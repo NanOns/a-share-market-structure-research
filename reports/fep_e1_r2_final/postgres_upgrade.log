@@ -1,0 +1,443 @@
+2026-10-05 14:20:35.129 CST [27584] LOG:  starting PostgreSQL 18.6 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit
+2026-10-05 14:20:35.130 CST [27584] LOG:  listening on IPv4 address "127.0.0.1", port 55489
+2026-10-05 14:20:35.163 CST [53424] LOG:  database system was shut down at 2026-10-05 14:20:18 CST
+2026-10-05 14:20:35.174 CST [27584] LOG:  database system is ready to accept connections
+2026-10-05 14:20:42.254 CST [11996] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 14:20:42.254 CST [11996] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 14:20:42.254 CST [11996] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:42.458 CST [46380] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:20:42.458 CST [46380] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:20:42.458 CST [46380] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:42.509 CST [28548] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:20:42.509 CST [28548] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:20:42.509 CST [28548] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:42.661 CST [52820] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:20:42.661 CST [52820] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:20:42.661 CST [52820] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:42.710 CST [51028] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:20:42.710 CST [51028] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:20:42.710 CST [51028] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:42.757 CST [49772] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:20:42.757 CST [49772] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:20:42.757 CST [49772] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:42.803 CST [53864] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:20:42.803 CST [53864] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:20:42.803 CST [53864] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:42.849 CST [8960] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:20:42.849 CST [8960] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:20:42.849 CST [8960] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:42.995 CST [54800] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:20:42.995 CST [54800] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:20:42.995 CST [54800] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:43.147 CST [46316] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:20:43.147 CST [46316] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:20:43.147 CST [46316] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:43.302 CST [46368] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:20:43.302 CST [46368] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:20:43.302 CST [46368] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:43.357 CST [15136] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:20:43.357 CST [15136] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:20:43.357 CST [15136] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:43.401 CST [26112] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:20:43.401 CST [26112] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:20:43.401 CST [26112] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:43.448 CST [54808] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:20:43.448 CST [54808] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:20:43.448 CST [54808] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:43.498 CST [11200] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:20:43.498 CST [11200] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:20:43.498 CST [11200] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:43.549 CST [49612] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:20:43.549 CST [49612] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:20:43.549 CST [49612] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:43.550 CST [49612] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 14:20:43.550 CST [49612] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 14:20:43.550 CST [49612] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:43.597 CST [37184] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 14:20:43.597 CST [37184] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 14:20:43.597 CST [37184] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:43.642 CST [52156] ERROR:  FEP_HEAD_ACTIVATION_INVALID
+2026-10-05 14:20:43.642 CST [52156] CONTEXT:  PL/pgSQL function validate_deployment_head() line 6 at RAISE
+2026-10-05 14:20:43.642 CST [52156] STATEMENT:  insert into fep.deployment_heads values ($1,'SHADOW_INFERENCE','ABS:T5',5,'FEATURE','set1','g1','future',1,$2)
+2026-10-05 14:20:43.684 CST [47372] ERROR:  permission denied for function cas_deploy
+2026-10-05 14:20:43.684 CST [47372] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:43.729 CST [36492] ERROR:  permission denied for table deployment_heads
+2026-10-05 14:20:43.729 CST [36492] STATEMENT:  update fep.deployment_heads set head_version=2
+2026-10-05 14:20:43.730 CST [36492] ERROR:  permission denied for table deployment_heads
+2026-10-05 14:20:43.730 CST [36492] STATEMENT:  delete from fep.deployment_heads
+2026-10-05 14:20:43.731 CST [36492] ERROR:  permission denied for table contracts
+2026-10-05 14:20:43.731 CST [36492] STATEMENT:  update fep.contracts set version='x'
+2026-10-05 14:20:43.731 CST [36492] ERROR:  must be owner of table deployment_heads
+2026-10-05 14:20:43.731 CST [36492] STATEMENT:  alter table fep.deployment_heads disable trigger all
+2026-10-05 14:20:43.732 CST [36492] ERROR:  permission denied to set role "fep_cas_owner"
+2026-10-05 14:20:43.732 CST [36492] STATEMENT:  set role fep_cas_owner
+2026-10-05 14:20:44.193 CST [54432] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 14:20:44.193 CST [54432] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 14:20:44.193 CST [54432] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:44.283 CST [17196] ERROR:  query returned no rows
+2026-10-05 14:20:44.283 CST [17196] CONTEXT:  PL/pgSQL function validate_observation() line 4 at SQL statement
+2026-10-05 14:20:44.283 CST [17196] STATEMENT:  insert into fep.observations values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:44.329 CST [52424] ERROR:  insert or update on table "label_revisions" violates foreign key constraint "label_revisions_observation_id_scope_id_fkey"
+2026-10-05 14:20:44.329 CST [52424] DETAIL:  Key (observation_id, scope_id)=(o, OTHER) is not present in table "observations".
+2026-10-05 14:20:44.329 CST [52424] STATEMENT:  insert into fep.label_revisions values ('o','OTHER','ABS:T5',1,2,$1,.2,null,'OBSERVED',true,$2,null)
+2026-10-05 14:20:44.380 CST [50248] ERROR:  insert or update on table "dataset_rows" violates foreign key constraint "dataset_rows_snapshot_id_observation_id_fkey"
+2026-10-05 14:20:44.380 CST [50248] DETAIL:  Key (snapshot_id, observation_id)=(snap, other) is not present in table "snapshots".
+2026-10-05 14:20:44.380 CST [50248] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:20:44.416 CST [48688] ERROR:  FEP_SNAPSHOT_FEATURE_CONTRACT_MISMATCH
+2026-10-05 14:20:44.416 CST [48688] CONTEXT:  PL/pgSQL function validate_snapshot() line 6 at RAISE
+2026-10-05 14:20:44.416 CST [48688] STATEMENT:  insert into fep.snapshots values ('wrong','o',1,'WINDOW',$1,$2,$3)
+2026-10-05 14:20:44.457 CST [53756] ERROR:  insert or update on table "dataset_fold_label_selection" violates foreign key constraint "dataset_fold_label_selection_observation_id_target_id_sele_fkey"
+2026-10-05 14:20:44.457 CST [53756] DETAIL:  Key (observation_id, target_id, selected_label_revision, selected_label_digest)=(o, ABS:T5, 1, d78ed9efa6ae77434392252f5e55039c106c229f28150fb5fbffbedbc40e15df) is not present in table "label_revisions".
+2026-10-05 14:20:44.457 CST [53756] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:20:44.500 CST [54308] ERROR:  query returned no rows
+2026-10-05 14:20:44.500 CST [54308] CONTEXT:  PL/pgSQL function validate_dataset_row() line 6 at SQL statement
+2026-10-05 14:20:44.500 CST [54308] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:20:44.543 CST [53380] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 14:20:44.543 CST [53380] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 14:20:44.543 CST [53380] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:20:44.585 CST [44808] ERROR:  FEP_FOLD_LABEL_NOT_TRAINABLE
+2026-10-05 14:20:44.585 CST [44808] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 14 at RAISE
+2026-10-05 14:20:44.585 CST [44808] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:20:44.627 CST [49092] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 14:20:44.627 CST [49092] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 14:20:44.627 CST [49092] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:20:44.669 CST [51316] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 14:20:44.669 CST [51316] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 14:20:44.669 CST [51316] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:20:44.748 CST [28156] ERROR:  FEP_RECONSTRUCTION_NOT_PIT
+2026-10-05 14:20:44.748 CST [28156] CONTEXT:  PL/pgSQL function validate_observation_revision() line 12 at RAISE
+2026-10-05 14:20:44.748 CST [28156] STATEMENT:  insert into fep.observation_revisions values ('o',2,'PUB',$1,$2,$3,'NONE','PIT_OBSERVED','REPLAY',1,$4)
+2026-10-05 14:20:44.837 CST [49516] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-05 14:20:44.837 CST [49516] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-05 14:20:44.837 CST [49516] STATEMENT:  set constraints all immediate
+2026-10-05 14:20:44.909 CST [54756] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 14:20:44.909 CST [54756] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 14:20:44.909 CST [54756] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:20:44.957 CST [32760] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 14:20:44.957 CST [32760] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 14:20:44.957 CST [32760] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:20:45.121 CST [54828] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 14:20:45.121 CST [54828] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 14:20:45.121 CST [54828] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:20:45.196 CST [6924] ERROR:  FEP_APPEND_ONLY
+2026-10-05 14:20:45.196 CST [6924] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-05 14:20:45.196 CST [6924] STATEMENT:  update fep.contracts set version='2' where contract_id='OBS'
+2026-10-05 14:20:45.236 CST [54960] ERROR:  FEP_APPEND_ONLY
+2026-10-05 14:20:45.236 CST [54960] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-05 14:20:45.236 CST [54960] STATEMENT:  delete from fep.contracts where contract_id='OBS'
+2026-10-05 14:20:45.319 CST [40424] ERROR:  FEP_LABEL_EXACT_SOURCE_MISMATCH
+2026-10-05 14:20:45.319 CST [40424] CONTEXT:  PL/pgSQL function validate_label_revision() line 14 at RAISE
+2026-10-05 14:20:45.319 CST [40424] STATEMENT:  insert into fep.label_revisions values ('o',$1,'ABS:T5',5,2,$2,.9,null,'OBSERVED',true,$3,1)
+2026-10-05 14:20:45.364 CST [37200] ERROR:  FEP_UPSTREAM_EXACT_AUTHORITY_REQUIRED
+2026-10-05 14:20:45.364 CST [37200] CONTEXT:  PL/pgSQL function validate_label_binding() line 12 at RAISE
+2026-10-05 14:20:45.364 CST [37200] STATEMENT:  insert into fep.label_source_bindings values ('missing','OBS','key','r',$1,'2026-09-08',$2,$3,$4,$5)
+2026-10-05 14:20:45.411 CST [53376] ERROR:  duplicate key value violates unique constraint "prediction_slots_observation_id_target_id_horizon_model_fam_key"
+2026-10-05 14:20:45.411 CST [53376] DETAIL:  Key (observation_id, target_id, horizon, model_family_scope)=(o, ABS:T5, 5, CORE) already exists.
+2026-10-05 14:20:45.411 CST [53376] STATEMENT:  insert into fep.prediction_slots values ($1,'o',$2,'ABS:T5',5,'CORE',$3,$4,'NO_ACTIVE_MODEL')
+2026-10-05 14:20:45.781 CST [51896] ERROR:  type "nonexistent_type" does not exist at character 37
+2026-10-05 14:20:45.781 CST [51896] STATEMENT:  create table fep.failed_install (id nonexistent_type)
+2026-10-05 14:20:45.862 CST [55276] ERROR:  type "nonexistent_type" does not exist at character 37
+2026-10-05 14:20:45.862 CST [55276] STATEMENT:  create table fep.rollback_probe (id nonexistent_type)
+2026-10-05 14:20:45.951 CST [20276] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-05 14:20:45.951 CST [20276] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-05 14:20:45.951 CST [20276] STATEMENT:  insert into fep.datasets values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:12.868 CST [22116] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 14:24:12.868 CST [22116] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 14:24:12.868 CST [22116] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:12.982 CST [47344] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:24:12.982 CST [47344] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:24:12.982 CST [47344] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:13.035 CST [35692] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:24:13.035 CST [35692] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:24:13.035 CST [35692] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:13.102 CST [42572] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:24:13.102 CST [42572] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:24:13.102 CST [42572] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:13.156 CST [42932] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:24:13.156 CST [42932] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:24:13.156 CST [42932] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:13.214 CST [22640] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:24:13.214 CST [22640] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:24:13.214 CST [22640] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:13.282 CST [42916] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:24:13.282 CST [42916] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:24:13.282 CST [42916] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:13.340 CST [54608] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:24:13.340 CST [54608] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:24:13.340 CST [54608] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:13.395 CST [6444] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:24:13.395 CST [6444] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:24:13.395 CST [6444] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:13.460 CST [52796] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:24:13.460 CST [52796] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:24:13.460 CST [52796] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:13.506 CST [54872] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:24:13.506 CST [54872] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:24:13.506 CST [54872] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:13.560 CST [4340] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:24:13.560 CST [4340] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:24:13.560 CST [4340] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:13.608 CST [20044] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:24:13.608 CST [20044] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:24:13.608 CST [20044] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:13.654 CST [54684] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:24:13.654 CST [54684] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:24:13.654 CST [54684] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:13.701 CST [54540] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:24:13.701 CST [54540] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:24:13.701 CST [54540] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:13.751 CST [47020] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:24:13.751 CST [47020] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:24:13.751 CST [47020] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:13.753 CST [47020] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 14:24:13.753 CST [47020] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 14:24:13.753 CST [47020] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:13.813 CST [51520] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 14:24:13.813 CST [51520] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 14:24:13.813 CST [51520] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:13.976 CST [32876] ERROR:  FEP_HEAD_ACTIVATION_INVALID
+2026-10-05 14:24:13.976 CST [32876] CONTEXT:  PL/pgSQL function validate_deployment_head() line 6 at RAISE
+2026-10-05 14:24:13.976 CST [32876] STATEMENT:  insert into fep.deployment_heads values ($1,'SHADOW_INFERENCE','ABS:T5',5,'FEATURE','set1','g1','future',1,$2)
+2026-10-05 14:24:14.024 CST [36676] ERROR:  permission denied for function cas_deploy
+2026-10-05 14:24:14.024 CST [36676] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:14.077 CST [51372] ERROR:  permission denied for table deployment_heads
+2026-10-05 14:24:14.077 CST [51372] STATEMENT:  update fep.deployment_heads set head_version=2
+2026-10-05 14:24:14.078 CST [51372] ERROR:  permission denied for table deployment_heads
+2026-10-05 14:24:14.078 CST [51372] STATEMENT:  delete from fep.deployment_heads
+2026-10-05 14:24:14.079 CST [51372] ERROR:  permission denied for table contracts
+2026-10-05 14:24:14.079 CST [51372] STATEMENT:  update fep.contracts set version='x'
+2026-10-05 14:24:14.080 CST [51372] ERROR:  must be owner of table deployment_heads
+2026-10-05 14:24:14.080 CST [51372] STATEMENT:  alter table fep.deployment_heads disable trigger all
+2026-10-05 14:24:14.081 CST [51372] ERROR:  permission denied to set role "fep_cas_owner"
+2026-10-05 14:24:14.081 CST [51372] STATEMENT:  set role fep_cas_owner
+2026-10-05 14:24:14.753 CST [49648] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 14:24:14.753 CST [49648] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 14:24:14.753 CST [49648] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:14.965 CST [40996] ERROR:  query returned no rows
+2026-10-05 14:24:14.965 CST [40996] CONTEXT:  PL/pgSQL function validate_observation() line 4 at SQL statement
+2026-10-05 14:24:14.965 CST [40996] STATEMENT:  insert into fep.observations values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:15.004 CST [35536] ERROR:  insert or update on table "label_revisions" violates foreign key constraint "label_revisions_observation_id_scope_id_fkey"
+2026-10-05 14:24:15.004 CST [35536] DETAIL:  Key (observation_id, scope_id)=(o, OTHER) is not present in table "observations".
+2026-10-05 14:24:15.004 CST [35536] STATEMENT:  insert into fep.label_revisions values ('o','OTHER','ABS:T5',1,2,$1,.2,null,'OBSERVED',true,$2,null)
+2026-10-05 14:24:15.056 CST [42988] ERROR:  insert or update on table "dataset_rows" violates foreign key constraint "dataset_rows_snapshot_id_observation_id_fkey"
+2026-10-05 14:24:15.056 CST [42988] DETAIL:  Key (snapshot_id, observation_id)=(snap, other) is not present in table "snapshots".
+2026-10-05 14:24:15.056 CST [42988] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:24:15.092 CST [45476] ERROR:  FEP_SNAPSHOT_FEATURE_CONTRACT_MISMATCH
+2026-10-05 14:24:15.092 CST [45476] CONTEXT:  PL/pgSQL function validate_snapshot() line 6 at RAISE
+2026-10-05 14:24:15.092 CST [45476] STATEMENT:  insert into fep.snapshots values ('wrong','o',1,'WINDOW',$1,$2,$3)
+2026-10-05 14:24:15.137 CST [20276] ERROR:  insert or update on table "dataset_fold_label_selection" violates foreign key constraint "dataset_fold_label_selection_observation_id_target_id_sele_fkey"
+2026-10-05 14:24:15.137 CST [20276] DETAIL:  Key (observation_id, target_id, selected_label_revision, selected_label_digest)=(o, ABS:T5, 1, d78ed9efa6ae77434392252f5e55039c106c229f28150fb5fbffbedbc40e15df) is not present in table "label_revisions".
+2026-10-05 14:24:15.137 CST [20276] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:24:15.186 CST [24348] ERROR:  query returned no rows
+2026-10-05 14:24:15.186 CST [24348] CONTEXT:  PL/pgSQL function validate_dataset_row() line 6 at SQL statement
+2026-10-05 14:24:15.186 CST [24348] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:24:15.238 CST [19476] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 14:24:15.238 CST [19476] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 14:24:15.238 CST [19476] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:24:15.299 CST [49012] ERROR:  FEP_FOLD_LABEL_NOT_TRAINABLE
+2026-10-05 14:24:15.299 CST [49012] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 14 at RAISE
+2026-10-05 14:24:15.299 CST [49012] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:24:15.345 CST [35072] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 14:24:15.345 CST [35072] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 14:24:15.345 CST [35072] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:24:15.403 CST [41956] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 14:24:15.403 CST [41956] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 14:24:15.403 CST [41956] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:24:15.618 CST [47412] ERROR:  FEP_RECONSTRUCTION_NOT_PIT
+2026-10-05 14:24:15.618 CST [47412] CONTEXT:  PL/pgSQL function validate_observation_revision() line 12 at RAISE
+2026-10-05 14:24:15.618 CST [47412] STATEMENT:  insert into fep.observation_revisions values ('o',2,'PUB',$1,$2,$3,'NONE','PIT_OBSERVED','REPLAY',1,$4)
+2026-10-05 14:24:15.716 CST [51860] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-05 14:24:15.716 CST [51860] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-05 14:24:15.716 CST [51860] STATEMENT:  set constraints all immediate
+2026-10-05 14:24:15.810 CST [46520] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 14:24:15.810 CST [46520] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 14:24:15.810 CST [46520] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:24:15.863 CST [10880] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 14:24:15.863 CST [10880] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 14:24:15.863 CST [10880] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:24:15.916 CST [54532] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 14:24:15.916 CST [54532] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 14:24:15.916 CST [54532] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:24:16.005 CST [40856] ERROR:  FEP_APPEND_ONLY
+2026-10-05 14:24:16.005 CST [40856] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-05 14:24:16.005 CST [40856] STATEMENT:  update fep.contracts set version='2' where contract_id='OBS'
+2026-10-05 14:24:16.041 CST [3024] ERROR:  FEP_APPEND_ONLY
+2026-10-05 14:24:16.041 CST [3024] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-05 14:24:16.041 CST [3024] STATEMENT:  delete from fep.contracts where contract_id='OBS'
+2026-10-05 14:24:16.107 CST [13896] ERROR:  FEP_LABEL_EXACT_SOURCE_MISMATCH
+2026-10-05 14:24:16.107 CST [13896] CONTEXT:  PL/pgSQL function validate_label_revision() line 14 at RAISE
+2026-10-05 14:24:16.107 CST [13896] STATEMENT:  insert into fep.label_revisions values ('o',$1,'ABS:T5',5,2,$2,.9,null,'OBSERVED',true,$3,1)
+2026-10-05 14:24:16.143 CST [49404] ERROR:  FEP_UPSTREAM_EXACT_AUTHORITY_REQUIRED
+2026-10-05 14:24:16.143 CST [49404] CONTEXT:  PL/pgSQL function validate_label_binding() line 12 at RAISE
+2026-10-05 14:24:16.143 CST [49404] STATEMENT:  insert into fep.label_source_bindings values ('missing','OBS','key','r',$1,'2026-09-08',$2,$3,$4,$5)
+2026-10-05 14:24:16.179 CST [22652] ERROR:  duplicate key value violates unique constraint "prediction_slots_observation_id_target_id_horizon_model_fam_key"
+2026-10-05 14:24:16.179 CST [22652] DETAIL:  Key (observation_id, target_id, horizon, model_family_scope)=(o, ABS:T5, 5, CORE) already exists.
+2026-10-05 14:24:16.179 CST [22652] STATEMENT:  insert into fep.prediction_slots values ($1,'o',$2,'ABS:T5',5,'CORE',$3,$4,'NO_ACTIVE_MODEL')
+2026-10-05 14:24:16.704 CST [48112] ERROR:  type "nonexistent_type" does not exist at character 37
+2026-10-05 14:24:16.704 CST [48112] STATEMENT:  create table fep.failed_install (id nonexistent_type)
+2026-10-05 14:24:16.790 CST [54964] ERROR:  type "nonexistent_type" does not exist at character 37
+2026-10-05 14:24:16.790 CST [54964] STATEMENT:  create table fep.rollback_probe (id nonexistent_type)
+2026-10-05 14:24:16.889 CST [35376] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-05 14:24:16.889 CST [35376] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-05 14:24:16.889 CST [35376] STATEMENT:  insert into fep.datasets values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:25:35.161 CST [36044] LOG:  checkpoint starting: time
+2026-10-05 14:30:10.037 CST [36044] LOG:  checkpoint complete: wrote 10270 buffers (62.7%), wrote 4 SLRU buffers; 0 WAL file(s) added, 0 removed, 3 recycled; write=269.940 s, sync=4.910 s, total=274.876 s; sync files=4632, longest=0.006 s, average=0.002 s; distance=52904 kB, estimate=52904 kB; lsn=0/4B9D478, redo lsn=0/4B9D3E8
+2026-10-05 14:31:56.106 CST [27584] LOG:  received fast shutdown request
+2026-10-05 14:31:56.109 CST [27584] LOG:  aborting any active transactions
+2026-10-05 14:31:56.115 CST [27584] LOG:  background worker "logical replication launcher" (PID 45404) exited with exit code 1
+2026-10-05 14:31:56.116 CST [36044] LOG:  shutting down
+2026-10-05 14:31:56.118 CST [36044] LOG:  checkpoint starting: shutdown immediate
+2026-10-05 14:31:56.129 CST [36044] LOG:  checkpoint complete: wrote 0 buffers (0.0%), wrote 0 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.001 s, sync=0.001 s, total=0.013 s; sync files=0, longest=0.000 s, average=0.000 s; distance=0 kB, estimate=47614 kB; lsn=0/4B9D528, redo lsn=0/4B9D528
+2026-10-05 14:31:56.157 CST [27584] LOG:  database system is shut down
+2026-10-05 17:07:45.980 CST [47760] LOG:  starting PostgreSQL 18.6 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit
+2026-10-05 17:07:45.981 CST [47760] LOG:  listening on IPv4 address "127.0.0.1", port 55489
+2026-10-05 17:07:46.019 CST [32820] LOG:  database system was shut down at 2026-10-05 14:31:56 CST
+2026-10-05 17:07:46.027 CST [47760] LOG:  database system is ready to accept connections
+2026-10-05 17:11:30.930 CST [52984] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 17:11:30.930 CST [52984] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 17:11:30.930 CST [52984] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:31.043 CST [23708] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:11:31.043 CST [23708] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:11:31.043 CST [23708] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:31.205 CST [50200] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:11:31.205 CST [50200] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:11:31.205 CST [50200] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:31.258 CST [53556] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:11:31.258 CST [53556] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:11:31.258 CST [53556] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:31.307 CST [44924] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:11:31.307 CST [44924] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:11:31.307 CST [44924] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:31.352 CST [47388] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:11:31.352 CST [47388] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:11:31.352 CST [47388] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:31.513 CST [34496] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:11:31.513 CST [34496] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:11:31.513 CST [34496] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:31.560 CST [14616] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:11:31.560 CST [14616] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:11:31.560 CST [14616] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:31.617 CST [47192] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:11:31.617 CST [47192] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:11:31.617 CST [47192] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:31.661 CST [4608] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:11:31.661 CST [4608] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:11:31.661 CST [4608] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:31.711 CST [54104] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:11:31.711 CST [54104] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:11:31.711 CST [54104] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:31.761 CST [55188] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:11:31.761 CST [55188] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:11:31.761 CST [55188] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:31.910 CST [3748] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:11:31.910 CST [3748] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:11:31.910 CST [3748] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:31.963 CST [35844] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:11:31.963 CST [35844] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:11:31.963 CST [35844] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:32.007 CST [32368] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:11:32.007 CST [32368] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:11:32.007 CST [32368] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:32.054 CST [5368] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:11:32.054 CST [5368] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:11:32.054 CST [5368] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:32.055 CST [5368] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 17:11:32.055 CST [5368] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 17:11:32.055 CST [5368] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:32.101 CST [44016] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 17:11:32.101 CST [44016] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 17:11:32.101 CST [44016] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:32.151 CST [43168] ERROR:  FEP_HEAD_ACTIVATION_INVALID
+2026-10-05 17:11:32.151 CST [43168] CONTEXT:  PL/pgSQL function validate_deployment_head() line 6 at RAISE
+2026-10-05 17:11:32.151 CST [43168] STATEMENT:  insert into fep.deployment_heads values ($1,'SHADOW_INFERENCE','ABS:T5',5,'FEATURE','set1','g1','future',1,$2)
+2026-10-05 17:11:32.299 CST [48944] ERROR:  permission denied for function cas_deploy
+2026-10-05 17:11:32.299 CST [48944] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:32.356 CST [14316] ERROR:  permission denied for table deployment_heads
+2026-10-05 17:11:32.356 CST [14316] STATEMENT:  update fep.deployment_heads set head_version=2
+2026-10-05 17:11:32.357 CST [14316] ERROR:  permission denied for table deployment_heads
+2026-10-05 17:11:32.357 CST [14316] STATEMENT:  delete from fep.deployment_heads
+2026-10-05 17:11:32.357 CST [14316] ERROR:  permission denied for table contracts
+2026-10-05 17:11:32.357 CST [14316] STATEMENT:  update fep.contracts set version='x'
+2026-10-05 17:11:32.358 CST [14316] ERROR:  must be owner of table deployment_heads
+2026-10-05 17:11:32.358 CST [14316] STATEMENT:  alter table fep.deployment_heads disable trigger all
+2026-10-05 17:11:32.359 CST [14316] ERROR:  permission denied to set role "fep_cas_owner"
+2026-10-05 17:11:32.359 CST [14316] STATEMENT:  set role fep_cas_owner
+2026-10-05 17:11:33.536 CST [27700] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 17:11:33.536 CST [27700] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 17:11:33.536 CST [27700] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:33.644 CST [54600] ERROR:  query returned no rows
+2026-10-05 17:11:33.644 CST [54600] CONTEXT:  PL/pgSQL function validate_observation() line 4 at SQL statement
+2026-10-05 17:11:33.644 CST [54600] STATEMENT:  insert into fep.observations values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:33.697 CST [42140] ERROR:  insert or update on table "label_revisions" violates foreign key constraint "label_revisions_observation_id_scope_id_fkey"
+2026-10-05 17:11:33.697 CST [42140] DETAIL:  Key (observation_id, scope_id)=(o, OTHER) is not present in table "observations".
+2026-10-05 17:11:33.697 CST [42140] STATEMENT:  insert into fep.label_revisions values ('o','OTHER','ABS:T5',1,2,$1,.2,null,'OBSERVED',true,$2,null)
+2026-10-05 17:11:33.747 CST [51120] ERROR:  insert or update on table "dataset_rows" violates foreign key constraint "dataset_rows_snapshot_id_observation_id_fkey"
+2026-10-05 17:11:33.747 CST [51120] DETAIL:  Key (snapshot_id, observation_id)=(snap, other) is not present in table "snapshots".
+2026-10-05 17:11:33.747 CST [51120] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:11:33.799 CST [53756] ERROR:  FEP_SNAPSHOT_FEATURE_CONTRACT_MISMATCH
+2026-10-05 17:11:33.799 CST [53756] CONTEXT:  PL/pgSQL function validate_snapshot() line 6 at RAISE
+2026-10-05 17:11:33.799 CST [53756] STATEMENT:  insert into fep.snapshots values ('wrong','o',1,'WINDOW',$1,$2,$3)
+2026-10-05 17:11:33.845 CST [45484] ERROR:  insert or update on table "dataset_fold_label_selection" violates foreign key constraint "dataset_fold_label_selection_observation_id_target_id_sele_fkey"
+2026-10-05 17:11:33.845 CST [45484] DETAIL:  Key (observation_id, target_id, selected_label_revision, selected_label_digest)=(o, ABS:T5, 1, d78ed9efa6ae77434392252f5e55039c106c229f28150fb5fbffbedbc40e15df) is not present in table "label_revisions".
+2026-10-05 17:11:33.845 CST [45484] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:11:34.004 CST [43396] ERROR:  query returned no rows
+2026-10-05 17:11:34.004 CST [43396] CONTEXT:  PL/pgSQL function validate_dataset_row() line 6 at SQL statement
+2026-10-05 17:11:34.004 CST [43396] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:11:34.057 CST [37960] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 17:11:34.057 CST [37960] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 17:11:34.057 CST [37960] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:11:34.104 CST [42112] ERROR:  FEP_FOLD_LABEL_NOT_TRAINABLE
+2026-10-05 17:11:34.104 CST [42112] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 14 at RAISE
+2026-10-05 17:11:34.104 CST [42112] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:11:34.149 CST [38900] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 17:11:34.149 CST [38900] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 17:11:34.149 CST [38900] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:11:34.192 CST [40956] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 17:11:34.192 CST [40956] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 17:11:34.192 CST [40956] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:11:34.284 CST [40248] ERROR:  FEP_RECONSTRUCTION_NOT_PIT
+2026-10-05 17:11:34.284 CST [40248] CONTEXT:  PL/pgSQL function validate_observation_revision() line 12 at RAISE
+2026-10-05 17:11:34.284 CST [40248] STATEMENT:  insert into fep.observation_revisions values ('o',2,'PUB',$1,$2,$3,'NONE','PIT_OBSERVED','REPLAY',1,$4)
+2026-10-05 17:11:34.378 CST [54660] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-05 17:11:34.378 CST [54660] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-05 17:11:34.378 CST [54660] STATEMENT:  set constraints all immediate
+2026-10-05 17:11:34.695 CST [32528] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 17:11:34.695 CST [32528] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 17:11:34.695 CST [32528] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:11:34.751 CST [49888] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 17:11:34.751 CST [49888] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 17:11:34.751 CST [49888] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:11:34.827 CST [34172] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 17:11:34.827 CST [34172] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 17:11:34.827 CST [34172] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:11:34.933 CST [47832] ERROR:  FEP_APPEND_ONLY
+2026-10-05 17:11:34.933 CST [47832] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-05 17:11:34.933 CST [47832] STATEMENT:  update fep.contracts set version='2' where contract_id='OBS'
+2026-10-05 17:11:34.980 CST [53288] ERROR:  FEP_APPEND_ONLY
+2026-10-05 17:11:34.980 CST [53288] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-05 17:11:34.980 CST [53288] STATEMENT:  delete from fep.contracts where contract_id='OBS'
+2026-10-05 17:11:35.061 CST [52512] ERROR:  FEP_LABEL_EXACT_SOURCE_MISMATCH
+2026-10-05 17:11:35.061 CST [52512] CONTEXT:  PL/pgSQL function validate_label_revision() line 14 at RAISE
+2026-10-05 17:11:35.061 CST [52512] STATEMENT:  insert into fep.label_revisions values ('o',$1,'ABS:T5',5,2,$2,.9,null,'OBSERVED',true,$3,1)
+2026-10-05 17:11:35.114 CST [40532] ERROR:  FEP_UPSTREAM_EXACT_AUTHORITY_REQUIRED
+2026-10-05 17:11:35.114 CST [40532] CONTEXT:  PL/pgSQL function validate_label_binding() line 12 at RAISE
+2026-10-05 17:11:35.114 CST [40532] STATEMENT:  insert into fep.label_source_bindings values ('missing','OBS','key','r',$1,'2026-09-08',$2,$3,$4,$5)
+2026-10-05 17:11:35.153 CST [36908] ERROR:  duplicate key value violates unique constraint "prediction_slots_observation_id_target_id_horizon_model_fam_key"
+2026-10-05 17:11:35.153 CST [36908] DETAIL:  Key (observation_id, target_id, horizon, model_family_scope)=(o, ABS:T5, 5, CORE) already exists.
+2026-10-05 17:11:35.153 CST [36908] STATEMENT:  insert into fep.prediction_slots values ($1,'o',$2,'ABS:T5',5,'CORE',$3,$4,'NO_ACTIVE_MODEL')
+2026-10-05 17:11:38.217 CST [52348] ERROR:  type "nonexistent_type" does not exist at character 37
+2026-10-05 17:11:38.217 CST [52348] STATEMENT:  create table fep.failed_install (id nonexistent_type)
+2026-10-05 17:11:38.334 CST [37024] ERROR:  type "nonexistent_type" does not exist at character 37
+2026-10-05 17:11:38.334 CST [37024] STATEMENT:  create table fep.rollback_probe (id nonexistent_type)
+2026-10-05 17:11:38.541 CST [53100] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-05 17:11:38.541 CST [53100] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-05 17:11:38.541 CST [53100] STATEMENT:  insert into fep.datasets values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:12:46.026 CST [52016] LOG:  checkpoint starting: time
+2026-10-05 17:17:16.395 CST [52016] LOG:  checkpoint complete: wrote 3153 buffers (19.2%), wrote 4 SLRU buffers; 0 WAL file(s) added, 0 removed, 1 recycled; write=270.010 s, sync=0.341 s, total=270.370 s; sync files=1516, longest=0.004 s, average=0.001 s; distance=16148 kB, estimate=16148 kB; lsn=0/5B62948, redo lsn=0/5B628B8
+2026-10-05 17:26:07.615 CST [47760] LOG:  received fast shutdown request
+2026-10-05 17:26:07.619 CST [47760] LOG:  aborting any active transactions
+2026-10-05 17:26:07.627 CST [47760] LOG:  background worker "logical replication launcher" (PID 4560) exited with exit code 1
+2026-10-05 17:26:07.628 CST [52016] LOG:  shutting down
+2026-10-05 17:26:07.630 CST [52016] LOG:  checkpoint starting: shutdown immediate
+2026-10-05 17:26:07.660 CST [52016] LOG:  checkpoint complete: wrote 8 buffers (0.0%), wrote 0 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.003 s, sync=0.016 s, total=0.032 s; sync files=8, longest=0.002 s, average=0.002 s; distance=33 kB, estimate=14537 kB; lsn=0/5B6AD40, redo lsn=0/5B6AD40
+2026-10-05 17:26:07.698 CST [47760] LOG:  database system is shut down

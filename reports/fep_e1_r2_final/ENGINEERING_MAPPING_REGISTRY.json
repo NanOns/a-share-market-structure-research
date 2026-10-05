@@ -1,0 +1,1179 @@
+{
+  "fields": [
+    {
+      "field_name": "amount_ratio20",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "amount_ratio20",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "amount_ratio20",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "amount_ratio5",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "amount_ratio5",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "amount_ratio5",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "atr20",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "atr20",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "atr20",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "atr5",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "atr5",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "atr5",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "atr_ratio",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "atr_ratio",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "atr_ratio",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "clv",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "clv",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "clv",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "core_price_damage",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "boolean",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "core_price_damage",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "core_price_damage",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "hh_progress",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "boolean",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "hh_progress",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "hh_progress",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "hhv20",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "hhv20",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "hhv20",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "hhv5",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "hhv5",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "hhv5",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "hhv60",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "hhv60",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "hhv60",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "ll_progress",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "boolean",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "ll_progress",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "ll_progress",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "llv20",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "llv20",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "llv20",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "llv5",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "llv5",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "llv5",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "llv60",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "llv60",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "llv60",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "ma20",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "ma20",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "ma20",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "ma5",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "ma5",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "ma5",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "ma60",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "ma60",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "ma60",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "pos60",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "pos60",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "pos60",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "prior60_percentile",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "prior60_percentile",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "prior60_percentile",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "prior_high20",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "prior_high20",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "prior_high20",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "prior_high5",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "prior_high5",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "prior_high5",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "prior_high60",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "prior_high60",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "prior_high60",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "prior_low20",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "prior_low20",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "prior_low20",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "prior_low5",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "prior_low5",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "prior_low5",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "prior_low60",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "prior_low60",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "prior_low60",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "range_ratio",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "range_ratio",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "range_ratio",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "rel_market_1",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "rel_market_1",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "rel_market_1",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "rel_market_3",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "rel_market_3",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "rel_market_3",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "rel_market_5",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "rel_market_5",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "rel_market_5",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "ret1",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "ret1",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "ret1",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "ret20",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "ret20",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "ret20",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "ret3",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "ret3",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "ret3",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "ret5",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "ret5",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "ret5",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "rps20",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "rps20",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "rps20",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "rps20_delta3",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "rps20_delta3",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "rps20_delta3",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "rps5",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "rps5",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "rps5",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "rps5_delta1",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "rps5_delta1",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "rps5_delta1",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "rps5_delta3",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "rps5_delta3",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "rps5_delta3",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "slope20",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "slope20",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "slope20",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "slope60",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "slope60",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "slope60",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "tr",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "tr",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "tr",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "vol20",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "vol20",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "vol20",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "vol5",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "vol5",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "vol5",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "vol_ratio",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "vol_ratio",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "vol_ratio",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "volume_ratio20",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "volume_ratio20",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "volume_ratio20",
+        "quality"
+      ]
+    },
+    {
+      "field_name": "volume_ratio5",
+      "status": "IMPLEMENTED_EXACT_MAPPING",
+      "required": true,
+      "nullable": true,
+      "data_type": "float64",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "quality_allowlist": [
+        "OBSERVED",
+        "UNKNOWN"
+      ],
+      "dependency_key": "publication",
+      "field_path": [
+        "values",
+        "volume_ratio5",
+        "value"
+      ],
+      "quality_path": [
+        "values",
+        "volume_ratio5",
+        "quality"
+      ]
+    }
+  ]
+}

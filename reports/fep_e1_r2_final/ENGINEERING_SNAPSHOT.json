@@ -1,0 +1,582 @@
+{
+  "observation_id": "7402d22e42df49c7dd0deb90190315c26842f3c93b792f14940f9d867e563fe8",
+  "observation_revision": 1,
+  "feature_cutoff": "2026-10-05T09:07:08.931401+00:00",
+  "dependency_manifest": {
+    "publication": {
+      "path": "reports/fep_e1_r2_final/OWNER_ROW_PROJECTION.json",
+      "bytes": 62135,
+      "sha256": "c477a7d8e5c44a54d2e6084647457d41d5807770196c90cff67e09cd5162ed4d",
+      "system_available_at": "2026-10-05T09:07:08.926753+00:00"
+    },
+    "accepted_head": {
+      "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+      "bytes": 4924,
+      "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035",
+      "system_available_at": "2026-10-05T09:07:08.927376+00:00"
+    },
+    "algorithm_contract": {
+      "path": "config/v4_03_algorithm_contracts_v1.json",
+      "bytes": 238576,
+      "sha256": "b36d3058ae9e557642389ef264f8451076a0b9876ec423299d64d1a890e054d2",
+      "system_available_at": "2026-10-05T09:07:08.928149+00:00"
+    },
+    "parameter_contract": {
+      "path": "config/v4_03_parameter_set_v1.json",
+      "bytes": 649,
+      "sha256": "2f3cc8ae2fdf4bffc098dc1a0dc90bf05bbb12557b45ea8ddc50048410314e18",
+      "system_available_at": "2026-10-05T09:07:08.928753+00:00"
+    },
+    "calendar": {
+      "path": "data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/calendar_sse_20230704_20260924.json",
+      "bytes": 17888,
+      "sha256": "09285bb116db5e7ab644e4942c331ceb9bc715b47f0369b9f228ef9d17df2d53",
+      "system_available_at": "2026-10-05T09:07:08.929371+00:00"
+    },
+    "universe": {
+      "path": "reports/fep_e1_r2_final/UNIVERSE_EXACT_SOURCE_READBACK.json",
+      "bytes": 674,
+      "sha256": "27cd49de40dcc4c831f663332de5c39dfa9daf8aa4ad7877a6d9ef8f8672e81e",
+      "system_available_at": "2026-10-05T09:07:08.930791+00:00"
+    },
+    "adjustment_basis": {
+      "path": "reports/fep_e1_r2_final/ADJUSTMENT_BASIS_EXACT_SOURCE_READBACK.json",
+      "bytes": 669,
+      "sha256": "e039696bebc96ab9eeea9b8a9ee0e7bc00cbb36e05497a4bb7b7e05239c78ee7",
+      "system_available_at": "2026-10-05T09:07:08.931401+00:00"
+    },
+    "feature_contract": {
+      "path": "config/fep_feature_owner_contract_v1.json",
+      "bytes": 84680,
+      "sha256": "bd9bb9eba32658ba0430debeac2207633a4c7e777ffe946503736c6527566a69",
+      "system_available_at": "2026-10-05T09:07:08.930031+00:00"
+    },
+    "membership": "NONE",
+    "state_event_revision": "NONE",
+    "enrichment_revision": "NONE"
+  },
+  "values": {
+    "amount_ratio20": {
+      "value": 0.9531670425790969,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "3458b441cc642edd959e8716298947718f226ef8887fff6ed72b04cb16fc466e",
+      "input_digest": "42b88b71e5757b9d6f449f14bfe516ee47c772276109f26187905ed0f9265869",
+      "window_identity": "06825ee0c1cf28f87ce7f7061b2593b22e252e4d7ec80e28bba2a53545b98ea8",
+      "unit": "ratio",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "amount_ratio5": {
+      "value": 0.9182611197278893,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "b23f8dc85bad2be97b4c46688f0760bced7087b31d3f325a44b4815e0c8d3235",
+      "input_digest": "5601bc3958722a68ad2971150eb50c189bc18636ce0dc36b56bfb74f5433744a",
+      "window_identity": "a6c58e32ebb8aeca08ecf82c6cef236f441a6f820a43ef3d09365f2f55eec23b",
+      "unit": "ratio",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "atr20": {
+      "value": 0.3670000000000001,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "6f34cbef5fe0875b051117e360e911b67ccb60793b91b26350f0680031c21b54",
+      "input_digest": "42b88b71e5757b9d6f449f14bfe516ee47c772276109f26187905ed0f9265869",
+      "window_identity": "9515e2b61ac6b06707a7a9a7efa688935728c2d81e57de437604b877d15eabee",
+      "unit": "adjusted_price",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "atr5": {
+      "value": 0.34800000000000003,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "75f7c595eeac8456c4fc1e85cc99ee8e28c4fb763247d703f4b6551134c7d863",
+      "input_digest": "5601bc3958722a68ad2971150eb50c189bc18636ce0dc36b56bfb74f5433744a",
+      "window_identity": "bd04dba1daba866e2e4cfbe7f71bb67e6b781181181eebe5c847b0802c57e793",
+      "unit": "adjusted_price",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "atr_ratio": {
+      "value": 0.9482288828337873,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "2d18d04b34a685a969f953acd68fa779ca6613e2f53fbd64929827fc6f6e78c8",
+      "input_digest": "a510752734ba417615b1bf9de474799235e2c93557570add2a2e8644f397eba4",
+      "window_identity": "bc6a673a4639cab68a01379f2d3407747b5c3de98bd82a8b434c1d77d6b2f267",
+      "unit": "ratio",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "clv": {
+      "value": 0.09523809523809322,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "855ebc0e6c2fa4b6b588f4fbde9d76982f95a8fdbb3e499df9e1e92f6b995253",
+      "input_digest": "24d11cc77a4111c1cd11749724d0b4ada2dc59ee08fe8c2b3e50919e4f30d3a9",
+      "window_identity": "c2519903be965b3a34b77018fce94c45301a5d71cf306dd1ee40462a87cc3430",
+      "unit": "ratio",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "core_price_damage": {
+      "value": false,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "698c655c1c6453d14b59bcfb04e809c9e8c036bb643b5bc64382d8a3815ee42b",
+      "input_digest": "7ef7d6b9b9b92d4478fc73d20ac24e41c39453815fc2c761ae15c2e236633e37",
+      "window_identity": "1f31d217c880bfa711e9441bfb10319dc1e7233fdc71e2628a5c6078687b920a",
+      "unit": "boolean",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "hh_progress": {
+      "value": true,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "b116697b66f2e0923dadbc9069d37823c959ecce2df88aa27efc3afbde4e2869",
+      "input_digest": "e2f956642600e527584431e9334427c84a3993f32c11827fb3aa8da0d3a5b71b",
+      "window_identity": "77ba5a4fa72ea15de3ab1204e236fb23ac3a8e13e2344d922d5a55b4a7884eba",
+      "unit": "boolean",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "hhv20": {
+      "value": 13.79,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "bb20a8bccd3b401a459e942e05f577de384a5c75d6f9e22e88120a16e01f1158",
+      "input_digest": "2e2f794445b4053ec48109a93d8038a8c601db137327fea1914aeed1f702d72a",
+      "window_identity": "1c5168f1d12cf4a19db4ed371227eb528aee493f55f587a7d152767af16aba02",
+      "unit": "adjusted_price",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "hhv5": {
+      "value": 13.41,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "576bf7ad68cb50af283f5d7d92465633902182faf2ffc2217cd489e989350fce",
+      "input_digest": "4a480f7184651a6d258f5c66eb42a785fae08220fefcc75965b81c5a63e09a3e",
+      "window_identity": "bce97471bc5cda5b6f3aa17ed92efd3fd4aa65a8e9b909040e9210250a54da75",
+      "unit": "adjusted_price",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "hhv60": {
+      "value": 15.79,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "4a78aab0538be617f38061fe5943efd0006e0fdcc95bb5c78e463c220b4c6c79",
+      "input_digest": "0bf6413cf79558314ae42a4db63fd918875b23d5c222b1fcbed7d4679ea7d1a8",
+      "window_identity": "edf5e4fb2f284925ce60f29e7426aabfd6ce4d7b595502e8a63b352fa1fb08f7",
+      "unit": "adjusted_price",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "ll_progress": {
+      "value": false,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "97e23caf004b6c4d583be2039021cf96743beb40b772df4dfa2279f4c99cd4ae",
+      "input_digest": "e2f956642600e527584431e9334427c84a3993f32c11827fb3aa8da0d3a5b71b",
+      "window_identity": "f0d7b4050b6fd2440999808432286beee40fac71888168487c7facd4b880dbbd",
+      "unit": "boolean",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "llv20": {
+      "value": 12.61,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "c6dd77c3f602b461e5332dfc06c7f29779f929d1ce44c32446233ee8f54c4d3c",
+      "input_digest": "2e2f794445b4053ec48109a93d8038a8c601db137327fea1914aeed1f702d72a",
+      "window_identity": "46fe0ee8d5b81113c9c856cb2c5e5206bfef31c7fc7a47cf95bdb80d07f764d2",
+      "unit": "adjusted_price",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "llv5": {
+      "value": 12.7,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "1d72ad9ed25954251246643617910ea47cfb1ff3b39ed911031f9b38d6d4c1b8",
+      "input_digest": "4a480f7184651a6d258f5c66eb42a785fae08220fefcc75965b81c5a63e09a3e",
+      "window_identity": "c6df832b6f2303367d1f49dbfdf2ba58cb8905a459984392dada57af78e6a845",
+      "unit": "adjusted_price",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "llv60": {
+      "value": 12.61,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "570d11dfeb77276a4584428086c73d1692e1d6217a154963597370990ad5569a",
+      "input_digest": "0bf6413cf79558314ae42a4db63fd918875b23d5c222b1fcbed7d4679ea7d1a8",
+      "window_identity": "9d15533d83e6ffd66ce81c122a4deb71607bade193a67c7035c37c24003be187",
+      "unit": "adjusted_price",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "ma20": {
+      "value": 13.0995,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "528a6080affd02dcbac52bcee0d1ad71709c690259071e91652cb3dc587a8707",
+      "input_digest": "2e2f794445b4053ec48109a93d8038a8c601db137327fea1914aeed1f702d72a",
+      "window_identity": "7fe63ca8809b9810622fcbf9930b84bc9377a5936f75245ddcb4bb3a88cae11a",
+      "unit": "adjusted_price",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "ma5": {
+      "value": 13.113999999999999,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "ebcdbd1dc3095c1e651f539b98ed12cce4555c3a636ed87452dc8539ff294417",
+      "input_digest": "4a480f7184651a6d258f5c66eb42a785fae08220fefcc75965b81c5a63e09a3e",
+      "window_identity": "34fb122bc870015008c4703c891ea75f3cf316f67aa57d35ccd1d220a03de15b",
+      "unit": "adjusted_price",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "ma60": {
+      "value": 14.006333333333334,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "c9acf2673fc1cf1aa9ab0329d88a5685029e061b8b9bc79faf9d023d48c6a3eb",
+      "input_digest": "0bf6413cf79558314ae42a4db63fd918875b23d5c222b1fcbed7d4679ea7d1a8",
+      "window_identity": "637d1508398e818a40b9c9dccbfaf9198c61494385eae6974d232d7fd7302bdb",
+      "unit": "adjusted_price",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "pos60": {
+      "value": 0.10377358490566041,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "23a62b3a5800c4da430b2a257f4bdb01ec1a4e17fe513679299325426b7d6413",
+      "input_digest": "7dc9bfae9583fb2f7890c515d94f100eaf2ee2ddfc6f1631495cdf5e9bfd312e",
+      "window_identity": "ec1a476be9222aade6a5c3e553ec8dbb2ec5c8f2b82b82561aebc02cd62d4414",
+      "unit": "ratio",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "prior60_percentile": {
+      "value": 8.333333333333334,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "f6c4354d7332e4af4c01e0b5702f9a9ca7761344d2fafff4ae85ae3d7d3d56bd",
+      "input_digest": "6ab36d711aa67afc93558721ffa0ae438d7e2346e9434c0d1ee682870189f89c",
+      "window_identity": "d2776c8c4b693a856ad1ac70cc00e03f600ac3ad2cd366bd0745730f1d701058",
+      "unit": "percentile_points",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "prior_high20": {
+      "value": 14.01,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "e576cd1a2fae66abcf9d0500bdef2bff0456ea4173b33c6ad5ad174623d9397c",
+      "input_digest": "9b76c7200e42d3b0abaec3936557537fbc781edbb9364a3c659d95a4963d631f",
+      "window_identity": "29b9227c259e4d516ea60b2568017238fbf542fa3de92094e9ad1a3bb0771c81",
+      "unit": "adjusted_price",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "prior_high5": {
+      "value": 13.41,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "a3b7c5c571aa51f91589ad3b0d6083af647cb141075379feffe81812ee1fffba",
+      "input_digest": "aba35f4df7454dab7871bf17cd6169a5aff401cd727a2e5fb48e8f36d4a0cade",
+      "window_identity": "843ac0a59ee9754350da0956d455efaea5b21b44d4732195a454330d093cca79",
+      "unit": "adjusted_price",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "prior_high60": {
+      "value": 15.79,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "4b7808a8c8b53b4ebaee4eea9cb72d9a4ee4575c2391b90892d4e10bba48f15d",
+      "input_digest": "2fa25a33bd43fa3b38bec9e5ddafc221baf447f72e3ded72c2011022fe4083a0",
+      "window_identity": "468218d566c125abf33cefa73b256e4de7ccb267c302e9927e8ee3eae0bc3dc3",
+      "unit": "adjusted_price",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "prior_low20": {
+      "value": 12.61,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "3baf973941b79df52cf2b732eaa96c59fe78e094ed8ef1877b790e80e424d9bb",
+      "input_digest": "9b76c7200e42d3b0abaec3936557537fbc781edbb9364a3c659d95a4963d631f",
+      "window_identity": "91ce7974c0218178508a538ff10ab6c01799de3dc8116284ee7a548415d26002",
+      "unit": "adjusted_price",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "prior_low5": {
+      "value": 12.61,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "89d9f9058131b9cd1c9836fda87dd9b42e99207a7fc87fa67d77cca4a5fdedb6",
+      "input_digest": "aba35f4df7454dab7871bf17cd6169a5aff401cd727a2e5fb48e8f36d4a0cade",
+      "window_identity": "3ac4154f0e42a106426e14d75907015ff7f98e2aa5717b0ab7a58f9601344208",
+      "unit": "adjusted_price",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "prior_low60": {
+      "value": 12.61,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "85253583c1c1278b3c47e22d7eb3352dba3922cf35ec030028b2d47f3cac7f5d",
+      "input_digest": "2fa25a33bd43fa3b38bec9e5ddafc221baf447f72e3ded72c2011022fe4083a0",
+      "window_identity": "aca04ff75b4e10411572b46107a5bbf8f2723a60818554036c5cb3f262bcc7e0",
+      "unit": "adjusted_price",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "range_ratio": {
+      "value": 0.6016949152542381,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "d1a7e8485b47900bc6cbec63e7db0f319830d1101dc5f9e40b3176f0c7e192e2",
+      "input_digest": "012d9bba8ca71f85a67e4a24be3ef6ded7c69d9406d0ab820435e4a73660485c",
+      "window_identity": "f13991707dd9977f58c8ab1f62863d84918537345e36f171b38cf19c81af6c93",
+      "unit": "ratio",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "rel_market_1": {
+      "value": -0.007318170324914802,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "02f7536185c43c8f57817c8afd150940b2b70ce4223eb9713a33379ec30c271a",
+      "input_digest": "d64cfbc24c547c134c53c53ee8a0f4f6184e31eb9f94c1e3f316c574da2d3862",
+      "window_identity": "ee5c34a6604291da0dc1a3c3e122c44ea887e1f4942aca96b965aac529da4cc5",
+      "unit": "return_fraction",
+      "producer_contract_id": "MARKET_RELATIVE_REFERENCE_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "rel_market_3": {
+      "value": -0.004418609630797238,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "9f5c4aee7f07283feb946ad671dbf2990e99c0883bdab6b1195177d3695e8fbb",
+      "input_digest": "63a1bb1f2bd5a9b2c63fe390978e0603a89dd5b256e4c584ee6ff4bb93b6eb2b",
+      "window_identity": "1c0bf215571f7201486f0095b83814d7400e74f02cfa9be40fa8497e494c0cf2",
+      "unit": "return_fraction",
+      "producer_contract_id": "MARKET_RELATIVE_REFERENCE_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "rel_market_5": {
+      "value": -0.01112592430804224,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "d6c02e5afc67bcd824666ece2059e0292c625a727363b11759dd595c3e590019",
+      "input_digest": "0f0085f8fa77829ec3cb5ade819d0640f2643fd998c92e6e92ed8d091dff5ab8",
+      "window_identity": "5aa8dc56464775f5d698d55f51007d35bfbbe8e19c0c55ca2b8592dea2b4f001",
+      "unit": "return_fraction",
+      "producer_contract_id": "MARKET_RELATIVE_REFERENCE_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "ret1": {
+      "value": -0.019696969696969657,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "65761200f83527929390ac4c4f4c768ac3b3c50017449d0193b4b3d3d26c39ac",
+      "input_digest": "395bc3d026ead8ea461a22b68bb7c2e5d78315b8aa5fbcb0488cfec7e1819a58",
+      "window_identity": "3a11a44a986cfee5d63e3c28adaacb7539a9ce4c4f30220e3aba2a55c48cb671",
+      "unit": "return_fraction",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "ret20": {
+      "value": -0.07372942018611317,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "276abea7547a609b7584a9dff42ee87d290256c2fa7befd381d3672e5cf91b77",
+      "input_digest": "42b88b71e5757b9d6f449f14bfe516ee47c772276109f26187905ed0f9265869",
+      "window_identity": "d30a07bdd3082264567c3b5a99bdf5bb98a308ed57733aa7239e0a0bbcf9cac5",
+      "unit": "return_fraction",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "ret3": {
+      "value": -0.018209408194233667,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "46c6288156b180bac93aae7513116d23885c0ff7306dc209ee8be9db5bd35f2b",
+      "input_digest": "064259d883937ada60bca87c6ebf4186079fc2a7ef783797cf6f85da12a4992d",
+      "window_identity": "9ee915f4be0a3f87bf3749f6232dcf974d1711a450d8cdafe92158296d35450c",
+      "unit": "return_fraction",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "ret5": {
+      "value": 0.009360374414976613,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "6258df64bcc6658a0db623a159dd9443bb019e2244c15d5aae958c9622bb8b0c",
+      "input_digest": "5601bc3958722a68ad2971150eb50c189bc18636ce0dc36b56bfb74f5433744a",
+      "window_identity": "4906154f103a417a35adcd41e6ece7c102c325c55f13419868cdd5a8357bbc80",
+      "unit": "return_fraction",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "rps20": {
+      "value": 17.008564031069508,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "af6c8de45eb8ff1631b83411e8a414d9abd107a86268289043a8f421f1c7883f",
+      "input_digest": "98ed6f5542c43dca13c71102d5f59c93737d82981e2a7e098405ff68726b8e5d",
+      "window_identity": "14a2c282905cf9a95abcaf744b8fca288c8c10e52a9d42ed45c2e17b7b78fbdb",
+      "unit": "percentage_points",
+      "producer_contract_id": "RPS_MIDRANK_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "rps20_delta3": {
+      "value": 4.874672817680386,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "0873d293d3009878fc83d6708efe7c531de9072ca9cd7b10b4ec00dcb20d6260",
+      "input_digest": "5fac83836e9dcb488d641d879abb514dee6cbf8bbb5f757fead1f6daeaaec453",
+      "window_identity": "ffa94595ad9f33bca0b925d00b42aaae80c4123d70b80a2a776bbfd5ca5f81b1",
+      "unit": "percentage_points",
+      "producer_contract_id": "RPS_DELTA_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "rps5": {
+      "value": 49.57247961821436,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "d97c21ade890b4ae2bc6c589c0e1aa4a2b349da1a9c52254e53b65148497cdd3",
+      "input_digest": "67ae883e7a58c6a1562a9c80fbd19f9e655318d2e7c5593337ccc78ef0aca35a",
+      "window_identity": "1d4e825de24a3f38fe42ce872306be90edeca3888c00664d2edd460526bb5ba4",
+      "unit": "percentage_points",
+      "producer_contract_id": "RPS_MIDRANK_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "rps5_delta1": {
+      "value": 0.5872030563361292,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "f2c24f5f2e6384887af748772142d07e30d22a06b757431276a2a6cdebeabbe8",
+      "input_digest": "af2ea6da666b4dd62b597eeb0d5ad2f734e112c9170868c68f1dc37a05a05d7b",
+      "window_identity": "1628e6ce38bd41b71bcb1cd9891d69c269f89f34a8e3f2e7a1cf2933576024a2",
+      "unit": "percentage_points",
+      "producer_contract_id": "RPS_DELTA_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "rps5_delta3": {
+      "value": 9.992463694647483,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "dabd167488fa3068eb2ac2e6f77a492a7764f8715ef15300fe0520f25c05d4d4",
+      "input_digest": "58ddb85c67f5f1bdead53bb3763e6ebed80dd0ad12b552adfe707a371813d882",
+      "window_identity": "b4551c5db4f6352fa90e0e33b86c47dbd9dcf7ef6270440d831671a43077f42e",
+      "unit": "percentage_points",
+      "producer_contract_id": "RPS_DELTA_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "slope20": {
+      "value": -0.5463215258855582,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "6f70a15a9ccd0aa4880839d81561355b26f48d06ed48d05d228cde55f109a098",
+      "input_digest": "d297950b6ef88098e139b3dcbe3074d6942e6ff72c2b320f8e4722d1379e337e",
+      "window_identity": "5ad78eb9f78462da809d0050b66cdd2a8672ffedb90fc3ca7bf3a6bea605e3d7",
+      "unit": "dimensionless",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "slope60": {
+      "value": -0.5558583106266997,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "431e98f4277a53f09ada3222282dc417958966ac2f521372d0b858a16ddee77a",
+      "input_digest": "e5ea34855c66ee1e40a0d441d4a8e471798e3b74895e3911f3d3a8c2a471e58c",
+      "window_identity": "1dcaa9e3a920b4b97d03a469656fc46c153ff50e626300c2bac625377a2a9024",
+      "unit": "dimensionless",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "tr": {
+      "value": 0.41999999999999993,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "3c2fbd20801af30bb73f612f13939905e7ea6c3843fbedcc9fbdc33d68af2586",
+      "input_digest": "395bc3d026ead8ea461a22b68bb7c2e5d78315b8aa5fbcb0488cfec7e1819a58",
+      "window_identity": "63d1c4362ad79279254224f7cd6e3f71b996bddffa0d16ab6c3cf298b375df0b",
+      "unit": "adjusted_price",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "vol20": {
+      "value": 0.013356976449569208,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "b5f397b2dd88f783151e34136178e5c61c9549d29da1365b110575ad23b2e366",
+      "input_digest": "42b88b71e5757b9d6f449f14bfe516ee47c772276109f26187905ed0f9265869",
+      "window_identity": "54f440769ce9333f7a4c90c90fa22a0ea8b349c358881bd1ca3e5804425acb23",
+      "unit": "log_return_std",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "vol5": {
+      "value": 0.014633133440395246,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "952044396f017daabb8ccc9bf0aab9442c7628ab40352f633d9f18e78793ea88",
+      "input_digest": "5601bc3958722a68ad2971150eb50c189bc18636ce0dc36b56bfb74f5433744a",
+      "window_identity": "14648d52f6c0a0137f6a8c236f793992ba2d6f38429fd53663b617f50388a228",
+      "unit": "log_return_std",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "vol_ratio": {
+      "value": 1.095542355385915,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "ce5d4bc1664826633928f7cf35f7c771abe0a315e7f78496099a80143ee5e079",
+      "input_digest": "a510752734ba417615b1bf9de474799235e2c93557570add2a2e8644f397eba4",
+      "window_identity": "39f0eedc057846b86f8cae41dc6fc8e210974c08aa10648ca667b3794975d5de",
+      "unit": "ratio",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "volume_ratio20": {
+      "value": 0.9545175011686376,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "25c50d214a9c6815a023b44442fbe8c2aeec1865b6bdd3027434a2104c739d91",
+      "input_digest": "42b88b71e5757b9d6f449f14bfe516ee47c772276109f26187905ed0f9265869",
+      "window_identity": "56cdc22e9d3f7009493aa5623aa72354fae04275641eebf2109c8058c3fa4f6a",
+      "unit": "ratio",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    },
+    "volume_ratio5": {
+      "value": 0.9122923121134126,
+      "quality": "OBSERVED",
+      "unknown_reason": null,
+      "source_digest": "a10cd7c5e67ccfbcf093daf9e9648f1cdab24871ab96128dc56bcdfdd583e065",
+      "input_digest": "5601bc3958722a68ad2971150eb50c189bc18636ce0dc36b56bfb74f5433744a",
+      "window_identity": "6499fc3007530d9572e217f6b3dc0ee989355652d35f311eac98eb7ef02be770",
+      "unit": "ratio",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
+    }
+  },
+  "evidence_origin": "RECONSTRUCTED_ASOF",
+  "execution_mode": "REPLAY",
+  "feature_digest": "0c32f1910db750c95561685c354eee14f28ce352d9da6dfa58b6189d6a4cebba",
+  "dependency_digest": "196ffe21dbe9ae1b100f352f66e8a33ecf6546d45bea4fe5944a51163b483b54",
+  "created_at": "2026-10-05T09:07:08.931501+00:00"
+}

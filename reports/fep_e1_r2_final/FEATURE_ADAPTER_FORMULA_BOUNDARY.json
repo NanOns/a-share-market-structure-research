@@ -1,0 +1,18 @@
+{
+  "status": "PASS_NO_FACTOR_REIMPLEMENTATION",
+  "source": {
+    "path": "src/workbench_analysis/fep_e1/feature_owner.py",
+    "bytes": 7351,
+    "sha256": "d69181e83e09085749c691c1e9deb45a8a4e50b486c040f91fa0b7f7af409f34"
+  },
+  "imports": [
+    "gzip",
+    "hashlib",
+    "json",
+    "math",
+    "pathlib",
+    "contracts"
+  ],
+  "semantic_rule": "Every output numeric value is copied from exact accepted owner envelope; no price, return, ranking or RPS computation",
+  "independent_counterfactuals": "test_all_47_accepted_historical_fields_and_seven_relative_rps_are_copied; unknown remains un-imputed"
+}

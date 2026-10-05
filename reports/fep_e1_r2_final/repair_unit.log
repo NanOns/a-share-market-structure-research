@@ -1,0 +1,37 @@
+.................................F........                               [100%]
+================================== FAILURES ===================================
+_________________________ test_f12_valid_latest_decoy _________________________
+
+    def test_f12_valid_latest_decoy():
+>       f12_governance()
+
+tests\test_r25_packet.py:170: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r25_packet.py:157: in f12_governance
+    c = controller(x)
+        ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:33: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'EXACT_DEPENDENCY_MISMATCH'
+
+    def check(ok,reason):
+>       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: EXACT_DEPENDENCY_MISMATCH
+
+scripts\v4_16_shadow_runtime.py:17: ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_r25_packet.py::test_f12_valid_latest_decoy - ValueError: EX...
+1 failed, 41 passed in 5.57s

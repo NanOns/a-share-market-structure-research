@@ -1,0 +1,76 @@
+{
+  "status": "PASS",
+  "evidence_origin": "RECONSTRUCTED_ASOF",
+  "execution_mode": "REPLAY",
+  "AS_RECORDED": false,
+  "FIRST_OBSERVED": false,
+  "observation": {
+    "path": "reports/fep_e1_r2_final/ENGINEERING_OBSERVATION.json",
+    "bytes": 485,
+    "sha256": "c4a8724dc4bbd95bd5aaebee0bb335552153698d6e2fdc3720308f731dd4a5e6"
+  },
+  "snapshot": {
+    "path": "reports/fep_e1_r2_final/ENGINEERING_SNAPSHOT.json",
+    "bytes": 27779,
+    "sha256": "5e48ded147c0a5f98921de57bd1f37e3b8a28631550c3e5a7afef04d3dd87559"
+  },
+  "consumed_owner_row_digest": "efc3586dda8fe058eb2f048f921ea4387a937f73dc26fd80af78032bb6330231",
+  "feature_count": 47,
+  "deterministic_same_capture": true,
+  "feature_digest": "0c32f1910db750c95561685c354eee14f28ce352d9da6dfa58b6189d6a4cebba",
+  "dependency_manifest": {
+    "publication": {
+      "path": "reports/fep_e1_r2_final/OWNER_ROW_PROJECTION.json",
+      "bytes": 62135,
+      "sha256": "c477a7d8e5c44a54d2e6084647457d41d5807770196c90cff67e09cd5162ed4d",
+      "system_available_at": "2026-10-05T09:07:08.926753+00:00"
+    },
+    "accepted_head": {
+      "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+      "bytes": 4924,
+      "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035",
+      "system_available_at": "2026-10-05T09:07:08.927376+00:00"
+    },
+    "algorithm_contract": {
+      "path": "config/v4_03_algorithm_contracts_v1.json",
+      "bytes": 238576,
+      "sha256": "b36d3058ae9e557642389ef264f8451076a0b9876ec423299d64d1a890e054d2",
+      "system_available_at": "2026-10-05T09:07:08.928149+00:00"
+    },
+    "parameter_contract": {
+      "path": "config/v4_03_parameter_set_v1.json",
+      "bytes": 649,
+      "sha256": "2f3cc8ae2fdf4bffc098dc1a0dc90bf05bbb12557b45ea8ddc50048410314e18",
+      "system_available_at": "2026-10-05T09:07:08.928753+00:00"
+    },
+    "calendar": {
+      "path": "data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/calendar_sse_20230704_20260924.json",
+      "bytes": 17888,
+      "sha256": "09285bb116db5e7ab644e4942c331ceb9bc715b47f0369b9f228ef9d17df2d53",
+      "system_available_at": "2026-10-05T09:07:08.929371+00:00"
+    },
+    "universe": {
+      "path": "reports/fep_e1_r2_final/UNIVERSE_EXACT_SOURCE_READBACK.json",
+      "bytes": 674,
+      "sha256": "27cd49de40dcc4c831f663332de5c39dfa9daf8aa4ad7877a6d9ef8f8672e81e",
+      "system_available_at": "2026-10-05T09:07:08.930791+00:00"
+    },
+    "adjustment_basis": {
+      "path": "reports/fep_e1_r2_final/ADJUSTMENT_BASIS_EXACT_SOURCE_READBACK.json",
+      "bytes": 669,
+      "sha256": "e039696bebc96ab9eeea9b8a9ee0e7bc00cbb36e05497a4bb7b7e05239c78ee7",
+      "system_available_at": "2026-10-05T09:07:08.931401+00:00"
+    },
+    "feature_contract": {
+      "path": "config/fep_feature_owner_contract_v1.json",
+      "bytes": 84680,
+      "sha256": "bd9bb9eba32658ba0430debeac2207633a4c7e777ffe946503736c6527566a69",
+      "system_available_at": "2026-10-05T09:07:08.930031+00:00"
+    },
+    "membership": "NONE",
+    "state_event_revision": "NONE",
+    "enrichment_revision": "NONE"
+  },
+  "slot_boundary_semantics": "ENGINEERING_READ_CEILING_ONLY_NOT_PREDICTION_DEADLINE",
+  "prediction_deadline": "NOT_ENABLED"
+}

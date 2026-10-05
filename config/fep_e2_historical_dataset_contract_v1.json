@@ -1,0 +1,228 @@
+{
+  "contract_id": "FEP_E2_HISTORICAL_DATASET_V1",
+  "version": "1.0.0",
+  "scope": "FEP_STOCK_ENTRY_CORE",
+  "source_bindings": {
+    "calendar": {
+      "path": "data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/calendar_sse_20230704_20260924.json",
+      "bytes": 17888,
+      "sha256": "09285bb116db5e7ab644e4942c331ceb9bc715b47f0369b9f228ef9d17df2d53"
+    },
+    "universe": {
+      "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "bytes": 239298684,
+      "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+    },
+    "adjustment_identity": {
+      "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+      "bytes": 112302935,
+      "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+    },
+    "v4_15_head": {
+      "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+      "bytes": 4778,
+      "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+    },
+    "data_head": {
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "bytes": 16890,
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "identity": {
+      "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/identity_projection_dc4b72168585944ca0925e806ebaff0a7785d180a85802e320c4973c1cc898f8.json",
+      "bytes": 4008726,
+      "sha256": "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea"
+    },
+    "status": {
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+      "bytes": 100075252,
+      "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+    }
+  },
+  "owner_runtime_bindings": [
+    {
+      "path": "src/v4/factors/core.py",
+      "bytes": 16643,
+      "sha256": "8986358268a5ae706c6cc46c95937ed381b65b55d3293667f840ff50008217f1"
+    },
+    {
+      "path": "src/v4/factors/relative.py",
+      "bytes": 10710,
+      "sha256": "74034b819cd845e8177eee24b30cd441e94b1619f393b67c24c5397076af82ab"
+    },
+    {
+      "path": "src/v4/profile_primitives.py",
+      "bytes": 9355,
+      "sha256": "082f68ffebdba5338bab3a4679c08ab48fbc8762db34f63382c81ccb6e224432"
+    },
+    {
+      "path": "src/v4/profile_core.py",
+      "bytes": 12281,
+      "sha256": "75333ae3accf09edf9a8530984f86e93c7e36c9dcd3f9afbf0a6f9bfa1072116"
+    },
+    {
+      "path": "src/v4/base_seed.py",
+      "bytes": 37887,
+      "sha256": "0fa1b11f0d342731cf3658379f6ae14982b3861509daf2e949e197a722aac1d7"
+    },
+    {
+      "path": "src/v4/stock_prewatch.py",
+      "bytes": 22817,
+      "sha256": "a57a4413b56cd81f43a06611f4dec328ef6ac35486f4a4b56e5b5938e2db60ce"
+    },
+    {
+      "path": "src/v4/confirmation.py",
+      "bytes": 11496,
+      "sha256": "b9babb481dec8f372cf32c4c31410d6a8da387ac70fd84ccad2e0467c9c1344b"
+    },
+    {
+      "path": "src/v4/confirmation_candidate_r4.py",
+      "bytes": 2789,
+      "sha256": "4b4c1ba82b9d56dddd3e2e1f292819d818397159adf7914cf63a9e84668b916c"
+    },
+    {
+      "path": "src/v4/confirmation_d2_candidate_r5.py",
+      "bytes": 29206,
+      "sha256": "ae6288497effec913a622240c36c1b45937d0d0f95fee15d406c5d065fac87d7"
+    },
+    {
+      "path": "src/v4/research_state.py",
+      "bytes": 13989,
+      "sha256": "58fde91734f5d1192a43174052c3c10ce6a41a65facce2076b9bf0798d0e5bfb"
+    },
+    {
+      "path": "src/v4/target_fact_producers_r4.py",
+      "bytes": 6426,
+      "sha256": "e37ea78452a50c368a2b39e2d2cfe78ba1be4dda9127fef232ac871326209258"
+    },
+    {
+      "path": "src/workbench_analysis/v4_15_radar_cohort.py",
+      "bytes": 15444,
+      "sha256": "1897b81d5618d3b077af6d65e77b0df9bc26175b44facfee5dac5021a92dd06e"
+    },
+    {
+      "path": "src/workbench_analysis/v4_15_settlement.py",
+      "bytes": 23641,
+      "sha256": "b24b31d4670160ca41e620e86ca9b6fa4d393a0112ea4251eda02edb38457697"
+    },
+    {
+      "path": "src/v4/adjustment_basis_r4.py",
+      "bytes": 2684,
+      "sha256": "6668f50dfd1a43069615cc174ccf628c33d158f6f1e8988cd8dafc74260fc1c2"
+    },
+    {
+      "path": "src/v4/confirmation_events.py",
+      "bytes": 7567,
+      "sha256": "a647ff5e9eaa4146ff8d08b01e9b4628f545f5485da7db86f751e6586db5b903"
+    },
+    {
+      "path": "src/v4/confirmation_events_candidate_r5.py",
+      "bytes": 4699,
+      "sha256": "3f1b1bbf0ff46cd1480ef120fd25914ec3371b3a2d1de6cf8657b932c7011141"
+    },
+    {
+      "path": "src/v4/state_provenance.py",
+      "bytes": 24944,
+      "sha256": "f4a5f0683a2735488d285f74f91d1c0dc3ff25112060c485debf22615f811a77"
+    },
+    {
+      "path": "src/workbench_analysis/research_features.py",
+      "bytes": 11547,
+      "sha256": "1393f4d33f8b6aecb2e666d57e9cd528859a21b8a7712e3749e8f7f2c59a5b20"
+    },
+    {
+      "path": "src/workbench_analysis/stock_attention.py",
+      "bytes": 11157,
+      "sha256": "9bccf4fa7c7fdcba5a9d0c7b8bf81f045e9698f9193c1811f1022ae4f76b30b8"
+    },
+    {
+      "path": "src/workbench_analysis/today_research_factors_v3_3.py",
+      "bytes": 14709,
+      "sha256": "1f466ff5db7251d4e99221046602b9550fa60012e50acc7bac74efd41b35dbb5"
+    },
+    {
+      "path": "src/workbench_analysis/today_research_scanner_v3_3.py",
+      "bytes": 7011,
+      "sha256": "0cf65de4f926f43cce5fcac60f16e2e047b4c5f0f4cc497e1f832f6e3bdc3379"
+    },
+    {
+      "path": "src/normalize/universe_recent.py",
+      "bytes": 1392,
+      "sha256": "cb476ea8711496dab31407377090e0b67e8cefb9401cfcd6042f5dfa91e1f6cc"
+    },
+    {
+      "path": "src/market_calendar/trading_calendar.py",
+      "bytes": 5607,
+      "sha256": "d9e3b6e59b7cfaa5b52af9e8647c3daa21bfcd1bf88b4b1294cfbb4b7fadbf81"
+    },
+    {
+      "path": "src/workbench_analysis/v4_current_stage_authority.py",
+      "bytes": 7718,
+      "sha256": "f53ce7b44dd579e79f6b382bffd383871d4a20b3d5a0bf3b6e7a38dc6e0c4995"
+    }
+  ],
+  "parameter_bindings": [
+    {
+      "path": "config/v4_03_parameter_set_v1.json",
+      "bytes": 649,
+      "sha256": "2f3cc8ae2fdf4bffc098dc1a0dc90bf05bbb12557b45ea8ddc50048410314e18"
+    },
+    {
+      "path": "config/v4_04_parameter_set_v1.json",
+      "bytes": 17586,
+      "sha256": "5b19a23dfbf6b214f5ee7c7cce5df5674db69d099386038c082317819812ced5"
+    },
+    {
+      "path": "config/v4_07_parameter_set_v1.json",
+      "bytes": 1252,
+      "sha256": "241785e1a97dd2283eb8b361eb791f4e5c8f6ca67579a06f2a2d38c0c7586a1a"
+    },
+    {
+      "path": "config/v4_09_parameter_set_v1.json",
+      "bytes": 1179,
+      "sha256": "3c9b0d658c6e8212c5a6239eecdeece99d54791b97cee45fe4df98de71086c24"
+    },
+    {
+      "path": "config/v4_10_parameter_set_r1_2.json",
+      "bytes": 435,
+      "sha256": "20b66f9f2d2d4fe6ba8c3dd0583d6fa3d5408daebda09fae7ff27548e800ffd7"
+    },
+    {
+      "path": "config/v4_11_confirmation_parameter_set_v1.json",
+      "bytes": 853,
+      "sha256": "34d61ecb766b523e9cec1c2178be3385968e6a9fc9b273025b35c3646117b1fd"
+    },
+    {
+      "path": "config/research_attention_v3.yaml",
+      "bytes": 6277,
+      "sha256": "559e026897c5fd03d451af409438e90d1c535b69aecb1c2b336209e3ac9c96ec"
+    }
+  ],
+  "target": "ABS_RETURN_N:T1",
+  "target_kind": "CONTINUOUS",
+  "horizon": 1,
+  "feature_contract_id": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+  "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+  "lineage": {
+    "evidence_origin": "RECONSTRUCTED_CORRECTED",
+    "execution_mode": "HISTORICAL_SIMULATION",
+    "AS_RECORDED": false,
+    "FIRST_OBSERVED": false,
+    "REAL_OOS": false,
+    "production": false,
+    "shadow": false
+  },
+  "unavailable_dimensions": [
+    "sector",
+    "regime"
+  ],
+  "unavailable_fact_policy": "UNKNOWN_NEVER_IMPUTE",
+  "reconstructed_adjustment_limitation": "Final accepted corrected affine coordinate; historical first availability NOT_PROVEN",
+  "membership_limitation": "Accepted R6.2 dated reconstructed universe; no historical AS_RECORDED claim",
+  "original_feature_owner_contract": {
+    "path": "config/fep_feature_owner_contract_v1.json",
+    "bytes": 84680,
+    "sha256": "bd9bb9eba32658ba0430debeac2207633a4c7e777ffe946503736c6527566a69"
+  },
+  "entry_event_population": "All owner-enrolled ENTRY events; first PREWATCH and known new CONFIRMED; unknown transition candidates retained in complete state scan"
+}

@@ -1,0 +1,2604 @@
+{
+  "contract_id": "FEP_E2_SUPPORT_POLICY_REGISTRY_V1",
+  "version": "1.0.0",
+  "policies": [
+    {
+      "policy_id": "FEP_E2_ENTRY_CORE_ABS_RETURN_T1_RECONSTRUCTED_V1",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ABS_RETURN_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "CONTINUOUS"
+      },
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "values": {
+        "rows": 71,
+        "dates": 16,
+        "blocks": 13,
+        "entities": 71,
+        "episodes": 71,
+        "class_min": 13,
+        "max_missing_fraction": 0.07692307692307693,
+        "max_total_variation": 0.07692307692307693
+      },
+      "required_classes": [
+        "POS",
+        "NEG"
+      ],
+      "representation_dimensions": {
+        "trade_date": "ASSESSED",
+        "sector": "UNAVAILABLE_NOT_GATED",
+        "regime": "UNAVAILABLE_NOT_GATED",
+        "risk": "ASSESSED",
+        "feature_support": "ASSESSED"
+      },
+      "derivation": {
+        "contract": "INDEPENDENT_REPETITION_SQRT_BUDGET_V1",
+        "support_discovery_digest": "a23cc385ebe059deb0cc431acc569ff0958b7a51484d3db0cd900937ee2524da",
+        "count_rule": "ceil(sqrt(available independent inventory)), lower bound 2; class budget from nonoverlap blocks",
+        "completeness_budget": "Missingness and total variation each <=1/ceil(sqrt(independent blocks)); at most one repetition-budget unit can be unrepresented. Engineering quality budget, not predictive power",
+        "performance_inputs_used": false,
+        "limitations": "Engineering descriptive capability only; no confidence or effectiveness claim"
+      }
+    },
+    {
+      "policy_id": "UNSET:ABS_RETURN_N:T3",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ABS_RETURN_N:T3",
+        "horizon": 3,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "CONTINUOUS"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:ABS_RETURN_N:T5",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ABS_RETURN_N:T5",
+        "horizon": 5,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "CONTINUOUS"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:ABS_RETURN_N:T10",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ABS_RETURN_N:T10",
+        "horizon": 10,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "CONTINUOUS"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:ABS_RETURN_N:T20",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ABS_RETURN_N:T20",
+        "horizon": 20,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "CONTINUOUS"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:POSITIVE_ABS_N:T1",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "POSITIVE_ABS_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:POSITIVE_ABS_N:T3",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "POSITIVE_ABS_N:T3",
+        "horizon": 3,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:POSITIVE_ABS_N:T5",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "POSITIVE_ABS_N:T5",
+        "horizon": 5,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:POSITIVE_ABS_N:T10",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "POSITIVE_ABS_N:T10",
+        "horizon": 10,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:POSITIVE_ABS_N:T20",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "POSITIVE_ABS_N:T20",
+        "horizon": 20,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MARKET_EXCESS_N:T1",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MARKET_EXCESS_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MARKET_EXCESS_N:T3",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MARKET_EXCESS_N:T3",
+        "horizon": 3,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MARKET_EXCESS_N:T5",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MARKET_EXCESS_N:T5",
+        "horizon": 5,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MARKET_EXCESS_N:T10",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MARKET_EXCESS_N:T10",
+        "horizon": 10,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MARKET_EXCESS_N:T20",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MARKET_EXCESS_N:T20",
+        "horizon": 20,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:POSITIVE_MARKET_EXCESS_N:T1",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "POSITIVE_MARKET_EXCESS_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:POSITIVE_MARKET_EXCESS_N:T3",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "POSITIVE_MARKET_EXCESS_N:T3",
+        "horizon": 3,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:POSITIVE_MARKET_EXCESS_N:T5",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "POSITIVE_MARKET_EXCESS_N:T5",
+        "horizon": 5,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:POSITIVE_MARKET_EXCESS_N:T10",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "POSITIVE_MARKET_EXCESS_N:T10",
+        "horizon": 10,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:POSITIVE_MARKET_EXCESS_N:T20",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "POSITIVE_MARKET_EXCESS_N:T20",
+        "horizon": 20,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:SECTOR_EXCESS_N:T1",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "SECTOR_EXCESS_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:SECTOR_EXCESS_N:T3",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "SECTOR_EXCESS_N:T3",
+        "horizon": 3,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:SECTOR_EXCESS_N:T5",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "SECTOR_EXCESS_N:T5",
+        "horizon": 5,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:SECTOR_EXCESS_N:T10",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "SECTOR_EXCESS_N:T10",
+        "horizon": 10,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:SECTOR_EXCESS_N:T20",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "SECTOR_EXCESS_N:T20",
+        "horizon": 20,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MFE_N:T1",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MFE_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MFE_N:T3",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MFE_N:T3",
+        "horizon": 3,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MFE_N:T5",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MFE_N:T5",
+        "horizon": 5,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MFE_N:T10",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MFE_N:T10",
+        "horizon": 10,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MFE_N:T20",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MFE_N:T20",
+        "horizon": 20,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MAE_N:T1",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MAE_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MAE_N:T3",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MAE_N:T3",
+        "horizon": 3,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MAE_N:T5",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MAE_N:T5",
+        "horizon": 5,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MAE_N:T10",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MAE_N:T10",
+        "horizon": 10,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MAE_N:T20",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MAE_N:T20",
+        "horizon": 20,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:PATH_MDD_CLOSE_N:T1",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "PATH_MDD_CLOSE_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:PATH_MDD_CLOSE_N:T3",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "PATH_MDD_CLOSE_N:T3",
+        "horizon": 3,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:PATH_MDD_CLOSE_N:T5",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "PATH_MDD_CLOSE_N:T5",
+        "horizon": 5,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:PATH_MDD_CLOSE_N:T10",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "PATH_MDD_CLOSE_N:T10",
+        "horizon": 10,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:PATH_MDD_CLOSE_N:T20",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "PATH_MDD_CLOSE_N:T20",
+        "horizon": 20,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MFE_ATR_N:T1",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MFE_ATR_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MFE_ATR_N:T3",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MFE_ATR_N:T3",
+        "horizon": 3,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MFE_ATR_N:T5",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MFE_ATR_N:T5",
+        "horizon": 5,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MFE_ATR_N:T10",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MFE_ATR_N:T10",
+        "horizon": 10,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MFE_ATR_N:T20",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MFE_ATR_N:T20",
+        "horizon": 20,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MAE_ATR_N:T1",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MAE_ATR_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MAE_ATR_N:T3",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MAE_ATR_N:T3",
+        "horizon": 3,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MAE_ATR_N:T5",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MAE_ATR_N:T5",
+        "horizon": 5,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MAE_ATR_N:T10",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MAE_ATR_N:T10",
+        "horizon": 10,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:MAE_ATR_N:T20",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "MAE_ATR_N:T20",
+        "horizon": 20,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:PATH_MDD_ATR_N:T1",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "PATH_MDD_ATR_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:PATH_MDD_ATR_N:T3",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "PATH_MDD_ATR_N:T3",
+        "horizon": 3,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:PATH_MDD_ATR_N:T5",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "PATH_MDD_ATR_N:T5",
+        "horizon": 5,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:PATH_MDD_ATR_N:T10",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "PATH_MDD_ATR_N:T10",
+        "horizon": 10,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:PATH_MDD_ATR_N:T20",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "PATH_MDD_ATR_N:T20",
+        "horizon": 20,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:FIRST_EXIT_PREWATCH_N:T1",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "FIRST_EXIT_PREWATCH_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:FIRST_EXIT_PREWATCH_N:T3",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "FIRST_EXIT_PREWATCH_N:T3",
+        "horizon": 3,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:FIRST_EXIT_PREWATCH_N:T5",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "FIRST_EXIT_PREWATCH_N:T5",
+        "horizon": 5,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:FIRST_EXIT_PREWATCH_N:T10",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "FIRST_EXIT_PREWATCH_N:T10",
+        "horizon": 10,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:FIRST_EXIT_PREWATCH_N:T20",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "FIRST_EXIT_PREWATCH_N:T20",
+        "horizon": 20,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:ANY_CONFIRM_N:T1",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ANY_CONFIRM_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:ANY_CONFIRM_N:T3",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ANY_CONFIRM_N:T3",
+        "horizon": 3,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:ANY_CONFIRM_N:T5",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ANY_CONFIRM_N:T5",
+        "horizon": 5,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:ANY_CONFIRM_N:T10",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ANY_CONFIRM_N:T10",
+        "horizon": 10,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:ANY_CONFIRM_N:T20",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ANY_CONFIRM_N:T20",
+        "horizon": 20,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:ANY_INVALIDATE_N:T1",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ANY_INVALIDATE_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:ANY_INVALIDATE_N:T3",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ANY_INVALIDATE_N:T3",
+        "horizon": 3,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:ANY_INVALIDATE_N:T5",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ANY_INVALIDATE_N:T5",
+        "horizon": 5,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:ANY_INVALIDATE_N:T10",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ANY_INVALIDATE_N:T10",
+        "horizon": 10,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:ANY_INVALIDATE_N:T20",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ANY_INVALIDATE_N:T20",
+        "horizon": 20,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:ANY_EXPIRE_N:T1",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ANY_EXPIRE_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:ANY_EXPIRE_N:T3",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ANY_EXPIRE_N:T3",
+        "horizon": 3,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:ANY_EXPIRE_N:T5",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ANY_EXPIRE_N:T5",
+        "horizon": 5,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:ANY_EXPIRE_N:T10",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ANY_EXPIRE_N:T10",
+        "horizon": 10,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:ANY_EXPIRE_N:T20",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ANY_EXPIRE_N:T20",
+        "horizon": 20,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:TREND_TRANSITION_N:T1",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "TREND_TRANSITION_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:TREND_TRANSITION_N:T3",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "TREND_TRANSITION_N:T3",
+        "horizon": 3,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:TREND_TRANSITION_N:T5",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "TREND_TRANSITION_N:T5",
+        "horizon": 5,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:TREND_TRANSITION_N:T10",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "TREND_TRANSITION_N:T10",
+        "horizon": 10,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    },
+    {
+      "policy_id": "UNSET:TREND_TRANSITION_N:T20",
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "TREND_TRANSITION_N:T20",
+        "horizon": 20,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "DISABLED_NOT_ADMITTED"
+      },
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T12:26:48.029609+00:00",
+      "reason": "Independent scoped support and adapter evidence not admitted"
+    }
+  ],
+  "default": "UNSET_NOT_EVALUABLE",
+  "disabled_scopes": [
+    "T3",
+    "T5",
+    "T10",
+    "T20",
+    "FIRST_EXIT",
+    "ANY_EVENTS",
+    "DAILY",
+    "SUPPLEMENTAL",
+    "FIRST_OBSERVED",
+    "REAL_OOS"
+  ],
+  "historical_r1_policy": {
+    "path": "config/fep_e2_support_policy_v1.json",
+    "bytes": 7093,
+    "sha256": "ede6e632b36d45d24adaa2014e5e516cc5b40c67c9508a5e55a5ae20327ca2a2"
+  },
+  "frozen_at": "2026-10-05T12:26:48.029609+00:00",
+  "dataset_digest": "1482a3ff1ec6bc2508e7e909188c49a64a23e9826a5a240e4618572157bfe79b",
+  "discovery_digest": "a23cc385ebe059deb0cc431acc569ff0958b7a51484d3db0cd900937ee2524da",
+  "production": false
+}

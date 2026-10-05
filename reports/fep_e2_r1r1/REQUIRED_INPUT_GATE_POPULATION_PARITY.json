@@ -1,0 +1,20 @@
+{
+  "status": "PASS_EXACT_ENTRY_PAYLOAD_PARITY",
+  "entities": 189,
+  "comparison": "Full upstream evaluation vs explicit required-episode-input capability gate",
+  "ENTRY_payloads_byte_equivalent": true,
+  "changed_fields": "Non-eligible state diagnostics mark uncomputed D0/Seed/PREWATCH explicitly UNKNOWN; eligibility cannot become TRUE under the frozen owner required unknown gate",
+  "evidence": [
+    {
+      "path": "reports/fep_e2_r1r1/attempts/full_before_required_input_gate/population/../SUBSET_RECEIPT.json",
+      "bytes": 47762,
+      "sha256": "9e57efe6063bcad7cd000a5f962e60f83e17dfcdb03bc3f6db3b27926640b33e"
+    },
+    {
+      "path": "config/fep_e2_historical_required_input_gate_v1.json",
+      "bytes": 850,
+      "sha256": "cf3bac7c1bcb65437294796235e09abeba2a9f5a9f54fbf4a04a220b07b73822"
+    }
+  ],
+  "no_labels_or_statistics_read": true
+}

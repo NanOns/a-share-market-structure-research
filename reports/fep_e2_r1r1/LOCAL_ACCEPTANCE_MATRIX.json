@@ -1,0 +1,36 @@
+{
+  "status": "PASS_LOCAL_READY_FOR_INDEPENDENT_EXTERNAL_AUDIT",
+  "checks": {
+    "historical_population": "PASS",
+    "feature_owner": "PASS",
+    "V4_15_labels": "PASS",
+    "dataset": "PASS",
+    "policy_scope": "PASS",
+    "representation": "PASS_EXPLICIT_UNAVAILABLE",
+    "conditional_baseline": "PASS_ENGINEERING_CAPABILITY_SCOPED",
+    "negative_matrix": "PASS",
+    "protected_state": "PASS",
+    "targeted": "PASS",
+    "scoped_regression": "PASS_NO_NEW_FAILURES",
+    "pre_existing_failures": 52,
+    "external_acceptance": "NOT_GRANTED"
+  },
+  "admitted_scope": [
+    {
+      "entity_type": "STOCK",
+      "observation_scope": "FEP_STOCK_ENTRY_CORE",
+      "signal_type": "ENTRY",
+      "target": "ABS_RETURN_N:T1",
+      "horizon": 1,
+      "feature_variant": "CORE",
+      "evidence_origin": "RECONSTRUCTED_CORRECTED",
+      "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+      "contract_versions": {
+        "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+        "target": "FORWARD_PRICE_PATH_V1"
+      },
+      "target_kind": "CONTINUOUS"
+    }
+  ],
+  "next": "STOP_WAIT_V4_15E2_R1R1_INDEPENDENT_EXTERNAL_AUDIT"
+}

@@ -1,0 +1,104 @@
+{
+  "status": "PASS",
+  "case_count": 23,
+  "cases": [
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_reject_synthetic",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_reject_one_date_117_rows",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_reject_return_selected_window",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_reject_future_feature",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_reject_label_revision_digest",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_reject_availability_overclaim[FIRST_OBSERVED]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_reject_availability_overclaim[REAL_OOS]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_reject_availability_overclaim[AS_RECORDED]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_reject_policy_scope_reuse[horizon-20]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_reject_policy_scope_reuse[target-FIRST_EXIT]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_reject_policy_scope_reuse[signal_type-DAILY]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_reject_policy_scope_reuse[observation_scope-FEP_STOCK_DAILY_CORE]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_reject_policy_scope_reuse[feature_variant-SUPPLEMENTAL]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_reject_policy_scope_reuse[evidence_origin-FIRST_OBSERVED]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_unavailable_representation_is_not_zero",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_unavailable_condition_cannot_be_formal",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_reject_post_statistics_freeze",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_reject_performance_derived_policy",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_deterministic_rebuild",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_current_heads_immutable_and_e2_isolated",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_owner_business_ast_exact",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_historical_price_transport_never_backdates_availability",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r1_repair::test_historical_basis_mismatch_fails_closed_in_actual_owner",
+      "status": "PASS"
+    }
+  ],
+  "synthetic_vectors_are_tests_only": true,
+  "receipt": {
+    "path": "reports/fep_e2_r1r1/targeted.xml",
+    "bytes": 16488,
+    "sha256": "5cf8b6fb9eb69c74287c36eb07377f53100ab2a06fb29f81861a934c2cc2fa15"
+  }
+}

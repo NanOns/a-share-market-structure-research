@@ -95,6 +95,12 @@ def validate_input(dataset):
 
 def baseline(dataset, query, policy, contract, created_at):
     validate_input(dataset)
+    applicability = dict({k:query[k] for k in BASE}, target_kind=dataset['target_kind'])
+    # Historical R1 UNSET input remains readable but can never support a bucket.
+    historical_unset = policy.get('status') == 'UNSET_DIAGNOSTIC_ONLY' and all(
+        v == 'UNSET' for v in policy['values'].values())
+    if not historical_unset and policy.get('applicability') != applicability:
+        raise ValueError('E2_POLICY_APPLICABILITY_MISMATCH')
     if instant(created_at) <= instant(policy['freeze_before_statistics_at']):
         raise ValueError('E2_POLICY_NOT_FROZEN_BEFORE_STATISTICS')
     if contract['levels'] != [[n,list(keys)] for n,keys in LEVELS]:
@@ -111,6 +117,8 @@ def baseline(dataset, query, policy, contract, created_at):
         expected = [r for r in dataset['denominator'] if all(r[k] == query[k] for k in keys)]
         rows = [r for r in dataset['rows'] if all(r[k] == query[k] for k in keys)]
         state,counts,diagnostic = gate(rows,expected,policy)
+        if any(policy.get('representation_dimensions', {}).get(k) == 'UNAVAILABLE_NOT_GATED' for k in keys):
+            state = 'NOT_EVALUABLE_CONDITION_UNAVAILABLE'
         trace.append(dict(level=level,state=state,counts=counts,diagnostic=diagnostic))
         if state == 'SUPPORTED':
             break

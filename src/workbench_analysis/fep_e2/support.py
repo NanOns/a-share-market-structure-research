@@ -37,18 +37,26 @@ def inventory(rows):
                 entities=len({r['entity_id'] for r in rows}), episodes=episodes)
 
 
-def diagnostics(expected, observed):
+def diagnostics(expected, observed, dimensions=None):
     counts = dict(sorted(Counter(r['status'] for r in expected).items()))
-    tv = {}
+    tv, dimension_status = {}, {}
     for key in REPRESENTATION:
         # Sector absence is explicit, not inferred from current membership.
         a = Counter(str(r.get(key, 'UNAVAILABLE')) for r in expected)
         b = Counter(str(r.get(key, 'UNAVAILABLE')) for r in observed)
+        unavailable = (dimensions is not None and dimensions.get(key) == 'UNAVAILABLE_NOT_GATED') or (
+            dimensions is None and set(a) <= {'UNAVAILABLE'})
+        if unavailable:
+            tv[key] = None
+            dimension_status[key] = 'UNAVAILABLE_NOT_GATED'
+            continue
+        dimension_status[key] = 'ASSESSED' if expected and observed else 'INSUFFICIENT_SUPPORT'
         tv[key] = (sum(abs(a[k]/len(expected)-b[k]/len(observed))
                        for k in a.keys() | b.keys())/2 if expected and observed else None)
     return dict(expected=len(expected), eligible=len(observed), statuses=counts,
                 missing_fraction=1-len(observed)/len(expected) if expected else None,
-                representativeness_total_variation=tv, estimand='COMPLETE_CASE_DESCRIPTIVE')
+                representativeness_total_variation=tv, dimension_status=dimension_status,
+                estimand='COMPLETE_CASE_DESCRIPTIVE')
 
 
 def discover(expected, rows):
@@ -62,7 +70,7 @@ def discover(expected, rows):
 
 def gate(rows, expected, policy):
     counts = inventory(rows)
-    diagnostic = diagnostics(expected, rows)
+    diagnostic = diagnostics(expected, rows, policy.get('representation_dimensions'))
     values = policy['values']
     if any(values.get(k) in (None, 'UNSET') for k in
            (*DIMENSIONS, 'class_min', 'max_missing_fraction', 'max_total_variation')):
@@ -79,7 +87,8 @@ def gate(rows, expected, policy):
         return 'THIN_CLASS', counts, diagnostic
     if diagnostic['missing_fraction'] is None or diagnostic['missing_fraction'] > values['max_missing_fraction']:
         return 'MISSINGNESS_FAIL', counts, diagnostic
-    if any(v is None or v > values['max_total_variation']
-           for v in diagnostic['representativeness_total_variation'].values()):
+    if any((v is None or v > values['max_total_variation'])
+           for k,v in diagnostic['representativeness_total_variation'].items()
+           if diagnostic['dimension_status'][k] != 'UNAVAILABLE_NOT_GATED'):
         return 'REPRESENTATIVENESS_FAIL', counts, diagnostic
     return 'SUPPORTED', counts, diagnostic

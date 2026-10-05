@@ -1,0 +1,38 @@
+{
+  "status": "PASS_SEALED_COMPLETE_REAL_SOURCE_REPLAY",
+  "sealed_at": "2026-10-05T12:26:46.402266+00:00",
+  "dataset": {
+    "path": "reports/fep_e2_r1r1/HISTORICAL_E1_E2_DATASET.json.gz",
+    "bytes": 3530046,
+    "sha256": "c7b94c193fdd5b71c09da2c233353db2541583e71fa473f7eb87e2f3511ed4a9"
+  },
+  "e1_digest": "341408817241a80be9bea3266d7e9b6147ba19302f87080a7dc7d20fbd36595a",
+  "e2_digest": "1482a3ff1ec6bc2508e7e909188c49a64a23e9826a5a240e4618572157bfe79b",
+  "expected": 5024,
+  "eligible": 5023,
+  "lineage": {
+    "evidence_origin": "RECONSTRUCTED_CORRECTED",
+    "execution_mode": "HISTORICAL_SIMULATION",
+    "AS_RECORDED": false,
+    "FIRST_OBSERVED": false,
+    "REAL_OOS": false,
+    "production": false,
+    "shadow": false
+  },
+  "window": {
+    "path": "reports/fep_e2_r1r1/HISTORICAL_WINDOW_FREEZE.json",
+    "bytes": 598,
+    "sha256": "d9bfb329ddbd038810b47e0c8d08c5ed77cce50d0396308805ed2302908ae94c"
+  },
+  "population": {
+    "path": "reports/fep_e2_r1r1/HISTORICAL_OBSERVATION_POPULATION.json",
+    "bytes": 2606016,
+    "sha256": "1661a5d891fa7010bbd069bdfd3e39b36df5f9940c11c609d17cae4cbe5715fa"
+  },
+  "labels": {
+    "path": "reports/fep_e2_r1r1/V4_15_HISTORICAL_LABEL_ADAPTER_GATE.json",
+    "bytes": 1607029,
+    "sha256": "f926bc8c81e9c5c1d1d0ce4811b5851e62bbdc3a17199e0f5285b9095a0ebe27"
+  },
+  "selection_rule": "All frozen ENTRY observations; no result-dependent pruning"
+}

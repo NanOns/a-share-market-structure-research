@@ -15,6 +15,9 @@ CONTRACT = dict(contract_id='CONDITIONAL_EXPECTANCY_V1',levels=[[n,list(k)] for 
 POLICY = dict(policy_id='TEST_ONLY_NOT_ADMITTED',freeze_before_statistics_at='2026-10-05T00:00:00Z',
               values=dict(rows=2,dates=2,blocks=2,entities=2,episodes=2,class_min=1,
                           max_missing_fraction=0.5,max_total_variation=0.5),required_classes=['POS','NEG'])
+POLICY['applicability']=dict(entity_type='STOCK',observation_scope='FEP_STOCK_ENTRY_CORE',signal_type='ENTRY',
+    target='target',horizon=1,feature_variant='CORE',evidence_origin='RECONSTRUCTED_ASOF',
+    label_quality_policy='ENGINEERING',contract_versions={'feature':'V1','target':'V1'},target_kind='CONTINUOUS')
 NOW='2026-10-05T10:00:00Z'
 
 

@@ -1,0 +1,23 @@
+{
+  "items": [
+    {
+      "audit_id": "FEP_E2_HISTORICAL_D2_FACT_AVAILABILITY",
+      "status": "OPEN_DIAGNOSTIC_ONLY",
+      "scope": "Historical confirmation unknown transitions, absent frozen episode invalidation, corrected adjustment first-availability limitations",
+      "evidence": [
+        {
+          "path": "reports/fep_e2_r1r1/HISTORICAL_OBSERVATION_POPULATION.json",
+          "bytes": 2606016,
+          "sha256": "1661a5d891fa7010bbd069bdfd3e39b36df5f9940c11c609d17cae4cbe5715fa"
+        },
+        {
+          "path": "config/fep_e2_historical_dataset_contract_v1.json",
+          "bytes": 8238,
+          "sha256": "ddd6f621419c4f9547a806faef9d7def4b31f55be8a4189f571a558b5428e1b4"
+        }
+      ],
+      "independent_acceptance": "Requires a separately versioned owner-input closure audit; no global effectiveness claim",
+      "current_stage_effect": "Unknown rows retained in full state scan; no synthetic fills; accepted ENTRY estimand only"
+    }
+  ]
+}

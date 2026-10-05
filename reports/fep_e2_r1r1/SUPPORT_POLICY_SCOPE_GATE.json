@@ -1,0 +1,33 @@
+{
+  "status": "PASS_EXACT_APPLICABILITY",
+  "admitted_scopes": [
+    {
+      "entity_type": "STOCK",
+      "observation_scope": "FEP_STOCK_ENTRY_CORE",
+      "signal_type": "ENTRY",
+      "target": "ABS_RETURN_N:T1",
+      "horizon": 1,
+      "feature_variant": "CORE",
+      "evidence_origin": "RECONSTRUCTED_CORRECTED",
+      "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+      "contract_versions": {
+        "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+        "target": "FORWARD_PRICE_PATH_V1"
+      },
+      "target_kind": "CONTINUOUS"
+    }
+  ],
+  "registry": {
+    "path": "config/fep_e2_support_policy_registry_v1.json",
+    "bytes": 90532,
+    "sha256": "2dbc502893c04f2bab4134dc4ba3a639a41dfa618906f592fd637ac196d5e2b6"
+  },
+  "negative_matrix": {
+    "path": "reports/fep_e2_r1r1/NEGATIVE_MATRIX.json",
+    "bytes": 3220,
+    "sha256": "a9793e4ab94aca4ddbc08f90f640272356296f14314f5395057383d425f60298"
+  },
+  "unlisted_or_UNSET_scopes": "NOT_EVALUABLE",
+  "engineering_only": true,
+  "pooled_entry_event_semantics": "ENTRY includes owner-enrolled FIRST_PREWATCH/NEW_CONFIRMED; original event type preserved per row"
+}

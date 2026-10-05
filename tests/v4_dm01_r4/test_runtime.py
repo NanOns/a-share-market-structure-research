@@ -115,8 +115,9 @@ def test_current_real_v2_parent_and_future_wait():
     assert not gate['candidate_created'] and r.sha(r.ROOT/r.HEAD)==before
     with pytest.raises(ValueError):r.session_gate('2026-10-09','2026-10-05T09:00:00+00:00')
     with pytest.raises(ValueError,match='COVERAGE'):r.session_gate('2027-01-04','2026-10-05T09:00:00+00:00')
-    with pytest.raises(ValueError,match='PENDING_DM01_R4_EXTERNAL_ACCEPTANCE'):
-        r.session_gate('2026-10-08','2026-10-08T09:00:00+00:00')
+    envelope=r.accepted_envelope(r.ROOT)
+    assert envelope['status']=='EXTERNALLY_ACCEPTED_DM01_R4_RUNTIME'
+    assert envelope['permissions']==r.PERMISSIONS and r.sha(r.ROOT/r.HEAD)==before
 
 
 def test_actual_entrypoint_no_capture():

@@ -1,0 +1,89 @@
+{
+  "status": "PASS",
+  "fixtures": {
+    "fresh": {
+      "path": "reports/fep_e5_r1r1b/FRESH_FINAL_DB_READBACK.json",
+      "bytes": 21069854,
+      "sha256": "6bbb319b06cf105886dad56ce9449d4d2ddf8b66b4e2f36d8cd3564a752fbc9c"
+    },
+    "upgrade": {
+      "path": "reports/fep_e5_r1r1b/UPGRADE_FINAL_DB_READBACK.json",
+      "bytes": 21074107,
+      "sha256": "76a2a588b78fefc0255a6ead0512bee5124e1a2380da5a65c9b051bf3bdceb66"
+    }
+  },
+  "negative_matrix": {
+    "path": "reports/fep_e5_r1r1b/RECONSTRUCTION_NEGATIVE_MATRIX.json",
+    "bytes": 32159,
+    "sha256": "899db26be1780307f2654fc30819a35c92c43265e19ac5c4aa27bad2286a7ef5"
+  },
+  "permission_keys": [
+    {
+      "horizon": 1,
+      "grant_id": "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee",
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "target_id": "ABS_RETURN_N:T1",
+      "capability": "SHADOW_INFERENCE",
+      "model_role": "CHALLENGER",
+      "model_set_id": "FEP_CANONICAL_SET:da58f814c02e57ee30c14cd907a4bf48c6f1c1c0180f1bb52811c685cb9bac22",
+      "feature_contract_id": "FEP_E2_HISTORICAL_CORE_FEATURE_V1"
+    },
+    {
+      "horizon": 1,
+      "grant_id": "FEP_SHADOW_GRANT:7312186ab23292368dc59ef6997950f91f61bb7c7ff137b4bb2f19409473f945",
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "target_id": "ABS_RETURN_N:T1",
+      "capability": "SHADOW_INFERENCE",
+      "model_role": "BASELINE",
+      "model_set_id": "FEP_CANONICAL_SET:81e16abe188a75d2eb974d78a9cd650214629605cc49aaa060bee824272ce522",
+      "feature_contract_id": "FEP_E2_HISTORICAL_CORE_FEATURE_V1"
+    },
+    {
+      "horizon": 1,
+      "grant_id": "FEP_SHADOW_GRANT:ed929287f977ae6c5999f2950425edf0b0a5259a484c1ad874ca9fdaebbff2cd",
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "target_id": "ABS_RETURN_N:T1",
+      "capability": "SHADOW_INFERENCE",
+      "model_role": "CHALLENGER",
+      "model_set_id": "FEP_CANONICAL_SET:87ce74d007c753d86d45e09bb0383b26d73959601424f10b2ffc24fa10bb8793",
+      "feature_contract_id": "FEP_E2_HISTORICAL_CORE_FEATURE_V1"
+    }
+  ],
+  "members": [
+    {
+      "role": "BASELINE",
+      "horizon": 1,
+      "model_id": "FEP_E5_E2:0958ddd2705658aec687694a266196ac74a2b8cc3929dcf85f16bbd544a066ef",
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "target_id": "ABS_RETURN_N:T1",
+      "model_set_id": "FEP_CANONICAL_SET:81e16abe188a75d2eb974d78a9cd650214629605cc49aaa060bee824272ce522",
+      "feature_contract_id": "FEP_E2_HISTORICAL_CORE_FEATURE_V1"
+    },
+    {
+      "role": "CHALLENGER",
+      "horizon": 1,
+      "model_id": "FEP_E5_E3:df402889545f21650b3829906e6d12a98a0ebcf6ea97d1722886025e7d90d222",
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "target_id": "ABS_RETURN_N:T1",
+      "model_set_id": "FEP_CANONICAL_SET:87ce74d007c753d86d45e09bb0383b26d73959601424f10b2ffc24fa10bb8793",
+      "feature_contract_id": "FEP_E2_HISTORICAL_CORE_FEATURE_V1"
+    },
+    {
+      "role": "CHALLENGER",
+      "horizon": 1,
+      "model_id": "FEP_E5_E4:deb6788d228165cda5224cb1382bcdb237eb9cca392bc73e35191d3805821d65",
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "target_id": "ABS_RETURN_N:T1",
+      "model_set_id": "FEP_CANONICAL_SET:da58f814c02e57ee30c14cd907a4bf48c6f1c1c0180f1bb52811c685cb9bac22",
+      "feature_contract_id": "FEP_E2_HISTORICAL_CORE_FEATURE_V1"
+    }
+  ],
+  "exact_FK_retained": true,
+  "SHADOW_roles": [
+    "BASELINE",
+    "CHALLENGER"
+  ],
+  "CHAMPION": "NONE",
+  "MODEL_DISPLAY": "UNGRANTED",
+  "PRIORITY_USE": "UNGRANTED"
+}

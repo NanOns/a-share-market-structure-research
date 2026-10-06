@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "fixtures": {
+    "fresh": {
+      "path": "reports/fep_e5_r1r1b/FRESH_FINAL_DB_READBACK.json",
+      "bytes": 21069854,
+      "sha256": "6bbb319b06cf105886dad56ce9449d4d2ddf8b66b4e2f36d8cd3564a752fbc9c"
+    },
+    "upgrade": {
+      "path": "reports/fep_e5_r1r1b/UPGRADE_FINAL_DB_READBACK.json",
+      "bytes": 21074107,
+      "sha256": "76a2a588b78fefc0255a6ead0512bee5124e1a2380da5a65c9b051bf3bdceb66"
+    }
+  },
+  "negative_matrix": {
+    "path": "reports/fep_e5_r1r1b/RECONSTRUCTION_NEGATIVE_MATRIX.json",
+    "bytes": 32159,
+    "sha256": "899db26be1780307f2654fc30819a35c92c43265e19ac5c4aa27bad2286a7ef5"
+  },
+  "authority_counts": 205,
+  "immutability": true,
+  "publication_counts": {
+    "fresh": 0,
+    "upgrade": 1
+  },
+  "upgrade_publication": "Current synthetic PIT regression fixture only; no historical business publication"
+}

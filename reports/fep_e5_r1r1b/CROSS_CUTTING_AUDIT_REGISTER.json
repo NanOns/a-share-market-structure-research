@@ -1,0 +1,32 @@
+{
+  "items": [
+    {
+      "id": "FEP-RA-PUBLICATION-BOUNDARY-01",
+      "scope": "Additive v4.publications reconstruction rejection trigger; ordinary PIT namespace regression",
+      "evidence": [
+        {
+          "path": "src/workbench_db/migrations/v4_postgres/032_fep_reconstruction_authority_shadow_v1.sql",
+          "bytes": 18415,
+          "sha256": "4145dd9ccad821b8d10b72004e547c0fa8fd05d61a409316ecb49bcfac9762f5"
+        },
+        {
+          "path": "reports/fep_e5_r1r1b/PIT_PUBLICATION_PATH_REGRESSION.json",
+          "bytes": 3211,
+          "sha256": "3878cbb7ba013d984eed5baf072c8513bf58f1db74158ece738e187464679d4b"
+        }
+      ],
+      "internal_acceptance": "PASS_CANDIDATE",
+      "external_acceptance": false
+    },
+    {
+      "id": "FEP-RA-LEGACY-UPGRADE-01",
+      "scope": "Strict new publication/PIT union rejects incompatible pre-existing reconstructed-publication rows; no silent relabeling",
+      "evidence": {
+        "path": "src/workbench_db/migrations/v4_postgres/032_fep_reconstruction_authority_shadow_v1.sql",
+        "bytes": 18415,
+        "sha256": "4145dd9ccad821b8d10b72004e547c0fa8fd05d61a409316ecb49bcfac9762f5"
+      },
+      "acceptance": "Populated current PIT upgrade PASS; incompatible legacy publication populations fail closed and require separate review"
+    }
+  ]
+}

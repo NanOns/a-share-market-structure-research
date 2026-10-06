@@ -1,0 +1,25 @@
+{
+  "audit_id": "FEP-ACCEPTED-MODEL-PROVENANCE-01",
+  "scope": "Explicit accepted-artifact import origin union; no fabricated training run or historical fitting clocks; exact registered import manifest and role guards",
+  "evidence": [
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/032_fep_reconstruction_authority_shadow_v1.sql",
+      "bytes": 18415,
+      "sha256": "4145dd9ccad821b8d10b72004e547c0fa8fd05d61a409316ecb49bcfac9762f5"
+    },
+    {
+      "path": "reports/fep_e5_r1r1b/CANONICAL_PREDICTION_BINDING_READBACK.json",
+      "bytes": 12075452,
+      "sha256": "15ed10ee8a536bd687007db0a8fc96f986668fab6818983b84128388bf527048"
+    },
+    {
+      "path": "reports/fep_e5_r1r1b/TARGETED_SUMMARY.json",
+      "bytes": 618,
+      "sha256": "9182373348d6ba84de6e946b53fa45f44dd592fbd46a684d9294563d7c49274e"
+    }
+  ],
+  "acceptance": "PASS_CANDIDATE_PENDING_INDEPENDENT_REVIEW",
+  "training_runs": 0,
+  "imported_models": 3,
+  "production": false
+}

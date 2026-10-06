@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="14" skipped="0" tests="194" time="12.123" timestamp="2026-10-06T11:30:50.131685+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_01_reconstruction_is_not_publication[fresh]" time="0.055" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_01_reconstruction_is_not_publication[upgrade]" time="0.062" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_02_current_reconstruction_after_T0_without_PIT[fresh]" time="0.025" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_02_current_reconstruction_after_T0_without_PIT[upgrade]" time="0.028" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_03_no_historical_accepted_semantics[fresh]" time="0.066" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_03_no_historical_accepted_semantics[upgrade]" time="0.167" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_04_row_digest_is_not_authority[fresh]" time="0.058" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_04_row_digest_is_not_authority[upgrade]" time="0.047" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_05_current_publication_cannot_reconstruction[fresh]" time="0.064" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_05_current_publication_cannot_reconstruction[upgrade]" time="0.049" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_06_08_exact_authority_identity[fresh-RA-06-trade_date-2000-01-01]" time="0.170" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_06_08_exact_authority_identity[fresh-RA-07-namespace_id-UNIT_WRONG_NS]" time="0.166" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_06_08_exact_authority_identity[fresh-RA-08-feature_contract_id-UNIT_WRONG_FEATURE]" time="0.054" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_06_08_exact_authority_identity[upgrade-RA-06-trade_date-2000-01-01]" time="0.060" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_06_08_exact_authority_identity[upgrade-RA-07-namespace_id-UNIT_WRONG_NS]" time="0.057" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_06_08_exact_authority_identity[upgrade-RA-08-feature_contract_id-UNIT_WRONG_FEATURE]" time="0.066" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_09_10_manifest_registration_and_dependency_guard[fresh-RA-09-None]" time="0.061" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_09_10_manifest_registration_and_dependency_guard[fresh-RA-10-CURRENT-CURRENT]" time="0.060" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_09_10_manifest_registration_and_dependency_guard[fresh-RA-10-LATEST-LATEST]" time="0.057" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_09_10_manifest_registration_and_dependency_guard[fresh-RA-10-TODAY-TODAY]" time="0.166" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_09_10_manifest_registration_and_dependency_guard[upgrade-RA-09-None]" time="0.055" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_09_10_manifest_registration_and_dependency_guard[upgrade-RA-10-CURRENT-CURRENT]" time="0.173" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_09_10_manifest_registration_and_dependency_guard[upgrade-RA-10-LATEST-LATEST]" time="0.064" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_09_10_manifest_registration_and_dependency_guard[upgrade-RA-10-TODAY-TODAY]" time="0.155" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_11_13_no_evidence_or_display_upgrade[fresh-FIRST_OBSERVED]" time="0.077" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_11_13_no_evidence_or_display_upgrade[fresh-REAL_OOS]" time="0.088" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_11_13_no_evidence_or_display_upgrade[fresh-production]" time="0.074" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_11_13_no_evidence_or_display_upgrade[fresh-model_display]" time="0.083" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_11_13_no_evidence_or_display_upgrade[fresh-priority_use]" time="0.077" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_11_13_no_evidence_or_display_upgrade[fresh-AS_RECORDED]" time="0.075" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_11_13_no_evidence_or_display_upgrade[fresh-PROMOTION_EVIDENCE]" time="0.072" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_11_13_no_evidence_or_display_upgrade[upgrade-FIRST_OBSERVED]" time="0.079" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_11_13_no_evidence_or_display_upgrade[upgrade-REAL_OOS]" time="0.070" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_11_13_no_evidence_or_display_upgrade[upgrade-production]" time="0.072" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_11_13_no_evidence_or_display_upgrade[upgrade-model_display]" time="0.176" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_11_13_no_evidence_or_display_upgrade[upgrade-priority_use]" time="0.171" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_11_13_no_evidence_or_display_upgrade[upgrade-AS_RECORDED]" time="0.069" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_RA_11_13_no_evidence_or_display_upgrade[upgrade-PROMOTION_EVIDENCE]" time="0.072" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_observation_union_fail_closed[fresh-change0]" time="0.160" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_observation_union_fail_closed[fresh-change1]" time="0.048" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_observation_union_fail_closed[fresh-change2]" time="0.047" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_observation_union_fail_closed[fresh-change3]" time="0.049" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_observation_union_fail_closed[fresh-change4]" time="0.165" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_observation_union_fail_closed[fresh-change5]" time="0.053" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_observation_union_fail_closed[upgrade-change0]" time="0.060" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_observation_union_fail_closed[upgrade-change1]" time="0.047" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_observation_union_fail_closed[upgrade-change2]" time="0.060" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_observation_union_fail_closed[upgrade-change3]" time="0.049" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_observation_union_fail_closed[upgrade-change4]" time="0.160" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_observation_union_fail_closed[upgrade-change5]" time="0.053" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_run_union_fail_closed[fresh-change0]" time="0.024" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_run_union_fail_closed[fresh-change1]" time="0.029" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_run_union_fail_closed[fresh-change2]" time="0.030" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_run_union_fail_closed[fresh-change3]" time="0.031" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_run_union_fail_closed[fresh-change4]" time="0.133" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_run_union_fail_closed[upgrade-change0]" time="0.141" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_run_union_fail_closed[upgrade-change1]" time="0.035" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_run_union_fail_closed[upgrade-change2]" time="0.031" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_run_union_fail_closed[upgrade-change3]" time="0.136" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_run_union_fail_closed[upgrade-change4]" time="0.025" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_snapshot_exact_binding[fresh-snapshot_id]" time="0.024" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_snapshot_exact_binding[fresh-feature_digest]" time="0.031" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_snapshot_exact_binding[fresh-quality_digest]" time="0.031" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_snapshot_exact_binding[fresh-feature_contract_id]" time="0.032" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_snapshot_exact_binding[upgrade-snapshot_id]" time="0.024" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_snapshot_exact_binding[upgrade-feature_digest]" time="0.023" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_snapshot_exact_binding[upgrade-quality_digest]" time="0.027" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_snapshot_exact_binding[upgrade-feature_contract_id]" time="0.031" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_feature_values_exact_binding[fresh-value-9000]" time="0.045" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_feature_values_exact_binding[fresh-quality-UNKNOWN]" time="0.044" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_feature_values_exact_binding[fresh-source_digest-7190732a207f2360ecd627aad0f1410b8202614c8ba16dacbd69dc390e18c587]" time="0.046" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_feature_values_exact_binding[upgrade-value-9000]" time="0.039" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_feature_values_exact_binding[upgrade-quality-UNKNOWN]" time="0.043" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_feature_values_exact_binding[upgrade-source_digest-7190732a207f2360ecd627aad0f1410b8202614c8ba16dacbd69dc390e18c587]" time="0.039" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_permission_nonchampion_display_priority_forbidden[fresh-MODEL_DISPLAY]" time="0.019" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_permission_nonchampion_display_priority_forbidden[fresh-DESCRIPTIVE_DISPLAY]" time="0.023" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_permission_nonchampion_display_priority_forbidden[fresh-PRIORITY_USE]" time="0.030" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_permission_nonchampion_display_priority_forbidden[upgrade-MODEL_DISPLAY]" time="0.018" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_permission_nonchampion_display_priority_forbidden[upgrade-DESCRIPTIVE_DISPLAY]" time="0.028" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_permission_nonchampion_display_priority_forbidden[upgrade-PRIORITY_USE]" time="0.031" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_permission_wrong_role_exact_FK[fresh]" time="0.020"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'foreign key'&#10;  Actual message: 'duplicate key value violates unique constraint &quot;permission_keys_scope_id_target_id_horizon_feature_contract_key&quot;\nDETAIL:  Key (scope_id, target_id, horizon, feature_contract_id, model_set_id, capability)=(FEP_STOCK_ENTRY_CORE, ABS_RETURN_N:T1, 1, FEP_E2_HISTORICAL_CORE_FEATURE_V1, FEP_CANONICAL_SET:da58f814c02e57ee30c14cd907a4bf48c6f1c1c0180f1bb52811c685cb9bac22, SHADOW_INFERENCE) already exists.'">canonical = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55490 user=fep_e5_admin database=fep_e5b_fresh) at 0x1b0a41e5130&gt;
+
+    def test_permission_wrong_role_exact_FK(canonical):
+        k=row(canonical,'permission_keys');k['grant_id']='UNIT_WRONG_ROLE';k['model_role']='CHAMPION'
+&gt;       rejected(canonical,lambda:insert(canonical,'permission_keys',k),'foreign key')
+
+tests\fep_e5\test_e5_reconstruction.py:97: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+pg = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55490 user=fep_e5_admin database=fep_e5b_fresh) at 0x1b0a41e5130&gt;
+op = &lt;function test_permission_wrong_role_exact_FK.&lt;locals&gt;.&lt;lambda&gt; at 0x000001B0A42D0680&gt;
+match = 'foreign key'
+
+    def rejected(pg,op,match):
+&gt;       with pytest.raises(psycopg.Error,match=match):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'foreign key'
+E         Actual message: 'duplicate key value violates unique constraint "permission_keys_scope_id_target_id_horizon_feature_contract_key"\nDETAIL:  Key (scope_id, target_id, horizon, feature_contract_id, model_set_id, capability)=(FEP_STOCK_ENTRY_CORE, ABS_RETURN_N:T1, 1, FEP_E2_HISTORICAL_CORE_FEATURE_V1, FEP_CANONICAL_SET:da58f814c02e57ee30c14cd907a4bf48c6f1c1c0180f1bb52811c685cb9bac22, SHADOW_INFERENCE) already exists.'
+
+tests\fep_e5\test_e5_reconstruction.py:25: AssertionError</failure></testcase><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_permission_wrong_role_exact_FK[upgrade]" time="0.019"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'foreign key'&#10;  Actual message: 'duplicate key value violates unique constraint &quot;permission_keys_scope_id_target_id_horizon_feature_contract_key&quot;\nDETAIL:  Key (scope_id, target_id, horizon, feature_contract_id, model_set_id, capability)=(FEP_STOCK_ENTRY_CORE, ABS_RETURN_N:T1, 1, FEP_E2_HISTORICAL_CORE_FEATURE_V1, FEP_CANONICAL_SET:da58f814c02e57ee30c14cd907a4bf48c6f1c1c0180f1bb52811c685cb9bac22, SHADOW_INFERENCE) already exists.'">canonical = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55491 user=fep_e5_admin database=fep_e5b_upgrade) at 0x1b0a41e59a0&gt;
+
+    def test_permission_wrong_role_exact_FK(canonical):
+        k=row(canonical,'permission_keys');k['grant_id']='UNIT_WRONG_ROLE';k['model_role']='CHAMPION'
+&gt;       rejected(canonical,lambda:insert(canonical,'permission_keys',k),'foreign key')
+
+tests\fep_e5\test_e5_reconstruction.py:97: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+pg = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55491 user=fep_e5_admin database=fep_e5b_upgrade) at 0x1b0a41e59a0&gt;
+op = &lt;function test_permission_wrong_role_exact_FK.&lt;locals&gt;.&lt;lambda&gt; at 0x000001B0A42D3380&gt;
+match = 'foreign key'
+
+    def rejected(pg,op,match):
+&gt;       with pytest.raises(psycopg.Error,match=match):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'foreign key'
+E         Actual message: 'duplicate key value violates unique constraint "permission_keys_scope_id_target_id_horizon_feature_contract_key"\nDETAIL:  Key (scope_id, target_id, horizon, feature_contract_id, model_set_id, capability)=(FEP_STOCK_ENTRY_CORE, ABS_RETURN_N:T1, 1, FEP_E2_HISTORICAL_CORE_FEATURE_V1, FEP_CANONICAL_SET:da58f814c02e57ee30c14cd907a4bf48c6f1c1c0180f1bb52811c685cb9bac22, SHADOW_INFERENCE) already exists.'
+
+tests\fep_e5\test_e5_reconstruction.py:25: AssertionError</failure></testcase><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_imported_model_cannot_fake_champion[fresh]" time="0.025" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_imported_model_cannot_fake_champion[upgrade]" time="0.030" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-UPDATE-reconstruction_authorities]" time="0.083" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-UPDATE-observation_revisions]" time="0.075" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-UPDATE-snapshots]" time="0.021" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-UPDATE-feature_values]" time="0.046" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-UPDATE-models]" time="0.021" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-UPDATE-model_sets]" time="0.030" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-UPDATE-model_set_members]" time="0.030" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-UPDATE-permission_keys]" time="0.031" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-UPDATE-prediction_slots]" time="0.038" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-UPDATE-slot_model_bindings]" time="0.027" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-UPDATE-prediction_runs]" time="0.031" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-UPDATE-predictions]" time="0.098" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-UPDATE-acceptance_receipts]" time="0.026" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-UPDATE-slot_receipts]" time="0.030" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-UPDATE-activations]" time="0.027" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-UPDATE-deployment_change_receipts]" time="0.023" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-DELETE-reconstruction_authorities]" time="0.122" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-DELETE-observation_revisions]" time="0.022" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-DELETE-snapshots]" time="0.018" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-DELETE-feature_values]" time="0.022" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-DELETE-models]" time="0.021" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-DELETE-model_sets]" time="0.133" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-DELETE-model_set_members]" time="0.031" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-DELETE-permission_keys]" time="0.020" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-DELETE-prediction_slots]" time="0.019" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-DELETE-slot_model_bindings]" time="0.028" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-DELETE-prediction_runs]" time="0.132" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-DELETE-predictions]" time="0.023" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-DELETE-acceptance_receipts]" time="0.031" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-DELETE-slot_receipts]" time="0.017" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-DELETE-activations]" time="0.028" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[fresh-DELETE-deployment_change_receipts]" time="0.017" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-UPDATE-reconstruction_authorities]" time="0.086" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-UPDATE-observation_revisions]" time="0.072" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-UPDATE-snapshots]" time="0.028" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-UPDATE-feature_values]" time="0.055" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-UPDATE-models]" time="0.020" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-UPDATE-model_sets]" time="0.030" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-UPDATE-model_set_members]" time="0.019" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-UPDATE-permission_keys]" time="0.027" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-UPDATE-prediction_slots]" time="0.037" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-UPDATE-slot_model_bindings]" time="0.028" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-UPDATE-prediction_runs]" time="0.032" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-UPDATE-predictions]" time="0.100" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-UPDATE-acceptance_receipts]" time="0.024" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-UPDATE-slot_receipts]" time="0.029" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-UPDATE-activations]" time="0.129" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-UPDATE-deployment_change_receipts]" time="0.021" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-DELETE-reconstruction_authorities]" time="0.029" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-DELETE-observation_revisions]" time="0.019" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-DELETE-snapshots]" time="0.029" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-DELETE-feature_values]" time="0.132" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-DELETE-models]" time="0.122" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-DELETE-model_sets]" time="0.022" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-DELETE-model_set_members]" time="0.018" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-DELETE-permission_keys]" time="0.131" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-DELETE-prediction_slots]" time="0.124" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-DELETE-slot_model_bindings]" time="0.022" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-DELETE-prediction_runs]" time="0.018" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-DELETE-predictions]" time="0.020" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-DELETE-acceptance_receipts]" time="0.021" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-DELETE-slot_receipts]" time="0.019" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-DELETE-activations]" time="0.021" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_append_only_guards[upgrade-DELETE-deployment_change_receipts]" time="0.025" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_typed_identity[fresh-scope_id-UNIT_WRONG]" time="0.079"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'foreign key|query returned no rows'&#10;  Actual message: 'FEP_RECONSTRUCTION_EVIDENCE_UPGRADE_FORBIDDEN\nCONTEXT:  PL/pgSQL function validate_canonical_prediction_authority() line 21 at RAISE'">canonical = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55490 user=fep_e5_admin database=fep_e5b_fresh) at 0x1b0a41e63f0&gt;
+field = 'scope_id', value = 'UNIT_WRONG'
+
+    @pytest.mark.parametrize('field,value',[('scope_id','UNIT_WRONG'),('target_id','UNIT_WRONG'),('horizon',20),('model_set_id','UNIT_WRONG'),('snapshot_id','UNIT_WRONG')])
+    def test_prediction_typed_identity(canonical,field,value):
+        p=row(canonical,'predictions');p['prediction_id']='UNIT_BAD_IDENTITY';p[field]=value
+&gt;       rejected(canonical,lambda:insert(canonical,'predictions',p),'foreign key|query returned no rows')
+
+tests\fep_e5\test_e5_reconstruction.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+pg = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55490 user=fep_e5_admin database=fep_e5b_fresh) at 0x1b0a41e63f0&gt;
+op = &lt;function test_prediction_typed_identity.&lt;locals&gt;.&lt;lambda&gt; at 0x000001B0A4837C40&gt;
+match = 'foreign key|query returned no rows'
+
+    def rejected(pg,op,match):
+&gt;       with pytest.raises(psycopg.Error,match=match):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'foreign key|query returned no rows'
+E         Actual message: 'FEP_RECONSTRUCTION_EVIDENCE_UPGRADE_FORBIDDEN\nCONTEXT:  PL/pgSQL function validate_canonical_prediction_authority() line 21 at RAISE'
+
+tests\fep_e5\test_e5_reconstruction.py:25: AssertionError</failure></testcase><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_typed_identity[fresh-target_id-UNIT_WRONG]" time="0.082"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'foreign key|query returned no rows'&#10;  Actual message: 'duplicate key value violates unique constraint &quot;predictions_slot_id_model_id_revision_key&quot;\nDETAIL:  Key (slot_id, model_id, revision)=(FEP_CANONICAL_SLOT:fd92defe89092cb7d38329c5b80f493293ed0de5df7674c00d60b1ea4ef4ef15, FEP_E5_E4:deb6788d228165cda5224cb1382bcdb237eb9cca392bc73e35191d3805821d65, 1) already exists.'">canonical = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55490 user=fep_e5_admin database=fep_e5b_fresh) at 0x1b0a41e6a80&gt;
+field = 'target_id', value = 'UNIT_WRONG'
+
+    @pytest.mark.parametrize('field,value',[('scope_id','UNIT_WRONG'),('target_id','UNIT_WRONG'),('horizon',20),('model_set_id','UNIT_WRONG'),('snapshot_id','UNIT_WRONG')])
+    def test_prediction_typed_identity(canonical,field,value):
+        p=row(canonical,'predictions');p['prediction_id']='UNIT_BAD_IDENTITY';p[field]=value
+&gt;       rejected(canonical,lambda:insert(canonical,'predictions',p),'foreign key|query returned no rows')
+
+tests\fep_e5\test_e5_reconstruction.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+pg = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55490 user=fep_e5_admin database=fep_e5b_fresh) at 0x1b0a41e6a80&gt;
+op = &lt;function test_prediction_typed_identity.&lt;locals&gt;.&lt;lambda&gt; at 0x000001B0A4837420&gt;
+match = 'foreign key|query returned no rows'
+
+    def rejected(pg,op,match):
+&gt;       with pytest.raises(psycopg.Error,match=match):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'foreign key|query returned no rows'
+E         Actual message: 'duplicate key value violates unique constraint "predictions_slot_id_model_id_revision_key"\nDETAIL:  Key (slot_id, model_id, revision)=(FEP_CANONICAL_SLOT:fd92defe89092cb7d38329c5b80f493293ed0de5df7674c00d60b1ea4ef4ef15, FEP_E5_E4:deb6788d228165cda5224cb1382bcdb237eb9cca392bc73e35191d3805821d65, 1) already exists.'
+
+tests\fep_e5\test_e5_reconstruction.py:25: AssertionError</failure></testcase><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_typed_identity[fresh-horizon-20]" time="0.073"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'foreign key|query returned no rows'&#10;  Actual message: 'duplicate key value violates unique constraint &quot;predictions_slot_id_model_id_revision_key&quot;\nDETAIL:  Key (slot_id, model_id, revision)=(FEP_CANONICAL_SLOT:fd92defe89092cb7d38329c5b80f493293ed0de5df7674c00d60b1ea4ef4ef15, FEP_E5_E4:deb6788d228165cda5224cb1382bcdb237eb9cca392bc73e35191d3805821d65, 1) already exists.'">canonical = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55490 user=fep_e5_admin database=fep_e5b_fresh) at 0x1b0a41e74d0&gt;
+field = 'horizon', value = 20
+
+    @pytest.mark.parametrize('field,value',[('scope_id','UNIT_WRONG'),('target_id','UNIT_WRONG'),('horizon',20),('model_set_id','UNIT_WRONG'),('snapshot_id','UNIT_WRONG')])
+    def test_prediction_typed_identity(canonical,field,value):
+        p=row(canonical,'predictions');p['prediction_id']='UNIT_BAD_IDENTITY';p[field]=value
+&gt;       rejected(canonical,lambda:insert(canonical,'predictions',p),'foreign key|query returned no rows')
+
+tests\fep_e5\test_e5_reconstruction.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+pg = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55490 user=fep_e5_admin database=fep_e5b_fresh) at 0x1b0a41e74d0&gt;
+op = &lt;function test_prediction_typed_identity.&lt;locals&gt;.&lt;lambda&gt; at 0x000001B0A4824EA0&gt;
+match = 'foreign key|query returned no rows'
+
+    def rejected(pg,op,match):
+&gt;       with pytest.raises(psycopg.Error,match=match):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'foreign key|query returned no rows'
+E         Actual message: 'duplicate key value violates unique constraint "predictions_slot_id_model_id_revision_key"\nDETAIL:  Key (slot_id, model_id, revision)=(FEP_CANONICAL_SLOT:fd92defe89092cb7d38329c5b80f493293ed0de5df7674c00d60b1ea4ef4ef15, FEP_E5_E4:deb6788d228165cda5224cb1382bcdb237eb9cca392bc73e35191d3805821d65, 1) already exists.'
+
+tests\fep_e5\test_e5_reconstruction.py:25: AssertionError</failure></testcase><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_typed_identity[fresh-model_set_id-UNIT_WRONG]" time="0.074"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'foreign key|query returned no rows'&#10;  Actual message: 'duplicate key value violates unique constraint &quot;predictions_slot_id_model_id_revision_key&quot;\nDETAIL:  Key (slot_id, model_id, revision)=(FEP_CANONICAL_SLOT:fd92defe89092cb7d38329c5b80f493293ed0de5df7674c00d60b1ea4ef4ef15, FEP_E5_E4:deb6788d228165cda5224cb1382bcdb237eb9cca392bc73e35191d3805821d65, 1) already exists.'">canonical = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55490 user=fep_e5_admin database=fep_e5b_fresh) at 0x1b0a41e7d40&gt;
+field = 'model_set_id', value = 'UNIT_WRONG'
+
+    @pytest.mark.parametrize('field,value',[('scope_id','UNIT_WRONG'),('target_id','UNIT_WRONG'),('horizon',20),('model_set_id','UNIT_WRONG'),('snapshot_id','UNIT_WRONG')])
+    def test_prediction_typed_identity(canonical,field,value):
+        p=row(canonical,'predictions');p['prediction_id']='UNIT_BAD_IDENTITY';p[field]=value
+&gt;       rejected(canonical,lambda:insert(canonical,'predictions',p),'foreign key|query returned no rows')
+
+tests\fep_e5\test_e5_reconstruction.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+pg = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55490 user=fep_e5_admin database=fep_e5b_fresh) at 0x1b0a41e7d40&gt;
+op = &lt;function test_prediction_typed_identity.&lt;locals&gt;.&lt;lambda&gt; at 0x000001B0A4825940&gt;
+match = 'foreign key|query returned no rows'
+
+    def rejected(pg,op,match):
+&gt;       with pytest.raises(psycopg.Error,match=match):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'foreign key|query returned no rows'
+E         Actual message: 'duplicate key value violates unique constraint "predictions_slot_id_model_id_revision_key"\nDETAIL:  Key (slot_id, model_id, revision)=(FEP_CANONICAL_SLOT:fd92defe89092cb7d38329c5b80f493293ed0de5df7674c00d60b1ea4ef4ef15, FEP_E5_E4:deb6788d228165cda5224cb1382bcdb237eb9cca392bc73e35191d3805821d65, 1) already exists.'
+
+tests\fep_e5\test_e5_reconstruction.py:25: AssertionError</failure></testcase><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_typed_identity[fresh-snapshot_id-UNIT_WRONG]" time="0.072" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_typed_identity[upgrade-scope_id-UNIT_WRONG]" time="0.068"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'foreign key|query returned no rows'&#10;  Actual message: 'FEP_RECONSTRUCTION_EVIDENCE_UPGRADE_FORBIDDEN\nCONTEXT:  PL/pgSQL function validate_canonical_prediction_authority() line 21 at RAISE'">canonical = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55491 user=fep_e5_admin database=fep_e5b_upgrade) at 0x1b0a48bcaa0&gt;
+field = 'scope_id', value = 'UNIT_WRONG'
+
+    @pytest.mark.parametrize('field,value',[('scope_id','UNIT_WRONG'),('target_id','UNIT_WRONG'),('horizon',20),('model_set_id','UNIT_WRONG'),('snapshot_id','UNIT_WRONG')])
+    def test_prediction_typed_identity(canonical,field,value):
+        p=row(canonical,'predictions');p['prediction_id']='UNIT_BAD_IDENTITY';p[field]=value
+&gt;       rejected(canonical,lambda:insert(canonical,'predictions',p),'foreign key|query returned no rows')
+
+tests\fep_e5\test_e5_reconstruction.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+pg = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55491 user=fep_e5_admin database=fep_e5b_upgrade) at 0x1b0a48bcaa0&gt;
+op = &lt;function test_prediction_typed_identity.&lt;locals&gt;.&lt;lambda&gt; at 0x000001B0A4825F80&gt;
+match = 'foreign key|query returned no rows'
+
+    def rejected(pg,op,match):
+&gt;       with pytest.raises(psycopg.Error,match=match):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'foreign key|query returned no rows'
+E         Actual message: 'FEP_RECONSTRUCTION_EVIDENCE_UPGRADE_FORBIDDEN\nCONTEXT:  PL/pgSQL function validate_canonical_prediction_authority() line 21 at RAISE'
+
+tests\fep_e5\test_e5_reconstruction.py:25: AssertionError</failure></testcase><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_typed_identity[upgrade-target_id-UNIT_WRONG]" time="0.071"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'foreign key|query returned no rows'&#10;  Actual message: 'duplicate key value violates unique constraint &quot;predictions_slot_id_model_id_revision_key&quot;\nDETAIL:  Key (slot_id, model_id, revision)=(FEP_CANONICAL_SLOT:fd92defe89092cb7d38329c5b80f493293ed0de5df7674c00d60b1ea4ef4ef15, FEP_E5_E4:deb6788d228165cda5224cb1382bcdb237eb9cca392bc73e35191d3805821d65, 1) already exists.'">canonical = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55491 user=fep_e5_admin database=fep_e5b_upgrade) at 0x1b0a48bd220&gt;
+field = 'target_id', value = 'UNIT_WRONG'
+
+    @pytest.mark.parametrize('field,value',[('scope_id','UNIT_WRONG'),('target_id','UNIT_WRONG'),('horizon',20),('model_set_id','UNIT_WRONG'),('snapshot_id','UNIT_WRONG')])
+    def test_prediction_typed_identity(canonical,field,value):
+        p=row(canonical,'predictions');p['prediction_id']='UNIT_BAD_IDENTITY';p[field]=value
+&gt;       rejected(canonical,lambda:insert(canonical,'predictions',p),'foreign key|query returned no rows')
+
+tests\fep_e5\test_e5_reconstruction.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+pg = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55491 user=fep_e5_admin database=fep_e5b_upgrade) at 0x1b0a48bd220&gt;
+op = &lt;function test_prediction_typed_identity.&lt;locals&gt;.&lt;lambda&gt; at 0x000001B0A4826F20&gt;
+match = 'foreign key|query returned no rows'
+
+    def rejected(pg,op,match):
+&gt;       with pytest.raises(psycopg.Error,match=match):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'foreign key|query returned no rows'
+E         Actual message: 'duplicate key value violates unique constraint "predictions_slot_id_model_id_revision_key"\nDETAIL:  Key (slot_id, model_id, revision)=(FEP_CANONICAL_SLOT:fd92defe89092cb7d38329c5b80f493293ed0de5df7674c00d60b1ea4ef4ef15, FEP_E5_E4:deb6788d228165cda5224cb1382bcdb237eb9cca392bc73e35191d3805821d65, 1) already exists.'
+
+tests\fep_e5\test_e5_reconstruction.py:25: AssertionError</failure></testcase><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_typed_identity[upgrade-horizon-20]" time="0.178"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'foreign key|query returned no rows'&#10;  Actual message: 'duplicate key value violates unique constraint &quot;predictions_slot_id_model_id_revision_key&quot;\nDETAIL:  Key (slot_id, model_id, revision)=(FEP_CANONICAL_SLOT:fd92defe89092cb7d38329c5b80f493293ed0de5df7674c00d60b1ea4ef4ef15, FEP_E5_E4:deb6788d228165cda5224cb1382bcdb237eb9cca392bc73e35191d3805821d65, 1) already exists.'">canonical = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55491 user=fep_e5_admin database=fep_e5b_upgrade) at 0x1b0a48bda90&gt;
+field = 'horizon', value = 20
+
+    @pytest.mark.parametrize('field,value',[('scope_id','UNIT_WRONG'),('target_id','UNIT_WRONG'),('horizon',20),('model_set_id','UNIT_WRONG'),('snapshot_id','UNIT_WRONG')])
+    def test_prediction_typed_identity(canonical,field,value):
+        p=row(canonical,'predictions');p['prediction_id']='UNIT_BAD_IDENTITY';p[field]=value
+&gt;       rejected(canonical,lambda:insert(canonical,'predictions',p),'foreign key|query returned no rows')
+
+tests\fep_e5\test_e5_reconstruction.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+pg = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55491 user=fep_e5_admin database=fep_e5b_upgrade) at 0x1b0a48bda90&gt;
+op = &lt;function test_prediction_typed_identity.&lt;locals&gt;.&lt;lambda&gt; at 0x000001B0A48277E0&gt;
+match = 'foreign key|query returned no rows'
+
+    def rejected(pg,op,match):
+&gt;       with pytest.raises(psycopg.Error,match=match):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'foreign key|query returned no rows'
+E         Actual message: 'duplicate key value violates unique constraint "predictions_slot_id_model_id_revision_key"\nDETAIL:  Key (slot_id, model_id, revision)=(FEP_CANONICAL_SLOT:fd92defe89092cb7d38329c5b80f493293ed0de5df7674c00d60b1ea4ef4ef15, FEP_E5_E4:deb6788d228165cda5224cb1382bcdb237eb9cca392bc73e35191d3805821d65, 1) already exists.'
+
+tests\fep_e5\test_e5_reconstruction.py:25: AssertionError</failure></testcase><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_typed_identity[upgrade-model_set_id-UNIT_WRONG]" time="0.182"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'foreign key|query returned no rows'&#10;  Actual message: 'duplicate key value violates unique constraint &quot;predictions_slot_id_model_id_revision_key&quot;\nDETAIL:  Key (slot_id, model_id, revision)=(FEP_CANONICAL_SLOT:fd92defe89092cb7d38329c5b80f493293ed0de5df7674c00d60b1ea4ef4ef15, FEP_E5_E4:deb6788d228165cda5224cb1382bcdb237eb9cca392bc73e35191d3805821d65, 1) already exists.'">canonical = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55491 user=fep_e5_admin database=fep_e5b_upgrade) at 0x1b0a48be300&gt;
+field = 'model_set_id', value = 'UNIT_WRONG'
+
+    @pytest.mark.parametrize('field,value',[('scope_id','UNIT_WRONG'),('target_id','UNIT_WRONG'),('horizon',20),('model_set_id','UNIT_WRONG'),('snapshot_id','UNIT_WRONG')])
+    def test_prediction_typed_identity(canonical,field,value):
+        p=row(canonical,'predictions');p['prediction_id']='UNIT_BAD_IDENTITY';p[field]=value
+&gt;       rejected(canonical,lambda:insert(canonical,'predictions',p),'foreign key|query returned no rows')
+
+tests\fep_e5\test_e5_reconstruction.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+pg = &lt;psycopg.Connection [INTRANS] (host=127.0.0.1 port=55491 user=fep_e5_admin database=fep_e5b_upgrade) at 0x1b0a48be300&gt;
+op = &lt;function test_prediction_typed_identity.&lt;locals&gt;.&lt;lambda&gt; at 0x000001B0A48276A0&gt;
+match = 'foreign key|query returned no rows'
+
+    def rejected(pg,op,match):
+&gt;       with pytest.raises(psycopg.Error,match=match):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'foreign key|query returned no rows'
+E         Actual message: 'duplicate key value violates unique constraint "predictions_slot_id_model_id_revision_key"\nDETAIL:  Key (slot_id, model_id, revision)=(FEP_CANONICAL_SLOT:fd92defe89092cb7d38329c5b80f493293ed0de5df7674c00d60b1ea4ef4ef15, FEP_E5_E4:deb6788d228165cda5224cb1382bcdb237eb9cca392bc73e35191d3805821d65, 1) already exists.'
+
+tests\fep_e5\test_e5_reconstruction.py:25: AssertionError</failure></testcase><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_prediction_typed_identity[upgrade-snapshot_id-UNIT_WRONG]" time="0.078" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_canonical_ledger_denominator_and_roles[fresh]" time="0.064" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_canonical_ledger_denominator_and_roles[upgrade]" time="0.176" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_PIT_path_positive_and_preserved[fresh]" time="0.055" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_PIT_path_positive_and_preserved[upgrade]" time="0.025" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_PIT_original_validator_negatives[fresh-wrong_date]" time="0.048"><failure message="psycopg.errors.RaiseException: V4_MARKET_CALENDAR_INSERT_INVALIDATES_INITIAL_BOUNDARY&#10;CONTEXT:  PL/pgSQL function v4.validate_market_calendar_session_insert() line 12 at RAISE">canonical = &lt;psycopg.Connection [INERROR] (host=127.0.0.1 port=55490 user=fep_e5_admin database=fep_e5b_fresh) at 0x1b0a48bea80&gt;
+case = 'wrong_date'
+
+    @pytest.mark.parametrize('case',['wrong_date','wrong_namespace','unaccepted','after_cutoff','missing_dependency','wrong_manifest_publication','replay'])
+    def test_PIT_original_validator_negatives(canonical,case):
+        p=canonical
+        if p.info.dbname.endswith('fresh'):pit_seed(p)
+        r=row(p,'observation_revisions',"observation_id='UNIT_PIT_OBSERVATION'");r.update(revision=2,supersedes_revision=1,dependency_digest=c.digest(case))
+        if case=='after_cutoff':r['feature_cutoff']='2000-01-01T00:00:00Z'
+        elif case=='missing_dependency':del r['dependency_manifest']['calendar']
+        elif case=='wrong_manifest_publication':r['dependency_manifest']['publication']='WRONG'
+        elif case=='replay':r['execution_mode']='REPLAY'
+        else:
+            ns='UNIT_OTHER_NAMESPACE' if case=='wrong_namespace' else 'UNIT_PIT_NAMESPACE'
+            if case=='wrong_namespace':add_namespace(p,ns)
+&gt;           add_publication(p,publication_id='UNIT_BAD_PUBLICATION',namespace_id=ns,trade_date=date(2000,1,1) if case=='wrong_date' else date.today(),lineage_id='UNIT_BAD_LINE',status='STAGED' if case=='unaccepted' else 'ACCEPTED')
+
+tests\fep_e5\test_e5_reconstruction.py:138: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_phase0\test_postgres_schema.py:46: in add_publication
+    add_calendar_session(pg, calendar_id, trade_date)
+tests\v4_phase0\test_postgres_schema.py:38: in add_calendar_session
+    pg.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;psycopg.Connection [INERROR] (host=127.0.0.1 port=55490 user=fep_e5_admin database=fep_e5b_fresh) at 0x1b0a48bea80&gt;
+query = 'insert into v4.market_calendar_sessions(market_calendar_id,session_no,trade_date,calendar_digest) values (%s,%s,%s,%s) on conflict do nothing'
+params = ('CAL-UNIT_PIT_NAMESPACE', 730120, datetime.date(2000, 1, 1), 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -&gt; Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+&gt;           raise ex.with_traceback(None)
+E           psycopg.errors.RaiseException: V4_MARKET_CALENDAR_INSERT_INVALIDATES_INITIAL_BOUNDARY
+E           CONTEXT:  PL/pgSQL function v4.validate_market_calendar_session_insert() line 12 at RAISE
+
+E:\python\Lib\site-packages\psycopg\connection.py:304: RaiseException</failure></testcase><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_PIT_original_validator_negatives[fresh-wrong_namespace]" time="0.046" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_PIT_original_validator_negatives[fresh-unaccepted]" time="0.046"><failure message="psycopg.errors.CheckViolation: new row for relation &quot;publications&quot; violates check constraint &quot;publications_status_check&quot;&#10;DETAIL:  Failing row contains (UNIT_BAD_PUBLICATION, 2026-10-06, 1, STAGED, UNIT_PIT_NAMESPACE, 1, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, 554e49545f4241445f5055424c49434154494f4e554e49545f4241445f505542, null, null, UNIT_BAD_LINE, null, null, null, INITIAL_BOUNDARY, CAL-UNIT_PIT_NAMESPACE).">canonical = &lt;psycopg.Connection [INERROR] (host=127.0.0.1 port=55490 user=fep_e5_admin database=fep_e5b_fresh) at 0x1b0a41e7890&gt;
+case = 'unaccepted'
+
+    @pytest.mark.parametrize('case',['wrong_date','wrong_namespace','unaccepted','after_cutoff','missing_dependency','wrong_manifest_publication','replay'])
+    def test_PIT_original_validator_negatives(canonical,case):
+        p=canonical
+        if p.info.dbname.endswith('fresh'):pit_seed(p)
+        r=row(p,'observation_revisions',"observation_id='UNIT_PIT_OBSERVATION'");r.update(revision=2,supersedes_revision=1,dependency_digest=c.digest(case))
+        if case=='after_cutoff':r['feature_cutoff']='2000-01-01T00:00:00Z'
+        elif case=='missing_dependency':del r['dependency_manifest']['calendar']
+        elif case=='wrong_manifest_publication':r['dependency_manifest']['publication']='WRONG'
+        elif case=='replay':r['execution_mode']='REPLAY'
+        else:
+            ns='UNIT_OTHER_NAMESPACE' if case=='wrong_namespace' else 'UNIT_PIT_NAMESPACE'
+            if case=='wrong_namespace':add_namespace(p,ns)
+&gt;           add_publication(p,publication_id='UNIT_BAD_PUBLICATION',namespace_id=ns,trade_date=date(2000,1,1) if case=='wrong_date' else date.today(),lineage_id='UNIT_BAD_LINE',status='STAGED' if case=='unaccepted' else 'ACCEPTED')
+
+tests\fep_e5\test_e5_reconstruction.py:138: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_phase0\test_postgres_schema.py:47: in add_publication
+    pg.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;psycopg.Connection [INERROR] (host=127.0.0.1 port=55490 user=fep_e5_admin database=fep_e5b_fresh) at 0x1b0a41e7890&gt;
+query = "insert into v4.publications(\n             publication_id,publication_lineage_id,trade_date,market_calendar_id,revisi...at)\n           values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,case when %s='ACCEPTED' then now() else null end)"
+params = ('UNIT_BAD_PUBLICATION', 'UNIT_BAD_LINE', datetime.date(2026, 10, 6), 'CAL-UNIT_PIT_NAMESPACE', 1, 'STAGED', ...)
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -&gt; Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+&gt;           raise ex.with_traceback(None)
+E           psycopg.errors.CheckViolation: new row for relation "publications" violates check constraint "publications_status_check"
+E           DETAIL:  Failing row contains (UNIT_BAD_PUBLICATION, 2026-10-06, 1, STAGED, UNIT_PIT_NAMESPACE, 1, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, 554e49545f4241445f5055424c49434154494f4e554e49545f4241445f505542, null, null, UNIT_BAD_LINE, null, null, null, INITIAL_BOUNDARY, CAL-UNIT_PIT_NAMESPACE).
+
+E:\python\Lib\site-packages\psycopg\connection.py:304: CheckViolation</failure></testcase><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_PIT_original_validator_negatives[fresh-after_cutoff]" time="0.039" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_PIT_original_validator_negatives[fresh-missing_dependency]" time="0.039" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_PIT_original_validator_negatives[fresh-wrong_manifest_publication]" time="0.037" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_PIT_original_validator_negatives[fresh-replay]" time="0.043" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_PIT_original_validator_negatives[upgrade-wrong_date]" time="0.032"><failure message="psycopg.errors.RaiseException: V4_MARKET_CALENDAR_INSERT_INVALIDATES_INITIAL_BOUNDARY&#10;CONTEXT:  PL/pgSQL function v4.validate_market_calendar_session_insert() line 12 at RAISE">canonical = &lt;psycopg.Connection [INERROR] (host=127.0.0.1 port=55491 user=fep_e5_admin database=fep_e5b_upgrade) at 0x1b0a41e75c0&gt;
+case = 'wrong_date'
+
+    @pytest.mark.parametrize('case',['wrong_date','wrong_namespace','unaccepted','after_cutoff','missing_dependency','wrong_manifest_publication','replay'])
+    def test_PIT_original_validator_negatives(canonical,case):
+        p=canonical
+        if p.info.dbname.endswith('fresh'):pit_seed(p)
+        r=row(p,'observation_revisions',"observation_id='UNIT_PIT_OBSERVATION'");r.update(revision=2,supersedes_revision=1,dependency_digest=c.digest(case))
+        if case=='after_cutoff':r['feature_cutoff']='2000-01-01T00:00:00Z'
+        elif case=='missing_dependency':del r['dependency_manifest']['calendar']
+        elif case=='wrong_manifest_publication':r['dependency_manifest']['publication']='WRONG'
+        elif case=='replay':r['execution_mode']='REPLAY'
+        else:
+            ns='UNIT_OTHER_NAMESPACE' if case=='wrong_namespace' else 'UNIT_PIT_NAMESPACE'
+            if case=='wrong_namespace':add_namespace(p,ns)
+&gt;           add_publication(p,publication_id='UNIT_BAD_PUBLICATION',namespace_id=ns,trade_date=date(2000,1,1) if case=='wrong_date' else date.today(),lineage_id='UNIT_BAD_LINE',status='STAGED' if case=='unaccepted' else 'ACCEPTED')
+
+tests\fep_e5\test_e5_reconstruction.py:138: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_phase0\test_postgres_schema.py:46: in add_publication
+    add_calendar_session(pg, calendar_id, trade_date)
+tests\v4_phase0\test_postgres_schema.py:38: in add_calendar_session
+    pg.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;psycopg.Connection [INERROR] (host=127.0.0.1 port=55491 user=fep_e5_admin database=fep_e5b_upgrade) at 0x1b0a41e75c0&gt;
+query = 'insert into v4.market_calendar_sessions(market_calendar_id,session_no,trade_date,calendar_digest) values (%s,%s,%s,%s) on conflict do nothing'
+params = ('CAL-UNIT_PIT_NAMESPACE', 730120, datetime.date(2000, 1, 1), 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -&gt; Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+&gt;           raise ex.with_traceback(None)
+E           psycopg.errors.RaiseException: V4_MARKET_CALENDAR_INSERT_INVALIDATES_INITIAL_BOUNDARY
+E           CONTEXT:  PL/pgSQL function v4.validate_market_calendar_session_insert() line 12 at RAISE
+
+E:\python\Lib\site-packages\psycopg\connection.py:304: RaiseException</failure></testcase><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_PIT_original_validator_negatives[upgrade-wrong_namespace]" time="0.041" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_PIT_original_validator_negatives[upgrade-unaccepted]" time="0.143"><failure message="psycopg.errors.CheckViolation: new row for relation &quot;publications&quot; violates check constraint &quot;publications_status_check&quot;&#10;DETAIL:  Failing row contains (UNIT_BAD_PUBLICATION, 2026-10-06, 1, STAGED, UNIT_PIT_NAMESPACE, 1, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, 554e49545f4241445f5055424c49434154494f4e554e49545f4241445f505542, null, null, UNIT_BAD_LINE, null, null, null, INITIAL_BOUNDARY, CAL-UNIT_PIT_NAMESPACE).">canonical = &lt;psycopg.Connection [INERROR] (host=127.0.0.1 port=55491 user=fep_e5_admin database=fep_e5b_upgrade) at 0x1b0a41e66c0&gt;
+case = 'unaccepted'
+
+    @pytest.mark.parametrize('case',['wrong_date','wrong_namespace','unaccepted','after_cutoff','missing_dependency','wrong_manifest_publication','replay'])
+    def test_PIT_original_validator_negatives(canonical,case):
+        p=canonical
+        if p.info.dbname.endswith('fresh'):pit_seed(p)
+        r=row(p,'observation_revisions',"observation_id='UNIT_PIT_OBSERVATION'");r.update(revision=2,supersedes_revision=1,dependency_digest=c.digest(case))
+        if case=='after_cutoff':r['feature_cutoff']='2000-01-01T00:00:00Z'
+        elif case=='missing_dependency':del r['dependency_manifest']['calendar']
+        elif case=='wrong_manifest_publication':r['dependency_manifest']['publication']='WRONG'
+        elif case=='replay':r['execution_mode']='REPLAY'
+        else:
+            ns='UNIT_OTHER_NAMESPACE' if case=='wrong_namespace' else 'UNIT_PIT_NAMESPACE'
+            if case=='wrong_namespace':add_namespace(p,ns)
+&gt;           add_publication(p,publication_id='UNIT_BAD_PUBLICATION',namespace_id=ns,trade_date=date(2000,1,1) if case=='wrong_date' else date.today(),lineage_id='UNIT_BAD_LINE',status='STAGED' if case=='unaccepted' else 'ACCEPTED')
+
+tests\fep_e5\test_e5_reconstruction.py:138: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_phase0\test_postgres_schema.py:47: in add_publication
+    pg.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;psycopg.Connection [INERROR] (host=127.0.0.1 port=55491 user=fep_e5_admin database=fep_e5b_upgrade) at 0x1b0a41e66c0&gt;
+query = "insert into v4.publications(\n             publication_id,publication_lineage_id,trade_date,market_calendar_id,revisi...at)\n           values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,case when %s='ACCEPTED' then now() else null end)"
+params = ('UNIT_BAD_PUBLICATION', 'UNIT_BAD_LINE', datetime.date(2026, 10, 6), 'CAL-UNIT_PIT_NAMESPACE', 1, 'STAGED', ...)
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -&gt; Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+&gt;           raise ex.with_traceback(None)
+E           psycopg.errors.CheckViolation: new row for relation "publications" violates check constraint "publications_status_check"
+E           DETAIL:  Failing row contains (UNIT_BAD_PUBLICATION, 2026-10-06, 1, STAGED, UNIT_PIT_NAMESPACE, 1, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, 554e49545f4241445f5055424c49434154494f4e554e49545f4241445f505542, null, null, UNIT_BAD_LINE, null, null, null, INITIAL_BOUNDARY, CAL-UNIT_PIT_NAMESPACE).
+
+E:\python\Lib\site-packages\psycopg\connection.py:304: CheckViolation</failure></testcase><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_PIT_original_validator_negatives[upgrade-after_cutoff]" time="0.028" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_PIT_original_validator_negatives[upgrade-missing_dependency]" time="0.028" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_PIT_original_validator_negatives[upgrade-wrong_manifest_publication]" time="0.137" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_PIT_original_validator_negatives[upgrade-replay]" time="0.024" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_API_exact_context_and_revoked_boundary[fresh]" time="0.075" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_API_exact_context_and_revoked_boundary[upgrade]" time="0.079" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_CAS_rejection_atomicity[fresh-wrong_version]" time="0.071" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_CAS_rejection_atomicity[fresh-wrong_prior]" time="0.063" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_CAS_rejection_atomicity[fresh-wrong_request_payload]" time="0.061" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_CAS_rejection_atomicity[fresh-negative_version]" time="0.162" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_CAS_rejection_atomicity[fresh-invalid_action]" time="0.067" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_CAS_rejection_atomicity[upgrade-wrong_version]" time="0.062" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_CAS_rejection_atomicity[upgrade-wrong_prior]" time="0.182" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_CAS_rejection_atomicity[upgrade-wrong_request_payload]" time="0.067" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_CAS_rejection_atomicity[upgrade-negative_version]" time="0.067" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_CAS_rejection_atomicity[upgrade-invalid_action]" time="0.068" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_CAS_replay_idempotent[fresh]" time="0.062" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_CAS_replay_idempotent[upgrade]" time="0.062" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_CAS_outer_failure_restores_head_and_receipts[fresh]" time="0.063" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_CAS_outer_failure_restores_head_and_receipts[upgrade]" time="0.063" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_application_cannot_admit_authority_or_mutate_head[fresh]" time="0.017" /><testcase classname="tests.fep_e5.test_e5_reconstruction" name="test_application_cannot_admit_authority_or_mutate_head[upgrade]" time="0.026" /></testsuite></testsuites>

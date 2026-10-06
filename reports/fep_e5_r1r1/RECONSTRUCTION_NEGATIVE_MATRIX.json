@@ -1,0 +1,868 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_01_reconstruction_is_not_publication[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_01_reconstruction_is_not_publication[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_02_current_reconstruction_after_T0_without_PIT[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_02_current_reconstruction_after_T0_without_PIT[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_03_no_historical_accepted_semantics[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_03_no_historical_accepted_semantics[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_04_row_digest_is_not_authority[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_04_row_digest_is_not_authority[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_05_current_publication_cannot_reconstruction[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_05_current_publication_cannot_reconstruction[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_06_08_exact_authority_identity[fresh-RA-06-trade_date-2000-01-01]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_06_08_exact_authority_identity[fresh-RA-07-namespace_id-UNIT_WRONG_NS]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_06_08_exact_authority_identity[fresh-RA-08-feature_contract_id-UNIT_WRONG_FEATURE]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_06_08_exact_authority_identity[upgrade-RA-06-trade_date-2000-01-01]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_06_08_exact_authority_identity[upgrade-RA-07-namespace_id-UNIT_WRONG_NS]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_06_08_exact_authority_identity[upgrade-RA-08-feature_contract_id-UNIT_WRONG_FEATURE]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_09_10_manifest_registration_and_dependency_guard[fresh-RA-09-None]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_09_10_manifest_registration_and_dependency_guard[fresh-RA-10-CURRENT-CURRENT]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_09_10_manifest_registration_and_dependency_guard[fresh-RA-10-LATEST-LATEST]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_09_10_manifest_registration_and_dependency_guard[fresh-RA-10-TODAY-TODAY]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_09_10_manifest_registration_and_dependency_guard[upgrade-RA-09-None]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_09_10_manifest_registration_and_dependency_guard[upgrade-RA-10-CURRENT-CURRENT]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_09_10_manifest_registration_and_dependency_guard[upgrade-RA-10-LATEST-LATEST]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_09_10_manifest_registration_and_dependency_guard[upgrade-RA-10-TODAY-TODAY]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[fresh-FIRST_OBSERVED]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[fresh-REAL_OOS]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[fresh-production]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[fresh-model_display]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[fresh-priority_use]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[fresh-AS_RECORDED]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[fresh-PROMOTION_EVIDENCE]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[upgrade-FIRST_OBSERVED]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[upgrade-REAL_OOS]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[upgrade-production]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[upgrade-model_display]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[upgrade-priority_use]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[upgrade-AS_RECORDED]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[upgrade-PROMOTION_EVIDENCE]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[fresh-change0]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[fresh-change1]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[fresh-change2]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[fresh-change3]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[fresh-change4]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[fresh-change5]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[upgrade-change0]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[upgrade-change1]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[upgrade-change2]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[upgrade-change3]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[upgrade-change4]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[upgrade-change5]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[fresh-change0]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[fresh-change1]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[fresh-change2]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[fresh-change3]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[fresh-change4]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[upgrade-change0]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[upgrade-change1]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[upgrade-change2]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[upgrade-change3]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[upgrade-change4]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_snapshot_exact_binding[fresh-snapshot_id]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_snapshot_exact_binding[fresh-feature_digest]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_snapshot_exact_binding[fresh-quality_digest]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_snapshot_exact_binding[fresh-feature_contract_id]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_snapshot_exact_binding[upgrade-snapshot_id]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_snapshot_exact_binding[upgrade-feature_digest]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_snapshot_exact_binding[upgrade-quality_digest]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_snapshot_exact_binding[upgrade-feature_contract_id]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_feature_values_exact_binding[fresh-value-9000]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_feature_values_exact_binding[fresh-quality-UNKNOWN]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_feature_values_exact_binding[fresh-source_digest-7190732a207f2360ecd627aad0f1410b8202614c8ba16dacbd69dc390e18c587]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_feature_values_exact_binding[upgrade-value-9000]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_feature_values_exact_binding[upgrade-quality-UNKNOWN]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_feature_values_exact_binding[upgrade-source_digest-7190732a207f2360ecd627aad0f1410b8202614c8ba16dacbd69dc390e18c587]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_permission_nonchampion_display_priority_forbidden[fresh-MODEL_DISPLAY]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_permission_nonchampion_display_priority_forbidden[fresh-DESCRIPTIVE_DISPLAY]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_permission_nonchampion_display_priority_forbidden[fresh-PRIORITY_USE]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_permission_nonchampion_display_priority_forbidden[upgrade-MODEL_DISPLAY]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_permission_nonchampion_display_priority_forbidden[upgrade-DESCRIPTIVE_DISPLAY]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_permission_nonchampion_display_priority_forbidden[upgrade-PRIORITY_USE]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_permission_wrong_role_exact_FK[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_permission_wrong_role_exact_FK[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_imported_model_cannot_fake_champion[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_imported_model_cannot_fake_champion[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-reconstruction_authorities]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-observation_revisions]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-snapshots]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-feature_values]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-models]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-model_sets]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-model_set_members]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-permission_keys]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-prediction_slots]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-slot_model_bindings]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-prediction_runs]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-predictions]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-acceptance_receipts]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-slot_receipts]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-activations]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-deployment_change_receipts]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-reconstruction_authorities]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-observation_revisions]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-snapshots]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-feature_values]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-models]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-model_sets]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-model_set_members]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-permission_keys]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-prediction_slots]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-slot_model_bindings]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-prediction_runs]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-predictions]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-acceptance_receipts]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-slot_receipts]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-activations]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-deployment_change_receipts]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-reconstruction_authorities]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-observation_revisions]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-snapshots]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-feature_values]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-models]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-model_sets]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-model_set_members]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-permission_keys]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-prediction_slots]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-slot_model_bindings]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-prediction_runs]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-predictions]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-acceptance_receipts]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-slot_receipts]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-activations]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-deployment_change_receipts]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-reconstruction_authorities]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-observation_revisions]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-snapshots]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-feature_values]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-models]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-model_sets]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-model_set_members]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-permission_keys]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-prediction_slots]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-slot_model_bindings]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-prediction_runs]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-predictions]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-acceptance_receipts]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-slot_receipts]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-activations]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-deployment_change_receipts]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[fresh-scope_id-UNIT_WRONG]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[fresh-target_id-UNIT_WRONG]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[fresh-horizon-20]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[fresh-model_set_id-UNIT_WRONG]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[fresh-snapshot_id-UNIT_WRONG]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[upgrade-scope_id-UNIT_WRONG]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[upgrade-target_id-UNIT_WRONG]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[upgrade-horizon-20]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[upgrade-model_set_id-UNIT_WRONG]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[upgrade-snapshot_id-UNIT_WRONG]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_canonical_ledger_denominator_and_roles[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_canonical_ledger_denominator_and_roles[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_path_positive_and_preserved[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_path_positive_and_preserved[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-wrong_date]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-wrong_namespace]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-unaccepted]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-after_cutoff]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-missing_dependency]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-wrong_manifest_publication]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-replay]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-wrong_date]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-wrong_namespace]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-unaccepted]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-after_cutoff]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-missing_dependency]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-wrong_manifest_publication]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-replay]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_API_exact_context_and_revoked_boundary[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_API_exact_context_and_revoked_boundary[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[fresh-wrong_version]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[fresh-wrong_prior]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[fresh-wrong_request_payload]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[fresh-negative_version]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[fresh-invalid_action]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[upgrade-wrong_version]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[upgrade-wrong_prior]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[upgrade-wrong_request_payload]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[upgrade-negative_version]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[upgrade-invalid_action]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_replay_idempotent[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_replay_idempotent[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_outer_failure_restores_head_and_receipts[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_outer_failure_restores_head_and_receipts[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_application_cannot_admit_authority_or_mutate_head[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_application_cannot_admit_authority_or_mutate_head[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_acceptance_transaction_rolls_back_after_prediction[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_acceptance_transaction_rolls_back_after_prediction[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_first_observed_literal_forbidden[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_first_observed_literal_forbidden[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_historical_revision_preserves_first_identity[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_historical_revision_preserves_first_identity[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_run_cross_observation_authority_rejected[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_run_cross_observation_authority_rejected[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_acceptance_wrong_model_set_or_revoke_rejected[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_acceptance_wrong_model_set_or_revoke_rejected[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_priority_failure_after_insert_has_no_partial_fact[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_priority_failure_after_insert_has_no_partial_fact[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_priority_fixture_references_canonical_predictions_only[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_priority_fixture_references_canonical_predictions_only[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_cross_model_set_revoke_rejected[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_cross_model_set_revoke_rejected[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_acceptance_stale_allow_cannot_admit_after_revoke[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_acceptance_stale_allow_cannot_admit_after_revoke[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_run_input_digest_must_match_exact_snapshot[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_run_input_digest_must_match_exact_snapshot[upgrade]",
+      "status": "PASS"
+    }
+  ],
+  "RA_01_13_covered": true,
+  "XML": {
+    "path": "reports/fep_e5_r1r1b/targeted.xml",
+    "bytes": 66538,
+    "sha256": "bf5efb16176511547f086e473cce1e57614195d5c45cdd06aeb1eb86ccabb975"
+  },
+  "all_real_PostgreSQL": true
+}

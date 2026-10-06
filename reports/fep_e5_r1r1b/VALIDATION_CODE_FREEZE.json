@@ -1,0 +1,78 @@
+{
+  "code_bindings": [
+    {
+      "path": "src/workbench_analysis/fep_e5/canonical_ledger.py",
+      "bytes": 13911,
+      "sha256": "f16e03b46a5c8cd0769418f3c02e7758769202c54a30786e7ea808aa9fb82ced"
+    },
+    {
+      "path": "src/workbench_service/canonical_expectancy_service.py",
+      "bytes": 2897,
+      "sha256": "48f88af3895232540d5f477731d24b57249aecb62b8de4ae6750b470c9bd7f35"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/032_fep_reconstruction_authority_shadow_v1.sql",
+      "bytes": 18415,
+      "sha256": "4145dd9ccad821b8d10b72004e547c0fa8fd05d61a409316ecb49bcfac9762f5"
+    },
+    {
+      "path": "scripts/run_fep_e5_r1r1b.py",
+      "bytes": 14894,
+      "sha256": "8867dee7567812c1cd0d9f49c7b42e704cc84759587b4e2a015417667c98cd24"
+    },
+    {
+      "path": "tests/fep_e5/test_e5_reconstruction.py",
+      "bytes": 22665,
+      "sha256": "b087d02a4607b5fa6e6f31c3ed5aed99ce21c68c639ab96bb13d04b950c1b895"
+    },
+    {
+      "path": "scripts/finalize_fep_e5_r1r1b.py",
+      "bytes": 23244,
+      "sha256": "e4445c36a8068d5124eeea3f4f7c1f4a78895d7d12791fa76b6e818d311e2a3f"
+    },
+    {
+      "path": "config/v4_18_migration_replay_contract_v1_2.json",
+      "bytes": 197310,
+      "sha256": "4a89c2d275bda4ec6d233dcb38196fc9156be78e494f9a3fa76ed8771f8b3ade"
+    },
+    {
+      "path": "tests/fep/test_v4_18_namespace_successor.py",
+      "bytes": 2767,
+      "sha256": "d1a9c4f4c2f27b796a31232619c2c823fea8344ed61d89d50e72da9527fb5a2e"
+    }
+  ],
+  "input_freeze": {
+    "path": "reports/fep_e5_r1r1b/IMPLEMENTATION_INPUT_FREEZE.json",
+    "bytes": 80577,
+    "sha256": "4e874759287f5d204d91a17e7794331884286f55a2a0b40dedf526004668ed58"
+  },
+  "reason": "Freeze current validation driver, fixture corrections and additive namespace inventory after rebuilt projection; original semantic contract, source population and numerical outputs unchanged.",
+  "projected_counts_unchanged": true,
+  "previous_failed_attempts": [
+    {
+      "path": "reports/fep_e5_r1r1b/canonical_initial.xml",
+      "bytes": 63439,
+      "sha256": "dcc4da8c71ddf0c8b14d0afa35813c18f1144d2ec724afad6e4fa6dfef9603ee"
+    },
+    {
+      "path": "reports/fep_e5_r1r1b/canonical_corrected.xml",
+      "bytes": 34584,
+      "sha256": "6a366e03e01a020fa8ccc76bcb6537003c42e87ab8cfbea92591e5dcf4e7279e"
+    }
+  ],
+  "frozen_at": "2026-10-06T03:40:09.874141+00:00",
+  "publication_layout_amendment": {
+    "before": {
+      "path": "scripts/finalize_fep_e5_r1r1b.py",
+      "bytes": 21577,
+      "sha256": "30c43a470f632bc836513a62d54cb0383700aacfa7396a57f95b5abcabffc293"
+    },
+    "after": {
+      "path": "scripts/finalize_fep_e5_r1r1b.py",
+      "bytes": 23244,
+      "sha256": "e4445c36a8068d5124eeea3f4f7c1f4a78895d7d12791fa76b6e818d311e2a3f"
+    },
+    "reason": "Honor task section 19: replace old N/A receipt paths with actual readbacks, retaining exact baseline bytes in predecessor_receipts; evidence layout only, no runtime/schema/test changes",
+    "amended_at": "2026-10-06T03:44:03.883818+00:00"
+  }
+}

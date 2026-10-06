@@ -1,0 +1,54 @@
+{
+  "code_bindings": [
+    {
+      "path": "src/workbench_analysis/fep_e5/canonical_ledger.py",
+      "bytes": 13853,
+      "sha256": "4e03e6475690d020abc4ac2064db8a49ab8ec46ef238a1dec85be1d9893cc6bb"
+    },
+    {
+      "path": "src/workbench_service/canonical_expectancy_service.py",
+      "bytes": 2897,
+      "sha256": "48f88af3895232540d5f477731d24b57249aecb62b8de4ae6750b470c9bd7f35"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/032_fep_reconstruction_authority_shadow_v1.sql",
+      "bytes": 17258,
+      "sha256": "8e7b52ec6dfa18cd391e511822535f87c6b8ad955b2ce6792eff0d7a4623d32a"
+    },
+    {
+      "path": "scripts/run_fep_e5_r1r1b.py",
+      "bytes": 14894,
+      "sha256": "8867dee7567812c1cd0d9f49c7b42e704cc84759587b4e2a015417667c98cd24"
+    },
+    {
+      "path": "tests/fep_e5/test_e5_reconstruction.py",
+      "bytes": 20080,
+      "sha256": "b6db366f35e9bec80c0530e23bec344ed46f6a92c47c5fa712a00a6a920a6c54"
+    },
+    {
+      "path": "scripts/finalize_fep_e5_r1r1b.py",
+      "bytes": 21161,
+      "sha256": "73a230f88ba1993ca63298a8c37f8d9cadfdfb7c0e6d8c09362ece7ca5b6344a"
+    }
+  ],
+  "input_freeze": {
+    "path": "reports/fep_e5_r1r1b/IMPLEMENTATION_INPUT_FREEZE.json",
+    "bytes": 80577,
+    "sha256": "52c3c2fc327659dd413af9e553373bf65d679fe8d7cb70c4d71e154d98f5226b"
+  },
+  "reason": "Test fixture corrections after recorded initial test failures; add independent drill/finalization driver. Projection implementation, migration, semantic contract, source population and outputs unchanged.",
+  "projected_counts_unchanged": true,
+  "previous_failed_attempts": [
+    {
+      "path": "reports/fep_e5_r1r1b/canonical_initial.xml",
+      "bytes": 63439,
+      "sha256": "dcc4da8c71ddf0c8b14d0afa35813c18f1144d2ec724afad6e4fa6dfef9603ee"
+    },
+    {
+      "path": "reports/fep_e5_r1r1b/canonical_corrected.xml",
+      "bytes": 34584,
+      "sha256": "6a366e03e01a020fa8ccc76bcb6537003c42e87ab8cfbea92591e5dcf4e7279e"
+    }
+  ],
+  "frozen_at": "2026-10-06T03:35:15.677069+00:00"
+}

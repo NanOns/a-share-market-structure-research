@@ -9,11 +9,11 @@ ROOT=Path(__file__).resolve().parents[2]
 
 
 def test_all_current_sql_declarations_are_explicit_successor_inventory():
-    c=json.loads((ROOT/'config/v4_18_migration_replay_contract_v1_1.json').read_bytes())
+    c=json.loads((ROOT/'config/v4_18_migration_replay_contract_v1_2.json').read_bytes())
     ref=c['supersedes'];raw=(ROOT/ref['path']).read_bytes()
-    assert c['contract_id']=='V4_18_MIGRATION_REPLAY_CONTRACT_V1_1'
+    assert c['contract_id']=='V4_18_MIGRATION_REPLAY_CONTRACT_V1_2'
     assert len(raw)==ref['bytes'] and hashlib.sha256(raw).hexdigest()==ref['sha256']
-    assert raw==subprocess.check_output(['git','show','e4ea913:'+ref['path']],cwd=ROOT)
+    assert raw==subprocess.check_output(['git','show','9a6ecd205c690b62063cc80810272dda8001cfe9:'+ref['path']],cwd=ROOT)
     original=json.loads(raw)
     assert c['permissions']==original['permissions']
     assert c['namespace_matrix'][:len(original['namespace_matrix'])]==original['namespace_matrix']
@@ -24,10 +24,15 @@ def test_all_current_sql_declarations_are_explicit_successor_inventory():
                 if r['declaration']!='DESIGN_ONLY_NOT_CREATED'}
     assert actual==registered
     fep=[r for r in c['namespace_matrix'] if r['state_or_table'].startswith('fep.')]
-    assert len(fep)==33
+    assert len(fep)==34
     assert all(r['read_source']=='FEP_E1_ENGINEERING' and r['disposition']=='REFERENCE'
                and r['write_target'] is None and not r['production_cutover']
-               and r['migration_replay_pass']=='NOT_GRANTED' for r in fep)
+               and r['migration_replay_pass']=='NOT_GRANTED' for r in fep if r['read_source']=='FEP_E1_ENGINEERING')
+    assert len([r for r in fep if r['read_source']=='FEP_E1_ENGINEERING'])==33
+    reconstruction=[r for r in fep if r['read_source']=='FEP_E5_CANONICAL_RECONSTRUCTION_ENGINEERING']
+    assert len(reconstruction)==1 and reconstruction[0]['state_or_table']=='fep.reconstruction_authorities'
+    assert reconstruction[0]['write_target'] is None and not reconstruction[0]['production_cutover']
+    assert reconstruction[0]['migration_replay_pass']=='NOT_GRANTED'
     assert c['permissions']['migration_replay_pass']=='NOT_GRANTED'
     assert not any(c['permissions'][k] for k in ('migration_execution','production_writer','production_focus_cutover'))
     assert c['permissions']['v4_18_accepted_head'] is None

@@ -1,0 +1,25 @@
+{
+  "audit_id": "FEP-RA-NAMESPACE-INVENTORY-01",
+  "scope": "All current SQL table declarations, additive V4-18 v1_2 inventory, original v1_1 namespace prefix and permissions unchanged",
+  "evidence": [
+    {
+      "path": "config/v4_18_migration_replay_contract_v1_2.json",
+      "bytes": 197310,
+      "sha256": "4a89c2d275bda4ec6d233dcb38196fc9156be78e494f9a3fa76ed8771f8b3ade"
+    },
+    {
+      "path": "tests/fep/test_v4_18_namespace_successor.py",
+      "bytes": 2767,
+      "sha256": "d1a9c4f4c2f27b796a31232619c2c823fea8344ed61d89d50e72da9527fb5a2e"
+    },
+    {
+      "path": "reports/fep_e5_r1r1b/TARGETED_SUMMARY.json",
+      "bytes": 618,
+      "sha256": "9182373348d6ba84de6e946b53fa45f44dd592fbd46a684d9294563d7c49274e"
+    }
+  ],
+  "independent_acceptance": "PASS_CANDIDATE_PENDING_EXTERNAL_REVIEW",
+  "production_cutover": false,
+  "migration_replay_pass": "NOT_GRANTED",
+  "V4_18_acceptance": false
+}

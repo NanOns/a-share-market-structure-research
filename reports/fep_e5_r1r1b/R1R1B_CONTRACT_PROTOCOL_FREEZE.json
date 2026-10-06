@@ -1,0 +1,144 @@
+{
+  "baseline": "9a6ecd205c690b62063cc80810272dda8001cfe9",
+  "frozen_at": "2026-10-06T03:17:45.716506+00:00",
+  "migration_writes_before_freeze": 0,
+  "canonical_writes_before_freeze": 0,
+  "task": {
+    "path": "reports/fep_e5_r1r1b/V4_15E5_R1R1B_HISTORICAL_RECONSTRUCTION_AUTHORITY_CONTRACT_REPAIR_AND_CANONICAL_RESUME_TASK_R1_20261006.md",
+    "bytes": 15023,
+    "sha256": "b2a92f1f5b97398f78fc3ade28d7a25f6072e83a8f86fe72aead5be690cf1701"
+  },
+  "audit": {
+    "path": "reports/fep_e5_r1r1b/V4_15E5_R1R1A_BLOCKED_CONTRACT_CONFLICT_INDEPENDENT_EXTERNAL_AUDIT_R1_20261006.md",
+    "bytes": 12340,
+    "sha256": "c90f197b063f03221a9ede89662b80b02d4025ac4d111a03ffc5ff9a6c9e9719"
+  },
+  "authority_semantics": {
+    "PIT_OBSERVED": "CANONICAL_PUBLICATION; original validator unchanged",
+    "RECONSTRUCTED_ASOF": "HISTORICAL_RECONSTRUCTION; REPLAY; no observed availability claim",
+    "RECONSTRUCTED_CORRECTED": "HISTORICAL_RECONSTRUCTION; REPLAY; AS_RECORDED/FIRST_OBSERVED/REAL_OOS false",
+    "observation_authority_union": "exactly one: publication or reconstruction",
+    "prediction_run_authority_union": "same exact authority as snapshot observation revision",
+    "permission_role_policy": "SHADOW exact BASELINE/CHALLENGER/CHAMPION member; display/priority champion only",
+    "FIRST_OBSERVED": "canonical publication PIT only; not granted",
+    "REAL_OOS": "not granted",
+    "production_display_priority": "all ungranted"
+  },
+  "source_contract": {
+    "path": "config/fep_e2_historical_dataset_contract_v1.json",
+    "bytes": 8238,
+    "sha256": "ddd6f621419c4f9547a806faef9d7def4b31f55be8a4189f571a558b5428e1b4"
+  },
+  "prior_output": {
+    "path": "reports/fep_e5_r1/POSTGRES_LEDGER_EXPORT.json",
+    "bytes": 12581510,
+    "sha256": "ff6be2ae755f39018363c18db82833b92ccf5b4254723c45565d82956a13ac93"
+  },
+  "protected_before": {
+    "execution_baseline": "54a214167cfd4414901d2002b0a3cf5da45f4e36",
+    "protected_path_count": 16139,
+    "historical_git_diff": [],
+    "bindings": [
+      {
+        "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+        "bytes": 15303,
+        "sha256": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+      },
+      {
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "bytes": 16890,
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      {
+        "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+        "bytes": 4778,
+        "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+      },
+      {
+        "path": "config/v4_16_runtime_activation_authority_v3.json",
+        "bytes": 1335,
+        "sha256": "2dda7facec4e5b2d706cc4dd3910f1e2415ce924145f145222c7d9f65eb6c2fb"
+      }
+    ],
+    "Stage": "V4_00_TO_V4_15_ACCEPTED",
+    "Data": "2026-09-30",
+    "V4_16_ACCEPTED_HEAD": "NOT_CREATED",
+    "REAL_SHADOW_OBSERVATIONS": 0,
+    "PIT_OBSERVED_REAL_SAMPLES": 0,
+    "real_database_created": false
+  },
+  "R25_before": {
+    "status": "WAIT_ACCEPTED_DAILY_INPUT",
+    "target_trade_date": null,
+    "previous_trade_date": null,
+    "selected_from_wall_clock": false,
+    "input_selection": "EXPLICIT_ACCEPTED_BINDINGS_ONLY",
+    "exact_daily_input_authority": null,
+    "inventory": [
+      {
+        "bytes": 16890,
+        "path": "data/v4/r25_r4r2/historical_data_head_20260930.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      {
+        "bytes": 2783,
+        "path": "config/v4_16_go_forward_input_authority_v1_1.json",
+        "sha256": "63b7205ff159aca5a82702968ef1cf3d5ca19907125f05084d08d045b9801654"
+      },
+      {
+        "bytes": 1335,
+        "path": "config/v4_16_runtime_activation_authority_v3.json",
+        "sha256": "2dda7facec4e5b2d706cc4dd3910f1e2415ce924145f145222c7d9f65eb6c2fb"
+      }
+    ],
+    "historical_accepted_trade_date": "2026-09-30",
+    "reasons": [
+      "NO_EXACT_ACCEPTED_REAL_SESSION_DAILY_INPUT_SUPPLIED",
+      "FROZEN_DATA_HEAD_IS_HISTORICAL_ONLY",
+      "NO_TARGET_DATE_ACCEPTED_OWNER_OUTPUT_AND_T0_SNAPSHOT_BOUND_TO_REAL_AUTHORITY"
+    ],
+    "excluded_inputs": [
+      "R23_ISOLATED_SEED",
+      "R24_ACTIVATION_SIMULATION",
+      "R24R1_ACTIVATION_SIMULATION",
+      "LEGACY_PRIOR"
+    ],
+    "protected": {
+      "execution_baseline": "54a214167cfd4414901d2002b0a3cf5da45f4e36",
+      "protected_path_count": 16139,
+      "historical_git_diff": [],
+      "bindings": [
+        {
+          "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+          "bytes": 15303,
+          "sha256": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+        },
+        {
+          "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+          "bytes": 16890,
+          "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+        },
+        {
+          "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+          "bytes": 4778,
+          "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+        },
+        {
+          "path": "config/v4_16_runtime_activation_authority_v3.json",
+          "bytes": 1335,
+          "sha256": "2dda7facec4e5b2d706cc4dd3910f1e2415ce924145f145222c7d9f65eb6c2fb"
+        }
+      ],
+      "Stage": "V4_00_TO_V4_15_ACCEPTED",
+      "Data": "2026-09-30",
+      "V4_16_ACCEPTED_HEAD": "NOT_CREATED",
+      "REAL_SHADOW_OBSERVATIONS": 0,
+      "PIT_OBSERVED_REAL_SAMPLES": 0,
+      "real_database_created": false
+    },
+    "next": "RETRY_ON_NEXT_ELIGIBLE_ACCEPTED_MARKET_SESSION"
+  },
+  "inference_policy": "Import exact accepted E5 R1 outputs/inputs and artifact lineage; zero new training/search/label resolution",
+  "model_set_policy": "One exact member per family set: E2 BASELINE; E3/E4 separate CHALLENGER sets, no champion; ordered engineering batch activation before immutable per-family slot cutoff, never result-driven",
+  "logical_digest": "6dff93805f053c87e96d3ccfcaf1f1a04c621e154b553ce8087847dc11da002b"
+}

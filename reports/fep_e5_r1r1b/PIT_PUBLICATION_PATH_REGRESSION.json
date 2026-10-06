@@ -1,0 +1,90 @@
+{
+  "status": "PASS",
+  "fixtures": {
+    "fresh": {
+      "path": "reports/fep_e5_r1r1b/FRESH_FINAL_DB_READBACK.json",
+      "bytes": 21069854,
+      "sha256": "6bbb319b06cf105886dad56ce9449d4d2ddf8b66b4e2f36d8cd3564a752fbc9c"
+    },
+    "upgrade": {
+      "path": "reports/fep_e5_r1r1b/UPGRADE_FINAL_DB_READBACK.json",
+      "bytes": 21074107,
+      "sha256": "76a2a588b78fefc0255a6ead0512bee5124e1a2380da5a65c9b051bf3bdceb66"
+    }
+  },
+  "negative_matrix": {
+    "path": "reports/fep_e5_r1r1b/RECONSTRUCTION_NEGATIVE_MATRIX.json",
+    "bytes": 32159,
+    "sha256": "899db26be1780307f2654fc30819a35c92c43265e19ac5c4aa27bad2286a7ef5"
+  },
+  "original_function_unchanged": true,
+  "positive_PIT_current_synthetic": true,
+  "upgrade_prior_PIT_fact_unchanged": true,
+  "negative_cases": [
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_path_positive_and_preserved[fresh]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_path_positive_and_preserved[upgrade]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-wrong_date]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-wrong_namespace]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-unaccepted]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-after_cutoff]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-missing_dependency]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-wrong_manifest_publication]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-replay]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-wrong_date]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-wrong_namespace]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-unaccepted]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-after_cutoff]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-missing_dependency]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-wrong_manifest_publication]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-replay]",
+      "status": "PASS"
+    }
+  ],
+  "historical_PIT_backfill": false
+}

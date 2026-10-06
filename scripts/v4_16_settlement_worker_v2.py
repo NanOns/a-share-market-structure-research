@@ -17,9 +17,21 @@ class DurableSettlementWorker:
         check(due['due_date'] is not None and due['due_date']<=cutoff,'PRE_DUE_FUTURE_READ_FORBIDDEN')
         check(isinstance(evaluation_source_digest,str) and len(evaluation_source_digest)==64 and all(c in '0123456789abcdef' for c in evaluation_source_digest),'INVALID_EVALUATION_DIGEST')
         enrollment=self.db.get('enrollment',due['enrollment_id'])
-        key=digest(['SHADOW_V4',enrollment['model_contract_id'],enrollment['state_lineage_id'],enrollment['enrollment_id'],due['horizon'],due['due_date'],'FORWARD_PRICE_PATH_V1'])
-        self.db.transaction(lambda:self.db.conn.execute('INSERT OR IGNORE INTO settlement_queue_v2(queue_key,evaluation_source_digest,due_kind,due_id,status) VALUES(?,?,?,?,\'READY\')',(key,evaluation_source_digest,due_kind,due_id)))
+        key=self.queue_identity(due,enrollment)
+        def enqueue_exact():
+            self.db.conn.execute('INSERT OR IGNORE INTO settlement_queue_v2(queue_key,evaluation_source_digest,due_kind,due_id,status) VALUES(?,?,?,?,\'READY\')',(key,evaluation_source_digest,due_kind,due_id))
+            row=self.row(key,evaluation_source_digest)
+            check(tuple(row[k] for k in ('queue_key','evaluation_source_digest','due_kind','due_id'))==(key,evaluation_source_digest,due_kind,due_id),'QUEUE_IDEMPOTENCY_CONFLICT')
+            frozen_due=self.db.get(row['due_kind'],row['due_id'])
+            frozen_enrollment=self.db.get('enrollment',frozen_due['enrollment_id'])
+            check(self.queue_identity(frozen_due,frozen_enrollment)==row['queue_key'],'QUEUE_IDEMPOTENCY_CONFLICT')
+        self.db.transaction(enqueue_exact)
         return key
+
+    @staticmethod
+    def queue_identity(due,enrollment):
+        check(due['namespace']==enrollment['namespace']=='SHADOW_V4' and due['enrollment_id']==enrollment['enrollment_id'] and due['frozen_t0']==enrollment['frozen_t0'],'QUEUE_IDEMPOTENCY_CONFLICT')
+        return digest([enrollment['namespace'],enrollment['model_contract_id'],enrollment['state_lineage_id'],enrollment['enrollment_id'],due['horizon'],due['due_date'],'FORWARD_PRICE_PATH_V1'])
 
     def row(self,key,source_digest):
         cursor=self.db.conn.execute('SELECT * FROM settlement_queue_v2 WHERE queue_key=? AND evaluation_source_digest=?',(key,source_digest))

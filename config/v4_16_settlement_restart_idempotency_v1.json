@@ -1,0 +1,26 @@
+{
+  "activation_selection": "EXACT_SINGLETON_ACTIVATION_HEAD_THEN_EXACT_FACT_ID_IN_READ_TRANSACTION",
+  "baseline_commit": "efe2d0c5f2b0d94878929120521fa48982e3cf56",
+  "conflict": "QUEUE_IDEMPOTENCY_CONFLICT",
+  "contract_id": "V4_16_SETTLEMENT_RESTART_IDEMPOTENCY_V1",
+  "external_acceptance": false,
+  "implementations": [
+    {
+      "bytes": 19566,
+      "path": "scripts/v4_16_go_forward_shadow_runtime_r4r3.py",
+      "sha256": "0b56765004aa58951df617c3620bf113ae87919c989a721dba00b8c9ce757d8d"
+    },
+    {
+      "bytes": 8257,
+      "path": "scripts/v4_16_settlement_worker_v2.py",
+      "sha256": "bb7a354399a6e894dd76d75606f2ca9d10d91f513a24b81621484e87909f9468"
+    }
+  ],
+  "migrations_added": false,
+  "production": false,
+  "queue_retry": "TRANSACTIONAL_EXACT_PK_DUE_KIND_DUE_ID_AND_RECOMPUTED_FROZEN_IDENTITY_READBACK",
+  "runtime_authorized": false,
+  "runtime_dependency_contract_id": "V4_16_RUNTIME_DEPENDENCIES_V5",
+  "scope": "P0_02_R1R1_ONLY",
+  "version": "1.0.0"
+}

@@ -105,10 +105,17 @@ class SettlementObligationControllerR4R2:
         try:
             check(conn.execute('SELECT environment,evidence_origin FROM storage_identity').fetchall()==[
                 ('ACTIVATION_SIMULATION' if simulation else 'REAL',self.origin)],'OBLIGATION_STORAGE_IDENTITY')
-            rows=conn.execute("SELECT payload,digest FROM facts WHERE kind='activation'").fetchall()
-            check(bool(rows),'NO_ACCEPTED_ACTIVATION_HISTORY')
-            for raw,sha in rows:check(hashlib.sha256(raw.encode()).hexdigest()==sha,'ACTIVATION_HISTORY_DIGEST')
-            binding=json.loads(rows[-1][0])['authority_binding']
+            conn.execute('BEGIN')
+            heads=conn.execute('SELECT authority_id FROM activation_head WHERE singleton=1').fetchall()
+            check(len(heads)==1,'EXACT_ACTIVATION_HEAD_REQUIRED')
+            authority_id=heads[0][0]
+            rows=conn.execute("SELECT payload,digest FROM facts WHERE kind='activation' AND id=?",(authority_id,)).fetchall()
+            check(len(rows)==1,'EXACT_ACTIVATION_HEAD_FACT_REQUIRED')
+            raw,sha=rows[0]
+            check(hashlib.sha256(raw.encode()).hexdigest()==sha,'ACTIVATION_HISTORY_DIGEST')
+            accepted=json.loads(raw)
+            check(accepted['authority_id']==authority_id,'ACTIVATION_HEAD_IDENTITY_MISMATCH')
+            binding=accepted['authority_binding']
             check(conn.execute("SELECT count(*) FROM facts WHERE kind='enrollment'").fetchone()[0]>0,'NO_ACCEPTED_SETTLEMENT_OBLIGATIONS')
         finally:conn.close()
         self.accepted_activation_binding=binding
@@ -120,7 +127,11 @@ class SettlementObligationControllerR4R2:
         self.grant=self.activation['grant']
         check(self.deps['contract_id']=='V4_16_RUNTIME_DEPENDENCIES_V5','STALE_OBLIGATION_DEPENDENCY')
         check(self.grant['runtime_dependency_contract_id']==self.deps['contract_id'] and self.grant['dependency_set_digest']==dependency_digest(self.deps),'STALE_OBLIGATION_DEPENDENCY')
+        check(self.activation['authority_id']==authority_id==self.grant['authority_id']==acceptance['authority_id'],'AUTHORITY_IDENTITY_MISMATCH')
         check(self.grant['storage_identity']['database_path']==path.relative_to(self.root).as_posix(),'OBLIGATION_DATABASE_NOT_BOUND')
+        check(self.activation['environment_class']==('ACTIVATION_SIMULATION' if simulation else 'REAL'),'OBLIGATION_STORAGE_IDENTITY')
+        identity=self.grant['storage_identity']
+        check(all(identity[k]==v for k,v in dict(namespace='SHADOW_V4',execution_mode='SHADOW',evidence_origin=self.origin,migration=self.deps['migration']).items()),'OBLIGATION_STORAGE_IDENTITY')
         self.sources=json.loads(exact(self.root,self.grant['source_authority']))
         loader=GoForwardInputAuthority
         if simulation:

@@ -11,9 +11,25 @@ def build():
     source+='\n'+verify+'\n    def database(self,path):\n        self.guard()\n        return SuccessorDatabase(self,path)\n'
     settlement=inspect.getsource(SettlementObligationController).replace('class SettlementObligationController:', 'class SettlementObligationControllerR4R2:').replace('config/v4_16_runtime_dependencies_v3.json','config/v4_16_runtime_dependencies_v5.json').replace('return RealShadowDatabase(self,path)','return SuccessorDatabase(self,path)')
     settlement=settlement.replace('def __init__(self,root,path,simulation=False):','def __init__(self,root,path,simulation=False,simulation_dependencies=None):')
+    start=settlement.index('            rows=conn.execute(')
+    end=settlement.index('            check(conn.execute("SELECT count(*)',start)
+    settlement=settlement[:start]+'''            conn.execute('BEGIN')
+            heads=conn.execute('SELECT authority_id FROM activation_head WHERE singleton=1').fetchall()
+            check(len(heads)==1,'EXACT_ACTIVATION_HEAD_REQUIRED')
+            authority_id=heads[0][0]
+            rows=conn.execute("SELECT payload,digest FROM facts WHERE kind='activation' AND id=?",(authority_id,)).fetchall()
+            check(len(rows)==1,'EXACT_ACTIVATION_HEAD_FACT_REQUIRED')
+            raw,sha=rows[0]
+            check(hashlib.sha256(raw.encode()).hexdigest()==sha,'ACTIVATION_HISTORY_DIGEST')
+            accepted=json.loads(raw)
+            check(accepted['authority_id']==authority_id,'ACTIVATION_HEAD_IDENTITY_MISMATCH')
+            binding=accepted['authority_binding']
+'''+settlement[end:]
+    settlement=settlement.replace("        self.grant=self.activation['grant']", "        self.grant=self.activation['grant']\n        check(self.activation['authority_id']==authority_id==self.grant['authority_id']==acceptance['authority_id'],'AUTHORITY_IDENTITY_MISMATCH')")
     settlement=settlement.replace("        self.dependency_path='config/v4_16_runtime_dependencies_v5.json'", "        check(simulation_dependencies is None or (simulation and (self.root/simulation_dependencies).resolve().is_relative_to(self.root/'reports/r24r1/activation_simulation')), 'ISOLATED_SETTLEMENT_FIXTURE_REQUIRED')\n        self.dependency_path=simulation_dependencies or 'config/v4_16_runtime_dependencies_v5.json'")
     settlement=settlement.replace('        self.authority=GoForwardInputAuthority(', "        loader=GoForwardInputAuthority\n        if simulation:\n            from scripts.v4_16_go_forward_input_authority import GoForwardInputAuthority as loader\n        self.authority=loader(")
     settlement=settlement.replace("        self.grant=self.activation['grant']", "        self.grant=self.activation['grant']\n        check(self.deps['contract_id']=='V4_16_RUNTIME_DEPENDENCIES_V5','STALE_OBLIGATION_DEPENDENCY')\n        check(self.grant['runtime_dependency_contract_id']==self.deps['contract_id'] and self.grant['dependency_set_digest']==dependency_digest(self.deps),'STALE_OBLIGATION_DEPENDENCY')")
+    settlement=settlement.replace("        self.sources=json.loads", "        check(self.activation['environment_class']==('ACTIVATION_SIMULATION' if simulation else 'REAL'),'OBLIGATION_STORAGE_IDENTITY')\n        identity=self.grant['storage_identity']\n        check(all(identity[k]==v for k,v in dict(namespace='SHADOW_V4',execution_mode='SHADOW',evidence_origin=self.origin,migration=self.deps['migration']).items()),'OBLIGATION_STORAGE_IDENTITY')\n        self.sources=json.loads")
     source+='\n'+settlement
     database=inspect.getsource(RealShadowDatabase).replace('class RealShadowDatabase:', 'class SuccessorDatabase:')
     database=database.replace("tables<= {'storage_identity','facts','publication_heads','activation_head'}", "tables<= {'storage_identity','facts','publication_heads','activation_head','settlement_queue_v2'} | set(INTEGRITY_TABLES)")

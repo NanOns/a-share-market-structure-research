@@ -1,0 +1,71 @@
+{
+  "status": "PASS",
+  "authority": {
+    "path": "reports/fep_e5_final_closure_mainline_audit_r1/V4_15E5_FINAL_CLOSURE_AND_PROJECT_MAINLINE_RECONCILIATION_INDEPENDENT_AUDIT_R1_20261006.md",
+    "bytes": 11617,
+    "sha256": "f0ea03601c0bc86d555abda1e92997d59f81008f2572f457c7ab5381d9173a78"
+  },
+  "states": {
+    "V4_00_TO_V4_15": "ACCEPTED",
+    "V4_16": "ENGINEERING_READY_WAIT_REAL_SHADOW",
+    "V4_17": "ENGINEERING_ACCEPTED_WAIT_REAL_READBACK",
+    "V4_18": "DESIGN_ACCEPTED_WAIT_REAL_SHADOW_GATE",
+    "V4_19": "DESIGN_ACCEPTED_WAIT_REAL_GATES",
+    "V4_20": "DESIGN_ACCEPTED_WAIT_PRODUCTION_PERMISSION",
+    "V4_21": "DESIGN_ACCEPTED_WAIT_REAL_OBSERVATION",
+    "V4_22": "DESIGN_ACCEPTED_WAIT_REAL_GATES",
+    "V4_22_FINAL_PASS": "NOT_GRANTED_WAIT_REAL_GATES",
+    "FEP_E1_TO_E5": "COMPLETE_FOR_CURRENT_SCOPE",
+    "DM01_R4_RUNTIME": "EXTERNALLY_ACCEPTED_SCOPED_READY_FOR_NEXT_REAL_SESSION",
+    "R25": "WAIT_ACCEPTED_DAILY_INPUT",
+    "REAL_SHADOW_OBSERVATIONS": 0,
+    "PIT_OBSERVED_REAL_SAMPLES": 0,
+    "NOW": "STOP_WAIT",
+    "NEXT": "WAIT_NEXT_ELIGIBLE_ACCEPTED_SESSION_AND_POST_CLOSE_GATE"
+  },
+  "DM01_runtime_head": {
+    "path": "data/v4/DM01_R4_RUNTIME_ACCEPTANCE_HEAD_V1.json",
+    "bytes": 2278,
+    "sha256": "694a48e94c52b8fee89e467520d8616d257eef7cb537a4407522fa01715e9ada"
+  },
+  "existing_resume_authority": {
+    "path": "docs/evidence/runtime_resume_20261005/V4_RUNTIME_RESUME_RETURN_TO_R25_FIRST_REAL_SHADOW_20261005.md",
+    "bytes": 3537,
+    "sha256": "0f41c0f72dd8a938031241668338a6b6fa814a83aea7e8541527b5fce63c2950"
+  },
+  "earliest_calendar_opportunity": "2026-10-08",
+  "calendar_date_is_not_authorization": true,
+  "actual_gate": "Eligible confirmed target session post-close accepted data, exact source manifest/daily input digest and target-session authority",
+  "target_trade_date": null,
+  "wall_clock_target_selection": false,
+  "future_sequence": [
+    "confirm target market session",
+    "confirm previous market session",
+    "freeze accepted TDX_RAW_DAILY",
+    "build and accept ADJUSTED_DAILY",
+    "build and accept OWNER_OUTPUT",
+    "build and accept T0_SNAPSHOT",
+    "execute accepted DM01 all-nine daily chain",
+    "promote V2 Data Head only if every gate passes",
+    "build exact R25 target-session PIT bridge",
+    "retry accepted R25 preflight",
+    "STOP at PASS_LOCAL_READY_FOR_EXTERNAL_AUDIT",
+    "independent external audit of packet",
+    "separate first Real Shadow authorization"
+  ],
+  "sequence_is_not_current_execution_authorization": true,
+  "real_shadow_execution": "NOT_STARTED",
+  "new_design_task_authorized": false,
+  "technical_debt_cleanup": "Separate explicit user authorization required",
+  "permissions": {
+    "REAL_DAILY_PRIORITY_SHADOW": "NOT_GRANTED",
+    "DESCRIPTIVE_DISPLAY": "UNGRANTED",
+    "MODEL_DISPLAY": "UNGRANTED",
+    "PRIORITY_USE": "UNGRANTED",
+    "CHAMPION": "NONE",
+    "REAL_OOS": "NOT_GRANTED",
+    "FIRST_OBSERVED": "NOT_GRANTED",
+    "FEP_PRODUCTION": "UNGRANTED"
+  },
+  "production_ready": false
+}

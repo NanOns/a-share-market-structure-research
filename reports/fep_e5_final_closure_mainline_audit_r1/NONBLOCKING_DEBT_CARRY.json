@@ -1,0 +1,35 @@
+{
+  "status": "PRESERVED_NONBLOCKING",
+  "authority": {
+    "path": "reports/fep_e5_final_closure_mainline_audit_r1/V4_15E5_FINAL_CLOSURE_AND_PROJECT_MAINLINE_RECONCILIATION_INDEPENDENT_AUDIT_R1_20261006.md",
+    "bytes": 11617,
+    "sha256": "f0ea03601c0bc86d555abda1e92997d59f81008f2572f457c7ab5381d9173a78"
+  },
+  "items": [
+    "FEP_SIGNAL_DB_LEVEL_HARDENING",
+    "R26-A01 historical V3 regression debt",
+    "R31 P2 governance helper generalization",
+    "R31 P2 evidence_root hardening",
+    "DM01 historical/scoped regression debt",
+    "FEP broader scoped regression debt",
+    "real Daily model absent",
+    "new independent OOS absent",
+    "joint OOD limitations",
+    "calibration limitations",
+    "E4 no increment vs E2"
+  ],
+  "FEP_detail": {
+    "path": "reports/fep_e5_final_external_acceptance_r1/OPEN_PRODUCTION_GOVERNANCE_DEBT.json",
+    "bytes": 10747,
+    "sha256": "19844cd5f65c4e6911b332405069270d0a888331cdf22c0a91196f167eb86494"
+  },
+  "aggregate_debt_count": null,
+  "overlapping_debt_lists_must_not_be_added": true,
+  "no_cleanup_executed": true,
+  "signal_hardening_required_before": [
+    "FEP_PRODUCTION",
+    "REAL_DAILY_PRIORITY_SHADOW",
+    "MODEL_DISPLAY",
+    "PRIORITY_USE"
+  ]
+}

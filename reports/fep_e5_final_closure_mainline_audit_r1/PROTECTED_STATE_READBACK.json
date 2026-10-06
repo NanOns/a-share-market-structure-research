@@ -1,0 +1,166 @@
+{
+  "status": "PASS_UNCHANGED",
+  "protected": {
+    "execution_baseline": "54a214167cfd4414901d2002b0a3cf5da45f4e36",
+    "protected_path_count": 16139,
+    "historical_git_diff": [],
+    "bindings": [
+      {
+        "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+        "bytes": 15303,
+        "sha256": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+      },
+      {
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "bytes": 16890,
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      {
+        "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+        "bytes": 4778,
+        "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+      },
+      {
+        "path": "config/v4_16_runtime_activation_authority_v3.json",
+        "bytes": 1335,
+        "sha256": "2dda7facec4e5b2d706cc4dd3910f1e2415ce924145f145222c7d9f65eb6c2fb"
+      }
+    ],
+    "Stage": "V4_00_TO_V4_15_ACCEPTED",
+    "Data": "2026-09-30",
+    "V4_16_ACCEPTED_HEAD": "NOT_CREATED",
+    "REAL_SHADOW_OBSERVATIONS": 0,
+    "PIT_OBSERVED_REAL_SAMPLES": 0,
+    "real_database_created": false
+  },
+  "R25": {
+    "status": "WAIT_ACCEPTED_DAILY_INPUT",
+    "target_trade_date": null,
+    "previous_trade_date": null,
+    "selected_from_wall_clock": false,
+    "input_selection": "EXPLICIT_ACCEPTED_BINDINGS_ONLY",
+    "exact_daily_input_authority": null,
+    "inventory": [
+      {
+        "bytes": 16890,
+        "path": "data/v4/r25_r4r2/historical_data_head_20260930.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      {
+        "bytes": 2783,
+        "path": "config/v4_16_go_forward_input_authority_v1_1.json",
+        "sha256": "63b7205ff159aca5a82702968ef1cf3d5ca19907125f05084d08d045b9801654"
+      },
+      {
+        "bytes": 1335,
+        "path": "config/v4_16_runtime_activation_authority_v3.json",
+        "sha256": "2dda7facec4e5b2d706cc4dd3910f1e2415ce924145f145222c7d9f65eb6c2fb"
+      }
+    ],
+    "historical_accepted_trade_date": "2026-09-30",
+    "reasons": [
+      "NO_EXACT_ACCEPTED_REAL_SESSION_DAILY_INPUT_SUPPLIED",
+      "FROZEN_DATA_HEAD_IS_HISTORICAL_ONLY",
+      "NO_TARGET_DATE_ACCEPTED_OWNER_OUTPUT_AND_T0_SNAPSHOT_BOUND_TO_REAL_AUTHORITY"
+    ],
+    "excluded_inputs": [
+      "R23_ISOLATED_SEED",
+      "R24_ACTIVATION_SIMULATION",
+      "R24R1_ACTIVATION_SIMULATION",
+      "LEGACY_PRIOR"
+    ],
+    "protected": {
+      "execution_baseline": "54a214167cfd4414901d2002b0a3cf5da45f4e36",
+      "protected_path_count": 16139,
+      "historical_git_diff": [],
+      "bindings": [
+        {
+          "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+          "bytes": 15303,
+          "sha256": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+        },
+        {
+          "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+          "bytes": 16890,
+          "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+        },
+        {
+          "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+          "bytes": 4778,
+          "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+        },
+        {
+          "path": "config/v4_16_runtime_activation_authority_v3.json",
+          "bytes": 1335,
+          "sha256": "2dda7facec4e5b2d706cc4dd3910f1e2415ce924145f145222c7d9f65eb6c2fb"
+        }
+      ],
+      "Stage": "V4_00_TO_V4_15_ACCEPTED",
+      "Data": "2026-09-30",
+      "V4_16_ACCEPTED_HEAD": "NOT_CREATED",
+      "REAL_SHADOW_OBSERVATIONS": 0,
+      "PIT_OBSERVED_REAL_SAMPLES": 0,
+      "real_database_created": false
+    },
+    "next": "RETRY_ON_NEXT_ELIGIBLE_ACCEPTED_MARKET_SESSION"
+  },
+  "DM01_permissions": {
+    "focus": false,
+    "production": false,
+    "shadow": false
+  },
+  "absent_heads": [
+    "V4_16_ACCEPTED_HEAD.json",
+    "V4_18_ACCEPTED_HEAD.json",
+    "V4_19_ACCEPTED_HEAD.json",
+    "V4_20_ACCEPTED_HEAD.json",
+    "V4_21_ACCEPTED_HEAD.json",
+    "V4_22_ACCEPTED_HEAD.json",
+    "FEP_PRODUCTION_HEAD.json",
+    "REAL_DAILY_HEAD.json"
+  ],
+  "Priority_V1_bindings": [
+    {
+      "path": "config/research_priority.yaml",
+      "bytes": 1691,
+      "sha256": "a9e19d0e4b9b7d63316888c8fc58789970d64dad392b381467c92ebd03c7dd74"
+    },
+    {
+      "path": "src/candidates/research_priority.py",
+      "bytes": 6215,
+      "sha256": "69d4a91889ea2935dd93d053de2bf6bf1440159b5ab3033a63b511c8c80d81b7"
+    },
+    {
+      "path": "src/shadow_v2/research_priority.py",
+      "bytes": 848,
+      "sha256": "d295573c8c4f94d6efbb82b0240d1dedeeff3b13cedb359e8a9c6f42757e9f63"
+    },
+    {
+      "path": "config/v4_09_priority_provenance_contract_r1_1.json",
+      "bytes": 1152,
+      "sha256": "807114a3572a062557c265fea3a939971936a88e1662ad6ff7c0f56c9e0b6e99"
+    },
+    {
+      "path": "src/v4/stock_prewatch.py",
+      "bytes": 22817,
+      "sha256": "a57a4413b56cd81f43a06611f4dec328ef6ac35486f4a4b56e5b5938e2db60ce"
+    },
+    {
+      "path": "src/v4/stock_prewatch_persistence.py",
+      "bytes": 3404,
+      "sha256": "d8b83938362f146d3a960a4426ddcf85093a4b025519098853966486603df69a"
+    },
+    {
+      "path": "src/workbench_analysis/v4_15_radar_cohort.py",
+      "bytes": 15444,
+      "sha256": "1897b81d5618d3b077af6d65e77b0df9bc26175b44facfee5dac5021a92dd06e"
+    }
+  ],
+  "accepted_trade_date": "2026-09-30",
+  "TDX_write_operations": 0,
+  "new_target_package_created": false,
+  "R25_retry_executed": false,
+  "runtime_started": false,
+  "permission_changes": false,
+  "readback_at": "2026-10-06T08:31:24.805147+00:00"
+}

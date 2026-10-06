@@ -1,0 +1,88 @@
+{
+  "contract_id": "FEP_FINAL_CLOSURE_MAINLINE_RECONCILIATION_ARCHIVE_V1",
+  "execution_baseline": "88b1722010a746fa347682ffe56ff7c634f89146",
+  "external_audit": {
+    "path": "reports/fep_e5_final_closure_mainline_audit_r1/V4_15E5_FINAL_CLOSURE_AND_PROJECT_MAINLINE_RECONCILIATION_INDEPENDENT_AUDIT_R1_20261006.md",
+    "bytes": 11617,
+    "sha256": "f0ea03601c0bc86d555abda1e92997d59f81008f2572f457c7ab5381d9173a78"
+  },
+  "prior_closure_seal": {
+    "path": "reports/fep_e5_final_external_acceptance_r1/FEP_E5_FINAL_CLOSURE_SEAL.json",
+    "bytes": 7212,
+    "sha256": "801e5e068e5960ad5b9dac6a5a27333b84f4dfa06086b8e5744e7a07166c716a"
+  },
+  "resume_authority": {
+    "path": "docs/evidence/runtime_resume_20261005/V4_RUNTIME_RESUME_RETURN_TO_R25_FIRST_REAL_SHADOW_20261005.md",
+    "bytes": 3537,
+    "sha256": "0f41c0f72dd8a938031241668338a6b6fa814a83aea7e8541527b5fce63c2950"
+  },
+  "DM01_runtime_head": {
+    "path": "data/v4/DM01_R4_RUNTIME_ACCEPTANCE_HEAD_V1.json",
+    "bytes": 2278,
+    "sha256": "694a48e94c52b8fee89e467520d8616d257eef7cb537a4407522fa01715e9ada"
+  },
+  "evidence": [
+    {
+      "path": "reports/fep_e5_final_closure_mainline_audit_r1/.gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "reports/fep_e5_final_closure_mainline_audit_r1/CHANGED_FILE_LIST.json",
+      "bytes": 938,
+      "sha256": "98ef398f600b0451ea2f192ac2859810631fb866747cf23257ca4126f2852e45"
+    },
+    {
+      "path": "reports/fep_e5_final_closure_mainline_audit_r1/COMPLETION_REPORT.md",
+      "bytes": 1899,
+      "sha256": "d120cc637d31297b0dc5e72ac1cf33d194e6a541e912b4f5e12e527be4361ed0"
+    },
+    {
+      "path": "reports/fep_e5_final_closure_mainline_audit_r1/EXTERNAL_AUDIT_ACCEPTANCE_READBACK.json",
+      "bytes": 1130,
+      "sha256": "ae0fb1173bdbad841351fd9612bbd2298fed6ffae7adf8ea834919cbe10b1708"
+    },
+    {
+      "path": "reports/fep_e5_final_closure_mainline_audit_r1/NONBLOCKING_DEBT_CARRY.json",
+      "bytes": 1218,
+      "sha256": "02c9eee5fbd900323c812e94eda118f46642290efce051f37d47b33888ae4bf2"
+    },
+    {
+      "path": "reports/fep_e5_final_closure_mainline_audit_r1/PROJECT_MAINLINE_RECONCILIATION.json",
+      "bytes": 3009,
+      "sha256": "34e43334674331ab9a8a14be17f6a4572a3544e41cd069da1969e9d6e73f5172"
+    },
+    {
+      "path": "reports/fep_e5_final_closure_mainline_audit_r1/PROTECTED_STATE_READBACK.json",
+      "bytes": 5557,
+      "sha256": "58fce3995721a285902d4f41b52201523f47ffb9015f8c6efb9596b3dcbc6d69"
+    },
+    {
+      "path": "reports/fep_e5_final_closure_mainline_audit_r1/V4_15E5_FINAL_CLOSURE_AND_PROJECT_MAINLINE_RECONCILIATION_INDEPENDENT_AUDIT_R1_20261006.md",
+      "bytes": 11617,
+      "sha256": "f0ea03601c0bc86d555abda1e92997d59f81008f2572f457c7ab5381d9173a78"
+    }
+  ],
+  "state": {
+    "V4_00_TO_V4_15": "ACCEPTED",
+    "V4_16": "ENGINEERING_READY_WAIT_REAL_SHADOW",
+    "V4_17": "ENGINEERING_ACCEPTED_WAIT_REAL_READBACK",
+    "V4_18": "DESIGN_ACCEPTED_WAIT_REAL_SHADOW_GATE",
+    "V4_19": "DESIGN_ACCEPTED_WAIT_REAL_GATES",
+    "V4_20": "DESIGN_ACCEPTED_WAIT_PRODUCTION_PERMISSION",
+    "V4_21": "DESIGN_ACCEPTED_WAIT_REAL_OBSERVATION",
+    "V4_22": "DESIGN_ACCEPTED_WAIT_REAL_GATES",
+    "V4_22_FINAL_PASS": "NOT_GRANTED_WAIT_REAL_GATES",
+    "FEP_E1_TO_E5": "COMPLETE_FOR_CURRENT_SCOPE",
+    "DM01_R4_RUNTIME": "EXTERNALLY_ACCEPTED_SCOPED_READY_FOR_NEXT_REAL_SESSION",
+    "R25": "WAIT_ACCEPTED_DAILY_INPUT",
+    "REAL_SHADOW_OBSERVATIONS": 0,
+    "PIT_OBSERVED_REAL_SAMPLES": 0,
+    "NOW": "STOP_WAIT",
+    "NEXT": "WAIT_NEXT_ELIGIBLE_ACCEPTED_SESSION_AND_POST_CLOSE_GATE"
+  },
+  "external_acceptance_archived": true,
+  "production_ready": false,
+  "sealed_at": "2026-10-06T08:31:24.811680+00:00",
+  "logical_digest": "b022b9bd096caf441f179582967661a154499c628bc02acd3e900406c4a0889e"
+}

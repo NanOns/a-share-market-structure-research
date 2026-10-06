@@ -1,0 +1,155 @@
+{
+  "explicit_active_selector": {
+    "bytes": 1344,
+    "path": "config/v4_16_current_runtime_entrypoints_v1.json",
+    "sha256": "d2ad1bca5b083603366cceb95e8147f770879207f0b39c506a0e90263f63dc4f"
+  },
+  "global_replace": false,
+  "policy": "V6 USERS SELECT EXPLICIT V6 REGISTRY/ENTRYPOINT; OLD DEFAULT DISPATCH REMAINS HISTORICAL TO PRESERVE V5 EXACT GRANTS",
+  "successors": [
+    {
+      "active_successor": {
+        "bytes": 179638,
+        "path": "data/v4/V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V4.json",
+        "sha256": "5b10132d869650ecab890a57df07db336dee0a022323da45ea2180abf750523d"
+      },
+      "historical": {
+        "bytes": 178356,
+        "path": "data/v4/V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V3.json",
+        "sha256": "0e78e72a225d444293c554ed5dc5527c02ae2d8d01ba0cfb3d923bc7696bc9d9"
+      }
+    },
+    {
+      "active_successor": {
+        "bytes": 3847,
+        "path": "config/v4_cross_stage_current_audit_authority_v4.json",
+        "sha256": "2d32331cd3f8aeaefa0f2fa519e846bb62269aa5af1ce1a5fc5d9cea71870bdb"
+      },
+      "historical": {
+        "bytes": 3004,
+        "path": "config/v4_cross_stage_current_audit_authority_v3.json",
+        "sha256": "11aba0147de5de1592114256b6975bd08c069eabee309f27963b1c0cb002f0fa"
+      }
+    },
+    {
+      "active_successor": {
+        "bytes": 3607,
+        "path": "config/v4_16_runtime_capability_resolution_v2.json",
+        "sha256": "109694188b1eb572a8575446e547bb770428da73d486d7354d57ca7c11841407"
+      },
+      "historical": {
+        "bytes": 2232,
+        "path": "config/v4_16_runtime_capability_resolution_v1.json",
+        "sha256": "3f84b8f8194447a87e18e4a2af460eab5db157941c18c1b4aab4c2cfc61c4323"
+      }
+    },
+    {
+      "active_successor": {
+        "bytes": 19641,
+        "path": "config/v4_16_runtime_dependencies_v6.json",
+        "sha256": "44e304620cbab14c43a25e8bcd2bad816c58507594906ba792ba4c8255f02d06"
+      },
+      "historical": {
+        "bytes": 16247,
+        "path": "config/v4_16_runtime_dependencies_v5.json",
+        "sha256": "ea1f955e0f2e7fab6cfadb5755cce191e09eb341c898f6b293cec15dbb9a4414"
+      }
+    },
+    {
+      "active_successor": {
+        "bytes": 1701,
+        "path": "config/v4_16_runtime_activation_authority_v5.json",
+        "sha256": "56a18809ae78df4222b23623bf4a8a7fb48226453484efbf5a0fe9e322c1fbad"
+      },
+      "historical": {
+        "bytes": 1721,
+        "path": "config/v4_16_runtime_activation_authority_v4.json",
+        "sha256": "6fb4672d2ca9dba9c05552cc7c21036e265c34232e063460d6dd23528f731ba8"
+      }
+    },
+    {
+      "active_successor": {
+        "bytes": 2736,
+        "path": "config/v4_16_r25_packet_preflight_v4.json",
+        "sha256": "fed25000f7c504fd360da9fd3809441c000027d2e6e8c2d6016427d5be50b153"
+      },
+      "historical": {
+        "bytes": 2420,
+        "path": "config/v4_16_r25_packet_preflight_v3.json",
+        "sha256": "bee38287a85516ffb20268ebb106d068062dbf7818daddd8ad345ba5fd674c52"
+      }
+    },
+    {
+      "active_successor": {
+        "bytes": 11307,
+        "path": "config/v4_16_settlement_worker_contract_v3.json",
+        "sha256": "679391de78958198ab271fa536d80d492e440060383e2834ada0718e5bb337f9"
+      },
+      "historical": {
+        "bytes": 10359,
+        "path": "config/v4_16_settlement_worker_contract_v2.json",
+        "sha256": "6427a57b8b4c6905a43c46800388920a927831d1249a716568241d24f6c64d0e"
+      }
+    },
+    {
+      "active_successor": {
+        "bytes": 19816,
+        "path": "scripts/v4_16_go_forward_shadow_runtime_r4r4.py",
+        "sha256": "634207e47b7720a216cd48e012409b0ddc18630b3508f3d24c6f46d6e53f0ee1"
+      },
+      "historical": {
+        "bytes": 19566,
+        "path": "scripts/v4_16_go_forward_shadow_runtime_r4r3.py",
+        "sha256": "0b56765004aa58951df617c3620bf113ae87919c989a721dba00b8c9ce757d8d"
+      }
+    },
+    {
+      "active_successor": {
+        "bytes": 355,
+        "path": "scripts/v4_16_shadow_runtime_v6.py",
+        "sha256": "3a54a89244e3617eb5689509c5a329fd40b04c6fb240d253f172f1f14b4e9f82"
+      },
+      "historical": {
+        "bytes": 35323,
+        "path": "scripts/v4_16_shadow_runtime.py",
+        "sha256": "c6d47d47b100a29a2e779a8ad858b13463dbf73451256e3bc9543cfa40430120"
+      }
+    },
+    {
+      "active_successor": {
+        "bytes": 1471,
+        "path": "scripts/run_v4_16_settlement_v3.py",
+        "sha256": "6b52f108b776fe212bb79d67350e019927131505bc3143e4c388cc44cc1cea44"
+      },
+      "historical": {
+        "bytes": 1149,
+        "path": "scripts/run_v4_16_settlement_v2.py",
+        "sha256": "9b7275845318a2e46d1e2c54cd66bca7ee6c820f1dc1ebaa58dc9bc90c7b256a"
+      }
+    },
+    {
+      "active_successor": {
+        "bytes": 22176,
+        "path": "scripts/validate_r25_preflight_v6.py",
+        "sha256": "356db2b7b4611984517f6f0156eb413e627073dad05537542308db47d9398842"
+      },
+      "historical": {
+        "bytes": 22163,
+        "path": "scripts/validate_r25_preflight.py",
+        "sha256": "a558f83ab027995f0291e072d2a50327da74c4302637b94203757e0ee7af64fc"
+      }
+    },
+    {
+      "active_successor": {
+        "bytes": 2814,
+        "path": "scripts/build_r25_packet_r4r4.py",
+        "sha256": "230ed4a3e9eff05c35840d487373643213e3530e78ee5f9dbf9809024b7a9a81"
+      },
+      "historical": {
+        "bytes": 754,
+        "path": "scripts/build_r25_packet_r4r3.py",
+        "sha256": "1541fd013823f11fe7d0f8607026a5984705023e2d4934d244fb246a778a3657"
+      }
+    }
+  ]
+}

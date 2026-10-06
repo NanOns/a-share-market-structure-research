@@ -1,0 +1,132 @@
+{
+  "canonical_issue_diff": {
+    "A08_CURRENT_RUNTIME": {
+      "after": {
+        "affected_capabilities": [
+          "V4_09_N01_CURRENT_RUNTIME_PREWATCH"
+        ],
+        "alias_of": null,
+        "audit_id": "A08_CURRENT_RUNTIME",
+        "blocking_scope": "CAPABILITY_ONLY",
+        "blocks_affected_capability_in_shadow": false,
+        "blocks_engineering_stage": false,
+        "blocks_production_cutover": true,
+        "blocks_production_cutover_for_scope": true,
+        "blocks_shadow_entry": false,
+        "blocks_v4_16_contract_entry": false,
+        "blocks_v4_16_runtime_activation": false,
+        "canonical_issue_id": "A08_CURRENT_RUNTIME",
+        "capability_dimensions": {},
+        "current_authority": {
+          "a08": {
+            "bytes": 2172,
+            "path": "reports/audits/V4_09_N01_HARDENING_ACCEPTED_RECORD_R1.json",
+            "sha256": "4b4377ff88405af89969a6bbe9b2416594f47859ff9436349bd78025ee1515f6"
+          },
+          "a08_acceptance": {
+            "bytes": 17949,
+            "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+            "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+          },
+          "current_runtime_external_acceptance": {
+            "bytes": 5002,
+            "path": "docs/evidence/a08_current_runtime_propagation_20261006/V4_A08_CURRENT_RUNTIME_INDEPENDENT_EXTERNAL_REAUDIT_R1_20261006.md",
+            "sha256": "95356231b0b743eb9d2f679dc3b2cf19fd6e7e59e9a0229cc9cfbb5730af9389"
+          }
+        },
+        "current_runtime_acceptance_scope": "ENGINEERING_SHADOW_DEPENDENCY_ONLY; NO_RUNTIME_OR_PRODUCTION_PERMISSION",
+        "current_state": "ACCEPTED_SCOPED",
+        "evidence_bindings": [
+          {
+            "bytes": 2172,
+            "path": "reports/audits/V4_09_N01_HARDENING_ACCEPTED_RECORD_R1.json",
+            "sha256": "4b4377ff88405af89969a6bbe9b2416594f47859ff9436349bd78025ee1515f6"
+          },
+          {
+            "bytes": 17949,
+            "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+            "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+          },
+          {
+            "bytes": 5002,
+            "path": "docs/evidence/a08_current_runtime_propagation_20261006/V4_A08_CURRENT_RUNTIME_INDEPENDENT_EXTERNAL_REAUDIT_R1_20261006.md",
+            "sha256": "95356231b0b743eb9d2f679dc3b2cf19fd6e7e59e9a0229cc9cfbb5730af9389"
+          }
+        ],
+        "formal_consumer_permission_granted_by_this_head": false,
+        "limitations": [
+          "Accepted historical publication does not accept current runtime"
+        ],
+        "priority": "P1",
+        "requires_real_observation_accumulation": false,
+        "scope": "Current V4-09 runtime distinct from historical hardening audit",
+        "superseded_historical_statuses": []
+      },
+      "before": {
+        "affected_capabilities": [
+          "V4_09_N01_CURRENT_RUNTIME_PREWATCH"
+        ],
+        "alias_of": null,
+        "audit_id": "A08_CURRENT_RUNTIME",
+        "blocking_scope": "CAPABILITY_ONLY",
+        "blocks_affected_capability_in_shadow": true,
+        "blocks_engineering_stage": false,
+        "blocks_production_cutover": true,
+        "blocks_production_cutover_for_scope": true,
+        "blocks_shadow_entry": true,
+        "blocks_v4_16_contract_entry": false,
+        "blocks_v4_16_runtime_activation": false,
+        "canonical_issue_id": "A08_CURRENT_RUNTIME",
+        "capability_dimensions": {},
+        "current_authority": {
+          "a08": {
+            "bytes": 2172,
+            "path": "reports/audits/V4_09_N01_HARDENING_ACCEPTED_RECORD_R1.json",
+            "sha256": "4b4377ff88405af89969a6bbe9b2416594f47859ff9436349bd78025ee1515f6"
+          },
+          "a08_acceptance": {
+            "bytes": 17949,
+            "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+            "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+          }
+        },
+        "current_state": "OPEN_EXTERNAL_REAUDIT",
+        "evidence_bindings": [
+          {
+            "bytes": 2172,
+            "path": "reports/audits/V4_09_N01_HARDENING_ACCEPTED_RECORD_R1.json",
+            "sha256": "4b4377ff88405af89969a6bbe9b2416594f47859ff9436349bd78025ee1515f6"
+          },
+          {
+            "bytes": 17949,
+            "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+            "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+          }
+        ],
+        "formal_consumer_permission_granted_by_this_head": false,
+        "limitations": [
+          "Accepted historical publication does not accept current runtime"
+        ],
+        "priority": "P1",
+        "requires_real_observation_accumulation": false,
+        "scope": "Current V4-09 runtime distinct from historical hardening audit",
+        "superseded_historical_statuses": []
+      }
+    }
+  },
+  "external_acceptance": {
+    "bytes": 5002,
+    "path": "docs/evidence/a08_current_runtime_propagation_20261006/V4_A08_CURRENT_RUNTIME_INDEPENDENT_EXTERNAL_REAUDIT_R1_20261006.md",
+    "sha256": "95356231b0b743eb9d2f679dc3b2cf19fd6e7e59e9a0229cc9cfbb5730af9389"
+  },
+  "predecessor": {
+    "bytes": 178356,
+    "path": "data/v4/V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V3.json",
+    "sha256": "0e78e72a225d444293c554ed5dc5527c02ae2d8d01ba0cfb3d923bc7696bc9d9"
+  },
+  "successor": {
+    "bytes": 179638,
+    "path": "data/v4/V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V4.json",
+    "sha256": "5b10132d869650ecab890a57df07db336dee0a022323da45ea2180abf750523d"
+  }
+}

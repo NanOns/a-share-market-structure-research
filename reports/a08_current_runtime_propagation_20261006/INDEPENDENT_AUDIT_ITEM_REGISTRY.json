@@ -1,0 +1,29 @@
+{
+  "A08_CURRENT_RUNTIME": {
+    "external_evidence": {
+      "bytes": 5002,
+      "path": "docs/evidence/a08_current_runtime_propagation_20261006/V4_A08_CURRENT_RUNTIME_INDEPENDENT_EXTERNAL_REAUDIT_R1_20261006.md",
+      "sha256": "95356231b0b743eb9d2f679dc3b2cf19fd6e7e59e9a0229cc9cfbb5730af9389"
+    },
+    "external_scope": "PASS_CURRENT_RUNTIME_ENGINEERING_SHADOW_DEPENDENCY_SCOPE",
+    "propagation": "CANDIDATE_EXTERNAL_AUDIT_PENDING"
+  },
+  "HISTORICAL_STAGE_READER_COMPATIBILITY": {
+    "acceptance": "INDEPENDENT_OF_A08_PROPAGATION_GATE",
+    "baseline": {
+      "bytes": 497950,
+      "path": "reports/full_chain_repair_20261006/scoped_regression.xml",
+      "sha256": "bff1d874fdcba588eaf76a8277783ec76fd9bd4038a49e36fb8b7b941a03990b"
+    },
+    "failure_nodes": [
+      "tests.v4_09.test_stock_prewatch::test_production_and_v4_09_acceptance_stay_disabled",
+      "tests.v4_a08.test_repair_freeze_authority::test_historical_archive_does_not_accept_current_runtime_for_new_promotion"
+    ],
+    "scope": "UNCHANGED_HISTORICAL_R17_READER_STAGE_12_13_ALLOWLIST",
+    "status": "OPEN_INHERITED_DEBT"
+  },
+  "amount_a": {
+    "H21": "ACCUMULATION_CONTINUES",
+    "historical": "BLOCKED_AFFECTED_SCOPE"
+  }
+}

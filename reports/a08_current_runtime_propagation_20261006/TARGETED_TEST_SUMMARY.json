@@ -1,0 +1,35 @@
+{
+  "initial_attempt_retained": {
+    "bytes": 6251,
+    "path": "reports/a08_current_runtime_propagation_20261006/initial.xml",
+    "sha256": "9f58a7e45f5c91f07dad6a973d3632930dd5cc8d37b78c07cfe8dab1b3602ad9"
+  },
+  "introduced_failure_nodes": 0,
+  "suites": {
+    "final_targeted": {
+      "evidence": {
+        "bytes": 2269,
+        "path": "reports/a08_current_runtime_propagation_20261006/final_targeted.xml",
+        "sha256": "1b1494142af26be762b86de8c314d03e8da9652b73d8b0b9cd0934dcf514b926"
+      },
+      "introduced_failure_nodes": [],
+      "known_failed_nodes": [],
+      "passed": 15,
+      "skipped": 0
+    },
+    "pass_keep_regression": {
+      "evidence": {
+        "bytes": 41532,
+        "path": "reports/a08_current_runtime_propagation_20261006/pass_keep_regression.xml",
+        "sha256": "0f5153c50f04575d8e55433591a2fa69392ce0aa4b24e0bc860e08525b9bec4f"
+      },
+      "introduced_failure_nodes": [],
+      "known_failed_nodes": [
+        "tests.v4_09.test_stock_prewatch::test_production_and_v4_09_acceptance_stay_disabled",
+        "tests.v4_a08.test_repair_freeze_authority::test_historical_archive_does_not_accept_current_runtime_for_new_promotion"
+      ],
+      "passed": 314,
+      "skipped": 0
+    }
+  }
+}

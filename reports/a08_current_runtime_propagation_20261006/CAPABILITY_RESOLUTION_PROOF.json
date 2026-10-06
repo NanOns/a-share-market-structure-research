@@ -1,0 +1,66 @@
+{
+  "current_audit_head": {
+    "bytes": 179638,
+    "path": "data/v4/V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V4.json",
+    "sha256": "5b10132d869650ecab890a57df07db336dee0a022323da45ea2180abf750523d"
+  },
+  "dependency_graph_unchanged": true,
+  "permission_granted": false,
+  "resolver": {
+    "bytes": 3607,
+    "path": "config/v4_16_runtime_capability_resolution_v2.json",
+    "sha256": "109694188b1eb572a8575446e547bb770428da73d486d7354d57ca7c11841407"
+  },
+  "results": {
+    "AMOUNT_A_H21_FORMAL_CONSUMER": {
+      "admitted": false,
+      "blocking_issue_ids": [
+        "A04_H21_CONSUMER"
+      ],
+      "effective_blocked_runtime_capabilities": [
+        "AMOUNT_A_H21_FORMAL_CONSUMER",
+        "HISTORICAL_AMOUNT_A_FORMAL_CONSUMER"
+      ],
+      "permission_granted": false,
+      "requested_capabilities": [
+        "AMOUNT_A_H21_FORMAL_CONSUMER"
+      ],
+      "required_capabilities": [
+        "AMOUNT_A_H21_FORMAL_CONSUMER"
+      ]
+    },
+    "HISTORICAL_AMOUNT_A_FORMAL_CONSUMER": {
+      "admitted": false,
+      "blocking_issue_ids": [
+        "A04_HISTORICAL_AMOUNT_A"
+      ],
+      "effective_blocked_runtime_capabilities": [
+        "AMOUNT_A_H21_FORMAL_CONSUMER",
+        "HISTORICAL_AMOUNT_A_FORMAL_CONSUMER"
+      ],
+      "permission_granted": false,
+      "requested_capabilities": [
+        "HISTORICAL_AMOUNT_A_FORMAL_CONSUMER"
+      ],
+      "required_capabilities": [
+        "HISTORICAL_AMOUNT_A_FORMAL_CONSUMER"
+      ]
+    },
+    "PURE_CORE_STOCK": {
+      "admitted": true,
+      "blocking_issue_ids": [],
+      "effective_blocked_runtime_capabilities": [
+        "AMOUNT_A_H21_FORMAL_CONSUMER",
+        "HISTORICAL_AMOUNT_A_FORMAL_CONSUMER"
+      ],
+      "permission_granted": false,
+      "requested_capabilities": [
+        "PURE_CORE_STOCK"
+      ],
+      "required_capabilities": [
+        "PURE_CORE_STOCK",
+        "V4_09_N01_CURRENT_RUNTIME_PREWATCH"
+      ]
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "V5_grant_to_V6": "REJECTED_EXECUTED",
+  "V5_stop_restart": "PASS_EXECUTED",
+  "V6_grant_to_V5": "REJECTED_EXECUTED",
+  "V6_isolated_settlement_restart": "PASS_EXECUTED",
+  "evidence": {
+    "bytes": 46137,
+    "path": "reports/a08_current_runtime_propagation_20261006/NEGATIVE_MATRIX.json",
+    "sha256": "bf7f93ba69c2cea66954578a6aa4a488a052f30d29e71beda26f508caff35325"
+  },
+  "no_real_obligations_created": true,
+  "old_dependency": {
+    "bytes": 16247,
+    "path": "config/v4_16_runtime_dependencies_v5.json",
+    "sha256": "ea1f955e0f2e7fab6cfadb5755cce191e09eb341c898f6b293cec15dbb9a4414"
+  },
+  "old_entrypoint": {
+    "bytes": 1149,
+    "path": "scripts/run_v4_16_settlement_v2.py",
+    "sha256": "9b7275845318a2e46d1e2c54cd66bca7ee6c820f1dc1ebaa58dc9bc90c7b256a"
+  },
+  "old_runtime": {
+    "bytes": 19566,
+    "path": "scripts/v4_16_go_forward_shadow_runtime_r4r3.py",
+    "sha256": "0b56765004aa58951df617c3620bf113ae87919c989a721dba00b8c9ce757d8d"
+  },
+  "preserved_business_asts": [
+    "OneSessionLaunchController",
+    "SuccessorDatabase",
+    "settlement_cycle",
+    "accepted_future_authority"
+  ],
+  "restart_A01_A02_and_queue_Q01_Q05": "PASS_EXECUTED",
+  "worker": {
+    "bytes": 8257,
+    "path": "scripts/v4_16_settlement_worker_v2.py",
+    "sha256": "bb7a354399a6e894dd76d75606f2ca9d10d91f513a24b81621484e87909f9468"
+  }
+}

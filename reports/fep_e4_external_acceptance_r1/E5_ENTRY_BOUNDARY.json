@@ -1,0 +1,23 @@
+{
+  "status": "AUTHORIZED_ENTRY_REQUIRES_SEPARATE_TASK_CARD",
+  "E5_ENTRY": "AUTHORIZED_NOT_BLOCKED_BY_E4",
+  "E5_started": false,
+  "formal_task_card_received": false,
+  "required_pre_run_frozen_fields": [
+    "effectiveness disposition rule",
+    "primary metric",
+    "tie-break",
+    "promotion boundary",
+    "priority projection boundary",
+    "shadow-only boundary",
+    "model evidence class"
+  ],
+  "prohibition": [
+    "promotion from seen Outer",
+    "MODEL_DISPLAY from E4",
+    "PRIORITY_USE from E4",
+    "production grant from E4",
+    "retroactive PRIORITY_V1 rewrite"
+  ],
+  "NEXT": "ISSUE_V4_15E5_EXPECTANCY_AWARE_PRIORITY_PROJECTION_TASK"
+}

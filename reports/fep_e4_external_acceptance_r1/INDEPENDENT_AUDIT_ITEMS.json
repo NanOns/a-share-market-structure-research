@@ -1,0 +1,53 @@
+{
+  "items": [
+    {
+      "audit_id": "AUDIT_NOTE_E4_01",
+      "external_disposition": "PASS_NONBLOCKING_GOVERNANCE_HARDENING_REQUIRED",
+      "status": "OPEN_FOR_NEXT_EFFECTIVENESS_PROTOCOL",
+      "scope": "Pre-register effectiveness disposition mapping with primary metric, tie-break and promotion boundary before evaluation opens",
+      "historical_E4": "Mapping existed in frozen evaluator source but not an explicit protocol field; accepted nonblocking by external auditor",
+      "evidence": [
+        {
+          "path": "reports/fep_e4_external_acceptance_r1/V4_15E4_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261006.md",
+          "bytes": 16655,
+          "sha256": "1696b2a7fe62e8f5582bc23c8437459703f15318bcc19c4cd20a2b671d83c0b3"
+        },
+        {
+          "path": "config/fep_e4_challenger_protocol_v1.json",
+          "bytes": 37729,
+          "sha256": "ad40acc259b2c7bfcfa7b874d0826862167a01626e4041e69a5bb3c1ecf5451b"
+        },
+        {
+          "path": "scripts/run_fep_e4_r1.py",
+          "bytes": 25350,
+          "sha256": "b4dd6d082c4f49827de1ab1ad9f2f5582332f934f5101258a753f756841f37b1"
+        }
+      ],
+      "acceptance": "Next E5/new effectiveness task must freeze the required explicit fields before its evaluation; no retroactive E4 protocol edit"
+    },
+    {
+      "audit_id": "FEP_E4_MODEL_EVIDENCE_LIMITATIONS",
+      "status": "OPEN_NO_PROMOTION",
+      "scope": [
+        "Seen historical Outer",
+        "46/205 predictable coverage",
+        "JOINT_OOD UNSET",
+        "No MAE increment over E2",
+        "Weak quantile calibration"
+      ],
+      "evidence": [
+        {
+          "path": "reports/fep_e4_external_acceptance_r1/V4_15E4_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261006.md",
+          "bytes": 16655,
+          "sha256": "1696b2a7fe62e8f5582bc23c8437459703f15318bcc19c4cd20a2b671d83c0b3"
+        },
+        {
+          "path": "reports/fep_e4_r1/INDEPENDENT_AUDIT_ITEMS.json",
+          "bytes": 795,
+          "sha256": "15498f8cc0a24fb247b069b3b1585a042522f85816339ce4a5f15dc60439cb34"
+        }
+      ],
+      "acceptance": "Separate future authorized evidence audit; E4 engineering acceptance does not close limitations"
+    }
+  ]
+}

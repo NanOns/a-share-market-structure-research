@@ -1,0 +1,95 @@
+{
+  "status": "PASS",
+  "fixtures": {
+    "fresh": [
+      {
+        "activation_id": "FEP_CANONICAL_ACTIVATION:fresh-E2-allow",
+        "grant_id": "FEP_SHADOW_GRANT:7312186ab23292368dc59ef6997950f91f61bb7c7ff137b4bb2f19409473f945",
+        "version": 1,
+        "action": "ALLOW",
+        "request_id": "fresh-E2-allow"
+      },
+      {
+        "activation_id": "FEP_CANONICAL_ACTIVATION:fresh-E2-revoke",
+        "grant_id": "FEP_SHADOW_GRANT:7312186ab23292368dc59ef6997950f91f61bb7c7ff137b4bb2f19409473f945",
+        "version": 2,
+        "action": "REVOKE",
+        "request_id": "fresh-E2-revoke"
+      },
+      {
+        "activation_id": "FEP_CANONICAL_ACTIVATION:fresh-E3-allow",
+        "grant_id": "FEP_SHADOW_GRANT:ed929287f977ae6c5999f2950425edf0b0a5259a484c1ad874ca9fdaebbff2cd",
+        "version": 3,
+        "action": "ALLOW",
+        "request_id": "fresh-E3-allow"
+      },
+      {
+        "activation_id": "FEP_CANONICAL_ACTIVATION:fresh-E3-revoke",
+        "grant_id": "FEP_SHADOW_GRANT:ed929287f977ae6c5999f2950425edf0b0a5259a484c1ad874ca9fdaebbff2cd",
+        "version": 4,
+        "action": "REVOKE",
+        "request_id": "fresh-E3-revoke"
+      },
+      {
+        "activation_id": "FEP_CANONICAL_ACTIVATION:fresh-E4-allow",
+        "grant_id": "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee",
+        "version": 5,
+        "action": "ALLOW",
+        "request_id": "fresh-E4-allow"
+      },
+      {
+        "activation_id": "FEP_CANONICAL_ACTIVATION:fresh-E4-revoke",
+        "grant_id": "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee",
+        "version": 6,
+        "action": "REVOKE",
+        "request_id": "fresh-E4-revoke"
+      }
+    ],
+    "upgrade": [
+      {
+        "activation_id": "FEP_CANONICAL_ACTIVATION:upgrade-E2-allow",
+        "grant_id": "FEP_SHADOW_GRANT:7312186ab23292368dc59ef6997950f91f61bb7c7ff137b4bb2f19409473f945",
+        "version": 1,
+        "action": "ALLOW",
+        "request_id": "upgrade-E2-allow"
+      },
+      {
+        "activation_id": "FEP_CANONICAL_ACTIVATION:upgrade-E2-revoke",
+        "grant_id": "FEP_SHADOW_GRANT:7312186ab23292368dc59ef6997950f91f61bb7c7ff137b4bb2f19409473f945",
+        "version": 2,
+        "action": "REVOKE",
+        "request_id": "upgrade-E2-revoke"
+      },
+      {
+        "activation_id": "FEP_CANONICAL_ACTIVATION:upgrade-E3-allow",
+        "grant_id": "FEP_SHADOW_GRANT:ed929287f977ae6c5999f2950425edf0b0a5259a484c1ad874ca9fdaebbff2cd",
+        "version": 3,
+        "action": "ALLOW",
+        "request_id": "upgrade-E3-allow"
+      },
+      {
+        "activation_id": "FEP_CANONICAL_ACTIVATION:upgrade-E3-revoke",
+        "grant_id": "FEP_SHADOW_GRANT:ed929287f977ae6c5999f2950425edf0b0a5259a484c1ad874ca9fdaebbff2cd",
+        "version": 4,
+        "action": "REVOKE",
+        "request_id": "upgrade-E3-revoke"
+      },
+      {
+        "activation_id": "FEP_CANONICAL_ACTIVATION:upgrade-E4-allow",
+        "grant_id": "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee",
+        "version": 5,
+        "action": "ALLOW",
+        "request_id": "upgrade-E4-allow"
+      },
+      {
+        "activation_id": "FEP_CANONICAL_ACTIVATION:upgrade-E4-revoke",
+        "grant_id": "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee",
+        "version": 6,
+        "action": "REVOKE",
+        "request_id": "upgrade-E4-revoke"
+      }
+    ]
+  },
+  "all_final_heads": "REVOKE",
+  "historical_predictions_retained": true
+}

@@ -1,0 +1,51 @@
+{
+  "status": "PASS_CANDIDATE",
+  "fixtures": {
+    "fresh": {
+      "unit": "ratio",
+      "enabled": false,
+      "formula": "R_N",
+      "horizon": 1,
+      "risk_set": {
+        "design_binding": {
+          "path": "docs/evidence/fep_e1/FEP_R2_MODULE_DESIGN_20260930.md",
+          "bytes": 36627,
+          "sha256": "f01ac9c550a71b8edb73436969e39172f6809404df9e19ffbfff2306c9456014"
+        },
+        "endpoint_quality": "OBSERVED",
+        "upstream_contract": "FORWARD_PRICE_PATH_V1",
+        "definition_reference": "FEP.5/ABS_RETURN_N"
+      },
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "target_id": "ABS_RETURN_N:T1",
+      "value_kind": "NUMERIC",
+      "contract_id": "FEP_E1_TARGETS_V1",
+      "allowed_quality": [
+        "OBSERVED"
+      ]
+    },
+    "upgrade": {
+      "unit": "ratio",
+      "enabled": false,
+      "formula": "R_N",
+      "horizon": 1,
+      "risk_set": {
+        "design_binding": {
+          "path": "docs/evidence/fep_e1/FEP_R2_MODULE_DESIGN_20260930.md",
+          "bytes": 36627,
+          "sha256": "f01ac9c550a71b8edb73436969e39172f6809404df9e19ffbfff2306c9456014"
+        },
+        "endpoint_quality": "OBSERVED",
+        "upstream_contract": "FORWARD_PRICE_PATH_V1",
+        "definition_reference": "FEP.5/ABS_RETURN_N"
+      },
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "target_id": "ABS_RETURN_N:T1",
+      "value_kind": "NUMERIC",
+      "contract_id": "FEP_E1_TARGETS_V1",
+      "allowed_quality": [
+        "OBSERVED"
+      ]
+    }
+  }
+}

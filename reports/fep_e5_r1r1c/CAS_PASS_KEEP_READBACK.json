@@ -1,0 +1,315 @@
+{
+  "status": "PASS_KEEP",
+  "concurrency": {
+    "status": "PASS",
+    "fixtures": {
+      "fresh": {
+        "before_head": [
+          6,
+          "FEP_CANONICAL_ACTIVATION:fresh-E4-revoke",
+          "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee"
+        ],
+        "races": [
+          {
+            "worker": 1,
+            "status": "COMMITTED",
+            "receipt": {
+              "activation_id": "FEP_CANONICAL_ACTIVATION:fresh-canonical-race-1",
+              "grant_id": "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee",
+              "version": 7,
+              "action": "ALLOW",
+              "request_id": "fresh-canonical-race-1"
+            }
+          },
+          {
+            "worker": 2,
+            "status": "REJECTED",
+            "sqlstate": "P0001",
+            "error": "FEP_CAS_CONFLICT\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE"
+          }
+        ],
+        "winner_receipt": {
+          "checks": {
+            "engineering_only": true
+          },
+          "grant_id": "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee",
+          "request_id": "fresh-canonical-race-1",
+          "accepted_at": "2026-10-06T04:41:59.037465+00:00",
+          "activation_id": "FEP_CANONICAL_ACTIVATION:fresh-canonical-race-1",
+          "new_head_version": 7,
+          "expected_head_version": 6,
+          "expected_prior_activation_id": "FEP_CANONICAL_ACTIVATION:fresh-E4-revoke"
+        },
+        "replay_version": 7,
+        "one_winner_one_rejected": true,
+        "no_orphan_activation_or_receipt": true,
+        "after_head": [
+          8,
+          "FEP_CANONICAL_ACTIVATION:fresh-canonical-final-revoke",
+          "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee"
+        ],
+        "final_revoke": {
+          "activation_id": "FEP_CANONICAL_ACTIVATION:fresh-canonical-final-revoke",
+          "grant_id": "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee",
+          "version": 8,
+          "action": "REVOKE",
+          "request_id": "fresh-canonical-final-revoke"
+        }
+      },
+      "upgrade": {
+        "before_head": [
+          6,
+          "FEP_CANONICAL_ACTIVATION:upgrade-E4-revoke",
+          "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee"
+        ],
+        "races": [
+          {
+            "worker": 1,
+            "status": "REJECTED",
+            "sqlstate": "P0001",
+            "error": "FEP_CAS_CONFLICT\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE"
+          },
+          {
+            "worker": 2,
+            "status": "COMMITTED",
+            "receipt": {
+              "activation_id": "FEP_CANONICAL_ACTIVATION:upgrade-canonical-race-2",
+              "grant_id": "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee",
+              "version": 7,
+              "action": "ALLOW",
+              "request_id": "upgrade-canonical-race-2"
+            }
+          }
+        ],
+        "winner_receipt": {
+          "checks": {
+            "engineering_only": true
+          },
+          "grant_id": "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee",
+          "request_id": "upgrade-canonical-race-2",
+          "accepted_at": "2026-10-06T04:41:59.687633+00:00",
+          "activation_id": "FEP_CANONICAL_ACTIVATION:upgrade-canonical-race-2",
+          "new_head_version": 7,
+          "expected_head_version": 6,
+          "expected_prior_activation_id": "FEP_CANONICAL_ACTIVATION:upgrade-E4-revoke"
+        },
+        "replay_version": 7,
+        "one_winner_one_rejected": true,
+        "no_orphan_activation_or_receipt": true,
+        "after_head": [
+          8,
+          "FEP_CANONICAL_ACTIVATION:upgrade-canonical-final-revoke",
+          "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee"
+        ],
+        "final_revoke": {
+          "activation_id": "FEP_CANONICAL_ACTIVATION:upgrade-canonical-final-revoke",
+          "grant_id": "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee",
+          "version": 8,
+          "action": "REVOKE",
+          "request_id": "upgrade-canonical-final-revoke"
+        }
+      }
+    }
+  },
+  "idempotency": {
+    "status": "PASS",
+    "fixtures": {
+      "fresh": {
+        "replay_version": 7,
+        "original_receipt": {
+          "checks": {
+            "engineering_only": true
+          },
+          "grant_id": "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee",
+          "request_id": "fresh-canonical-race-1",
+          "accepted_at": "2026-10-06T04:41:59.037465+00:00",
+          "activation_id": "FEP_CANONICAL_ACTIVATION:fresh-canonical-race-1",
+          "new_head_version": 7,
+          "expected_head_version": 6,
+          "expected_prior_activation_id": "FEP_CANONICAL_ACTIVATION:fresh-E4-revoke"
+        },
+        "no_new_rows": true
+      },
+      "upgrade": {
+        "replay_version": 7,
+        "original_receipt": {
+          "checks": {
+            "engineering_only": true
+          },
+          "grant_id": "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee",
+          "request_id": "upgrade-canonical-race-2",
+          "accepted_at": "2026-10-06T04:41:59.687633+00:00",
+          "activation_id": "FEP_CANONICAL_ACTIVATION:upgrade-canonical-race-2",
+          "new_head_version": 7,
+          "expected_head_version": 6,
+          "expected_prior_activation_id": "FEP_CANONICAL_ACTIVATION:upgrade-E4-revoke"
+        },
+        "no_new_rows": true
+      }
+    }
+  },
+  "rollback": {
+    "status": "PASS",
+    "fixtures": {
+      "fresh": {
+        "status": "PASS",
+        "after_CAS_receipt_failure_restored_head": true,
+        "no_partial_activations": true,
+        "before_counts": {
+          "acceptance_receipts": 615,
+          "activations": 7,
+          "contracts": 10,
+          "dataset_eligibility_ledger": 0,
+          "dataset_fold_cutoffs": 0,
+          "dataset_fold_label_selection": 0,
+          "dataset_rows": 0,
+          "datasets": 0,
+          "deployment_change_receipts": 7,
+          "deployment_heads": 1,
+          "feature_values": 4100,
+          "field_registry": 20,
+          "field_scope": 20,
+          "label_revisions": 0,
+          "label_source_bindings": 0,
+          "model_set_members": 3,
+          "model_sets": 3,
+          "models": 3,
+          "observation_revisions": 205,
+          "observations": 205,
+          "permission_keys": 3,
+          "prediction_runs": 615,
+          "prediction_slots": 616,
+          "predictions": 615,
+          "priority_projection": 0,
+          "priority_projection_grants": 0,
+          "reconstruction_authorities": 205,
+          "reports": 0,
+          "scopes": 1,
+          "slot_model_bindings": 615,
+          "slot_receipts": 616,
+          "snapshots": 205,
+          "targets": 1,
+          "training_runs": 0
+        },
+        "after_failed_counts": {
+          "acceptance_receipts": 615,
+          "activations": 7,
+          "contracts": 10,
+          "dataset_eligibility_ledger": 0,
+          "dataset_fold_cutoffs": 0,
+          "dataset_fold_label_selection": 0,
+          "dataset_rows": 0,
+          "datasets": 0,
+          "deployment_change_receipts": 7,
+          "deployment_heads": 1,
+          "feature_values": 4100,
+          "field_registry": 20,
+          "field_scope": 20,
+          "label_revisions": 0,
+          "label_source_bindings": 0,
+          "model_set_members": 3,
+          "model_sets": 3,
+          "models": 3,
+          "observation_revisions": 205,
+          "observations": 205,
+          "permission_keys": 3,
+          "prediction_runs": 615,
+          "prediction_slots": 616,
+          "predictions": 615,
+          "priority_projection": 0,
+          "priority_projection_grants": 0,
+          "reconstruction_authorities": 205,
+          "reports": 0,
+          "scopes": 1,
+          "slot_model_bindings": 615,
+          "slot_receipts": 616,
+          "snapshots": 205,
+          "targets": 1,
+          "training_runs": 0
+        },
+        "historical_predictions_unchanged": true,
+        "final_permission_revoked": true
+      },
+      "upgrade": {
+        "status": "PASS",
+        "after_CAS_receipt_failure_restored_head": true,
+        "no_partial_activations": true,
+        "before_counts": {
+          "acceptance_receipts": 615,
+          "activations": 7,
+          "contracts": 12,
+          "dataset_eligibility_ledger": 0,
+          "dataset_fold_cutoffs": 0,
+          "dataset_fold_label_selection": 0,
+          "dataset_rows": 0,
+          "datasets": 0,
+          "deployment_change_receipts": 7,
+          "deployment_heads": 1,
+          "feature_values": 4100,
+          "field_registry": 20,
+          "field_scope": 20,
+          "label_revisions": 0,
+          "label_source_bindings": 0,
+          "model_set_members": 3,
+          "model_sets": 3,
+          "models": 3,
+          "observation_revisions": 206,
+          "observations": 206,
+          "permission_keys": 3,
+          "prediction_runs": 615,
+          "prediction_slots": 616,
+          "predictions": 615,
+          "priority_projection": 0,
+          "priority_projection_grants": 0,
+          "reconstruction_authorities": 205,
+          "reports": 0,
+          "scopes": 2,
+          "slot_model_bindings": 615,
+          "slot_receipts": 616,
+          "snapshots": 206,
+          "targets": 1,
+          "training_runs": 0
+        },
+        "after_failed_counts": {
+          "acceptance_receipts": 615,
+          "activations": 7,
+          "contracts": 12,
+          "dataset_eligibility_ledger": 0,
+          "dataset_fold_cutoffs": 0,
+          "dataset_fold_label_selection": 0,
+          "dataset_rows": 0,
+          "datasets": 0,
+          "deployment_change_receipts": 7,
+          "deployment_heads": 1,
+          "feature_values": 4100,
+          "field_registry": 20,
+          "field_scope": 20,
+          "label_revisions": 0,
+          "label_source_bindings": 0,
+          "model_set_members": 3,
+          "model_sets": 3,
+          "models": 3,
+          "observation_revisions": 206,
+          "observations": 206,
+          "permission_keys": 3,
+          "prediction_runs": 615,
+          "prediction_slots": 616,
+          "predictions": 615,
+          "priority_projection": 0,
+          "priority_projection_grants": 0,
+          "reconstruction_authorities": 205,
+          "reports": 0,
+          "scopes": 2,
+          "slot_model_bindings": 615,
+          "slot_receipts": 616,
+          "snapshots": 206,
+          "targets": 1,
+          "training_runs": 0
+        },
+        "historical_predictions_unchanged": true,
+        "final_permission_revoked": true
+      }
+    },
+    "acceptance_failure_after_prediction_proof": "test_acceptance_transaction_rolls_back_after_prediction; targeted XML binds both fixtures"
+  }
+}

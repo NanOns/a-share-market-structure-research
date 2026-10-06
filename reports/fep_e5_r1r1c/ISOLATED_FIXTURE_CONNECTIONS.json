@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "fixtures": {
+    "fresh": {
+      "dsn": "host=127.0.0.1 port=55492 user=fep_e5_admin dbname=fep_e5b_fresh",
+      "storage": "E:/codex_tmp/fep_e5_r1r1c_fresh_20261006",
+      "actual_readback_matches_export": true,
+      "production": false
+    },
+    "upgrade": {
+      "dsn": "host=127.0.0.1 port=55493 user=fep_e5_admin dbname=fep_e5b_upgrade",
+      "storage": "E:/codex_tmp/fep_e5_r1r1c_upgrade_20261006",
+      "actual_readback_matches_export": true,
+      "production": false
+    }
+  },
+  "readback_at": "2026-10-06T04:49:12.850149+00:00",
+  "purpose": "Metadata repair and PASS_KEEP verification only; inherited database names retained by byte-identical B installer."
+}

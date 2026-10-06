@@ -62,6 +62,8 @@ def authority_entries(rows, frozen_manifest):
     return entries
 
 def seed_identity(pg, rows, entries, model_catalog):
+    from .metadata_binding import register, verify_signal, SIGNAL_CONTRACT
+    metadata = register(pg, contract)
     contract(pg,FEATURE,dict(version=VERSION,source='EXACT_ACCEPTED_E2_CORE_VECTOR'))
     contract(pg,'FEP_E5_OBSERVATION_V1',dict(signal='FIRST_PREWATCH',source='ACCEPTED_HISTORICAL_E2_POPULATION'))
     contract(pg,'FEP_E5_WINDOW_V1',dict(source=entries[0]['source_manifest']['historical_population']))
@@ -69,17 +71,21 @@ def seed_identity(pg, rows, entries, model_catalog):
     contract(pg,AUTH_CONTRACT,dict(namespace_id=NS,exact_authorities=entries),family='FEP_RECONSTRUCTION_AUTHORITY_V1')
     pg.execute("insert into v4.model_namespaces values (%s,%s,'SHADOW',%s)",(NS,AUTH_CONTRACT,NS))
     pg.execute("insert into fep.scopes values (%s,'STOCK','ENTRY','FIRST_PREWATCH','CORE',%s,'FEP_E5_OBSERVATION_V1',%s)",(SCOPE,NS,digest([SCOPE,NS])))
-    pg.execute("insert into fep.targets values (%s,'FEP_E5_OBSERVATION_V1',%s,1,'ratio','NUMERIC','accepted V4-15 ABS_RETURN_N:T1',%s,%s,true)",
-        (TARGET,SCOPE,Jsonb({'contract':'FORWARD_PRICE_PATH_V1'}),Jsonb(['OBSERVED','UNKNOWN'])))
+    target = metadata['target_row']
+    pg.execute('insert into fep.targets values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',
+        tuple(Jsonb(target[k]) if k in ('risk_set','allowed_quality') else target[k] for k in
+              ('target_id','contract_id','scope_id','horizon','unit','value_kind','formula','risk_set','allowed_quality','enabled')))
     for field in rows[0]['model_features']:
         pg.execute("insert into fep.field_registry values (%s,%s,'ACCEPTED_CORE_OWNER','model_features',%s,'SOURCE_FEATURE_CONTRACT',true,false,'SOURCE_DATE_LE_OBSERVATION_DATE',%s,'FEP_E5_WINDOW_V1')",
             (FEATURE,field,'BOOLEAN' if field in ('hh_progress','ll_progress') else 'NUMERIC',Jsonb(['OBSERVED','UNKNOWN'])))
         pg.execute('insert into fep.field_scope values (%s,%s,%s)',(FEATURE,field,SCOPE))
     mapping=[]
     for row,e in zip(rows,entries):
+        verify_signal(dict(core_signal_contract_id=SIGNAL_CONTRACT, scope_id=SCOPE,
+                           signal_key='FIRST_PREWATCH:'+row['observation_id']), metadata['signal_body'])
         cutoff=datetime.fromisoformat(row['trade_date']+'T07:00:00+00:00')
         pg.execute('insert into fep.observations values (%s,%s,%s,%s,%s,%s,%s,%s)',
-            (row['observation_id'],SCOPE,row['entity_id'],row['trade_date'],'FIRST_PREWATCH:'+row['observation_id'],row['episode_id'],AUTH_CONTRACT,cutoff))
+            (row['observation_id'],SCOPE,row['entity_id'],row['trade_date'],'FIRST_PREWATCH:'+row['observation_id'],row['episode_id'],SIGNAL_CONTRACT,cutoff))
         recorded=pg.execute('select clock_timestamp()').fetchone()[0]
         pg.execute('insert into fep.reconstruction_authorities values (%s,%s,%s,%s,%s,%s,\'REPLAY\',%s,%s,%s,%s,%s,\'NOT_HISTORICALLY_OBSERVED\',false,false,false)',
             (e['authority_id'],AUTH_CONTRACT,SCOPE,NS,e['trade_date'],e['evidence_origin'],Jsonb(e['source_manifest']),e['source_manifest_digest'],FEATURE,Jsonb(e['accepted_head_identity']),recorded))

@@ -1,0 +1,154 @@
+{
+  "status": "PASS_KEEP",
+  "roles": [
+    "BASELINE",
+    "CHALLENGER",
+    "CHALLENGER"
+  ],
+  "final_heads": "REVOKE",
+  "CHAMPION": false,
+  "MODEL_DISPLAY": false,
+  "PRIORITY_USE": false,
+  "fixtures": {
+    "fresh": {
+      "status": "PASS",
+      "checks": {
+        "observations": true,
+        "reconstruction_authorities": true,
+        "observation_revisions": true,
+        "snapshots": true,
+        "feature_values": true,
+        "predictions": true,
+        "models": true,
+        "model_set_members": true,
+        "permission_keys": true,
+        "prediction_runs": true,
+        "prediction_slots": true,
+        "slot_model_bindings": true
+      },
+      "execution_clock_columns_regenerated": true,
+      "schema_unchanged": true,
+      "counts": {
+        "acceptance_receipts": 615,
+        "activations": 8,
+        "contracts": 11,
+        "dataset_eligibility_ledger": 0,
+        "dataset_fold_cutoffs": 0,
+        "dataset_fold_label_selection": 0,
+        "dataset_rows": 0,
+        "datasets": 0,
+        "deployment_change_receipts": 8,
+        "deployment_heads": 1,
+        "feature_values": 4100,
+        "field_registry": 20,
+        "field_scope": 20,
+        "label_revisions": 0,
+        "label_source_bindings": 0,
+        "model_set_members": 3,
+        "model_sets": 3,
+        "models": 3,
+        "observation_revisions": 205,
+        "observations": 205,
+        "permission_keys": 3,
+        "prediction_runs": 615,
+        "prediction_slots": 616,
+        "predictions": 615,
+        "priority_projection": 1,
+        "priority_projection_grants": 0,
+        "reconstruction_authorities": 205,
+        "reports": 0,
+        "scopes": 1,
+        "slot_model_bindings": 615,
+        "slot_receipts": 616,
+        "snapshots": 205,
+        "targets": 1,
+        "training_runs": 0
+      },
+      "final_head": [
+        8,
+        "FEP_CANONICAL_ACTIVATION:fresh-canonical-final-revoke",
+        "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee"
+      ],
+      "previous": {
+        "path": "reports/fep_e5_r1r1b/FRESH_FINAL_DB_READBACK.json",
+        "bytes": 21069854,
+        "sha256": "6bbb319b06cf105886dad56ce9449d4d2ddf8b66b4e2f36d8cd3564a752fbc9c"
+      },
+      "current": {
+        "path": "reports/fep_e5_r1r1c/FRESH_FINAL_DB_READBACK.json",
+        "bytes": 21103416,
+        "sha256": "e39d435a6aa870a6ae558b26fa1469d4fbbe9d7cf2cbad05723628bb794ad79b"
+      }
+    },
+    "upgrade": {
+      "status": "PASS",
+      "checks": {
+        "observations": true,
+        "reconstruction_authorities": true,
+        "observation_revisions": true,
+        "snapshots": true,
+        "feature_values": true,
+        "predictions": true,
+        "models": true,
+        "model_set_members": true,
+        "permission_keys": true,
+        "prediction_runs": true,
+        "prediction_slots": true,
+        "slot_model_bindings": true
+      },
+      "execution_clock_columns_regenerated": true,
+      "schema_unchanged": true,
+      "counts": {
+        "acceptance_receipts": 615,
+        "activations": 8,
+        "contracts": 13,
+        "dataset_eligibility_ledger": 0,
+        "dataset_fold_cutoffs": 0,
+        "dataset_fold_label_selection": 0,
+        "dataset_rows": 0,
+        "datasets": 0,
+        "deployment_change_receipts": 8,
+        "deployment_heads": 1,
+        "feature_values": 4100,
+        "field_registry": 20,
+        "field_scope": 20,
+        "label_revisions": 0,
+        "label_source_bindings": 0,
+        "model_set_members": 3,
+        "model_sets": 3,
+        "models": 3,
+        "observation_revisions": 206,
+        "observations": 206,
+        "permission_keys": 3,
+        "prediction_runs": 615,
+        "prediction_slots": 616,
+        "predictions": 615,
+        "priority_projection": 1,
+        "priority_projection_grants": 0,
+        "reconstruction_authorities": 205,
+        "reports": 0,
+        "scopes": 2,
+        "slot_model_bindings": 615,
+        "slot_receipts": 616,
+        "snapshots": 206,
+        "targets": 1,
+        "training_runs": 0
+      },
+      "final_head": [
+        8,
+        "FEP_CANONICAL_ACTIVATION:upgrade-canonical-final-revoke",
+        "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee"
+      ],
+      "previous": {
+        "path": "reports/fep_e5_r1r1b/UPGRADE_FINAL_DB_READBACK.json",
+        "bytes": 21074107,
+        "sha256": "76a2a588b78fefc0255a6ead0512bee5124e1a2380da5a65c9b051bf3bdceb66"
+      },
+      "current": {
+        "path": "reports/fep_e5_r1r1c/UPGRADE_FINAL_DB_READBACK.json",
+        "bytes": 21107017,
+        "sha256": "08d19f006a6b98670441f1d85745cd2fcd4f9bbea3fd08c027d5f2ab8ca6f476"
+      }
+    }
+  }
+}

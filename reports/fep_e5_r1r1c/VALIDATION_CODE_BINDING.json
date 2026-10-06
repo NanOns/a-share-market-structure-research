@@ -1,0 +1,47 @@
+{
+  "code_bindings": [
+    {
+      "path": "src/workbench_analysis/fep_e5/canonical_ledger.py",
+      "bytes": 14317,
+      "sha256": "60c110d3dd1cf1781a48ad035a901e646b1453b5fd67b55801c5b46a41200f9b"
+    },
+    {
+      "path": "src/workbench_analysis/fep_e5/metadata_binding.py",
+      "bytes": 4195,
+      "sha256": "dc799f95361e6203c9720c37f3d90ca727432d139773eeafcb2a12830f5d71de"
+    },
+    {
+      "path": "scripts/run_fep_e5_r1r1c.py",
+      "bytes": 11917,
+      "sha256": "5c3c5c95ebc4b3bc6dbbd470d3b3d8d4a5365817547bde475b84e34e4f6e20cf"
+    },
+    {
+      "path": "scripts/publish_fep_e5_r1r1c_readback.py",
+      "bytes": 2226,
+      "sha256": "619fa7203640ade5fec1051bc8a216fc7f876b52b63c5ba9b5b062aceb167a51"
+    },
+    {
+      "path": "tests/fep_e5/test_e5_metadata_binding.py",
+      "bytes": 3212,
+      "sha256": "7b16f7cb5514182e9fbef5c0f0c06b7a9117c9b27043b6cc438cd73d69a3d01a"
+    }
+  ],
+  "algorithm_drivers": [
+    {
+      "path": "scripts/run_fep_e5_r1r1b.py",
+      "bytes": 14894,
+      "sha256": "8867dee7567812c1cd0d9f49c7b42e704cc84759587b4e2a015417667c98cd24"
+    },
+    {
+      "path": "scripts/finalize_fep_e5_r1r1b.py",
+      "bytes": 23244,
+      "sha256": "e4445c36a8068d5124eeea3f4f7c1f4a78895d7d12791fa76b6e818d311e2a3f"
+    }
+  ],
+  "reason": "Exact current successor evidence/closure code; post-projection changes only add remote verification and stricter parity assertions. Metadata admission and numerical/CAS/API/Priority code tested unchanged.",
+  "targeted_summary": {
+    "path": "reports/fep_e5_r1r1c/TARGETED_SUMMARY.json",
+    "bytes": 618,
+    "sha256": "c795b45ffe392b103d73f09dee6476e37b885cfbe2e68a9fbbfc107d95553e42"
+  }
+}

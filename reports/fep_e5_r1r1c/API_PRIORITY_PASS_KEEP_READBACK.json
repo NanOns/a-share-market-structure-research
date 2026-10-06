@@ -1,0 +1,844 @@
+{
+  "status": "PASS_KEEP",
+  "API": {
+    "status": "PASS",
+    "fixtures": {
+      "fresh": [
+        {
+          "stage": "E2",
+          "context": {
+            "prediction_id": "FEP_CANONICAL_PREDICTION:54bbc82f96405a1470980cf024d26e7c36d12f2a5bd38ae9c16345637c049765",
+            "slot_id": "FEP_CANONICAL_SLOT:af9149985b56d9e64228cc93a97f1e3dd1a1d285e03f70ff85d896adbee0ad00",
+            "model_set_id": "FEP_CANONICAL_SET:81e16abe188a75d2eb974d78a9cd650214629605cc49aaa060bee824272ce522",
+            "model_id": "FEP_E5_E2:0958ddd2705658aec687694a266196ac74a2b8cc3929dcf85f16bbd544a066ef",
+            "run_id": "FEP_CANONICAL_RUN:9ba83a17b8d3882aa8e20e820a048dbac12668ccba668da4b2d439d658d50882",
+            "snapshot_id": "FEP_CANONICAL_SNAPSHOT:4aa8b0e43afb002ab4f597e35d3b9db008b16a7e8761d8308d14260ef14deb3b",
+            "output_digest": "6c82c4a07c723ca63640aa95fee56aca3eb3b9c8515558eb91ec807fb1f5e4cb",
+            "feature_digest": "974a1a006478b4292c19be615ce6edc7712b8eeca1655bef41a3573aa989ec84",
+            "quality_digest": "e029fba81e3a0f08b0c5496d09ef0a62419b93b6288f6535caa35476c3fca008",
+            "authority_kind": "HISTORICAL_RECONSTRUCTION",
+            "publication_id": null,
+            "reconstruction_authority_id": "FEP_RECONSTRUCTION_AUTHORITY:edf2a87c41a04153e7d00be9e9af0e708248b2bbfadc83cc73a9d5a4766a703e",
+            "context_digest": "cd373209138426f1f7b61087256d2f0829742825e3d66791d6b3133bae0d3129"
+          },
+          "default": {
+            "status": "NOT_ENABLED_MODEL_DISPLAY_UNGRANTED",
+            "axes": null,
+            "projection_state": "REJECTED_QUALITY",
+            "diagnostic": false,
+            "MODEL_DISPLAY": "UNGRANTED",
+            "PRIORITY_USE": "UNGRANTED",
+            "REAL_DAILY_PRIORITY_SHADOW": "NOT_GRANTED",
+            "FIRST_OBSERVED": false,
+            "REAL_OOS": false,
+            "production": false,
+            "authority_kind": "HISTORICAL_RECONSTRUCTION"
+          },
+          "diagnostic": {
+            "status": "ENGINEERING_DIAGNOSTIC",
+            "axes": {
+              "OOD": {
+                "status": "NOT_APPLICABLE_DESCRIPTIVE_BASELINE",
+                "JOINT_OOD": "NOT_APPLICABLE_DESCRIPTIVE",
+                "hard_reasons": [],
+                "global_OOD_OK": false,
+                "diagnostic_reasons": []
+              },
+              "risk_expectancy": null,
+              "return_expectancy": null,
+              "confidence_support": {
+                "rows": 4552,
+                "dates": 220,
+                "blocks": 142,
+                "entities": 4552,
+                "episodes": 4552
+              },
+              "relative_expectancy": null,
+              "structure_expectancy": null
+            },
+            "projection_state": "REJECTED_QUALITY",
+            "diagnostic": true,
+            "MODEL_DISPLAY": "UNGRANTED",
+            "PRIORITY_USE": "UNGRANTED",
+            "REAL_DAILY_PRIORITY_SHADOW": "NOT_GRANTED",
+            "FIRST_OBSERVED": false,
+            "REAL_OOS": false,
+            "production": false,
+            "authority_kind": "HISTORICAL_RECONSTRUCTION"
+          }
+        },
+        {
+          "stage": "E3",
+          "context": {
+            "prediction_id": "FEP_CANONICAL_PREDICTION:7432ff9c70d4120635b0417c78d1892f93103a3a22239fe5ddad81fd5427043f",
+            "slot_id": "FEP_CANONICAL_SLOT:26743aa7d686725365f46beefea6f88a879347fcda101843da7b7f61b53d056a",
+            "model_set_id": "FEP_CANONICAL_SET:87ce74d007c753d86d45e09bb0383b26d73959601424f10b2ffc24fa10bb8793",
+            "model_id": "FEP_E5_E3:df402889545f21650b3829906e6d12a98a0ebcf6ea97d1722886025e7d90d222",
+            "run_id": "FEP_CANONICAL_RUN:6e436408dad3ad15d056ec2bf1c47b311ca37517d0cadfb99147b058ca2e6752",
+            "snapshot_id": "FEP_CANONICAL_SNAPSHOT:7529ed6e6cdc7ad66ce7fd282da2f1046274932ed89fe246c766355ba3e441a5",
+            "output_digest": "66adf59818ee33e05d23cec6d97f815e511b5c3409cadea28186798bbf99c903",
+            "feature_digest": "bda9494bf2bf7edd65e8a3adfc5831a1658c85281b287bd423b0eee8067b3ebb",
+            "quality_digest": "43b659a4f3bd5ecc64fa1e2a2f4ca45d27d24e95baff99fa5cb6dc303978180d",
+            "authority_kind": "HISTORICAL_RECONSTRUCTION",
+            "publication_id": null,
+            "reconstruction_authority_id": "FEP_RECONSTRUCTION_AUTHORITY:751207ae4845f5b3e325e309dbf61d722f47d32a26518fc5c6ad8a13e992826b",
+            "context_digest": "83c9409073b2b346442d1c53255da0bb7c34c74af37d2b0e8d06a3a9d7980baf"
+          },
+          "default": {
+            "status": "NOT_ENABLED_MODEL_DISPLAY_UNGRANTED",
+            "axes": null,
+            "projection_state": "READY",
+            "diagnostic": false,
+            "MODEL_DISPLAY": "UNGRANTED",
+            "PRIORITY_USE": "UNGRANTED",
+            "REAL_DAILY_PRIORITY_SHADOW": "NOT_GRANTED",
+            "FIRST_OBSERVED": false,
+            "REAL_OOS": false,
+            "production": false,
+            "authority_kind": "HISTORICAL_RECONSTRUCTION"
+          },
+          "diagnostic": {
+            "status": "ENGINEERING_DIAGNOSTIC",
+            "axes": {
+              "OOD": {
+                "status": "MARGINAL_CHECKS_PASS_JOINT_UNSET",
+                "JOINT_OOD": "UNSET",
+                "hard_reasons": [],
+                "global_OOD_OK": false,
+                "diagnostic_reasons": []
+              },
+              "risk_expectancy": null,
+              "return_expectancy": -0.007899889056946274,
+              "confidence_support": {
+                "rows": 4552,
+                "dates": 220,
+                "blocks": 142,
+                "entities": 4552,
+                "episodes": 4552
+              },
+              "relative_expectancy": null,
+              "structure_expectancy": null
+            },
+            "projection_state": "READY",
+            "diagnostic": true,
+            "MODEL_DISPLAY": "UNGRANTED",
+            "PRIORITY_USE": "UNGRANTED",
+            "REAL_DAILY_PRIORITY_SHADOW": "NOT_GRANTED",
+            "FIRST_OBSERVED": false,
+            "REAL_OOS": false,
+            "production": false,
+            "authority_kind": "HISTORICAL_RECONSTRUCTION"
+          }
+        },
+        {
+          "stage": "E4",
+          "context": {
+            "prediction_id": "FEP_CANONICAL_PREDICTION:00b578bfba3f2db641b5397c7e991a7c9d03b9dc5402bb2359945a7307ce1006",
+            "slot_id": "FEP_CANONICAL_SLOT:51fb7cd7cb6ccdc85447b44a2f251d1c945988d5948b1f4450d0f7861a996be4",
+            "model_set_id": "FEP_CANONICAL_SET:da58f814c02e57ee30c14cd907a4bf48c6f1c1c0180f1bb52811c685cb9bac22",
+            "model_id": "FEP_E5_E4:deb6788d228165cda5224cb1382bcdb237eb9cca392bc73e35191d3805821d65",
+            "run_id": "FEP_CANONICAL_RUN:e69c5fdf329a31b7f0b1cbf8608a7d7439604e8242141092ebdb0fc809703744",
+            "snapshot_id": "FEP_CANONICAL_SNAPSHOT:93c0d2bd2f424989451d862aa8f8385b8a5fdf9b464a5c175821fb57fe7f2ba2",
+            "output_digest": "9aa2038a168a3468a96a314d45db5eac29c538357558bd0dae6f0c72f7f9bd84",
+            "feature_digest": "0df70710430b5d3faf7229b59d9b8c2ee3e10265807ea1b0173b1f5204060c2f",
+            "quality_digest": "8ef359f7dce5836df50ce349cacba90ff5245242f59182656314780e7135ca3d",
+            "authority_kind": "HISTORICAL_RECONSTRUCTION",
+            "publication_id": null,
+            "reconstruction_authority_id": "FEP_RECONSTRUCTION_AUTHORITY:89e40aa56b23b6a76cbe045031ae698fb0d212a1268cd71e9c71b6cd247e369e",
+            "context_digest": "71e664c43e3a095e4e1cf66cb97d2df46f9ec5b223994c63e9a812f14c459177"
+          },
+          "default": {
+            "status": "NOT_ENABLED_MODEL_DISPLAY_UNGRANTED",
+            "axes": null,
+            "projection_state": "REJECTED_QUALITY",
+            "diagnostic": false,
+            "MODEL_DISPLAY": "UNGRANTED",
+            "PRIORITY_USE": "UNGRANTED",
+            "REAL_DAILY_PRIORITY_SHADOW": "NOT_GRANTED",
+            "FIRST_OBSERVED": false,
+            "REAL_OOS": false,
+            "production": false,
+            "authority_kind": "HISTORICAL_RECONSTRUCTION"
+          },
+          "diagnostic": {
+            "status": "ENGINEERING_DIAGNOSTIC",
+            "axes": {
+              "OOD": {
+                "status": "NOT_EVALUABLE_HARD_OOD",
+                "JOINT_OOD": "UNSET",
+                "hard_reasons": [
+                  "pos60:REQUIRED_FEATURE_MISSING",
+                  "prior60_percentile:REQUIRED_FEATURE_MISSING",
+                  "slope60:REQUIRED_FEATURE_MISSING"
+                ],
+                "global_OOD_OK": false,
+                "diagnostic_reasons": []
+              },
+              "risk_expectancy": null,
+              "return_expectancy": null,
+              "confidence_support": {
+                "rows": 4552,
+                "dates": 220,
+                "blocks": 142,
+                "entities": 4552,
+                "episodes": 4552
+              },
+              "relative_expectancy": null,
+              "structure_expectancy": null
+            },
+            "projection_state": "REJECTED_QUALITY",
+            "diagnostic": true,
+            "MODEL_DISPLAY": "UNGRANTED",
+            "PRIORITY_USE": "UNGRANTED",
+            "REAL_DAILY_PRIORITY_SHADOW": "NOT_GRANTED",
+            "FIRST_OBSERVED": false,
+            "REAL_OOS": false,
+            "production": false,
+            "authority_kind": "HISTORICAL_RECONSTRUCTION"
+          }
+        }
+      ],
+      "upgrade": [
+        {
+          "stage": "E2",
+          "context": {
+            "prediction_id": "FEP_CANONICAL_PREDICTION:54bbc82f96405a1470980cf024d26e7c36d12f2a5bd38ae9c16345637c049765",
+            "slot_id": "FEP_CANONICAL_SLOT:af9149985b56d9e64228cc93a97f1e3dd1a1d285e03f70ff85d896adbee0ad00",
+            "model_set_id": "FEP_CANONICAL_SET:81e16abe188a75d2eb974d78a9cd650214629605cc49aaa060bee824272ce522",
+            "model_id": "FEP_E5_E2:0958ddd2705658aec687694a266196ac74a2b8cc3929dcf85f16bbd544a066ef",
+            "run_id": "FEP_CANONICAL_RUN:9ba83a17b8d3882aa8e20e820a048dbac12668ccba668da4b2d439d658d50882",
+            "snapshot_id": "FEP_CANONICAL_SNAPSHOT:4aa8b0e43afb002ab4f597e35d3b9db008b16a7e8761d8308d14260ef14deb3b",
+            "output_digest": "6c82c4a07c723ca63640aa95fee56aca3eb3b9c8515558eb91ec807fb1f5e4cb",
+            "feature_digest": "974a1a006478b4292c19be615ce6edc7712b8eeca1655bef41a3573aa989ec84",
+            "quality_digest": "e029fba81e3a0f08b0c5496d09ef0a62419b93b6288f6535caa35476c3fca008",
+            "authority_kind": "HISTORICAL_RECONSTRUCTION",
+            "publication_id": null,
+            "reconstruction_authority_id": "FEP_RECONSTRUCTION_AUTHORITY:edf2a87c41a04153e7d00be9e9af0e708248b2bbfadc83cc73a9d5a4766a703e",
+            "context_digest": "cd373209138426f1f7b61087256d2f0829742825e3d66791d6b3133bae0d3129"
+          },
+          "default": {
+            "status": "NOT_ENABLED_MODEL_DISPLAY_UNGRANTED",
+            "axes": null,
+            "projection_state": "REJECTED_QUALITY",
+            "diagnostic": false,
+            "MODEL_DISPLAY": "UNGRANTED",
+            "PRIORITY_USE": "UNGRANTED",
+            "REAL_DAILY_PRIORITY_SHADOW": "NOT_GRANTED",
+            "FIRST_OBSERVED": false,
+            "REAL_OOS": false,
+            "production": false,
+            "authority_kind": "HISTORICAL_RECONSTRUCTION"
+          },
+          "diagnostic": {
+            "status": "ENGINEERING_DIAGNOSTIC",
+            "axes": {
+              "OOD": {
+                "status": "NOT_APPLICABLE_DESCRIPTIVE_BASELINE",
+                "JOINT_OOD": "NOT_APPLICABLE_DESCRIPTIVE",
+                "hard_reasons": [],
+                "global_OOD_OK": false,
+                "diagnostic_reasons": []
+              },
+              "risk_expectancy": null,
+              "return_expectancy": null,
+              "confidence_support": {
+                "rows": 4552,
+                "dates": 220,
+                "blocks": 142,
+                "entities": 4552,
+                "episodes": 4552
+              },
+              "relative_expectancy": null,
+              "structure_expectancy": null
+            },
+            "projection_state": "REJECTED_QUALITY",
+            "diagnostic": true,
+            "MODEL_DISPLAY": "UNGRANTED",
+            "PRIORITY_USE": "UNGRANTED",
+            "REAL_DAILY_PRIORITY_SHADOW": "NOT_GRANTED",
+            "FIRST_OBSERVED": false,
+            "REAL_OOS": false,
+            "production": false,
+            "authority_kind": "HISTORICAL_RECONSTRUCTION"
+          }
+        },
+        {
+          "stage": "E3",
+          "context": {
+            "prediction_id": "FEP_CANONICAL_PREDICTION:7432ff9c70d4120635b0417c78d1892f93103a3a22239fe5ddad81fd5427043f",
+            "slot_id": "FEP_CANONICAL_SLOT:26743aa7d686725365f46beefea6f88a879347fcda101843da7b7f61b53d056a",
+            "model_set_id": "FEP_CANONICAL_SET:87ce74d007c753d86d45e09bb0383b26d73959601424f10b2ffc24fa10bb8793",
+            "model_id": "FEP_E5_E3:df402889545f21650b3829906e6d12a98a0ebcf6ea97d1722886025e7d90d222",
+            "run_id": "FEP_CANONICAL_RUN:6e436408dad3ad15d056ec2bf1c47b311ca37517d0cadfb99147b058ca2e6752",
+            "snapshot_id": "FEP_CANONICAL_SNAPSHOT:7529ed6e6cdc7ad66ce7fd282da2f1046274932ed89fe246c766355ba3e441a5",
+            "output_digest": "66adf59818ee33e05d23cec6d97f815e511b5c3409cadea28186798bbf99c903",
+            "feature_digest": "bda9494bf2bf7edd65e8a3adfc5831a1658c85281b287bd423b0eee8067b3ebb",
+            "quality_digest": "43b659a4f3bd5ecc64fa1e2a2f4ca45d27d24e95baff99fa5cb6dc303978180d",
+            "authority_kind": "HISTORICAL_RECONSTRUCTION",
+            "publication_id": null,
+            "reconstruction_authority_id": "FEP_RECONSTRUCTION_AUTHORITY:751207ae4845f5b3e325e309dbf61d722f47d32a26518fc5c6ad8a13e992826b",
+            "context_digest": "83c9409073b2b346442d1c53255da0bb7c34c74af37d2b0e8d06a3a9d7980baf"
+          },
+          "default": {
+            "status": "NOT_ENABLED_MODEL_DISPLAY_UNGRANTED",
+            "axes": null,
+            "projection_state": "READY",
+            "diagnostic": false,
+            "MODEL_DISPLAY": "UNGRANTED",
+            "PRIORITY_USE": "UNGRANTED",
+            "REAL_DAILY_PRIORITY_SHADOW": "NOT_GRANTED",
+            "FIRST_OBSERVED": false,
+            "REAL_OOS": false,
+            "production": false,
+            "authority_kind": "HISTORICAL_RECONSTRUCTION"
+          },
+          "diagnostic": {
+            "status": "ENGINEERING_DIAGNOSTIC",
+            "axes": {
+              "OOD": {
+                "status": "MARGINAL_CHECKS_PASS_JOINT_UNSET",
+                "JOINT_OOD": "UNSET",
+                "hard_reasons": [],
+                "global_OOD_OK": false,
+                "diagnostic_reasons": []
+              },
+              "risk_expectancy": null,
+              "return_expectancy": -0.007899889056946274,
+              "confidence_support": {
+                "rows": 4552,
+                "dates": 220,
+                "blocks": 142,
+                "entities": 4552,
+                "episodes": 4552
+              },
+              "relative_expectancy": null,
+              "structure_expectancy": null
+            },
+            "projection_state": "READY",
+            "diagnostic": true,
+            "MODEL_DISPLAY": "UNGRANTED",
+            "PRIORITY_USE": "UNGRANTED",
+            "REAL_DAILY_PRIORITY_SHADOW": "NOT_GRANTED",
+            "FIRST_OBSERVED": false,
+            "REAL_OOS": false,
+            "production": false,
+            "authority_kind": "HISTORICAL_RECONSTRUCTION"
+          }
+        },
+        {
+          "stage": "E4",
+          "context": {
+            "prediction_id": "FEP_CANONICAL_PREDICTION:00b578bfba3f2db641b5397c7e991a7c9d03b9dc5402bb2359945a7307ce1006",
+            "slot_id": "FEP_CANONICAL_SLOT:51fb7cd7cb6ccdc85447b44a2f251d1c945988d5948b1f4450d0f7861a996be4",
+            "model_set_id": "FEP_CANONICAL_SET:da58f814c02e57ee30c14cd907a4bf48c6f1c1c0180f1bb52811c685cb9bac22",
+            "model_id": "FEP_E5_E4:deb6788d228165cda5224cb1382bcdb237eb9cca392bc73e35191d3805821d65",
+            "run_id": "FEP_CANONICAL_RUN:e69c5fdf329a31b7f0b1cbf8608a7d7439604e8242141092ebdb0fc809703744",
+            "snapshot_id": "FEP_CANONICAL_SNAPSHOT:93c0d2bd2f424989451d862aa8f8385b8a5fdf9b464a5c175821fb57fe7f2ba2",
+            "output_digest": "9aa2038a168a3468a96a314d45db5eac29c538357558bd0dae6f0c72f7f9bd84",
+            "feature_digest": "0df70710430b5d3faf7229b59d9b8c2ee3e10265807ea1b0173b1f5204060c2f",
+            "quality_digest": "8ef359f7dce5836df50ce349cacba90ff5245242f59182656314780e7135ca3d",
+            "authority_kind": "HISTORICAL_RECONSTRUCTION",
+            "publication_id": null,
+            "reconstruction_authority_id": "FEP_RECONSTRUCTION_AUTHORITY:89e40aa56b23b6a76cbe045031ae698fb0d212a1268cd71e9c71b6cd247e369e",
+            "context_digest": "71e664c43e3a095e4e1cf66cb97d2df46f9ec5b223994c63e9a812f14c459177"
+          },
+          "default": {
+            "status": "NOT_ENABLED_MODEL_DISPLAY_UNGRANTED",
+            "axes": null,
+            "projection_state": "REJECTED_QUALITY",
+            "diagnostic": false,
+            "MODEL_DISPLAY": "UNGRANTED",
+            "PRIORITY_USE": "UNGRANTED",
+            "REAL_DAILY_PRIORITY_SHADOW": "NOT_GRANTED",
+            "FIRST_OBSERVED": false,
+            "REAL_OOS": false,
+            "production": false,
+            "authority_kind": "HISTORICAL_RECONSTRUCTION"
+          },
+          "diagnostic": {
+            "status": "ENGINEERING_DIAGNOSTIC",
+            "axes": {
+              "OOD": {
+                "status": "NOT_EVALUABLE_HARD_OOD",
+                "JOINT_OOD": "UNSET",
+                "hard_reasons": [
+                  "pos60:REQUIRED_FEATURE_MISSING",
+                  "prior60_percentile:REQUIRED_FEATURE_MISSING",
+                  "slope60:REQUIRED_FEATURE_MISSING"
+                ],
+                "global_OOD_OK": false,
+                "diagnostic_reasons": []
+              },
+              "risk_expectancy": null,
+              "return_expectancy": null,
+              "confidence_support": {
+                "rows": 4552,
+                "dates": 220,
+                "blocks": 142,
+                "entities": 4552,
+                "episodes": 4552
+              },
+              "relative_expectancy": null,
+              "structure_expectancy": null
+            },
+            "projection_state": "REJECTED_QUALITY",
+            "diagnostic": true,
+            "MODEL_DISPLAY": "UNGRANTED",
+            "PRIORITY_USE": "UNGRANTED",
+            "REAL_DAILY_PRIORITY_SHADOW": "NOT_GRANTED",
+            "FIRST_OBSERVED": false,
+            "REAL_OOS": false,
+            "production": false,
+            "authority_kind": "HISTORICAL_RECONSTRUCTION"
+          }
+        }
+      ]
+    },
+    "after_revoke": "NO_AXES",
+    "real_daily": "NOT_ENABLED_NO_ACCEPTED_DAILY_SCOPE",
+    "production_mount": false
+  },
+  "priority": {
+    "status": "PASS_SYNTHETIC_ONLY",
+    "fixtures": {
+      "fresh": {
+        "status": "PASS_CANONICAL_SYNTHETIC_LINKAGE_ONLY",
+        "stored_row": {
+          "run_id": "FEP_CANONICAL_RUN:95cd1ab720d74601ea0d4566ef179b03e6d36422f4dc2728b699fa23847282a5",
+          "axis_state": "SYNTHETIC_LINKAGE_ONLY",
+          "axis_values": {
+            "version": "FEP_E5_CANONICAL_PRIORITY_SYNTHETIC_LINKAGE_V1",
+            "PRIORITY_USE": false,
+            "MODEL_DISPLAY": false,
+            "not_real_daily": true,
+            "synthetic_only": true,
+            "synthetic_fixture": {
+              "rows": [
+                {
+                  "axes": {
+                    "OOD": "FIXTURE",
+                    "risk_expectancy": 0.01,
+                    "return_expectancy": 1.0,
+                    "confidence_support": "FIXTURE",
+                    "relative_expectancy": null,
+                    "structure_expectancy": null
+                  },
+                  "risk": [],
+                  "action": "ENGINEERING_SHADOW",
+                  "v1_rank": 1,
+                  "eligible": true,
+                  "entity_id": "TEST_ONLY:0",
+                  "v1_identity": "811377cf22567f4e5d342f4289888d2abed4c0a9229db3f494be163c6dc3f904",
+                  "layer_identity": "c9c412c4e9a4763122b99a4086427e0d4c47ad39a92ba1580abb80fb56a95434",
+                  "v2_shadow_rank": 3,
+                  "v1_display_rank": 1,
+                  "projection_state": "READY"
+                },
+                {
+                  "axes": {
+                    "OOD": "FIXTURE",
+                    "risk_expectancy": 0.01,
+                    "return_expectancy": 2.0,
+                    "confidence_support": "FIXTURE",
+                    "relative_expectancy": null,
+                    "structure_expectancy": null
+                  },
+                  "risk": [],
+                  "action": "ENGINEERING_SHADOW",
+                  "v1_rank": 2,
+                  "eligible": true,
+                  "entity_id": "TEST_ONLY:1",
+                  "v1_identity": "b3cdf064832d28ec6f9ae96cbd72d80c3a97de9e0426f5d11e1e6fdd415b779a",
+                  "layer_identity": "c9c412c4e9a4763122b99a4086427e0d4c47ad39a92ba1580abb80fb56a95434",
+                  "v2_shadow_rank": 2,
+                  "v1_display_rank": 2,
+                  "projection_state": "READY"
+                },
+                {
+                  "axes": {
+                    "OOD": "FIXTURE",
+                    "risk_expectancy": 0.01,
+                    "return_expectancy": 3.0,
+                    "confidence_support": "FIXTURE",
+                    "relative_expectancy": null,
+                    "structure_expectancy": null
+                  },
+                  "risk": [],
+                  "action": "ENGINEERING_SHADOW",
+                  "v1_rank": 3,
+                  "eligible": true,
+                  "entity_id": "TEST_ONLY:2",
+                  "v1_identity": "8fc07a2e81022844f0b05a3b8b12fef44577abd905e181a15dad4dde9efdf756",
+                  "layer_identity": "c9c412c4e9a4763122b99a4086427e0d4c47ad39a92ba1580abb80fb56a95434",
+                  "v2_shadow_rank": 1,
+                  "v1_display_rank": 3,
+                  "projection_state": "READY"
+                },
+                {
+                  "axes": null,
+                  "risk": [],
+                  "action": "ABSTAIN",
+                  "v1_rank": 4,
+                  "eligible": true,
+                  "entity_id": "TEST_ONLY:3",
+                  "v1_identity": "fbd938d1d84029314a29cb17fa4f9f791b546efc5f7d4d9bd151c03936f12914",
+                  "layer_identity": "c9c412c4e9a4763122b99a4086427e0d4c47ad39a92ba1580abb80fb56a95434",
+                  "v2_shadow_rank": 4,
+                  "v1_display_rank": 4,
+                  "projection_state": "MISSING_PREDICTION"
+                },
+                {
+                  "axes": null,
+                  "risk": [],
+                  "action": "ABSTAIN",
+                  "v1_rank": 5,
+                  "eligible": true,
+                  "entity_id": "TEST_ONLY:4",
+                  "v1_identity": "f92b9352fc9aefcd6ae493b03afbb97e61d94896174ffb97f423b8599ceed798",
+                  "layer_identity": "c9c412c4e9a4763122b99a4086427e0d4c47ad39a92ba1580abb80fb56a95434",
+                  "v2_shadow_rank": 5,
+                  "v1_display_rank": 5,
+                  "projection_state": "MISSING_MODEL"
+                },
+                {
+                  "axes": null,
+                  "risk": [],
+                  "action": "ABSTAIN",
+                  "v1_rank": 6,
+                  "eligible": true,
+                  "entity_id": "TEST_ONLY:5",
+                  "v1_identity": "7baa60f7043795720b85a544ad7b79a9c500c4199ffd3b8390d944e1048dce95",
+                  "layer_identity": "c9c412c4e9a4763122b99a4086427e0d4c47ad39a92ba1580abb80fb56a95434",
+                  "v2_shadow_rank": 6,
+                  "v1_display_rank": 6,
+                  "projection_state": "REJECTED_OOD"
+                },
+                {
+                  "axes": {
+                    "OOD": "FIXTURE",
+                    "risk_expectancy": 10.0,
+                    "return_expectancy": 7.0,
+                    "confidence_support": "FIXTURE",
+                    "relative_expectancy": null,
+                    "structure_expectancy": null
+                  },
+                  "risk": [
+                    "INVALIDATED",
+                    "RISK_CHANGE",
+                    "HIGH_EXTENSION"
+                  ],
+                  "action": "ENGINEERING_SHADOW",
+                  "v1_rank": null,
+                  "eligible": false,
+                  "entity_id": "TEST_ONLY:6",
+                  "v1_identity": "de0e944f7b44ea88a71c72b0b4bb6f01c8dc523b060baab95c7f8992d4f28bd1",
+                  "layer_identity": "498a65d3e2c738409cc34b89d65e12e65dc5dd9d981f8487dc2f0f71601358a3",
+                  "v2_shadow_rank": null,
+                  "v1_display_rank": 7,
+                  "projection_state": "READY"
+                }
+              ],
+              "same_K": 3,
+              "status": "PASS_ENGINEERING_FIXTURE",
+              "REAL_OOS": false,
+              "v2_active": false,
+              "contract_id": "PRIORITY_V2_SHADOW_E5_V1",
+              "risk_events": [
+                {
+                  "events": [
+                    "INVALIDATED",
+                    "RISK_CHANGE",
+                    "HIGH_EXTENSION"
+                  ],
+                  "entity_id": "TEST_ONLY:6"
+                }
+              ],
+              "rejected_OOD": 1,
+              "missing_model": 1,
+              "FIRST_OBSERVED": false,
+              "coverage_ratio": 0.5,
+              "synthetic_only": true,
+              "full_pool_digest": "c083b03a7efec2819d7513bb43da6ba0c9b7e8efa1b7d2052ade8e219654fc11",
+              "covered_candidates": 3,
+              "missing_prediction": 1,
+              "same_candidate_set": true,
+              "eligible_candidates": 6,
+              "REAL_PRIORITY_SHADOW": "NOT_GRANTED",
+              "default_tie_break_enabled": false,
+              "missing_daily_observation": 0
+            },
+            "source_prior_fixture": {
+              "path": "reports/fep_e5_r1/DAILY_PRIORITY_CAPABILITY_READBACK.json",
+              "bytes": 19922,
+              "sha256": "71109f211a0348a8c1f3ee75ae5bae02b4a7be3805da3dc0fe37d9de34b81e31"
+            },
+            "historical_entry_anchor": "001b29e772b43a338054b01cd4ab8dc645f1f0c8e185132e00937c1ecd6d0014"
+          },
+          "projection_id": "FEP_CANONICAL_PRIORITY_SYNTHETIC_LINKAGE:fresh",
+          "observation_id": "001b29e772b43a338054b01cd4ab8dc645f1f0c8e185132e00937c1ecd6d0014",
+          "prediction_refs": [
+            {
+              "run_id": "FEP_CANONICAL_RUN:95cd1ab720d74601ea0d4566ef179b03e6d36422f4dc2728b699fa23847282a5",
+              "model_id": "FEP_E5_E2:0958ddd2705658aec687694a266196ac74a2b8cc3929dcf85f16bbd544a066ef",
+              "snapshot_id": "FEP_CANONICAL_SNAPSHOT:73432ca89abd70f31d3c88110c9e61538f7c4a901831f49f7d9726c1ef85a913",
+              "model_set_id": "FEP_CANONICAL_SET:81e16abe188a75d2eb974d78a9cd650214629605cc49aaa060bee824272ce522",
+              "prediction_id": "FEP_CANONICAL_PREDICTION:5fd7f55f36fe7da77ef1618ed200e7c6a82b7f941ce1b0908d95a4b5aea72424",
+              "observation_id": "001b29e772b43a338054b01cd4ab8dc645f1f0c8e185132e00937c1ecd6d0014"
+            },
+            {
+              "run_id": "FEP_CANONICAL_RUN:f260a7a6267a93e64a1520044c2cdd2d3e2c02d55266f49434fe749ff3c6015c",
+              "model_id": "FEP_E5_E3:df402889545f21650b3829906e6d12a98a0ebcf6ea97d1722886025e7d90d222",
+              "snapshot_id": "FEP_CANONICAL_SNAPSHOT:73432ca89abd70f31d3c88110c9e61538f7c4a901831f49f7d9726c1ef85a913",
+              "model_set_id": "FEP_CANONICAL_SET:87ce74d007c753d86d45e09bb0383b26d73959601424f10b2ffc24fa10bb8793",
+              "prediction_id": "FEP_CANONICAL_PREDICTION:6a4a7a89183d7b28642c3666821b7b631c88d84b52b5e37bcffde85512d657fb",
+              "observation_id": "001b29e772b43a338054b01cd4ab8dc645f1f0c8e185132e00937c1ecd6d0014"
+            },
+            {
+              "run_id": "FEP_CANONICAL_RUN:939bb426273a8109e2e238244022b197dc10ca0218a3e1d0115a0c957e31abc0",
+              "model_id": "FEP_E5_E4:deb6788d228165cda5224cb1382bcdb237eb9cca392bc73e35191d3805821d65",
+              "snapshot_id": "FEP_CANONICAL_SNAPSHOT:73432ca89abd70f31d3c88110c9e61538f7c4a901831f49f7d9726c1ef85a913",
+              "model_set_id": "FEP_CANONICAL_SET:da58f814c02e57ee30c14cd907a4bf48c6f1c1c0180f1bb52811c685cb9bac22",
+              "prediction_id": "FEP_CANONICAL_PREDICTION:aa07e64c8cd5b320411e73c0c13773b2e5448fe41c2456911dbb5a8573717709",
+              "observation_id": "001b29e772b43a338054b01cd4ab8dc645f1f0c8e185132e00937c1ecd6d0014"
+            }
+          ],
+          "core_rank_identity": "6dcd45f08f51342c2b48d9fa1c4a986a6ec009cbf92c709668adc1228d366300",
+          "priority_contract_id": "FEP_E5_CANONICAL_PRIORITY_SYNTHETIC_LINKAGE_V1"
+        },
+        "canonical_prediction_refs": 3,
+        "complete_pool": 7,
+        "synthetic_entity_to_historical_entity_equivalence": false,
+        "fixture_numbers_are_synthetic_and_not_historical_predictions": true,
+        "priority_grants": 0,
+        "real_daily_api": {
+          "status": "NOT_ENABLED_NO_ACCEPTED_DAILY_SCOPE",
+          "v2_active": false,
+          "REAL_PRIORITY_SHADOW": "NOT_GRANTED"
+        },
+        "full_V1_digest": "6dcd45f08f51342c2b48d9fa1c4a986a6ec009cbf92c709668adc1228d366300",
+        "risk_events_preserved": true,
+        "failed_priority_transaction_unchanged": true
+      },
+      "upgrade": {
+        "status": "PASS_CANONICAL_SYNTHETIC_LINKAGE_ONLY",
+        "stored_row": {
+          "run_id": "FEP_CANONICAL_RUN:95cd1ab720d74601ea0d4566ef179b03e6d36422f4dc2728b699fa23847282a5",
+          "axis_state": "SYNTHETIC_LINKAGE_ONLY",
+          "axis_values": {
+            "version": "FEP_E5_CANONICAL_PRIORITY_SYNTHETIC_LINKAGE_V1",
+            "PRIORITY_USE": false,
+            "MODEL_DISPLAY": false,
+            "not_real_daily": true,
+            "synthetic_only": true,
+            "synthetic_fixture": {
+              "rows": [
+                {
+                  "axes": {
+                    "OOD": "FIXTURE",
+                    "risk_expectancy": 0.01,
+                    "return_expectancy": 1.0,
+                    "confidence_support": "FIXTURE",
+                    "relative_expectancy": null,
+                    "structure_expectancy": null
+                  },
+                  "risk": [],
+                  "action": "ENGINEERING_SHADOW",
+                  "v1_rank": 1,
+                  "eligible": true,
+                  "entity_id": "TEST_ONLY:0",
+                  "v1_identity": "811377cf22567f4e5d342f4289888d2abed4c0a9229db3f494be163c6dc3f904",
+                  "layer_identity": "c9c412c4e9a4763122b99a4086427e0d4c47ad39a92ba1580abb80fb56a95434",
+                  "v2_shadow_rank": 3,
+                  "v1_display_rank": 1,
+                  "projection_state": "READY"
+                },
+                {
+                  "axes": {
+                    "OOD": "FIXTURE",
+                    "risk_expectancy": 0.01,
+                    "return_expectancy": 2.0,
+                    "confidence_support": "FIXTURE",
+                    "relative_expectancy": null,
+                    "structure_expectancy": null
+                  },
+                  "risk": [],
+                  "action": "ENGINEERING_SHADOW",
+                  "v1_rank": 2,
+                  "eligible": true,
+                  "entity_id": "TEST_ONLY:1",
+                  "v1_identity": "b3cdf064832d28ec6f9ae96cbd72d80c3a97de9e0426f5d11e1e6fdd415b779a",
+                  "layer_identity": "c9c412c4e9a4763122b99a4086427e0d4c47ad39a92ba1580abb80fb56a95434",
+                  "v2_shadow_rank": 2,
+                  "v1_display_rank": 2,
+                  "projection_state": "READY"
+                },
+                {
+                  "axes": {
+                    "OOD": "FIXTURE",
+                    "risk_expectancy": 0.01,
+                    "return_expectancy": 3.0,
+                    "confidence_support": "FIXTURE",
+                    "relative_expectancy": null,
+                    "structure_expectancy": null
+                  },
+                  "risk": [],
+                  "action": "ENGINEERING_SHADOW",
+                  "v1_rank": 3,
+                  "eligible": true,
+                  "entity_id": "TEST_ONLY:2",
+                  "v1_identity": "8fc07a2e81022844f0b05a3b8b12fef44577abd905e181a15dad4dde9efdf756",
+                  "layer_identity": "c9c412c4e9a4763122b99a4086427e0d4c47ad39a92ba1580abb80fb56a95434",
+                  "v2_shadow_rank": 1,
+                  "v1_display_rank": 3,
+                  "projection_state": "READY"
+                },
+                {
+                  "axes": null,
+                  "risk": [],
+                  "action": "ABSTAIN",
+                  "v1_rank": 4,
+                  "eligible": true,
+                  "entity_id": "TEST_ONLY:3",
+                  "v1_identity": "fbd938d1d84029314a29cb17fa4f9f791b546efc5f7d4d9bd151c03936f12914",
+                  "layer_identity": "c9c412c4e9a4763122b99a4086427e0d4c47ad39a92ba1580abb80fb56a95434",
+                  "v2_shadow_rank": 4,
+                  "v1_display_rank": 4,
+                  "projection_state": "MISSING_PREDICTION"
+                },
+                {
+                  "axes": null,
+                  "risk": [],
+                  "action": "ABSTAIN",
+                  "v1_rank": 5,
+                  "eligible": true,
+                  "entity_id": "TEST_ONLY:4",
+                  "v1_identity": "f92b9352fc9aefcd6ae493b03afbb97e61d94896174ffb97f423b8599ceed798",
+                  "layer_identity": "c9c412c4e9a4763122b99a4086427e0d4c47ad39a92ba1580abb80fb56a95434",
+                  "v2_shadow_rank": 5,
+                  "v1_display_rank": 5,
+                  "projection_state": "MISSING_MODEL"
+                },
+                {
+                  "axes": null,
+                  "risk": [],
+                  "action": "ABSTAIN",
+                  "v1_rank": 6,
+                  "eligible": true,
+                  "entity_id": "TEST_ONLY:5",
+                  "v1_identity": "7baa60f7043795720b85a544ad7b79a9c500c4199ffd3b8390d944e1048dce95",
+                  "layer_identity": "c9c412c4e9a4763122b99a4086427e0d4c47ad39a92ba1580abb80fb56a95434",
+                  "v2_shadow_rank": 6,
+                  "v1_display_rank": 6,
+                  "projection_state": "REJECTED_OOD"
+                },
+                {
+                  "axes": {
+                    "OOD": "FIXTURE",
+                    "risk_expectancy": 10.0,
+                    "return_expectancy": 7.0,
+                    "confidence_support": "FIXTURE",
+                    "relative_expectancy": null,
+                    "structure_expectancy": null
+                  },
+                  "risk": [
+                    "INVALIDATED",
+                    "RISK_CHANGE",
+                    "HIGH_EXTENSION"
+                  ],
+                  "action": "ENGINEERING_SHADOW",
+                  "v1_rank": null,
+                  "eligible": false,
+                  "entity_id": "TEST_ONLY:6",
+                  "v1_identity": "de0e944f7b44ea88a71c72b0b4bb6f01c8dc523b060baab95c7f8992d4f28bd1",
+                  "layer_identity": "498a65d3e2c738409cc34b89d65e12e65dc5dd9d981f8487dc2f0f71601358a3",
+                  "v2_shadow_rank": null,
+                  "v1_display_rank": 7,
+                  "projection_state": "READY"
+                }
+              ],
+              "same_K": 3,
+              "status": "PASS_ENGINEERING_FIXTURE",
+              "REAL_OOS": false,
+              "v2_active": false,
+              "contract_id": "PRIORITY_V2_SHADOW_E5_V1",
+              "risk_events": [
+                {
+                  "events": [
+                    "INVALIDATED",
+                    "RISK_CHANGE",
+                    "HIGH_EXTENSION"
+                  ],
+                  "entity_id": "TEST_ONLY:6"
+                }
+              ],
+              "rejected_OOD": 1,
+              "missing_model": 1,
+              "FIRST_OBSERVED": false,
+              "coverage_ratio": 0.5,
+              "synthetic_only": true,
+              "full_pool_digest": "c083b03a7efec2819d7513bb43da6ba0c9b7e8efa1b7d2052ade8e219654fc11",
+              "covered_candidates": 3,
+              "missing_prediction": 1,
+              "same_candidate_set": true,
+              "eligible_candidates": 6,
+              "REAL_PRIORITY_SHADOW": "NOT_GRANTED",
+              "default_tie_break_enabled": false,
+              "missing_daily_observation": 0
+            },
+            "source_prior_fixture": {
+              "path": "reports/fep_e5_r1/DAILY_PRIORITY_CAPABILITY_READBACK.json",
+              "bytes": 19922,
+              "sha256": "71109f211a0348a8c1f3ee75ae5bae02b4a7be3805da3dc0fe37d9de34b81e31"
+            },
+            "historical_entry_anchor": "001b29e772b43a338054b01cd4ab8dc645f1f0c8e185132e00937c1ecd6d0014"
+          },
+          "projection_id": "FEP_CANONICAL_PRIORITY_SYNTHETIC_LINKAGE:upgrade",
+          "observation_id": "001b29e772b43a338054b01cd4ab8dc645f1f0c8e185132e00937c1ecd6d0014",
+          "prediction_refs": [
+            {
+              "run_id": "FEP_CANONICAL_RUN:95cd1ab720d74601ea0d4566ef179b03e6d36422f4dc2728b699fa23847282a5",
+              "model_id": "FEP_E5_E2:0958ddd2705658aec687694a266196ac74a2b8cc3929dcf85f16bbd544a066ef",
+              "snapshot_id": "FEP_CANONICAL_SNAPSHOT:73432ca89abd70f31d3c88110c9e61538f7c4a901831f49f7d9726c1ef85a913",
+              "model_set_id": "FEP_CANONICAL_SET:81e16abe188a75d2eb974d78a9cd650214629605cc49aaa060bee824272ce522",
+              "prediction_id": "FEP_CANONICAL_PREDICTION:5fd7f55f36fe7da77ef1618ed200e7c6a82b7f941ce1b0908d95a4b5aea72424",
+              "observation_id": "001b29e772b43a338054b01cd4ab8dc645f1f0c8e185132e00937c1ecd6d0014"
+            },
+            {
+              "run_id": "FEP_CANONICAL_RUN:f260a7a6267a93e64a1520044c2cdd2d3e2c02d55266f49434fe749ff3c6015c",
+              "model_id": "FEP_E5_E3:df402889545f21650b3829906e6d12a98a0ebcf6ea97d1722886025e7d90d222",
+              "snapshot_id": "FEP_CANONICAL_SNAPSHOT:73432ca89abd70f31d3c88110c9e61538f7c4a901831f49f7d9726c1ef85a913",
+              "model_set_id": "FEP_CANONICAL_SET:87ce74d007c753d86d45e09bb0383b26d73959601424f10b2ffc24fa10bb8793",
+              "prediction_id": "FEP_CANONICAL_PREDICTION:6a4a7a89183d7b28642c3666821b7b631c88d84b52b5e37bcffde85512d657fb",
+              "observation_id": "001b29e772b43a338054b01cd4ab8dc645f1f0c8e185132e00937c1ecd6d0014"
+            },
+            {
+              "run_id": "FEP_CANONICAL_RUN:939bb426273a8109e2e238244022b197dc10ca0218a3e1d0115a0c957e31abc0",
+              "model_id": "FEP_E5_E4:deb6788d228165cda5224cb1382bcdb237eb9cca392bc73e35191d3805821d65",
+              "snapshot_id": "FEP_CANONICAL_SNAPSHOT:73432ca89abd70f31d3c88110c9e61538f7c4a901831f49f7d9726c1ef85a913",
+              "model_set_id": "FEP_CANONICAL_SET:da58f814c02e57ee30c14cd907a4bf48c6f1c1c0180f1bb52811c685cb9bac22",
+              "prediction_id": "FEP_CANONICAL_PREDICTION:aa07e64c8cd5b320411e73c0c13773b2e5448fe41c2456911dbb5a8573717709",
+              "observation_id": "001b29e772b43a338054b01cd4ab8dc645f1f0c8e185132e00937c1ecd6d0014"
+            }
+          ],
+          "core_rank_identity": "6dcd45f08f51342c2b48d9fa1c4a986a6ec009cbf92c709668adc1228d366300",
+          "priority_contract_id": "FEP_E5_CANONICAL_PRIORITY_SYNTHETIC_LINKAGE_V1"
+        },
+        "canonical_prediction_refs": 3,
+        "complete_pool": 7,
+        "synthetic_entity_to_historical_entity_equivalence": false,
+        "fixture_numbers_are_synthetic_and_not_historical_predictions": true,
+        "priority_grants": 0,
+        "real_daily_api": {
+          "status": "NOT_ENABLED_NO_ACCEPTED_DAILY_SCOPE",
+          "v2_active": false,
+          "REAL_PRIORITY_SHADOW": "NOT_GRANTED"
+        },
+        "full_V1_digest": "6dcd45f08f51342c2b48d9fa1c4a986a6ec009cbf92c709668adc1228d366300",
+        "risk_events_preserved": true,
+        "failed_priority_transaction_unchanged": true
+      }
+    },
+    "REAL_DAILY_PRIORITY_SHADOW": "NOT_GRANTED",
+    "Priority_V1_mutation": false
+  }
+}

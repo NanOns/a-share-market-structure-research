@@ -1,0 +1,112 @@
+{
+  "status": "PASS",
+  "schema": "fep",
+  "fixtures": {
+    "fresh": {
+      "table_counts": {
+        "acceptance_receipts": 615,
+        "activations": 6,
+        "contracts": 10,
+        "dataset_eligibility_ledger": 0,
+        "dataset_fold_cutoffs": 0,
+        "dataset_fold_label_selection": 0,
+        "dataset_rows": 0,
+        "datasets": 0,
+        "deployment_change_receipts": 6,
+        "deployment_heads": 1,
+        "feature_values": 4100,
+        "field_registry": 20,
+        "field_scope": 20,
+        "label_revisions": 0,
+        "label_source_bindings": 0,
+        "model_set_members": 3,
+        "model_sets": 3,
+        "models": 3,
+        "observation_revisions": 205,
+        "observations": 205,
+        "permission_keys": 3,
+        "prediction_runs": 615,
+        "prediction_slots": 616,
+        "predictions": 615,
+        "priority_projection": 0,
+        "priority_projection_grants": 0,
+        "reconstruction_authorities": 205,
+        "reports": 0,
+        "scopes": 1,
+        "slot_model_bindings": 615,
+        "slot_receipts": 616,
+        "snapshots": 205,
+        "targets": 1,
+        "training_runs": 0
+      },
+      "quality": {
+        "E2": {
+          "REJECTED_QUALITY": 159,
+          "READY": 46
+        },
+        "E3": {
+          "READY": 46,
+          "REJECTED_QUALITY": 159
+        },
+        "E4": {
+          "REJECTED_QUALITY": 159,
+          "READY": 46
+        }
+      }
+    },
+    "upgrade": {
+      "table_counts": {
+        "acceptance_receipts": 615,
+        "activations": 6,
+        "contracts": 12,
+        "dataset_eligibility_ledger": 0,
+        "dataset_fold_cutoffs": 0,
+        "dataset_fold_label_selection": 0,
+        "dataset_rows": 0,
+        "datasets": 0,
+        "deployment_change_receipts": 6,
+        "deployment_heads": 1,
+        "feature_values": 4100,
+        "field_registry": 20,
+        "field_scope": 20,
+        "label_revisions": 0,
+        "label_source_bindings": 0,
+        "model_set_members": 3,
+        "model_sets": 3,
+        "models": 3,
+        "observation_revisions": 206,
+        "observations": 206,
+        "permission_keys": 3,
+        "prediction_runs": 615,
+        "prediction_slots": 616,
+        "predictions": 615,
+        "priority_projection": 0,
+        "priority_projection_grants": 0,
+        "reconstruction_authorities": 205,
+        "reports": 0,
+        "scopes": 2,
+        "slot_model_bindings": 615,
+        "slot_receipts": 616,
+        "snapshots": 206,
+        "targets": 1,
+        "training_runs": 0
+      },
+      "quality": {
+        "E2": {
+          "REJECTED_QUALITY": 159,
+          "READY": 46
+        },
+        "E3": {
+          "READY": 46,
+          "REJECTED_QUALITY": 159
+        },
+        "E4": {
+          "REJECTED_QUALITY": 159,
+          "READY": 46
+        }
+      }
+    }
+  },
+  "fep_e5_engineering_used_as_authority": false,
+  "production": false
+}

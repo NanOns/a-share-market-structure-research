@@ -1,0 +1,390 @@
+{
+  "status": "PASS_EXECUTED_REJECTION_TESTS_ONLY",
+  "cases": [
+    {
+      "node": "tests.fep_e5.test_e5_canonical_identity::test_N05_missing_historical_authority_retains_population",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_canonical_identity::test_N04_date_matched_publication_is_not_a_mapping",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_canonical_identity::test_N03_digest_publication_is_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_canonical_identity::test_N03_canonical_database_rejects_fake_publication",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_canonical_identity::test_N04_canonical_database_rejects_wrong_date_publication",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_canonical_identity::test_identity_population_must_be_exact[duplicate]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_canonical_identity::test_identity_population_must_be_exact[foreign_authority]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_01_entry_daily_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_02_t1_t5_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_03_abs_market_excess_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_04_core_supplemental_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_05_current_head_rebuild_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_06_seen_outer_promotion_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_07_e4_champion_rejected[TREE_CHALLENGER]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_08_e2_champion_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_09_display_without_champion_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_10_priority_without_daily_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_11_old_entry_as_today_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_12_v1_rank_mutation_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_13_eligibility_mutation_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_14_positive_hides_risk_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_15_ood_denominator_drop_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_16_no_model_slot_retained",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_17_binding_not_replaced_by_better_result",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_18_post_result_priority_tuple_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_19_post_result_disposition_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_20_core_feedback_write_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_21_exact_permission_not_cross_target_horizon",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_22_fixture_real_oos_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_23_reconstructed_first_observed_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_24_rollback_cannot_delete_history",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_25_failed_transaction_no_partial_activation",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_26_joint_unset_cannot_be_pass",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_27_real_daily_api_inactive",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_28_v1_source_parameter_digest_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_29_new_training_blocked",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_e5_30_label_recompute_blocked",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_actual_append_only_predictions_and_corrected_view",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_atomic_prediction_receipt_failure",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_prediction_persisted_then_priority_fails_independently",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_idempotence_semantic_clock_metadata",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_priority_fixture_full_pool_and_risk_preserved",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_actual_http_bootstrap_context_and_api_permission",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_same_day_guard_each_clock[trade_date]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_same_day_guard_each_clock[snapshot_trade_date]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_same_day_guard_each_clock[slot_trade_date]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_same_day_guard_each_clock[accepted_trade_date]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_none_is_unknown_not_neutral",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_unset_future_oos_closed",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_late_activation_and_deadline",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_future_feature_snapshot_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_cas_idempotent_and_conflict",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_all_fact_tables_have_db_guards",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_prediction_output_identity_cannot_override[model_id-INJECTED]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_prediction_output_identity_cannot_override[inference_model_id-OTHER]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_prediction_output_identity_cannot_override[inference_source_digest-OTHER]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_contract::test_prediction_output_identity_cannot_override[inference_snapshot_digest-OTHER]",
+      "status": "PASS"
+    }
+  ],
+  "executed_cases": 57,
+  "inherited_R1_negative_semantics_preserved": true,
+  "canonical_CAS_and_permission_repair_cases": "NOT_EXECUTED_BLOCKED_IDENTITY_AUTHORITY",
+  "canonical_integration_acceptance": false,
+  "synthetic_fixtures_not_authority_for_historical_population": true,
+  "canonical_required_cases": [
+    {
+      "case": "N01",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N02",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N03",
+      "status": "PASS_EXECUTED_REAL_POSTGRES_REJECTION",
+      "reason": "New explicit missing/fake/date-mismatched authority tests; no historical acceptance claim"
+    },
+    {
+      "case": "N04",
+      "status": "PASS_EXECUTED_REAL_POSTGRES_REJECTION",
+      "reason": "New explicit missing/fake/date-mismatched authority tests; no historical acceptance claim"
+    },
+    {
+      "case": "N05",
+      "status": "PASS_EXECUTED_REAL_POSTGRES_REJECTION",
+      "reason": "New explicit missing/fake/date-mismatched authority tests; no historical acceptance claim"
+    },
+    {
+      "case": "N06",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N07",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N08",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N09",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N10",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N11",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N12",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N13",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N14",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N15",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N16",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N17",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N18",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N19",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N20",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N21",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N22",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N23",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N24",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N25",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N26",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N27",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N28",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N29",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    },
+    {
+      "case": "N30",
+      "status": "NOT_EXECUTED_IN_CANONICAL_INTEGRATION_PATH",
+      "reason": "Canonical execution stopped at missing publication authority; inherited prototype tests are not canonical integration proof"
+    }
+  ]
+}

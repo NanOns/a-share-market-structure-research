@@ -1,0 +1,181 @@
+{
+  "blockers": [
+    {
+      "audit_id": "E5-B01",
+      "status": "OPEN_BLOCKER",
+      "scope": "CANONICAL_FEP_LEDGER_INTEGRATION",
+      "repair_requirement": "Use the accepted canonical fep.* projection ledger, not a parallel schema.",
+      "evidence": [
+        {
+          "path": "reports/fep_e5_r1/PROJECTION_PERSISTENCE_GATE.json",
+          "bytes": 693,
+          "sha256": "bd0306b5d9c2d1d3e2ffa4f16a02a49022f54db38ecdeee1dc8bcc829f3174da"
+        },
+        {
+          "path": "reports/fep_e5_r1/FINAL_EXIT_READBACK.json",
+          "bytes": 12895,
+          "sha256": "c204ef41a75a46dc8ed134616aa29204e5edc5bd1de952fa8495b19d4e44339b"
+        },
+        {
+          "path": "src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql",
+          "bytes": 22956,
+          "sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356"
+        },
+        {
+          "path": "src/workbench_db/migrations/v4_postgres/029_fep_append_only_v1.sql",
+          "bytes": 4285,
+          "sha256": "efb9bb078cb758b67919a86fe8f67d5020c9e39b34b04c72db2ab5e3ee761b5b"
+        },
+        {
+          "path": "src/workbench_db/migrations/v4_postgres/030_fep_validation_cas_v1.sql",
+          "bytes": 17761,
+          "sha256": "b516a275813ab9d5b15279a876f9526597d5069ddf5773903812ff13c9579296"
+        },
+        {
+          "path": "src/workbench_db/migrations/v4_postgres/031_fep_roles_v1.sql",
+          "bytes": 2815,
+          "sha256": "59e660f6e6b0d62f207dd1c6d6a16ed26c7d41525d65870ef3aacbc341e0c3b8"
+        }
+      ],
+      "acceptance": "Separately issued R1R1 task and independent audit; not closed by this receipt"
+    },
+    {
+      "audit_id": "E5-B02",
+      "status": "OPEN_BLOCKER",
+      "scope": "CANONICAL_OBSERVATION_SNAPSHOT_PUBLICATION_BINDING",
+      "repair_requirement": "Bind formal observations/revisions/snapshots/publications with canonical FK and triggers; engineering content handles do not satisfy this chain.",
+      "evidence": [
+        {
+          "path": "reports/fep_e5_r1/EMBEDDED_SNAPSHOT_ADAPTER_READBACK.json",
+          "bytes": 1478,
+          "sha256": "0f207c6c641a36fcd32a66432ea887725464f95e2e7a8dd8d60c0beb89617469"
+        },
+        {
+          "path": "src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql",
+          "bytes": 22956,
+          "sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356"
+        },
+        {
+          "path": "src/workbench_db/migrations/v4_postgres/029_fep_append_only_v1.sql",
+          "bytes": 4285,
+          "sha256": "efb9bb078cb758b67919a86fe8f67d5020c9e39b34b04c72db2ab5e3ee761b5b"
+        },
+        {
+          "path": "src/workbench_db/migrations/v4_postgres/030_fep_validation_cas_v1.sql",
+          "bytes": 17761,
+          "sha256": "b516a275813ab9d5b15279a876f9526597d5069ddf5773903812ff13c9579296"
+        },
+        {
+          "path": "src/workbench_db/migrations/v4_postgres/031_fep_roles_v1.sql",
+          "bytes": 2815,
+          "sha256": "59e660f6e6b0d62f207dd1c6d6a16ed26c7d41525d65870ef3aacbc341e0c3b8"
+        }
+      ],
+      "acceptance": "Separately issued R1R1 task and independent audit; not closed by this receipt"
+    },
+    {
+      "audit_id": "E5-B03",
+      "status": "OPEN_BLOCKER",
+      "scope": "CANONICAL_PERMISSION_DEPLOYMENT_INTEGRATION",
+      "repair_requirement": "Validate canonical permission/activation/deployment receipts and fep.cas_deploy; explicitly repair the CHAMPION-only vs diagnostic SHADOW contract conflict without granting display or priority.",
+      "evidence": [
+        {
+          "path": "reports/fep_e5_r1/PERMISSION_MATRIX.json",
+          "bytes": 1063,
+          "sha256": "96b48a502c7bca01e1f397c9ee3542c6b149834764eab684c86f0c95b8ecc646"
+        },
+        {
+          "path": "reports/fep_e5_r1/ROLLBACK_DRILL.json",
+          "bytes": 1810,
+          "sha256": "60e7788e066f5e094eb9b26fab23c4f908e4cffe30758f9f40ea02e73957931d"
+        },
+        {
+          "path": "src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql",
+          "bytes": 22956,
+          "sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356"
+        },
+        {
+          "path": "src/workbench_db/migrations/v4_postgres/029_fep_append_only_v1.sql",
+          "bytes": 4285,
+          "sha256": "efb9bb078cb758b67919a86fe8f67d5020c9e39b34b04c72db2ab5e3ee761b5b"
+        },
+        {
+          "path": "src/workbench_db/migrations/v4_postgres/030_fep_validation_cas_v1.sql",
+          "bytes": 17761,
+          "sha256": "b516a275813ab9d5b15279a876f9526597d5069ddf5773903812ff13c9579296"
+        },
+        {
+          "path": "src/workbench_db/migrations/v4_postgres/031_fep_roles_v1.sql",
+          "bytes": 2815,
+          "sha256": "59e660f6e6b0d62f207dd1c6d6a16ed26c7d41525d65870ef3aacbc341e0c3b8"
+        }
+      ],
+      "acceptance": "Separately issued R1R1 task and independent audit; not closed by this receipt"
+    }
+  ],
+  "notes": [
+    {
+      "audit_id": "AUDIT_NOTE_E5_01",
+      "status": "HEAD_TARGET_CORRECTED_READBACK_NO_CI_RUN",
+      "scope": "Implementation HEAD CI receipt; prior candidate receipt remains immutable",
+      "evidence": [
+        {
+          "path": "reports/fep_e5_external_audit_r1/GITHUB_CI_IMPLEMENTATION_READBACK.json",
+          "bytes": 357,
+          "sha256": "66e467db3db3601267355232f981d6a6f2f08790c7df91aeaaa731f98148c9ae"
+        }
+      ],
+      "acceptance": "Local readback only; no CI PASS claim"
+    },
+    {
+      "audit_id": "AUDIT_NOTE_E4_01",
+      "status": "EXTERNALLY_CONFIRMED_E5_PROTOCOL_PASS",
+      "scope": "Seven frozen engineering governance fields",
+      "evidence": [
+        {
+          "path": "reports/fep_e5_external_audit_r1/V4_15E5_INDEPENDENT_EXTERNAL_AUDIT_R1_20261006.md",
+          "bytes": 14599,
+          "sha256": "202385558843367b756a193499ee308f17bd7c6651b5efc38d3025bf88aaa0d2"
+        },
+        {
+          "path": "reports/fep_e5_r1/PROTOCOL_FREEZE.json",
+          "bytes": 639,
+          "sha256": "7054451e18b336b3bab66b670388fbb53ccf47428a2baf437d3a864cffc5861f"
+        }
+      ],
+      "acceptance": "Supplied E5 external audit section 2"
+    }
+  ],
+  "current_execution": {
+    "status": "BLOCKED_CONTRACT_CONFLICT",
+    "B01": "OPEN_BLOCKER",
+    "B02": "OPEN_BLOCKER",
+    "B03": "OPEN_BLOCKER",
+    "evidence": [
+      {
+        "path": "reports/fep_e5_r1r1/CONTRACT_CONFLICT_DISPOSITION.json",
+        "bytes": 1576,
+        "sha256": "758a056a5fad8dcc77a1bcf202df32326fcf76d15588dcd93bbe5d41b4fe0989"
+      },
+      {
+        "path": "reports/fep_e5_r1r1/CANONICAL_PUBLICATION_BINDING_READBACK.json",
+        "bytes": 295279,
+        "sha256": "7c5e59148b4b3c5c0c88647c8e239677fb61720866690f3c860a5ef407488282"
+      }
+    ],
+    "acceptance": "Authentic historical authority repair plus canonical implementation and independent audit required"
+  },
+  "separate_cross_cutting_audit": {
+    "audit_id": "FEP_CANONICAL_NON_CHAMPION_SHADOW_ROLE_CONFLICT_R1",
+    "scope": "Canonical SHADOW role expressiveness across future FEP stages",
+    "status": "CONFIRMED_OPEN",
+    "evidence": [
+      {
+        "path": "src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql",
+        "bytes": 22956,
+        "sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356"
+      }
+    ],
+    "acceptance": "Narrow additive repair with retained exact member FK and champion-only display/priority; not resolved by this diagnostic result"
+  }
+}

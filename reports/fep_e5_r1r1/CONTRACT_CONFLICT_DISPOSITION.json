@@ -1,0 +1,30 @@
+{
+  "status": "BLOCKED_CONTRACT_CONFLICT",
+  "blockers": [
+    {
+      "blocker_id": "E5-B02",
+      "exact_failing_contract": "030 fep.validate_observation_revision + canonical publication FK",
+      "conflict": "CONTRACT_CONFLICT_CANONICAL_PUBLICATION_BINDING",
+      "affected_observations": 205,
+      "missing_authority": "exact historical publication/revision/snapshot/namespace/dependency authority",
+      "attempted_legal_path": "Read-only exact binding against canonical fep/v4 in both accepted E1 fixtures; inspect source identity artifact",
+      "workaround_forbidden": "Fake accepted publication, digest identity, current backfill and silent row skip",
+      "smallest_proposed_repair": "Supply authentic canonical historical authority manifest and accessible read-only authority database/export"
+    },
+    {
+      "blocker_id": "E5-B03",
+      "conflict": "CONFIRMED_CHAMPION_ONLY_SHADOW_PERMISSION_CONTRACT",
+      "exact_failing_contract": {
+        "path": "src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql",
+        "bytes": 22956,
+        "sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356"
+      },
+      "disposition": "Narrow additive role-aware SHADOW repair authorized, deferred because identity authority gate blocks execution",
+      "proposed_repair": "SHADOW_INFERENCE exact model_set_member role; display/priority remain CHAMPION-only; retain FK"
+    }
+  ],
+  "E5_B01": "OPEN_BLOCKER_NOT_IMPLEMENTED",
+  "E5_B02": "OPEN_BLOCKER",
+  "E5_B03": "OPEN_BLOCKER",
+  "NEXT": "STOP_WAIT_EXTERNAL_CONTRACT_REPAIR"
+}

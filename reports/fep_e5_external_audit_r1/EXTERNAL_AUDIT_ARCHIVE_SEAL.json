@@ -1,0 +1,88 @@
+{
+  "stage": "V4-15E5.EXTERNAL_AUDIT.R1",
+  "status": "BLOCKED_EXTERNAL_AUDIT_ARCHIVED",
+  "baseline": "51a1aab3fc9fe5bb390ec768dfd9514a1db6af54",
+  "authority": {
+    "path": "reports/fep_e5_external_audit_r1/V4_15E5_INDEPENDENT_EXTERNAL_AUDIT_R1_20261006.md",
+    "bytes": 14599,
+    "sha256": "202385558843367b756a193499ee308f17bd7c6651b5efc38d3025bf88aaa0d2"
+  },
+  "code_bindings": [
+    {
+      "path": "scripts/archive_fep_e5_external_audit_r1.py",
+      "bytes": 10199,
+      "sha256": "4a66d141d363de55ef05f840a051cc02134b31e86cfb035f3efd5251bc31f4b5"
+    }
+  ],
+  "evidence_bindings": [
+    {
+      "path": "reports/fep_e5_external_audit_r1/.gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "reports/fep_e5_external_audit_r1/AUDIT_ITEM_DISPOSITIONS.json",
+      "bytes": 6169,
+      "sha256": "7a92b3368b28247c7b2ca1963918be3ebb9ba78d2c75f5b6b196cad9527014f8"
+    },
+    {
+      "path": "reports/fep_e5_external_audit_r1/AUDIT_RECONCILIATION_READBACK.json",
+      "bytes": 92042,
+      "sha256": "b71d4d48bb28a09517c665ee6f20dff27ee5a43995a8c9e05ea03c809cab555c"
+    },
+    {
+      "path": "reports/fep_e5_external_audit_r1/CHANGED_FILE_LIST.json",
+      "bytes": 704,
+      "sha256": "97f030d79287ec8becb25075393d32a474e89678ab2dbf30bf57a57f6a4ef91d"
+    },
+    {
+      "path": "reports/fep_e5_external_audit_r1/COMPLETION_REPORT.md",
+      "bytes": 1422,
+      "sha256": "f831947970b2c2fc495b8e40ebd7b5b7bb684be601de06fad4f479a9b8338912"
+    },
+    {
+      "path": "reports/fep_e5_external_audit_r1/GITHUB_CI_IMPLEMENTATION_READBACK.json",
+      "bytes": 357,
+      "sha256": "66e467db3db3601267355232f981d6a6f2f08790c7df91aeaaa731f98148c9ae"
+    },
+    {
+      "path": "reports/fep_e5_external_audit_r1/V4_15E5_INDEPENDENT_EXTERNAL_AUDIT_R1_20261006.md",
+      "bytes": 14599,
+      "sha256": "202385558843367b756a193499ee308f17bd7c6651b5efc38d3025bf88aaa0d2"
+    }
+  ],
+  "state": {
+    "V4_15E5_FINAL_EXTERNAL_AUDIT": "BLOCKED_R1_CANONICAL_FEP_INTEGRATION",
+    "E5_PROTOCOL_FREEZE": "PASS",
+    "E5_MODEL_EVIDENCE_CLASS": "PASS",
+    "E5_HISTORICAL_ENTRY_PROJECTION_PROTOTYPE": "PASS_ENGINEERING",
+    "E5_ENTRY_DAILY_SEPARATION": "PASS",
+    "E5_PRIORITY_V2_SHADOW_ENGINE": "PASS_ENGINEERING_FIXTURE",
+    "E5_PERMISSION_FAIL_CLOSED": "PASS_IN_ISOLATED_ENGINEERING_LEDGER",
+    "E5_ROLLBACK_ATOMICITY": "PASS_IN_ISOLATED_ENGINEERING_LEDGER",
+    "E5_NEGATIVE_MATRIX": "PASS",
+    "E5_REGRESSION": "PASS_CAPABILITY_SCOPED_WITH_KNOWN_DEBT",
+    "E5_CANONICAL_FEP_LEDGER_INTEGRATION": "FAIL",
+    "E5_CANONICAL_OBSERVATION_SNAPSHOT_PUBLICATION_BINDING": "FAIL",
+    "E5_CANONICAL_PERMISSION_DEPLOYMENT_INTEGRATION": "FAIL",
+    "E5": "BLOCKED_NOT_FORMALLY_ACCEPTED",
+    "FEP_E5_ENGINEERING_ACCEPTED": false,
+    "E5_R1R1_STARTED": false,
+    "E5_R1R1_FORMAL_TASK_CARD": "NOT_SUPPLIED",
+    "NEXT": "ISSUE_V4_15E5_R1R1_CANONICAL_FEP_INTEGRATION_REPAIR",
+    "REAL_DAILY_PRIORITY_SHADOW": "NOT_GRANTED",
+    "PRIORITY_USE": "UNGRANTED",
+    "MODEL_DISPLAY": "UNGRANTED",
+    "CHAMPION": false,
+    "REAL_OOS": "NOT_GRANTED",
+    "FIRST_OBSERVED": "NOT_GRANTED",
+    "FEP_PRODUCTION": "UNGRANTED",
+    "new_training": 0,
+    "new_label_resolution": 0,
+    "production": false,
+    "shadow": false,
+    "focus": false
+  },
+  "sealed_at": "2026-10-06T01:54:34.811843+00:00",
+  "logical_digest": "a308f5fdfc9b18300d4906bfe9c83d4ff0627ad968a3bedce53e3b7517e3448b"
+}

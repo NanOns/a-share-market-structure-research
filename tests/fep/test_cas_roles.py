@@ -158,4 +158,4 @@ def test_E1_24_concurrent_cas_and_same_request(pg):
         replays=list(executor.map(compete,[(b,args),(b,args)]))
     assert all(x['status']=='PASS' and x['version']==2 for x in replays)
     from workbench_analysis.fep_e1.contracts import atomic_json
-    atomic_json(ROOT/'reports/fep_e1'/f'CAS_CONCURRENCY_{old}.json',dict(evidence_class='ENGINEERING_FIXTURE',isolated_database=name,concurrent_cas=results,identical_request_replay=replays,rollback_counts=counts))
+    atomic_json(ROOT/os.environ.get('FEP_TEST_RECEIPT_ROOT','reports/fep_e1')/f'CAS_CONCURRENCY_{old}.json',dict(evidence_class='ENGINEERING_FIXTURE',isolated_database=name,concurrent_cas=results,identical_request_replay=replays,rollback_counts=counts))

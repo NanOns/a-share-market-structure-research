@@ -1,0 +1,99 @@
+{
+  "current_audit_head": {
+    "bytes": 178356,
+    "path": "data/v4/V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V3.json",
+    "sha256": "0e78e72a225d444293c554ed5dc5527c02ae2d8d01ba0cfb3d923bc7696bc9d9"
+  },
+  "decision": "KEEP_EXACT_OPEN_STATES; NO_INDEPENDENT_EXTERNAL_DISPOSITION_AVAILABLE",
+  "entries": {
+    "A04": {
+      "affected_capabilities": [
+        "A04"
+      ],
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "ACCEPTED_SCOPED"
+    },
+    "A04_H21_CONSUMER": {
+      "affected_capabilities": [
+        "AMOUNT_A_H21_FORMAL_CONSUMER"
+      ],
+      "blocks_affected_capability_in_shadow": true,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "ACCUMULATION_CONTINUES"
+    },
+    "A04_HISTORICAL_AMOUNT_A": {
+      "affected_capabilities": [
+        "HISTORICAL_AMOUNT_A_FORMAL_CONSUMER"
+      ],
+      "blocks_affected_capability_in_shadow": true,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "BLOCKED_AFFECTED_SCOPE"
+    },
+    "A08": {
+      "affected_capabilities": [
+        "A08"
+      ],
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "ACCEPTED_SCOPED"
+    },
+    "A08_CURRENT_RUNTIME": {
+      "affected_capabilities": [
+        "V4_09_N01_CURRENT_RUNTIME_PREWATCH"
+      ],
+      "blocks_affected_capability_in_shadow": true,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "OPEN_EXTERNAL_REAUDIT"
+    },
+    "AUD_R3C_ACCEPTED_SUSPENSION_STATE_ADMISSION_01": {
+      "affected_capabilities": [
+        "AUD_R3C_ACCEPTED_SUSPENSION_STATE_ADMISSION_01"
+      ],
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "OPEN_EXTERNAL_REAUDIT"
+    },
+    "AUD_R3C_ADJUSTMENT_COORDINATE_EXACTNESS": {
+      "affected_capabilities": [
+        "AUD_R3C_ADJUSTMENT_COORDINATE_EXACTNESS"
+      ],
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "OPEN_EXTERNAL_REAUDIT"
+    },
+    "AUD_R3C_D2_ADMISSION_AND_PRIOR_AUTHENTICITY": {
+      "affected_capabilities": [
+        "AUD_R3C_D2_ADMISSION_AND_PRIOR_AUTHENTICITY"
+      ],
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "OPEN_EXTERNAL_REAUDIT"
+    },
+    "AUD_R3C_EVENT_PRIOR_UNKNOWN_01": {
+      "affected_capabilities": [
+        "AUD_R3C_EVENT_PRIOR_UNKNOWN_01"
+      ],
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "OPEN_EXTERNAL_REAUDIT"
+    },
+    "AUD_R3_GIT_EXACT_BYTE_PORTABILITY": {
+      "affected_capabilities": [
+        "AUD_R3_GIT_EXACT_BYTE_PORTABILITY"
+      ],
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "OPEN_EXTERNAL_REAUDIT"
+    },
+    "AUD_R3_REAL_WINDOW_AND_EPISODE_CAPABILITY": {
+      "affected_capabilities": [
+        "AUD_R3_REAL_WINDOW_AND_EPISODE_CAPABILITY"
+      ],
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "NONBLOCKING_VALIDATION_DEBT"
+    }
+  },
+  "status": "EXTERNAL_ACCEPTANCE_NOT_GRANTED"
+}

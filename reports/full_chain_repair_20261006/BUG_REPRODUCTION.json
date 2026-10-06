@@ -1,0 +1,68 @@
+{
+  "P0-01": {
+    "actual_intersection": [],
+    "actual_owner_code_consumes_prewatch": true,
+    "affected_capability": [
+      "V4_09_N01_CURRENT_RUNTIME_PREWATCH"
+    ],
+    "historical_set_test_would_allow": true,
+    "open_issue": "OPEN_EXTERNAL_REAUDIT"
+  },
+  "P0-02": {
+    "actual_rejection": "EXACT_DEPENDENCY_MISMATCH",
+    "actual_restart_first_read": "E:\\codex work\\大A交易\\config\\v4_16_runtime_dependencies_v3.json",
+    "contract_runtime_implemented": false,
+    "worker_storage_missing_from_baseline_schema": true
+  },
+  "P1-03": {
+    "actual_orphan_publication_insert_accepted": true,
+    "fixture_origin": "ACTIVATION_SIMULATION",
+    "storage": "MEMORY_ONLY"
+  },
+  "P1-04": {
+    "actual_generic_relative_return": -8.326672684688674e-17,
+    "actual_missing_fields": [
+      "benchmark_valuation_coverage",
+      "benchmark_marked_weight",
+      "quote_age",
+      "quote_trade_date",
+      "relative_market_return"
+    ]
+  },
+  "P1-05": {
+    "actual_invalid_interior_affine_result": {
+      "MAE_N": -2.0,
+      "MFE_N": 0.19999999999999996,
+      "PATH_MDD_CLOSE_N": -2.1,
+      "R_N": 0.10000000000000009,
+      "actual_count": 2,
+      "available_at": null,
+      "evaluation_adjustment_identity": "LOCAL_AFFINE_V1",
+      "evaluation_basis_date": "2030-01-03",
+      "evaluation_comparison_reference": 10,
+      "outcome_status": "OBSERVED",
+      "path_quality": "OBSERVED",
+      "reason_codes": [],
+      "source_asof": null,
+      "transform_coefficients": {
+        "alpha": 1,
+        "beta": 0
+      },
+      "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+    },
+    "illegal_alpha": -1
+  },
+  "P1-06": {
+    "actual_database_negative_before_migration": "test_baseline_unknown_signal_accepted: two isolated PostgreSQL fixtures",
+    "evidence": {
+      "bytes": 11320,
+      "path": "reports/full_chain_repair_20261006/targeted.xml",
+      "sha256": "e3827c0f894ae43b4fd807fd9710e659dbbe0b2c76f2061ceb886e9512c28987"
+    }
+  },
+  "P2-07": {
+    "actual_default_install_executes_sql": true,
+    "fixture_opt_in_required": false,
+    "real_database_used": false
+  }
+}

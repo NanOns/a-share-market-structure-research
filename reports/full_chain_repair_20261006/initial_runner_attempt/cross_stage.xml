@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="22" skipped="0" tests="348" time="64.087" timestamp="2026-10-06T19:46:27.573813+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_state_contract_and_parameter_identity_negative_vectors[compression_state_correct]" time="0.001" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_state_contract_and_parameter_identity_negative_vectors[compression_state_wrong_contract]" time="0.001" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_state_contract_and_parameter_identity_negative_vectors[compression_state_missing_contract]" time="0.001" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_state_contract_and_parameter_identity_negative_vectors[compression_state_wrong_parameter]" time="0.001" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_state_contract_and_parameter_identity_negative_vectors[compression_state_missing_parameter]" time="0.001" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_state_contract_and_parameter_identity_negative_vectors[ma_structure_state_correct]" time="0.001" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_state_contract_and_parameter_identity_negative_vectors[ma_structure_state_wrong_contract]" time="0.001" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_state_contract_and_parameter_identity_negative_vectors[ma_structure_state_missing_contract]" time="0.001" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_state_contract_and_parameter_identity_negative_vectors[ma_structure_state_wrong_parameter]" time="0.001" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_state_contract_and_parameter_identity_negative_vectors[ma_structure_state_missing_parameter]" time="0.001" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_state_contract_and_parameter_identity_negative_vectors[core_extension_risk_correct]" time="0.001" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_state_contract_and_parameter_identity_negative_vectors[core_extension_risk_wrong_contract]" time="0.001" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_state_contract_and_parameter_identity_negative_vectors[core_extension_risk_missing_contract]" time="0.001" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_state_contract_and_parameter_identity_negative_vectors[core_extension_risk_wrong_parameter]" time="0.001" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_state_contract_and_parameter_identity_negative_vectors[core_extension_risk_missing_parameter]" time="0.001" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_priority_failures_never_change_false_or_unknown_raw" time="0.001" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_b0_validator_rejects_self_consistent_wrong_producer_or_contract[b0_contract]" time="0.014" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_b0_validator_rejects_self_consistent_wrong_producer_or_contract[b0_producer]" time="0.007" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_immutable_writer_exclusive_create_retry_and_conflict" time="0.008" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_concurrent_conflicting_creates_preserve_one_complete_payload" time="0.004" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_materialized_t_next_day_and_same_day_revision_do_not_replace_t" time="0.020" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_legacy_fixed_output_is_prohibited_before_loading_inputs" time="0.001" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[RAW_TRUE_TRUE]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[RAW_TRUE_UNKNOWN]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[RAW_FALSE_TRUE]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[RAW_FALSE_UNKNOWN]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[RAW_UNKNOWN_TRUE]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[RAW_UNKNOWN_UNKNOWN]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_6]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_7]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_8]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_9]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_10]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_11]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_12]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_13]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_14]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_15]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_16]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_17]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_18]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_19]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_20]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_21]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_22]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_23]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_24]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_25]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_26]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_27]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_28]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_29]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_30]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_31]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_32]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_33]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_34]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_35]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_36]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_37]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_38]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_39]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_40]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_41]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_42]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_43]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_44]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_45]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_46]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_47]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_48]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_49]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_50]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_51]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_52]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_53]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_54]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_55]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_56]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_57]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_58]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_59]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_60]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_61]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_62]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_63]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_64]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_65]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_66]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_67]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_68]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_69]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_70]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_71]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_72]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_73]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_74]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_75]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_76]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_77]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_78]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_79]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_80]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_81]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_82]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_83]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_84]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_85]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_86]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_87]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_88]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_89]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_90]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_91]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_92]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_93]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_94]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_95]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_96]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_97]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_98]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_99]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_100]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_101]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_102]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_103]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_104]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_105]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_106]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_107]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_108]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_109]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_110]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_111]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_112]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_113]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_114]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_115]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_116]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_117]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_118]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_119]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_120]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_121]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_122]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_123]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_124]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_125]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_126]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_127]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_128]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_129]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_130]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_131]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_132]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_133]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_134]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_135]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_136]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_137]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_138]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_139]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_140]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_141]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_142]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_143]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_144]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[AXES_145]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[UNKNOWN_146]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[UNKNOWN_147]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[UNKNOWN_148]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_independent_frozen_vector[UNKNOWN_149]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_required_unknown_dominates_false_seed[damage]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_required_unknown_dominates_false_seed[seed]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_required_unknown_dominates_false_seed[source_date]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_required_unknown_dominates_false_seed[availability]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_required_unknown_dominates_false_seed[basis]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_required_unknown_dominates_false_seed[publication]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_required_unknown_dominates_false_seed[identity]" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_priority_unknown_does_not_gate_true_seed" time="0.001" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_partial_seed_does_not_require_all_profile_fields" time="0.001" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_forbidden_fields_do_not_change_any_result_bytes[sector_prewatch]" time="0.003" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_forbidden_fields_do_not_change_any_result_bytes[rotation_core_state]" time="0.003" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_forbidden_fields_do_not_change_any_result_bytes[B2]" time="0.003" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_forbidden_fields_do_not_change_any_result_bytes[state_reducer]" time="0.003" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_forbidden_fields_do_not_change_any_result_bytes[final_eligibility]" time="0.003" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_forbidden_fields_do_not_change_any_result_bytes[confirmation]" time="0.003" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_forbidden_fields_do_not_change_any_result_bytes[anchor]" time="0.003" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_forbidden_fields_do_not_change_any_result_bytes[support]" time="0.003" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_forbidden_fields_do_not_change_any_result_bytes[radar]" time="0.003" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_forbidden_fields_do_not_change_any_result_bytes[focus]" time="0.003" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_forbidden_fields_do_not_change_any_result_bytes[ui]" time="0.003" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_forbidden_fields_do_not_change_any_result_bytes[future_outcome]" time="0.003" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_forbidden_fields_do_not_change_any_result_bytes[forward_return]" time="0.003" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_forbidden_fields_do_not_change_any_result_bytes[turnover]" time="0.003" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_parameter_instance_and_numeric_enum_order" time="0.002" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_context_drives_dates_publications_counts[2030-01-02-1]" time="0.001" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_context_drives_dates_publications_counts[2030-02-04-3]" time="0.002" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_context_drives_dates_publications_counts[2031-03-05-4]" time="0.001" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_duplicate_missing_and_board_scope_rejected" time="0.000" /><testcase classname="tests.v4_09.test_stock_prewatch" name="test_production_and_v4_09_acceptance_stay_disabled" time="0.046"><failure message="workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED">tests\v4_09\test_stock_prewatch.py:104: in test_production_and_v4_09_acceptance_stay_disabled
+    assert current_state(ROOT)['status']=='PASS'
+           ^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\historical_stage_governance_r17.py:51: in current_state
+    if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED</failure></testcase><testcase classname="tests.v4_dm01_r4r2.test_acceptance_seal" name="test_real_external_envelope_and_extension_bytes" time="0.031" /><testcase classname="tests.v4_dm01_r4r2.test_acceptance_seal" name="test_sealed_future_wait_has_no_source_or_publication" time="0.178" /><testcase classname="tests.v4_dm01_r4r2.test_acceptance_seal" name="test_acceptance_does_not_grant_shadow_or_move_heads" time="0.005" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[1]" time="0.970" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[2]" time="0.941" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[3]" time="0.897" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[4]" time="0.926" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[5]" time="0.970" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[6]" time="0.962" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[7]" time="1.012" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[8]" time="0.938" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[9]" time="0.908" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[10]" time="0.892" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[13]" time="0.907" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_R4R2_11_engineering_producer" time="0.990" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_R4R2_12_real_shaped_parity" time="1.295"><failure message="ValueError: BRIDGE_EXACT_BINDING_MISMATCH">tests\v4_dm01_r4r2\test_bridge.py:126: in test_R4R2_12_real_shaped_parity
+    packetref=produce_packet(v['root'],daily=packet['candidate']['grant']['daily_input_authority'],candidate=put(v['root'],'reports/r25/activation_candidate/authority.json',packet['candidate']),sources=packet['candidate']['grant']['source_authority'],predecessor=packet['candidate']['grant']['predecessor'],output='reports/r25/activation_candidate/engineering_packet.json',engineering=True)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\build_r25_bridge_r4r2.py:53: in produce_packet
+    for reference in deps['bindings']:o.exact_bytes(root,reference)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r25_bridge_oracle_r4r2.py:115: in exact_bytes
+    check(binding(root,b['path'])==b,'BRIDGE_EXACT_BINDING_MISMATCH');return (Path(root)/b['path']).read_bytes()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r25_bridge_oracle_r4r2.py:14: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: BRIDGE_EXACT_BINDING_MISMATCH</failure></testcase><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_R4R2_14_old_V1_historical_only" time="0.851" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_R4R2_15_contract_parity" time="0.003" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_R4R2_16_future_wait[2026-10-08-2026-10-05T00:00:00Z]" time="0.002" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_R4R2_16_future_wait[2026-09-28-2026-09-28T06:00:00Z]" time="0.001" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_output_cannot_target_heads" time="0.002" /><testcase classname="tests.test_r20a_current" name="test_current_reader_injected_without_historical_validator" time="1.516" /><testcase classname="tests.test_r20a_current" name="test_independent_gate" time="0.022"><failure message="ValueError: CURRENT_METADATA_COHERENCE_EXACT">tests\test_r20a_current.py:16: in test_independent_gate
+    def test_independent_gate():assert oracle.validate()['R20A_CURRENT_STAGE_AUTHORITY']=='PASS_LOCAL'
+                                       ^^^^^^^^^^^^^^^^^
+scripts\validate_r20a_current.py:33: in validate
+    require(stage==expected,'CURRENT_METADATA_COHERENCE_EXACT')
+scripts\validate_r20a_current.py:8: in require
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: CURRENT_METADATA_COHERENCE_EXACT</failure></testcase><testcase classname="tests.test_r20a_current" name="test_independent_current_negatives[range]" time="0.022" /><testcase classname="tests.test_r20a_current" name="test_independent_current_negatives[entry]" time="0.023" /><testcase classname="tests.test_r20a_current" name="test_independent_current_negatives[binding]" time="0.022" /><testcase classname="tests.test_r20a_current" name="test_independent_current_negatives[digest]" time="0.023" /><testcase classname="tests.test_r20a_current" name="test_independent_current_negatives[data]" time="0.021" /><testcase classname="tests.test_r20a_current" name="test_independent_current_negatives[production]" time="0.022" /><testcase classname="tests.test_r20a_current" name="test_independent_current_negatives[shadow]" time="0.021" /><testcase classname="tests.test_r20a_current" name="test_independent_current_negatives[focus]" time="0.021" /><testcase classname="tests.test_r20a_current" name="test_independent_current_negatives[pit]" time="0.022" /><testcase classname="tests.test_r20a_current" name="test_reader_no_latest_resolution" time="0.000" /><testcase classname="tests.test_r20c_runtime" name="test_first_persistent_revision_and_correction" time="1.473" /><testcase classname="tests.test_r20c_runtime" name="test_frozen_event_families[FIRST_PREWATCH-STOCK-TRUE-True]" time="1.366" /><testcase classname="tests.test_r20c_runtime" name="test_frozen_event_families[REENTRY_PREWATCH-STOCK-TRUE-True]" time="1.353" /><testcase classname="tests.test_r20c_runtime" name="test_frozen_event_families[NEW_CONFIRMED-STOCK-TRUE-True]" time="1.386" /><testcase classname="tests.test_r20c_runtime" name="test_frozen_event_families[REACCELERATION_EVENT-STOCK-TRUE-True]" time="1.381" /><testcase classname="tests.test_r20c_runtime" name="test_frozen_event_families[UPGRADE_TO_WARM-SECTOR-TRUE-True]" time="1.350" /><testcase classname="tests.test_r20c_runtime" name="test_frozen_event_families[INVALIDATION-STOCK-FALSE-False]" time="1.371" /><testcase classname="tests.test_r20c_runtime" name="test_frozen_event_families[UPGRADE_TO_WARM-STOCK-TRUE-False]" time="1.342" /><testcase classname="tests.test_r20c_runtime" name="test_focus_display_and_multisector_do_not_filter" time="1.362" /><testcase classname="tests.test_r20c_runtime" name="test_forbidden_metadata[focus_filter]" time="1.349" /><testcase classname="tests.test_r20c_runtime" name="test_forbidden_metadata[ui_top_k_filter]" time="1.345" /><testcase classname="tests.test_r20c_runtime" name="test_forbidden_metadata[future_source]" time="1.356" /><testcase classname="tests.test_r20c_runtime" name="test_forbidden_metadata[fep_prediction]" time="1.382" /><testcase classname="tests.test_r20c_runtime" name="test_forbidden_metadata[reset_T0]" time="1.359" /><testcase classname="tests.test_r20c_runtime" name="test_forbidden_metadata[redraw_controls]" time="1.337" /><testcase classname="tests.test_r20c_runtime" name="test_forbidden_metadata[qualification_source]" time="1.331" /><testcase classname="tests.test_r20c_runtime" name="test_changed_byte_overwrite_rejected" time="1.335" /><testcase classname="tests.test_r20c_runtime" name="test_illegal_episode_revision" time="1.357" /><testcase classname="tests.test_r20c_runtime" name="test_formal_exit_reentry_preserves_old" time="1.399" /><testcase classname="tests.test_r20c_runtime" name="test_no_current_authority_and_namespace_escape" time="1.350" /><testcase classname="tests.test_r20c_runtime" name="test_unsealed_publication_rejected" time="1.358" /><testcase classname="tests.test_r20c_runtime" name="test_future_event_rejected" time="1.445" /><testcase classname="tests.test_r20c_runtime" name="test_duplicate_entity_rejected" time="1.399" /><testcase classname="tests.test_r20c_runtime" name="test_diagnostics_never_primary_enrollment[SEED]" time="1.356" /><testcase classname="tests.test_r20c_runtime" name="test_diagnostics_never_primary_enrollment[NEAR_MISS]" time="1.361" /><testcase classname="tests.test_r20d_settlement" name="test_independent_formula_examples[closes0-expected0]" time="0.001" /><testcase classname="tests.test_r20d_settlement" name="test_independent_formula_examples[closes1-expected1]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_independent_formula_examples[closes2-expected2]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_independent_formula_examples[closes3-expected3]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_no_coercion[update0-IDENTITY_UNKNOWN]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_no_coercion[update1-ADJUSTMENT_UNKNOWN]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_no_coercion[update2-ADJUSTMENT_UNKNOWN]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_no_coercion[update3-SUSPENDED_AT_HORIZON]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_no_coercion[update4-DELISTED_BEFORE_HORIZON]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_no_coercion[update5-MATURED_DATA_MISSING]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_terminal_evidence_and_gaps" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_affine_common_basis_and_exclude_t0_extrema" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_calendar" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_fixed_benchmark_no_reweight" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_controls" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_unknown_delta_does_not_invent_ranking" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_benchmark_mixed_basis_and_distinct_t0_transform" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_availability_no_future" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_persisted_revision_readback" time="1.342" /><testcase classname="tests.test_r20d_settlement" name="test_strict_accepted_projection" time="1.409" /><testcase classname="tests.test_r20d_settlement" name="test_all_horizons_independent_arithmetic[1]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_all_horizons_independent_arithmetic[3]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_all_horizons_independent_arithmetic[5]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_all_horizons_independent_arithmetic[10]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_all_horizons_independent_arithmetic[20]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_sector_runtime_and_rotation" time="1.305" /><testcase classname="tests.test_r20d_settlement" name="test_reconstruction_does_not_fake_available_t0" time="1.289" /><testcase classname="tests.test_r20d_settlement" name="test_bad_affine[0-0]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_bad_affine[-1-0]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_bad_affine[nan-0]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_bad_affine[1-inf]" time="0.000" /><testcase classname="tests.test_r20e_persisted" name="test_full_independent_disk_oracle" time="0.022"><failure message="ValueError: CURRENT_METADATA_COHERENCE_EXACT">tests\test_r20e_persisted.py:16: in test_full_independent_disk_oracle
+    result=oracle.validate()
+           ^^^^^^^^^^^^^^^^^
+scripts\validate_r20e_oracle.py:25: in validate
+    current_gate()
+scripts\validate_r20a_current.py:33: in validate
+    require(stage==expected,'CURRENT_METADATA_COHERENCE_EXACT')
+scripts\validate_r20a_current.py:8: in require
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: CURRENT_METADATA_COHERENCE_EXACT</failure></testcase><testcase classname="tests.test_r20e_persisted" name="test_current_authority_negatives[stage_pointer_reverted_to_v4_13]" time="0.020" /><testcase classname="tests.test_r20e_persisted" name="test_current_authority_negatives[stale_v4_14_entry]" time="0.021" /><testcase classname="tests.test_r20e_persisted" name="test_current_authority_negatives[v4_14_head_digest_mutated]" time="0.022" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[future_source_before_T0_freeze]" time="0.023" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[Focus_filters_enrollment]" time="0.023" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[UI_filters_enrollment]" time="0.023" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[same_day_revision_new_logical_event]" time="0.025" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[source_correction_resets_T0]" time="0.023" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[source_correction_redraws_controls]" time="0.023" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[benchmark_reweights_missing_member]" time="0.026" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[marked_threshold_invented]" time="0.023" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[control_future_refill]" time="0.025" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[control_assignment_changed_after_crossing]" time="0.023" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[same_source_creates_duplicate_revision]" time="0.024" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[corrected_source_overwrites_first_observed]" time="0.034" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[mixed_adjustment_basis]" time="0.023" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[unregistered_CRLF_normalization]" time="0.024" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[binary_normalization]" time="0.023" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[FEP_feedback]" time="0.023" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[raw_provider_fallback]" time="0.025" /><testcase classname="tests.test_r20e_persisted" name="test_changed_byte_overwrite_fails_closed" time="0.190" /><testcase classname="tests.test_r20e_persisted" name="test_oracle_does_not_import_evaluators_or_resolver" time="0.000" /><testcase classname="tests.test_r20e_persisted" name="test_real_quote_does_not_grant_research_universe_or_controls" time="0.007" /><testcase classname="tests.test_r23r1_runtime" name="test_positive_complete_persisted_oracle" time="2.230" /><testcase classname="tests.test_r23r1_runtime" name="test_independent_rejects_semantic_corruption[25]" time="0.041" /><testcase classname="tests.test_r23r1_runtime" name="test_independent_rejects_semantic_corruption[26]" time="0.040" /><testcase classname="tests.test_r23r1_runtime" name="test_independent_rejects_semantic_corruption[27]" time="0.042" /><testcase classname="tests.test_r23r1_runtime" name="test_independent_rejects_semantic_corruption[28]" time="0.042" /><testcase classname="tests.test_r23r1_runtime" name="test_independent_rejects_semantic_corruption[29]" time="0.043" /><testcase classname="tests.test_r23r1_runtime" name="test_independent_rejects_semantic_corruption[30]" time="0.042" /><testcase classname="tests.test_r23r1_runtime" name="test_independent_rejects_semantic_corruption[31]" time="0.041" /><testcase classname="tests.test_r23r1_runtime" name="test_independent_rejects_semantic_corruption[32]" time="0.042" /><testcase classname="tests.test_r23r1_runtime" name="test_capability_scope_absent" time="0.002" /><testcase classname="tests.test_r23r1_runtime" name="test_nonaccepted_states_complete_and_missed_preserves_timing" time="1.933" /><testcase classname="tests.test_r23r1_runtime" name="test_receipt_creation_before_visibility_rejected" time="1.892" /><testcase classname="tests.test_r23r1_runtime" name="test_oracle_has_no_writer_import" time="0.002" /><testcase classname="tests.test_r23r1_runtime" name="test_protected_baseline" time="0.158"><failure message="ValueError: PROTECTED_BASELINE_MUTATION">tests\test_r23r1_runtime.py:84: in test_protected_baseline
+    def test_protected_baseline():assert oracle.protected()['status']=='PASS_LOCAL'
+                                         ^^^^^^^^^^^^^^^^^^
+scripts\validate_r23r1_runtime.py:95: in protected
+    require((changed&amp;existing)&lt;=allowed,'PROTECTED_BASELINE_MUTATION')
+scripts\validate_r23r1_runtime.py:8: in require
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: PROTECTED_BASELINE_MUTATION</failure></testcase><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A01]" time="0.002" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A02]" time="0.019" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A03]" time="0.024"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH</failure></testcase><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A04]" time="0.024"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH</failure></testcase><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A05]" time="0.025"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH</failure></testcase><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A06]" time="0.025"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH</failure></testcase><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A07]" time="0.023"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH</failure></testcase><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A08]" time="0.028"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'UNACCEPTED_STORAGE'&#10;  Actual message: 'EXACT_DEPENDENCY_MISMATCH'">tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:57: in negative
+    with pytest.raises(ValueError,match=REASONS[case]):controller(x)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'UNACCEPTED_STORAGE'
+E     Actual message: 'EXACT_DEPENDENCY_MISMATCH'</failure></testcase><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A09]" time="0.029"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'UNACCEPTED_SOURCE_ADAPTER'&#10;  Actual message: 'EXACT_DEPENDENCY_MISMATCH'">tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:57: in negative
+    with pytest.raises(ValueError,match=REASONS[case]):controller(x)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'UNACCEPTED_SOURCE_ADAPTER'
+E     Actual message: 'EXACT_DEPENDENCY_MISMATCH'</failure></testcase><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A10]" time="0.024"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'MISSING_MANDATORY_SOURCE'&#10;  Actual message: 'EXACT_DEPENDENCY_MISMATCH'">tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:57: in negative
+    with pytest.raises(ValueError,match=REASONS[case]):controller(x)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'MISSING_MANDATORY_SOURCE'
+E     Actual message: 'EXACT_DEPENDENCY_MISMATCH'</failure></testcase><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A11]" time="0.024"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH</failure></testcase><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A12]" time="0.025"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH</failure></testcase><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A13]" time="0.024"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH</failure></testcase><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A14]" time="0.025"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH</failure></testcase><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A15]" time="0.025"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH</failure></testcase><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A16]" time="0.024"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH</failure></testcase><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A17]" time="0.022"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH</failure></testcase><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A18]" time="0.023"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH</failure></testcase><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A19]" time="0.025"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH</failure></testcase><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A20]" time="0.002" /></testsuite></testsuites>

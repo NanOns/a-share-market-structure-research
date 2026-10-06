@@ -1,0 +1,34 @@
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "tests/fep_e5",
+    "tests/fep_e4",
+    "tests/fep_e3",
+    "tests/fep_e2",
+    "tests/fep",
+    "tests/test_r20d_settlement.py",
+    "tests/test_r25_packet.py::test_actual_authority_inventory_waits_without_target",
+    "-q",
+    "--junitxml=E:\\codex work\\大A交易\\reports\\full_chain_repair_20261006\\affected_stage.xml.working"
+  ],
+  "exit_code": 0,
+  "failed_nodes": [],
+  "introduced_failure_nodes": [],
+  "known_debt_nodes": [],
+  "log": {
+    "bytes": 6402,
+    "path": "reports/full_chain_repair_20261006/affected_stage.log",
+    "sha256": "de92b3c2b33aa98202bc44a727c16dd17d735b7d7ac68e9a308c2a3246f74943"
+  },
+  "passed": 545,
+  "removed_debt_nodes": [],
+  "skipped": 1,
+  "xml": {
+    "bytes": 68568,
+    "path": "reports/full_chain_repair_20261006/affected_stage.xml",
+    "sha256": "2c329d5e58c7265f0b0d48ab6c536d86d466068131253204b3dde273bc37c525"
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "fresh": {
+    "contracts": [
+      [
+        "FEP_E2_ENTRY_EVENT_STRATA_V1_1",
+        "FEP_E2_ENTRY_EVENT_STRATA_V1_1",
+        "1",
+        "6df0c6ad8f0109b6a02b56b4f905341cd12b53b3607c18791b3aada285b6d569",
+        {
+          "accepted_contract": {
+            "completeness": "Every entity/date from frozen R1R1 scan; FULL_OWNER_EVALUATION required before any first episode",
+            "contract_id": "FEP_E2_ENTRY_EVENT_STRATA_V1_1",
+            "first_prewatch": "Accepted Radar ENROLLED + maturity PREWATCH + no parent episode; initial SEED upgrade is not an ENROLLED event",
+            "formal_signals": [
+              "FIRST_PREWATCH",
+              "NEW_CONFIRMED",
+              "REENTRY"
+            ],
+            "frozen_at": "2026-10-05T13:03:51.040921+00:00",
+            "heuristic": "ENGINEERING_SUPPORT_HEURISTIC",
+            "lineage": {
+              "AS_RECORDED": false,
+              "FIRST_OBSERVED": false,
+              "REAL_OOS": false,
+              "evidence_origin": "RECONSTRUCTED_CORRECTED",
+              "execution_mode": "HISTORICAL_SIMULATION",
+              "production": false,
+              "shadow": false
+            },
+            "no_prior_owner_fabrication": true,
+            "observation_identity": "Exact V4-15 enrollment identity: logical event + reconstructed cohort namespace",
+            "observation_scope": "FEP_STOCK_ENTRY_CORE",
+            "umbrella_only": "ENTRY",
+            "window": {
+              "bytes": 598,
+              "path": "reports/fep_e2_r1r1/HISTORICAL_WINDOW_FREEZE.json",
+              "sha256": "d9bfb329ddbd038810b47e0c8d08c5ed77cce50d0396308805ed2302908ae94c"
+            }
+          },
+          "predicate_digest": "efe81c599fc24dae00bd7f3e073e389eee2efda242294186010bceb643601b4b",
+          "source_binding": {
+            "bytes": 1134,
+            "path": "reports/fep_e2_r1r2/ENTRY_EVENT_STRATA_CONTRACT.json",
+            "sha256": "9884d9df4530ceea9ee3268c30e5dfb65ef149939710eb87e66d73466408025a"
+          }
+        }
+      ]
+    ],
+    "observations": [
+      [
+        "FEP_STOCK_ENTRY_CORE",
+        "FIRST_PREWATCH",
+        "FEP_E2_ENTRY_EVENT_STRATA_V1_1"
+      ]
+    ],
+    "scopes": [
+      [
+        "FEP_STOCK_ENTRY_CORE",
+        "FIRST_PREWATCH"
+      ]
+    ]
+  },
+  "predicate_digest": "efe81c599fc24dae00bd7f3e073e389eee2efda242294186010bceb643601b4b",
+  "upgrade": {
+    "contracts": [
+      [
+        "UNIT_PIT_OBSERVATION",
+        "UNIT_PIT_OBSERVATION",
+        "1",
+        "9a404b803becf6a0e84566907cc8d7b431c563dafb6003333605c8f7dc5a14a6",
+        {}
+      ],
+      [
+        "FEP_E2_ENTRY_EVENT_STRATA_V1_1",
+        "FEP_E2_ENTRY_EVENT_STRATA_V1_1",
+        "1",
+        "6df0c6ad8f0109b6a02b56b4f905341cd12b53b3607c18791b3aada285b6d569",
+        {
+          "accepted_contract": {
+            "completeness": "Every entity/date from frozen R1R1 scan; FULL_OWNER_EVALUATION required before any first episode",
+            "contract_id": "FEP_E2_ENTRY_EVENT_STRATA_V1_1",
+            "first_prewatch": "Accepted Radar ENROLLED + maturity PREWATCH + no parent episode; initial SEED upgrade is not an ENROLLED event",
+            "formal_signals": [
+              "FIRST_PREWATCH",
+              "NEW_CONFIRMED",
+              "REENTRY"
+            ],
+            "frozen_at": "2026-10-05T13:03:51.040921+00:00",
+            "heuristic": "ENGINEERING_SUPPORT_HEURISTIC",
+            "lineage": {
+              "AS_RECORDED": false,
+              "FIRST_OBSERVED": false,
+              "REAL_OOS": false,
+              "evidence_origin": "RECONSTRUCTED_CORRECTED",
+              "execution_mode": "HISTORICAL_SIMULATION",
+              "production": false,
+              "shadow": false
+            },
+            "no_prior_owner_fabrication": true,
+            "observation_identity": "Exact V4-15 enrollment identity: logical event + reconstructed cohort namespace",
+            "observation_scope": "FEP_STOCK_ENTRY_CORE",
+            "umbrella_only": "ENTRY",
+            "window": {
+              "bytes": 598,
+              "path": "reports/fep_e2_r1r1/HISTORICAL_WINDOW_FREEZE.json",
+              "sha256": "d9bfb329ddbd038810b47e0c8d08c5ed77cce50d0396308805ed2302908ae94c"
+            }
+          },
+          "predicate_digest": "efe81c599fc24dae00bd7f3e073e389eee2efda242294186010bceb643601b4b",
+          "source_binding": {
+            "bytes": 1134,
+            "path": "reports/fep_e2_r1r2/ENTRY_EVENT_STRATA_CONTRACT.json",
+            "sha256": "9884d9df4530ceea9ee3268c30e5dfb65ef149939710eb87e66d73466408025a"
+          }
+        }
+      ]
+    ],
+    "observations": [
+      [
+        "FEP_STOCK_ENTRY_CORE",
+        "FIRST_PREWATCH",
+        "FEP_E2_ENTRY_EVENT_STRATA_V1_1"
+      ],
+      [
+        "UNIT_PIT_SCOPE",
+        "UNIT_PIT_SIGNAL",
+        "UNIT_PIT_OBSERVATION"
+      ]
+    ],
+    "scopes": [
+      [
+        "UNIT_PIT_SCOPE",
+        "FIRST_PREWATCH"
+      ],
+      [
+        "FEP_STOCK_ENTRY_CORE",
+        "FIRST_PREWATCH"
+      ]
+    ]
+  }
+}

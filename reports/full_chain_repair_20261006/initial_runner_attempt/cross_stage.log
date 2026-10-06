@@ -1,0 +1,438 @@
+........................................................................ [ 20%]
+........................................................................ [ 41%]
+........................................................F............... [ 62%]
+F......F................................................................ [ 82%]
+..F....................................F..FFFFFFFFFFFFFFFFF.             [100%]
+================================== FAILURES ===================================
+_____________ test_production_and_v4_09_acceptance_stay_disabled ______________
+tests\v4_09\test_stock_prewatch.py:104: in test_production_and_v4_09_acceptance_stay_disabled
+    assert current_state(ROOT)['status']=='PASS'
+           ^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\historical_stage_governance_r17.py:51: in current_state
+    if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+_______________________ test_R4R2_12_real_shaped_parity _______________________
+tests\v4_dm01_r4r2\test_bridge.py:126: in test_R4R2_12_real_shaped_parity
+    packetref=produce_packet(v['root'],daily=packet['candidate']['grant']['daily_input_authority'],candidate=put(v['root'],'reports/r25/activation_candidate/authority.json',packet['candidate']),sources=packet['candidate']['grant']['source_authority'],predecessor=packet['candidate']['grant']['predecessor'],output='reports/r25/activation_candidate/engineering_packet.json',engineering=True)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\build_r25_bridge_r4r2.py:53: in produce_packet
+    for reference in deps['bindings']:o.exact_bytes(root,reference)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r25_bridge_oracle_r4r2.py:115: in exact_bytes
+    check(binding(root,b['path'])==b,'BRIDGE_EXACT_BINDING_MISMATCH');return (Path(root)/b['path']).read_bytes()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r25_bridge_oracle_r4r2.py:14: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: BRIDGE_EXACT_BINDING_MISMATCH
+____________________________ test_independent_gate ____________________________
+tests\test_r20a_current.py:16: in test_independent_gate
+    def test_independent_gate():assert oracle.validate()['R20A_CURRENT_STAGE_AUTHORITY']=='PASS_LOCAL'
+                                       ^^^^^^^^^^^^^^^^^
+scripts\validate_r20a_current.py:33: in validate
+    require(stage==expected,'CURRENT_METADATA_COHERENCE_EXACT')
+scripts\validate_r20a_current.py:8: in require
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: CURRENT_METADATA_COHERENCE_EXACT
+______________________ test_full_independent_disk_oracle ______________________
+tests\test_r20e_persisted.py:16: in test_full_independent_disk_oracle
+    result=oracle.validate()
+           ^^^^^^^^^^^^^^^^^
+scripts\validate_r20e_oracle.py:25: in validate
+    current_gate()
+scripts\validate_r20a_current.py:33: in validate
+    require(stage==expected,'CURRENT_METADATA_COHERENCE_EXACT')
+scripts\validate_r20a_current.py:8: in require
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: CURRENT_METADATA_COHERENCE_EXACT
+___________________________ test_protected_baseline ___________________________
+tests\test_r23r1_runtime.py:84: in test_protected_baseline
+    def test_protected_baseline():assert oracle.protected()['status']=='PASS_LOCAL'
+                                         ^^^^^^^^^^^^^^^^^^
+scripts\validate_r23r1_runtime.py:95: in protected
+    require((changed&existing)<=allowed,'PROTECTED_BASELINE_MUTATION')
+scripts\validate_r23r1_runtime.py:8: in require
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: PROTECTED_BASELINE_MUTATION
+---------------------------- Captured stderr call -----------------------------
+warning: in the working copy of 'scripts/v4_16_shadow_runtime.py', CRLF will be replaced by LF the next time Git touches it
+________________________ test_negative_activation[A03] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH
+________________________ test_negative_activation[A04] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH
+________________________ test_negative_activation[A05] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH
+________________________ test_negative_activation[A06] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH
+________________________ test_negative_activation[A07] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH
+________________________ test_negative_activation[A08] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:57: in negative
+    with pytest.raises(ValueError,match=REASONS[case]):controller(x)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'UNACCEPTED_STORAGE'
+E     Actual message: 'EXACT_DEPENDENCY_MISMATCH'
+________________________ test_negative_activation[A09] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:57: in negative
+    with pytest.raises(ValueError,match=REASONS[case]):controller(x)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'UNACCEPTED_SOURCE_ADAPTER'
+E     Actual message: 'EXACT_DEPENDENCY_MISMATCH'
+________________________ test_negative_activation[A10] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:57: in negative
+    with pytest.raises(ValueError,match=REASONS[case]):controller(x)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'MISSING_MANDATORY_SOURCE'
+E     Actual message: 'EXACT_DEPENDENCY_MISMATCH'
+________________________ test_negative_activation[A11] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH
+________________________ test_negative_activation[A12] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH
+________________________ test_negative_activation[A13] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH
+________________________ test_negative_activation[A14] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH
+________________________ test_negative_activation[A15] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH
+________________________ test_negative_activation[A16] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH
+________________________ test_negative_activation[A17] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH
+________________________ test_negative_activation[A18] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH
+________________________ test_negative_activation[A19] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:61: in negative
+    c=controller(x);db=c.database(ROOT/x['database']);launch=OneSessionLaunchController(db)
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:36: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:17: in check
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_DEPENDENCY_MISMATCH
+=========================== short test summary info ===========================
+FAILED tests/v4_09/test_stock_prewatch.py::test_production_and_v4_09_acceptance_stay_disabled
+FAILED tests/v4_dm01_r4r2/test_bridge.py::test_R4R2_12_real_shaped_parity - V...
+FAILED tests/test_r20a_current.py::test_independent_gate - ValueError: CURREN...
+FAILED tests/test_r20e_persisted.py::test_full_independent_disk_oracle - Valu...
+FAILED tests/test_r23r1_runtime.py::test_protected_baseline - ValueError: PRO...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A03] - ValueError: E...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A04] - ValueError: E...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A05] - ValueError: E...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A06] - ValueError: E...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A07] - ValueError: E...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A08] - AssertionErro...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A09] - AssertionErro...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A10] - AssertionErro...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A11] - ValueError: E...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A12] - ValueError: E...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A13] - ValueError: E...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A14] - ValueError: E...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A15] - ValueError: E...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A16] - ValueError: E...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A17] - ValueError: E...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A18] - ValueError: E...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A19] - ValueError: E...
+22 failed, 326 passed in 64.09s (0:01:04)

@@ -1,0 +1,30 @@
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "tests/test_full_chain_repair.py",
+    "tests/test_full_chain_fep_db.py",
+    "-q",
+    "--tb=short",
+    "--junitxml=E:\\codex work\\大A交易\\reports\\full_chain_repair_20261006\\targeted.xml.working"
+  ],
+  "exit_code": 0,
+  "failed_nodes": [],
+  "introduced_failure_nodes": [],
+  "known_debt_nodes": [],
+  "log": {
+    "bytes": 184,
+    "path": "reports/full_chain_repair_20261006/targeted.log",
+    "sha256": "5debc60ca26deea3986a0abe9d83d2b912bfc2d67f98a7248005598cfe1f7131"
+  },
+  "passed": 106,
+  "removed_debt_nodes": [],
+  "skipped": 0,
+  "xml": {
+    "bytes": 11320,
+    "path": "reports/full_chain_repair_20261006/targeted.xml",
+    "sha256": "e3827c0f894ae43b4fd807fd9710e659dbbe0b2c76f2061ceb886e9512c28987"
+  }
+}

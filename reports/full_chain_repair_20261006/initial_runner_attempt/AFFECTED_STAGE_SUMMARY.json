@@ -1,0 +1,50 @@
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "tests/fep_e5",
+    "tests/fep_e4",
+    "tests/fep_e3",
+    "tests/fep_e2",
+    "tests/fep",
+    "tests/test_r20d_settlement.py",
+    "tests/test_r25_packet.py::test_actual_authority_inventory_waits_without_target",
+    "-q",
+    "--junitxml=E:\\codex work\\大A交易\\reports\\full_chain_repair_20261006\\affected_stage.xml.working"
+  ],
+  "exit_code": 1,
+  "failed_nodes": [
+    "tests/fep/test_v4_18_namespace_successor.py::test_all_current_sql_declarations_are_explicit_successor_inventory",
+    "tests/fep_e3/test_e3_contract.py::test_e3_20_no_display_priority_grant",
+    "tests/fep_e4/test_e4_contract.py::test_e4_tree_serialization_actual_parity[HGB_ABSOLUTE_ERROR-None]",
+    "tests/fep_e4/test_e4_contract.py::test_e4_tree_serialization_actual_parity[HGB_QUANTILE-0.25]",
+    "tests/fep_e4/test_e4_contract.py::test_e4_tree_serialization_actual_parity[HGB_QUANTILE-0.5]",
+    "tests/fep_e4/test_e4_contract.py::test_e4_tree_serialization_actual_parity[HGB_QUANTILE-0.75]",
+    "tests/test_r25_packet.py::test_actual_authority_inventory_waits_without_target"
+  ],
+  "introduced_failure_nodes": [
+    "tests/fep/test_v4_18_namespace_successor.py::test_all_current_sql_declarations_are_explicit_successor_inventory",
+    "tests/fep_e3/test_e3_contract.py::test_e3_20_no_display_priority_grant",
+    "tests/fep_e4/test_e4_contract.py::test_e4_tree_serialization_actual_parity[HGB_ABSOLUTE_ERROR-None]",
+    "tests/fep_e4/test_e4_contract.py::test_e4_tree_serialization_actual_parity[HGB_QUANTILE-0.25]",
+    "tests/fep_e4/test_e4_contract.py::test_e4_tree_serialization_actual_parity[HGB_QUANTILE-0.5]",
+    "tests/fep_e4/test_e4_contract.py::test_e4_tree_serialization_actual_parity[HGB_QUANTILE-0.75]",
+    "tests/test_r25_packet.py::test_actual_authority_inventory_waits_without_target"
+  ],
+  "known_debt_nodes": [],
+  "log": {
+    "bytes": 14355,
+    "path": "reports/full_chain_repair_20261006/affected_stage.log",
+    "sha256": "0a775f69c31255d00730b42f7708f0b97d91f4dddd4166829c06042103b2a9df"
+  },
+  "passed": 538,
+  "removed_debt_nodes": [],
+  "skipped": 1,
+  "xml": {
+    "bytes": 81416,
+    "path": "reports/full_chain_repair_20261006/affected_stage.xml",
+    "sha256": "a2e371b99780836464dc76b25dead86b940d96ef4dc0134ac01aec9b22d66e7e"
+  }
+}

@@ -1,0 +1,41 @@
+........................................................................ [ 22%]
+........................................................................ [ 45%]
+........................................................F............... [ 68%]
+.......F................................................................ [ 91%]
+..F.......................                                               [100%]
+================================== FAILURES ===================================
+_____________ test_production_and_v4_09_acceptance_stay_disabled ______________
+tests\v4_09\test_stock_prewatch.py:104: in test_production_and_v4_09_acceptance_stay_disabled
+    assert current_state(ROOT)['status']=='PASS'
+           ^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\historical_stage_governance_r17.py:51: in current_state
+    if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+____________________________ test_independent_gate ____________________________
+tests\test_r20a_current.py:16: in test_independent_gate
+    def test_independent_gate():assert oracle.validate()['R20A_CURRENT_STAGE_AUTHORITY']=='PASS_LOCAL'
+                                       ^^^^^^^^^^^^^^^^^
+scripts\validate_r20a_current.py:33: in validate
+    require(stage==expected,'CURRENT_METADATA_COHERENCE_EXACT')
+scripts\validate_r20a_current.py:8: in require
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: CURRENT_METADATA_COHERENCE_EXACT
+______________________ test_full_independent_disk_oracle ______________________
+tests\test_r20e_persisted.py:16: in test_full_independent_disk_oracle
+    result=oracle.validate()
+           ^^^^^^^^^^^^^^^^^
+scripts\validate_r20e_oracle.py:25: in validate
+    current_gate()
+scripts\validate_r20a_current.py:33: in validate
+    require(stage==expected,'CURRENT_METADATA_COHERENCE_EXACT')
+scripts\validate_r20a_current.py:8: in require
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: CURRENT_METADATA_COHERENCE_EXACT
+=========================== short test summary info ===========================
+FAILED tests/v4_09/test_stock_prewatch.py::test_production_and_v4_09_acceptance_stay_disabled
+FAILED tests/test_r20a_current.py::test_independent_gate - ValueError: CURREN...
+FAILED tests/test_r20e_persisted.py::test_full_independent_disk_oracle - Valu...
+3 failed, 311 passed in 58.95s

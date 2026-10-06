@@ -1,0 +1,208 @@
+........................................................................ [ 13%]
+........................................................................ [ 26%]
+........................................................................ [ 39%]
+........................................................................ [ 52%]
+........................FFFF..........................F................. [ 65%]
+........................................................................ [ 79%]
+....................................................s................... [ 92%]
+........F................................F                               [100%]
+================================== FAILURES ===================================
+______ test_e4_tree_serialization_actual_parity[HGB_ABSOLUTE_ERROR-None] ______
+
+family = 'HGB_ABSOLUTE_ERROR', q = None
+
+    @pytest.mark.parametrize('family,q',[('HGB_ABSOLUTE_ERROR',None),('HGB_QUANTILE',.25),('HGB_QUANTILE',.5),('HGB_QUANTILE',.75)])
+    def test_e4_tree_serialization_actual_parity(family,q):
+        rows,fm=sample(80);ids=[r['observation_id'] for r in rows];prep=m.preprocessing(rows,fm,ids)
+        params=dict(learning_rate=.05,max_leaf_nodes=7,max_depth=3,min_samples_leaf=10,l2_regularization=1.)
+        if q is not None:params['quantile']=q
+>       model=c.fit(rows,prep,family,params,{},ids);restored=json.loads(json.dumps(model,sort_keys=True))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e4\test_e4_contract.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+rows = [{'observation_scope': 'FEP_STOCK_ENTRY_CORE', 'signal_type': 'FIRST_PREWATCH', 'target': 'ABS_RETURN_N:T1', 'horizon'..._scope': 'FEP_STOCK_ENTRY_CORE', 'signal_type': 'FIRST_PREWATCH', 'target': 'ABS_RETURN_N:T1', 'horizon': 1, ...}, ...]
+prep = {'contract_id': 'FEP_E3_TRAIN_PREPROCESSING_V1', 'numeric': {'amount_ratio20': {'mean': 4.05, 'scale': 2.3092206477510...': [False]}, 'terms': ['amount_ratio20', 'amount_ratio5', 'atr_ratio', 'clv', 'pos60', 'prior60_percentile', ...], ...}
+family = 'HGB_ABSOLUTE_ERROR'
+parameters = {'learning_rate': 0.05, 'max_leaf_nodes': 7, 'max_depth': 3, 'min_samples_leaf': 10, ...}
+dependencies = {}
+allowed_ids = ['test0', 'test1', 'test2', 'test3', 'test4', 'test5', ...]
+partition = 'TRAIN'
+
+    def fit(rows,prep,family,parameters,dependencies,allowed_ids,partition='TRAIN'):
+        p.scope(rows);p.fit_authority(partition,[r['observation_id'] for r in rows],allowed_ids,'tree_model')
+        if family not in ('HGB_ABSOLUTE_ERROR','HGB_QUANTILE'):raise ValueError('E4_MODEL_FAMILY_REJECTED')
+>       from sklearn.ensemble import HistGradientBoostingRegressor
+E       ModuleNotFoundError: No module named 'sklearn'
+
+src\workbench_analysis\fep_e4\challenger.py:63: ModuleNotFoundError
+_________ test_e4_tree_serialization_actual_parity[HGB_QUANTILE-0.25] _________
+
+family = 'HGB_QUANTILE', q = 0.25
+
+    @pytest.mark.parametrize('family,q',[('HGB_ABSOLUTE_ERROR',None),('HGB_QUANTILE',.25),('HGB_QUANTILE',.5),('HGB_QUANTILE',.75)])
+    def test_e4_tree_serialization_actual_parity(family,q):
+        rows,fm=sample(80);ids=[r['observation_id'] for r in rows];prep=m.preprocessing(rows,fm,ids)
+        params=dict(learning_rate=.05,max_leaf_nodes=7,max_depth=3,min_samples_leaf=10,l2_regularization=1.)
+        if q is not None:params['quantile']=q
+>       model=c.fit(rows,prep,family,params,{},ids);restored=json.loads(json.dumps(model,sort_keys=True))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e4\test_e4_contract.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+rows = [{'observation_scope': 'FEP_STOCK_ENTRY_CORE', 'signal_type': 'FIRST_PREWATCH', 'target': 'ABS_RETURN_N:T1', 'horizon'..._scope': 'FEP_STOCK_ENTRY_CORE', 'signal_type': 'FIRST_PREWATCH', 'target': 'ABS_RETURN_N:T1', 'horizon': 1, ...}, ...]
+prep = {'contract_id': 'FEP_E3_TRAIN_PREPROCESSING_V1', 'numeric': {'amount_ratio20': {'mean': 4.05, 'scale': 2.3092206477510...': [False]}, 'terms': ['amount_ratio20', 'amount_ratio5', 'atr_ratio', 'clv', 'pos60', 'prior60_percentile', ...], ...}
+family = 'HGB_QUANTILE'
+parameters = {'learning_rate': 0.05, 'max_leaf_nodes': 7, 'max_depth': 3, 'min_samples_leaf': 10, ...}
+dependencies = {}
+allowed_ids = ['test0', 'test1', 'test2', 'test3', 'test4', 'test5', ...]
+partition = 'TRAIN'
+
+    def fit(rows,prep,family,parameters,dependencies,allowed_ids,partition='TRAIN'):
+        p.scope(rows);p.fit_authority(partition,[r['observation_id'] for r in rows],allowed_ids,'tree_model')
+        if family not in ('HGB_ABSOLUTE_ERROR','HGB_QUANTILE'):raise ValueError('E4_MODEL_FAMILY_REJECTED')
+>       from sklearn.ensemble import HistGradientBoostingRegressor
+E       ModuleNotFoundError: No module named 'sklearn'
+
+src\workbench_analysis\fep_e4\challenger.py:63: ModuleNotFoundError
+_________ test_e4_tree_serialization_actual_parity[HGB_QUANTILE-0.5] __________
+
+family = 'HGB_QUANTILE', q = 0.5
+
+    @pytest.mark.parametrize('family,q',[('HGB_ABSOLUTE_ERROR',None),('HGB_QUANTILE',.25),('HGB_QUANTILE',.5),('HGB_QUANTILE',.75)])
+    def test_e4_tree_serialization_actual_parity(family,q):
+        rows,fm=sample(80);ids=[r['observation_id'] for r in rows];prep=m.preprocessing(rows,fm,ids)
+        params=dict(learning_rate=.05,max_leaf_nodes=7,max_depth=3,min_samples_leaf=10,l2_regularization=1.)
+        if q is not None:params['quantile']=q
+>       model=c.fit(rows,prep,family,params,{},ids);restored=json.loads(json.dumps(model,sort_keys=True))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e4\test_e4_contract.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+rows = [{'observation_scope': 'FEP_STOCK_ENTRY_CORE', 'signal_type': 'FIRST_PREWATCH', 'target': 'ABS_RETURN_N:T1', 'horizon'..._scope': 'FEP_STOCK_ENTRY_CORE', 'signal_type': 'FIRST_PREWATCH', 'target': 'ABS_RETURN_N:T1', 'horizon': 1, ...}, ...]
+prep = {'contract_id': 'FEP_E3_TRAIN_PREPROCESSING_V1', 'numeric': {'amount_ratio20': {'mean': 4.05, 'scale': 2.3092206477510...': [False]}, 'terms': ['amount_ratio20', 'amount_ratio5', 'atr_ratio', 'clv', 'pos60', 'prior60_percentile', ...], ...}
+family = 'HGB_QUANTILE'
+parameters = {'learning_rate': 0.05, 'max_leaf_nodes': 7, 'max_depth': 3, 'min_samples_leaf': 10, ...}
+dependencies = {}
+allowed_ids = ['test0', 'test1', 'test2', 'test3', 'test4', 'test5', ...]
+partition = 'TRAIN'
+
+    def fit(rows,prep,family,parameters,dependencies,allowed_ids,partition='TRAIN'):
+        p.scope(rows);p.fit_authority(partition,[r['observation_id'] for r in rows],allowed_ids,'tree_model')
+        if family not in ('HGB_ABSOLUTE_ERROR','HGB_QUANTILE'):raise ValueError('E4_MODEL_FAMILY_REJECTED')
+>       from sklearn.ensemble import HistGradientBoostingRegressor
+E       ModuleNotFoundError: No module named 'sklearn'
+
+src\workbench_analysis\fep_e4\challenger.py:63: ModuleNotFoundError
+_________ test_e4_tree_serialization_actual_parity[HGB_QUANTILE-0.75] _________
+
+family = 'HGB_QUANTILE', q = 0.75
+
+    @pytest.mark.parametrize('family,q',[('HGB_ABSOLUTE_ERROR',None),('HGB_QUANTILE',.25),('HGB_QUANTILE',.5),('HGB_QUANTILE',.75)])
+    def test_e4_tree_serialization_actual_parity(family,q):
+        rows,fm=sample(80);ids=[r['observation_id'] for r in rows];prep=m.preprocessing(rows,fm,ids)
+        params=dict(learning_rate=.05,max_leaf_nodes=7,max_depth=3,min_samples_leaf=10,l2_regularization=1.)
+        if q is not None:params['quantile']=q
+>       model=c.fit(rows,prep,family,params,{},ids);restored=json.loads(json.dumps(model,sort_keys=True))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e4\test_e4_contract.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+rows = [{'observation_scope': 'FEP_STOCK_ENTRY_CORE', 'signal_type': 'FIRST_PREWATCH', 'target': 'ABS_RETURN_N:T1', 'horizon'..._scope': 'FEP_STOCK_ENTRY_CORE', 'signal_type': 'FIRST_PREWATCH', 'target': 'ABS_RETURN_N:T1', 'horizon': 1, ...}, ...]
+prep = {'contract_id': 'FEP_E3_TRAIN_PREPROCESSING_V1', 'numeric': {'amount_ratio20': {'mean': 4.05, 'scale': 2.3092206477510...': [False]}, 'terms': ['amount_ratio20', 'amount_ratio5', 'atr_ratio', 'clv', 'pos60', 'prior60_percentile', ...], ...}
+family = 'HGB_QUANTILE'
+parameters = {'learning_rate': 0.05, 'max_leaf_nodes': 7, 'max_depth': 3, 'min_samples_leaf': 10, ...}
+dependencies = {}
+allowed_ids = ['test0', 'test1', 'test2', 'test3', 'test4', 'test5', ...]
+partition = 'TRAIN'
+
+    def fit(rows,prep,family,parameters,dependencies,allowed_ids,partition='TRAIN'):
+        p.scope(rows);p.fit_authority(partition,[r['observation_id'] for r in rows],allowed_ids,'tree_model')
+        if family not in ('HGB_ABSOLUTE_ERROR','HGB_QUANTILE'):raise ValueError('E4_MODEL_FAMILY_REJECTED')
+>       from sklearn.ensemble import HistGradientBoostingRegressor
+E       ModuleNotFoundError: No module named 'sklearn'
+
+src\workbench_analysis\fep_e4\challenger.py:63: ModuleNotFoundError
+____________________ test_e3_20_no_display_priority_grant _____________________
+
+    def test_e3_20_no_display_priority_grant():
+        rows,fm=sample();ids=[r['observation_id'] for r in rows];prep=m.preprocessing(rows,fm,ids)
+>       model=m.fit(rows,prep,'HUBER_LINEAR',dict(alpha=.01,epsilon=1.35),dict(test_only=True),ids)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e3\test_e3_contract.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+rows = [{'observation_scope': 'FEP_STOCK_ENTRY_CORE', 'signal_type': 'FIRST_PREWATCH', 'target': 'ABS_RETURN_N:T1', 'horizon'..._scope': 'FEP_STOCK_ENTRY_CORE', 'signal_type': 'FIRST_PREWATCH', 'target': 'ABS_RETURN_N:T1', 'horizon': 1, ...}, ...]
+prep = {'contract_id': 'FEP_E3_TRAIN_PREPROCESSING_V1', 'numeric': {'amount_ratio20': {'mean': 0.8500000000000001, 'scale': 0...': [False]}, 'terms': ['amount_ratio20', 'amount_ratio5', 'atr_ratio', 'clv', 'pos60', 'prior60_percentile', ...], ...}
+family = 'HUBER_LINEAR', parameters = {'alpha': 0.01, 'epsilon': 1.35}
+dependencies = {'test_only': True}
+allowed_ids = ['test0', 'test1', 'test2', 'test3', 'test4', 'test5', ...]
+
+    def fit(rows,prep,family,parameters,dependencies,allowed_ids):
+        fit_authority('TRAIN',[r['observation_id'] for r in rows],allowed_ids,'model')
+>       from sklearn.linear_model import HuberRegressor,QuantileRegressor
+E       ModuleNotFoundError: No module named 'sklearn'
+
+src\workbench_analysis\fep_e3\models.py:70: ModuleNotFoundError
+_____ test_all_current_sql_declarations_are_explicit_successor_inventory ______
+
+    def test_all_current_sql_declarations_are_explicit_successor_inventory():
+        c=json.loads((ROOT/'config/v4_18_migration_replay_contract_v1_2.json').read_bytes())
+        ref=c['supersedes'];raw=(ROOT/ref['path']).read_bytes()
+        assert c['contract_id']=='V4_18_MIGRATION_REPLAY_CONTRACT_V1_2'
+        assert len(raw)==ref['bytes'] and hashlib.sha256(raw).hexdigest()==ref['sha256']
+        assert raw==subprocess.check_output(['git','show','9a6ecd205c690b62063cc80810272dda8001cfe9:'+ref['path']],cwd=ROOT)
+        original=json.loads(raw)
+        assert c['permissions']==original['permissions']
+        assert c['namespace_matrix'][:len(original['namespace_matrix'])]==original['namespace_matrix']
+        paths=list((ROOT/'src/workbench_db').rglob('*.sql'))+[ROOT/'migrations/v4_16_r24_real_shadow_v1.sql']
+        actual={(p.relative_to(ROOT).as_posix(),name) for p in paths for name in
+                re.findall(r'CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?([\w.]+)',p.read_text(encoding='utf8'),re.I)}
+        registered={(r['declaration'],r['state_or_table']) for r in c['namespace_matrix']
+                    if r['declaration']!='DESIGN_ONLY_NOT_CREATED'}
+>       assert actual==registered
+E       AssertionError: assert {('migrations...isions'), ...} == {('migrations...isions'), ...}
+E         
+E         Extra items in the left set:
+E         ('src/workbench_db/migrations/v4_postgres/033_fep_signal_contract_integrity_v1.sql', 'fep.signal_contract_registry')
+E         Use -v to get more diff
+
+tests\fep\test_v4_18_namespace_successor.py:25: AssertionError
+____________ test_actual_authority_inventory_waits_without_target _____________
+
+    def test_actual_authority_inventory_waits_without_target():
+>       result = selection()
+                 ^^^^^^^^^^^
+
+tests\test_r25_packet.py:183: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_r25_preflight.py:256: in selection
+    exact(root, reference, parse=False)
+scripts\validate_r25_preflight.py:39: in exact
+    check(binding(root, reference['path']) == reference, 'EXACT_BINDING_MISMATCH')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, reason = 'EXACT_BINDING_MISMATCH'
+
+    def check(condition, reason):
+        if not condition:
+>           raise ValueError(reason)
+E           ValueError: EXACT_BINDING_MISMATCH
+
+scripts\validate_r25_preflight.py:20: ValueError
+---------------------------- Captured stderr call -----------------------------
+warning: in the working copy of 'scripts/v4_16_shadow_runtime.py', CRLF will be replaced by LF the next time Git touches it
+=========================== short test summary info ===========================
+FAILED tests/fep_e4/test_e4_contract.py::test_e4_tree_serialization_actual_parity[HGB_ABSOLUTE_ERROR-None]
+FAILED tests/fep_e4/test_e4_contract.py::test_e4_tree_serialization_actual_parity[HGB_QUANTILE-0.25]
+FAILED tests/fep_e4/test_e4_contract.py::test_e4_tree_serialization_actual_parity[HGB_QUANTILE-0.5]
+FAILED tests/fep_e4/test_e4_contract.py::test_e4_tree_serialization_actual_parity[HGB_QUANTILE-0.75]
+FAILED tests/fep_e3/test_e3_contract.py::test_e3_20_no_display_priority_grant
+FAILED tests/fep/test_v4_18_namespace_successor.py::test_all_current_sql_declarations_are_explicit_successor_inventory
+FAILED tests/test_r25_packet.py::test_actual_authority_inventory_waits_without_target
+7 failed, 538 passed, 1 skipped in 28.77s

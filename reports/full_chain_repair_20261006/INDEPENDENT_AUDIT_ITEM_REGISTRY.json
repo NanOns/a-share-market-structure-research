@@ -1,0 +1,198 @@
+{
+  "carry": {
+    "A04": {
+      "affected_capabilities": [
+        "A04"
+      ],
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "ACCEPTED_SCOPED"
+    },
+    "A04_H21_CONSUMER": {
+      "affected_capabilities": [
+        "AMOUNT_A_H21_FORMAL_CONSUMER"
+      ],
+      "blocks_affected_capability_in_shadow": true,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "ACCUMULATION_CONTINUES"
+    },
+    "A04_HISTORICAL_AMOUNT_A": {
+      "affected_capabilities": [
+        "HISTORICAL_AMOUNT_A_FORMAL_CONSUMER"
+      ],
+      "blocks_affected_capability_in_shadow": true,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "BLOCKED_AFFECTED_SCOPE"
+    },
+    "A08": {
+      "affected_capabilities": [
+        "A08"
+      ],
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "ACCEPTED_SCOPED"
+    },
+    "A08_CURRENT_RUNTIME": {
+      "affected_capabilities": [
+        "V4_09_N01_CURRENT_RUNTIME_PREWATCH"
+      ],
+      "blocks_affected_capability_in_shadow": true,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "OPEN_EXTERNAL_REAUDIT"
+    },
+    "AUD_R3C_ACCEPTED_SUSPENSION_STATE_ADMISSION_01": {
+      "affected_capabilities": [
+        "AUD_R3C_ACCEPTED_SUSPENSION_STATE_ADMISSION_01"
+      ],
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "OPEN_EXTERNAL_REAUDIT"
+    },
+    "AUD_R3C_ADJUSTMENT_COORDINATE_EXACTNESS": {
+      "affected_capabilities": [
+        "AUD_R3C_ADJUSTMENT_COORDINATE_EXACTNESS"
+      ],
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "OPEN_EXTERNAL_REAUDIT"
+    },
+    "AUD_R3C_D2_ADMISSION_AND_PRIOR_AUTHENTICITY": {
+      "affected_capabilities": [
+        "AUD_R3C_D2_ADMISSION_AND_PRIOR_AUTHENTICITY"
+      ],
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "OPEN_EXTERNAL_REAUDIT"
+    },
+    "AUD_R3C_EVENT_PRIOR_UNKNOWN_01": {
+      "affected_capabilities": [
+        "AUD_R3C_EVENT_PRIOR_UNKNOWN_01"
+      ],
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "OPEN_EXTERNAL_REAUDIT"
+    },
+    "AUD_R3_GIT_EXACT_BYTE_PORTABILITY": {
+      "affected_capabilities": [
+        "AUD_R3_GIT_EXACT_BYTE_PORTABILITY"
+      ],
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "OPEN_EXTERNAL_REAUDIT"
+    },
+    "AUD_R3_REAL_WINDOW_AND_EPISODE_CAPABILITY": {
+      "affected_capabilities": [
+        "AUD_R3_REAL_WINDOW_AND_EPISODE_CAPABILITY"
+      ],
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_production_cutover_for_scope": true,
+      "current_state": "NONBLOCKING_VALIDATION_DEBT"
+    }
+  },
+  "items": {
+    "AUD_REPAIR_DUE_CALENDAR_EXTENSION": {
+      "evidence": {
+        "bytes": 2134,
+        "path": "reports/full_chain_repair_20261006/P0-02/NEGATIVE_MATRIX.json",
+        "sha256": "e6e8efa09d2a3e29a55ac97a40aa67dec23b4aba11be52fce7e9f11c7cfba914"
+      },
+      "scope": "NULL_FUTURE_DUE_SESSION_RECOVERY_WITHOUT_FACT_REWRITE",
+      "status": "CANDIDATE_REPAIRED_EXTERNAL_AUDIT_PENDING"
+    },
+    "AUD_REPAIR_MIGRATION_ALLOCATOR_STALE_BASELINE": {
+      "evidence": {
+        "bytes": 648,
+        "path": "config/v4_migration_allocation_registry_r4.json",
+        "sha256": "7a85836f56dd6b9942da214c4df4f1f20d63fa139919758212bf3fd7087ead2e"
+      },
+      "scope": "CURRENT_STAGE_ALLOCATOR_PARENT_BINDING",
+      "status": "CANDIDATE_REPAIRED_EXTERNAL_AUDIT_PENDING"
+    },
+    "AUD_REPAIR_V4_18_NAMESPACE_INVENTORY": {
+      "evidence": {
+        "bytes": 209362,
+        "path": "config/v4_18_migration_replay_contract_v1_3.json",
+        "sha256": "912ce48504628d22ade450b5122804dd5e602ce15542574ccd846579e1ce9426"
+      },
+      "scope": "ADDITIVE_DECLARATION_INVENTORY_ONLY_NO_RUNTIME_GATE",
+      "status": "CANDIDATE_REPAIRED_EXTERNAL_AUDIT_PENDING"
+    },
+    "P0-01": {
+      "acceptance": {
+        "bytes": 2054,
+        "path": "reports/full_chain_repair_20261006/P0-01/CANDIDATE_SEAL.json",
+        "sha256": "72b382839f58a0e24942c1504d3219f48fab24e64193241e32fe88baf098d44c"
+      },
+      "batch": "A",
+      "scope": "CAPABILITY_ISSUE_DOMAIN",
+      "status": "CANDIDATE_REPAIRED_EXTERNAL_AUDIT_PENDING"
+    },
+    "P0-02": {
+      "acceptance": {
+        "bytes": 2054,
+        "path": "reports/full_chain_repair_20261006/P0-02/CANDIDATE_SEAL.json",
+        "sha256": "c4fb59f8d869296ce4d5b7151bb3eb24a08ed9fc623b1b793f38aaaf4e4abde5"
+      },
+      "batch": "A",
+      "scope": "DURABLE_R4R2_SETTLEMENT",
+      "status": "CANDIDATE_REPAIRED_EXTERNAL_AUDIT_PENDING"
+    },
+    "P1-03": {
+      "acceptance": {
+        "bytes": 2054,
+        "path": "reports/full_chain_repair_20261006/P1-03/CANDIDATE_SEAL.json",
+        "sha256": "cb4734a852d752380552287dc16e32a610d6d8a663e2cade9bd1b0abbfdbb5e1"
+      },
+      "batch": "B",
+      "scope": "REAL_SHADOW_DB_SEMANTIC_INTEGRITY",
+      "status": "CANDIDATE_REPAIRED_EXTERNAL_AUDIT_PENDING"
+    },
+    "P1-04": {
+      "acceptance": {
+        "bytes": 2054,
+        "path": "reports/full_chain_repair_20261006/P1-04/CANDIDATE_SEAL.json",
+        "sha256": "16ceeee87312f08bdf70e4b7f90728106f141e125d624c477ed51979dc136edb"
+      },
+      "batch": "C",
+      "scope": "FORWARD_BENCHMARK_SURFACE",
+      "status": "CANDIDATE_REPAIRED_EXTERNAL_AUDIT_PENDING"
+    },
+    "P1-05": {
+      "acceptance": {
+        "bytes": 2054,
+        "path": "reports/full_chain_repair_20261006/P1-05/CANDIDATE_SEAL.json",
+        "sha256": "bcf9c457b2c12a6bf3a993b747a1387c69cf27342e732615d1b90440dbc04085"
+      },
+      "batch": "C",
+      "scope": "AFFINE_VALIDATION",
+      "status": "CANDIDATE_REPAIRED_EXTERNAL_AUDIT_PENDING"
+    },
+    "P1-06": {
+      "acceptance": {
+        "bytes": 2054,
+        "path": "reports/full_chain_repair_20261006/P1-06/CANDIDATE_SEAL.json",
+        "sha256": "761788b7097fa92846f874ec3f810be709cf07d4972929eafd81ab3c668d5e18"
+      },
+      "batch": "D",
+      "scope": "FEP_SIGNAL_DB_GUARD",
+      "status": "CANDIDATE_REPAIRED_EXTERNAL_AUDIT_PENDING"
+    },
+    "P2-07": {
+      "acceptance": {
+        "bytes": 2053,
+        "path": "reports/full_chain_repair_20261006/P2-07/CANDIDATE_SEAL.json",
+        "sha256": "591c7710551f2b5b1d6fa030adf384e841e448304ea9b6ca216aba12a514bced"
+      },
+      "batch": "D",
+      "scope": "LEGACY_ENGINEERING_LEDGER_ISOLATION",
+      "status": "CANDIDATE_REPAIRED_EXTERNAL_AUDIT_PENDING"
+    }
+  },
+  "stage_gate": {
+    "FULL_CHAIN_REPAIR": "CANDIDATE_READY_FOR_INDEPENDENT_EXTERNAL_AUDIT",
+    "external_acceptance": false,
+    "first_real_shadow_authorized": false,
+    "introduced_failure_nodes": 0,
+    "next_stage": "INDEPENDENT_FULL_CHAIN_EXTERNAL_REAUDIT"
+  }
+}

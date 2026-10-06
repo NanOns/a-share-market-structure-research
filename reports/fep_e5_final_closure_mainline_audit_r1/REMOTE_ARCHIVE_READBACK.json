@@ -1,0 +1,69 @@
+{
+  "status": "PASS_REMOTE_ARCHIVE_VISIBLE",
+  "archive_commit": "4cbae21379ae739d084d0cc0488eb3f96a4cf951",
+  "github_commit": "4cbae21379ae739d084d0cc0488eb3f96a4cf951",
+  "observed_remote_HEAD": "4cbae21379ae739d084d0cc0488eb3f96a4cf951",
+  "files": [
+    {
+      "path": "reports/fep_e5_final_closure_mainline_audit_r1/.gitattributes",
+      "git_blob": "fa1385d99a319b43c06f5309d1aae9fdd3adea46",
+      "bytes": 8,
+      "status": "PASS"
+    },
+    {
+      "path": "reports/fep_e5_final_closure_mainline_audit_r1/CHANGED_FILE_LIST.json",
+      "git_blob": "333b330ea21d37a8e1146c8c0cf7d91237e0f65f",
+      "bytes": 938,
+      "status": "PASS"
+    },
+    {
+      "path": "reports/fep_e5_final_closure_mainline_audit_r1/COMPLETION_REPORT.md",
+      "git_blob": "06198082e228aaf077ddd245dfd5df9fda2be730",
+      "bytes": 1899,
+      "status": "PASS"
+    },
+    {
+      "path": "reports/fep_e5_final_closure_mainline_audit_r1/EXTERNAL_AUDIT_ACCEPTANCE_READBACK.json",
+      "git_blob": "7975a317e2f2eda6f3795245f151f9c5119b9c48",
+      "bytes": 1130,
+      "status": "PASS"
+    },
+    {
+      "path": "reports/fep_e5_final_closure_mainline_audit_r1/MAINLINE_RECONCILIATION_ARCHIVE_SEAL.json",
+      "git_blob": "06e587399b957f16fa0d784f00d84ee8528648c9",
+      "bytes": 3854,
+      "status": "PASS"
+    },
+    {
+      "path": "reports/fep_e5_final_closure_mainline_audit_r1/NONBLOCKING_DEBT_CARRY.json",
+      "git_blob": "798d667b9aea6323f5378c70e0674b56cec06084",
+      "bytes": 1218,
+      "status": "PASS"
+    },
+    {
+      "path": "reports/fep_e5_final_closure_mainline_audit_r1/PROJECT_MAINLINE_RECONCILIATION.json",
+      "git_blob": "56527b1605d070202bc0506e0f7cd880b4bb9ad2",
+      "bytes": 3009,
+      "status": "PASS"
+    },
+    {
+      "path": "reports/fep_e5_final_closure_mainline_audit_r1/PROTECTED_STATE_READBACK.json",
+      "git_blob": "49fabddc9280c46e5f04f73ea60cb5ab8b3d58cc",
+      "bytes": 5557,
+      "status": "PASS"
+    },
+    {
+      "path": "reports/fep_e5_final_closure_mainline_audit_r1/V4_15E5_FINAL_CLOSURE_AND_PROJECT_MAINLINE_RECONCILIATION_INDEPENDENT_AUDIT_R1_20261006.md",
+      "git_blob": "c857c3bce78dcc9adfce0ecac9336108f5a9ff6c",
+      "bytes": 11617,
+      "status": "PASS"
+    }
+  ],
+  "all_nine_blobs_verified": true,
+  "NOW": "STOP_WAIT",
+  "NEXT": "WAIT_NEXT_ELIGIBLE_ACCEPTED_SESSION_AND_POST_CLOSE_GATE",
+  "runtime_authorized": false,
+  "production_ready": false,
+  "readback_at": "2026-10-06T08:32:07.821277+00:00",
+  "receipt_policy": "Post-publication receipt in successor commit; audit archive seal unchanged."
+}

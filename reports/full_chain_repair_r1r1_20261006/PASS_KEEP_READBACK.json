@@ -1,0 +1,68 @@
+{
+  "P0-01": {
+    "code_and_contract_bytes_unchanged": true,
+    "prior_evidence": {
+      "bytes": 2054,
+      "path": "reports/full_chain_repair_20261006/P0-01/CANDIDATE_SEAL.json",
+      "sha256": "72b382839f58a0e24942c1504d3219f48fab24e64193241e32fe88baf098d44c"
+    },
+    "status": "PASS_KEEP"
+  },
+  "P1-03": {
+    "code_and_contract_bytes_unchanged": true,
+    "prior_evidence": {
+      "bytes": 2054,
+      "path": "reports/full_chain_repair_20261006/P1-03/CANDIDATE_SEAL.json",
+      "sha256": "cb4734a852d752380552287dc16e32a610d6d8a663e2cade9bd1b0abbfdbb5e1"
+    },
+    "status": "PASS_KEEP"
+  },
+  "P1-04": {
+    "code_and_contract_bytes_unchanged": true,
+    "prior_evidence": {
+      "bytes": 2054,
+      "path": "reports/full_chain_repair_20261006/P1-04/CANDIDATE_SEAL.json",
+      "sha256": "16ceeee87312f08bdf70e4b7f90728106f141e125d624c477ed51979dc136edb"
+    },
+    "status": "PASS_KEEP"
+  },
+  "P1-05": {
+    "code_and_contract_bytes_unchanged": true,
+    "prior_evidence": {
+      "bytes": 2054,
+      "path": "reports/full_chain_repair_20261006/P1-05/CANDIDATE_SEAL.json",
+      "sha256": "bcf9c457b2c12a6bf3a993b747a1387c69cf27342e732615d1b90440dbc04085"
+    },
+    "status": "PASS_KEEP"
+  },
+  "P1-06": {
+    "code_and_contract_bytes_unchanged": true,
+    "prior_evidence": {
+      "bytes": 2054,
+      "path": "reports/full_chain_repair_20261006/P1-06/CANDIDATE_SEAL.json",
+      "sha256": "761788b7097fa92846f874ec3f810be709cf07d4972929eafd81ab3c668d5e18"
+    },
+    "status": "PASS_KEEP"
+  },
+  "P2-07": {
+    "code_and_contract_bytes_unchanged": true,
+    "prior_evidence": {
+      "bytes": 2053,
+      "path": "reports/full_chain_repair_20261006/P2-07/CANDIDATE_SEAL.json",
+      "sha256": "591c7710551f2b5b1d6fa030adf384e841e448304ea9b6ca216aba12a514bced"
+    },
+    "status": "PASS_KEEP"
+  },
+  "runtime_shared_binding_refresh": {
+    "changed_existing_paths": [
+      ".gitattributes",
+      "config/v4_16_runtime_dependencies_v5.json",
+      "config/v4_16_settlement_worker_contract_v2.json",
+      "scripts/build_full_chain_runtime_successor.py",
+      "scripts/v4_16_go_forward_shadow_runtime_r4r3.py",
+      "scripts/v4_16_settlement_worker_v2.py"
+    ],
+    "other_repair_implementations_and_migrations_unchanged": true,
+    "scope": "P0_02_ONLY"
+  }
+}

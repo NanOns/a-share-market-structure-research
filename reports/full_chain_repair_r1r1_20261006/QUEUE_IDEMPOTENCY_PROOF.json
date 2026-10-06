@@ -1,0 +1,41 @@
+{
+  "Q03_fixture": "Malformed persisted queue row injected with FK temporarily disabled in disposable simulation",
+  "Q04_fixture": "Injected inconsistent immutable-enrollment readback; no persistent fact mutation",
+  "Q05_evidence": "Executed corrected source produces evaluation_revision=2 and retains original outcome",
+  "baseline_conflict_silently_ignored": true,
+  "candidate_conflict": "QUEUE_IDEMPOTENCY_CONFLICT",
+  "comparison_fields": [
+    "queue_key",
+    "evaluation_source_digest",
+    "due_kind",
+    "due_id"
+  ],
+  "conflicting_row_retained": true,
+  "exact_retry_row": {
+    "accepted_outcome_revision": null,
+    "ack_at": null,
+    "backlog_reason": null,
+    "claim_at": null,
+    "claim_owner": null,
+    "claim_version": 0,
+    "due_id": "60b8a6ff758c86e08e9257abeb53a2064e66ae4d3f572df4f572f7cdc73c4cac",
+    "due_kind": "due",
+    "evaluation_source_digest": "a72caf0391e1a180d4dafb2fe8d09913dd58094861c77c3137cb2a9bfb121b16",
+    "lease_until": null,
+    "outcome_kind": "outcome",
+    "queue_key": "5393ac11008e0001436ab21ccedff0b567a00b5c2adcb8cff84b4ea69e4ebfa4",
+    "retry_count": 0,
+    "status": "READY"
+  },
+  "frozen_identity_fields": [
+    "namespace",
+    "model_contract_id",
+    "state_lineage_id",
+    "enrollment_id",
+    "horizon",
+    "due_trade_date",
+    "outcome_contract_id"
+  ],
+  "origin": "ACTIVATION_SIMULATION",
+  "real_evidence": false
+}

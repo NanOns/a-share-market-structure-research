@@ -1,0 +1,22 @@
+{
+  "AUD_R25_F12_HISTORICAL_FIXTURE_BINDING": {
+    "acceptance": "INDEPENDENT_FROM_P0_02_GATE; NO_CHANGE_TO_FROZEN_FIXTURE_OR_OTHER_SIX_PASS_ITEMS",
+    "baseline_evidence": {
+      "bytes": 18048,
+      "path": "reports/full_chain_repair_20261006/SCOPED_REGRESSION_SUMMARY.json",
+      "sha256": "672a44a1f1f2d989030cf9888b6907d10b250e58bd9930e7876bf1e6d909fcf8"
+    },
+    "current_evidence": {
+      "bytes": 6440,
+      "path": "reports/full_chain_repair_r1r1_20261006/entrypoint_regression.xml",
+      "sha256": "f29795ea6a663eb7deafb4f905d9e6753d4b55df3120e820d5ea78299e9fa88f"
+    },
+    "node": "tests.test_r25_packet::test_f12_valid_latest_decoy",
+    "scope": "UNCHANGED_V3_HISTORICAL_SIMULATION_FIXTURE_BINDING",
+    "status": "OPEN_INHERITED_DEBT"
+  },
+  "P0_02_R1R1": {
+    "scope": "EXACT_ACTIVATION_HEAD_AND_QUEUE_IDEMPOTENCY",
+    "status": "CANDIDATE_REPAIRED_EXTERNAL_AUDIT_PENDING"
+  }
+}

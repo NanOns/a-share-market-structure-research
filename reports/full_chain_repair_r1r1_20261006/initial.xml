@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="13" time="23.917" timestamp="2026-10-06T20:29:02.958730+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[A01]" time="3.053" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[A02]" time="2.967" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[A03]" time="1.609" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[A04]" time="1.577" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[A05]" time="1.628" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[A06]" time="1.632" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[payload_identity]" time="1.616" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[acceptance_identity]" time="1.622" /><testcase classname="tests.test_settlement_r1r1" name="test_queue_exact_idempotency[Q01]" time="1.649" /><testcase classname="tests.test_settlement_r1r1" name="test_queue_exact_idempotency[Q02]" time="1.579"><failure message="sqlite3.IntegrityError: UNIQUE constraint failed: integrity_due_v2.enrollment, integrity_due_v2.horizon, integrity_due_v2.due_date, integrity_due_v2.frozen_t0">shadow = (&lt;scripts.v4_16_go_forward_shadow_runtime_r4r3.SuccessorDatabase object at 0x0000023B0A1A6450&gt;, {'base': 'reports/r24r...V1', 'parameter_set_id': 'V4_10_STATE_REDUCER_PARAMETER_SET_V1', 'state_lineage_id': 'R24R1_SIMULATION_LINEAGE', ...}})
+case = 'Q02'
+
+    @pytest.mark.parametrize('case',['Q01','Q02','Q03','Q04','Q05'])
+    def test_queue_exact_idempotency(shadow,case):
+        db,x=shadow;authority,source=future(db);worker=DurableSettlementWorker(db,'R1R1')
+        due=next(d for d in db.rows('due') if d['horizon']==1);due_id=digest([due['enrollment_id'],1]);sha=source.binding['sha256']
+        if case in ('Q02','Q03'):
+            other_id=due_id+'_REVISION'
+&gt;           db.transaction(lambda:db.append('due_revision',other_id,due))
+
+tests\test_settlement_r1r1.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\v4_16_go_forward_shadow_runtime_r4r3.py:204: in transaction
+    result=fn()
+           ^^^^
+tests\test_settlement_r1r1.py:66: in &lt;lambda&gt;
+    db.transaction(lambda:db.append('due_revision',other_id,due))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;scripts.v4_16_go_forward_shadow_runtime_r4r3.SuccessorDatabase object at 0x0000023B0A1A6450&gt;
+kind = 'due_revision'
+key = '60b8a6ff758c86e08e9257abeb53a2064e66ae4d3f572df4f572f7cdc73c4cac_REVISION'
+value = {'due_date': '2026-10-09', 'enrollment_id': 'eab2410546aa9a1e17320fb3fe21233a6e903b93f3712bc819e13534a977567a', 'evidence_class': 'NOT_REAL_EVIDENCE', 'evidence_origin': 'ACTIVATION_SIMULATION', ...}
+
+    def append(self,kind,key,value):
+        p=copy.deepcopy(value)
+        p.update(namespace='SHADOW_V4',execution_mode='SHADOW',evidence_origin=self.controller.origin,
+                 evidence_class='NOT_REAL_EVIDENCE' if self.controller.simulation else 'PIT_OBSERVED_REAL')
+        raw=canonical(p)
+        sha=hashlib.sha256(raw.encode()).hexdigest()
+        old=self.conn.execute('SELECT digest FROM facts WHERE kind=? AND id=?',(kind,key)).fetchone()
+        if old:
+            check(old[0]==sha,'APPEND_ONLY_IDENTITY_CONFLICT')
+        else:
+&gt;           self.conn.execute('INSERT INTO facts VALUES(?,?,?,?,?,?,?)',(kind,key,'SHADOW_V4','SHADOW',self.controller.origin,raw,sha))
+E           sqlite3.IntegrityError: UNIQUE constraint failed: integrity_due_v2.enrollment, integrity_due_v2.horizon, integrity_due_v2.due_date, integrity_due_v2.frozen_t0
+
+scripts\v4_16_go_forward_shadow_runtime_r4r3.py:190: IntegrityError</failure></testcase><testcase classname="tests.test_settlement_r1r1" name="test_queue_exact_idempotency[Q03]" time="1.591"><failure message="sqlite3.IntegrityError: UNIQUE constraint failed: integrity_due_v2.enrollment, integrity_due_v2.horizon, integrity_due_v2.due_date, integrity_due_v2.frozen_t0">shadow = (&lt;scripts.v4_16_go_forward_shadow_runtime_r4r3.SuccessorDatabase object at 0x0000023B08922C60&gt;, {'base': 'reports/r24r...V1', 'parameter_set_id': 'V4_10_STATE_REDUCER_PARAMETER_SET_V1', 'state_lineage_id': 'R24R1_SIMULATION_LINEAGE', ...}})
+case = 'Q03'
+
+    @pytest.mark.parametrize('case',['Q01','Q02','Q03','Q04','Q05'])
+    def test_queue_exact_idempotency(shadow,case):
+        db,x=shadow;authority,source=future(db);worker=DurableSettlementWorker(db,'R1R1')
+        due=next(d for d in db.rows('due') if d['horizon']==1);due_id=digest([due['enrollment_id'],1]);sha=source.binding['sha256']
+        if case in ('Q02','Q03'):
+            other_id=due_id+'_REVISION'
+&gt;           db.transaction(lambda:db.append('due_revision',other_id,due))
+
+tests\test_settlement_r1r1.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\v4_16_go_forward_shadow_runtime_r4r3.py:204: in transaction
+    result=fn()
+           ^^^^
+tests\test_settlement_r1r1.py:66: in &lt;lambda&gt;
+    db.transaction(lambda:db.append('due_revision',other_id,due))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;scripts.v4_16_go_forward_shadow_runtime_r4r3.SuccessorDatabase object at 0x0000023B08922C60&gt;
+kind = 'due_revision'
+key = '60b8a6ff758c86e08e9257abeb53a2064e66ae4d3f572df4f572f7cdc73c4cac_REVISION'
+value = {'due_date': '2026-10-09', 'enrollment_id': 'eab2410546aa9a1e17320fb3fe21233a6e903b93f3712bc819e13534a977567a', 'evidence_class': 'NOT_REAL_EVIDENCE', 'evidence_origin': 'ACTIVATION_SIMULATION', ...}
+
+    def append(self,kind,key,value):
+        p=copy.deepcopy(value)
+        p.update(namespace='SHADOW_V4',execution_mode='SHADOW',evidence_origin=self.controller.origin,
+                 evidence_class='NOT_REAL_EVIDENCE' if self.controller.simulation else 'PIT_OBSERVED_REAL')
+        raw=canonical(p)
+        sha=hashlib.sha256(raw.encode()).hexdigest()
+        old=self.conn.execute('SELECT digest FROM facts WHERE kind=? AND id=?',(kind,key)).fetchone()
+        if old:
+            check(old[0]==sha,'APPEND_ONLY_IDENTITY_CONFLICT')
+        else:
+&gt;           self.conn.execute('INSERT INTO facts VALUES(?,?,?,?,?,?,?)',(kind,key,'SHADOW_V4','SHADOW',self.controller.origin,raw,sha))
+E           sqlite3.IntegrityError: UNIQUE constraint failed: integrity_due_v2.enrollment, integrity_due_v2.horizon, integrity_due_v2.due_date, integrity_due_v2.frozen_t0
+
+scripts\v4_16_go_forward_shadow_runtime_r4r3.py:190: IntegrityError</failure></testcase><testcase classname="tests.test_settlement_r1r1" name="test_queue_exact_idempotency[Q04]" time="1.664" /><testcase classname="tests.test_settlement_r1r1" name="test_queue_exact_idempotency[Q05]" time="1.633" /></testsuite></testsuites>

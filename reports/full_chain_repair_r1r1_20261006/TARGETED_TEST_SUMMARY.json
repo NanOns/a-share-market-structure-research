@@ -1,0 +1,32 @@
+{
+  "initial_failures": "Fixture construction errors retained in initial.xml and targeted.xml; corrected before final execution",
+  "introduced_failure_nodes": 0,
+  "suites": {
+    "entrypoint_regression": {
+      "failed": 1,
+      "introduced_failure_nodes": [],
+      "known_failure_nodes": [
+        "tests.test_r25_packet::test_f12_valid_latest_decoy"
+      ],
+      "passed": 43,
+      "skipped": 0,
+      "xml": {
+        "bytes": 6440,
+        "path": "reports/full_chain_repair_r1r1_20261006/entrypoint_regression.xml",
+        "sha256": "f29795ea6a663eb7deafb4f905d9e6753d4b55df3120e820d5ea78299e9fa88f"
+      }
+    },
+    "final_targeted": {
+      "failed": 0,
+      "introduced_failure_nodes": [],
+      "known_failure_nodes": [],
+      "passed": 103,
+      "skipped": 0,
+      "xml": {
+        "bytes": 10945,
+        "path": "reports/full_chain_repair_r1r1_20261006/final_targeted.xml",
+        "sha256": "2927671b022a8fc8781cd21b7ae1c42c686561df692c82996dca005b0d421c43"
+      }
+    }
+  }
+}

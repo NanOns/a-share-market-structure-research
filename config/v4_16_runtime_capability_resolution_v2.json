@@ -1,0 +1,103 @@
+{
+  "blocked_issue_ids": [
+    "A04_H21_CONSUMER",
+    "A04_HISTORICAL_AMOUNT_A"
+  ],
+  "contract_id": "V4_16_RUNTIME_CAPABILITY_RESOLUTION_V2",
+  "current_audit_authority": {
+    "bytes": 3847,
+    "path": "config/v4_cross_stage_current_audit_authority_v4.json",
+    "sha256": "2d32331cd3f8aeaefa0f2fa519e846bb62269aa5af1ce1a5fc5d9cea71870bdb"
+  },
+  "current_audit_head": {
+    "bytes": 179638,
+    "path": "data/v4/V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V4.json",
+    "sha256": "5b10132d869650ecab890a57df07db336dee0a022323da45ea2180abf750523d"
+  },
+  "current_audit_issue_resolution": {
+    "A04_H21_CONSUMER": {
+      "affected_capabilities": [
+        "AMOUNT_A_H21_FORMAL_CONSUMER"
+      ],
+      "blocks_affected_capability_in_shadow": true,
+      "blocks_v4_16_runtime_activation": false,
+      "current_state": "ACCUMULATION_CONTINUES"
+    },
+    "A04_HISTORICAL_AMOUNT_A": {
+      "affected_capabilities": [
+        "HISTORICAL_AMOUNT_A_FORMAL_CONSUMER"
+      ],
+      "blocks_affected_capability_in_shadow": true,
+      "blocks_v4_16_runtime_activation": false,
+      "current_state": "BLOCKED_AFFECTED_SCOPE"
+    }
+  },
+  "current_producer_bindings": [
+    {
+      "bytes": 22817,
+      "path": "src/v4/stock_prewatch.py",
+      "sha256": "a57a4413b56cd81f43a06611f4dec328ef6ac35486f4a4b56e5b5938e2db60ce"
+    },
+    {
+      "bytes": 2683,
+      "path": "reports/v4_09/V4_09_R1_1_REPAIR_CONTRACT_FREEZE.json",
+      "sha256": "baabb97bae5973eaa88f215a37d79fa58a20fc6a4147f218a4288bab08775fdc"
+    },
+    {
+      "bytes": 1152,
+      "path": "config/v4_09_priority_provenance_contract_r1_1.json",
+      "sha256": "807114a3572a062557c265fea3a939971936a88e1662ad6ff7c0f56c9e0b6e99"
+    },
+    {
+      "bytes": 3774,
+      "path": "config/v4_09_priority_producer_vectors_r1_1.json",
+      "sha256": "71d14a606dcba4b62db0015feea1ed89ff78688d6d9a85d55966d1c803803486"
+    }
+  ],
+  "dependency_evidence": [
+    {
+      "bytes": 10260,
+      "path": "scripts/v4_16_real_owner_projection_v1.py",
+      "sha256": "ac952ab2a5f10d26f579688d4a053d2284309880255f4f6585722c3e61297649"
+    },
+    {
+      "bytes": 35215,
+      "path": "scripts/v4_16_go_forward_shadow_runtime.py",
+      "sha256": "5e6d2880f2254d6d7f62ed9563cd385f2097a7bb425e009dd3d3946514258397"
+    }
+  ],
+  "effective_blocked_runtime_capabilities": [
+    "AMOUNT_A_H21_FORMAL_CONSUMER",
+    "HISTORICAL_AMOUNT_A_FORMAL_CONSUMER"
+  ],
+  "external_acceptance_bindings": [
+    {
+      "bytes": 5002,
+      "path": "docs/evidence/a08_current_runtime_propagation_20261006/V4_A08_CURRENT_RUNTIME_INDEPENDENT_EXTERNAL_REAUDIT_R1_20261006.md",
+      "sha256": "95356231b0b743eb9d2f679dc3b2cf19fd6e7e59e9a0229cc9cfbb5730af9389"
+    },
+    {
+      "bytes": 4084,
+      "path": "docs/evidence/a08_current_runtime_propagation_20261006/V4_FULL_CHAIN_R1R1_P0_02_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261006.md",
+      "sha256": "a19f80ae764d83e21103b9b91c4e4e57c54d8fe54598b4bbebbd81d86aedaaab"
+    }
+  ],
+  "permission_granted": false,
+  "predecessor": {
+    "bytes": 2232,
+    "path": "config/v4_16_runtime_capability_resolution_v1.json",
+    "sha256": "3f84b8f8194447a87e18e4a2af460eab5db157941c18c1b4aab4c2cfc61c4323"
+  },
+  "production": false,
+  "pure_core_prewatch_decision": "DEPENDS_ON_CURRENT_PREWATCH_OWNER_STATE_AND_ENROLLED_TRANSITION",
+  "runtime_authorized": false,
+  "runtime_capability_dependency_graph": {
+    "AMOUNT_A_H21_FORMAL_CONSUMER": [],
+    "HISTORICAL_AMOUNT_A_FORMAL_CONSUMER": [],
+    "PURE_CORE_STOCK": [
+      "V4_09_N01_CURRENT_RUNTIME_PREWATCH"
+    ],
+    "V4_09_N01_CURRENT_RUNTIME_PREWATCH": []
+  },
+  "version": "2.0.0"
+}

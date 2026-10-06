@@ -1,0 +1,64 @@
+{
+  "authorized_scope": "FIRST_REAL_SHADOW_ACTIVATION_PACKET_PREPARATION_ONLY",
+  "blocked_issue_ids": [
+    "A04_H21_CONSUMER",
+    "A04_HISTORICAL_AMOUNT_A"
+  ],
+  "bridge_contract": "DM01_R25_TARGET_SESSION_PIT_BINDING_R4R1_V1",
+  "bridge_producer": "scripts/build_r25_bridge_r4r2.py",
+  "builder": {
+    "bytes": 2814,
+    "path": "scripts/build_r25_packet_r4r4.py",
+    "sha256": "230ed4a3e9eff05c35840d487373643213e3530e78ee5f9dbf9809024b7a9a81"
+  },
+  "candidate_execution_authorized": false,
+  "candidate_external_acceptance": null,
+  "candidate_output": "reports/r25/activation_candidate/authority.json",
+  "capability_resolution": {
+    "bytes": 3607,
+    "path": "config/v4_16_runtime_capability_resolution_v2.json",
+    "sha256": "109694188b1eb572a8575446e547bb770428da73d486d7354d57ca7c11841407"
+  },
+  "contract_id": "V4_16_R25_PACKET_PREFLIGHT_V4",
+  "execution_baseline": "54a214167cfd4414901d2002b0a3cf5da45f4e36",
+  "first_observed_policy": "NEXT_EXTERNALLY_AUTHORIZED_CONSUMPTION_ONLY_NEVER_PREFILLED",
+  "go_forward_input_contract": {
+    "bytes": 2783,
+    "path": "config/v4_16_go_forward_input_authority_v1_1.json",
+    "sha256": "63b7205ff159aca5a82702968ef1cf3d5ca19907125f05084d08d045b9801654"
+  },
+  "initial_capability_scope": [
+    "PURE_CORE_STOCK"
+  ],
+  "input_selection": "EXPLICIT_ACCEPTED_BINDINGS_ONLY_NO_LATEST_GLOB_MTIME_OR_WALL_CLOCK",
+  "on_missing_exact_real_input": "WAIT_ACCEPTED_DAILY_INPUT",
+  "oracle": "scripts/r25_bridge_oracle_r4r2.py",
+  "parallel_engineering": "UNRELATED_V4_17_UI_ENGINEERING_NOT_BLOCKED_BY_WAIT",
+  "predecessor": {
+    "bytes": 2420,
+    "path": "config/v4_16_r25_packet_preflight_v3.json",
+    "sha256": "bee38287a85516ffb20268ebb106d068062dbf7818daddd8ad345ba5fd674c52"
+  },
+  "ready_next": "STOP_WAIT_DM01_R4R2_INDEPENDENT_EXTERNAL_AUDIT",
+  "real_database_policy": "MUST_NOT_CREATE_OR_OPEN",
+  "real_execution": "NOT_STARTED",
+  "regression_workspace_root": "E:/codex_tmp",
+  "runtime_consumer": "scripts/v4_16_go_forward_input_authority_r4r2.py",
+  "runtime_dependencies": "config/v4_16_runtime_dependencies_v4.json",
+  "runtime_dependency_contract_id": "V4_16_RUNTIME_DEPENDENCIES_V6",
+  "runtime_entry": "scripts/v4_16_go_forward_shadow_runtime_r4r2.py",
+  "temporary_allowed_drives": [
+    "E:",
+    "F:"
+  ],
+  "test_temporary_root": "E:/codex_tmp/test_temp",
+  "test_vectors": "TEMPORARY_ENGINEERING_VECTORS_NOT_REAL_EVIDENCE",
+  "v4_17_acceptance_and_v4_17g": "REQUIRE_REAL_SHADOW_EVIDENCE",
+  "validator": {
+    "bytes": 22176,
+    "path": "scripts/validate_r25_preflight_v6.py",
+    "sha256": "356db2b7b4611984517f6f0156eb413e627073dad05537542308db47d9398842"
+  },
+  "version": "2.0.0",
+  "wait_next": "RETRY_ON_NEXT_ELIGIBLE_ACCEPTED_MARKET_SESSION"
+}

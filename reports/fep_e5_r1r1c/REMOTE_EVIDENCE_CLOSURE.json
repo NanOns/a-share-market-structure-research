@@ -1,0 +1,28 @@
+{
+  "candidate_commit": "6d06288c56bc632539262b246b0829ceee317690",
+  "execution_baseline": "68b3d97d1f5d98a4ed6be87bca3ce8c81696e587",
+  "observed_remote_candidate_head": "6d06288c56bc632539262b246b0829ceee317690",
+  "all_57_candidate_blobs_verified": true,
+  "candidate_seal": {
+    "path": "reports/fep_e5_r1r1c/FEP_E5_R1R1C_CANDIDATE_SEAL.json",
+    "bytes": 42724,
+    "sha256": "01d98df4a5e9144881bedbbd22eec8f9d2274593b3fdd178939235ea11c83c55"
+  },
+  "remote_receipts": [
+    {
+      "path": "reports/fep_e5_r1r1c/REMOTE_PUBLICATION_READBACK.json",
+      "bytes": 21618,
+      "sha256": "109d4f1635937a6bb94d242d9f82f31976e8e736cc9a61de83c6d992c64a29af"
+    },
+    {
+      "path": "reports/fep_e5_r1r1c/REMOTE_CI_READBACK.json",
+      "bytes": 6363,
+      "sha256": "1b01e2044e72f7c69c266f93decb87d2636fcb83f088bf9c489529fb06404a49"
+    }
+  ],
+  "fixture_lifecycle": "Six explicit E-drive test clusters stopped successfully; no fixture files deleted.",
+  "closure_commit_policy": "Successor commit contains these post-publication receipts; its parent is the verified candidate. Final HEAD verified after push without inventing a self-referential commit SHA.",
+  "external_acceptance": false,
+  "NEXT": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT_R1R1C",
+  "recorded_at": "2026-10-06T04:57:27.505116+00:00"
+}

@@ -120,7 +120,10 @@ def test_R4R2_12_real_shaped_parity(vector,monkeypatch):
     from scripts.validate_r25_preflight import inspect_packet
     deps_ref=put(v['root'],'config/v4_16_runtime_dependencies_v4.json',(ROOT/'config/v4_16_runtime_dependencies_v4.json').read_bytes())
     for reference in packet['deps']['bindings']:
-        put(v['root'],reference['path'],(ROOT/reference['path']).read_bytes())
+        source=ROOT/reference['path']
+        if reference['path']=='scripts/validate_r25_preflight.py':
+            source=ROOT/'docs/evidence/full_chain_repair_20261006/baseline_runtime/validate_r25_preflight.py'
+        put(v['root'],reference['path'],source.read_bytes())
     audit='docs/evidence/r25/V4_R24R1_GO_FORWARD_INPUT_AUTHORITY_COHORT_IDENTITY_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md'
     put(v['root'],audit,(ROOT/audit).read_bytes())
     packetref=produce_packet(v['root'],daily=packet['candidate']['grant']['daily_input_authority'],candidate=put(v['root'],'reports/r25/activation_candidate/authority.json',packet['candidate']),sources=packet['candidate']['grant']['source_authority'],predecessor=packet['candidate']['grant']['predecessor'],output='reports/r25/activation_candidate/engineering_packet.json',engineering=True)

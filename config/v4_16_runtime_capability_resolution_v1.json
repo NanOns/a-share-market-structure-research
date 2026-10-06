@@ -1,0 +1,69 @@
+{
+  "blocked_issue_ids": [
+    "A04_H21_CONSUMER",
+    "A04_HISTORICAL_AMOUNT_A",
+    "A08_CURRENT_RUNTIME"
+  ],
+  "contract_id": "V4_16_RUNTIME_CAPABILITY_RESOLUTION_V1",
+  "current_audit_head": {
+    "bytes": 178356,
+    "path": "data/v4/V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V3.json",
+    "sha256": "0e78e72a225d444293c554ed5dc5527c02ae2d8d01ba0cfb3d923bc7696bc9d9"
+  },
+  "current_audit_issue_resolution": {
+    "A04_H21_CONSUMER": {
+      "affected_capabilities": [
+        "AMOUNT_A_H21_FORMAL_CONSUMER"
+      ],
+      "blocks_affected_capability_in_shadow": true,
+      "blocks_v4_16_runtime_activation": false,
+      "current_state": "ACCUMULATION_CONTINUES"
+    },
+    "A04_HISTORICAL_AMOUNT_A": {
+      "affected_capabilities": [
+        "HISTORICAL_AMOUNT_A_FORMAL_CONSUMER"
+      ],
+      "blocks_affected_capability_in_shadow": true,
+      "blocks_v4_16_runtime_activation": false,
+      "current_state": "BLOCKED_AFFECTED_SCOPE"
+    },
+    "A08_CURRENT_RUNTIME": {
+      "affected_capabilities": [
+        "V4_09_N01_CURRENT_RUNTIME_PREWATCH"
+      ],
+      "blocks_affected_capability_in_shadow": true,
+      "blocks_v4_16_runtime_activation": false,
+      "current_state": "OPEN_EXTERNAL_REAUDIT"
+    }
+  },
+  "dependency_evidence": [
+    {
+      "bytes": 10260,
+      "path": "scripts/v4_16_real_owner_projection_v1.py",
+      "sha256": "ac952ab2a5f10d26f579688d4a053d2284309880255f4f6585722c3e61297649"
+    },
+    {
+      "bytes": 35215,
+      "path": "scripts/v4_16_go_forward_shadow_runtime.py",
+      "sha256": "5e6d2880f2254d6d7f62ed9563cd385f2097a7bb425e009dd3d3946514258397"
+    }
+  ],
+  "effective_blocked_runtime_capabilities": [
+    "AMOUNT_A_H21_FORMAL_CONSUMER",
+    "HISTORICAL_AMOUNT_A_FORMAL_CONSUMER",
+    "PURE_CORE_STOCK",
+    "V4_09_N01_CURRENT_RUNTIME_PREWATCH"
+  ],
+  "production": false,
+  "pure_core_prewatch_decision": "DEPENDS_ON_CURRENT_PREWATCH_OWNER_STATE_AND_ENROLLED_TRANSITION",
+  "runtime_authorized": false,
+  "runtime_capability_dependency_graph": {
+    "AMOUNT_A_H21_FORMAL_CONSUMER": [],
+    "HISTORICAL_AMOUNT_A_FORMAL_CONSUMER": [],
+    "PURE_CORE_STOCK": [
+      "V4_09_N01_CURRENT_RUNTIME_PREWATCH"
+    ],
+    "V4_09_N01_CURRENT_RUNTIME_PREWATCH": []
+  },
+  "version": "1.0.0"
+}

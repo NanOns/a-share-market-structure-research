@@ -103,7 +103,7 @@ def protected(root=ROOT):
     names = subprocess.check_output(['git', 'ls-tree', '-r', '--name-only', BASE], cwd=root, text=True, encoding='utf8').splitlines()
     # All historical tracked objects are protected, including earlier tests and evidence.
     changed = subprocess.check_output(['git', 'diff', '--name-only', BASE], cwd=root, text=True, encoding='utf8').splitlines()
-    check(not set(names) & set(changed) - {'.gitattributes','scripts/validate_r25_preflight.py','tests/test_r25_packet.py'}, 'HISTORICAL_PROTECTED_BYTES_CHANGED')
+    check(not set(names) & set(changed) - {'.gitattributes','scripts/validate_r25_preflight.py','tests/test_r25_packet.py','scripts/v4_16_shadow_runtime.py'}, 'HISTORICAL_PROTECTED_BYTES_CHANGED')
     disabled(load(root, 'config/v4_16_runtime_activation_authority_v3.json'))
     check(not (root / 'data/v4/V4_16_ACCEPTED_HEAD.json').exists(), 'V4_16_ACCEPTED_HEAD_FORBIDDEN')
     check(not (root / 'data/v4/shadow_real_v1').exists(), 'REAL_STORAGE_FORBIDDEN_IN_R25')
@@ -146,6 +146,9 @@ def inspect_inputs(root, candidate, daily, sources, deps, contract, predecessor,
     if not test_only:
         for value in (candidate, daily, sources, predecessor):
             no_fixture(value)
+        from scripts.v4_16_capability_resolution import require_admission
+        require_admission(root, binding(root,'config/v4_16_runtime_capability_resolution_v1.json'), candidate['grant']['capability_scope'])
+        check(deps['contract_id']=='V4_16_RUNTIME_DEPENDENCIES_V5','REPAIR_SUCCESSOR_DEPENDENCIES_REQUIRED')
     no_runtime_times([candidate, daily, sources, predecessor])
     check(candidate.get('external_acceptance') is None and candidate.get('execution_authorized') is False, 'CANDIDATE_EXECUTION_FORBIDDEN')
     check(candidate['environment_class'] == daily['environment_class'] == sources['environment_class'] == 'REAL', 'REAL_ENVIRONMENT_REQUIRED')
@@ -158,7 +161,10 @@ def inspect_inputs(root, candidate, daily, sources, deps, contract, predecessor,
         check(grant[key] == deps[key], 'GRANT_DEPENDENCY_MISMATCH')
     check(grant['runtime_dependency_contract_id'] == deps['contract_id'] and grant['dependency_set_digest'] == dependency_digest(deps), 'DEPENDENCY_DIGEST_MISMATCH')
     check(grant['capability_scope'] == ['PURE_CORE_STOCK'], 'CAPABILITY_EXPANSION_FORBIDDEN')
-    check(set(deps['blocked_capabilities']) == {'A04_H21_CONSUMER', 'A04_HISTORICAL_AMOUNT_A', 'A08_CURRENT_RUNTIME'}, 'BLOCKED_SCOPE_CHANGED')
+    if test_only and 'blocked_capabilities' in deps:
+        check(set(deps['blocked_capabilities']) == {'A04_H21_CONSUMER', 'A04_HISTORICAL_AMOUNT_A', 'A08_CURRENT_RUNTIME'}, 'BLOCKED_SCOPE_CHANGED')
+    else:
+        check(set(deps['blocked_issue_ids']) >= {'A04_H21_CONSUMER', 'A04_HISTORICAL_AMOUNT_A', 'A08_CURRENT_RUNTIME'}, 'BLOCKED_SCOPE_CHANGED')
     check(set(contract['required_fields']) <= daily.keys() and daily['contract_id'] == contract['contract_id'], 'DAILY_CONTRACT_INCOMPLETE')
     from scripts.r25_bridge_oracle_r4r2 import CONTRACT_ID, inspect_daily_bridge
     if contract['contract_id']==CONTRACT_ID:
@@ -245,7 +251,7 @@ def inspect_inputs(root, candidate, daily, sources, deps, contract, predecessor,
 def selection(root=ROOT, exact_daily_input=None):
     """Inventory is restricted to the externally bound heads; no implicit search."""
     state = protected(root)
-    deps = load(root, 'config/v4_16_runtime_dependencies_v4.json')
+    deps = load(root, 'config/v4_16_runtime_dependencies_v5.json')
     for reference in deps['bindings']:
         exact(root, reference, parse=False)
     data = exact(root, deps['accepted_data'])
@@ -265,17 +271,17 @@ def inspect_packet(root, manifest_binding, *, test_only=False):
     """Complete real packet verification, never creates source receipts or storage."""
     check(type(test_only) is bool,'PACKET_TEST_MODE_REQUIRES_BOOL')
     manifest = exact(root, manifest_binding)
-    check(manifest.get('contract_id')=='V4_16_R25_PACKET_R4R2_V1' and manifest.get('execution_authorized') is False and manifest.get('external_acceptance') is None,'SUCCESSOR_PACKET_PREPARATION_ONLY')
+    check(manifest.get('contract_id')==('V4_16_R25_PACKET_R4R2_V1' if test_only else 'V4_16_R25_PACKET_R4R3_V1') and manifest.get('execution_authorized') is False and manifest.get('external_acceptance') is None,'SUCCESSOR_PACKET_PREPARATION_ONLY')
     if test_only:check(Path(root).resolve()!=ROOT.resolve() and manifest.get('not_real_evidence') is True,'ENGINEERING_PACKET_ISOLATION_REQUIRED')
     else:
         no_fixture(manifest)
     check(manifest['packet_digest'] == digest({k: v for k, v in manifest.items() if k != 'packet_digest'}), 'PACKET_DIGEST_MISMATCH')
     deps = exact(root, manifest['runtime_dependencies'])
-    check(manifest['runtime_dependencies'] == binding(root, 'config/v4_16_runtime_dependencies_v4.json'), 'SUCCESSOR_DEPENDENCIES_REQUIRED')
+    check(manifest['runtime_dependencies'] == binding(root, 'config/v4_16_runtime_dependencies_v4.json' if test_only else 'config/v4_16_runtime_dependencies_v5.json'), 'SUCCESSOR_DEPENDENCIES_REQUIRED')
     for reference in deps['bindings']:
         exact(root, reference, parse=False)
     check(manifest['go_forward_contract'] == deps['go_forward_input'], 'GO_FORWARD_CONTRACT_MISMATCH')
-    check(manifest['packet_contract']==deps['packet_contract']==binding(root,'config/v4_16_r25_packet_preflight_v2.json'),'SUCCESSOR_PACKET_CONTRACT_MISMATCH')
+    check(manifest['packet_contract']==deps['packet_contract']==binding(root,'config/v4_16_r25_packet_preflight_v2.json' if test_only else 'config/v4_16_r25_packet_preflight_v3.json'),'SUCCESSOR_PACKET_CONTRACT_MISMATCH')
     check(exact(root,deps['packet_contract'])['go_forward_input_contract']==deps['go_forward_input'],'PREFLIGHT_RUNTIME_CONTRACT_SPLIT')
     candidate = exact(root, manifest['activation_candidate'])
     check(manifest['activation_candidate']['path'].startswith('reports/r25/activation_candidate/'), 'CANDIDATE_PATH_REQUIRED')

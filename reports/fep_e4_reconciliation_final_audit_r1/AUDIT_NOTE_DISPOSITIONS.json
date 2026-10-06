@@ -1,0 +1,40 @@
+{
+  "items": [
+    {
+      "audit_id": "AUDIT_NOTE_E4_RECON_01",
+      "status": "PASS_NONBLOCKING_ONE_SHOT_RECEIPT_BUILDER",
+      "scope": "Existing reconcile_fep_e4_external_audit_r1.py is a one-shot archival receipt builder",
+      "disposition": "Reference only; Desktop source and exact historical HEAD prerequisites mean it is not a portable reproduction entrypoint. Accepted historical script and receipts remain unchanged.",
+      "evidence": [
+        {
+          "path": "reports/fep_e4_reconciliation_final_audit_r1/V4_15E4_EXTERNAL_ACCEPTANCE_RECONCILIATION_FINAL_AUDIT_R1_20261006.md",
+          "bytes": 9684,
+          "sha256": "13f9a7ad9a171603683a0b4997b476b60411f4caca16b9b9d603c4c94b9aa710"
+        },
+        {
+          "path": "scripts/reconcile_fep_e4_external_audit_r1.py",
+          "bytes": 11525,
+          "sha256": "ccd6f6fb9ed4c90dc33462ea5681f40f70097f885ee4daf68a1c9844c4b44255"
+        }
+      ]
+    },
+    {
+      "audit_id": "AUDIT_NOTE_E4_01",
+      "status": "OPEN_FOR_NEXT_EFFECTIVENESS_PROTOCOL",
+      "scope": "Explicit disposition rule, primary metric, tie-break and promotion boundary freeze before future evaluation open",
+      "disposition": "Preserve prior independent audit item; no retroactive E4 protocol edit",
+      "evidence": [
+        {
+          "path": "reports/fep_e4_external_acceptance_r1/INDEPENDENT_AUDIT_ITEMS.json",
+          "bytes": 2196,
+          "sha256": "c06a86f1af233b583680a471e83b3d062dcfa2402279e978706cc2916e606df5"
+        },
+        {
+          "path": "reports/fep_e4_reconciliation_final_audit_r1/V4_15E4_EXTERNAL_ACCEPTANCE_RECONCILIATION_FINAL_AUDIT_R1_20261006.md",
+          "bytes": 9684,
+          "sha256": "13f9a7ad9a171603683a0b4997b476b60411f4caca16b9b9d603c4c94b9aa710"
+        }
+      ]
+    }
+  ]
+}

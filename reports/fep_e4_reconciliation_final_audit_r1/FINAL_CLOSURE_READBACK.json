@@ -1,0 +1,278 @@
+{
+  "status": "PASS_FINAL_AUDIT_ARCHIVED_AND_READ_BACK",
+  "authority": {
+    "path": "reports/fep_e4_reconciliation_final_audit_r1/V4_15E4_EXTERNAL_ACCEPTANCE_RECONCILIATION_FINAL_AUDIT_R1_20261006.md",
+    "bytes": 9684,
+    "sha256": "13f9a7ad9a171603683a0b4997b476b60411f4caca16b9b9d603c4c94b9aa710"
+  },
+  "audited_commit": "d38551ded26ed82a5362c942d8ce191cca5c04d1",
+  "audited_parent": "848db27bfd2ede74ef1eac508f5454044d2211ce",
+  "recorded_at": "2026-10-06T00:37:48.116265+00:00",
+  "previous_receipt_bindings": [
+    {
+      "path": "scripts/reconcile_fep_e4_external_audit_r1.py",
+      "bytes": 11525,
+      "sha256": "ccd6f6fb9ed4c90dc33462ea5681f40f70097f885ee4daf68a1c9844c4b44255"
+    },
+    {
+      "path": "reports/fep_e4_external_acceptance_r1/.gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "reports/fep_e4_external_acceptance_r1/COMPLETION_REPORT.md",
+      "bytes": 1819,
+      "sha256": "1b14b1785d6b252983ce6628d23dadc6397ae70f19fa37d3fd7605cc96967c13"
+    },
+    {
+      "path": "reports/fep_e4_external_acceptance_r1/E5_ENTRY_BOUNDARY.json",
+      "bytes": 660,
+      "sha256": "fde6be062a4d7131418a8e9c7b2d3ba3e9280d9aba04be9ea24159c27b5db1e0"
+    },
+    {
+      "path": "reports/fep_e4_external_acceptance_r1/ENTRY_BASELINE.json",
+      "bytes": 755,
+      "sha256": "67ca6462fe462efaa7e4c238cf62bcb0b5de868a92a3ee3ed641ea7b0b3b57ee"
+    },
+    {
+      "path": "reports/fep_e4_external_acceptance_r1/EXTERNAL_ACCEPTANCE_RECONCILIATION.json",
+      "bytes": 161964,
+      "sha256": "be229cf45e03d89fe08686c120da3b8939a5cf64abfc994ef9acb26ec8f0cea8"
+    },
+    {
+      "path": "reports/fep_e4_external_acceptance_r1/INDEPENDENT_AUDIT_ITEMS.json",
+      "bytes": 2196,
+      "sha256": "c06a86f1af233b583680a471e83b3d062dcfa2402279e978706cc2916e606df5"
+    },
+    {
+      "path": "reports/fep_e4_external_acceptance_r1/PROTECTED_STATE_READBACK.json",
+      "bytes": 4852,
+      "sha256": "ca47a5256a641c03fa9ec8e6b615100838534546af1ad59edfa4c02aebf57859"
+    },
+    {
+      "path": "reports/fep_e4_external_acceptance_r1/V4_15E4_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261006.md",
+      "bytes": 16655,
+      "sha256": "1696b2a7fe62e8f5582bc23c8437459703f15318bcc19c4cd20a2b671d83c0b3"
+    },
+    {
+      "path": "reports/fep_e4_external_acceptance_r1/EXTERNAL_ACCEPTANCE_SEAL.json",
+      "bytes": 3365,
+      "sha256": "c8006b64bb1c24f6de8f83faf7068196ac767770d6bccf2f8c9b45435c6b7092"
+    }
+  ],
+  "verified_upstream_binding_count": 233,
+  "upstream_raw_git_byte_difference_paths": [
+    "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json",
+    "data/v4/V4_03_ACCEPTED_HEAD.json"
+  ],
+  "raw_byte_differences_disclosed": true,
+  "protected_heads": {
+    "execution_baseline": "54a214167cfd4414901d2002b0a3cf5da45f4e36",
+    "protected_path_count": 16139,
+    "historical_git_diff": [],
+    "bindings": [
+      {
+        "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+        "bytes": 15303,
+        "sha256": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+      },
+      {
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "bytes": 16890,
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      {
+        "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+        "bytes": 4778,
+        "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+      },
+      {
+        "path": "config/v4_16_runtime_activation_authority_v3.json",
+        "bytes": 1335,
+        "sha256": "2dda7facec4e5b2d706cc4dd3910f1e2415ce924145f145222c7d9f65eb6c2fb"
+      }
+    ],
+    "Stage": "V4_00_TO_V4_15_ACCEPTED",
+    "Data": "2026-09-30",
+    "V4_16_ACCEPTED_HEAD": "NOT_CREATED",
+    "REAL_SHADOW_OBSERVATIONS": 0,
+    "PIT_OBSERVED_REAL_SAMPLES": 0,
+    "real_database_created": false
+  },
+  "R25_selection": {
+    "status": "WAIT_ACCEPTED_DAILY_INPUT",
+    "target_trade_date": null,
+    "previous_trade_date": null,
+    "selected_from_wall_clock": false,
+    "input_selection": "EXPLICIT_ACCEPTED_BINDINGS_ONLY",
+    "exact_daily_input_authority": null,
+    "inventory": [
+      {
+        "bytes": 16890,
+        "path": "data/v4/r25_r4r2/historical_data_head_20260930.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      {
+        "bytes": 2783,
+        "path": "config/v4_16_go_forward_input_authority_v1_1.json",
+        "sha256": "63b7205ff159aca5a82702968ef1cf3d5ca19907125f05084d08d045b9801654"
+      },
+      {
+        "bytes": 1335,
+        "path": "config/v4_16_runtime_activation_authority_v3.json",
+        "sha256": "2dda7facec4e5b2d706cc4dd3910f1e2415ce924145f145222c7d9f65eb6c2fb"
+      }
+    ],
+    "historical_accepted_trade_date": "2026-09-30",
+    "reasons": [
+      "NO_EXACT_ACCEPTED_REAL_SESSION_DAILY_INPUT_SUPPLIED",
+      "FROZEN_DATA_HEAD_IS_HISTORICAL_ONLY",
+      "NO_TARGET_DATE_ACCEPTED_OWNER_OUTPUT_AND_T0_SNAPSHOT_BOUND_TO_REAL_AUTHORITY"
+    ],
+    "excluded_inputs": [
+      "R23_ISOLATED_SEED",
+      "R24_ACTIVATION_SIMULATION",
+      "R24R1_ACTIVATION_SIMULATION",
+      "LEGACY_PRIOR"
+    ],
+    "protected": {
+      "execution_baseline": "54a214167cfd4414901d2002b0a3cf5da45f4e36",
+      "protected_path_count": 16139,
+      "historical_git_diff": [],
+      "bindings": [
+        {
+          "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+          "bytes": 15303,
+          "sha256": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+        },
+        {
+          "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+          "bytes": 16890,
+          "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+        },
+        {
+          "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+          "bytes": 4778,
+          "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+        },
+        {
+          "path": "config/v4_16_runtime_activation_authority_v3.json",
+          "bytes": 1335,
+          "sha256": "2dda7facec4e5b2d706cc4dd3910f1e2415ce924145f145222c7d9f65eb6c2fb"
+        }
+      ],
+      "Stage": "V4_00_TO_V4_15_ACCEPTED",
+      "Data": "2026-09-30",
+      "V4_16_ACCEPTED_HEAD": "NOT_CREATED",
+      "REAL_SHADOW_OBSERVATIONS": 0,
+      "PIT_OBSERVED_REAL_SAMPLES": 0,
+      "real_database_created": false
+    },
+    "next": "RETRY_ON_NEXT_ELIGIBLE_ACCEPTED_MARKET_SESSION"
+  },
+  "prior_E5_boundary": {
+    "path": "reports/fep_e4_external_acceptance_r1/E5_ENTRY_BOUNDARY.json",
+    "bytes": 660,
+    "sha256": "fde6be062a4d7131418a8e9c7b2d3ba3e9280d9aba04be9ea24159c27b5db1e0"
+  },
+  "previous_regression_evidence": {
+    "targeted_passed": 256,
+    "targeted_skipped": 1,
+    "scoped_passed": 2615,
+    "scoped_skipped": 4,
+    "existing_debt_nodes": [
+      "tests.test_r20a_current::test_independent_gate",
+      "tests.test_r20e_persisted::test_full_independent_disk_oracle",
+      "tests.test_r20r1_scope::test_current_real_outcomes_are_pending",
+      "tests.test_r20r1_scope::test_independent_exact_feasibility",
+      "tests.test_r20r1_scope::test_independent_oracle",
+      "tests.test_r20r1r1_maturity::test_current_exact_authority_no_real_maturity",
+      "tests.test_r21_promotion::test_independent_promotion",
+      "tests.test_r23_runtime::test_protected_authority",
+      "tests.test_r24r1_authority::test_atomic_failure[cohort]",
+      "tests.test_r24r1_authority::test_atomic_failure[head]",
+      "tests.test_r24r1_authority::test_daily_negative[F11]",
+      "tests.test_r24r1_authority::test_duplicate_logical_event_is_rejected_by_storage",
+      "tests.test_r24r1_authority::test_fractional_second_readiness_uses_latest_instant",
+      "tests.test_r24r1_authority::test_future_reachability",
+      "tests.test_r24r1_authority::test_independent_corruption[C01]",
+      "tests.test_r24r1_authority::test_independent_corruption[C02]",
+      "tests.test_r24r1_authority::test_independent_corruption[C03]",
+      "tests.test_r24r1_authority::test_independent_corruption[C04]",
+      "tests.test_r24r1_authority::test_independent_corruption[S01]",
+      "tests.test_r24r1_authority::test_independent_corruption[S02]",
+      "tests.test_r24r1_authority::test_independent_corruption[S03]",
+      "tests.test_r24r1_authority::test_independent_corruption[S04]",
+      "tests.test_r24r1_authority::test_nested_future_source_row_cannot_hide_behind_declared_max",
+      "tests.test_r25_packet::test_f12_valid_latest_decoy",
+      "tests.upgrade_v3.test_p01_01_lock_scope::test_hot_rank_route_skips_request_scope",
+      "tests.upgrade_v3.test_p01_01_lock_scope::test_send_marks_disconnected_client_closed",
+      "tests.upgrade_v3.test_v3_unified_entry::test_v3_is_the_single_unified_workbench_entry",
+      "tests.v4_09.test_stock_prewatch::test_production_and_v4_09_acceptance_stay_disabled",
+      "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[audited_sealed_head-wrong]",
+      "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[capabilities-value5]",
+      "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[external_acceptance_decision-wrong]",
+      "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[global_head_parent_archive-value7]",
+      "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[implementation_commit-wrong]",
+      "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[open_audit_registry-value6]",
+      "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[parent_binding-value4]",
+      "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[production_permission-True]",
+      "tests.v4_10.test_accepted_head_r1::test_promotion_and_all_25_independent_checks",
+      "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[artifact-value5]",
+      "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[capabilities-value0]",
+      "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[external_acceptance_decision-wrong]",
+      "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[implementation_commit-wrong]",
+      "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[production_permission-True]",
+      "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[upstream_binding-value4]",
+      "tests.v4_10.test_promotion::test_promoted_exact",
+      "tests.v4_a08.test_repair_freeze_authority::test_historical_archive_does_not_accept_current_runtime_for_new_promotion",
+      "tests.v4_dm01_promotion.test_accepted_chain::test_anchor_is_exact_bytes_and_wrong_hash_never_redirects",
+      "tests.v4_dm01_promotion.test_accepted_chain::test_business_publication_history_has_explicit_archive_scope",
+      "tests.v4_dm01_r3.test_real_authority_and_chain::test_atomic_failure_determinism_and_heads_preserved",
+      "tests.v4_publication_reader_di_r1.test_explicit_views::test_exact_outputs_and_two_history_plus_current_concurrency",
+      "tests.v4_publication_reader_di_r1.test_explicit_views::test_wrong_candidate_hash_behavior_exact",
+      "tests.v4_registry_r3.test_formalization::test_external_dispositions_and_protected_bytes",
+      "tests.v4_registry_r4.test_entry::test_independent_acceptance_exact_evidence"
+    ],
+    "exclusions": [
+      "--deselect=tests/v4_dm01_r4/test_runtime.py::test_current_real_v2_parent_and_future_wait",
+      "--deselect=tests/test_v4_18_migration_contract.py::test_all_declared_tables_have_explicit_namespace_rules"
+    ],
+    "introduced_active_failures": 0,
+    "repository_all_green": false,
+    "new_test_run": false,
+    "CI_evidence": "NO_RUN_NO_STATUS_REPORTED_BY_SUPPLIED_EXTERNAL_AUDIT"
+  },
+  "verification": "Exact authority and prior receipt hashes, audited Git bytes, 233 upstream sealed hashes, boundary and live protected/R25 readback",
+  "new_model_fits": 0,
+  "new_model_scoring": 0,
+  "new_database_run": false,
+  "new_test_run": false,
+  "TDX": "UNTOUCHED",
+  "source_path": "D:\\Users\\lps\\Desktop\\阶段任务\\V4_15E4_EXTERNAL_ACCEPTANCE_RECONCILIATION_FINAL_AUDIT_R1_20261006.md",
+  "source_sha256": "13f9a7ad9a171603683a0b4997b476b60411f4caca16b9b9d603c4c94b9aa710",
+  "final_state": {
+    "V4_15E4_EXTERNAL_ACCEPTANCE_RECONCILIATION_AUDIT": "PASS_FINAL",
+    "E4": "FORMALLY_CLOSED",
+    "E5_ENTRY": "AUTHORIZED",
+    "E5_STARTED": false,
+    "E5_FORMAL_TASK_CARD": "NOT_YET_ISSUED",
+    "CURRENT_BLOCKER": "NO_E5_FORMAL_TASK_CARD",
+    "NEXT": "ISSUE_V4_15E5_EXPECTANCY_AWARE_PRIORITY_PROJECTION_TASK",
+    "CHALLENGER_EFFECTIVENESS": "MIXED",
+    "PRIMARY_EFFECTIVENESS_VS_E2": "NO_INCREMENT",
+    "E3_MODEL_EFFECTIVENESS": "NO_INCREMENT",
+    "SEEN_OUTER_DIAGNOSTIC_ONLY": true,
+    "NEW_INDEPENDENT_OOS_EVIDENCE": false,
+    "CHAMPION": false,
+    "PROMOTION_EVIDENCE": false,
+    "REAL_OOS": "NOT_GRANTED",
+    "FIRST_OBSERVED": "NOT_GRANTED",
+    "MODEL_DISPLAY": "UNGRANTED",
+    "PRIORITY_USE": "UNGRANTED",
+    "FEP_PRODUCTION": "UNGRANTED",
+    "production": false,
+    "shadow": false,
+    "focus": false
+  }
+}

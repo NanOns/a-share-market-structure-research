@@ -1,0 +1,33 @@
+{
+  "status": "PASS_EXACT_SHADOW_ONLY",
+  "keys": [
+    {
+      "horizon": "T1",
+      "grant_id": "5f70f07ee1d85348b4732d086af7bd10c03e93d652347655168cf11fadb24c02",
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "target_id": "ABS_RETURN_N:T1",
+      "capability": "SHADOW_INFERENCE",
+      "model_set_id": "7e3baa88035397cfd335bc21e0ec5ce0957ac35ea851e09f2ade954f07a385e0",
+      "feature_contract_id": "FEP_E2_HISTORICAL_CORE_FEATURE_V1"
+    }
+  ],
+  "model_members": [
+    "FEP_E5_E2:0958ddd2705658aec687694a266196ac74a2b8cc3929dcf85f16bbd544a066ef",
+    "FEP_E5_E3:df402889545f21650b3829906e6d12a98a0ebcf6ea97d1722886025e7d90d222",
+    "FEP_E5_E4:deb6788d228165cda5224cb1382bcdb237eb9cca392bc73e35191d3805821d65"
+  ],
+  "identity_fields": [
+    "scope_id",
+    "target_id",
+    "horizon",
+    "feature_contract_id",
+    "model_set_id",
+    "capability"
+  ],
+  "SHADOW_INFERENCE": "ENGINEERING_ONLY",
+  "DESCRIPTIVE_DISPLAY": "UNGRANTED",
+  "MODEL_DISPLAY": "UNGRANTED",
+  "PRIORITY_USE": "UNGRANTED",
+  "CHAMPION": "NONE",
+  "FEP_PRODUCTION": "UNGRANTED"
+}

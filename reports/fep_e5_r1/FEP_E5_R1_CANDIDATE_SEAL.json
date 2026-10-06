@@ -1,0 +1,362 @@
+{
+  "stage": "V4-15E5.R1",
+  "baseline": "adcfa36466e0c33626cc6ffc5fbd37cfd65e98bb",
+  "status": "PASS_READY_FOR_INDEPENDENT_EXTERNAL_AUDIT",
+  "state": {
+    "V4_15E5_ENGINEERING": "PASS_READY_FOR_INDEPENDENT_EXTERNAL_AUDIT",
+    "E5_EFFECTIVENESS_EVALUATION": "CLOSED_ENGINEERING_ONLY",
+    "disposition": "PASS_ENGINEERING_ONLY_NO_PROMOTION",
+    "ENTRY_PROJECTION_ENGINEERING": "PASS",
+    "PREDICTION_LEDGER": "PASS",
+    "MODEL_EVIDENCE_BINDING": "PASS",
+    "API_READBACK": "PASS",
+    "PRIORITY_SHADOW_ENGINE": "PASS_ENGINEERING",
+    "ENTRY_DAILY_SEPARATION": "PASS",
+    "PERMISSION_GOVERNANCE": "PASS",
+    "ROLLBACK": "PASS",
+    "PRIORITY_V1_PROTECTED": "PASS",
+    "FEP_STOCK_DAILY_CORE": "NOT_ENABLED_NO_ACCEPTED_DAILY_SCOPE",
+    "REAL_DAILY_PRIORITY_SHADOW": "NOT_GRANTED",
+    "REAL_PRIORITY_SHADOW": "NOT_GRANTED",
+    "PRIORITY_USE": "UNGRANTED",
+    "MODEL_DISPLAY": "UNGRANTED",
+    "FEP_PRODUCTION": "UNGRANTED",
+    "REAL_OOS": "NOT_GRANTED",
+    "FIRST_OBSERVED": "NOT_GRANTED",
+    "CHAMPION": false,
+    "production": false,
+    "shadow": false,
+    "focus": false,
+    "new_model_training": 0,
+    "new_hyperparameter_search": 0,
+    "new_label_resolution": 0,
+    "new_E4_trial": 0,
+    "TDX": "UNTOUCHED",
+    "BaoStock": "NOT_REQUIRED",
+    "known_debt_nodes": [
+      "tests.test_r20a_current::test_independent_gate",
+      "tests.test_r20e_persisted::test_full_independent_disk_oracle",
+      "tests.test_r20r1_scope::test_current_real_outcomes_are_pending",
+      "tests.test_r20r1_scope::test_independent_exact_feasibility",
+      "tests.test_r20r1_scope::test_independent_oracle",
+      "tests.test_r20r1r1_maturity::test_current_exact_authority_no_real_maturity",
+      "tests.test_r21_promotion::test_independent_promotion",
+      "tests.test_r23_runtime::test_protected_authority",
+      "tests.test_r24r1_authority::test_atomic_failure[cohort]",
+      "tests.test_r24r1_authority::test_atomic_failure[head]",
+      "tests.test_r24r1_authority::test_daily_negative[F11]",
+      "tests.test_r24r1_authority::test_duplicate_logical_event_is_rejected_by_storage",
+      "tests.test_r24r1_authority::test_fractional_second_readiness_uses_latest_instant",
+      "tests.test_r24r1_authority::test_future_reachability",
+      "tests.test_r24r1_authority::test_independent_corruption[C01]",
+      "tests.test_r24r1_authority::test_independent_corruption[C02]",
+      "tests.test_r24r1_authority::test_independent_corruption[C03]",
+      "tests.test_r24r1_authority::test_independent_corruption[C04]",
+      "tests.test_r24r1_authority::test_independent_corruption[S01]",
+      "tests.test_r24r1_authority::test_independent_corruption[S02]",
+      "tests.test_r24r1_authority::test_independent_corruption[S03]",
+      "tests.test_r24r1_authority::test_independent_corruption[S04]",
+      "tests.test_r24r1_authority::test_nested_future_source_row_cannot_hide_behind_declared_max",
+      "tests.test_r25_packet::test_f12_valid_latest_decoy",
+      "tests.upgrade_v3.test_p01_01_lock_scope::test_hot_rank_route_skips_request_scope",
+      "tests.upgrade_v3.test_p01_01_lock_scope::test_send_marks_disconnected_client_closed",
+      "tests.upgrade_v3.test_v3_unified_entry::test_v3_is_the_single_unified_workbench_entry",
+      "tests.v4_09.test_stock_prewatch::test_production_and_v4_09_acceptance_stay_disabled",
+      "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[audited_sealed_head-wrong]",
+      "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[capabilities-value5]",
+      "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[external_acceptance_decision-wrong]",
+      "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[global_head_parent_archive-value7]",
+      "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[implementation_commit-wrong]",
+      "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[open_audit_registry-value6]",
+      "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[parent_binding-value4]",
+      "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[production_permission-True]",
+      "tests.v4_10.test_accepted_head_r1::test_promotion_and_all_25_independent_checks",
+      "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[artifact-value5]",
+      "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[capabilities-value0]",
+      "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[external_acceptance_decision-wrong]",
+      "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[implementation_commit-wrong]",
+      "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[production_permission-True]",
+      "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[upstream_binding-value4]",
+      "tests.v4_10.test_promotion::test_promoted_exact",
+      "tests.v4_a08.test_repair_freeze_authority::test_historical_archive_does_not_accept_current_runtime_for_new_promotion",
+      "tests.v4_dm01_promotion.test_accepted_chain::test_anchor_is_exact_bytes_and_wrong_hash_never_redirects",
+      "tests.v4_dm01_promotion.test_accepted_chain::test_business_publication_history_has_explicit_archive_scope",
+      "tests.v4_dm01_r3.test_real_authority_and_chain::test_atomic_failure_determinism_and_heads_preserved",
+      "tests.v4_publication_reader_di_r1.test_explicit_views::test_exact_outputs_and_two_history_plus_current_concurrency",
+      "tests.v4_publication_reader_di_r1.test_explicit_views::test_wrong_candidate_hash_behavior_exact",
+      "tests.v4_registry_r3.test_formalization::test_external_dispositions_and_protected_bytes",
+      "tests.v4_registry_r4.test_entry::test_independent_acceptance_exact_evidence"
+    ],
+    "introduced_active_failures": [],
+    "repository_all_green": false,
+    "GitHub_CI": "NO_RUN_NO_STATUS_NOT_USED_AS_EVIDENCE",
+    "NEXT": "STOP_WAIT_V4_15E5_INDEPENDENT_EXTERNAL_AUDIT"
+  },
+  "code_bindings": [
+    {
+      "path": "src/workbench_analysis/fep_e5/__init__.py",
+      "bytes": 84,
+      "sha256": "35b537731d89e5d638680d38f957782cbdd1ab28249d7e957e4e4706a4342c54"
+    },
+    {
+      "path": "src/workbench_analysis/fep_e5/contracts.py",
+      "bytes": 10075,
+      "sha256": "b127519125b8233465cdb85e972e0130ec1d5f050a74d045dc6ff9759864f317"
+    },
+    {
+      "path": "src/workbench_analysis/fep_e5/ledger.py",
+      "bytes": 6775,
+      "sha256": "ecab72db1e38fdcef7370320fe0a242f2620203db9062155b6da60617b85ba05"
+    },
+    {
+      "path": "src/workbench_analysis/fep_e5/schema.sql",
+      "bytes": 4926,
+      "sha256": "0de72627c880469b49bed4f54cf35ba4d692bbe2f2c49b91a6c659ecfc9476bd"
+    },
+    {
+      "path": "src/workbench_analysis/fep_e5/projection.py",
+      "bytes": 5690,
+      "sha256": "31e50cd36b2e5a5a994ed88dcb7cd100458bc2fb957b321ca83c2d8afa169f60"
+    },
+    {
+      "path": "src/workbench_analysis/fep_e5/adapters.py",
+      "bytes": 3987,
+      "sha256": "e063c65f5ad8d217307f797e569a12d2692a7f7bcfab85687bc04964857cdea1"
+    },
+    {
+      "path": "src/workbench_analysis/fep_e5/fixtures.py",
+      "bytes": 1873,
+      "sha256": "217136cf66757a640e126d7077376f75648aee710b671f93092b8a70164c7c34"
+    },
+    {
+      "path": "src/workbench_service/expectancy_service.py",
+      "bytes": 4138,
+      "sha256": "c4e54ad919b2f98ba561fcccbf6e106060d309200f81b4657a63ec9ea481c54a"
+    },
+    {
+      "path": "scripts/run_fep_e5_r1.py",
+      "bytes": 29840,
+      "sha256": "837ec19dbc907dc4986c93784ec621bbd6c2849267be013ce94ddbd87b96cd38"
+    },
+    {
+      "path": "tests/fep_e5/test_e5_contract.py",
+      "bytes": 15632,
+      "sha256": "4990f8602e63d5a960b4e7681b4069d9835cffb4ffc7155190e4d55cab38e308"
+    },
+    {
+      "path": "config/fep_e5_projection_priority_protocol_v1.json",
+      "bytes": 81144,
+      "sha256": "5f30ffa732f6773903bb0c55bb11763fb4eb7dd40a6153930bdcf88994d2fa76"
+    },
+    {
+      "path": "config/fep_e5_model_evidence_class_v1.json",
+      "bytes": 820,
+      "sha256": "a3e71737c6ad5a8a280a58f11dab4834e1bd5dfe81ea23ef8c249e2296651ad8"
+    }
+  ],
+  "evidence_bindings": [
+    {
+      "path": "reports/fep_e5_r1/.gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "reports/fep_e5_r1/API_READBACK.json",
+      "bytes": 5725,
+      "sha256": "d7c35b272e212a9a77541c6cd8722a145675946674322b3ea26bd804f457a449"
+    },
+    {
+      "path": "reports/fep_e5_r1/CAS_CONCURRENCY_fep_e1_fresh.json",
+      "bytes": 886,
+      "sha256": "a962588339defadaf480862fa6f15ef07dc5996b9f409fac3c203d3a122cebdd"
+    },
+    {
+      "path": "reports/fep_e5_r1/CAS_CONCURRENCY_fep_e1_upgrade.json",
+      "bytes": 927,
+      "sha256": "3ba1a53d36ca98f2ae64344cdb74d121f0f68dea1c30d2a57f34f7150d074edf"
+    },
+    {
+      "path": "reports/fep_e5_r1/CHANGED_FILE_LIST.json",
+      "bytes": 5692,
+      "sha256": "1fa4d4d3e8c96c873cf06fabaa8887c2a9ee9321ee618a02ec8b46273b37c302"
+    },
+    {
+      "path": "reports/fep_e5_r1/COMPLETION_REPORT.md",
+      "bytes": 4126,
+      "sha256": "cf5c194228c27c52bc7708cb86550ccc8e3c5ce37c13472181a53937664537db"
+    },
+    {
+      "path": "reports/fep_e5_r1/DAILY_PRIORITY_CAPABILITY_READBACK.json",
+      "bytes": 19922,
+      "sha256": "71109f211a0348a8c1f3ee75ae5bae02b4a7be3805da3dc0fe37d9de34b81e31"
+    },
+    {
+      "path": "reports/fep_e5_r1/EMBEDDED_SNAPSHOT_ADAPTER_READBACK.json",
+      "bytes": 1478,
+      "sha256": "0f207c6c641a36fcd32a66432ea887725464f95e2e7a8dd8d60c0beb89617469"
+    },
+    {
+      "path": "reports/fep_e5_r1/ENTRY_BASELINE.json",
+      "bytes": 649,
+      "sha256": "7e5ce0f7b136aa499fc059d1c2833ef417e3b0f6ff4cab5b733cfbb588696a93"
+    },
+    {
+      "path": "reports/fep_e5_r1/ENTRY_PROJECTION_READBACK.json",
+      "bytes": 5074103,
+      "sha256": "01e2d5f74bb05be100c4857850388d11e13a035455af2fa92f10e5e96753b101"
+    },
+    {
+      "path": "reports/fep_e5_r1/EXACT_UPSTREAM_INFERENCE_READBACK.json",
+      "bytes": 4593,
+      "sha256": "c0211e79c34d4078e4a992e6615e810aa1458dad86f4bf1b3a0f5b07d5adb394"
+    },
+    {
+      "path": "reports/fep_e5_r1/EXECUTION_CLOCK.json",
+      "bytes": 193,
+      "sha256": "23d66b54bc0747732c2690b0d52dd40cdd5a0992c189f5c92ecf94b6477f6461"
+    },
+    {
+      "path": "reports/fep_e5_r1/FINAL_EXIT_READBACK.json",
+      "bytes": 12895,
+      "sha256": "c204ef41a75a46dc8ed134616aa29204e5edc5bd1de952fa8495b19d4e44339b"
+    },
+    {
+      "path": "reports/fep_e5_r1/FINAL_PACKAGE_READBACK.json",
+      "bytes": 831,
+      "sha256": "79505f4c7d98fb80295cd92130514d44f409e1faf2a5bf57c905cd21c6871fe6"
+    },
+    {
+      "path": "reports/fep_e5_r1/FIXTURE_SHUTDOWN_RECEIPT.json",
+      "bytes": 572,
+      "sha256": "37d60a1a95c6c4f89da6f5f66809559c014c2d248b1cbbf771032f6957f09a3c"
+    },
+    {
+      "path": "reports/fep_e5_r1/FUTURE_PRIORITY_OOS_PROTOCOL_STUB.json",
+      "bytes": 782,
+      "sha256": "309f9bf1a7d708ada276aa262d5d402826107b12678a1263bc20bbad831d94fa"
+    },
+    {
+      "path": "reports/fep_e5_r1/GITHUB_CI_READBACK.json",
+      "bytes": 431,
+      "sha256": "73638e03dcd593263d475f09ebb3ab617ccf2ff8f49c8c93c01445f63f1c4442"
+    },
+    {
+      "path": "reports/fep_e5_r1/INDEPENDENT_AUDIT_ITEMS.json",
+      "bytes": 2060,
+      "sha256": "37e27f6a89c7590a94b1a2d6dc0d5932ef142ba99e8f17dca4bbb8683120aee4"
+    },
+    {
+      "path": "reports/fep_e5_r1/MODEL_CATALOG.json",
+      "bytes": 5387,
+      "sha256": "2e844eb181961fe88a50c60ca8ec59fe7e53585c7e867429f09177987f288a04"
+    },
+    {
+      "path": "reports/fep_e5_r1/MODEL_EVIDENCE_CLASS.json",
+      "bytes": 820,
+      "sha256": "a3e71737c6ad5a8a280a58f11dab4834e1bd5dfe81ea23ef8c249e2296651ad8"
+    },
+    {
+      "path": "reports/fep_e5_r1/NEGATIVE_MATRIX.json",
+      "bytes": 6510,
+      "sha256": "c49f293c326842367a72cef3a5f2d5cf548ed8b2778a285f45f26827dabb0d9b"
+    },
+    {
+      "path": "reports/fep_e5_r1/PERMISSION_MATRIX.json",
+      "bytes": 1063,
+      "sha256": "96b48a502c7bca01e1f397c9ee3542c6b149834764eab684c86f0c95b8ecc646"
+    },
+    {
+      "path": "reports/fep_e5_r1/POSTGRES_LEDGER_EXPORT.json",
+      "bytes": 12581510,
+      "sha256": "ff6be2ae755f39018363c18db82833b92ccf5b4254723c45565d82956a13ac93"
+    },
+    {
+      "path": "reports/fep_e5_r1/PREDICTION_BINDING_READBACK.json",
+      "bytes": 221420,
+      "sha256": "babe82ff522475400cf58783e0eab7689b58814d3913ebd47b994723c7a7aee8"
+    },
+    {
+      "path": "reports/fep_e5_r1/PREDICTION_SLOT_LEDGER.json",
+      "bytes": 511020,
+      "sha256": "7e0d2d86430e550b93adcf49dd4b625a078a85840e9764b37ec04b009d662432"
+    },
+    {
+      "path": "reports/fep_e5_r1/PRIORITY_V1_PROTECTED_READBACK.json",
+      "bytes": 5438,
+      "sha256": "b9a06967942082061972303e292b0bd7d231c3bfc338ffa737ae8dd199ccbfee"
+    },
+    {
+      "path": "reports/fep_e5_r1/PROJECTION_PERSISTENCE_GATE.json",
+      "bytes": 693,
+      "sha256": "bd0306b5d9c2d1d3e2ffa4f16a02a49022f54db38ecdeee1dc8bcc829f3174da"
+    },
+    {
+      "path": "reports/fep_e5_r1/PROTOCOL_FREEZE.json",
+      "bytes": 639,
+      "sha256": "7054451e18b336b3bab66b670388fbb53ccf47428a2baf437d3a864cffc5861f"
+    },
+    {
+      "path": "reports/fep_e5_r1/ROLLBACK_DRILL.json",
+      "bytes": 1810,
+      "sha256": "60e7788e066f5e094eb9b26fab23c4f908e4cffe30758f9f40ea02e73957931d"
+    },
+    {
+      "path": "reports/fep_e5_r1/scoped.log",
+      "bytes": 108175,
+      "sha256": "c43151ffa348724c8e66843d3bd20cf3a37cbdc7ee840211b607796d478d70e4"
+    },
+    {
+      "path": "reports/fep_e5_r1/scoped.xml",
+      "bytes": 465015,
+      "sha256": "77d75e50712b02a9afc5b738a71281db4f0b5c2e6acb6504558045f8be45c3d1"
+    },
+    {
+      "path": "reports/fep_e5_r1/SCOPED_REGRESSION_SUMMARY.json",
+      "bytes": 17686,
+      "sha256": "a5a0a8ceb0a251ecd8a57de3a5f7da333fd057207d7877535ec1884c698ed2e6"
+    },
+    {
+      "path": "reports/fep_e5_r1/targeted.log",
+      "bytes": 438,
+      "sha256": "a039c5f2d6e2ce28e52e6ba352f027ecb7d02e85cc14bcb7b14b7d4a3ff4a817"
+    },
+    {
+      "path": "reports/fep_e5_r1/targeted.xml",
+      "bytes": 35828,
+      "sha256": "fc8df40fc0bfa399fd3e06e84abe4d95074416fc4de3854f0f6b8ba971de30f1"
+    },
+    {
+      "path": "reports/fep_e5_r1/TARGETED_SUMMARY.json",
+      "bytes": 612,
+      "sha256": "4e0b719a9b3ca9a637d3549943f20f647970de8076f7cb1352684a1c143695a8"
+    },
+    {
+      "path": "reports/fep_e5_r1/TRANSACTION_ROLLBACK_GATE.json",
+      "bytes": 4620,
+      "sha256": "153b13f2871d3ca524c7986bd707aa9225ba31e2a34f7a8ca8126e5c5d254430"
+    },
+    {
+      "path": "reports/fep_e5_r1/UPSTREAM_BINDINGS.json",
+      "bytes": 60000,
+      "sha256": "2d5cfe9f792510d6ee8f8db4e23d1a65adee3f43e8ce088c12a29a98509ee6b7"
+    },
+    {
+      "path": "reports/fep_e5_r1/V4_15E5_FEP_PROJECTION_PRIORITY_SHADOW_ENGINEERING_TASK_R1_20261006.md",
+      "bytes": 27596,
+      "sha256": "e3ff53ff42449d35cdcdd8cb680bdfcde58c682d29d3b5b95dc87226316cd4ae"
+    },
+    {
+      "path": "reports/fep_e5_r1/V4_FEP_EXECUTION_MASTER_V4_15E5_R1_20261006.md",
+      "bytes": 4734,
+      "sha256": "8d7a9ec55d67cf7939ede27225b3357153e5b9e196fa5d44183b139ab2f80435"
+    }
+  ],
+  "sealed_at": "2026-10-06T01:29:37.820113+00:00",
+  "external_acceptance": false,
+  "packaging_readback": {
+    "no_projection_protocol_or_code_change": true,
+    "completion_reproduction_boundary_corrected": true,
+    "full_changed_file_list": true
+  },
+  "logical_digest": "ab61026112ba0f996b7de0da2aa2db7a44da4ec5d41b92c861ca998caec6845d"
+}

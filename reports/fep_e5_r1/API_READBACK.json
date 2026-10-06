@@ -1,0 +1,144 @@
+{
+  "status": "PASS_EXPLICIT_ENGINEERING_API",
+  "context": {
+    "publication_id": "7bca8b1b1f51228c2d438f4f3f086e3022a76e08edff5a88dba7d4366757cbda",
+    "prediction_slot_id": "128927973598a7f26e9b2fa02cc6351a0c4165758cf7787b8bb4ca3495a88138",
+    "feature_snapshot_id": "FEP_E5_EMBEDDED_SNAPSHOT:f39b05bc3b4c44f9c6e04ca60eabd2a065bdec342031ffffee85eceb5e9cb511",
+    "feature_snapshot_digest": "f39b05bc3b4c44f9c6e04ca60eabd2a065bdec342031ffffee85eceb5e9cb511",
+    "model_set_id": "7e3baa88035397cfd335bc21e0ec5ce0957ac35ea851e09f2ade954f07a385e0",
+    "model_id": "FEP_E5_E2:0958ddd2705658aec687694a266196ac74a2b8cc3929dcf85f16bbd544a066ef",
+    "run_id": "c4c1aeabe0fe40cc613489c1e4a5b6eaba35b44b989e4fe0cbbaba6553d0ec21",
+    "revision": 1,
+    "input_digest": "8f7d6473167ff62bc2c58f265da6a74129a3c0171b699e1add50a05a433c55fa",
+    "prediction_digest": "dd096656f9b862976c9ee2f1ce1d7467e796df285fab4f362618077e457665f1",
+    "context_digest": "77a522a939c070f935c1d287116fd8617b883ed98ac99d8d7414a5a29bc86025"
+  },
+  "default_response": {
+    "scope_id": "FEP_STOCK_ENTRY_CORE",
+    "observation_scope": "FIRST_PREWATCH",
+    "trade_date": "2024-12-13",
+    "entity_id": "SEC-DA20E83AE8AB29AC9182AA84757C04CF",
+    "target_id": "ABS_RETURN_N:T1",
+    "horizon": "T1",
+    "feature_variant": "CORE",
+    "projection_state": "REJECTED_QUALITY",
+    "quality_state": "UNAVAILABLE",
+    "support_state": "SUPPORTED",
+    "OOD_state": {
+      "status": "NOT_APPLICABLE_DESCRIPTIVE_BASELINE",
+      "JOINT_OOD": "NOT_APPLICABLE_DESCRIPTIVE",
+      "hard_reasons": [],
+      "global_OOD_OK": false,
+      "diagnostic_reasons": []
+    },
+    "coherence_state": "UNKNOWN",
+    "evidence_class": "ACCEPTED_BASELINE_ENGINEERING",
+    "model_id": "FEP_E5_E2:0958ddd2705658aec687694a266196ac74a2b8cc3929dcf85f16bbd544a066ef",
+    "model_family": "CONDITIONAL_STATISTICS_BASELINE",
+    "model_set_id": "7e3baa88035397cfd335bc21e0ec5ce0957ac35ea851e09f2ade954f07a385e0",
+    "prediction_slot_id": "128927973598a7f26e9b2fa02cc6351a0c4165758cf7787b8bb4ca3495a88138",
+    "prediction_evidence": "HISTORICAL_SIMULATION",
+    "execution_mode": "ENGINEERING_SHADOW",
+    "input_digest": "8f7d6473167ff62bc2c58f265da6a74129a3c0171b699e1add50a05a433c55fa",
+    "prediction_digest": "dd096656f9b862976c9ee2f1ce1d7467e796df285fab4f362618077e457665f1",
+    "feature_snapshot_id": "FEP_E5_EMBEDDED_SNAPSHOT:f39b05bc3b4c44f9c6e04ca60eabd2a065bdec342031ffffee85eceb5e9cb511",
+    "threshold_state": "UNKNOWN",
+    "status": "NOT_ENABLED_MODEL_DISPLAY_UNGRANTED",
+    "axes": null,
+    "diagnostic": false,
+    "permission": "UNGRANTED",
+    "permissions": {
+      "shadow_inference": true,
+      "descriptive_display": false,
+      "model_display": false,
+      "priority_use": false
+    },
+    "historical_as_of": true,
+    "FIRST_OBSERVED": false,
+    "REAL_OOS": false,
+    "production": false,
+    "priority": {
+      "v1_rank": null,
+      "v2_shadow_rank": null,
+      "v2_active": false
+    }
+  },
+  "diagnostic_response": {
+    "scope_id": "FEP_STOCK_ENTRY_CORE",
+    "observation_scope": "FIRST_PREWATCH",
+    "trade_date": "2024-12-13",
+    "entity_id": "SEC-DA20E83AE8AB29AC9182AA84757C04CF",
+    "target_id": "ABS_RETURN_N:T1",
+    "horizon": "T1",
+    "feature_variant": "CORE",
+    "projection_state": "REJECTED_QUALITY",
+    "quality_state": "UNAVAILABLE",
+    "support_state": "SUPPORTED",
+    "OOD_state": {
+      "status": "NOT_APPLICABLE_DESCRIPTIVE_BASELINE",
+      "JOINT_OOD": "NOT_APPLICABLE_DESCRIPTIVE",
+      "hard_reasons": [],
+      "global_OOD_OK": false,
+      "diagnostic_reasons": []
+    },
+    "coherence_state": "UNKNOWN",
+    "evidence_class": "ACCEPTED_BASELINE_ENGINEERING",
+    "model_id": "FEP_E5_E2:0958ddd2705658aec687694a266196ac74a2b8cc3929dcf85f16bbd544a066ef",
+    "model_family": "CONDITIONAL_STATISTICS_BASELINE",
+    "model_set_id": "7e3baa88035397cfd335bc21e0ec5ce0957ac35ea851e09f2ade954f07a385e0",
+    "prediction_slot_id": "128927973598a7f26e9b2fa02cc6351a0c4165758cf7787b8bb4ca3495a88138",
+    "prediction_evidence": "HISTORICAL_SIMULATION",
+    "execution_mode": "ENGINEERING_SHADOW",
+    "input_digest": "8f7d6473167ff62bc2c58f265da6a74129a3c0171b699e1add50a05a433c55fa",
+    "prediction_digest": "dd096656f9b862976c9ee2f1ce1d7467e796df285fab4f362618077e457665f1",
+    "feature_snapshot_id": "FEP_E5_EMBEDDED_SNAPSHOT:f39b05bc3b4c44f9c6e04ca60eabd2a065bdec342031ffffee85eceb5e9cb511",
+    "threshold_state": "UNKNOWN",
+    "status": "ENGINEERING_DIAGNOSTIC",
+    "axes": {
+      "OOD": {
+        "status": "NOT_APPLICABLE_DESCRIPTIVE_BASELINE",
+        "JOINT_OOD": "NOT_APPLICABLE_DESCRIPTIVE",
+        "hard_reasons": [],
+        "global_OOD_OK": false,
+        "diagnostic_reasons": []
+      },
+      "risk_expectancy": null,
+      "return_expectancy": null,
+      "confidence_support": {
+        "rows": 4552,
+        "dates": 220,
+        "blocks": 142,
+        "entities": 4552,
+        "episodes": 4552
+      },
+      "relative_expectancy": null,
+      "structure_expectancy": null
+    },
+    "diagnostic": true,
+    "permission": "SHADOW_INFERENCE_ONLY",
+    "permissions": {
+      "shadow_inference": true,
+      "descriptive_display": false,
+      "model_display": false,
+      "priority_use": false
+    },
+    "historical_as_of": true,
+    "FIRST_OBSERVED": false,
+    "REAL_OOS": false,
+    "production": false,
+    "priority": {
+      "v1_rank": null,
+      "v2_shadow_rank": null,
+      "v2_active": false
+    }
+  },
+  "today_ENTRY_reuse": {
+    "status": "NOT_APPLICABLE_ENTRY_IS_NOT_TODAY_DAILY"
+  },
+  "daily_priority": {
+    "status": "NOT_ENABLED_NO_ACCEPTED_DAILY_SCOPE",
+    "v2_active": false,
+    "REAL_PRIORITY_SHADOW": "NOT_GRANTED",
+    "priority_use": false
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "status": "PASS_EXACT_EMBEDDED_CONTENT_ADAPTER",
+  "source": {
+    "path": "reports/fep_e3_r1/EXACT_MODEL_ROWS.jsonl.gz",
+    "bytes": 15848102,
+    "sha256": "13f1e526528587458d6e6bc86830192c647a22c63e53c7ec06339aad3e8f34f4"
+  },
+  "rows": 205,
+  "existing_content": "Accepted E3 exact model rows embed the frozen E2-derived Core envelopes and already registered model features",
+  "observation_scope_mapping": {
+    "source_observation_scope": "FEP_STOCK_ENTRY_CORE",
+    "source_signal_type": "FIRST_PREWATCH",
+    "E5_observation_scope": "FIRST_PREWATCH",
+    "DAILY_mapping": "FORBIDDEN"
+  },
+  "snapshot_id": "FEP_E5_EMBEDDED_SNAPSHOT:<content SHA256>; independent engineering ledger identity, not a fabricated Core snapshot primary key",
+  "publication_id_semantics": "Original E2 observation-row digest used as an engineering context content handle; not a v4.publications primary key or production application context",
+  "publication_consumer": "Standalone explicitly injected engineering API only; production app unmounted",
+  "upstream_contract": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+  "new_feature_computation": false,
+  "new_label_consumption": false,
+  "current_head_lookup": false,
+  "input_content_digest": "eedff0fbb876f1b6e5048feb85a6a0fc6fa20579719cde0b1c085ea6c813975e",
+  "adapter_code": {
+    "path": "src/workbench_analysis/fep_e5/adapters.py",
+    "bytes": 3987,
+    "sha256": "e063c65f5ad8d217307f797e569a12d2692a7f7bcfab85687bc04964857cdea1"
+  }
+}

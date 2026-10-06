@@ -1,0 +1,28 @@
+{
+  "contract_id": "FEP_E5_MODEL_EVIDENCE_CLASS_V1",
+  "version": "1.0.0",
+  "champion": "NONE",
+  "classes": [
+    {
+      "stage": "E2",
+      "model_family": "CONDITIONAL_STATISTICS_BASELINE",
+      "evidence_class": "ACCEPTED_BASELINE_ENGINEERING",
+      "priority_role": "PRIMARY_E5_ENGINEERING_SOURCE",
+      "production_role": "NONE"
+    },
+    {
+      "stage": "E3",
+      "model_family": "INTERPRETABLE_MODEL",
+      "evidence_class": "ACCEPTED_MODEL_ENGINEERING_NO_INCREMENT",
+      "priority_role": "DIAGNOSTIC_SHADOW_ONLY",
+      "production_role": "NONE"
+    },
+    {
+      "stage": "E4",
+      "model_family": "TREE_CHALLENGER",
+      "evidence_class": "ACCEPTED_CHALLENGER_ENGINEERING_MIXED_NO_INCREMENT_VS_E2",
+      "priority_role": "DIAGNOSTIC_SHADOW_ONLY",
+      "production_role": "NONE"
+    }
+  ]
+}

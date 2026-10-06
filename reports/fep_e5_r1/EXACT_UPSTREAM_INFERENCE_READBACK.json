@@ -1,0 +1,166 @@
+{
+  "status": "PASS_SERIALIZED_ARTIFACT_CONSUMPTION_ONLY",
+  "models": {
+    "E2": {
+      "rows": 46,
+      "exact_accepted_statistics": true,
+      "source": {
+        "path": "reports/fep_e2_r1r2/registry/f790f96b8bd29772cff55c0bec2296214c86409cb00dd12762804e268a11113f.json",
+        "bytes": 1694279,
+        "sha256": "604a31b32a3947ccf1c2423df672b76487c50df219dd57d7a22631b6343b565e"
+      }
+    },
+    "INTERPRETABLE_MODEL": {
+      "rows": 46,
+      "exact_previous_predictable_ids": true,
+      "point_max_abs_delta": 2.42861286636753e-17,
+      "quantile_max_abs_delta": 6.938893903907228e-18,
+      "numerical_readback_tolerance": 1e-12,
+      "no_rounding_of_persisted_output": true,
+      "reference": {
+        "path": "reports/fep_e3_r1/registry/serialization_v1_1/outer_predictions_0988779703e2d2ceb619124654991aa2c5999d1fa236b552bfa36395f139d430.json",
+        "bytes": 92790,
+        "sha256": "f42ea9e3273f4fbef3cb7d801d903672c2c9f91447578167eee4c494f0f6386a"
+      }
+    },
+    "TREE_CHALLENGER": {
+      "rows": 46,
+      "exact_previous_predictable_ids": true,
+      "point_max_abs_delta": 0.0,
+      "quantile_max_abs_delta": 0.0,
+      "numerical_readback_tolerance": 1e-12,
+      "no_rounding_of_persisted_output": true,
+      "reference": {
+        "path": "reports/fep_e4_r1/registry/seen_outer_predictions_778d626ac82b057ba558427a5b98c14adf6dca0469ab1c711d496604ee15791c.json",
+        "bytes": 93076,
+        "sha256": "696421003941dbeab865c45e25c1d013fe4e6805a224b732c55020a75429b64d"
+      }
+    }
+  },
+  "temporal_chain_rows_verified": 615,
+  "snapshot_model_binding_verified": true,
+  "new_model_fit": 0,
+  "new_effectiveness_scoring": 0,
+  "post_rollback_API": {
+    "scope_id": "FEP_STOCK_ENTRY_CORE",
+    "observation_scope": "FIRST_PREWATCH",
+    "trade_date": "2024-11-14",
+    "entity_id": "SEC-DFA022622C0F2DBD8CDD039C8645E3EE",
+    "target_id": "ABS_RETURN_N:T1",
+    "horizon": "T1",
+    "feature_variant": "CORE",
+    "projection_state": "READY",
+    "quality_state": "OBSERVED",
+    "support_state": "SUPPORTED",
+    "OOD_state": {
+      "status": "NOT_APPLICABLE_DESCRIPTIVE_BASELINE",
+      "JOINT_OOD": "NOT_APPLICABLE_DESCRIPTIVE",
+      "hard_reasons": [],
+      "global_OOD_OK": false,
+      "diagnostic_reasons": []
+    },
+    "coherence_state": "PASS_FROZEN_REARRANGEMENT",
+    "evidence_class": "ACCEPTED_BASELINE_ENGINEERING",
+    "model_id": "FEP_E5_E2:0958ddd2705658aec687694a266196ac74a2b8cc3929dcf85f16bbd544a066ef",
+    "model_family": "CONDITIONAL_STATISTICS_BASELINE",
+    "model_set_id": "7e3baa88035397cfd335bc21e0ec5ce0957ac35ea851e09f2ade954f07a385e0",
+    "prediction_slot_id": "365b6bd6a2d8caf9e3c3bdfd8716470598f5793c2433bf76cb6a21ae25c84f3a",
+    "prediction_evidence": "HISTORICAL_SIMULATION",
+    "execution_mode": "ENGINEERING_SHADOW",
+    "input_digest": "7df884730204013ebd64b50fb274b32dded4e0a3ba5ac922f96bd0a5686c372b",
+    "prediction_digest": "c38ed2dad4daa77216ba1d791eca6978cdc98c1d89aa85467ed7b52e5729da21",
+    "feature_snapshot_id": "FEP_E5_EMBEDDED_SNAPSHOT:330260f6fd10671f8916df2f0d280a119b55fcb287a0be2e720649c280833d1b",
+    "threshold_state": "NOT_FROZEN",
+    "status": "NOT_ENABLED_MODEL_DISPLAY_UNGRANTED",
+    "axes": null,
+    "diagnostic": false,
+    "permission": "UNGRANTED",
+    "permissions": {
+      "shadow_inference": false,
+      "descriptive_display": false,
+      "model_display": false,
+      "priority_use": false
+    },
+    "historical_as_of": true,
+    "FIRST_OBSERVED": false,
+    "REAL_OOS": false,
+    "production": false,
+    "priority": {
+      "v1_rank": null,
+      "v2_shadow_rank": null,
+      "v2_active": false
+    }
+  },
+  "db_guards": [
+    [
+      "acceptance_receipts",
+      "immutable",
+      "O"
+    ],
+    [
+      "activations",
+      "immutable",
+      "O"
+    ],
+    [
+      "deployment_heads",
+      "head_guard",
+      "O"
+    ],
+    [
+      "deployment_receipts",
+      "immutable",
+      "O"
+    ],
+    [
+      "models",
+      "immutable",
+      "O"
+    ],
+    [
+      "permission_keys",
+      "immutable",
+      "O"
+    ],
+    [
+      "prediction_runs",
+      "immutable",
+      "O"
+    ],
+    [
+      "prediction_slots",
+      "immutable",
+      "O"
+    ],
+    [
+      "predictions",
+      "immutable",
+      "O"
+    ],
+    [
+      "priority_projection",
+      "immutable",
+      "O"
+    ],
+    [
+      "projections",
+      "immutable",
+      "O"
+    ],
+    [
+      "protocols",
+      "immutable",
+      "O"
+    ],
+    [
+      "slot_model_bindings",
+      "immutable",
+      "O"
+    ],
+    [
+      "slot_receipts",
+      "immutable",
+      "O"
+    ]
+  ]
+}

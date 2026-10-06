@@ -1,0 +1,48 @@
+{
+  "items": [
+    {
+      "audit_id": "AUDIT_NOTE_E4_01",
+      "status": "SATISFIED_FOR_E5_ENGINEERING_PROTOCOL_LOCAL_PENDING_EXTERNAL_AUDIT",
+      "scope": "Seven explicit pre-projection disposition/metric/tie/promotion/priority/shadow/evidence fields frozen; effectiveness evaluation remains closed",
+      "evidence": [
+        {
+          "path": "reports/fep_e5_r1/PROTOCOL_FREEZE.json",
+          "bytes": 639,
+          "sha256": "7054451e18b336b3bab66b670388fbb53ccf47428a2baf437d3a864cffc5861f"
+        }
+      ],
+      "acceptance": "Independent E5 audit, no retroactive E4 edit"
+    },
+    {
+      "audit_id": "FEP_E5_ENGINEERING_NAMESPACE_AND_DAILY_EVIDENCE",
+      "status": "OPEN_EXTERNAL_REVIEW",
+      "scope": "Independent isolated PostgreSQL namespace; not a production migration or real Daily grant. Low upstream coverage, weak calibration and joint OOD limitations remain.",
+      "evidence": [
+        {
+          "path": "reports/fep_e5_r1/PROJECTION_PERSISTENCE_GATE.json",
+          "bytes": 693,
+          "sha256": "bd0306b5d9c2d1d3e2ffa4f16a02a49022f54db38ecdeee1dc8bcc829f3174da"
+        },
+        {
+          "path": "reports/fep_e5_r1/FUTURE_PRIORITY_OOS_PROTOCOL_STUB.json",
+          "bytes": 782,
+          "sha256": "309f9bf1a7d708ada276aa262d5d402826107b12678a1263bc20bbad831d94fa"
+        }
+      ],
+      "acceptance": "Separate authorized real Daily/OOS/production protocol"
+    },
+    {
+      "audit_id": "FEP_E5_EMBEDDED_PUBLICATION_CONTEXT_ADAPTER",
+      "status": "OPEN_EXTERNAL_REVIEW",
+      "scope": "Engineering content-handle publication identity and unmounted read-only HTTP adapter; not production Core publication integration",
+      "evidence": [
+        {
+          "path": "reports/fep_e5_r1/EMBEDDED_SNAPSHOT_ADAPTER_READBACK.json",
+          "bytes": 1478,
+          "sha256": "0f207c6c641a36fcd32a66432ea887725464f95e2e7a8dd8d60c0beb89617469"
+        }
+      ],
+      "acceptance": "Independent E5 engineering audit; any production integration requires a separately authorized protocol"
+    }
+  ]
+}

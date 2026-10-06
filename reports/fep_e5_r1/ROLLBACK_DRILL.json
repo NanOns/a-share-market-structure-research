@@ -1,0 +1,46 @@
+{
+  "status": "PASS_INDEPENDENT_FEP_ROLLBACK_AND_ATOMICITY",
+  "receipt": {
+    "request": {
+      "grant_id": "5f70f07ee1d85348b4732d086af7bd10c03e93d652347655168cf11fadb24c02",
+      "request_id": "E5_ROLLBACK:219d7259897fdf6315bf1ea56587515fdef85f29bb00096985596733b281b385",
+      "expected_version": 1,
+      "action": "REVOKE",
+      "effective_at": "2026-10-06T01:18:15.520009+00:00",
+      "head_id": "d4c6163452ed607fd4dcfb65311f96e9d7efb30671730bcc646e0e83fc965e41"
+    },
+    "activation_id": "849442ea5558065da276a62889df86e5b7e032a60de7297e098c4a6e286975eb",
+    "version": 2,
+    "previous_activation_id": "a39d5c1a2537029aea1da95242a1fee2973e9aa46eeafe78616b506ad8834072"
+  },
+  "prediction_history_digest_before": "01560f6a1c1fdfe7b221ae625fc70c35bff1aaaba0e95bd9c1fddc23f5615140",
+  "prediction_history_digest_after": "01560f6a1c1fdfe7b221ae625fc70c35bff1aaaba0e95bd9c1fddc23f5615140",
+  "permission_revoked": true,
+  "failed_activation_receipt_absent": true,
+  "failed_priority_row_absent": true,
+  "Core_unaffected": true,
+  "PRIORITY_V1_digest_before": "6dcd45f08f51342c2b48d9fa1c4a986a6ec009cbf92c709668adc1228d366300",
+  "PRIORITY_V1_digest_after": "6dcd45f08f51342c2b48d9fa1c4a986a6ec009cbf92c709668adc1228d366300",
+  "default_API_after_rollback": {
+    "status": "NOT_ENABLED_NO_ACCEPTED_DAILY_SCOPE",
+    "v2_active": false,
+    "REAL_PRIORITY_SHADOW": "NOT_GRANTED",
+    "priority_use": false
+  },
+  "counts": {
+    "models": 3,
+    "prediction_slots": 616,
+    "slot_model_bindings": 615,
+    "permission_keys": 1,
+    "prediction_runs": 615,
+    "predictions": 615,
+    "projections": 615,
+    "slot_receipts": 616,
+    "acceptance_receipts": 615,
+    "activations": 2,
+    "deployment_receipts": 2,
+    "deployment_heads": 1,
+    "priority_projection": 1,
+    "protocols": 1
+  }
+}

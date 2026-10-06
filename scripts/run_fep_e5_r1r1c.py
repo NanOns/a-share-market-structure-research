@@ -116,7 +116,7 @@ def finalize():
     b.old.write(REPORT/'COMPLETION_REPORT.md',text.encode())
     files=CODE+sorted(p.relative_to(ROOT).as_posix() for p in REPORT.rglob('*') if p.is_file())+['reports/fep_e5_r1r1c/CHANGED_FILE_LIST.json','reports/fep_e5_r1r1c/FEP_E5_R1R1C_CANDIDATE_SEAL.json']
     emit('CHANGED_FILE_LIST',dict(parent=BASE,all_changed_files=sorted(set(files))))
-    seal=dict(status='CANDIDATE_EXTERNAL_AUDIT_REQUIRED',baseline_sha=BASE,prior_implementation_sha=freeze['implementation'],code_bindings=[b.binding(ROOT/p) for p in CODE],evidence_bindings=[b.binding(p) for p in sorted(REPORT.rglob('*')) if p.is_file()],metadata_authority=m.authority(),state=state,external_acceptance=False,sealed_at=b.now())
+    seal=dict(status='CANDIDATE_EXTERNAL_AUDIT_REQUIRED',baseline_sha=BASE,prior_implementation_sha=freeze['implementation'],code_bindings=[b.binding(ROOT/p) for p in CODE],evidence_bindings=[b.binding(p) for p in sorted(REPORT.rglob('*')) if p.is_file() and p.name!='FEP_E5_R1R1C_CANDIDATE_SEAL.json'],metadata_authority=m.authority(),state=state,external_acceptance=False,sealed_at=b.now())
     seal['logical_digest']=digest(seal);emit('FEP_E5_R1R1C_CANDIDATE_SEAL',seal)
     print(state,flush=True)
 

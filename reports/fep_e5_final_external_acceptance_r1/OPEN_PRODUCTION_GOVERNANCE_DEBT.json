@@ -1,0 +1,196 @@
+{
+  "status": "OPEN_NONBLOCKING_PRODUCTION_GOVERNANCE_DEBT",
+  "items": [
+    {
+      "debt_id": "FEP_SIGNAL_DB_LEVEL_HARDENING",
+      "status": "OPEN_NONBLOCKING_UNTIL_PRODUCTION_PERMISSION",
+      "current_state": "core_signal_contract_id exact-bound by canonical adapter/verifier, but no dedicated FK/semantic DB trigger",
+      "must_close_before": [
+        "FEP_PRODUCTION",
+        "REAL_DAILY_PRIORITY_SHADOW",
+        "MODEL_DISPLAY",
+        "PRIORITY_USE"
+      ],
+      "allowed_current_scope": "historical engineering fixture / diagnostic readback only",
+      "scope": "Dedicated signal contract FK / semantic database admission hardening",
+      "evidence": [
+        {
+          "path": "reports/fep_e5_final_external_acceptance_r1/V4_15E5_R1R1C_CANONICAL_METADATA_BINDING_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261006.md",
+          "bytes": 10260,
+          "sha256": "bbc89c9039ab1e87977a69d5024e5dc4ea7ae7f338e8ddab30db24d01a52ea57"
+        },
+        {
+          "path": "reports/fep_e5_r1r1c/METADATA_NEGATIVE_MATRIX.json",
+          "bytes": 2498,
+          "sha256": "8944192a2b16fb8dcf9a5cb75e25a86f63d5c69c79e01b5e9785d08dd91bf000"
+        }
+      ],
+      "acceptance": "Separate production-governance review must close or explicitly waive this item before any listed permission; no waiver issued by engineering closure.",
+      "independent_from_current_engineering_gate": true
+    },
+    {
+      "debt_id": "FEP_REPOSITORY_EXISTING_DEBT_52",
+      "status": "OPEN_PRESERVED_LIMITATION",
+      "current_state": "52 exact existing repository debt nodes",
+      "evidence": [
+        {
+          "path": "reports/fep_e5_r1r1c/SCOPED_REGRESSION_SUMMARY.json",
+          "bytes": 17692,
+          "sha256": "1f78ea24d349c9deb286709db90ecf2ed1671463d3ba71dde46b096d8826f81c"
+        }
+      ],
+      "nodes": [
+        "tests.test_r20a_current::test_independent_gate",
+        "tests.test_r20e_persisted::test_full_independent_disk_oracle",
+        "tests.test_r20r1_scope::test_current_real_outcomes_are_pending",
+        "tests.test_r20r1_scope::test_independent_exact_feasibility",
+        "tests.test_r20r1_scope::test_independent_oracle",
+        "tests.test_r20r1r1_maturity::test_current_exact_authority_no_real_maturity",
+        "tests.test_r21_promotion::test_independent_promotion",
+        "tests.test_r23_runtime::test_protected_authority",
+        "tests.test_r24r1_authority::test_atomic_failure[cohort]",
+        "tests.test_r24r1_authority::test_atomic_failure[head]",
+        "tests.test_r24r1_authority::test_daily_negative[F11]",
+        "tests.test_r24r1_authority::test_duplicate_logical_event_is_rejected_by_storage",
+        "tests.test_r24r1_authority::test_fractional_second_readiness_uses_latest_instant",
+        "tests.test_r24r1_authority::test_future_reachability",
+        "tests.test_r24r1_authority::test_independent_corruption[C01]",
+        "tests.test_r24r1_authority::test_independent_corruption[C02]",
+        "tests.test_r24r1_authority::test_independent_corruption[C03]",
+        "tests.test_r24r1_authority::test_independent_corruption[C04]",
+        "tests.test_r24r1_authority::test_independent_corruption[S01]",
+        "tests.test_r24r1_authority::test_independent_corruption[S02]",
+        "tests.test_r24r1_authority::test_independent_corruption[S03]",
+        "tests.test_r24r1_authority::test_independent_corruption[S04]",
+        "tests.test_r24r1_authority::test_nested_future_source_row_cannot_hide_behind_declared_max",
+        "tests.test_r25_packet::test_f12_valid_latest_decoy",
+        "tests.upgrade_v3.test_p01_01_lock_scope::test_hot_rank_route_skips_request_scope",
+        "tests.upgrade_v3.test_p01_01_lock_scope::test_send_marks_disconnected_client_closed",
+        "tests.upgrade_v3.test_v3_unified_entry::test_v3_is_the_single_unified_workbench_entry",
+        "tests.v4_09.test_stock_prewatch::test_production_and_v4_09_acceptance_stay_disabled",
+        "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[audited_sealed_head-wrong]",
+        "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[capabilities-value5]",
+        "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[external_acceptance_decision-wrong]",
+        "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[global_head_parent_archive-value7]",
+        "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[implementation_commit-wrong]",
+        "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[open_audit_registry-value6]",
+        "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[parent_binding-value4]",
+        "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[production_permission-True]",
+        "tests.v4_10.test_accepted_head_r1::test_promotion_and_all_25_independent_checks",
+        "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[artifact-value5]",
+        "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[capabilities-value0]",
+        "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[external_acceptance_decision-wrong]",
+        "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[implementation_commit-wrong]",
+        "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[production_permission-True]",
+        "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[upstream_binding-value4]",
+        "tests.v4_10.test_promotion::test_promoted_exact",
+        "tests.v4_a08.test_repair_freeze_authority::test_historical_archive_does_not_accept_current_runtime_for_new_promotion",
+        "tests.v4_dm01_promotion.test_accepted_chain::test_anchor_is_exact_bytes_and_wrong_hash_never_redirects",
+        "tests.v4_dm01_promotion.test_accepted_chain::test_business_publication_history_has_explicit_archive_scope",
+        "tests.v4_dm01_r3.test_real_authority_and_chain::test_atomic_failure_determinism_and_heads_preserved",
+        "tests.v4_publication_reader_di_r1.test_explicit_views::test_exact_outputs_and_two_history_plus_current_concurrency",
+        "tests.v4_publication_reader_di_r1.test_explicit_views::test_wrong_candidate_hash_behavior_exact",
+        "tests.v4_registry_r3.test_formalization::test_external_dispositions_and_protected_bytes",
+        "tests.v4_registry_r4.test_entry::test_independent_acceptance_exact_evidence"
+      ]
+    },
+    {
+      "debt_id": "FEP_REAL_DAILY_MODEL_ABSENT",
+      "status": "OPEN_PRESERVED_LIMITATION",
+      "current_state": "real Daily model absent",
+      "evidence": [
+        {
+          "path": "reports/fep_e5_final_external_acceptance_r1/V4_15E5_EXTERNAL_ACCEPTANCE_RECONCILIATION_AND_BRANCH_CLOSURE_TASK_R1_20261006.md",
+          "bytes": 6418,
+          "sha256": "595c6ca254e68bbd9c3b77be8ab81ff4387b8923760a0d62e66c937a531abc52"
+        },
+        {
+          "path": "reports/fep_e5_final_external_acceptance_r1/V4_15E5_R1R1C_CANONICAL_METADATA_BINDING_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261006.md",
+          "bytes": 10260,
+          "sha256": "bbc89c9039ab1e87977a69d5024e5dc4ea7ae7f338e8ddab30db24d01a52ea57"
+        }
+      ]
+    },
+    {
+      "debt_id": "FEP_NEW_INDEPENDENT_OOS_ABSENT",
+      "status": "OPEN_PRESERVED_LIMITATION",
+      "current_state": "new independent OOS absent",
+      "evidence": [
+        {
+          "path": "reports/fep_e5_final_external_acceptance_r1/V4_15E5_EXTERNAL_ACCEPTANCE_RECONCILIATION_AND_BRANCH_CLOSURE_TASK_R1_20261006.md",
+          "bytes": 6418,
+          "sha256": "595c6ca254e68bbd9c3b77be8ab81ff4387b8923760a0d62e66c937a531abc52"
+        },
+        {
+          "path": "reports/fep_e5_final_external_acceptance_r1/V4_15E5_R1R1C_CANONICAL_METADATA_BINDING_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261006.md",
+          "bytes": 10260,
+          "sha256": "bbc89c9039ab1e87977a69d5024e5dc4ea7ae7f338e8ddab30db24d01a52ea57"
+        }
+      ]
+    },
+    {
+      "debt_id": "FEP_JOINT_OOD_LIMITATIONS",
+      "status": "OPEN_PRESERVED_LIMITATION",
+      "current_state": "joint OOD limitations",
+      "evidence": [
+        {
+          "path": "reports/fep_e5_final_external_acceptance_r1/V4_15E5_EXTERNAL_ACCEPTANCE_RECONCILIATION_AND_BRANCH_CLOSURE_TASK_R1_20261006.md",
+          "bytes": 6418,
+          "sha256": "595c6ca254e68bbd9c3b77be8ab81ff4387b8923760a0d62e66c937a531abc52"
+        },
+        {
+          "path": "reports/fep_e5_final_external_acceptance_r1/V4_15E5_R1R1C_CANONICAL_METADATA_BINDING_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261006.md",
+          "bytes": 10260,
+          "sha256": "bbc89c9039ab1e87977a69d5024e5dc4ea7ae7f338e8ddab30db24d01a52ea57"
+        }
+      ]
+    },
+    {
+      "debt_id": "FEP_CALIBRATION_LIMITATIONS",
+      "status": "OPEN_PRESERVED_LIMITATION",
+      "current_state": "calibration limitations",
+      "evidence": [
+        {
+          "path": "reports/fep_e5_final_external_acceptance_r1/V4_15E5_EXTERNAL_ACCEPTANCE_RECONCILIATION_AND_BRANCH_CLOSURE_TASK_R1_20261006.md",
+          "bytes": 6418,
+          "sha256": "595c6ca254e68bbd9c3b77be8ab81ff4387b8923760a0d62e66c937a531abc52"
+        },
+        {
+          "path": "reports/fep_e5_final_external_acceptance_r1/V4_15E5_R1R1C_CANONICAL_METADATA_BINDING_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261006.md",
+          "bytes": 10260,
+          "sha256": "bbc89c9039ab1e87977a69d5024e5dc4ea7ae7f338e8ddab30db24d01a52ea57"
+        }
+      ]
+    },
+    {
+      "debt_id": "FEP_E4_NO_INCREMENT_VS_E2",
+      "status": "OPEN_PRESERVED_LIMITATION",
+      "current_state": "E4 no increment vs E2",
+      "evidence": [
+        {
+          "path": "reports/fep_e5_final_external_acceptance_r1/V4_15E5_EXTERNAL_ACCEPTANCE_RECONCILIATION_AND_BRANCH_CLOSURE_TASK_R1_20261006.md",
+          "bytes": 6418,
+          "sha256": "595c6ca254e68bbd9c3b77be8ab81ff4387b8923760a0d62e66c937a531abc52"
+        },
+        {
+          "path": "reports/fep_e5_final_external_acceptance_r1/V4_15E5_R1R1C_CANONICAL_METADATA_BINDING_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261006.md",
+          "bytes": 10260,
+          "sha256": "bbc89c9039ab1e87977a69d5024e5dc4ea7ae7f338e8ddab30db24d01a52ea57"
+        }
+      ]
+    }
+  ],
+  "repository_all_green": false,
+  "permissions": {
+    "REAL_DAILY_PRIORITY_SHADOW": "NOT_GRANTED",
+    "DESCRIPTIVE_DISPLAY": "UNGRANTED",
+    "MODEL_DISPLAY": "UNGRANTED",
+    "PRIORITY_USE": "UNGRANTED",
+    "CHAMPION": "NONE",
+    "REAL_OOS": "NOT_GRANTED",
+    "FIRST_OBSERVED": "NOT_GRANTED",
+    "FEP_PRODUCTION": "UNGRANTED"
+  },
+  "production_ready": false,
+  "no_debt_deleted": true
+}

@@ -9,22 +9,22 @@ ROOT=Path(__file__).resolve().parents[2]
 
 
 def test_all_current_sql_declarations_are_explicit_successor_inventory():
-    c=json.loads((ROOT/'config/v4_18_migration_replay_contract_v1_2.json').read_bytes())
+    c=json.loads((ROOT/'config/v4_18_migration_replay_contract_v1_3.json').read_bytes())
     ref=c['supersedes'];raw=(ROOT/ref['path']).read_bytes()
-    assert c['contract_id']=='V4_18_MIGRATION_REPLAY_CONTRACT_V1_2'
+    assert c['contract_id']=='V4_18_MIGRATION_REPLAY_CONTRACT_V1_3'
     assert len(raw)==ref['bytes'] and hashlib.sha256(raw).hexdigest()==ref['sha256']
-    assert raw==subprocess.check_output(['git','show','9a6ecd205c690b62063cc80810272dda8001cfe9:'+ref['path']],cwd=ROOT)
+    assert raw==subprocess.check_output(['git','show',c['baseline']+':'+ref['path']],cwd=ROOT)
     original=json.loads(raw)
     assert c['permissions']==original['permissions']
     assert c['namespace_matrix'][:len(original['namespace_matrix'])]==original['namespace_matrix']
-    paths=list((ROOT/'src/workbench_db').rglob('*.sql'))+[ROOT/'migrations/v4_16_r24_real_shadow_v1.sql']
+    paths=list((ROOT/'src/workbench_db').rglob('*.sql'))+[ROOT/p for p in ('migrations/v4_16_r24_real_shadow_v1.sql','migrations/v4_16_settlement_queue_v2.sql','migrations/v4_16_real_shadow_integrity_v2.sql')]
     actual={(p.relative_to(ROOT).as_posix(),name) for p in paths for name in
             re.findall(r'CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?([\w.]+)',p.read_text(encoding='utf8'),re.I)}
     registered={(r['declaration'],r['state_or_table']) for r in c['namespace_matrix']
                 if r['declaration']!='DESIGN_ONLY_NOT_CREATED'}
     assert actual==registered
     fep=[r for r in c['namespace_matrix'] if r['state_or_table'].startswith('fep.')]
-    assert len(fep)==34
+    assert len(fep)==35
     assert all(r['read_source']=='FEP_E1_ENGINEERING' and r['disposition']=='REFERENCE'
                and r['write_target'] is None and not r['production_cutover']
                and r['migration_replay_pass']=='NOT_GRANTED' for r in fep if r['read_source']=='FEP_E1_ENGINEERING')

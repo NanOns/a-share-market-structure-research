@@ -1,0 +1,15 @@
+{
+  "known_debt_not_hidden": [
+    "IA05 collection import error",
+    "IA06 unavailable opt-in PG cases",
+    "IA03 pending/due collision",
+    "IA04 price-domain behavior"
+  ],
+  "resolved": [
+    "M12 fixture needed an explicit complete publication head instead of latest partial preview",
+    "Legacy test tables are rematerialized only in the disposable snapshot",
+    "Chart fixture needed a bounded normalized input projection",
+    "Direct old-test edits triggered R25 historical-byte protection; original bytes restored and additive conftest used",
+    "Protected fingerprint gate caught a physical DuckDB byte change; 103 tables and all views/indexes compared equal; changed bytes retained and original snapshot restored; repository-wide pytest read-only/recovery guard added before fresh acceptance"
+  ]
+}

@@ -1,0 +1,299 @@
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_forward_p1_isolation.py",
+    "tests/upgrade_m12",
+    "-q",
+    "--basetemp=E:\\codex_tmp\\test_temp\\forward_p1_ia09_1791330561407941900",
+    "--junitxml=E:\\codex_tmp\\test_temp\\forward_p1_ia09_1791330561407941900.xml"
+  ],
+  "counts": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 30
+  },
+  "evidence_class": "ENGINEERING_REGRESSION_ONLY",
+  "exit_code": 0,
+  "finished_at": "2026-10-06T23:49:43.266878+00:00",
+  "log": {
+    "bytes": 102,
+    "path": "reports/forward_p1_repair_r1_20261006/IA09_PYTEST.log",
+    "sha256": "8b70dcbf5ad7ba5b2d5dfcde6a07588f4de6b0bf0929df5a7e15750fbe49983b"
+  },
+  "next_stage": "IA01",
+  "phase": "IA09",
+  "protected_database_connection_attempts": [
+    {
+      "callers": [
+        {
+          "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+          "function": "_hookexec",
+          "line": 120
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+          "function": "_multicall",
+          "line": 121
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\_pytest\\runner.py",
+          "function": "pytest_runtest_call",
+          "line": 184
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+          "function": "runtest",
+          "line": 1707
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\pluggy\\_hooks.py",
+          "function": "__call__",
+          "line": 512
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+          "function": "_hookexec",
+          "line": 120
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+          "function": "_multicall",
+          "line": 121
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+          "function": "pytest_pyfunc_call",
+          "line": 167
+        },
+        {
+          "file": "E:\\codex work\\大A交易\\tests\\test_forward_p1_isolation.py",
+          "function": "test_global_guard_rejects_explicit_real_database_writer",
+          "line": 55
+        }
+      ],
+      "database": "E:\\codex work\\大A交易\\data\\database\\market_research.duckdb",
+      "decision": "REJECT_EXPLICIT_WRITER",
+      "requested_read_only": false
+    },
+    {
+      "callers": [
+        {
+          "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+          "function": "_hookexec",
+          "line": 120
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+          "function": "_multicall",
+          "line": 121
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\_pytest\\runner.py",
+          "function": "pytest_runtest_call",
+          "line": 184
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+          "function": "runtest",
+          "line": 1707
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\pluggy\\_hooks.py",
+          "function": "__call__",
+          "line": 512
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+          "function": "_hookexec",
+          "line": 120
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+          "function": "_multicall",
+          "line": 121
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+          "function": "pytest_pyfunc_call",
+          "line": 167
+        },
+        {
+          "file": "E:\\codex work\\大A交易\\tests\\test_forward_p1_isolation.py",
+          "function": "test_global_guard_default_live_connection_is_read_only",
+          "line": 59
+        }
+      ],
+      "database": "E:\\codex work\\大A交易\\data\\database\\market_research.duckdb",
+      "decision": "READ_ONLY_INPUT",
+      "requested_read_only": null
+    },
+    {
+      "callers": [
+        {
+          "file": "E:\\python\\Lib\\site-packages\\_pytest\\runner.py",
+          "function": "pytest_runtest_call",
+          "line": 184
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+          "function": "runtest",
+          "line": 1707
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\pluggy\\_hooks.py",
+          "function": "__call__",
+          "line": 512
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+          "function": "_hookexec",
+          "line": 120
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+          "function": "_multicall",
+          "line": 121
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+          "function": "pytest_pyfunc_call",
+          "line": 167
+        },
+        {
+          "file": "E:\\codex work\\大A交易\\tests\\test_forward_p1_isolation.py",
+          "function": "test_legacy_collection_repository_metadata_is_readonly",
+          "line": 68
+        },
+        {
+          "file": "E:\\codex work\\大A交易\\src\\workbench_db\\repository.py",
+          "function": "__enter__",
+          "line": 91
+        },
+        {
+          "file": "E:\\codex work\\大A交易\\tests\\runtime_isolation_plugin.py",
+          "function": "readonly_input_open",
+          "line": 44
+        }
+      ],
+      "database": "E:\\codex work\\大A交易\\data\\database\\market_research.duckdb",
+      "decision": "READ_ONLY_INPUT",
+      "requested_read_only": true
+    },
+    {
+      "callers": [
+        {
+          "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+          "function": "execute",
+          "line": 1181
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+          "function": "_get_active_fixturedef",
+          "line": 726
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+          "function": "execute",
+          "line": 1232
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\pluggy\\_hooks.py",
+          "function": "__call__",
+          "line": 512
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+          "function": "_hookexec",
+          "line": 120
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+          "function": "_multicall",
+          "line": 121
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+          "function": "pytest_fixture_setup",
+          "line": 1328
+        },
+        {
+          "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+          "function": "call_fixture_func",
+          "line": 1005
+        },
+        {
+          "file": "E:\\codex work\\大A交易\\tests\\upgrade_m12\\conftest.py",
+          "function": "isolated_m12_runtime",
+          "line": 16
+        }
+      ],
+      "database": "E:\\codex work\\大A交易\\data\\database\\market_research.duckdb",
+      "decision": "READ_ONLY_INPUT",
+      "requested_read_only": true
+    }
+  ],
+  "runtime_authorization": false,
+  "skipped_coverage": [],
+  "source_bindings": [
+    {
+      "bytes": 135,
+      "path": "conftest.py",
+      "sha256": "91bccb1e09ed653e67f3dc83ec936c46a009b7d2c56029f26a0f8ebb9b0cca9c"
+    },
+    {
+      "bytes": 4724,
+      "path": "tests/runtime_isolation_plugin.py",
+      "sha256": "c8c0d571b43cd29590745cf080e328f04a40f81c4e76fce584a8e7829ad9d3ba"
+    },
+    {
+      "bytes": 17170,
+      "path": "src/workbench_analysis/v4_15_forward_p1.py",
+      "sha256": "407d9f3990e08c7a5cd9bcad8e687d010a270fdb0d29c2de4d281482477ebffe"
+    },
+    {
+      "bytes": 911,
+      "path": "scripts/v4_16_forward_p1_worker.py",
+      "sha256": "41b6d33f874e24de4ee40075d8d2b45810f6137eef72d58a46919724d6df7439"
+    },
+    {
+      "bytes": 3898,
+      "path": "tests/runtime_isolation.py",
+      "sha256": "64533afcf27fcbb1a19b675c2c9bfa402289aae9d02e21e6dd69d1ad11254cea"
+    },
+    {
+      "bytes": 5837,
+      "path": "tests/upgrade_m12/conftest.py",
+      "sha256": "e83910a8d4cc308f3f7108db6cdb9cb666e8c994745b23a9ecbf8c0e51b1e92a"
+    },
+    {
+      "bytes": 9317,
+      "path": "tests/forward_p1_vectors.py",
+      "sha256": "7993f18746e65a00b7c590b6cd0a878446a18441b7ba9469cf492902e5320875"
+    },
+    {
+      "bytes": 4055,
+      "path": "tests/test_forward_p1_isolation.py",
+      "sha256": "a10eb573a464376db3ef9f5276883f1c4b32d23c9386f41e0f27791738aaaa88"
+    },
+    {
+      "bytes": 178,
+      "path": "tests/test_forward_p1_stock.py",
+      "sha256": "b846407822c682419db8e45718c1207a5e50d45ba8dac16f046248598cbf28d7"
+    },
+    {
+      "bytes": 181,
+      "path": "tests/test_forward_p1_sector.py",
+      "sha256": "ae3155e01bcb79511cfef22f05ddb45206c8138c0f82dc30d8282eaf0b0b1d43"
+    },
+    {
+      "bytes": 6559,
+      "path": "tests/test_forward_p1_regression.py",
+      "sha256": "a2e36f8e94a2522d1e536aeb97b9d8ddad9ea75cfe72bdb682d66cce7d163eb7"
+    }
+  ],
+  "stage_contract": "V4_FORWARD_P1_REPAIR_R1_IA09_IA01_IA02",
+  "started_at": "2026-10-06T23:49:21.407417+00:00"
+}

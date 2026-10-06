@@ -1,0 +1,172 @@
+{
+  "attempts": [
+    {
+      "attempted_database": "E:\\codex work\\大A交易\\data\\database\\market_research.duckdb",
+      "attempted_root": "E:\\codex work\\大A交易",
+      "case": "REAL_REPOSITORY",
+      "decision": "REJECTED_BEFORE_SERVICE",
+      "mode": "NO_REAL_RECOVERY",
+      "reason": "PROTECTED_ROOT"
+    },
+    {
+      "attempted_database": "D:/new_tdx/test.duckdb",
+      "attempted_root": "D:/new_tdx",
+      "case": "TDX",
+      "decision": "REJECTED_BEFORE_SERVICE",
+      "mode": "NO_REAL_RECOVERY",
+      "reason": "PROTECTED_ROOT"
+    },
+    {
+      "attempted_database": "E:\\codex work\\大A交易\\data\\database\\market_research.duckdb",
+      "attempted_root": "E:\\codex_tmp\\test_temp\\forward_p1_proof_1791330905822847600",
+      "case": "REAL_DB_ESCAPE",
+      "decision": "REJECTED_BEFORE_SERVICE",
+      "mode": "NO_REAL_RECOVERY",
+      "reason": "DATABASE_OUTSIDE_TEST_ROOT"
+    },
+    {
+      "attempted_database": "E:\\codex_tmp\\test_temp\\forward_p1_proof_1791330905822847600\\..\\escape.duckdb",
+      "attempted_root": "E:\\codex_tmp\\test_temp\\forward_p1_proof_1791330905822847600",
+      "case": "RELATIVE_ESCAPE",
+      "decision": "REJECTED_BEFORE_SERVICE",
+      "mode": "NO_REAL_RECOVERY",
+      "reason": "DATABASE_OUTSIDE_TEST_ROOT"
+    },
+    {
+      "attempted_database": "E:\\codex_tmp\\test_temp\\forward_p1_proof_1791330905822847600\\data\\test.duckdb",
+      "attempted_root": "E:\\codex_tmp\\test_temp\\forward_p1_proof_1791330905822847600",
+      "case": "UNDECLARED_MODE",
+      "decision": "REJECTED_BEFORE_SERVICE",
+      "mode": "DEFAULT",
+      "reason": "RECOVERY_MODE_NOT_EXPLICIT"
+    },
+    {
+      "attempted_database": "E:\\codex_tmp\\test_temp\\forward_p1_proof_1791330905822847600\\data\\test.duckdb",
+      "attempted_root": "E:\\codex_tmp\\test_temp\\forward_p1_proof_1791330905822847600",
+      "case": "DISPOSABLE_ACCEPTED",
+      "decision": "ADMITTED",
+      "mode": "NO_REAL_RECOVERY"
+    }
+  ],
+  "coverage_note": "Initial core runtime roots cover the entire task. Supplemental all runtime output roots surround final acceptance regression. Input staging is read-only input and excluded from supplemental output inventory.",
+  "default_recovery_mode": "NO_REAL_RECOVERY",
+  "disposable_recovery": {
+    "after_sha256": "9cfe4408c4bd544458213ee98f0b4825ae688ec3aac3c7ab728586189268184b",
+    "after_status": "INTERRUPTED",
+    "background_escape_probe": {
+      "after_result": [
+        {
+          "activation": null,
+          "attempt": 1,
+          "completed_slice_ids": [],
+          "error": null,
+          "job_id": "disposable-job",
+          "job_kind": "HISTORY_ANALYSIS",
+          "latest_event": {
+            "status": "INTERRUPTED"
+          },
+          "planned_domains": [],
+          "progress": {},
+          "request_identity": null,
+          "status": "INTERRUPTED",
+          "updated_at_utc": null
+        }
+      ],
+      "after_sha256": "2362d88e1fffe77b0ed92259a9d18c106cdb1087ecf4b1bf7fa09fe60448be65",
+      "attempted_request": {
+        "completed_slice_ids": [],
+        "job_kind": "HISTORY_ANALYSIS",
+        "request": {
+          "output_root": "D:/new_tdx",
+          "source_manifest_path": "E:\\codex work\\大A交易\\data\\current"
+        }
+      },
+      "background_start_calls": 0,
+      "decision": "INTERRUPTION_MARKED_ONLY_NO_BACKGROUND_RESUME"
+    },
+    "background_resume": false,
+    "before_sha256": "a7ec7fd7a5de0d41f12c2404b1e9ad405ef37d9847a212cbf35e1ed8af499b2d",
+    "before_status": "RUNNING",
+    "database": "E:\\codex_tmp\\test_temp\\forward_p1_proof_1791330905822847600\\recovery\\recovery.duckdb",
+    "recovery_result": [
+      {
+        "activation": null,
+        "attempt": 1,
+        "completed_slice_ids": [],
+        "error": null,
+        "job_id": "disposable-job",
+        "job_kind": "HISTORY_ANALYSIS",
+        "latest_event": {
+          "status": "INTERRUPTED"
+        },
+        "planned_domains": [],
+        "progress": {},
+        "request_identity": null,
+        "status": "INTERRUPTED",
+        "updated_at_utc": null
+      }
+    ],
+    "root": "E:\\codex_tmp\\test_temp\\forward_p1_proof_1791330905822847600\\recovery"
+  },
+  "inherited_dsn_or_runtime_environment": false,
+  "initial_core_fingerprints": [
+    {
+      "bytes": 7864405,
+      "path": "reports/forward_p1_repair_r1_20261006/IA09_PROTECTED_ROOT_FINGERPRINT_BEFORE.json",
+      "sha256": "0102de2ee502617cd3992d913edfc1f7cad20fde3f6b82311d37367fb63bebdd"
+    },
+    {
+      "bytes": 7864405,
+      "path": "reports/forward_p1_repair_r1_20261006/IA09_PROTECTED_ROOT_FINGERPRINT_AFTER.json",
+      "sha256": "0102de2ee502617cd3992d913edfc1f7cad20fde3f6b82311d37367fb63bebdd"
+    }
+  ],
+  "original_m12_tests_byte_identical": true,
+  "production_recovery_code_changed": false,
+  "protected_file_drift": 0,
+  "protected_root_before_after_equal": true,
+  "required_vectors": {
+    "TISO-01": "REAL_DB_ESCAPE rejected before service",
+    "TISO-02": "REAL_REPOSITORY rejected by guarded launcher",
+    "TISO-03": "Configured TDX output root rejected",
+    "TISO-04": "DISPOSABLE_ACCEPTED admitted",
+    "TISO-05": "Real HistoryJobService changes disposable RUNNING to INTERRUPTED",
+    "TISO-06": "Real DB full-byte SHA/mtime/size unchanged",
+    "TISO-07": "Escaped request retained as interrupted; zero background starts; DB/root escapes rejected",
+    "TISO-08": "Explicit child environment from isolated root; no inherited DSNs"
+  },
+  "storage_incident": {
+    "bytes": 1876,
+    "path": "reports/forward_p1_repair_r1_20261006/PROTECTED_DB_STORAGE_INCIDENT_AND_RESTORATION.json",
+    "sha256": "7bc8f7e322cc4d1d7c1e41d6d910ba2f3729d8eadc73c7751357fcc16597b109"
+  },
+  "subprocess_environment_keys": [
+    "CODEX_TEST_RECOVERY_MODE",
+    "CODEX_TEST_ROOT",
+    "PATH",
+    "PYTHONPATH",
+    "SystemRoot",
+    "TEMP",
+    "TMP",
+    "WINDIR",
+    "WORKBENCH_API_BACKEND"
+  ],
+  "supplemental_fingerprints": [
+    {
+      "bytes": 3260,
+      "path": "reports/forward_p1_repair_r1_20261006/IA09_ALL_RUNTIME_ROOTS_BEFORE_FINAL_REGRESSION.json",
+      "sha256": "cde417c47d89a3d100043c3241c13d58fdb1ff2965c344e936719e8762eec15a"
+    },
+    {
+      "bytes": 3260,
+      "path": "reports/forward_p1_repair_r1_20261006/IA09_ALL_RUNTIME_ROOTS_AFTER_FINAL_REGRESSION.json",
+      "sha256": "933b8a585d2b00f749cf5efb3f6066b35ca6d2ce72050c5c2d9475aff1490006"
+    }
+  ],
+  "test_receipt": {
+    "bytes": 9351,
+    "path": "reports/forward_p1_repair_r1_20261006/IA09_TEST_RECEIPT.json",
+    "sha256": "deb8239ddd27cb9462491c4577e00c427c5b79cb5768e11adf2cf6ce1c991aa7"
+  },
+  "zero_write_claim_scope": "POST_GLOBAL_GUARD_ACCEPTANCE_RUN_ONLY; EARLIER_FAILED_STORAGE_DRIFT_IS_DISCLOSED"
+}

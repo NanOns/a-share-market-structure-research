@@ -1,0 +1,3705 @@
+[
+  {
+    "contract_expectation": {
+      "R_N": 0.1,
+      "rule": "Verified T0/endpoint return; path requires every participating coordinate."
+    },
+    "id": "STK-01",
+    "input": {
+      "basis": "2030-01-04",
+      "expected_identity": null,
+      "reference": 10,
+      "rows": [
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": 10.5,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 11.5,
+          "low": 9.5,
+          "source_identity": "LOCAL_SOURCE_A",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        },
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": 11,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 12,
+          "low": 10,
+          "source_identity": "LOCAL_SOURCE_A",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        }
+      ]
+    },
+    "new_result": {
+      "MAE_N": -0.050000000000000044,
+      "MFE_N": 0.19999999999999996,
+      "PATH_MDD_CLOSE_N": 0,
+      "R_N": 0.10000000000000009,
+      "actual_count": 2,
+      "available_at": null,
+      "endpoint_quality": "OBSERVED",
+      "evaluation_adjustment_identity": "AFFINE_A",
+      "evaluation_basis_date": "2030-01-04",
+      "evaluation_comparison_reference": 10,
+      "outcome_status": "OBSERVED",
+      "path_quality": "OBSERVED",
+      "reason_codes": [],
+      "source_asof": null,
+      "transform_coefficients": {
+        "alpha": 1,
+        "beta": 0
+      },
+      "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+    },
+    "old_result": {
+      "MAE_N": -0.050000000000000044,
+      "MFE_N": 0.19999999999999996,
+      "PATH_MDD_CLOSE_N": 0,
+      "R_N": 0.10000000000000009,
+      "actual_count": 2,
+      "available_at": null,
+      "evaluation_adjustment_identity": "AFFINE_A",
+      "evaluation_basis_date": "2030-01-04",
+      "evaluation_comparison_reference": 10,
+      "outcome_status": "OBSERVED",
+      "path_quality": "OBSERVED",
+      "reason_codes": [],
+      "source_asof": null,
+      "transform_coefficients": {
+        "alpha": 1,
+        "beta": 0
+      },
+      "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+    },
+    "why_contract_matches": "Endpoint admission remains strict; incomplete interior only degrades path metrics; no interpolation."
+  },
+  {
+    "contract_expectation": {
+      "R_N": 0.1,
+      "rule": "Verified T0/endpoint return; path requires every participating coordinate."
+    },
+    "id": "STK-02",
+    "input": {
+      "basis": "2030-01-04",
+      "expected_identity": null,
+      "reference": 10,
+      "rows": [
+        {},
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": 11,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 12,
+          "low": 10,
+          "source_identity": "LOCAL_SOURCE_A",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        }
+      ]
+    },
+    "new_result": {
+      "MAE_N": null,
+      "MFE_N": null,
+      "PATH_MDD_CLOSE_N": null,
+      "R_N": 0.10000000000000009,
+      "actual_count": 2,
+      "available_at": null,
+      "endpoint_quality": "OBSERVED",
+      "evaluation_adjustment_identity": "AFFINE_A",
+      "evaluation_basis_date": "2030-01-04",
+      "evaluation_comparison_reference": 10,
+      "outcome_status": "OBSERVED",
+      "path_quality": "MATURED_DATA_MISSING",
+      "reason_codes": [
+        "INTERIOR_AFFINE_OR_BASIS_UNKNOWN",
+        "INTERIOR_IDENTITY_UNKNOWN",
+        "UNKNOWN_INTERIOR_GAP"
+      ],
+      "source_asof": null,
+      "transform_coefficients": {
+        "alpha": 1,
+        "beta": 0
+      },
+      "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+    },
+    "old_result": {
+      "MAE_N": null,
+      "MFE_N": null,
+      "PATH_MDD_CLOSE_N": null,
+      "R_N": null,
+      "actual_count": 0,
+      "evaluation_basis_date": "2030-01-04",
+      "outcome_status": "ADJUSTMENT_UNKNOWN",
+      "reason_codes": [
+        "INVALID_AFFINE_OR_BASIS"
+      ]
+    },
+    "why_contract_matches": "Endpoint admission remains strict; incomplete interior only degrades path metrics; no interpolation."
+  },
+  {
+    "contract_expectation": {
+      "R_N": 0.1,
+      "rule": "Verified T0/endpoint return; path requires every participating coordinate."
+    },
+    "id": "STK-03",
+    "input": {
+      "basis": "2030-01-04",
+      "expected_identity": null,
+      "reference": 10,
+      "rows": [
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": 10.5,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 11.5,
+          "low": 9.5,
+          "source_identity": "LOCAL_SOURCE_A",
+          "verified_adjustment": true,
+          "verified_identity": true
+        },
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": 11,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 12,
+          "low": 10,
+          "source_identity": "LOCAL_SOURCE_A",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        }
+      ]
+    },
+    "new_result": {
+      "MAE_N": null,
+      "MFE_N": null,
+      "PATH_MDD_CLOSE_N": null,
+      "R_N": 0.10000000000000009,
+      "actual_count": 2,
+      "available_at": null,
+      "endpoint_quality": "OBSERVED",
+      "evaluation_adjustment_identity": "AFFINE_A",
+      "evaluation_basis_date": "2030-01-04",
+      "evaluation_comparison_reference": 10,
+      "outcome_status": "OBSERVED",
+      "path_quality": "MATURED_DATA_MISSING",
+      "reason_codes": [
+        "INTERIOR_AFFINE_OR_BASIS_UNKNOWN"
+      ],
+      "source_asof": null,
+      "transform_coefficients": {
+        "alpha": 1,
+        "beta": 0
+      },
+      "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+    },
+    "old_result": {
+      "MAE_N": null,
+      "MFE_N": null,
+      "PATH_MDD_CLOSE_N": null,
+      "R_N": null,
+      "actual_count": 0,
+      "evaluation_basis_date": "2030-01-04",
+      "outcome_status": "ADJUSTMENT_UNKNOWN",
+      "reason_codes": [
+        "INVALID_AFFINE_OR_BASIS"
+      ]
+    },
+    "why_contract_matches": "Endpoint admission remains strict; incomplete interior only degrades path metrics; no interpolation."
+  },
+  {
+    "contract_expectation": {
+      "R_N": null,
+      "rule": "Verified T0/endpoint return; path requires every participating coordinate."
+    },
+    "id": "STK-04",
+    "input": {
+      "basis": "2030-01-04",
+      "expected_identity": null,
+      "reference": 10,
+      "rows": [
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": 10.5,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 11.5,
+          "low": 9.5,
+          "source_identity": "LOCAL_SOURCE_A",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        },
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": 11,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 12,
+          "low": 10,
+          "source_identity": "LOCAL_SOURCE_A",
+          "transform_coefficients": {
+            "alpha": 0,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        }
+      ]
+    },
+    "new_result": {
+      "MAE_N": null,
+      "MFE_N": null,
+      "PATH_MDD_CLOSE_N": null,
+      "R_N": null,
+      "actual_count": 0,
+      "endpoint_quality": "ADJUSTMENT_UNKNOWN",
+      "evaluation_basis_date": "2030-01-04",
+      "outcome_status": "ADJUSTMENT_UNKNOWN",
+      "path_quality": "NOT_AVAILABLE_TERMINAL_OR_ENDPOINT",
+      "reason_codes": [
+        "INVALID_AFFINE_OR_BASIS"
+      ]
+    },
+    "old_result": {
+      "MAE_N": null,
+      "MFE_N": null,
+      "PATH_MDD_CLOSE_N": null,
+      "R_N": null,
+      "actual_count": 0,
+      "evaluation_basis_date": "2030-01-04",
+      "outcome_status": "ADJUSTMENT_UNKNOWN",
+      "reason_codes": [
+        "INVALID_AFFINE_OR_BASIS"
+      ]
+    },
+    "why_contract_matches": "Endpoint admission remains strict; incomplete interior only degrades path metrics; no interpolation."
+  },
+  {
+    "contract_expectation": {
+      "R_N": null,
+      "rule": "Verified T0/endpoint return; path requires every participating coordinate."
+    },
+    "id": "STK-05",
+    "input": {
+      "basis": "2030-01-04",
+      "expected_identity": null,
+      "reference": 10,
+      "rows": [
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": 10.5,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 11.5,
+          "low": 9.5,
+          "source_identity": "LOCAL_SOURCE_A",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        },
+        {
+          "T0_basis_verified": true,
+          "T0_transform_coefficients": {
+            "alpha": 0,
+            "beta": 0
+          },
+          "adjustment_identity": "AFFINE_A",
+          "close": 11,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 12,
+          "low": 10,
+          "source_identity": "LOCAL_SOURCE_A",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        }
+      ]
+    },
+    "new_result": {
+      "MAE_N": null,
+      "MFE_N": null,
+      "PATH_MDD_CLOSE_N": null,
+      "R_N": null,
+      "actual_count": 0,
+      "endpoint_quality": "ADJUSTMENT_UNKNOWN",
+      "evaluation_basis_date": "2030-01-04",
+      "outcome_status": "ADJUSTMENT_UNKNOWN",
+      "path_quality": "NOT_AVAILABLE_TERMINAL_OR_ENDPOINT",
+      "reason_codes": [
+        "INVALID_AFFINE_OR_BASIS"
+      ]
+    },
+    "old_result": {
+      "MAE_N": null,
+      "MFE_N": null,
+      "PATH_MDD_CLOSE_N": null,
+      "R_N": null,
+      "actual_count": 0,
+      "evaluation_basis_date": "2030-01-04",
+      "outcome_status": "ADJUSTMENT_UNKNOWN",
+      "reason_codes": [
+        "INVALID_AFFINE_OR_BASIS"
+      ]
+    },
+    "why_contract_matches": "Endpoint admission remains strict; incomplete interior only degrades path metrics; no interpolation."
+  },
+  {
+    "contract_expectation": {
+      "R_N": null,
+      "rule": "Verified T0/endpoint return; path requires every participating coordinate."
+    },
+    "id": "STK-06",
+    "input": {
+      "basis": "2030-01-04",
+      "expected_identity": "FROZEN_OTHER",
+      "reference": 10,
+      "rows": [
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": 10.5,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 11.5,
+          "low": 9.5,
+          "source_identity": "LOCAL_SOURCE_A",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        },
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": 11,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 12,
+          "low": 10,
+          "source_identity": "LOCAL_SOURCE_A",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        }
+      ]
+    },
+    "new_result": {
+      "MAE_N": null,
+      "MFE_N": null,
+      "PATH_MDD_CLOSE_N": null,
+      "R_N": null,
+      "actual_count": 1,
+      "available_at": null,
+      "endpoint_quality": "ADJUSTMENT_UNKNOWN",
+      "evaluation_adjustment_identity": "AFFINE_A",
+      "evaluation_basis_date": "2030-01-04",
+      "evaluation_comparison_reference": 10,
+      "outcome_status": "ADJUSTMENT_UNKNOWN",
+      "path_quality": "NOT_AVAILABLE_TERMINAL_OR_ENDPOINT",
+      "reason_codes": [
+        "ENDPOINT_IDENTITY_MISMATCH"
+      ],
+      "source_asof": null,
+      "transform_coefficients": {
+        "alpha": 1,
+        "beta": 0
+      },
+      "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+    },
+    "old_result": {
+      "MAE_N": -0.050000000000000044,
+      "MFE_N": 0.19999999999999996,
+      "PATH_MDD_CLOSE_N": 0,
+      "R_N": 0.10000000000000009,
+      "actual_count": 2,
+      "available_at": null,
+      "evaluation_adjustment_identity": "AFFINE_A",
+      "evaluation_basis_date": "2030-01-04",
+      "evaluation_comparison_reference": 10,
+      "outcome_status": "OBSERVED",
+      "path_quality": "OBSERVED",
+      "reason_codes": [],
+      "source_asof": null,
+      "transform_coefficients": {
+        "alpha": 1,
+        "beta": 0
+      },
+      "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+    },
+    "why_contract_matches": "Endpoint admission remains strict; incomplete interior only degrades path metrics; no interpolation."
+  },
+  {
+    "contract_expectation": {
+      "R_N": null,
+      "rule": "Verified T0/endpoint return; path requires every participating coordinate."
+    },
+    "id": "STK-07",
+    "input": {
+      "basis": "2030-01-04",
+      "expected_identity": null,
+      "reference": 10,
+      "rows": [
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": 10.5,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 11.5,
+          "low": 9.5,
+          "source_identity": "LOCAL_SOURCE_A",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        },
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": 11,
+          "evaluation_basis_date": "2030-01-03",
+          "high": 12,
+          "low": 10,
+          "source_identity": "LOCAL_SOURCE_A",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        }
+      ]
+    },
+    "new_result": {
+      "MAE_N": null,
+      "MFE_N": null,
+      "PATH_MDD_CLOSE_N": null,
+      "R_N": null,
+      "actual_count": 0,
+      "endpoint_quality": "ADJUSTMENT_UNKNOWN",
+      "evaluation_basis_date": "2030-01-04",
+      "outcome_status": "ADJUSTMENT_UNKNOWN",
+      "path_quality": "NOT_AVAILABLE_TERMINAL_OR_ENDPOINT",
+      "reason_codes": [
+        "INVALID_AFFINE_OR_BASIS"
+      ]
+    },
+    "old_result": {
+      "MAE_N": null,
+      "MFE_N": null,
+      "PATH_MDD_CLOSE_N": null,
+      "R_N": null,
+      "actual_count": 0,
+      "evaluation_basis_date": "2030-01-04",
+      "outcome_status": "ADJUSTMENT_UNKNOWN",
+      "reason_codes": [
+        "INVALID_AFFINE_OR_BASIS"
+      ]
+    },
+    "why_contract_matches": "Endpoint admission remains strict; incomplete interior only degrades path metrics; no interpolation."
+  },
+  {
+    "contract_expectation": {
+      "R_N": 0.1,
+      "rule": "Verified T0/endpoint return; path requires every participating coordinate."
+    },
+    "id": "STK-08",
+    "input": {
+      "basis": "2030-01-04",
+      "expected_identity": null,
+      "reference": 10,
+      "rows": [
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": null,
+          "evaluation_basis_date": "2030-01-04",
+          "high": null,
+          "low": null,
+          "source_identity": "LOCAL_SOURCE_A",
+          "status": "CONFIRMED_SUSPENSION",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        },
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": 11,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 12,
+          "low": 10,
+          "source_identity": "LOCAL_SOURCE_A",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        }
+      ]
+    },
+    "new_result": {
+      "MAE_N": 0.0,
+      "MFE_N": 0.19999999999999996,
+      "PATH_MDD_CLOSE_N": 0,
+      "R_N": 0.10000000000000009,
+      "actual_count": 1,
+      "available_at": null,
+      "endpoint_quality": "OBSERVED",
+      "evaluation_adjustment_identity": "AFFINE_A",
+      "evaluation_basis_date": "2030-01-04",
+      "evaluation_comparison_reference": 10,
+      "outcome_status": "OBSERVED",
+      "path_quality": "CONFIRMED_INTERIOR_SUSPENSION_OMITTED",
+      "reason_codes": [],
+      "source_asof": null,
+      "transform_coefficients": {
+        "alpha": 1,
+        "beta": 0
+      },
+      "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+    },
+    "old_result": {
+      "MAE_N": 0.0,
+      "MFE_N": 0.19999999999999996,
+      "PATH_MDD_CLOSE_N": 0,
+      "R_N": 0.10000000000000009,
+      "actual_count": 1,
+      "available_at": null,
+      "evaluation_adjustment_identity": "AFFINE_A",
+      "evaluation_basis_date": "2030-01-04",
+      "evaluation_comparison_reference": 10,
+      "outcome_status": "OBSERVED",
+      "path_quality": "CONFIRMED_INTERIOR_SUSPENSION_OMITTED",
+      "reason_codes": [],
+      "source_asof": null,
+      "transform_coefficients": {
+        "alpha": 1,
+        "beta": 0
+      },
+      "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+    },
+    "why_contract_matches": "Endpoint admission remains strict; incomplete interior only degrades path metrics; no interpolation."
+  },
+  {
+    "contract_expectation": {
+      "R_N": 0.1,
+      "rule": "Verified T0/endpoint return; path requires every participating coordinate."
+    },
+    "id": "STK-09",
+    "input": {
+      "basis": "2030-01-04",
+      "expected_identity": null,
+      "reference": 20,
+      "rows": [
+        {},
+        {
+          "T0_basis_verified": true,
+          "T0_transform_coefficients": {
+            "alpha": 0.5,
+            "beta": 0
+          },
+          "adjustment_identity": "AFFINE_A",
+          "close": 11,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 12,
+          "low": 10,
+          "source_identity": "LOCAL_SOURCE_A",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        }
+      ]
+    },
+    "new_result": {
+      "MAE_N": null,
+      "MFE_N": null,
+      "PATH_MDD_CLOSE_N": null,
+      "R_N": 0.10000000000000009,
+      "actual_count": 2,
+      "available_at": null,
+      "endpoint_quality": "OBSERVED",
+      "evaluation_adjustment_identity": "AFFINE_A",
+      "evaluation_basis_date": "2030-01-04",
+      "evaluation_comparison_reference": 10.0,
+      "outcome_status": "OBSERVED",
+      "path_quality": "MATURED_DATA_MISSING",
+      "reason_codes": [
+        "INTERIOR_AFFINE_OR_BASIS_UNKNOWN",
+        "INTERIOR_IDENTITY_UNKNOWN",
+        "UNKNOWN_INTERIOR_GAP"
+      ],
+      "source_asof": null,
+      "transform_coefficients": {
+        "alpha": 0.5,
+        "beta": 0
+      },
+      "transform_digest": "67153a49b208a2ec5a492cb48e11eb8c39749ddbff10dbecce5319259e725d58"
+    },
+    "old_result": {
+      "MAE_N": null,
+      "MFE_N": null,
+      "PATH_MDD_CLOSE_N": null,
+      "R_N": null,
+      "actual_count": 0,
+      "evaluation_basis_date": "2030-01-04",
+      "outcome_status": "ADJUSTMENT_UNKNOWN",
+      "reason_codes": [
+        "INVALID_AFFINE_OR_BASIS"
+      ]
+    },
+    "why_contract_matches": "Endpoint admission remains strict; incomplete interior only degrades path metrics; no interpolation."
+  },
+  {
+    "contract_expectation": "Append correction without rewriting history",
+    "id": "STK-10",
+    "input": {
+      "corrected_source": true
+    },
+    "new_result": {
+      "corrected": {
+        "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+        "MAE_N": 0.0,
+        "MFE_N": 0.19999999999999996,
+        "PATH_MDD_CLOSE_N": 0,
+        "R_N": 0.19999999999999996,
+        "actual_count": 3,
+        "available_at": null,
+        "controls": {
+          "A": {
+            "ITT_RETAINED": true,
+            "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+            "control_assignment_id": "75e712e1c259b419d0b4aae5f7021e702dedfadffe438ce609ba2794bb949359",
+            "outcomes": []
+          },
+          "B": {
+            "ITT_RETAINED": true,
+            "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+            "control_assignment_id": "2303985ec49e44b00f18058d91bf46c40bba8bef9487188aff7bf69eb6852dbf",
+            "outcomes": []
+          },
+          "C": {
+            "ITT_RETAINED": true,
+            "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+            "control_assignment_id": "f7c2710415747abaa4e404ee559ed843ffee6686daba3fad84b930cc7abcd694",
+            "outcomes": []
+          }
+        },
+        "due_date": "2030-01-04",
+        "endpoint_quality": "OBSERVED",
+        "enrollment_id": "E",
+        "evaluation_adjustment_identity": "AFFINE_A",
+        "evaluation_basis_date": "2030-01-04",
+        "evaluation_comparison_reference": 10,
+        "evaluation_revision": 3,
+        "evaluation_source": {
+          "sha256": "823e10017a16a91a9956ea4bb6b19ce7625220cecf79e81369d8320044094548"
+        },
+        "evaluation_source_digest": "823e10017a16a91a9956ea4bb6b19ce7625220cecf79e81369d8320044094548",
+        "evaluation_source_identity": {
+          "sha256": "823e10017a16a91a9956ea4bb6b19ce7625220cecf79e81369d8320044094548"
+        },
+        "evidence_class": "ENGINEERING_VECTOR",
+        "first_observed_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+        "focus": false,
+        "frozen_t0": [
+          "t0_freezes",
+          "69e4c8509ea34646e62b6bcca0157dce0dc731b5e7bd7ad74124d58df9d2bdd2"
+        ],
+        "horizon": 3,
+        "latest_corrected_id": "830c970e4224a1288ea461cbecfbf363bb17beedba2801e50a1ecf2eecd9ec4e",
+        "market_benchmark": {
+          "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+          "benchmark_delisted_weight": 0,
+          "benchmark_endpoint_coverage": 1.0,
+          "benchmark_id": "53d8de8a74767a9763844ac663d82ba9e7c3b5c364b62a475d30c5ab484218d0",
+          "benchmark_marked_weight": 0,
+          "benchmark_members": [
+            "A",
+            "B",
+            "C"
+          ],
+          "benchmark_missing_weight": 0.0,
+          "benchmark_quality": "OBSERVED",
+          "benchmark_suspended_weight": 0,
+          "benchmark_unknown_weight": 0,
+          "benchmark_valuation_coverage": 1.0,
+          "constituents": [
+            {
+              "original_weight": 0.3333333333333333,
+              "security_id": "A",
+              "state": "ACTUAL_ENDPOINT"
+            },
+            {
+              "original_weight": 0.3333333333333333,
+              "security_id": "B",
+              "state": "ACTUAL_ENDPOINT"
+            },
+            {
+              "original_weight": 0.3333333333333333,
+              "security_id": "C",
+              "state": "ACTUAL_ENDPOINT"
+            }
+          ],
+          "fixed_shares": {
+            "A": 0.03333333333333333,
+            "B": 0.03333333333333333,
+            "C": 0.03333333333333333
+          },
+          "initial_weights": {
+            "A": 0.3333333333333333,
+            "B": 0.3333333333333333,
+            "C": 0.3333333333333333
+          },
+          "marked_permission": false,
+          "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+          "observed_contribution": 1.1333333333333333,
+          "quote_age": null,
+          "quote_trade_date": null,
+          "relative_market_return": 0.06666666666666665,
+          "relative_market_return_marked": null,
+          "return": 0.1333333333333333,
+          "runtime_schema_version": "1.1"
+        },
+        "outcome_contract_id": "FORWARD_PRICE_PATH_V1_1",
+        "outcome_revision_id": "830c970e4224a1288ea461cbecfbf363bb17beedba2801e50a1ecf2eecd9ec4e",
+        "outcome_status": "OBSERVED",
+        "path_quality": "OBSERVED",
+        "price_path": [
+          {
+            "T0_basis_verified": true,
+            "adjustment_identity": "AFFINE_A",
+            "close": 11,
+            "evaluation_basis_date": "2030-01-04",
+            "high": 12,
+            "low": 10,
+            "source_identity": "LOCAL_SOURCE_A",
+            "trade_date": "2030-01-02",
+            "transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "verified_adjustment": true,
+            "verified_identity": true
+          },
+          {
+            "T0_basis_verified": true,
+            "adjustment_identity": "AFFINE_A",
+            "close": 11,
+            "evaluation_basis_date": "2030-01-04",
+            "high": 12,
+            "low": 10,
+            "source_identity": "LOCAL_SOURCE_A",
+            "trade_date": "2030-01-03",
+            "transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "verified_adjustment": true,
+            "verified_identity": true
+          },
+          {
+            "T0_basis_verified": true,
+            "adjustment_identity": "AFFINE_A",
+            "close": 12,
+            "evaluation_basis_date": "2030-01-04",
+            "high": 12,
+            "low": 10,
+            "source_identity": "LOCAL_SOURCE_A",
+            "trade_date": "2030-01-04",
+            "transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "verified_adjustment": true,
+            "verified_identity": true
+          }
+        ],
+        "production": false,
+        "reason_codes": [],
+        "report_cutoff": "2030-01-04",
+        "revision_reason": "ACCEPTED_EVALUATION_SOURCE_REVISION",
+        "revision_sequence": 3,
+        "runtime_authorized": false,
+        "sector_benchmark": {
+          "MAE_CLOSE": 0,
+          "MFE_CLOSE": 0.10000000000000009,
+          "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+          "benchmark_delisted_weight": 0,
+          "benchmark_endpoint_coverage": 1.0,
+          "benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+          "benchmark_marked_weight": 0,
+          "benchmark_members": [
+            "B",
+            "C"
+          ],
+          "benchmark_missing_weight": 0.0,
+          "benchmark_quality": "OBSERVED",
+          "benchmark_suspended_weight": 0,
+          "benchmark_unknown_weight": 0,
+          "benchmark_valuation_coverage": 1.0,
+          "constituents": [
+            {
+              "original_weight": 0.5,
+              "security_id": "B",
+              "state": "ACTUAL_ENDPOINT"
+            },
+            {
+              "original_weight": 0.5,
+              "security_id": "C",
+              "state": "ACTUAL_ENDPOINT"
+            }
+          ],
+          "fixed_shares": {
+            "B": 0.05,
+            "C": 0.05
+          },
+          "initial_weights": {
+            "B": 0.5,
+            "C": 0.5
+          },
+          "marked_permission": false,
+          "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+          "observed_contribution": 1.1,
+          "quote_age": null,
+          "quote_trade_date": null,
+          "relative_market_return_marked": null,
+          "relative_sector_return": 0.09999999999999987,
+          "relative_sector_return_marked": null,
+          "return": 0.10000000000000009,
+          "runtime_schema_version": "1.1",
+          "sector_benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+          "sector_members": [
+            "B",
+            "C"
+          ]
+        },
+        "shadow": false,
+        "source_asof": null,
+        "supersedes": [
+          "outcomes",
+          "a19e3a110622e7ebbe79156e38f8f6a2fdb60c4ade04083ff19a894616e20b4e"
+        ],
+        "transform_coefficients": {
+          "alpha": 1,
+          "beta": 0
+        },
+        "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+      },
+      "first": {
+        "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+        "MAE_N": 0.0,
+        "MFE_N": 0.19999999999999996,
+        "PATH_MDD_CLOSE_N": 0,
+        "R_N": 0.10000000000000009,
+        "actual_count": 3,
+        "available_at": null,
+        "controls": {
+          "A": {
+            "ITT_RETAINED": true,
+            "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+            "control_assignment_id": "75e712e1c259b419d0b4aae5f7021e702dedfadffe438ce609ba2794bb949359",
+            "outcomes": []
+          },
+          "B": {
+            "ITT_RETAINED": true,
+            "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+            "control_assignment_id": "2303985ec49e44b00f18058d91bf46c40bba8bef9487188aff7bf69eb6852dbf",
+            "outcomes": []
+          },
+          "C": {
+            "ITT_RETAINED": true,
+            "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+            "control_assignment_id": "f7c2710415747abaa4e404ee559ed843ffee6686daba3fad84b930cc7abcd694",
+            "outcomes": []
+          }
+        },
+        "due_date": "2030-01-04",
+        "endpoint_quality": "OBSERVED",
+        "enrollment_id": "E",
+        "evaluation_adjustment_identity": "AFFINE_A",
+        "evaluation_basis_date": "2030-01-04",
+        "evaluation_comparison_reference": 10,
+        "evaluation_revision": 2,
+        "evaluation_source": {
+          "sha256": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040"
+        },
+        "evaluation_source_digest": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040",
+        "evaluation_source_identity": {
+          "sha256": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040"
+        },
+        "evidence_class": "ENGINEERING_VECTOR",
+        "first_observed_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+        "focus": false,
+        "frozen_t0": [
+          "t0_freezes",
+          "69e4c8509ea34646e62b6bcca0157dce0dc731b5e7bd7ad74124d58df9d2bdd2"
+        ],
+        "horizon": 3,
+        "latest_corrected_id": "a19e3a110622e7ebbe79156e38f8f6a2fdb60c4ade04083ff19a894616e20b4e",
+        "market_benchmark": {
+          "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+          "benchmark_delisted_weight": 0,
+          "benchmark_endpoint_coverage": 1.0,
+          "benchmark_id": "53d8de8a74767a9763844ac663d82ba9e7c3b5c364b62a475d30c5ab484218d0",
+          "benchmark_marked_weight": 0,
+          "benchmark_members": [
+            "A",
+            "B",
+            "C"
+          ],
+          "benchmark_missing_weight": 0.0,
+          "benchmark_quality": "OBSERVED",
+          "benchmark_suspended_weight": 0,
+          "benchmark_unknown_weight": 0,
+          "benchmark_valuation_coverage": 1.0,
+          "constituents": [
+            {
+              "original_weight": 0.3333333333333333,
+              "security_id": "A",
+              "state": "ACTUAL_ENDPOINT"
+            },
+            {
+              "original_weight": 0.3333333333333333,
+              "security_id": "B",
+              "state": "ACTUAL_ENDPOINT"
+            },
+            {
+              "original_weight": 0.3333333333333333,
+              "security_id": "C",
+              "state": "ACTUAL_ENDPOINT"
+            }
+          ],
+          "fixed_shares": {
+            "A": 0.03333333333333333,
+            "B": 0.03333333333333333,
+            "C": 0.03333333333333333
+          },
+          "initial_weights": {
+            "A": 0.3333333333333333,
+            "B": 0.3333333333333333,
+            "C": 0.3333333333333333
+          },
+          "marked_permission": false,
+          "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+          "observed_contribution": 1.0999999999999999,
+          "quote_age": null,
+          "quote_trade_date": null,
+          "relative_market_return": 2.220446049250313e-16,
+          "relative_market_return_marked": null,
+          "return": 0.09999999999999987,
+          "runtime_schema_version": "1.1"
+        },
+        "outcome_contract_id": "FORWARD_PRICE_PATH_V1_1",
+        "outcome_revision_id": "a19e3a110622e7ebbe79156e38f8f6a2fdb60c4ade04083ff19a894616e20b4e",
+        "outcome_status": "OBSERVED",
+        "path_quality": "OBSERVED",
+        "price_path": [
+          {
+            "T0_basis_verified": true,
+            "adjustment_identity": "AFFINE_A",
+            "close": 11,
+            "evaluation_basis_date": "2030-01-04",
+            "high": 12,
+            "low": 10,
+            "source_identity": "LOCAL_SOURCE_A",
+            "trade_date": "2030-01-02",
+            "transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "verified_adjustment": true,
+            "verified_identity": true
+          },
+          {
+            "T0_basis_verified": true,
+            "adjustment_identity": "AFFINE_A",
+            "close": 11,
+            "evaluation_basis_date": "2030-01-04",
+            "high": 12,
+            "low": 10,
+            "source_identity": "LOCAL_SOURCE_A",
+            "trade_date": "2030-01-03",
+            "transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "verified_adjustment": true,
+            "verified_identity": true
+          },
+          {
+            "T0_basis_verified": true,
+            "adjustment_identity": "AFFINE_A",
+            "close": 11,
+            "evaluation_basis_date": "2030-01-04",
+            "high": 12,
+            "low": 10,
+            "source_identity": "LOCAL_SOURCE_A",
+            "trade_date": "2030-01-04",
+            "transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "verified_adjustment": true,
+            "verified_identity": true
+          }
+        ],
+        "production": false,
+        "reason_codes": [],
+        "report_cutoff": "2030-01-04",
+        "revision_reason": "ACCEPTED_EVALUATION_SOURCE_REVISION",
+        "revision_sequence": 2,
+        "runtime_authorized": false,
+        "sector_benchmark": {
+          "MAE_CLOSE": 0,
+          "MFE_CLOSE": 0.10000000000000009,
+          "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+          "benchmark_delisted_weight": 0,
+          "benchmark_endpoint_coverage": 1.0,
+          "benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+          "benchmark_marked_weight": 0,
+          "benchmark_members": [
+            "B",
+            "C"
+          ],
+          "benchmark_missing_weight": 0.0,
+          "benchmark_quality": "OBSERVED",
+          "benchmark_suspended_weight": 0,
+          "benchmark_unknown_weight": 0,
+          "benchmark_valuation_coverage": 1.0,
+          "constituents": [
+            {
+              "original_weight": 0.5,
+              "security_id": "B",
+              "state": "ACTUAL_ENDPOINT"
+            },
+            {
+              "original_weight": 0.5,
+              "security_id": "C",
+              "state": "ACTUAL_ENDPOINT"
+            }
+          ],
+          "fixed_shares": {
+            "B": 0.05,
+            "C": 0.05
+          },
+          "initial_weights": {
+            "B": 0.5,
+            "C": 0.5
+          },
+          "marked_permission": false,
+          "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+          "observed_contribution": 1.1,
+          "quote_age": null,
+          "quote_trade_date": null,
+          "relative_market_return_marked": null,
+          "relative_sector_return": 0.0,
+          "relative_sector_return_marked": null,
+          "return": 0.10000000000000009,
+          "runtime_schema_version": "1.1",
+          "sector_benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+          "sector_members": [
+            "B",
+            "C"
+          ]
+        },
+        "shadow": false,
+        "source_asof": null,
+        "supersedes": [
+          "outcomes",
+          "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89"
+        ],
+        "transform_coefficients": {
+          "alpha": 1,
+          "beta": 0
+        },
+        "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+      },
+      "historical": {
+        "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+        "MAE_N": 0.0,
+        "MFE_N": 0.19999999999999996,
+        "PATH_MDD_CLOSE_N": 0,
+        "R_N": 0.10000000000000009,
+        "actual_count": 3,
+        "available_at": null,
+        "controls": {
+          "A": {
+            "ITT_RETAINED": true,
+            "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+            "control_assignment_id": "75e712e1c259b419d0b4aae5f7021e702dedfadffe438ce609ba2794bb949359",
+            "outcomes": []
+          },
+          "B": {
+            "ITT_RETAINED": true,
+            "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+            "control_assignment_id": "2303985ec49e44b00f18058d91bf46c40bba8bef9487188aff7bf69eb6852dbf",
+            "outcomes": []
+          },
+          "C": {
+            "ITT_RETAINED": true,
+            "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+            "control_assignment_id": "f7c2710415747abaa4e404ee559ed843ffee6686daba3fad84b930cc7abcd694",
+            "outcomes": []
+          }
+        },
+        "due_date": "2030-01-04",
+        "enrollment_id": "E",
+        "evaluation_adjustment_identity": "AFFINE_A",
+        "evaluation_basis_date": "2030-01-04",
+        "evaluation_comparison_reference": 10,
+        "evaluation_revision": 1,
+        "evaluation_source": {
+          "sha256": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040"
+        },
+        "evaluation_source_digest": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040",
+        "evaluation_source_identity": {
+          "sha256": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040"
+        },
+        "evidence_class": "ENGINEERING_VECTOR",
+        "first_observed_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+        "frozen_t0": [
+          "t0_freezes",
+          "E"
+        ],
+        "horizon": 3,
+        "latest_corrected_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+        "market_benchmark": {
+          "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+          "benchmark_delisted_weight": 0,
+          "benchmark_endpoint_coverage": 1.0,
+          "benchmark_id": "53d8de8a74767a9763844ac663d82ba9e7c3b5c364b62a475d30c5ab484218d0",
+          "benchmark_marked_weight": 0,
+          "benchmark_members": [
+            "A",
+            "B",
+            "C"
+          ],
+          "benchmark_missing_weight": 0.0,
+          "benchmark_quality": "OBSERVED",
+          "benchmark_suspended_weight": 0,
+          "benchmark_unknown_weight": 0,
+          "benchmark_valuation_coverage": 1.0,
+          "constituents": [
+            {
+              "original_weight": 0.3333333333333333,
+              "security_id": "A",
+              "state": "ACTUAL_ENDPOINT"
+            },
+            {
+              "original_weight": 0.3333333333333333,
+              "security_id": "B",
+              "state": "ACTUAL_ENDPOINT"
+            },
+            {
+              "original_weight": 0.3333333333333333,
+              "security_id": "C",
+              "state": "ACTUAL_ENDPOINT"
+            }
+          ],
+          "fixed_shares": {
+            "A": 0.03333333333333333,
+            "B": 0.03333333333333333,
+            "C": 0.03333333333333333
+          },
+          "initial_weights": {
+            "A": 0.3333333333333333,
+            "B": 0.3333333333333333,
+            "C": 0.3333333333333333
+          },
+          "marked_permission": false,
+          "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+          "observed_contribution": 1.0999999999999999,
+          "quote_age": null,
+          "quote_trade_date": null,
+          "relative_market_return": 2.220446049250313e-16,
+          "relative_market_return_marked": null,
+          "return": 0.09999999999999987,
+          "runtime_schema_version": "1.1"
+        },
+        "outcome_contract_id": "FORWARD_PRICE_PATH_V1",
+        "outcome_revision_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+        "outcome_status": "OBSERVED",
+        "path_quality": "OBSERVED",
+        "price_path": [
+          {
+            "T0_basis_verified": true,
+            "adjustment_identity": "AFFINE_A",
+            "close": 11,
+            "evaluation_basis_date": "2030-01-04",
+            "high": 12,
+            "low": 10,
+            "source_identity": "LOCAL_SOURCE_A",
+            "trade_date": "2030-01-02",
+            "transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "verified_adjustment": true,
+            "verified_identity": true
+          },
+          {
+            "T0_basis_verified": true,
+            "adjustment_identity": "AFFINE_A",
+            "close": 11,
+            "evaluation_basis_date": "2030-01-04",
+            "high": 12,
+            "low": 10,
+            "source_identity": "LOCAL_SOURCE_A",
+            "trade_date": "2030-01-03",
+            "transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "verified_adjustment": true,
+            "verified_identity": true
+          },
+          {
+            "T0_basis_verified": true,
+            "adjustment_identity": "AFFINE_A",
+            "close": 11,
+            "evaluation_basis_date": "2030-01-04",
+            "high": 12,
+            "low": 10,
+            "source_identity": "LOCAL_SOURCE_A",
+            "trade_date": "2030-01-04",
+            "transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "verified_adjustment": true,
+            "verified_identity": true
+          }
+        ],
+        "reason_codes": [],
+        "report_cutoff": "2030-01-04",
+        "revision_reason": "FIRST_OBSERVED",
+        "revision_sequence": 1,
+        "sector_benchmark": {
+          "MAE_CLOSE": 0,
+          "MFE_CLOSE": 0.10000000000000009,
+          "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+          "benchmark_delisted_weight": 0,
+          "benchmark_endpoint_coverage": 1.0,
+          "benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+          "benchmark_marked_weight": 0,
+          "benchmark_members": [
+            "B",
+            "C"
+          ],
+          "benchmark_missing_weight": 0.0,
+          "benchmark_quality": "OBSERVED",
+          "benchmark_suspended_weight": 0,
+          "benchmark_unknown_weight": 0,
+          "benchmark_valuation_coverage": 1.0,
+          "constituents": [
+            {
+              "original_weight": 0.5,
+              "security_id": "B",
+              "state": "ACTUAL_ENDPOINT"
+            },
+            {
+              "original_weight": 0.5,
+              "security_id": "C",
+              "state": "ACTUAL_ENDPOINT"
+            }
+          ],
+          "fixed_shares": {
+            "B": 0.05,
+            "C": 0.05
+          },
+          "initial_weights": {
+            "B": 0.5,
+            "C": 0.5
+          },
+          "marked_permission": false,
+          "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+          "observed_contribution": 1.1,
+          "quote_age": null,
+          "quote_trade_date": null,
+          "relative_market_return_marked": null,
+          "relative_sector_return": 0.0,
+          "relative_sector_return_marked": null,
+          "return": 0.10000000000000009,
+          "runtime_schema_version": "1.1",
+          "sector_benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+          "sector_members": [
+            "B",
+            "C"
+          ]
+        },
+        "source_asof": null,
+        "supersedes": null,
+        "transform_coefficients": {
+          "alpha": 1,
+          "beta": 0
+        },
+        "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+      },
+      "historical_unchanged": true,
+      "readback": {
+        "FIRST_OBSERVED": {
+          "3": {
+            "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+            "MAE_N": 0.0,
+            "MFE_N": 0.19999999999999996,
+            "PATH_MDD_CLOSE_N": 0,
+            "R_N": 0.10000000000000009,
+            "actual_count": 3,
+            "available_at": null,
+            "controls": {
+              "A": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "75e712e1c259b419d0b4aae5f7021e702dedfadffe438ce609ba2794bb949359",
+                "outcomes": []
+              },
+              "B": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "2303985ec49e44b00f18058d91bf46c40bba8bef9487188aff7bf69eb6852dbf",
+                "outcomes": []
+              },
+              "C": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "f7c2710415747abaa4e404ee559ed843ffee6686daba3fad84b930cc7abcd694",
+                "outcomes": []
+              }
+            },
+            "due_date": "2030-01-04",
+            "enrollment_id": "E",
+            "evaluation_adjustment_identity": "AFFINE_A",
+            "evaluation_basis_date": "2030-01-04",
+            "evaluation_comparison_reference": 10,
+            "evaluation_revision": 1,
+            "evaluation_source": {
+              "sha256": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040"
+            },
+            "evaluation_source_digest": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040",
+            "evaluation_source_identity": {
+              "sha256": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040"
+            },
+            "evidence_class": "ENGINEERING_VECTOR",
+            "first_observed_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+            "frozen_t0": [
+              "t0_freezes",
+              "E"
+            ],
+            "horizon": 3,
+            "latest_corrected_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+            "market_benchmark": {
+              "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+              "benchmark_delisted_weight": 0,
+              "benchmark_endpoint_coverage": 1.0,
+              "benchmark_id": "53d8de8a74767a9763844ac663d82ba9e7c3b5c364b62a475d30c5ab484218d0",
+              "benchmark_marked_weight": 0,
+              "benchmark_members": [
+                "A",
+                "B",
+                "C"
+              ],
+              "benchmark_missing_weight": 0.0,
+              "benchmark_quality": "OBSERVED",
+              "benchmark_suspended_weight": 0,
+              "benchmark_unknown_weight": 0,
+              "benchmark_valuation_coverage": 1.0,
+              "constituents": [
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "A",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "B",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "C",
+                  "state": "ACTUAL_ENDPOINT"
+                }
+              ],
+              "fixed_shares": {
+                "A": 0.03333333333333333,
+                "B": 0.03333333333333333,
+                "C": 0.03333333333333333
+              },
+              "initial_weights": {
+                "A": 0.3333333333333333,
+                "B": 0.3333333333333333,
+                "C": 0.3333333333333333
+              },
+              "marked_permission": false,
+              "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+              "observed_contribution": 1.0999999999999999,
+              "quote_age": null,
+              "quote_trade_date": null,
+              "relative_market_return": 2.220446049250313e-16,
+              "relative_market_return_marked": null,
+              "return": 0.09999999999999987,
+              "runtime_schema_version": "1.1"
+            },
+            "outcome_contract_id": "FORWARD_PRICE_PATH_V1",
+            "outcome_revision_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+            "outcome_status": "OBSERVED",
+            "path_quality": "OBSERVED",
+            "price_path": [
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-02",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              },
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-03",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              },
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-04",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              }
+            ],
+            "reason_codes": [],
+            "report_cutoff": "2030-01-04",
+            "revision_reason": "FIRST_OBSERVED",
+            "revision_sequence": 1,
+            "sector_benchmark": {
+              "MAE_CLOSE": 0,
+              "MFE_CLOSE": 0.10000000000000009,
+              "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+              "benchmark_delisted_weight": 0,
+              "benchmark_endpoint_coverage": 1.0,
+              "benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+              "benchmark_marked_weight": 0,
+              "benchmark_members": [
+                "B",
+                "C"
+              ],
+              "benchmark_missing_weight": 0.0,
+              "benchmark_quality": "OBSERVED",
+              "benchmark_suspended_weight": 0,
+              "benchmark_unknown_weight": 0,
+              "benchmark_valuation_coverage": 1.0,
+              "constituents": [
+                {
+                  "original_weight": 0.5,
+                  "security_id": "B",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.5,
+                  "security_id": "C",
+                  "state": "ACTUAL_ENDPOINT"
+                }
+              ],
+              "fixed_shares": {
+                "B": 0.05,
+                "C": 0.05
+              },
+              "initial_weights": {
+                "B": 0.5,
+                "C": 0.5
+              },
+              "marked_permission": false,
+              "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+              "observed_contribution": 1.1,
+              "quote_age": null,
+              "quote_trade_date": null,
+              "relative_market_return_marked": null,
+              "relative_sector_return": 0.0,
+              "relative_sector_return_marked": null,
+              "return": 0.10000000000000009,
+              "runtime_schema_version": "1.1",
+              "sector_benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+              "sector_members": [
+                "B",
+                "C"
+              ]
+            },
+            "source_asof": null,
+            "supersedes": null,
+            "transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+          }
+        },
+        "LATEST_CORRECTED": {
+          "3": {
+            "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+            "MAE_N": 0.0,
+            "MFE_N": 0.19999999999999996,
+            "PATH_MDD_CLOSE_N": 0,
+            "R_N": 0.19999999999999996,
+            "actual_count": 3,
+            "available_at": null,
+            "controls": {
+              "A": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "75e712e1c259b419d0b4aae5f7021e702dedfadffe438ce609ba2794bb949359",
+                "outcomes": []
+              },
+              "B": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "2303985ec49e44b00f18058d91bf46c40bba8bef9487188aff7bf69eb6852dbf",
+                "outcomes": []
+              },
+              "C": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "f7c2710415747abaa4e404ee559ed843ffee6686daba3fad84b930cc7abcd694",
+                "outcomes": []
+              }
+            },
+            "due_date": "2030-01-04",
+            "endpoint_quality": "OBSERVED",
+            "enrollment_id": "E",
+            "evaluation_adjustment_identity": "AFFINE_A",
+            "evaluation_basis_date": "2030-01-04",
+            "evaluation_comparison_reference": 10,
+            "evaluation_revision": 3,
+            "evaluation_source": {
+              "sha256": "823e10017a16a91a9956ea4bb6b19ce7625220cecf79e81369d8320044094548"
+            },
+            "evaluation_source_digest": "823e10017a16a91a9956ea4bb6b19ce7625220cecf79e81369d8320044094548",
+            "evaluation_source_identity": {
+              "sha256": "823e10017a16a91a9956ea4bb6b19ce7625220cecf79e81369d8320044094548"
+            },
+            "evidence_class": "ENGINEERING_VECTOR",
+            "first_observed_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+            "focus": false,
+            "frozen_t0": [
+              "t0_freezes",
+              "69e4c8509ea34646e62b6bcca0157dce0dc731b5e7bd7ad74124d58df9d2bdd2"
+            ],
+            "horizon": 3,
+            "latest_corrected_id": "830c970e4224a1288ea461cbecfbf363bb17beedba2801e50a1ecf2eecd9ec4e",
+            "market_benchmark": {
+              "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+              "benchmark_delisted_weight": 0,
+              "benchmark_endpoint_coverage": 1.0,
+              "benchmark_id": "53d8de8a74767a9763844ac663d82ba9e7c3b5c364b62a475d30c5ab484218d0",
+              "benchmark_marked_weight": 0,
+              "benchmark_members": [
+                "A",
+                "B",
+                "C"
+              ],
+              "benchmark_missing_weight": 0.0,
+              "benchmark_quality": "OBSERVED",
+              "benchmark_suspended_weight": 0,
+              "benchmark_unknown_weight": 0,
+              "benchmark_valuation_coverage": 1.0,
+              "constituents": [
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "A",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "B",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "C",
+                  "state": "ACTUAL_ENDPOINT"
+                }
+              ],
+              "fixed_shares": {
+                "A": 0.03333333333333333,
+                "B": 0.03333333333333333,
+                "C": 0.03333333333333333
+              },
+              "initial_weights": {
+                "A": 0.3333333333333333,
+                "B": 0.3333333333333333,
+                "C": 0.3333333333333333
+              },
+              "marked_permission": false,
+              "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+              "observed_contribution": 1.1333333333333333,
+              "quote_age": null,
+              "quote_trade_date": null,
+              "relative_market_return": 0.06666666666666665,
+              "relative_market_return_marked": null,
+              "return": 0.1333333333333333,
+              "runtime_schema_version": "1.1"
+            },
+            "outcome_contract_id": "FORWARD_PRICE_PATH_V1_1",
+            "outcome_revision_id": "830c970e4224a1288ea461cbecfbf363bb17beedba2801e50a1ecf2eecd9ec4e",
+            "outcome_status": "OBSERVED",
+            "path_quality": "OBSERVED",
+            "price_path": [
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-02",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              },
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-03",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              },
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 12,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-04",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              }
+            ],
+            "production": false,
+            "reason_codes": [],
+            "report_cutoff": "2030-01-04",
+            "revision_reason": "ACCEPTED_EVALUATION_SOURCE_REVISION",
+            "revision_sequence": 3,
+            "runtime_authorized": false,
+            "sector_benchmark": {
+              "MAE_CLOSE": 0,
+              "MFE_CLOSE": 0.10000000000000009,
+              "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+              "benchmark_delisted_weight": 0,
+              "benchmark_endpoint_coverage": 1.0,
+              "benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+              "benchmark_marked_weight": 0,
+              "benchmark_members": [
+                "B",
+                "C"
+              ],
+              "benchmark_missing_weight": 0.0,
+              "benchmark_quality": "OBSERVED",
+              "benchmark_suspended_weight": 0,
+              "benchmark_unknown_weight": 0,
+              "benchmark_valuation_coverage": 1.0,
+              "constituents": [
+                {
+                  "original_weight": 0.5,
+                  "security_id": "B",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.5,
+                  "security_id": "C",
+                  "state": "ACTUAL_ENDPOINT"
+                }
+              ],
+              "fixed_shares": {
+                "B": 0.05,
+                "C": 0.05
+              },
+              "initial_weights": {
+                "B": 0.5,
+                "C": 0.5
+              },
+              "marked_permission": false,
+              "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+              "observed_contribution": 1.1,
+              "quote_age": null,
+              "quote_trade_date": null,
+              "relative_market_return_marked": null,
+              "relative_sector_return": 0.09999999999999987,
+              "relative_sector_return_marked": null,
+              "return": 0.10000000000000009,
+              "runtime_schema_version": "1.1",
+              "sector_benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+              "sector_members": [
+                "B",
+                "C"
+              ]
+            },
+            "shadow": false,
+            "source_asof": null,
+            "supersedes": [
+              "outcomes",
+              "a19e3a110622e7ebbe79156e38f8f6a2fdb60c4ade04083ff19a894616e20b4e"
+            ],
+            "transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+          }
+        },
+        "benchmark_control_bindings": {
+          "controls": {
+            "A": {
+              "control_assignment_id": "75e712e1c259b419d0b4aae5f7021e702dedfadffe438ce609ba2794bb949359",
+              "control_entity_ids": [],
+              "status": "NOT_AVAILABLE"
+            },
+            "B": {
+              "control_assignment_id": "2303985ec49e44b00f18058d91bf46c40bba8bef9487188aff7bf69eb6852dbf",
+              "control_count": 0,
+              "control_entity_ids": [],
+              "reason_codes": [
+                "INSUFFICIENT_POOL"
+              ],
+              "requested_count": 1
+            },
+            "C": {
+              "control_assignment_id": "f7c2710415747abaa4e404ee559ed843ffee6686daba3fad84b930cc7abcd694",
+              "control_count": 0,
+              "control_distance": [],
+              "control_entity_ids": [],
+              "control_feature_snapshot": [],
+              "match_scope": "MATCH_SCOPE_INDUSTRY",
+              "reason_codes": [
+                "UNKNOWN_OR_INSUFFICIENT_RANK_BASIS"
+              ]
+            },
+            "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f"
+          },
+          "market": {
+            "T0": "2030-01-01",
+            "benchmark_id": "53d8de8a74767a9763844ac663d82ba9e7c3b5c364b62a475d30c5ab484218d0",
+            "constituent_digest": "66011c9d8b4c2518dbf4cb139f439cd04771bae3ff39ec5d5f1f1150a77879fa",
+            "constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+            "kind": "MARKET",
+            "members": [
+              {
+                "adjustment_identity": "AFFINE_A",
+                "fixed_shares": 0.03333333333333333,
+                "reference": 10,
+                "security_id": "A",
+                "weight": 0.3333333333333333
+              },
+              {
+                "adjustment_identity": "AFFINE_A",
+                "fixed_shares": 0.03333333333333333,
+                "reference": 10,
+                "security_id": "B",
+                "weight": 0.3333333333333333
+              },
+              {
+                "adjustment_identity": "AFFINE_A",
+                "fixed_shares": 0.03333333333333333,
+                "reference": 10,
+                "security_id": "C",
+                "weight": 0.3333333333333333
+              }
+            ],
+            "quality": "OBSERVED"
+          },
+          "sector": {
+            "T0": "2030-01-01",
+            "benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+            "constituent_digest": "e49a3f5e3d29181f9edbdc64b47cc41b573c9d6f21748ccbd226669b3cbd9d95",
+            "constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+            "kind": "SECTOR",
+            "members": [
+              {
+                "adjustment_identity": "AFFINE_A",
+                "fixed_shares": 0.05,
+                "reference": 10,
+                "security_id": "B",
+                "weight": 0.5
+              },
+              {
+                "adjustment_identity": "AFFINE_A",
+                "fixed_shares": 0.05,
+                "reference": 10,
+                "security_id": "C",
+                "weight": 0.5
+              }
+            ],
+            "quality": "OBSERVED"
+          }
+        },
+        "degradation_reasons": [],
+        "due_items": [
+          {
+            "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+            "MAE_N": 0.0,
+            "MFE_N": 0.19999999999999996,
+            "PATH_MDD_CLOSE_N": 0,
+            "R_N": 0.10000000000000009,
+            "actual_count": 3,
+            "available_at": null,
+            "controls": {
+              "A": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "75e712e1c259b419d0b4aae5f7021e702dedfadffe438ce609ba2794bb949359",
+                "outcomes": []
+              },
+              "B": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "2303985ec49e44b00f18058d91bf46c40bba8bef9487188aff7bf69eb6852dbf",
+                "outcomes": []
+              },
+              "C": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "f7c2710415747abaa4e404ee559ed843ffee6686daba3fad84b930cc7abcd694",
+                "outcomes": []
+              }
+            },
+            "due_date": "2030-01-04",
+            "enrollment_id": "E",
+            "evaluation_adjustment_identity": "AFFINE_A",
+            "evaluation_basis_date": "2030-01-04",
+            "evaluation_comparison_reference": 10,
+            "evaluation_revision": 1,
+            "evaluation_source": {
+              "sha256": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040"
+            },
+            "evaluation_source_digest": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040",
+            "evaluation_source_identity": {
+              "sha256": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040"
+            },
+            "evidence_class": "ENGINEERING_VECTOR",
+            "first_observed_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+            "frozen_t0": [
+              "t0_freezes",
+              "E"
+            ],
+            "horizon": 3,
+            "latest_corrected_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+            "market_benchmark": {
+              "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+              "benchmark_delisted_weight": 0,
+              "benchmark_endpoint_coverage": 1.0,
+              "benchmark_id": "53d8de8a74767a9763844ac663d82ba9e7c3b5c364b62a475d30c5ab484218d0",
+              "benchmark_marked_weight": 0,
+              "benchmark_members": [
+                "A",
+                "B",
+                "C"
+              ],
+              "benchmark_missing_weight": 0.0,
+              "benchmark_quality": "OBSERVED",
+              "benchmark_suspended_weight": 0,
+              "benchmark_unknown_weight": 0,
+              "benchmark_valuation_coverage": 1.0,
+              "constituents": [
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "A",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "B",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "C",
+                  "state": "ACTUAL_ENDPOINT"
+                }
+              ],
+              "fixed_shares": {
+                "A": 0.03333333333333333,
+                "B": 0.03333333333333333,
+                "C": 0.03333333333333333
+              },
+              "initial_weights": {
+                "A": 0.3333333333333333,
+                "B": 0.3333333333333333,
+                "C": 0.3333333333333333
+              },
+              "marked_permission": false,
+              "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+              "observed_contribution": 1.0999999999999999,
+              "quote_age": null,
+              "quote_trade_date": null,
+              "relative_market_return": 2.220446049250313e-16,
+              "relative_market_return_marked": null,
+              "return": 0.09999999999999987,
+              "runtime_schema_version": "1.1"
+            },
+            "outcome_contract_id": "FORWARD_PRICE_PATH_V1",
+            "outcome_revision_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+            "outcome_status": "OBSERVED",
+            "path_quality": "OBSERVED",
+            "price_path": [
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-02",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              },
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-03",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              },
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-04",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              }
+            ],
+            "reason_codes": [],
+            "report_cutoff": "2030-01-04",
+            "revision_reason": "FIRST_OBSERVED",
+            "revision_sequence": 1,
+            "sector_benchmark": {
+              "MAE_CLOSE": 0,
+              "MFE_CLOSE": 0.10000000000000009,
+              "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+              "benchmark_delisted_weight": 0,
+              "benchmark_endpoint_coverage": 1.0,
+              "benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+              "benchmark_marked_weight": 0,
+              "benchmark_members": [
+                "B",
+                "C"
+              ],
+              "benchmark_missing_weight": 0.0,
+              "benchmark_quality": "OBSERVED",
+              "benchmark_suspended_weight": 0,
+              "benchmark_unknown_weight": 0,
+              "benchmark_valuation_coverage": 1.0,
+              "constituents": [
+                {
+                  "original_weight": 0.5,
+                  "security_id": "B",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.5,
+                  "security_id": "C",
+                  "state": "ACTUAL_ENDPOINT"
+                }
+              ],
+              "fixed_shares": {
+                "B": 0.05,
+                "C": 0.05
+              },
+              "initial_weights": {
+                "B": 0.5,
+                "C": 0.5
+              },
+              "marked_permission": false,
+              "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+              "observed_contribution": 1.1,
+              "quote_age": null,
+              "quote_trade_date": null,
+              "relative_market_return_marked": null,
+              "relative_sector_return": 0.0,
+              "relative_sector_return_marked": null,
+              "return": 0.10000000000000009,
+              "runtime_schema_version": "1.1",
+              "sector_benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+              "sector_members": [
+                "B",
+                "C"
+              ]
+            },
+            "source_asof": null,
+            "supersedes": null,
+            "transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+          },
+          {
+            "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+            "MAE_N": 0.0,
+            "MFE_N": 0.19999999999999996,
+            "PATH_MDD_CLOSE_N": 0,
+            "R_N": 0.10000000000000009,
+            "actual_count": 3,
+            "available_at": null,
+            "controls": {
+              "A": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "75e712e1c259b419d0b4aae5f7021e702dedfadffe438ce609ba2794bb949359",
+                "outcomes": []
+              },
+              "B": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "2303985ec49e44b00f18058d91bf46c40bba8bef9487188aff7bf69eb6852dbf",
+                "outcomes": []
+              },
+              "C": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "f7c2710415747abaa4e404ee559ed843ffee6686daba3fad84b930cc7abcd694",
+                "outcomes": []
+              }
+            },
+            "due_date": "2030-01-04",
+            "endpoint_quality": "OBSERVED",
+            "enrollment_id": "E",
+            "evaluation_adjustment_identity": "AFFINE_A",
+            "evaluation_basis_date": "2030-01-04",
+            "evaluation_comparison_reference": 10,
+            "evaluation_revision": 2,
+            "evaluation_source": {
+              "sha256": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040"
+            },
+            "evaluation_source_digest": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040",
+            "evaluation_source_identity": {
+              "sha256": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040"
+            },
+            "evidence_class": "ENGINEERING_VECTOR",
+            "first_observed_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+            "focus": false,
+            "frozen_t0": [
+              "t0_freezes",
+              "69e4c8509ea34646e62b6bcca0157dce0dc731b5e7bd7ad74124d58df9d2bdd2"
+            ],
+            "horizon": 3,
+            "latest_corrected_id": "a19e3a110622e7ebbe79156e38f8f6a2fdb60c4ade04083ff19a894616e20b4e",
+            "market_benchmark": {
+              "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+              "benchmark_delisted_weight": 0,
+              "benchmark_endpoint_coverage": 1.0,
+              "benchmark_id": "53d8de8a74767a9763844ac663d82ba9e7c3b5c364b62a475d30c5ab484218d0",
+              "benchmark_marked_weight": 0,
+              "benchmark_members": [
+                "A",
+                "B",
+                "C"
+              ],
+              "benchmark_missing_weight": 0.0,
+              "benchmark_quality": "OBSERVED",
+              "benchmark_suspended_weight": 0,
+              "benchmark_unknown_weight": 0,
+              "benchmark_valuation_coverage": 1.0,
+              "constituents": [
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "A",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "B",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "C",
+                  "state": "ACTUAL_ENDPOINT"
+                }
+              ],
+              "fixed_shares": {
+                "A": 0.03333333333333333,
+                "B": 0.03333333333333333,
+                "C": 0.03333333333333333
+              },
+              "initial_weights": {
+                "A": 0.3333333333333333,
+                "B": 0.3333333333333333,
+                "C": 0.3333333333333333
+              },
+              "marked_permission": false,
+              "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+              "observed_contribution": 1.0999999999999999,
+              "quote_age": null,
+              "quote_trade_date": null,
+              "relative_market_return": 2.220446049250313e-16,
+              "relative_market_return_marked": null,
+              "return": 0.09999999999999987,
+              "runtime_schema_version": "1.1"
+            },
+            "outcome_contract_id": "FORWARD_PRICE_PATH_V1_1",
+            "outcome_revision_id": "a19e3a110622e7ebbe79156e38f8f6a2fdb60c4ade04083ff19a894616e20b4e",
+            "outcome_status": "OBSERVED",
+            "path_quality": "OBSERVED",
+            "price_path": [
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-02",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              },
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-03",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              },
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-04",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              }
+            ],
+            "production": false,
+            "reason_codes": [],
+            "report_cutoff": "2030-01-04",
+            "revision_reason": "ACCEPTED_EVALUATION_SOURCE_REVISION",
+            "revision_sequence": 2,
+            "runtime_authorized": false,
+            "sector_benchmark": {
+              "MAE_CLOSE": 0,
+              "MFE_CLOSE": 0.10000000000000009,
+              "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+              "benchmark_delisted_weight": 0,
+              "benchmark_endpoint_coverage": 1.0,
+              "benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+              "benchmark_marked_weight": 0,
+              "benchmark_members": [
+                "B",
+                "C"
+              ],
+              "benchmark_missing_weight": 0.0,
+              "benchmark_quality": "OBSERVED",
+              "benchmark_suspended_weight": 0,
+              "benchmark_unknown_weight": 0,
+              "benchmark_valuation_coverage": 1.0,
+              "constituents": [
+                {
+                  "original_weight": 0.5,
+                  "security_id": "B",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.5,
+                  "security_id": "C",
+                  "state": "ACTUAL_ENDPOINT"
+                }
+              ],
+              "fixed_shares": {
+                "B": 0.05,
+                "C": 0.05
+              },
+              "initial_weights": {
+                "B": 0.5,
+                "C": 0.5
+              },
+              "marked_permission": false,
+              "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+              "observed_contribution": 1.1,
+              "quote_age": null,
+              "quote_trade_date": null,
+              "relative_market_return_marked": null,
+              "relative_sector_return": 0.0,
+              "relative_sector_return_marked": null,
+              "return": 0.10000000000000009,
+              "runtime_schema_version": "1.1",
+              "sector_benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+              "sector_members": [
+                "B",
+                "C"
+              ]
+            },
+            "shadow": false,
+            "source_asof": null,
+            "supersedes": [
+              "outcomes",
+              "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89"
+            ],
+            "transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+          },
+          {
+            "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+            "MAE_N": 0.0,
+            "MFE_N": 0.19999999999999996,
+            "PATH_MDD_CLOSE_N": 0,
+            "R_N": 0.19999999999999996,
+            "actual_count": 3,
+            "available_at": null,
+            "controls": {
+              "A": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "75e712e1c259b419d0b4aae5f7021e702dedfadffe438ce609ba2794bb949359",
+                "outcomes": []
+              },
+              "B": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "2303985ec49e44b00f18058d91bf46c40bba8bef9487188aff7bf69eb6852dbf",
+                "outcomes": []
+              },
+              "C": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "f7c2710415747abaa4e404ee559ed843ffee6686daba3fad84b930cc7abcd694",
+                "outcomes": []
+              }
+            },
+            "due_date": "2030-01-04",
+            "endpoint_quality": "OBSERVED",
+            "enrollment_id": "E",
+            "evaluation_adjustment_identity": "AFFINE_A",
+            "evaluation_basis_date": "2030-01-04",
+            "evaluation_comparison_reference": 10,
+            "evaluation_revision": 3,
+            "evaluation_source": {
+              "sha256": "823e10017a16a91a9956ea4bb6b19ce7625220cecf79e81369d8320044094548"
+            },
+            "evaluation_source_digest": "823e10017a16a91a9956ea4bb6b19ce7625220cecf79e81369d8320044094548",
+            "evaluation_source_identity": {
+              "sha256": "823e10017a16a91a9956ea4bb6b19ce7625220cecf79e81369d8320044094548"
+            },
+            "evidence_class": "ENGINEERING_VECTOR",
+            "first_observed_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+            "focus": false,
+            "frozen_t0": [
+              "t0_freezes",
+              "69e4c8509ea34646e62b6bcca0157dce0dc731b5e7bd7ad74124d58df9d2bdd2"
+            ],
+            "horizon": 3,
+            "latest_corrected_id": "830c970e4224a1288ea461cbecfbf363bb17beedba2801e50a1ecf2eecd9ec4e",
+            "market_benchmark": {
+              "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+              "benchmark_delisted_weight": 0,
+              "benchmark_endpoint_coverage": 1.0,
+              "benchmark_id": "53d8de8a74767a9763844ac663d82ba9e7c3b5c364b62a475d30c5ab484218d0",
+              "benchmark_marked_weight": 0,
+              "benchmark_members": [
+                "A",
+                "B",
+                "C"
+              ],
+              "benchmark_missing_weight": 0.0,
+              "benchmark_quality": "OBSERVED",
+              "benchmark_suspended_weight": 0,
+              "benchmark_unknown_weight": 0,
+              "benchmark_valuation_coverage": 1.0,
+              "constituents": [
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "A",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "B",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "C",
+                  "state": "ACTUAL_ENDPOINT"
+                }
+              ],
+              "fixed_shares": {
+                "A": 0.03333333333333333,
+                "B": 0.03333333333333333,
+                "C": 0.03333333333333333
+              },
+              "initial_weights": {
+                "A": 0.3333333333333333,
+                "B": 0.3333333333333333,
+                "C": 0.3333333333333333
+              },
+              "marked_permission": false,
+              "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+              "observed_contribution": 1.1333333333333333,
+              "quote_age": null,
+              "quote_trade_date": null,
+              "relative_market_return": 0.06666666666666665,
+              "relative_market_return_marked": null,
+              "return": 0.1333333333333333,
+              "runtime_schema_version": "1.1"
+            },
+            "outcome_contract_id": "FORWARD_PRICE_PATH_V1_1",
+            "outcome_revision_id": "830c970e4224a1288ea461cbecfbf363bb17beedba2801e50a1ecf2eecd9ec4e",
+            "outcome_status": "OBSERVED",
+            "path_quality": "OBSERVED",
+            "price_path": [
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-02",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              },
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-03",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              },
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 12,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-04",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              }
+            ],
+            "production": false,
+            "reason_codes": [],
+            "report_cutoff": "2030-01-04",
+            "revision_reason": "ACCEPTED_EVALUATION_SOURCE_REVISION",
+            "revision_sequence": 3,
+            "runtime_authorized": false,
+            "sector_benchmark": {
+              "MAE_CLOSE": 0,
+              "MFE_CLOSE": 0.10000000000000009,
+              "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+              "benchmark_delisted_weight": 0,
+              "benchmark_endpoint_coverage": 1.0,
+              "benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+              "benchmark_marked_weight": 0,
+              "benchmark_members": [
+                "B",
+                "C"
+              ],
+              "benchmark_missing_weight": 0.0,
+              "benchmark_quality": "OBSERVED",
+              "benchmark_suspended_weight": 0,
+              "benchmark_unknown_weight": 0,
+              "benchmark_valuation_coverage": 1.0,
+              "constituents": [
+                {
+                  "original_weight": 0.5,
+                  "security_id": "B",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.5,
+                  "security_id": "C",
+                  "state": "ACTUAL_ENDPOINT"
+                }
+              ],
+              "fixed_shares": {
+                "B": 0.05,
+                "C": 0.05
+              },
+              "initial_weights": {
+                "B": 0.5,
+                "C": 0.5
+              },
+              "marked_permission": false,
+              "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+              "observed_contribution": 1.1,
+              "quote_age": null,
+              "quote_trade_date": null,
+              "relative_market_return_marked": null,
+              "relative_sector_return": 0.09999999999999987,
+              "relative_sector_return_marked": null,
+              "return": 0.10000000000000009,
+              "runtime_schema_version": "1.1",
+              "sector_benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+              "sector_members": [
+                "B",
+                "C"
+              ]
+            },
+            "shadow": false,
+            "source_asof": null,
+            "supersedes": [
+              "outcomes",
+              "a19e3a110622e7ebbe79156e38f8f6a2fdb60c4ade04083ff19a894616e20b4e"
+            ],
+            "transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+          }
+        ],
+        "frozen_t0": [
+          "t0_freezes",
+          "69e4c8509ea34646e62b6bcca0157dce0dc731b5e7bd7ad74124d58df9d2bdd2"
+        ],
+        "matured_items": [
+          {
+            "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+            "MAE_N": 0.0,
+            "MFE_N": 0.19999999999999996,
+            "PATH_MDD_CLOSE_N": 0,
+            "R_N": 0.10000000000000009,
+            "actual_count": 3,
+            "available_at": null,
+            "controls": {
+              "A": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "75e712e1c259b419d0b4aae5f7021e702dedfadffe438ce609ba2794bb949359",
+                "outcomes": []
+              },
+              "B": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "2303985ec49e44b00f18058d91bf46c40bba8bef9487188aff7bf69eb6852dbf",
+                "outcomes": []
+              },
+              "C": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "f7c2710415747abaa4e404ee559ed843ffee6686daba3fad84b930cc7abcd694",
+                "outcomes": []
+              }
+            },
+            "due_date": "2030-01-04",
+            "enrollment_id": "E",
+            "evaluation_adjustment_identity": "AFFINE_A",
+            "evaluation_basis_date": "2030-01-04",
+            "evaluation_comparison_reference": 10,
+            "evaluation_revision": 1,
+            "evaluation_source": {
+              "sha256": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040"
+            },
+            "evaluation_source_digest": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040",
+            "evaluation_source_identity": {
+              "sha256": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040"
+            },
+            "evidence_class": "ENGINEERING_VECTOR",
+            "first_observed_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+            "frozen_t0": [
+              "t0_freezes",
+              "E"
+            ],
+            "horizon": 3,
+            "latest_corrected_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+            "market_benchmark": {
+              "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+              "benchmark_delisted_weight": 0,
+              "benchmark_endpoint_coverage": 1.0,
+              "benchmark_id": "53d8de8a74767a9763844ac663d82ba9e7c3b5c364b62a475d30c5ab484218d0",
+              "benchmark_marked_weight": 0,
+              "benchmark_members": [
+                "A",
+                "B",
+                "C"
+              ],
+              "benchmark_missing_weight": 0.0,
+              "benchmark_quality": "OBSERVED",
+              "benchmark_suspended_weight": 0,
+              "benchmark_unknown_weight": 0,
+              "benchmark_valuation_coverage": 1.0,
+              "constituents": [
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "A",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "B",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "C",
+                  "state": "ACTUAL_ENDPOINT"
+                }
+              ],
+              "fixed_shares": {
+                "A": 0.03333333333333333,
+                "B": 0.03333333333333333,
+                "C": 0.03333333333333333
+              },
+              "initial_weights": {
+                "A": 0.3333333333333333,
+                "B": 0.3333333333333333,
+                "C": 0.3333333333333333
+              },
+              "marked_permission": false,
+              "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+              "observed_contribution": 1.0999999999999999,
+              "quote_age": null,
+              "quote_trade_date": null,
+              "relative_market_return": 2.220446049250313e-16,
+              "relative_market_return_marked": null,
+              "return": 0.09999999999999987,
+              "runtime_schema_version": "1.1"
+            },
+            "outcome_contract_id": "FORWARD_PRICE_PATH_V1",
+            "outcome_revision_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+            "outcome_status": "OBSERVED",
+            "path_quality": "OBSERVED",
+            "price_path": [
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-02",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              },
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-03",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              },
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-04",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              }
+            ],
+            "reason_codes": [],
+            "report_cutoff": "2030-01-04",
+            "revision_reason": "FIRST_OBSERVED",
+            "revision_sequence": 1,
+            "sector_benchmark": {
+              "MAE_CLOSE": 0,
+              "MFE_CLOSE": 0.10000000000000009,
+              "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+              "benchmark_delisted_weight": 0,
+              "benchmark_endpoint_coverage": 1.0,
+              "benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+              "benchmark_marked_weight": 0,
+              "benchmark_members": [
+                "B",
+                "C"
+              ],
+              "benchmark_missing_weight": 0.0,
+              "benchmark_quality": "OBSERVED",
+              "benchmark_suspended_weight": 0,
+              "benchmark_unknown_weight": 0,
+              "benchmark_valuation_coverage": 1.0,
+              "constituents": [
+                {
+                  "original_weight": 0.5,
+                  "security_id": "B",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.5,
+                  "security_id": "C",
+                  "state": "ACTUAL_ENDPOINT"
+                }
+              ],
+              "fixed_shares": {
+                "B": 0.05,
+                "C": 0.05
+              },
+              "initial_weights": {
+                "B": 0.5,
+                "C": 0.5
+              },
+              "marked_permission": false,
+              "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+              "observed_contribution": 1.1,
+              "quote_age": null,
+              "quote_trade_date": null,
+              "relative_market_return_marked": null,
+              "relative_sector_return": 0.0,
+              "relative_sector_return_marked": null,
+              "return": 0.10000000000000009,
+              "runtime_schema_version": "1.1",
+              "sector_benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+              "sector_members": [
+                "B",
+                "C"
+              ]
+            },
+            "source_asof": null,
+            "supersedes": null,
+            "transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+          },
+          {
+            "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+            "MAE_N": 0.0,
+            "MFE_N": 0.19999999999999996,
+            "PATH_MDD_CLOSE_N": 0,
+            "R_N": 0.10000000000000009,
+            "actual_count": 3,
+            "available_at": null,
+            "controls": {
+              "A": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "75e712e1c259b419d0b4aae5f7021e702dedfadffe438ce609ba2794bb949359",
+                "outcomes": []
+              },
+              "B": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "2303985ec49e44b00f18058d91bf46c40bba8bef9487188aff7bf69eb6852dbf",
+                "outcomes": []
+              },
+              "C": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "f7c2710415747abaa4e404ee559ed843ffee6686daba3fad84b930cc7abcd694",
+                "outcomes": []
+              }
+            },
+            "due_date": "2030-01-04",
+            "endpoint_quality": "OBSERVED",
+            "enrollment_id": "E",
+            "evaluation_adjustment_identity": "AFFINE_A",
+            "evaluation_basis_date": "2030-01-04",
+            "evaluation_comparison_reference": 10,
+            "evaluation_revision": 2,
+            "evaluation_source": {
+              "sha256": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040"
+            },
+            "evaluation_source_digest": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040",
+            "evaluation_source_identity": {
+              "sha256": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040"
+            },
+            "evidence_class": "ENGINEERING_VECTOR",
+            "first_observed_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+            "focus": false,
+            "frozen_t0": [
+              "t0_freezes",
+              "69e4c8509ea34646e62b6bcca0157dce0dc731b5e7bd7ad74124d58df9d2bdd2"
+            ],
+            "horizon": 3,
+            "latest_corrected_id": "a19e3a110622e7ebbe79156e38f8f6a2fdb60c4ade04083ff19a894616e20b4e",
+            "market_benchmark": {
+              "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+              "benchmark_delisted_weight": 0,
+              "benchmark_endpoint_coverage": 1.0,
+              "benchmark_id": "53d8de8a74767a9763844ac663d82ba9e7c3b5c364b62a475d30c5ab484218d0",
+              "benchmark_marked_weight": 0,
+              "benchmark_members": [
+                "A",
+                "B",
+                "C"
+              ],
+              "benchmark_missing_weight": 0.0,
+              "benchmark_quality": "OBSERVED",
+              "benchmark_suspended_weight": 0,
+              "benchmark_unknown_weight": 0,
+              "benchmark_valuation_coverage": 1.0,
+              "constituents": [
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "A",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "B",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "C",
+                  "state": "ACTUAL_ENDPOINT"
+                }
+              ],
+              "fixed_shares": {
+                "A": 0.03333333333333333,
+                "B": 0.03333333333333333,
+                "C": 0.03333333333333333
+              },
+              "initial_weights": {
+                "A": 0.3333333333333333,
+                "B": 0.3333333333333333,
+                "C": 0.3333333333333333
+              },
+              "marked_permission": false,
+              "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+              "observed_contribution": 1.0999999999999999,
+              "quote_age": null,
+              "quote_trade_date": null,
+              "relative_market_return": 2.220446049250313e-16,
+              "relative_market_return_marked": null,
+              "return": 0.09999999999999987,
+              "runtime_schema_version": "1.1"
+            },
+            "outcome_contract_id": "FORWARD_PRICE_PATH_V1_1",
+            "outcome_revision_id": "a19e3a110622e7ebbe79156e38f8f6a2fdb60c4ade04083ff19a894616e20b4e",
+            "outcome_status": "OBSERVED",
+            "path_quality": "OBSERVED",
+            "price_path": [
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-02",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              },
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-03",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              },
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-04",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              }
+            ],
+            "production": false,
+            "reason_codes": [],
+            "report_cutoff": "2030-01-04",
+            "revision_reason": "ACCEPTED_EVALUATION_SOURCE_REVISION",
+            "revision_sequence": 2,
+            "runtime_authorized": false,
+            "sector_benchmark": {
+              "MAE_CLOSE": 0,
+              "MFE_CLOSE": 0.10000000000000009,
+              "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+              "benchmark_delisted_weight": 0,
+              "benchmark_endpoint_coverage": 1.0,
+              "benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+              "benchmark_marked_weight": 0,
+              "benchmark_members": [
+                "B",
+                "C"
+              ],
+              "benchmark_missing_weight": 0.0,
+              "benchmark_quality": "OBSERVED",
+              "benchmark_suspended_weight": 0,
+              "benchmark_unknown_weight": 0,
+              "benchmark_valuation_coverage": 1.0,
+              "constituents": [
+                {
+                  "original_weight": 0.5,
+                  "security_id": "B",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.5,
+                  "security_id": "C",
+                  "state": "ACTUAL_ENDPOINT"
+                }
+              ],
+              "fixed_shares": {
+                "B": 0.05,
+                "C": 0.05
+              },
+              "initial_weights": {
+                "B": 0.5,
+                "C": 0.5
+              },
+              "marked_permission": false,
+              "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+              "observed_contribution": 1.1,
+              "quote_age": null,
+              "quote_trade_date": null,
+              "relative_market_return_marked": null,
+              "relative_sector_return": 0.0,
+              "relative_sector_return_marked": null,
+              "return": 0.10000000000000009,
+              "runtime_schema_version": "1.1",
+              "sector_benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+              "sector_members": [
+                "B",
+                "C"
+              ]
+            },
+            "shadow": false,
+            "source_asof": null,
+            "supersedes": [
+              "outcomes",
+              "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89"
+            ],
+            "transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+          },
+          {
+            "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+            "MAE_N": 0.0,
+            "MFE_N": 0.19999999999999996,
+            "PATH_MDD_CLOSE_N": 0,
+            "R_N": 0.19999999999999996,
+            "actual_count": 3,
+            "available_at": null,
+            "controls": {
+              "A": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "75e712e1c259b419d0b4aae5f7021e702dedfadffe438ce609ba2794bb949359",
+                "outcomes": []
+              },
+              "B": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "2303985ec49e44b00f18058d91bf46c40bba8bef9487188aff7bf69eb6852dbf",
+                "outcomes": []
+              },
+              "C": {
+                "ITT_RETAINED": true,
+                "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+                "control_assignment_id": "f7c2710415747abaa4e404ee559ed843ffee6686daba3fad84b930cc7abcd694",
+                "outcomes": []
+              }
+            },
+            "due_date": "2030-01-04",
+            "endpoint_quality": "OBSERVED",
+            "enrollment_id": "E",
+            "evaluation_adjustment_identity": "AFFINE_A",
+            "evaluation_basis_date": "2030-01-04",
+            "evaluation_comparison_reference": 10,
+            "evaluation_revision": 3,
+            "evaluation_source": {
+              "sha256": "823e10017a16a91a9956ea4bb6b19ce7625220cecf79e81369d8320044094548"
+            },
+            "evaluation_source_digest": "823e10017a16a91a9956ea4bb6b19ce7625220cecf79e81369d8320044094548",
+            "evaluation_source_identity": {
+              "sha256": "823e10017a16a91a9956ea4bb6b19ce7625220cecf79e81369d8320044094548"
+            },
+            "evidence_class": "ENGINEERING_VECTOR",
+            "first_observed_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+            "focus": false,
+            "frozen_t0": [
+              "t0_freezes",
+              "69e4c8509ea34646e62b6bcca0157dce0dc731b5e7bd7ad74124d58df9d2bdd2"
+            ],
+            "horizon": 3,
+            "latest_corrected_id": "830c970e4224a1288ea461cbecfbf363bb17beedba2801e50a1ecf2eecd9ec4e",
+            "market_benchmark": {
+              "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+              "benchmark_delisted_weight": 0,
+              "benchmark_endpoint_coverage": 1.0,
+              "benchmark_id": "53d8de8a74767a9763844ac663d82ba9e7c3b5c364b62a475d30c5ab484218d0",
+              "benchmark_marked_weight": 0,
+              "benchmark_members": [
+                "A",
+                "B",
+                "C"
+              ],
+              "benchmark_missing_weight": 0.0,
+              "benchmark_quality": "OBSERVED",
+              "benchmark_suspended_weight": 0,
+              "benchmark_unknown_weight": 0,
+              "benchmark_valuation_coverage": 1.0,
+              "constituents": [
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "A",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "B",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.3333333333333333,
+                  "security_id": "C",
+                  "state": "ACTUAL_ENDPOINT"
+                }
+              ],
+              "fixed_shares": {
+                "A": 0.03333333333333333,
+                "B": 0.03333333333333333,
+                "C": 0.03333333333333333
+              },
+              "initial_weights": {
+                "A": 0.3333333333333333,
+                "B": 0.3333333333333333,
+                "C": 0.3333333333333333
+              },
+              "marked_permission": false,
+              "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+              "observed_contribution": 1.1333333333333333,
+              "quote_age": null,
+              "quote_trade_date": null,
+              "relative_market_return": 0.06666666666666665,
+              "relative_market_return_marked": null,
+              "return": 0.1333333333333333,
+              "runtime_schema_version": "1.1"
+            },
+            "outcome_contract_id": "FORWARD_PRICE_PATH_V1_1",
+            "outcome_revision_id": "830c970e4224a1288ea461cbecfbf363bb17beedba2801e50a1ecf2eecd9ec4e",
+            "outcome_status": "OBSERVED",
+            "path_quality": "OBSERVED",
+            "price_path": [
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-02",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              },
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 11,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-03",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              },
+              {
+                "T0_basis_verified": true,
+                "adjustment_identity": "AFFINE_A",
+                "close": 12,
+                "evaluation_basis_date": "2030-01-04",
+                "high": 12,
+                "low": 10,
+                "source_identity": "LOCAL_SOURCE_A",
+                "trade_date": "2030-01-04",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "verified_adjustment": true,
+                "verified_identity": true
+              }
+            ],
+            "production": false,
+            "reason_codes": [],
+            "report_cutoff": "2030-01-04",
+            "revision_reason": "ACCEPTED_EVALUATION_SOURCE_REVISION",
+            "revision_sequence": 3,
+            "runtime_authorized": false,
+            "sector_benchmark": {
+              "MAE_CLOSE": 0,
+              "MFE_CLOSE": 0.10000000000000009,
+              "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+              "benchmark_delisted_weight": 0,
+              "benchmark_endpoint_coverage": 1.0,
+              "benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+              "benchmark_marked_weight": 0,
+              "benchmark_members": [
+                "B",
+                "C"
+              ],
+              "benchmark_missing_weight": 0.0,
+              "benchmark_quality": "OBSERVED",
+              "benchmark_suspended_weight": 0,
+              "benchmark_unknown_weight": 0,
+              "benchmark_valuation_coverage": 1.0,
+              "constituents": [
+                {
+                  "original_weight": 0.5,
+                  "security_id": "B",
+                  "state": "ACTUAL_ENDPOINT"
+                },
+                {
+                  "original_weight": 0.5,
+                  "security_id": "C",
+                  "state": "ACTUAL_ENDPOINT"
+                }
+              ],
+              "fixed_shares": {
+                "B": 0.05,
+                "C": 0.05
+              },
+              "initial_weights": {
+                "B": 0.5,
+                "C": 0.5
+              },
+              "marked_permission": false,
+              "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+              "observed_contribution": 1.1,
+              "quote_age": null,
+              "quote_trade_date": null,
+              "relative_market_return_marked": null,
+              "relative_sector_return": 0.09999999999999987,
+              "relative_sector_return_marked": null,
+              "return": 0.10000000000000009,
+              "runtime_schema_version": "1.1",
+              "sector_benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+              "sector_members": [
+                "B",
+                "C"
+              ]
+            },
+            "shadow": false,
+            "source_asof": null,
+            "supersedes": [
+              "outcomes",
+              "a19e3a110622e7ebbe79156e38f8f6a2fdb60c4ade04083ff19a894616e20b4e"
+            ],
+            "transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+          }
+        ],
+        "pending_items": [],
+        "readback_asof": "2030-01-04"
+      }
+    },
+    "old_result": {
+      "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+      "MAE_N": 0.0,
+      "MFE_N": 0.19999999999999996,
+      "PATH_MDD_CLOSE_N": 0,
+      "R_N": 0.10000000000000009,
+      "actual_count": 3,
+      "available_at": null,
+      "controls": {
+        "A": {
+          "ITT_RETAINED": true,
+          "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+          "control_assignment_id": "75e712e1c259b419d0b4aae5f7021e702dedfadffe438ce609ba2794bb949359",
+          "outcomes": []
+        },
+        "B": {
+          "ITT_RETAINED": true,
+          "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+          "control_assignment_id": "2303985ec49e44b00f18058d91bf46c40bba8bef9487188aff7bf69eb6852dbf",
+          "outcomes": []
+        },
+        "C": {
+          "ITT_RETAINED": true,
+          "assignment_digest": "d05402fe1cbad71971586a0fb64cf779e41383bb51a83eb27ba418ca0a27b44f",
+          "control_assignment_id": "f7c2710415747abaa4e404ee559ed843ffee6686daba3fad84b930cc7abcd694",
+          "outcomes": []
+        }
+      },
+      "due_date": "2030-01-04",
+      "enrollment_id": "E",
+      "evaluation_adjustment_identity": "AFFINE_A",
+      "evaluation_basis_date": "2030-01-04",
+      "evaluation_comparison_reference": 10,
+      "evaluation_revision": 1,
+      "evaluation_source": {
+        "sha256": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040"
+      },
+      "evaluation_source_digest": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040",
+      "evaluation_source_identity": {
+        "sha256": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040"
+      },
+      "evidence_class": "ENGINEERING_VECTOR",
+      "first_observed_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+      "frozen_t0": [
+        "t0_freezes",
+        "E"
+      ],
+      "horizon": 3,
+      "latest_corrected_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+      "market_benchmark": {
+        "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+        "benchmark_delisted_weight": 0,
+        "benchmark_endpoint_coverage": 1.0,
+        "benchmark_id": "53d8de8a74767a9763844ac663d82ba9e7c3b5c364b62a475d30c5ab484218d0",
+        "benchmark_marked_weight": 0,
+        "benchmark_members": [
+          "A",
+          "B",
+          "C"
+        ],
+        "benchmark_missing_weight": 0.0,
+        "benchmark_quality": "OBSERVED",
+        "benchmark_suspended_weight": 0,
+        "benchmark_unknown_weight": 0,
+        "benchmark_valuation_coverage": 1.0,
+        "constituents": [
+          {
+            "original_weight": 0.3333333333333333,
+            "security_id": "A",
+            "state": "ACTUAL_ENDPOINT"
+          },
+          {
+            "original_weight": 0.3333333333333333,
+            "security_id": "B",
+            "state": "ACTUAL_ENDPOINT"
+          },
+          {
+            "original_weight": 0.3333333333333333,
+            "security_id": "C",
+            "state": "ACTUAL_ENDPOINT"
+          }
+        ],
+        "fixed_shares": {
+          "A": 0.03333333333333333,
+          "B": 0.03333333333333333,
+          "C": 0.03333333333333333
+        },
+        "initial_weights": {
+          "A": 0.3333333333333333,
+          "B": 0.3333333333333333,
+          "C": 0.3333333333333333
+        },
+        "marked_permission": false,
+        "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+        "observed_contribution": 1.0999999999999999,
+        "quote_age": null,
+        "quote_trade_date": null,
+        "relative_market_return": 2.220446049250313e-16,
+        "relative_market_return_marked": null,
+        "return": 0.09999999999999987,
+        "runtime_schema_version": "1.1"
+      },
+      "outcome_contract_id": "FORWARD_PRICE_PATH_V1",
+      "outcome_revision_id": "9ac6b953a40505d10df88c5dfef78fc51cc93c1b24dc5796213746b6b8811f89",
+      "outcome_status": "OBSERVED",
+      "path_quality": "OBSERVED",
+      "price_path": [
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": 11,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 12,
+          "low": 10,
+          "source_identity": "LOCAL_SOURCE_A",
+          "trade_date": "2030-01-02",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        },
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": 11,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 12,
+          "low": 10,
+          "source_identity": "LOCAL_SOURCE_A",
+          "trade_date": "2030-01-03",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        },
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": 11,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 12,
+          "low": 10,
+          "source_identity": "LOCAL_SOURCE_A",
+          "trade_date": "2030-01-04",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        }
+      ],
+      "reason_codes": [],
+      "report_cutoff": "2030-01-04",
+      "revision_reason": "FIRST_OBSERVED",
+      "revision_sequence": 1,
+      "sector_benchmark": {
+        "MAE_CLOSE": 0,
+        "MFE_CLOSE": 0.10000000000000009,
+        "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+        "benchmark_delisted_weight": 0,
+        "benchmark_endpoint_coverage": 1.0,
+        "benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+        "benchmark_marked_weight": 0,
+        "benchmark_members": [
+          "B",
+          "C"
+        ],
+        "benchmark_missing_weight": 0.0,
+        "benchmark_quality": "OBSERVED",
+        "benchmark_suspended_weight": 0,
+        "benchmark_unknown_weight": 0,
+        "benchmark_valuation_coverage": 1.0,
+        "constituents": [
+          {
+            "original_weight": 0.5,
+            "security_id": "B",
+            "state": "ACTUAL_ENDPOINT"
+          },
+          {
+            "original_weight": 0.5,
+            "security_id": "C",
+            "state": "ACTUAL_ENDPOINT"
+          }
+        ],
+        "fixed_shares": {
+          "B": 0.05,
+          "C": 0.05
+        },
+        "initial_weights": {
+          "B": 0.5,
+          "C": 0.5
+        },
+        "marked_permission": false,
+        "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+        "observed_contribution": 1.1,
+        "quote_age": null,
+        "quote_trade_date": null,
+        "relative_market_return_marked": null,
+        "relative_sector_return": 0.0,
+        "relative_sector_return_marked": null,
+        "return": 0.10000000000000009,
+        "runtime_schema_version": "1.1",
+        "sector_benchmark_id": "dcc2f2aa8f4acf9855fd7689efbdc4915da5e61fdb4e62cfeb968a213d0b4801",
+        "sector_members": [
+          "B",
+          "C"
+        ]
+      },
+      "source_asof": null,
+      "supersedes": null,
+      "transform_coefficients": {
+        "alpha": 1,
+        "beta": 0
+      },
+      "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+    },
+    "why_contract_matches": "Three immutable outcome revisions with explicit supersedes"
+  },
+  {
+    "contract_expectation": {
+      "R_N": 0.1,
+      "rule": "Verified T0/endpoint return; path requires every participating coordinate."
+    },
+    "id": "STK-11",
+    "input": {
+      "basis": "2030-01-04",
+      "expected_identity": null,
+      "reference": 10,
+      "rows": [
+        {},
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": 11,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 12,
+          "low": 10,
+          "source_identity": "LOCAL_SOURCE_A",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        }
+      ]
+    },
+    "new_result": {
+      "MAE_N": null,
+      "MFE_N": null,
+      "PATH_MDD_CLOSE_N": null,
+      "R_N": 0.10000000000000009,
+      "actual_count": 2,
+      "available_at": null,
+      "endpoint_quality": "OBSERVED",
+      "evaluation_adjustment_identity": "AFFINE_A",
+      "evaluation_basis_date": "2030-01-04",
+      "evaluation_comparison_reference": 10,
+      "outcome_status": "OBSERVED",
+      "path_quality": "MATURED_DATA_MISSING",
+      "reason_codes": [
+        "INTERIOR_AFFINE_OR_BASIS_UNKNOWN",
+        "INTERIOR_IDENTITY_UNKNOWN",
+        "UNKNOWN_INTERIOR_GAP"
+      ],
+      "relative_market_proof": {
+        "benchmark_constituent_policy": "FIXED_ORIGINAL_WEIGHTS_NO_REWEIGHT",
+        "benchmark_delisted_weight": 0,
+        "benchmark_endpoint_coverage": 1.0,
+        "benchmark_id": "419a398020eec002d00dcf447dd35751a7c748b97444f441ad85f87a0b38d55e",
+        "benchmark_marked_weight": 0,
+        "benchmark_members": [
+          "B"
+        ],
+        "benchmark_missing_weight": 0.0,
+        "benchmark_quality": "OBSERVED",
+        "benchmark_suspended_weight": 0,
+        "benchmark_unknown_weight": 0,
+        "benchmark_valuation_coverage": 1.0,
+        "constituents": [
+          {
+            "original_weight": 1.0,
+            "security_id": "B",
+            "state": "ACTUAL_ENDPOINT"
+          }
+        ],
+        "fixed_shares": {
+          "B": 0.1
+        },
+        "initial_weights": {
+          "B": 1.0
+        },
+        "marked_permission": false,
+        "marked_reason": "PARAMETER_GATE_NOT_FROZEN",
+        "observed_contribution": 1.05,
+        "quote_age": null,
+        "quote_trade_date": null,
+        "relative_market_return": 0.050000000000000044,
+        "relative_market_return_marked": null,
+        "return": 0.050000000000000044,
+        "runtime_schema_version": "1.1"
+      },
+      "source_asof": null,
+      "transform_coefficients": {
+        "alpha": 1,
+        "beta": 0
+      },
+      "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+    },
+    "old_result": {
+      "MAE_N": null,
+      "MFE_N": null,
+      "PATH_MDD_CLOSE_N": null,
+      "R_N": null,
+      "actual_count": 0,
+      "evaluation_basis_date": "2030-01-04",
+      "outcome_status": "ADJUSTMENT_UNKNOWN",
+      "reason_codes": [
+        "INVALID_AFFINE_OR_BASIS"
+      ]
+    },
+    "why_contract_matches": "Endpoint admission remains strict; incomplete interior only degrades path metrics; no interpolation."
+  },
+  {
+    "contract_expectation": {
+      "R_N": 0.1,
+      "rule": "Verified T0/endpoint return; path requires every participating coordinate."
+    },
+    "id": "STK-12",
+    "input": {
+      "basis": "2030-01-04",
+      "expected_identity": null,
+      "reference": 10,
+      "rows": [
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": 10.5,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 11.5,
+          "low": 9.5,
+          "source_identity": "LOCAL_SOURCE_A",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        },
+        {},
+        {
+          "T0_basis_verified": true,
+          "adjustment_identity": "AFFINE_A",
+          "close": 11,
+          "evaluation_basis_date": "2030-01-04",
+          "high": 12,
+          "low": 10,
+          "source_identity": "LOCAL_SOURCE_A",
+          "transform_coefficients": {
+            "alpha": 1,
+            "beta": 0
+          },
+          "verified_adjustment": true,
+          "verified_identity": true
+        }
+      ]
+    },
+    "new_result": {
+      "MAE_N": null,
+      "MFE_N": null,
+      "PATH_MDD_CLOSE_N": null,
+      "R_N": 0.10000000000000009,
+      "actual_count": 3,
+      "available_at": null,
+      "endpoint_quality": "OBSERVED",
+      "evaluation_adjustment_identity": "AFFINE_A",
+      "evaluation_basis_date": "2030-01-04",
+      "evaluation_comparison_reference": 10,
+      "outcome_status": "OBSERVED",
+      "path_quality": "MATURED_DATA_MISSING",
+      "reason_codes": [
+        "INTERIOR_AFFINE_OR_BASIS_UNKNOWN",
+        "INTERIOR_IDENTITY_UNKNOWN",
+        "UNKNOWN_INTERIOR_GAP"
+      ],
+      "source_asof": null,
+      "transform_coefficients": {
+        "alpha": 1,
+        "beta": 0
+      },
+      "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+    },
+    "old_result": {
+      "MAE_N": null,
+      "MFE_N": null,
+      "PATH_MDD_CLOSE_N": null,
+      "R_N": null,
+      "actual_count": 0,
+      "evaluation_basis_date": "2030-01-04",
+      "outcome_status": "ADJUSTMENT_UNKNOWN",
+      "reason_codes": [
+        "INVALID_AFFINE_OR_BASIS"
+      ]
+    },
+    "why_contract_matches": "Endpoint admission remains strict; incomplete interior only degrades path metrics; no interpolation."
+  }
+]

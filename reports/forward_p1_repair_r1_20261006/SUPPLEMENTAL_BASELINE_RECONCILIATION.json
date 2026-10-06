@@ -1,0 +1,23 @@
+{
+  "all_other_roots_equal": true,
+  "authoritative_database_baseline": {
+    "bytes": 7864405,
+    "path": "reports/forward_p1_repair_r1_20261006/IA09_PROTECTED_ROOT_FINGERPRINT_BEFORE.json",
+    "sha256": "0102de2ee502617cd3992d913edfc1f7cad20fde3f6b82311d37367fb63bebdd"
+  },
+  "derived_database_catalog": {
+    "bytes": 2003382728,
+    "catalog_sha256": "4d1a8dcfd60381efbb7891cb8702f9b3177be60abb54c6ecf27b1217f2641163",
+    "files": 108,
+    "root": "data/database"
+  },
+  "final_complete_core_equals_original": true,
+  "original_failed_run_accepted": false,
+  "original_supplemental_unchanged": {
+    "bytes": 3260,
+    "path": "reports/forward_p1_repair_r1_20261006/IA09_ALL_RUNTIME_ROOTS_BEFORE_FINAL_REGRESSION.json",
+    "sha256": "cde417c47d89a3d100043c3241c13d58fdb1ff2965c344e936719e8762eec15a"
+  },
+  "reason": "Supplemental BEFORE was captured after failed collection storage checkpoint; original complete core BEFORE predates it",
+  "reconciled_supplemental_equals_final": true
+}

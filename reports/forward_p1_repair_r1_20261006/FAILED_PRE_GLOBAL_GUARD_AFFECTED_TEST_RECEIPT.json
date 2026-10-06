@@ -1,0 +1,1197 @@
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_forward_p1_regression.py",
+    "tests/test_full_chain_repair.py",
+    "tests/test_settlement_r1r1.py",
+    "tests/test_r20d_settlement.py",
+    "tests/test_a08_governance_propagation.py",
+    "tests/fep",
+    "tests/fep_e5",
+    "-q",
+    "--basetemp=E:\\codex_tmp\\test_temp\\forward_p1_affected_1791329670027749400",
+    "--junitxml=E:\\codex_tmp\\test_temp\\forward_p1_affected_1791329670027749400.xml"
+  ],
+  "counts": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 278,
+    "tests": 561
+  },
+  "evidence_class": "ENGINEERING_REGRESSION_ONLY",
+  "exit_code": 0,
+  "finished_at": "2026-10-06T23:36:12.640866+00:00",
+  "log": {
+    "bytes": 694,
+    "path": "reports/forward_p1_repair_r1_20261006/AFFECTED_PYTEST.log",
+    "sha256": "b3a793e378e1864884300688583f36f5928edfc3f48df6906c04a7a9453cb015"
+  },
+  "next_stage": "PROTECTED_STATE_AND_INDEPENDENT_EXTERNAL_AUDIT",
+  "phase": "AFFECTED",
+  "runtime_authorization": false,
+  "skipped_coverage": [
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_23_initial_and_replacement",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_25_conflict_rolls_back_all",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_26_idempotency",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_27_changed_request_args[kwargs0]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_27_changed_request_args[kwargs1]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_27_changed_request_args[kwargs2]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_27_changed_request_args[kwargs3]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_27_changed_request_args[kwargs4]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_27_changed_request_args[kwargs5]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_27_changed_request_args[kwargs6]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_28_null_parameters[0]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_28_null_parameters[1]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_28_null_parameters[2]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_28_null_parameters[3]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_28_null_parameters[5]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_28_null_parameters[6]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_28_null_parameters[7]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_null_prior_changed_replay",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_29_fake_revoke",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_30_future_head",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_31_public_execute",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_32_application_direct_dml",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_33_search_path_hijack",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_read_only_no_role_escalation",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_cas_roles::test_E1_24_concurrent_cas_and_same_request",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_E1_01_wrong_observation_scope",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_E1_02_wrong_target_scope_horizon",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_E1_03_snapshot_observation_mismatch",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_E1_04_snapshot_feature_contract_mismatch",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_E1_05_label_digest_revision_mismatch",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_E1_06_row_different_fold_selection",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_three_time_blocks[E1_07-12-5-12-10-NOT_VISIBLE]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_three_time_blocks[E1_08-2-15-6-10-NOT_TRAINABLE]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_three_time_blocks[E1_09-2-5-12-10-NOT_VISIBLE]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_three_time_blocks[E1_10-2-5-20-10-NOT_VISIBLE]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_E1_11_later_fold_new_revision",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_E1_12_reconstruction_not_pit",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_E1_13_pending_denominator",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_E1_14_missing_denominator_block",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_E1_15_no_global_revision",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_phase_overlap[E1_16-SEC-A-2026-09-01-local-1-o]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_phase_overlap[E1_17-SEC-B-2026-09-01-local-2-o2]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_phase_overlap[E1_18-SEC-A-2026-09-02-local-1-o2]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_E1_19_distinct_entity_local_episode",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_E1_20_immutable_update",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_E1_21_immutable_delete",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_E1_22_inventory",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_E1_34_no_recompute_and_exact_source",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_E1_35_missing_upstream",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_E1_37_duplicate_slot",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_database::test_E1_38_no_model_retained",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_migration::test_actual_fep_migration_rollback",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_pipeline::test_E1_39_failure_priority_core_isolation",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_pipeline::test_E1_40_accepted_bytes_no_new_heads",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep.test_pipeline::test_persisted_full_denominator_and_atomic_failure",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_canonical_identity::test_N05_missing_historical_authority_retains_population",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_canonical_identity::test_N04_date_matched_publication_is_not_a_mapping",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_canonical_identity::test_N03_digest_publication_is_rejected",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_canonical_identity::test_N03_canonical_database_rejects_fake_publication",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_canonical_identity::test_N04_canonical_database_rejects_wrong_date_publication",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_canonical_identity::test_identity_population_must_be_exact[duplicate]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_canonical_identity::test_identity_population_must_be_exact[foreign_authority]",
+      "reason": "FEP_E1_TEST_DSN required for real isolated PostgreSQL"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_metadata_binding::test_real_canonical_metadata_readback[55492-fresh]",
+      "reason": "Explicit isolated canonical fixture required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_metadata_binding::test_real_canonical_metadata_readback[55493-upgrade]",
+      "reason": "Explicit isolated canonical fixture required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_01_reconstruction_is_not_publication[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_01_reconstruction_is_not_publication[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_02_current_reconstruction_after_T0_without_PIT[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_02_current_reconstruction_after_T0_without_PIT[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_03_no_historical_accepted_semantics[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_03_no_historical_accepted_semantics[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_04_row_digest_is_not_authority[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_04_row_digest_is_not_authority[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_05_current_publication_cannot_reconstruction[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_05_current_publication_cannot_reconstruction[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_06_08_exact_authority_identity[fresh-RA-06-trade_date-2000-01-01]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_06_08_exact_authority_identity[fresh-RA-07-namespace_id-UNIT_WRONG_NS]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_06_08_exact_authority_identity[fresh-RA-08-feature_contract_id-UNIT_WRONG_FEATURE]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_06_08_exact_authority_identity[upgrade-RA-06-trade_date-2000-01-01]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_06_08_exact_authority_identity[upgrade-RA-07-namespace_id-UNIT_WRONG_NS]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_06_08_exact_authority_identity[upgrade-RA-08-feature_contract_id-UNIT_WRONG_FEATURE]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_09_10_manifest_registration_and_dependency_guard[fresh-RA-09-None]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_09_10_manifest_registration_and_dependency_guard[fresh-RA-10-CURRENT-CURRENT]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_09_10_manifest_registration_and_dependency_guard[fresh-RA-10-LATEST-LATEST]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_09_10_manifest_registration_and_dependency_guard[fresh-RA-10-TODAY-TODAY]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_09_10_manifest_registration_and_dependency_guard[upgrade-RA-09-None]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_09_10_manifest_registration_and_dependency_guard[upgrade-RA-10-CURRENT-CURRENT]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_09_10_manifest_registration_and_dependency_guard[upgrade-RA-10-LATEST-LATEST]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_09_10_manifest_registration_and_dependency_guard[upgrade-RA-10-TODAY-TODAY]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[fresh-FIRST_OBSERVED]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[fresh-REAL_OOS]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[fresh-production]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[fresh-model_display]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[fresh-priority_use]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[fresh-AS_RECORDED]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[fresh-PROMOTION_EVIDENCE]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[upgrade-FIRST_OBSERVED]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[upgrade-REAL_OOS]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[upgrade-production]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[upgrade-model_display]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[upgrade-priority_use]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[upgrade-AS_RECORDED]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_RA_11_13_no_evidence_or_display_upgrade[upgrade-PROMOTION_EVIDENCE]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[fresh-change0]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[fresh-change1]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[fresh-change2]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[fresh-change3]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[fresh-change4]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[fresh-change5]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[upgrade-change0]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[upgrade-change1]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[upgrade-change2]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[upgrade-change3]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[upgrade-change4]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_observation_union_fail_closed[upgrade-change5]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[fresh-change0]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[fresh-change1]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[fresh-change2]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[fresh-change3]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[fresh-change4]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[upgrade-change0]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[upgrade-change1]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[upgrade-change2]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[upgrade-change3]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_run_union_fail_closed[upgrade-change4]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_snapshot_exact_binding[fresh-snapshot_id]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_snapshot_exact_binding[fresh-feature_digest]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_snapshot_exact_binding[fresh-quality_digest]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_snapshot_exact_binding[fresh-feature_contract_id]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_snapshot_exact_binding[upgrade-snapshot_id]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_snapshot_exact_binding[upgrade-feature_digest]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_snapshot_exact_binding[upgrade-quality_digest]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_snapshot_exact_binding[upgrade-feature_contract_id]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_feature_values_exact_binding[fresh-value-9000]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_feature_values_exact_binding[fresh-quality-UNKNOWN]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_feature_values_exact_binding[fresh-source_digest-7190732a207f2360ecd627aad0f1410b8202614c8ba16dacbd69dc390e18c587]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_feature_values_exact_binding[upgrade-value-9000]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_feature_values_exact_binding[upgrade-quality-UNKNOWN]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_feature_values_exact_binding[upgrade-source_digest-7190732a207f2360ecd627aad0f1410b8202614c8ba16dacbd69dc390e18c587]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_permission_nonchampion_display_priority_forbidden[fresh-MODEL_DISPLAY]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_permission_nonchampion_display_priority_forbidden[fresh-DESCRIPTIVE_DISPLAY]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_permission_nonchampion_display_priority_forbidden[fresh-PRIORITY_USE]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_permission_nonchampion_display_priority_forbidden[upgrade-MODEL_DISPLAY]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_permission_nonchampion_display_priority_forbidden[upgrade-DESCRIPTIVE_DISPLAY]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_permission_nonchampion_display_priority_forbidden[upgrade-PRIORITY_USE]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_permission_wrong_role_exact_FK[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_permission_wrong_role_exact_FK[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_imported_model_cannot_fake_champion[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_imported_model_cannot_fake_champion[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-reconstruction_authorities]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-observation_revisions]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-snapshots]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-feature_values]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-models]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-model_sets]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-model_set_members]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-permission_keys]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-prediction_slots]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-slot_model_bindings]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-prediction_runs]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-predictions]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-acceptance_receipts]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-slot_receipts]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-activations]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-UPDATE-deployment_change_receipts]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-reconstruction_authorities]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-observation_revisions]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-snapshots]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-feature_values]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-models]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-model_sets]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-model_set_members]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-permission_keys]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-prediction_slots]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-slot_model_bindings]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-prediction_runs]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-predictions]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-acceptance_receipts]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-slot_receipts]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-activations]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[fresh-DELETE-deployment_change_receipts]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-reconstruction_authorities]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-observation_revisions]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-snapshots]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-feature_values]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-models]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-model_sets]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-model_set_members]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-permission_keys]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-prediction_slots]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-slot_model_bindings]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-prediction_runs]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-predictions]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-acceptance_receipts]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-slot_receipts]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-activations]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-UPDATE-deployment_change_receipts]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-reconstruction_authorities]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-observation_revisions]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-snapshots]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-feature_values]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-models]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-model_sets]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-model_set_members]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-permission_keys]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-prediction_slots]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-slot_model_bindings]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-prediction_runs]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-predictions]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-acceptance_receipts]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-slot_receipts]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-activations]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_append_only_guards[upgrade-DELETE-deployment_change_receipts]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[fresh-scope_id-UNIT_WRONG]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[fresh-target_id-UNIT_WRONG]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[fresh-horizon-20]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[fresh-model_set_id-UNIT_WRONG]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[fresh-snapshot_id-UNIT_WRONG]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[upgrade-scope_id-UNIT_WRONG]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[upgrade-target_id-UNIT_WRONG]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[upgrade-horizon-20]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[upgrade-model_set_id-UNIT_WRONG]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_typed_identity[upgrade-snapshot_id-UNIT_WRONG]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_canonical_ledger_denominator_and_roles[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_canonical_ledger_denominator_and_roles[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_path_positive_and_preserved[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_path_positive_and_preserved[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-wrong_date]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-wrong_namespace]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-unaccepted]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-after_cutoff]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-missing_dependency]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-wrong_manifest_publication]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[fresh-replay]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-wrong_date]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-wrong_namespace]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-unaccepted]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-after_cutoff]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-missing_dependency]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-wrong_manifest_publication]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_PIT_original_validator_negatives[upgrade-replay]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_API_exact_context_and_revoked_boundary[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_API_exact_context_and_revoked_boundary[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[fresh-wrong_version]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[fresh-wrong_prior]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[fresh-wrong_request_payload]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[fresh-negative_version]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[fresh-invalid_action]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[upgrade-wrong_version]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[upgrade-wrong_prior]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[upgrade-wrong_request_payload]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[upgrade-negative_version]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_rejection_atomicity[upgrade-invalid_action]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_replay_idempotent[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_replay_idempotent[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_outer_failure_restores_head_and_receipts[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_outer_failure_restores_head_and_receipts[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_application_cannot_admit_authority_or_mutate_head[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_application_cannot_admit_authority_or_mutate_head[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_acceptance_transaction_rolls_back_after_prediction[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_acceptance_transaction_rolls_back_after_prediction[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_first_observed_literal_forbidden[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_prediction_first_observed_literal_forbidden[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_historical_revision_preserves_first_identity[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_historical_revision_preserves_first_identity[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_run_cross_observation_authority_rejected[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_run_cross_observation_authority_rejected[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_acceptance_wrong_model_set_or_revoke_rejected[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_acceptance_wrong_model_set_or_revoke_rejected[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_priority_failure_after_insert_has_no_partial_fact[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_priority_failure_after_insert_has_no_partial_fact[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_priority_fixture_references_canonical_predictions_only[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_priority_fixture_references_canonical_predictions_only[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_cross_model_set_revoke_rejected[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_CAS_cross_model_set_revoke_rejected[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_acceptance_stale_allow_cannot_admit_after_revoke[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_acceptance_stale_allow_cannot_admit_after_revoke[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_run_input_digest_must_match_exact_snapshot[fresh]",
+      "reason": "explicit canonical fixtures required"
+    },
+    {
+      "node": "tests.fep_e5.test_e5_reconstruction::test_run_input_digest_must_match_exact_snapshot[upgrade]",
+      "reason": "explicit canonical fixtures required"
+    }
+  ],
+  "source_bindings": [
+    {
+      "bytes": 17170,
+      "path": "src/workbench_analysis/v4_15_forward_p1.py",
+      "sha256": "407d9f3990e08c7a5cd9bcad8e687d010a270fdb0d29c2de4d281482477ebffe"
+    },
+    {
+      "bytes": 911,
+      "path": "scripts/v4_16_forward_p1_worker.py",
+      "sha256": "41b6d33f874e24de4ee40075d8d2b45810f6137eef72d58a46919724d6df7439"
+    },
+    {
+      "bytes": 3898,
+      "path": "tests/runtime_isolation.py",
+      "sha256": "64533afcf27fcbb1a19b675c2c9bfa402289aae9d02e21e6dd69d1ad11254cea"
+    },
+    {
+      "bytes": 5837,
+      "path": "tests/upgrade_m12/conftest.py",
+      "sha256": "e83910a8d4cc308f3f7108db6cdb9cb666e8c994745b23a9ecbf8c0e51b1e92a"
+    },
+    {
+      "bytes": 9317,
+      "path": "tests/forward_p1_vectors.py",
+      "sha256": "7993f18746e65a00b7c590b6cd0a878446a18441b7ba9469cf492902e5320875"
+    },
+    {
+      "bytes": 2785,
+      "path": "tests/test_forward_p1_isolation.py",
+      "sha256": "908d68e7ec1669413a5f5f7fdecd83b459b1953277165c8ba6e76007a5d39261"
+    },
+    {
+      "bytes": 178,
+      "path": "tests/test_forward_p1_stock.py",
+      "sha256": "b846407822c682419db8e45718c1207a5e50d45ba8dac16f046248598cbf28d7"
+    },
+    {
+      "bytes": 181,
+      "path": "tests/test_forward_p1_sector.py",
+      "sha256": "ae3155e01bcb79511cfef22f05ddb45206c8138c0f82dc30d8282eaf0b0b1d43"
+    },
+    {
+      "bytes": 6559,
+      "path": "tests/test_forward_p1_regression.py",
+      "sha256": "a2e36f8e94a2522d1e536aeb97b9d8ddad9ea75cfe72bdb682d66cce7d163eb7"
+    }
+  ],
+  "stage_contract": "V4_FORWARD_P1_REPAIR_R1_IA09_IA01_IA02",
+  "started_at": "2026-10-06T23:34:30.027364+00:00"
+}

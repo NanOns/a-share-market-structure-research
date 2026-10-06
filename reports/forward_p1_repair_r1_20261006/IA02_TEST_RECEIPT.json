@@ -1,0 +1,89 @@
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_forward_p1_sector.py",
+    "-q",
+    "--basetemp=E:\\codex_tmp\\test_temp\\forward_p1_ia02_1791330589457878300",
+    "--junitxml=E:\\codex_tmp\\test_temp\\forward_p1_ia02_1791330589457878300.xml"
+  ],
+  "counts": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 12
+  },
+  "evidence_class": "ENGINEERING_REGRESSION_ONLY",
+  "exit_code": 0,
+  "finished_at": "2026-10-06T23:49:50.283106+00:00",
+  "log": {
+    "bytes": 101,
+    "path": "reports/forward_p1_repair_r1_20261006/IA02_PYTEST.log",
+    "sha256": "9739647a533b7f9dcb05d935015cf1a9a4f3e25ebc24160d340f8cf6c552600b"
+  },
+  "next_stage": "AFFECTED",
+  "phase": "IA02",
+  "protected_database_connection_attempts": [],
+  "runtime_authorization": false,
+  "skipped_coverage": [],
+  "source_bindings": [
+    {
+      "bytes": 135,
+      "path": "conftest.py",
+      "sha256": "91bccb1e09ed653e67f3dc83ec936c46a009b7d2c56029f26a0f8ebb9b0cca9c"
+    },
+    {
+      "bytes": 4724,
+      "path": "tests/runtime_isolation_plugin.py",
+      "sha256": "c8c0d571b43cd29590745cf080e328f04a40f81c4e76fce584a8e7829ad9d3ba"
+    },
+    {
+      "bytes": 17170,
+      "path": "src/workbench_analysis/v4_15_forward_p1.py",
+      "sha256": "407d9f3990e08c7a5cd9bcad8e687d010a270fdb0d29c2de4d281482477ebffe"
+    },
+    {
+      "bytes": 911,
+      "path": "scripts/v4_16_forward_p1_worker.py",
+      "sha256": "41b6d33f874e24de4ee40075d8d2b45810f6137eef72d58a46919724d6df7439"
+    },
+    {
+      "bytes": 3898,
+      "path": "tests/runtime_isolation.py",
+      "sha256": "64533afcf27fcbb1a19b675c2c9bfa402289aae9d02e21e6dd69d1ad11254cea"
+    },
+    {
+      "bytes": 5837,
+      "path": "tests/upgrade_m12/conftest.py",
+      "sha256": "e83910a8d4cc308f3f7108db6cdb9cb666e8c994745b23a9ecbf8c0e51b1e92a"
+    },
+    {
+      "bytes": 9317,
+      "path": "tests/forward_p1_vectors.py",
+      "sha256": "7993f18746e65a00b7c590b6cd0a878446a18441b7ba9469cf492902e5320875"
+    },
+    {
+      "bytes": 4055,
+      "path": "tests/test_forward_p1_isolation.py",
+      "sha256": "a10eb573a464376db3ef9f5276883f1c4b32d23c9386f41e0f27791738aaaa88"
+    },
+    {
+      "bytes": 178,
+      "path": "tests/test_forward_p1_stock.py",
+      "sha256": "b846407822c682419db8e45718c1207a5e50d45ba8dac16f046248598cbf28d7"
+    },
+    {
+      "bytes": 181,
+      "path": "tests/test_forward_p1_sector.py",
+      "sha256": "ae3155e01bcb79511cfef22f05ddb45206c8138c0f82dc30d8282eaf0b0b1d43"
+    },
+    {
+      "bytes": 6559,
+      "path": "tests/test_forward_p1_regression.py",
+      "sha256": "a2e36f8e94a2522d1e536aeb97b9d8ddad9ea75cfe72bdb682d66cce7d163eb7"
+    }
+  ],
+  "stage_contract": "V4_FORWARD_P1_REPAIR_R1_IA09_IA01_IA02",
+  "started_at": "2026-10-06T23:49:49.457408+00:00"
+}

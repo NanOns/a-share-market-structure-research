@@ -1,0 +1,41 @@
+{
+  "all_base_table_rows_and_catalog_definitions_equal": true,
+  "atomic_restore": true,
+  "catalog_comparison": {
+    "bytes": 317,
+    "path": "reports/forward_p1_repair_r1_20261006/PROTECTED_DB_DRIFT_CATALOG_COMPARISON.json",
+    "sha256": "e874e752a124a1f85ea4d0278e3b5ded78b3e8d6363517032c9cc28aeb765ddb"
+  },
+  "changed": {
+    "bytes": 1912352768,
+    "mtime_ns": 1791329695141331300,
+    "path": "data/database/market_research.duckdb",
+    "sha256": "92a541fbfd54af8da72a09cab706a5a0309ca36b11c452a5e61d4c55d072cd7d"
+  },
+  "changed_snapshot": {
+    "path": "E:\\codex_tmp\\test_temp\\forward_p1_storage_incident_1791330311302851400\\changed_database.duckdb",
+    "sha256": "92a541fbfd54af8da72a09cab706a5a0309ca36b11c452a5e61d4c55d072cd7d"
+  },
+  "failed_run_zero_write_claim": false,
+  "logical_comparison": {
+    "bytes": 9365,
+    "path": "reports/forward_p1_repair_r1_20261006/PROTECTED_DB_DRIFT_LOGICAL_COMPARISON.json",
+    "sha256": "9373bbb311410cc08e83e5975bcc57ccdaa29c251f25fe205b70ef7f8e3d45c2"
+  },
+  "logical_data_loss": false,
+  "next": "GLOBAL_TEST_CONNECTION_GUARD_AND_FRESH_ACCEPTANCE_REGRESSION_REQUIRED",
+  "original": {
+    "bytes": 1912352768,
+    "mtime_ns": 1791293998112912200,
+    "path": "data/database/market_research.duckdb",
+    "sha256": "f73893914446c4a2c65a2a6341be6170f1caf957e0d16e9c9efc0127a9f8cdc7"
+  },
+  "original_snapshot": {
+    "path": "E:\\codex_tmp\\test_temp\\forward_p1_m12\\m12_runtime0\\data\\database\\test.duckdb",
+    "sha256": "f73893914446c4a2c65a2a6341be6170f1caf957e0d16e9c9efc0127a9f8cdc7"
+  },
+  "restored_mtime_ns": 1791293998112912200,
+  "restored_sha256": "f73893914446c4a2c65a2a6341be6170f1caf957e0d16e9c9efc0127a9f8cdc7",
+  "status": "STORAGE_BYTE_DRIFT_DETECTED_AND_CORRECTED; FAILED_RUN_RETAINED",
+  "writer_lock": "WIN32_DENY_WRITE_DURING_SNAPSHOT_AND_COPY; RELEASE_AND_REVALIDATE_FOR_ATOMIC_RENAME"
+}

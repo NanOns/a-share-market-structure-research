@@ -73,4 +73,9 @@ def register(pg, contract):
     verify_target(accepted['target_row'], accepted['target_registry'])
     contract(pg, TARGET_CONTRACT, dict(source_binding=accepted['target_reference'], accepted_registry=accepted['target_registry']))
     contract(pg, SIGNAL_CONTRACT, dict(source_binding=accepted['signal_reference'], accepted_contract=accepted['signal_body'], predicate_digest=accepted['predicate_digest']))
+    if pg.execute("select to_regclass('fep.signal_contract_registry')").fetchone()[0] is not None:
+        pg.execute("""insert into fep.signal_contract_registry
+            select contract_id,%s,signal,family,digest,body->>'predicate_digest'
+            from fep.contracts cross join lateral jsonb_array_elements_text(body->'accepted_contract'->'formal_signals') signal
+            where contract_id=%s on conflict do nothing""",(accepted['signal_body']['observation_scope'],SIGNAL_CONTRACT))
     return accepted

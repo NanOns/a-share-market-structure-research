@@ -10,8 +10,13 @@ TABLES=('models','prediction_slots','slot_model_bindings','permission_keys','pre
     'slot_receipts','acceptance_receipts','activations','deployment_receipts','deployment_heads','priority_projection','protocols')
 
 class Ledger:
-    def __init__(self,pg):self.pg=pg
+    def __init__(self,pg,*,historical_fixture=False):
+        self.pg=pg;self.historical_fixture=historical_fixture
+    def fixture_guard(self):
+        c.require(self.historical_fixture is True,'HISTORICAL_ENGINEERING_FIXTURE_ONLY')
+        c.require(self.pg.info.dbname in {'fep_e1_fresh','fep_e1_upgrade','fep_e5_legacy_fixture'},'LEGACY_PRODUCTION_DSN_FORBIDDEN')
     def install(self):
+        self.fixture_guard()
         with self.pg.transaction():self.pg.execute(Path(__file__).with_name('schema.sql').read_text(encoding='utf-8'))
     def get(self,table,key):
         c.require(table in TABLES,'LEDGER_TABLE_NOT_ALLOWED')
@@ -21,6 +26,7 @@ class Ledger:
         c.require(table in TABLES,'LEDGER_TABLE_NOT_ALLOWED')
         return [r[0] for r in self.pg.execute(sql.SQL('select payload from {}.{} order by id').format(sql.Identifier(SCHEMA),sql.Identifier(table)))]
     def put(self,table,key,payload,**columns):
+        self.fixture_guard()
         c.write_target(SCHEMA);c.require(table in TABLES and table!='deployment_heads','IMMUTABLE_TABLE_REQUIRED')
         old=self.get(table,key)
         if old is not None:
@@ -50,6 +56,7 @@ class Ledger:
         with self.pg.transaction():self.put('permission_keys',key['grant_id'],key,model_id=model_id,capability=capability)
         return key
     def cas(self,grant_id,request_id,expected_version,action,effective_at,*,fail_after_receipt=False):
+        self.fixture_guard()
         grant=self.get('permission_keys',grant_id);c.require(grant is not None,'EXACT_PERMISSION_REQUIRED')
         c.require(action in ('ALLOW','REVOKE'),'ACTIVATION_ACTION')
         from datetime import datetime,timezone

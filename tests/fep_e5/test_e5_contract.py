@@ -31,7 +31,7 @@ def rejects(call,match=None):
 def db():
     dsn=os.environ.get('FEP_E5_TEST_DSN','host=127.0.0.1 port=55488 user=fep_e1_admin dbname=fep_e1_fresh')
     with psycopg.connect(dsn,autocommit=True) as pg:
-        ledger=Ledger(pg);ledger.install()
+        ledger=Ledger(pg,historical_fixture=True);ledger.install()
         with pg.transaction(force_rollback=True):yield ledger
 def activated(db):
     m=model();db.register_model(m);s=db.plan(slot());db.bind(s['slot_id'],m['model_id']);g=db.grant(m['model_id']);db.cas(g['grant_id'],'UNIT_ALLOW',0,'ALLOW',AT)

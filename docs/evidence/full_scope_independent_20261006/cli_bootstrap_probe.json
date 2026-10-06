@@ -1,0 +1,27 @@
+{
+  "audit_head": "e21adab807e7f39960ec555764ab8c9d6b50f47b",
+  "evidence_class": "READ_ONLY_CLI_IMPORT_HELP_NOT_REAL_DATA_EXECUTION",
+  "command": [
+    "E:\\python\\python.exe",
+    "-B",
+    "E:\\codex work\\大A交易\\scripts\\run_v4_dm01_daily_increment.py",
+    "--help"
+  ],
+  "results": [
+    {
+      "mode": "INHERITED_ENV",
+      "returncode": 1,
+      "output_encoding": "UTF-8",
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\r\n  File \"E:\\codex work\\大A交易\\scripts\\run_v4_dm01_daily_increment.py\", line 23, in <module>\r\n    from workbench_analysis.dm01_runtime_r4 import session_gate, validate_registry, BUILDERS, current_parent, calendar, build_candidate, promote, ref, POLICY, HEAD\r\n  File \"E:\\codex work\\大A交易\\src\\workbench_analysis\\dm01_runtime_r4.py\", line 17, in <module>\r\n    from . import dm01_incremental_component_builders_r3_3 as kernels\r\n  File \"E:\\codex work\\大A交易\\src\\workbench_analysis\\dm01_incremental_component_builders_r3_3.py\", line 18, in <module>\r\n    from scripts.v4_02_build_raw_selected_v2 import date_identity, check_raw_quality\r\nModuleNotFoundError: No module named 'scripts'\r\n"
+    },
+    {
+      "mode": "EXPLICIT_ROOT_AND_SRC_PYTHONPATH",
+      "returncode": 0,
+      "output_encoding": "UTF-8",
+      "stdout": "usage: run_v4_dm01_daily_increment.py [-h] --target-date TARGET_DATE\r\n                                      [--snapshot-root SNAPSHOT_ROOT]\r\n                                      [--receipt-dir RECEIPT_DIR]\r\n\r\nRun the source-gated V4-DM-01 daily increment entrypoint.\r\n\r\noptions:\r\n  -h, --help            show this help message and exit\r\n  --target-date TARGET_DATE\r\n  --snapshot-root SNAPSHOT_ROOT\r\n  --receipt-dir RECEIPT_DIR\r\n",
+      "stderr": ""
+    }
+  ],
+  "interpretation": "Standalone entrypoint inserts src but not repository root; kernels import scripts.*. An explicit launch environment reaches --help, inherited environment does not. No capture flags or data-stage commands executed."
+}

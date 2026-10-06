@@ -1,0 +1,260 @@
+{
+  "head": "e21adab807e7f39960ec555764ab8c9d6b50f47b",
+  "authority": "INDEPENDENT_AUDIT_ONLY_NO_PERMISSION_GRANT",
+  "items": [
+    {
+      "id": "IA-01",
+      "severity": "P1",
+      "kind": "NEW_REPRODUCED_CONTRACT_DEVIATION",
+      "scope": "V4-15/16 Stock Forward绝对终点收益与路径质量隔离",
+      "title": "区间内部不可得使已验证终点收益被整体清空",
+      "sources": [
+        [
+          "src/workbench_analysis/v4_15_settlement_successor.py",
+          16
+        ],
+        [
+          "config/v4_15_forward_price_path_contract_v1.json",
+          null
+        ],
+        [
+          "scripts/v4_16_settlement_worker_v2.py",
+          82
+        ]
+      ],
+      "evidence": "semantic_probes.json → UNKNOWN_INTERIOR_VALID_ENDPOINT：P0=10、终点close=11且身份/坐标已验证，内部行close/high/low缺失且verified_adjustment=false；实际R_N=null/outcome_status=ADJUSTMENT_UNKNOWN。独立预期R_N=0.1，路径指标不可评估。",
+      "cause": "successor在计算endpoint前遍历全部actual row，任一valid_row失败直接返回整份invalid结果；它把路径坐标缺失提升成端点坐标失败。冻结unknown_gap明确ENDPOINT_RETURN_INDEPENDENT_IF_VERIFIED，设计§46A要求未确认内部缺口只限制路径指标。",
+      "impact": "缺失内部价格/换基时，合法endpoint的absolute结果、对照结果和相应FEP ABS标签被多余删除。当前real activation禁用，未证明已经污染真实结果；缺失少报也属于算法合同偏离。",
+      "acceptance": "保持endpoint/T0坐标严格验证；仅endpoint无效时R_N不可用。内部缺口限制MFE/MAE/MDD并给路径reason。独立向量覆盖missing/invalid interior、有效endpoint、无效endpoint/T0、确认停牌、公司行为，持久化worker/readback同预期；accepted历史字节不改。"
+    },
+    {
+      "id": "IA-02",
+      "severity": "P1",
+      "kind": "NEW_REPRODUCED_INTEGRATION_AND_SCHEMA_DEVIATION",
+      "scope": "V4-15/16 Sector自身篮子Forward与字段语义",
+      "title": "板块聚合路径不满足新结算identity；旧实现把close极值写入价格MFE字段",
+      "sources": [
+        [
+          "src/workbench_analysis/v4_15_settlement.py",
+          196
+        ],
+        [
+          "src/workbench_analysis/v4_15_settlement_successor.py",
+          16
+        ],
+        [
+          "src/workbench_analysis/v4_15_settlement_successor.py",
+          67
+        ]
+      ],
+      "evidence": "semantic_probes.json → SECTOR_BASKET_VALID_ENDPOINT：2成员P0=10、终点11，等初始权重均验证。historical R_N≈0.1，successor R_N=null、ADJUSTMENT_UNKNOWN；聚合生成行没有adjustment_identity。historical同时MFE_N≈0.1，high/low实际上都由basket close代替。",
+      "cause": "successor通过FunctionType复用原settle字节码并替换price_path；原Sector分支产生单位指数close/high/low而没有新validator必需的identity。设计§49A.3只允许板块MFE_CLOSE/MAE_CLOSE，不应提供由close冒充的盘中MFE_N/MAE_N。",
+      "impact": "即使全部成员端点有效，Sector absolute Forward也不能成熟；回到旧runtime会恢复R却保留字段语义问题。当前PURE_CORE_STOCK grant不授权Sector，不是现有Stock whole-chain P0。",
+      "acceptance": "独立Sector篮子path及lineage合同定义每成员同basis到聚合指数的identity；有效篮子R正确、partial保持UNKNOWN而不重权，输出MFE_CLOSE/MAE_CLOSE；不得伪填股票high/low。n<2的股票relative-sector和Sector自身篮子分别验收。"
+    },
+    {
+      "id": "IA-03",
+      "severity": "P2",
+      "kind": "NEW_REPRODUCED_GENERIC_API_STATE_COLLISION",
+      "scope": "V4-15通用engineering SettlementRuntime；未证明当前durable real worker受影响",
+      "title": "同一evaluation source的PENDING结果覆盖后续DUE幂等查询",
+      "sources": [
+        [
+          "src/workbench_analysis/v4_15_settlement.py",
+          195
+        ],
+        [
+          "src/workbench_analysis/v4_15_settlement.py",
+          227
+        ]
+      ],
+      "evidence": "semantic_probes.json → PENDING_THEN_DUE_SAME_EVALUATION_DIGEST：首次cutoff=T0写PENDING；次次cutoff=T+1同源，返回same_ref=true、due_status=PENDING，未新增成熟结果。",
+      "cause": "outcome key=enrollment/horizon/contract/source SHA；未到期记录与到期记录使用同一key。existing lookup在成熟计算后优先返回旧PENDING。",
+      "impact": "通用工程API/readback和future source snapshot复用场景可能永远不成熟。现durable worker只允许due后enqueue，因此不能把反例直接称为已激活真实worker故障。",
+      "acceptance": "pending保持在独立due/planner层或冻结明确的状态revision规则，禁止覆盖历史outcome。验收同源pre-due→due、重复due、corrected source、first/latest、重启和持久化读取；保持设计唯一键，不简单把执行时间塞key破坏幂等。"
+    },
+    {
+      "id": "IA-04",
+      "severity": "P2",
+      "kind": "NEW_REPRODUCED_BOUNDARY_HARDENING",
+      "scope": "Forward数值输入边界；正式上游可达性未证实",
+      "title": "有限但非法的实际价格仍被标OBSERVED",
+      "sources": [
+        [
+          "src/workbench_analysis/v4_15_settlement_successor.py",
+          16
+        ],
+        [
+          "src/workbench_analysis/v4_15_settlement.py",
+          51
+        ]
+      ],
+      "evidence": "semantic_probes.json → INVALID_NEGATIVE_ACTUAL_PRICE：close=-1、high=-0.5、low=-2、P0=10，系数identity，实际R=-1.1、MAE=-1.2、OBSERVED。",
+      "cause": "新validator检查finite和alpha正，未检查actual OHLC正价格/包络。它信任上游verified flags。",
+      "impact": "当前已接受原始源有价格校验，本轮没有证明正式producer会输出此输入；不能夸大成真实数据污染P0。新adapter或错误flag可将非法结果传入FEP。",
+      "acceptance": "明确上游保证与消费者check责任；actual-price不合法拒绝/降级，终值退市0走独立terminal路径且保留证据，不能拒绝合法terminal=0；验收raw OHLC包络，变换后价格允许域按最新合同独立冻结，不凭本报告任意定义。"
+    },
+    {
+      "id": "IA-05",
+      "severity": "P1",
+      "kind": "EXISTING_OPEN_CROSS_CUTTING_TEST_DEBT",
+      "scope": "全仓回归与release证据；独立于各stage historical gate",
+      "title": "默认pytest收集失败，全仓回归不能签绿",
+      "sources": [
+        [
+          "tests/upgrade_m14/test_online_batches.py",
+          9
+        ],
+        [
+          "src/workbench_online/collector.py",
+          1
+        ],
+        [
+          "docs/audits/V4_GLOBAL_PYTEST_COLLECTION_AUDIT_ITEM_R1_20260929.md",
+          null
+        ]
+      ],
+      "evidence": "pytest_full.log/xml：ImportError _commit_raw_and_batch；继续收集全仓复跑已中止，无完整JUnit，不报通过数量。后续阶段/FEP限定测试的失败/错误/skip见pytest_summary.json、pytest_stages.log/xml。",
+      "cause": "已于2026-09-29登记OPEN/NOT_ACCEPTED。hot-rank capture后来被retire为request-time-only，但旧测试仍导入capture函数；其他历史exact/设计断言与隔离DB条件也须逐项处置。",
+      "impact": "不能宣称全仓回归通过或本HEAD release ready；同样不能把默认收集错误直接等于已接受V4 Pure-Core算法失败。",
+      "acceptance": "复用原global audit item，按失败node独立分类、baseline、正式supersession或修复，DB测试先验证隔离环境；保留退役写入口禁用；最终默认完整pytest无收集错误且失败有独立验收。禁止删测/静默ignore冒充绿。"
+    },
+    {
+      "id": "IA-06",
+      "severity": "P1",
+      "kind": "VERIFICATION_AND_DEPLOYMENT_EVIDENCE_GAP",
+      "scope": "本轮FEP/阶段DB fresh-upgrade/权限/trigger及模型依赖实证复验",
+      "title": "隔离库fixture/DSN和模型依赖不足，当前环境验证未完成",
+      "sources": [
+        [
+          "tests/fep/conftest.py",
+          16
+        ],
+        [
+          "tests/test_full_chain_fep_db.py",
+          9
+        ],
+        [
+          "src/workbench_db/migrations/v4_postgres/033_fep_signal_contract_integrity_v1.sql",
+          1
+        ],
+        [
+          "src/workbench_analysis/fep_e3/models.py",
+          70
+        ]
+      ],
+      "evidence": "首轮281 skip中214+2缺canonical fixtures、62缺FEP_E1_TEST_DSN、1缺disposable DB DSN、2缺symlink权限；没有PG连接error记录。38个setup errors均为旧V4_13_STAGE authority拒绝。E3/E4另有5项缺sklearn失败。逐node原文见pytest_stages.xml/inventory；历史fresh/upgrade readback不是本轮重跑结果。",
+      "cause": "隔离库显式env gates和当前Python依赖与历史验收环境不同；E盘basetemp与tempfile根不一致还导致68 fixture namespace拒绝，已独立更正环境复验，原失败保留。static DDL/FK/trigger和模型源码存在不能证明当前部署可运行。",
+      "impact": "工程历史接受范围可保留；本轮不能独立确认全部真实PG表约束、role/search_path、fresh/upgrade与模型fit/parity效果。不得在market_research生产库重置来取证。",
+      "acceptance": "仅使用已确认disposable隔离DB，冻结空库/升级迁移列表，逐项negative insert/权限/CAS/rollback实证；冻结兼容模型runtime依赖并完成fit/parity，统一E/F TEMP及fixture安全根。记录当前source SHA；环境验证不自动grant生产。"
+    },
+    {
+      "id": "IA-07",
+      "severity": "P2",
+      "kind": "PERFORMANCE_VALIDATION_DEBT_NOT_PROVED_TIMEOUT",
+      "scope": "FEP E1 dataset/E3 purge、全市场Forward controls与整链负载",
+      "title": "若干二次复杂度路径尚缺当前规模性能证据",
+      "sources": [
+        [
+          "src/workbench_analysis/fep_e1/datasets.py",
+          54
+        ],
+        [
+          "src/workbench_analysis/fep_e3/protocol.py",
+          104
+        ],
+        [
+          "src/workbench_analysis/v4_15_settlement.py",
+          21
+        ],
+        [
+          "reports/v4_phase0/V4_PHASE0_PERFORMANCE_BASELINE_R2.json",
+          null
+        ]
+      ],
+      "evidence": "E1对每row重新扫描rows构建population/Counter；E3对每row扫描later rows；controls为每signal冻结complete population。早期性能baseline的runtime row count=0。",
+      "cause": "正确性向量覆盖不能替代当前负载测量。无本轮CPU/RAM/全市场daily/LOO/FEP真实负载回执。",
+      "impact": "支持大数据规模的SLA未证实；没有实测timeout，所以不判当前性能故障P0/P1。重复snapshot可能扩大工件体积。",
+      "acceptance": "按合同规模测elapsed/peak memory/output bytes；必要时预聚合population weights、partition边界和复用固定features，保留完全相同logical digest/selection/weight。"
+    },
+    {
+      "id": "IA-08",
+      "severity": "P2",
+      "kind": "HISTORICAL_PROVENANCE_ROUTING_DEBT",
+      "scope": "旧head/validator exact身份；非当前active head损坏",
+      "title": "历史引用需显式版本路由，不能与当前工作区字节等同",
+      "sources": [
+        [
+          "data/v4/V4_09_ACCEPTED_HEAD.json",
+          null
+        ],
+        [
+          "data/v4/V4_12_ACCEPTED_HEAD.json",
+          null
+        ],
+        [
+          "src/workbench_analysis/v4_portable_exact.py",
+          21
+        ],
+        [
+          "src/workbench_analysis/v4_13_accepted_contract_package.py",
+          50
+        ]
+      ],
+      "evidence": "4797条绑定4777匹配、20 mismatch；20引用对应15个(path,expected SHA)身份全部Git可找回。PortableExact对这些旧绑定返回UNREGISTERED_ACCEPTED_BINDING，当前CurrentStageAuthority与V4_09 load_package均PASS。",
+      "cause": "旧head保存当时code/validator及parent状态，新head/validator已推进。历史库精确字节与当前文件不同是事实；Git可追溯不等于每个旧CLI都能在当前checkout直接运行。例：v4_13_accepted_contract_package.current_contracts只接受stage range到12/13，现到15则UNAUTHORIZED_V4_13_STAGE，38个setup errors来自此旧entry。",
+      "impact": "历史验收不能直接给当前代码授权，旧validator重跑可能失败；必须使用明确historical reader/checkout。未发现active V6 literal dependency mismatch，不能据20数量全局重开历史阶段。",
+      "acceptance": "复用Current Audit已开放Git/production再审item，固定旧字节回放路由或新successor外审；所有current consumers绑定新scope的源码，禁止generic normalize/改历史SHA。"
+    },
+    {
+      "id": "IA-09",
+      "severity": "P1",
+      "kind": "NEW_CONFIRMED_TEST_ISOLATION_DEFECT",
+      "scope": "全仓旧UI测试fixture与审计运行环境；独立于V4算法stage gate",
+      "title": "旧浏览器测试直接启动实际工作区数据库的发布恢复入口",
+      "sources": [
+        [
+          "tests/upgrade_m12/test_browser_behavior.py",
+          41
+        ],
+        [
+          "src/workbench_service/app.py",
+          2297
+        ],
+        [
+          "src/workbench_publish/service.py",
+          272
+        ]
+      ],
+      "evidence": "全仓继续收集复跑观察到python子进程37788以root实际data/database/market_research.duckdb启动serve（parent39176）。serve先_recover_startup，再监听；recover_interrupted更新RUNNING jobs/attempts且对active任务启后台重跑。已中止进程，partial log最后84%，没有完整JUnit。详情global_rerun_interruption.json。",
+      "cause": "fixture把真实ROOT/DB传给通用可恢复服务，而不是disposable clone；read-only浏览器断言不等于服务启动read-only。本轮复跑前隔离检查不足，未捕获DB前指纹。",
+      "impact": "理论上可改变真实job状态或恢复发布任务。未证实本轮发生具体业务重发布，也不能证明零DB写；无TDX写命令、业务tracked diff为空，后者不能证明ignored DB零变化。不能用这种测试作为纯只读验收证据。",
+      "acceptance": "fixture只使用已冻结disposable数据库/根目录，启动前对绝对路径fail-closed；测试显式选择无生产恢复入口的服务或隔离恢复，校验test前后production heads/jobs/artifacts无变更。重复全仓之前先完成安全环境验证；不修改TDX源。"
+    },
+    {
+      "id": "IA-10",
+      "severity": "P2",
+      "kind": "NEW_CONFIRMED_STANDALONE_CLI_BOOTSTRAP_GAP",
+      "scope": "DM01 R4/R4R1 daily直接脚本启动；非底层九组件数值算法",
+      "title": "DM01脚本仅加入src，未满足kernel的scripts包导入",
+      "sources": [
+        [
+          "scripts/run_v4_dm01_daily_increment.py",
+          12
+        ],
+        [
+          "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          18
+        ],
+        [
+          "tests/v4_dm01_r4/test_runtime.py",
+          122
+        ]
+      ],
+      "evidence": "test_actual_entrypoint_no_capture实际子进程报ModuleNotFoundError:scripts。独立cli_bootstrap_probe.json只执行--help：继承环境exit1，显式PYTHONPATH=repo root+src后exit0。没有执行capture/build/promotion。",
+      "cause": "该入口只sys.path.insert(ROOT/src)，Python直接跑scripts/file.py将scripts目录置于sys.path而非repo root；kernel又from scripts.v4_02_build_raw_selected_v2导入。隐含依赖外部PYTHONPATH，直接运行合同/测试不能成立。",
+      "impact": "直接daily维护CLI在进入session gate前即失败，不能声称独立入口工程可运行；明确设置bootstrap或模块式launcher可绕过，因此不否定组件公式或当前已接受data head，也不认定当前所有launcher故障。",
+      "acceptance": "冻结支持的直接CLI/模块launcher及root+src环境bootstrap合同，在干净child环境验证--help和future-session WAIT/no capture；补实际已授权session的隔离入口向量，保留历史字节，依赖/入口修复不自动grant数据发布。"
+    }
+  ]
+}

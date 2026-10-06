@@ -1,0 +1,20 @@
+{
+  "status": "INTERRUPTED_NOT_COMPLETED_NO_JUNIT",
+  "progress_last_log": "84%",
+  "reason": "Legacy browser session fixture starts serve against actual workspace DB; serve invokes publication recovery and may mutate jobs/restart publication requests.",
+  "fixture": "tests/upgrade_m12/test_browser_behavior.py:41",
+  "startup": "src/workbench_service/app.py:2297",
+  "recovery": "src/workbench_publish/service.py:272",
+  "terminated_processes": [
+    39176,
+    37788
+  ],
+  "no_python_processes_observed_after_stop": true,
+  "database_stat_after_stop": {
+    "path": "E:\\codex work\\大A交易\\data\\database\\market_research.duckdb",
+    "size": 1912352768,
+    "mtime_utc": "2026-10-06T13:39:58.112912+00:00"
+  },
+  "limitation": "No pre-run exact DB fingerprint was captured. Cannot prove zero DB writes or claim all tests isolated. No TDX write was issued. No business tracked files changed.",
+  "tracked_changes_after_stop": []
+}

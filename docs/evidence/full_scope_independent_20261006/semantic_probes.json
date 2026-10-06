@@ -1,0 +1,79 @@
+{
+  "evidence_class": "SYNTHETIC_AUDIT_COUNTEREXAMPLES_NOT_REAL_OBSERVATION",
+  "results": [
+    {
+      "probe": "SECTOR_BASKET_VALID_ENDPOINT",
+      "implementation": "historical",
+      "expected_absolute_return": 0.1,
+      "actual": {
+        "R_N": 0.10000000000000009,
+        "MFE_N": 0.10000000000000009,
+        "MAE_N": 0.0,
+        "outcome_status": "OBSERVED",
+        "reason_codes": []
+      },
+      "interpretation": "Sector synthetic row lacks adjustment_identity; successor rejects it. Historical path also uses close-only values as MFE_N/MAE_N."
+    },
+    {
+      "probe": "SECTOR_BASKET_VALID_ENDPOINT",
+      "implementation": "successor",
+      "expected_absolute_return": 0.1,
+      "actual": {
+        "R_N": null,
+        "MFE_N": null,
+        "MAE_N": null,
+        "outcome_status": "ADJUSTMENT_UNKNOWN",
+        "reason_codes": [
+          "INVALID_AFFINE_OR_BASIS"
+        ]
+      },
+      "interpretation": "Sector synthetic row lacks adjustment_identity; successor rejects it. Historical path also uses close-only values as MFE_N/MAE_N."
+    },
+    {
+      "probe": "PENDING_THEN_DUE_SAME_EVALUATION_DIGEST",
+      "expected": "DUE evaluation must not reuse PENDING outcome",
+      "pending_status": "PENDING",
+      "due_status": "PENDING",
+      "same_ref": true,
+      "applicability": "Generic V4-15 engineering API. Durable worker admits only due obligations, so this is not a proved current real-worker failure."
+    },
+    {
+      "probe": "UNKNOWN_INTERIOR_VALID_ENDPOINT",
+      "expected_endpoint_return": 0.1,
+      "actual": {
+        "R_N": null,
+        "MFE_N": null,
+        "MAE_N": null,
+        "outcome_status": "ADJUSTMENT_UNKNOWN",
+        "reason_codes": [
+          "INVALID_AFFINE_OR_BASIS"
+        ]
+      },
+      "contract": "FORWARD_PRICE_PATH_V1 unknown_gap: ENDPOINT_RETURN_INDEPENDENT_IF_VERIFIED"
+    },
+    {
+      "probe": "INVALID_NEGATIVE_ACTUAL_PRICE",
+      "actual": {
+        "R_N": -1.1,
+        "MFE_N": 0.0,
+        "MAE_N": -1.2,
+        "PATH_MDD_CLOSE_N": -1.1,
+        "evaluation_basis_date": "2030-01-03",
+        "actual_count": 1,
+        "reason_codes": [],
+        "evaluation_comparison_reference": 10,
+        "evaluation_adjustment_identity": "SYNTHETIC_AFFINE",
+        "transform_coefficients": {
+          "alpha": 1,
+          "beta": 0
+        },
+        "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91",
+        "source_asof": null,
+        "available_at": null,
+        "path_quality": "OBSERVED",
+        "outcome_status": "OBSERVED"
+      },
+      "applicability": "Boundary hardening. Whether a formal Accepted Daily producer can emit this row is not established."
+    }
+  ]
+}

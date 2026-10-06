@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="6.780" timestamp="2026-10-06T21:28:55.518493+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="" name="tests.upgrade_m14.test_online_batches" time="0.000"><error message="collection failure">ImportError while importing test module 'E:\codex work\大A交易\tests\upgrade_m14\test_online_batches.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+E:\python\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\upgrade_m14\test_online_batches.py:9: in &lt;module&gt;
+    from workbench_online.collector import _commit_raw_and_batch
+E   ImportError: cannot import name '_commit_raw_and_batch' from 'workbench_online.collector' (E:\codex work\大A交易\src\workbench_online\collector.py)</error></testcase></testsuite></testsuites>

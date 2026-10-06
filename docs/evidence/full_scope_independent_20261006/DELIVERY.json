@@ -1,0 +1,786 @@
+{
+  "stage_contract": "READ_ONLY_CODE_ALGORITHM_CONTRACT_REVIEW_AND_SYNTHETIC_COUNTEREXAMPLES_V1",
+  "audited_head": "e21adab807e7f39960ec555764ab8c9d6b50f47b",
+  "branch": "codex/v4-system-reform",
+  "remote": "origin",
+  "created_at_utc": "2026-10-06T14:05:26.110719+00:00",
+  "status": "READY_FOR_AUDIT_PUBLICATION",
+  "reports": [
+    "docs/audits/V4_00_22_FEP_INDEPENDENT_FULL_SCOPE_AUDIT_R1_20261006.md",
+    "docs/audits/V4_00_22_FEP_COMPREHENSIVE_CROSS_MODEL_AUDIT_R1_20261006.md"
+  ],
+  "stage_count": 36,
+  "issue_count": 10,
+  "project_final_acceptance": "NOT_GRANTED",
+  "next_stage": "INDEPENDENT_CONFIRMATION_AND_SCOPED_REPAIR_TASK_NOT_AUTOMATIC_REAL_ACTIVATION",
+  "permissions_issued": false,
+  "push_is_external_acceptance": false,
+  "unrelated_worktree_policy": "PRESERVE_INITIAL_UNTRACKED_FILES_ONLY_ADD_NAMED_AUDIT_ARTIFACTS",
+  "completed_at_utc": "2026-10-06T14:16:11.692798+00:00",
+  "acceptance_result": "AUDIT_REPORTS_COMPLETE_WITH_OPEN_FINDINGS_AND_RECORDED_TEST_ISOLATION_DEVIATION",
+  "test_summary": {
+    "default_global": {
+      "xml": "pytest_full.xml",
+      "counts": {
+        "errors": 1,
+        "testcases": 1
+      },
+      "suite_attributes": [
+        {
+          "name": "pytest",
+          "errors": "1",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "1",
+          "time": "6.780",
+          "timestamp": "2026-10-06T21:28:55.518493+08:00",
+          "hostname": "DESKTOP-PMEP5GE"
+        }
+      ],
+      "by_module": {
+        "": {
+          "errors": 1
+        }
+      }
+    },
+    "selected_stages_fep": {
+      "xml": "pytest_stages.xml",
+      "counts": {
+        "skipped": 281,
+        "passed": 4014,
+        "failed": 243,
+        "errors": 38,
+        "testcases": 4576
+      },
+      "suite_attributes": [
+        {
+          "name": "pytest",
+          "errors": "38",
+          "failures": "243",
+          "skipped": "281",
+          "tests": "4576",
+          "time": "982.156",
+          "timestamp": "2026-10-06T21:49:38.060123+08:00",
+          "hostname": "DESKTOP-PMEP5GE"
+        }
+      ],
+      "by_module": {
+        "tests.fep.test_cas_roles": {
+          "skipped": 25
+        },
+        "tests.fep.test_database": {
+          "skipped": 26
+        },
+        "tests.fep.test_feature_owner": {
+          "passed": 14
+        },
+        "tests.fep.test_migration": {
+          "skipped": 1
+        },
+        "tests.fep.test_namespace": {
+          "passed": 1
+        },
+        "tests.fep.test_pipeline": {
+          "passed": 6,
+          "skipped": 3
+        },
+        "tests.fep.test_r1_label_time": {
+          "passed": 17
+        },
+        "tests.fep.test_v4_18_namespace_successor": {
+          "passed": 2
+        },
+        "tests.fep_e2.test_conditional": {
+          "passed": 24
+        },
+        "tests.fep_e2.test_r1r1_repair": {
+          "passed": 23
+        },
+        "tests.fep_e2.test_r1r2_event_strata": {
+          "passed": 21
+        },
+        "tests.fep_e3.test_e3_contract": {
+          "passed": 30,
+          "failed": 1
+        },
+        "tests.fep_e4.test_e4_contract": {
+          "passed": 27,
+          "failed": 4
+        },
+        "tests.fep_e5.test_e5_canonical_identity": {
+          "skipped": 7
+        },
+        "tests.fep_e5.test_e5_contract": {
+          "passed": 50
+        },
+        "tests.fep_e5.test_e5_metadata_binding": {
+          "passed": 16,
+          "skipped": 2
+        },
+        "tests.fep_e5.test_e5_reconstruction": {
+          "skipped": 214
+        },
+        "tests.test_a08_governance_propagation": {
+          "passed": 15
+        },
+        "tests.test_full_chain_fep_db": {
+          "passed": 20
+        },
+        "tests.test_full_chain_repair": {
+          "passed": 89
+        },
+        "tests.test_pre16_governance": {
+          "passed": 88,
+          "failed": 6
+        },
+        "tests.test_r17a_historical_governance": {
+          "failed": 2,
+          "passed": 11
+        },
+        "tests.test_r17b_promotion": {
+          "failed": 3,
+          "passed": 29
+        },
+        "tests.test_r17c_replay_contract": {
+          "failed": 2,
+          "passed": 47
+        },
+        "tests.test_r17r1_active_closure": {
+          "failed": 1,
+          "passed": 16
+        },
+        "tests.test_r17r1_refreeze": {
+          "passed": 12
+        },
+        "tests.test_r18a_runtime": {
+          "passed": 63
+        },
+        "tests.test_r18b_persisted": {
+          "failed": 2
+        },
+        "tests.test_r18c_oracle": {
+          "passed": 19,
+          "failed": 1
+        },
+        "tests.test_r18r1_canonical": {
+          "failed": 1,
+          "passed": 23
+        },
+        "tests.test_r18r1_owner_edges": {
+          "failed": 1,
+          "passed": 12
+        },
+        "tests.test_r18r1r1_canonical": {
+          "failed": 1,
+          "passed": 22
+        },
+        "tests.test_r18r1r1_consumption": {
+          "failed": 1,
+          "passed": 23
+        },
+        "tests.test_r19_promotion_contracts": {
+          "failed": 14,
+          "passed": 48
+        },
+        "tests.test_r20a_current": {
+          "passed": 11,
+          "failed": 1
+        },
+        "tests.test_r20b_portability": {
+          "passed": 15
+        },
+        "tests.test_r20c_runtime": {
+          "passed": 25
+        },
+        "tests.test_r20d_settlement": {
+          "passed": 31
+        },
+        "tests.test_r20e_persisted": {
+          "failed": 1,
+          "passed": 23
+        },
+        "tests.test_r20r1_scope": {
+          "failed": 3,
+          "passed": 48
+        },
+        "tests.test_r20r1r1_maturity": {
+          "failed": 33,
+          "passed": 2
+        },
+        "tests.test_r20r1r2_dm01": {
+          "failed": 36,
+          "passed": 2
+        },
+        "tests.test_r21_promotion": {
+          "failed": 1,
+          "passed": 19
+        },
+        "tests.test_r22_contracts": {
+          "failed": 4,
+          "passed": 81
+        },
+        "tests.test_r22r1_contracts": {
+          "passed": 50,
+          "failed": 1
+        },
+        "tests.test_r23_runtime": {
+          "passed": 55,
+          "failed": 1
+        },
+        "tests.test_r23r1_runtime": {
+          "passed": 13,
+          "failed": 1
+        },
+        "tests.test_r24_activation": {
+          "passed": 32
+        },
+        "tests.test_r24r1_a20": {
+          "passed": 3,
+          "failed": 17
+        },
+        "tests.test_r24r1_authority": {
+          "passed": 16,
+          "failed": 15
+        },
+        "tests.test_r25_packet": {
+          "passed": 22,
+          "failed": 1
+        },
+        "tests.test_settlement_r1r1": {
+          "passed": 13
+        },
+        "tests.test_v4_12_authority_r2": {
+          "passed": 28,
+          "failed": 2
+        },
+        "tests.test_v4_12_breakout_episode_r13": {
+          "passed": 20
+        },
+        "tests.test_v4_12_contract_freeze_r1": {
+          "passed": 93,
+          "failed": 1
+        },
+        "tests.test_v4_12_multi_anchor_r12": {
+          "passed": 24,
+          "failed": 2
+        },
+        "tests.test_v4_12_persisted_r11": {
+          "passed": 14,
+          "failed": 2
+        },
+        "tests.test_v4_12_runtime_r1": {
+          "passed": 122,
+          "failed": 1
+        },
+        "tests.test_v4_12_time_counter_r2_1": {
+          "passed": 20,
+          "failed": 1
+        },
+        "tests.test_v4_13_r15_contract": {
+          "passed": 44,
+          "failed": 1
+        },
+        "tests.test_v4_13_r15r1_lineage": {
+          "passed": 9
+        },
+        "tests.test_v4_13_r16a_runtime": {
+          "errors": 13,
+          "passed": 3
+        },
+        "tests.test_v4_13_r16b_runtime": {
+          "errors": 16
+        },
+        "tests.test_v4_13_r16c_publication": {
+          "passed": 5,
+          "failed": 6
+        },
+        "tests.test_v4_13_r16r1_repair": {
+          "errors": 9,
+          "passed": 36
+        },
+        "tests.test_v4_14_rollback": {
+          "failed": 1,
+          "passed": 25
+        },
+        "tests.test_v4_17_shadow_ui": {
+          "passed": 44
+        },
+        "tests.test_v4_18_migration_contract": {
+          "passed": 23,
+          "failed": 1
+        },
+        "tests.test_v4_19_focus_cutover_contract": {
+          "passed": 35
+        },
+        "tests.test_v4_20_default_ui_contract": {
+          "passed": 26
+        },
+        "tests.test_v4_21_forward_observation_contract": {
+          "passed": 27
+        },
+        "tests.test_v4_21_native_session_repair": {
+          "passed": 13
+        },
+        "tests.test_v4_22_independent_audit_contract": {
+          "passed": 60
+        },
+        "tests.test_v4_22_r31r1_repair": {
+          "passed": 21
+        },
+        "tests.test_v4_22_r31r2_repair": {
+          "passed": 30
+        },
+        "tests.test_v4_r14_governance_contracts": {
+          "failed": 3,
+          "passed": 17
+        },
+        "tests.v4_01.test_r8_1_identity_event_discovery": {
+          "passed": 15
+        },
+        "tests.v4_01.test_r8_2_identity_relation_evidence": {
+          "passed": 8
+        },
+        "tests.v4_01.test_r8_3_identity_event_linkage": {
+          "passed": 17
+        },
+        "tests.v4_01.test_r8_3_official_search_capture": {
+          "passed": 2
+        },
+        "tests.v4_01.test_r8_generic_alias_completeness": {
+          "passed": 10
+        },
+        "tests.v4_01.test_source_fingerprint_candidate": {
+          "passed": 10
+        },
+        "tests.v4_01.test_v4_01_generic_candidate_union": {
+          "passed": 6
+        },
+        "tests.v4_01.test_v4_01_receipt_parsing": {
+          "passed": 2
+        },
+        "tests.v4_02.test_final_closure_pack": {
+          "passed": 12
+        },
+        "tests.v4_02.test_final_r3_repairs": {
+          "passed": 7
+        },
+        "tests.v4_02.test_final_r4_special_price_phase": {
+          "passed": 7
+        },
+        "tests.v4_02.test_go_forward_r3": {
+          "passed": 11
+        },
+        "tests.v4_02.test_r5_generic_runtime": {
+          "passed": 9
+        },
+        "tests.v4_02.test_r6_generic_production_builder": {
+          "passed": 8
+        },
+        "tests.v4_03.test_algorithm_contract_v12": {
+          "passed": 7
+        },
+        "tests.v4_03.test_ast_golden_r3": {
+          "passed": 2
+        },
+        "tests.v4_03.test_core_vectors": {
+          "passed": 14
+        },
+        "tests.v4_03.test_r3_closure": {
+          "passed": 7
+        },
+        "tests.v4_04.test_accepted_input": {
+          "passed": 3
+        },
+        "tests.v4_04.test_all_rule_branches": {
+          "passed": 56
+        },
+        "tests.v4_04.test_contract_semantics_r4": {
+          "passed": 16
+        },
+        "tests.v4_04.test_full_market_schema": {
+          "passed": 1
+        },
+        "tests.v4_04.test_machine_contracts": {
+          "passed": 2
+        },
+        "tests.v4_04.test_machine_executor_r2": {
+          "passed": 4
+        },
+        "tests.v4_04.test_machine_vectors_r3": {
+          "passed": 1
+        },
+        "tests.v4_04.test_market_regime_ui": {
+          "passed": 7
+        },
+        "tests.v4_04.test_profile_core_rules": {
+          "passed": 3
+        },
+        "tests.v4_04.test_profile_primitives": {
+          "passed": 5
+        },
+        "tests.v4_04.test_profile_status_r2": {
+          "passed": 5
+        },
+        "tests.v4_04.test_technical_window_status_r3": {
+          "passed": 7
+        },
+        "tests.v4_05.test_replay_gate_a_r2": {
+          "passed": 2
+        },
+        "tests.v4_05.test_replay_gate_a_r3": {
+          "passed": 10
+        },
+        "tests.v4_05.test_v4_05_r4_1_canonical_hash": {
+          "passed": 3
+        },
+        "tests.v4_05.test_v4_05_r4_2_exact_candidate_binding": {
+          "passed": 2
+        },
+        "tests.v4_05.test_v4_05_r4_contract_repairs": {
+          "passed": 10
+        },
+        "tests.v4_06.test_v4_06_supplemental": {
+          "passed": 69
+        },
+        "tests.v4_07.test_base_seed": {
+          "passed": 41
+        },
+        "tests.v4_08.test_membership_contract": {
+          "passed": 26
+        },
+        "tests.v4_08.test_membership_source_parser": {
+          "passed": 2
+        },
+        "tests.v4_08.test_r2_contract_vectors": {
+          "passed": 5
+        },
+        "tests.v4_08.test_r3_admission_and_ast": {
+          "passed": 50
+        },
+        "tests.v4_08.test_r5_1_accepted_adapter": {
+          "passed": 21
+        },
+        "tests.v4_08.test_r5_2_context_authority": {
+          "passed": 13
+        },
+        "tests.v4_08.test_r5_runtime": {
+          "passed": 34
+        },
+        "tests.v4_09.test_r1_1_lineage_immutability": {
+          "passed": 22
+        },
+        "tests.v4_09.test_stock_prewatch": {
+          "passed": 178,
+          "failed": 1
+        },
+        "tests.v4_10.test_accepted_head_r1": {
+          "failed": 9
+        },
+        "tests.v4_10.test_promotion": {
+          "failed": 7
+        },
+        "tests.v4_10.test_r1_1_lineage": {
+          "passed": 93
+        },
+        "tests.v4_10.test_r1_2_publisher": {
+          "passed": 2
+        },
+        "tests.v4_10.test_research_state": {
+          "passed": 105
+        },
+        "tests.v4_11.test_confirmation": {
+          "passed": 32
+        },
+        "tests.v4_11.test_persistence": {
+          "passed": 7
+        },
+        "tests.v4_11.test_semantic_r2": {
+          "passed": 3
+        },
+        "tests.v4_11_promotion_r6.test_promotion_boundaries_r6": {
+          "passed": 5
+        },
+        "tests.v4_11_r3a.test_target_fact_oracle": {
+          "passed": 46
+        },
+        "tests.v4_11_r3b.test_input_closure": {
+          "passed": 37
+        },
+        "tests.v4_11_r3c.test_d2_bridge": {
+          "passed": 18
+        },
+        "tests.v4_11_r3c.test_event_publication_quality": {
+          "passed": 8
+        },
+        "tests.v4_11_r3c.test_scenario_oracle": {
+          "passed": 1
+        },
+        "tests.v4_11_r3c.test_upstream_source_admission": {
+          "passed": 11
+        },
+        "tests.v4_11_r4.test_adjustment_basis": {
+          "passed": 9
+        },
+        "tests.v4_11_r4.test_d2_bridge_r4": {
+          "passed": 18
+        },
+        "tests.v4_11_r4.test_event_safety": {
+          "passed": 9
+        },
+        "tests.v4_11_r4.test_real_upstream_window": {
+          "passed": 2
+        },
+        "tests.v4_11_r5.test_owner_authority_r5": {
+          "passed": 14
+        },
+        "tests.v4_11_r5.test_sealed_d2_authority_r5": {
+          "passed": 10
+        },
+        "tests.v4_a02_a05_formal_r1.test_formal_amendments": {
+          "passed": 9
+        },
+        "tests.v4_a02_r2.test_rps_history": {
+          "passed": 12
+        },
+        "tests.v4_a03_a04_a07_r2.test_candidate_boundaries": {
+          "passed": 21
+        },
+        "tests.v4_a03_a04_a07_r2.test_payload_governance_r2_1": {
+          "passed": 7
+        },
+        "tests.v4_a03_a04_a07_r2.test_real_candidate_readback": {
+          "failed": 4
+        },
+        "tests.v4_a04_r3.test_amount_a_go_forward": {
+          "passed": 12
+        },
+        "tests.v4_a04_r3.test_independent_arithmetic_and_evidence": {
+          "passed": 1,
+          "failed": 1
+        },
+        "tests.v4_a04_r3.test_stock_confirmation_independence": {
+          "passed": 5
+        },
+        "tests.v4_a04_r3.test_strict_source_admission": {
+          "failed": 2
+        },
+        "tests.v4_a05_r2.test_legacy_exact": {
+          "passed": 14
+        },
+        "tests.v4_a06_r2.test_mechanism_policy": {
+          "passed": 16
+        },
+        "tests.v4_a08.test_repair_freeze_authority": {
+          "passed": 12,
+          "failed": 1
+        },
+        "tests.v4_a09.test_consumer_identity_sql": {
+          "skipped": 1
+        },
+        "tests.v4_a10.test_source_authority_governance_r1": {
+          "passed": 27
+        },
+        "tests.v4_a10_a12_r3.test_producer_instances": {
+          "passed": 27
+        },
+        "tests.v4_a10_r2.test_owner_acceptance": {
+          "passed": 39
+        },
+        "tests.v4_a11.test_identity_authority_audit_r1": {
+          "passed": 4
+        },
+        "tests.v4_a12.test_cascade_candidate_boundary": {
+          "passed": 2
+        },
+        "tests.v4_a12.test_status_st_authority_r1": {
+          "passed": 19
+        },
+        "tests.v4_a12_r2.test_real_candidate_boundary": {
+          "passed": 18
+        },
+        "tests.v4_a13.test_event_semantics": {
+          "passed": 22
+        },
+        "tests.v4_a13.test_external_acceptance_formalization": {
+          "passed": 23
+        },
+        "tests.v4_dm01.test_a01_incremental_builders_r1": {
+          "passed": 33
+        },
+        "tests.v4_dm01.test_continuous_data_maintenance": {
+          "passed": 41
+        },
+        "tests.v4_dm01.test_official_daily_sources_v2": {
+          "passed": 47,
+          "failed": 1
+        },
+        "tests.v4_dm01_promotion.test_accepted_chain": {
+          "passed": 23,
+          "failed": 2
+        },
+        "tests.v4_dm01_r2.test_runtime_capture_and_supplemental_gate": {
+          "passed": 20
+        },
+        "tests.v4_dm01_r3.test_metadata_durability": {
+          "passed": 7
+        },
+        "tests.v4_dm01_r3.test_real_authority_and_chain": {
+          "passed": 21,
+          "failed": 1
+        },
+        "tests.v4_dm01_r4.test_runtime": {
+          "passed": 23,
+          "failed": 2
+        },
+        "tests.v4_dm01_r4r1.test_lineage": {
+          "passed": 11,
+          "failed": 4
+        },
+        "tests.v4_dm01_r4r2.test_acceptance_seal": {
+          "passed": 3
+        },
+        "tests.v4_dm01_r4r2.test_bridge": {
+          "passed": 18
+        },
+        "tests.v4_joint.test_joint_final_receipt_gate": {
+          "passed": 5
+        },
+        "tests.v4_owner_bootstrap_r1.test_scoped_candidate": {
+          "passed": 55
+        },
+        "tests.v4_parallel_scoped_consolidation_r3.test_clean_protected_representations": {
+          "passed": 14,
+          "failed": 1
+        },
+        "tests.v4_parallel_scoped_consolidation_r3.test_consolidation": {
+          "failed": 2,
+          "passed": 28
+        },
+        "tests.v4_parallel_scoped_consolidation_r3.test_protected_portability": {
+          "passed": 4
+        },
+        "tests.v4_parallel_scoped_formalization_r1.test_clean_representations": {
+          "passed": 18,
+          "failed": 1
+        },
+        "tests.v4_parallel_scoped_formalization_r1.test_scoped_acceptance": {
+          "passed": 49,
+          "failed": 9
+        },
+        "tests.v4_phase0.test_adjustment_contract_vectors": {
+          "passed": 3
+        },
+        "tests.v4_phase0.test_algorithm_contracts": {
+          "passed": 17
+        },
+        "tests.v4_phase0.test_baostock_supplemental": {
+          "passed": 16
+        },
+        "tests.v4_phase0.test_canonical_source_selection": {
+          "passed": 3
+        },
+        "tests.v4_phase0.test_phase0_final_gate": {
+          "passed": 14
+        },
+        "tests.v4_phase0.test_postgres_schema": {
+          "passed": 29
+        },
+        "tests.v4_phase0.test_security_entity_identity": {
+          "passed": 4
+        },
+        "tests.v4_phase0.test_source_bundle_identity": {
+          "passed": 2
+        },
+        "tests.v4_phase0.test_source_overlap_classifier": {
+          "passed": 3
+        },
+        "tests.v4_phase0.test_tdx_local_snapshot": {
+          "passed": 2,
+          "skipped": 1
+        },
+        "tests.v4_phase0.test_tdx_snapshot": {
+          "passed": 10,
+          "skipped": 1
+        },
+        "tests.v4_phase0.test_v4_01_lineage_policy": {
+          "passed": 1
+        },
+        "tests.v4_phase0.test_v4_01_required_scope_r6": {
+          "passed": 28
+        },
+        "tests.v4_publication_reader_di_r1.test_explicit_views": {
+          "failed": 2,
+          "passed": 2
+        },
+        "tests.v4_registry_r3.test_formalization": {
+          "failed": 1,
+          "passed": 2
+        },
+        "tests.v4_registry_r4.test_entry": {
+          "passed": 1,
+          "failed": 1
+        },
+        "tests.v4_scoped_promotions_r3.test_scoped_readers": {
+          "passed": 17,
+          "failed": 15
+        }
+      }
+    },
+    "m14_direct": {
+      "xml": "pytest_m14.xml",
+      "counts": {
+        "passed": 5,
+        "testcases": 5
+      },
+      "suite_attributes": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "5",
+          "time": "0.088",
+          "timestamp": "2026-10-06T21:52:26.179376+08:00",
+          "hostname": "DESKTOP-PMEP5GE"
+        }
+      ],
+      "by_module": {
+        "tests.upgrade_m14.test_hot_rank_api": {
+          "passed": 3
+        },
+        "tests.upgrade_m14.test_hot_rank_capture_retired": {
+          "passed": 2
+        }
+      }
+    },
+    "namespace_recheck": {
+      "xml": "pytest_namespace_recheck.xml",
+      "counts": {
+        "failed": 1,
+        "passed": 72,
+        "testcases": 73
+      },
+      "suite_attributes": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "1",
+          "skipped": "0",
+          "tests": "73",
+          "time": "182.675",
+          "timestamp": "2026-10-06T22:08:00.316715+08:00",
+          "hostname": "DESKTOP-PMEP5GE"
+        }
+      ],
+      "by_module": {
+        "tests.test_r20r1r1_maturity": {
+          "failed": 1,
+          "passed": 34
+        },
+        "tests.test_r20r1r2_dm01": {
+          "passed": 38
+        }
+      }
+    }
+  }
+}

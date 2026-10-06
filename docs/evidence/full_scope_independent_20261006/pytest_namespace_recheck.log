@@ -1,0 +1,32 @@
+F....................................................................... [ 98%]
+.                                                                        [100%]
+================================== FAILURES ===================================
+________________ test_current_exact_authority_no_real_maturity ________________
+
+    def test_current_exact_authority_no_real_maturity():
+>       result=validate();assert result['CURRENT_REAL_MATURITY_EVIDENCE']=='NONE'
+               ^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_r20r1r1_oracle.py:86: in validate
+    previous_scope();current=state_oracle(ROOT)
+    ^^^^^^^^^^^^^^^^
+scripts\validate_r20r1_oracle.py:12: in validate
+    expected=inspect(root);recorded=load('reports/r20r1/REAL_MATURITY_FEASIBILITY_GATE.json')
+             ^^^^^^^^^^^^^
+scripts\validate_r20r1_feasibility.py:18: in inspect
+    require(stage['accepted_stage_range']=='V4_00_TO_V4_14_ACCEPTED' and stage['v4_14_binding']==bindings['head'],'CURRENT_EXACT_V4_14')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, message = 'CURRENT_EXACT_V4_14'
+
+    def require(condition,message):
+>       if not condition:raise ValueError(message)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: CURRENT_EXACT_V4_14
+
+scripts\validate_r20r1_feasibility.py:7: ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_r20r1r1_maturity.py::test_current_exact_authority_no_real_maturity
+1 failed, 72 passed in 182.72s (0:03:02)

@@ -1,0 +1,31 @@
+{
+  "contract": "config/v4_18_migration_replay_contract_v1_3.json",
+  "active_scope": "All src/workbench_db SQL + R24 real shadow + queue v2 + integrity v2; matches current successor test scope",
+  "declared": 226,
+  "actual": 226,
+  "missing": [],
+  "declared_not_present": [],
+  "result": "PASS",
+  "excluded_historical_engineering_schema": {
+    "path": "migrations\\v4_16_r23_shadow_v1.sql",
+    "tables": [
+      "shadow_source_readiness_receipts",
+      "shadow_observation_slots",
+      "shadow_source_freeze_manifests",
+      "shadow_publications",
+      "shadow_state_heads",
+      "shadow_observations",
+      "shadow_first_enrollments",
+      "shadow_membership_snapshots",
+      "shadow_due_outbox",
+      "shadow_outcome_revisions",
+      "shadow_health_receipts",
+      "shadow_artifacts",
+      "shadow_transaction_receipts",
+      "shadow_control_receipts",
+      "shadow_publication_heads",
+      "shadow_runtime_operations"
+    ],
+    "reason": "R23 simulation engineering schema is not an active migration source; naive all-migrations count 242 would misclassify these 16 as omissions."
+  }
+}

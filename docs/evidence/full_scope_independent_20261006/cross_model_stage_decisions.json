@@ -1,0 +1,188 @@
+{
+  "independent_head": "e21adab807e7f39960ec555764ab8c9d6b50f47b",
+  "online_head": "b7ca247745976aa390387a0701601b00ac0d8498",
+  "authority": "AUDIT_SYNTHESIS_ONLY_NO_PERMISSION",
+  "stage_count": 36,
+  "decisions": {
+    "V4-00A": {
+      "online_section": "§5",
+      "online_verdict": "PASS",
+      "synthesis": "基线冻结接受可保留；本轮默认全仓收集失败和IA-09测试隔离问题是独立当前验证债务，不推翻Phase0历史范围。"
+    },
+    "V4-00B": {
+      "online_section": "§5",
+      "online_verdict": "PASS_REQUIRED_SCOPE",
+      "synthesis": "一致：日期有效身份/knowledge time结构成立；全历史AS_RECORDED与法律实体类型不自动完整。"
+    },
+    "V4-00C": {
+      "online_section": "§5",
+      "online_verdict": "PASS",
+      "synthesis": "一致：publication/revision/namespace工程范围成立；current owner实际读取通过，不只依赖旧PASS文本。"
+    },
+    "V4-00D": {
+      "online_section": "§5",
+      "online_verdict": "PASS",
+      "synthesis": "一致：输入根只读、有界下载/输出分离；本轮未重新下载全量TDX包。"
+    },
+    "V4-00E": {
+      "online_section": "§5",
+      "online_verdict": "PASS_REQUIRED_SCOPE；前次affine缺口已关闭",
+      "synthesis": "原Affine非法系数硬化可保留，但“已修复”不覆盖IA-01内部缺口/端点隔离，也不覆盖IA-02板块adapter契合。不能据旧修复概括全部Forward正确。"
+    },
+    "V4-00F": {
+      "online_section": "§5",
+      "online_verdict": "PASS_CONTRACT",
+      "synthesis": "一致：BaoStock只可选补充，strict-binding不足保持降级，不成为Core总前置。"
+    },
+    "V4-00G": {
+      "online_section": "§5",
+      "online_verdict": "PASS",
+      "synthesis": "一致：版本contract/AST/producer/窗口框架成立；IA-01同时说明框架存在与消费公式吻合须分别验证。"
+    },
+    "V4-00H": {
+      "online_section": "§5",
+      "online_verdict": "PASS",
+      "synthesis": "历史rollback/performance合同接受保留；本轮没有当前全市场整链负载实证，不能将旧runtime row count=0 baseline外推为当前SLA。"
+    },
+    "V4-01": {
+      "online_section": "§6",
+      "online_verdict": "FULL_PASS_REQUIRED_SCOPE",
+      "synthesis": "一致：Bootstrap工程接受可保留；线上引用4035729行/786 sessions是历史外审数据，不是本轮又做了一次raw全扫。"
+    },
+    "V4-02": {
+      "online_section": "§7",
+      "online_verdict": "PASS_REQUIRED_SCOPE_WITH_EXPLICIT_DEGRADATION",
+      "synthesis": "Canonical核心和9/30 accepted链结论一致；historical first availability不可补造。另IA-10证实DM01直接CLI缺repo-root bootstrap，底层公式接受不代表独立脚本入口可运行。"
+    },
+    "V4-03": {
+      "online_section": "§8",
+      "online_verdict": "PASS_AMENDED_SCOPE",
+      "synthesis": "一致：Sector full-market责任移到08有正式amendment，不是主架构偏离。"
+    },
+    "V4-04": {
+      "online_section": "§9",
+      "online_verdict": "FULL_PASS_REQUIRED_SCOPE",
+      "synthesis": "一致：Pure-Core分层和全市场profile已实现；规则分类不等于策略收益已验证。"
+    },
+    "V4-05": {
+      "online_section": "§10",
+      "online_verdict": "SCOPED_DEGRADED_PASS",
+      "synthesis": "一致：Replay Gate A可在受限capability内成立；历史PIT effectiveness未授权。"
+    },
+    "V4-06": {
+      "online_section": "§11",
+      "online_verdict": "PASS_OPTIONAL_SCOPED",
+      "synthesis": "一致：Supplemental缺失不阻断07；严格源绑定不足只影响对应补充能力。"
+    },
+    "V4-07": {
+      "online_section": "§12",
+      "online_verdict": "ENGINEERING_PASS_SCOPED",
+      "synthesis": "一致：BaseSeed Pure-Core whitelist与unknown propagation；真实prior-RPS bootstrap限制仍保留。"
+    },
+    "V4-08": {
+      "online_section": "§13",
+      "online_verdict": "ENGINEERING_PASS_CAPABILITY_SCOPED；full surface未完成",
+      "synthesis": "一致；进一步区分Amount-A producer工程接受、H21正式consumer和historical consumer。producer接受不关闭A04_H21/HISTORICAL；IA-02是其Forward消费专项，不否定当日Rotation Core。"
+    },
+    "V4-09": {
+      "online_section": "§14",
+      "online_verdict": "ALGORITHM_ENGINEERING PASS；A08_CURRENT_RUNTIME排除",
+      "synthesis": "版本更新：本轮包含当前A08 V4/active V6传播，ACCEPTED_SCOPED仅工程Shadow依赖；production_blocking仍true，permission=false。线上排除是其当时scope，不能沿用为本轮排除。"
+    },
+    "V4-10": {
+      "online_section": "§15",
+      "online_verdict": "FULL_PASS_STAGE_PURPOSE",
+      "synthesis": "一致：本stage要求interface/独立向量；完整DAG在14验收。不因旧10 Head NOT_IMPLEMENTED判全stage失败。"
+    },
+    "V4-11": {
+      "online_section": "§16",
+      "online_verdict": "ENGINEERING_PASS_CAPABILITY_SCOPED",
+      "synthesis": "一致：LAUNCH/RECOVERY正式，另两scenario diagnostic及历史event debt不能误写为四场景全正式。"
+    },
+    "V4-12": {
+      "online_section": "§17",
+      "online_verdict": "ENGINEERING_PASS_CAPABILITY_SCOPED",
+      "synthesis": "一致：multi-anchor/coordinate/episode/counters实现；真实owner/historical capability受限，历史validator路由债务独立记录。"
+    },
+    "V4-13": {
+      "online_section": "§18",
+      "online_verdict": "ENGINEERING_PASS_CAPABILITY_SCOPED",
+      "synthesis": "一致：target exclusion在LOO重算之前；current membership与historical membership authority分离。"
+    },
+    "V4-14": {
+      "online_section": "§19",
+      "online_verdict": "ENGINEERING_REPLAY_PASS；HISTORICAL_PIT_EFFECTIVENESS未授权",
+      "synthesis": "一致：DAG输入绑定、时序和revision replay是工程证据；不是全历史PIT，也不是M14在线增强模块。"
+    },
+    "V4-15": {
+      "online_section": "§20",
+      "online_verdict": "ENGINEERING PASS；REAL_MATURITY PENDING；前次修复已通过",
+      "synthesis": "实质修订：IA-01/02当前Forward局部REPAIR_REQUIRED；IA-03/04分别为通用API状态和输入边界P2。真实成熟待积累仍正确，但并非全部剩余问题只需等市场时间。"
+    },
+    "V4-16": {
+      "online_section": "§27",
+      "online_verdict": "ENGINEERING_READY；stage final未完成",
+      "synthesis": "真实grant/样本0结论一致；“工程ready”需缩限：durable worker使用IA-01路径，Sector开放前还需IA-02。不能直接从前次hardening PASS推断当前全Forward范围ready。"
+    },
+    "V4-17": {
+      "online_section": "§28",
+      "online_verdict": "ENGINEERING_EXTERNALLY_ACCEPTED；真实end-to-end pending",
+      "synthesis": "一致：只读context token/GET/SQLite read-only工程保留；accepted readback为空时无连接、不以目录最新simulation替代。"
+    },
+    "V4-17G": {
+      "online_section": "§29",
+      "online_verdict": "NOT_GRANTED / REAL_GATE_PENDING",
+      "synthesis": "一致：尚无真实session，不可用reconstructed历史数凑stable/Forward门。"
+    },
+    "V4-18": {
+      "online_section": "§30",
+      "online_verdict": "CONTRACT_DESIGN_PASS；runtime未开始",
+      "synthesis": "一致：V1_3设计-only，六接口未实现；独立inventory适用226个声明全部覆盖。R23历史工程16表不属active migration，不能报漏表；真正runtime前仍需最终successor exact外审。"
+    },
+    "V4-19": {
+      "online_section": "§31",
+      "online_verdict": "CONTRACT_DESIGN_PASS；cutover未实现",
+      "synthesis": "一致：capability permissions/writer/CAS/rollback未执行，Focus源未切。"
+    },
+    "V4-20": {
+      "online_section": "§32",
+      "online_verdict": "CONTRACT_DESIGN_PASS；default UI cutover未开始",
+      "synthesis": "一致：模块逐项permission和mixed routing，当前默认Legacy；不是全局V4生产页。"
+    },
+    "V4-21": {
+      "online_section": "§33",
+      "online_verdict": "CONTRACT_DESIGN_PASS；真实累计未开始",
+      "synthesis": "一致：native ACCEPTED_ON_TIME归owner，evaluable独立投影；真实继续观察无writer授权。"
+    },
+    "V4-22": {
+      "online_section": "§34",
+      "online_verdict": "AUDIT_FRAMEWORK_PASS；FINAL NOT_GRANTED",
+      "synthesis": "一致：closure evidence/item authority/schema加固是合同审计；真实前置未完成，且本轮新项未关闭，不能签最终验收。"
+    },
+    "FEP-E1": {
+      "online_section": "§22",
+      "online_verdict": "ENGINEERING_ACCEPTED；47/47 mapping",
+      "synthesis": "一致：owner字段copy、完整分母/as-of三时间；本轮PG因fixture/DSN不足skip，限制重新验收，真实label和FIRST_OBSERVED尚无。"
+    },
+    "FEP-E2": {
+      "online_section": "§23",
+      "online_verdict": "ENGINEERING_ACCEPTED_CAPABILITY_SCOPED",
+      "synthesis": "一致：FIRST_PREWATCH×ABS_RETURN:T1工程范围；Fraction日期平权、固定backoff/support。pooled/REENTRY/NEW_CONFIRMED不自动授权。"
+    },
+    "FEP-E3": {
+      "online_section": "§24",
+      "online_verdict": "MODEL_ENGINEERING_PASS；MODEL_EFFECTIVENESS NO",
+      "synthesis": "一致：split/purge/train-only preprocess/calibration/OOD工程；有效性/OOS不是PASS，NO_INCREMENT/弱coverage应如实保留。"
+    },
+    "FEP-E4": {
+      "online_section": "§25",
+      "online_verdict": "OPTIONAL ENGINEERING_PASS；vs E2 NO_INCREMENT",
+      "synthesis": "一致：challenger实现可通过而不成为Champion；Outer为见过的诊断复用，不能声称new real OOS。"
+    },
+    "FEP-E5": {
+      "online_section": "§26",
+      "online_verdict": "ENGINEERING_COMPLETE_CURRENT_SCOPE；production/display/priority未授权",
+      "synthesis": "一致：canonical reconstruction authority、signal binding、slot/deployment/CAS与legacy isolation保留。上游IA-01/02有修复需要，不可将受影响outcome作为有效标签；本轮真实PG验收也不全。"
+    }
+  }
+}

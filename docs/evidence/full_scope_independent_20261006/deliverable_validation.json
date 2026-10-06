@@ -1,0 +1,54 @@
+{
+  "audited_head": "e21adab807e7f39960ec555764ab8c9d6b50f47b",
+  "publication_head_before_commit": "e21adab807e7f39960ec555764ab8c9d6b50f47b",
+  "reports": [
+    {
+      "report": "V4_00_22_FEP_INDEPENDENT_FULL_SCOPE_AUDIT_R1_20261006.md",
+      "bytes": 89954,
+      "sha256": "fb3eb39d163c7018069a5d745887e014512632ef288d22a2397b23d9a5ecaafd",
+      "stage_count": 36,
+      "stages_complete": true,
+      "local_links": 165,
+      "missing_links": [],
+      "invalid_source_lines": [],
+      "no_placeholder": true,
+      "all_issues_present": true
+    },
+    {
+      "report": "V4_00_22_FEP_COMPREHENSIVE_CROSS_MODEL_AUDIT_R1_20261006.md",
+      "bytes": 88046,
+      "sha256": "6014582e83e5e2a71eaac8bd8e07be04e82e3978f57240e2091903e1bb5ec273",
+      "stage_count": 36,
+      "stages_complete": true,
+      "local_links": 138,
+      "missing_links": [],
+      "invalid_source_lines": [],
+      "no_placeholder": true,
+      "all_issues_present": true
+    }
+  ],
+  "source_inventory_count": 2819,
+  "business_source_inventory_changes": [],
+  "tracked_business_diff": [],
+  "design_identities": [
+    {
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+      "bytes": 224998,
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+    },
+    {
+      "path": "docs/design/FEP_R2_MODULE_DESIGN_20260930.md",
+      "bytes": 36627,
+      "sha256": "f01ac9c550a71b8edb73436969e39172f6809404df9e19ffbfff2306c9456014"
+    },
+    {
+      "path": "docs/evidence/fep_e1/FEP_R2_MODULE_DESIGN_20260930.md",
+      "bytes": 36627,
+      "sha256": "f01ac9c550a71b8edb73436969e39172f6809404df9e19ffbfff2306c9456014"
+    }
+  ],
+  "fep_working_design_equals_archived": true,
+  "issue_count": 10,
+  "status": "PASS",
+  "limitations": "Deliverable validity only; does not grant project acceptance. Git diff/source immutability does not prove zero ignored-database writes; see IA-09."
+}

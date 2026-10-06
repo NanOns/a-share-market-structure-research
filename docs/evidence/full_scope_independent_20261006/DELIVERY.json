@@ -4,7 +4,7 @@
   "branch": "codex/v4-system-reform",
   "remote": "origin",
   "created_at_utc": "2026-10-06T14:05:26.110719+00:00",
-  "status": "READY_FOR_AUDIT_PUBLICATION",
+  "status": "AUDIT_ARTIFACTS_PUSH_VERIFIED",
   "reports": [
     "docs/audits/V4_00_22_FEP_INDEPENDENT_FULL_SCOPE_AUDIT_R1_20261006.md",
     "docs/audits/V4_00_22_FEP_COMPREHENSIVE_CROSS_MODEL_AUDIT_R1_20261006.md"
@@ -782,5 +782,25 @@
         }
       }
     }
-  }
+  },
+  "audit_commit": "01dfd9cef2e14bfa8f28771346ab09e4b6c36e2d",
+  "verified_remote_audit_commit": "01dfd9cef2e14bfa8f28771346ab09e4b6c36e2d",
+  "verified_at_utc": "2026-10-06T14:18:42.306288+00:00",
+  "remote_ref": "refs/heads/codex/v4-system-reform",
+  "index_exact_evidence_files_verified": 42,
+  "unrelated_untracked_status_preserved": [
+    "?? artifacts/fep_20260930/",
+    "?? artifacts/fep_r2_20260930/",
+    "?? docs/audits/FEP_CROSS_AUDIT_AND_INTEGRATION_20260930.md",
+    "?? docs/audits/FEP_INTEGRATION_REVIEW_20260930.md",
+    "?? docs/audits/FEP_INTEGRATION_SECOND_REVIEW_20260930.md",
+    "?? docs/audits/FEP_R2_EXTERNAL_PATCH_DISPOSITION_20260930.md",
+    "?? docs/audits/FEP_R2_INTEGRATION_REVIEW_20260930.md",
+    "?? docs/audits/FEP_R2_TEMPORAL_REVIEW_20260930.md",
+    "?? docs/audits/FEP_STATISTICS_REVIEW_20260930.md",
+    "?? docs/audits/FEP_TEMPORAL_REVIEW_20260930.md",
+    "?? docs/design/",
+    "?? tmp/"
+  ],
+  "publication_receipt_policy": "This receipt records the main audit commit and its verified push; the receipt commit is identified in Git history and is separately pushed."
 }

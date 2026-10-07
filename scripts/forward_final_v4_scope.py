@@ -18,11 +18,11 @@ def build():
              'test_r6r1_governance_cleanup.py'}
     for path in sorted((ROOT / 'tests').glob('test_*.py')):
         if (path.name.startswith(root_names) or path.name in extra or
-                (path.name.startswith('test_r') and 'v4_' in path.read_text(encoding='utf8'))):
+                (path.name.startswith('test_r') and 'v4_' in path.read_text(encoding='utf8').lower())):
             selected.append(path.relative_to(ROOT).as_posix())
     selected = sorted(set(selected))
     all_files = sorted(p.relative_to(ROOT).as_posix() for p in (ROOT / 'tests').rglob('test_*.py'))
-    receipt = dict(version='V4_ONLY_USER_SCOPE_20261007',
+    receipt = dict(version='V4_ONLY_USER_SCOPE_20261007_R2_CASE_INSENSITIVE',
                    authorization='User: 全量执行和历史测试仅包括V4版本，不包括之前版本',
                    files=selected, bindings=[binding(p) for p in selected],
                    outside_version_scope=[p for p in all_files if p not in selected],

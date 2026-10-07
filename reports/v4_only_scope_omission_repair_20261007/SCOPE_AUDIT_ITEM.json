@@ -1,0 +1,20 @@
+{
+  "acceptance": "CLOSED_ENGINEERING_PENDING_INDEPENDENT_EXTERNAL_REAUDIT",
+  "audit_id": "V4_ONLY_SCOPE_OMISSION_R1",
+  "execution": {
+    "bytes": 1288,
+    "path": "reports/v4_only_scope_omission_repair_20261007/GLOBAL_CURRENT_REGRESSION_RECEIPT.json",
+    "sha256": "a4acc92b6fcf092df4782846a44ed4200463f24be1d766e9a9fab215733fff90"
+  },
+  "finding": "Case-sensitive V4 contract detection omitted the current R17A governance tests",
+  "runtime_authorized": false,
+  "scope": [
+    "scripts/forward_final_v4_scope.py",
+    "tests/test_r17a_historical_governance.py"
+  ],
+  "scope_diff": {
+    "bytes": 689,
+    "path": "reports/v4_only_scope_omission_repair_20261007/SCOPE_DIFF.json",
+    "sha256": "794916e13cb639a11ac155582e5c6cf6da9f0f7506e2b46a09552a68a3cbaaa0"
+  }
+}

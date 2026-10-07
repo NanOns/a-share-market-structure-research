@@ -1,0 +1,23 @@
+{
+  "acceptance": "CANDIDATE_READY_FOR_INDEPENDENT_EXTERNAL_AUDIT",
+  "contract": {
+    "bytes": 6444,
+    "path": "docs/evidence/v4_only_scope_omission_repair_20261007/V4_ONLY_FULL_REGRESSION_INDEPENDENT_EXTERNAL_AUDIT_R1_20261007.md",
+    "sha256": "286c1c274175ffef9470ff5b874d2be1a68592dac0fece14693d185933206d49"
+  },
+  "evidence": [
+    {
+      "bytes": 1288,
+      "path": "reports/v4_only_scope_omission_repair_20261007/GLOBAL_CURRENT_REGRESSION_RECEIPT.json",
+      "sha256": "a4acc92b6fcf092df4782846a44ed4200463f24be1d766e9a9fab215733fff90"
+    },
+    {
+      "bytes": 733,
+      "path": "reports/v4_only_scope_omission_repair_20261007/PROTECTED_STATE_READBACK.json",
+      "sha256": "1ccb0f9785ee7e646ccadfc100681b009b49ebbd93a7ab56e4bd78d8545f582d"
+    }
+  ],
+  "next_stage": "INDEPENDENT_V4_SCOPE_REAUDIT",
+  "pre_v4_execution": false,
+  "stage": "V4_ONLY_SCOPE_OMISSION_REPAIR_R1"
+}

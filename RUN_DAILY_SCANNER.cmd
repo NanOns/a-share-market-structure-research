@@ -12,8 +12,8 @@ if not exist "E:\python\python.exe" (
   exit /b 9009
 )
 
-echo Running TDX Market Structure Scanner with local TDX daily data...
-"E:\python\python.exe" "%PROJECT_ROOT%run_live_forward.py" --date latest
+echo Running V4 accepted-current daily refresh...
+"E:\python\python.exe" -m scripts.run_v4_current_daily
 set "EXIT_CODE=%ERRORLEVEL%"
 
 echo.

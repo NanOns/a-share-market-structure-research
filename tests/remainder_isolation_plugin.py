@@ -53,7 +53,8 @@ def pytest_configure(config):
         return original_popen(command,*args,**kwargs)
     patch.setattr(subprocess,'Popen',disposable_child)
     connect=psycopg.connect
-    manifest=REPOSITORY/'reports/forward_r2_remainder_consolidated_20261007/IA06_CLUSTER_BOOTSTRAP.json'
+    manifest=Path(os.environ.get('REMAINDER_PG_CLUSTER_MANIFEST',str(REPOSITORY/'reports/forward_r2_remainder_consolidated_20261007/IA06_CLUSTER_BOOTSTRAP.json'))).resolve()
+    if not manifest.is_relative_to(REPOSITORY/'reports'):raise ValueError('DISPOSABLE_CLUSTER_MANIFEST_ESCAPE')
     clusters=json.loads(manifest.read_bytes()) if manifest.exists() else {}
     allowed={str(v['port']) for v in clusters.values()}
     verified=set()
@@ -66,7 +67,7 @@ def pytest_configure(config):
         if port not in verified:
             with connect(cluster['admin_dsn'],autocommit=True) as witness:
                 directory=Path(witness.execute('show data_directory').fetchone()[0]).resolve()
-                if directory!=(Path(cluster['root'])/'data').resolve() or not directory.is_relative_to(PG_DISPOSABLE_BASE):raise ValueError('DISPOSABLE_PG_DIRECTORY_IDENTITY_MISMATCH')
+                if directory!=(Path(cluster['root'])/'data').resolve() or not any(directory.is_relative_to(base) for base in ALLOWED):raise ValueError('DISPOSABLE_PG_DIRECTORY_IDENTITY_MISMATCH')
             verified.add(port)
         EVENTS.append(dict(event='psycopg.connect',decision='ALLOW_VERIFIED_DISPOSABLE_PG',database=params.get('dbname'),port=port,cluster_root=cluster['root']))
         return connect(conninfo,*args,**kw)

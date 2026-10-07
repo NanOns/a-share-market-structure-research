@@ -1,0 +1,646 @@
+{
+  "accepted_research_readonly": "ACTIVE",
+  "capability_permission": "UNCHANGED_BY_DISPLAY",
+  "context": {
+    "context": {
+      "accepted_trade_date": "2026-09-30",
+      "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+      "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+      "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+      "historical_pit_effectiveness": "NOT_GRANTED",
+      "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+      "last_accepted_trade_date": "2026-09-30",
+      "namespace": "V4_CURRENT_ACCEPTED",
+      "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+      "source_mode": "V4_ACCEPTED_RESEARCH_READONLY",
+      "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+      "stage": "V4-15",
+      "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+      "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+    },
+    "context_token": "current-v4-8a7b8e3f8fe867183cbeefe8a1e48f9038b4ccf9aee778f10bfd9d4ba348afa1",
+    "focus_write": false,
+    "production_permission": {
+      "ROTATION": false,
+      "SECTOR_RISK_CHANGE": false,
+      "SECTOR_STAGE": false,
+      "STOCK_CORE": false,
+      "STOCK_SECTOR_DEPENDENT": false
+    },
+    "source_mode": "V4_ACCEPTED_RESEARCH_READONLY",
+    "status": "READY_CURRENT_ACCEPTED"
+  },
+  "current_accepted_reader": "ACTIVE",
+  "default_ui_shell": "ACTIVE",
+  "evidence_bindings": [
+    {
+      "bytes": 91817,
+      "contract_id": "reports/v4_production_cutover_20261007/01_HOME_CURRENT_ACCEPTED.png",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/01_HOME_CURRENT_ACCEPTED.png",
+      "sha256": "188b775af7b56fe76d404a950db2b4923b99a7a7d633b193ce44cb52ab124301"
+    },
+    {
+      "bytes": 122461,
+      "contract_id": "reports/v4_production_cutover_20261007/02_WHY_NOW.png",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/02_WHY_NOW.png",
+      "sha256": "37be11aad8788a982bb1a8c82aa311eb99f5ad5401455c44b49fa00486a39326"
+    },
+    {
+      "bytes": 90970,
+      "contract_id": "reports/v4_production_cutover_20261007/03_RADAR.png",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/03_RADAR.png",
+      "sha256": "d0873c20be117b4623a297be907763ee7f186f880761f741a50d175d3aff905a"
+    },
+    {
+      "bytes": 151525,
+      "contract_id": "reports/v4_production_cutover_20261007/04_ENTITY_AND_SECTOR.png",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/04_ENTITY_AND_SECTOR.png",
+      "sha256": "c4bae4333382be7de94c99e11b02bb88513380fc2fbe7f3ae0d19492f148f597"
+    },
+    {
+      "bytes": 84054,
+      "contract_id": "reports/v4_production_cutover_20261007/04_SECTOR.png",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/04_SECTOR.png",
+      "sha256": "5b7002d0741b418c91fb5a0176bdc8cfc91814f8b095c8e40d7157b5cf948b54"
+    },
+    {
+      "bytes": 125852,
+      "contract_id": "reports/v4_production_cutover_20261007/05_FORWARD_STATE.png",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/05_FORWARD_STATE.png",
+      "sha256": "93d43e3bbf1d1246c0480be2644e612b09011beffb25fa18fdef1e56cd9b3547"
+    },
+    {
+      "bytes": 90207,
+      "contract_id": "reports/v4_production_cutover_20261007/05_SETTLEMENT.png",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/05_SETTLEMENT.png",
+      "sha256": "0212e86f7de9f6fdc17e5ef178d2705ebaf4ff8edf46b42359a39db68558e5d6"
+    },
+    {
+      "bytes": 57393,
+      "contract_id": "reports/v4_production_cutover_20261007/06_HEALTH_AND_FRESHNESS.png",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/06_HEALTH_AND_FRESHNESS.png",
+      "sha256": "25530fc029d4121097a7ec649df54ceba11c11d69e40fe9df442783906b9506d"
+    },
+    {
+      "bytes": 66828,
+      "contract_id": "reports/v4_production_cutover_20261007/07_SHADOW_NO_REAL_DATA.png",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/07_SHADOW_NO_REAL_DATA.png",
+      "sha256": "5ff91c2f3ae077c7e7e86e9d302d8b23298ae2e569d0f2fb330b623dcb4ab2b9"
+    },
+    {
+      "bytes": 2100,
+      "contract_id": "reports/v4_production_cutover_20261007/ATOMIC_PUBLISH_TEST.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/ATOMIC_PUBLISH_TEST.json",
+      "sha256": "a0483d7dfb060c457ce1f2bf5dc0aac2ff6da6922c8500565df45be9aa9034bd"
+    },
+    {
+      "bytes": 8594,
+      "contract_id": "reports/v4_production_cutover_20261007/CHANGED_FILES.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/CHANGED_FILES.json",
+      "sha256": "b77e226b4ad6730d8da58a25fd0ce68d8e80e66ad156222cc23d831d2085b50a"
+    },
+    {
+      "bytes": 275765,
+      "contract_id": "reports/v4_production_cutover_20261007/CURRENT_COMPONENT_OWNER_INVENTORY.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/CURRENT_COMPONENT_OWNER_INVENTORY.json",
+      "sha256": "6943567b9f4a4a2d57127723a01136ca00923e62380293cc74524202c066849b"
+    },
+    {
+      "bytes": 1346,
+      "contract_id": "reports/v4_production_cutover_20261007/CURRENT_DATA_READBACK.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/CURRENT_DATA_READBACK.json",
+      "sha256": "73da9007f2f627ce9470fa0983859ba1d925addfa11cb21483462900f95c57bf"
+    },
+    {
+      "bytes": 667266,
+      "contract_id": "reports/v4_production_cutover_20261007/CURRENT_READER_RECEIPT.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/CURRENT_READER_RECEIPT.json",
+      "sha256": "44f3dba0bb7f63d283eda0fae77c256ace816872c5900e3b1246cc6c1637202a"
+    },
+    {
+      "bytes": 1596,
+      "contract_id": "reports/v4_production_cutover_20261007/DAILY_REFRESH_LATEST_RECEIPT.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/DAILY_REFRESH_LATEST_RECEIPT.json",
+      "sha256": "12f53d41c15882fcab349af827dc54069a10c9f1621ab7c90e3cefc2065acd07"
+    },
+    {
+      "bytes": 758,
+      "contract_id": "reports/v4_production_cutover_20261007/DIAGNOSTIC_RUN_RECEIPT.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/DIAGNOSTIC_RUN_RECEIPT.json",
+      "sha256": "5a106639d222863fb236fa7588dfba93a59bba3ce8a935fcb5f33a12770d9678"
+    },
+    {
+      "bytes": 6080,
+      "contract_id": "reports/v4_production_cutover_20261007/ENTRY_BASELINE.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/ENTRY_BASELINE.json",
+      "sha256": "aee1fc19fee51dc22a860903fd74baf9173c46e3710a9ac302521cbb73b36812"
+    },
+    {
+      "bytes": 6308,
+      "contract_id": "reports/v4_production_cutover_20261007/FINAL_SOURCE_FREEZE.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/FINAL_SOURCE_FREEZE.json",
+      "sha256": "e269b88e4c5f15190cc889612d68465e8a68c8a69c287210c4f75fadc30eddf9"
+    },
+    {
+      "bytes": 14672,
+      "contract_id": "reports/v4_production_cutover_20261007/FINAL_SOURCE_READBACK.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/FINAL_SOURCE_READBACK.json",
+      "sha256": "c7936f6aebee63f5d329ebf43be18fb2bb9c45a8b5e08a151301f448ebb29851"
+    },
+    {
+      "bytes": 827,
+      "contract_id": "reports/v4_production_cutover_20261007/HISTORICAL_CHILD_ROUTING_AUDIT.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/HISTORICAL_CHILD_ROUTING_AUDIT.json",
+      "sha256": "8a11351e5008a47ba099474a66a43641a15e0658341e581fc90498f900caf89b"
+    },
+    {
+      "bytes": 2119,
+      "contract_id": "reports/v4_production_cutover_20261007/IMMUTABLE_PROJECTION_UPGRADE.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/IMMUTABLE_PROJECTION_UPGRADE.json",
+      "sha256": "d8e533ecc288909ddb6ab47cd9a9c26aa8112a9e0b19fc96ba2cf47de624f08f"
+    },
+    {
+      "bytes": 211,
+      "contract_id": "reports/v4_production_cutover_20261007/INTERRUPTED_PREFINAL_REGRESSION.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/INTERRUPTED_PREFINAL_REGRESSION.json",
+      "sha256": "f1a05781ac651884bd88bcd82af8053cc180b7ebeb73e8fce49d0401126362f7"
+    },
+    {
+      "bytes": 1023,
+      "contract_id": "reports/v4_production_cutover_20261007/INTERRUPTED_PREFINAL_REGRESSION.log",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/INTERRUPTED_PREFINAL_REGRESSION.log",
+      "sha256": "aeb37b88dbc1a7b7e2ac128982acf168570a292a961126116b3330c93e980515"
+    },
+    {
+      "bytes": 3585,
+      "contract_id": "reports/v4_production_cutover_20261007/KNOWN_FIELD_READBACK_MATRIX.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/KNOWN_FIELD_READBACK_MATRIX.json",
+      "sha256": "93c2215b2f6ece0ba9312c2fa3f0ce706a6c0a3e438528a2dc415e98edb8ead3"
+    },
+    {
+      "bytes": 756,
+      "contract_id": "reports/v4_production_cutover_20261007/LEGACY_FALLBACK_NEGATIVE.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/LEGACY_FALLBACK_NEGATIVE.json",
+      "sha256": "6e53f9b77ecb6f29991fa95b8dd2f1e0db011c0a955da01ecd305e44443765f9"
+    },
+    {
+      "bytes": 702394,
+      "contract_id": "reports/v4_production_cutover_20261007/LIVE_HTTP_RECEIPT.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/LIVE_HTTP_RECEIPT.json",
+      "sha256": "5fa2cf82d5d1c2d8c8c2a6cb7fdad69d9c7979e77ae76902231984dac5fd0b2e"
+    },
+    {
+      "bytes": 725,
+      "contract_id": "reports/v4_production_cutover_20261007/NEXT_ACCEPTED_INPUT_SIMULATION.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/NEXT_ACCEPTED_INPUT_SIMULATION.json",
+      "sha256": "abd18aae3fc6605a5f87b7b9080c040a7cc8423c1bf11a405880e37387d5f74d"
+    },
+    {
+      "bytes": 1596,
+      "contract_id": "reports/v4_production_cutover_20261007/NO_NEW_DAY_RECEIPT.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/NO_NEW_DAY_RECEIPT.json",
+      "sha256": "12f53d41c15882fcab349af827dc54069a10c9f1621ab7c90e3cefc2065acd07"
+    },
+    {
+      "bytes": 1596,
+      "contract_id": "reports/v4_production_cutover_20261007/NO_NEW_TRADING_DAY_BEHAVIOR.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/NO_NEW_TRADING_DAY_BEHAVIOR.json",
+      "sha256": "12f53d41c15882fcab349af827dc54069a10c9f1621ab7c90e3cefc2065acd07"
+    },
+    {
+      "bytes": 865,
+      "contract_id": "reports/v4_production_cutover_20261007/OPEN_ISSUES.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/OPEN_ISSUES.json",
+      "sha256": "492a9317fb9a14eddcc8caa53844067eb0115b3ddf52cce9145818062125de4f"
+    },
+    {
+      "bytes": 215,
+      "contract_id": "reports/v4_production_cutover_20261007/P0_2_P0_3_ENTRY.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/P0_2_P0_3_ENTRY.json",
+      "sha256": "0770b579944c9b88d078ee8efda7dcc5d78f0fe10d9e10cd6ad63c611a966ab7"
+    },
+    {
+      "bytes": 138,
+      "contract_id": "reports/v4_production_cutover_20261007/P0_2_P0_3_GATE.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/P0_2_P0_3_GATE.json",
+      "sha256": "250ab17cc4252e86a8b69f6ec895be0562f841fb43728c04e4f0441dbfd0304f"
+    },
+    {
+      "bytes": 164,
+      "contract_id": "reports/v4_production_cutover_20261007/P0_4_ENTRY.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/P0_4_ENTRY.json",
+      "sha256": "1dcbb55e8703bd90d60a71a0c10f073d89cbaf312df1cba6b5935c3cdab34be6"
+    },
+    {
+      "bytes": 325,
+      "contract_id": "reports/v4_production_cutover_20261007/P0_4_GATE.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/P0_4_GATE.json",
+      "sha256": "08f693b0b64ba18e33384b6295ebf0c5bd5fea961ae799436376721a2b10e6f0"
+    },
+    {
+      "bytes": 222,
+      "contract_id": "reports/v4_production_cutover_20261007/P0_5_ENTRY.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/P0_5_ENTRY.json",
+      "sha256": "536d703923be309ce98667b8a0c61342010816bad16a09c3237a5ccdf1bb1400"
+    },
+    {
+      "bytes": 1024,
+      "contract_id": "reports/v4_production_cutover_20261007/P0_5_GATE.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/P0_5_GATE.json",
+      "sha256": "711f01135637413ca351a5866aa4e6a3de0303f7a7e4d50fd8026528b247c359"
+    },
+    {
+      "bytes": 1343,
+      "contract_id": "reports/v4_production_cutover_20261007/P0_5_POST_CUTOVER_GATE.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/P0_5_POST_CUTOVER_GATE.json",
+      "sha256": "05d77cb115584a88be49596929ce9997e45c88748c8e15bf13ca1ec5305b58e3"
+    },
+    {
+      "bytes": 3070,
+      "contract_id": "reports/v4_production_cutover_20261007/POST_CUTOVER_AUTHORITY.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/POST_CUTOVER_AUTHORITY.json",
+      "sha256": "f0187a8a1b0ed4f21d342c44104d1c3f0a2a4b14ad110625f139ee62aaff7f2d"
+    },
+    {
+      "bytes": 2474,
+      "contract_id": "reports/v4_production_cutover_20261007/PRE_CUTOVER_AUTHORITY.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/PRE_CUTOVER_AUTHORITY.json",
+      "sha256": "6e0c97910493fac88e6fc03aa62c6a24a9802bd1effab410c6fd2abca50ceb00"
+    },
+    {
+      "bytes": 3070,
+      "contract_id": "reports/v4_production_cutover_20261007/PRODUCTION_AUTHORITY_POST.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/PRODUCTION_AUTHORITY_POST.json",
+      "sha256": "f0187a8a1b0ed4f21d342c44104d1c3f0a2a4b14ad110625f139ee62aaff7f2d"
+    },
+    {
+      "bytes": 2259,
+      "contract_id": "reports/v4_production_cutover_20261007/PRODUCTION_AUTHORITY_PRE.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/PRODUCTION_AUTHORITY_PRE.json",
+      "sha256": "18b5162583d67c909e408fa9817de4ccbe9cd1d09f604ca0fef649ab126111d7"
+    },
+    {
+      "bytes": 18831,
+      "contract_id": "reports/v4_production_cutover_20261007/PRODUCTION_DB_SCHEMA_READBACK.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/PRODUCTION_DB_SCHEMA_READBACK.json",
+      "sha256": "bd96f7adf46d2948c1e4033e0550df482919ea9936e0f9da2a291833a0bbe8c5"
+    },
+    {
+      "bytes": 5695,
+      "contract_id": "reports/v4_production_cutover_20261007/PROTECTED_STATE_READBACK.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/PROTECTED_STATE_READBACK.json",
+      "sha256": "2acc4e720503ce7efa56c1c326e11db1093e502def6b5ac6ab9d92e85e60bfca"
+    },
+    {
+      "bytes": 765,
+      "contract_id": "reports/v4_production_cutover_20261007/ROLLBACK_POINTER.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/ROLLBACK_POINTER.json",
+      "sha256": "b833f5f503cee7a0e743116c8d00e979728bd91ba9223a5f9dc7e463dcc55539"
+    },
+    {
+      "bytes": 2100,
+      "contract_id": "reports/v4_production_cutover_20261007/ROLLBACK_RECEIPT.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/ROLLBACK_RECEIPT.json",
+      "sha256": "a0483d7dfb060c457ce1f2bf5dc0aac2ff6da6922c8500565df45be9aa9034bd"
+    },
+    {
+      "bytes": 2100,
+      "contract_id": "reports/v4_production_cutover_20261007/ROLLBACK_TEST.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/ROLLBACK_TEST.json",
+      "sha256": "a0483d7dfb060c457ce1f2bf5dc0aac2ff6da6922c8500565df45be9aa9034bd"
+    },
+    {
+      "bytes": 1921,
+      "contract_id": "reports/v4_production_cutover_20261007/SCREENSHOT_MANIFEST.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/SCREENSHOT_MANIFEST.json",
+      "sha256": "aa4ade8dedfe83b6881909299f331b68aa5ad8e3572628b114df284e94909a80"
+    },
+    {
+      "bytes": 702394,
+      "contract_id": "reports/v4_production_cutover_20261007/SERVICE_BEFORE_RESTART.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/SERVICE_BEFORE_RESTART.json",
+      "sha256": "5fa2cf82d5d1c2d8c8c2a6cb7fdad69d9c7979e77ae76902231984dac5fd0b2e"
+    },
+    {
+      "bytes": 702394,
+      "contract_id": "reports/v4_production_cutover_20261007/SERVICE_E2E_RECEIPT.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/SERVICE_E2E_RECEIPT.json",
+      "sha256": "5fa2cf82d5d1c2d8c8c2a6cb7fdad69d9c7979e77ae76902231984dac5fd0b2e"
+    },
+    {
+      "bytes": 1464382,
+      "contract_id": "reports/v4_production_cutover_20261007/SERVICE_RESTART_RECEIPT.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/SERVICE_RESTART_RECEIPT.json",
+      "sha256": "829eb960ba52582e40658a14680f42df88f96b4947f9829431ab1f6fda3c69bd"
+    },
+    {
+      "bytes": 1815,
+      "contract_id": "reports/v4_production_cutover_20261007/SHADOW_SEPARATION_RECEIPT.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/SHADOW_SEPARATION_RECEIPT.json",
+      "sha256": "5cb3aea5076cd697f32b64c89fc273ac1907a1987da5171077be080a673a5ef3"
+    },
+    {
+      "bytes": 5239554,
+      "contract_id": "reports/v4_production_cutover_20261007/TDX_POST_FINGERPRINT.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/TDX_POST_FINGERPRINT.json",
+      "sha256": "00b9fa71fcd0aaccba8c4a18f4189ebedf5b4811c39cd52b4e4575e1ddfa86ef"
+    },
+    {
+      "bytes": 5239554,
+      "contract_id": "reports/v4_production_cutover_20261007/TDX_PRE_FINGERPRINT.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/TDX_PRE_FINGERPRINT.json",
+      "sha256": "00b9fa71fcd0aaccba8c4a18f4189ebedf5b4811c39cd52b4e4575e1ddfa86ef"
+    },
+    {
+      "bytes": 710,
+      "contract_id": "reports/v4_production_cutover_20261007/TDX_ZERO_WRITE.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/TDX_ZERO_WRITE.json",
+      "sha256": "9d17cf22df20f1f2d117cb43ff680aa886ad6e013498a3a0346ba2725661aa34"
+    },
+    {
+      "bytes": 402,
+      "contract_id": "reports/v4_production_cutover_20261007/TEMP_STORAGE_OWNER_GATE_RECEIPT.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/TEMP_STORAGE_OWNER_GATE_RECEIPT.json",
+      "sha256": "609e4878182623e58934bc5473dc9b7264eaa26da775e44dadc94004b3002b7c"
+    },
+    {
+      "bytes": 627,
+      "contract_id": "reports/v4_production_cutover_20261007/TEST_CLUSTER_RELOCATION.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/TEST_CLUSTER_RELOCATION.json",
+      "sha256": "dbf7b9c47897dd2116b6164a0ff4f7ce2be6de7379c956f4ea1f812b187432ad"
+    },
+    {
+      "bytes": 1921,
+      "contract_id": "reports/v4_production_cutover_20261007/UI_E2E_RECEIPT.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/UI_E2E_RECEIPT.json",
+      "sha256": "aa4ade8dedfe83b6881909299f331b68aa5ad8e3572628b114df284e94909a80"
+    },
+    {
+      "bytes": 817,
+      "contract_id": "reports/v4_production_cutover_20261007/UPSTREAM_SQL_NAMESPACE_AUDIT.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/UPSTREAM_SQL_NAMESPACE_AUDIT.json",
+      "sha256": "074df6c07523f69fc8d3ef93c4345603adb0440dbe27771519233399c9700c2e"
+    },
+    {
+      "bytes": 69981,
+      "contract_id": "reports/v4_production_cutover_20261007/V4_ONLY_EXECUTION_SCOPE.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/V4_ONLY_EXECUTION_SCOPE.json",
+      "sha256": "12667e880e4be2353008eb07b3dfd5fe65f3e799f7c1a51f989bb7b6b60f7066"
+    },
+    {
+      "bytes": 11711,
+      "contract_id": "reports/v4_production_cutover_20261007/V4_ONLY_FULL_REGRESSION_RECEIPT.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/V4_ONLY_FULL_REGRESSION_RECEIPT.json",
+      "sha256": "7905c0bca0657bf12b619884d0bdcd73e734044705af8ee242f7367516603975"
+    },
+    {
+      "bytes": 17424,
+      "contract_id": "reports/v4_production_cutover_20261007/V4_SQL_DISPOSABLE_FIXTURE.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/V4_SQL_DISPOSABLE_FIXTURE.json",
+      "sha256": "75df1bee3b46e0a0cecffdd3a15298db9d6345929c3065407712433021c5b230"
+    },
+    {
+      "bytes": 3206718,
+      "contract_id": "reports/v4_production_cutover_20261007/accepted_state_projection.json",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/accepted_state_projection.json",
+      "sha256": "ac302f29f76c90ffbec424652fd5f232f76076aea7c14f54c392924bb14c4c1e"
+    },
+    {
+      "bytes": 5473,
+      "contract_id": "reports/v4_production_cutover_20261007/full_regression.log",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/full_regression.log",
+      "sha256": "da6ea206d6b9d1dd8d766d97ce7b00bf6220816d47784bc0e5848c38cbc1db08"
+    },
+    {
+      "bytes": 636398,
+      "contract_id": "reports/v4_production_cutover_20261007/full_regression.xml",
+      "owner_stage": "GOVERNANCE",
+      "path": "reports/v4_production_cutover_20261007/full_regression.xml",
+      "sha256": "9989870437ecbd558d78bcec2dc581864b6844d21e7cb1a6b5be2fbb7f2de57a"
+    }
+  ],
+  "next": "STOP_WAIT_INDEPENDENT_EXTERNAL_ACCEPTANCE",
+  "parent_commit": "411c8d35bf3e3e84c766dd3e59e2824f3cfd7d2b",
+  "shadow_diagnostic": "ACTIVE_SEPARATE_SCOPE",
+  "source_bindings": [
+    {
+      "bytes": 15256,
+      "contract_id": ".gitattributes",
+      "owner_stage": "GOVERNANCE",
+      "path": ".gitattributes",
+      "sha256": "f111fb4a782f82e5515a819a881d12a8a9099599a350b654e44573aa2e4626a2"
+    },
+    {
+      "bytes": 49,
+      "contract_id": "OPEN_RESEARCH_WORKBENCH.cmd",
+      "owner_stage": "GOVERNANCE",
+      "path": "OPEN_RESEARCH_WORKBENCH.cmd",
+      "sha256": "6cdba9b7b8bcf854dedf7fe968aa8a8699bc60de3d180856b371385d3a03921a"
+    },
+    {
+      "bytes": 47,
+      "contract_id": "OPEN_UNIFIED_WORKBENCH.cmd",
+      "owner_stage": "GOVERNANCE",
+      "path": "OPEN_UNIFIED_WORKBENCH.cmd",
+      "sha256": "0d861c94189d3d9384b3352567a394d3f74ca05461395db0267e3ffd5144b666"
+    },
+    {
+      "bytes": 639,
+      "contract_id": "RUN_DAILY_SCANNER.cmd",
+      "owner_stage": "GOVERNANCE",
+      "path": "RUN_DAILY_SCANNER.cmd",
+      "sha256": "fa2e4efc3d03246f70abbc1e46ed5b47dae607725c63eaf2579b593a2cc4f755"
+    },
+    {
+      "bytes": 869,
+      "contract_id": "docs/audits/V4_DISPOSABLE_UPSTREAM_SQL_NAMESPACE_20261007.md",
+      "owner_stage": "GOVERNANCE",
+      "path": "docs/audits/V4_DISPOSABLE_UPSTREAM_SQL_NAMESPACE_20261007.md",
+      "sha256": "e27dd67bc4ce092c9a607e852197eac43b3c055c4ae1eba882eefb5eb08e979e"
+    },
+    {
+      "bytes": 1039,
+      "contract_id": "docs/audits/V4_HISTORICAL_CHILD_PACKAGE_ROUTING_20261007.md",
+      "owner_stage": "GOVERNANCE",
+      "path": "docs/audits/V4_HISTORICAL_CHILD_PACKAGE_ROUTING_20261007.md",
+      "sha256": "ee9cf2dd96454d32b7cf93650509f41d59cdccdba8cf3960fa1f82c117818607"
+    },
+    {
+      "bytes": 2402,
+      "contract_id": "run_workbench_service.py",
+      "owner_stage": "GOVERNANCE",
+      "path": "run_workbench_service.py",
+      "sha256": "661ef0680f184696b5f83496e2c8a9883c507afc5228afedfdd141596150ed14"
+    },
+    {
+      "bytes": 9155,
+      "contract_id": "scripts/build_v4_current_read_contract.py",
+      "owner_stage": "GOVERNANCE",
+      "path": "scripts/build_v4_current_read_contract.py",
+      "sha256": "d806113245c433190b0548af0b65bd49c1b35031f3598df82f904ab158e2b9b8"
+    },
+    {
+      "bytes": 10387,
+      "contract_id": "scripts/finalize_v4_production_cutover.py",
+      "owner_stage": "GOVERNANCE",
+      "path": "scripts/finalize_v4_production_cutover.py",
+      "sha256": "7f56f8b75769a8a18d6d5b769ba75f0c7bf9b45d79ed1568bc15f776d3e62bd7"
+    },
+    {
+      "bytes": 1041,
+      "contract_id": "scripts/forward_remainder_child.py",
+      "owner_stage": "GOVERNANCE",
+      "path": "scripts/forward_remainder_child.py",
+      "sha256": "55b3e2cb2f7f56a073eddeb4bf82bd0cc5e05f4ad1eef9ba74ab444a453ca57c"
+    },
+    {
+      "bytes": 2249,
+      "contract_id": "scripts/run_v4_current_daily.py",
+      "owner_stage": "GOVERNANCE",
+      "path": "scripts/run_v4_current_daily.py",
+      "sha256": "84217c161cf450c0227b70d1af34b2be7f562af48f61811af5ef21f35de51bdf"
+    },
+    {
+      "bytes": 7115,
+      "contract_id": "scripts/run_v4_production_full_regression.py",
+      "owner_stage": "GOVERNANCE",
+      "path": "scripts/run_v4_production_full_regression.py",
+      "sha256": "dad6c0578daa218df75d50113ec02b5353be1ae99e8010d0d67f5b753ad71904"
+    },
+    {
+      "bytes": 3172,
+      "contract_id": "scripts/v4_production_browser_e2e.cjs",
+      "owner_stage": "GOVERNANCE",
+      "path": "scripts/v4_production_browser_e2e.cjs",
+      "sha256": "f8f6e06d0485f10b73ee8400b06353c4451072c7a8b52f07ba462817718af139"
+    },
+    {
+      "bytes": 3283,
+      "contract_id": "scripts/v4_production_cutover_evidence.py",
+      "owner_stage": "GOVERNANCE",
+      "path": "scripts/v4_production_cutover_evidence.py",
+      "sha256": "66f71af5e9ac85dec596a4222908d104527f3ed20986c8972580b86d6cf8c390"
+    },
+    {
+      "bytes": 2834,
+      "contract_id": "scripts/v4_production_live_smoke.py",
+      "owner_stage": "GOVERNANCE",
+      "path": "scripts/v4_production_live_smoke.py",
+      "sha256": "76a9da6d3a2bd6b5395a91194ef34c64c92439848e9dc361f986edb1315364a6"
+    },
+    {
+      "bytes": 8096,
+      "contract_id": "scripts/workbench_tray.ps1",
+      "owner_stage": "GOVERNANCE",
+      "path": "scripts/workbench_tray.ps1",
+      "sha256": "a974e688b603f0506fd5ae53ee23ef8498e5d0e8e098238e9802c8d62ec614fb"
+    },
+    {
+      "bytes": 16641,
+      "contract_id": "src/workbench_service/current_v4_context.py",
+      "owner_stage": "GOVERNANCE",
+      "path": "src/workbench_service/current_v4_context.py",
+      "sha256": "4cd9303eedd04076358daf7458c27352f02292c5cb5cb6489de10e2b05c625cc"
+    },
+    {
+      "bytes": 4335,
+      "contract_id": "src/workbench_service/static/v4-workbench.html",
+      "owner_stage": "GOVERNANCE",
+      "path": "src/workbench_service/static/v4-workbench.html",
+      "sha256": "494e2b04e2af1d4efcecb4230b56355edc2211d32aa23ff29780cc6eab5db427"
+    },
+    {
+      "bytes": 6445,
+      "contract_id": "src/workbench_service/static/v4-workbench.js",
+      "owner_stage": "GOVERNANCE",
+      "path": "src/workbench_service/static/v4-workbench.js",
+      "sha256": "813e1211bdd742d6381f3b027efb88144f3c0545ad5c809b0fc57741141605f0"
+    },
+    {
+      "bytes": 4851,
+      "contract_id": "src/workbench_service/v4_daily_refresh.py",
+      "owner_stage": "GOVERNANCE",
+      "path": "src/workbench_service/v4_daily_refresh.py",
+      "sha256": "ba6e40addc3aceda6ab6e5e26921207d6bf55c531ca57920ab8340ed946e6c45"
+    },
+    {
+      "bytes": 2711,
+      "contract_id": "src/workbench_service/v4_server.py",
+      "owner_stage": "GOVERNANCE",
+      "path": "src/workbench_service/v4_server.py",
+      "sha256": "a9bb3b86f3d8f619b70f47ccda142cf8ed50cadf7515c1da5b6351b9e2a1b5bd"
+    },
+    {
+      "bytes": 34014,
+      "contract_id": "tests/remainder_isolation_plugin.py",
+      "owner_stage": "GOVERNANCE",
+      "path": "tests/remainder_isolation_plugin.py",
+      "sha256": "351dca44d5e230aeb8bb4aa175e9937de6f947e4a9f59d88710acea66b7b0ad0"
+    }
+  ],
+  "status": "CANDIDATE_READY_FOR_INDEPENDENT_EXTERNAL_AUDIT"
+}

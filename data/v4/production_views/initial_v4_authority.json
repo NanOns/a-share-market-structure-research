@@ -1,0 +1,50 @@
+{
+  "activation_status": "CANDIDATE",
+  "capability_permission_authority": {
+    "authority_source_path": "config/v4_19_focus_source_cutover_contract_v1.json",
+    "bytes": 30858,
+    "contract_id": "config/v4_19_focus_source_cutover_contract_v1.json",
+    "owner_stage": "GOVERNANCE",
+    "path": "data/v4/production_views/blobs/c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd.json",
+    "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+  },
+  "contract_id": "V4_PRODUCTION_RUNTIME_AUTHORITY_V1",
+  "daily_entrypoint": "scripts/run_v4_current_daily.py",
+  "daily_refresh_contract": "V4_ACCEPTED_CURRENT_REFRESH_V1",
+  "data_head_binding": {
+    "authority_source_path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "bytes": 16890,
+    "contract_id": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "owner_stage": "GOVERNANCE",
+    "path": "data/v4/production_views/blobs/38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40.json",
+    "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+  },
+  "default_ui": "V4",
+  "focus_membership_write": false,
+  "last_accepted_trade_date": "2026-09-30",
+  "legacy_default": false,
+  "mode": "V4_DEFAULT_PRODUCT",
+  "product_version": "V4",
+  "read_authority": {
+    "bytes": 138790,
+    "contract_id": "config/v4_current_accepted_read_contract_v1.json",
+    "owner_stage": "GOVERNANCE",
+    "path": "data/v4/production_views/8a3a9c12fa8b34897270f5cc3d0ef09b12e9dfb1ff744f21d057dd7491732f5b/read_contract.json",
+    "sha256": "8a3a9c12fa8b34897270f5cc3d0ef09b12e9dfb1ff744f21d057dd7491732f5b"
+  },
+  "rollback_binding": null,
+  "shadow_diagnostics": true,
+  "source_mode": "V4_ACCEPTED_RESEARCH_READONLY",
+  "stage_authority_binding": {
+    "authority_source_path": "config/v4_current_stage_authority_v2.json",
+    "bytes": 4004,
+    "contract_id": "config/v4_current_stage_authority_v2.json",
+    "owner_stage": "GOVERNANCE",
+    "path": "data/v4/production_views/blobs/dc57e3957a1301ff3358f5012080027c47550559c4cd5d406065f98e4958a206.json",
+    "sha256": "dc57e3957a1301ff3358f5012080027c47550559c4cd5d406065f98e4958a206"
+  },
+  "tdx_write_authorized": false,
+  "trading_action_authorized": false,
+  "ui_read_only": true,
+  "version": "1.0.0"
+}

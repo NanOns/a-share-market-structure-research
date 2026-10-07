@@ -1,0 +1,46 @@
+{
+  "default_activation": "CANDIDATE",
+  "previous_projection_unchanged": {
+    "bytes": 3206718,
+    "contract_id": "reports/v4_production_cutover_20261007/accepted_state_projection.json",
+    "owner_stage": "GOVERNANCE",
+    "path": "reports/v4_production_cutover_20261007/accepted_state_projection.json",
+    "sha256": "ac302f29f76c90ffbec424652fd5f232f76076aea7c14f54c392924bb14c4c1e"
+  },
+  "publish": {
+    "after": "76f973c5016c9f309a9ca416ccd1519ea6d191b0cbe47e084bc72b40080012f0",
+    "before": "5514b4a5d477b885c287a0a549e2f71cf95ff3171ffd02d20178ed6e5f1184c2",
+    "context": {
+      "context": {
+        "accepted_trade_date": "2026-09-30",
+        "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+        "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+        "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+        "historical_pit_effectiveness": "NOT_GRANTED",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "last_accepted_trade_date": "2026-09-30",
+        "namespace": "V4_CURRENT_ACCEPTED",
+        "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "source_mode": "V4_ACCEPTED_RESEARCH_READONLY",
+        "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+        "stage": "V4-15",
+        "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+        "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+      },
+      "context_token": "current-v4-8a7b8e3f8fe867183cbeefe8a1e48f9038b4ccf9aee778f10bfd9d4ba348afa1",
+      "focus_write": false,
+      "production_permission": {
+        "ROTATION": false,
+        "SECTOR_RISK_CHANGE": false,
+        "SECTOR_STAGE": false,
+        "STOCK_CORE": false,
+        "STOCK_SECTOR_DEPENDENT": false
+      },
+      "source_mode": "V4_ACCEPTED_RESEARCH_READONLY",
+      "status": "READY_CURRENT_ACCEPTED"
+    },
+    "status": "PUBLISHED_CURRENT_ACCEPTED"
+  },
+  "status": "PASS"
+}

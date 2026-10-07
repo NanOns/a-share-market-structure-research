@@ -1,0 +1,27 @@
+{
+  "capability_permissions_unchanged": true,
+  "full_regression": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 2,
+    "tests": 4799
+  },
+  "next": "ACTIVATE_AND_RESTART_LIVE_SMOKE",
+  "permitted_symlink_skips": [
+    {
+      "reason": "symlink creation unavailable e:\\codex work\\大a交易\\tests\\v4_phase0\\test_tdx_local_snapshot.py:54: symlink creation unavailable",
+      "test": "tests.v4_phase0.test_tdx_local_snapshot::test_symlink_input_is_rejected"
+    },
+    {
+      "reason": "symlink creation is unavailable on this runner e:\\codex work\\大a交易\\tests\\v4_phase0\\test_tdx_snapshot.py:101: symlink creation is unavailable on this runner",
+      "test": "tests.v4_phase0.test_tdx_snapshot::test_extracted_symlink_is_rejected"
+    }
+  ],
+  "portable_equivalents": [
+    "test_local_snapshot_original_owner_rejects_link_predicate",
+    "test_extracted_snapshot_original_owner_rejects_reparse_attribute"
+  ],
+  "protected_bytes_unchanged": true,
+  "status": "PASS_LOCAL",
+  "tdx_zero_write": true
+}

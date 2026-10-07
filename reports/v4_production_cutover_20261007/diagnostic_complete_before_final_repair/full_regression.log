@@ -1,0 +1,2064 @@
+........................................................................ [  1%]
+........................................................................ [  3%]
+........................................................................ [  4%]
+........................................................................ [  6%]
+........................................................................ [  7%]
+........................................................................ [  9%]
+........................................................................ [ 10%]
+........................................................................ [ 12%]
+........................................................................ [ 13%]
+........................................................................ [ 15%]
+........................................................................ [ 16%]
+........................................................................ [ 18%]
+........................................................................ [ 19%]
+........................................................................ [ 21%]
+.......................................................F................ [ 22%]
+........................................................................ [ 24%]
+........................................................................ [ 25%]
+........................................................................ [ 27%]
+........................................................................ [ 28%]
+.....................FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF..FFFFFFFFFFFFFFFFF [ 30%]
+FFFFFFFFFFFFFFFFF..FF................................................... [ 31%]
+........................................................................ [ 33%]
+........................................................................ [ 34%]
+........................................................................ [ 36%]
+........................................................................ [ 37%]
+........................................................................ [ 39%]
+........................................................................ [ 40%]
+........................................................................ [ 42%]
+........................................................................ [ 43%]
+........................................................................ [ 45%]
+........................................................................ [ 46%]
+........................................................................ [ 48%]
+........................................................................ [ 49%]
+........................................................................ [ 51%]
+........................................................................ [ 52%]
+........................................................................ [ 54%]
+........................................................................ [ 55%]
+........................................................................ [ 57%]
+........................................................................ [ 58%]
+........................................................................ [ 60%]
+........................................................................ [ 61%]
+........................................................................ [ 63%]
+........................................................................ [ 64%]
+........................................................................ [ 66%]
+........................................................................ [ 67%]
+........................................................................ [ 69%]
+........................................................................ [ 70%]
+........................................................................ [ 72%]
+........................................................................ [ 73%]
+........................................................................ [ 75%]
+........................................................................ [ 76%]
+........................................................................ [ 78%]
+........................................................................ [ 79%]
+........................................................................ [ 81%]
+........................................................................ [ 82%]
+........................................................................ [ 84%]
+........................................................................ [ 85%]
+........................................................................ [ 87%]
+........................................................................ [ 88%]
+........................................................................ [ 90%]
+........................................................................ [ 91%]
+........................................................................ [ 93%]
+........................................................................ [ 94%]
+........................................................................ [ 96%]
+...................................................................F.... [ 97%]
+...............F...................s..........s......................... [ 99%]
+.............................................                            [100%]
+================================== FAILURES ===================================
+______________ test_fresh_process_pair_revision_and_determinism _______________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_fresh_process_pair_revisi0')
+
+    def test_fresh_process_pair_revision_and_determinism(tmp_path):
+        a=ReplayAuthority(ROOT);o=Oracle(ROOT);ns='proof'
+>       prior,pr,producer=invoke(a,tmp_path,ns,'2026-09-29',dict(confirmation=True),None,0)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r18b_persisted.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+a = <workbench_analysis._remainder_authority_8ac418738276.ReplayAuthority object at 0x0000022DF6CF5A90>
+artifact_root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_fresh_process_pair_revisi0')
+namespace = 'proof', date = '2026-09-29', choice = {'confirmation': True}
+prior = None, index = 0, revision = 'r1'
+
+    def invoke(a,artifact_root,namespace,date,choice,prior,index,revision='r1'):
+        envelope=dict(target_trade_date=date,target_revision=revision,previous_market_session=a.previous(date),cutoff=date+'T16:00:00+00:00',authority_bindings=a.bindings(),contract_package_digest=a.package_digest,previous_state_publication=prior,source_refs=[*a.refs,*a.owners.values(),ref(ROOT,'config/v4_07_machine_vectors_v1.json'),ref(ROOT,'config/v4_10_machine_vectors_r1_2.json'),ref(ROOT,'config/v4_12_machine_vectors_v1.json')],source_availability=[dict(max_source_trade_date=date,system_available_at=date+'T01:00:00+00:00',basis='EXPLICIT_SYNTHETIC_FACTS')],evidence_class='ENGINEERING_SYNTHETIC',owner_inputs=choice)
+        input_ref=publish(artifact_root,namespace+'/execution/'+str(index)+'/input.json',envelope)
+        rp=namespace+'/execution/'+str(index)+'/child_receipt.json'
+        process=subprocess.Popen([sys.executable,'-m','scripts.r18_replay_worker',str(Path(artifact_root)/input_ref['path']),str(artifact_root),namespace,rp],cwd=ROOT,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,encoding='utf8',errors='replace')
+        out,err=process.communicate(timeout=120);exited=datetime.now(timezone.utc).isoformat()
+>       if process.returncode:raise RuntimeError(err)
+                              ^^^^^^^^^^^^^^^^^^^^^^^
+E       RuntimeError: Traceback (most recent call last):
+E         File "E:\codex work\大A交易\scripts\forward_remainder_child.py", line 16, in <module>
+E           try:runpy.run_module(module,run_name='__main__')
+E               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         File "<frozen runpy>", line 234, in run_module
+E         File "<frozen runpy>", line 88, in _run_code
+E         File "E:\codex work\大A交易\scripts\r18_replay_worker.py", line 21, in <module>
+E           if __name__=='__main__':print(json.dumps(run(*sys.argv[1:]),sort_keys=True))
+E                                                    ~~~^^^^^^^^^^^^^^^
+E         File "E:\codex work\大A交易\scripts\r18_replay_worker.py", line 14, in run
+E           prior=validate_envelope(artifact_root,envelope,a)
+E         File "E:\codex work\大A交易\src\workbench_analysis\v4_14_publication.py", line 9, in validate_envelope
+E           if envelope['authority_bindings']!=authority.bindings() or envelope['contract_package_digest']!=authority.package_digest:raise ValueError('REPLAY_ENVELOPE_AUTHORITY_MISMATCH')
+E                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: REPLAY_ENVELOPE_AUTHORITY_MISMATCH
+
+scripts\run_r18b.py:16: RuntimeError
+_________________ test_positive_reconstructed_t1_is_reachable _________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_positive_reconstructed_t10')
+
+    def test_positive_reconstructed_t1_is_reachable(tmp_path):
+>       p=build(tmp_path)[0];proof=validate_packet(p,tmp_path)
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_positive_reconstructed_t10')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+_________ test_incremental_all_horizons_and_old_snapshots_revalidate __________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_incremental_all_horizons_0')
+
+    def test_incremental_all_horizons_and_old_snapshots_revalidate(tmp_path):
+>       packets=build(tmp_path,(1,3,5,10,20));assert exact(refresh([],tmp_path),tmp_path)['status']=='OPEN'
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_incremental_all_horizons_0')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+__________________ test_duplicate_exact_packet_is_idempotent __________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_duplicate_exact_packet_is0')
+
+    def test_duplicate_exact_packet_is_idempotent(tmp_path):
+>       p=build(tmp_path)[0];first=refresh([p],tmp_path)
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_duplicate_exact_packet_is0')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+_____________ test_negative_packets_fail_closed[synthetic_owner] ______________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo0')
+attack = 'synthetic_owner'
+
+    @pytest.mark.parametrize('attack',['synthetic_owner','unsealed_owner','enrollment_mismatch','freeze_mismatch','raw_provider','prices_only','unaccepted_endpoint','before_freeze','wrong_horizon','wrong_due','corrupted_outcome','boolean_proof','PIT_upgrade','realtime_upgrade','incomplete_path','T0_in_path','corrupt_exact_bytes','unknown_data_snapshot','nonfinite_outcome'])
+    def test_negative_packets_fail_closed(tmp_path,attack):
+>       p=build(tmp_path)[0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo0')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+______________ test_negative_packets_fail_closed[unsealed_owner] ______________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo1')
+attack = 'unsealed_owner'
+
+    @pytest.mark.parametrize('attack',['synthetic_owner','unsealed_owner','enrollment_mismatch','freeze_mismatch','raw_provider','prices_only','unaccepted_endpoint','before_freeze','wrong_horizon','wrong_due','corrupted_outcome','boolean_proof','PIT_upgrade','realtime_upgrade','incomplete_path','T0_in_path','corrupt_exact_bytes','unknown_data_snapshot','nonfinite_outcome'])
+    def test_negative_packets_fail_closed(tmp_path,attack):
+>       p=build(tmp_path)[0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo1')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+___________ test_negative_packets_fail_closed[enrollment_mismatch] ____________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo2')
+attack = 'enrollment_mismatch'
+
+    @pytest.mark.parametrize('attack',['synthetic_owner','unsealed_owner','enrollment_mismatch','freeze_mismatch','raw_provider','prices_only','unaccepted_endpoint','before_freeze','wrong_horizon','wrong_due','corrupted_outcome','boolean_proof','PIT_upgrade','realtime_upgrade','incomplete_path','T0_in_path','corrupt_exact_bytes','unknown_data_snapshot','nonfinite_outcome'])
+    def test_negative_packets_fail_closed(tmp_path,attack):
+>       p=build(tmp_path)[0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo2')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+_____________ test_negative_packets_fail_closed[freeze_mismatch] ______________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo3')
+attack = 'freeze_mismatch'
+
+    @pytest.mark.parametrize('attack',['synthetic_owner','unsealed_owner','enrollment_mismatch','freeze_mismatch','raw_provider','prices_only','unaccepted_endpoint','before_freeze','wrong_horizon','wrong_due','corrupted_outcome','boolean_proof','PIT_upgrade','realtime_upgrade','incomplete_path','T0_in_path','corrupt_exact_bytes','unknown_data_snapshot','nonfinite_outcome'])
+    def test_negative_packets_fail_closed(tmp_path,attack):
+>       p=build(tmp_path)[0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo3')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+_______________ test_negative_packets_fail_closed[raw_provider] _______________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo4')
+attack = 'raw_provider'
+
+    @pytest.mark.parametrize('attack',['synthetic_owner','unsealed_owner','enrollment_mismatch','freeze_mismatch','raw_provider','prices_only','unaccepted_endpoint','before_freeze','wrong_horizon','wrong_due','corrupted_outcome','boolean_proof','PIT_upgrade','realtime_upgrade','incomplete_path','T0_in_path','corrupt_exact_bytes','unknown_data_snapshot','nonfinite_outcome'])
+    def test_negative_packets_fail_closed(tmp_path,attack):
+>       p=build(tmp_path)[0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo4')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+_______________ test_negative_packets_fail_closed[prices_only] ________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo5')
+attack = 'prices_only'
+
+    @pytest.mark.parametrize('attack',['synthetic_owner','unsealed_owner','enrollment_mismatch','freeze_mismatch','raw_provider','prices_only','unaccepted_endpoint','before_freeze','wrong_horizon','wrong_due','corrupted_outcome','boolean_proof','PIT_upgrade','realtime_upgrade','incomplete_path','T0_in_path','corrupt_exact_bytes','unknown_data_snapshot','nonfinite_outcome'])
+    def test_negative_packets_fail_closed(tmp_path,attack):
+>       p=build(tmp_path)[0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo5')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+___________ test_negative_packets_fail_closed[unaccepted_endpoint] ____________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo6')
+attack = 'unaccepted_endpoint'
+
+    @pytest.mark.parametrize('attack',['synthetic_owner','unsealed_owner','enrollment_mismatch','freeze_mismatch','raw_provider','prices_only','unaccepted_endpoint','before_freeze','wrong_horizon','wrong_due','corrupted_outcome','boolean_proof','PIT_upgrade','realtime_upgrade','incomplete_path','T0_in_path','corrupt_exact_bytes','unknown_data_snapshot','nonfinite_outcome'])
+    def test_negative_packets_fail_closed(tmp_path,attack):
+>       p=build(tmp_path)[0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo6')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+______________ test_negative_packets_fail_closed[before_freeze] _______________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo7')
+attack = 'before_freeze'
+
+    @pytest.mark.parametrize('attack',['synthetic_owner','unsealed_owner','enrollment_mismatch','freeze_mismatch','raw_provider','prices_only','unaccepted_endpoint','before_freeze','wrong_horizon','wrong_due','corrupted_outcome','boolean_proof','PIT_upgrade','realtime_upgrade','incomplete_path','T0_in_path','corrupt_exact_bytes','unknown_data_snapshot','nonfinite_outcome'])
+    def test_negative_packets_fail_closed(tmp_path,attack):
+>       p=build(tmp_path)[0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo7')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+______________ test_negative_packets_fail_closed[wrong_horizon] _______________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo8')
+attack = 'wrong_horizon'
+
+    @pytest.mark.parametrize('attack',['synthetic_owner','unsealed_owner','enrollment_mismatch','freeze_mismatch','raw_provider','prices_only','unaccepted_endpoint','before_freeze','wrong_horizon','wrong_due','corrupted_outcome','boolean_proof','PIT_upgrade','realtime_upgrade','incomplete_path','T0_in_path','corrupt_exact_bytes','unknown_data_snapshot','nonfinite_outcome'])
+    def test_negative_packets_fail_closed(tmp_path,attack):
+>       p=build(tmp_path)[0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo8')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+________________ test_negative_packets_fail_closed[wrong_due] _________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo9')
+attack = 'wrong_due'
+
+    @pytest.mark.parametrize('attack',['synthetic_owner','unsealed_owner','enrollment_mismatch','freeze_mismatch','raw_provider','prices_only','unaccepted_endpoint','before_freeze','wrong_horizon','wrong_due','corrupted_outcome','boolean_proof','PIT_upgrade','realtime_upgrade','incomplete_path','T0_in_path','corrupt_exact_bytes','unknown_data_snapshot','nonfinite_outcome'])
+    def test_negative_packets_fail_closed(tmp_path,attack):
+>       p=build(tmp_path)[0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo9')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+____________ test_negative_packets_fail_closed[corrupted_outcome] _____________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo10')
+attack = 'corrupted_outcome'
+
+    @pytest.mark.parametrize('attack',['synthetic_owner','unsealed_owner','enrollment_mismatch','freeze_mismatch','raw_provider','prices_only','unaccepted_endpoint','before_freeze','wrong_horizon','wrong_due','corrupted_outcome','boolean_proof','PIT_upgrade','realtime_upgrade','incomplete_path','T0_in_path','corrupt_exact_bytes','unknown_data_snapshot','nonfinite_outcome'])
+    def test_negative_packets_fail_closed(tmp_path,attack):
+>       p=build(tmp_path)[0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo10')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+______________ test_negative_packets_fail_closed[boolean_proof] _______________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo11')
+attack = 'boolean_proof'
+
+    @pytest.mark.parametrize('attack',['synthetic_owner','unsealed_owner','enrollment_mismatch','freeze_mismatch','raw_provider','prices_only','unaccepted_endpoint','before_freeze','wrong_horizon','wrong_due','corrupted_outcome','boolean_proof','PIT_upgrade','realtime_upgrade','incomplete_path','T0_in_path','corrupt_exact_bytes','unknown_data_snapshot','nonfinite_outcome'])
+    def test_negative_packets_fail_closed(tmp_path,attack):
+>       p=build(tmp_path)[0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo11')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+_______________ test_negative_packets_fail_closed[PIT_upgrade] ________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo12')
+attack = 'PIT_upgrade'
+
+    @pytest.mark.parametrize('attack',['synthetic_owner','unsealed_owner','enrollment_mismatch','freeze_mismatch','raw_provider','prices_only','unaccepted_endpoint','before_freeze','wrong_horizon','wrong_due','corrupted_outcome','boolean_proof','PIT_upgrade','realtime_upgrade','incomplete_path','T0_in_path','corrupt_exact_bytes','unknown_data_snapshot','nonfinite_outcome'])
+    def test_negative_packets_fail_closed(tmp_path,attack):
+>       p=build(tmp_path)[0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo12')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+_____________ test_negative_packets_fail_closed[realtime_upgrade] _____________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo13')
+attack = 'realtime_upgrade'
+
+    @pytest.mark.parametrize('attack',['synthetic_owner','unsealed_owner','enrollment_mismatch','freeze_mismatch','raw_provider','prices_only','unaccepted_endpoint','before_freeze','wrong_horizon','wrong_due','corrupted_outcome','boolean_proof','PIT_upgrade','realtime_upgrade','incomplete_path','T0_in_path','corrupt_exact_bytes','unknown_data_snapshot','nonfinite_outcome'])
+    def test_negative_packets_fail_closed(tmp_path,attack):
+>       p=build(tmp_path)[0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo13')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+_____________ test_negative_packets_fail_closed[incomplete_path] ______________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo14')
+attack = 'incomplete_path'
+
+    @pytest.mark.parametrize('attack',['synthetic_owner','unsealed_owner','enrollment_mismatch','freeze_mismatch','raw_provider','prices_only','unaccepted_endpoint','before_freeze','wrong_horizon','wrong_due','corrupted_outcome','boolean_proof','PIT_upgrade','realtime_upgrade','incomplete_path','T0_in_path','corrupt_exact_bytes','unknown_data_snapshot','nonfinite_outcome'])
+    def test_negative_packets_fail_closed(tmp_path,attack):
+>       p=build(tmp_path)[0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo14')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+________________ test_negative_packets_fail_closed[T0_in_path] ________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo15')
+attack = 'T0_in_path'
+
+    @pytest.mark.parametrize('attack',['synthetic_owner','unsealed_owner','enrollment_mismatch','freeze_mismatch','raw_provider','prices_only','unaccepted_endpoint','before_freeze','wrong_horizon','wrong_due','corrupted_outcome','boolean_proof','PIT_upgrade','realtime_upgrade','incomplete_path','T0_in_path','corrupt_exact_bytes','unknown_data_snapshot','nonfinite_outcome'])
+    def test_negative_packets_fail_closed(tmp_path,attack):
+>       p=build(tmp_path)[0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo15')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+___________ test_negative_packets_fail_closed[corrupt_exact_bytes] ____________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo16')
+attack = 'corrupt_exact_bytes'
+
+    @pytest.mark.parametrize('attack',['synthetic_owner','unsealed_owner','enrollment_mismatch','freeze_mismatch','raw_provider','prices_only','unaccepted_endpoint','before_freeze','wrong_horizon','wrong_due','corrupted_outcome','boolean_proof','PIT_upgrade','realtime_upgrade','incomplete_path','T0_in_path','corrupt_exact_bytes','unknown_data_snapshot','nonfinite_outcome'])
+    def test_negative_packets_fail_closed(tmp_path,attack):
+>       p=build(tmp_path)[0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo16')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+__________ test_negative_packets_fail_closed[unknown_data_snapshot] ___________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo17')
+attack = 'unknown_data_snapshot'
+
+    @pytest.mark.parametrize('attack',['synthetic_owner','unsealed_owner','enrollment_mismatch','freeze_mismatch','raw_provider','prices_only','unaccepted_endpoint','before_freeze','wrong_horizon','wrong_due','corrupted_outcome','boolean_proof','PIT_upgrade','realtime_upgrade','incomplete_path','T0_in_path','corrupt_exact_bytes','unknown_data_snapshot','nonfinite_outcome'])
+    def test_negative_packets_fail_closed(tmp_path,attack):
+>       p=build(tmp_path)[0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo17')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+____________ test_negative_packets_fail_closed[nonfinite_outcome] _____________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo18')
+attack = 'nonfinite_outcome'
+
+    @pytest.mark.parametrize('attack',['synthetic_owner','unsealed_owner','enrollment_mismatch','freeze_mismatch','raw_provider','prices_only','unaccepted_endpoint','before_freeze','wrong_horizon','wrong_due','corrupted_outcome','boolean_proof','PIT_upgrade','realtime_upgrade','incomplete_path','T0_in_path','corrupt_exact_bytes','unknown_data_snapshot','nonfinite_outcome'])
+    def test_negative_packets_fail_closed(tmp_path,attack):
+>       p=build(tmp_path)[0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_negative_packets_fail_clo18')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+________ test_mixed_accepted_basis_rejected_even_after_exact_rebinding ________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_mixed_accepted_basis_reje0')
+
+    def test_mixed_accepted_basis_rejected_even_after_exact_rebinding(tmp_path):
+>       p=build(tmp_path)[0];old=p['accepted_endpoints'][0]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_mixed_accepted_basis_reje0')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+_____ test_independent_coverage_oracle_rejects_overclaims[full_after_t1] ______
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_independent_coverage_orac0')
+attack = 'full_after_t1'
+
+    @pytest.mark.parametrize('attack',['full_after_t1','global_unblock_after_t1','invent_horizon','PIT_upgrade','stage_authorized'])
+    def test_independent_coverage_oracle_rejects_overclaims(tmp_path,attack):
+>       p=build(tmp_path)[0];s=exact(refresh([p],tmp_path),tmp_path)
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_independent_coverage_orac0')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+_ test_independent_coverage_oracle_rejects_overclaims[global_unblock_after_t1] _
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_independent_coverage_orac1')
+attack = 'global_unblock_after_t1'
+
+    @pytest.mark.parametrize('attack',['full_after_t1','global_unblock_after_t1','invent_horizon','PIT_upgrade','stage_authorized'])
+    def test_independent_coverage_oracle_rejects_overclaims(tmp_path,attack):
+>       p=build(tmp_path)[0];s=exact(refresh([p],tmp_path),tmp_path)
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_independent_coverage_orac1')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+_____ test_independent_coverage_oracle_rejects_overclaims[invent_horizon] _____
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_independent_coverage_orac2')
+attack = 'invent_horizon'
+
+    @pytest.mark.parametrize('attack',['full_after_t1','global_unblock_after_t1','invent_horizon','PIT_upgrade','stage_authorized'])
+    def test_independent_coverage_oracle_rejects_overclaims(tmp_path,attack):
+>       p=build(tmp_path)[0];s=exact(refresh([p],tmp_path),tmp_path)
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_independent_coverage_orac2')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+______ test_independent_coverage_oracle_rejects_overclaims[PIT_upgrade] _______
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_independent_coverage_orac3')
+attack = 'PIT_upgrade'
+
+    @pytest.mark.parametrize('attack',['full_after_t1','global_unblock_after_t1','invent_horizon','PIT_upgrade','stage_authorized'])
+    def test_independent_coverage_oracle_rejects_overclaims(tmp_path,attack):
+>       p=build(tmp_path)[0];s=exact(refresh([p],tmp_path),tmp_path)
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_independent_coverage_orac3')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+____ test_independent_coverage_oracle_rejects_overclaims[stage_authorized] ____
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_independent_coverage_orac4')
+attack = 'stage_authorized'
+
+    @pytest.mark.parametrize('attack',['full_after_t1','global_unblock_after_t1','invent_horizon','PIT_upgrade','stage_authorized'])
+    def test_independent_coverage_oracle_rejects_overclaims(tmp_path,attack):
+>       p=build(tmp_path)[0];s=exact(refresh([p],tmp_path),tmp_path)
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_independent_coverage_orac4')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+_________________ test_readback_tamper_cannot_invent_coverage _________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_readback_tamper_cannot_in0')
+
+    def test_readback_tamper_cannot_invent_coverage(tmp_path):
+>       p=build(tmp_path)[0];refresh([p],tmp_path);view=read(tmp_path,'reports/r20r1r1/MATURITY_DEBT_READBACK.json');view['proved_horizons']=[1,20]
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_readback_tamper_cannot_in0')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+_________ test_corrected_source_appends_and_preserves_first_observed __________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_corrected_source_appends_0')
+
+    def test_corrected_source_appends_and_preserves_first_observed(tmp_path):
+>       p=build(tmp_path)[0];refresh([p],tmp_path);before=read(tmp_path,'reports/r20r1r1/MATURITY_DEBT_READBACK.json');old=next(iter(before['proofs_by_enrollment_horizon'].values()));old_bytes=(tmp_path/old['FIRST_OBSERVED']['path']).read_bytes()
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:99: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_corrected_source_appends_0')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+____________ test_duplicate_packet_cannot_change_existing_receipt _____________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_duplicate_packet_cannot_c0')
+
+    def test_duplicate_packet_cannot_change_existing_receipt(tmp_path):
+>       p=build(tmp_path)[0];refresh([p],tmp_path);before=(tmp_path/'reports/r20r1r1/MATURITY_DEBT_READBACK.json').read_bytes()
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:106: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_duplicate_packet_cannot_c0')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+__________ test_corrected_source_cannot_overwrite_first_observation ___________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_corrected_source_cannot_o0')
+
+    def test_corrected_source_cannot_overwrite_first_observation(tmp_path):
+>       p=build(tmp_path)[0];refresh([p],tmp_path);view=read(tmp_path,'reports/r20r1r1/MATURITY_DEBT_READBACK.json');b=next(iter(view['proofs_by_enrollment_horizon'].values()))['FIRST_OBSERVED'];proof=exact(b,tmp_path);proof['packet']['horizon']=20;put(tmp_path,b['path'],proof)
+          ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r1_maturity.py:114: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_corrected_source_cannot_o0')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+__________________ test_production_shaped_batch_positive[1] ___________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_production_shaped_batch_p0')
+n = 1
+
+    @pytest.mark.parametrize('n',[1,3,5,10,20])
+    def test_production_shaped_batch_positive(tmp_path,n):
+>       p=build(tmp_path,(n,))[0];before=(ROOT/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes()
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+__________________ test_production_shaped_batch_positive[3] ___________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_production_shaped_batch_p1')
+n = 3
+
+    @pytest.mark.parametrize('n',[1,3,5,10,20])
+    def test_production_shaped_batch_positive(tmp_path,n):
+>       p=build(tmp_path,(n,))[0];before=(ROOT/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes()
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+__________________ test_production_shaped_batch_positive[5] ___________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_production_shaped_batch_p2')
+n = 5
+
+    @pytest.mark.parametrize('n',[1,3,5,10,20])
+    def test_production_shaped_batch_positive(tmp_path,n):
+>       p=build(tmp_path,(n,))[0];before=(ROOT/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes()
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+__________________ test_production_shaped_batch_positive[10] __________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_production_shaped_batch_p3')
+n = 10
+
+    @pytest.mark.parametrize('n',[1,3,5,10,20])
+    def test_production_shaped_batch_positive(tmp_path,n):
+>       p=build(tmp_path,(n,))[0];before=(ROOT/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes()
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+__________________ test_production_shaped_batch_positive[20] __________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_production_shaped_batch_p4')
+n = 20
+
+    @pytest.mark.parametrize('n',[1,3,5,10,20])
+    def test_production_shaped_batch_positive(tmp_path,n):
+>       p=build(tmp_path,(n,))[0];before=(ROOT/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes()
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+_________ test_incremental_coverage_and_duplicate_preserve_pass_keep __________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_incremental_coverage_and_0')
+
+    def test_incremental_coverage_and_duplicate_preserve_pass_keep(tmp_path):
+>       ps=build(tmp_path);refresh([],tmp_path);assert state_oracle(tmp_path)['aggregate_state']=='OPEN'
+           ^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:37: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+________ test_native_schema_semantic_negatives[invented_source_fields] ________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_native_schema_semantic_ne0')
+bad = 'invented_source_fields'
+
+    @pytest.mark.parametrize('bad',['invented_source_fields','unknown_adjustment','missing_qfq','ambiguous_identity','wrong_artifact_date','receipt_date','parent_component','parent_digest','wrong_target','wrong_source_revision','wrong_source_bar','unbound_source_inputs'])
+    def test_native_schema_semantic_negatives(tmp_path,bad):
+>       p=build(tmp_path,(1,))[0]
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+__________ test_native_schema_semantic_negatives[unknown_adjustment] __________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_native_schema_semantic_ne1')
+bad = 'unknown_adjustment'
+
+    @pytest.mark.parametrize('bad',['invented_source_fields','unknown_adjustment','missing_qfq','ambiguous_identity','wrong_artifact_date','receipt_date','parent_component','parent_digest','wrong_target','wrong_source_revision','wrong_source_bar','unbound_source_inputs'])
+    def test_native_schema_semantic_negatives(tmp_path,bad):
+>       p=build(tmp_path,(1,))[0]
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+_____________ test_native_schema_semantic_negatives[missing_qfq] ______________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_native_schema_semantic_ne2')
+bad = 'missing_qfq'
+
+    @pytest.mark.parametrize('bad',['invented_source_fields','unknown_adjustment','missing_qfq','ambiguous_identity','wrong_artifact_date','receipt_date','parent_component','parent_digest','wrong_target','wrong_source_revision','wrong_source_bar','unbound_source_inputs'])
+    def test_native_schema_semantic_negatives(tmp_path,bad):
+>       p=build(tmp_path,(1,))[0]
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+__________ test_native_schema_semantic_negatives[ambiguous_identity] __________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_native_schema_semantic_ne3')
+bad = 'ambiguous_identity'
+
+    @pytest.mark.parametrize('bad',['invented_source_fields','unknown_adjustment','missing_qfq','ambiguous_identity','wrong_artifact_date','receipt_date','parent_component','parent_digest','wrong_target','wrong_source_revision','wrong_source_bar','unbound_source_inputs'])
+    def test_native_schema_semantic_negatives(tmp_path,bad):
+>       p=build(tmp_path,(1,))[0]
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+_________ test_native_schema_semantic_negatives[wrong_artifact_date] __________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_native_schema_semantic_ne4')
+bad = 'wrong_artifact_date'
+
+    @pytest.mark.parametrize('bad',['invented_source_fields','unknown_adjustment','missing_qfq','ambiguous_identity','wrong_artifact_date','receipt_date','parent_component','parent_digest','wrong_target','wrong_source_revision','wrong_source_bar','unbound_source_inputs'])
+    def test_native_schema_semantic_negatives(tmp_path,bad):
+>       p=build(tmp_path,(1,))[0]
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+_____________ test_native_schema_semantic_negatives[receipt_date] _____________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_native_schema_semantic_ne5')
+bad = 'receipt_date'
+
+    @pytest.mark.parametrize('bad',['invented_source_fields','unknown_adjustment','missing_qfq','ambiguous_identity','wrong_artifact_date','receipt_date','parent_component','parent_digest','wrong_target','wrong_source_revision','wrong_source_bar','unbound_source_inputs'])
+    def test_native_schema_semantic_negatives(tmp_path,bad):
+>       p=build(tmp_path,(1,))[0]
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+___________ test_native_schema_semantic_negatives[parent_component] ___________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_native_schema_semantic_ne6')
+bad = 'parent_component'
+
+    @pytest.mark.parametrize('bad',['invented_source_fields','unknown_adjustment','missing_qfq','ambiguous_identity','wrong_artifact_date','receipt_date','parent_component','parent_digest','wrong_target','wrong_source_revision','wrong_source_bar','unbound_source_inputs'])
+    def test_native_schema_semantic_negatives(tmp_path,bad):
+>       p=build(tmp_path,(1,))[0]
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+____________ test_native_schema_semantic_negatives[parent_digest] _____________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_native_schema_semantic_ne7')
+bad = 'parent_digest'
+
+    @pytest.mark.parametrize('bad',['invented_source_fields','unknown_adjustment','missing_qfq','ambiguous_identity','wrong_artifact_date','receipt_date','parent_component','parent_digest','wrong_target','wrong_source_revision','wrong_source_bar','unbound_source_inputs'])
+    def test_native_schema_semantic_negatives(tmp_path,bad):
+>       p=build(tmp_path,(1,))[0]
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+_____________ test_native_schema_semantic_negatives[wrong_target] _____________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_native_schema_semantic_ne8')
+bad = 'wrong_target'
+
+    @pytest.mark.parametrize('bad',['invented_source_fields','unknown_adjustment','missing_qfq','ambiguous_identity','wrong_artifact_date','receipt_date','parent_component','parent_digest','wrong_target','wrong_source_revision','wrong_source_bar','unbound_source_inputs'])
+    def test_native_schema_semantic_negatives(tmp_path,bad):
+>       p=build(tmp_path,(1,))[0]
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+________ test_native_schema_semantic_negatives[wrong_source_revision] _________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_native_schema_semantic_ne9')
+bad = 'wrong_source_revision'
+
+    @pytest.mark.parametrize('bad',['invented_source_fields','unknown_adjustment','missing_qfq','ambiguous_identity','wrong_artifact_date','receipt_date','parent_component','parent_digest','wrong_target','wrong_source_revision','wrong_source_bar','unbound_source_inputs'])
+    def test_native_schema_semantic_negatives(tmp_path,bad):
+>       p=build(tmp_path,(1,))[0]
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+___________ test_native_schema_semantic_negatives[wrong_source_bar] ___________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_native_schema_semantic_ne10')
+bad = 'wrong_source_bar'
+
+    @pytest.mark.parametrize('bad',['invented_source_fields','unknown_adjustment','missing_qfq','ambiguous_identity','wrong_artifact_date','receipt_date','parent_component','parent_digest','wrong_target','wrong_source_revision','wrong_source_bar','unbound_source_inputs'])
+    def test_native_schema_semantic_negatives(tmp_path,bad):
+>       p=build(tmp_path,(1,))[0]
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+________ test_native_schema_semantic_negatives[unbound_source_inputs] _________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_native_schema_semantic_ne11')
+bad = 'unbound_source_inputs'
+
+    @pytest.mark.parametrize('bad',['invented_source_fields','unknown_adjustment','missing_qfq','ambiguous_identity','wrong_artifact_date','receipt_date','parent_component','parent_digest','wrong_target','wrong_source_revision','wrong_source_bar','unbound_source_inputs'])
+    def test_native_schema_semantic_negatives(tmp_path,bad):
+>       p=build(tmp_path,(1,))[0]
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+____________ test_production_authority_negatives[missing_receipt] _____________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_production_authority_nega0')
+bad = 'missing_receipt'
+
+    @pytest.mark.parametrize('bad',['missing_receipt','receipt_artifact_bytes','chain_membership','missing_session','chain_parent','incomplete_final_components','invented_head_list'])
+    def test_production_authority_negatives(tmp_path,bad):
+>       p=build(tmp_path,(3,))[0];h=read(tmp_path,'data/v4/V4_DATA_ACCEPTED_HEAD.json');ch=exact(h['accepted_chain'],tmp_path)
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+_________ test_production_authority_negatives[receipt_artifact_bytes] _________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_production_authority_nega1')
+bad = 'receipt_artifact_bytes'
+
+    @pytest.mark.parametrize('bad',['missing_receipt','receipt_artifact_bytes','chain_membership','missing_session','chain_parent','incomplete_final_components','invented_head_list'])
+    def test_production_authority_negatives(tmp_path,bad):
+>       p=build(tmp_path,(3,))[0];h=read(tmp_path,'data/v4/V4_DATA_ACCEPTED_HEAD.json');ch=exact(h['accepted_chain'],tmp_path)
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+____________ test_production_authority_negatives[chain_membership] ____________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_production_authority_nega2')
+bad = 'chain_membership'
+
+    @pytest.mark.parametrize('bad',['missing_receipt','receipt_artifact_bytes','chain_membership','missing_session','chain_parent','incomplete_final_components','invented_head_list'])
+    def test_production_authority_negatives(tmp_path,bad):
+>       p=build(tmp_path,(3,))[0];h=read(tmp_path,'data/v4/V4_DATA_ACCEPTED_HEAD.json');ch=exact(h['accepted_chain'],tmp_path)
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+____________ test_production_authority_negatives[missing_session] _____________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_production_authority_nega3')
+bad = 'missing_session'
+
+    @pytest.mark.parametrize('bad',['missing_receipt','receipt_artifact_bytes','chain_membership','missing_session','chain_parent','incomplete_final_components','invented_head_list'])
+    def test_production_authority_negatives(tmp_path,bad):
+>       p=build(tmp_path,(3,))[0];h=read(tmp_path,'data/v4/V4_DATA_ACCEPTED_HEAD.json');ch=exact(h['accepted_chain'],tmp_path)
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+______________ test_production_authority_negatives[chain_parent] ______________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_production_authority_nega4')
+bad = 'chain_parent'
+
+    @pytest.mark.parametrize('bad',['missing_receipt','receipt_artifact_bytes','chain_membership','missing_session','chain_parent','incomplete_final_components','invented_head_list'])
+    def test_production_authority_negatives(tmp_path,bad):
+>       p=build(tmp_path,(3,))[0];h=read(tmp_path,'data/v4/V4_DATA_ACCEPTED_HEAD.json');ch=exact(h['accepted_chain'],tmp_path)
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+______ test_production_authority_negatives[incomplete_final_components] _______
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_production_authority_nega5')
+bad = 'incomplete_final_components'
+
+    @pytest.mark.parametrize('bad',['missing_receipt','receipt_artifact_bytes','chain_membership','missing_session','chain_parent','incomplete_final_components','invented_head_list'])
+    def test_production_authority_negatives(tmp_path,bad):
+>       p=build(tmp_path,(3,))[0];h=read(tmp_path,'data/v4/V4_DATA_ACCEPTED_HEAD.json');ch=exact(h['accepted_chain'],tmp_path)
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+___________ test_production_authority_negatives[invented_head_list] ___________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_production_authority_nega6')
+bad = 'invented_head_list'
+
+    @pytest.mark.parametrize('bad',['missing_receipt','receipt_artifact_bytes','chain_membership','missing_session','chain_parent','incomplete_final_components','invented_head_list'])
+    def test_production_authority_negatives(tmp_path,bad):
+>       p=build(tmp_path,(3,))[0];h=read(tmp_path,'data/v4/V4_DATA_ACCEPTED_HEAD.json');ch=exact(h['accepted_chain'],tmp_path)
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+________ test_projection_deterministic_source_immutable_and_t0_mapping ________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_projection_deterministic_0')
+
+    def test_projection_deterministic_source_immutable_and_t0_mapping(tmp_path):
+>       p=build(tmp_path,(5,))[0];before={b['path']:(tmp_path/b['path']).read_bytes() for b in p['accepted_endpoints']};value=exact(p['projection'],tmp_path)
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+___________ test_projection_digest_tracks_exact_descriptor_changes ____________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_projection_digest_tracks_0')
+
+    def test_projection_digest_tracks_exact_descriptor_changes(tmp_path):
+>       p=build(tmp_path,(1,))[0];old=p['projection']['sha256']
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+___________ test_independent_oracle_fail_closed[projection_missing] ___________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_independent_oracle_fail_c0')
+bad = 'projection_missing'
+
+    @pytest.mark.parametrize('bad',['projection_missing','projection_t0_math','outcome_math','pit','one_horizon_full','one_horizon_global_unblock'])
+    def test_independent_oracle_fail_closed(tmp_path,bad):
+>       p=build(tmp_path,(1,))[0]
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+___________ test_independent_oracle_fail_closed[projection_t0_math] ___________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_independent_oracle_fail_c1')
+bad = 'projection_t0_math'
+
+    @pytest.mark.parametrize('bad',['projection_missing','projection_t0_math','outcome_math','pit','one_horizon_full','one_horizon_global_unblock'])
+    def test_independent_oracle_fail_closed(tmp_path,bad):
+>       p=build(tmp_path,(1,))[0]
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+______________ test_independent_oracle_fail_closed[outcome_math] ______________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_independent_oracle_fail_c2')
+bad = 'outcome_math'
+
+    @pytest.mark.parametrize('bad',['projection_missing','projection_t0_math','outcome_math','pit','one_horizon_full','one_horizon_global_unblock'])
+    def test_independent_oracle_fail_closed(tmp_path,bad):
+>       p=build(tmp_path,(1,))[0]
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+__________________ test_independent_oracle_fail_closed[pit] ___________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_independent_oracle_fail_c3')
+bad = 'pit'
+
+    @pytest.mark.parametrize('bad',['projection_missing','projection_t0_math','outcome_math','pit','one_horizon_full','one_horizon_global_unblock'])
+    def test_independent_oracle_fail_closed(tmp_path,bad):
+>       p=build(tmp_path,(1,))[0]
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+____________ test_independent_oracle_fail_closed[one_horizon_full] ____________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_independent_oracle_fail_c4')
+bad = 'one_horizon_full'
+
+    @pytest.mark.parametrize('bad',['projection_missing','projection_t0_math','outcome_math','pit','one_horizon_full','one_horizon_global_unblock'])
+    def test_independent_oracle_fail_closed(tmp_path,bad):
+>       p=build(tmp_path,(1,))[0]
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+_______ test_independent_oracle_fail_closed[one_horizon_global_unblock] _______
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_independent_oracle_fail_c5')
+bad = 'one_horizon_global_unblock'
+
+    @pytest.mark.parametrize('bad',['projection_missing','projection_t0_math','outcome_math','pit','one_horizon_full','one_horizon_global_unblock'])
+    def test_independent_oracle_fail_closed(tmp_path,bad):
+>       p=build(tmp_path,(1,))[0]
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+_____________ test_active_admission_rejects_old_fixture_shortcut ______________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_active_admission_rejects_0')
+
+    def test_active_admission_rejects_old_fixture_shortcut(tmp_path):
+        from scripts.r20r1r1_fixture import build as historical_fixture
+>       p=historical_fixture(tmp_path)[0]
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r1_fixture.py:17: in build
+    for b in copies:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_active_admission_rejects_0')
+path = 'data/v4/V4_14_ACCEPTED_HEAD.json', value = None
+raw = b'{\n  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",\n  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANT...TATE_REPLAY_DEGRADED_PASS",\n  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",\n  "version": "1.0.0"\n}\n'
+
+    def put(root,path,value=None,raw=None):
+        root=Path(root).resolve()
+>       if root==ROOT.resolve() or not (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to((ROOT/'reports/r20r1r1/engineering_fixtures').resolve())):raise ValueError('ISOLATED_TEST_NAMESPACE_REQUIRED')
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_TEST_NAMESPACE_REQUIRED
+
+scripts\r20r1r1_fixture.py:9: ValueError
+_______________ test_production_same_day_correction_append_only _______________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_production_same_day_corre0')
+
+    def test_production_same_day_correction_append_only(tmp_path):
+>       p=build(tmp_path,(1,))[0];refresh([p],tmp_path);old=read(tmp_path,'reports/r20r1r2/MATURITY_DEBT_READBACK.json');entry=next(iter(old['proofs_by_enrollment_horizon'].values()));old_bytes=(tmp_path/entry['FIRST_OBSERVED']['path']).read_bytes()
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:120: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+___ test_prior_same_day_revision_requires_explicit_accepted_record_binding ____
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_production_cutover_full_91472f79ac15/test_prior_same_day_revision_r0')
+
+    def test_prior_same_day_revision_requires_explicit_accepted_record_binding(tmp_path):
+>       p=build(tmp_path,(1,))[0];build(tmp_path,(1,),revision=2)
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r20r1r2_dm01.py:129: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r20r1r2_fixture.py:18: in build
+    for b in refs:put(root,b['path'],raw=(ROOT/b['path']).read_bytes())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r20r1r2_fixture.py:11: in put
+    require(root!=ROOT.resolve() and (root.is_relative_to(Path(tempfile.gettempdir()).resolve()) or root.is_relative_to(ROOT/'reports/r20r1r2/engineering_fixtures')) and p.is_relative_to(root),'ISOLATED_FIXTURE_NAMESPACE_ONLY')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, message = 'ISOLATED_FIXTURE_NAMESPACE_ONLY'
+
+    def require(ok,message):
+>       if not ok:raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ISOLATED_FIXTURE_NAMESPACE_ONLY
+
+scripts\r20r1r2_io.py:14: ValueError
+_____ test_fresh_v4_schema_has_revisionable_pit_and_publication_relations _____
+
+    def test_fresh_v4_schema_has_revisionable_pit_and_publication_relations():
+        with connect() as pg:
+            tables = {r[0] for r in pg.execute("select table_name from information_schema.tables where table_schema='v4'").fetchall()}
+            assert {"source_packages", "source_revisions", "security_lifecycle_facts", "security_membership_facts", "market_calendar_sessions", "universe_snapshots", "universe_members", "model_namespaces", "publications", "publication_heads", "publication_consumed_sources", "publication_revision_events", "namespace_migrations", "event_observations", "state_heads"} <= tables
+            versions = pg.execute("select version from v4_meta.schema_migrations order by version").fetchall()
+>           assert {"V4_PHASE0_FOUNDATION_V1", "V4_PHASE0_NAMESPACE_INTEGRITY_V1", "V4_PHASE0_CONTRACT_ALIGNMENT_R2", "V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2", "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2", "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2", "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2", "V4_PRIOR_SESSION_STATE_FREEZE_INTEGRITY_R3", "V4_SECURITY_LIFECYCLE_HISTORY_R5_V1", "V4_SECURITY_MEMBERSHIP_INTERVAL_R6_2_V1", "V4_PROVIDER_LIFECYCLE_FACT_R6_2_V1"} <= {x[0] for x in versions}
+E           AssertionError: assert {'V4_FACT_SOU...RITY_R3', ...} <= {'FEP_E5_CANO..._FIELDS', ...}
+E             
+E             Extra items in the left set:
+E             'V4_SECURITY_LIFECYCLE_HISTORY_R5_V1'
+E             'V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2'
+E             'V4_PHASE0_CONTRACT_ALIGNMENT_R2'
+E             'V4_PROVIDER_LIFECYCLE_FACT_R6_2_V1'
+E             'V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2'...
+E             
+E             ...Full output truncated (6 lines hidden), use '-vv' to show
+
+tests\v4_phase0\test_postgres_schema.py:91: AssertionError
+______ test_r5_security_lifecycle_history_contract_matches_formal_schema ______
+
+    def test_r5_security_lifecycle_history_contract_matches_formal_schema():
+        contract = json.loads((ROOT / "config/v4_security_lifecycle_history_v1.json").read_text("utf-8"))
+        with connect() as pg:
+            columns = {r[0] for r in pg.execute(
+                "select column_name from information_schema.columns where table_schema='v4' and table_name='security_lifecycle_history'"
+            ).fetchall()}
+            migration = pg.execute(
+                "select checksum_sha256 from v4_meta.schema_migrations where version='V4_SECURITY_LIFECYCLE_HISTORY_R5_V1'"
+            ).fetchone()
+            triggers = {r[0] for r in pg.execute(
+                "select tgname from pg_trigger where tgrelid='v4.security_lifecycle_history'::regclass and not tgisinternal"
+            ).fetchall()}
+        assert set(contract["required_fields"]) <= columns
+>       assert migration is not None
+E       assert None is not None
+
+tests\v4_phase0\test_postgres_schema.py:336: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_r18b_persisted.py::test_fresh_process_pair_revision_and_determinism
+FAILED tests/test_r20r1r1_maturity.py::test_positive_reconstructed_t1_is_reachable
+FAILED tests/test_r20r1r1_maturity.py::test_incremental_all_horizons_and_old_snapshots_revalidate
+FAILED tests/test_r20r1r1_maturity.py::test_duplicate_exact_packet_is_idempotent
+FAILED tests/test_r20r1r1_maturity.py::test_negative_packets_fail_closed[synthetic_owner]
+FAILED tests/test_r20r1r1_maturity.py::test_negative_packets_fail_closed[unsealed_owner]
+FAILED tests/test_r20r1r1_maturity.py::test_negative_packets_fail_closed[enrollment_mismatch]
+FAILED tests/test_r20r1r1_maturity.py::test_negative_packets_fail_closed[freeze_mismatch]
+FAILED tests/test_r20r1r1_maturity.py::test_negative_packets_fail_closed[raw_provider]
+FAILED tests/test_r20r1r1_maturity.py::test_negative_packets_fail_closed[prices_only]
+FAILED tests/test_r20r1r1_maturity.py::test_negative_packets_fail_closed[unaccepted_endpoint]
+FAILED tests/test_r20r1r1_maturity.py::test_negative_packets_fail_closed[before_freeze]
+FAILED tests/test_r20r1r1_maturity.py::test_negative_packets_fail_closed[wrong_horizon]
+FAILED tests/test_r20r1r1_maturity.py::test_negative_packets_fail_closed[wrong_due]
+FAILED tests/test_r20r1r1_maturity.py::test_negative_packets_fail_closed[corrupted_outcome]
+FAILED tests/test_r20r1r1_maturity.py::test_negative_packets_fail_closed[boolean_proof]
+FAILED tests/test_r20r1r1_maturity.py::test_negative_packets_fail_closed[PIT_upgrade]
+FAILED tests/test_r20r1r1_maturity.py::test_negative_packets_fail_closed[realtime_upgrade]
+FAILED tests/test_r20r1r1_maturity.py::test_negative_packets_fail_closed[incomplete_path]
+FAILED tests/test_r20r1r1_maturity.py::test_negative_packets_fail_closed[T0_in_path]
+FAILED tests/test_r20r1r1_maturity.py::test_negative_packets_fail_closed[corrupt_exact_bytes]
+FAILED tests/test_r20r1r1_maturity.py::test_negative_packets_fail_closed[unknown_data_snapshot]
+FAILED tests/test_r20r1r1_maturity.py::test_negative_packets_fail_closed[nonfinite_outcome]
+FAILED tests/test_r20r1r1_maturity.py::test_mixed_accepted_basis_rejected_even_after_exact_rebinding
+FAILED tests/test_r20r1r1_maturity.py::test_independent_coverage_oracle_rejects_overclaims[full_after_t1]
+FAILED tests/test_r20r1r1_maturity.py::test_independent_coverage_oracle_rejects_overclaims[global_unblock_after_t1]
+FAILED tests/test_r20r1r1_maturity.py::test_independent_coverage_oracle_rejects_overclaims[invent_horizon]
+FAILED tests/test_r20r1r1_maturity.py::test_independent_coverage_oracle_rejects_overclaims[PIT_upgrade]
+FAILED tests/test_r20r1r1_maturity.py::test_independent_coverage_oracle_rejects_overclaims[stage_authorized]
+FAILED tests/test_r20r1r1_maturity.py::test_readback_tamper_cannot_invent_coverage
+FAILED tests/test_r20r1r1_maturity.py::test_corrected_source_appends_and_preserves_first_observed
+FAILED tests/test_r20r1r1_maturity.py::test_duplicate_packet_cannot_change_existing_receipt
+FAILED tests/test_r20r1r1_maturity.py::test_corrected_source_cannot_overwrite_first_observation
+FAILED tests/test_r20r1r2_dm01.py::test_production_shaped_batch_positive[1]
+FAILED tests/test_r20r1r2_dm01.py::test_production_shaped_batch_positive[3]
+FAILED tests/test_r20r1r2_dm01.py::test_production_shaped_batch_positive[5]
+FAILED tests/test_r20r1r2_dm01.py::test_production_shaped_batch_positive[10]
+FAILED tests/test_r20r1r2_dm01.py::test_production_shaped_batch_positive[20]
+FAILED tests/test_r20r1r2_dm01.py::test_incremental_coverage_and_duplicate_preserve_pass_keep
+FAILED tests/test_r20r1r2_dm01.py::test_native_schema_semantic_negatives[invented_source_fields]
+FAILED tests/test_r20r1r2_dm01.py::test_native_schema_semantic_negatives[unknown_adjustment]
+FAILED tests/test_r20r1r2_dm01.py::test_native_schema_semantic_negatives[missing_qfq]
+FAILED tests/test_r20r1r2_dm01.py::test_native_schema_semantic_negatives[ambiguous_identity]
+FAILED tests/test_r20r1r2_dm01.py::test_native_schema_semantic_negatives[wrong_artifact_date]
+FAILED tests/test_r20r1r2_dm01.py::test_native_schema_semantic_negatives[receipt_date]
+FAILED tests/test_r20r1r2_dm01.py::test_native_schema_semantic_negatives[parent_component]
+FAILED tests/test_r20r1r2_dm01.py::test_native_schema_semantic_negatives[parent_digest]
+FAILED tests/test_r20r1r2_dm01.py::test_native_schema_semantic_negatives[wrong_target]
+FAILED tests/test_r20r1r2_dm01.py::test_native_schema_semantic_negatives[wrong_source_revision]
+FAILED tests/test_r20r1r2_dm01.py::test_native_schema_semantic_negatives[wrong_source_bar]
+FAILED tests/test_r20r1r2_dm01.py::test_native_schema_semantic_negatives[unbound_source_inputs]
+FAILED tests/test_r20r1r2_dm01.py::test_production_authority_negatives[missing_receipt]
+FAILED tests/test_r20r1r2_dm01.py::test_production_authority_negatives[receipt_artifact_bytes]
+FAILED tests/test_r20r1r2_dm01.py::test_production_authority_negatives[chain_membership]
+FAILED tests/test_r20r1r2_dm01.py::test_production_authority_negatives[missing_session]
+FAILED tests/test_r20r1r2_dm01.py::test_production_authority_negatives[chain_parent]
+FAILED tests/test_r20r1r2_dm01.py::test_production_authority_negatives[incomplete_final_components]
+FAILED tests/test_r20r1r2_dm01.py::test_production_authority_negatives[invented_head_list]
+FAILED tests/test_r20r1r2_dm01.py::test_projection_deterministic_source_immutable_and_t0_mapping
+FAILED tests/test_r20r1r2_dm01.py::test_projection_digest_tracks_exact_descriptor_changes
+FAILED tests/test_r20r1r2_dm01.py::test_independent_oracle_fail_closed[projection_missing]
+FAILED tests/test_r20r1r2_dm01.py::test_independent_oracle_fail_closed[projection_t0_math]
+FAILED tests/test_r20r1r2_dm01.py::test_independent_oracle_fail_closed[outcome_math]
+FAILED tests/test_r20r1r2_dm01.py::test_independent_oracle_fail_closed[pit]
+FAILED tests/test_r20r1r2_dm01.py::test_independent_oracle_fail_closed[one_horizon_full]
+FAILED tests/test_r20r1r2_dm01.py::test_independent_oracle_fail_closed[one_horizon_global_unblock]
+FAILED tests/test_r20r1r2_dm01.py::test_active_admission_rejects_old_fixture_shortcut
+FAILED tests/test_r20r1r2_dm01.py::test_production_same_day_correction_append_only
+FAILED tests/test_r20r1r2_dm01.py::test_prior_same_day_revision_requires_explicit_accepted_record_binding
+FAILED tests/v4_phase0/test_postgres_schema.py::test_fresh_v4_schema_has_revisionable_pit_and_publication_relations
+FAILED tests/v4_phase0/test_postgres_schema.py::test_r5_security_lifecycle_history_contract_matches_formal_schema
+71 failed, 4724 passed, 2 skipped in 2454.44s (0:40:54)

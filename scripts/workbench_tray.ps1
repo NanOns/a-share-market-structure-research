@@ -8,7 +8,7 @@ $projectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $pythonExe = 'E:\python\python.exe'
 if (-not (Test-Path -LiteralPath $pythonExe)) { $pythonExe = 'python' }
 $baseUrl = 'http://127.0.0.1:28765'
-$configuredPostgres = (Get-Content -LiteralPath (Join-Path $projectRoot 'config/workbench.yaml') -Raw) -match '(?m)^\s{4}engine:\s*["'']?postgresql'
+$configuredPostgres = $false # V4 default reads exact accepted artifacts; no legacy database dependency
 $localPgConfig = Join-Path $projectRoot 'config/.env'
 $confirmation = '我确认进入维护窗口'
 $created = $false
@@ -16,8 +16,8 @@ $mutex = New-Object System.Threading.Mutex($true, 'Local\DaAWorkbenchTray', [ref
 if (-not $created) {
     if ($OpenWorkbench) {
         try { $existing = Invoke-RestMethod -Uri ($baseUrl + '/api/operations/status') -TimeoutSec 2 } catch { $existing = $null }
-        if ($configuredPostgres -and ($null -eq $existing -or $existing.backend -ne 'postgresql')) {
-            throw 'PostgreSQL 工作台未就绪；已阻止打开旧版数据。'
+        if ($null -eq $existing -or $existing.service_mode -ne 'V4_DEFAULT_WORKBENCH') {
+            throw 'V4 工作台未就绪，请检查 V4 服务状态。'
         }
         Start-Process ($baseUrl + '/')
     }
@@ -32,21 +32,21 @@ function Get-ServiceStatus {
 function Start-WorkbenchService {
     $status = Get-ServiceStatus
     if ($null -ne $status) {
-        if ($configuredPostgres -and $status.backend -ne 'postgresql') {
-            throw '当前服务连接旧 DuckDB，与 PostgreSQL 配置不符；已阻止打开旧数据。请配置 WORKBENCH_PG_DSN 后重启服务。'
+        if ($status.service_mode -ne 'V4_DEFAULT_WORKBENCH') {
+            throw '当前端口由其他版本服务占用，请停止旧服务后启动 V4 工作台。'
         }
         return $status
     }
     if ($configuredPostgres -and -not $env:WORKBENCH_PG_DSN -and -not (Test-Path -LiteralPath $localPgConfig)) {
         throw '缺少 WORKBENCH_PG_DSN，无法启动 PostgreSQL 工作台；不会回退到旧 DuckDB。'
     }
-    Start-Process -FilePath $pythonExe -ArgumentList @('run_workbench_service.py','--host','127.0.0.1','--port','28765') -WorkingDirectory $projectRoot -WindowStyle Hidden | Out-Null
+    Start-Process -FilePath $pythonExe -ArgumentList @('run_workbench_service.py','--v4-default','--host','127.0.0.1','--port','28765') -WorkingDirectory $projectRoot -WindowStyle Hidden | Out-Null
     $deadline = (Get-Date).AddSeconds(30)
     do {
         Start-Sleep -Milliseconds 500
         $status = Get-ServiceStatus
         if ($null -ne $status) {
-            if ($configuredPostgres -and $status.backend -ne 'postgresql') { throw '工作台启动后仍连接旧 DuckDB，已阻止打开。' }
+            if ($status.service_mode -ne 'V4_DEFAULT_WORKBENCH') { throw '启动后的服务不是 V4 工作台。' }
             return $status
         }
     } while ((Get-Date) -lt $deadline)
@@ -54,7 +54,7 @@ function Start-WorkbenchService {
 }
 
 function Get-CsrfToken {
-    $page = Invoke-WebRequest -UseBasicParsing -Uri ($baseUrl + '/operations') -TimeoutSec 3
+    $page = Invoke-WebRequest -UseBasicParsing -Uri ($baseUrl + '/v4#health') -TimeoutSec 3
     $match = [regex]::Match($page.Content, "const csrf='([^']+)'")
     if (-not $match.Success) { throw '无法读取服务控制令牌' }
     return $match.Groups[1].Value
@@ -91,7 +91,7 @@ $menu = New-Object System.Windows.Forms.ContextMenuStrip
 
 $statusItem = New-Object System.Windows.Forms.ToolStripMenuItem('服务状态：检查中')
 $statusItem.Enabled = $false
-$openItem = New-Object System.Windows.Forms.ToolStripMenuItem('打开 V3 工作台')
+$openItem = New-Object System.Windows.Forms.ToolStripMenuItem('打开 V4 工作台')
 $opsItem = New-Object System.Windows.Forms.ToolStripMenuItem('打开运维中心')
 $startItem = New-Object System.Windows.Forms.ToolStripMenuItem('启动服务')
 $restartItem = New-Object System.Windows.Forms.ToolStripMenuItem('重启服务')
@@ -110,22 +110,22 @@ $notify.ContextMenuStrip = $menu
 
 function Refresh-TrayStatus {
     $status = Get-ServiceStatus
-    $ready = $null -ne $status
+    $ready = $null -ne $status -and $status.service_mode -eq 'V4_DEFAULT_WORKBENCH' -and $status.service_state -eq 'READY'
     if ($ready) {
-        $statusItem.Text = '服务状态：运行中（PID ' + $status.service_pid + '）'
+        $statusItem.Text = '服务状态：V4 运行中（只读）'
         $notify.Text = '大A交易工作台：运行中'
     } else {
-        $statusItem.Text = '服务状态：已停止'
-        $notify.Text = '大A交易工作台：已停止'
+        $statusItem.Text = '服务状态：未就绪'
+        $notify.Text = '大A交易工作台：未就绪'
     }
     $startItem.Enabled = -not $ready
-    $restartItem.Enabled = $ready
-    $stopItem.Enabled = $ready
-    $stopExitItem.Enabled = $ready
+    $restartItem.Enabled = $false # Read-only V4 HTTP service exposes no control writes
+    $stopItem.Enabled = $false
+    $stopExitItem.Enabled = $false
 }
 
 $openItem.Add_Click({ try { Start-WorkbenchService | Out-Null; Start-Process ($baseUrl + '/') } catch { [System.Windows.Forms.MessageBox]::Show($_.Exception.Message,'工作台') | Out-Null } })
-$opsItem.Add_Click({ try { Start-WorkbenchService | Out-Null; Start-Process ($baseUrl + '/operations') } catch { [System.Windows.Forms.MessageBox]::Show($_.Exception.Message,'工作台') | Out-Null } })
+$opsItem.Add_Click({ try { Start-WorkbenchService | Out-Null; Start-Process ($baseUrl + '/v4#health') } catch { [System.Windows.Forms.MessageBox]::Show($_.Exception.Message,'工作台') | Out-Null } })
 $startItem.Add_Click({ try { Start-WorkbenchService | Out-Null; Refresh-TrayStatus } catch { [System.Windows.Forms.MessageBox]::Show($_.Exception.Message,'启动失败') | Out-Null } })
 $restartItem.Add_Click({ try { Invoke-ServiceControl 'restart' | Out-Null; $notify.ShowBalloonTip(2500,'大A交易工作台','服务正在受控重启',[System.Windows.Forms.ToolTipIcon]::Info) } catch { [System.Windows.Forms.MessageBox]::Show($_.Exception.Message,'重启失败') | Out-Null } })
 $stopItem.Add_Click({ try { Invoke-ServiceControl 'stop' | Out-Null; $notify.ShowBalloonTip(2000,'大A交易工作台','服务正在停止',[System.Windows.Forms.ToolTipIcon]::Info) } catch { [System.Windows.Forms.MessageBox]::Show($_.Exception.Message,'停止失败') | Out-Null } })
@@ -141,7 +141,7 @@ try { Start-WorkbenchService | Out-Null } catch { $notify.ShowBalloonTip(4000,'�
 Refresh-TrayStatus
 if ($OpenWorkbench) {
     $status = Get-ServiceStatus
-    if ($null -ne $status -and ((-not $configuredPostgres) -or $status.backend -eq 'postgresql')) { Start-Process ($baseUrl + '/') }
+    if ($null -ne $status -and $status.service_mode -eq 'V4_DEFAULT_WORKBENCH') { Start-Process ($baseUrl + '/') }
 }
 [System.Windows.Forms.Application]::Run()
 $timer.Dispose()

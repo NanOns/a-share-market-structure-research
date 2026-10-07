@@ -267,10 +267,15 @@ def _identity_inventory(root: Path) -> dict[str, Any]:
     computation = computation_identity(root)
     render = render_identity(root)
     execution = v2_execution_identity(root)
+    scope = {'historical_role': 'LEGACY_DIAGNOSTIC_ONLY', 'runtime_permission': False,
+             'historical_replay_is_current_acceptance': False}
+    if (root / 'config/v4_legacy_release_scope_v1.json').is_file():
+        from workbench_analysis.v4_legacy_release_scope import release_scope
+        scope = release_scope(root)
     return {
         "status": "PASS",
         "separation": {
-            "source_identity": "source-identity-v1.0 (current release pointer)",
+            "source_identity": "source-identity-v1.0 (historical V1 diagnostic pointer)",
             "computation_identity": computation["version"],
             "render_identity": render["version"],
             "v2_execution_identity": execution["version"],
@@ -278,6 +283,7 @@ def _identity_inventory(root: Path) -> dict[str, Any]:
             "forward_evaluation_identity": forward.get("identity", {}).get("version"),
         },
         "current_release": {
+            "authority_scope": scope['historical_role'],
             "date": current.get("latest_release", {}).get("date"),
             "run_id": current.get("latest_release", {}).get("run_id"),
             "source_identity_sha256": current.get("latest_release", {}).get("source_identity", {}).get("sha256"),
@@ -289,6 +295,7 @@ def _identity_inventory(root: Path) -> dict[str, Any]:
             "render_identity_sha256": render["sha256"],
             "v2_execution_identity_sha256": execution["sha256"],
         },
+        "release_authority_scope": scope,
         "v2_contracts": {
             "economic_model_identity": workbench.get("identity", {}).get("economic_model_identity"),
             "queue_ranking_contract": workbench.get("identity", {}).get("queue_ranking_contract"),

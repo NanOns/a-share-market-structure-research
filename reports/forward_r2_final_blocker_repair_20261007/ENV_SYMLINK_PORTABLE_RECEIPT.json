@@ -1,0 +1,26 @@
+{
+  "original_assertions_preserved": true,
+  "original_platform_skips": [
+    {
+      "node": "tests.v4_phase0.test_tdx_local_snapshot::test_symlink_input_is_rejected",
+      "reason": "symlink creation unavailable"
+    },
+    {
+      "node": "tests.v4_phase0.test_tdx_snapshot::test_extracted_symlink_is_rejected",
+      "reason": "symlink creation is unavailable on this runner"
+    }
+  ],
+  "portable_passed": 2,
+  "real_junction_child_boundary": {
+    "bytes": 2037,
+    "path": "reports/forward_r2_final_blocker_repair_20261007/TDX_PATH_GUARD_NEGATIVE_MATRIX.json",
+    "sha256": "090f14954022392cb26eee319e206c70cfba66e61dfd11c0e760593a649e058e"
+  },
+  "replay": {
+    "bytes": 811,
+    "path": "reports/forward_r2_final_blocker_repair_20261007/execution/raw_runs/final_blocker_v4_skip_closure.xml",
+    "sha256": "b8a2402672655249589b3196191b0f8df5f3c8288f30667d0cbd0a0909f15a4b"
+  },
+  "scope": "V4_PHASE0_SNAPSHOT_OWNERS",
+  "status": "V4_PORTABLE_EQUIVALENTS_PASS_WITH_EXPLICIT_PLATFORM_SKIPS"
+}

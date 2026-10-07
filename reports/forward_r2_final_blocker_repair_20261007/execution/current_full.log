@@ -1,0 +1,2967 @@
+.................................................................s...... [  1%]
+........................................................................ [  3%]
+........................................................................ [  4%]
+........................................................................ [  6%]
+........................................................................ [  7%]
+........................................................................ [  9%]
+........................................................................ [ 10%]
+........................................................................ [ 12%]
+........................................................................ [ 13%]
+........................................................................ [ 15%]
+........................................................................ [ 16%]
+........................................................................ [ 18%]
+........................................................................ [ 19%]
+........................................................................ [ 21%]
+........................................................................ [ 22%]
+........................................................................ [ 24%]
+........................................................................ [ 25%]
+........................................................................ [ 27%]
+........................................................................ [ 28%]
+........................................................................ [ 30%]
+........................................................................ [ 31%]
+........................................................................ [ 33%]
+........................................................................ [ 34%]
+........................................................................ [ 36%]
+........................................................................ [ 37%]
+........................................................................ [ 39%]
+........................................................................ [ 40%]
+........................................................................ [ 42%]
+........................................................................ [ 43%]
+........................................................................ [ 45%]
+........................................................................ [ 46%]
+........................................................................ [ 48%]
+........................................................................ [ 49%]
+........................................................................ [ 51%]
+........................................................................ [ 52%]
+........................................................................ [ 54%]
+........................................................................ [ 56%]
+........................................................................ [ 57%]
+........................................................................ [ 59%]
+........................................................................ [ 60%]
+........................................................................ [ 62%]
+........................................................................ [ 63%]
+........................................................................ [ 65%]
+........................................................................ [ 66%]
+........................................................................ [ 68%]
+........................................................................ [ 69%]
+........................................................................ [ 71%]
+..........................EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE [ 72%]
+EEEEEEEEEEEEEEEEEEEEEEE...............EEEEEEEE.EE....................... [ 74%]
+........................................................................ [ 75%]
+...E..E...................................EEEEEEE....................... [ 77%]
+........................................................................ [ 78%]
+........................................................................ [ 80%]
+........................................................................ [ 81%]
+.....................................................................s.. [ 83%]
+........................................................................ [ 84%]
+........................................................................ [ 86%]
+........................................................................ [ 87%]
+........................................................................ [ 89%]
+........................................................................ [ 90%]
+........................................................................ [ 92%]
+........................................................................ [ 93%]
+........................................................................ [ 95%]
+........................................................................ [ 96%]
+...................................................................s.... [ 98%]
+......s................................................................. [ 99%]
+.....                                                                    [100%]
+=================================== ERRORS ====================================
+_ ERROR at setup of test_r1_1_adversarial_api_vector[partial_prior_payload_rejected_in_accepted_mode] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[self_consistent_fake_prior_digest_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[prior_content_address_publication_id_mismatch_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[prior_missing_calendar_publication_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[prior_calendar_identity_mismatch_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[prior_trade_date_session_index_inconsistent_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[same_day_revision_exact_session_binding_pass] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[prior_session_transition_bound_calendar_pass] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[synthetic_prior_cannot_enter_accepted_mode] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[wrong_prior_ledger_identity_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[bare_true_model_boundary_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[authorized_boundary_pass] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[boundary_missing_manifest_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[boundary_wrong_from_model_contract_id_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[boundary_wrong_to_model_contract_id_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[boundary_wrong_effective_trade_date_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[boundary_manifest_digest_mismatch_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[boundary_unpublished_manifest_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[unbound_core_price_damage_cannot_change_state] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[unbound_risk_cannot_change_state] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[unbound_delta3_cannot_change_state] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[unbound_suspended_cannot_change_state] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[wrong_core_price_damage_producer_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[frozen_invalidation_true_before_owner_producer_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[episode_invalidation_contract_id_true_before_owner_producer_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[followup_complete_true_before_owner_producer_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[scenario_true_before_owner_producer_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[invalidation_wrong_publication_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[invalidation_contract_matches_but_unbound_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[not_implemented_fact_never_coerced_false] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[unbound_dq5_cannot_move_sector_health_or_expiry] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[wrong_risk_parameter_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[wrong_delta3_time_role_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[future_available_fact_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[published_future_timestamp_still_unavailable_at_T] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[registered_stock_producer_relabelled_sector_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[input_publication_ids_string_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[input_publication_ids_empty_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[input_publication_ids_empty_id_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[input_publication_ids_duplicate_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[input_publication_ids_nested_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[input_publication_ids_nonstr_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[exact_publication_membership_no_substring_match] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[input_manifest_digest_wrong_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[real_old_to_current_preserves_followup] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[real_boundary_current_episode_namespace_separate] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[old_model_prior_without_boundary_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+__ ERROR at setup of test_r1_1_adversarial_api_vector[wrong_real_from_model] __
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[wrong_real_from_parameter] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+___ ERROR at setup of test_r1_1_adversarial_api_vector[wrong_real_to_model] ___
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[wrong_real_effective_date] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[missing_old_source_publication] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[old_payload_digest_mismatch] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[old_source_authority_digest_mismatch] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[noop_model_boundary_rejected] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[SEED_cannot_suppress_trusted_fact] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[PREWATCH_cannot_suppress_trusted_fact] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[core_price_damage_cannot_suppress_trusted_fact] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[suspended_cannot_suppress_trusted_fact] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[risk_cannot_suppress_trusted_fact] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[delta3_cannot_suppress_trusted_fact] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[dq5_cannot_claim_not_implemented] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[dq5_implemented_unknown_publication_pass] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[delta3_implemented_unknown_publication_pass] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[stock_core_cannot_use_not_applicable] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[trusted_true_cannot_be_relabelled_implemented_unknown] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[PREWATCH_owner_mismatch_cannot_hide_fact] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_r1_1_adversarial_api_vector[SEED_owner_mismatch_cannot_hide_fact] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_direct_sql_forgery_gate_has_exact_rejection_reasons __
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_independent_python_and_sql_canonical_numeric_unicode_identity[0] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_independent_python_and_sql_canonical_numeric_unicode_identity[-0.0] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_independent_python_and_sql_canonical_numeric_unicode_identity[1.0] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_independent_python_and_sql_canonical_numeric_unicode_identity[1e-07] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_independent_python_and_sql_canonical_numeric_unicode_identity[1200000000000.0] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_independent_python_and_sql_canonical_numeric_unicode_identity[-3.01] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_independent_python_and_sql_canonical_numeric_unicode_identity[value6] _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_future_published_fact_not_available_by_cutoff_is_rejected _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+___ ERROR at setup of test_output_rows_are_not_a_controlled_publisher_input ___
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_owner_connection_does_not_implicitly_become_reducer_publisher _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_independent_postcheck_has_complete_axis_and_transition_coverage _
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+______ ERROR at setup of test_real_input_missing_confirmation_is_unknown ______
+
+    @pytest.fixture(scope='session')
+    def v410_disposable_dsn():
+        if os.environ.get('V4_10_DISPOSABLE_TEST_DSN'):
+            yield os.environ['V4_10_DISPOSABLE_TEST_DSN']
+            return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\conftest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=8251 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+____________ ERROR at setup of test_retry_consumer_and_append_only ____________
+
+    @pytest.fixture(scope='session')
+    def candidate_dsn():
+        dsn=os.environ.get('V4_10_DISPOSABLE_TEST_DSN')
+        if dsn:yield dsn;return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path('E:/Postgres/bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_11\conftest.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=7364 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+______________ ERROR at setup of test_event_publish_and_readback ______________
+
+    @pytest.fixture(scope='session')
+    def candidate_dsn():
+        dsn=os.environ.get('V4_10_DISPOSABLE_TEST_DSN')
+        if dsn:yield dsn;return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path('E:/Postgres/bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_11\conftest.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=7364 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+____________________ ERROR at setup of test_atomic_failure ____________________
+
+    @pytest.fixture(scope='session')
+    def candidate_dsn():
+        dsn=os.environ.get('V4_10_DISPOSABLE_TEST_DSN')
+        if dsn:yield dsn;return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path('E:/Postgres/bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_11\conftest.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=7364 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+__________________ ERROR at setup of test_migration_rollback __________________
+
+    @pytest.fixture(scope='session')
+    def candidate_dsn():
+        dsn=os.environ.get('V4_10_DISPOSABLE_TEST_DSN')
+        if dsn:yield dsn;return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path('E:/Postgres/bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_11\conftest.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=7364 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_______ ERROR at setup of test_semantic_migration_rollback_and_reapply ________
+
+    @pytest.fixture(scope='session')
+    def candidate_dsn():
+        dsn=os.environ.get('V4_10_DISPOSABLE_TEST_DSN')
+        if dsn:yield dsn;return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path('E:/Postgres/bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_11\conftest.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=7364 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_ ERROR at setup of test_direct_ordinary_writer_and_consumer_bypass_rejected __
+
+    @pytest.fixture(scope='session')
+    def candidate_dsn():
+        dsn=os.environ.get('V4_10_DISPOSABLE_TEST_DSN')
+        if dsn:yield dsn;return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path('E:/Postgres/bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_11\conftest.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=7364 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+_________ ERROR at setup of test_incomplete_publication_cannot_commit _________
+
+    @pytest.fixture(scope='session')
+    def candidate_dsn():
+        dsn=os.environ.get('V4_10_DISPOSABLE_TEST_DSN')
+        if dsn:yield dsn;return
+        from scripts.run_v4_08_r3_isolated_verification import disposable_cluster,apply_migrations
+>       with disposable_cluster(Path('E:/Postgres/bin')) as (dsn,temp):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_11\conftest.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts\run_v4_08_r3_isolated_verification.py:46: in disposable_cluster
+    with psycopg.connect(connection, autocommit=True) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=7364 user=postgres dbname=postgres', args = ()
+kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+>           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:64: ValueError
+=========================== short test summary info ===========================
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[partial_prior_payload_rejected_in_accepted_mode]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[self_consistent_fake_prior_digest_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[prior_content_address_publication_id_mismatch_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[prior_missing_calendar_publication_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[prior_calendar_identity_mismatch_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[prior_trade_date_session_index_inconsistent_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[same_day_revision_exact_session_binding_pass]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[prior_session_transition_bound_calendar_pass]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[synthetic_prior_cannot_enter_accepted_mode]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[wrong_prior_ledger_identity_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[bare_true_model_boundary_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[authorized_boundary_pass]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[boundary_missing_manifest_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[boundary_wrong_from_model_contract_id_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[boundary_wrong_to_model_contract_id_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[boundary_wrong_effective_trade_date_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[boundary_manifest_digest_mismatch_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[boundary_unpublished_manifest_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[unbound_core_price_damage_cannot_change_state]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[unbound_risk_cannot_change_state]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[unbound_delta3_cannot_change_state]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[unbound_suspended_cannot_change_state]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[wrong_core_price_damage_producer_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[frozen_invalidation_true_before_owner_producer_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[episode_invalidation_contract_id_true_before_owner_producer_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[followup_complete_true_before_owner_producer_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[scenario_true_before_owner_producer_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[invalidation_wrong_publication_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[invalidation_contract_matches_but_unbound_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[not_implemented_fact_never_coerced_false]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[unbound_dq5_cannot_move_sector_health_or_expiry]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[wrong_risk_parameter_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[wrong_delta3_time_role_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[future_available_fact_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[published_future_timestamp_still_unavailable_at_T]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[registered_stock_producer_relabelled_sector_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[input_publication_ids_string_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[input_publication_ids_empty_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[input_publication_ids_empty_id_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[input_publication_ids_duplicate_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[input_publication_ids_nested_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[input_publication_ids_nonstr_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[exact_publication_membership_no_substring_match]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[input_manifest_digest_wrong_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[real_old_to_current_preserves_followup]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[real_boundary_current_episode_namespace_separate]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[old_model_prior_without_boundary_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[wrong_real_from_model]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[wrong_real_from_parameter]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[wrong_real_to_model]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[wrong_real_effective_date]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[missing_old_source_publication]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[old_payload_digest_mismatch]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[old_source_authority_digest_mismatch]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[noop_model_boundary_rejected]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[SEED_cannot_suppress_trusted_fact]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[PREWATCH_cannot_suppress_trusted_fact]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[core_price_damage_cannot_suppress_trusted_fact]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[suspended_cannot_suppress_trusted_fact]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[risk_cannot_suppress_trusted_fact]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[delta3_cannot_suppress_trusted_fact]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[dq5_cannot_claim_not_implemented]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[dq5_implemented_unknown_publication_pass]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[delta3_implemented_unknown_publication_pass]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[stock_core_cannot_use_not_applicable]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[trusted_true_cannot_be_relabelled_implemented_unknown]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[PREWATCH_owner_mismatch_cannot_hide_fact]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_r1_1_adversarial_api_vector[SEED_owner_mismatch_cannot_hide_fact]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_direct_sql_forgery_gate_has_exact_rejection_reasons
+ERROR tests/v4_10/test_r1_1_lineage.py::test_independent_python_and_sql_canonical_numeric_unicode_identity[0]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_independent_python_and_sql_canonical_numeric_unicode_identity[-0.0]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_independent_python_and_sql_canonical_numeric_unicode_identity[1.0]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_independent_python_and_sql_canonical_numeric_unicode_identity[1e-07]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_independent_python_and_sql_canonical_numeric_unicode_identity[1200000000000.0]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_independent_python_and_sql_canonical_numeric_unicode_identity[-3.01]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_independent_python_and_sql_canonical_numeric_unicode_identity[value6]
+ERROR tests/v4_10/test_r1_1_lineage.py::test_future_published_fact_not_available_by_cutoff_is_rejected
+ERROR tests/v4_10/test_r1_2_publisher.py::test_output_rows_are_not_a_controlled_publisher_input
+ERROR tests/v4_10/test_r1_2_publisher.py::test_owner_connection_does_not_implicitly_become_reducer_publisher
+ERROR tests/v4_10/test_research_state.py::test_independent_postcheck_has_complete_axis_and_transition_coverage
+ERROR tests/v4_10/test_research_state.py::test_real_input_missing_confirmation_is_unknown
+ERROR tests/v4_11/test_persistence.py::test_retry_consumer_and_append_only - ...
+ERROR tests/v4_11/test_persistence.py::test_event_publish_and_readback - Valu...
+ERROR tests/v4_11/test_persistence.py::test_atomic_failure - ValueError: DISP...
+ERROR tests/v4_11/test_persistence.py::test_migration_rollback - ValueError: ...
+ERROR tests/v4_11/test_persistence.py::test_semantic_migration_rollback_and_reapply
+ERROR tests/v4_11/test_persistence.py::test_direct_ordinary_writer_and_consumer_bypass_rejected
+ERROR tests/v4_11/test_persistence.py::test_incomplete_publication_cannot_commit
+4665 passed, 4 skipped, 88 errors in 2483.03s (0:41:23)

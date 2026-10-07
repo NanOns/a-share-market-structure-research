@@ -1,0 +1,65 @@
+{
+  "IA07": "NOT_VERIFIABLE_BY_CURRENT_ACCEPTED_CAPABILITY",
+  "IA07_FULL_PASS": false,
+  "TDX_fresh_zero_write": true,
+  "active_exact_artifacts_not_fabricated": true,
+  "candidate_ready": true,
+  "candidate_scope": "V4_ONLY_WITH_EXPLICIT_IA07_CAPABILITY_DEBT",
+  "complete_historical_approval_chain": "PRE_V4_OUTSIDE_EXECUTION_SCOPE_UNAVAILABLE_NOT_FABRICATED",
+  "current_regression": {
+    "deselected": [],
+    "error_nodes": [],
+    "errors": 0,
+    "execution_method": "FULL_PROFILE_PLUS_VERIFIED_PG_ENVIRONMENT_REPLAY",
+    "failed": 0,
+    "failed_nodes": [],
+    "historical_supersession_count": 0,
+    "ignored": [],
+    "introduced_failures": [],
+    "log": {
+      "bytes": 163951,
+      "path": "reports/forward_r2_final_blocker_repair_20261007/execution/current_full.log",
+      "sha256": "bb1c48d5933433cf57363b546f2f9c729346ed7d6b93e492b9bb801b1bca7def"
+    },
+    "new_xfail": [],
+    "passed": 4757,
+    "replay": {
+      "bytes": 36803,
+      "path": "reports/forward_r2_final_blocker_repair_20261007/V4_PG_ENVIRONMENT_REPLAY_RECEIPT.json",
+      "sha256": "1207c8d8a310d70937c92d0ff9b811d2805c6c359c0c1623a45232ffce2265e0"
+    },
+    "skipped": 2,
+    "skips": [
+      {
+        "node": "tests.v4_phase0.test_tdx_local_snapshot::test_symlink_input_is_rejected",
+        "reason": "symlink creation unavailable"
+      },
+      {
+        "node": "tests.v4_phase0.test_tdx_snapshot::test_extracted_symlink_is_rejected",
+        "reason": "symlink creation is unavailable on this runner"
+      }
+    ],
+    "status": "PASS",
+    "total": 4759,
+    "version_scope": "V4_ONLY_USER_SCOPE_20261007",
+    "xml": {
+      "bytes": 631026,
+      "path": "reports/forward_r2_final_blocker_repair_20261007/execution/current_full.xml",
+      "sha256": "ae5351632bf57aed435636607ca8df8b642bc2bcef7731049c47a2024a91ef6d"
+    }
+  },
+  "default_ui": false,
+  "external_acceptance": false,
+  "focus": false,
+  "historical_incident_erased": false,
+  "legacy_model_source_preflight": "PRIOR_OUTSIDE_SCOPE_DIAGNOSTIC_PASS",
+  "next_stage": "IA07_SEPARATE_CAPABILITY_ACCEPTANCE_AND_INDEPENDENT_V4_EXTERNAL_AUDIT",
+  "original_60_nodes": {
+    "blocks_v4_regression": false,
+    "role": "PRE_V4_OUTSIDE_USER_EXECUTION_SCOPE"
+  },
+  "production": false,
+  "real_samples_added": false,
+  "shadow": false,
+  "status": "CANDIDATE_READY_FOR_INDEPENDENT_EXTERNAL_AUDIT"
+}

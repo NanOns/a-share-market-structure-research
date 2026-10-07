@@ -1,0 +1,24 @@
+{
+  "acceptance": "TARGET_PASS_AND_V4_SCOPED_REGRESSION_RECORDED",
+  "audit_id": "R3_CROSS_RESEARCH_HTTP_READ_BOUNDARY",
+  "finding": [
+    "Missing json import in registered bundle payload decoding",
+    "Mixed read-only/read-write DuckDB connections across concurrent HTTP requests"
+  ],
+  "full_regression": {
+    "bytes": 1365,
+    "path": "reports/forward_r2_final_blocker_repair_20261007/GLOBAL_CURRENT_REGRESSION_RECEIPT.json",
+    "sha256": "be29a002d3512f0515df984bf02c8675e268178fa8f2380a2e28cf70066e2922"
+  },
+  "prior_ui_target": "PRE_SCOPE_CORRECTION_DIAGNOSTIC_NOT_V4_FULL_ACCEPTANCE",
+  "repair": [
+    "Import json",
+    "Serialize independent readers using API database lock without outer read/write session"
+  ],
+  "runtime_promotion": false,
+  "scope": [
+    "src/workbench_service/app.py",
+    "src/workbench_db/read_repository.py"
+  ],
+  "target_passed": 24
+}

@@ -1,5 +1,6 @@
 """Backend-neutral read repository boundary for pre-cutover projections."""
 from __future__ import annotations
+import json
 
 from contextlib import contextmanager
 from pathlib import Path

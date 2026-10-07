@@ -1,0 +1,3306 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="60" skipped="0" tests="60" time="1.362" timestamp="2026-10-07T16:13:02.406361+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="" name="test_gate_outputs_and_partition" time="0.001"><failure message="FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\steady_trend'">def test_gate_outputs_and_partition():
+        p=ROOT/"reports/shadow/v2/20260904/steady_trend"
+        required={"STEADY_TREND_V2_SHADOW.parquet","STEADY_TREND_V2_SUMMARY.json","STEADY_TREND_V1_V2_DIFF.csv","STEADY_TREND_AUDIT_SAMPLE.csv"}
+&gt;       assert required &lt;= {x.name for x in p.iterdir()}
+                                            ^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_01\test_r3_01_gate.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/shadow/v2/20260904/steady_trend')
+
+    def iterdir(self):
+        """Yield path objects of the directory contents.
+    
+        The children are yielded in arbitrary order, and the
+        special entries '.' and '..' are not included.
+        """
+        root_dir = str(self)
+&gt;       with os.scandir(root_dir) as scandir_it:
+             ^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\steady_trend'
+
+E:\python\Lib\pathlib\_local.py:575: FileNotFoundError</failure></testcase><testcase classname="" name="test_concentration_is_exact_reuse" time="0.001"><failure message="FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/V2_DIAGNOSTIC_FACTORS.parquet">def test_concentration_is_exact_reuse():
+&gt;       d = pq.read_table(ROOT/"reports/shadow/v2/20260904/V2_DIAGNOSTIC_FACTORS.parquet", columns=["security_id","RETURN_CONCENTRATION_20"]).to_pandas()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_01\test_return_concentration_reused.py:6: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1891: in read_table
+    dataset = ParquetDataset(
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1471: in __init__
+    self._dataset = ds.dataset(path_or_paths, filesystem=filesystem,
+E:\python\Lib\site-packages\pyarrow\dataset.py:790: in dataset
+    return _filesystem_dataset(source, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pyarrow\dataset.py:472: in _filesystem_dataset
+    fs, paths_or_selector = _ensure_single_source(source, filesystem)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = 'E:/codex work/大A交易/reports/shadow/v2/20260904/V2_DIAGNOSTIC_FACTORS.parquet'
+filesystem = &lt;pyarrow._fs.LocalFileSystem object at 0x0000023E92AEC630&gt;
+
+    def _ensure_single_source(path, filesystem=None):
+        """
+        Treat path as either a recursively traversable directory or a single file.
+    
+        Parameters
+        ----------
+        path : path-like
+        filesystem : FileSystem or str, optional
+            If an URI is passed, then its path component will act as a prefix for
+            the file paths.
+    
+        Returns
+        -------
+        (FileSystem, list of str or fs.Selector)
+            File system object and either a single item list pointing to a file or
+            an fs.Selector object pointing to a directory.
+    
+        Raises
+        ------
+        TypeError
+            If the passed filesystem has wrong type.
+        FileNotFoundError
+            If the referenced file or directory doesn't exist.
+        """
+        from pyarrow.fs import FileType, FileSelector, _resolve_filesystem_and_path
+    
+        # at this point we already checked that `path` is a path-like
+        filesystem, path = _resolve_filesystem_and_path(path, filesystem)
+    
+        # ensure that the path is normalized before passing to dataset discovery
+        path = filesystem.normalize_path(path)
+    
+        # retrieve the file descriptor
+        file_info = filesystem.get_file_info(path)
+    
+        # depending on the path type either return with a recursive
+        # directory selector or as a list containing a single file
+        if file_info.type == FileType.Directory:
+            paths_or_selector = FileSelector(path, recursive=True)
+        elif file_info.type == FileType.File:
+            paths_or_selector = [path]
+        else:
+&gt;           raise FileNotFoundError(path)
+E           FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/V2_DIAGNOSTIC_FACTORS.parquet
+
+E:\python\Lib\site-packages\pyarrow\dataset.py:437: FileNotFoundError</failure></testcase><testcase classname="" name="test_all_rows_shadow_only" time="0.001"><failure message="FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/steady_trend/STEADY_TREND_V2_SHADOW.parquet">def test_all_rows_shadow_only():
+&gt;       x=pq.read_table(ROOT/"reports/shadow/v2/20260904/steady_trend/STEADY_TREND_V2_SHADOW.parquet",columns=["shadow","production_eligible"]).to_pandas()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_01\test_shadow_only.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1891: in read_table
+    dataset = ParquetDataset(
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1471: in __init__
+    self._dataset = ds.dataset(path_or_paths, filesystem=filesystem,
+E:\python\Lib\site-packages\pyarrow\dataset.py:790: in dataset
+    return _filesystem_dataset(source, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pyarrow\dataset.py:472: in _filesystem_dataset
+    fs, paths_or_selector = _ensure_single_source(source, filesystem)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = 'E:/codex work/大A交易/reports/shadow/v2/20260904/steady_trend/STEADY_TREND_V2_SHADOW.parquet'
+filesystem = &lt;pyarrow._fs.LocalFileSystem object at 0x0000023E92A35630&gt;
+
+    def _ensure_single_source(path, filesystem=None):
+        """
+        Treat path as either a recursively traversable directory or a single file.
+    
+        Parameters
+        ----------
+        path : path-like
+        filesystem : FileSystem or str, optional
+            If an URI is passed, then its path component will act as a prefix for
+            the file paths.
+    
+        Returns
+        -------
+        (FileSystem, list of str or fs.Selector)
+            File system object and either a single item list pointing to a file or
+            an fs.Selector object pointing to a directory.
+    
+        Raises
+        ------
+        TypeError
+            If the passed filesystem has wrong type.
+        FileNotFoundError
+            If the referenced file or directory doesn't exist.
+        """
+        from pyarrow.fs import FileType, FileSelector, _resolve_filesystem_and_path
+    
+        # at this point we already checked that `path` is a path-like
+        filesystem, path = _resolve_filesystem_and_path(path, filesystem)
+    
+        # ensure that the path is normalized before passing to dataset discovery
+        path = filesystem.normalize_path(path)
+    
+        # retrieve the file descriptor
+        file_info = filesystem.get_file_info(path)
+    
+        # depending on the path type either return with a recursive
+        # directory selector or as a list containing a single file
+        if file_info.type == FileType.Directory:
+            paths_or_selector = FileSelector(path, recursive=True)
+        elif file_info.type == FileType.File:
+            paths_or_selector = [path]
+        else:
+&gt;           raise FileNotFoundError(path)
+E           FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/steady_trend/STEADY_TREND_V2_SHADOW.parquet
+
+E:\python\Lib\site-packages\pyarrow\dataset.py:437: FileNotFoundError</failure></testcase><testcase classname="" name="test_v1_steady_baseline_is_198" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\releases\\20260904\\695c7ae5affd4abbb3d86eddb4b154e0\\stocks.csv'">def test_v1_steady_baseline_is_198():
+        p = ROOT/"reports/releases/20260904/695c7ae5affd4abbb3d86eddb4b154e0/stocks.csv"
+&gt;       x = pd.read_csv(p, usecols=["steady_trend"])
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_01\test_v1_base_unchanged.py:7: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:873: in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:300: in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:1645: in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:1904: in _make_engine
+    self.handles = get_handle(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path_or_buf = WindowsPath('E:/codex work/大A交易/reports/releases/20260904/695c7ae5affd4abbb3d86eddb4b154e0/stocks.csv')
+mode = 'r', encoding = 'utf-8', compression = None, memory_map = False
+is_text = True, errors = 'strict', storage_options = None
+
+    def get_handle(
+        path_or_buf: FilePath | BaseBuffer,
+        mode: str,
+        *,
+        encoding: str | None = None,
+        compression: CompressionOptions | None = None,
+        memory_map: bool = False,
+        is_text: bool = True,
+        errors: str | None = None,
+        storage_options: StorageOptions | None = None,
+    ) -&gt; IOHandles[str] | IOHandles[bytes]:
+        """
+        Get file handle for given path/buffer and mode.
+    
+        Parameters
+        ----------
+        path_or_buf : str or file handle
+            File path or object.
+        mode : str
+            Mode to open path_or_buf with.
+        encoding : str or None
+            Encoding to use.
+        compression : str or dict, default 'infer'
+            For on-the-fly compression of the output data. If 'infer' and 'path_or_buf'
+            is path-like, then detect compression from the following extensions: '.gz',
+            '.bz2', '.zip', '.xz', '.zst', '.tar', '.tar.gz', '.tar.xz' or '.tar.bz2'
+            (otherwise no compression).
+            Set to ``None`` for no compression.
+            Can also be a dict with key ``'method'`` set
+            to one of {``'zip'``, ``'gzip'``, ``'bz2'``, ``'zstd'``, ``'xz'``, ``'tar'``}
+            and other key-value pairs are forwarded to
+            ``zipfile.ZipFile``, ``gzip.GzipFile``,
+            ``bz2.BZ2File``, ``zstandard.ZstdCompressor``, ``lzma.LZMAFile`` or
+            ``tarfile.TarFile``, respectively.
+            As an example, the following could be passed for faster compression and to
+            create a reproducible gzip archive:
+            ``compression={'method': 'gzip', 'compresslevel': 1, 'mtime': 1}``.
+    
+               May be a dict with key 'method' as compression mode
+               and other keys as compression options if compression
+               mode is 'zip'.
+    
+               Passing compression options as keys in dict is
+               supported for compression modes 'gzip', 'bz2', 'zstd' and 'zip'.
+    
+        memory_map : bool, default False
+            See parsers._parser_params for more information. Only used by read_csv.
+        is_text : bool, default True
+            Whether the type of the content passed to the file/buffer is string or
+            bytes. This is not the same as `"b" not in mode`. If a string content is
+            passed to a binary file/buffer, a wrapper is inserted.
+        errors : str, default 'strict'
+            Specifies how encoding and decoding errors are to be handled.
+            See the errors argument for :func:`open` for a full list
+            of options.
+        storage_options: StorageOptions = None
+            Passed to _get_filepath_or_buffer
+    
+        Returns the dataclass IOHandles
+        """
+        # Windows does not default to utf-8. Set to utf-8 for a consistent behavior
+        encoding = encoding or "utf-8"
+    
+        errors = errors or "strict"
+    
+        # read_csv does not know whether the buffer is opened in binary/text mode
+        if _is_binary_mode(path_or_buf, mode) and "b" not in mode:
+            mode += "b"
+    
+        # validate encoding and errors
+        codecs.lookup(encoding)
+        if isinstance(errors, str):
+            codecs.lookup_error(errors)
+    
+        # open URLs
+        ioargs = _get_filepath_or_buffer(
+            path_or_buf,
+            encoding=encoding,
+            compression=compression,
+            mode=mode,
+            storage_options=storage_options,
+        )
+    
+        handle = ioargs.filepath_or_buffer
+        handles: list[BaseBuffer]
+    
+        # memory mapping needs to be the first step
+        # only used for read_csv
+        handle, memory_map, handles = _maybe_memory_map(handle, memory_map)
+    
+        is_path = isinstance(handle, str)
+        compression_args = dict(ioargs.compression)
+        compression = compression_args.pop("method")
+    
+        # Only for write methods
+        if "r" not in mode and is_path:
+            check_parent_directory(str(handle))
+    
+        if compression:
+            if compression != "zstd":
+                # compression libraries do not like an explicit text-mode
+                ioargs.mode = ioargs.mode.replace("t", "")
+            elif compression == "zstd" and "b" not in ioargs.mode:
+                # python-zstandard defaults to text mode, but we always expect
+                # compression libraries to use binary mode.
+                ioargs.mode += "b"
+    
+            # GZ Compression
+            if compression == "gzip":
+                if isinstance(handle, str):
+                    # error: Incompatible types in assignment (expression has type
+                    # "GzipFile", variable has type "Union[str, BaseBuffer]")
+                    handle = gzip.GzipFile(  # type: ignore[assignment]
+                        filename=handle,
+                        mode=ioargs.mode,
+                        **compression_args,
+                    )
+                else:
+                    handle = gzip.GzipFile(
+                        # No overload variant of "GzipFile" matches argument types
+                        # "Union[str, BaseBuffer]", "str", "Dict[str, Any]"
+                        fileobj=handle,  # type: ignore[call-overload]
+                        mode=ioargs.mode,
+                        **compression_args,
+                    )
+    
+            # BZ Compression
+            elif compression == "bz2":
+                import bz2
+    
+                # Overload of "BZ2File" to handle pickle protocol 5
+                # "Union[str, BaseBuffer]", "str", "Dict[str, Any]"
+                handle = bz2.BZ2File(  # type: ignore[call-overload]
+                    handle,
+                    mode=ioargs.mode,
+                    **compression_args,
+                )
+    
+            # ZIP Compression
+            elif compression == "zip":
+                # error: Argument 1 to "_BytesZipFile" has incompatible type
+                # "Union[str, BaseBuffer]"; expected "Union[Union[str, PathLike[str]],
+                # ReadBuffer[bytes], WriteBuffer[bytes]]"
+                handle = _BytesZipFile(
+                    handle,  # type: ignore[arg-type]
+                    ioargs.mode,
+                    **compression_args,
+                )
+                if handle.buffer.mode == "r":
+                    handles.append(handle)
+                    zip_names = handle.buffer.namelist()
+                    if len(zip_names) == 1:
+                        handle = handle.buffer.open(zip_names.pop())
+                    elif not zip_names:
+                        raise ValueError(f"Zero files found in ZIP file {path_or_buf}")
+                    else:
+                        raise ValueError(
+                            "Multiple files found in ZIP file. "
+                            f"Only one file per ZIP: {zip_names}"
+                        )
+    
+            # TAR Encoding
+            elif compression == "tar":
+                compression_args.setdefault("mode", ioargs.mode)
+                if isinstance(handle, str):
+                    handle = _BytesTarFile(name=handle, **compression_args)
+                else:
+                    # error: Argument "fileobj" to "_BytesTarFile" has incompatible
+                    # type "BaseBuffer"; expected "Union[ReadBuffer[bytes],
+                    # WriteBuffer[bytes], None]"
+                    handle = _BytesTarFile(
+                        fileobj=handle,  # type: ignore[arg-type]
+                        **compression_args,
+                    )
+                assert isinstance(handle, _BytesTarFile)
+                if "r" in handle.buffer.mode:
+                    handles.append(handle)
+                    files = handle.buffer.getnames()
+                    if len(files) == 1:
+                        file = handle.buffer.extractfile(files[0])
+                        assert file is not None
+                        handle = file
+                    elif not files:
+                        raise ValueError(f"Zero files found in TAR archive {path_or_buf}")
+                    else:
+                        raise ValueError(
+                            "Multiple files found in TAR archive. "
+                            f"Only one file per TAR archive: {files}"
+                        )
+    
+            # XZ Compression
+            elif compression == "xz":
+                # error: Argument 1 to "LZMAFile" has incompatible type "Union[str,
+                # BaseBuffer]"; expected "Optional[Union[Union[str, bytes, PathLike[str],
+                # PathLike[bytes]], IO[bytes]], None]"
+                import lzma
+    
+                handle = lzma.LZMAFile(
+                    handle,  # type: ignore[arg-type]
+                    ioargs.mode,
+                    **compression_args,
+                )
+    
+            # Zstd Compression
+            elif compression == "zstd":
+                zstd = import_optional_dependency("zstandard")
+                if "r" in ioargs.mode:
+                    open_args = {"dctx": zstd.ZstdDecompressor(**compression_args)}
+                else:
+                    open_args = {"cctx": zstd.ZstdCompressor(**compression_args)}
+                handle = zstd.open(
+                    handle,
+                    mode=ioargs.mode,
+                    **open_args,
+                )
+    
+            # Unrecognized Compression
+            else:
+                msg = f"Unrecognized compression type: {compression}"
+                raise ValueError(msg)
+    
+            assert not isinstance(handle, str)
+            handles.append(handle)
+    
+        elif isinstance(handle, str):
+            # Check whether the filename is to be opened in binary mode.
+            # Binary mode does not support 'encoding' and 'newline'.
+            if ioargs.encoding and "b" not in ioargs.mode:
+                # Encoding
+&gt;               handle = open(
+                    handle,
+                    ioargs.mode,
+                    encoding=ioargs.encoding,
+                    errors=errors,
+                    newline="",
+                )
+E               FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\releases\\20260904\\695c7ae5affd4abbb3d86eddb4b154e0\\stocks.csv'
+
+E:\python\Lib\site-packages\pandas\io\common.py:930: FileNotFoundError</failure></testcase><testcase classname="" name="test_outputs_partition_base" time="0.000"><failure message="FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\strong_pullback'">def test_outputs_partition_base():
+     p=ROOT/"reports/shadow/v2/20260904/strong_pullback"
+     required={"STRONG_PULLBACK_V2_SHADOW.parquet","STRONG_PULLBACK_V2_SUMMARY.json","STRONG_PULLBACK_V1_V2_DIFF.csv","STRONG_PULLBACK_DEPTH_MISMATCH.csv","STRONG_PULLBACK_AUDIT_SAMPLE.csv"}
+&gt;    assert required&lt;={x.name for x in p.iterdir()}
+                                       ^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_02\test_r3_02_gate.py:7: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/shadow/v2/20260904/strong_pullback')
+
+    def iterdir(self):
+        """Yield path objects of the directory contents.
+    
+        The children are yielded in arbitrary order, and the
+        special entries '.' and '..' are not included.
+        """
+        root_dir = str(self)
+&gt;       with os.scandir(root_dir) as scandir_it:
+             ^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\strong_pullback'
+
+E:\python\Lib\pathlib\_local.py:575: FileNotFoundError</failure></testcase><testcase classname="" name="test_output_is_never_production_eligible" time="0.001"><failure message="FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/strong_pullback/STRONG_PULLBACK_V2_SHADOW.parquet">def test_output_is_never_production_eligible():
+&gt;    x=pq.read_table(ROOT/"reports/shadow/v2/20260904/strong_pullback/STRONG_PULLBACK_V2_SHADOW.parquet",columns=["shadow","production_eligible"]).to_pandas()
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_02\test_shadow_only.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1891: in read_table
+    dataset = ParquetDataset(
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1471: in __init__
+    self._dataset = ds.dataset(path_or_paths, filesystem=filesystem,
+E:\python\Lib\site-packages\pyarrow\dataset.py:790: in dataset
+    return _filesystem_dataset(source, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pyarrow\dataset.py:472: in _filesystem_dataset
+    fs, paths_or_selector = _ensure_single_source(source, filesystem)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = 'E:/codex work/大A交易/reports/shadow/v2/20260904/strong_pullback/STRONG_PULLBACK_V2_SHADOW.parquet'
+filesystem = &lt;pyarrow._fs.LocalFileSystem object at 0x0000023E92D75C30&gt;
+
+    def _ensure_single_source(path, filesystem=None):
+        """
+        Treat path as either a recursively traversable directory or a single file.
+    
+        Parameters
+        ----------
+        path : path-like
+        filesystem : FileSystem or str, optional
+            If an URI is passed, then its path component will act as a prefix for
+            the file paths.
+    
+        Returns
+        -------
+        (FileSystem, list of str or fs.Selector)
+            File system object and either a single item list pointing to a file or
+            an fs.Selector object pointing to a directory.
+    
+        Raises
+        ------
+        TypeError
+            If the passed filesystem has wrong type.
+        FileNotFoundError
+            If the referenced file or directory doesn't exist.
+        """
+        from pyarrow.fs import FileType, FileSelector, _resolve_filesystem_and_path
+    
+        # at this point we already checked that `path` is a path-like
+        filesystem, path = _resolve_filesystem_and_path(path, filesystem)
+    
+        # ensure that the path is normalized before passing to dataset discovery
+        path = filesystem.normalize_path(path)
+    
+        # retrieve the file descriptor
+        file_info = filesystem.get_file_info(path)
+    
+        # depending on the path type either return with a recursive
+        # directory selector or as a list containing a single file
+        if file_info.type == FileType.Directory:
+            paths_or_selector = FileSelector(path, recursive=True)
+        elif file_info.type == FileType.File:
+            paths_or_selector = [path]
+        else:
+&gt;           raise FileNotFoundError(path)
+E           FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/strong_pullback/STRONG_PULLBACK_V2_SHADOW.parquet
+
+E:\python\Lib\site-packages\pyarrow\dataset.py:437: FileNotFoundError</failure></testcase><testcase classname="" name="test_v1_count_is_345" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\releases\\20260904\\695c7ae5affd4abbb3d86eddb4b154e0\\stocks.csv'">def test_v1_count_is_345():
+&gt;    p=ROOT/"reports/releases/20260904/695c7ae5affd4abbb3d86eddb4b154e0/stocks.csv";x=pd.read_csv(p,usecols=["strong_pullback"])
+                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_02\test_v1_pullback_base_unchanged.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:873: in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:300: in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:1645: in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:1904: in _make_engine
+    self.handles = get_handle(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path_or_buf = WindowsPath('E:/codex work/大A交易/reports/releases/20260904/695c7ae5affd4abbb3d86eddb4b154e0/stocks.csv')
+mode = 'r', encoding = 'utf-8', compression = None, memory_map = False
+is_text = True, errors = 'strict', storage_options = None
+
+    def get_handle(
+        path_or_buf: FilePath | BaseBuffer,
+        mode: str,
+        *,
+        encoding: str | None = None,
+        compression: CompressionOptions | None = None,
+        memory_map: bool = False,
+        is_text: bool = True,
+        errors: str | None = None,
+        storage_options: StorageOptions | None = None,
+    ) -&gt; IOHandles[str] | IOHandles[bytes]:
+        """
+        Get file handle for given path/buffer and mode.
+    
+        Parameters
+        ----------
+        path_or_buf : str or file handle
+            File path or object.
+        mode : str
+            Mode to open path_or_buf with.
+        encoding : str or None
+            Encoding to use.
+        compression : str or dict, default 'infer'
+            For on-the-fly compression of the output data. If 'infer' and 'path_or_buf'
+            is path-like, then detect compression from the following extensions: '.gz',
+            '.bz2', '.zip', '.xz', '.zst', '.tar', '.tar.gz', '.tar.xz' or '.tar.bz2'
+            (otherwise no compression).
+            Set to ``None`` for no compression.
+            Can also be a dict with key ``'method'`` set
+            to one of {``'zip'``, ``'gzip'``, ``'bz2'``, ``'zstd'``, ``'xz'``, ``'tar'``}
+            and other key-value pairs are forwarded to
+            ``zipfile.ZipFile``, ``gzip.GzipFile``,
+            ``bz2.BZ2File``, ``zstandard.ZstdCompressor``, ``lzma.LZMAFile`` or
+            ``tarfile.TarFile``, respectively.
+            As an example, the following could be passed for faster compression and to
+            create a reproducible gzip archive:
+            ``compression={'method': 'gzip', 'compresslevel': 1, 'mtime': 1}``.
+    
+               May be a dict with key 'method' as compression mode
+               and other keys as compression options if compression
+               mode is 'zip'.
+    
+               Passing compression options as keys in dict is
+               supported for compression modes 'gzip', 'bz2', 'zstd' and 'zip'.
+    
+        memory_map : bool, default False
+            See parsers._parser_params for more information. Only used by read_csv.
+        is_text : bool, default True
+            Whether the type of the content passed to the file/buffer is string or
+            bytes. This is not the same as `"b" not in mode`. If a string content is
+            passed to a binary file/buffer, a wrapper is inserted.
+        errors : str, default 'strict'
+            Specifies how encoding and decoding errors are to be handled.
+            See the errors argument for :func:`open` for a full list
+            of options.
+        storage_options: StorageOptions = None
+            Passed to _get_filepath_or_buffer
+    
+        Returns the dataclass IOHandles
+        """
+        # Windows does not default to utf-8. Set to utf-8 for a consistent behavior
+        encoding = encoding or "utf-8"
+    
+        errors = errors or "strict"
+    
+        # read_csv does not know whether the buffer is opened in binary/text mode
+        if _is_binary_mode(path_or_buf, mode) and "b" not in mode:
+            mode += "b"
+    
+        # validate encoding and errors
+        codecs.lookup(encoding)
+        if isinstance(errors, str):
+            codecs.lookup_error(errors)
+    
+        # open URLs
+        ioargs = _get_filepath_or_buffer(
+            path_or_buf,
+            encoding=encoding,
+            compression=compression,
+            mode=mode,
+            storage_options=storage_options,
+        )
+    
+        handle = ioargs.filepath_or_buffer
+        handles: list[BaseBuffer]
+    
+        # memory mapping needs to be the first step
+        # only used for read_csv
+        handle, memory_map, handles = _maybe_memory_map(handle, memory_map)
+    
+        is_path = isinstance(handle, str)
+        compression_args = dict(ioargs.compression)
+        compression = compression_args.pop("method")
+    
+        # Only for write methods
+        if "r" not in mode and is_path:
+            check_parent_directory(str(handle))
+    
+        if compression:
+            if compression != "zstd":
+                # compression libraries do not like an explicit text-mode
+                ioargs.mode = ioargs.mode.replace("t", "")
+            elif compression == "zstd" and "b" not in ioargs.mode:
+                # python-zstandard defaults to text mode, but we always expect
+                # compression libraries to use binary mode.
+                ioargs.mode += "b"
+    
+            # GZ Compression
+            if compression == "gzip":
+                if isinstance(handle, str):
+                    # error: Incompatible types in assignment (expression has type
+                    # "GzipFile", variable has type "Union[str, BaseBuffer]")
+                    handle = gzip.GzipFile(  # type: ignore[assignment]
+                        filename=handle,
+                        mode=ioargs.mode,
+                        **compression_args,
+                    )
+                else:
+                    handle = gzip.GzipFile(
+                        # No overload variant of "GzipFile" matches argument types
+                        # "Union[str, BaseBuffer]", "str", "Dict[str, Any]"
+                        fileobj=handle,  # type: ignore[call-overload]
+                        mode=ioargs.mode,
+                        **compression_args,
+                    )
+    
+            # BZ Compression
+            elif compression == "bz2":
+                import bz2
+    
+                # Overload of "BZ2File" to handle pickle protocol 5
+                # "Union[str, BaseBuffer]", "str", "Dict[str, Any]"
+                handle = bz2.BZ2File(  # type: ignore[call-overload]
+                    handle,
+                    mode=ioargs.mode,
+                    **compression_args,
+                )
+    
+            # ZIP Compression
+            elif compression == "zip":
+                # error: Argument 1 to "_BytesZipFile" has incompatible type
+                # "Union[str, BaseBuffer]"; expected "Union[Union[str, PathLike[str]],
+                # ReadBuffer[bytes], WriteBuffer[bytes]]"
+                handle = _BytesZipFile(
+                    handle,  # type: ignore[arg-type]
+                    ioargs.mode,
+                    **compression_args,
+                )
+                if handle.buffer.mode == "r":
+                    handles.append(handle)
+                    zip_names = handle.buffer.namelist()
+                    if len(zip_names) == 1:
+                        handle = handle.buffer.open(zip_names.pop())
+                    elif not zip_names:
+                        raise ValueError(f"Zero files found in ZIP file {path_or_buf}")
+                    else:
+                        raise ValueError(
+                            "Multiple files found in ZIP file. "
+                            f"Only one file per ZIP: {zip_names}"
+                        )
+    
+            # TAR Encoding
+            elif compression == "tar":
+                compression_args.setdefault("mode", ioargs.mode)
+                if isinstance(handle, str):
+                    handle = _BytesTarFile(name=handle, **compression_args)
+                else:
+                    # error: Argument "fileobj" to "_BytesTarFile" has incompatible
+                    # type "BaseBuffer"; expected "Union[ReadBuffer[bytes],
+                    # WriteBuffer[bytes], None]"
+                    handle = _BytesTarFile(
+                        fileobj=handle,  # type: ignore[arg-type]
+                        **compression_args,
+                    )
+                assert isinstance(handle, _BytesTarFile)
+                if "r" in handle.buffer.mode:
+                    handles.append(handle)
+                    files = handle.buffer.getnames()
+                    if len(files) == 1:
+                        file = handle.buffer.extractfile(files[0])
+                        assert file is not None
+                        handle = file
+                    elif not files:
+                        raise ValueError(f"Zero files found in TAR archive {path_or_buf}")
+                    else:
+                        raise ValueError(
+                            "Multiple files found in TAR archive. "
+                            f"Only one file per TAR archive: {files}"
+                        )
+    
+            # XZ Compression
+            elif compression == "xz":
+                # error: Argument 1 to "LZMAFile" has incompatible type "Union[str,
+                # BaseBuffer]"; expected "Optional[Union[Union[str, bytes, PathLike[str],
+                # PathLike[bytes]], IO[bytes]], None]"
+                import lzma
+    
+                handle = lzma.LZMAFile(
+                    handle,  # type: ignore[arg-type]
+                    ioargs.mode,
+                    **compression_args,
+                )
+    
+            # Zstd Compression
+            elif compression == "zstd":
+                zstd = import_optional_dependency("zstandard")
+                if "r" in ioargs.mode:
+                    open_args = {"dctx": zstd.ZstdDecompressor(**compression_args)}
+                else:
+                    open_args = {"cctx": zstd.ZstdCompressor(**compression_args)}
+                handle = zstd.open(
+                    handle,
+                    mode=ioargs.mode,
+                    **open_args,
+                )
+    
+            # Unrecognized Compression
+            else:
+                msg = f"Unrecognized compression type: {compression}"
+                raise ValueError(msg)
+    
+            assert not isinstance(handle, str)
+            handles.append(handle)
+    
+        elif isinstance(handle, str):
+            # Check whether the filename is to be opened in binary mode.
+            # Binary mode does not support 'encoding' and 'newline'.
+            if ioargs.encoding and "b" not in ioargs.mode:
+                # Encoding
+&gt;               handle = open(
+                    handle,
+                    ioargs.mode,
+                    encoding=ioargs.encoding,
+                    errors=errors,
+                    newline="",
+                )
+E               FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\releases\\20260904\\695c7ae5affd4abbb3d86eddb4b154e0\\stocks.csv'
+
+E:\python\Lib\site-packages\pandas\io\common.py:930: FileNotFoundError</failure></testcase><testcase classname="" name="test_outputs_and_partition" time="0.000"><failure message="FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\breakout_prep'">def test_outputs_and_partition():
+     p=ROOT/"reports/shadow/v2/20260904/breakout_prep";required={"BREAKOUT_PREP_V2_SHADOW.parquet","BREAKOUT_PREP_V2_SUMMARY.json","BREAKOUT_PREP_V1_V2_DIFF.csv","BREAKOUT_PREP_AUDIT_SAMPLE.csv"}
+&gt;    assert required&lt;={x.name for x in p.iterdir()};s=json.loads((p/"BREAKOUT_PREP_V2_SUMMARY.json").read_text("utf8"));assert sum(s["class_counts"].values())==s["v1_breakout_prep_count"]==304
+                                       ^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_03\test_r3_03_gate.py:6: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/shadow/v2/20260904/breakout_prep')
+
+    def iterdir(self):
+        """Yield path objects of the directory contents.
+    
+        The children are yielded in arbitrary order, and the
+        special entries '.' and '..' are not included.
+        """
+        root_dir = str(self)
+&gt;       with os.scandir(root_dir) as scandir_it:
+             ^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\breakout_prep'
+
+E:\python\Lib\pathlib\_local.py:575: FileNotFoundError</failure></testcase><testcase classname="" name="test_shadow_flags" time="0.001"><failure message="FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/breakout_prep/BREAKOUT_PREP_V2_SHADOW.parquet">def test_shadow_flags():
+&gt;    x=pq.read_table(ROOT/"reports/shadow/v2/20260904/breakout_prep/BREAKOUT_PREP_V2_SHADOW.parquet",columns=["shadow","production_eligible"]).to_pandas()
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_03\test_shadow_only.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1891: in read_table
+    dataset = ParquetDataset(
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1471: in __init__
+    self._dataset = ds.dataset(path_or_paths, filesystem=filesystem,
+E:\python\Lib\site-packages\pyarrow\dataset.py:790: in dataset
+    return _filesystem_dataset(source, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pyarrow\dataset.py:472: in _filesystem_dataset
+    fs, paths_or_selector = _ensure_single_source(source, filesystem)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = 'E:/codex work/大A交易/reports/shadow/v2/20260904/breakout_prep/BREAKOUT_PREP_V2_SHADOW.parquet'
+filesystem = &lt;pyarrow._fs.LocalFileSystem object at 0x0000023E92D9B830&gt;
+
+    def _ensure_single_source(path, filesystem=None):
+        """
+        Treat path as either a recursively traversable directory or a single file.
+    
+        Parameters
+        ----------
+        path : path-like
+        filesystem : FileSystem or str, optional
+            If an URI is passed, then its path component will act as a prefix for
+            the file paths.
+    
+        Returns
+        -------
+        (FileSystem, list of str or fs.Selector)
+            File system object and either a single item list pointing to a file or
+            an fs.Selector object pointing to a directory.
+    
+        Raises
+        ------
+        TypeError
+            If the passed filesystem has wrong type.
+        FileNotFoundError
+            If the referenced file or directory doesn't exist.
+        """
+        from pyarrow.fs import FileType, FileSelector, _resolve_filesystem_and_path
+    
+        # at this point we already checked that `path` is a path-like
+        filesystem, path = _resolve_filesystem_and_path(path, filesystem)
+    
+        # ensure that the path is normalized before passing to dataset discovery
+        path = filesystem.normalize_path(path)
+    
+        # retrieve the file descriptor
+        file_info = filesystem.get_file_info(path)
+    
+        # depending on the path type either return with a recursive
+        # directory selector or as a list containing a single file
+        if file_info.type == FileType.Directory:
+            paths_or_selector = FileSelector(path, recursive=True)
+        elif file_info.type == FileType.File:
+            paths_or_selector = [path]
+        else:
+&gt;           raise FileNotFoundError(path)
+E           FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/breakout_prep/BREAKOUT_PREP_V2_SHADOW.parquet
+
+E:\python\Lib\site-packages\pyarrow\dataset.py:437: FileNotFoundError</failure></testcase><testcase classname="" name="test_v1_count_304" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\releases\\20260904\\695c7ae5affd4abbb3d86eddb4b154e0\\stocks.csv'">def test_v1_count_304():
+&gt;    p=ROOT/"reports/releases/20260904/695c7ae5affd4abbb3d86eddb4b154e0/stocks.csv";x=pd.read_csv(p,usecols=["breakout_prep"])
+                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_03\test_v1_breakout_base_unchanged.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:873: in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:300: in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:1645: in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:1904: in _make_engine
+    self.handles = get_handle(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path_or_buf = WindowsPath('E:/codex work/大A交易/reports/releases/20260904/695c7ae5affd4abbb3d86eddb4b154e0/stocks.csv')
+mode = 'r', encoding = 'utf-8', compression = None, memory_map = False
+is_text = True, errors = 'strict', storage_options = None
+
+    def get_handle(
+        path_or_buf: FilePath | BaseBuffer,
+        mode: str,
+        *,
+        encoding: str | None = None,
+        compression: CompressionOptions | None = None,
+        memory_map: bool = False,
+        is_text: bool = True,
+        errors: str | None = None,
+        storage_options: StorageOptions | None = None,
+    ) -&gt; IOHandles[str] | IOHandles[bytes]:
+        """
+        Get file handle for given path/buffer and mode.
+    
+        Parameters
+        ----------
+        path_or_buf : str or file handle
+            File path or object.
+        mode : str
+            Mode to open path_or_buf with.
+        encoding : str or None
+            Encoding to use.
+        compression : str or dict, default 'infer'
+            For on-the-fly compression of the output data. If 'infer' and 'path_or_buf'
+            is path-like, then detect compression from the following extensions: '.gz',
+            '.bz2', '.zip', '.xz', '.zst', '.tar', '.tar.gz', '.tar.xz' or '.tar.bz2'
+            (otherwise no compression).
+            Set to ``None`` for no compression.
+            Can also be a dict with key ``'method'`` set
+            to one of {``'zip'``, ``'gzip'``, ``'bz2'``, ``'zstd'``, ``'xz'``, ``'tar'``}
+            and other key-value pairs are forwarded to
+            ``zipfile.ZipFile``, ``gzip.GzipFile``,
+            ``bz2.BZ2File``, ``zstandard.ZstdCompressor``, ``lzma.LZMAFile`` or
+            ``tarfile.TarFile``, respectively.
+            As an example, the following could be passed for faster compression and to
+            create a reproducible gzip archive:
+            ``compression={'method': 'gzip', 'compresslevel': 1, 'mtime': 1}``.
+    
+               May be a dict with key 'method' as compression mode
+               and other keys as compression options if compression
+               mode is 'zip'.
+    
+               Passing compression options as keys in dict is
+               supported for compression modes 'gzip', 'bz2', 'zstd' and 'zip'.
+    
+        memory_map : bool, default False
+            See parsers._parser_params for more information. Only used by read_csv.
+        is_text : bool, default True
+            Whether the type of the content passed to the file/buffer is string or
+            bytes. This is not the same as `"b" not in mode`. If a string content is
+            passed to a binary file/buffer, a wrapper is inserted.
+        errors : str, default 'strict'
+            Specifies how encoding and decoding errors are to be handled.
+            See the errors argument for :func:`open` for a full list
+            of options.
+        storage_options: StorageOptions = None
+            Passed to _get_filepath_or_buffer
+    
+        Returns the dataclass IOHandles
+        """
+        # Windows does not default to utf-8. Set to utf-8 for a consistent behavior
+        encoding = encoding or "utf-8"
+    
+        errors = errors or "strict"
+    
+        # read_csv does not know whether the buffer is opened in binary/text mode
+        if _is_binary_mode(path_or_buf, mode) and "b" not in mode:
+            mode += "b"
+    
+        # validate encoding and errors
+        codecs.lookup(encoding)
+        if isinstance(errors, str):
+            codecs.lookup_error(errors)
+    
+        # open URLs
+        ioargs = _get_filepath_or_buffer(
+            path_or_buf,
+            encoding=encoding,
+            compression=compression,
+            mode=mode,
+            storage_options=storage_options,
+        )
+    
+        handle = ioargs.filepath_or_buffer
+        handles: list[BaseBuffer]
+    
+        # memory mapping needs to be the first step
+        # only used for read_csv
+        handle, memory_map, handles = _maybe_memory_map(handle, memory_map)
+    
+        is_path = isinstance(handle, str)
+        compression_args = dict(ioargs.compression)
+        compression = compression_args.pop("method")
+    
+        # Only for write methods
+        if "r" not in mode and is_path:
+            check_parent_directory(str(handle))
+    
+        if compression:
+            if compression != "zstd":
+                # compression libraries do not like an explicit text-mode
+                ioargs.mode = ioargs.mode.replace("t", "")
+            elif compression == "zstd" and "b" not in ioargs.mode:
+                # python-zstandard defaults to text mode, but we always expect
+                # compression libraries to use binary mode.
+                ioargs.mode += "b"
+    
+            # GZ Compression
+            if compression == "gzip":
+                if isinstance(handle, str):
+                    # error: Incompatible types in assignment (expression has type
+                    # "GzipFile", variable has type "Union[str, BaseBuffer]")
+                    handle = gzip.GzipFile(  # type: ignore[assignment]
+                        filename=handle,
+                        mode=ioargs.mode,
+                        **compression_args,
+                    )
+                else:
+                    handle = gzip.GzipFile(
+                        # No overload variant of "GzipFile" matches argument types
+                        # "Union[str, BaseBuffer]", "str", "Dict[str, Any]"
+                        fileobj=handle,  # type: ignore[call-overload]
+                        mode=ioargs.mode,
+                        **compression_args,
+                    )
+    
+            # BZ Compression
+            elif compression == "bz2":
+                import bz2
+    
+                # Overload of "BZ2File" to handle pickle protocol 5
+                # "Union[str, BaseBuffer]", "str", "Dict[str, Any]"
+                handle = bz2.BZ2File(  # type: ignore[call-overload]
+                    handle,
+                    mode=ioargs.mode,
+                    **compression_args,
+                )
+    
+            # ZIP Compression
+            elif compression == "zip":
+                # error: Argument 1 to "_BytesZipFile" has incompatible type
+                # "Union[str, BaseBuffer]"; expected "Union[Union[str, PathLike[str]],
+                # ReadBuffer[bytes], WriteBuffer[bytes]]"
+                handle = _BytesZipFile(
+                    handle,  # type: ignore[arg-type]
+                    ioargs.mode,
+                    **compression_args,
+                )
+                if handle.buffer.mode == "r":
+                    handles.append(handle)
+                    zip_names = handle.buffer.namelist()
+                    if len(zip_names) == 1:
+                        handle = handle.buffer.open(zip_names.pop())
+                    elif not zip_names:
+                        raise ValueError(f"Zero files found in ZIP file {path_or_buf}")
+                    else:
+                        raise ValueError(
+                            "Multiple files found in ZIP file. "
+                            f"Only one file per ZIP: {zip_names}"
+                        )
+    
+            # TAR Encoding
+            elif compression == "tar":
+                compression_args.setdefault("mode", ioargs.mode)
+                if isinstance(handle, str):
+                    handle = _BytesTarFile(name=handle, **compression_args)
+                else:
+                    # error: Argument "fileobj" to "_BytesTarFile" has incompatible
+                    # type "BaseBuffer"; expected "Union[ReadBuffer[bytes],
+                    # WriteBuffer[bytes], None]"
+                    handle = _BytesTarFile(
+                        fileobj=handle,  # type: ignore[arg-type]
+                        **compression_args,
+                    )
+                assert isinstance(handle, _BytesTarFile)
+                if "r" in handle.buffer.mode:
+                    handles.append(handle)
+                    files = handle.buffer.getnames()
+                    if len(files) == 1:
+                        file = handle.buffer.extractfile(files[0])
+                        assert file is not None
+                        handle = file
+                    elif not files:
+                        raise ValueError(f"Zero files found in TAR archive {path_or_buf}")
+                    else:
+                        raise ValueError(
+                            "Multiple files found in TAR archive. "
+                            f"Only one file per TAR archive: {files}"
+                        )
+    
+            # XZ Compression
+            elif compression == "xz":
+                # error: Argument 1 to "LZMAFile" has incompatible type "Union[str,
+                # BaseBuffer]"; expected "Optional[Union[Union[str, bytes, PathLike[str],
+                # PathLike[bytes]], IO[bytes]], None]"
+                import lzma
+    
+                handle = lzma.LZMAFile(
+                    handle,  # type: ignore[arg-type]
+                    ioargs.mode,
+                    **compression_args,
+                )
+    
+            # Zstd Compression
+            elif compression == "zstd":
+                zstd = import_optional_dependency("zstandard")
+                if "r" in ioargs.mode:
+                    open_args = {"dctx": zstd.ZstdDecompressor(**compression_args)}
+                else:
+                    open_args = {"cctx": zstd.ZstdCompressor(**compression_args)}
+                handle = zstd.open(
+                    handle,
+                    mode=ioargs.mode,
+                    **open_args,
+                )
+    
+            # Unrecognized Compression
+            else:
+                msg = f"Unrecognized compression type: {compression}"
+                raise ValueError(msg)
+    
+            assert not isinstance(handle, str)
+            handles.append(handle)
+    
+        elif isinstance(handle, str):
+            # Check whether the filename is to be opened in binary mode.
+            # Binary mode does not support 'encoding' and 'newline'.
+            if ioargs.encoding and "b" not in ioargs.mode:
+                # Encoding
+&gt;               handle = open(
+                    handle,
+                    ioargs.mode,
+                    encoding=ioargs.encoding,
+                    errors=errors,
+                    newline="",
+                )
+E               FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\releases\\20260904\\695c7ae5affd4abbb3d86eddb4b154e0\\stocks.csv'
+
+E:\python\Lib\site-packages\pandas\io\common.py:930: FileNotFoundError</failure></testcase><testcase classname="" name="test_gate" time="0.001"><failure message="FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\sector_leader'">def test_gate():
+&gt;    p=ROOT/"reports/shadow/v2/20260904/sector_leader";required={"SECTOR_LEADER_V2_SHADOW.parquet","SECTOR_LEADER_V2_SUMMARY.json","SECTOR_LEADER_V1_V2_DIFF.csv","SECTOR_LEADER_PRIMARY_SECTOR_CHANGE.csv","SECTOR_LEADER_STYLE_SELF_REINFORCEMENT.csv","SECTOR_LEADER_AUDIT_SAMPLE.csv"};assert required&lt;={x.name for x in p.iterdir()};s=json.loads((p/"SECTOR_LEADER_V2_SUMMARY.json").read_text("utf8"));assert sum(s["class_counts"].values())==s["v1_sector_leader_count"]==505
+                                                                                                                                                                                                                                                                                                                             ^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_04\test_r3_04_gate.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/shadow/v2/20260904/sector_leader')
+
+    def iterdir(self):
+        """Yield path objects of the directory contents.
+    
+        The children are yielded in arbitrary order, and the
+        special entries '.' and '..' are not included.
+        """
+        root_dir = str(self)
+&gt;       with os.scandir(root_dir) as scandir_it:
+             ^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\sector_leader'
+
+E:\python\Lib\pathlib\_local.py:575: FileNotFoundError</failure></testcase><testcase classname="" name="test_flags" time="0.001"><failure message="FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/sector_leader/SECTOR_LEADER_V2_SHADOW.parquet">def test_flags():
+&gt;    x=pq.read_table(ROOT/"reports/shadow/v2/20260904/sector_leader/SECTOR_LEADER_V2_SHADOW.parquet",columns=["shadow","production_eligible"]).to_pandas();assert x.shadow.all() and not x.production_eligible.any()
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_04\test_shadow_only.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1891: in read_table
+    dataset = ParquetDataset(
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1471: in __init__
+    self._dataset = ds.dataset(path_or_paths, filesystem=filesystem,
+E:\python\Lib\site-packages\pyarrow\dataset.py:790: in dataset
+    return _filesystem_dataset(source, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pyarrow\dataset.py:472: in _filesystem_dataset
+    fs, paths_or_selector = _ensure_single_source(source, filesystem)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = 'E:/codex work/大A交易/reports/shadow/v2/20260904/sector_leader/SECTOR_LEADER_V2_SHADOW.parquet'
+filesystem = &lt;pyarrow._fs.LocalFileSystem object at 0x0000023E92CA80F0&gt;
+
+    def _ensure_single_source(path, filesystem=None):
+        """
+        Treat path as either a recursively traversable directory or a single file.
+    
+        Parameters
+        ----------
+        path : path-like
+        filesystem : FileSystem or str, optional
+            If an URI is passed, then its path component will act as a prefix for
+            the file paths.
+    
+        Returns
+        -------
+        (FileSystem, list of str or fs.Selector)
+            File system object and either a single item list pointing to a file or
+            an fs.Selector object pointing to a directory.
+    
+        Raises
+        ------
+        TypeError
+            If the passed filesystem has wrong type.
+        FileNotFoundError
+            If the referenced file or directory doesn't exist.
+        """
+        from pyarrow.fs import FileType, FileSelector, _resolve_filesystem_and_path
+    
+        # at this point we already checked that `path` is a path-like
+        filesystem, path = _resolve_filesystem_and_path(path, filesystem)
+    
+        # ensure that the path is normalized before passing to dataset discovery
+        path = filesystem.normalize_path(path)
+    
+        # retrieve the file descriptor
+        file_info = filesystem.get_file_info(path)
+    
+        # depending on the path type either return with a recursive
+        # directory selector or as a list containing a single file
+        if file_info.type == FileType.Directory:
+            paths_or_selector = FileSelector(path, recursive=True)
+        elif file_info.type == FileType.File:
+            paths_or_selector = [path]
+        else:
+&gt;           raise FileNotFoundError(path)
+E           FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/sector_leader/SECTOR_LEADER_V2_SHADOW.parquet
+
+E:\python\Lib\site-packages\pyarrow\dataset.py:437: FileNotFoundError</failure></testcase><testcase classname="" name="test_v1_count" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\releases\\20260904\\695c7ae5affd4abbb3d86eddb4b154e0\\stocks.csv'">def test_v1_count():
+&gt;    p=ROOT/"reports/releases/20260904/695c7ae5affd4abbb3d86eddb4b154e0/stocks.csv";x=pd.read_csv(p,usecols=["sector_leader"]);assert x.sector_leader.astype(str).str.lower().eq("true").sum()==505
+                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_04\test_v1_leader_base_unchanged.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:873: in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:300: in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:1645: in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:1904: in _make_engine
+    self.handles = get_handle(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path_or_buf = WindowsPath('E:/codex work/大A交易/reports/releases/20260904/695c7ae5affd4abbb3d86eddb4b154e0/stocks.csv')
+mode = 'r', encoding = 'utf-8', compression = None, memory_map = False
+is_text = True, errors = 'strict', storage_options = None
+
+    def get_handle(
+        path_or_buf: FilePath | BaseBuffer,
+        mode: str,
+        *,
+        encoding: str | None = None,
+        compression: CompressionOptions | None = None,
+        memory_map: bool = False,
+        is_text: bool = True,
+        errors: str | None = None,
+        storage_options: StorageOptions | None = None,
+    ) -&gt; IOHandles[str] | IOHandles[bytes]:
+        """
+        Get file handle for given path/buffer and mode.
+    
+        Parameters
+        ----------
+        path_or_buf : str or file handle
+            File path or object.
+        mode : str
+            Mode to open path_or_buf with.
+        encoding : str or None
+            Encoding to use.
+        compression : str or dict, default 'infer'
+            For on-the-fly compression of the output data. If 'infer' and 'path_or_buf'
+            is path-like, then detect compression from the following extensions: '.gz',
+            '.bz2', '.zip', '.xz', '.zst', '.tar', '.tar.gz', '.tar.xz' or '.tar.bz2'
+            (otherwise no compression).
+            Set to ``None`` for no compression.
+            Can also be a dict with key ``'method'`` set
+            to one of {``'zip'``, ``'gzip'``, ``'bz2'``, ``'zstd'``, ``'xz'``, ``'tar'``}
+            and other key-value pairs are forwarded to
+            ``zipfile.ZipFile``, ``gzip.GzipFile``,
+            ``bz2.BZ2File``, ``zstandard.ZstdCompressor``, ``lzma.LZMAFile`` or
+            ``tarfile.TarFile``, respectively.
+            As an example, the following could be passed for faster compression and to
+            create a reproducible gzip archive:
+            ``compression={'method': 'gzip', 'compresslevel': 1, 'mtime': 1}``.
+    
+               May be a dict with key 'method' as compression mode
+               and other keys as compression options if compression
+               mode is 'zip'.
+    
+               Passing compression options as keys in dict is
+               supported for compression modes 'gzip', 'bz2', 'zstd' and 'zip'.
+    
+        memory_map : bool, default False
+            See parsers._parser_params for more information. Only used by read_csv.
+        is_text : bool, default True
+            Whether the type of the content passed to the file/buffer is string or
+            bytes. This is not the same as `"b" not in mode`. If a string content is
+            passed to a binary file/buffer, a wrapper is inserted.
+        errors : str, default 'strict'
+            Specifies how encoding and decoding errors are to be handled.
+            See the errors argument for :func:`open` for a full list
+            of options.
+        storage_options: StorageOptions = None
+            Passed to _get_filepath_or_buffer
+    
+        Returns the dataclass IOHandles
+        """
+        # Windows does not default to utf-8. Set to utf-8 for a consistent behavior
+        encoding = encoding or "utf-8"
+    
+        errors = errors or "strict"
+    
+        # read_csv does not know whether the buffer is opened in binary/text mode
+        if _is_binary_mode(path_or_buf, mode) and "b" not in mode:
+            mode += "b"
+    
+        # validate encoding and errors
+        codecs.lookup(encoding)
+        if isinstance(errors, str):
+            codecs.lookup_error(errors)
+    
+        # open URLs
+        ioargs = _get_filepath_or_buffer(
+            path_or_buf,
+            encoding=encoding,
+            compression=compression,
+            mode=mode,
+            storage_options=storage_options,
+        )
+    
+        handle = ioargs.filepath_or_buffer
+        handles: list[BaseBuffer]
+    
+        # memory mapping needs to be the first step
+        # only used for read_csv
+        handle, memory_map, handles = _maybe_memory_map(handle, memory_map)
+    
+        is_path = isinstance(handle, str)
+        compression_args = dict(ioargs.compression)
+        compression = compression_args.pop("method")
+    
+        # Only for write methods
+        if "r" not in mode and is_path:
+            check_parent_directory(str(handle))
+    
+        if compression:
+            if compression != "zstd":
+                # compression libraries do not like an explicit text-mode
+                ioargs.mode = ioargs.mode.replace("t", "")
+            elif compression == "zstd" and "b" not in ioargs.mode:
+                # python-zstandard defaults to text mode, but we always expect
+                # compression libraries to use binary mode.
+                ioargs.mode += "b"
+    
+            # GZ Compression
+            if compression == "gzip":
+                if isinstance(handle, str):
+                    # error: Incompatible types in assignment (expression has type
+                    # "GzipFile", variable has type "Union[str, BaseBuffer]")
+                    handle = gzip.GzipFile(  # type: ignore[assignment]
+                        filename=handle,
+                        mode=ioargs.mode,
+                        **compression_args,
+                    )
+                else:
+                    handle = gzip.GzipFile(
+                        # No overload variant of "GzipFile" matches argument types
+                        # "Union[str, BaseBuffer]", "str", "Dict[str, Any]"
+                        fileobj=handle,  # type: ignore[call-overload]
+                        mode=ioargs.mode,
+                        **compression_args,
+                    )
+    
+            # BZ Compression
+            elif compression == "bz2":
+                import bz2
+    
+                # Overload of "BZ2File" to handle pickle protocol 5
+                # "Union[str, BaseBuffer]", "str", "Dict[str, Any]"
+                handle = bz2.BZ2File(  # type: ignore[call-overload]
+                    handle,
+                    mode=ioargs.mode,
+                    **compression_args,
+                )
+    
+            # ZIP Compression
+            elif compression == "zip":
+                # error: Argument 1 to "_BytesZipFile" has incompatible type
+                # "Union[str, BaseBuffer]"; expected "Union[Union[str, PathLike[str]],
+                # ReadBuffer[bytes], WriteBuffer[bytes]]"
+                handle = _BytesZipFile(
+                    handle,  # type: ignore[arg-type]
+                    ioargs.mode,
+                    **compression_args,
+                )
+                if handle.buffer.mode == "r":
+                    handles.append(handle)
+                    zip_names = handle.buffer.namelist()
+                    if len(zip_names) == 1:
+                        handle = handle.buffer.open(zip_names.pop())
+                    elif not zip_names:
+                        raise ValueError(f"Zero files found in ZIP file {path_or_buf}")
+                    else:
+                        raise ValueError(
+                            "Multiple files found in ZIP file. "
+                            f"Only one file per ZIP: {zip_names}"
+                        )
+    
+            # TAR Encoding
+            elif compression == "tar":
+                compression_args.setdefault("mode", ioargs.mode)
+                if isinstance(handle, str):
+                    handle = _BytesTarFile(name=handle, **compression_args)
+                else:
+                    # error: Argument "fileobj" to "_BytesTarFile" has incompatible
+                    # type "BaseBuffer"; expected "Union[ReadBuffer[bytes],
+                    # WriteBuffer[bytes], None]"
+                    handle = _BytesTarFile(
+                        fileobj=handle,  # type: ignore[arg-type]
+                        **compression_args,
+                    )
+                assert isinstance(handle, _BytesTarFile)
+                if "r" in handle.buffer.mode:
+                    handles.append(handle)
+                    files = handle.buffer.getnames()
+                    if len(files) == 1:
+                        file = handle.buffer.extractfile(files[0])
+                        assert file is not None
+                        handle = file
+                    elif not files:
+                        raise ValueError(f"Zero files found in TAR archive {path_or_buf}")
+                    else:
+                        raise ValueError(
+                            "Multiple files found in TAR archive. "
+                            f"Only one file per TAR archive: {files}"
+                        )
+    
+            # XZ Compression
+            elif compression == "xz":
+                # error: Argument 1 to "LZMAFile" has incompatible type "Union[str,
+                # BaseBuffer]"; expected "Optional[Union[Union[str, bytes, PathLike[str],
+                # PathLike[bytes]], IO[bytes]], None]"
+                import lzma
+    
+                handle = lzma.LZMAFile(
+                    handle,  # type: ignore[arg-type]
+                    ioargs.mode,
+                    **compression_args,
+                )
+    
+            # Zstd Compression
+            elif compression == "zstd":
+                zstd = import_optional_dependency("zstandard")
+                if "r" in ioargs.mode:
+                    open_args = {"dctx": zstd.ZstdDecompressor(**compression_args)}
+                else:
+                    open_args = {"cctx": zstd.ZstdCompressor(**compression_args)}
+                handle = zstd.open(
+                    handle,
+                    mode=ioargs.mode,
+                    **open_args,
+                )
+    
+            # Unrecognized Compression
+            else:
+                msg = f"Unrecognized compression type: {compression}"
+                raise ValueError(msg)
+    
+            assert not isinstance(handle, str)
+            handles.append(handle)
+    
+        elif isinstance(handle, str):
+            # Check whether the filename is to be opened in binary mode.
+            # Binary mode does not support 'encoding' and 'newline'.
+            if ioargs.encoding and "b" not in ioargs.mode:
+                # Encoding
+&gt;               handle = open(
+                    handle,
+                    ioargs.mode,
+                    encoding=ioargs.encoding,
+                    errors=errors,
+                    newline="",
+                )
+E               FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\releases\\20260904\\695c7ae5affd4abbb3d86eddb4b154e0\\stocks.csv'
+
+E:\python\Lib\site-packages\pandas\io\common.py:930: FileNotFoundError</failure></testcase><testcase classname="" name="test_gate" time="0.000"><failure message="FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\early_mover'">def test_gate():
+&gt;    p=ROOT/"reports/shadow/v2/20260904/early_mover";required={"EARLY_MOVER_V2_SHADOW.parquet","EARLY_MOVER_V2_SUMMARY.json","EARLY_MOVER_V1_V2_DIFF.csv","EARLY_MOVER_SECTOR_CONTEXT_AUDIT.csv","EARLY_MOVER_AUDIT_SAMPLE.csv"};assert required&lt;={x.name for x in p.iterdir()};s=json.loads((p/"EARLY_MOVER_V2_SUMMARY.json").read_text("utf8"));assert sum(s["class_counts"].values())==s["v1_early_mover_count"]==86
+                                                                                                                                                                                                                                                                   ^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_05\test_r3_05_gate.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/shadow/v2/20260904/early_mover')
+
+    def iterdir(self):
+        """Yield path objects of the directory contents.
+    
+        The children are yielded in arbitrary order, and the
+        special entries '.' and '..' are not included.
+        """
+        root_dir = str(self)
+&gt;       with os.scandir(root_dir) as scandir_it:
+             ^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\early_mover'
+
+E:\python\Lib\pathlib\_local.py:575: FileNotFoundError</failure></testcase><testcase classname="" name="test_flags" time="0.001"><failure message="FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/early_mover/EARLY_MOVER_V2_SHADOW.parquet">def test_flags():
+&gt;    x=pq.read_table(ROOT/"reports/shadow/v2/20260904/early_mover/EARLY_MOVER_V2_SHADOW.parquet",columns=["shadow","production_eligible"]).to_pandas();assert x.shadow.all() and not x.production_eligible.any()
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_05\test_shadow_only.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1891: in read_table
+    dataset = ParquetDataset(
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1471: in __init__
+    self._dataset = ds.dataset(path_or_paths, filesystem=filesystem,
+E:\python\Lib\site-packages\pyarrow\dataset.py:790: in dataset
+    return _filesystem_dataset(source, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pyarrow\dataset.py:472: in _filesystem_dataset
+    fs, paths_or_selector = _ensure_single_source(source, filesystem)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = 'E:/codex work/大A交易/reports/shadow/v2/20260904/early_mover/EARLY_MOVER_V2_SHADOW.parquet'
+filesystem = &lt;pyarrow._fs.LocalFileSystem object at 0x0000023E92A05EF0&gt;
+
+    def _ensure_single_source(path, filesystem=None):
+        """
+        Treat path as either a recursively traversable directory or a single file.
+    
+        Parameters
+        ----------
+        path : path-like
+        filesystem : FileSystem or str, optional
+            If an URI is passed, then its path component will act as a prefix for
+            the file paths.
+    
+        Returns
+        -------
+        (FileSystem, list of str or fs.Selector)
+            File system object and either a single item list pointing to a file or
+            an fs.Selector object pointing to a directory.
+    
+        Raises
+        ------
+        TypeError
+            If the passed filesystem has wrong type.
+        FileNotFoundError
+            If the referenced file or directory doesn't exist.
+        """
+        from pyarrow.fs import FileType, FileSelector, _resolve_filesystem_and_path
+    
+        # at this point we already checked that `path` is a path-like
+        filesystem, path = _resolve_filesystem_and_path(path, filesystem)
+    
+        # ensure that the path is normalized before passing to dataset discovery
+        path = filesystem.normalize_path(path)
+    
+        # retrieve the file descriptor
+        file_info = filesystem.get_file_info(path)
+    
+        # depending on the path type either return with a recursive
+        # directory selector or as a list containing a single file
+        if file_info.type == FileType.Directory:
+            paths_or_selector = FileSelector(path, recursive=True)
+        elif file_info.type == FileType.File:
+            paths_or_selector = [path]
+        else:
+&gt;           raise FileNotFoundError(path)
+E           FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/early_mover/EARLY_MOVER_V2_SHADOW.parquet
+
+E:\python\Lib\site-packages\pyarrow\dataset.py:437: FileNotFoundError</failure></testcase><testcase classname="" name="test_count" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\releases\\20260904\\695c7ae5affd4abbb3d86eddb4b154e0\\stocks.csv'">def test_count():
+&gt;    p=ROOT/"reports/releases/20260904/695c7ae5affd4abbb3d86eddb4b154e0/stocks.csv";x=pd.read_csv(p,usecols=["early_mover"]);assert x.early_mover.astype(str).str.lower().eq("true").sum()==86
+                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_05\test_v1_early_base_unchanged.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:873: in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:300: in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:1645: in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pandas\io\parsers\readers.py:1904: in _make_engine
+    self.handles = get_handle(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path_or_buf = WindowsPath('E:/codex work/大A交易/reports/releases/20260904/695c7ae5affd4abbb3d86eddb4b154e0/stocks.csv')
+mode = 'r', encoding = 'utf-8', compression = None, memory_map = False
+is_text = True, errors = 'strict', storage_options = None
+
+    def get_handle(
+        path_or_buf: FilePath | BaseBuffer,
+        mode: str,
+        *,
+        encoding: str | None = None,
+        compression: CompressionOptions | None = None,
+        memory_map: bool = False,
+        is_text: bool = True,
+        errors: str | None = None,
+        storage_options: StorageOptions | None = None,
+    ) -&gt; IOHandles[str] | IOHandles[bytes]:
+        """
+        Get file handle for given path/buffer and mode.
+    
+        Parameters
+        ----------
+        path_or_buf : str or file handle
+            File path or object.
+        mode : str
+            Mode to open path_or_buf with.
+        encoding : str or None
+            Encoding to use.
+        compression : str or dict, default 'infer'
+            For on-the-fly compression of the output data. If 'infer' and 'path_or_buf'
+            is path-like, then detect compression from the following extensions: '.gz',
+            '.bz2', '.zip', '.xz', '.zst', '.tar', '.tar.gz', '.tar.xz' or '.tar.bz2'
+            (otherwise no compression).
+            Set to ``None`` for no compression.
+            Can also be a dict with key ``'method'`` set
+            to one of {``'zip'``, ``'gzip'``, ``'bz2'``, ``'zstd'``, ``'xz'``, ``'tar'``}
+            and other key-value pairs are forwarded to
+            ``zipfile.ZipFile``, ``gzip.GzipFile``,
+            ``bz2.BZ2File``, ``zstandard.ZstdCompressor``, ``lzma.LZMAFile`` or
+            ``tarfile.TarFile``, respectively.
+            As an example, the following could be passed for faster compression and to
+            create a reproducible gzip archive:
+            ``compression={'method': 'gzip', 'compresslevel': 1, 'mtime': 1}``.
+    
+               May be a dict with key 'method' as compression mode
+               and other keys as compression options if compression
+               mode is 'zip'.
+    
+               Passing compression options as keys in dict is
+               supported for compression modes 'gzip', 'bz2', 'zstd' and 'zip'.
+    
+        memory_map : bool, default False
+            See parsers._parser_params for more information. Only used by read_csv.
+        is_text : bool, default True
+            Whether the type of the content passed to the file/buffer is string or
+            bytes. This is not the same as `"b" not in mode`. If a string content is
+            passed to a binary file/buffer, a wrapper is inserted.
+        errors : str, default 'strict'
+            Specifies how encoding and decoding errors are to be handled.
+            See the errors argument for :func:`open` for a full list
+            of options.
+        storage_options: StorageOptions = None
+            Passed to _get_filepath_or_buffer
+    
+        Returns the dataclass IOHandles
+        """
+        # Windows does not default to utf-8. Set to utf-8 for a consistent behavior
+        encoding = encoding or "utf-8"
+    
+        errors = errors or "strict"
+    
+        # read_csv does not know whether the buffer is opened in binary/text mode
+        if _is_binary_mode(path_or_buf, mode) and "b" not in mode:
+            mode += "b"
+    
+        # validate encoding and errors
+        codecs.lookup(encoding)
+        if isinstance(errors, str):
+            codecs.lookup_error(errors)
+    
+        # open URLs
+        ioargs = _get_filepath_or_buffer(
+            path_or_buf,
+            encoding=encoding,
+            compression=compression,
+            mode=mode,
+            storage_options=storage_options,
+        )
+    
+        handle = ioargs.filepath_or_buffer
+        handles: list[BaseBuffer]
+    
+        # memory mapping needs to be the first step
+        # only used for read_csv
+        handle, memory_map, handles = _maybe_memory_map(handle, memory_map)
+    
+        is_path = isinstance(handle, str)
+        compression_args = dict(ioargs.compression)
+        compression = compression_args.pop("method")
+    
+        # Only for write methods
+        if "r" not in mode and is_path:
+            check_parent_directory(str(handle))
+    
+        if compression:
+            if compression != "zstd":
+                # compression libraries do not like an explicit text-mode
+                ioargs.mode = ioargs.mode.replace("t", "")
+            elif compression == "zstd" and "b" not in ioargs.mode:
+                # python-zstandard defaults to text mode, but we always expect
+                # compression libraries to use binary mode.
+                ioargs.mode += "b"
+    
+            # GZ Compression
+            if compression == "gzip":
+                if isinstance(handle, str):
+                    # error: Incompatible types in assignment (expression has type
+                    # "GzipFile", variable has type "Union[str, BaseBuffer]")
+                    handle = gzip.GzipFile(  # type: ignore[assignment]
+                        filename=handle,
+                        mode=ioargs.mode,
+                        **compression_args,
+                    )
+                else:
+                    handle = gzip.GzipFile(
+                        # No overload variant of "GzipFile" matches argument types
+                        # "Union[str, BaseBuffer]", "str", "Dict[str, Any]"
+                        fileobj=handle,  # type: ignore[call-overload]
+                        mode=ioargs.mode,
+                        **compression_args,
+                    )
+    
+            # BZ Compression
+            elif compression == "bz2":
+                import bz2
+    
+                # Overload of "BZ2File" to handle pickle protocol 5
+                # "Union[str, BaseBuffer]", "str", "Dict[str, Any]"
+                handle = bz2.BZ2File(  # type: ignore[call-overload]
+                    handle,
+                    mode=ioargs.mode,
+                    **compression_args,
+                )
+    
+            # ZIP Compression
+            elif compression == "zip":
+                # error: Argument 1 to "_BytesZipFile" has incompatible type
+                # "Union[str, BaseBuffer]"; expected "Union[Union[str, PathLike[str]],
+                # ReadBuffer[bytes], WriteBuffer[bytes]]"
+                handle = _BytesZipFile(
+                    handle,  # type: ignore[arg-type]
+                    ioargs.mode,
+                    **compression_args,
+                )
+                if handle.buffer.mode == "r":
+                    handles.append(handle)
+                    zip_names = handle.buffer.namelist()
+                    if len(zip_names) == 1:
+                        handle = handle.buffer.open(zip_names.pop())
+                    elif not zip_names:
+                        raise ValueError(f"Zero files found in ZIP file {path_or_buf}")
+                    else:
+                        raise ValueError(
+                            "Multiple files found in ZIP file. "
+                            f"Only one file per ZIP: {zip_names}"
+                        )
+    
+            # TAR Encoding
+            elif compression == "tar":
+                compression_args.setdefault("mode", ioargs.mode)
+                if isinstance(handle, str):
+                    handle = _BytesTarFile(name=handle, **compression_args)
+                else:
+                    # error: Argument "fileobj" to "_BytesTarFile" has incompatible
+                    # type "BaseBuffer"; expected "Union[ReadBuffer[bytes],
+                    # WriteBuffer[bytes], None]"
+                    handle = _BytesTarFile(
+                        fileobj=handle,  # type: ignore[arg-type]
+                        **compression_args,
+                    )
+                assert isinstance(handle, _BytesTarFile)
+                if "r" in handle.buffer.mode:
+                    handles.append(handle)
+                    files = handle.buffer.getnames()
+                    if len(files) == 1:
+                        file = handle.buffer.extractfile(files[0])
+                        assert file is not None
+                        handle = file
+                    elif not files:
+                        raise ValueError(f"Zero files found in TAR archive {path_or_buf}")
+                    else:
+                        raise ValueError(
+                            "Multiple files found in TAR archive. "
+                            f"Only one file per TAR archive: {files}"
+                        )
+    
+            # XZ Compression
+            elif compression == "xz":
+                # error: Argument 1 to "LZMAFile" has incompatible type "Union[str,
+                # BaseBuffer]"; expected "Optional[Union[Union[str, bytes, PathLike[str],
+                # PathLike[bytes]], IO[bytes]], None]"
+                import lzma
+    
+                handle = lzma.LZMAFile(
+                    handle,  # type: ignore[arg-type]
+                    ioargs.mode,
+                    **compression_args,
+                )
+    
+            # Zstd Compression
+            elif compression == "zstd":
+                zstd = import_optional_dependency("zstandard")
+                if "r" in ioargs.mode:
+                    open_args = {"dctx": zstd.ZstdDecompressor(**compression_args)}
+                else:
+                    open_args = {"cctx": zstd.ZstdCompressor(**compression_args)}
+                handle = zstd.open(
+                    handle,
+                    mode=ioargs.mode,
+                    **open_args,
+                )
+    
+            # Unrecognized Compression
+            else:
+                msg = f"Unrecognized compression type: {compression}"
+                raise ValueError(msg)
+    
+            assert not isinstance(handle, str)
+            handles.append(handle)
+    
+        elif isinstance(handle, str):
+            # Check whether the filename is to be opened in binary mode.
+            # Binary mode does not support 'encoding' and 'newline'.
+            if ioargs.encoding and "b" not in ioargs.mode:
+                # Encoding
+&gt;               handle = open(
+                    handle,
+                    ioargs.mode,
+                    encoding=ioargs.encoding,
+                    errors=errors,
+                    newline="",
+                )
+E               FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\releases\\20260904\\695c7ae5affd4abbb3d86eddb4b154e0\\stocks.csv'
+
+E:\python\Lib\site-packages\pandas\io\common.py:930: FileNotFoundError</failure></testcase><testcase classname="" name="test_no_rating" time="0.001"><failure message="FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/priority/V2_UNIFIED_RESEARCH_BOARD.parquet">&gt;   def test_no_rating():assert not any("rating" in c.lower() or "score" in c.lower() for c in pq.read_table(ROOT/"reports/shadow/v2/20260904/priority/V2_UNIFIED_RESEARCH_BOARD.parquet").column_names)
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_06\test_no_v2_abcd_rating.py:4: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1891: in read_table
+    dataset = ParquetDataset(
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1471: in __init__
+    self._dataset = ds.dataset(path_or_paths, filesystem=filesystem,
+E:\python\Lib\site-packages\pyarrow\dataset.py:790: in dataset
+    return _filesystem_dataset(source, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pyarrow\dataset.py:472: in _filesystem_dataset
+    fs, paths_or_selector = _ensure_single_source(source, filesystem)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = 'E:/codex work/大A交易/reports/shadow/v2/20260904/priority/V2_UNIFIED_RESEARCH_BOARD.parquet'
+filesystem = &lt;pyarrow._fs.LocalFileSystem object at 0x0000023E92CAABB0&gt;
+
+    def _ensure_single_source(path, filesystem=None):
+        """
+        Treat path as either a recursively traversable directory or a single file.
+    
+        Parameters
+        ----------
+        path : path-like
+        filesystem : FileSystem or str, optional
+            If an URI is passed, then its path component will act as a prefix for
+            the file paths.
+    
+        Returns
+        -------
+        (FileSystem, list of str or fs.Selector)
+            File system object and either a single item list pointing to a file or
+            an fs.Selector object pointing to a directory.
+    
+        Raises
+        ------
+        TypeError
+            If the passed filesystem has wrong type.
+        FileNotFoundError
+            If the referenced file or directory doesn't exist.
+        """
+        from pyarrow.fs import FileType, FileSelector, _resolve_filesystem_and_path
+    
+        # at this point we already checked that `path` is a path-like
+        filesystem, path = _resolve_filesystem_and_path(path, filesystem)
+    
+        # ensure that the path is normalized before passing to dataset discovery
+        path = filesystem.normalize_path(path)
+    
+        # retrieve the file descriptor
+        file_info = filesystem.get_file_info(path)
+    
+        # depending on the path type either return with a recursive
+        # directory selector or as a list containing a single file
+        if file_info.type == FileType.Directory:
+            paths_or_selector = FileSelector(path, recursive=True)
+        elif file_info.type == FileType.File:
+            paths_or_selector = [path]
+        else:
+&gt;           raise FileNotFoundError(path)
+E           FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/priority/V2_UNIFIED_RESEARCH_BOARD.parquet
+
+E:\python\Lib\site-packages\pyarrow\dataset.py:437: FileNotFoundError</failure></testcase><testcase classname="" name="test_unique" time="0.001"><failure message="FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/priority/V2_UNIFIED_RESEARCH_BOARD.parquet">def test_unique():
+&gt;    x=pq.read_table(ROOT/"reports/shadow/v2/20260904/priority/V2_UNIFIED_RESEARCH_BOARD.parquet",columns=["security_id"]).to_pandas();assert len(x)==1015 and x.security_id.is_unique
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_06\test_one_security_one_unified_row.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1891: in read_table
+    dataset = ParquetDataset(
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1471: in __init__
+    self._dataset = ds.dataset(path_or_paths, filesystem=filesystem,
+E:\python\Lib\site-packages\pyarrow\dataset.py:790: in dataset
+    return _filesystem_dataset(source, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pyarrow\dataset.py:472: in _filesystem_dataset
+    fs, paths_or_selector = _ensure_single_source(source, filesystem)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = 'E:/codex work/大A交易/reports/shadow/v2/20260904/priority/V2_UNIFIED_RESEARCH_BOARD.parquet'
+filesystem = &lt;pyarrow._fs.LocalFileSystem object at 0x0000023E92AA11B0&gt;
+
+    def _ensure_single_source(path, filesystem=None):
+        """
+        Treat path as either a recursively traversable directory or a single file.
+    
+        Parameters
+        ----------
+        path : path-like
+        filesystem : FileSystem or str, optional
+            If an URI is passed, then its path component will act as a prefix for
+            the file paths.
+    
+        Returns
+        -------
+        (FileSystem, list of str or fs.Selector)
+            File system object and either a single item list pointing to a file or
+            an fs.Selector object pointing to a directory.
+    
+        Raises
+        ------
+        TypeError
+            If the passed filesystem has wrong type.
+        FileNotFoundError
+            If the referenced file or directory doesn't exist.
+        """
+        from pyarrow.fs import FileType, FileSelector, _resolve_filesystem_and_path
+    
+        # at this point we already checked that `path` is a path-like
+        filesystem, path = _resolve_filesystem_and_path(path, filesystem)
+    
+        # ensure that the path is normalized before passing to dataset discovery
+        path = filesystem.normalize_path(path)
+    
+        # retrieve the file descriptor
+        file_info = filesystem.get_file_info(path)
+    
+        # depending on the path type either return with a recursive
+        # directory selector or as a list containing a single file
+        if file_info.type == FileType.Directory:
+            paths_or_selector = FileSelector(path, recursive=True)
+        elif file_info.type == FileType.File:
+            paths_or_selector = [path]
+        else:
+&gt;           raise FileNotFoundError(path)
+E           FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/priority/V2_UNIFIED_RESEARCH_BOARD.parquet
+
+E:\python\Lib\site-packages\pyarrow\dataset.py:437: FileNotFoundError</failure></testcase><testcase classname="" name="test_long_schema" time="0.001"><failure message="FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/priority/V2_QUEUE_MEMBERSHIP.parquet">&gt;   def test_long_schema():assert {"security_id","queue_name","queue_tier","source_v2_class"}==set(pq.read_table(ROOT/"reports/shadow/v2/20260904/priority/V2_QUEUE_MEMBERSHIP.parquet").column_names)
+                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_06\test_queue_membership_long_table.py:4: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1891: in read_table
+    dataset = ParquetDataset(
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1471: in __init__
+    self._dataset = ds.dataset(path_or_paths, filesystem=filesystem,
+E:\python\Lib\site-packages\pyarrow\dataset.py:790: in dataset
+    return _filesystem_dataset(source, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pyarrow\dataset.py:472: in _filesystem_dataset
+    fs, paths_or_selector = _ensure_single_source(source, filesystem)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = 'E:/codex work/大A交易/reports/shadow/v2/20260904/priority/V2_QUEUE_MEMBERSHIP.parquet'
+filesystem = &lt;pyarrow._fs.LocalFileSystem object at 0x0000023E92AED5B0&gt;
+
+    def _ensure_single_source(path, filesystem=None):
+        """
+        Treat path as either a recursively traversable directory or a single file.
+    
+        Parameters
+        ----------
+        path : path-like
+        filesystem : FileSystem or str, optional
+            If an URI is passed, then its path component will act as a prefix for
+            the file paths.
+    
+        Returns
+        -------
+        (FileSystem, list of str or fs.Selector)
+            File system object and either a single item list pointing to a file or
+            an fs.Selector object pointing to a directory.
+    
+        Raises
+        ------
+        TypeError
+            If the passed filesystem has wrong type.
+        FileNotFoundError
+            If the referenced file or directory doesn't exist.
+        """
+        from pyarrow.fs import FileType, FileSelector, _resolve_filesystem_and_path
+    
+        # at this point we already checked that `path` is a path-like
+        filesystem, path = _resolve_filesystem_and_path(path, filesystem)
+    
+        # ensure that the path is normalized before passing to dataset discovery
+        path = filesystem.normalize_path(path)
+    
+        # retrieve the file descriptor
+        file_info = filesystem.get_file_info(path)
+    
+        # depending on the path type either return with a recursive
+        # directory selector or as a list containing a single file
+        if file_info.type == FileType.Directory:
+            paths_or_selector = FileSelector(path, recursive=True)
+        elif file_info.type == FileType.File:
+            paths_or_selector = [path]
+        else:
+&gt;           raise FileNotFoundError(path)
+E           FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/priority/V2_QUEUE_MEMBERSHIP.parquet
+
+E:\python\Lib\site-packages\pyarrow\dataset.py:437: FileNotFoundError</failure></testcase><testcase classname="" name="test_gate" time="0.001"><failure message="FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\priority'">def test_gate():
+&gt;    p=ROOT/"reports/shadow/v2/20260904/priority";required={"V2_UNIFIED_RESEARCH_BOARD.parquet","V2_QUEUE_MEMBERSHIP.parquet","V2_PRIORITY_SUMMARY.json","V2_STRUCTURE_OVERLAP_MATRIX.csv","V1_V2_PRIORITY_DIFF.csv","V2_LEADER_DOMINANCE_AUDIT.json","V2_PRIORITY_AUDIT_SAMPLE.csv","V2_PRIORITY_SHADOW_IDENTITY.json"};assert required&lt;={x.name for x in p.iterdir()};s=json.loads((p/"V2_PRIORITY_SUMMARY.json").read_text());assert sum(s["band_counts"].values())==1015
+                                                                                                                                                                                                                                                                                                                                                           ^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_06\test_r3_06_gate.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/shadow/v2/20260904/priority')
+
+    def iterdir(self):
+        """Yield path objects of the directory contents.
+    
+        The children are yielded in arbitrary order, and the
+        special entries '.' and '..' are not included.
+        """
+        root_dir = str(self)
+&gt;       with os.scandir(root_dir) as scandir_it:
+             ^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\priority'
+
+E:\python\Lib\pathlib\_local.py:575: FileNotFoundError</failure></testcase><testcase classname="" name="test_flags" time="0.001"><failure message="FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/priority/V2_UNIFIED_RESEARCH_BOARD.parquet">def test_flags():
+&gt;    x=pq.read_table(ROOT/"reports/shadow/v2/20260904/priority/V2_UNIFIED_RESEARCH_BOARD.parquet",columns=["shadow","production_eligible"]).to_pandas();assert x.shadow.all() and not x.production_eligible.any()
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_06\test_shadow_only.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1891: in read_table
+    dataset = ParquetDataset(
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1471: in __init__
+    self._dataset = ds.dataset(path_or_paths, filesystem=filesystem,
+E:\python\Lib\site-packages\pyarrow\dataset.py:790: in dataset
+    return _filesystem_dataset(source, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pyarrow\dataset.py:472: in _filesystem_dataset
+    fs, paths_or_selector = _ensure_single_source(source, filesystem)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = 'E:/codex work/大A交易/reports/shadow/v2/20260904/priority/V2_UNIFIED_RESEARCH_BOARD.parquet'
+filesystem = &lt;pyarrow._fs.LocalFileSystem object at 0x0000023E92ACAD30&gt;
+
+    def _ensure_single_source(path, filesystem=None):
+        """
+        Treat path as either a recursively traversable directory or a single file.
+    
+        Parameters
+        ----------
+        path : path-like
+        filesystem : FileSystem or str, optional
+            If an URI is passed, then its path component will act as a prefix for
+            the file paths.
+    
+        Returns
+        -------
+        (FileSystem, list of str or fs.Selector)
+            File system object and either a single item list pointing to a file or
+            an fs.Selector object pointing to a directory.
+    
+        Raises
+        ------
+        TypeError
+            If the passed filesystem has wrong type.
+        FileNotFoundError
+            If the referenced file or directory doesn't exist.
+        """
+        from pyarrow.fs import FileType, FileSelector, _resolve_filesystem_and_path
+    
+        # at this point we already checked that `path` is a path-like
+        filesystem, path = _resolve_filesystem_and_path(path, filesystem)
+    
+        # ensure that the path is normalized before passing to dataset discovery
+        path = filesystem.normalize_path(path)
+    
+        # retrieve the file descriptor
+        file_info = filesystem.get_file_info(path)
+    
+        # depending on the path type either return with a recursive
+        # directory selector or as a list containing a single file
+        if file_info.type == FileType.Directory:
+            paths_or_selector = FileSelector(path, recursive=True)
+        elif file_info.type == FileType.File:
+            paths_or_selector = [path]
+        else:
+&gt;           raise FileNotFoundError(path)
+E           FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/priority/V2_UNIFIED_RESEARCH_BOARD.parquet
+
+E:\python\Lib\site-packages\pyarrow\dataset.py:437: FileNotFoundError</failure></testcase><testcase classname="" name="test_bound" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\priority\\V2_PRIORITY_SHADOW_IDENTITY.json'">def test_bound():
+&gt;    x=json.loads((ROOT/"reports/shadow/v2/20260904/priority/V2_PRIORITY_SHADOW_IDENTITY.json").read_text("utf8"));assert set(x["source_artifacts"])=={"R3-01","R3-02","R3-03","R3-04","R3-05"} and all(v["sha256"] for v in x["source_artifacts"].values())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_06\test_source_shadow_receipts_bound.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/shadow/v2/20260904/priority/V2_PRIORITY_SHADOW_IDENTITY.json')
+mode = 'r', buffering = -1, encoding = 'utf8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\priority\\V2_PRIORITY_SHADOW_IDENTITY.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_neutral" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\integrated\\R3_INTEGRATED_SEAL_RECEIPT.json'">def test_neutral():
+&gt;    x=json.loads((ROOT/"reports/shadow/v2/20260904/integrated/R3_INTEGRATED_SEAL_RECEIPT.json").read_text())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_seal\test_data_insufficient_neutrality.py:4: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/shadow/v2/20260904/integrated/R3_INTEGRATED_SEAL_RECEIPT.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\integrated\\R3_INTEGRATED_SEAL_RECEIPT.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_identity" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\integrated\\R3_INTEGRATED_SEAL_RECEIPT.json'">def test_identity():
+&gt;    x=json.loads((ROOT/"reports/shadow/v2/20260904/integrated/R3_INTEGRATED_SEAL_RECEIPT.json").read_text())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_seal\test_integrated_identity.py:4: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/shadow/v2/20260904/integrated/R3_INTEGRATED_SEAL_RECEIPT.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\integrated\\R3_INTEGRATED_SEAL_RECEIPT.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_absent" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\integrated\\R3_INTEGRATED_SEAL_RECEIPT.json'">def test_absent():
+&gt;    x=json.loads((ROOT/"reports/shadow/v2/20260904/integrated/R3_INTEGRATED_SEAL_RECEIPT.json").read_text())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_seal\test_no_score_or_rating.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/shadow/v2/20260904/integrated/R3_INTEGRATED_SEAL_RECEIPT.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\integrated\\R3_INTEGRATED_SEAL_RECEIPT.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_unique" time="0.001"><failure message="FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/priority/V2_UNIFIED_RESEARCH_BOARD.parquet">def test_unique():
+&gt;    board=pq.read_table(ROOT/"reports/shadow/v2/20260904/priority/V2_UNIFIED_RESEARCH_BOARD.parquet").to_pandas()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_seal\test_one_security_one_row.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1891: in read_table
+    dataset = ParquetDataset(
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1471: in __init__
+    self._dataset = ds.dataset(path_or_paths, filesystem=filesystem,
+E:\python\Lib\site-packages\pyarrow\dataset.py:790: in dataset
+    return _filesystem_dataset(source, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pyarrow\dataset.py:472: in _filesystem_dataset
+    fs, paths_or_selector = _ensure_single_source(source, filesystem)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = 'E:/codex work/大A交易/reports/shadow/v2/20260904/priority/V2_UNIFIED_RESEARCH_BOARD.parquet'
+filesystem = &lt;pyarrow._fs.LocalFileSystem object at 0x0000023E92DC11F0&gt;
+
+    def _ensure_single_source(path, filesystem=None):
+        """
+        Treat path as either a recursively traversable directory or a single file.
+    
+        Parameters
+        ----------
+        path : path-like
+        filesystem : FileSystem or str, optional
+            If an URI is passed, then its path component will act as a prefix for
+            the file paths.
+    
+        Returns
+        -------
+        (FileSystem, list of str or fs.Selector)
+            File system object and either a single item list pointing to a file or
+            an fs.Selector object pointing to a directory.
+    
+        Raises
+        ------
+        TypeError
+            If the passed filesystem has wrong type.
+        FileNotFoundError
+            If the referenced file or directory doesn't exist.
+        """
+        from pyarrow.fs import FileType, FileSelector, _resolve_filesystem_and_path
+    
+        # at this point we already checked that `path` is a path-like
+        filesystem, path = _resolve_filesystem_and_path(path, filesystem)
+    
+        # ensure that the path is normalized before passing to dataset discovery
+        path = filesystem.normalize_path(path)
+    
+        # retrieve the file descriptor
+        file_info = filesystem.get_file_info(path)
+    
+        # depending on the path type either return with a recursive
+        # directory selector or as a list containing a single file
+        if file_info.type == FileType.Directory:
+            paths_or_selector = FileSelector(path, recursive=True)
+        elif file_info.type == FileType.File:
+            paths_or_selector = [path]
+        else:
+&gt;           raise FileNotFoundError(path)
+E           FileNotFoundError: E:/codex work/大A交易/reports/shadow/v2/20260904/priority/V2_UNIFIED_RESEARCH_BOARD.parquet
+
+E:\python\Lib\site-packages\pyarrow\dataset.py:437: FileNotFoundError</failure></testcase><testcase classname="" name="test_chain" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\integrated\\R3_INTEGRATED_SEAL_RECEIPT.json'">def test_chain():
+&gt;    x=json.loads((ROOT/"reports/shadow/v2/20260904/integrated/R3_INTEGRATED_SEAL_RECEIPT.json").read_text())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_seal\test_receipt_chain.py:4: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/shadow/v2/20260904/integrated/R3_INTEGRATED_SEAL_RECEIPT.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\integrated\\R3_INTEGRATED_SEAL_RECEIPT.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_frozen" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\integrated\\R3_INTEGRATED_SEAL_RECEIPT.json'">&gt;   def test_frozen():assert json.loads((ROOT/"reports/shadow/v2/20260904/integrated/R3_INTEGRATED_SEAL_RECEIPT.json").read_text())["semantic_freeze_pass"]
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_seal\test_semantic_freezes.py:3: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/shadow/v2/20260904/integrated/R3_INTEGRATED_SEAL_RECEIPT.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\integrated\\R3_INTEGRATED_SEAL_RECEIPT.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_v1" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\integrated\\R3_INTEGRATED_SEAL_RECEIPT.json'">def test_v1():
+     pointer=json.loads((ROOT/"reports/current/CURRENT_RELEASE.json").read_text(encoding="utf-8"))
+&gt;    seal=json.loads((ROOT/"reports/shadow/v2/20260904/integrated/R3_INTEGRATED_SEAL_RECEIPT.json").read_text())
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r3_seal\test_v1_identity.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/shadow/v2/20260904/integrated/R3_INTEGRATED_SEAL_RECEIPT.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\integrated\\R3_INTEGRATED_SEAL_RECEIPT.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_final_seed" time="0.001"><failure message="FileNotFoundError: E:/codex work/大A交易/data/forward/observations/20260904/revision_3/FORWARD_OBSERVATION.parquet">def test_final_seed():
+&gt;    x=pq.read_table(ROOT/"data/forward/observations/20260904/revision_3/FORWARD_OBSERVATION.parquet",columns=["candidate_state"]).to_pandas();assert len(x)==1015 and x.candidate_state.eq("SOURCE_REVISED").all()
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r4_00\test_baseline_seed.py:4: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1891: in read_table
+    dataset = ParquetDataset(
+E:\python\Lib\site-packages\pyarrow\parquet\core.py:1471: in __init__
+    self._dataset = ds.dataset(path_or_paths, filesystem=filesystem,
+E:\python\Lib\site-packages\pyarrow\dataset.py:790: in dataset
+    return _filesystem_dataset(source, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\pyarrow\dataset.py:472: in _filesystem_dataset
+    fs, paths_or_selector = _ensure_single_source(source, filesystem)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = 'E:/codex work/大A交易/data/forward/observations/20260904/revision_3/FORWARD_OBSERVATION.parquet'
+filesystem = &lt;pyarrow._fs.LocalFileSystem object at 0x0000023E92D77970&gt;
+
+    def _ensure_single_source(path, filesystem=None):
+        """
+        Treat path as either a recursively traversable directory or a single file.
+    
+        Parameters
+        ----------
+        path : path-like
+        filesystem : FileSystem or str, optional
+            If an URI is passed, then its path component will act as a prefix for
+            the file paths.
+    
+        Returns
+        -------
+        (FileSystem, list of str or fs.Selector)
+            File system object and either a single item list pointing to a file or
+            an fs.Selector object pointing to a directory.
+    
+        Raises
+        ------
+        TypeError
+            If the passed filesystem has wrong type.
+        FileNotFoundError
+            If the referenced file or directory doesn't exist.
+        """
+        from pyarrow.fs import FileType, FileSelector, _resolve_filesystem_and_path
+    
+        # at this point we already checked that `path` is a path-like
+        filesystem, path = _resolve_filesystem_and_path(path, filesystem)
+    
+        # ensure that the path is normalized before passing to dataset discovery
+        path = filesystem.normalize_path(path)
+    
+        # retrieve the file descriptor
+        file_info = filesystem.get_file_info(path)
+    
+        # depending on the path type either return with a recursive
+        # directory selector or as a list containing a single file
+        if file_info.type == FileType.Directory:
+            paths_or_selector = FileSelector(path, recursive=True)
+        elif file_info.type == FileType.File:
+            paths_or_selector = [path]
+        else:
+&gt;           raise FileNotFoundError(path)
+E           FileNotFoundError: E:/codex work/大A交易/data/forward/observations/20260904/revision_3/FORWARD_OBSERVATION.parquet
+
+E:\python\Lib\site-packages\pyarrow\dataset.py:437: FileNotFoundError</failure></testcase><testcase classname="" name="test_no_future_outcomes_are_generated" time="0.001"><failure message="FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\codex work\\大A交易\\data\\forward\\observations'">def test_no_future_outcomes_are_generated():
+        rows=[]
+        observation_root=ROOT/"data/forward/observations"
+&gt;       sealed_dates=sorted(p.name for p in observation_root.iterdir() if p.is_dir())
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r4_00\test_no_future_outcome_generation.py:6: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/data/forward/observations')
+
+    def iterdir(self):
+        """Yield path objects of the directory contents.
+    
+        The children are yielded in arbitrary order, and the
+        special entries '.' and '..' are not included.
+        """
+        root_dir = str(self)
+&gt;       with os.scandir(root_dir) as scandir_it:
+             ^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\codex work\\大A交易\\data\\forward\\observations'
+
+E:\python\Lib\pathlib\_local.py:575: FileNotFoundError</failure></testcase><testcase classname="" name="test_artifacts" time="0.000"><failure message="FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\codex work\\大A交易\\data\\forward\\observations\\20260904\\revision_3'">def test_artifacts():
+     data=ROOT/"data/forward/observations/20260904/revision_3";report=ROOT/"reports/forward/20260904/revision_3"
+&gt;    assert {"FORWARD_OBSERVATION.parquet","OBSERVATION_IDENTITY.json","OUTCOME_BATCH.json"}&lt;={p.name for p in data.iterdir()}
+                                                                                                               ^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r4_00\test_r4_00_gate.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/data/forward/observations/20260904/revision_3')
+
+    def iterdir(self):
+        """Yield path objects of the directory contents.
+    
+        The children are yielded in arbitrary order, and the
+        special entries '.' and '..' are not included.
+        """
+        root_dir = str(self)
+&gt;       with os.scandir(root_dir) as scandir_it:
+             ^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\codex work\\大A交易\\data\\forward\\observations\\20260904\\revision_3'
+
+E:\python\Lib\pathlib\_local.py:575: FileNotFoundError</failure></testcase><testcase classname="" name="test_binding" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\data\\forward\\observations\\20260904\\revision_3\\OBSERVATION_IDENTITY.json'">def test_binding():
+&gt;    x=json.loads((ROOT/"data/forward/observations/20260904/revision_3/OBSERVATION_IDENTITY.json").read_text(encoding="utf-8"));assert all(x[k] for k in ("v1_computation_identity","r3_integrated_shadow_identity","priority_shadow_identity","source_revision_id"))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r4_00\test_v1_v2_identity_binding.py:4: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/data/forward/observations/20260904/revision_3/OBSERVATION_IDENTITY.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\data\\forward\\observations\\20260904\\revision_3\\OBSERVATION_IDENTITY.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_v2_identity" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\priority\\V2_PRIORITY_SHADOW_IDENTITY.json'">def test_v2_identity():
+&gt;    x=json.loads((ROOT/"reports/shadow/v2/20260904/priority/V2_PRIORITY_SHADOW_IDENTITY.json").read_text())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r4_01\test_v2_rules_unchanged.py:6: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/shadow/v2/20260904/priority/V2_PRIORITY_SHADOW_IDENTITY.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\shadow\\v2\\20260904\\priority\\V2_PRIORITY_SHADOW_IDENTITY.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_integrated_seal_accepts_unmodified_bound_artifacts" time="0.021"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\releases\\20260904\\695c7ae5affd4abbb3d86eddb4b154e0\\PRODUCTION_RECEIPT.json'">tmp_path = WindowsPath('G:/codex_tmp/test_temp/final_historical_6d0efa7db6424fe08035eb42ff39b97e/run/historical_assertion0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023E92A8B310&gt;
+
+    def test_integrated_seal_accepts_unmodified_bound_artifacts(tmp_path, monkeypatch):
+&gt;       root = _copy_seal_fixture(tmp_path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r4_repair\test_post_reaudit_blockers.py:48: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r4_repair\test_post_reaudit_blockers.py:31: in _copy_seal_fixture
+    historical = json.loads((ROOT / "reports/releases/20260904/695c7ae5affd4abbb3d86eddb4b154e0/PRODUCTION_RECEIPT.json").read_text(encoding="utf8"))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/releases/20260904/695c7ae5affd4abbb3d86eddb4b154e0/PRODUCTION_RECEIPT.json')
+mode = 'r', buffering = -1, encoding = 'utf8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\releases\\20260904\\695c7ae5affd4abbb3d86eddb4b154e0\\PRODUCTION_RECEIPT.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_integrated_seal_rejects_artifact_or_membership_mutation[swapped_classes]" time="0.007"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\releases\\20260904\\695c7ae5affd4abbb3d86eddb4b154e0\\PRODUCTION_RECEIPT.json'">tmp_path = WindowsPath('G:/codex_tmp/test_temp/final_historical_6d0efa7db6424fe08035eb42ff39b97e/run/historical_assertion1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023E92BEBD90&gt;
+mutation = 'swapped_classes'
+
+    @pytest.mark.parametrize("mutation", ["swapped_classes", "duplicate_membership"])
+    def test_integrated_seal_rejects_artifact_or_membership_mutation(tmp_path, monkeypatch, mutation):
+&gt;       root = _copy_seal_fixture(tmp_path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r4_repair\test_post_reaudit_blockers.py:113: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r4_repair\test_post_reaudit_blockers.py:31: in _copy_seal_fixture
+    historical = json.loads((ROOT / "reports/releases/20260904/695c7ae5affd4abbb3d86eddb4b154e0/PRODUCTION_RECEIPT.json").read_text(encoding="utf8"))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/releases/20260904/695c7ae5affd4abbb3d86eddb4b154e0/PRODUCTION_RECEIPT.json')
+mode = 'r', buffering = -1, encoding = 'utf8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\releases\\20260904\\695c7ae5affd4abbb3d86eddb4b154e0\\PRODUCTION_RECEIPT.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_integrated_seal_rejects_artifact_or_membership_mutation[duplicate_membership]" time="0.007"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\releases\\20260904\\695c7ae5affd4abbb3d86eddb4b154e0\\PRODUCTION_RECEIPT.json'">tmp_path = WindowsPath('G:/codex_tmp/test_temp/final_historical_6d0efa7db6424fe08035eb42ff39b97e/run/historical_assertion2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023E92BEA040&gt;
+mutation = 'duplicate_membership'
+
+    @pytest.mark.parametrize("mutation", ["swapped_classes", "duplicate_membership"])
+    def test_integrated_seal_rejects_artifact_or_membership_mutation(tmp_path, monkeypatch, mutation):
+&gt;       root = _copy_seal_fixture(tmp_path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r4_repair\test_post_reaudit_blockers.py:113: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r4_repair\test_post_reaudit_blockers.py:31: in _copy_seal_fixture
+    historical = json.loads((ROOT / "reports/releases/20260904/695c7ae5affd4abbb3d86eddb4b154e0/PRODUCTION_RECEIPT.json").read_text(encoding="utf8"))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/releases/20260904/695c7ae5affd4abbb3d86eddb4b154e0/PRODUCTION_RECEIPT.json')
+mode = 'r', buffering = -1, encoding = 'utf8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\releases\\20260904\\695c7ae5affd4abbb3d86eddb4b154e0\\PRODUCTION_RECEIPT.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_entrypoint_threshold_change_is_a_model_change" time="0.006"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\releases\\20260904\\695c7ae5affd4abbb3d86eddb4b154e0\\PRODUCTION_RECEIPT.json'">tmp_path = WindowsPath('G:/codex_tmp/test_temp/final_historical_6d0efa7db6424fe08035eb42ff39b97e/run/historical_assertion3')
+
+    def test_entrypoint_threshold_change_is_a_model_change(tmp_path):
+&gt;       root = _copy_seal_fixture(tmp_path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r4_repair\test_post_reaudit_blockers.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\r4_repair\test_post_reaudit_blockers.py:31: in _copy_seal_fixture
+    historical = json.loads((ROOT / "reports/releases/20260904/695c7ae5affd4abbb3d86eddb4b154e0/PRODUCTION_RECEIPT.json").read_text(encoding="utf8"))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/releases/20260904/695c7ae5affd4abbb3d86eddb4b154e0/PRODUCTION_RECEIPT.json')
+mode = 'r', buffering = -1, encoding = 'utf8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\releases\\20260904\\695c7ae5affd4abbb3d86eddb4b154e0\\PRODUCTION_RECEIPT.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_m14_source_bound_hashes_are_current" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_m14\\m14_01_source_validation_receipt_20260911.json'">def test_m14_source_bound_hashes_are_current():
+        for receipt_name in ("m14_01_source_validation_receipt_20260911.json", "m14_01_review_receipt_20260911.json"):
+&gt;           receipt = json.loads((REPORTS / receipt_name).read_text(encoding="utf-8"))
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_m14\test_m14_artifact_consistency.py:26: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_m14/m14_01_source_validation_receipt_20260911.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_m14\\m14_01_source_validation_receipt_20260911.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_m14_personal_branch_reopen_is_bound_to_batch_foundation" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_m14\\m14_02_batch_foundation_receipt_20260911.json'">def test_m14_personal_branch_reopen_is_bound_to_batch_foundation():
+        reopen = REPORTS / "m14_01_personal_reopen_receipt_20260911.json"
+&gt;       foundation = json.loads((REPORTS / "m14_02_batch_foundation_receipt_20260911.json").read_text(encoding="utf-8"))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_m14\test_m14_artifact_consistency.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_m14/m14_02_batch_foundation_receipt_20260911.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_m14\\m14_02_batch_foundation_receipt_20260911.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_probe_report_is_metadata_only_and_keeps_capabilities_unverified" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_m14\\m14_01_source_probe_report_20260911.json'">def test_probe_report_is_metadata_only_and_keeps_capabilities_unverified():
+        root = Path(__file__).resolve().parents[2]
+&gt;       report = json.loads((root / "reports/upgrade_m14/m14_01_source_probe_report_20260911.json").read_text(encoding="utf-8"))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_m14\test_source_registry.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_m14/m14_01_source_probe_report_20260911.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_m14\\m14_01_source_probe_report_20260911.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_m6_starts_only_after_m5_full_pass" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_m5\\M5_OPERATIONS_RECEIPT.json'">def test_m6_starts_only_after_m5_full_pass():
+&gt;       m5 = load("reports/upgrade_m5/M5_OPERATIONS_RECEIPT.json")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_m6\test_m6_acceptance_contract.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_m6\test_m6_acceptance_contract.py:9: in load
+    return json.loads((ROOT / relative).read_text(encoding="utf-8"))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_m5/M5_OPERATIONS_RECEIPT.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_m5\\M5_OPERATIONS_RECEIPT.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_user_internal_acceptance_replaces_external_audit_gate" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_m6\\M6_START_RECEIPT.json'">def test_user_internal_acceptance_replaces_external_audit_gate():
+&gt;       m6 = load("reports/upgrade_m6/M6_START_RECEIPT.json")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_m6\test_m6_acceptance_contract.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_m6\test_m6_acceptance_contract.py:9: in load
+    return json.loads((ROOT / relative).read_text(encoding="utf-8"))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_m6/M6_START_RECEIPT.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_m6\\M6_START_RECEIPT.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_m6_acceptance_dates_are_real_published_days" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_m6\\M6_START_RECEIPT.json'">def test_m6_acceptance_dates_are_real_published_days():
+        import duckdb
+    
+&gt;       m6 = load("reports/upgrade_m6/M6_START_RECEIPT.json")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_m6\test_m6_acceptance_contract.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_m6\test_m6_acceptance_contract.py:9: in load
+    return json.loads((ROOT / relative).read_text(encoding="utf-8"))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_m6/M6_START_RECEIPT.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_m6\\M6_START_RECEIPT.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_checked_in_ext01_receipt_is_bound_to_the_new_contract" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P09-01-B-LZ-EXT01_CURRENT_PROBE.json'">def test_checked_in_ext01_receipt_is_bound_to_the_new_contract():
+        root = Path(__file__).resolve().parents[2]
+&gt;       receipt = json.loads((root / "reports/upgrade_v3/P09-01-B-LZ-EXT01_CURRENT_PROBE.json").read_text(encoding="utf-8"))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_v3\test_p09_01_b_lz_ext01.py:48: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_v3/P09-01-B-LZ-EXT01_CURRENT_PROBE.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P09-01-B-LZ-EXT01_CURRENT_PROBE.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_checked_in_receipt_has_the_same_static_scope" time="0.001"><failure message="AssertionError">def test_checked_in_receipt_has_the_same_static_scope():
+        root = Path(__file__).resolve().parents[2]
+        receipt_path = root / "reports/upgrade_v3/P09-01-A_SOURCE_REGISTRY.json"
+&gt;       assert receipt_path.exists()
+               ^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_v3\test_p09_01_source_registry.py:56: AssertionError</failure></testcase><testcase classname="" name="test_p11_02_report_records_read_only_acceptance" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-02-OLD-WRITE-RECOVERY-PREVIEW.json'">def test_p11_02_report_records_read_only_acceptance():
+&gt;       report = json.loads(REPORT.read_text(encoding="utf-8"))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_v3\test_p11_02_old_write_recovery_preview.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_v3/P11-02-OLD-WRITE-RECOVERY-PREVIEW.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-02-OLD-WRITE-RECOVERY-PREVIEW.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_old_tables_are_frozen_until_v3_and_ui_migration_complete" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-03-OLD-TABLE-RETENTION-DECISION-20260913.json'">def test_old_tables_are_frozen_until_v3_and_ui_migration_complete():
+&gt;       report = json.loads(REPORT.read_text(encoding="utf-8"))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_v3\test_p11_03_old_table_retention_decision.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_v3/P11-03-OLD-TABLE-RETENTION-DECISION-20260913.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-03-OLD-TABLE-RETENTION-DECISION-20260913.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_p11_03_authorized_recovery_postconditions" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-03-RECOVERY-EXECUTION-20260913.json'">def test_p11_03_authorized_recovery_postconditions():
+&gt;       report = json.loads(REPORT.read_text(encoding="utf-8"))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_v3\test_p11_03_recovery_execution.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_v3/P11-03-RECOVERY-EXECUTION-20260913.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-03-RECOVERY-EXECUTION-20260913.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_p11_03_register_is_waiting_decision_and_no_recovery_executed" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-03-RECOVERY-WAITING-DECISION.json'">def test_p11_03_register_is_waiting_decision_and_no_recovery_executed():
+&gt;       report = _report()
+                 ^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_v3\test_p11_03_recovery_waiting_decision.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_v3\test_p11_03_recovery_waiting_decision.py:12: in _report
+    return json.loads(REPORT.read_text(encoding="utf-8"))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_v3/P11-03-RECOVERY-WAITING-DECISION.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-03-RECOVERY-WAITING-DECISION.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_p11_03_register_has_exact_targets_and_carries_open_audits" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-03-RECOVERY-WAITING-DECISION.json'">def test_p11_03_register_has_exact_targets_and_carries_open_audits():
+&gt;       report = _report()
+                 ^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_v3\test_p11_03_recovery_waiting_decision.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_v3\test_p11_03_recovery_waiting_decision.py:12: in _report
+    return json.loads(REPORT.read_text(encoding="utf-8"))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_v3/P11-03-RECOVERY-WAITING-DECISION.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-03-RECOVERY-WAITING-DECISION.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_p11_04_switches_primary_entry_and_preserves_fallback" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-04-ENTRY-HANDOFF-20260913.json'">def test_p11_04_switches_primary_entry_and_preserves_fallback():
+&gt;       report = json.loads(REPORT.read_text(encoding="utf-8"))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_v3\test_p11_04_entry_handoff.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_v3/P11-04-ENTRY-HANDOFF-20260913.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-04-ENTRY-HANDOFF-20260913.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_p11_04_handoff_preflight_is_ready_without_switching_entry" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-04-HANDOFF-PREFLIGHT-20260913.json'">def test_p11_04_handoff_preflight_is_ready_without_switching_entry():
+&gt;       report = json.loads(REPORT.read_text(encoding="utf-8"))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_v3\test_p11_04_handoff_preflight.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_v3/P11-04-HANDOFF-PREFLIGHT-20260913.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-04-HANDOFF-PREFLIGHT-20260913.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_auxiliary_writer_audit_is_bounded_without_table_cleanup" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-02-AUD-AUXILIARY-WRITES-BOUNDARY-20260913.json'">def test_auxiliary_writer_audit_is_bounded_without_table_cleanup():
+&gt;       report = json.loads(REPORT.read_text(encoding="utf-8"))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_v3\test_p11_auxiliary_writer_boundary.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_v3/P11-02-AUD-AUXILIARY-WRITES-BOUNDARY-20260913.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-02-AUD-AUXILIARY-WRITES-BOUNDARY-20260913.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_p11_daily_operation_receipt_is_full_pass_and_effect_gate_is_honest" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-DAILY-OPERATION-20260913.json'">def test_p11_daily_operation_receipt_is_full_pass_and_effect_gate_is_honest():
+&gt;       payload = json.loads(REPORT.read_text(encoding="utf-8"))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_v3\test_p11_daily_operation.py:10: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_v3/P11-DAILY-OPERATION-20260913.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-DAILY-OPERATION-20260913.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_p11_post_handoff_daily_preflight_receipt_is_full_pass_and_read_only" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-POST-HANDOFF-DAILY-PREFLIGHT-20260913.json'">def test_p11_post_handoff_daily_preflight_receipt_is_full_pass_and_read_only():
+&gt;       payload = json.loads(REPORT.read_text(encoding="utf-8"))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_v3\test_p11_post_handoff_daily_preflight.py:10: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_v3/P11-POST-HANDOFF-DAILY-PREFLIGHT-20260913.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-POST-HANDOFF-DAILY-PREFLIGHT-20260913.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_storage_reference_graph_is_fully_reconciled_without_mutation" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-02-AUD-STORAGE-REFERENCE-GRAPH-20260913.json'">def test_storage_reference_graph_is_fully_reconciled_without_mutation():
+&gt;       report = json.loads(REPORT.read_text(encoding="utf-8"))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_v3\test_p11_storage_reference_graph.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_v3/P11-02-AUD-STORAGE-REFERENCE-GRAPH-20260913.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-02-AUD-STORAGE-REFERENCE-GRAPH-20260913.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_p11_storage_stop_growth_gate_is_ready_for_separate_handoff" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-01-STORAGE-STOP-GROWTH-GATE-20260913.json'">def test_p11_storage_stop_growth_gate_is_ready_for_separate_handoff():
+&gt;       report = json.loads(REPORT.read_text(encoding="utf-8"))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_v3\test_p11_storage_stop_growth.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_v3/P11-01-STORAGE-STOP-GROWTH-GATE-20260913.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-01-STORAGE-STOP-GROWTH-GATE-20260913.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_p11_v3_daily_activation_receipt_is_full_pass_and_bounded" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-V3-DAILY-ACTIVATION-20260913.json'">def test_p11_v3_daily_activation_receipt_is_full_pass_and_bounded():
+&gt;       payload = json.loads(REPORT.read_text(encoding="utf-8"))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_v3\test_p11_v3_daily_activation.py:10: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_v3/P11-V3-DAILY-ACTIVATION-20260913.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-V3-DAILY-ACTIVATION-20260913.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="" name="test_p11_v3_snapshot_compatibility_repair_is_full_pass_without_deletion" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-V3-SNAPSHOT-COMPATIBILITY-REPAIR-20260913.json'">def test_p11_v3_snapshot_compatibility_repair_is_full_pass_without_deletion():
+&gt;       payload = json.loads(REPORT.read_text(encoding="utf-8"))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+docs\evidence\forward_r2_final_blocker_repair_20261007\original_tests\tests\upgrade_v3\test_p11_v3_snapshot_compatibility_repair.py:10: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/upgrade_v3/P11-V3-SNAPSHOT-COMPATIBILITY-REPAIR-20260913.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\upgrade_v3\\P11-V3-SNAPSHOT-COMPATIBILITY-REPAIR-20260913.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase></testsuite></testsuites>

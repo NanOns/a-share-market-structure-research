@@ -1,0 +1,197 @@
+{
+  "acceptance": "ENGINEERING_PASS_CURRENT_READER_PROPAGATED",
+  "consumers": [
+    {
+      "disposition": "HISTORICAL_DIAGNOSTIC_WITH_EXACT_CURRENT_AUTHORITY_BINDING",
+      "line": 264,
+      "path": "src/upgrade_m0.py",
+      "role": "HISTORICAL_AUDIT_DIAGNOSTIC",
+      "source": "current = _read_json(root / \"reports\" / \"current\" / \"CURRENT_RELEASE.json\")"
+    },
+    {
+      "disposition": "LEGACY_V1_OUTPUT_WRITER_NOT_A_CURRENT_V4_ACCEPTANCE_AUTHORITY",
+      "line": 380,
+      "path": "src/production/daily.py",
+      "role": "ACTIVE_PRODUCTION_WRITER",
+      "source": "atomic_write_json(current/'CURRENT_RELEASE.json',status)"
+    },
+    {
+      "disposition": "STANDALONE_SCRIPT_REFERENCE_REQUIRES_ITS_OWN_STAGE_GATE; NOT_EXECUTED_AS_CURRENT_AUTHORITY",
+      "line": 120,
+      "path": "scripts/build_post_repair_r3_evidence.py",
+      "role": "SCRIPT_REQUIRES_PER_OWNER_REVIEW",
+      "source": "pointer_path = ROOT / \"reports/current/CURRENT_RELEASE.json\""
+    },
+    {
+      "disposition": "STANDALONE_SCRIPT_REFERENCE_REQUIRES_ITS_OWN_STAGE_GATE; NOT_EXECUTED_AS_CURRENT_AUTHORITY",
+      "line": 231,
+      "path": "scripts/finalize_r1.py",
+      "role": "SCRIPT_REQUIRES_PER_OWNER_REVIEW",
+      "source": "atomic_write_json(ROOT/'reports/current/CURRENT_RELEASE.json',current)"
+    },
+    {
+      "disposition": "STANDALONE_SCRIPT_REFERENCE_REQUIRES_ITS_OWN_STAGE_GATE; NOT_EXECUTED_AS_CURRENT_AUTHORITY",
+      "line": 342,
+      "path": "scripts/finalize_r1.py",
+      "role": "SCRIPT_REQUIRES_PER_OWNER_REVIEW",
+      "source": "- `reports/current/CURRENT_RELEASE.json`"
+    },
+    {
+      "disposition": "STANDALONE_SCRIPT_REFERENCE_REQUIRES_ITS_OWN_STAGE_GATE; NOT_EXECUTED_AS_CURRENT_AUTHORITY",
+      "line": 8,
+      "path": "scripts/finalize_r3_00.py",
+      "role": "SCRIPT_REQUIRES_PER_OWNER_REVIEW",
+      "source": "cur=load(ROOT/'reports/current/CURRENT_RELEASE.json');seal=load(ROOT/'reports/reseal/V1_PRODUCTION_READINESS_RESEAL_RECEIPT.json');freeze=load(OUT/'V1_BASELINE_FREEZE_RECEIPT.json');identity=load(OUT/'V2_SHADOW_IDENTITY.json');smoke=load(ROOT/'logs/daily/20260904_55127728d45a44568a259549d0fce788.log')"
+    },
+    {
+      "disposition": "STANDALONE_SCRIPT_REFERENCE_REQUIRES_ITS_OWN_STAGE_GATE; NOT_EXECUTED_AS_CURRENT_AUTHORITY",
+      "line": 13,
+      "path": "scripts/finalize_v1_reseal.py",
+      "role": "SCRIPT_REQUIRES_PER_OWNER_REVIEW",
+      "source": "current=load(ROOT/'reports/current/CURRENT_RELEASE.json');prod=load(RELEASE/'PRODUCTION_RECEIPT.json');inp=load(RELEASE/'INPUT_SNAPSHOT_MANIFEST.json')"
+    },
+    {
+      "disposition": "STANDALONE_SCRIPT_REFERENCE_REQUIRES_ITS_OWN_STAGE_GATE; NOT_EXECUTED_AS_CURRENT_AUTHORITY",
+      "line": 50,
+      "path": "scripts/finalize_v1_reseal.py",
+      "role": "SCRIPT_REQUIRES_PER_OWNER_REVIEW",
+      "source": "(ROOT/'reports/current/CURRENT_RELEASE.json').write_text(json.dumps(current,ensure_ascii=False,indent=2,sort_keys=True)+'\\n',encoding='utf8')"
+    },
+    {
+      "disposition": "STANDALONE_SCRIPT_REFERENCE_REQUIRES_ITS_OWN_STAGE_GATE; NOT_EXECUTED_AS_CURRENT_AUTHORITY",
+      "line": 19,
+      "path": "scripts/forward_remainder_legacy_identity.py",
+      "role": "SCRIPT_REQUIRES_PER_OWNER_REVIEW",
+      "source": "release_path='reports/current/CURRENT_RELEASE.json'"
+    },
+    {
+      "disposition": "STANDALONE_SCRIPT_REFERENCE_REQUIRES_ITS_OWN_STAGE_GATE; NOT_EXECUTED_AS_CURRENT_AUTHORITY",
+      "line": 69,
+      "path": "scripts/reset_v3_20260911_dynamic.py",
+      "role": "SCRIPT_REQUIRES_PER_OWNER_REVIEW",
+      "source": "\"reports/current/20260911.json\", \"reports/current/CURRENT_RELEASE.json\","
+    },
+    {
+      "disposition": "PRESERVED_HISTORICAL_TEST_EXPECTATION",
+      "line": 5,
+      "path": "tests/phase6_1/test_report_leader_fields.py",
+      "role": "TEST_ONLY",
+      "source": "current=json.loads(Path('reports/current/CURRENT_RELEASE.json').read_text('utf8'))"
+    },
+    {
+      "disposition": "PRESERVED_HISTORICAL_TEST_EXPECTATION",
+      "line": 16,
+      "path": "tests/r1/test_runtime_does_not_rewrite_spec.py",
+      "role": "TEST_ONLY",
+      "source": "assert (tmp_path/'reports/current/CURRENT_RELEASE.json').exists()"
+    },
+    {
+      "disposition": "PRESERVED_HISTORICAL_TEST_EXPECTATION",
+      "line": 4,
+      "path": "tests/r3/test_v1_baseline_freeze.py",
+      "role": "TEST_ONLY",
+      "source": "x=json.load(open('reports/current/CURRENT_RELEASE.json',encoding='utf8'))['latest_release'];assert Path(x['release_path']).is_dir() and (Path(x['release_path'])/'manifest.json').is_file()"
+    },
+    {
+      "disposition": "PRESERVED_HISTORICAL_TEST_EXPECTATION",
+      "line": 6,
+      "path": "tests/r3_01/test_v1_identity_unchanged.py",
+      "role": "TEST_ONLY",
+      "source": "x=json.loads((ROOT/\"reports/current/CURRENT_RELEASE.json\").read_text(\"utf8\"))"
+    },
+    {
+      "disposition": "PRESERVED_HISTORICAL_TEST_EXPECTATION",
+      "line": 6,
+      "path": "tests/r3_02/test_v1_identity_unchanged.py",
+      "role": "TEST_ONLY",
+      "source": "x=json.loads((ROOT/\"reports/current/CURRENT_RELEASE.json\").read_text(\"utf8\"))"
+    },
+    {
+      "disposition": "PRESERVED_HISTORICAL_TEST_EXPECTATION",
+      "line": 6,
+      "path": "tests/r3_03/test_v1_identity_unchanged.py",
+      "role": "TEST_ONLY",
+      "source": "x=json.loads((ROOT/\"reports/current/CURRENT_RELEASE.json\").read_text(\"utf8\"))"
+    },
+    {
+      "disposition": "PRESERVED_HISTORICAL_TEST_EXPECTATION",
+      "line": 5,
+      "path": "tests/r3_04/test_v1_identity_unchanged.py",
+      "role": "TEST_ONLY",
+      "source": "def test_identity(): assert json.loads((ROOT/\"reports/current/CURRENT_RELEASE.json\").read_text(\"utf8\"))[\"latest_release\"][\"computation_identity\"][\"sha256\"]==computation_identity(ROOT)[\"sha256\"]"
+    },
+    {
+      "disposition": "PRESERVED_HISTORICAL_TEST_EXPECTATION",
+      "line": 5,
+      "path": "tests/r3_05/test_v1_identity_unchanged.py",
+      "role": "TEST_ONLY",
+      "source": "def test_identity():assert json.loads((ROOT/\"reports/current/CURRENT_RELEASE.json\").read_text(\"utf8\"))[\"latest_release\"][\"computation_identity\"][\"sha256\"]==computation_identity(ROOT)[\"sha256\"]"
+    },
+    {
+      "disposition": "PRESERVED_HISTORICAL_TEST_EXPECTATION",
+      "line": 5,
+      "path": "tests/r3_06/test_v1_identity_unchanged.py",
+      "role": "TEST_ONLY",
+      "source": "def test_id():assert json.loads((ROOT/\"reports/current/CURRENT_RELEASE.json\").read_text(\"utf8\"))[\"latest_release\"][\"computation_identity\"][\"sha256\"]==computation_identity(ROOT)[\"sha256\"]"
+    },
+    {
+      "disposition": "PRESERVED_HISTORICAL_TEST_EXPECTATION",
+      "line": 4,
+      "path": "tests/r3_seal/test_v1_identity.py",
+      "role": "TEST_ONLY",
+      "source": "pointer=json.loads((ROOT/\"reports/current/CURRENT_RELEASE.json\").read_text(encoding=\"utf-8\"))"
+    },
+    {
+      "disposition": "PRESERVED_HISTORICAL_TEST_EXPECTATION",
+      "line": 4,
+      "path": "tests/r4_00/test_v1_identity_unchanged.py",
+      "role": "TEST_ONLY",
+      "source": "def test_v1():assert json.loads((ROOT/\"reports/current/CURRENT_RELEASE.json\").read_text(\"utf8\"))[\"latest_release\"][\"computation_identity\"][\"sha256\"]==computation_identity(ROOT)[\"sha256\"]"
+    },
+    {
+      "disposition": "PRESERVED_HISTORICAL_TEST_EXPECTATION",
+      "line": 5,
+      "path": "tests/r4_01/test_v1_rules_unchanged.py",
+      "role": "TEST_ONLY",
+      "source": "def test_v1_identity():assert json.loads((ROOT/\"reports/current/CURRENT_RELEASE.json\").read_text(\"utf8\"))[\"latest_release\"][\"computation_identity\"][\"sha256\"]==computation_identity(ROOT)[\"sha256\"]"
+    },
+    {
+      "disposition": "PRESERVED_HISTORICAL_TEST_EXPECTATION",
+      "line": 25,
+      "path": "tests/r4_repair/test_post_reaudit_blockers.py",
+      "role": "TEST_ONLY",
+      "source": "for relative in (\"reports/current/CURRENT_RELEASE.json\", \"reports/phase1/PHASE1_FINAL_RECEIPT.json\"):"
+    },
+    {
+      "disposition": "PRESERVED_HISTORICAL_TEST_EXPECTATION",
+      "line": 29,
+      "path": "tests/r4_repair/test_post_reaudit_blockers.py",
+      "role": "TEST_ONLY",
+      "source": "pointer_path = root / \"reports/current/CURRENT_RELEASE.json\""
+    }
+  ],
+  "current_runtime_readers_using_legacy_pointer_as_current_authority": [],
+  "current_successor": {
+    "bytes": 4004,
+    "path": "config/v4_current_stage_authority_v2.json",
+    "sha256": "dc57e3957a1301ff3358f5012080027c47550559c4cd5d406065f98e4958a206"
+  },
+  "historical_pointer": {
+    "bytes": 7578,
+    "path": "reports/current/CURRENT_RELEASE.json",
+    "sha256": "3c6fef7cbf3e0e2fa2dba6ebd0fcfe7e31b1f57b9086ccbd89d496beb804ccf1"
+  },
+  "next_stage": "FINAL_FULL_REGRESSION_AND_INDEPENDENT_EXTERNAL_AUDIT",
+  "owner_readback": {
+    "bytes": 2124,
+    "path": "reports/forward_r2_final_blocker_repair_20261007/GOV1_SCOPE_PROPAGATION_RECEIPT.json",
+    "sha256": "edb6087a9a1852419144a072a5e7c09fdfe4a865b543b1d90185a51708438333"
+  },
+  "pointer_modified": false,
+  "runtime_permissions_changed": false,
+  "scope_contract": {
+    "bytes": 856,
+    "path": "config/v4_legacy_release_scope_v1.json",
+    "sha256": "1bba0e18f6b9e16db69df488b54da8d20e6a3a29bfc69356466bced12ccbc10a"
+  }
+}

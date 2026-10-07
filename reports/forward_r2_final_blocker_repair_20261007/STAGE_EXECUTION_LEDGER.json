@@ -1,0 +1,27 @@
+{
+  "stages": [
+    {
+      "acceptance": "CANDIDATE_READY_FOR_INDEPENDENT_EXTERNAL_AUDIT",
+      "contract": {
+        "bytes": 75466,
+        "path": "reports/forward_r2_final_blocker_repair_20261007/V4_ONLY_EXECUTION_SCOPE.json",
+        "sha256": "679929d7bb6c064c843d2bbeebf70d7b282c167326e8707a554ea378136e1eec"
+      },
+      "evidence": [
+        {
+          "bytes": 1951,
+          "path": "reports/forward_r2_final_blocker_repair_20261007/V4_FINAL_EVIDENCE_INDEX.json",
+          "sha256": "0d5e54e656f3b107ef81ae4091b7c5d5e823ed75500b7add2dd5b9ebdb893d30"
+        }
+      ],
+      "next_stage": "IA07_SEPARATE_CAPABILITY_ACCEPTANCE_AND_INDEPENDENT_V4_EXTERNAL_AUDIT",
+      "stage": "V4_R3_FINAL"
+    }
+  ],
+  "task": {
+    "bytes": 10068,
+    "path": "docs/evidence/forward_r2_final_blocker_repair_20261007/V4_FORWARD_R2_FINAL_BLOCKER_REPAIR_TASK_R3_20261007.md",
+    "sha256": "3f1fde77be97653a10023ee577647c5eee70d2c05cf7322c205bd9ac7dec7549"
+  },
+  "user_scope_override": "V4_ONLY; excludes execution of all preceding versions"
+}

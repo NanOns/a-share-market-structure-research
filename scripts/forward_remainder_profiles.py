@@ -2,17 +2,18 @@
 import hashlib,json,subprocess,shutil
 from pathlib import Path,PureWindowsPath
 from scripts.full_chain_repair_io import ROOT,write
+from tests.final_disposable_paths import resolve_destination_inside_root
 P='reports/forward_r2_remainder_consolidated_20261007/'
 BASE=Path('E:/codex_tmp/test_temp')
 def relative_reference(out,rel):
-    name=PureWindowsPath(rel)
-    if name.drive or name.root or '..' in name.parts:return None
-    source=ROOT.joinpath(*name.parts).resolve();target=out.joinpath(*name.parts).resolve()
-    if not source.is_relative_to(ROOT) or not target.is_relative_to(out.resolve()):return None
+    try:target=resolve_destination_inside_root(out,rel)
+    except ValueError:return None
+    name=PureWindowsPath(rel);source=ROOT.joinpath(*name.parts).resolve()
+    if not source.is_relative_to(ROOT):return None
     return source,target
 
 def git_profile(name,commit):
-    out=(BASE/name).resolve()
+    out=resolve_destination_inside_root(BASE,name)
     if not out.is_relative_to(BASE.resolve()) or out==BASE.resolve():raise ValueError("DISPOSABLE_PROFILE_ROOT_REQUIRED")
     if not out.exists():
         subprocess.run(['git','clone','--shared','--no-checkout',str(ROOT),str(out)],check=True)
@@ -23,10 +24,10 @@ def git_profile(name,commit):
     assert not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=out,text=True)
     return dict(root=str(out),source_commit=commit,tracked_status='CLEAN',grants_current_permission=False)
 def simulation_profile():
-    out=BASE/'remainder_r24r1_simulation_profile';out.mkdir(exist_ok=True)
-    for name in ('config','scripts','src','migrations'):shutil.copytree(ROOT/name,out/name,dirs_exist_ok=True)
-    (out/'data/v4').mkdir(parents=True,exist_ok=True)
-    for path in (ROOT/'data/v4').glob('*.json'):shutil.copyfile(path,out/'data/v4'/path.name)
+    out=resolve_destination_inside_root(BASE,'remainder_r24r1_simulation_profile');out.mkdir(exist_ok=True)
+    for name in ('config','scripts','src','migrations'):shutil.copytree(ROOT/name,resolve_destination_inside_root(out,name),dirs_exist_ok=True)
+    resolve_destination_inside_root(out,'data/v4').mkdir(parents=True,exist_ok=True)
+    for path in (ROOT/'data/v4').glob('*.json'):shutil.copyfile(path,resolve_destination_inside_root(out,'data/v4/'+path.name))
     queue=['config/v4_current_stage_authority_v2.json','config/v4_16_runtime_dependencies_v3.json','config/v4_16_r23_owner_fixture_v1.json','config/v4_16_r23_snapshot_fixture_v1.json'];seen=set();refs=[]
     def walk(value):
         if isinstance(value,dict):
@@ -52,7 +53,7 @@ def simulation_profile():
     for commit in subprocess.check_output(['git','log','--format=%H','--',old['path']],cwd=ROOT,text=True).splitlines():
         raw=subprocess.check_output(['git','show',commit+':'+old['path']],cwd=ROOT)
         if hashlib.sha256(raw).hexdigest()==old['sha256']:
-            (out/old['path']).write_bytes(raw);old=dict(old,source_commit=commit);break
+            resolve_destination_inside_root(out,old['path']).write_bytes(raw);old=dict(old,source_commit=commit);break
     else:raise ValueError('EXACT_V3_SOURCE_NOT_FOUND')
     if not (out/'.git').exists():subprocess.run(['git','init',str(out)],check=True)
     (out/'.git/objects/info/alternates').write_bytes(((ROOT/'.git/objects').as_posix()+'\n').encode())

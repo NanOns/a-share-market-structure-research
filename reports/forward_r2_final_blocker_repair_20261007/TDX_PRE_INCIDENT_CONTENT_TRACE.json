@@ -1,0 +1,59 @@
+{
+  "prior_TDX_ZERO_WRITE": false,
+  "prior_incident": {
+    "bytes": 2183,
+    "path": "reports/forward_r2_remainder_consolidated_20261007/TDX_INPUT_WRITE_INCIDENT.json",
+    "sha256": "da3abad2d74974d6f10bda304ae3c4c7a8f1b07b2db30934a2a001a07aa0fce6"
+  },
+  "prior_incident_erased": false,
+  "prior_unique_files": 4,
+  "prior_write_calls": 5,
+  "rows": [
+    {
+      "independent_archive_members": [],
+      "path": "D:/new_tdx/T0002/hq_cache/szs.tnf",
+      "post_incident_sha256": "b40bec69401d22db4ebe39045a81fb7143e7fe69d7849adebcd70f6a750a7d3f",
+      "pre_incident_mtime_recoverable": false,
+      "status": "PRE_INCIDENT_CONTENT_NOT_INDEPENDENTLY_VERIFIABLE"
+    },
+    {
+      "independent_archive_members": [],
+      "path": "D:/new_tdx/T0002/hq_cache/tdxhy.cfg",
+      "post_incident_sha256": "f0861020e5d9fde9f10ab0374da6b887f3a5f681cfa00bb7dc6776ee4703c735",
+      "pre_incident_mtime_recoverable": false,
+      "status": "PRE_INCIDENT_CONTENT_NOT_INDEPENDENTLY_VERIFIABLE"
+    },
+    {
+      "independent_archive_members": [
+        {
+          "archive": "data/v4/source_snapshots/tdx/20260928/sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c/hsjday.zip",
+          "bytes": 122144,
+          "matches_post_incident_content": false,
+          "member": "sz/lday/sz302132.day",
+          "sha256": "b56d79a87cd4bc9d1bde1f7ed131b56cf1050280dee3b789477e739fb92e5789"
+        }
+      ],
+      "path": "D:/new_tdx/vipdoc/sz/lday/sz302132.day",
+      "post_incident_sha256": "53901f418c2b0ed1e55c11532f6298095a3ff48a8f9309ab0f8db89f41d371fb",
+      "pre_incident_mtime_recoverable": false,
+      "status": "PRE_INCIDENT_CONTENT_NOT_INDEPENDENTLY_VERIFIABLE"
+    },
+    {
+      "independent_archive_members": [
+        {
+          "archive": "data/v4/source_snapshots/tdx/20260928/sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c/hsjday.zip",
+          "bytes": 109472,
+          "matches_post_incident_content": true,
+          "member": "sz/lday/sz300114.day",
+          "sha256": "08cf59e7d31aa0b0eae1f097e8cf782b1d6fb2124f8a3e784e19ccf830e29d54"
+        }
+      ],
+      "path": "D:/new_tdx/vipdoc/sz/lday/sz300114.day",
+      "post_incident_sha256": "08cf59e7d31aa0b0eae1f097e8cf782b1d6fb2124f8a3e784e19ccf830e29d54",
+      "pre_incident_mtime_recoverable": false,
+      "status": "INDEPENDENT_ARCHIVE_CONTENT_MATCH"
+    }
+  ],
+  "search_scope": "Existing accepted source ZIP archives only; user confirmed no other backup directories",
+  "source_bytes_or_metadata_restored": false
+}

@@ -1,0 +1,72 @@
+{
+  "IA07_FULL_PASS": false,
+  "absolute_settlement_capability": {
+    "capability": "ABSOLUTE_FORWARD_SETTLEMENT",
+    "contract_defined": true,
+    "degradation": "INDEPENDENT_FROM_BENCHMARK_CONTROLS; UNKNOWN_GAPS_DEGRADE_PATH_ONLY",
+    "focus": false,
+    "production": false,
+    "required_sources": "ACCEPTED_IDENTITY_CALENDAR_LOCAL_ADJUSTMENT_AND_ENDPOINT",
+    "runtime_permission": false,
+    "shadow": false
+  },
+  "acceptance": "NOT_VERIFIABLE_BY_CURRENT_ACCEPTED_CAPABILITY",
+  "accepted_quality": "RESEARCH_MEMBERSHIP_AND_HARD_SAFETY_NOT_PROJECTED_BENCHMARK_CONTROLS_UNAVAILABLE",
+  "complete_rank_population": 0,
+  "control_debt_blocks_control_matching_acceptance": true,
+  "controls_required_for_absolute_stock_only_settlement": false,
+  "default_ui": false,
+  "feature_nonmissing_counts": {
+    "RPS20": 0,
+    "prior20_mean_amount": 0,
+    "vol20": 0
+  },
+  "focus": false,
+  "hard_safety_pool": 0,
+  "imputed_missing_features": false,
+  "independence_proof": "ABSOLUTE_FORWARD_SETTLEMENT.degradation = INDEPENDENT_FROM_BENCHMARK_CONTROLS",
+  "measurements": [
+    {
+      "actual_eligible_signal_count": 0,
+      "actual_owner_invocations": 0,
+      "population_count": 100,
+      "rank_matching_measured": false,
+      "scale": "small",
+      "status": "NOT_VERIFIABLE_BY_CURRENT_ACCEPTED_CAPABILITY",
+      "wall_seconds": 5.000001692678779e-07
+    },
+    {
+      "actual_eligible_signal_count": 0,
+      "actual_owner_invocations": 0,
+      "population_count": 1000,
+      "rank_matching_measured": false,
+      "scale": "medium",
+      "status": "NOT_VERIFIABLE_BY_CURRENT_ACCEPTED_CAPABILITY",
+      "wall_seconds": 6.000009307172149e-07
+    },
+    {
+      "actual_eligible_signal_count": 0,
+      "actual_owner_invocations": 0,
+      "population_count": 5037,
+      "rank_matching_measured": false,
+      "scale": "full_available",
+      "status": "NOT_VERIFIABLE_BY_CURRENT_ACCEPTED_CAPABILITY",
+      "wall_seconds": 2.999986463692039e-07
+    }
+  ],
+  "next_stage": "INDEPENDENT_FEATURE_PROJECTION_ACCEPTANCE_REQUIRED_BEFORE_FULL_CONTROL_PERFORMANCE",
+  "population_count": 5037,
+  "production": false,
+  "shadow": false,
+  "snapshot": {
+    "bytes": 1302820,
+    "path": "reports/v4_15_runtime_r20/r20d_accepted_source_r3/snapshots/ccf05627352fcf4065e1ac98d730c7f15b882e3e55af23fbe4fda509265e8f16.json",
+    "sha256": "cc402379142ee62c2738a2af0d742d5d86aab72f37977c07fce8063aa65439eb"
+  },
+  "source": {
+    "bytes": 4274,
+    "path": "config/v4_15_source_capability_matrix_v1.json",
+    "sha256": "783957d1588fab8dd5ba1a1400dacb7de99c7fb7eded3c7acf6b7b7ba99c5853"
+  },
+  "synthetic_row_expansion": false
+}

@@ -1,0 +1,49 @@
+{
+  "current_runtime_permission": false,
+  "generated_profile_self_references_excluded": true,
+  "metadata_authority_hits": [
+    {
+      "artifacts": [
+        "m14_01_source_probe_report_20260911.json"
+      ],
+      "evidence": "validate_registry checks explicit disabled/rejected dataset and source gates; probe_report is not loaded as verification authority",
+      "path": "config/m14_source_registry_v1.json",
+      "referenced_probe_opened_by_current_validator": false,
+      "registry_binding": {
+        "bytes": 3963,
+        "path": "config/m14_source_registry_v1.json",
+        "sha256": "d91dcfc27b3b20b70fe2feb4c8eeecbcd806ccb5b06878bcf88822ab8a68f674"
+      },
+      "role": "DISABLED_REJECTED_CANDIDATE_HISTORICAL_PROBE_LINK",
+      "runtime_authority": false,
+      "successor_tests": "tests/upgrade_m14/test_source_registry.py::test_m14_registry_is_fail_closed_and_has_four_datasets; test_no_source_or_dataset_can_claim_verified_or_enabled",
+      "validator_binding": {
+        "bytes": 8917,
+        "path": "scripts/verify_m14_01_source_registry.py",
+        "sha256": "77ccf13444549ac4e0353ca45834663e6bb6485b9ad41a65f38a2d37aba4ea75"
+      }
+    }
+  ],
+  "superseded_artifact_basenames": [
+    "M5_OPERATIONS_RECEIPT.json",
+    "M6_START_RECEIPT.json",
+    "P09-01-A_SOURCE_REGISTRY.json",
+    "P09-01-B-LZ-EXT01_CURRENT_PROBE.json",
+    "P11-01-STORAGE-STOP-GROWTH-GATE-20260913.json",
+    "P11-02-AUD-AUXILIARY-WRITES-BOUNDARY-20260913.json",
+    "P11-02-AUD-STORAGE-REFERENCE-GRAPH-20260913.json",
+    "P11-02-OLD-WRITE-RECOVERY-PREVIEW.json",
+    "P11-03-OLD-TABLE-RETENTION-DECISION-20260913.json",
+    "P11-03-RECOVERY-EXECUTION-20260913.json",
+    "P11-03-RECOVERY-WAITING-DECISION.json",
+    "P11-04-ENTRY-HANDOFF-20260913.json",
+    "P11-04-HANDOFF-PREFLIGHT-20260913.json",
+    "P11-DAILY-OPERATION-20260913.json",
+    "P11-POST-HANDOFF-DAILY-PREFLIGHT-20260913.json",
+    "P11-V3-DAILY-ACTIVATION-20260913.json",
+    "P11-V3-SNAPSHOT-COMPATIBILITY-REPAIR-20260913.json",
+    "m14_01_source_probe_report_20260911.json",
+    "m14_01_source_validation_receipt_20260911.json",
+    "m14_02_batch_foundation_receipt_20260911.json"
+  ]
+}

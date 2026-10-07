@@ -1,17 +1,18 @@
 """Clean sparse Git checkout replay of all registered historical identities."""
 import os,subprocess,json,uuid,sys
 from pathlib import Path
+from tests.final_disposable_paths import resolve_destination_inside_root
 from scripts.full_chain_repair_io import ROOT,write,binding
 P='reports/forward_r2_remainder_consolidated_20261007/'
 def run():
-    base=Path('E:/codex_tmp/test_temp');index=base/('remainder_index_'+uuid.uuid4().hex)
+    base=Path('G:/codex_tmp/test_temp');index=resolve_destination_inside_root(base,'remainder_index_'+uuid.uuid4().hex)
     env=dict(os.environ,GIT_INDEX_FILE=str(index))
     def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,env=env,text=True).strip()
     original=git('rev-parse','HEAD');git('read-tree','HEAD')
     paths=['src/workbench_analysis/historical_binding_routing_remainder.py','config/v4_historical_binding_routing_remainder_v1.json','docs/evidence/forward_r2_remainder_consolidated_20261007/.gitattributes','docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs']
     git('add','--',*paths);tree=git('write-tree')
     commit=original if tree==git('rev-parse',original+'^{tree}') else git('commit-tree',tree,'-p',original,'-m','Isolated historical-reader replay tree; no branch movement')
-    out=base/('remainder_clean_reader_'+uuid.uuid4().hex[:10])
+    out=resolve_destination_inside_root(base,'remainder_clean_reader_'+uuid.uuid4().hex[:10])
     subprocess.run(['git','clone','--shared','--no-checkout',str(ROOT),str(out)],check=True)
     subprocess.run(['git','-C',str(out),'config','core.longpaths','true'],check=True)
     subprocess.run(['git','-C',str(out),'sparse-checkout','init','--no-cone'],check=True)

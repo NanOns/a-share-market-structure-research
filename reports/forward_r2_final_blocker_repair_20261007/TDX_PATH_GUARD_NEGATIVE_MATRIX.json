@@ -1,0 +1,58 @@
+{
+  "raw_execution": {
+    "bytes": 631026,
+    "path": "reports/forward_r2_final_blocker_repair_20261007/execution/current_full.xml",
+    "sha256": "ae5351632bf57aed435636607ca8df8b642bc2bcef7731049c47a2024a91ef6d"
+  },
+  "scope": "V4_ENGINEERING_SOURCE_BOUNDARY",
+  "tests": [
+    {
+      "node": "tests.test_forward_final_path_boundary::test_reject_before_any_output[D:/new_tdx/vipdoc/sz/lday/x.day]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.test_forward_final_path_boundary::test_reject_before_any_output[D:\\\\new_tdx\\\\vipdoc\\\\sz\\\\lday\\\\x.day]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.test_forward_final_path_boundary::test_reject_before_any_output[\\\\\\\\server\\\\share\\\\x.day]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.test_forward_final_path_boundary::test_reject_before_any_output[../escape.json]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.test_forward_final_path_boundary::test_reject_before_any_output[D://new_tdx///vipdoc/x.day]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.test_forward_final_path_boundary::test_reject_before_any_output[D:new_tdx/x.day]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.test_forward_final_path_boundary::test_reject_before_any_output[/new_tdx/x.day]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.test_forward_final_path_boundary::test_reject_before_any_output[safe/../../escape]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.test_forward_final_path_boundary::test_reject_before_any_output[safe/file:stream]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.test_forward_final_path_boundary::test_normal_relative_destination_only",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.test_forward_final_path_boundary::test_real_windows_junction_escape_and_child",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.test_forward_final_path_boundary::test_child_guard_rejects_source_mutation_before_os_call",
+      "status": "PASS"
+    }
+  ]
+}

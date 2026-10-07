@@ -132,7 +132,16 @@ def test_integrated_seal_rejects_artifact_or_membership_mutation(tmp_path, monke
 
 
 def test_entrypoint_threshold_change_is_a_model_change(tmp_path):
-    root = _copy_seal_fixture(tmp_path)
+    # Exercise the active model preflight directly. Historical release receipts
+    # are not inputs to this owner and must not mask its tamper rejection.
+    root = tmp_path / 'model_preflight'
+    relative = Path('reports/shadow/v2/20260904/integrated/R3_INTEGRATED_SHADOW_IDENTITY.json')
+    identity = json.loads((ROOT / relative).read_bytes())
+    for name in (str(relative), *identity['files']):
+        target = root / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(ROOT / name, target)
+    assert run_live_forward.ProductionServices().model_identity(root) == identity['sha256']
     path = root / "run_sector_leader_v2.py"
     source = path.read_text(encoding="utf8")
     assert ">=.70" in source

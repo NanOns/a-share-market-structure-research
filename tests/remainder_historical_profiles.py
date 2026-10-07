@@ -1,5 +1,6 @@
 """Pinned Git historical fixtures and named accepted byte compatibility; no head fallback."""
 import json,subprocess,os,threading,hashlib
+from tests.final_disposable_paths import resolve_destination_inside_root
 from functools import lru_cache
 from pathlib import Path,PureWindowsPath
 from scripts.full_chain_repair_io import ROOT as REPOSITORY
@@ -8,7 +9,7 @@ _LOCK=threading.RLock()
 _REPRESENTATIONS={}
 @lru_cache(maxsize=None)
 def profile(commit):
-    out=BASE/('remainder_frozen_v5_'+commit[:12])
+    out=resolve_destination_inside_root(BASE,'remainder_frozen_v5_'+commit[:12])
     if not (out/'.git').exists():
         out.mkdir(parents=True,exist_ok=True)
         subprocess.run(['git','init',str(out)],check=True,stdout=subprocess.DEVNULL)
@@ -63,7 +64,7 @@ def profile(commit):
         # The already accepted path-specific portability contract is an explicit
         # compatibility fixture, not a stage/head replacement or permission grant.
         raw=subprocess.check_output(['git','show','433c3378d4bc4db572f95de20cadbf899c2a04ce:'+registry],cwd=REPOSITORY)
-        target=out/registry;target.parent.mkdir(parents=True,exist_ok=True)
+        target=resolve_destination_inside_root(out,registry);target.parent.mkdir(parents=True,exist_ok=True)
         target.write_bytes(raw)
     selected=[name for name in entries if name.startswith(('config/','src/','scripts/','migrations/')) or (name.startswith('data/v4/') and name.count('/')==2 and name.endswith('.json'))]
     batch=subprocess.check_output(['git','cat-file','--batch'],cwd=out,input=('\n'.join(entries[name] for name in selected)+'\n').encode())
@@ -76,7 +77,7 @@ def profile(commit):
             options=[raw,raw.replace(b'\r\n',b'\n'),raw.replace(b'\r\n',b'\n').replace(b'\n',b'\r\n')]
             raw=next((x for x in options if len(x)==ref['bytes'] and hashlib.sha256(x).hexdigest()==ref['sha256']),None)
             if raw is None:raise ValueError('PINNED_DECLARED_REPRESENTATION_UNRECOVERABLE')
-        target=out/name
+        target=resolve_destination_inside_root(out,name)
         if target.is_file():
             if target.read_bytes()!=raw:raise ValueError('HISTORICAL_PROFILE_EXISTING_BYTES_CHANGED')
         else:
@@ -115,7 +116,7 @@ def install(monkeypatch,out,entries):
         if actual_exists(path):return
         with _LOCK:
             if actual_exists(path):return
-            target=Path(path);target.parent.mkdir(parents=True,exist_ok=True)
+            target=resolve_destination_inside_root(out,rel);target.parent.mkdir(parents=True,exist_ok=True)
             temp=target.with_name(target.name+'.git-profile.tmp')
             with open_path(temp,'wb') as stream:
                 subprocess.run(['git','cat-file','blob',entries[rel]],cwd=out,stdout=stream,check=True)
@@ -172,7 +173,7 @@ def install(monkeypatch,out,entries):
             if not recursive and '/' in suffix:continue
             if fnmatch.fnmatch(suffix if '/' in pattern else suffix.rsplit('/',1)[-1],pattern):names.add(name)
         for name in sorted(names):
-            target=out/name;materialize(target);yield target
+            target=resolve_destination_inside_root(out,name);materialize(target);yield target
     monkeypatch.setattr(Path,'open',opened);monkeypatch.setattr(Path,'exists',existed);monkeypatch.setattr(Path,'stat',stated)
     monkeypatch.setattr(builtins,'open',builtin_open)
     monkeypatch.setattr(Path,'glob',lambda path,pattern,**kw:listed(path,pattern))

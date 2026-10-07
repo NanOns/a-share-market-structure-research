@@ -2006,6 +2006,12 @@ def make_handler(root,db,*,shadow_simulation_fixture=None):
     query={k:v[0] for k,v in parse_qs(urlparse(self.path).query).items()}
     status,body=focus_tracker_api.handle(path,query)
     return self._send(status,body)
+   # These owners open their own read-only repository sessions. An outer
+   # read/write DuckDB handle conflicts with their connection configuration.
+   independent_reader = path in ('/api/v3/research/today','/api/v3/research/today-turnover') or path.startswith('/api/v3/research/today/')
+   if independent_reader:
+    with api._db_lock:
+     return self._do_GET()
    if allowed_while_database_exclusive or path in ('/api/hot-rankings','/api/v3/hot-rankings'):
     return self._do_GET()
    with api.request_scope():

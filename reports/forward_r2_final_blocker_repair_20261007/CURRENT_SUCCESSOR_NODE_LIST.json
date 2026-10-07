@@ -1,0 +1,17 @@
+{
+  "current_candidate_permission": false,
+  "nodes": [
+    "tests/test_forward_final_release_scope.py::test_current_authority_separates_immutable_historical_release",
+    "tests/test_forward_final_release_scope.py::test_historical_pointer_drift_rejected_before_current_acceptance",
+    "tests/test_remainder_current_guards.py::test_protected_filesystem_mutation_rejected[mkdir]",
+    "tests/test_remainder_current_guards.py::test_protected_filesystem_mutation_rejected[open]",
+    "tests/test_remainder_current_guards.py::test_protected_filesystem_mutation_rejected[rename]",
+    "tests/upgrade_m14/test_source_registry.py::test_m14_registry_is_fail_closed_and_has_four_datasets",
+    "tests/upgrade_m14/test_source_registry.py::test_no_source_or_dataset_can_claim_verified_or_enabled",
+    "tests/upgrade_v3/test_p09_01_b_lz_ext01.py::test_invalid_ext01_response_is_unavailable_and_fail_closed",
+    "tests/upgrade_v3/test_p09_01_b_lz_ext01.py::test_valid_current_json_is_degraded_until_field_scale_and_pagination_are_fixed",
+    "tests/upgrade_v3/test_p09_01_source_registry.py::test_hot_rank_and_quote_sources_are_request_time_only",
+    "tests/upgrade_v3/test_p09_01_source_registry.py::test_static_registry_matches_v3_known_endpoints_and_is_fail_closed",
+    "tests/upgrade_v3/test_p11_02_old_write_recovery_preview.py::test_p11_02_core_migrated_domains_have_no_legacy_writer_call_sites"
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "contract": "V4_SHADOW_PREVIEW_SERVICE_V1",
+  "acceptance": "PASS_SERVICE_ACCESS_ONLY",
+  "checks": [
+    {
+      "path": "/v4/shadow",
+      "status": 200,
+      "body": {
+        "bytes": 2860
+      }
+    },
+    {
+      "path": "/v4/shadow.js",
+      "status": 200,
+      "body": {
+        "bytes": 9037
+      }
+    },
+    {
+      "path": "/api/v4/shadow/context",
+      "status": 200,
+      "body": {
+        "status": "NO_REAL_SHADOW_DATA",
+        "context": null,
+        "context_token": null,
+        "real_sample_count": 0,
+        "source_quality": "UNKNOWN",
+        "items": [],
+        "evidence_label": "NO_REAL_SHADOW_DATA",
+        "component": "context"
+      }
+    },
+    {
+      "path": "/api/operations/status",
+      "status": 200,
+      "body": {
+        "service_state": "READY",
+        "service_mode": "V4_SHADOW_ONLY",
+        "service_control_contract": "V4_SHADOW_PREVIEW_SERVICE_V1",
+        "read_only": true,
+        "legacy_workbench_available": false
+      }
+    },
+    {
+      "path": "/api/v4/shadow/context?x=1&x=2",
+      "status": 409,
+      "body": {
+        "status": "BLOCKED",
+        "code": "DUPLICATE_CONTEXT_PARAMETER",
+        "items": []
+      }
+    },
+    {
+      "path": "/api/publications",
+      "status": 404,
+      "body": {
+        "status": "BLOCKED",
+        "code": "ROUTE_UNAVAILABLE_IN_V4_SHADOW_ONLY"
+      }
+    },
+    {
+      "method": "POST",
+      "status": 405,
+      "body": {
+        "status": "BLOCKED",
+        "code": "SHADOW_READ_ONLY",
+        "items": []
+      }
+    }
+  ],
+  "next_stage": "USER_MANUAL_ACCEPTANCE",
+  "real_shadow_acceptance": false,
+  "database_writes": false,
+  "tdx_writes": false
+}

@@ -31,7 +31,7 @@ def test_workbench_post_returns_job_and_get_reads_status(tmp_path,monkeypatch):
  monkeypatch.setattr(app.subprocess,'run',lambda *args,**kwargs:Mock(returncode=0,stderr=''))
  server=ThreadingHTTPServer(('127.0.0.1',0),app.make_handler(root,db));threading.Thread(target=server.serve_forever,daemon=True).start()
  try:
-  base=f'http://127.0.0.1:{server.server_port}';html=urllib.request.urlopen(base+'/').read().decode();token=html.split("const csrf='")[1].split("'")[0]
+  base=f'http://127.0.0.1:{server.server_port}';html=urllib.request.urlopen(base+'/v1').read().decode();token=html.split("const csrf='")[1].split("'")[0]
   req=urllib.request.Request(base+'/api/jobs',data=b'{}',method='POST',headers={'Content-Type':'application/json','X-CSRF-Token':token})
   submitted=json.loads(urllib.request.urlopen(req).read());status=json.loads(urllib.request.urlopen(base+'/api/jobs?job_id='+submitted['job_id']).read())
   assert submitted['job_id'].startswith('daily-') and status['status'] in ('QUEUED','RUNNING')

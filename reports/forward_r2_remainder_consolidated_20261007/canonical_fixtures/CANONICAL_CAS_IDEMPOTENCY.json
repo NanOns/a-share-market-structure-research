@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "fixtures": {
+    "fresh": {
+      "replay_version": 7,
+      "original_receipt": {
+        "checks": {
+          "engineering_only": true
+        },
+        "grant_id": "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee",
+        "request_id": "fresh-canonical-race-2",
+        "accepted_at": "2026-10-07T09:22:57.377221+08:00",
+        "activation_id": "FEP_CANONICAL_ACTIVATION:fresh-canonical-race-2",
+        "new_head_version": 7,
+        "expected_head_version": 6,
+        "expected_prior_activation_id": "FEP_CANONICAL_ACTIVATION:fresh-E4-revoke"
+      },
+      "no_new_rows": true
+    },
+    "upgrade": {
+      "replay_version": 7,
+      "original_receipt": {
+        "checks": {
+          "engineering_only": true
+        },
+        "grant_id": "FEP_SHADOW_GRANT:5a74651f70ef849c33ae18418bd48ec860eeed76f0fd475335b1cc7591eff8ee",
+        "request_id": "upgrade-canonical-race-1",
+        "accepted_at": "2026-10-07T09:22:58.054222+08:00",
+        "activation_id": "FEP_CANONICAL_ACTIVATION:upgrade-canonical-race-1",
+        "new_head_version": 7,
+        "expected_head_version": 6,
+        "expected_prior_activation_id": "FEP_CANONICAL_ACTIVATION:upgrade-E4-revoke"
+      },
+      "no_new_rows": true
+    }
+  }
+}

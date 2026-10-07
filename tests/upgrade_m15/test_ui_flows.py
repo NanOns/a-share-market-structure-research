@@ -34,10 +34,13 @@ def test_m15_app_restores_page_route_and_keeps_insight_route_compatible():
     assert "currentPage !== pageRoute.page" in app
 
 
-def test_m15_v2_has_no_iframe_and_legacy_view_stays_bound():
+def test_m15_v2_keeps_only_hidden_focus_frame_and_legacy_view_bound():
     index = (V2 / "index.html").read_text(encoding="utf-8")
     source = (ROOT / "src/workbench_service/app.py").read_text(encoding="utf-8")
-    assert "<iframe" not in index
+    assert index.count("<iframe") == 1
+    assert 'id="focus-tracker-inline" class="focus-tracker-inline" hidden><iframe' in index
+    assert 'src="/v3/focus-tracker"' in index
+    assert 'src="/view' not in index
     assert "u.path in ('/v2','/v2/','/v2/index.html')" in source
     assert "u.path=='/view'" in source
 

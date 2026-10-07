@@ -46,7 +46,8 @@ def test_real_canonical_metadata_readback(port,kind):
         pytest.skip('Explicit isolated canonical fixture required')
     import psycopg
     a=m.authority()
-    with psycopg.connect(f'host=127.0.0.1 port={port} user=fep_e5_admin dbname=fep_e5b_{kind}') as pg:
+    from scripts.run_fep_e5_r1r1b import DSNS
+    with psycopg.connect(DSNS[kind]) as pg:
         row=pg.execute("select to_jsonb(t) from fep.targets t where target_id='ABS_RETURN_N:T1'").fetchone()[0]
         assert m.verify_target(row,a['target_registry'])
         rows=pg.execute("select to_jsonb(t) from fep.observations t where scope_id='FEP_STOCK_ENTRY_CORE'").fetchall()

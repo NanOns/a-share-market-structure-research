@@ -1,0 +1,90 @@
+..FF..............FF....F..FFF.                                          [100%]
+================================== FAILURES ===================================
+_________ test_pagination_is_bounded_and_linkage_is_publication_bound _________
+tests\upgrade_m2\test_api.py:33: in test_pagination_is_bounded_and_linkage_is_publication_bound
+    sector=api.sectors(pub,'',1,1)['items'][0]['sector_id']; x=api.linkage(pub,sector,None)
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_service\app.py:1711: in linkage
+    if self._analysis_bindings(p): return self._analysis_linkage(p,sector,security,page,size,q,basis,trade_date)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_service\app.py:1646: in _analysis_linkage
+    if not dates: raise ValueError('LINKAGE_NOT_BUILT')
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: LINKAGE_NOT_BUILT
+__________ test_reverse_linkage_preserves_real_sector_rank_and_count __________
+tests\upgrade_m2\test_api.py:43: in test_reverse_linkage_preserves_real_sector_rank_and_count
+    member=api.linkage(pub,sector,None,1,1)['items'][0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_service\app.py:1711: in linkage
+    if self._analysis_bindings(p): return self._analysis_linkage(p,sector,security,page,size,q,basis,trade_date)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_service\app.py:1646: in _analysis_linkage
+    if not dates: raise ValueError('LINKAGE_NOT_BUILT')
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: LINKAGE_NOT_BUILT
+__________ test_api_refuses_quote_when_bound_source_hash_has_drifted __________
+tests\upgrade_m7\test_quotes_universe.py:103: in test_api_refuses_quote_when_bound_source_hash_has_drifted
+    assert api._quotes(publication_id) == {}
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_service\app.py:612: in _quotes
+    self._quote_cache[p]=self._load_quotes(p) or {}
+                         ^^^^^^^^^^^^^^^^^^^^
+src\workbench_service\app.py:621: in _load_quotes
+    trade_date,_=self._pub(p); current=date.fromisoformat(trade_date)
+                 ^^^^^^^^^^^^
+src\workbench_service\app.py:605: in _pub
+    if not row: raise ValueError('PUBLICATION_NOT_FOUND')
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: PUBLICATION_NOT_FOUND
+_______ test_api_refuses_publication_without_a_matching_quote_manifest ________
+tests\upgrade_m7\test_quotes_universe.py:108: in test_api_refuses_publication_without_a_matching_quote_manifest
+    assert api._quotes("m4-44e401cad4337d38105b496077a4f36e") == {}
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_service\app.py:612: in _quotes
+    self._quote_cache[p]=self._load_quotes(p) or {}
+                         ^^^^^^^^^^^^^^^^^^^^
+src\workbench_service\app.py:621: in _load_quotes
+    trade_date,_=self._pub(p); current=date.fromisoformat(trade_date)
+                 ^^^^^^^^^^^^
+src\workbench_service\app.py:605: in _pub
+    if not row: raise ValueError('PUBLICATION_NOT_FOUND')
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: PUBLICATION_NOT_FOUND
+____________________ test_assets_are_versioned_for_m15_04 _____________________
+tests\upgrade_m15\test_performance.py:43: in test_assets_are_versioned_for_m15_04
+    assert f"{asset}?v=m15-04" in text
+E   assert 'styles.css?v=m15-04' in '<!doctype html>\n<html lang="zh-CN">\n<head>\n    <meta charset="utf-8">\n    <meta name="viewport" content="width=de...n(){focus.hidden=true;main.hidden=false;button.classList.remove(\'active\')})});\n}());\n</script>\n</body>\n</html>\n'
+______ test_forward_and_reverse_linkage_reuse_same_member_rank_and_count ______
+tests\upgrade_m11\test_linkage_consistency.py:29: in test_forward_and_reverse_linkage_reuse_same_member_rank_and_count
+    api, publication_id, snapshot_id, sector_id, security_id = _context()
+                                                               ^^^^^^^^^^
+tests\upgrade_m11\test_linkage_consistency.py:16: in _context
+    sector_id, security_id = connection.execute(
+    ^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: cannot unpack non-iterable NoneType object
+___________ test_query_filter_does_not_renumber_sector_member_rank ____________
+tests\upgrade_m11\test_linkage_consistency.py:40: in test_query_filter_does_not_renumber_sector_member_rank
+    api, publication_id, _, sector_id, security_id = _context()
+                                                     ^^^^^^^^^^
+tests\upgrade_m11\test_linkage_consistency.py:16: in _context
+    sector_id, security_id = connection.execute(
+    ^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: cannot unpack non-iterable NoneType object
+_____________ test_linkage_history_is_date_ordered_and_traceable ______________
+tests\upgrade_m11\test_linkage_consistency.py:49: in test_linkage_history_is_date_ordered_and_traceable
+    api, publication_id, snapshot_id, sector_id, _ = _context()
+                                                     ^^^^^^^^^^
+tests\upgrade_m11\test_linkage_consistency.py:16: in _context
+    sector_id, security_id = connection.execute(
+    ^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: cannot unpack non-iterable NoneType object
+=========================== short test summary info ===========================
+FAILED tests/upgrade_m2/test_api.py::test_pagination_is_bounded_and_linkage_is_publication_bound
+FAILED tests/upgrade_m2/test_api.py::test_reverse_linkage_preserves_real_sector_rank_and_count
+FAILED tests/upgrade_m7/test_quotes_universe.py::test_api_refuses_quote_when_bound_source_hash_has_drifted
+FAILED tests/upgrade_m7/test_quotes_universe.py::test_api_refuses_publication_without_a_matching_quote_manifest
+FAILED tests/upgrade_m15/test_performance.py::test_assets_are_versioned_for_m15_04
+FAILED tests/upgrade_m11/test_linkage_consistency.py::test_forward_and_reverse_linkage_reuse_same_member_rank_and_count
+FAILED tests/upgrade_m11/test_linkage_consistency.py::test_query_filter_does_not_renumber_sector_member_rank
+FAILED tests/upgrade_m11/test_linkage_consistency.py::test_linkage_history_is_date_ordered_and_traceable
+8 failed, 23 passed in 58.34s

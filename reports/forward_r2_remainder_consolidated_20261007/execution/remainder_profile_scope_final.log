@@ -1,0 +1,761 @@
+FFFFFFFFFFFFFFFFFFFF..............FFFFFFFFF............................. [ 52%]
+..FFF.F.........................................................         [100%]
+================================== FAILURES ===================================
+________________________ test_negative_activation[A01] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+________________________ test_negative_activation[A02] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+________________________ test_negative_activation[A03] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+________________________ test_negative_activation[A04] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+________________________ test_negative_activation[A05] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+________________________ test_negative_activation[A06] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+________________________ test_negative_activation[A07] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+________________________ test_negative_activation[A08] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+________________________ test_negative_activation[A09] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+________________________ test_negative_activation[A10] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+________________________ test_negative_activation[A11] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+________________________ test_negative_activation[A12] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+________________________ test_negative_activation[A13] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+________________________ test_negative_activation[A14] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+________________________ test_negative_activation[A15] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+________________________ test_negative_activation[A16] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+________________________ test_negative_activation[A17] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+________________________ test_negative_activation[A18] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+________________________ test_negative_activation[A19] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+________________________ test_negative_activation[A20] ________________________
+tests\test_r24r1_a20.py:97: in test_negative_activation
+    def test_negative_activation(case):negative(case)
+                                       ^^^^^^^^^^^^^^
+tests\test_r24r1_a20.py:34: in negative
+    baseline=protected()
+             ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+__________________________ test_future_reachability ___________________________
+tests\test_r24r1_authority.py:70: in test_future_reachability
+    def test_future_reachability():positive()
+                                   ^^^^^^^^^^
+tests\test_r24r1_authority.py:39: in positive
+    before=protected(); x=prepare(name); c=controller(x)
+           ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+______________________ test_independent_corruption[C01] _______________________
+tests\test_r24r1_authority.py:94: in test_independent_corruption
+    def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:39: in positive
+    before=protected(); x=prepare(name); c=controller(x)
+           ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+______________________ test_independent_corruption[C02] _______________________
+tests\test_r24r1_authority.py:94: in test_independent_corruption
+    def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:39: in positive
+    before=protected(); x=prepare(name); c=controller(x)
+           ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+______________________ test_independent_corruption[C03] _______________________
+tests\test_r24r1_authority.py:94: in test_independent_corruption
+    def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:39: in positive
+    before=protected(); x=prepare(name); c=controller(x)
+           ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+______________________ test_independent_corruption[C04] _______________________
+tests\test_r24r1_authority.py:94: in test_independent_corruption
+    def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:39: in positive
+    before=protected(); x=prepare(name); c=controller(x)
+           ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+______________________ test_independent_corruption[S01] _______________________
+tests\test_r24r1_authority.py:94: in test_independent_corruption
+    def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:39: in positive
+    before=protected(); x=prepare(name); c=controller(x)
+           ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+______________________ test_independent_corruption[S02] _______________________
+tests\test_r24r1_authority.py:94: in test_independent_corruption
+    def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:39: in positive
+    before=protected(); x=prepare(name); c=controller(x)
+           ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+______________________ test_independent_corruption[S03] _______________________
+tests\test_r24r1_authority.py:94: in test_independent_corruption
+    def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:39: in positive
+    before=protected(); x=prepare(name); c=controller(x)
+           ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+______________________ test_independent_corruption[S04] _______________________
+tests\test_r24r1_authority.py:94: in test_independent_corruption
+    def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:39: in positive
+    before=protected(); x=prepare(name); c=controller(x)
+           ^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:23: in protected
+    return dict(bindings=[ref(p,root) for p in paths],committed_authority=ref('config/v4_16_runtime_activation_authority_v3.json',root),
+                          ^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:140: in <lambda>
+    monkeypatch.setattr(owner,'ref',lambda path,*args,**kw:ref(path,root=root))
+                                                           ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:12: in ref
+    raw=(Path(root)/path).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_r24r1_simulation_profile\\migrations\\v4_16_r23_shadow_v1.sql'
+____________________ test_exact_prior_bundle_security_row _____________________
+tests\test_v4_12_persisted_r11.py:15: in test_exact_prior_bundle_security_row
+    b=InputBinder(C,'2026-09-30','2026-10-02T06:00:00+00:00');row,ref=b.prior({'frozen_manifest':REF},'SYNTHETIC')
+                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_12_input_binder.py:56: in prior
+    if key not in self.frozen_loaders:self.frozen_loaders[key]=FrozenSnapshotLoader(self.contracts,ref,self.cutoff.isoformat())
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_12_frozen_snapshot.py:25: in __init__
+    if m['snapshot_contract']!=file_ref(contracts.root,CONTRACT_PATH):raise ValueError('SNAPSHOT_CONTRACT_MISMATCH')
+                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: SNAPSHOT_CONTRACT_MISMATCH
+____________ test_same_day_and_future_session_rejected[2026-09-29] ____________
+tests\test_v4_12_persisted_r11.py:21: in test_same_day_and_future_session_rejected
+    with pytest.raises(ValueError,match='SAME_DAY_OR_FOREIGN_PRIOR_D1'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'SAME_DAY_OR_FOREIGN_PRIOR_D1'
+E     Actual message: 'SNAPSHOT_CONTRACT_MISMATCH'
+____________ test_same_day_and_future_session_rejected[2026-09-28] ____________
+tests\test_v4_12_persisted_r11.py:21: in test_same_day_and_future_session_rejected
+    with pytest.raises(ValueError,match='SAME_DAY_OR_FOREIGN_PRIOR_D1'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'SAME_DAY_OR_FOREIGN_PRIOR_D1'
+E     Actual message: 'SNAPSHOT_CONTRACT_MISMATCH'
+________________________ test_exact_security_required _________________________
+tests\test_v4_12_persisted_r11.py:28: in test_exact_security_required
+    with pytest.raises(ValueError,match='MISSING_FROZEN_SECURITY_ROW'):FrozenSnapshotLoader(C,REF,'2026-10-02T06:00:00+00:00').read('OTHER','2026-09-29')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'MISSING_FROZEN_SECURITY_ROW'
+E     Actual message: 'SNAPSHOT_CONTRACT_MISMATCH'
+=========================== short test summary info ===========================
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A01] - FileNotFoundE...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A02] - FileNotFoundE...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A03] - FileNotFoundE...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A04] - FileNotFoundE...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A05] - FileNotFoundE...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A06] - FileNotFoundE...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A07] - FileNotFoundE...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A08] - FileNotFoundE...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A09] - FileNotFoundE...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A10] - FileNotFoundE...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A11] - FileNotFoundE...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A12] - FileNotFoundE...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A13] - FileNotFoundE...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A14] - FileNotFoundE...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A15] - FileNotFoundE...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A16] - FileNotFoundE...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A17] - FileNotFoundE...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A18] - FileNotFoundE...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A19] - FileNotFoundE...
+FAILED tests/test_r24r1_a20.py::test_negative_activation[A20] - FileNotFoundE...
+FAILED tests/test_r24r1_authority.py::test_future_reachability - FileNotFound...
+FAILED tests/test_r24r1_authority.py::test_independent_corruption[C01] - File...
+FAILED tests/test_r24r1_authority.py::test_independent_corruption[C02] - File...
+FAILED tests/test_r24r1_authority.py::test_independent_corruption[C03] - File...
+FAILED tests/test_r24r1_authority.py::test_independent_corruption[C04] - File...
+FAILED tests/test_r24r1_authority.py::test_independent_corruption[S01] - File...
+FAILED tests/test_r24r1_authority.py::test_independent_corruption[S02] - File...
+FAILED tests/test_r24r1_authority.py::test_independent_corruption[S03] - File...
+FAILED tests/test_r24r1_authority.py::test_independent_corruption[S04] - File...
+FAILED tests/test_v4_12_persisted_r11.py::test_exact_prior_bundle_security_row
+FAILED tests/test_v4_12_persisted_r11.py::test_same_day_and_future_session_rejected[2026-09-29]
+FAILED tests/test_v4_12_persisted_r11.py::test_same_day_and_future_session_rejected[2026-09-28]
+FAILED tests/test_v4_12_persisted_r11.py::test_exact_security_required - Asse...
+33 failed, 103 passed in 207.59s (0:03:27)

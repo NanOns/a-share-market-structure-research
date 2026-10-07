@@ -1,0 +1,4191 @@
+{
+  "external_acceptance_granted": false,
+  "final_acceptance": "PASS",
+  "final_global_cases": [
+    {
+      "node": "tests.test_a08_governance_propagation::test_exact_head_scope_and_only_A08_diff",
+      "seconds": 0.004,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_a08_governance_propagation::test_capability_scopes[PURE_CORE_STOCK-None]",
+      "seconds": 0.005,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_a08_governance_propagation::test_capability_scopes[AMOUNT_A_H21_FORMAL_CONSUMER-A04_H21_CONSUMER]",
+      "seconds": 0.005,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_a08_governance_propagation::test_capability_scopes[HISTORICAL_AMOUNT_A_FORMAL_CONSUMER-A04_HISTORICAL_AMOUNT_A]",
+      "seconds": 0.005,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_a08_governance_propagation::test_fail_closed_governance[unknown_issue]",
+      "seconds": 0.474,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_a08_governance_propagation::test_fail_closed_governance[stale_V3_head]",
+      "seconds": 0.334,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_a08_governance_propagation::test_fail_closed_governance[mismatched_head_sha]",
+      "seconds": 0.406,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_a08_governance_propagation::test_fail_closed_governance[stale_resolver]",
+      "seconds": 0.317,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_a08_governance_propagation::test_fail_closed_governance[external_audit_tamper]",
+      "seconds": 0.333,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_a08_governance_propagation::test_V5_grant_rejected_by_V6_and_actual_settlement_controller",
+      "seconds": 2.182,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_a08_governance_propagation::test_V6_grant_rejected_by_historical_V5_actual_restart",
+      "seconds": 4.075,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_a08_governance_propagation::test_V6_real_runtime_disabled_without_source_or_database",
+      "seconds": 0.015,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_a08_governance_propagation::test_V6_grant_digest_and_resolver_parity",
+      "seconds": 0.024,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_a08_governance_propagation::test_V6_r25_selection_waits_for_real_target",
+      "seconds": 0.238,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_a08_governance_propagation::test_V6_packet_builder_and_validator_engineering_roundtrip",
+      "seconds": 2.36,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_isolation::test_disposable_guard[0]",
+      "seconds": 0.005,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_isolation::test_disposable_guard[1]",
+      "seconds": 0.005,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_isolation::test_disposable_guard[2]",
+      "seconds": 0.011,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_isolation::test_disposable_guard[3]",
+      "seconds": 0.005,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_isolation::test_disposable_guard[4]",
+      "seconds": 0.005,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_isolation::test_disposable_guard[5]",
+      "seconds": 0.006,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_isolation::test_disposable_guard[6]",
+      "seconds": 1.318,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_isolation::test_disposable_guard[7]",
+      "seconds": 0.005,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_isolation::test_global_guard_rejects_explicit_real_database_writer",
+      "seconds": 0.023,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_isolation::test_global_guard_default_live_connection_is_read_only",
+      "seconds": 0.109,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_isolation::test_legacy_collection_repository_metadata_is_readonly",
+      "seconds": 0.108,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_endpoint_strictness[patch0]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_endpoint_strictness[patch1]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_endpoint_strictness[patch2]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_endpoint_strictness[patch3]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_endpoint_strictness[patch4]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_endpoint_strictness[patch5]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_endpoint_strictness[patch6]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_endpoint_strictness[patch7]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_interior_only_degrades_path[patch0]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_interior_only_degrades_path[patch1]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_interior_only_degrades_path[patch2]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_interior_only_degrades_path[patch3]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_interior_only_degrades_path[patch4]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_interior_only_degrades_path[patch5]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_ia04_remains_open[negative_price]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_ia04_remains_open[invalid_ohlc]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_ia04_remains_open[terminal_zero]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_ia03_same_source_pending_due_still_open",
+      "seconds": 0.005,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_fep_new_exact_revision_requires_owner_acceptance",
+      "seconds": 0.005,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_worker_keeps_queue_fencing_and_contract_is_additive",
+      "seconds": 2.348,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_sector_coordinate_guards[member_source]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_sector_coordinate_guards[member_adjustment]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_sector_coordinate_guards[member_basis]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_sector_coordinate_guards[basket_tamper]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_sector_coordinate_guards[basket_source_tamper]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_sector_coordinate_guards[wrong_date]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_worker_candidate_cannot_activate_real_delivery",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_e5_missing_exact_identity_stays_conflict",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_regression::test_confirmed_suspension_omits_coordinates_without_fabrication",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_sector::test_required_sector_vector[1]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_sector::test_required_sector_vector[2]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_sector::test_required_sector_vector[3]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_sector::test_required_sector_vector[4]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_sector::test_required_sector_vector[5]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_sector::test_required_sector_vector[6]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_sector::test_required_sector_vector[7]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_sector::test_required_sector_vector[8]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_sector::test_required_sector_vector[9]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_sector::test_required_sector_vector[10]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_sector::test_required_sector_vector[11]",
+      "seconds": 0.012,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_sector::test_required_sector_vector[12]",
+      "seconds": 0.018,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_stock::test_required_stock_vector[1]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_stock::test_required_stock_vector[2]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_stock::test_required_stock_vector[3]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_stock::test_required_stock_vector[4]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_stock::test_required_stock_vector[5]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_stock::test_required_stock_vector[6]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_stock::test_required_stock_vector[7]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_stock::test_required_stock_vector[8]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_stock::test_required_stock_vector[9]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_stock::test_required_stock_vector[10]",
+      "seconds": 0.01,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_stock::test_required_stock_vector[11]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_p1_stock::test_required_stock_vector[12]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_stock[1]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_stock[2]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_stock[3]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_stock[4]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_stock[5]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_stock[6]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_stock[7]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_stock[8]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_stock[9]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_stock[10]",
+      "seconds": 0.009,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_stock[11]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_stock[12]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_sector[1]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_sector[2]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_sector[3]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_sector[4]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_sector[5]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_sector[6]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_sector[7]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_sector[8]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_sector[9]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_sector[10]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_sector[11]",
+      "seconds": 0.016,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_pass_keep_sector[12]",
+      "seconds": 0.017,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_state_vector[1]",
+      "seconds": 0.029,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_state_vector[2]",
+      "seconds": 0.018,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_state_vector[3]",
+      "seconds": 0.036,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_state_vector[4]",
+      "seconds": 0.014,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_state_vector[5]",
+      "seconds": 0.015,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_state_vector[6]",
+      "seconds": 0.011,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_state_vector[7]",
+      "seconds": 0.011,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_state_vector[8]",
+      "seconds": 0.016,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_state_vector[9]",
+      "seconds": 0.016,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_state_vector[10]",
+      "seconds": 0.011,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_price_vector[1]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_price_vector[2]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_price_vector[3]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_price_vector[4]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_price_vector[5]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_price_vector[6]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_price_vector[7]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_price_vector[8]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_price_vector[9]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_price_vector[10]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_price_vector[11]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_price_vector[12]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_extra_domain_boundaries[patch0]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_extra_domain_boundaries[patch1]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_extra_domain_boundaries[patch2]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_extra_domain_boundaries[patch3]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_extra_domain_boundaries[patch4]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_sector_successor_negative_member_and_terminal_zero",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_worker_r2_simulation_and_retry",
+      "seconds": 2.26,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2::test_historical_pending_and_observed_contracts_remain_immutable",
+      "seconds": 0.004,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2_cli::test_clean_child_vector[1]",
+      "seconds": 0.058,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2_cli::test_clean_child_vector[2]",
+      "seconds": 0.041,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2_cli::test_clean_child_vector[3]",
+      "seconds": 0.043,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2_cli::test_clean_child_vector[4]",
+      "seconds": 2.813,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2_cli::test_clean_child_vector[5]",
+      "seconds": 2.728,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2_cli::test_clean_child_vector[6]",
+      "seconds": 2.623,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2_cli::test_clean_child_vector[7]",
+      "seconds": 1.396,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2_cli::test_clean_child_vector[8]",
+      "seconds": 5.245,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2_cli::test_clean_direct_r4_fixture_and_legacy_module_help",
+      "seconds": 2.356,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_forward_r2_cli::test_bootstrap_fixture_rejects_tdx_before_creation",
+      "seconds": 0.053,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_baseline_unknown_signal_accepted[pg0]",
+      "seconds": 0.03,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_baseline_unknown_signal_accepted[pg1]",
+      "seconds": 0.026,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg0-unknown]",
+      "seconds": 0.053,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg0-target]",
+      "seconds": 0.035,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg0-reconstruction]",
+      "seconds": 0.034,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg0-scope]",
+      "seconds": 0.046,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg0-predicate]",
+      "seconds": 0.046,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg0-signal]",
+      "seconds": 0.145,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg0-family]",
+      "seconds": 0.038,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg1-unknown]",
+      "seconds": 0.058,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg1-target]",
+      "seconds": 0.037,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg1-reconstruction]",
+      "seconds": 0.036,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg1-scope]",
+      "seconds": 0.038,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg1-predicate]",
+      "seconds": 0.148,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg1-signal]",
+      "seconds": 0.034,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg1-family]",
+      "seconds": 0.153,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_signal_registry_positive_and_immutable[pg0]",
+      "seconds": 0.038,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_signal_registry_positive_and_immutable[pg1]",
+      "seconds": 0.044,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_signal_registry_role_and_search_path[pg0]",
+      "seconds": 0.034,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_fep_db::test_signal_registry_role_and_search_path[pg1]",
+      "seconds": 0.04,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_capability_block[1]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_capability_block[2]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_capability_block[3]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_capability_block[4]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_capability_block[5]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_capability_block[6]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_capability_block[7]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_capability_block[8]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[endpoint-coeff0]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[endpoint-coeff1]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[endpoint-coeff2]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[endpoint-coeff3]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[endpoint-coeff4]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[endpoint-coeff5]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[endpoint-coeff6]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[endpoint-coeff7]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[endpoint-None]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[endpoint-coeff9]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[interior-coeff0]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[interior-coeff1]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[interior-coeff2]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[interior-coeff3]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[interior-coeff4]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[interior-coeff5]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[interior-coeff6]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[interior-coeff7]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[interior-None]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[interior-coeff9]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[T0-coeff0]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[T0-coeff1]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[T0-coeff2]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[T0-coeff3]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[T0-coeff4]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[T0-coeff5]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[T0-coeff6]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[T0-coeff7]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[T0-None]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[T0-coeff9]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[benchmark-coeff0]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[benchmark-coeff1]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[benchmark-coeff2]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[benchmark-coeff3]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[benchmark-coeff4]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[benchmark-coeff5]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[benchmark-coeff6]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[benchmark-coeff7]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[benchmark-None]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine[benchmark-coeff9]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine_other[basis]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine_other[identity]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine_other[T0_nan]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_affine_other[overflow]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_benchmark_contract[actual]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_benchmark_contract[suspended]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_benchmark_contract[delisted]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_benchmark_contract[identity]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_benchmark_contract[adjustment]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_benchmark_contract[missing]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_benchmark_contract[sector_small]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_benchmark_contract[sector]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_benchmark_contract[exclude]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_direct_db_reject[publication]",
+      "seconds": 2.254,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_direct_db_reject[enrollment]",
+      "seconds": 2.377,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_direct_db_reject[slot_revision]",
+      "seconds": 2.265,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_direct_db_reject[event]",
+      "seconds": 2.255,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_direct_db_reject[due]",
+      "seconds": 2.313,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_direct_db_reject[horizon]",
+      "seconds": 2.252,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_direct_db_reject[outcome]",
+      "seconds": 2.232,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_direct_db_reject[evaluation]",
+      "seconds": 2.364,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_direct_db_reject[state]",
+      "seconds": 2.323,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_direct_db_reject[admission_manifest]",
+      "seconds": 2.48,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_settlement_queue[enqueue]",
+      "seconds": 2.444,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_settlement_queue[restart]",
+      "seconds": 2.304,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_settlement_queue[CAS]",
+      "seconds": 2.474,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_settlement_queue[claim_crash]",
+      "seconds": 2.345,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_settlement_queue[result_crash]",
+      "seconds": 2.376,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_settlement_queue[idempotent]",
+      "seconds": 2.341,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_settlement_queue[corrected]",
+      "seconds": 2.192,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_settlement_queue[predue]",
+      "seconds": 2.252,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_settlement_queue[no_UI]",
+      "seconds": 2.426,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_settlement_queue[stop]",
+      "seconds": 2.418,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_settlement_queue[retry]",
+      "seconds": 2.408,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_legacy_fixture_gate",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_disabled_successor_no_database",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_two_actual_worker_connections_one_CAS_winner",
+      "seconds": 2.573,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_old_V3_obligation_authority_rejected",
+      "seconds": 2.189,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_V5_obligation_restart_after_stop_without_new_activation",
+      "seconds": 3.849,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_roll_back_publication_keeps_zero_queue",
+      "seconds": 2.21,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_full_chain_repair::test_unknown_due_session_appends_delivery_revision",
+      "seconds": 2.364,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_independent_formula_examples[closes0-expected0]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_independent_formula_examples[closes1-expected1]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_independent_formula_examples[closes2-expected2]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_independent_formula_examples[closes3-expected3]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_no_coercion[update0-IDENTITY_UNKNOWN]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_no_coercion[update1-ADJUSTMENT_UNKNOWN]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_no_coercion[update2-ADJUSTMENT_UNKNOWN]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_no_coercion[update3-SUSPENDED_AT_HORIZON]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_no_coercion[update4-DELISTED_BEFORE_HORIZON]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_no_coercion[update5-MATURED_DATA_MISSING]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_terminal_evidence_and_gaps",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_affine_common_basis_and_exclude_t0_extrema",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_calendar",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_fixed_benchmark_no_reweight",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_controls",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_unknown_delta_does_not_invent_ranking",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_benchmark_mixed_basis_and_distinct_t0_transform",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_availability_no_future",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_persisted_revision_readback",
+      "seconds": 1.579,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_strict_accepted_projection",
+      "seconds": 1.573,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_all_horizons_independent_arithmetic[1]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_all_horizons_independent_arithmetic[3]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_all_horizons_independent_arithmetic[5]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_all_horizons_independent_arithmetic[10]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_all_horizons_independent_arithmetic[20]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_sector_runtime_and_rotation",
+      "seconds": 1.511,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_reconstruction_does_not_fake_available_t0",
+      "seconds": 1.477,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_bad_affine[0-0]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_bad_affine[-1-0]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_bad_affine[nan-0]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r20d_settlement::test_bad_affine[1-inf]",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_target_negative[R25-01]",
+      "seconds": 0.06,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_target_negative[R25-02]",
+      "seconds": 0.042,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_target_negative[R25-03]",
+      "seconds": 0.036,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_target_negative[R25-04]",
+      "seconds": 0.031,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_target_negative[R25-05]",
+      "seconds": 0.024,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_target_negative[R25-06]",
+      "seconds": 0.039,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_target_negative[R25-07]",
+      "seconds": 0.023,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_target_negative[R25-08]",
+      "seconds": 0.021,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_target_negative[R25-09]",
+      "seconds": 0.047,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_target_negative[R25-10]",
+      "seconds": 0.037,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_target_negative[R25-11]",
+      "seconds": 0.044,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_target_negative[R25-12]",
+      "seconds": 0.035,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_target_negative[R25-13]",
+      "seconds": 0.021,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_target_negative[R25-14]",
+      "seconds": 0.021,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_target_negative[R25-15]",
+      "seconds": 0.031,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_target_negative[R25-16]",
+      "seconds": 0.028,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_vector_is_positive_only_in_test_mode",
+      "seconds": 0.035,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_f12_valid_latest_decoy",
+      "seconds": 2.952,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_oracle_has_no_writer_or_sqlite_imports",
+      "seconds": 0.007,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_actual_authority_inventory_waits_without_target",
+      "seconds": 0.23,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_user_c_drive_temporary_space_prohibition",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_fractional_boundary_rejected[source]",
+      "seconds": 0.032,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_r25_packet::test_fractional_boundary_rejected[daily]",
+      "seconds": 0.023,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_current_guards::test_unknown_pg_endpoint_rejected_before_connect",
+      "seconds": 0.001,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_current_guards::test_protected_filesystem_mutation_rejected[open]",
+      "seconds": 0.005,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_current_guards::test_protected_filesystem_mutation_rejected[mkdir]",
+      "seconds": 0.005,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_current_guards::test_protected_filesystem_mutation_rejected[rename]",
+      "seconds": 0.005,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_current_guards::test_current_r25_keeps_historical_source_freeze_closed",
+      "seconds": 0.34,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[D:/new_tdx/x.day]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[D:\\\\new_tdx\\\\x.day]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[../outside.json]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[/absolute.json]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[E:/codex work/\\u5927A\\u4ea4\\u6613/data/v4/V4_DATA_ACCEPTED_HEAD.json]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_dm01_profiles::test_current_accepted_runtime_has_no_legacy_pending_error",
+      "seconds": 2.489,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_dm01_profiles::test_historical_missing_and_unaccepted_authority_fail_closed",
+      "seconds": 0.012,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[0]",
+      "seconds": 0.048,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[1]",
+      "seconds": 0.048,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[2]",
+      "seconds": 0.05,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[3]",
+      "seconds": 0.044,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[4]",
+      "seconds": 0.046,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[5]",
+      "seconds": 0.06,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[6]",
+      "seconds": 0.048,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[7]",
+      "seconds": 0.045,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[8]",
+      "seconds": 0.046,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[9]",
+      "seconds": 0.044,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[10]",
+      "seconds": 0.052,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[11]",
+      "seconds": 0.045,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[12]",
+      "seconds": 0.046,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[13]",
+      "seconds": 0.049,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[14]",
+      "seconds": 0.05,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[15]",
+      "seconds": 0.049,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[16]",
+      "seconds": 0.048,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[17]",
+      "seconds": 0.048,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[18]",
+      "seconds": 0.115,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[19]",
+      "seconds": 0.048,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_wrong_identities_and_windows_alias[sha]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_wrong_identities_and_windows_alias[bytes]",
+      "seconds": 0.003,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_wrong_identities_and_windows_alias[path]",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_wrong_identities_and_windows_alias[windows]",
+      "seconds": 0.043,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_wrong_identities_and_windows_alias[blob]",
+      "seconds": 0.025,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_current_never_reads_historical_stage",
+      "seconds": 1.552,
+      "status": "passed",
+      "trace": null
+    },
+    {
+      "node": "tests.test_remainder_historical_routing::test_old_v13_reader_remains_pinned",
+      "seconds": 0.002,
+      "status": "passed",
+      "trace": null
+    }
+  ],
+  "final_source_execution": true,
+  "global_source": {
+    "bytes": 893860,
+    "path": "reports/forward_r2_remainder_consolidated_20261007/execution/remainder_full_f.xml",
+    "sha256": "4d9ccb1961a16cd54f0a74eceb7b18219b7ca7d119ca7b212e0b62f60b655e8f"
+  },
+  "runs": [
+    {
+      "acceptance": "PASS",
+      "artifacts": [
+        {
+          "bytes": 37685,
+          "path": "reports/forward_r2_remainder_consolidated_20261007/execution/remainder_pass_keep_c.xml",
+          "sha256": "7aecec10a0a0ef79150d9b0ee86463438545f418f55b8b0640f973a83d3492fa"
+        },
+        {
+          "bytes": 438,
+          "path": "reports/forward_r2_remainder_consolidated_20261007/execution/remainder_pass_keep_c.log",
+          "sha256": "db3ba8012e6c32729bddb21055e9754ec4785222313cc753439851c9ac7ff869"
+        }
+      ],
+      "cases": [
+        {
+          "node": "tests.test_forward_p1_stock::test_required_stock_vector[1]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_stock::test_required_stock_vector[2]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_stock::test_required_stock_vector[3]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_stock::test_required_stock_vector[4]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_stock::test_required_stock_vector[5]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_stock::test_required_stock_vector[6]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_stock::test_required_stock_vector[7]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_stock::test_required_stock_vector[8]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_stock::test_required_stock_vector[9]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_stock::test_required_stock_vector[10]",
+          "seconds": 0.006,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_stock::test_required_stock_vector[11]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_stock::test_required_stock_vector[12]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_sector::test_required_sector_vector[1]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_sector::test_required_sector_vector[2]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_sector::test_required_sector_vector[3]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_sector::test_required_sector_vector[4]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_sector::test_required_sector_vector[5]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_sector::test_required_sector_vector[6]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_sector::test_required_sector_vector[7]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_sector::test_required_sector_vector[8]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_sector::test_required_sector_vector[9]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_sector::test_required_sector_vector[10]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_sector::test_required_sector_vector[11]",
+          "seconds": 0.009,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_sector::test_required_sector_vector[12]",
+          "seconds": 0.009,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_stock[1]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_stock[2]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_stock[3]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_stock[4]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_stock[5]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_stock[6]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_stock[7]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_stock[8]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_stock[9]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_stock[10]",
+          "seconds": 0.008,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_stock[11]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_stock[12]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_sector[1]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_sector[2]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_sector[3]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_sector[4]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_sector[5]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_sector[6]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_sector[7]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_sector[8]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_sector[9]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_sector[10]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_sector[11]",
+          "seconds": 0.01,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_pass_keep_sector[12]",
+          "seconds": 0.01,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_state_vector[1]",
+          "seconds": 0.034,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_state_vector[2]",
+          "seconds": 0.009,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_state_vector[3]",
+          "seconds": 0.009,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_state_vector[4]",
+          "seconds": 0.009,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_state_vector[5]",
+          "seconds": 0.009,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_state_vector[6]",
+          "seconds": 0.01,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_state_vector[7]",
+          "seconds": 0.01,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_state_vector[8]",
+          "seconds": 0.009,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_state_vector[9]",
+          "seconds": 0.01,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_state_vector[10]",
+          "seconds": 0.009,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_price_vector[1]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_price_vector[2]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_price_vector[3]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_price_vector[4]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_price_vector[5]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_price_vector[6]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_price_vector[7]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_price_vector[8]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_price_vector[9]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_price_vector[10]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_price_vector[11]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_price_vector[12]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_extra_domain_boundaries[patch0]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_extra_domain_boundaries[patch1]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_extra_domain_boundaries[patch2]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_extra_domain_boundaries[patch3]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_extra_domain_boundaries[patch4]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_sector_successor_negative_member_and_terminal_zero",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_worker_r2_simulation_and_retry",
+          "seconds": 1.72,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2::test_historical_pending_and_observed_contracts_remain_immutable",
+          "seconds": 0.003,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_isolation::test_disposable_guard[0]",
+          "seconds": 0.004,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_isolation::test_disposable_guard[1]",
+          "seconds": 0.004,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_isolation::test_disposable_guard[2]",
+          "seconds": 0.004,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_isolation::test_disposable_guard[3]",
+          "seconds": 0.004,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_isolation::test_disposable_guard[4]",
+          "seconds": 0.004,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_isolation::test_disposable_guard[5]",
+          "seconds": 0.005,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_isolation::test_disposable_guard[6]",
+          "seconds": 0.468,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_isolation::test_disposable_guard[7]",
+          "seconds": 0.005,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_isolation::test_global_guard_rejects_explicit_real_database_writer",
+          "seconds": 0.052,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_isolation::test_global_guard_default_live_connection_is_read_only",
+          "seconds": 0.153,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_isolation::test_legacy_collection_repository_metadata_is_readonly",
+          "seconds": 0.102,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2_cli::test_clean_child_vector[1]",
+          "seconds": 0.041,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2_cli::test_clean_child_vector[2]",
+          "seconds": 0.038,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2_cli::test_clean_child_vector[3]",
+          "seconds": 0.038,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2_cli::test_clean_child_vector[4]",
+          "seconds": 2.662,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2_cli::test_clean_child_vector[5]",
+          "seconds": 2.674,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2_cli::test_clean_child_vector[6]",
+          "seconds": 2.71,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2_cli::test_clean_child_vector[7]",
+          "seconds": 1.348,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2_cli::test_clean_child_vector[8]",
+          "seconds": 5.283,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2_cli::test_clean_direct_r4_fixture_and_legacy_module_help",
+          "seconds": 2.284,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_r2_cli::test_bootstrap_fixture_rejects_tdx_before_creation",
+          "seconds": 0.062,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_capability_block[1]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_capability_block[2]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_capability_block[3]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_capability_block[4]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_capability_block[5]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_capability_block[6]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_capability_block[7]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_capability_block[8]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[endpoint-coeff0]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[endpoint-coeff1]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[endpoint-coeff2]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[endpoint-coeff3]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[endpoint-coeff4]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[endpoint-coeff5]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[endpoint-coeff6]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[endpoint-coeff7]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[endpoint-None]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[endpoint-coeff9]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[interior-coeff0]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[interior-coeff1]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[interior-coeff2]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[interior-coeff3]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[interior-coeff4]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[interior-coeff5]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[interior-coeff6]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[interior-coeff7]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[interior-None]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[interior-coeff9]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[T0-coeff0]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[T0-coeff1]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[T0-coeff2]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[T0-coeff3]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[T0-coeff4]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[T0-coeff5]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[T0-coeff6]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[T0-coeff7]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[T0-None]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[T0-coeff9]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[benchmark-coeff0]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[benchmark-coeff1]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[benchmark-coeff2]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[benchmark-coeff3]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[benchmark-coeff4]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[benchmark-coeff5]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[benchmark-coeff6]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[benchmark-coeff7]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[benchmark-None]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine[benchmark-coeff9]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine_other[basis]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine_other[identity]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine_other[T0_nan]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_affine_other[overflow]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_benchmark_contract[actual]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_benchmark_contract[suspended]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_benchmark_contract[delisted]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_benchmark_contract[identity]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_benchmark_contract[adjustment]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_benchmark_contract[missing]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_benchmark_contract[sector_small]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_benchmark_contract[sector]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_benchmark_contract[exclude]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_direct_db_reject[publication]",
+          "seconds": 1.7,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_direct_db_reject[enrollment]",
+          "seconds": 1.644,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_direct_db_reject[slot_revision]",
+          "seconds": 1.754,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_direct_db_reject[event]",
+          "seconds": 1.752,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_direct_db_reject[due]",
+          "seconds": 1.722,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_direct_db_reject[horizon]",
+          "seconds": 1.713,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_direct_db_reject[outcome]",
+          "seconds": 1.691,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_direct_db_reject[evaluation]",
+          "seconds": 1.693,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_direct_db_reject[state]",
+          "seconds": 1.741,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_direct_db_reject[admission_manifest]",
+          "seconds": 2.042,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_settlement_queue[enqueue]",
+          "seconds": 2.073,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_settlement_queue[restart]",
+          "seconds": 2.104,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_settlement_queue[CAS]",
+          "seconds": 2.051,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_settlement_queue[claim_crash]",
+          "seconds": 2.093,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_settlement_queue[result_crash]",
+          "seconds": 2.103,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_settlement_queue[idempotent]",
+          "seconds": 2.108,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_settlement_queue[corrected]",
+          "seconds": 2.224,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_settlement_queue[predue]",
+          "seconds": 2.082,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_settlement_queue[no_UI]",
+          "seconds": 2.104,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_settlement_queue[stop]",
+          "seconds": 2.187,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_settlement_queue[retry]",
+          "seconds": 2.119,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_legacy_fixture_gate",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_disabled_successor_no_database",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_two_actual_worker_connections_one_CAS_winner",
+          "seconds": 2.126,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_old_V3_obligation_authority_rejected",
+          "seconds": 2.109,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_V5_obligation_restart_after_stop_without_new_activation",
+          "seconds": 3.612,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_roll_back_publication_keeps_zero_queue",
+          "seconds": 2.334,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_repair::test_unknown_due_session_appends_delivery_revision",
+          "seconds": 2.463,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_independent_formula_examples[closes0-expected0]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_independent_formula_examples[closes1-expected1]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_independent_formula_examples[closes2-expected2]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_independent_formula_examples[closes3-expected3]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_no_coercion[update0-IDENTITY_UNKNOWN]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_no_coercion[update1-ADJUSTMENT_UNKNOWN]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_no_coercion[update2-ADJUSTMENT_UNKNOWN]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_no_coercion[update3-SUSPENDED_AT_HORIZON]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_no_coercion[update4-DELISTED_BEFORE_HORIZON]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_no_coercion[update5-MATURED_DATA_MISSING]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_terminal_evidence_and_gaps",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_affine_common_basis_and_exclude_t0_extrema",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_calendar",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_fixed_benchmark_no_reweight",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_controls",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_unknown_delta_does_not_invent_ranking",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_benchmark_mixed_basis_and_distinct_t0_transform",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_availability_no_future",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_persisted_revision_readback",
+          "seconds": 1.563,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_strict_accepted_projection",
+          "seconds": 1.602,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_all_horizons_independent_arithmetic[1]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_all_horizons_independent_arithmetic[3]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_all_horizons_independent_arithmetic[5]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_all_horizons_independent_arithmetic[10]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_all_horizons_independent_arithmetic[20]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_sector_runtime_and_rotation",
+          "seconds": 1.418,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_reconstruction_does_not_fake_available_t0",
+          "seconds": 1.44,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_bad_affine[0-0]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_bad_affine[-1-0]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_bad_affine[nan-0]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r20d_settlement::test_bad_affine[1-inf]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_target_negative[R25-01]",
+          "seconds": 0.05,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_target_negative[R25-02]",
+          "seconds": 0.041,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_target_negative[R25-03]",
+          "seconds": 0.036,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_target_negative[R25-04]",
+          "seconds": 0.032,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_target_negative[R25-05]",
+          "seconds": 0.02,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_target_negative[R25-06]",
+          "seconds": 0.042,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_target_negative[R25-07]",
+          "seconds": 0.02,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_target_negative[R25-08]",
+          "seconds": 0.025,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_target_negative[R25-09]",
+          "seconds": 0.057,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_target_negative[R25-10]",
+          "seconds": 0.043,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_target_negative[R25-11]",
+          "seconds": 0.042,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_target_negative[R25-12]",
+          "seconds": 0.04,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_target_negative[R25-13]",
+          "seconds": 0.02,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_target_negative[R25-14]",
+          "seconds": 0.018,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_target_negative[R25-15]",
+          "seconds": 0.026,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_target_negative[R25-16]",
+          "seconds": 0.021,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_vector_is_positive_only_in_test_mode",
+          "seconds": 0.033,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_f12_valid_latest_decoy",
+          "seconds": 3.349,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_oracle_has_no_writer_or_sqlite_imports",
+          "seconds": 0.004,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_actual_authority_inventory_waits_without_target",
+          "seconds": 0.188,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_user_c_drive_temporary_space_prohibition",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_fractional_boundary_rejected[source]",
+          "seconds": 0.033,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_r25_packet::test_fractional_boundary_rejected[daily]",
+          "seconds": 0.021,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_a08_governance_propagation::test_exact_head_scope_and_only_A08_diff",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_a08_governance_propagation::test_capability_scopes[PURE_CORE_STOCK-None]",
+          "seconds": 0.003,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_a08_governance_propagation::test_capability_scopes[AMOUNT_A_H21_FORMAL_CONSUMER-A04_H21_CONSUMER]",
+          "seconds": 0.003,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_a08_governance_propagation::test_capability_scopes[HISTORICAL_AMOUNT_A_FORMAL_CONSUMER-A04_HISTORICAL_AMOUNT_A]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_a08_governance_propagation::test_fail_closed_governance[unknown_issue]",
+          "seconds": 0.45,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_a08_governance_propagation::test_fail_closed_governance[stale_V3_head]",
+          "seconds": 0.327,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_a08_governance_propagation::test_fail_closed_governance[mismatched_head_sha]",
+          "seconds": 0.351,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_a08_governance_propagation::test_fail_closed_governance[stale_resolver]",
+          "seconds": 0.302,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_a08_governance_propagation::test_fail_closed_governance[external_audit_tamper]",
+          "seconds": 0.344,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_a08_governance_propagation::test_V5_grant_rejected_by_V6_and_actual_settlement_controller",
+          "seconds": 2.205,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_a08_governance_propagation::test_V6_grant_rejected_by_historical_V5_actual_restart",
+          "seconds": 3.598,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_a08_governance_propagation::test_V6_real_runtime_disabled_without_source_or_database",
+          "seconds": 0.014,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_a08_governance_propagation::test_V6_grant_digest_and_resolver_parity",
+          "seconds": 0.013,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_a08_governance_propagation::test_V6_r25_selection_waits_for_real_target",
+          "seconds": 0.186,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_a08_governance_propagation::test_V6_packet_builder_and_validator_engineering_roundtrip",
+          "seconds": 1.545,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_endpoint_strictness[patch0]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_endpoint_strictness[patch1]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_endpoint_strictness[patch2]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_endpoint_strictness[patch3]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_endpoint_strictness[patch4]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_endpoint_strictness[patch5]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_endpoint_strictness[patch6]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_endpoint_strictness[patch7]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_interior_only_degrades_path[patch0]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_interior_only_degrades_path[patch1]",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_interior_only_degrades_path[patch2]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_interior_only_degrades_path[patch3]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_interior_only_degrades_path[patch4]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_interior_only_degrades_path[patch5]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_ia04_remains_open[negative_price]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_ia04_remains_open[invalid_ohlc]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_ia04_remains_open[terminal_zero]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_ia03_same_source_pending_due_still_open",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_fep_new_exact_revision_requires_owner_acceptance",
+          "seconds": 0.003,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_worker_keeps_queue_fencing_and_contract_is_additive",
+          "seconds": 2.287,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_sector_coordinate_guards[member_source]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_sector_coordinate_guards[member_adjustment]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_sector_coordinate_guards[member_basis]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_sector_coordinate_guards[basket_tamper]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_sector_coordinate_guards[basket_source_tamper]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_sector_coordinate_guards[wrong_date]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_worker_candidate_cannot_activate_real_delivery",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_e5_missing_exact_identity_stays_conflict",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_forward_p1_regression::test_confirmed_suspension_omits_coordinates_without_fabrication",
+          "seconds": 0.0,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_baseline_unknown_signal_accepted[pg0]",
+          "seconds": 0.03,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_baseline_unknown_signal_accepted[pg1]",
+          "seconds": 0.021,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg0-unknown]",
+          "seconds": 0.087,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg0-target]",
+          "seconds": 0.038,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg0-reconstruction]",
+          "seconds": 0.036,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg0-scope]",
+          "seconds": 0.05,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg0-predicate]",
+          "seconds": 0.05,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg0-signal]",
+          "seconds": 0.038,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg0-family]",
+          "seconds": 0.042,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg1-unknown]",
+          "seconds": 0.031,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg1-target]",
+          "seconds": 0.044,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg1-reconstruction]",
+          "seconds": 0.033,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg1-scope]",
+          "seconds": 0.035,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg1-predicate]",
+          "seconds": 0.035,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg1-signal]",
+          "seconds": 0.033,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_signal_db_reject[pg1-family]",
+          "seconds": 0.032,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_signal_registry_positive_and_immutable[pg0]",
+          "seconds": 0.033,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_signal_registry_positive_and_immutable[pg1]",
+          "seconds": 0.034,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_signal_registry_role_and_search_path[pg0]",
+          "seconds": 0.038,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_full_chain_fep_db::test_signal_registry_role_and_search_path[pg1]",
+          "seconds": 0.031,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_unknown_pg_endpoint_rejected_before_connect",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_protected_filesystem_mutation_rejected[open]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_protected_filesystem_mutation_rejected[mkdir]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_protected_filesystem_mutation_rejected[rename]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_current_r25_keeps_historical_source_freeze_closed",
+          "seconds": 0.336,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[D:/new_tdx/x.day]",
+          "seconds": 0.003,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[D:\\\\new_tdx\\\\x.day]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[../outside.json]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[/absolute.json]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[E:/codex work/\\u5927A\\u4ea4\\u6613/data/v4/V4_DATA_ACCEPTED_HEAD.json]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_dm01_profiles::test_current_accepted_runtime_has_no_legacy_pending_error",
+          "seconds": 2.336,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_dm01_profiles::test_historical_missing_and_unaccepted_authority_fail_closed",
+          "seconds": 0.005,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[0]",
+          "seconds": 0.048,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[1]",
+          "seconds": 0.047,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[2]",
+          "seconds": 0.049,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[3]",
+          "seconds": 0.042,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[4]",
+          "seconds": 0.041,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[5]",
+          "seconds": 0.045,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[6]",
+          "seconds": 0.045,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[7]",
+          "seconds": 0.05,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[8]",
+          "seconds": 0.045,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[9]",
+          "seconds": 0.046,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[10]",
+          "seconds": 0.048,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[11]",
+          "seconds": 0.047,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[12]",
+          "seconds": 0.047,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[13]",
+          "seconds": 0.045,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[14]",
+          "seconds": 0.049,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[15]",
+          "seconds": 0.046,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[16]",
+          "seconds": 0.045,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[17]",
+          "seconds": 0.046,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[18]",
+          "seconds": 0.045,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_all_historical_occurrences_exact[19]",
+          "seconds": 0.047,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_wrong_identities_and_windows_alias[sha]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_wrong_identities_and_windows_alias[bytes]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_wrong_identities_and_windows_alias[path]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_wrong_identities_and_windows_alias[windows]",
+          "seconds": 0.046,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_wrong_identities_and_windows_alias[blob]",
+          "seconds": 0.023,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_current_never_reads_historical_stage",
+          "seconds": 1.363,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_historical_routing::test_old_v13_reader_remains_pinned",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        }
+      ],
+      "counts": {
+        "error": 0,
+        "failure": 0,
+        "passed": 345,
+        "skipped": 0
+      },
+      "name": "remainder_pass_keep_c",
+      "total": 345
+    }
+  ],
+  "scope": [
+    "IA01",
+    "IA02",
+    "IA03",
+    "IA04",
+    "IA09",
+    "IA10",
+    "FORWARD_WORKER_CAS_RESTART",
+    "R25",
+    "A08",
+    "V4_15"
+  ]
+}

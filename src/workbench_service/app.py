@@ -2006,7 +2006,7 @@ def make_handler(root,db,*,shadow_simulation_fixture=None):
     query={k:v[0] for k,v in parse_qs(urlparse(self.path).query).items()}
     status,body=focus_tracker_api.handle(path,query)
     return self._send(status,body)
-   if allowed_while_database_exclusive:
+   if allowed_while_database_exclusive or path in ('/api/hot-rankings','/api/v3/hot-rankings'):
     return self._do_GET()
    with api.request_scope():
     return self._do_GET()

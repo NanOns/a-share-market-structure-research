@@ -18,7 +18,7 @@ from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
 from numbers import Real
 from pathlib import Path
-from typing import Any, Callable, Iterable, Mapping, Sequence
+from typing import Any, Callable, ContextManager, Iterable, Mapping, Sequence
 
 import duckdb
 
@@ -355,7 +355,7 @@ class IncrementalBuildCoordinator:
         for domain, executor in self.executor_matrix.items():
             executor.validate(domain)
 
-    def _connect(self) -> duckdb.DuckDBPyConnection:
+    def _connect(self) -> ContextManager[Any]:
         return self._repository.connect()
 
     @staticmethod
@@ -642,82 +642,74 @@ class IncrementalBuildCoordinator:
         reused_objects = 0
         identity_rows_added = 0
         task_metrics: list[dict[str, Any]] = []
-        connection = self._connect()
-        connection_open = True
-        try:
-            connection.execute("BEGIN TRANSACTION")
-            for item in sorted(object_list, key=lambda value: (value.trade_date, value.domain, value.slice_id)):
-                slice_reused = self._ensure_slice(connection, item)
-                before_binding = self._existing_binding(connection, item.slice_id)
-                before_objects = self._object_ids(connection)
-                written = self.writers[item.domain](connection, item.slice_id, _writer_frame(item.frame))
-                if isinstance(written, Mapping):
-                    row_count = int(written.get("row_count", item.row_count))
-                else:
-                    row_count = int(written)
-                if row_count != item.row_count:
-                    raise IncrementalBuildError(f"WRITER_ROW_COUNT_MISMATCH:{item.task_key}")
-                after_binding = self._existing_binding(connection, item.slice_id)
-                after_objects = self._object_ids(connection)
-                new_object_ids = after_objects - before_objects
-                if before_binding is not None or slice_reused:
-                    rows_reused += row_count
-                else:
-                    identity_rows_added += 1
-                result_object_reused = bool(after_binding and after_binding[0] in before_objects)
-                if result_object_reused:
-                    reused_objects += 1
-                reassembled_row_count = int(item.basis.get("reused_row_count", 0) or 0)
-                if reassembled_row_count < 0 or reassembled_row_count > row_count:
-                    raise IncrementalBuildError(f"BUILD_OBJECT_REUSED_ROW_COUNT_INVALID:{item.task_key}")
-                calculated_row_count = row_count - reassembled_row_count
-                if not (before_binding is not None or slice_reused):
-                    rows_new += calculated_row_count
-                rows_reassembled += reassembled_row_count
-                task_metrics.append({
-                    "task_key": item.task_key,
-                    "covered_task_keys": list(item.covered_task_keys or (item.task_key,)),
-                    "covered_task_count": len(item.covered_task_keys or (item.task_key,)),
-                    "domain": item.domain,
-                    "trade_date": item.trade_date,
-                    "slice_id": item.slice_id,
-                    "execution_mode": "CALCULATE",
-                    "row_count": row_count,
-                    "calculated_row_count": calculated_row_count,
-                    "reassembled_row_count": reassembled_row_count,
-                    "slice_reused": bool(slice_reused),
-                    "result_binding_created": before_binding is None and after_binding is not None,
-                    "new_result_object_count": len(new_object_ids),
-                })
-            for reference in reused_list:
-                covered_tasks = [tasks[key] for key in reference.keys()]
-                row_count, result_object_id, source_slice_id = self._reuse_source(connection, reference, covered_tasks)
-                rows_reused += row_count
-                reused_objects += 1
-                task_metrics.append({
-                    "task_key": reference.task_key,
-                    "covered_task_keys": list(reference.keys()),
-                    "covered_task_count": len(reference.keys()),
-                    "domain": str(covered_tasks[0]["domain"]),
-                    "trade_date": _iso(covered_tasks[0]["trade_date"]),
-                    "slice_id": source_slice_id,
-                    "execution_mode": "REUSE",
-                    "row_count": row_count,
-                    "result_object_id": result_object_id,
-                })
-            if snapshot is not None:
-                self._bind_snapshot(connection, snapshot, binding_entries)
-            connection.execute("COMMIT")
-        except Exception:
+        with self._connect() as connection:
             try:
+                connection.execute("BEGIN TRANSACTION")
+                for item in sorted(object_list, key=lambda value: (value.trade_date, value.domain, value.slice_id)):
+                    slice_reused = self._ensure_slice(connection, item)
+                    before_binding = self._existing_binding(connection, item.slice_id)
+                    before_objects = self._object_ids(connection)
+                    written = self.writers[item.domain](connection, item.slice_id, _writer_frame(item.frame))
+                    if isinstance(written, Mapping):
+                        row_count = int(written.get("row_count", item.row_count))
+                    else:
+                        row_count = int(written)
+                    if row_count != item.row_count:
+                        raise IncrementalBuildError(f"WRITER_ROW_COUNT_MISMATCH:{item.task_key}")
+                    after_binding = self._existing_binding(connection, item.slice_id)
+                    after_objects = self._object_ids(connection)
+                    new_object_ids = after_objects - before_objects
+                    if before_binding is not None or slice_reused:
+                        rows_reused += row_count
+                    else:
+                        identity_rows_added += 1
+                    result_object_reused = bool(after_binding and after_binding[0] in before_objects)
+                    if result_object_reused:
+                        reused_objects += 1
+                    reassembled_row_count = int(item.basis.get("reused_row_count", 0) or 0)
+                    if reassembled_row_count < 0 or reassembled_row_count > row_count:
+                        raise IncrementalBuildError(f"BUILD_OBJECT_REUSED_ROW_COUNT_INVALID:{item.task_key}")
+                    calculated_row_count = row_count - reassembled_row_count
+                    if not (before_binding is not None or slice_reused):
+                        rows_new += calculated_row_count
+                    rows_reassembled += reassembled_row_count
+                    task_metrics.append({
+                        "task_key": item.task_key,
+                        "covered_task_keys": list(item.covered_task_keys or (item.task_key,)),
+                        "covered_task_count": len(item.covered_task_keys or (item.task_key,)),
+                        "domain": item.domain,
+                        "trade_date": item.trade_date,
+                        "slice_id": item.slice_id,
+                        "execution_mode": "CALCULATE",
+                        "row_count": row_count,
+                        "calculated_row_count": calculated_row_count,
+                        "reassembled_row_count": reassembled_row_count,
+                        "slice_reused": bool(slice_reused),
+                        "result_binding_created": before_binding is None and after_binding is not None,
+                        "new_result_object_count": len(new_object_ids),
+                    })
+                for reference in reused_list:
+                    covered_tasks = [tasks[key] for key in reference.keys()]
+                    row_count, result_object_id, source_slice_id = self._reuse_source(connection, reference, covered_tasks)
+                    rows_reused += row_count
+                    reused_objects += 1
+                    task_metrics.append({
+                        "task_key": reference.task_key,
+                        "covered_task_keys": list(reference.keys()),
+                        "covered_task_count": len(reference.keys()),
+                        "domain": str(covered_tasks[0]["domain"]),
+                        "trade_date": _iso(covered_tasks[0]["trade_date"]),
+                        "slice_id": source_slice_id,
+                        "execution_mode": "REUSE",
+                        "row_count": row_count,
+                        "result_object_id": result_object_id,
+                    })
+                if snapshot is not None:
+                    self._bind_snapshot(connection, snapshot, binding_entries)
+                connection.execute("COMMIT")
+            except Exception:
                 connection.execute("ROLLBACK")
-            finally:
-                connection.close()
-                connection_open = False
-            raise
-        finally:
-            if connection_open:
-                connection.close()
+                raise
 
         database_after = _file_bytes(self.database_path)
         db_growth = max(0, database_after - database_before)

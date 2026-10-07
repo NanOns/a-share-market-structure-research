@@ -1,0 +1,70 @@
+{
+  "DSNS": {
+    "fresh": "host=127.0.0.1 port=55640 user=fep_e1_admin dbname=fep_guard_pre033_v2_fresh",
+    "upgrade": "host=127.0.0.1 port=55641 user=fep_e1_admin dbname=fep_guard_pre033_v2_upgrade"
+  },
+  "current_schema_not_downgraded": true,
+  "migrations": {
+    "fresh": [
+      {
+        "path": "src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql",
+        "sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+        "status": "APPLIED"
+      },
+      {
+        "path": "src/workbench_db/migrations/v4_postgres/029_fep_append_only_v1.sql",
+        "sha256": "efb9bb078cb758b67919a86fe8f67d5020c9e39b34b04c72db2ab5e3ee761b5b",
+        "status": "APPLIED"
+      },
+      {
+        "path": "src/workbench_db/migrations/v4_postgres/030_fep_validation_cas_v1.sql",
+        "sha256": "b516a275813ab9d5b15279a876f9526597d5069ddf5773903812ff13c9579296",
+        "status": "APPLIED"
+      },
+      {
+        "path": "src/workbench_db/migrations/v4_postgres/031_fep_roles_v1.sql",
+        "sha256": "59e660f6e6b0d62f207dd1c6d6a16ed26c7d41525d65870ef3aacbc341e0c3b8",
+        "status": "APPLIED"
+      },
+      {
+        "path": "src/workbench_db/migrations/v4_postgres/032_fep_reconstruction_authority_shadow_v1.sql",
+        "sha256": "4145dd9ccad821b8d10b72004e547c0fa8fd05d61a409316ecb49bcfac9762f5",
+        "status": "APPLIED"
+      }
+    ],
+    "upgrade": [
+      {
+        "path": "src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql",
+        "sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+        "status": "APPLIED"
+      },
+      {
+        "path": "src/workbench_db/migrations/v4_postgres/029_fep_append_only_v1.sql",
+        "sha256": "efb9bb078cb758b67919a86fe8f67d5020c9e39b34b04c72db2ab5e3ee761b5b",
+        "status": "APPLIED"
+      },
+      {
+        "path": "src/workbench_db/migrations/v4_postgres/030_fep_validation_cas_v1.sql",
+        "sha256": "b516a275813ab9d5b15279a876f9526597d5069ddf5773903812ff13c9579296",
+        "status": "APPLIED"
+      },
+      {
+        "path": "src/workbench_db/migrations/v4_postgres/031_fep_roles_v1.sql",
+        "sha256": "59e660f6e6b0d62f207dd1c6d6a16ed26c7d41525d65870ef3aacbc341e0c3b8",
+        "status": "APPLIED"
+      },
+      {
+        "path": "src/workbench_db/migrations/v4_postgres/032_fep_reconstruction_authority_shadow_v1.sql",
+        "sha256": "4145dd9ccad821b8d10b72004e547c0fa8fd05d61a409316ecb49bcfac9762f5",
+        "status": "APPLIED"
+      }
+    ]
+  },
+  "profile": "EXACT_PRE_033_SCHEMA_WITH_FROZEN_CANONICAL_INPUTS",
+  "source": {
+    "bytes": 4441,
+    "path": "tests/test_full_chain_fep_db.py",
+    "sha256": "2fe5ccbdd5c80bad0ce3225857fc295f5d6be562ca2122b4e4da51f9f6bf6405"
+  },
+  "test_purpose": "baseline contrast; actual 033 executed per test inside rollback transaction"
+}

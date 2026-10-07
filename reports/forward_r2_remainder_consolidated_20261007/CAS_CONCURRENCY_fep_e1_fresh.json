@@ -1,0 +1,38 @@
+{
+  "evidence_class": "ENGINEERING_FIXTURE",
+  "isolated_database": "fep_e1_fresh_concurrency_8ffeedfd",
+  "concurrent_cas": [
+    {
+      "status": "PASS",
+      "version": 1,
+      "transaction_id": 2021,
+      "session_pid": 31880
+    },
+    {
+      "status": "BLOCK",
+      "exception": "FEP_CAS_CONFLICT\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE",
+      "sqlstate": "P0001",
+      "transaction_id": 2020,
+      "session_pid": 39884
+    }
+  ],
+  "identical_request_replay": [
+    {
+      "status": "PASS",
+      "version": 2,
+      "transaction_id": 2023,
+      "session_pid": 40600
+    },
+    {
+      "status": "PASS",
+      "version": 2,
+      "transaction_id": 2022,
+      "session_pid": 45708
+    }
+  ],
+  "rollback_counts": {
+    "activations": 1,
+    "deployment_change_receipts": 1,
+    "deployment_heads": 1
+  }
+}

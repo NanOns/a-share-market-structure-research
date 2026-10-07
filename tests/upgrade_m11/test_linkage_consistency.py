@@ -33,7 +33,10 @@ def test_forward_and_reverse_linkage_reuse_same_member_rank_and_count():
     assert forward["snapshot_id"] == reverse["snapshot_id"] == snapshot_id
     assert forward["items"][0]["sector_member_rank"] == row["sector_member_rank"]
     assert forward["items"][0]["sector_member_count"] == row["sector_member_count"]
-    assert forward["items"][0]["association_contract_id"] == "STOCK_SECTOR_ASSOC_V1"
+    assert forward["association_contract_id"] is None
+    assert forward["items"][0]["association_contract_id"] is None
+    assert row["association_contract_id"] is None
+    assert forward["items"][0]["association_eligible"] is None
 
 
 def test_query_filter_does_not_renumber_sector_member_rank():

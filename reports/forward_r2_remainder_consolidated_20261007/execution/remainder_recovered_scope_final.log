@@ -1,0 +1,52 @@
+.....................F.................................................. [ 16%]
+........................................................................ [ 33%]
+........................................................................ [ 50%]
+........................................................................ [ 67%]
+........................................................................ [ 84%]
+................F.........................F.........................     [100%]
+================================== FAILURES ===================================
+__________ test_frozen_profile_reads_exact_git_and_tracks_mutations ___________
+tests\test_remainder_current_guards.py:51: in test_frozen_profile_reads_exact_git_and_tracks_mutations
+    with open(target,'wb') as stream:stream.write(b'changed\n')
+         ^^^^^^^^^^^^^^^^^
+tests\remainder_historical_profiles.py:150: in builtin_open
+    if rel in entries and any(c in mode for c in ('w','a','+','x')):raise ValueError('PINNED_HISTORICAL_TRACKED_FILE_WRITE_FORBIDDEN')
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: PINNED_HISTORICAL_TRACKED_FILE_WRITE_FORBIDDEN
+__ test_historical_archive_does_not_accept_current_runtime_for_new_promotion __
+tests\v4_a08\test_repair_freeze_authority.py:51: in test_historical_archive_does_not_accept_current_runtime_for_new_promotion
+    result=validate()
+           ^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:55: in validate_v4_09_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+src\workbench_analysis\historical_stage_governance_r17.py:51: in current_state
+    if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+________ test_business_publication_history_has_explicit_archive_scope _________
+tests\v4_dm01_promotion\test_accepted_chain.py:103: in test_business_publication_history_has_explicit_archive_scope
+    result=reader()
+           ^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:55: in validate_v4_09_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+src\workbench_analysis\historical_stage_governance_r17.py:51: in current_state
+    if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+=========================== short test summary info ===========================
+FAILED tests/test_remainder_current_guards.py::test_frozen_profile_reads_exact_git_and_tracks_mutations
+FAILED tests/v4_a08/test_repair_freeze_authority.py::test_historical_archive_does_not_accept_current_runtime_for_new_promotion
+FAILED tests/v4_dm01_promotion/test_accepted_chain.py::test_business_publication_history_has_explicit_archive_scope
+3 failed, 425 passed in 660.15s (0:11:00)

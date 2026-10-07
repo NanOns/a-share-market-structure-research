@@ -1,0 +1,114 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- E:\python\python.exe
+cachedir: .pytest_cache
+rootdir: E:\codex work\��A����
+configfile: pytest.ini
+plugins: anyio-4.14.2
+collecting ... collected 41 items
+
+tests/test_r18b_persisted.py::test_fresh_process_pair_revision_and_determinism FAILED [  2%]
+tests/test_r18r1r1_consumption.py::test_actual_callable_reads_persisted_envelope_before_output FAILED [  4%]
+tests/test_r18r1r1_consumption.py::test_callable_cannot_mutate_frozen_argument FAILED [  7%]
+tests/test_remainder_current_guards.py::test_unknown_pg_endpoint_rejected_before_connect PASSED [  9%]
+tests/test_remainder_current_guards.py::test_protected_filesystem_mutation_rejected[open] PASSED [ 12%]
+tests/test_remainder_current_guards.py::test_protected_filesystem_mutation_rejected[mkdir] PASSED [ 14%]
+tests/test_remainder_current_guards.py::test_protected_filesystem_mutation_rejected[rename] PASSED [ 17%]
+tests/test_remainder_current_guards.py::test_current_r25_keeps_historical_source_freeze_closed PASSED [ 19%]
+tests/test_remainder_current_guards.py::test_profile_copy_rejects_nonrelative_references_before_io[D:/new_tdx/x.day] PASSED [ 21%]
+tests/test_remainder_current_guards.py::test_profile_copy_rejects_nonrelative_references_before_io[D:\\new_tdx\\x.day] PASSED [ 24%]
+tests/test_remainder_current_guards.py::test_profile_copy_rejects_nonrelative_references_before_io[../outside.json] PASSED [ 26%]
+tests/test_remainder_current_guards.py::test_profile_copy_rejects_nonrelative_references_before_io[/absolute.json] PASSED [ 29%]
+tests/test_remainder_current_guards.py::test_profile_copy_rejects_nonrelative_references_before_io[E:/codex work/\u5927A\u4ea4\u6613/data/v4/V4_DATA_ACCEPTED_HEAD.json] PASSED [ 31%]
+tests/test_remainder_current_guards.py::test_frozen_profile_reads_exact_git_and_tracks_mutations PASSED [ 34%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[0] PASSED [ 36%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[1] PASSED [ 39%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[2] PASSED [ 41%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[3] PASSED [ 43%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[4] PASSED [ 46%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[5] PASSED [ 48%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[6] PASSED [ 51%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[7] PASSED [ 53%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[8] PASSED [ 56%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[9] PASSED [ 58%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[10] PASSED [ 60%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[11] PASSED [ 63%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[12] PASSED [ 65%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[13] PASSED [ 68%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[14] PASSED [ 70%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[15] PASSED [ 73%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[16] PASSED [ 75%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[17] PASSED [ 78%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[18] PASSED [ 80%]
+tests/test_remainder_historical_routing.py::test_all_historical_occurrences_exact[19] PASSED [ 82%]
+tests/test_remainder_historical_routing.py::test_wrong_identities_and_windows_alias[sha] PASSED [ 85%]
+tests/test_remainder_historical_routing.py::test_wrong_identities_and_windows_alias[bytes] PASSED [ 87%]
+tests/test_remainder_historical_routing.py::test_wrong_identities_and_windows_alias[path] PASSED [ 90%]
+tests/test_remainder_historical_routing.py::test_wrong_identities_and_windows_alias[windows] PASSED [ 92%]
+tests/test_remainder_historical_routing.py::test_wrong_identities_and_windows_alias[blob] PASSED [ 95%]
+tests/test_remainder_historical_routing.py::test_current_never_reads_historical_stage PASSED [ 97%]
+tests/test_remainder_historical_routing.py::test_old_v13_reader_remains_pinned PASSED [100%]
+
+================================== FAILURES ===================================
+______________ test_fresh_process_pair_revision_and_determinism _______________
+E:\codex_tmp\test_temp\remainder_frozen_v3_8ac418738276\src\workbench_analysis\v4_14_authority.py:13: in __init__
+    try:validate(self.root)
+        ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: reports/v4_13_runtime_r16/real/2026-09-30/r6/loo_context.jsonl.gz
+
+The above exception was the direct cause of the following exception:
+tests\test_r18b_persisted.py:22: in test_fresh_process_pair_revision_and_determinism
+    a=ReplayAuthority(ROOT);o=Oracle(ROOT);ns='proof'
+      ^^^^^^^^^^^^^^^^^^^^^
+E:\codex_tmp\test_temp\remainder_frozen_v3_8ac418738276\src\workbench_analysis\v4_14_authority.py:14: in __init__
+    except (AssertionError,KeyError) as e:raise ValueError('REPLAY_ACTIVE_AUTHORITY_INVALID') from e
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: REPLAY_ACTIVE_AUTHORITY_INVALID
+_________ test_actual_callable_reads_persisted_envelope_before_output _________
+E:\codex_tmp\test_temp\remainder_frozen_v3_c1e8b1eba279\src\workbench_analysis\v4_14_authority.py:13: in __init__
+    try:validate(self.root)
+        ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: reports/v4_13_runtime_r16/real/2026-09-30/r6/loo_context.jsonl.gz
+
+The above exception was the direct cause of the following exception:
+tests\test_r18r1r1_consumption.py:59: in test_actual_callable_reads_persisted_envelope_before_output
+    a=ReplayAuthority(ROOT);date='2026-09-29';e=dict(target_trade_date=date,target_revision='r1',previous_market_session=a.previous(date),cutoff=date+'T16:00:00+00:00',owner_inputs=dict(consumption_mapping_ref=ref(ROOT,'config/v4_14_precall_consumption_mapping_r18r1r1_v1.json'),invocation_storage=dict(artifact_root=str(tmp_path),namespace='proof')))
+      ^^^^^^^^^^^^^^^^^^^^^
+E:\codex_tmp\test_temp\remainder_frozen_v3_c1e8b1eba279\src\workbench_analysis\v4_14_authority.py:14: in __init__
+    except (AssertionError,KeyError) as e:raise ValueError('REPLAY_ACTIVE_AUTHORITY_INVALID') from e
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: REPLAY_ACTIVE_AUTHORITY_INVALID
+_________________ test_callable_cannot_mutate_frozen_argument _________________
+E:\codex_tmp\test_temp\remainder_frozen_v3_c1e8b1eba279\src\workbench_analysis\v4_14_authority.py:13: in __init__
+    try:validate(self.root)
+        ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: reports/v4_13_runtime_r16/real/2026-09-30/r6/loo_context.jsonl.gz
+
+The above exception was the direct cause of the following exception:
+tests\test_r18r1r1_consumption.py:77: in test_callable_cannot_mutate_frozen_argument
+    a=ReplayAuthority(ROOT);e=dict(target_trade_date='2026-09-29',target_revision='r1',previous_market_session='2026-09-28',cutoff='2026-09-29T16:00:00+00:00',owner_inputs=dict(consumption_mapping_ref=ref(ROOT,'config/v4_14_precall_consumption_mapping_r18r1r1_v1.json'),invocation_storage=dict(artifact_root=str(tmp_path),namespace='proof')))
+      ^^^^^^^^^^^^^^^^^^^^^
+E:\codex_tmp\test_temp\remainder_frozen_v3_c1e8b1eba279\src\workbench_analysis\v4_14_authority.py:14: in __init__
+    except (AssertionError,KeyError) as e:raise ValueError('REPLAY_ACTIVE_AUTHORITY_INVALID') from e
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: REPLAY_ACTIVE_AUTHORITY_INVALID
+----------- generated xml file: E:\codex_tmp\remainder_frozen_f.xml -----------
+=========================== short test summary info ===========================
+FAILED tests/test_r18b_persisted.py::test_fresh_process_pair_revision_and_determinism - ValueError: REPLAY_ACTIVE_AUTHORITY_INVALID
+FAILED tests/test_r18r1r1_consumption.py::test_actual_callable_reads_persisted_envelope_before_output - ValueError: REPLAY_ACTIVE_AUTHORITY_INVALID
+FAILED tests/test_r18r1r1_consumption.py::test_callable_cannot_mutate_frozen_argument - ValueError: REPLAY_ACTIVE_AUTHORITY_INVALID
+======================== 3 failed, 38 passed in 13.04s ========================

@@ -1,0 +1,723 @@
+{
+  "ast_scope": "Only original V17 additive-route AST node uses exact entry tree; current HTTP and P01 lock assertions still execute current code",
+  "contract": "EXACT_HISTORICAL_SCOPE_AND_DISPOSABLE_PROJECTION_V1",
+  "executions": [
+    {
+      "acceptance": "PASS",
+      "artifacts": [
+        {
+          "bytes": 10401,
+          "path": "reports/forward_r2_remainder_consolidated_20261007/execution/remainder_freeze_scope_final_b.xml",
+          "sha256": "ca6257660d2bf66e4cf3a1b73f033e3b5792d2ef336f354a1079d5e7b691fc30"
+        },
+        {
+          "bytes": 183,
+          "path": "reports/forward_r2_remainder_consolidated_20261007/execution/remainder_freeze_scope_final_b.log",
+          "sha256": "137cd347b1982874a6783a3e19316aaabca39ac00b771ea7a3e2a56159340843"
+        }
+      ],
+      "cases": [
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_current_no_real_data_never_opens_database",
+          "seconds": 20.254,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_all_components_same_token_refresh_deeplink_filter_pagination_unknown",
+          "seconds": 0.015,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_corrected_observed_outcome_is_exact_revision",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_negative_matrix[U01]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_negative_matrix[U02]",
+          "seconds": 0.003,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_negative_matrix[U03]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_negative_matrix[U04]",
+          "seconds": 0.003,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_negative_matrix[U05]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_negative_matrix[U06]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_negative_matrix[U07]",
+          "seconds": 0.003,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_negative_matrix[U08]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_negative_matrix[U09]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_negative_matrix[U10]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_negative_matrix[U11]",
+          "seconds": 0.003,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_negative_matrix[U12]",
+          "seconds": 0.003,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_negative_matrix[U13]",
+          "seconds": 0.003,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_negative_matrix[U14]",
+          "seconds": 0.003,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_negative_matrix[U15]",
+          "seconds": 0.003,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_negative_matrix[U16]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_negative_matrix[U17]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_negative_matrix[U18]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_extra_scope_guards[lineage]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_extra_scope_guards[namespace]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_extra_scope_guards[origin]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_extra_scope_guards[missing_quality]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_extra_scope_guards[unknown_known]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_extra_scope_guards[pending_known]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_extra_scope_guards[unregistered_field]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_extra_scope_guards[pagination]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_http_shared_service_read_only_and_existing_pages",
+          "seconds": 1.814,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_browser_code_contract_and_unknown_guard",
+          "seconds": 0.061,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_readback_config_has_no_real_acceptance",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_native_exact_readonly_storage_projection",
+          "seconds": 1.121,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_native_readback_fail_closed[receipt]",
+          "seconds": 1.227,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_native_readback_fail_closed[fact_digest]",
+          "seconds": 1.382,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_native_readback_fail_closed[slot_model]",
+          "seconds": 1.295,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_native_readback_fail_closed[storage_origin]",
+          "seconds": 1.468,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_native_readback_fail_closed[path_escape]",
+          "seconds": 1.678,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_native_readback_fail_closed[absent_db]",
+          "seconds": 1.744,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_native_readback_fail_closed[field_path]",
+          "seconds": 1.604,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_native_readback_fail_closed[field_kind]",
+          "seconds": 1.944,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_same_publication_new_readback_manifest_cannot_reuse_old_token",
+          "seconds": 1.751,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_legacy_module_ast_identical_after_removing_additive_shadow_routes",
+          "seconds": 12.26,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_17_shadow_ui::test_bad_shadow_contract_preserves_existing_v3_http",
+          "seconds": 2.406,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_permissions_are_design_only",
+          "seconds": 5.601,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_all_declared_tables_have_explicit_namespace_rules",
+          "seconds": 0.17,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M01]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M02]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M03]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M04]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M05]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M06]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M07]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M08]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M09]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M10]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M11]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M12]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M13]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M14]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M15]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M16]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M17]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M18]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M19]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_declarative_vectors_bind_independent_oracle[M20]",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_vectors_and_future_interfaces_complete",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_v4_18_migration_contract::test_inheritance_obligations_and_rollback_are_explicit",
+          "seconds": 0.003,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.upgrade_v3.test_p01_01_lock_scope::test_hot_rank_route_skips_request_scope",
+          "seconds": 0.007,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.upgrade_v3.test_p01_01_lock_scope::test_hot_rank_network_wait_does_not_block_short_local_read",
+          "seconds": 0.034,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.upgrade_v3.test_p01_01_lock_scope::test_send_marks_disconnected_client_closed",
+          "seconds": 0.006,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_unknown_pg_endpoint_rejected_before_connect",
+          "seconds": 0.001,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_protected_filesystem_mutation_rejected[open]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_protected_filesystem_mutation_rejected[mkdir]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_protected_filesystem_mutation_rejected[rename]",
+          "seconds": 0.003,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_current_r25_keeps_historical_source_freeze_closed",
+          "seconds": 0.342,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[D:/new_tdx/x.day]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[D:\\\\new_tdx\\\\x.day]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[../outside.json]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[/absolute.json]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[E:/codex work/\\u5927A\\u4ea4\\u6613/data/v4/V4_DATA_ACCEPTED_HEAD.json]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_frozen_profile_reads_exact_git_and_tracks_mutations",
+          "seconds": 0.729,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_g_storage_child_keeps_protected_root_rejection",
+          "seconds": 0.042,
+          "status": "passed",
+          "trace": null
+        }
+      ],
+      "counts": {
+        "error": 0,
+        "failure": 0,
+        "passed": 83,
+        "skipped": 0
+      },
+      "name": "remainder_freeze_scope_final_b",
+      "total": 83
+    },
+    {
+      "acceptance": "PASS",
+      "artifacts": [
+        {
+          "bytes": 3621,
+          "path": "reports/forward_r2_remainder_consolidated_20261007/execution/remainder_final_boundary_replays_b.xml",
+          "sha256": "1aa1606f37ba10aa5d1de3c3bf32f33a855ac20d04a2bad01eb76f636c8af1e4"
+        },
+        {
+          "bytes": 101,
+          "path": "reports/forward_r2_remainder_consolidated_20261007/execution/remainder_final_boundary_replays_b.log",
+          "sha256": "59529ef504a1ce35c3fbb0aded95f6bbf1ee93d93b605cc0aa0544861bb43c9d"
+        }
+      ],
+      "cases": [
+        {
+          "node": "tests.v4_a03_a04_a07_r2.test_payload_governance_r2_1::test_declared_schema_and_target_cannot_hide_actual_payload[payload0-SCHEMA_DRIFT]",
+          "seconds": 1.823,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.v4_a03_a04_a07_r2.test_payload_governance_r2_1::test_declared_schema_and_target_cannot_hide_actual_payload[payload1-TARGET_DATE_MISMATCH]",
+          "seconds": 0.139,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.v4_a03_a04_a07_r2.test_payload_governance_r2_1::test_declared_schema_and_target_cannot_hide_actual_payload[payload2-SCHEMA_DRIFT]",
+          "seconds": 0.124,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.v4_a03_a04_a07_r2.test_payload_governance_r2_1::test_declared_schema_and_target_cannot_hide_actual_payload[payload3-SCHEMA_DRIFT]",
+          "seconds": 0.116,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.v4_a03_a04_a07_r2.test_payload_governance_r2_1::test_declared_schema_and_target_cannot_hide_actual_payload[payload4-SCHEMA_DRIFT]",
+          "seconds": 0.125,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.v4_a03_a04_a07_r2.test_payload_governance_r2_1::test_real_accepted_baseline_r2_1_replay_retains_original_identity",
+          "seconds": 0.242,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.v4_a03_a04_a07_r2.test_payload_governance_r2_1::test_undeclared_source_family_rejected",
+          "seconds": 0.056,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.v4_dm01_r4r2.test_acceptance_seal::test_real_external_envelope_and_extension_bytes",
+          "seconds": 0.036,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.v4_dm01_r4r2.test_acceptance_seal::test_sealed_future_wait_has_no_source_or_publication",
+          "seconds": 0.291,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.v4_dm01_r4r2.test_acceptance_seal::test_acceptance_does_not_grant_shadow_or_move_heads",
+          "seconds": 0.006,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_unknown_pg_endpoint_rejected_before_connect",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_protected_filesystem_mutation_rejected[open]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_protected_filesystem_mutation_rejected[mkdir]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_protected_filesystem_mutation_rejected[rename]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_current_r25_keeps_historical_source_freeze_closed",
+          "seconds": 0.343,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[D:/new_tdx/x.day]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[D:\\\\new_tdx\\\\x.day]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[../outside.json]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[/absolute.json]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[E:/codex work/\\u5927A\\u4ea4\\u6613/data/v4/V4_DATA_ACCEPTED_HEAD.json]",
+          "seconds": 0.002,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_frozen_profile_reads_exact_git_and_tracks_mutations",
+          "seconds": 0.261,
+          "status": "passed",
+          "trace": null
+        },
+        {
+          "node": "tests.test_remainder_current_guards::test_g_storage_child_keeps_protected_root_rejection",
+          "seconds": 0.055,
+          "status": "passed",
+          "trace": null
+        }
+      ],
+      "counts": {
+        "error": 0,
+        "failure": 0,
+        "passed": 22,
+        "skipped": 0
+      },
+      "name": "remainder_final_boundary_replays_b",
+      "total": 22
+    }
+  ],
+  "original_test_bytes_changed": false,
+  "production_write_permission": false,
+  "r25_scope": "Original WAIT state reads entry Git tree, current fail-closed tests remain separate",
+  "retry_scope": "Actual accepted observation bytes replay to private G projection; only immediate envelope/source references copied with drive/root/traversal rejection",
+  "source_bindings": [
+    {
+      "bytes": 33822,
+      "path": "tests/remainder_isolation_plugin.py",
+      "sha256": "808893e7317d872b4e2af9b07456b86ed4f48a9ec2c9d281465db16bcf33ebc3"
+    },
+    {
+      "bytes": 27709,
+      "path": "config/v4_frozen_test_profiles_remainder_v1.json",
+      "sha256": "b31e2684f3a7bec86de00ea95cfc262934e3cbc0feb8e908486bc40f2e7b6faa"
+    },
+    {
+      "bytes": 20746,
+      "path": "tests/test_v4_17_shadow_ui.py",
+      "sha256": "ff6a194f87fad64db0b6fbbdb1278c6240b0cd6476492bd12e8ee3ccc24a3d33"
+    },
+    {
+      "bytes": 3532,
+      "path": "tests/test_v4_18_migration_contract.py",
+      "sha256": "3cca7285d6dd4058e43692b9b0962317b0c79fe4a0c6494e00f5f299b23af71c"
+    },
+    {
+      "bytes": 1972,
+      "path": "tests/v4_a03_a04_a07_r2/test_payload_governance_r2_1.py",
+      "sha256": "b8564044bde544e8beb52a9865f3a663f013d6936f29b7dccf394dd84a958016"
+    },
+    {
+      "bytes": 2729,
+      "path": "tests/v4_dm01_r4r2/test_acceptance_seal.py",
+      "sha256": "63869718dff3346bfcd2590ba7f9b782b58bd31849cb77ddd53e46cae35a27ec"
+    }
+  ],
+  "v18_scope": "Original v1 design inventory uses original f7c7277 design tree, before FEP SQL; module C follows same exact tree"
+}

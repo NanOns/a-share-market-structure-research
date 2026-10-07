@@ -1,0 +1,402 @@
+..................................FFFFFFFFF...........                   [100%]
+================================== FAILURES ===================================
+__________________________ test_future_reachability ___________________________
+
+>   def test_future_reachability():positive()
+                                   ^^^^^^^^^^
+
+tests\test_r24r1_authority.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:67: in positive
+    return dict(context=x,oracle=inspect(ROOT/x['database'],x['manifest']),old_calendar_rejects_target=True,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:28: in inspect
+    deps=read(manifest,root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:9: in read
+    return json.loads((Path(root)/path).read_bytes())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/��A����/reports/r24r1/activation_simulation/a9396c8255bc4e2a9273f9b12b1480c9/dependencies.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\��A����\\reports\\r24r1\\activation_simulation\\a9396c8255bc4e2a9273f9b12b1480c9\\dependencies.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+______________________ test_independent_corruption[C01] _______________________
+
+case = 'C01'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/remainder_r24_history/test_independent_corruption_C00')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+>   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:67: in positive
+    return dict(context=x,oracle=inspect(ROOT/x['database'],x['manifest']),old_calendar_rejects_target=True,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:28: in inspect
+    deps=read(manifest,root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:9: in read
+    return json.loads((Path(root)/path).read_bytes())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/��A����/reports/r24r1/activation_simulation/328e894fd6484242ac2a9fee4ba9365f/dependencies.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\��A����\\reports\\r24r1\\activation_simulation\\328e894fd6484242ac2a9fee4ba9365f\\dependencies.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+______________________ test_independent_corruption[C02] _______________________
+
+case = 'C02'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/remainder_r24_history/test_independent_corruption_C01')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+>   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:67: in positive
+    return dict(context=x,oracle=inspect(ROOT/x['database'],x['manifest']),old_calendar_rejects_target=True,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:28: in inspect
+    deps=read(manifest,root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:9: in read
+    return json.loads((Path(root)/path).read_bytes())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/��A����/reports/r24r1/activation_simulation/92e8011c77ad43168f72a88642726c4d/dependencies.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\��A����\\reports\\r24r1\\activation_simulation\\92e8011c77ad43168f72a88642726c4d\\dependencies.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+______________________ test_independent_corruption[C03] _______________________
+
+case = 'C03'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/remainder_r24_history/test_independent_corruption_C02')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+>   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:67: in positive
+    return dict(context=x,oracle=inspect(ROOT/x['database'],x['manifest']),old_calendar_rejects_target=True,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:28: in inspect
+    deps=read(manifest,root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:9: in read
+    return json.loads((Path(root)/path).read_bytes())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/��A����/reports/r24r1/activation_simulation/8d3d5285c841439e9f433ec5d334aaba/dependencies.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\��A����\\reports\\r24r1\\activation_simulation\\8d3d5285c841439e9f433ec5d334aaba\\dependencies.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+______________________ test_independent_corruption[C04] _______________________
+
+case = 'C04'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/remainder_r24_history/test_independent_corruption_C03')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+>   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:67: in positive
+    return dict(context=x,oracle=inspect(ROOT/x['database'],x['manifest']),old_calendar_rejects_target=True,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:28: in inspect
+    deps=read(manifest,root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:9: in read
+    return json.loads((Path(root)/path).read_bytes())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/��A����/reports/r24r1/activation_simulation/9a5388876eaa498c905ede248f1d36d2/dependencies.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\��A����\\reports\\r24r1\\activation_simulation\\9a5388876eaa498c905ede248f1d36d2\\dependencies.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+______________________ test_independent_corruption[S01] _______________________
+
+case = 'S01'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/remainder_r24_history/test_independent_corruption_S00')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+>   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:67: in positive
+    return dict(context=x,oracle=inspect(ROOT/x['database'],x['manifest']),old_calendar_rejects_target=True,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:28: in inspect
+    deps=read(manifest,root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:9: in read
+    return json.loads((Path(root)/path).read_bytes())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/��A����/reports/r24r1/activation_simulation/ed9487648bfb41fa85b4a9fc1adf601d/dependencies.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\��A����\\reports\\r24r1\\activation_simulation\\ed9487648bfb41fa85b4a9fc1adf601d\\dependencies.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+______________________ test_independent_corruption[S02] _______________________
+
+case = 'S02'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/remainder_r24_history/test_independent_corruption_S01')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+>   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:67: in positive
+    return dict(context=x,oracle=inspect(ROOT/x['database'],x['manifest']),old_calendar_rejects_target=True,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:28: in inspect
+    deps=read(manifest,root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:9: in read
+    return json.loads((Path(root)/path).read_bytes())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/��A����/reports/r24r1/activation_simulation/06f448d9c80e49fbb83bf07768c98b90/dependencies.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\��A����\\reports\\r24r1\\activation_simulation\\06f448d9c80e49fbb83bf07768c98b90\\dependencies.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+______________________ test_independent_corruption[S03] _______________________
+
+case = 'S03'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/remainder_r24_history/test_independent_corruption_S02')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+>   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:67: in positive
+    return dict(context=x,oracle=inspect(ROOT/x['database'],x['manifest']),old_calendar_rejects_target=True,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:28: in inspect
+    deps=read(manifest,root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:9: in read
+    return json.loads((Path(root)/path).read_bytes())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/��A����/reports/r24r1/activation_simulation/95ba725d67934d5cb94a09584e4c66c3/dependencies.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\��A����\\reports\\r24r1\\activation_simulation\\95ba725d67934d5cb94a09584e4c66c3\\dependencies.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+______________________ test_independent_corruption[S04] _______________________
+
+case = 'S04'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/remainder_r24_history/test_independent_corruption_S03')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+>   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:67: in positive
+    return dict(context=x,oracle=inspect(ROOT/x['database'],x['manifest']),old_calendar_rejects_target=True,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:28: in inspect
+    deps=read(manifest,root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:9: in read
+    return json.loads((Path(root)/path).read_bytes())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/��A����/reports/r24r1/activation_simulation/8b638dbac55945bf99ca53208c62254b/dependencies.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\��A����\\reports\\r24r1\\activation_simulation\\8b638dbac55945bf99ca53208c62254b\\dependencies.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/test_r24r1_authority.py::test_future_reachability - FileNotFound...
+FAILED tests/test_r24r1_authority.py::test_independent_corruption[C01] - File...
+FAILED tests/test_r24r1_authority.py::test_independent_corruption[C02] - File...
+FAILED tests/test_r24r1_authority.py::test_independent_corruption[C03] - File...
+FAILED tests/test_r24r1_authority.py::test_independent_corruption[C04] - File...
+FAILED tests/test_r24r1_authority.py::test_independent_corruption[S01] - File...
+FAILED tests/test_r24r1_authority.py::test_independent_corruption[S02] - File...
+FAILED tests/test_r24r1_authority.py::test_independent_corruption[S03] - File...
+FAILED tests/test_r24r1_authority.py::test_independent_corruption[S04] - File...
+9 failed, 45 passed in 105.94s (0:01:45)

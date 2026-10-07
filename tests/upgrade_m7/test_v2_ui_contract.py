@@ -9,7 +9,10 @@ V2 = ROOT / "src/workbench_service/static/v2"
 
 def test_v2_preview_assets_are_modular_and_not_the_legacy_iframe():
     index = (V2 / "index.html").read_text(encoding="utf-8")
-    assert "<iframe" not in index
+    assert index.count("<iframe") == 1
+    assert 'id="focus-tracker-inline" class="focus-tracker-inline" hidden><iframe' in index
+    assert 'src="/v3/focus-tracker"' in index
+    assert 'src="/view' not in index
     for asset in ("api.js", "format.js", "table.js", "modal.js", "app.js", "styles.css"):
         assert f'"/v2/{asset}' in index or f"'/v2/{asset}" in index
 

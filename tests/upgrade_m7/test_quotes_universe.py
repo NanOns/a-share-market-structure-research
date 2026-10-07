@@ -97,15 +97,17 @@ def test_real_service_uses_previous_market_session_not_previous_publication() ->
     assert result["quote_ret1_basis"] == "RAW_CLOSE_PREVIOUS_TRADING_DAY"
 
 
-def test_api_refuses_quote_when_bound_source_hash_has_drifted() -> None:
+def test_api_refuses_non_success_historical_publication() -> None:
     api = Api(Path("data/database/market_research.duckdb"))
     publication_id = "452811b8e0c54c029560aae46c6d3081"
-    assert api._quotes(publication_id) == {}
+    with pytest.raises(ValueError,match="PUBLICATION_NOT_FOUND"):
+        api._quotes(publication_id)
 
 
 def test_api_refuses_publication_without_a_matching_quote_manifest() -> None:
     api = Api(Path("data/database/market_research.duckdb"))
-    assert api._quotes("m4-44e401cad4337d38105b496077a4f36e") == {}
+    with pytest.raises(ValueError,match="PUBLICATION_NOT_FOUND"):
+        api._quotes("m4-44e401cad4337d38105b496077a4f36e")
 
 
 def test_quote_contract_is_versioned_and_preserves_legacy_fields() -> None:
@@ -114,3 +116,15 @@ def test_quote_contract_is_versioned_and_preserves_legacy_fields() -> None:
     assert "REFERENCE_PREV_CLOSE" in contract
     assert "RAW_CLOSE_PREVIOUS_TRADING_DAY" in contract
     assert "UNKNOWN_CORPORATE_ACTION" in contract
+
+
+def test_verified_quote_source_rejects_wrong_bound_file_hash(tmp_path):
+    import duckdb,hashlib
+    source=Path(__file__).resolve().parents[2]/'data/normalized/adjusted_daily.parquet'
+    target=tmp_path/'bounded_quote_source.parquet'
+    with duckdb.connect(':memory:') as connection:
+        connection.execute("copy (select * from read_parquet($source) where security_id='SH.600000' and date between date '2026-09-03' and date '2026-09-04') to $target (format parquet)",dict(source=str(source),target=str(target)))
+    digest=hashlib.sha256(target.read_bytes()).hexdigest()
+    service=QuoteService(target)
+    assert service.load(trade_date=date(2026,9,4),publication_id='ENGINEERING_HASH_GUARD',expected_file_sha256=digest)
+    assert service.load(trade_date=date(2026,9,4),publication_id='ENGINEERING_HASH_GUARD',expected_file_sha256='0'*64)=={}

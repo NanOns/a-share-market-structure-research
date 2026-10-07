@@ -178,7 +178,7 @@ def test_application_cannot_admit_authority_or_mutate_head(canonical):
 def unit_reconstruction(pg):
     """Rolled-back synthetic authority, separately registered, no publication."""
     a=row(pg,'reconstruction_authorities');obs=row(pg,'observations',"observation_id='"+a['source_manifest']['source_observation_id']+"'")
-    old_obs=obs['observation_id'];obs.update(observation_id='UNIT_RECONSTRUCTION',signal_key='UNIT_RECONSTRUCTION')
+    old_obs=obs['observation_id'];obs.update(observation_id='UNIT_RECONSTRUCTION',signal_key='FIRST_PREWATCH:UNIT_RECONSTRUCTION')
     insert(pg,'observations',obs)
     a.update(authority_id='UNIT_RECONSTRUCTION_AUTHORITY',authority_contract_id='UNIT_RECONSTRUCTION_CONTRACT',reconstructed_at=c.now())
     a['source_manifest'].update(source_observation_id=obs['observation_id'],snapshot_id='UNIT_RECONSTRUCTION_SNAPSHOT')

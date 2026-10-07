@@ -1,0 +1,38 @@
+{
+  "evidence_class": "ENGINEERING_FIXTURE",
+  "isolated_database": "fep_e1_upgrade_concurrency_d103be86",
+  "concurrent_cas": [
+    {
+      "status": "PASS",
+      "version": 1,
+      "transaction_id": 5727,
+      "session_pid": 36972
+    },
+    {
+      "status": "BLOCK",
+      "exception": "FEP_CAS_CONFLICT\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE",
+      "sqlstate": "P0001",
+      "transaction_id": 5726,
+      "session_pid": 33768
+    }
+  ],
+  "identical_request_replay": [
+    {
+      "status": "PASS",
+      "version": 2,
+      "transaction_id": 5728,
+      "session_pid": 10484
+    },
+    {
+      "status": "PASS",
+      "version": 2,
+      "transaction_id": 5729,
+      "session_pid": 36168
+    }
+  ],
+  "rollback_counts": {
+    "activations": 1,
+    "deployment_change_receipts": 1,
+    "deployment_heads": 1
+  }
+}

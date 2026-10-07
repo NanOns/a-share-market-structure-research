@@ -1,0 +1,113 @@
+{
+  "baseline": "433c3378d4bc4db572f95de20cadbf899c2a04ce",
+  "final_seal": {
+    "bytes": 904,
+    "path": "reports/forward_r2_remainder_consolidated_20261007/CANDIDATE_SEAL.json",
+    "sha256": "fa540f2a76d3aa5e3d655754806a26577739d60a953fee9abdebaf70f92a84a3"
+  },
+  "next_gated_stage_entered": false,
+  "permission_changes": false,
+  "record_kind": "Final actual execution disposition; no external acceptance",
+  "stages": [
+    {
+      "acceptance": "BLOCKED_NOT_READY",
+      "contract": "IA05_GLOBAL_COLLECTION_AND_DM01",
+      "evidence": [
+        {
+          "bytes": 538,
+          "path": "reports/forward_r2_remainder_consolidated_20261007/GLOBAL_COLLECTION_RECEIPT.json",
+          "sha256": "cc64dae753856b8775fc88bd22fe3400ddf2002b379a22e8e55493c36e490840"
+        },
+        {
+          "bytes": 3459,
+          "path": "reports/forward_r2_remainder_consolidated_20261007/DM01_LEGACY_TEST_SUPERSESSION_PROOF.json",
+          "sha256": "830746c6ff715f819e47f3c573527f22d6d380b75b80c5eb23acf5e0f5a07011"
+        }
+      ],
+      "next_stage": "WP-B",
+      "stage": "WP-A"
+    },
+    {
+      "acceptance": "LOCAL_REPLAY_PASS_NO_PERMISSION",
+      "contract": "IA08_HISTORICAL_CURRENT_EXACT_ROUTING",
+      "evidence": [
+        {
+          "bytes": 12065,
+          "path": "reports/forward_r2_remainder_consolidated_20261007/IA08_HISTORICAL_READER_PROOF.json",
+          "sha256": "d409cdb1dedee5b247d30d9c5e6300b12ecce076953878cd796ca1fb0889e0af"
+        },
+        {
+          "bytes": 364,
+          "path": "reports/forward_r2_remainder_consolidated_20261007/IA08_CURRENT_READER_PROOF.json",
+          "sha256": "13215e97c9c9d027cbb9ab6197b3a4198b6c1b70e6ce4c1ee02aac893a09597a"
+        },
+        {
+          "bytes": 864,
+          "path": "reports/forward_r2_remainder_consolidated_20261007/IA08_CLEAN_CHECKOUT_REPLAY.json",
+          "sha256": "ff8f911d1656f8d16be5da523b4115d117668d9bfdd60ed292f7a949ecbe71df"
+        }
+      ],
+      "next_stage": "WP-C",
+      "stage": "WP-B"
+    },
+    {
+      "acceptance": "ISOLATED_VERIFICATION_PASS",
+      "contract": "IA06_OWNED_PG_AND_COMPATIBLE_MODEL_VERIFICATION",
+      "evidence": [
+        {
+          "bytes": 253237,
+          "path": "reports/forward_r2_remainder_consolidated_20261007/IA06_PG_NEGATIVE_MATRIX.json",
+          "sha256": "a7f02de49fe4aed8efd0bf757ba568b27f6c002827ee0d46cd7d878c26dc62cc"
+        },
+        {
+          "bytes": 2771,
+          "path": "reports/forward_r2_remainder_consolidated_20261007/IA06_POPULATED_UPGRADE_PROOF.json",
+          "sha256": "147b1072d8dde5196b400e115661cb8039c50a8f37a70c889de8903ac0d7923a"
+        },
+        {
+          "bytes": 8863,
+          "path": "reports/forward_r2_remainder_consolidated_20261007/IA06_E3_E4_PARITY_RECEIPT.json",
+          "sha256": "2f5f6cd2b4bed2b6af4657aebb38c697c9dd911e207bfa6f576cf7258d64a1cd"
+        }
+      ],
+      "next_stage": "WP-D",
+      "stage": "WP-C"
+    },
+    {
+      "acceptance": "MEASURED_WITH_EXPLICIT_CURRENT_DATA_DEGRADATION",
+      "contract": "IA07_CURRENT_ACCEPTED_SCALE",
+      "evidence": [
+        {
+          "bytes": 6587,
+          "path": "reports/forward_r2_remainder_consolidated_20261007/IA07_PERFORMANCE_MEASUREMENTS.json",
+          "sha256": "b11450d57526980b8cc26b02b9b3dd016c179683b2c066de18ade0191a0dd656"
+        },
+        {
+          "bytes": 531,
+          "path": "reports/forward_r2_remainder_consolidated_20261007/IA07_SECTOR_INPUT_READBACK.json",
+          "sha256": "b4351f88515079b2c2b7ce0244d24241f448eac99dfee40407dfdf57e67b1d04"
+        }
+      ],
+      "next_stage": "WP-E",
+      "stage": "WP-D"
+    },
+    {
+      "acceptance": "BLOCKED_NOT_READY",
+      "contract": "FULL_SAFE_REGRESSION_AND_PROTECTED_SEAL",
+      "evidence": [
+        {
+          "bytes": 2183,
+          "path": "reports/forward_r2_remainder_consolidated_20261007/TDX_INPUT_WRITE_INCIDENT.json",
+          "sha256": "da3abad2d74974d6f10bda304ae3c4c7a8f1b07b2db30934a2a001a07aa0fce6"
+        }
+      ],
+      "next_stage": "EXTERNAL_REVIEW_REPAIR_REQUIRED",
+      "stage": "WP-E"
+    }
+  ],
+  "task": {
+    "bytes": 12628,
+    "path": "docs/evidence/forward_r2_remainder_consolidated_20261007/V4_FORWARD_REPAIR_R2_REMAINDER_CONSOLIDATED_TASK_R2_20261007.md",
+    "sha256": "5be9df5019751e35122c9c45dd0794ecb2e87d20c36faa4ec08224c8138a230a"
+  }
+}

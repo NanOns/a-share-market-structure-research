@@ -33,7 +33,9 @@ def test_pagination_is_bounded_and_linkage_is_publication_bound():
  sector=api.sectors(pub,'',1,1)['items'][0]['sector_id']; x=api.linkage(pub,sector,None)
  assert x['publication_id']==pub and x['items'] and all(r['sector_id']==sector for r in x['items'])
  assert x['sector_member_count']>=x['total']
- assert [r['sector_member_rank'] for r in x['items']]==list(range(1,len(x['items'])+1))
+ ranks=[r['sector_member_rank'] for r in x['items'] if r['sector_member_rank'] is not None]
+ assert ranks==list(range(1,len(ranks)+1))
+ assert all(r['sector_member_rank'] is None for r in x['items'][len(ranks):])
  assert all(r['sector_member_count']==x['sector_member_count'] for r in x['items'])
 
 

@@ -1,0 +1,366 @@
+[
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": true,
+    "decision": "READ_ONLY_INPUT",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\importlib\\__init__.py",
+        "line": 88,
+        "function": "import_module"
+      },
+      {
+        "file": "<frozen importlib._bootstrap>",
+        "line": 1395,
+        "function": "_gcd_import"
+      },
+      {
+        "file": "<frozen importlib._bootstrap>",
+        "line": 1360,
+        "function": "_find_and_load"
+      },
+      {
+        "file": "<frozen importlib._bootstrap>",
+        "line": 1331,
+        "function": "_find_and_load_unlocked"
+      },
+      {
+        "file": "<frozen importlib._bootstrap>",
+        "line": 935,
+        "function": "_load_unlocked"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\assertion\\rewrite.py",
+        "line": 188,
+        "function": "exec_module"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m2\\test_api.py",
+        "line": 8,
+        "function": "<module>"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\repository.py",
+        "line": 91,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\runtime_isolation_plugin.py",
+        "line": 44,
+        "function": "readonly_input_open"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\runner.py",
+        "line": 184,
+        "function": "pytest_runtest_call"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 1707,
+        "function": "runtest"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_hooks.py",
+        "line": 512,
+        "function": "__call__"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\test_forward_p1_isolation.py",
+        "line": 55,
+        "function": "test_global_guard_rejects_explicit_real_database_writer"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": null,
+    "decision": "READ_ONLY_INPUT",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\runner.py",
+        "line": 184,
+        "function": "pytest_runtest_call"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 1707,
+        "function": "runtest"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_hooks.py",
+        "line": 512,
+        "function": "__call__"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\test_forward_p1_isolation.py",
+        "line": 59,
+        "function": "test_global_guard_default_live_connection_is_read_only"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": true,
+    "decision": "READ_ONLY_INPUT",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\runner.py",
+        "line": 184,
+        "function": "pytest_runtest_call"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 1707,
+        "function": "runtest"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_hooks.py",
+        "line": 512,
+        "function": "__call__"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\test_forward_p1_isolation.py",
+        "line": 68,
+        "function": "test_legacy_collection_repository_metadata_is_readonly"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\repository.py",
+        "line": 91,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\runtime_isolation_plugin.py",
+        "line": 44,
+        "function": "readonly_input_open"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": true,
+    "decision": "READ_ONLY_INPUT",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+        "line": 726,
+        "function": "_get_active_fixturedef"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+        "line": 1232,
+        "function": "execute"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_hooks.py",
+        "line": 512,
+        "function": "__call__"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+        "line": 1328,
+        "function": "pytest_fixture_setup"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+        "line": 1005,
+        "function": "call_fixture_func"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\remainder_isolation_plugin.py",
+        "line": 165,
+        "function": "remainder_legacy_api_snapshot"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m12\\conftest.py",
+        "line": 16,
+        "function": "isolated_m12_runtime"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": true,
+    "decision": "READ_ONLY_INPUT",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+        "line": 630,
+        "function": "getfixturevalue"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+        "line": 726,
+        "function": "_get_active_fixturedef"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+        "line": 1232,
+        "function": "execute"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_hooks.py",
+        "line": 512,
+        "function": "__call__"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+        "line": 1328,
+        "function": "pytest_fixture_setup"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+        "line": 1005,
+        "function": "call_fixture_func"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\remainder_isolation_plugin.py",
+        "line": 169,
+        "function": "remainder_legacy_api_snapshot"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": true,
+    "decision": "READ_ONLY_INPUT",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+        "line": 1181,
+        "function": "execute"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+        "line": 726,
+        "function": "_get_active_fixturedef"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+        "line": 1232,
+        "function": "execute"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_hooks.py",
+        "line": 512,
+        "function": "__call__"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+        "line": 1328,
+        "function": "pytest_fixture_setup"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+        "line": 1005,
+        "function": "call_fixture_func"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m12\\conftest.py",
+        "line": 16,
+        "function": "isolated_m12_runtime"
+      }
+    ]
+  }
+]

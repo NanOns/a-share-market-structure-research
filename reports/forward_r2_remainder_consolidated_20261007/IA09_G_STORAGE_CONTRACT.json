@@ -1,0 +1,43 @@
+{
+  "allowed_bases": [
+    "E:/codex_tmp/test_temp",
+    "G:/codex_tmp/test_temp"
+  ],
+  "audit": {
+    "bytes": 1424,
+    "path": "docs/audits/AUDIT_REMAINDER_G_DRIVE_DISPOSABLE_STORAGE_20261007.md",
+    "sha256": "aeeb5872d18fa3fe6f98db827f7d8be168577e362e54b17353c1158bc43db01a"
+  },
+  "authorization": "User explicitly authorized G drive temporary files when E space is insufficient",
+  "bounded_engineering_outputs": "FEP E2/E3/E4 and forward R2 CLI retain E isolation roots; 108 targeted tests passed",
+  "original_guards_unchanged": true,
+  "postgres_roots": "Exact owned E clusters only",
+  "production_roots_allowed": false,
+  "source_bindings": [
+    {
+      "bytes": 452,
+      "path": "tests/remainder_storage.py",
+      "sha256": "68c921ee556d3268761b8e46eb7cd74fbe4b32bffca647828d45d6603d28bea3"
+    },
+    {
+      "bytes": 33822,
+      "path": "tests/remainder_isolation_plugin.py",
+      "sha256": "808893e7317d872b4e2af9b07456b86ed4f48a9ec2c9d281465db16bcf33ebc3"
+    },
+    {
+      "bytes": 3898,
+      "path": "tests/runtime_isolation.py",
+      "sha256": "64533afcf27fcbb1a19b675c2c9bfa402289aae9d02e21e6dd69d1ad11254cea"
+    },
+    {
+      "bytes": 4724,
+      "path": "tests/runtime_isolation_plugin.py",
+      "sha256": "c8c0d571b43cd29590745cf080e328f04a40f81c4e76fce584a8e7829ad9d3ba"
+    },
+    {
+      "bytes": 4278,
+      "path": "tests/test_remainder_current_guards.py",
+      "sha256": "4608243b3f48eaf3c74058d044aa0fd3a7007228be42fb43980997d6234c5c77"
+    }
+  ]
+}

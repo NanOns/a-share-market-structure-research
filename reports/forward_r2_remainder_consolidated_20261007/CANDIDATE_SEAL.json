@@ -1,0 +1,27 @@
+{
+  "TDX_ZERO_WRITE": false,
+  "candidate_ready": false,
+  "final_counts": {
+    "error": 0,
+    "failure": 60,
+    "passed": 6085,
+    "skipped": 3
+  },
+  "global_pytest_pass": false,
+  "next_stage": "INDEPENDENT_REVIEW_OF_BLOCKERS; NO_RUNTIME_PROPAGATION",
+  "protected_state": {
+    "TDX_ZERO_WRITE": false,
+    "accepted_heads_and_migrations_drift": [],
+    "all_runtime_roots_unchanged": true,
+    "enumerated_runtime_bytes_and_mtimes_unchanged": true,
+    "limitation": "No pre-task TDX fingerprint; incident blocks zero-write acceptance",
+    "permissions_granted": false,
+    "tdx_incident": {
+      "bytes": 2183,
+      "path": "reports/forward_r2_remainder_consolidated_20261007/TDX_INPUT_WRITE_INCIDENT.json",
+      "sha256": "da3abad2d74974d6f10bda304ae3c4c7a8f1b07b2db30934a2a001a07aa0fce6"
+    }
+  },
+  "release_permission": false,
+  "status": "BLOCKED_NOT_READY_FOR_EXTERNAL_ACCEPTANCE"
+}

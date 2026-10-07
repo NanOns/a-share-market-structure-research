@@ -1,0 +1,108 @@
+{
+  "ast_equal": true,
+  "change": "Remove one extra EOF blank line only",
+  "file": "tests/test_remainder_current_guards.py",
+  "final_source": {
+    "bytes": 4277,
+    "path": "tests/test_remainder_current_guards.py",
+    "sha256": "4f37df84ac15b26a8c52deafc47dd7390b850d97c8fd4ef29a4118868001aec8"
+  },
+  "global_run_sha256": "4608243b3f48eaf3c74058d044aa0fd3a7007228be42fb43980997d6234c5c77",
+  "targeted_execution": {
+    "acceptance": "PASS",
+    "artifacts": [
+      {
+        "bytes": 2014,
+        "path": "reports/forward_r2_remainder_consolidated_20261007/execution/remainder_guard_format_final.xml",
+        "sha256": "b3b03861744c54244c7e4988684594ebe5f15c003851ca9aea002c6cf0e0dec1"
+      },
+      {
+        "bytes": 101,
+        "path": "reports/forward_r2_remainder_consolidated_20261007/execution/remainder_guard_format_final.log",
+        "sha256": "29cb53c499c058ce2726e3c0cb8d83c7f5a6adb6cb61c96e5cf247fee68e7fc5"
+      }
+    ],
+    "cases": [
+      {
+        "node": "tests.test_remainder_current_guards::test_unknown_pg_endpoint_rejected_before_connect",
+        "seconds": 0.004,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_protected_filesystem_mutation_rejected[open]",
+        "seconds": 0.003,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_protected_filesystem_mutation_rejected[mkdir]",
+        "seconds": 0.002,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_protected_filesystem_mutation_rejected[rename]",
+        "seconds": 0.002,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_current_r25_keeps_historical_source_freeze_closed",
+        "seconds": 0.386,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[D:/new_tdx/x.day]",
+        "seconds": 0.003,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[D:\\\\new_tdx\\\\x.day]",
+        "seconds": 0.002,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[../outside.json]",
+        "seconds": 0.002,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[/absolute.json]",
+        "seconds": 0.002,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[E:/codex work/\\u5927A\\u4ea4\\u6613/data/v4/V4_DATA_ACCEPTED_HEAD.json]",
+        "seconds": 0.002,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_frozen_profile_reads_exact_git_and_tracks_mutations",
+        "seconds": 0.299,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_g_storage_child_keeps_protected_root_rejection",
+        "seconds": 0.045,
+        "status": "passed",
+        "trace": null
+      }
+    ],
+    "counts": {
+      "error": 0,
+      "failure": 0,
+      "passed": 12,
+      "skipped": 0
+    },
+    "name": "remainder_guard_format_final",
+    "total": 12
+  }
+}

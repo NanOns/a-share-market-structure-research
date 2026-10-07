@@ -1,0 +1,130 @@
+{
+  "audit": {
+    "bytes": 1032,
+    "path": "docs/audits/AUDIT_HOT_RANK_HTTP_REQUEST_SCOPE_20261007.md",
+    "sha256": "5913c6474441970d3cc7a7ece892c19356babbc1616087463a227c35e1483674"
+  },
+  "capture_restored": false,
+  "change": "Request-time hot-rank HTTP routes bypass broad request_scope after the existing exclusive-build rejection",
+  "exclusive_build_guard_unchanged": true,
+  "execution": {
+    "acceptance": "PASS",
+    "artifacts": [
+      {
+        "bytes": 2408,
+        "path": "reports/forward_r2_remainder_consolidated_20261007/execution/remainder_guards_http_final.xml",
+        "sha256": "20a88ab8232ea601a607fa0e4a6ee53b09088958fabf2a753878e99ef4a9a3ac"
+      },
+      {
+        "bytes": 101,
+        "path": "reports/forward_r2_remainder_consolidated_20261007/execution/remainder_guards_http_final.log",
+        "sha256": "ecce32c77fce8089f8e3c7226ef0b051cfe38692c3cbc1e778b284234eda44f7"
+      }
+    ],
+    "cases": [
+      {
+        "node": "tests.test_remainder_current_guards::test_unknown_pg_endpoint_rejected_before_connect",
+        "seconds": 0.003,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_protected_filesystem_mutation_rejected[open]",
+        "seconds": 0.002,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_protected_filesystem_mutation_rejected[mkdir]",
+        "seconds": 0.002,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_protected_filesystem_mutation_rejected[rename]",
+        "seconds": 0.002,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_current_r25_keeps_historical_source_freeze_closed",
+        "seconds": 0.332,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[D:/new_tdx/x.day]",
+        "seconds": 0.002,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[D:\\\\new_tdx\\\\x.day]",
+        "seconds": 0.002,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[../outside.json]",
+        "seconds": 0.001,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[/absolute.json]",
+        "seconds": 0.001,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_profile_copy_rejects_nonrelative_references_before_io[E:/codex work/\\u5927A\\u4ea4\\u6613/data/v4/V4_DATA_ACCEPTED_HEAD.json]",
+        "seconds": 0.001,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_frozen_profile_reads_exact_git_and_tracks_mutations",
+        "seconds": 0.258,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.test_remainder_current_guards::test_g_storage_child_keeps_protected_root_rejection",
+        "seconds": 0.038,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.upgrade_v3.test_p01_01_lock_scope::test_hot_rank_route_skips_request_scope",
+        "seconds": 0.008,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.upgrade_v3.test_p01_01_lock_scope::test_hot_rank_network_wait_does_not_block_short_local_read",
+        "seconds": 0.002,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.upgrade_v3.test_p01_01_lock_scope::test_send_marks_disconnected_client_closed",
+        "seconds": 0.006,
+        "status": "passed",
+        "trace": null
+      }
+    ],
+    "counts": {
+      "error": 0,
+      "failure": 0,
+      "passed": 15,
+      "skipped": 0
+    },
+    "name": "remainder_guards_http_final",
+    "total": 15
+  },
+  "source": {
+    "bytes": 245146,
+    "path": "src/workbench_service/app.py",
+    "sha256": "19abe54f270eeecf20896dafb6a83f48318b730e754955bdcd0fa50a2f706fbe"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "TDX_ZERO_WRITE": false,
+  "TDX_write_calls": 5,
+  "affected_unique_TDX_files": [
+    {
+      "bytes": 8741210,
+      "mtime_ns": 1791336966007655700,
+      "mtime_utc": "2026-10-07T01:36:06.007656+00:00",
+      "path": "D:/new_tdx/T0002/hq_cache/szs.tnf",
+      "sha256": "b40bec69401d22db4ebe39045a81fb7143e7fe69d7849adebcd70f6a750a7d3f"
+    },
+    {
+      "bytes": 150522,
+      "mtime_ns": 1791336968054332900,
+      "mtime_utc": "2026-10-07T01:36:08.054333+00:00",
+      "path": "D:/new_tdx/T0002/hq_cache/tdxhy.cfg",
+      "sha256": "f0861020e5d9fde9f10ab0374da6b887f3a5f681cfa00bb7dc6776ee4703c735"
+    },
+    {
+      "bytes": 122112,
+      "mtime_ns": 1791336966013655300,
+      "mtime_utc": "2026-10-07T01:36:06.013655+00:00",
+      "path": "D:/new_tdx/vipdoc/sz/lday/sz302132.day",
+      "sha256": "53901f418c2b0ed1e55c11532f6298095a3ff48a8f9309ab0f8db89f41d371fb"
+    },
+    {
+      "bytes": 109472,
+      "mtime_ns": 1791336966013655300,
+      "mtime_utc": "2026-10-07T01:36:06.013655+00:00",
+      "path": "D:/new_tdx/vipdoc/sz/lday/sz300114.day",
+      "sha256": "08cf59e7d31aa0b0eae1f097e8cf782b1d6fb2124f8a3e784e19ccf830e29d54"
+    }
+  ],
+  "candidate_ready": false,
+  "content_operation": "Byte-preserving read followed by write_bytes; modification times changed",
+  "corrected_tool": {
+    "bytes": 4583,
+    "path": "scripts/forward_remainder_profiles.py",
+    "sha256": "68997cb4bc1f3b697c3ea5e95ef2373687fe6d5e58e19215990c745f7ed15f51"
+  },
+  "duplicate_reference": "tdxhy.cfg appeared with both slash forms",
+  "evidence": "Tool call creating simulation profile before checked-in profiles builder; subsequent excluded-reference log E:/codex_tmp/remainder_profiles_b.log",
+  "incident": "Historical simulation profile copier accepted absolute binding paths; out / absolute_path escaped E profile and wrote back the bytes just read.",
+  "other_external_effect": "One desktop source document was likewise rewritten with its existing bytes; no content transformation",
+  "pre_task_TDX_mtime_baseline_available": false,
+  "recovery": "No further TDX writes attempted; no metadata restoration or suppression",
+  "status": "NEW_BLOCKER_EXTERNAL_REVIEW_REQUIRED"
+}

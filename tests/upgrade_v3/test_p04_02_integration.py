@@ -51,7 +51,8 @@ def _database(tmp_path, cutoff):
     connection.execute((ROOT / "src/workbench_db/schema.sql").read_text(encoding="utf-8"))
     connection.execute("INSERT INTO schema_migrations VALUES (?, current_timestamp)", [BASE_SCHEMA_VERSION])
     receipt = MigrationExecutor(connection).apply()
-    assert receipt["applied"][-1]["version"] == "034_v3_signal_outcomes"
+    assert "034_v3_signal_outcomes" in [row["version"] for row in receipt["applied"]]
+    assert "035_v3_3_research_registry" in [row["version"] for row in receipt["applied"]]
     connection.execute(
         "INSERT INTO publications VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
         ["pub-v3-entry", cutoff, 1, "SUCCESS", 1, "test", None, "a" * 64, None, None, "fixture", "2026-04-16 08:00:00"],

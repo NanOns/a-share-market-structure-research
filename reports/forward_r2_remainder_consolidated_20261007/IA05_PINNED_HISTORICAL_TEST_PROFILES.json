@@ -1,0 +1,26 @@
+{
+  "current_tests": "Explicit current reader and fail-closed R25 guard",
+  "historical_tests": [
+    "V4_13_R15",
+    "V4_13_R16",
+    "R25_ENTRY_BASELINE",
+    "R24R1_V3_SIMULATION"
+  ],
+  "permission_changes": false,
+  "profiles": [
+    {
+      "grants_current_permission": false,
+      "root": "E:\\codex_tmp\\test_temp\\remainder_historical_stage13",
+      "source_commit": "7986acdb4db19e85f55045dbfc692c932d4e1499",
+      "tracked_status": "CLEAN"
+    },
+    {
+      "grants_current_permission": false,
+      "root": "E:\\codex_tmp\\test_temp\\remainder_entry_checkout",
+      "source_commit": "433c3378d4bc4db572f95de20cadbf899c2a04ce",
+      "tracked_status": "CLEAN"
+    }
+  ],
+  "reader": "EXACT_GIT_CHECKOUT",
+  "source_algorithms_changed": false
+}

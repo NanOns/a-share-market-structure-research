@@ -1,0 +1,28 @@
+.............F..........F...........F.......................             [100%]
+================================== FAILURES ===================================
+_________ test_pagination_is_bounded_and_linkage_is_publication_bound _________
+tests\upgrade_m2\test_api.py:36: in test_pagination_is_bounded_and_linkage_is_publication_bound
+    assert [r['sector_member_rank'] for r in x['items']]==list(range(1,len(x['items'])+1))
+E   assert [1, 2, 3, 4, 5, 6, ...] == [1, 2, 3, 4, 5, 6, ...]
+E     
+E     At index 51 diff: None != 52
+E     Use -v to get more diff
+______ test_forward_and_reverse_linkage_reuse_same_member_rank_and_count ______
+tests\upgrade_m11\test_linkage_consistency.py:36: in test_forward_and_reverse_linkage_reuse_same_member_rank_and_count
+    assert forward["items"][0]["association_contract_id"] == "STOCK_SECTOR_ASSOC_V1"
+E   AssertionError: assert None == 'STOCK_SECTOR_ASSOC_V1'
+__________ test_verified_quote_source_rejects_wrong_bound_file_hash ___________
+tests\upgrade_m7\test_quotes_universe.py:125: in test_verified_quote_source_rejects_wrong_bound_file_hash
+    with duckdb.connect(':memory:') as connection:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\upgrade_m7\test_quotes_universe.py:126: in test_verified_quote_source_rejects_wrong_bound_file_hash
+    connection.execute("copy (select * from read_parquet(?) where security_id='SH.600000' and date between date '2026-09-03' and date '2026-09-04') to ? (format parquet)",[str(source),str(target)])
+E   _duckdb.IOException: IO Error: No files found that match the pattern "E:\codex_tmp\test_temp\remainder_api_final_b\test_verified_quote_source_rej0\bounded_quote_source.parquet"
+E   
+E   LINE 1: copy (select * from read_parquet(?) where security_id='SH.600000' and date between...
+E                               ^
+=========================== short test summary info ===========================
+FAILED tests/upgrade_m2/test_api.py::test_pagination_is_bounded_and_linkage_is_publication_bound
+FAILED tests/upgrade_m11/test_linkage_consistency.py::test_forward_and_reverse_linkage_reuse_same_member_rank_and_count
+FAILED tests/upgrade_m7/test_quotes_universe.py::test_verified_quote_source_rejects_wrong_bound_file_hash
+3 failed, 57 passed in 49.20s

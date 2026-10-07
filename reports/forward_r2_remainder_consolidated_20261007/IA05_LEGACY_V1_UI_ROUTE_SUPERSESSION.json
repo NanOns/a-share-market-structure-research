@@ -1,0 +1,15 @@
+{
+  "archive": {
+    "bytes": 3430,
+    "path": "docs/evidence/forward_r2_remainder_consolidated_20261007/historical_tests/test_workbench_command_433c3378.py.txt",
+    "sha256": "8d1a9d5adbfbff40316ab7693a3d6e6bf0f4b141d53762acd34a4c33356ba4e7"
+  },
+  "current": {
+    "bytes": 3432,
+    "path": "tests/upgrade_m4/test_workbench_command.py",
+    "sha256": "48b6df9d3eea08c9fdd3eb36e2482305e97e78fdb7b7bb06ecd5db1bbd93df94"
+  },
+  "reason": "Frozen M4 job test consumes V1 inline CSRF. Main / now serves V3; explicit /v1 preserves its actual legacy API assertion.",
+  "runtime_modified": false,
+  "source_commit": "433c3378d4bc4db572f95de20cadbf899c2a04ce"
+}

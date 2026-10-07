@@ -1,0 +1,51 @@
+.............................F.............F.F.......................... [ 86%]
+...........                                                              [100%]
+================================== FAILURES ===================================
+____________ test_http_shared_service_read_only_and_existing_pages ____________
+tests\test_v4_17_shadow_ui.py:125: in test_http_shared_service_read_only_and_existing_pages
+    handler=app.make_handler(ROOT,db)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:288: in isolated_handler
+    return handler(project,db,**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+tests\runtime_isolation_plugin.py:70: in checked
+    runtime_guard(root,database)
+tests\runtime_isolation_plugin.py:62: in runtime_guard
+    return guard(root,database)
+           ^^^^^^^^^^^^^^^^^^^^
+tests\runtime_isolation.py:34: in guard
+    raise ValueError('DATABASE_OUTSIDE_TEST_ROOT')
+E   ValueError: DATABASE_OUTSIDE_TEST_ROOT
+_____________ test_bad_shadow_contract_preserves_existing_v3_http _____________
+tests\test_v4_17_shadow_ui.py:290: in test_bad_shadow_contract_preserves_existing_v3_http
+    server=ThreadingHTTPServer(('127.0.0.1',0),app.make_handler(ROOT,db));thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\remainder_isolation_plugin.py:288: in isolated_handler
+    return handler(project,db,**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+tests\runtime_isolation_plugin.py:70: in checked
+    runtime_guard(root,database)
+tests\runtime_isolation_plugin.py:62: in runtime_guard
+    return guard(root,database)
+           ^^^^^^^^^^^^^^^^^^^^
+tests\runtime_isolation.py:34: in guard
+    raise ValueError('DATABASE_OUTSIDE_TEST_ROOT')
+E   ValueError: DATABASE_OUTSIDE_TEST_ROOT
+___________ test_all_declared_tables_have_explicit_namespace_rules ____________
+tests\test_v4_18_migration_contract.py:24: in test_all_declared_tables_have_explicit_namespace_rules
+    assert actual == {(r['declaration'],r['state_or_table']) for r in rows if r['declaration'] != 'DESIGN_ONLY_NOT_CREATED'}
+E   AssertionError: assert {('migrations...isions'), ...} == {('migrations...isions'), ...}
+E     
+E     Extra items in the left set:
+E     ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.model_set_members')
+E     ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.models')
+E     ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.field_registry')
+E     ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.feature_values')
+E     ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.dataset_eligibility_ledger')...
+E     
+E     ...Full output truncated (29 lines hidden), use '-vv' to show
+=========================== short test summary info ===========================
+FAILED tests/test_v4_17_shadow_ui.py::test_http_shared_service_read_only_and_existing_pages
+FAILED tests/test_v4_17_shadow_ui.py::test_bad_shadow_contract_preserves_existing_v3_http
+FAILED tests/test_v4_18_migration_contract.py::test_all_declared_tables_have_explicit_namespace_rules
+3 failed, 80 passed in 59.88s

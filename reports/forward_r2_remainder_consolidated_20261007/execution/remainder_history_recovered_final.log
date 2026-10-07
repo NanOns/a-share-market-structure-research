@@ -1,0 +1,92 @@
+F.................FF.................................................... [ 33%]
+............F................F.......................................... [ 66%]
+........................................................................ [ 99%]
+.                                                                        [100%]
+================================== FAILURES ===================================
+________________________ test_phase0_independent_gate _________________________
+tests\test_r22_contracts.py:14: in test_phase0_independent_gate
+    def test_phase0_independent_gate():assert f.validate()['PRE16_EXTERNAL_ACCEPTANCE_FORMALIZATION']=='PASS_LOCAL'
+                                              ^^^^^^^^^^^^
+scripts\validate_pre16_finalization.py:43: in validate
+    for p in protected:exact(p,root)
+                       ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:55: in require
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_EVIDENCE_data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json
+_________ test_new_current_reader_uses_explicit_v2_and_returns_copies _________
+tests\test_r22_contracts.py:31: in test_new_current_reader_uses_explicit_v2_and_returns_copies
+    r=FinalCurrentAuditStatus();assert r.global_contract_entry_blockers()==r.runtime_activation_blockers()==[]
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\pre16_final_current_audit_reader.py:8: in __init__
+    self.root=root;self.validation=validate(root);self.head=read(HEAD,root)
+                                   ^^^^^^^^^^^^^^
+scripts\validate_pre16_finalization.py:43: in validate
+    for p in protected:exact(p,root)
+                       ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:55: in require
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_EVIDENCE_data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json
+_________________________ test_contract_completeness __________________________
+tests\test_r22_contracts.py:37: in test_contract_completeness
+    def test_contract_completeness():assert o.validate()['V4_16_CONTRACT_COMPLETENESS']=='PASS_READY_FOR_EXTERNAL_AUDIT'
+                                            ^^^^^^^^^^^^
+scripts\validate_r22_contracts.py:108: in validate
+    root=Path(root).resolve();phase0=formalization(root)
+                                     ^^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_finalization.py:43: in validate
+    for p in protected:exact(p,root)
+                       ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:55: in require
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_EVIDENCE_data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json
+__________ test_current_stage_and_data_and_protected_bytes_unchanged __________
+tests\test_r22_contracts.py:116: in test_current_stage_and_data_and_protected_bytes_unchanged
+    result=f.validate();assert len(result['protected_bindings'])==51
+           ^^^^^^^^^^^^
+scripts\validate_pre16_finalization.py:43: in validate
+    for p in protected:exact(p,root)
+                       ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:55: in require
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_EVIDENCE_data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json
+_________________________ test_full_independent_gate __________________________
+tests\test_r22r1_contracts.py:11: in test_full_independent_gate
+    def test_full_independent_gate():assert o.validate()['status']=='PASS_LOCAL_READY_FOR_EXTERNAL_AUDIT'
+                                            ^^^^^^^^^^^^
+scripts\validate_r22r1_contracts.py:118: in validate
+    previous(root)
+scripts\validate_pre16_finalization.py:43: in validate
+    for p in protected:exact(p,root)
+                       ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:55: in require
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: EXACT_EVIDENCE_data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json
+---------------------------- Captured stderr call -----------------------------
+warning: in the working copy of 'scripts/workbench_tray.ps1', LF will be replaced by CRLF the next time Git touches it
+=========================== short test summary info ===========================
+FAILED tests/test_r22_contracts.py::test_phase0_independent_gate - ValueError...
+FAILED tests/test_r22_contracts.py::test_new_current_reader_uses_explicit_v2_and_returns_copies
+FAILED tests/test_r22_contracts.py::test_contract_completeness - ValueError: ...
+FAILED tests/test_r22_contracts.py::test_current_stage_and_data_and_protected_bytes_unchanged
+FAILED tests/test_r22r1_contracts.py::test_full_independent_gate - ValueError...
+5 failed, 212 passed in 383.78s (0:06:23)

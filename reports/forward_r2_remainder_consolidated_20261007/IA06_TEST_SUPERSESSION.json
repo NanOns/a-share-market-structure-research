@@ -1,0 +1,62 @@
+{
+  "current": [
+    {
+      "bytes": 6878,
+      "path": "tests/fep/conftest.py",
+      "sha256": "0ffe987e82f2dffa981ad0c2c985bd9ffb18bdeb79ceb32465960389688f02c6"
+    },
+    {
+      "bytes": 8163,
+      "path": "tests/fep/test_database.py",
+      "sha256": "70f1e1f2979b15af78908a7e57cc2e541b83776b02956997d957ece156b1751a"
+    },
+    {
+      "bytes": 2504,
+      "path": "tests/fep/test_migration.py",
+      "sha256": "1897b95c591c632f518981c2a3078421197bab5a26b4fd41ebf344a681af3ff3"
+    },
+    {
+      "bytes": 3199,
+      "path": "tests/fep_e5/test_e5_metadata_binding.py",
+      "sha256": "f5efdd577c14542e65169b50cf8d32201ae34a6acdf66ded59ff173109cee93e"
+    },
+    {
+      "bytes": 22680,
+      "path": "tests/fep_e5/test_e5_reconstruction.py",
+      "sha256": "a0601a9c646b7dbfec4512a9414b87c32c95efc4a66a41f989f9316fdc661283"
+    }
+  ],
+  "historical": [
+    {
+      "archive": "docs/evidence/forward_r2_remainder_consolidated_20261007/historical_tests/tests_fep_conftest.py.txt",
+      "path": "tests/fep/conftest.py",
+      "sha256": "877da80795cd57724791f443167908922c43d38824b5c1a2ad36cb5eda768c84",
+      "source_commit": "433c3378d4bc4db572f95de20cadbf899c2a04ce"
+    },
+    {
+      "archive": "docs/evidence/forward_r2_remainder_consolidated_20261007/historical_tests/tests_fep_test_database.py.txt",
+      "path": "tests/fep/test_database.py",
+      "sha256": "e43ea406edae0428c6525b0f477c5457b51afc8f4486bae0d59d900a091fe8a7",
+      "source_commit": "433c3378d4bc4db572f95de20cadbf899c2a04ce"
+    },
+    {
+      "archive": "docs/evidence/forward_r2_remainder_consolidated_20261007/historical_tests/tests_fep_test_migration.py.txt",
+      "path": "tests/fep/test_migration.py",
+      "sha256": "5cafdba0331538640f60f79113f9fec1f2a3d74109babdca491acce9ae52e2c5",
+      "source_commit": "433c3378d4bc4db572f95de20cadbf899c2a04ce"
+    },
+    {
+      "archive": "docs/evidence/forward_r2_remainder_consolidated_20261007/historical_tests/tests_fep_e5_test_e5_metadata_binding.py.txt",
+      "path": "tests/fep_e5/test_e5_metadata_binding.py",
+      "sha256": "7b16f7cb5514182e9fbef5c0f0c06b7a9117c9b27043b6cc438cd73d69a3d01a",
+      "source_commit": "433c3378d4bc4db572f95de20cadbf899c2a04ce"
+    },
+    {
+      "archive": "docs/evidence/forward_r2_remainder_consolidated_20261007/historical_tests/tests_fep_e5_test_e5_reconstruction.py.txt",
+      "path": "tests/fep_e5/test_e5_reconstruction.py",
+      "sha256": "b087d02a4607b5fa6e6f31c3ed5aed99ce21c68c639ab96bb13d04b950c1b895",
+      "source_commit": "433c3378d4bc4db572f95de20cadbf899c2a04ce"
+    }
+  ],
+  "reason": "Current 028-033 full rollback and 35-table inventory; 032 requires synthetic engineering PIT_OBSERVED SHADOW fixtures and legal FIRST_PREWATCH signal identity; 033 requires typed signal registration before observation insert. Explicit owned DSNs replace fixed historical ports. Production SQL, constraints and algorithms unchanged."
+}

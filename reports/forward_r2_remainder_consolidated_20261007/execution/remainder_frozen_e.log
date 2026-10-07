@@ -1,0 +1,184 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- E:\python\python.exe
+cachedir: .pytest_cache
+rootdir: E:\codex work\��A����
+configfile: pytest.ini
+plugins: anyio-4.14.2
+collecting ... collected 88 items
+
+tests/test_r18b_persisted.py::test_full_persisted_owner_lifecycle PASSED [  1%]
+tests/test_r18b_persisted.py::test_fresh_process_pair_revision_and_determinism FAILED [  2%]
+tests/test_r18r1r1_consumption.py::test_field_precise_preexecution_proof PASSED [  3%]
+tests/test_r18r1r1_consumption.py::test_mandatory_consumption_perturbations[F0_D1_receipt_present_but_D1_argument_unbound] PASSED [  4%]
+tests/test_r18r1r1_consumption.py::test_mandatory_consumption_perturbations[D0_EVENT_receipt_present_but_event_argument_unbound] PASSED [  5%]
+tests/test_r18r1r1_consumption.py::test_mandatory_consumption_perturbations[F0_A_whole_node_substituted_for_base_seed_primitives] PASSED [  6%]
+tests/test_r18r1r1_consumption.py::test_mandatory_consumption_perturbations[F0_C_whole_node_substituted_for_stock_core] PASSED [  7%]
+tests/test_r18r1r1_consumption.py::test_mandatory_consumption_perturbations[A_C_whole_node_substituted_for_base_seed_raw] PASSED [  9%]
+tests/test_r18r1r1_consumption.py::test_mandatory_consumption_perturbations[D0_D2_wrong_confirmation_projection] PASSED [ 10%]
+tests/test_r18r1r1_consumption.py::test_mandatory_consumption_perturbations[C_D2_wrong_stock_raw_projection] PASSED [ 11%]
+tests/test_r18r1r1_consumption.py::test_mandatory_consumption_perturbations[consumer_argument_changed_after_receipt] PASSED [ 12%]
+tests/test_r18r1r1_consumption.py::test_mandatory_consumption_perturbations[receipt_changed_to_match_posthoc_echo] PASSED [ 13%]
+tests/test_r18r1r1_consumption.py::test_mandatory_consumption_perturbations[precall_envelope_created_after_output] PASSED [ 14%]
+tests/test_r18r1r1_consumption.py::test_mandatory_consumption_perturbations[degraded_edge_fabricates_known_value] PASSED [ 15%]
+tests/test_r18r1r1_consumption.py::test_retained_edge_perturbations[missing_B0] PASSED [ 17%]
+tests/test_r18r1r1_consumption.py::test_retained_edge_perturbations[missing_B2] PASSED [ 18%]
+tests/test_r18r1r1_consumption.py::test_retained_edge_perturbations[missing_membership] PASSED [ 19%]
+tests/test_r18r1r1_consumption.py::test_retained_edge_perturbations[missing_D1_previous] PASSED [ 20%]
+tests/test_r18r1r1_consumption.py::test_retained_edge_perturbations[wrong_owner] PASSED [ 21%]
+tests/test_r18r1r1_consumption.py::test_retained_edge_perturbations[wrong_time_role] PASSED [ 22%]
+tests/test_r18r1r1_consumption.py::test_retained_edge_perturbations[duplicate_edge] PASSED [ 23%]
+tests/test_r18r1r1_consumption.py::test_retained_edge_perturbations[unexpected_edge] PASSED [ 25%]
+tests/test_r18r1r1_consumption.py::test_retained_edge_perturbations[wrong_projection] PASSED [ 26%]
+tests/test_r18r1r1_consumption.py::test_retained_edge_perturbations[unbound_D0_lineage] PASSED [ 27%]
+tests/test_r18r1r1_consumption.py::test_actual_callable_reads_persisted_envelope_before_output FAILED [ 28%]
+tests/test_r18r1r1_consumption.py::test_callable_cannot_mutate_frozen_argument FAILED [ 29%]
+tests/test_r19_promotion_contracts.py::test_exact_promotion PASSED       [ 30%]
+tests/test_r19_promotion_contracts.py::test_promotion_rejects[audited] PASSED [ 31%]
+tests/test_r19_promotion_contracts.py::test_promotion_rejects[tested] PASSED [ 32%]
+tests/test_r19_promotion_contracts.py::test_promotion_rejects[stale_parent] PASSED [ 34%]
+tests/test_r19_promotion_contracts.py::test_promotion_rejects[original_v13] PASSED [ 35%]
+tests/test_r19_promotion_contracts.py::test_promotion_rejects[missing_rollback] PASSED [ 36%]
+tests/test_r19_promotion_contracts.py::test_promotion_rejects[wrong_seal] PASSED [ 37%]
+tests/test_r19_promotion_contracts.py::test_promotion_rejects[old_dag] PASSED [ 38%]
+tests/test_r19_promotion_contracts.py::test_promotion_rejects[pit] PASSED [ 39%]
+tests/test_r19_promotion_contracts.py::test_promotion_rejects[data] PASSED [ 40%]
+tests/test_r19_promotion_contracts.py::test_promotion_rejects[production] PASSED [ 42%]
+tests/test_r19_promotion_contracts.py::test_promotion_rejects[shadow] PASSED [ 43%]
+tests/test_r19_promotion_contracts.py::test_promotion_rejects[focus] PASSED [ 44%]
+tests/test_r19_promotion_contracts.py::test_promotion_rejects[runtime] PASSED [ 45%]
+tests/test_r19_promotion_contracts.py::test_promotion_rejects[stage_range] PASSED [ 46%]
+tests/test_r19_promotion_contracts.py::test_promotion_rejects[stage_prior_field] PASSED [ 47%]
+tests/test_r19_promotion_contracts.py::test_B_contracts PASSED           [ 48%]
+tests/test_r19_promotion_contracts.py::test_C_contracts PASSED           [ 50%]
+tests/test_r19_promotion_contracts.py::test_D_contracts FAILED           [ 51%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[radar_contract-owner_recomputation-True] PASSED [ 52%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[radar_contract-complete_ledger-False] PASSED [ 53%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[radar_event_registry-persistent_creates_event-True] PASSED [ 54%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[radar_event_registry-stock_warm-SYNTHESIZED] PASSED [ 55%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[cohort_contract-ignore_selection-value4] PASSED [ 56%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[cohort_contract-exited_invalidated_continue_settlement-False] PASSED [ 57%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[why_now_schema-qualification_effect-True] PASSED [ 59%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[conflict_hypothesis_schema-fabricate_second_story-True] PASSED [ 60%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[due_planner_contract-horizons-value8] PASSED [ 61%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[due_planner_contract-endpoint_suspension_shift-True] PASSED [ 62%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[forward_price_path_contract-T0_intraday_extrema_included-True] PASSED [ 63%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[forward_price_path_contract-common_basis_required-False] PASSED [ 64%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[outcome_status_contract-no_terminal_return-0] PASSED [ 65%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[outcome_status_contract-states-value13] PASSED [ 67%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[competing_outcome_contract-price_settlement_continues-False] PASSED [ 68%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[competing_outcome_contract-right_censored_is_event-True] PASSED [ 69%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[forward_market_benchmark_contract-reweight-True] PASSED [ 70%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[forward_market_benchmark_contract-consumer_isolation-False] PASSED [ 71%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[forward_sector_benchmark_contract-exclude_signal_stock-False] PASSED [ 72%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[rotation_pulse_basket_contract-members-FUTURE_MEMBERS] PASSED [ 73%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[control_assignment_contract-future_refill-True] PASSED [ 75%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[control_assignment_contract-assignments_immutable-False] PASSED [ 76%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[settlement_revision_contract-overwrite_signal_enrollment-True] PASSED [ 77%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[settlement_readback_contract-selection_independent-False] PASSED [ 78%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[quality_degradation-marked_coverage_gate-0.95] PASSED [ 79%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[quality_degradation-marked_quote_age_gate-3] PASSED [ 80%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[storage_schema_design-migration_apply-True] PASSED [ 81%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[contract_package-runtime_implemented-True] PASSED [ 82%]
+tests/test_r19_promotion_contracts.py::test_semantic_mutation_rejected[contract_package-HISTORICAL_PIT_EFFECTIVENESS-PASS] PASSED [ 84%]
+tests/test_r19_promotion_contracts.py::test_mutated_static_expected_rejected[radar_cohort_machine_vectors] PASSED [ 85%]
+tests/test_r19_promotion_contracts.py::test_mutated_static_expected_rejected[settlement_machine_vectors] PASSED [ 86%]
+tests/test_r19_promotion_contracts.py::test_mutated_static_expected_rejected[machine_vectors] PASSED [ 87%]
+tests/test_r19_promotion_contracts.py::test_duplicate_authority_is_P0 PASSED [ 88%]
+tests/test_r19_promotion_contracts.py::test_self_consistent_missing_field_is_not_complete PASSED [ 89%]
+tests/test_r19_promotion_contracts.py::test_forbidden_edge_cannot_be_added[edge0] PASSED [ 90%]
+tests/test_r19_promotion_contracts.py::test_forbidden_edge_cannot_be_added[edge1] PASSED [ 92%]
+tests/test_r19_promotion_contracts.py::test_forbidden_edge_cannot_be_added[edge2] PASSED [ 93%]
+tests/test_r19_promotion_contracts.py::test_forbidden_edge_cannot_be_added[edge3] PASSED [ 94%]
+tests/test_r19_promotion_contracts.py::test_forbidden_edge_cannot_be_added[edge4] PASSED [ 95%]
+tests/test_r19_promotion_contracts.py::test_forbidden_edge_cannot_be_added[edge5] PASSED [ 96%]
+tests/test_r19_promotion_contracts.py::test_missing_nonedge_rejected PASSED [ 97%]
+tests/test_r19_promotion_contracts.py::test_benchmark_thresholds_remain_unset PASSED [ 98%]
+tests/test_r19_promotion_contracts.py::test_independent_oracles_have_no_writer_or_runtime_dependency PASSED [100%]
+
+================================== FAILURES ===================================
+______________ test_fresh_process_pair_revision_and_determinism _______________
+tests\test_r18b_persisted.py:22: in test_fresh_process_pair_revision_and_determinism
+    a=ReplayAuthority(ROOT);o=Oracle(ROOT);ns='proof'
+      ^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_14_authority.py:42: in __init__
+    a=current_authority or CurrentStageAuthority(root)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:16: in __init__
+    self.contract=json.loads((self.root/'config'/name).read_bytes())
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+tests\remainder_historical_profiles.py:104: in opened
+    materialize(path);return open_path(path,mode,*args,**kw)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_frozen_v3_8ac418738276\\config\\v4_current_stage_authority_v1.json'
+_________ test_actual_callable_reads_persisted_envelope_before_output _________
+tests\test_r18r1r1_consumption.py:59: in test_actual_callable_reads_persisted_envelope_before_output
+    a=ReplayAuthority(ROOT);date='2026-09-29';e=dict(target_trade_date=date,target_revision='r1',previous_market_session=a.previous(date),cutoff=date+'T16:00:00+00:00',owner_inputs=dict(consumption_mapping_ref=ref(ROOT,'config/v4_14_precall_consumption_mapping_r18r1r1_v1.json'),invocation_storage=dict(artifact_root=str(tmp_path),namespace='proof')))
+      ^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_14_authority.py:42: in __init__
+    a=current_authority or CurrentStageAuthority(root)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:16: in __init__
+    self.contract=json.loads((self.root/'config'/name).read_bytes())
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+tests\remainder_historical_profiles.py:104: in opened
+    materialize(path);return open_path(path,mode,*args,**kw)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_frozen_v3_c1e8b1eba279\\config\\v4_current_stage_authority_v1.json'
+_________________ test_callable_cannot_mutate_frozen_argument _________________
+tests\test_r18r1r1_consumption.py:77: in test_callable_cannot_mutate_frozen_argument
+    a=ReplayAuthority(ROOT);e=dict(target_trade_date='2026-09-29',target_revision='r1',previous_market_session='2026-09-28',cutoff='2026-09-29T16:00:00+00:00',owner_inputs=dict(consumption_mapping_ref=ref(ROOT,'config/v4_14_precall_consumption_mapping_r18r1r1_v1.json'),invocation_storage=dict(artifact_root=str(tmp_path),namespace='proof')))
+      ^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_14_authority.py:42: in __init__
+    a=current_authority or CurrentStageAuthority(root)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:16: in __init__
+    self.contract=json.loads((self.root/'config'/name).read_bytes())
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+tests\remainder_historical_profiles.py:104: in opened
+    materialize(path);return open_path(path,mode,*args,**kw)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_frozen_v3_c1e8b1eba279\\config\\v4_current_stage_authority_v1.json'
+______________________________ test_D_contracts _______________________________
+tests\test_r19_promotion_contracts.py:30: in test_D_contracts
+    def test_D_contracts():assert v.check_d()['V4_15_CONTRACT_COMPLETENESS']=='PASS_READY_FOR_EXTERNAL_AUDIT'
+                                  ^^^^^^^^^^^
+scripts\validate_r19_contracts.py:172: in check_d
+    if verify_bindings:exact_refs(package)
+                       ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r19_contracts.py:165: in exact_refs
+    for item in value.values():exact_refs(item)
+                               ^^^^^^^^^^^^^^^^
+scripts\validate_r19_contracts.py:158: in exact_refs
+    for item in value:exact_refs(item)
+                      ^^^^^^^^^^^^^^^^
+scripts\validate_r19_contracts.py:163: in exact_refs
+    raw=p.read_bytes();require(len(raw)==value['bytes'] and hashlib.sha256(raw).hexdigest()==value['sha256'],'PACKAGE_EXACT_'+value['path'])
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r19a_promotion.py:31: in require
+    raise ValueError(reason)
+E   ValueError: PACKAGE_EXACT_config/v4_capability_cutover_policy_v1.json
+----------- generated xml file: E:\codex_tmp\remainder_frozen_e.xml -----------
+=========================== short test summary info ===========================
+FAILED tests/test_r18b_persisted.py::test_fresh_process_pair_revision_and_determinism - FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_frozen_v3_8ac418738276\\config\\v4_current_stage_authority_v1.json'
+FAILED tests/test_r18r1r1_consumption.py::test_actual_callable_reads_persisted_envelope_before_output - FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_frozen_v3_c1e8b1eba279\\config\\v4_current_stage_authority_v1.json'
+FAILED tests/test_r18r1r1_consumption.py::test_callable_cannot_mutate_frozen_argument - FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex_tmp\\test_temp\\remainder_frozen_v3_c1e8b1eba279\\config\\v4_current_stage_authority_v1.json'
+FAILED tests/test_r19_promotion_contracts.py::test_D_contracts - ValueError: PACKAGE_EXACT_config/v4_capability_cutover_policy_v1.json
+=================== 4 failed, 84 passed in 94.82s (0:01:34) ===================

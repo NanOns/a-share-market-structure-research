@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="54" time="105.930" timestamp="2026-10-07T09:51:26.464417+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A01]" time="0.013" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A02]" time="0.121" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A03]" time="1.727" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A04]" time="1.652" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A05]" time="1.667" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A06]" time="1.621" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A07]" time="1.637" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A08]" time="0.131" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A09]" time="0.119" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A10]" time="0.116" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A11]" time="1.682" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A12]" time="1.602" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A13]" time="1.622" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A14]" time="1.651" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A15]" time="1.629" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A16]" time="1.727" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A17]" time="1.814" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A18]" time="1.824" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A19]" time="1.709" /><testcase classname="tests.test_r24r1_a20" name="test_negative_activation[A20]" time="0.003" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F01]" time="1.599" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F02]" time="1.592" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F03]" time="1.590" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F04]" time="1.612" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F05]" time="1.529" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F06]" time="1.543" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F07]" time="1.574" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F08]" time="1.546" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F09]" time="1.518" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F10]" time="1.555" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F11]" time="1.668" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F12]" time="1.480" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F13]" time="1.472" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F14]" time="1.519" /><testcase classname="tests.test_r24r1_authority" name="test_future_reachability" time="4.764"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\r24r1\\activation_simulation\\a9396c8255bc4e2a9273f9b12b1480c9\\dependencies.json'">&gt;   def test_future_reachability():positive()
+                                   ^^^^^^^^^^
+
+tests\test_r24r1_authority.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:67: in positive
+    return dict(context=x,oracle=inspect(ROOT/x['database'],x['manifest']),old_calendar_rejects_target=True,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:28: in inspect
+    deps=read(manifest,root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:9: in read
+    return json.loads((Path(root)/path).read_bytes())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/r24r1/activation_simulation/a9396c8255bc4e2a9273f9b12b1480c9/dependencies.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\r24r1\\activation_simulation\\a9396c8255bc4e2a9273f9b12b1480c9\\dependencies.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_independent_corruption[C01]" time="4.757"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\r24r1\\activation_simulation\\328e894fd6484242ac2a9fee4ba9365f\\dependencies.json'">case = 'C01'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/remainder_r24_history/test_independent_corruption_C00')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+&gt;   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:67: in positive
+    return dict(context=x,oracle=inspect(ROOT/x['database'],x['manifest']),old_calendar_rejects_target=True,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:28: in inspect
+    deps=read(manifest,root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:9: in read
+    return json.loads((Path(root)/path).read_bytes())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/r24r1/activation_simulation/328e894fd6484242ac2a9fee4ba9365f/dependencies.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\r24r1\\activation_simulation\\328e894fd6484242ac2a9fee4ba9365f\\dependencies.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_independent_corruption[C02]" time="4.783"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\r24r1\\activation_simulation\\92e8011c77ad43168f72a88642726c4d\\dependencies.json'">case = 'C02'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/remainder_r24_history/test_independent_corruption_C01')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+&gt;   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:67: in positive
+    return dict(context=x,oracle=inspect(ROOT/x['database'],x['manifest']),old_calendar_rejects_target=True,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:28: in inspect
+    deps=read(manifest,root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:9: in read
+    return json.loads((Path(root)/path).read_bytes())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/r24r1/activation_simulation/92e8011c77ad43168f72a88642726c4d/dependencies.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\r24r1\\activation_simulation\\92e8011c77ad43168f72a88642726c4d\\dependencies.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_independent_corruption[C03]" time="4.733"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\r24r1\\activation_simulation\\8d3d5285c841439e9f433ec5d334aaba\\dependencies.json'">case = 'C03'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/remainder_r24_history/test_independent_corruption_C02')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+&gt;   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:67: in positive
+    return dict(context=x,oracle=inspect(ROOT/x['database'],x['manifest']),old_calendar_rejects_target=True,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:28: in inspect
+    deps=read(manifest,root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:9: in read
+    return json.loads((Path(root)/path).read_bytes())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/r24r1/activation_simulation/8d3d5285c841439e9f433ec5d334aaba/dependencies.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\r24r1\\activation_simulation\\8d3d5285c841439e9f433ec5d334aaba\\dependencies.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_independent_corruption[C04]" time="4.730"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\r24r1\\activation_simulation\\9a5388876eaa498c905ede248f1d36d2\\dependencies.json'">case = 'C04'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/remainder_r24_history/test_independent_corruption_C03')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+&gt;   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:67: in positive
+    return dict(context=x,oracle=inspect(ROOT/x['database'],x['manifest']),old_calendar_rejects_target=True,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:28: in inspect
+    deps=read(manifest,root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:9: in read
+    return json.loads((Path(root)/path).read_bytes())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/r24r1/activation_simulation/9a5388876eaa498c905ede248f1d36d2/dependencies.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\r24r1\\activation_simulation\\9a5388876eaa498c905ede248f1d36d2\\dependencies.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_independent_corruption[S01]" time="4.804"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\r24r1\\activation_simulation\\ed9487648bfb41fa85b4a9fc1adf601d\\dependencies.json'">case = 'S01'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/remainder_r24_history/test_independent_corruption_S00')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+&gt;   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:67: in positive
+    return dict(context=x,oracle=inspect(ROOT/x['database'],x['manifest']),old_calendar_rejects_target=True,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:28: in inspect
+    deps=read(manifest,root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:9: in read
+    return json.loads((Path(root)/path).read_bytes())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/r24r1/activation_simulation/ed9487648bfb41fa85b4a9fc1adf601d/dependencies.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\r24r1\\activation_simulation\\ed9487648bfb41fa85b4a9fc1adf601d\\dependencies.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_independent_corruption[S02]" time="4.824"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\r24r1\\activation_simulation\\06f448d9c80e49fbb83bf07768c98b90\\dependencies.json'">case = 'S02'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/remainder_r24_history/test_independent_corruption_S01')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+&gt;   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:67: in positive
+    return dict(context=x,oracle=inspect(ROOT/x['database'],x['manifest']),old_calendar_rejects_target=True,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:28: in inspect
+    deps=read(manifest,root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:9: in read
+    return json.loads((Path(root)/path).read_bytes())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/r24r1/activation_simulation/06f448d9c80e49fbb83bf07768c98b90/dependencies.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\r24r1\\activation_simulation\\06f448d9c80e49fbb83bf07768c98b90\\dependencies.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_independent_corruption[S03]" time="4.793"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\r24r1\\activation_simulation\\95ba725d67934d5cb94a09584e4c66c3\\dependencies.json'">case = 'S03'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/remainder_r24_history/test_independent_corruption_S02')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+&gt;   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:67: in positive
+    return dict(context=x,oracle=inspect(ROOT/x['database'],x['manifest']),old_calendar_rejects_target=True,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:28: in inspect
+    deps=read(manifest,root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:9: in read
+    return json.loads((Path(root)/path).read_bytes())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/r24r1/activation_simulation/95ba725d67934d5cb94a09584e4c66c3/dependencies.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\r24r1\\activation_simulation\\95ba725d67934d5cb94a09584e4c66c3\\dependencies.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_independent_corruption[S04]" time="4.739"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\r24r1\\activation_simulation\\8b638dbac55945bf99ca53208c62254b\\dependencies.json'">case = 'S04'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/remainder_r24_history/test_independent_corruption_S03')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+&gt;   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:67: in positive
+    return dict(context=x,oracle=inspect(ROOT/x['database'],x['manifest']),old_calendar_rejects_target=True,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r24r1_activation.py:28: in inspect
+    deps=read(manifest,root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\r24r1_io.py:9: in read
+    return json.loads((Path(root)/path).read_bytes())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/codex work/大A交易/reports/r24r1/activation_simulation/8b638dbac55945bf99ca53208c62254b/dependencies.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\codex work\\大A交易\\reports\\r24r1\\activation_simulation\\8b638dbac55945bf99ca53208c62254b\\dependencies.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_oracle_has_no_writer_imports" time="0.014" /><testcase classname="tests.test_r24r1_authority" name="test_atomic_failure[cohort]" time="1.777" /><testcase classname="tests.test_r24r1_authority" name="test_atomic_failure[head]" time="1.764" /><testcase classname="tests.test_r24r1_authority" name="test_duplicate_logical_event_is_rejected_by_storage" time="1.736" /><testcase classname="tests.test_r24r1_authority" name="test_nested_future_source_row_cannot_hide_behind_declared_max" time="1.591" /><testcase classname="tests.test_r24r1_authority" name="test_independent_daily_oracle_rejects_fractional_late_acceptance[source]" time="1.547" /><testcase classname="tests.test_r24r1_authority" name="test_independent_daily_oracle_rejects_fractional_late_acceptance[daily]" time="1.481" /><testcase classname="tests.test_r24r1_authority" name="test_fractional_second_readiness_uses_latest_instant" time="1.682" /><testcase classname="tests.upgrade_m4.test_workbench_command" name="test_controlled_compute_uses_fixed_project_entry_and_timeout" time="3.887" /><testcase classname="tests.upgrade_m4.test_workbench_command" name="test_workbench_post_returns_job_and_get_reads_status" time="0.981" /><testcase classname="tests.upgrade_m4.test_workbench_command" name="test_read_api_remains_available_during_publisher_transaction" time="0.305" /></testsuite></testsuites>

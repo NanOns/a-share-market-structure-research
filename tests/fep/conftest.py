@@ -38,15 +38,22 @@ def contract(p, name, body=None):
 
 
 def observation(p, name='o', entity='SEC-A', day='2026-09-01', episode='local-1', scope=SCOPE):
+    # Current 033 typed authority for explicitly synthetic test signals.
+    signal_contract='ENGINEERING_FIXTURE:'+scope
+    if p.execute('select 1 from fep.scopes where scope_id=%s',(scope,)).fetchone():
+        if not p.execute('select 1 from fep.contracts where contract_id=%s',(signal_contract,)).fetchone():
+            body=dict(accepted_contract=dict(contract_id=signal_contract,observation_scope=scope,formal_signals=['ENGINEERING_FIXTURE']),predicate_digest=digest(['fixture',scope]))
+            contract(p,signal_contract,body)
+            p.execute('insert into fep.signal_contract_registry values (%s,%s,%s,%s,%s,%s)',(signal_contract,scope,'ENGINEERING_FIXTURE',signal_contract,digest([signal_contract,body]),body['predicate_digest']))
     p.execute('insert into fep.observations values (%s,%s,%s,%s,%s,%s,%s,%s)',
-              (name, scope, entity, day, 'SIGNAL-'+name, episode, 'CORE-SIGNAL', T))
+              (name, scope, entity, day, 'ENGINEERING_FIXTURE:'+name, episode, signal_contract, T))
 
 
 def snapshot(p, name='snap', obs='o', feature='FEATURE', publication='PUB'):
     manifest = {k: 'NONE' for k in ('accepted_head','algorithm_contract','parameter_contract','calendar',
                 'universe','adjustment_basis','membership','state_event_revision','enrichment_revision')}
     manifest.update(publication=publication, feature_contract=feature)
-    p.execute('insert into fep.observation_revisions values (%s,1,%s,%s,%s,%s,\'NONE\',\'RECONSTRUCTED_ASOF\',\'REPLAY\',null,%s)',
+    p.execute('insert into fep.observation_revisions values (%s,1,%s,%s,%s,%s,\'NONE\',\'PIT_OBSERVED\',\'SHADOW\',null,%s)',
               (obs, publication, T-timedelta(days=1), Jsonb(manifest), digest(manifest), T))
     p.execute('insert into fep.snapshots values (%s,%s,1,%s,%s,%s,%s)',
               (name, obs, feature, digest([name,'f']), digest([name,'q']), T))

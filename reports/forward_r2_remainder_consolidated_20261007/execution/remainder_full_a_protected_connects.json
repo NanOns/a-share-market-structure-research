@@ -1,0 +1,1926 @@
+[
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": true,
+    "decision": "READ_ONLY_INPUT",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\importlib\\__init__.py",
+        "line": 88,
+        "function": "import_module"
+      },
+      {
+        "file": "<frozen importlib._bootstrap>",
+        "line": 1395,
+        "function": "_gcd_import"
+      },
+      {
+        "file": "<frozen importlib._bootstrap>",
+        "line": 1360,
+        "function": "_find_and_load"
+      },
+      {
+        "file": "<frozen importlib._bootstrap>",
+        "line": 1331,
+        "function": "_find_and_load_unlocked"
+      },
+      {
+        "file": "<frozen importlib._bootstrap>",
+        "line": 935,
+        "function": "_load_unlocked"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\assertion\\rewrite.py",
+        "line": 188,
+        "function": "exec_module"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m2\\test_api.py",
+        "line": 8,
+        "function": "<module>"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\repository.py",
+        "line": 91,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\runtime_isolation_plugin.py",
+        "line": 44,
+        "function": "readonly_input_open"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\runner.py",
+        "line": 184,
+        "function": "pytest_runtest_call"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 1707,
+        "function": "runtest"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_hooks.py",
+        "line": 512,
+        "function": "__call__"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\test_forward_p1_isolation.py",
+        "line": 55,
+        "function": "test_global_guard_rejects_explicit_real_database_writer"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": null,
+    "decision": "READ_ONLY_INPUT",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\runner.py",
+        "line": 184,
+        "function": "pytest_runtest_call"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 1707,
+        "function": "runtest"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_hooks.py",
+        "line": 512,
+        "function": "__call__"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\test_forward_p1_isolation.py",
+        "line": 59,
+        "function": "test_global_guard_default_live_connection_is_read_only"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": true,
+    "decision": "READ_ONLY_INPUT",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\runner.py",
+        "line": 184,
+        "function": "pytest_runtest_call"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 1707,
+        "function": "runtest"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_hooks.py",
+        "line": 512,
+        "function": "__call__"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\test_forward_p1_isolation.py",
+        "line": 68,
+        "function": "test_legacy_collection_repository_metadata_is_readonly"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\repository.py",
+        "line": 91,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\runtime_isolation_plugin.py",
+        "line": 44,
+        "function": "readonly_input_open"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m11\\test_attribute_library.py",
+        "line": 28,
+        "function": "test_sector_library_filters_by_type_and_preserves_traceability"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m11\\test_attribute_library.py",
+        "line": 13,
+        "function": "_api_and_publication"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m11\\test_attribute_library.py",
+        "line": 48,
+        "function": "test_stock_memberships_use_same_snapshot_and_keep_tags_out_of_association"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m11\\test_attribute_library.py",
+        "line": 13,
+        "function": "_api_and_publication"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m11\\test_intersection_and_rank.py",
+        "line": 61,
+        "function": "test_union_and_intersection_match_membership_truth_and_are_traceable"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m11\\test_intersection_and_rank.py",
+        "line": 16,
+        "function": "_context"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m11\\test_intersection_and_rank.py",
+        "line": 84,
+        "function": "test_exclude_has_priority_and_duplicate_include_is_idempotent"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m11\\test_intersection_and_rank.py",
+        "line": 16,
+        "function": "_context"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m11\\test_intersection_and_rank.py",
+        "line": 100,
+        "function": "test_null_and_empty_array_filters_are_explicit_and_four_sector_limit_is_enforced"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m11\\test_intersection_and_rank.py",
+        "line": 16,
+        "function": "_context"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m11\\test_linkage_consistency.py",
+        "line": 29,
+        "function": "test_forward_and_reverse_linkage_reuse_same_member_rank_and_count"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m11\\test_linkage_consistency.py",
+        "line": 12,
+        "function": "_context"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m11\\test_linkage_consistency.py",
+        "line": 40,
+        "function": "test_query_filter_does_not_renumber_sector_member_rank"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m11\\test_linkage_consistency.py",
+        "line": 12,
+        "function": "_context"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m11\\test_linkage_consistency.py",
+        "line": 49,
+        "function": "test_linkage_history_is_date_ordered_and_traceable"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m11\\test_linkage_consistency.py",
+        "line": 12,
+        "function": "_context"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": true,
+    "decision": "READ_ONLY_INPUT",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+        "line": 1181,
+        "function": "execute"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+        "line": 726,
+        "function": "_get_active_fixturedef"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+        "line": 1232,
+        "function": "execute"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_hooks.py",
+        "line": 512,
+        "function": "__call__"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+        "line": 1328,
+        "function": "pytest_fixture_setup"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\fixtures.py",
+        "line": 1005,
+        "function": "call_fixture_func"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m12\\conftest.py",
+        "line": 16,
+        "function": "isolated_m12_runtime"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m13\\test_market_cycle.py",
+        "line": 68,
+        "function": "test_market_cycle_api_returns_compact_points_and_metadata"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m13\\test_market_cycle.py",
+        "line": 88,
+        "function": "test_market_cycle_rejects_unknown_metric_and_day_detail_is_snapshot_bound"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m15\\test_overview.py",
+        "line": 17,
+        "function": "test_api30_is_snapshot_bound_and_keeps_fixed_sector_groups"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m15\\test_overview.py",
+        "line": 12,
+        "function": "_api_and_latest"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m15\\test_overview.py",
+        "line": 33,
+        "function": "test_api30_representatives_are_unique_and_keep_all_sector_sources"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m15\\test_overview.py",
+        "line": 12,
+        "function": "_api_and_latest"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m15\\test_overview.py",
+        "line": 44,
+        "function": "test_api31_keeps_priority_pagination_and_contract"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m15\\test_overview.py",
+        "line": 12,
+        "function": "_api_and_latest"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m15\\test_overview.py",
+        "line": 59,
+        "function": "test_v3_final_candidates_are_bounded_and_exclude_style_sectors"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m15\\test_overview.py",
+        "line": 12,
+        "function": "_api_and_latest"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m15\\test_overview.py",
+        "line": 73,
+        "function": "test_api30_rejects_future_overview_date"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m15\\test_overview.py",
+        "line": 12,
+        "function": "_api_and_latest"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m2\\test_api.py",
+        "line": 14,
+        "function": "test_publications_and_dashboard_are_bound_to_one_publication"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m2\\test_api.py",
+        "line": 26,
+        "function": "test_cross_date_lists_do_not_mix"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 915,
+        "function": "sectors"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 744,
+        "function": "_rows"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 604,
+        "function": "_pub"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m2\\test_api.py",
+        "line": 31,
+        "function": "test_pagination_is_bounded_and_linkage_is_publication_bound"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 1138,
+        "function": "stocks"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 744,
+        "function": "_rows"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 604,
+        "function": "_pub"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m2\\test_api.py",
+        "line": 42,
+        "function": "test_reverse_linkage_preserves_real_sector_rank_and_count"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 915,
+        "function": "sectors"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 744,
+        "function": "_rows"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 604,
+        "function": "_pub"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m2\\test_api.py",
+        "line": 56,
+        "function": "test_static_workbench_modules_are_preserved"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 1512,
+        "function": "queues"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 604,
+        "function": "_pub"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m2\\test_api.py",
+        "line": 64,
+        "function": "test_evidence_lookup_accepts_ui_queue_key"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 1512,
+        "function": "queues"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 604,
+        "function": "_pub"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m2\\test_api.py",
+        "line": 100,
+        "function": "test_default_stock_scope_is_a_share_and_quotes_are_enriched"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 1138,
+        "function": "stocks"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 744,
+        "function": "_rows"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 604,
+        "function": "_pub"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m2\\test_api.py",
+        "line": 113,
+        "function": "test_queue_api_uses_contract_rank_order_and_sector_has_daily_market_fields"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 1512,
+        "function": "queues"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 604,
+        "function": "_pub"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m2\\test_api.py",
+        "line": 130,
+        "function": "test_candidate_api_exposes_non_circular_strength_sector_fields"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 1501,
+        "function": "candidates"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 744,
+        "function": "_rows"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 604,
+        "function": "_pub"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m7\\test_display_scope.py",
+        "line": 51,
+        "function": "test_api_separates_full_stock_query_from_stock_facing_pages"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m7\\test_quotes_universe.py",
+        "line": 103,
+        "function": "test_api_refuses_quote_when_bound_source_hash_has_drifted"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 612,
+        "function": "_quotes"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 621,
+        "function": "_load_quotes"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 604,
+        "function": "_pub"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m7\\test_quotes_universe.py",
+        "line": 108,
+        "function": "test_api_refuses_publication_without_a_matching_quote_manifest"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 612,
+        "function": "_quotes"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 621,
+        "function": "_load_quotes"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 604,
+        "function": "_pub"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m7\\test_semantics_and_catalog.py",
+        "line": 33,
+        "function": "test_publication_and_identity_analysis_extensions_are_opt_in"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_manager.py",
+        "line": 120,
+        "function": "_hookexec"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_m7\\test_window_planner.py",
+        "line": 43,
+        "function": "test_api03_returns_publication_bound_plan"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_v3\\test_p10_02_sector_set_linkage.py",
+        "line": 38,
+        "function": "test_p10_02_name_selection_resolves_two_to_four_sectors_server_side"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_v3\\test_p10_02_sector_set_linkage.py",
+        "line": 15,
+        "function": "_fixture"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_v3\\test_p10_02_sector_set_linkage.py",
+        "line": 52,
+        "function": "test_p10_02_research_role_filter_runs_after_set_calculation_and_before_paging"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_v3\\test_p10_02_sector_set_linkage.py",
+        "line": 15,
+        "function": "_fixture"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  },
+  {
+    "database": "E:\\codex work\\\u5927A\u4ea4\u6613\\data\\database\\market_research.duckdb",
+    "requested_read_only": false,
+    "decision": "REJECT_EXPLICIT_WRITER",
+    "callers": [
+      {
+        "file": "E:\\python\\Lib\\site-packages\\pluggy\\_callers.py",
+        "line": 121,
+        "function": "_multicall"
+      },
+      {
+        "file": "E:\\python\\Lib\\site-packages\\_pytest\\python.py",
+        "line": 167,
+        "function": "pytest_pyfunc_call"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_v3\\test_p10_02_sector_set_linkage.py",
+        "line": 89,
+        "function": "test_p10_02_old_request_without_new_parameters_preserves_legacy_shape"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\tests\\upgrade_v3\\test_p10_02_sector_set_linkage.py",
+        "line": 15,
+        "function": "_fixture"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 245,
+        "function": "publications"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_service\\app.py",
+        "line": 227,
+        "function": "_con"
+      },
+      {
+        "file": "E:\\python\\Lib\\contextlib.py",
+        "line": 141,
+        "function": "__enter__"
+      },
+      {
+        "file": "E:\\codex work\\\u5927A\u4ea4\u6613\\src\\workbench_db\\api_connection.py",
+        "line": 27,
+        "function": "connect"
+      }
+    ]
+  }
+]

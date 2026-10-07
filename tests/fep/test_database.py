@@ -112,10 +112,11 @@ def test_E1_21_immutable_delete(base):
 def test_E1_22_inventory(pg):
     tables={r[0] for r in pg.execute("select tablename from pg_tables where schemaname='fep'")}
     guarded={r[0] for r in pg.execute("select c.relname from pg_trigger t join pg_class c on c.oid=t.tgrelid join pg_namespace n on n.oid=c.relnamespace where n.nspname='fep' and t.tgname='immutable'")}
-    assert len(tables)==33 and len(guarded)==32 and tables-{'deployment_heads'}==guarded
+    assert len(tables)==35 and len(guarded)==33 and tables-{'deployment_heads','signal_contract_registry'}==guarded
+    assert pg.execute("select count(*) from pg_trigger where tgrelid='fep.signal_contract_registry'::regclass and tgname='signal_registry_no_update'").fetchone()[0]==1
     with pg.transaction():
         pg.execute('create table fep.unexpected_fact (id integer)')
-        extra={r[0] for r in pg.execute("select tablename from pg_tables where schemaname='fep'")}-{'deployment_heads'}-guarded
+        extra={r[0] for r in pg.execute("select tablename from pg_tables where schemaname='fep'")}-{'deployment_heads','signal_contract_registry'}-guarded
         assert extra=={'unexpected_fact'}
         from workbench_analysis.fep_e1.db import validate_inventory
         rejected(pg,lambda:validate_inventory(pg),match='UNGUARDED_TABLE_INVENTORY')

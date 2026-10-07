@@ -1,0 +1,144 @@
+{
+  "audit": {
+    "bytes": 1322,
+    "path": "docs/audits/AUDIT_INCREMENTAL_WRITER_CONNECTION_LIFECYCLE_20261007.md",
+    "sha256": "9097ac71b3e7d084708a003f54212b1cbb683e7198d566875a6d039eac822341"
+  },
+  "change": "Use repository context manager for acquisition and close; preserve transaction and rollback",
+  "current": {
+    "bytes": 41862,
+    "path": "src/workbench_service/incremental_writer.py",
+    "sha256": "3c64bc993439ec38973de193d11e9ebf06881829e8664ef449593c85fc14c69a"
+  },
+  "execution": {
+    "acceptance": "PASS",
+    "artifacts": [
+      {
+        "bytes": 2930,
+        "path": "reports/forward_r2_remainder_consolidated_20261007/execution/remainder_writer_final.xml",
+        "sha256": "2c4bbb036e08e734e5a0466baa0746ebcea734a913b3358f9bf4dc49f4aa031d"
+      },
+      {
+        "bytes": 101,
+        "path": "reports/forward_r2_remainder_consolidated_20261007/execution/remainder_writer_final.log",
+        "sha256": "9ee47b41961e4b64818bc263ee724c28bb2b182aeb115ae224cb10177ea7cb0a"
+      }
+    ],
+    "cases": [
+      {
+        "node": "tests.upgrade_v3.test_p04_02_incremental_writer::test_real_technical_writer_repeated_three_times_adds_no_business_rows_on_retries",
+        "seconds": 0.63,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.upgrade_v3.test_p04_02_incremental_writer::test_snapshot_binding_is_committed_only_after_all_planned_objects_succeed",
+        "seconds": 0.413,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.upgrade_v3.test_p04_02_incremental_writer::test_same_domain_date_tasks_can_share_one_slice_before_snapshot_binding",
+        "seconds": 0.378,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.upgrade_v3.test_p04_02_incremental_writer::test_failed_domain_writer_rolls_back_rows_and_does_not_bind_snapshot",
+        "seconds": 0.306,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.upgrade_v3.test_p04_02_incremental_writer::test_partial_target_cannot_bind_publication",
+        "seconds": 0.223,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.upgrade_v3.test_p04_02_incremental_writer::test_frame_business_keys_must_match_covered_plan_tasks",
+        "seconds": 0.217,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.upgrade_v3.test_p04_02_incremental_writer::test_default_executor_matrix_is_explicit_and_unsupported_domain_fails_closed",
+        "seconds": 0.201,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.upgrade_v3.test_p04_02_incremental_writer::test_execute_daily_calculates_from_raw_input_and_binds_complete_scoped_plan",
+        "seconds": 0.389,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.upgrade_v3.test_p04_02_incremental_writer::test_reuse_reference_requires_existing_bound_slice_and_can_complete_snapshot",
+        "seconds": 0.444,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.upgrade_v3.test_p04_02_incremental_writer::test_reuse_reference_cannot_cross_security_scope_on_same_domain_date",
+        "seconds": 0.325,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.upgrade_v3.test_p04_02_incremental_writer::test_object_outside_build_plan_is_rejected_before_database_write",
+        "seconds": 0.244,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.upgrade_v3.test_p04_02_integration::test_daily_source_reader_materializes_only_the_task_lookback",
+        "seconds": 0.039,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.upgrade_v3.test_p04_02_integration::test_default_daily_targets_are_only_bound_v3_result_domains",
+        "seconds": 0.001,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.upgrade_v3.test_p04_02_integration::test_v3_daily_entry_calculates_reuses_binds_and_is_idempotent",
+        "seconds": 0.761,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.upgrade_v3.test_p04_02_integration::test_v3_daily_entry_builds_two_adjacent_cutoffs_without_multiplying_rows",
+        "seconds": 0.642,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.upgrade_v3.test_p04_02_integration::test_v3_daily_entry_accepts_historical_price_revision_plan_scope",
+        "seconds": 2.229,
+        "status": "passed",
+        "trace": null
+      },
+      {
+        "node": "tests.upgrade_v3.test_p04_02_integration::test_v3_daily_entry_accepts_relation_change_without_technical_recalculation",
+        "seconds": 0.497,
+        "status": "passed",
+        "trace": null
+      }
+    ],
+    "counts": {
+      "error": 0,
+      "failure": 0,
+      "passed": 17,
+      "skipped": 0
+    },
+    "name": "remainder_writer_final",
+    "total": 17
+  },
+  "numeric_contract_changed": false,
+  "old_bytes": 41809,
+  "old_sha256": "2d60cb0a0fc4d4227bf22b08397302fcf4554a5f529a22767ccf2ba98f36ffae",
+  "release_permission": false
+}

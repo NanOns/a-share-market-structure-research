@@ -1,0 +1,22 @@
+{
+  "adjustment_configuration": "TDX native affine QFQ local-only; future exday ignored after snapshot anchor; no negative actual-price exemption specified",
+  "authority": [
+    {
+      "bytes": 1260,
+      "path": "config/v4_02_go_forward_pit_adjustment_r2.json",
+      "sha256": "9bc22579ab4e7547f69ab38899d4ae6ee60b49d51dee574b50b18cbb277f1069"
+    },
+    {
+      "bytes": 1160,
+      "path": "config/a07_adjusted_price_lineage_r2.json",
+      "sha256": "d30a391dcf2ff19558d38bedfa485a480c7f11a0e516ab7ff6ac7e69039f8b39"
+    },
+    {
+      "bytes": 636,
+      "path": "config/adjustment.yaml",
+      "sha256": "f7a2711e18ba75d1252245ec7a0c947628fa06aca6fa3b0158670f0de0f25ab3"
+    }
+  ],
+  "conclusion": "Local accepted affine source only; no negative adjusted-price exception granted; no implicit coordinate conversion; successor enforces explicit positive transformed domain",
+  "review_phase": "IMPLEMENTATION_REVIEW_BEFORE_ACCEPTANCE"
+}

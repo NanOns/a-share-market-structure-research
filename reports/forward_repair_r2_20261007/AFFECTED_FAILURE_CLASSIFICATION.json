@@ -1,0 +1,23 @@
+{
+  "baseline_reproduction": {
+    "bytes": 2147,
+    "path": "reports/forward_repair_r2_20261007/BASELINE_DM01_LEGACY_TEST_RECEIPT.json",
+    "sha256": "228515d6764b7bd26cbcff756020f889f0aafcddf5fcf1b7f75a9115764d9767"
+  },
+  "failures": [
+    {
+      "message": "Failed: DID NOT RAISE ValueError",
+      "node": "tests.v4_dm01_r4.test_runtime::test_current_real_v2_parent_and_future_wait"
+    }
+  ],
+  "full_run": {
+    "bytes": 52940,
+    "path": "reports/forward_repair_r2_20261007/AFFECTED_TEST_RECEIPT.json",
+    "sha256": "f21dee44cb503e97840b36d98c41dcc51d97cd50acdfc2cc3bc4d03f1d9368c8"
+  },
+  "full_scope_green": false,
+  "introduced_failures": 0,
+  "known_baseline_failures": 1,
+  "required_R2_targeted_scopes_passed": true,
+  "unrelated_test_not_rewritten": true
+}

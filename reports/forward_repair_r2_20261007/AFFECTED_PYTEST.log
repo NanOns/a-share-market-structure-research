@@ -1,0 +1,28 @@
+........................................................................ [ 11%]
+........................................................................ [ 23%]
+.........................................................sssssssssssssss [ 34%]
+ssssssssssssssssssssssssssssssssssss..............s.......sss........... [ 46%]
+........sssssss......................................................... [ 57%]
+.........sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 69%]
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 80%]
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 92%]
+sssssssss............F...........................                        [100%]
+================================== FAILURES ===================================
+_________________ test_current_real_v2_parent_and_future_wait _________________
+
+    def test_current_real_v2_parent_and_future_wait():
+        parent=r.current_parent();assert parent['head']['accepted_trade_date']=='2026-09-30'
+        before=r.sha(r.ROOT/r.HEAD)
+        gate=r.session_gate('2026-10-08','2026-10-05T09:00:00+00:00')
+        assert gate['status']=='WAIT_MARKET_CLOSE' and gate['source_requests']==0
+        assert not gate['candidate_created'] and r.sha(r.ROOT/r.HEAD)==before
+        with pytest.raises(ValueError):r.session_gate('2026-10-09','2026-10-05T09:00:00+00:00')
+        with pytest.raises(ValueError,match='COVERAGE'):r.session_gate('2027-01-04','2026-10-05T09:00:00+00:00')
+>       with pytest.raises(ValueError,match='PENDING_DM01_R4_EXTERNAL_ACCEPTANCE'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\v4_dm01_r4\test_runtime.py:118: Failed
+=========================== short test summary info ===========================
+FAILED tests/v4_dm01_r4/test_runtime.py::test_current_real_v2_parent_and_future_wait
+1 failed, 346 passed, 278 skipped in 125.52s (0:02:05)

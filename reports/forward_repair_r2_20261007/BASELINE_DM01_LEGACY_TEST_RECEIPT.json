@@ -1,0 +1,58 @@
+{
+  "R2_modules_imported_by_test": false,
+  "audit_item": "AUDIT_DM01_R4_LEGACY_TEST_ACCEPTANCE_STATE_20261007",
+  "baseline_commit": "15a4e1cc545f6c44d94ebb2b63e71fba6c69e63a",
+  "classification": "PREEXISTING_TEST_EXPECTATION_STALE; NOT_INTRODUCED_BY_R2",
+  "command": [
+    "E:/python/python.exe",
+    "-m",
+    "pytest",
+    "tests/v4_dm01_r4/test_runtime.py::test_current_real_v2_parent_and_future_wait",
+    "-q",
+    "--basetemp=E:/codex_tmp/test_temp/forward_r2_baseline_confirm",
+    "--junitxml=E:\\codex_tmp\\test_temp\\forward_r2_baseline_confirm.xml"
+  ],
+  "existing_accepted_envelope": "EXTERNALLY_ACCEPTED_DM01_R4_RUNTIME",
+  "exit_code": 1,
+  "failed_node": "tests.v4_dm01_r4.test_runtime::test_current_real_v2_parent_and_future_wait",
+  "failure_message": "Failed: DID NOT RAISE ValueError",
+  "log": {
+    "bytes": 1322,
+    "path": "reports/forward_repair_r2_20261007/BASELINE_DM01_LEGACY_TEST.log",
+    "sha256": "f154b24a22c827577e53af9d338f44647fc2a00854d9f4f271724d036ecf672a"
+  },
+  "skip_or_pass": false,
+  "status": "OPEN_P2",
+  "unchanged_baseline_bindings": [
+    {
+      "bytes": 12735,
+      "path": "tests/v4_dm01_r4/test_runtime.py",
+      "sha256": "22c96a78c97495b0a98c2cc10e639ab371b518c4c8546d63deedb24286884eec"
+    },
+    {
+      "bytes": 30710,
+      "path": "src/workbench_analysis/dm01_runtime_r4.py",
+      "sha256": "c624125e82ec5ce55b55472d90c44170dfed034ea2101a1f19016a8070df6748"
+    },
+    {
+      "bytes": 2278,
+      "path": "data/v4/DM01_R4_RUNTIME_ACCEPTANCE_HEAD_V1.json",
+      "sha256": "694a48e94c52b8fee89e467520d8616d257eef7cb537a4407522fa01715e9ada"
+    },
+    {
+      "bytes": 720,
+      "path": "data/v4/DM01_R4_CALENDAR_HEAD_V1.json",
+      "sha256": "c02d5e553214667c2300bcc198ad36fdf37ec5f8a59d8391fd9851bd19549bc4"
+    },
+    {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    {
+      "bytes": 27865,
+      "path": "config/dm01_go_forward_runtime_contract_r4r1.json",
+      "sha256": "6452a8398800d2728df8bbfc7dfe84786790d988a70905ecc2c61b77a2201b17"
+    }
+  ]
+}

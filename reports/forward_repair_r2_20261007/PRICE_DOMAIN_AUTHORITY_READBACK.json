@@ -1,0 +1,41 @@
+{
+  "accepted_runtime_changed": false,
+  "authority": [
+    {
+      "bytes": 224998,
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+    },
+    {
+      "bytes": 9318,
+      "path": "config/v4_02_canonical_daily_pit_contract_v3.json",
+      "sha256": "6b61e97ace1d497299222ed12eac78d5736f2c5abe2d8cb45dbc8cc65cb11f35"
+    },
+    {
+      "bytes": 3295,
+      "path": "config/v4_15_forward_price_path_contract_v1.json",
+      "sha256": "9c39cdf980aee0c94453441557f80a874c2a847e6c58dc770b5e9d32088cc301"
+    },
+    {
+      "bytes": 1557,
+      "path": "config/v4_15_outcome_status_contract_v1.json",
+      "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+    },
+    {
+      "bytes": 1401,
+      "path": "config/v4_15_settlement_revision_contract_v1.json",
+      "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+    }
+  ],
+  "master_owner_line": 2275,
+  "master_rule": "OHLC finite and positive; low<=open/close<=high; violations not silently repaired",
+  "next_stage": "IA03_IA04_SUCCESSOR_IMPLEMENTATION",
+  "owner_gap": "Forward owner did not explicitly restate transformed-price domain or planner-state identity; additive successor freezes these rules, never alters old bytes",
+  "pending_design_readback": "Existing formal status/revision contracts include PENDING and immutable revisions; no explicit prohibition on ledger PENDING; deterministic maturity role is frozen instead of removing old ledger behavior",
+  "stage": "BEFORE_IMPLEMENTATION",
+  "successor": {
+    "bytes": 2411,
+    "path": "config/v4_15_forward_r2_semantics_v1.json",
+    "sha256": "e1a07fad52314dd414e9eafbc64348f0a21d797767f143a91b77313e9e292518"
+  }
+}

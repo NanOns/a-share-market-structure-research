@@ -1,0 +1,54 @@
+{
+  "T0": "finite positive native reference and transformed reference",
+  "authority": [
+    {
+      "bytes": 224998,
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+    },
+    {
+      "bytes": 9318,
+      "path": "config/v4_02_canonical_daily_pit_contract_v3.json",
+      "sha256": "6b61e97ace1d497299222ed12eac78d5736f2c5abe2d8cb45dbc8cc65cb11f35"
+    },
+    {
+      "bytes": 3295,
+      "path": "config/v4_15_forward_price_path_contract_v1.json",
+      "sha256": "9c39cdf980aee0c94453441557f80a874c2a847e6c58dc770b5e9d32088cc301"
+    },
+    {
+      "bytes": 1557,
+      "path": "config/v4_15_outcome_status_contract_v1.json",
+      "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+    },
+    {
+      "bytes": 1401,
+      "path": "config/v4_15_settlement_revision_contract_v1.json",
+      "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+    }
+  ],
+  "contract_id": "FORWARD_PRICE_PATH_V1_2",
+  "default_ui": false,
+  "focus": false,
+  "identity": [
+    "enrollment_id",
+    "horizon",
+    "FORWARD_PRICE_PATH_V1_2",
+    "source_digest",
+    "PENDING_OR_DUE",
+    "due_date",
+    "session_list_digest"
+  ],
+  "missing_ohlc": "Endpoint close may be independently observed; incomplete OHLC path stays unknown",
+  "ordinary_actual": "finite positive close/high/low and open when present; low<=close<=high and low<=open<=high",
+  "pending_policy": "PENDING retained as immutable state observation because OUTCOME_STATUS_V1 defines it; identity adds planner maturity role and exact due_date plus accepted session-list digest",
+  "production": false,
+  "real_shadow_authorized": false,
+  "revision_views": "FIRST_OBSERVED excludes PENDING; LATEST_CORRECTED excludes PENDING when matured result exists; chain scoped to same contract/frozen T0",
+  "runtime_authorized": false,
+  "sector_contract_id": "SECTOR_BASKET_FORWARD_PATH_V2",
+  "suspension": "confirmed interior suspension omitted; no synthetic bar; endpoint not observed",
+  "terminal": "separate DELISTED verified evidence; finite nonnegative terminal in common evaluation coordinate; zero allowed",
+  "transformed_actual": "Same finite positive domain and envelope; no negative adjusted-price exception granted by current owner",
+  "version": "1.2.0"
+}

@@ -1,0 +1,20 @@
+{
+  "R25_business_gate_changed": false,
+  "accepted_heads_changed": false,
+  "contract_id": "DM01_STANDALONE_BOOTSTRAP_R2_V1",
+  "direct": "python -I -B <absolute_repo>/scripts/_bootstrap.py --module scripts.<supported_module> -- <original arguments>",
+  "legacy_bare_script_invocation": "NOT_THE_SUPPORTED_LAUNCH_CONTRACT; frozen bytes kept intact",
+  "module": "python -s -B -m scripts._bootstrap --module scripts.<supported_module> -- <original arguments>; launch from repository root",
+  "nine_component_semantics_changed": false,
+  "preflight": "read-only session gate; zero source requests and data writes; no capture",
+  "root_resolution": "from __file__, prepend root/src, remove user-site paths; set child execution cwd to repository for frozen relative engineering reads",
+  "source_authority_changed": false,
+  "supported_modules": [
+    "scripts.run_v4_dm01_daily_increment",
+    "scripts.build_dm01_r4_tdx_delta",
+    "scripts.freeze_v4_dm01_daily_sources",
+    "scripts.verify_dm01_r4_runtime",
+    "scripts.verify_dm01_r4r1_runtime"
+  ],
+  "verification_recipes": "--fixture-root restricted to guarded E disposable roots; real historical evidence recipes not replayed"
+}

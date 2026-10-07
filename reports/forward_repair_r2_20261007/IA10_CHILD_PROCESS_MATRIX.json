@@ -1,0 +1,262 @@
+{
+  "clean_environment": true,
+  "vectors": [
+    {
+      "PYTHONPATH": "",
+      "command": [
+        "E:\\python\\python.exe",
+        "-I",
+        "-B",
+        "E:\\codex work\\大A交易\\scripts\\_bootstrap.py",
+        "--help"
+      ],
+      "cwd": "E:\\codex_tmp\\test_temp\\forward_r2_evidence_1791334520101777600\\cli1",
+      "exit_code": 0,
+      "id": "CLI-01",
+      "module_launcher_result": null,
+      "result": null,
+      "stderr": "",
+      "stdout": "usage: _bootstrap.py [-h]\r\n                     [--module {scripts.run_v4_dm01_daily_increment,scripts.build_dm01_r4_tdx_delta,scripts.freeze_v4_dm01_daily_sources,scripts.verify_dm01_r4_runtime,scripts.verify_dm01_r4r1_runtime}]\r\n                     [--preflight] [--target-date TARGET_DATE]\r\n                     [--fixture-root FIXTURE_ROOT]\r\n                     ...\r\n\r\nSupported direct launcher for frozen DM01 modules; no cwd/user-site imports.\r\n\r\npositional arguments:\r\n  arguments\r\n\r\noptions:\r\n  -h, --help            show this help message and exit\r\n  --module {scripts.run_v4_dm01_daily_increment,scripts.build_dm01_r4_tdx_delta,scripts.freeze_v4_dm01_daily_sources,scripts.verify_dm01_r4_runtime,scripts.verify_dm01_r4r1_runtime}\r\n  --preflight\r\n  --target-date TARGET_DATE\r\n  --fixture-root FIXTURE_ROOT\r\n",
+      "tdx_write_count": 0,
+      "user_site_disabled": true
+    },
+    {
+      "PYTHONPATH": "",
+      "command": [
+        "E:\\python\\python.exe",
+        "-I",
+        "-B",
+        "E:\\codex work\\大A交易\\scripts\\_bootstrap.py",
+        "--help"
+      ],
+      "cwd": "E:\\codex_tmp\\test_temp\\forward_r2_evidence_1791334520101777600\\cli2",
+      "exit_code": 0,
+      "id": "CLI-02",
+      "module_launcher_result": null,
+      "result": null,
+      "stderr": "",
+      "stdout": "usage: _bootstrap.py [-h]\r\n                     [--module {scripts.run_v4_dm01_daily_increment,scripts.build_dm01_r4_tdx_delta,scripts.freeze_v4_dm01_daily_sources,scripts.verify_dm01_r4_runtime,scripts.verify_dm01_r4r1_runtime}]\r\n                     [--preflight] [--target-date TARGET_DATE]\r\n                     [--fixture-root FIXTURE_ROOT]\r\n                     ...\r\n\r\nSupported direct launcher for frozen DM01 modules; no cwd/user-site imports.\r\n\r\npositional arguments:\r\n  arguments\r\n\r\noptions:\r\n  -h, --help            show this help message and exit\r\n  --module {scripts.run_v4_dm01_daily_increment,scripts.build_dm01_r4_tdx_delta,scripts.freeze_v4_dm01_daily_sources,scripts.verify_dm01_r4_runtime,scripts.verify_dm01_r4r1_runtime}\r\n  --preflight\r\n  --target-date TARGET_DATE\r\n  --fixture-root FIXTURE_ROOT\r\n",
+      "tdx_write_count": 0,
+      "user_site_disabled": true
+    },
+    {
+      "PYTHONPATH": "",
+      "command": [
+        "E:\\python\\python.exe",
+        "-I",
+        "-B",
+        "E:\\codex work\\大A交易\\scripts\\_bootstrap.py",
+        "--help"
+      ],
+      "cwd": "E:\\codex_tmp\\test_temp\\forward_r2_evidence_1791334520101777600\\cli3",
+      "exit_code": 0,
+      "id": "CLI-03",
+      "module_launcher_result": null,
+      "result": null,
+      "stderr": "",
+      "stdout": "usage: _bootstrap.py [-h]\r\n                     [--module {scripts.run_v4_dm01_daily_increment,scripts.build_dm01_r4_tdx_delta,scripts.freeze_v4_dm01_daily_sources,scripts.verify_dm01_r4_runtime,scripts.verify_dm01_r4r1_runtime}]\r\n                     [--preflight] [--target-date TARGET_DATE]\r\n                     [--fixture-root FIXTURE_ROOT]\r\n                     ...\r\n\r\nSupported direct launcher for frozen DM01 modules; no cwd/user-site imports.\r\n\r\npositional arguments:\r\n  arguments\r\n\r\noptions:\r\n  -h, --help            show this help message and exit\r\n  --module {scripts.run_v4_dm01_daily_increment,scripts.build_dm01_r4_tdx_delta,scripts.freeze_v4_dm01_daily_sources,scripts.verify_dm01_r4_runtime,scripts.verify_dm01_r4r1_runtime}\r\n  --preflight\r\n  --target-date TARGET_DATE\r\n  --fixture-root FIXTURE_ROOT\r\n",
+      "tdx_write_count": 0,
+      "user_site_disabled": true
+    },
+    {
+      "PYTHONPATH": "",
+      "command": [
+        "E:\\python\\python.exe",
+        "-I",
+        "-B",
+        "E:\\codex work\\大A交易\\scripts\\_bootstrap.py",
+        "--",
+        "--target-date",
+        "2026-10-08"
+      ],
+      "cwd": "E:\\codex_tmp\\test_temp\\forward_r2_evidence_1791334520101777600\\cli4",
+      "exit_code": 0,
+      "id": "CLI-04",
+      "module_launcher_result": null,
+      "result": {
+        "calendar": {
+          "bytes": 5147,
+          "path": "data/v4/dm01_r4/calendar/SESSION_CALENDAR_20260930_20261231_R1.json",
+          "sha256": "3cbce200d5dff2916b98af050c51c16fc2906c82da7214af9d8f0c736fc12465"
+        },
+        "candidate_created": false,
+        "data_head_moved": false,
+        "parent": {
+          "bytes": 16890,
+          "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+          "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+        },
+        "source_requests": 0,
+        "status": "WAIT_MARKET_CLOSE",
+        "target_trade_date": "2026-10-08"
+      },
+      "stderr": "",
+      "stdout": "{\"status\": \"WAIT_MARKET_CLOSE\", \"target_trade_date\": \"2026-10-08\", \"parent\": {\"path\": \"data/v4/V4_DATA_ACCEPTED_HEAD.json\", \"sha256\": \"38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40\", \"bytes\": 16890}, \"calendar\": {\"bytes\": 5147, \"path\": \"data/v4/dm01_r4/calendar/SESSION_CALENDAR_20260930_20261231_R1.json\", \"sha256\": \"3cbce200d5dff2916b98af050c51c16fc2906c82da7214af9d8f0c736fc12465\"}, \"source_requests\": 0, \"candidate_created\": false, \"data_head_moved\": false}\r\n",
+      "tdx_write_count": 0,
+      "user_site_disabled": true
+    },
+    {
+      "PYTHONPATH": "",
+      "command": [
+        "E:\\python\\python.exe",
+        "-I",
+        "-B",
+        "E:\\codex work\\大A交易\\scripts\\_bootstrap.py",
+        "--preflight",
+        "--target-date",
+        "2026-10-07"
+      ],
+      "cwd": "E:\\codex_tmp\\test_temp\\forward_r2_evidence_1791334520101777600\\cli5",
+      "exit_code": 2,
+      "id": "CLI-05",
+      "module_launcher_result": null,
+      "result": {
+        "data_mutation": false,
+        "preflight": true,
+        "reason": "BLOCKED_MISSING_INTERMEDIATE_SESSION:2026-10-08",
+        "source_requests": 0,
+        "status": "BLOCKED",
+        "tdx_root_write_count": 0
+      },
+      "stderr": "",
+      "stdout": "{\"status\": \"BLOCKED\", \"reason\": \"BLOCKED_MISSING_INTERMEDIATE_SESSION:2026-10-08\", \"preflight\": true, \"source_requests\": 0, \"data_mutation\": false, \"tdx_root_write_count\": 0}\r\n",
+      "tdx_write_count": 0,
+      "user_site_disabled": true
+    },
+    {
+      "PYTHONPATH": "",
+      "command": [
+        "E:\\python\\python.exe",
+        "-I",
+        "-B",
+        "E:\\codex work\\大A交易\\scripts\\_bootstrap.py",
+        "--preflight",
+        "--target-date",
+        "2026-10-08"
+      ],
+      "cwd": "E:\\codex_tmp\\test_temp\\forward_r2_evidence_1791334520101777600\\cli6",
+      "exit_code": 0,
+      "id": "CLI-06",
+      "module_launcher_result": null,
+      "result": {
+        "calendar": {
+          "bytes": 5147,
+          "path": "data/v4/dm01_r4/calendar/SESSION_CALENDAR_20260930_20261231_R1.json",
+          "sha256": "3cbce200d5dff2916b98af050c51c16fc2906c82da7214af9d8f0c736fc12465"
+        },
+        "candidate_created": false,
+        "data_head_moved": false,
+        "data_mutation": false,
+        "parent": {
+          "bytes": 16890,
+          "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+          "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+        },
+        "preflight": true,
+        "source_requests": 0,
+        "status": "WAIT_MARKET_CLOSE",
+        "target_trade_date": "2026-10-08",
+        "tdx_root_write_count": 0
+      },
+      "stderr": "",
+      "stdout": "{\"status\": \"WAIT_MARKET_CLOSE\", \"target_trade_date\": \"2026-10-08\", \"parent\": {\"path\": \"data/v4/V4_DATA_ACCEPTED_HEAD.json\", \"sha256\": \"38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40\", \"bytes\": 16890}, \"calendar\": {\"bytes\": 5147, \"path\": \"data/v4/dm01_r4/calendar/SESSION_CALENDAR_20260930_20261231_R1.json\", \"sha256\": \"3cbce200d5dff2916b98af050c51c16fc2906c82da7214af9d8f0c736fc12465\"}, \"source_requests\": 0, \"candidate_created\": false, \"data_head_moved\": false, \"preflight\": true, \"data_mutation\": false, \"tdx_root_write_count\": 0}\r\n",
+      "tdx_write_count": 0,
+      "user_site_disabled": true
+    },
+    {
+      "PYTHONPATH": "",
+      "command": [
+        "E:\\python\\python.exe",
+        "-I",
+        "-B",
+        "E:\\codex work\\大A交易\\scripts\\_bootstrap.py",
+        "--module",
+        "scripts.verify_dm01_r4r1_runtime",
+        "--fixture-root",
+        "E:\\codex_tmp\\test_temp\\forward_r2_evidence_1791334520101777600\\cli7\\fixture"
+      ],
+      "cwd": "E:\\codex_tmp\\test_temp\\forward_r2_evidence_1791334520101777600\\cli7",
+      "exit_code": 0,
+      "id": "CLI-07",
+      "module_launcher_result": null,
+      "result": {
+        "real_forward_evidence": false,
+        "result": {
+          "candidate": {
+            "bytes": 58816,
+            "path": "data/v4/dm01_r4/candidates/c240dc5948f52f8372dee672f3e93ea0e718e405f30dbc1ae5b2cd99f6c0d5ea/PROMOTION_CANDIDATE.json",
+            "sha256": "7c05d80afb6baf9257fbeb75d7e2f6c4b7c664f952eab48569be207ff861d707"
+          },
+          "candidate_id": "c240dc5948f52f8372dee672f3e93ea0e718e405f30dbc1ae5b2cd99f6c0d5ea",
+          "status": "ALL_NINE_CANDIDATE_READY"
+        },
+        "source_requests": 0,
+        "status": "ENGINEERING_FIXTURE_EXECUTED",
+        "tdx_root_write_count": 0
+      },
+      "stderr": "",
+      "stdout": "{\"status\": \"ENGINEERING_FIXTURE_EXECUTED\", \"result\": {\"status\": \"ALL_NINE_CANDIDATE_READY\", \"candidate\": {\"path\": \"data/v4/dm01_r4/candidates/c240dc5948f52f8372dee672f3e93ea0e718e405f30dbc1ae5b2cd99f6c0d5ea/PROMOTION_CANDIDATE.json\", \"sha256\": \"7c05d80afb6baf9257fbeb75d7e2f6c4b7c664f952eab48569be207ff861d707\", \"bytes\": 58816}, \"candidate_id\": \"c240dc5948f52f8372dee672f3e93ea0e718e405f30dbc1ae5b2cd99f6c0d5ea\"}, \"real_forward_evidence\": false, \"source_requests\": 0, \"tdx_root_write_count\": 0}\r\n",
+      "tdx_write_count": 0,
+      "user_site_disabled": true
+    },
+    {
+      "PYTHONPATH": "",
+      "command": [
+        "E:\\python\\python.exe",
+        "-I",
+        "-B",
+        "E:\\codex work\\大A交易\\scripts\\_bootstrap.py",
+        "--preflight",
+        "--target-date",
+        "2026-10-08"
+      ],
+      "cwd": "E:\\codex_tmp\\test_temp\\forward_r2_evidence_1791334520101777600\\cli8",
+      "exit_code": 0,
+      "id": "CLI-08",
+      "module_launcher_result": {
+        "calendar": {
+          "bytes": 5147,
+          "path": "data/v4/dm01_r4/calendar/SESSION_CALENDAR_20260930_20261231_R1.json",
+          "sha256": "3cbce200d5dff2916b98af050c51c16fc2906c82da7214af9d8f0c736fc12465"
+        },
+        "candidate_created": false,
+        "data_head_moved": false,
+        "data_mutation": false,
+        "parent": {
+          "bytes": 16890,
+          "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+          "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+        },
+        "preflight": true,
+        "source_requests": 0,
+        "status": "WAIT_MARKET_CLOSE",
+        "target_trade_date": "2026-10-08",
+        "tdx_root_write_count": 0
+      },
+      "result": {
+        "calendar": {
+          "bytes": 5147,
+          "path": "data/v4/dm01_r4/calendar/SESSION_CALENDAR_20260930_20261231_R1.json",
+          "sha256": "3cbce200d5dff2916b98af050c51c16fc2906c82da7214af9d8f0c736fc12465"
+        },
+        "candidate_created": false,
+        "data_head_moved": false,
+        "data_mutation": false,
+        "parent": {
+          "bytes": 16890,
+          "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+          "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+        },
+        "preflight": true,
+        "source_requests": 0,
+        "status": "WAIT_MARKET_CLOSE",
+        "target_trade_date": "2026-10-08",
+        "tdx_root_write_count": 0
+      },
+      "stderr": "",
+      "stdout": "{\"status\": \"WAIT_MARKET_CLOSE\", \"target_trade_date\": \"2026-10-08\", \"parent\": {\"path\": \"data/v4/V4_DATA_ACCEPTED_HEAD.json\", \"sha256\": \"38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40\", \"bytes\": 16890}, \"calendar\": {\"bytes\": 5147, \"path\": \"data/v4/dm01_r4/calendar/SESSION_CALENDAR_20260930_20261231_R1.json\", \"sha256\": \"3cbce200d5dff2916b98af050c51c16fc2906c82da7214af9d8f0c736fc12465\"}, \"source_requests\": 0, \"candidate_created\": false, \"data_head_moved\": false, \"preflight\": true, \"data_mutation\": false, \"tdx_root_write_count\": 0}\r\n",
+      "tdx_write_count": 0,
+      "user_site_disabled": true
+    }
+  ]
+}

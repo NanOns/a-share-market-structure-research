@@ -1,0 +1,60 @@
+{
+  "FIRST_OBSERVED": "first matured revision only",
+  "LATEST_CORRECTED": "latest matured correction; pending never replaces it",
+  "chain_scope": "exact frozen T0 and contract",
+  "contract": {
+    "bytes": 2411,
+    "path": "config/v4_15_forward_r2_semantics_v1.json",
+    "sha256": "e1a07fad52314dd414e9eafbc64348f0a21d797767f143a91b77313e9e292518"
+  },
+  "historical_pending_bytes_unchanged": true,
+  "identity_uses_wall_clock_random": false,
+  "old_same_source_collision": {
+    "due_result": {
+      "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+      "MAE_N": null,
+      "MFE_N": null,
+      "PATH_MDD_CLOSE_N": null,
+      "R_N": null,
+      "due_date": "2030-01-04",
+      "enrollment_id": "E",
+      "evaluation_revision": 1,
+      "evaluation_source": {
+        "sha256": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040"
+      },
+      "evaluation_source_digest": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040",
+      "evaluation_source_identity": {
+        "sha256": "c05a406aedd4634ebd5656917a6be0359ed6ebfb065f96f784c6670898758040"
+      },
+      "evidence_class": "ENGINEERING_VECTOR",
+      "first_observed_id": "a19e3a110622e7ebbe79156e38f8f6a2fdb60c4ade04083ff19a894616e20b4e",
+      "focus": false,
+      "frozen_t0": [
+        "t0_freezes",
+        "69e4c8509ea34646e62b6bcca0157dce0dc731b5e7bd7ad74124d58df9d2bdd2"
+      ],
+      "horizon": 3,
+      "latest_corrected_id": "a19e3a110622e7ebbe79156e38f8f6a2fdb60c4ade04083ff19a894616e20b4e",
+      "outcome_contract_id": "FORWARD_PRICE_PATH_V1_1",
+      "outcome_revision_id": "a19e3a110622e7ebbe79156e38f8f6a2fdb60c4ade04083ff19a894616e20b4e",
+      "outcome_status": "PENDING",
+      "price_path": [],
+      "production": false,
+      "report_cutoff": "2030-01-01",
+      "revision_reason": "FIRST_OBSERVED",
+      "revision_sequence": 1,
+      "runtime_authorized": false,
+      "shadow": false,
+      "supersedes": null
+    },
+    "same_reference": true
+  },
+  "pending_policy": "Deterministic maturity-state revision role; not removed because formal status/revision design includes ledger PENDING",
+  "restart_reopened_from_disk": true,
+  "same_source_due_can_append": true,
+  "vectors": {
+    "bytes": 721262,
+    "path": "reports/forward_repair_r2_20261007/IA03_VECTOR_MATRIX.json",
+    "sha256": "bc857ab811794b2bb3fe1cf41e373b25bc63d0637f68e82d5d5a8036fda53027"
+  }
+}

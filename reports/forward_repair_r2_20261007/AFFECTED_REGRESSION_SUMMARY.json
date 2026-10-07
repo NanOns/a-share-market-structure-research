@@ -1,0 +1,62 @@
+{
+  "IA06": "OPEN",
+  "counts": {
+    "AFFECTED": {
+      "errors": 0,
+      "failures": 1,
+      "skipped": 278,
+      "tests": 625
+    },
+    "CLI": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 10
+    },
+    "FORWARD": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 54
+    },
+    "IA09": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 30
+    }
+  },
+  "failure_classification": {
+    "bytes": 777,
+    "path": "reports/forward_repair_r2_20261007/AFFECTED_FAILURE_CLASSIFICATION.json",
+    "sha256": "fd7bef9c8e5771e2880506b2e0212142c3736db21a309932ea7b7e9e76ededa2"
+  },
+  "full_scope_green": false,
+  "global_pytest_pass": false,
+  "introduced_failures": 0,
+  "known_baseline_failures": 1,
+  "receipts": {
+    "AFFECTED": {
+      "bytes": 52940,
+      "path": "reports/forward_repair_r2_20261007/AFFECTED_TEST_RECEIPT.json",
+      "sha256": "f21dee44cb503e97840b36d98c41dcc51d97cd50acdfc2cc3bc4d03f1d9368c8"
+    },
+    "CLI": {
+      "bytes": 3041,
+      "path": "reports/forward_repair_r2_20261007/CLI_TEST_RECEIPT.json",
+      "sha256": "6c877f60242d30fac9e17ffa06a49b483310f9642779ceabda1d7b7617d66761"
+    },
+    "FORWARD": {
+      "bytes": 3048,
+      "path": "reports/forward_repair_r2_20261007/FORWARD_TEST_RECEIPT.json",
+      "sha256": "0aef4963d095bdaabbb1bce251c46f28ccab4ac576f3305d7545991e03eb7741"
+    },
+    "IA09": {
+      "bytes": 9608,
+      "path": "reports/forward_repair_r2_20261007/IA09_TEST_RECEIPT.json",
+      "sha256": "0eb0eab710d853035e76a49ccf086c07d11f70fb8e665b8a8b2f98b015ee45b1"
+    }
+  },
+  "scope": "Targeted Forward + isolation + settlement workers + inherited FEP/governance + DM01 R4/R4R1",
+  "skip_is_pass": false
+}

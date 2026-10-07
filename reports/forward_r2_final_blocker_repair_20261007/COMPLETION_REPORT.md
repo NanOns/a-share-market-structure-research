@@ -35,3 +35,7 @@ M7 历史任务并发 sequence 冲突属于 V4 前版本，记录为独立范围
 IA-07：NOT_VERIFIABLE_BY_CURRENT_ACCEPTED_CAPABILITY。真实 accepted universe 为 5037，完整控制特征池为 0，100/1000/5037 实际人口检查不能建立控制匹配性能结论。没有复制或合成控制池、没有将零 eligible rows 判为 FULL_PASS。该债务仅阻断控制匹配接受，不阻断合同允许的独立股票绝对结算。
 
 E3/E4 8 个实际模型重训与原 frozen population 的 parity 证据保留，不构成 champion、REAL_OOS 或运行授权。Git 提交和 push 仅交付本次代码及证据；后续仍须独立 V4 外审及 IA-07 独立能力接受。
+
+## 提交后干净检出验证
+
+代码提交：ade080cbe838da90a359ff7fe829af76c539ea06。其干净 sparse checkout 中，V4 历史绑定 reader 的 20 个读取位置、15 个唯一身份全部精确匹配，工作区干净、分支未移动、没有历史运行授权。证据：IA08_CLEAN_CHECKOUT_REPLAY.json。

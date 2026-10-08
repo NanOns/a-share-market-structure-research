@@ -1,0 +1,124 @@
+{
+  "adjustment_capability_unproven": 528,
+  "categories": {
+    "ADJUSTMENT_CAPABILITY_UNPROVEN": 528,
+    "EXPECTED_NO_BAR": 35
+  },
+  "contract": "THREE_DAY_E1_FINAL_DISPOSITION_V1",
+  "effective_membership_unknown": true,
+  "expected_no_bar_suspended": 35,
+  "historical_first_available_unproven": 15669,
+  "interpretation": "Accepted RAW rows and date-matched raw package passed prior source-byte oracle. The 528 items are QFQ capability gaps, not missing raw prices.",
+  "local_membership": {
+    "date_max": "2026-09-24",
+    "date_min": "2026-09-11",
+    "historical_backtest_safe_values": [
+      false
+    ],
+    "row_count": 753636,
+    "source": {
+      "bytes": 1350387,
+      "path": "data/sectors/sector_membership_daily.parquet",
+      "sha256": "d05a98970dfc1d6a7ac839f3646a727eadf9a7e76630b0e83da7cdb7d8c77468"
+    },
+    "target_rows": {
+      "2026-09-28": 0,
+      "2026-09-29": 0,
+      "2026-09-30": 0
+    }
+  },
+  "local_tdx_scattered_day": [
+    {
+      "configured_root": "D:\\new_tdx",
+      "disposition": "SCATTERED_DAY_BEHIND_TARGET",
+      "files_checked": 5210,
+      "last_record_distribution": {
+        "0": 4,
+        "20260828": 2,
+        "20260831": 1,
+        "20260903": 1,
+        "20260904": 1,
+        "20260907": 1,
+        "20260908": 1,
+        "20260909": 2,
+        "20260910": 5158,
+        "20260911": 2,
+        "20260915": 1,
+        "20260916": 1,
+        "20260918": 32,
+        "20260923": 1,
+        "20260924": 2
+      },
+      "source_package_identity": "BOUND_PER_SECURITY_IN_PACKAGE_ORACLE",
+      "source_package_still_available": true,
+      "target_day_hits": 0,
+      "trade_date": "2026-09-28"
+    },
+    {
+      "configured_root": "D:\\new_tdx",
+      "disposition": "SCATTERED_DAY_BEHIND_TARGET",
+      "files_checked": 5211,
+      "last_record_distribution": {
+        "0": 5,
+        "20260828": 2,
+        "20260831": 1,
+        "20260903": 1,
+        "20260904": 1,
+        "20260907": 1,
+        "20260908": 1,
+        "20260909": 2,
+        "20260910": 5158,
+        "20260911": 2,
+        "20260915": 1,
+        "20260916": 1,
+        "20260918": 32,
+        "20260923": 1,
+        "20260924": 2
+      },
+      "source_package_identity": "BOUND_PER_SECURITY_IN_PACKAGE_ORACLE",
+      "source_package_still_available": true,
+      "target_day_hits": 0,
+      "trade_date": "2026-09-29"
+    },
+    {
+      "configured_root": "D:\\new_tdx",
+      "disposition": "SCATTERED_DAY_BEHIND_TARGET",
+      "files_checked": 5213,
+      "last_record_distribution": {
+        "0": 6,
+        "20260828": 3,
+        "20260831": 1,
+        "20260903": 1,
+        "20260904": 1,
+        "20260907": 1,
+        "20260908": 1,
+        "20260909": 2,
+        "20260910": 5158,
+        "20260911": 2,
+        "20260915": 1,
+        "20260916": 1,
+        "20260918": 32,
+        "20260923": 1,
+        "20260924": 2
+      },
+      "source_package_identity": "BOUND_PER_SECURITY_IN_PACKAGE_ORACLE",
+      "source_package_still_available": true,
+      "target_day_hits": 0,
+      "trade_date": "2026-09-30"
+    }
+  ],
+  "membership_artifact_head": {
+    "bytes": 2151,
+    "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+    "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+  },
+  "raw_absent": 0,
+  "result": "PASS_SCOPED_CLASSIFICATION_FULL_SOURCE_CLOSURE_NOT_VERIFIABLE",
+  "source_package_oracle": {
+    "bytes": 1968,
+    "path": "docs/evidence/three_day_repair_r1_20261008/PACKAGE_ORACLE.json",
+    "sha256": "8e29b431eba0763086a1d95cfdca1f9f9dfba99f2550005c8a09cbde1b85502a"
+  },
+  "source_present_not_ingested": 0,
+  "strict_pit": "0/3"
+}

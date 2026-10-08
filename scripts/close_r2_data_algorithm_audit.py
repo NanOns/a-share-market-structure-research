@@ -9,6 +9,7 @@ import sqlite3
 import statistics
 import subprocess
 import sys
+from decimal import Decimal,ROUND_HALF_UP
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -72,6 +73,31 @@ def main():
             current=values,prior=None,prior_reason='NO_ACCEPTED_DATE_OWNED_20260929_MEMBERSHIP',
             membership_entered=None,membership_exited=None,state=item['fields']['output_state'],
             seed=native[sid]['fields']['seed_width'],breadth_delta3=native[sid]['fields']['breadth_delta3']))
+    center=manifest['domain_features']['market_center']
+    raw=json.loads(checked_path(ROOT,center['sources']['RAW_DAILY']).read_bytes())['rows']
+    prices={x['security_id']:x for x in raw}
+    limits=json.loads(checked_path(ROOT,center['sources']['PRICE_LIMIT']).read_bytes())['rows']
+    breadth=collections.Counter();limit_counts=collections.Counter();classified=0
+    for x in limits:
+        limit_counts[x['limit_status']]+=1;p=prices.get(x['security_id'])
+        if p and x['trading_status']=='ACTUAL_TRADED' and x['reference_price'] is not None:
+            delta=Decimal(str(p['close']))-Decimal(x['reference_price'])
+            breadth['up' if delta>0 else 'down' if delta<0 else 'flat']+=1
+        else:breadth['unknown']+=1
+        if p and x['limit_up_price'] and x['limit_down_price'] and x['trading_status']=='ACTUAL_TRADED':
+            close=Decimal(str(p['close']))
+            expected='LIMIT_UP' if close==Decimal(x['limit_up_price']) else 'LIMIT_DOWN' if close==Decimal(x['limit_down_price']) else 'NOT_LIMIT'
+            assert expected==x['limit_status'];classified+=1
+    assert dict(limit_counts)==center['limits']['counts']
+    for k,v in breadth.items():assert center['breadth'][k]==v
+    assert sum(breadth.values())==center['breadth']['denominator']==len(limits)
+    raw_amount=float(sum(Decimal(str(x['amount'])) for x in raw))
+    assert raw_amount==center['breadth']['amount_cny']
+    market_oracle=dict(business_date=day,breadth=dict(breadth),denominator=len(limits),
+        limit_counts=dict(limit_counts),close_limit_comparisons=classified,amount_cny=raw_amount,
+        amount_rows=len(raw),sources=center['sources'],
+        scope='RAW_CLOSE_VS_ACCEPTED_REFERENCE_AND_LIMIT_BOUNDS_NOT_INDEPENDENT_EXCHANGE_RULE_REAUDIT',
+        four_axis_algorithm_acceptance='NOT_REIMPLEMENTED_THIS_ROUND')
     numeric=[];missing=collections.Counter()
     with sqlite3.connect(checked_path(ROOT,owner['series']).as_uri()+'?mode=ro',uri=True) as db:
         for item in stocks:
@@ -91,7 +117,7 @@ def main():
                 numeric.append(dict(entity_id=sid,field=key,expected=expected,actual=c['value']))
         # Independently inspect all prior-day Focus observations against actual
         # dated bars; compare only when both RAW and QFQ coordinates coincide.
-        paths=[];unverified=[]
+        paths=[];unverified=[];adjusted_checks=[]
         focus=manifest['domain_features']['focus']
         for ep in focus['episodes']:
             if ep['T0']!='2026-09-29':continue
@@ -100,7 +126,21 @@ def main():
             bars={d:json.loads(p) for d,p in db.execute('SELECT day,payload FROM bars WHERE security=? AND day IN (?,?)',(ep['entity_id'],ep['T0'],day))}
             ready=len(bars)==2 and all(b.get('qfq_ohlc') and b.get('raw_ohlc') and math.isclose(float(b['qfq_ohlc'][3]),float(b['raw_ohlc'][3]),abs_tol=1e-9) for b in bars.values())
             if not ready:
-                unverified.append(dict(episode_id=ep['episode_id'],reason='REQUIRES_INDEPENDENT_AFFINE_REANCHOR_OR_MISSING_BAR'));continue
+                if len(bars)==2 and all(b.get('qfq_ohlc') for b in bars.values()):
+                    operands={d:[Decimal(str(v)).quantize(Decimal('0.01'),rounding=ROUND_HALF_UP) for v in b['qfq_ohlc']] for d,b in bars.items()}
+                    anchor=operands[ep['T0']][3];end=operands[day][3];expected=end/anchor-1
+                    assert math.isclose(float(expected),float(obs['price_path']['metrics']['return_close']),abs_tol=1e-12)
+                    outcome=next(o for o in ep['outcomes'] if o['horizon']==1)
+                    assert outcome['target_trade_date']==day and outcome['outcome_status']=='OBSERVED'
+                    assert math.isclose(float(expected),float(outcome['metrics']['return_close']),abs_tol=1e-12)
+                    adjusted_checks.append(dict(entity_id=ep['entity_id'],episode_id=ep['episode_id'],T0=ep['T0'],target=day,
+                        qfq_rounded_operands={d:list(map(str,v)) for d,v in operands.items()},expected_return=str(expected),
+                        comparison='ACCEPTED_QFQ_SERIES_VS_INDEPENDENT_FOCUS_REANCHOR_OUTPUT',
+                        independent_raw_affine_coefficients_proven=False))
+                unverified.append(dict(episode_id=ep['episode_id'],entity_id=ep['entity_id'],
+                    actual_dates=sorted(bars),adjustment_reasons={d:b.get('adjustment_reason') for d,b in bars.items()},
+                    qfq_known={d:bool(b.get('qfq_ohlc')) for d,b in bars.items()},
+                    price_path=obs['price_path'],reason='REQUIRES_INDEPENDENT_AFFINE_REANCHOR_OR_MISSING_BAR'));continue
             start=float(bars[ep['T0']]['raw_ohlc'][3]);end=float(bars[day]['raw_ohlc'][3])
             expected_return=end/start-1
             assert obs['price_path']['quality']=='READY'
@@ -112,11 +152,12 @@ def main():
                 target_trade_date=day,raw_return=expected_return,comparison='INDEPENDENT_RAW_RETURN_EQUALS_PATH_AND_H1_OUTCOME',price_path=obs['price_path'],outcomes=ep['outcomes']))
     forward=manifest['domain_features']['forward'];due=verify_due_settlement(forward,day)
     assert due==0 and len(forward['enrollments'])==117 and len(forward['plans'])==585
-    write(OUT/'R2_NUMERICAL_ORACLE.json',dict(contract_id='R2_NUMERICAL_ORACLE_V1',strict_pit=False,
+    write(OUT/'R2_NUMERICAL_ORACLE_V2.json',dict(contract_id='R2_NUMERICAL_ORACLE_V2',strict_pit=False,
+        market=market_oracle,
         stocks=dict(comparisons=len(numeric),unknown_preserved=dict(missing),samples=numeric),
         sectors=dict(comparisons=len(sector_comparisons)*3,rows=sector_comparisons,
             full_two_date_rotation_acceptance='NOT_VERIFIABLE',verified_output_states=sum(x['state']['value']!='UNKNOWN' for x in sector_comparisons)),
-        focus=dict(raw_coordinate_samples=paths,unverified=unverified,
+        focus=dict(raw_coordinate_samples=paths,adjusted_coordinate_checks=adjusted_checks,unverified=unverified,
             scope='INDEPENDENT_RAW_RETURN_PATH_AND_H1_OUTCOME_NOT_YET_FULL_AFFINE_PATH_ACCEPTANCE',forward_settlement=False),
         forward=dict(enrollments=117,plans=585,frozen_t0=len(forward['t0_freezes']),due=due,
             real_due_acceptance='NOT_VERIFIABLE_NO_REAL_DUE_SESSION')))

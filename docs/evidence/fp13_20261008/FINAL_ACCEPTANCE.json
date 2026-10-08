@@ -1,0 +1,83 @@
+{
+  "acceptance": "BLOCKED",
+  "code": [
+    {
+      "bytes": 1038,
+      "path": "src/workbench_service/static/research/api.js",
+      "sha256": "bcfbccc05f7af9b5f2ee206a0bbbad4f21e464b99177405cc40a4f943d95a930"
+    },
+    {
+      "bytes": 14027,
+      "path": "src/workbench_service/static/research/app.js",
+      "sha256": "fce0c231bcd30d73ada9681cb1bed12eee2a4fa8efcadddffd4a6dd8dae120e6"
+    },
+    {
+      "bytes": 7961,
+      "path": "src/workbench_service/static/research/components.js",
+      "sha256": "44e3d169b7f62b408751babad2aca6bdbd7abfd6e2b4a9602af91b07470d7703"
+    },
+    {
+      "bytes": 983,
+      "path": "src/workbench_service/static/research/index.html",
+      "sha256": "5d35b9b506a06901bcb4bc040fc6d1cf3e0ea2099212acf13b3a152316515ba9"
+    },
+    {
+      "bytes": 7269,
+      "path": "src/workbench_service/static/research/labels.js",
+      "sha256": "074172dd418507b9d68ef184d03945ea71592c977d901b6d783a55fa51c3bd3d"
+    },
+    {
+      "bytes": 5158,
+      "path": "src/workbench_service/static/research/replay.js",
+      "sha256": "13aae97a88109e43c20b6348ca3e0304a09daf528758bcb2ad2239af5d6b6909"
+    },
+    {
+      "bytes": 3202,
+      "path": "src/workbench_service/static/research/stock.js",
+      "sha256": "2baf02142f44b3967d016c8cfa53b11b592bf1690df1ee1d93812978be55eb7f"
+    },
+    {
+      "bytes": 3832,
+      "path": "src/workbench_service/static/research/style.css",
+      "sha256": "5719a15c2fb54010fab3306cfcac494150ac8a6b6e0d6e83975d948a9a6659e8"
+    }
+  ],
+  "context_token": "research-v4-0244dcc3e92c20498abda8df4fd1e24c29794a6e31db18ad9037ccad1303ac6b",
+  "display_date": "2026-09-30",
+  "edge_pass": false,
+  "independent_external_acceptance": "PENDING",
+  "next_stage": "FP14_PREPARE_BLOCKED_RESULT_NO_FULL_PRODUCT_ACTIVATION",
+  "offline_pass": false,
+  "product_complete": false,
+  "protected": {
+    "changed": [],
+    "checked": 872
+  },
+  "qa_contract": {
+    "bytes": 850,
+    "path": "config/v4_full_product_qa_contract_v1.json",
+    "sha256": "ef46d9ed5bc68ce22177d6e38d47365df3dbeb344df593731b41514bd54bb7ea"
+  },
+  "required_field_coverage_pass": false,
+  "runtime_release_id": "8b4bbcc6a81e48a6b158e3bdf3bb84c8",
+  "source_debt": {
+    "bytes": 2551,
+    "path": "docs/audits/FP13_FULL_PRODUCT_OPEN_ITEMS_20261008.md",
+    "sha256": "5f14402cc55a7376dc3947222e5c9640dad8228ffa87acd4cfa9f8e244fe4052"
+  },
+  "stage": "FP13",
+  "tdx_post": {
+    "bytes": 159,
+    "path": "docs/evidence/fp13_20261008/TDX_POST.json",
+    "sha256": "eb8aa1663b9c967c68066e42163b2c001818499765b96fe6d638ece32b07b422"
+  },
+  "tdx_pre": {
+    "bytes": 159,
+    "path": "docs/evidence/fp13_20261008/TDX_PRE.json",
+    "sha256": "eb8aa1663b9c967c68066e42163b2c001818499765b96fe6d638ece32b07b422"
+  },
+  "tests": {
+    "command": "python -B -m pytest tests/test_fp01_operational_release.py tests/test_fp02_research_snapshot.py tests/test_fp04_ui_authority.py tests/test_fp05_home.py tests/test_fp06_sector.py tests/test_fp07_stock.py tests/test_fp08_focus.py tests/test_fp11_diagnostics.py tests/test_fp12_replay.py tests/upgrade_m8/test_limit_rules.py tests/v4_02/test_final_r4_special_price_phase.py tests/test_r20d_settlement.py tests/test_v4_current_daily_refresh.py -q --basetemp E:/codex_tmp/test_temp/fp13_regression",
+    "passed": 131
+  }
+}

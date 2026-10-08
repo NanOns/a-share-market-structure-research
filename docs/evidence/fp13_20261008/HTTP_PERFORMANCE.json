@@ -1,0 +1,3589 @@
+{
+  "context": {
+    "context": {
+      "accepted_trade_date": "2026-09-30",
+      "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+      "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+      "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+      "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+      "factor_contract_id": null,
+      "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+      "historical_pit_effectiveness": "NOT_GRANTED",
+      "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+      "last_accepted_trade_date": "2026-09-30",
+      "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+      "namespace": "V4_CURRENT_ACCEPTED",
+      "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+      "parameter_set_id": null,
+      "publication_id": "8b4bbcc6a81e48a6b158e3bdf3bb84c8",
+      "quality": "QUALITY_DEGRADED",
+      "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+      "release_id": "8b4bbcc6a81e48a6b158e3bdf3bb84c8",
+      "release_metadata": {
+        "contract_version": "1.0.0",
+        "data_quality_state": "QUALITY_DEGRADED",
+        "evidence_origin": "REAL_ACCEPTED_SOURCE",
+        "evidence_state": "VALIDATION_ONGOING",
+        "input_digest": "cece02b5b64ecf67d9953282347b247a7f91e747327b79e684f33b9ea621baf5",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "owner": "FP02_RESEARCH_PROJECTION",
+        "published_at": "2026-10-08T04:19:31.100225+00:00",
+        "release_id": "8b4bbcc6a81e48a6b158e3bdf3bb84c8",
+        "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+        "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "trading_date": "2026-09-30"
+      },
+      "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+      "source_mode": "OPERATIONAL_PRODUCTION_ACTIVE",
+      "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+      "stage": "V4-15",
+      "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+      "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+      "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+      "trade_date": "2026-09-30",
+      "turnover_as_of": null
+    },
+    "context_token": "research-v4-0244dcc3e92c20498abda8df4fd1e24c29794a6e31db18ad9037ccad1303ac6b",
+    "counts": {
+      "events": 33,
+      "focus": 469,
+      "forward": 117,
+      "market": 1,
+      "radar": 117,
+      "sectors": 378,
+      "settlement": 5,
+      "sources": 4,
+      "stocks": 5213
+    },
+    "daily_refresh": {
+      "accepted_input_date": "2026-09-30",
+      "data_preserved": true,
+      "indexed_trade_date": "2026-09-30",
+      "next_completed_session": null,
+      "scope": "INPUT_PROGRESS_NOT_RESEARCH_CONTEXT",
+      "source_requests": 0,
+      "status": "WAIT_NEXT_ACCEPTED_INPUT"
+    },
+    "gaps": [
+      {
+        "count": 11,
+        "domain": "profile_identity",
+        "reason": "ADVANCED_ROWS_OUTSIDE_CURRENT_RAW_UNIVERSE",
+        "state": "SOURCE_INCOMPLETE"
+      },
+      {
+        "domain": "focus",
+        "next": "FP08_INDEPENDENT_FOCUS_WRITE_ADMISSION",
+        "reason": "AUTOMATIC_WRITE_PATH_ADAPTER_AND_LEGACY_HISTORY_MIGRATION_NOT_ADMITTED",
+        "state": "SOURCE_INCOMPLETE"
+      }
+    ],
+    "status": "READY"
+  },
+  "pagination": {
+    "events": {
+      "pages": 1,
+      "total": 33,
+      "unique": true
+    },
+    "focus": {
+      "pages": 3,
+      "total": 469,
+      "unique": true
+    },
+    "forward": {
+      "pages": 1,
+      "total": 117,
+      "unique": true
+    },
+    "sectors": {
+      "pages": 2,
+      "total": 378,
+      "unique": true
+    },
+    "sources": {
+      "pages": 1,
+      "total": 4,
+      "unique": true
+    },
+    "stocks": {
+      "pages": 27,
+      "total": 5213,
+      "unique": true
+    }
+  },
+  "protected": {
+    "changed": [],
+    "checked": 872
+  },
+  "requests": [
+    {
+      "http": 200,
+      "ms": 47.62,
+      "route": "context",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 95.5,
+      "route": "stocks?limit=200&offset=0",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 100.7,
+      "route": "stocks?limit=200&offset=200",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 118.36,
+      "route": "stocks?limit=200&offset=400",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 115.24,
+      "route": "stocks?limit=200&offset=600",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 130.82,
+      "route": "stocks?limit=200&offset=800",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 158.68,
+      "route": "stocks?limit=200&offset=1000",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 138.73,
+      "route": "stocks?limit=200&offset=1200",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 172.09,
+      "route": "stocks?limit=200&offset=1400",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 169.27,
+      "route": "stocks?limit=200&offset=1600",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 158.22,
+      "route": "stocks?limit=200&offset=1800",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 179.15,
+      "route": "stocks?limit=200&offset=2000",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 172.72,
+      "route": "stocks?limit=200&offset=2200",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 191.14,
+      "route": "stocks?limit=200&offset=2400",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 200.22,
+      "route": "stocks?limit=200&offset=2600",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 191.84,
+      "route": "stocks?limit=200&offset=2800",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 197.02,
+      "route": "stocks?limit=200&offset=3000",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 232.87,
+      "route": "stocks?limit=200&offset=3200",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 224.35,
+      "route": "stocks?limit=200&offset=3400",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 230.99,
+      "route": "stocks?limit=200&offset=3600",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 236.38,
+      "route": "stocks?limit=200&offset=3800",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 244.59,
+      "route": "stocks?limit=200&offset=4000",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 241.73,
+      "route": "stocks?limit=200&offset=4200",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 247.17,
+      "route": "stocks?limit=200&offset=4400",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 260.21,
+      "route": "stocks?limit=200&offset=4600",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 277.95,
+      "route": "stocks?limit=200&offset=4800",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 268.89,
+      "route": "stocks?limit=200&offset=5000",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 197.6,
+      "route": "stocks?limit=200&offset=5200",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 54.13,
+      "route": "sectors?limit=200&offset=0",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 41.51,
+      "route": "sectors?limit=200&offset=200",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 33.37,
+      "route": "focus?limit=200&offset=0",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 29.38,
+      "route": "focus?limit=200&offset=200",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 12.85,
+      "route": "focus?limit=200&offset=400",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 15.7,
+      "route": "forward?limit=200&offset=0",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 3.6,
+      "route": "events?limit=200&offset=0",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 1.79,
+      "route": "sources?limit=200&offset=0",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 72.96,
+      "route": "home",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 18.89,
+      "route": "market/indices",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 13.59,
+      "route": "market/breadth",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 1.79,
+      "route": "market/limits",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 1.59,
+      "route": "market/ladders",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 12.12,
+      "route": "market/facts-events",
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "http": 200,
+      "ms": 1.95,
+      "route": "focus/events",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 1.45,
+      "route": "forward/statistics",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 1.57,
+      "route": "forward/plans",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 25.03,
+      "route": "forward/fep",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 2788.71,
+      "route": "diagnostics/health",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 2.08,
+      "route": "diagnostics/sources",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 1.95,
+      "route": "diagnostics/contracts",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 23.47,
+      "route": "diagnostics/jobs",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 1.49,
+      "route": "diagnostics/legacy",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 1.26,
+      "route": "diagnostics/shadow",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 3.15,
+      "route": "stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/profile",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 28.07,
+      "route": "stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/chart",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 3.16,
+      "route": "stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/why-not-prewatch",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 1.9,
+      "route": "stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/anchors",
+      "status": "SOURCE_INCOMPLETE"
+    },
+    {
+      "http": 200,
+      "ms": 1.81,
+      "route": "stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/structure-events",
+      "status": "SOURCE_INCOMPLETE"
+    },
+    {
+      "http": 501,
+      "ms": 1.85,
+      "route": "stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/timeline",
+      "status": "ENGINEERING_NOT_READY"
+    },
+    {
+      "http": 200,
+      "ms": 3.25,
+      "route": "stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/evidence",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 35.67,
+      "route": "sectors/INDUSTRY:T010101/members",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 3.83,
+      "route": "sectors/INDUSTRY:T010101/timeline",
+      "status": "SOURCE_INCOMPLETE"
+    },
+    {
+      "http": 200,
+      "ms": 24.0,
+      "route": "sectors/INDUSTRY:T010101/rotation",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 4.08,
+      "route": "sectors/INDUSTRY:T010101/rotation-timeline",
+      "status": "SOURCE_INCOMPLETE"
+    },
+    {
+      "http": 200,
+      "ms": 105.35,
+      "route": "sectors/INDUSTRY:T010101/overlap",
+      "status": "READY"
+    },
+    {
+      "http": 409,
+      "ms": 12.12,
+      "route": "stocks?context_token=expired",
+      "status": "CONTEXT_CONFLICT"
+    },
+    {
+      "http": 400,
+      "ms": 1.21,
+      "route": "stocks?limit=201",
+      "status": "INVALID_REQUEST"
+    },
+    {
+      "http": 200,
+      "ms": 1.31,
+      "route": "replay?as_of=2026-09-18",
+      "status": "PIT_NOT_AVAILABLE"
+    },
+    {
+      "http": 200,
+      "ms": 83.86,
+      "route": "replay?as_of=2026-09-28&view=corrected&left=600000",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "ms": 257.09,
+      "route": "compare?as_of=2026-09-30&view=corrected&mode=stock-market&left=600000",
+      "status": "READY"
+    }
+  ],
+  "samples": {
+    "events": [
+      {
+        "display_name": "中华企业",
+        "display_name_source": {
+          "observed_at": "2026-10-08T02:32:57.686901+00:00",
+          "pit_safe": false,
+          "scope": "DISPLAY_ONLY",
+          "source_digest": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+        },
+        "entity_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "fields": {
+          "counterevidence": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": [
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ],
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "STATE_EVENT_V1",
+            "source_digest": "7de481708462bda5073031a129bc147279dc9f2c7741c389f14a8fc6f99dcd58",
+            "source_field": "counterevidence",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": [
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ],
+            "window": null
+          },
+          "effective_event": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": [
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ],
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "STATE_EVENT_V1",
+            "source_digest": "7de481708462bda5073031a129bc147279dc9f2c7741c389f14a8fc6f99dcd58",
+            "source_field": "effective_event",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "NEW_CONFIRMED",
+            "window": null
+          },
+          "primary_scenario": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": [
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ],
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "STATE_EVENT_V1",
+            "source_digest": "7de481708462bda5073031a129bc147279dc9f2c7741c389f14a8fc6f99dcd58",
+            "source_field": "primary_scenario",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "LAUNCH_CONFIRM",
+            "window": null
+          },
+          "trade_date": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": [
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ],
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "STATE_EVENT_V1",
+            "source_digest": "7de481708462bda5073031a129bc147279dc9f2c7741c389f14a8fc6f99dcd58",
+            "source_field": "trade_date",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "2026-09-30",
+            "window": null
+          }
+        },
+        "security_id": null,
+        "symbol": "SH.600675",
+        "trade_date": "2026-09-30"
+      },
+      {
+        "display_name": "华恒生物",
+        "display_name_source": {
+          "observed_at": "2026-10-08T02:32:57.686901+00:00",
+          "pit_safe": false,
+          "scope": "DISPLAY_ONLY",
+          "source_digest": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+        },
+        "entity_id": "SEC-1AED7FE439435A519BA45E0858278357",
+        "fields": {
+          "counterevidence": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": [
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ],
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "STATE_EVENT_V1",
+            "source_digest": "7de481708462bda5073031a129bc147279dc9f2c7741c389f14a8fc6f99dcd58",
+            "source_field": "counterevidence",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": [
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ],
+            "window": null
+          },
+          "effective_event": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": [
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ],
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "STATE_EVENT_V1",
+            "source_digest": "7de481708462bda5073031a129bc147279dc9f2c7741c389f14a8fc6f99dcd58",
+            "source_field": "effective_event",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "NEW_CONFIRMED",
+            "window": null
+          },
+          "primary_scenario": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": [
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ],
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "STATE_EVENT_V1",
+            "source_digest": "7de481708462bda5073031a129bc147279dc9f2c7741c389f14a8fc6f99dcd58",
+            "source_field": "primary_scenario",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "LAUNCH_CONFIRM",
+            "window": null
+          },
+          "trade_date": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": [
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ],
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "STATE_EVENT_V1",
+            "source_digest": "7de481708462bda5073031a129bc147279dc9f2c7741c389f14a8fc6f99dcd58",
+            "source_field": "trade_date",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "2026-09-30",
+            "window": null
+          }
+        },
+        "security_id": null,
+        "symbol": "SH.688639",
+        "trade_date": "2026-09-30"
+      },
+      {
+        "display_name": "康希诺",
+        "display_name_source": {
+          "observed_at": "2026-10-08T02:32:57.686901+00:00",
+          "pit_safe": false,
+          "scope": "DISPLAY_ONLY",
+          "source_digest": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+        },
+        "entity_id": "SEC-27594427F02DE9AB3A8FFC6155E19B42",
+        "fields": {
+          "counterevidence": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": [
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ],
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "STATE_EVENT_V1",
+            "source_digest": "7de481708462bda5073031a129bc147279dc9f2c7741c389f14a8fc6f99dcd58",
+            "source_field": "counterevidence",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": [
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ],
+            "window": null
+          },
+          "effective_event": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": [
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ],
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "STATE_EVENT_V1",
+            "source_digest": "7de481708462bda5073031a129bc147279dc9f2c7741c389f14a8fc6f99dcd58",
+            "source_field": "effective_event",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "NEW_CONFIRMED",
+            "window": null
+          },
+          "primary_scenario": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": [
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ],
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "STATE_EVENT_V1",
+            "source_digest": "7de481708462bda5073031a129bc147279dc9f2c7741c389f14a8fc6f99dcd58",
+            "source_field": "primary_scenario",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "LAUNCH_CONFIRM",
+            "window": null
+          },
+          "trade_date": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": [
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ],
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "STATE_EVENT_V1",
+            "source_digest": "7de481708462bda5073031a129bc147279dc9f2c7741c389f14a8fc6f99dcd58",
+            "source_field": "trade_date",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "2026-09-30",
+            "window": null
+          }
+        },
+        "security_id": null,
+        "symbol": "SH.688185",
+        "trade_date": "2026-09-30"
+      }
+    ],
+    "focus": [
+      {
+        "display_name": "真视通",
+        "display_name_source": {
+          "observed_at": "2026-10-08T02:32:57.686901+00:00",
+          "pit_safe": false,
+          "scope": "DISPLAY_ONLY",
+          "source_digest": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+        },
+        "entity_id": "SEC-00E228DA7EBF038EA528EF36B65B4C97",
+        "fields": {
+          "AS_RECORDED": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "AS_RECORDED",
+            "unit": "OWNER_UNIT_NOT_DECLARED",
+            "value": false,
+            "window": null
+          },
+          "T0": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "T0",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "2026-09-29",
+            "window": null
+          },
+          "end_date": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "UNKNOWN",
+            "reason": "OWNER_FIELD_REASON_MISSING_SEE_AUD_FP01_FIELD_REASON_GAPS",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "end_date",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": null,
+            "window": null
+          },
+          "episode_id": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "episode_id",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "eff7d18dfe9ea5e4cc2f7b56f16a307e86c83b97347da4b312e2c67b6f47a167",
+            "window": null
+          },
+          "event": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "event",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "DATA_UNAVAILABLE",
+            "window": null
+          },
+          "health": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "health",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "UNKNOWN",
+            "window": null
+          },
+          "knowledge_lineage": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "knowledge_lineage",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "RECONSTRUCTED_CORRECTED",
+            "window": null
+          },
+          "membership": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "membership",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "UNKNOWN",
+            "window": null
+          },
+          "outcome_status": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "outcome_status",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "PENDING",
+            "window": null
+          },
+          "parent_episode_id": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "UNKNOWN",
+            "reason": "OWNER_FIELD_REASON_MISSING_SEE_AUD_FP01_FIELD_REASON_GAPS",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "parent_episode_id",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": null,
+            "window": null
+          },
+          "path_reason": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "path_reason",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "V4_PATH_PREDICATE_ADAPTER_NOT_ADMITTED",
+            "window": null
+          },
+          "path_state": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "UNKNOWN",
+            "reason": "OWNER_FIELD_REASON_MISSING_SEE_AUD_FP01_FIELD_REASON_GAPS",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "path_state",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": null,
+            "window": null
+          },
+          "scenario": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "scenario",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "NONE",
+            "window": null
+          },
+          "source_publication": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "source_publication",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "V4_11_R5B_D2_ROW:e2f8b61a35bdf0c75fefbd8775ec67f8277e5838e56934bf910fbb1f896537c9",
+            "window": null
+          },
+          "trade_date": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "trade_date",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "2026-09-30",
+            "window": null
+          },
+          "validity": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "validity",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "UNKNOWN",
+            "window": null
+          },
+          "waiting_for": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "waiting_for",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": [
+              "PREWATCH",
+              "frozen_invalidation",
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ],
+            "window": null
+          }
+        },
+        "security_id": null,
+        "symbol": "SZ.002771",
+        "trade_date": "2026-09-30"
+      },
+      {
+        "display_name": "盟固利",
+        "display_name_source": {
+          "observed_at": "2026-10-08T02:32:57.686901+00:00",
+          "pit_safe": false,
+          "scope": "DISPLAY_ONLY",
+          "source_digest": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+        },
+        "entity_id": "SEC-00F7600938E29E801B3FB9F22775458E",
+        "fields": {
+          "AS_RECORDED": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "AS_RECORDED",
+            "unit": "OWNER_UNIT_NOT_DECLARED",
+            "value": false,
+            "window": null
+          },
+          "T0": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "T0",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "2026-09-30",
+            "window": null
+          },
+          "end_date": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "UNKNOWN",
+            "reason": "OWNER_FIELD_REASON_MISSING_SEE_AUD_FP01_FIELD_REASON_GAPS",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "end_date",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": null,
+            "window": null
+          },
+          "episode_id": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "episode_id",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "c6989b0e49ea82078b58249ea26e34ef4cc04b0497c61399c7043544165e3bdf",
+            "window": null
+          },
+          "event": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "event",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "NEW",
+            "window": null
+          },
+          "health": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "health",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "UNKNOWN",
+            "window": null
+          },
+          "knowledge_lineage": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "knowledge_lineage",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "RECONSTRUCTED_CORRECTED",
+            "window": null
+          },
+          "membership": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "membership",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "CURRENT",
+            "window": null
+          },
+          "outcome_status": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "outcome_status",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "PENDING",
+            "window": null
+          },
+          "parent_episode_id": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "UNKNOWN",
+            "reason": "OWNER_FIELD_REASON_MISSING_SEE_AUD_FP01_FIELD_REASON_GAPS",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "parent_episode_id",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": null,
+            "window": null
+          },
+          "path_reason": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "path_reason",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "V4_PATH_PREDICATE_ADAPTER_NOT_ADMITTED",
+            "window": null
+          },
+          "path_state": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "UNKNOWN",
+            "reason": "OWNER_FIELD_REASON_MISSING_SEE_AUD_FP01_FIELD_REASON_GAPS",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "path_state",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": null,
+            "window": null
+          },
+          "scenario": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "scenario",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "NONE",
+            "window": null
+          },
+          "source_publication": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "source_publication",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "V4_11_R5B_D2_ROW:70e843328117029cf81514add54363a48f013a14177015392f92fdc6353bec90",
+            "window": null
+          },
+          "trade_date": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "trade_date",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "2026-09-30",
+            "window": null
+          },
+          "validity": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "validity",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "UNKNOWN",
+            "window": null
+          },
+          "waiting_for": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "waiting_for",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": [
+              "PREWATCH",
+              "SEED",
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ],
+            "window": null
+          }
+        },
+        "security_id": null,
+        "symbol": "SZ.301487",
+        "trade_date": "2026-09-30"
+      },
+      {
+        "display_name": "洪通燃气",
+        "display_name_source": {
+          "observed_at": "2026-10-08T02:32:57.686901+00:00",
+          "pit_safe": false,
+          "scope": "DISPLAY_ONLY",
+          "source_digest": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+        },
+        "entity_id": "SEC-01503FBCF39C18F6512A1F63139DF7FA",
+        "fields": {
+          "AS_RECORDED": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "AS_RECORDED",
+            "unit": "OWNER_UNIT_NOT_DECLARED",
+            "value": false,
+            "window": null
+          },
+          "T0": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "T0",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "2026-09-29",
+            "window": null
+          },
+          "end_date": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "UNKNOWN",
+            "reason": "OWNER_FIELD_REASON_MISSING_SEE_AUD_FP01_FIELD_REASON_GAPS",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "end_date",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": null,
+            "window": null
+          },
+          "episode_id": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "episode_id",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "364839fdd48e955caa2aae5c4379ebe9e0d77d0fd8253d0a0d172f600f4feb56",
+            "window": null
+          },
+          "event": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "event",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "PERSISTENT",
+            "window": null
+          },
+          "health": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "health",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "UNKNOWN",
+            "window": null
+          },
+          "knowledge_lineage": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "knowledge_lineage",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "RECONSTRUCTED_CORRECTED",
+            "window": null
+          },
+          "membership": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "membership",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "EARLY",
+            "window": null
+          },
+          "outcome_status": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "outcome_status",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "PENDING",
+            "window": null
+          },
+          "parent_episode_id": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "UNKNOWN",
+            "reason": "OWNER_FIELD_REASON_MISSING_SEE_AUD_FP01_FIELD_REASON_GAPS",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "parent_episode_id",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": null,
+            "window": null
+          },
+          "path_reason": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "path_reason",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "V4_PATH_PREDICATE_ADAPTER_NOT_ADMITTED",
+            "window": null
+          },
+          "path_state": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "UNKNOWN",
+            "reason": "OWNER_FIELD_REASON_MISSING_SEE_AUD_FP01_FIELD_REASON_GAPS",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "path_state",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": null,
+            "window": null
+          },
+          "scenario": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "scenario",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "NONE",
+            "window": null
+          },
+          "source_publication": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "source_publication",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "V4_11_R5B_D2_ROW:861a9423bb41f3c9e08c21d0e25f7a54abcd95e6dead9efe54daf17c6878a260",
+            "window": null
+          },
+          "trade_date": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "trade_date",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "2026-09-30",
+            "window": null
+          },
+          "validity": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "validity",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "UNKNOWN",
+            "window": null
+          },
+          "waiting_for": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+            "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+            "source_field": "waiting_for",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": [
+              "frozen_invalidation",
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ],
+            "window": null
+          }
+        },
+        "security_id": null,
+        "symbol": "SH.605169",
+        "trade_date": "2026-09-30"
+      }
+    ],
+    "forward": [
+      {
+        "display_name": "中华企业",
+        "display_name_source": {
+          "observed_at": "2026-10-08T02:32:57.686901+00:00",
+          "pit_safe": false,
+          "scope": "DISPLAY_ONLY",
+          "source_digest": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+        },
+        "entity_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "fields": {
+          "T0": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f",
+            "source_field": "T0",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "2026-09-30",
+            "window": null
+          },
+          "benchmark_ids": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f",
+            "source_field": "benchmark_ids",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": {
+              "market": "bbc97308591778267824636974f6e47ad6156cdae90c410e5c9d2178602bf96e",
+              "sector": "3609ce7097a4b73d07c3072890402dbee4c0cc0440654c3f5520e9af21574b59"
+            },
+            "window": null
+          },
+          "cohort_namespace": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "DEGRADED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f",
+            "source_field": "cohort_namespace",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "RECONSTRUCTED_ASOF",
+            "window": null
+          },
+          "comparison_reference": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f",
+            "source_field": "comparison_reference",
+            "unit": "OWNER_UNIT_NOT_DECLARED",
+            "value": 2.52,
+            "window": null
+          },
+          "control_assignment_ids": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f",
+            "source_field": "control_assignment_ids",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": {
+              "A": "b10fd7fed919727dbfefb3f3fc95872b93d0786d402d4cd8778396ac0969044f",
+              "B": "c969fe014815ddb17f6d1899a68975123a137a513dec8998e12347eba91cb4c4",
+              "C": "f0299b1996e8018f86eb4007883ef5f001597094adace19e3d3c86a884b801b9"
+            },
+            "window": null
+          },
+          "enrollment_id": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f",
+            "source_field": "enrollment_id",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+            "window": null
+          },
+          "entity_id": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f",
+            "source_field": "entity_id",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+            "window": null
+          },
+          "evidence_class": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f",
+            "source_field": "evidence_class",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "REAL_ACCEPTED_SOURCE_CAPABILITY_SCOPED",
+            "window": null
+          },
+          "model_contract_id": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f",
+            "source_field": "model_contract_id",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "RESEARCH_STATE_V1",
+            "window": null
+          },
+          "parameter_digest": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f",
+            "source_field": "parameter_digest",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "20b66f9f2d2d4fe6ba8c3dd0583d6fa3d5408daebda09fae7ff27548e800ffd7",
+            "window": null
+          },
+          "primary_industry": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f",
+            "source_field": "primary_industry",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "INDUSTRY:T110202",
+            "window": null
+          },
+          "signal_type": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f",
+            "source_field": "signal_type",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "NEW_CONFIRMED",
+            "window": null
+          },
+          "source_publication": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f",
+            "source_field": "source_publication",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": {
+              "bytes": 3622812,
+              "path": "reports/v4_14_replay_r18/real/2026-09-30/r1/manifest.json",
+              "sha256": "f4c068afec2fdda754bce62a5f5773565c893be20554f871a25f11afee22e492"
+            },
+            "window": null
+          }
+        },
+        "security_id": null,
+        "symbol": "SH.600675",
+        "trade_date": "2026-09-30"
+      },
+      {
+        "display_name": "西安银行",
+        "display_name_source": {
+          "observed_at": "2026-10-08T02:32:57.686901+00:00",
+          "pit_safe": false,
+          "scope": "DISPLAY_ONLY",
+          "source_digest": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+        },
+        "entity_id": "SEC-02EEB406A654DC45C93B18230C20120A",
+        "fields": {
+          "T0": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "b08c04437547ebd119a35b0cc299aabbfa0a25ed8361daa430b97cb73d1cbf60",
+            "source_field": "T0",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "2026-09-30",
+            "window": null
+          },
+          "benchmark_ids": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "b08c04437547ebd119a35b0cc299aabbfa0a25ed8361daa430b97cb73d1cbf60",
+            "source_field": "benchmark_ids",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": {
+              "market": "f7070c0f67550aec86b342987b311557ad41f3ec31f4eb36ca6a238b68b14e75",
+              "sector": "6c54d8aeb95d0d6aac83b86359ddc591377029fdd1bf578b21602de0648d2a7d"
+            },
+            "window": null
+          },
+          "cohort_namespace": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "DEGRADED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "b08c04437547ebd119a35b0cc299aabbfa0a25ed8361daa430b97cb73d1cbf60",
+            "source_field": "cohort_namespace",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "RECONSTRUCTED_ASOF",
+            "window": null
+          },
+          "comparison_reference": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "b08c04437547ebd119a35b0cc299aabbfa0a25ed8361daa430b97cb73d1cbf60",
+            "source_field": "comparison_reference",
+            "unit": "OWNER_UNIT_NOT_DECLARED",
+            "value": 3.55,
+            "window": null
+          },
+          "control_assignment_ids": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "b08c04437547ebd119a35b0cc299aabbfa0a25ed8361daa430b97cb73d1cbf60",
+            "source_field": "control_assignment_ids",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": {
+              "A": "4751604f83c9b2f3d69298574614f3a777b516f52184ddace5c6bc8f32303594",
+              "B": "0ba15fed265bd63155d558b926d8205048677ef77a0f7ecfd0f9ae4ba6d9852e",
+              "C": "3da91db37434febe27b78988350eebc1a9a6e6804f798cf1ea202481d8a04e05"
+            },
+            "window": null
+          },
+          "enrollment_id": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "b08c04437547ebd119a35b0cc299aabbfa0a25ed8361daa430b97cb73d1cbf60",
+            "source_field": "enrollment_id",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "30bd7f8efa91f0fe7cb848a9c7ee0d41504a8ca6791a8daf1f0bfebc0aa2c675",
+            "window": null
+          },
+          "entity_id": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "b08c04437547ebd119a35b0cc299aabbfa0a25ed8361daa430b97cb73d1cbf60",
+            "source_field": "entity_id",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "SEC-02EEB406A654DC45C93B18230C20120A",
+            "window": null
+          },
+          "evidence_class": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "b08c04437547ebd119a35b0cc299aabbfa0a25ed8361daa430b97cb73d1cbf60",
+            "source_field": "evidence_class",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "REAL_ACCEPTED_SOURCE_CAPABILITY_SCOPED",
+            "window": null
+          },
+          "model_contract_id": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "b08c04437547ebd119a35b0cc299aabbfa0a25ed8361daa430b97cb73d1cbf60",
+            "source_field": "model_contract_id",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "RESEARCH_STATE_V1",
+            "window": null
+          },
+          "parameter_digest": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "b08c04437547ebd119a35b0cc299aabbfa0a25ed8361daa430b97cb73d1cbf60",
+            "source_field": "parameter_digest",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "20b66f9f2d2d4fe6ba8c3dd0583d6fa3d5408daebda09fae7ff27548e800ffd7",
+            "window": null
+          },
+          "primary_industry": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "b08c04437547ebd119a35b0cc299aabbfa0a25ed8361daa430b97cb73d1cbf60",
+            "source_field": "primary_industry",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "INDUSTRY:T1001",
+            "window": null
+          },
+          "signal_type": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "b08c04437547ebd119a35b0cc299aabbfa0a25ed8361daa430b97cb73d1cbf60",
+            "source_field": "signal_type",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "FIRST_PREWATCH",
+            "window": null
+          },
+          "source_publication": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "b08c04437547ebd119a35b0cc299aabbfa0a25ed8361daa430b97cb73d1cbf60",
+            "source_field": "source_publication",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": {
+              "bytes": 3622812,
+              "path": "reports/v4_14_replay_r18/real/2026-09-30/r1/manifest.json",
+              "sha256": "f4c068afec2fdda754bce62a5f5773565c893be20554f871a25f11afee22e492"
+            },
+            "window": null
+          }
+        },
+        "security_id": null,
+        "symbol": "SH.600928",
+        "trade_date": "2026-09-30"
+      },
+      {
+        "display_name": "春雪食品",
+        "display_name_source": {
+          "observed_at": "2026-10-08T02:32:57.686901+00:00",
+          "pit_safe": false,
+          "scope": "DISPLAY_ONLY",
+          "source_digest": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+        },
+        "entity_id": "SEC-03523A6B58C445E3003D75CADF1D83E7",
+        "fields": {
+          "T0": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "67e9fe1458e60dbcdad621b3e314bb31779f92eb3b2c86a11c7c0fbcb15dd62a",
+            "source_field": "T0",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "2026-09-30",
+            "window": null
+          },
+          "benchmark_ids": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "67e9fe1458e60dbcdad621b3e314bb31779f92eb3b2c86a11c7c0fbcb15dd62a",
+            "source_field": "benchmark_ids",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": {
+              "market": "428c2ef90684eb513c1cc5a11d0d40998a519adb5328df35560ce14bc86d60c8",
+              "sector": "365dafd4c32f944bb80f9bd282d3dc41d9f46c6e1e121c9d05ac9d805999e1ec"
+            },
+            "window": null
+          },
+          "cohort_namespace": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "DEGRADED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "67e9fe1458e60dbcdad621b3e314bb31779f92eb3b2c86a11c7c0fbcb15dd62a",
+            "source_field": "cohort_namespace",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "RECONSTRUCTED_ASOF",
+            "window": null
+          },
+          "comparison_reference": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "67e9fe1458e60dbcdad621b3e314bb31779f92eb3b2c86a11c7c0fbcb15dd62a",
+            "source_field": "comparison_reference",
+            "unit": "OWNER_UNIT_NOT_DECLARED",
+            "value": 9.67,
+            "window": null
+          },
+          "control_assignment_ids": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "67e9fe1458e60dbcdad621b3e314bb31779f92eb3b2c86a11c7c0fbcb15dd62a",
+            "source_field": "control_assignment_ids",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": {
+              "A": "0e00768a592438e7efaffadcd83df3a09b4e02c2064716756d98b22c47553adf",
+              "B": "4f1c581d1883036c0b3a8cf2aef2bf41cd4a132dc8b0162b9f1c5712c28f22af",
+              "C": "049310ecea8b882cea192f33bb48c63ba783dc231dbbde3b80bcc5b928fab217"
+            },
+            "window": null
+          },
+          "enrollment_id": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "67e9fe1458e60dbcdad621b3e314bb31779f92eb3b2c86a11c7c0fbcb15dd62a",
+            "source_field": "enrollment_id",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "255ab55a37da9a1dc34e78a6aace653d3c78ab62ff6910b9f17027a48cc6862f",
+            "window": null
+          },
+          "entity_id": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "67e9fe1458e60dbcdad621b3e314bb31779f92eb3b2c86a11c7c0fbcb15dd62a",
+            "source_field": "entity_id",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "SEC-03523A6B58C445E3003D75CADF1D83E7",
+            "window": null
+          },
+          "evidence_class": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "67e9fe1458e60dbcdad621b3e314bb31779f92eb3b2c86a11c7c0fbcb15dd62a",
+            "source_field": "evidence_class",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "REAL_ACCEPTED_SOURCE_CAPABILITY_SCOPED",
+            "window": null
+          },
+          "model_contract_id": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "67e9fe1458e60dbcdad621b3e314bb31779f92eb3b2c86a11c7c0fbcb15dd62a",
+            "source_field": "model_contract_id",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "RESEARCH_STATE_V1",
+            "window": null
+          },
+          "parameter_digest": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "67e9fe1458e60dbcdad621b3e314bb31779f92eb3b2c86a11c7c0fbcb15dd62a",
+            "source_field": "parameter_digest",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "20b66f9f2d2d4fe6ba8c3dd0583d6fa3d5408daebda09fae7ff27548e800ffd7",
+            "window": null
+          },
+          "primary_industry": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "67e9fe1458e60dbcdad621b3e314bb31779f92eb3b2c86a11c7c0fbcb15dd62a",
+            "source_field": "primary_industry",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "INDUSTRY:T030403",
+            "window": null
+          },
+          "signal_type": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "67e9fe1458e60dbcdad621b3e314bb31779f92eb3b2c86a11c7c0fbcb15dd62a",
+            "source_field": "signal_type",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "FIRST_PREWATCH",
+            "window": null
+          },
+          "source_publication": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+            "source_digest": "67e9fe1458e60dbcdad621b3e314bb31779f92eb3b2c86a11c7c0fbcb15dd62a",
+            "source_field": "source_publication",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": {
+              "bytes": 3622812,
+              "path": "reports/v4_14_replay_r18/real/2026-09-30/r1/manifest.json",
+              "sha256": "f4c068afec2fdda754bce62a5f5773565c893be20554f871a25f11afee22e492"
+            },
+            "window": null
+          }
+        },
+        "security_id": null,
+        "symbol": "SH.605567",
+        "trade_date": "2026-09-30"
+      }
+    ],
+    "sectors": [
+      {
+        "display_name": "煤炭开采",
+        "display_name_source": {
+          "observed_at": "2026-10-08T02:32:57.686901+00:00",
+          "pit_safe": false,
+          "scope": "DISPLAY_ONLY",
+          "source_digest": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+        },
+        "entity_id": "INDUSTRY:T010101",
+        "fields": {
+          "breadth_delta3": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "UNKNOWN",
+            "reason": "NO_PRIOR_ACCEPTED_PIT_HISTORY",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "breadth_delta3",
+            "unit": "ratio",
+            "value": null,
+            "window": null
+          },
+          "breadth_ret1": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "ACCEPTED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "breadth_ret1",
+            "unit": "ratio",
+            "value": 0.72,
+            "window": null
+          },
+          "member_count": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1",
+            "source_digest": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d",
+            "source_field": "member_count",
+            "unit": "count",
+            "value": 25,
+            "window": null
+          },
+          "output_state": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "UNKNOWN",
+            "reason": [
+              "NO_PRIOR_ACCEPTED_PIT_HISTORY"
+            ],
+            "source_as_of": "2026-09-30",
+            "source_contract_id": null,
+            "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+            "source_field": "output_state",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "UNKNOWN",
+            "window": null
+          },
+          "participation_proxy": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "ACCEPTED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "participation_proxy",
+            "unit": "ratio_or_percentile_points_as_field_contract",
+            "value": 0.603953080351812,
+            "window": null
+          },
+          "prior_rotation_state": {
+            "adjustment_basis": null,
+            "computation_domain": "ROTATION_CORE_V1",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "UNKNOWN",
+            "reason": "NO_PRIOR_ACCEPTED_PIT_HISTORY",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": null,
+            "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+            "source_field": "prior_rotation_state",
+            "unit": "enum",
+            "value": null,
+            "window": null
+          },
+          "sector_name": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1",
+            "source_digest": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d",
+            "source_field": "sector_name",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "煤炭开采",
+            "window": null
+          },
+          "sector_rs20": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "ACCEPTED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "sector_rs20",
+            "unit": "return ratio median",
+            "value": -0.06400000000000006,
+            "window": null
+          },
+          "sector_rs20_pct": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "ACCEPTED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "sector_rs20_pct",
+            "unit": "ratio_or_percentile_points_as_field_contract",
+            "value": 15.384615384615385,
+            "window": null
+          },
+          "sector_rs5": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "ACCEPTED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "sector_rs5",
+            "unit": "return ratio median",
+            "value": -0.03021784961349261,
+            "window": null
+          },
+          "sector_type": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": null,
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "sector_type",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "INDUSTRY",
+            "window": null
+          },
+          "seed_width": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": 0,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "UNKNOWN",
+            "reason": "DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "seed_width",
+            "unit": "ratio_or_percentile_points_as_field_contract",
+            "value": null,
+            "window": null
+          },
+          "top3_concentration": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "ACCEPTED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "top3_concentration",
+            "unit": "ratio_or_percentile_points_as_field_contract",
+            "value": 0.39800949132258845,
+            "window": null
+          }
+        },
+        "security_id": null,
+        "symbol": "",
+        "trade_date": "2026-09-30"
+      },
+      {
+        "display_name": "焦炭加工",
+        "display_name_source": {
+          "observed_at": "2026-10-08T02:32:57.686901+00:00",
+          "pit_safe": false,
+          "scope": "DISPLAY_ONLY",
+          "source_digest": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+        },
+        "entity_id": "INDUSTRY:T010102",
+        "fields": {
+          "breadth_delta3": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "UNKNOWN",
+            "reason": "NO_PRIOR_ACCEPTED_PIT_HISTORY",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "breadth_delta3",
+            "unit": "ratio",
+            "value": null,
+            "window": null
+          },
+          "breadth_ret1": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "ACCEPTED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "breadth_ret1",
+            "unit": "ratio",
+            "value": 0.7142857142857143,
+            "window": null
+          },
+          "member_count": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1",
+            "source_digest": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d",
+            "source_field": "member_count",
+            "unit": "count",
+            "value": 7,
+            "window": null
+          },
+          "output_state": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "UNKNOWN",
+            "reason": [
+              "NO_PRIOR_ACCEPTED_PIT_HISTORY"
+            ],
+            "source_as_of": "2026-09-30",
+            "source_contract_id": null,
+            "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+            "source_field": "output_state",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "UNKNOWN",
+            "window": null
+          },
+          "participation_proxy": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "ACCEPTED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "participation_proxy",
+            "unit": "ratio_or_percentile_points_as_field_contract",
+            "value": 0.5337772816425894,
+            "window": null
+          },
+          "prior_rotation_state": {
+            "adjustment_basis": null,
+            "computation_domain": "ROTATION_CORE_V1",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "UNKNOWN",
+            "reason": "NO_PRIOR_ACCEPTED_PIT_HISTORY",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": null,
+            "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+            "source_field": "prior_rotation_state",
+            "unit": "enum",
+            "value": null,
+            "window": null
+          },
+          "sector_name": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1",
+            "source_digest": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d",
+            "source_field": "sector_name",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "焦炭加工",
+            "window": null
+          },
+          "sector_rs20": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "ACCEPTED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "sector_rs20",
+            "unit": "return ratio median",
+            "value": -0.07389162561576346,
+            "window": null
+          },
+          "sector_rs20_pct": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "ACCEPTED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "sector_rs20_pct",
+            "unit": "ratio_or_percentile_points_as_field_contract",
+            "value": 12.5,
+            "window": null
+          },
+          "sector_rs5": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "ACCEPTED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "sector_rs5",
+            "unit": "return ratio median",
+            "value": -0.03654485049833878,
+            "window": null
+          },
+          "sector_type": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": null,
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "sector_type",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "INDUSTRY",
+            "window": null
+          },
+          "seed_width": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": 0,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "UNKNOWN",
+            "reason": "DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "seed_width",
+            "unit": "ratio_or_percentile_points_as_field_contract",
+            "value": null,
+            "window": null
+          },
+          "top3_concentration": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "ACCEPTED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "top3_concentration",
+            "unit": "ratio_or_percentile_points_as_field_contract",
+            "value": 0.6916151587933006,
+            "window": null
+          }
+        },
+        "security_id": null,
+        "symbol": "",
+        "trade_date": "2026-09-30"
+      },
+      {
+        "display_name": "水力发电",
+        "display_name_source": {
+          "observed_at": "2026-10-08T02:32:57.686901+00:00",
+          "pit_safe": false,
+          "scope": "DISPLAY_ONLY",
+          "source_digest": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+        },
+        "entity_id": "INDUSTRY:T010201",
+        "fields": {
+          "breadth_delta3": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "UNKNOWN",
+            "reason": "NO_PRIOR_ACCEPTED_PIT_HISTORY",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "breadth_delta3",
+            "unit": "ratio",
+            "value": null,
+            "window": null
+          },
+          "breadth_ret1": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "ACCEPTED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "breadth_ret1",
+            "unit": "ratio",
+            "value": 0.8636363636363636,
+            "window": null
+          },
+          "member_count": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1",
+            "source_digest": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d",
+            "source_field": "member_count",
+            "unit": "count",
+            "value": 22,
+            "window": null
+          },
+          "output_state": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "UNKNOWN",
+            "reason": [
+              "NO_PRIOR_ACCEPTED_PIT_HISTORY"
+            ],
+            "source_as_of": "2026-09-30",
+            "source_contract_id": null,
+            "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+            "source_field": "output_state",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "UNKNOWN",
+            "window": null
+          },
+          "participation_proxy": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "ACCEPTED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "participation_proxy",
+            "unit": "ratio_or_percentile_points_as_field_contract",
+            "value": 0.6787650932247759,
+            "window": null
+          },
+          "prior_rotation_state": {
+            "adjustment_basis": null,
+            "computation_domain": "ROTATION_CORE_V1",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "UNKNOWN",
+            "reason": "NO_PRIOR_ACCEPTED_PIT_HISTORY",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": null,
+            "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+            "source_field": "prior_rotation_state",
+            "unit": "enum",
+            "value": null,
+            "window": null
+          },
+          "sector_name": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1",
+            "source_digest": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d",
+            "source_field": "sector_name",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "水力发电",
+            "window": null
+          },
+          "sector_rs20": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "ACCEPTED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "sector_rs20",
+            "unit": "return ratio median",
+            "value": -0.02267869738829803,
+            "window": null
+          },
+          "sector_rs20_pct": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "ACCEPTED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "sector_rs20_pct",
+            "unit": "ratio_or_percentile_points_as_field_contract",
+            "value": 67.3076923076923,
+            "window": null
+          },
+          "sector_rs5": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "ACCEPTED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "sector_rs5",
+            "unit": "return ratio median",
+            "value": -0.01666675343742352,
+            "window": null
+          },
+          "sector_type": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": null,
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "sector_type",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "INDUSTRY",
+            "window": null
+          },
+          "seed_width": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": 0,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "UNKNOWN",
+            "reason": "DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "seed_width",
+            "unit": "ratio_or_percentile_points_as_field_contract",
+            "value": null,
+            "window": null
+          },
+          "top3_concentration": {
+            "adjustment_basis": null,
+            "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+            "denominator": null,
+            "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+            "quality": "ACCEPTED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+            "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376",
+            "source_field": "top3_concentration",
+            "unit": "ratio_or_percentile_points_as_field_contract",
+            "value": 0.6043418375751154,
+            "window": null
+          }
+        },
+        "security_id": null,
+        "symbol": "",
+        "trade_date": "2026-09-30"
+      }
+    ],
+    "sources": [
+      {
+        "display_name": "ADJUSTED_DAILY",
+        "display_name_source": {
+          "scope": "ACCEPTED_IDENTITY_OR_CODE_FALLBACK"
+        },
+        "entity_id": "ADJUSTED_DAILY",
+        "fields": {
+          "component": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+            "source_digest": "a28b3a912e44a8cc6e3e7e43f37038b64e1f7b62024ec4887b5320ffd33d2e17",
+            "source_field": "component",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "ADJUSTED_DAILY",
+            "window": null
+          },
+          "quality": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "DEGRADED",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+            "source_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+            "source_field": "quality",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "DEGRADED_PASS",
+            "window": null
+          },
+          "row_count": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+            "source_digest": "a28b3a912e44a8cc6e3e7e43f37038b64e1f7b62024ec4887b5320ffd33d2e17",
+            "source_field": "row_count",
+            "unit": "count",
+            "value": 5213,
+            "window": null
+          }
+        },
+        "security_id": null,
+        "symbol": "",
+        "trade_date": "2026-09-30"
+      },
+      {
+        "display_name": "IDENTITY_UNIVERSE",
+        "display_name_source": {
+          "scope": "ACCEPTED_IDENTITY_OR_CODE_FALLBACK"
+        },
+        "entity_id": "IDENTITY_UNIVERSE",
+        "fields": {
+          "component": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "SECURITY_IDENTITY_EVENT_DISCOVERY_V1",
+            "source_digest": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf",
+            "source_field": "component",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "IDENTITY_UNIVERSE",
+            "window": null
+          },
+          "quality": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+            "source_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+            "source_field": "quality",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "FULL_PASS",
+            "window": null
+          },
+          "row_count": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "SECURITY_IDENTITY_EVENT_DISCOVERY_V1",
+            "source_digest": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf",
+            "source_field": "row_count",
+            "unit": "count",
+            "value": 5224,
+            "window": null
+          }
+        },
+        "security_id": null,
+        "symbol": "",
+        "trade_date": "2026-09-30"
+      },
+      {
+        "display_name": "RAW_DAILY",
+        "display_name_source": {
+          "scope": "ACCEPTED_IDENTITY_OR_CODE_FALLBACK"
+        },
+        "entity_id": "RAW_DAILY",
+        "fields": {
+          "component": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+            "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1",
+            "source_field": "component",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "RAW_DAILY",
+            "window": null
+          },
+          "quality": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+            "source_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+            "source_field": "quality",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "FULL_PASS",
+            "window": null
+          },
+          "row_count": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+            "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1",
+            "source_field": "row_count",
+            "unit": "count",
+            "value": 5213,
+            "window": null
+          }
+        },
+        "security_id": null,
+        "symbol": "",
+        "trade_date": "2026-09-30"
+      }
+    ],
+    "stocks": [
+      {
+        "display_name": "三一重能",
+        "display_name_source": {
+          "observed_at": "2026-10-08T02:32:57.686901+00:00",
+          "pit_safe": false,
+          "scope": "DISPLAY_ONLY",
+          "source_digest": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+        },
+        "entity_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "fields": {
+          "close": {
+            "adjustment_basis": "RAW_UNADJUSTED",
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+            "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1",
+            "source_field": "close",
+            "unit": "CNY",
+            "value": 13.24,
+            "window": null
+          },
+          "final_eligibility": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "UNKNOWN",
+            "reason": "ACCEPTED_OWNER_CAPABILITY_SCOPED",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "RESEARCH_STATE_V1",
+            "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+            "source_field": "final_eligibility",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "UNKNOWN",
+            "window": null
+          },
+          "primary_industry": {
+            "adjustment_basis": null,
+            "computation_domain": "MEMBERSHIP_RELATION_PROJECTION_V1",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "MEMBERSHIP_RELATION_PROJECTION_V1",
+            "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+            "source_field": "primary_industry",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "INDUSTRY:T0706",
+            "window": null
+          },
+          "scenario": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "DEGRADED",
+            "reason": "ACCEPTED_OWNER_CAPABILITY_SCOPED",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "RESEARCH_STATE_V1",
+            "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+            "source_field": "scenario",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "NONE",
+            "window": null
+          },
+          "source_security_key": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+            "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1",
+            "source_field": "source_security_key",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "SH.688349",
+            "window": null
+          },
+          "trade_date": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+            "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1",
+            "source_field": "trade_date",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "2026-09-30",
+            "window": null
+          }
+        },
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "symbol": "SH.688349",
+        "trade_date": "2026-09-30"
+      },
+      {
+        "display_name": "三安光电",
+        "display_name_source": {
+          "observed_at": "2026-10-08T02:32:57.686901+00:00",
+          "pit_safe": false,
+          "scope": "DISPLAY_ONLY",
+          "source_digest": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+        },
+        "entity_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "fields": {
+          "close": {
+            "adjustment_basis": "RAW_UNADJUSTED",
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+            "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1",
+            "source_field": "close",
+            "unit": "CNY",
+            "value": 11.48,
+            "window": null
+          },
+          "final_eligibility": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "UNKNOWN",
+            "reason": "ACCEPTED_OWNER_CAPABILITY_SCOPED",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "RESEARCH_STATE_V1",
+            "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+            "source_field": "final_eligibility",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "UNKNOWN",
+            "window": null
+          },
+          "primary_industry": {
+            "adjustment_basis": null,
+            "computation_domain": "MEMBERSHIP_RELATION_PROJECTION_V1",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "MEMBERSHIP_RELATION_PROJECTION_V1",
+            "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+            "source_field": "primary_industry",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "INDUSTRY:T1203",
+            "window": null
+          },
+          "scenario": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "DEGRADED",
+            "reason": "ACCEPTED_OWNER_CAPABILITY_SCOPED",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "RESEARCH_STATE_V1",
+            "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+            "source_field": "scenario",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "NONE",
+            "window": null
+          },
+          "source_security_key": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+            "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1",
+            "source_field": "source_security_key",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "SH.600703",
+            "window": null
+          },
+          "trade_date": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+            "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1",
+            "source_field": "trade_date",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "2026-09-30",
+            "window": null
+          }
+        },
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "symbol": "SH.600703",
+        "trade_date": "2026-09-30"
+      },
+      {
+        "display_name": "晨曦航空",
+        "display_name_source": {
+          "observed_at": "2026-10-08T02:32:57.686901+00:00",
+          "pit_safe": false,
+          "scope": "DISPLAY_ONLY",
+          "source_digest": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+        },
+        "entity_id": "SEC-002610CF9EBB4227722834AADA8F757E",
+        "fields": {
+          "close": {
+            "adjustment_basis": "RAW_UNADJUSTED",
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+            "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1",
+            "source_field": "close",
+            "unit": "CNY",
+            "value": 9.95,
+            "window": null
+          },
+          "final_eligibility": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "UNKNOWN",
+            "reason": "ACCEPTED_OWNER_CAPABILITY_SCOPED",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "RESEARCH_STATE_V1",
+            "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+            "source_field": "final_eligibility",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "UNKNOWN",
+            "window": null
+          },
+          "primary_industry": {
+            "adjustment_basis": null,
+            "computation_domain": "MEMBERSHIP_RELATION_PROJECTION_V1",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "MEMBERSHIP_RELATION_PROJECTION_V1",
+            "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+            "source_field": "primary_industry",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "INDUSTRY:T0701",
+            "window": null
+          },
+          "scenario": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "DEGRADED",
+            "reason": "ACCEPTED_OWNER_CAPABILITY_SCOPED",
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "RESEARCH_STATE_V1",
+            "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+            "source_field": "scenario",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "NONE",
+            "window": null
+          },
+          "source_security_key": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+            "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1",
+            "source_field": "source_security_key",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "SZ.300581",
+            "window": null
+          },
+          "trade_date": {
+            "adjustment_basis": null,
+            "computation_domain": "OWNER_PROJECTION",
+            "denominator": null,
+            "parameter_set_id": null,
+            "quality": "KNOWN",
+            "reason": null,
+            "source_as_of": "2026-09-30",
+            "source_contract_id": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+            "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1",
+            "source_field": "trade_date",
+            "unit": "NOT_APPLICABLE_TYPED_VALUE",
+            "value": "2026-09-30",
+            "window": null
+          }
+        },
+        "security_id": "SEC-002610CF9EBB4227722834AADA8F757E",
+        "symbol": "SZ.300581",
+        "trade_date": "2026-09-30"
+      }
+    ]
+  },
+  "subroutes": {
+    "diagnostics/contracts": {
+      "reason": null,
+      "status": "READY",
+      "total": null
+    },
+    "diagnostics/health": {
+      "reason": null,
+      "status": "READY",
+      "total": null
+    },
+    "diagnostics/jobs": {
+      "reason": null,
+      "status": "READY",
+      "total": null
+    },
+    "diagnostics/legacy": {
+      "reason": null,
+      "status": "READY",
+      "total": null
+    },
+    "diagnostics/shadow": {
+      "reason": null,
+      "status": "READY",
+      "total": null
+    },
+    "diagnostics/sources": {
+      "reason": null,
+      "status": "READY",
+      "total": null
+    },
+    "focus/events": {
+      "reason": null,
+      "status": "READY",
+      "total": 469
+    },
+    "forward/fep": {
+      "reason": null,
+      "status": "READY",
+      "total": null
+    },
+    "forward/plans": {
+      "reason": null,
+      "status": "READY",
+      "total": 585
+    },
+    "forward/statistics": {
+      "reason": null,
+      "status": "READY",
+      "total": null
+    },
+    "home": {
+      "reason": null,
+      "status": "READY",
+      "total": null
+    },
+    "market/breadth": {
+      "reason": null,
+      "status": "READY",
+      "total": null
+    },
+    "market/facts-events": {
+      "reason": null,
+      "status": "SOURCE_UNAVAILABLE",
+      "total": null
+    },
+    "market/indices": {
+      "reason": null,
+      "status": "READY",
+      "total": 5
+    },
+    "market/ladders": {
+      "reason": null,
+      "status": "READY",
+      "total": 56
+    },
+    "market/limits": {
+      "reason": null,
+      "status": "READY",
+      "total": 5224
+    },
+    "sectors/INDUSTRY:T010101/members": {
+      "reason": null,
+      "status": "READY",
+      "total": 25
+    },
+    "sectors/INDUSTRY:T010101/overlap": {
+      "reason": null,
+      "status": "READY",
+      "total": 30
+    },
+    "sectors/INDUSTRY:T010101/rotation": {
+      "reason": null,
+      "status": "READY",
+      "total": null
+    },
+    "sectors/INDUSTRY:T010101/rotation-timeline": {
+      "reason": "FIRST_ACCEPTED_PIT_MEMBERSHIP_NO_PRIOR_DATED_NATIVE_HISTORY",
+      "status": "SOURCE_INCOMPLETE",
+      "total": 1
+    },
+    "sectors/INDUSTRY:T010101/timeline": {
+      "reason": "FIRST_ACCEPTED_PIT_MEMBERSHIP_NO_PRIOR_DATED_NATIVE_HISTORY",
+      "status": "SOURCE_INCOMPLETE",
+      "total": 1
+    },
+    "stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/anchors": {
+      "reason": null,
+      "status": "SOURCE_INCOMPLETE",
+      "total": 0
+    },
+    "stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/chart": {
+      "reason": null,
+      "status": "READY",
+      "total": 253
+    },
+    "stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/evidence": {
+      "reason": null,
+      "status": "READY",
+      "total": null
+    },
+    "stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/profile": {
+      "reason": null,
+      "status": "READY",
+      "total": null
+    },
+    "stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/structure-events": {
+      "reason": null,
+      "status": "SOURCE_INCOMPLETE",
+      "total": 0
+    },
+    "stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/timeline": {
+      "reason": null,
+      "status": "ENGINEERING_NOT_READY",
+      "total": 0
+    },
+    "stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/why-not-prewatch": {
+      "reason": null,
+      "status": "READY",
+      "total": null
+    }
+  }
+}

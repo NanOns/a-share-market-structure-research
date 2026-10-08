@@ -1,0 +1,545 @@
+- link "跳到主要内容":
+  - /url: "#content"
+- complementary:
+  - link "大 A V4 研究工作台":
+    - /url: /v4/research/home
+    - text: 大 A
+    - generic: V4 研究工作台
+  - navigation "主导航":
+    - link "今日总览":
+      - /url: /v4/research/home
+    - link "板块研究":
+      - /url: /v4/research/sectors
+    - link "个股研究":
+      - /url: /v4/research/stocks
+    - link "关注跟踪":
+      - /url: /v4/research/focus
+    - link "市场与事件":
+      - /url: /v4/research/market
+    - link "数据与诊断":
+      - /url: /v4/research/diagnostics
+  - paragraph:
+    - text: 真实生产快照
+    - text: 研究与持续验证
+- banner:
+  - strong: 当前已处理截至 2026-09-30
+  - generic: 数据更新时间：2026/10/1 20:25:10（北京时间） · 持续验证中
+  - generic: 正式研究运营
+- main:
+  - heading "技术图表 · 实际成交行情" [level=2]
+  - combobox "行情周期":
+    - option "日线"
+    - option "周线"
+    - option "月线" [selected]
+  - combobox "价格口径":
+    - option "原生前复权" [selected]
+    - option "不复权"
+  - paragraph: 截至 2026-09-30 · 截至该日坐标前复权 · 展示 13 / 13 根 · 成交量：股 / 成交额：元
+  - img "真实行情蜡烛图":
+    - generic "2025-09-30 开 13.09 高 13.27 低 11.39 收 11.48 量 1043981093"
+    - generic "2025-10-31 开 11.33 高 13.11 低 11.07 收 11.07 量 2196942050"
+    - generic "2025-11-28 开 11.07 高 11.54 低 10.83 收 11.06 量 2046714290"
+    - generic "2025-12-31 开 10.99 高 12.03 低 10.72 收 12.02 量 1616455594"
+    - generic "2026-01-30 开 12.05 高 12.06 低 9.46 收 9.62 量 2084339251"
+    - generic "2026-02-27 开 9.65 高 9.86 低 9.27 收 9.3 量 1037664813"
+    - generic "2026-03-31 开 9.27 高 10.04 低 9.01 收 9.76 量 1781499649"
+    - generic "2026-04-30 开 9.78 高 9.95 低 8.83 收 8.85 量 1216523611"
+    - generic "2026-05-29 开 8.85 高 9.12 低 8.33 收 8.95 量 1911173496"
+    - generic "2026-06-30 开 8.9 高 9.3 低 8.07 收 8.19 量 1601265151"
+    - generic "2026-07-31 开 8.16 高 9.72 低 8.12 收 9.51 量 1895010795"
+    - generic "2026-08-31 开 9.51 高 9.65 低 8.95 收 9.16 量 1462077344"
+    - generic "2026-09-30 开 9.13 高 9.49 低 8.91 收 9.48 量 1543940202"
+    - generic: 2025-09-30 — 2026-09-30 · MA5/20/60 · 下图成交量（股）
+  - button "行情口径与来源"
+  - generic: 研究工作台 / 个股研究
+  - heading "个股研究" [level=1]
+  - paragraph: 真实结果、输入质量与持续验证进度分别呈现。
+  - link "← 返回个股研究":
+    - /url: /v4/research/stocks?q=600000&sort=id&offset=0
+  - heading "浦发银行 SH.600000" [level=2]
+  - link "冻结回放":
+    - /url: /v4/research/replay?as_of=2026-09-30&left=SEC-62C40F6EEABB12A3B3F00D4FB0B61ED0
+  - text: ·
+  - link "比较该对象":
+    - /url: /v4/research/compare?as_of=2026-09-30&left=SEC-62C40F6EEABB12A3B3F00D4FB0B61ED0&mode=stock-market
+  - table:
+    - rowgroup:
+      - row "研究对象 研究字段 证据":
+        - columnheader "研究对象"
+        - columnheader "研究字段"
+        - columnheader "证据"
+    - rowgroup:
+      - row "接受状态 来源能力不足 来源":
+        - cell "接受状态"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "当前锚点 — 来源":
+        - cell "当前锚点"
+        - cell "—":
+          - button "—"
+        - cell "来源":
+          - button "来源"
+      - row "算法支撑板块 来源能力不足 来源":
+        - cell "算法支撑板块"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "当日锚点视图 来源能力不足 来源":
+        - cell "当日锚点视图"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "基础突破 来源能力不足 来源":
+        - cell "基础突破"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "基础回踩 来源能力不足 来源":
+        - cell "基础回踩"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "基础恢复 来源能力不足 来源":
+        - cell "基础恢复"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "边界事件 — 来源":
+        - cell "边界事件"
+        - cell "—":
+          - button "—"
+        - cell "来源":
+          - button "来源"
+      - row "收盘价 9.480 来源":
+        - cell "收盘价"
+        - cell "9.480":
+          - button "9.480"
+        - cell "来源":
+          - button "来源"
+      - row "检测器状态 查看详情 来源":
+        - cell "检测器状态"
+        - cell "查看详情":
+          - button "查看详情"
+        - cell "来源":
+          - button "来源"
+      - row "降级计数 0 来源":
+        - cell "降级计数"
+        - cell "0":
+          - button "0"
+        - cell "来源":
+          - button "来源"
+      - row "过期计数 0 来源":
+        - cell "过期计数"
+        - cell "0":
+          - button "0"
+        - cell "来源":
+          - button "来源"
+      - row "资格判断 来源能力不足 来源":
+        - cell "资格判断"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "健康度 来源能力不足 来源":
+        - cell "健康度"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "最高价 9.490 来源":
+        - cell "最高价"
+        - cell "9.490":
+          - button "9.490"
+        - cell "来源":
+          - button "来源"
+      - row "改善基线 — 来源":
+        - cell "改善基线"
+        - cell "—":
+          - button "—"
+        - cell "来源":
+          - button "来源"
+      - row "上市日期 1999-11-10 来源":
+        - cell "上市日期"
+        - cell "1999-11-10":
+          - button "1999-11-10"
+        - cell "来源":
+          - button "来源"
+      - row "最低价 9.160 来源":
+        - cell "最低价"
+        - cell "9.160":
+          - button "9.160"
+        - cell "来源":
+          - button "来源"
+      - row "市场会话年龄 1 来源":
+        - cell "市场会话年龄"
+        - cell "1":
+          - button "1"
+        - cell "来源":
+          - button "来源"
+      - row "已满足条件 无 来源":
+        - cell "已满足条件"
+        - cell "无":
+          - button "无"
+        - cell "来源":
+          - button "来源"
+      - row "成熟度 无 来源":
+        - cell "成熟度"
+        - cell "无":
+          - button "无"
+        - cell "来源":
+          - button "来源"
+      - row "开盘价 9.220 来源":
+        - cell "开盘价"
+        - cell "9.220":
+          - button "9.220"
+        - cell "来源":
+          - button "来源"
+      - row "六十会话位置 0.822 来源":
+        - cell "六十会话位置"
+        - cell "0.822":
+          - button "0.822"
+        - cell "来源":
+          - button "来源"
+      - row "主行业 查看所属板块 来源":
+        - cell "主行业"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1001
+        - cell "来源":
+          - button "来源"
+      - row "原始资格判断 查看详情 来源":
+        - cell "原始资格判断"
+        - cell "查看详情":
+          - button "查看详情"
+        - cell "来源":
+          - button "来源"
+      - row "相对板块状态 来源能力不足 来源":
+        - cell "相对板块状态"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "回测次数 来源能力不足 来源":
+        - cell "回测次数"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "轮动结构增强 查看详情 来源":
+        - cell "轮动结构增强"
+        - cell "查看详情":
+          - button "查看详情"
+        - cell "来源":
+          - button "来源"
+      - row "研究情景 无 来源":
+        - cell "研究情景"
+        - cell "无":
+          - button "无"
+        - cell "来源":
+          - button "来源"
+      - row "情景状态 来源能力不足 来源":
+        - cell "情景状态"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "背景质量 来源能力不足 来源":
+        - cell "背景质量"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "板块背景 查看详情 来源":
+        - cell "板块背景"
+        - cell "查看详情":
+          - button "查看详情"
+        - cell "来源":
+          - button "来源"
+      - row "证券代码 SH.600000 来源":
+        - cell "证券代码"
+        - cell "SH.600000":
+          - button "SH.600000"
+        - cell "来源":
+          - button "来源"
+      - row "状态时效 状态过期 来源":
+        - cell "状态时效"
+        - cell "状态过期":
+          - button "状态过期"
+        - cell "来源":
+          - button "来源"
+      - row "结构事件 无 来源":
+        - cell "结构事件"
+        - cell "无":
+          - button "无"
+        - cell "来源":
+          - button "来源"
+      - row "结构健康 来源能力不足 来源":
+        - cell "结构健康"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "支撑状态 来源能力不足 来源":
+        - cell "支撑状态"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "关联概念 1 项 来源":
+        - cell "关联概念"
+        - cell "1 项":
+          - button "1 项"
+        - cell "来源":
+          - button "来源"
+      - row "研究状态跟踪 已关闭 来源":
+        - cell "研究状态跟踪"
+        - cell "已关闭":
+          - button "已关闭"
+        - cell "来源":
+          - button "来源"
+      - row "交易日期 2026-09-30 来源":
+        - cell "交易日期"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "状态变更原因 1 项 来源":
+        - cell "状态变更原因"
+        - cell "1 项":
+          - button "1 项"
+        - cell "来源":
+          - button "来源"
+      - row "缺失条件 10 项 来源":
+        - cell "缺失条件"
+        - cell "10 项":
+          - button "10 项"
+        - cell "来源":
+          - button "来源"
+      - row "状态有效性 来源能力不足 来源":
+        - cell "状态有效性"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+  - heading "事实 F / 研究状态 R / 假设 H" [level=2]
+  - heading "事实" [level=3]
+  - table:
+    - rowgroup:
+      - row "研究对象 研究字段 证据":
+        - columnheader "研究对象"
+        - columnheader "研究字段"
+        - columnheader "证据"
+    - rowgroup:
+      - row "研究字段（见来源） 2.156 来源":
+        - cell "研究字段（见来源）"
+        - cell "2.156":
+          - button "2.156"
+        - cell "来源":
+          - button "来源"
+      - row "收盘价 9.480 来源":
+        - cell "收盘价"
+        - cell "9.480":
+          - button "9.480"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 9.108 来源":
+        - cell "研究字段（见来源）"
+        - cell "9.108":
+          - button "9.108"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 9.200 来源":
+        - cell "研究字段（见来源）"
+        - cell "9.200":
+          - button "9.200"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 9.160 来源":
+        - cell "研究字段（见来源）"
+        - cell "9.160":
+          - button "9.160"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 9.132 来源":
+        - cell "研究字段（见来源）"
+        - cell "9.132":
+          - button "9.132"
+        - cell "来源":
+          - button "来源"
+      - row "六十会话位置 0.822 来源":
+        - cell "六十会话位置"
+        - cell "0.822":
+          - button "0.822"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 77.456 来源":
+        - cell "研究字段（见来源）"
+        - cell "77.456":
+          - button "77.456"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 95.028 来源":
+        - cell "研究字段（见来源）"
+        - cell "95.028":
+          - button "95.028"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 2.112 来源":
+        - cell "研究字段（见来源）"
+        - cell "2.112":
+          - button "2.112"
+        - cell "来源":
+          - button "来源"
+  - heading "研究状态" [level=3]
+  - table:
+    - rowgroup:
+      - row "研究对象 研究字段 证据":
+        - columnheader "研究对象"
+        - columnheader "研究字段"
+        - columnheader "证据"
+    - rowgroup:
+      - row "接受状态 来源能力不足 来源":
+        - cell "接受状态"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 查看研究状态 来源":
+        - cell "研究字段（见来源）"
+        - cell "查看研究状态":
+          - button "查看研究状态"
+        - cell "来源":
+          - button "来源"
+      - row "基础突破 来源能力不足 来源":
+        - cell "基础突破"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "基础回踩 来源能力不足 来源":
+        - cell "基础回踩"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "基础恢复 来源能力不足 来源":
+        - cell "基础恢复"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 正常 来源":
+        - cell "研究字段（见来源）"
+        - cell "正常":
+          - button "正常"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 低 来源":
+        - cell "研究字段（见来源）"
+        - cell "低":
+          - button "低"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 查看研究状态 来源":
+        - cell "研究字段（见来源）"
+        - cell "查看研究状态":
+          - button "查看研究状态"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 查看研究状态 来源":
+        - cell "研究字段（见来源）"
+        - cell "查看研究状态":
+          - button "查看研究状态"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 查看研究状态 来源":
+        - cell "研究字段（见来源）"
+        - cell "查看研究状态":
+          - button "查看研究状态"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 查看研究状态 来源":
+        - cell "研究字段（见来源）"
+        - cell "查看研究状态":
+          - button "查看研究状态"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 查看研究状态 来源":
+        - cell "研究字段（见来源）"
+        - cell "查看研究状态":
+          - button "查看研究状态"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 查看研究状态 来源":
+        - cell "研究字段（见来源）"
+        - cell "查看研究状态":
+          - button "查看研究状态"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 查看研究状态 来源":
+        - cell "研究字段（见来源）"
+        - cell "查看研究状态":
+          - button "查看研究状态"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 查看研究状态 来源":
+        - cell "研究字段（见来源）"
+        - cell "查看研究状态":
+          - button "查看研究状态"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 来源能力不足 来源":
+        - cell "研究字段（见来源）"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "相对板块状态 来源能力不足 来源":
+        - cell "相对板块状态"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "板块背景 查看详情 来源":
+        - cell "板块背景"
+        - cell "查看详情":
+          - button "查看详情"
+        - cell "来源":
+          - button "来源"
+      - row "支撑状态 来源能力不足 来源":
+        - cell "支撑状态"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 查看研究状态 来源":
+        - cell "研究字段（见来源）"
+        - cell "查看研究状态":
+          - button "查看研究状态"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 查看研究状态 来源":
+        - cell "研究字段（见来源）"
+        - cell "查看研究状态":
+          - button "查看研究状态"
+        - cell "来源":
+          - button "来源"
+      - row "研究字段（见来源） 查看研究状态 来源":
+        - cell "研究字段（见来源）"
+        - cell "查看研究状态":
+          - button "查看研究状态"
+        - cell "来源":
+          - button "来源"
+  - generic: 假设：当前没有已绑定的 owner 假设产物。等待条件与失效条件仅按实际源展示。
+  - button "未入选原因、等待条件与证据"
+- contentinfo:
+  - text: V4 六入口框架 · 数据、证据与研究状态分别展示
+  - link "历史摘要":
+    - /url: /v4/legacy-summary

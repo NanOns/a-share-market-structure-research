@@ -1,0 +1,102 @@
+- link "跳到主要内容":
+  - /url: "#content"
+- complementary:
+  - link "大 A V4 研究工作台":
+    - /url: /v4/research/home
+    - text: 大 A
+    - generic: V4 研究工作台
+  - navigation "主导航":
+    - link "今日总览":
+      - /url: /v4/research/home
+    - link "板块研究":
+      - /url: /v4/research/sectors
+    - link "个股研究":
+      - /url: /v4/research/stocks
+    - link "关注跟踪":
+      - /url: /v4/research/focus
+    - link "市场与事件":
+      - /url: /v4/research/market
+    - link "数据与诊断" [active]:
+      - /url: /v4/research/diagnostics
+  - paragraph:
+    - text: 真实生产快照
+    - text: 研究与持续验证
+- banner:
+  - strong: 当前已处理截至 2026-09-30
+  - generic: 数据更新时间：2026/10/1 20:25:10（北京时间） · 持续验证中
+  - generic: 正式研究运营
+- main:
+  - generic: 研究工作台 / 数据与诊断
+  - heading "数据与诊断" [level=1]
+  - paragraph: 真实结果、输入质量与持续验证进度分别呈现。
+  - link "数据质量":
+    - /url: /v4/research/diagnostics/health
+  - link "来源与版本":
+    - /url: /v4/research/diagnostics/sources
+  - link "算法合同":
+    - /url: /v4/research/diagnostics/contracts
+  - link "日更与失败状态":
+    - /url: /v4/research/diagnostics/jobs
+  - link "旧模块映射":
+    - /url: /v4/research/diagnostics/legacy
+  - link "独立 Shadow":
+    - /url: /v4/research/diagnostics/shadow
+  - heading "生产源健康" [level=2]
+  - searchbox "搜索代码或名称"
+  - combobox "排序":
+    - option "默认顺序" [selected]
+    - option "名称升序"
+    - option "名称降序"
+    - option "代码升序"
+  - button "搜索"
+  - table:
+    - rowgroup:
+      - row "研究对象 记录数 质量 证据":
+        - columnheader "研究对象"
+        - columnheader "记录数"
+        - columnheader "质量"
+        - columnheader "证据"
+    - rowgroup:
+      - row "ADJUSTED_DAILY 5213 降级通过 来源":
+        - cell "ADJUSTED_DAILY"
+        - cell "5213":
+          - button "5213"
+        - cell "降级通过":
+          - button "降级通过"
+        - cell "来源":
+          - button "来源"
+      - row "IDENTITY_UNIVERSE 5224 通过 来源":
+        - cell "IDENTITY_UNIVERSE"
+        - cell "5224":
+          - button "5224"
+        - cell "通过":
+          - button "通过"
+        - cell "来源":
+          - button "来源"
+      - row "RAW_DAILY 5213 通过 来源":
+        - cell "RAW_DAILY"
+        - cell "5213":
+          - button "5213"
+        - cell "通过":
+          - button "通过"
+        - cell "来源":
+          - button "来源"
+      - row "TRADING_STATUS 5224 通过 来源":
+        - cell "TRADING_STATUS"
+        - cell "5224":
+          - button "5224"
+        - cell "通过":
+          - button "通过"
+        - cell "来源":
+          - button "来源"
+  - generic: 共 4 条 · 第 1 页
+  - button "上一页" [disabled]
+  - button "下一页" [disabled]
+  - button "查看发布、来源与缺口"
+  - paragraph: 日更入口：python -B scripts/run_fp02_research_snapshot.py --daily
+  - link "历史 Shadow 诊断":
+    - /url: /v4/shadow
+- contentinfo:
+  - text: V4 六入口框架 · 数据、证据与研究状态分别展示
+  - link "历史摘要":
+    - /url: /v4/legacy-summary

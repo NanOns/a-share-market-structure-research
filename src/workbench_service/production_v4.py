@@ -438,7 +438,7 @@ class ProductionV4ResearchReader:
         if forward.get('adapter_contract_id')=='R2_FORWARD_DUE_LOCAL_CORRECTED_V1':
             self.context['domain_readiness']['forward'].update(scope='CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ',
                 debt=['CURRENT_FEP_INFERENCE','STRICT_T0_ELIGIBILITY_NOT_GRANTED','REAL_COHORT_MATURITY_NOT_YET_OBSERVED'])
-        if focus.get('contract_id')=='R2_V4_FOCUS_PATH_OUTCOME_V2':
+        if focus.get('contract_id') in ('R2_V4_FOCUS_PATH_OUTCOME_V2','R2_V4_FOCUS_NATIVE_CORE_PATH_V1'):
             self.context['domain_readiness']['focus'].update(
                 scope='CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ',
                 earliest_valid_date=focus.get('earliest_valid_date'),

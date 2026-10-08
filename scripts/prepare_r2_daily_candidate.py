@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 from scripts.fp01_evidence import write,ref
-from focus_tracker.v4_daily_driver import advance
+from focus_tracker.v4_native_core_daily_driver import advance
 from focus_tracker.v4_path_adapter import checked
 from workbench_service.production_v4 import ProductionV4ResearchReader,build_snapshot,frozen_current_reader
 from workbench_service.current_v4_context import SourceInvalid

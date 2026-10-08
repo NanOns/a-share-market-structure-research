@@ -7,6 +7,9 @@ import html
 import json
 import os
 import re
+import shutil
+import subprocess
+import sys
 import tempfile
 import time
 import urllib.error
@@ -253,6 +256,51 @@ def _stream_download(url: str, destination: Path, *, max_bytes: int, timeout: in
         response.close()
 
 
+def _existing_downloader_package(target_date: str, package_url: str, *, max_bytes: int) -> tuple[Path, dict[str, Any]]:
+    """Delegate challenge handling to the already accepted R3 downloader.
+
+    A recent receipt can be shared only after a fresh caller publication check;
+    byte and date bindings are verified again rather than trusting its pointer.
+    """
+    root = Path(__file__).resolve().parents[2]
+    pointer = root / 'reports/audits/DM01_A01_R3_TDX_SOURCE_CAPTURE_R1.json'
+
+    def verified() -> tuple[Path, dict[str, Any]]:
+        ref = json.loads(pointer.read_bytes())['capture_receipt']
+        receipt_path = (root / ref['path']).resolve()
+        receipt_path.relative_to(root / 'data/v4/source_evidence/dm01_a01_r3/tdx')
+        if sha256_file(receipt_path) != ref['sha256']:
+            raise TDXSourceError('TDX_EXISTING_RECEIPT_DIGEST_MISMATCH')
+        receipt = json.loads(receipt_path.read_bytes())
+        age = (datetime.now(timezone.utc) - datetime.fromisoformat(receipt['observed_at'])).total_seconds()
+        if not 0 <= age <= 3600 or receipt['official_publication_date'] != target_date:
+            raise TDXSourceError('TDX_EXISTING_RECEIPT_NOT_CURRENT')
+        if receipt['status'] != 'PASS_OFFICIAL_ZIP':
+            raise TDXSourceError('TDX_EXISTING_DOWNLOADER_NOT_READY')
+        successful = next(a for a in receipt['attempts'] if a.get('ZIP_valid'))
+        if successful['url'] != package_url or receipt['request_count'] > receipt['request_limit']:
+            raise TDXSourceError('TDX_EXISTING_DOWNLOADER_SCOPE_MISMATCH')
+        binding = receipt['package']
+        package = (root / binding['path']).resolve()
+        package.relative_to(receipt_path.parent)
+        if (package.stat().st_size != binding['bytes'] or binding['bytes'] > max_bytes
+                or sha256_file(package) != binding['sha256']):
+            raise TDXSourceError('TDX_EXISTING_PACKAGE_BINDING_MISMATCH')
+        return package, {'capture_receipt': ref, 'package': binding,
+                         'adapter_contract': 'TDX_EXISTING_R3_DOWNLOADER_ADAPTER_V1',
+                         'knowledge_lineage': receipt['knowledge_lineage']}
+
+    try:
+        return verified()
+    except (OSError, KeyError, ValueError, StopIteration):
+        result = subprocess.run([sys.executable, '-X', 'utf8', '-B',
+                                 str(root / 'scripts/capture_dm01_a01_r3_tdx_package.py')],
+                                cwd=root, capture_output=True, timeout=480)
+        if result.returncode:
+            raise TDXSourceError('TDX_EXISTING_DOWNLOADER_EXECUTION_FAILED')
+        return verified()
+
+
 def capture_tdx_official_daily_package(
     *,
     target_date: str,
@@ -339,7 +387,24 @@ def capture_tdx_official_daily_package(
                            rejected_response=dict(path=str(rejected.resolve()), bytes=byte_count,
                                sha256=sha256_file(rejected), headers=download_headers, final_url=final_url))
             _atomic_write(capture_dir / 'capture_receipt.json', _json_bytes(receipt), tdx_root=tdx_root)
-            raise
+            challenge = rejected.read_bytes() if byte_count <= max_info_bytes else b''
+            if not all(re.search(rb'\b' + key + rb':\d+', challenge)
+                       for key in (b'WTKkN', b'bOYDu', b'wyeCN')):
+                raise
+            package, adapter = _existing_downloader_package(target_date, package_url, max_bytes=max_package_bytes)
+            _atomic_write(capture_dir / 'rejected_response_receipt.json', _json_bytes(receipt), tdx_root=tdx_root)
+            # The original rejected bytes and receipt remain diagnostic evidence.
+            # Hard links share immutable source bytes outside the read-only TDX root.
+            try:
+                os.link(package, temporary_archive)
+            except OSError:
+                shutil.copyfile(package, temporary_archive)
+            byte_count = package.stat().st_size
+            download_headers = {'sha256': adapter['package']['sha256']}
+            validation = _zip_validate(temporary_archive)
+            receipt['existing_downloader'] = adapter
+            receipt.pop('error', None)
+            receipt.pop('error_type', None)
         package_sha = download_headers.pop("sha256")
         snapshot_id = f"sha256-{package_sha}"
         package_dir = snapshot_root / "tdx" / target_date.replace("-", "") / snapshot_id

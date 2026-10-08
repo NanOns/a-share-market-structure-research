@@ -161,6 +161,26 @@ def test_tdx_page_update_date_target_enables_download(monkeypatch, tmp_path):
     assert result["zip_validation"]["crc_integrity"] == "PASS"
 
 
+def test_static_cookie_challenge_uses_existing_downloader_and_preserves_rejection(monkeypatch, tmp_path):
+    package = tmp_path / 'existing.zip'
+    package.write_bytes(_valid_package())
+    calls = []
+
+    def existing(target, url, *, max_bytes):
+        calls.append((target, url))
+        return package, {'package': {'sha256': tdx_source.sha256_file(package)},
+                         'adapter_contract': 'TDX_EXISTING_R3_DOWNLOADER_ADAPTER_V1'}
+
+    monkeypatch.setattr(tdx_source, '_existing_downloader_package', existing)
+    result = _capture_tdx(monkeypatch, tmp_path, update=TARGET,
+                          package=b'<html>WTKkN:1,bOYDu:2,wyeCN:3</html>')
+    assert calls and result['status'] == 'TDX_PACKAGE_READY'
+    assert result['download']['sha256'] == tdx_source.sha256_file(package)
+    rejected = Path(result['rejected_response']['path'])
+    assert rejected.read_bytes().startswith(b'<html>')
+    assert (rejected.parent / 'rejected_response_receipt.json').is_file()
+
+
 def test_tdx_download_url_is_discovered_not_hardcoded():
     markup = b'<a href="https://data.tdx.com.cn/release/todays-file.zip">x</a>'
     assert tdx_source.discover_download_url(markup) == "https://data.tdx.com.cn/release/todays-file.zip"

@@ -1,0 +1,112 @@
+{
+  "status": "PASS_DOWNLOAD_AND_FOUR_SESSION_RAW_READ",
+  "observed_at": "2026-10-08T23:53:21.238645+00:00",
+  "supersedes": "R4-A01 claim that official TDX package acquisition is blocked",
+  "cause": "Daily source entry omitted existing R3 static-cookie challenge downloader",
+  "source_receipt": {
+    "contract_id": "TDX_OFFICIAL_DAILY_PACKAGE_SOURCE_V1",
+    "version": "1.0.0",
+    "target_date": "2026-10-08",
+    "status": "TDX_PACKAGE_READY",
+    "observed_at": "2026-10-08T23:53:12+00:00",
+    "page_url": "https://www.tdx.com.cn/article/vipdata.html",
+    "page_http_metadata": {
+      "ETag": "\"6ab0e845-6320\"",
+      "Last-Modified": "Mon, 21 Sep 2026 08:18:13 GMT",
+      "Content-Type": "text/html"
+    },
+    "page_html_path": "G:\\codex work\\大A交易\\data\\v4\\source_snapshots\\tdx\\20261008\\capture-20261008T235312720215Z-38113b067ccedf5e\\page.html",
+    "page_sha256": "92b455e0e5eb03637eb55c98514a3f392e071bb1bab1d7b639d9ca9919de0c61",
+    "update_info_url": "https://data.tdx.com.cn/vipdoc/_hsjdayinfo.js?t=179150359",
+    "update_info_http_metadata": {
+      "ETag": "\"6ac75231-78\"",
+      "Last-Modified": "Thu, 08 Oct 2026 08:20:01 GMT",
+      "Content-Type": "application/javascript"
+    },
+    "update_info_path": "G:\\codex work\\大A交易\\data\\v4\\source_snapshots\\tdx\\20261008\\capture-20261008T235312720215Z-38113b067ccedf5e\\update_info.js",
+    "update_info_sha256": "8a8e9e9757075b8ac5151a023dc2217894d2ce4543c24860842faeb4e8f3df21",
+    "update_date": "2026-10-08",
+    "update_time": "15:58:57",
+    "resolved_download_url": "https://data.tdx.com.cn/vipdoc/hsjday.zip",
+    "downloaded_at": "2026-10-08T23:53:16+00:00",
+    "download": {
+      "final_url": "https://data.tdx.com.cn/vipdoc/hsjday.zip",
+      "path": "G:\\codex work\\大A交易\\data\\v4\\source_snapshots\\tdx\\20261008\\sha256-5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4\\hsjday.zip",
+      "bytes": 551544006,
+      "sha256": "5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4",
+      "http_metadata": {}
+    },
+    "zip_validation": {
+      "status": "PASS",
+      "entry_count": 12449,
+      "uncompressed_bytes": 953828832,
+      "day_entry_markets": [
+        "bj",
+        "sh",
+        "sz"
+      ],
+      "crc_integrity": "PASS"
+    },
+    "snapshot_id": "sha256-5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4",
+    "tdx_root_write_count": 0,
+    "rejected_response": {
+      "path": "G:\\codex work\\大A交易\\data\\v4\\source_snapshots\\tdx\\20261008\\capture-20261008T235312720215Z-38113b067ccedf5e\\rejected_package_response.bin",
+      "bytes": 988,
+      "sha256": "1c59f5dc952bbcfe3128c6c854de650a46d7af09814d290a0ae2391fd8b572ea",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Disposition": null,
+        "Content-Length": "988",
+        "sha256": "1c59f5dc952bbcfe3128c6c854de650a46d7af09814d290a0ae2391fd8b572ea"
+      },
+      "final_url": "https://data.tdx.com.cn/vipdoc/hsjday.zip"
+    },
+    "existing_downloader": {
+      "capture_receipt": {
+        "bytes": 3019,
+        "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261008T234926978138Z/request_receipt.json",
+        "sha256": "e72a09f21778a9da9d59736a8604d440dee4d18e143d6672bf1bbccf837698b9"
+      },
+      "package": {
+        "bytes": 551544006,
+        "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261008T234926978138Z/sha256-5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4/hsjday.zip",
+        "sha256": "5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4"
+      },
+      "adapter_contract": "TDX_EXISTING_R3_DOWNLOADER_ADAPTER_V1",
+      "knowledge_lineage": "RECONSTRUCTED_CORRECTED"
+    },
+    "source_revision_number": 1,
+    "receipt_path": "G:\\codex work\\大A交易\\data\\v4\\source_snapshots\\tdx\\20261008\\capture-20261008T235312720215Z-38113b067ccedf5e\\capture_receipt.json"
+  },
+  "counts": {
+    "2026-09-28": {
+      "sh": 2314,
+      "sz": 2896,
+      "bj": 349,
+      "total": 5559
+    },
+    "2026-09-29": {
+      "sh": 2314,
+      "sz": 2897,
+      "bj": 350,
+      "total": 5561
+    },
+    "2026-09-30": {
+      "sh": 2315,
+      "sz": 2898,
+      "bj": 350,
+      "total": 5563
+    },
+    "2026-10-08": {
+      "sh": 2315,
+      "sz": 2894,
+      "bj": 350,
+      "total": 5559
+    }
+  },
+  "tdx_root_write_count": 0,
+  "production_heads_changed": false,
+  "acceptance": "DOWNLOAD_AND_RAW_COVERAGE_ONLY",
+  "next_stage": "SOURCE_COORDINATE_AND_OWNER_ADMISSION"
+}

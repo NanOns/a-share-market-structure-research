@@ -17,13 +17,17 @@ def main():
     if receipt['status']!='SHADOW_SOURCE_PASS' or not receipt['append_failure_exact_rollback'] or not receipt['oracle']:
         raise SourceInvalid('FOCUS_SHADOW_GATE_FAILED')
     publication=json.loads(checked(ROOT,receipt['publication']).read_bytes())
+    publication['write_block_reason']='CONTINUOUS_DAILY_DRIVER_NOT_YET_ADMITTED'
+    publication['shadow_acceptance']=ref(OUT/'SHADOW_READBACK.json')
+    published_path=ROOT/'data/v4/r2_focus_journal'/receipt['second']['head']/('publication_'+digest(canonical(publication))+'.json')
+    write(published_path,publication);published=ref(published_path)
     reader=ProductionV4ResearchReader(ROOT);day=reader.context['trade_date']
     if publication['trade_date']!=day:raise SourceInvalid('FOCUS_SNAPSHOT_DATE_MIX')
     directory=ROOT/'data/v4/research_snapshots'/uuid.uuid4().hex;directory.mkdir(parents=True)
     path=directory/'focus_research.sqlite';shutil.copyfile(reader.path,path)
     meta=copy.deepcopy(reader.manifest);meta.pop('database')
     meta['domain_features']['focus']=publication
-    meta['sources']['focus_operational']=receipt['publication']
+    meta['sources']['focus_operational']=published
     meta['sources']['focus_journal']=receipt['journal']
     for name,binding in receipt['sources']['implementation'].items():meta['sources']['focus_kernel_'+name]=binding
     meta['release_id']=directory.name;meta['built_at']=datetime.now(timezone.utc).isoformat()
@@ -40,7 +44,7 @@ def main():
             values={**last,**{k:ep[k] for k in ('episode_id','T0','end_date','parent_episode_id')}}
             fields={k:compact_cell(dict(value=v,quality='UNKNOWN' if v is None or v=='UNKNOWN' else 'KNOWN',
                 reason=last.get('path_reason') if k=='path_state' else 'OWNER_VALUE_UNAVAILABLE' if v is None or v=='UNKNOWN' else None,
-                contract_id=CONTRACT),receipt['publication'],k,day) for k,v in values.items()}
+                contract_id=CONTRACT),published,k,day) for k,v in values.items()}
             item['fields']=fields
             db.execute('INSERT INTO objects VALUES(?,?,?,?,?,?)',('focus',identifier,item['display_name'].casefold(),item.get('symbol',''),last.get('scenario') or '',canonical(item).decode()))
         # Correct quality in the new projection only; original source and old

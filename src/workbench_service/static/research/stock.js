@@ -12,6 +12,8 @@ export async function stockDetail(main,id,signal){
  const p=await read('stocks/'+id+'/profile',{},signal);main.append(C.el('h2','事实 F / 研究状态 R / 假设 H'));
  for(const [name,fields] of [['事实',p.F],['研究状态',p.R]])main.append(C.el('h3',name),C.DataTable({items:Object.entries(fields).map(([k,v])=>({display_name:labels[k]||k,fields:{value:v}}))},['value'],'fields'));
  main.append(C.EmptyState('假设：当前没有已绑定的 owner 假设产物。等待条件与失效条件仅按实际源展示。'));const b=C.el('button','未入选原因、等待条件与证据');b.onclick=()=>C.EvidenceDrawer(p);main.append(b);
+ const focus=C.el('button','关注事件时间线');focus.onclick=async()=>C.EvidenceDrawer(await read('focus/'+id+'/timeline',{limit:200},signal));
+ const structure=C.el('button','结构锚点与事件');structure.onclick=async()=>C.EvidenceDrawer(await read('stocks/'+id+'/timeline',{limit:200},signal));main.append(focus,structure);
 }
 export function stockExport(signal){
  const box=C.el('div'),button=C.el('button','导出当前筛选全量画像 CSV'),cancel=C.el('button','取消导出'),status=C.el('span');cancel.hidden=true;const exportParams=new URLSearchParams(location.search);exportParams.set('context_token',getContext().context_token);const direct=C.link('浏览器原生下载 CSV','/api/v4/stocks.csv?'+exportParams);direct.download='V4_stocks.csv';box.append(button,cancel,status,direct);

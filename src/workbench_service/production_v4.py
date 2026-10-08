@@ -68,7 +68,7 @@ def compact_cell(cell, ref, field, date):
         source_contract_id=cell.get('producer_contract_id') or cell.get('model_contract_id') or cell.get('contract_id') or ref.get('contract_id'),
         parameter_set_id=cell.get('parameter_set_id'), source_as_of=cell.get('max_source_date', date),
         unit=cell.get('unit') or ('CNY' if price else ('count' if field.endswith('count') else ('OWNER_UNIT_NOT_DECLARED' if isinstance(cell.get('value'),(int,float)) else 'NOT_APPLICABLE_TYPED_VALUE'))),
-        denominator=cell.get('n'), window=cell.get('window_identity'),
+        denominator=cell.get('n') if cell.get('n') is not None else cell.get('denominator') if cell.get('denominator') is not None else cell.get('known_count'), window=cell.get('window_identity'),
         adjustment_basis='RAW_UNADJUSTED' if price else cell.get('coordinate_basis'),
         computation_domain=cell.get('producer') or cell.get('producer_contract_id') or 'OWNER_PROJECTION')
 

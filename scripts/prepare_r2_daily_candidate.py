@@ -15,7 +15,7 @@ OWNERS={'market':(5,'v4_market_operational_authority_v1.json'),
         'stocks':(7,'v4_stock_operational_authority_v1.json'),
         'market_center':(9,'v4_market_center_authority_v1.json'),
         'forward':(10,'v4_forward_operational_authority_v1.json')}
-MODULES={5:'build_fp05_market',6:'build_fp06_sector',7:'build_fp07_stock',9:'build_fp09_market_center',10:'build_fp10_forward'}
+MODULES={5:'build_fp05_market',6:'build_fp06_sector_v2',7:'build_fp07_stock',9:'build_fp09_market_center',10:'build_fp10_forward'}
 
 def prepare(*,rebuild_owners=False,replay_namespace=False):
     live_before=(ROOT/AUTHORITY).read_bytes();live=ProductionV4ResearchReader(ROOT)

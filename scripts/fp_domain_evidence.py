@@ -33,7 +33,7 @@ def enter(stage):
         task=ref(next(cards.glob(f'{stage:02d}_*'))),master=ref(next(cards.glob('00_*'))),
         phase0='FULL_PASS',driver_sync='No driver-named chat or repository file in current inventory; latest supplied task cards govern.',
         protected=protected,acceptance='IN_PROGRESS',next_stage='REAL_SOURCE_BINDING_AND_IMPLEMENTATION',
-        successor_upgrade=ref('docs/upgrade/R2_CONTINUOUS_DAILY_EXECUTION_20261008.md') if successor else None))
+        successor_upgrade=ref('docs/upgrade/R2_FIELD_ADMISSION_CONTINUATION_20261008.md') if successor else None))
     return out
 
 def check_protected(out):

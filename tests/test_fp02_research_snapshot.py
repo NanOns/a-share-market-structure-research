@@ -135,3 +135,11 @@ def test_active_joint_forbids_legacy_pointer_only_build(reader):
     with pytest.raises(SourceInvalid,match='JOINT_ROLLBACK'):
         rollback_snapshot(reader.root,digest(before))
     assert (reader.root/POINTER).read_bytes()==before
+
+
+def test_compact_projection_keeps_explicit_numeric_denominator():
+    from workbench_service.production_v4 import compact_cell
+    binding={'sha256':'accepted'}
+    for source,expected in [({'n':20,'denominator':30,'known_count':40},20),({'denominator':30,'known_count':40},30),({'known_count':40},40),({},None)]:
+        cell=compact_cell(dict(value=0.5,quality='ACCEPTED',**source),binding,'ma20_width','2026-09-30')
+        assert cell['value']==0.5 and cell['denominator']==expected

@@ -1,0 +1,51 @@
+{
+  "contract_id": "R2_P0_2_INDEPENDENT_SECTOR_ORACLE_V1",
+  "result": "PASS",
+  "target": "2026-09-30",
+  "sectors": 378,
+  "fields_per_sector": 7,
+  "comparisons": 2646,
+  "fields": [
+    "sector_rs1",
+    "sector_rs5",
+    "sector_rs20",
+    "breadth_ret1",
+    "breadth_ret5",
+    "breadth_ret20",
+    "ma20_width"
+  ],
+  "method": "Independent standard-library median, sign breadth, and accepted same-date QFQ close versus same-basis MA20 aggregation over the accepted PIT membership groups; source hashes verified before calculation.",
+  "source_bindings": {
+    "candidate_authority": {
+      "path": "data/v4/r2_daily_candidates/three_day_repair_r2_20261008/v4_sector_operational_authority_v1.json",
+      "bytes": 3155,
+      "sha256": "cb3a6442aa0d987d8252216a83f241b58c1d1d150d6bf3254bf24e2447e98f4b"
+    },
+    "native": {
+      "path": "data/v4/fp06_sector/26f72f80f6623cadd5e9794eb9bedb461a8345f38bfd7e21670bd317c83165be/native.jsonl.gz",
+      "bytes": 1574482,
+      "sha256": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc"
+    },
+    "factors": {
+      "path": "data/v4/fp06_sector/26f72f80f6623cadd5e9794eb9bedb461a8345f38bfd7e21670bd317c83165be/factors.jsonl.gz",
+      "bytes": 19460170,
+      "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    "membership": {
+      "path": "data/v4/artifact_store/v4_08/V4_08_PIT_MEMBERSHIP_FACTS_20260930_R1.jsonl.gz",
+      "bytes": 4004928,
+      "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+    },
+    "history": {
+      "path": "data/v4/fp05_market/e034e70084533be70892fd32d066139cbd273a36a8ada7e511a68f75fe1f1008/history.jsonl.gz",
+      "bytes": 42168789,
+      "sha256": "9f7ee99454374db02824b5c9d52e2da89fca30232bc291ddb1f48ef6db84b6c0"
+    }
+  },
+  "detail": {
+    "path": "docs/evidence/three_day_repair_r2_20261008/R2_P0_2_SECTOR_INDEPENDENT_ORACLE.csv",
+    "bytes": 947052,
+    "sha256": "3da24178ec80dc98901ecce053a8b601f475d2210552468e1109f016c89db377"
+  },
+  "history_claim": "CURRENT_MEMBERSHIP_NOT_REPLAYED_AS_PRIOR"
+}

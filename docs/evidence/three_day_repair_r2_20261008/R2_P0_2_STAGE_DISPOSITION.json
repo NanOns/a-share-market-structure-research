@@ -1,0 +1,43 @@
+{
+  "stage": "P0_2_CURRENT_OWNER_CANDIDATE",
+  "stage_contract": "V4_04_DERIVED_PRIMITIVES_V1 + V4_08_SECTOR_NATIVE_V1 + R2_CURRENT_SECTOR_MA20_WIDTH_ADAPTER_V2",
+  "target": "2026-09-30",
+  "acceptance": "PARTIAL_PASS_CURRENT_SECTOR_FACTS_ONLY",
+  "activation": false,
+  "evidence": {
+    "independent_oracle": {
+      "path": "docs/evidence/three_day_repair_r2_20261008/R2_P0_2_SECTOR_INDEPENDENT_ORACLE.json",
+      "bytes": 2133,
+      "sha256": "69f961324abe46a697cc2d35131be9f8e2e08778bc6de5fd1c4a9c3b03e6f20c"
+    },
+    "owner_consumer_snapshot": {
+      "path": "docs/evidence/three_day_repair_r2_20261008/R2_P0_2_OWNER_CONSUMER_SNAPSHOT.json",
+      "bytes": 12064,
+      "sha256": "cc9f7740349fdfd4ac609d7b4eb38d0d74865f6b0f6e3c062b06bb1817eccdb2"
+    },
+    "owner_candidate_entry": {
+      "path": "docs/evidence/three_day_repair_r2_20261008/P0_2_CURRENT_OWNER_CANDIDATE_ENTRY.json",
+      "bytes": 595,
+      "sha256": "82218901903255e73a041b5421d87278c5544655722601fef014c2fc64f11807"
+    },
+    "real_materialization": {
+      "path": "docs/evidence/r2_daily_runs/three_day_repair_r2_20261008/fp06/REAL_MATERIALIZATION.json",
+      "bytes": 3915,
+      "sha256": "f400141868c2353cc36d6391b1e0d484a691e95e2f31c9688357dccd8fc08eca"
+    }
+  },
+  "result": {
+    "core_factor_rows": 5224,
+    "profile_rows": 5224,
+    "product_stock_rows": 5213,
+    "product_stock_breakout_unknown": 5213,
+    "sectors": 378,
+    "independent_field_comparisons": 2646,
+    "sector_current_width_known": 378,
+    "sector_rs20_known": 378,
+    "sector_rotation_unknown": 378,
+    "strict_pit_historical_membership": "NOT_VERIFIABLE"
+  },
+  "limitation": "This is a current Core/Profile/Native candidate consumed by FP02 reader. The existing stock Structure owner was not reconstructed; no stock structure recovery is claimed. Missing prior PIT membership and Base/Seed keep sector rotation UNKNOWN.",
+  "next_stage": "P0_3_SECTOR_ROOT_CAUSE_AND_FIVE_EXAMPLE_ORACLE; P0_4 only for eligible current-sector fact scope"
+}

@@ -103,3 +103,35 @@ def test_alias_search_finds_multiple_event_objects_for_one_security(reader):
     stat=reader.path.stat();reader.file_signature=(stat.st_size,stat.st_mtime_ns)
     assert reader.query('events',{'q':'old2'})['total']==2
     assert reader.query('events',{'q':'old'})['total']==2
+
+
+def test_staged_reader_verifies_candidate_while_live_joint_stays_old(reader):
+    live=json.loads((reader.root/POINTER).read_bytes())
+    joint=reader.root/'config/v4_joint_release_authority_v1.json'
+    atomic_bytes(joint,canonical(dict(contract_id='V4_JOINT_RELEASE_V1',snapshot=live,
+        operational_release_scope=['stocks_daily'],full_product_release=False,trading=False)))
+    original=joint.read_bytes()
+    manifest=json.loads((reader.root/live['manifest']['path']).read_bytes())
+    manifest['release_id']='candidate';manifest['metadata']['release_id']='candidate'
+    path=reader.root/'candidate_manifest.json';atomic_bytes(path,canonical(manifest))
+    candidate=dict(manifest=reference(reader.root,path))
+    staged=ProductionV4ResearchReader(reader.root,snapshot_authority=candidate)
+    assert staged.context['release_id']=='candidate'
+    assert staged.context['scoped_release'] is False
+    assert ProductionV4ResearchReader(reader.root).token!=staged.token
+    assert joint.read_bytes()==original
+    manifest.pop('metadata');atomic_bytes(path,canonical(manifest));candidate['manifest']=reference(reader.root,path)
+    with pytest.raises(SourceInvalid,match='METADATA'):
+        ProductionV4ResearchReader(reader.root,snapshot_authority=candidate)
+    assert joint.read_bytes()==original
+
+
+def test_active_joint_forbids_legacy_pointer_only_build(reader):
+    from workbench_service.production_v4 import build_snapshot
+    joint=reader.root/'config/v4_joint_release_authority_v1.json'
+    atomic_bytes(joint,b'{}');before=(reader.root/POINTER).read_bytes()
+    with pytest.raises(SourceInvalid,match='STAGED_BUILD_AND_JOINT_CAS'):
+        build_snapshot(reader.root)
+    with pytest.raises(SourceInvalid,match='JOINT_ROLLBACK'):
+        rollback_snapshot(reader.root,digest(before))
+    assert (reader.root/POINTER).read_bytes()==before

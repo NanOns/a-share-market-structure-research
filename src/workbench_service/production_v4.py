@@ -73,8 +73,13 @@ def compact_cell(cell, ref, field, date):
         computation_domain=cell.get('producer') or cell.get('producer_contract_id') or 'OWNER_PROJECTION')
 
 
-def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
+def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=True, focus_override=None, authority_overrides=None):
     root = Path(root).resolve(); started = time.perf_counter()
+    from .joint_release import AUTHORITY as JOINT_AUTHORITY
+    if publish and (root/JOINT_AUTHORITY).exists():raise SourceInvalid('ACTIVE_JOINT_REQUIRES_STAGED_BUILD_AND_JOINT_CAS')
+    def operational(key,path):
+        if authority_overrides is not None and key in authority_overrides:return authority_overrides[key]
+        return json.loads(path.read_bytes()) if path.exists() else None
     pointer = root / POINTER
     before = pointer.read_bytes() if pointer.exists() else None
     if expected_pointer is not None and (digest(before) if before else None) != expected_pointer:
@@ -110,7 +115,7 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
         if row.get('symbol_effective_from', '') <= date and (not row.get('symbol_effective_to') or row['symbol_effective_to'] >= date):
             names[sid] = row
     directory = root / 'data/v4/research_snapshots' / uuid.uuid4().hex
-    directory.mkdir(parents=True); dbpath = directory / 'research.sqlite'
+    directory.mkdir(parents=True); dbpath = directory / ('research.sqlite' if publish else 'daily_research.sqlite')
     db = sqlite3.connect(dbpath)
     db.executescript('''CREATE TABLE objects(domain TEXT,id TEXT,name TEXT,symbol TEXT,state TEXT,payload TEXT,PRIMARY KEY(domain,id));
         CREATE INDEX object_name ON objects(domain,name,id);
@@ -202,16 +207,16 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
         domain_contract=root/'config/v4_research_domain_bff_contract_v2.json'
         if domain_contract.exists():sources['domain_bff_contract']=reference(root,domain_contract)
         market_authority=root/'config/v4_market_operational_authority_v1.json'
-        if market_authority.exists():
-            authority=json.loads(market_authority.read_bytes())
+        authority=operational('market',market_authority)
+        if authority is not None:
             if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('MARKET_SOURCE_CONTEXT_MISMATCH')
             market=legacy._read(authority['market']);sources['market_operational']=authority['market']
             domain_features['market']=market
             fields={k:compact_cell(dict(value=v,quality='UNKNOWN' if v in (None,'UNKNOWN') else 'KNOWN',reason=market['trend'].get('unknown_reason') if k=='trend_axis' else market['axes']['field_quality'].get(k,{}).get('unknown_reason'),contract_id='FP05_CURRENT_MARKET_FOUR_AXES_V1',parameter_set_id='V4_03_CORE_FACTOR_PARAMETER_SET_V1'),authority['market'],k,date) for k,v in market['row'].items()}
             put('market',dict(entity_id='A_SHARE_RESEARCH_MARKET',display_name='全市场研究环境',fields=fields))
         sector_authority=root/'config/v4_sector_operational_authority_v1.json'
-        if sector_authority.exists():
-            authority=json.loads(sector_authority.read_bytes())
+        authority=operational('sector',sector_authority)
+        if authority is not None:
             if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('SECTOR_SOURCE_CONTEXT_MISMATCH')
             legacy._verify(authority['native']);sources['sector_operational']=authority['native'];domain_features['sector']=authority
             with gzip.open(root/authority['native']['path'],'rt',encoding='utf8') as f:
@@ -222,8 +227,8 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
                     result['fields']['sector_type']=compact_cell(dict(value=row['sector_type'],quality='KNOWN'),authority['native'],'sector_type',date)
                     db.execute("DELETE FROM objects WHERE domain='sectors' AND id=?",(row['sector_id'],));put('sectors',result)
         stock_authority=root/'config/v4_stock_operational_authority_v1.json'
-        if stock_authority.exists():
-            authority=json.loads(stock_authority.read_bytes())
+        authority=operational('stocks',stock_authority)
+        if authority is not None:
             if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('STOCK_SOURCE_CONTEXT_MISMATCH')
             for kind in ('factors','profiles','series'):legacy._verify(authority[kind]);sources['stock_'+kind]=authority[kind]
             domain_features['stocks']=authority
@@ -240,22 +245,26 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
                             result['fields'][k]=compact_cell(cell,authority[kind],k,date)
                         db.execute("DELETE FROM objects WHERE domain='stocks' AND id=?",(row['security_id'],));put('stocks',result)
         focus_authority=root/'config/v4_focus_operational_authority_v1.json'
-        if focus_authority.exists():
-            authority=json.loads(focus_authority.read_bytes())
+        if focus_override is not None or focus_authority.exists():
+            authority=focus_override if focus_override is not None else json.loads(focus_authority.read_bytes())
             if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('FOCUS_SOURCE_CONTEXT_MISMATCH')
             publication=legacy._read(authority['publication']);domain_features['focus']=publication;sources['focus_operational']=authority['publication']
+            if authority.get('journal'):
+                legacy._verify(authority['journal']);sources['focus_journal']=authority['journal']
+            for name,binding in publication.get('sources',{}).get('implementation',{}).items():
+                legacy._verify(binding);sources['focus_kernel_'+name]=binding
             for episode in {e['entity_id']:e for e in sorted(publication['episodes'],key=lambda e:e['T0'])}.values():
                 last=episode['observations'][-1];stock=db.execute("SELECT payload FROM objects WHERE domain='stocks' AND id=?",(episode['entity_id'],)).fetchone();stock=json.loads(stock[0]) if stock else {}
                 fields={k:compact_cell(dict(value=v,quality='UNKNOWN' if v is None else 'KNOWN',contract_id=publication['contract_id']),authority['publication'],k,date) for k,v in {**last,**{k:episode[k] for k in ('episode_id','T0','end_date','parent_episode_id')}}.items()}
                 put('focus',dict(entity_id=episode['entity_id'],display_name=stock.get('display_name',episode['entity_id']),symbol=stock.get('symbol',''),fields=fields))
         center_authority=root/'config/v4_market_center_authority_v1.json'
-        if center_authority.exists():
-            authority=json.loads(center_authority.read_bytes())
+        authority=operational('market_center',center_authority)
+        if authority is not None:
             if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('MARKET_CENTER_CONTEXT_MISMATCH')
             domain_features['market_center']=legacy._read(authority['publication']);sources['market_center']=authority['publication']
         forward_authority=root/'config/v4_forward_operational_authority_v1.json'
-        if forward_authority.exists():
-            authority=json.loads(forward_authority.read_bytes())
+        authority=operational('forward',forward_authority)
+        if authority is not None:
             if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('FORWARD_SOURCE_CONTEXT_MISMATCH')
             publication=legacy._read(authority['publication']);domain_features['forward']=publication;sources['forward_operational']=authority['publication']
             for row in publication['enrollments']:
@@ -265,11 +274,12 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
                 result['fields'].update({k:compact_cell(dict(value=row.get(k),quality='KNOWN' if row.get(k) is not None else 'UNKNOWN'),row['source'],k,date) for k in keys})
                 db.execute("UPDATE objects SET payload=? WHERE domain='forward' AND id=?",(canonical(result).decode(),old[0]))
         replay_authority=root/'config/v4_replay_compare_authority_v1.json'
-        if replay_authority.exists():
-            authority=json.loads(replay_authority.read_bytes())
+        authority=operational('replay',replay_authority)
+        if authority is not None:
             if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('REPLAY_SOURCE_CONTEXT_MISMATCH')
             for entry in authority['catalog']:legacy._verify(entry['snapshot'])
-            legacy._verify(authority['contract']);domain_features['replay']=authority;sources['replay_operational']=reference(root,replay_authority)
+            legacy._verify(authority['contract']);domain_features['replay']=authority
+            frozen_replay=directory/'replay_authority.json';atomic_bytes(frozen_replay,canonical(authority));sources['replay_operational']=reference(root,frozen_replay)
         counts={d:db.execute('SELECT count(*) FROM objects WHERE domain=?',(d,)).fetchone()[0] for d in DOMAINS}
         expected_stocks=len(legacy._source(contract,'RAW_DAILY')['rows'])
         expected_sectors=len({r['sector_id'] for r in legacy._source(contract,'membership')})
@@ -282,6 +292,8 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
         if 'stocks' in domain_features:gaps=[g for g in gaps if g['domain']!='stocks']
         if 'focus' in domain_features:
             gaps=[g for g in gaps if g['domain']!='focus']+[dict(domain='focus',state='SOURCE_INCOMPLETE',reason='AUTOMATIC_WRITE_PATH_ADAPTER_AND_LEGACY_HISTORY_MIGRATION_NOT_ADMITTED',next='FP08_INDEPENDENT_FOCUS_WRITE_ADMISSION')]
+            if domain_features['focus'].get('contract_id')=='R2_V4_FOCUS_PATH_OUTCOME_V2':
+                gaps[-1].update(reason='UNRESOLVED_PATH_PREDICATE_OWNERS_AND_UNRECONCILED_LEGACY_PG',next='CONTINUOUS_DAILY_DRIVER_ADMISSION')
         meta=dict(contract_id='V4_RESEARCH_SNAPSHOT_V1', domain_features=domain_features,context=context['context'],legacy_context_token=context['context_token'],
             source_contract_digest=contract_digest, sources=sources, owners=owners, counts=counts, gaps=gaps,
             field_registry=field_registry, operational_state='OPERATIONAL_PRODUCTION_ACTIVE',
@@ -302,6 +314,12 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
         ref=reference(root,dbpath); manifest_path=directory/'manifest.json'
         atomic_bytes(manifest_path,canonical(dict(**meta,database=ref))+b'\n')
         new=dict(contract_id='V4_RESEARCH_SNAPSHOT_AUTHORITY_V1',manifest=reference(root,manifest_path),previous=json.loads(before) if before else None)
+        if not publish:
+            check=ProductionV4ResearchReader(root,snapshot_authority=new)
+            if fail_readback:raise SourceInvalid('INJECTED_READBACK_FAILURE')
+            if check.manifest['counts']!=counts:raise SourceInvalid('READBACK_COUNT_MISMATCH')
+            return dict(status='STAGED_NOT_PUBLISHED',pointer=new,counts=counts,gaps=gaps,
+                        build_seconds=round(time.perf_counter()-started,3),production_changed=False)
         lock=pointer.with_suffix('.lock');fd=os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY)
         try:
             os.close(fd)
@@ -322,7 +340,10 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
 
 
 def rollback_snapshot(root,expected_pointer):
-    root=Path(root).resolve();path=root/POINTER;before=path.read_bytes()
+    root=Path(root).resolve()
+    from .joint_release import AUTHORITY as JOINT_AUTHORITY
+    if (root/JOINT_AUTHORITY).exists():raise SourceInvalid('ACTIVE_JOINT_REQUIRES_JOINT_ROLLBACK')
+    path=root/POINTER;before=path.read_bytes()
     if digest(before)!=expected_pointer:raise SourceInvalid('SNAPSHOT_CAS_CONFLICT')
     previous=json.loads(before).get('previous')
     if not previous:raise SourceInvalid('NO_PREVIOUS_SNAPSHOT')
@@ -340,11 +361,11 @@ def rollback_snapshot(root,expected_pointer):
 
 
 class ProductionV4ResearchReader:
-    def __init__(self, root):
+    def __init__(self, root, *, snapshot_authority=None):
         self.root=Path(root).resolve();verifier=CurrentAcceptedV4Reader(root)
         from .joint_release import load
-        joint=load(self.root)
-        self.authority=joint['snapshot'] if joint else json.loads((self.root/POINTER).read_bytes())
+        joint=load(self.root) if snapshot_authority is None else None
+        self.authority=snapshot_authority if snapshot_authority is not None else joint['snapshot'] if joint else json.loads((self.root/POINTER).read_bytes())
         self.manifest=verifier._read(self.authority['manifest']);verifier._verify(self.manifest['database'])
         metadata=validate_release_metadata(self.manifest)
         self.path=verifier._path(self.manifest['database']['path'])
@@ -356,7 +377,7 @@ class ProductionV4ResearchReader:
         self.token='research-v4-'+self.authority['manifest']['sha256']
         self.context=dict(release_id=self.manifest['release_id'],model_namespace='V4_RESEARCH_SNAPSHOT_V1',
             source_mode='SCOPED_OPERATIONAL_RELEASE' if joint else 'EXISTING_REAL_SNAPSHOT_PENDING_RELEASE',publication_id=self.manifest['release_id'],data_as_of=self.manifest['context']['data_updated_at'],
-            core_revision=self.manifest['source_contract_digest'],optional_enrichment_revision=self.manifest['sources']['advanced']['sha256'],
+            core_revision=self.manifest['source_contract_digest'],optional_enrichment_revision=self.manifest['sources'].get('advanced',{}).get('sha256'),
             turnover_as_of=None,quality=self.manifest['quality'],source_contract_id='V4_RESEARCH_SNAPSHOT_V1',
             factor_contract_id=None,state_contract_id='ACCEPTED_OWNER_SCOPED',parameter_set_id=None)
         self.context={**self.manifest['context'],**self.context}
@@ -376,6 +397,7 @@ class ProductionV4ResearchReader:
         if focus.get('contract_id')=='R2_V4_FOCUS_PATH_OUTCOME_V2':
             self.context['domain_readiness']['focus'].update(
                 scope='CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ',
+                earliest_valid_date=focus.get('earliest_valid_date'),
                 debt=['UNRESOLVED_PATH_PREDICATE_OWNERS','LEGACY_PG_RECONCILIATION'])
 
     def envelope(self, **payload):

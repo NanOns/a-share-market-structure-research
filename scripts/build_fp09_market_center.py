@@ -5,14 +5,14 @@ from dataclasses import asdict
 from collections import Counter
 ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 from scripts.fp01_evidence import write,ref
-from scripts.fp_domain_evidence import enter
+from scripts.fp_domain_evidence import enter,operational_path
 from scripts.build_fp05_market import verified
 from workbench_service.current_v4_context import canonical,digest
 from tdx.day_reader import decode_record
 
 def main():
     out=enter(9);headref=ref('data/v4/V4_DATA_ACCEPTED_HEAD.json');head=json.loads(verified(headref).read_bytes());target=head['trade_date'] if 'trade_date' in head else head['accepted_trade_date']
-    sources={k:head['component_artifacts'][k] for k in ('RAW_DAILY','PRICE_LIMIT','TRADING_STATUS','IDENTITY_UNIVERSE')};sources['data_head']=headref
+    sources={k:head['component_artifacts'][k] for k in ('RAW_DAILY','PRICE_LIMIT','TRADING_STATUS','IDENTITY_UNIVERSE')};sources['data_head']=headref;sources['projection_adapter']=ref('scripts/build_fp09_market_center.py')
     limit=json.loads(verified(sources['PRICE_LIMIT']).read_bytes())['rows'];raw=json.loads(verified(sources['RAW_DAILY']).read_bytes())['rows'];prices={r['security_id']:r for r in raw};states=Counter(r['limit_status'] for r in limit);breadth=Counter();amount=0
     for r in limit:
         p=prices.get(r['security_id']);reference=r.get('reference_price')
@@ -43,6 +43,6 @@ def main():
                 if b['trade_date']<=target:bars.append(dict(**b,quality='KNOWN'))
             bars=bars[-120:];assert bars and bars[-1]['trade_date']==target;indices.append(dict(symbol=filename,display_name=name,bars=bars,price_basis='RAW_INDEX_POINTS',volume_unit='SOURCE_NATIVE_INDEX_VOLUME_UNVERIFIED',amount_unit='CNY',source_member=member))
     publication=dict(contract_id='FP09_MARKET_CENTER_V1',trade_date=target,sources=sources,indices=indices,breadth=dict(breadth,denominator=len(limit),actual_quote_count=len(raw),amount_cny=amount),limits=dict(counts=dict(states),rows=limit,rule_ids=sorted({r['rule_id'] for r in limit if r.get('rule_id')})),ladders=ladder,facts_events=dict(status='SOURCE_UNAVAILABLE',items=[],reason='NO_APPROVED_BOUND_OFFICIAL_OR_MEDIA_EVENT_DATASET'),broken_limit=dict(status='SOURCE_UNAVAILABLE',reason='INTRADAY_LIMIT_TOUCH_SEQUENCE_NOT_BOUND'),mode='POST_CLOSE_AS_OF',knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False)
-    path=ROOT/'data/v4/fp09_market_center'/digest(canonical(publication))/'market_center.json';write(path,publication);write(ROOT/'config/v4_market_center_authority_v1.json',dict(contract_id='FP09_MARKET_CENTER_AUTHORITY_V1',trade_date=target,input_data_head=headref,publication=ref(path)));write(out/'REAL_SOURCE_READBACK.json',dict(indices=[dict(name=i['display_name'],bars=len(i['bars']),last=i['bars'][-1]) for i in indices],breadth=publication['breadth'],limits=dict(states),ladder_count=len(ladder),sources=sources))
+    path=ROOT/'data/v4/fp09_market_center'/digest(canonical(publication))/'market_center.json';write(path,publication);write(operational_path('v4_market_center_authority_v1.json',for_write=True),dict(contract_id='FP09_MARKET_CENTER_AUTHORITY_V1',trade_date=target,input_data_head=headref,publication=ref(path)));write(out/'REAL_SOURCE_READBACK.json',dict(indices=[dict(name=i['display_name'],bars=len(i['bars']),last=i['bars'][-1]) for i in indices],breadth=publication['breadth'],limits=dict(states),ladder_count=len(ladder),sources=sources))
     print(json.dumps(dict(indices=len(indices),limits=dict(states),breadth=publication['breadth']),ensure_ascii=False))
 if __name__=='__main__':main()

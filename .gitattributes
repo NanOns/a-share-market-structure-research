@@ -293,3 +293,23 @@ docs/evidence/r2_focus_continuation_20261008/** -text
 data/v4/r2_focus_journal/** -text
 data/v4/r2_focus_journal/*/journal.sqlite filter=lfs diff=lfs merge=lfs -text
 data/v4/research_snapshots/*/focus_research.sqlite filter=lfs diff=lfs merge=lfs -text
+data/v4/research_snapshots/*/daily_research.sqlite filter=lfs diff=lfs merge=lfs -text
+data/v4/r2_continuous_focus/*/journal.sqlite filter=lfs diff=lfs merge=lfs -text
+docs/evidence/r2_continuous_daily_20261008/** -text
+docs/evidence/r2_daily_runs/** -text
+scripts/build_fp05_market.py -text
+scripts/build_fp06_sector.py -text
+scripts/build_fp07_stock.py -text
+scripts/build_fp09_market_center.py -text
+scripts/build_fp10_forward.py -text
+data/v4/r2_continuous_focus/** -text
+data/v4/r2_continuous_focus/*/journal.sqlite filter=lfs diff=lfs merge=lfs -text
+data/v4/r2_daily_candidates/** -text
+data/v4/fp05_market/** -text
+data/v4/fp05_market/*/*.gz filter=lfs diff=lfs merge=lfs -text
+data/v4/fp06_sector/** -text
+data/v4/fp06_sector/*/*.gz filter=lfs diff=lfs merge=lfs -text
+data/v4/fp07_stocks/** -text
+data/v4/fp07_stocks/*/*.sqlite filter=lfs diff=lfs merge=lfs -text
+data/v4/fp09_market_center/** -text
+data/v4/fp10_forward/** -text

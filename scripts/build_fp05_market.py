@@ -13,7 +13,7 @@ from pathlib import Path
 from statistics import median, fmean
 ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 from scripts.fp01_evidence import write,ref
-from scripts.fp_domain_evidence import enter
+from scripts.fp_domain_evidence import enter,operational_path
 from workbench_service.production_v4 import frozen_current_reader,reference
 from workbench_service.current_v4_context import canonical,digest
 from adjustment.tdx_adjustment import build_affine_factors,xrxd_from_gbbq
@@ -30,7 +30,7 @@ def main():
     nodes=[n for n in chain['nodes'] if n['trade_date']<=date]
     execution_path=next((ROOT/'data/v4/source_evidence/dm01_a01_r3/durable_chain_inputs_r2').glob('chain_execution_context*'))
     execution=json.loads(execution_path.read_bytes());assert execution['calendar']['binding']==head['calendar']
-    sources={'data_head':head_binding,'accepted_chain':head['accepted_chain'],'execution':ref(execution_path)}
+    sources={'data_head':head_binding,'accepted_chain':head['accepted_chain'],'execution':ref(execution_path),'projection_adapter':ref('scripts/build_fp05_market.py')}
     history_receipt=ROOT/'reports/v4_05/V4_05_R4_DAILY_HISTORY_RECEIPT.json';hr=json.loads(history_receipt.read_bytes())
     sources['history']=dict(path=hr['artifact_path'],sha256=hr['artifact_sha256']);sources['history_receipt']=ref(history_receipt)
     history=defaultdict(list)
@@ -118,7 +118,7 @@ def main():
         for sid,bars in sorted(history.items()):f.write(canonical(dict(security_id=sid,bars=bars))+b'\n')
     tmp.replace(historyfile)
     authority=dict(contract_id='FP05_MARKET_AUTHORITY_V1',trade_date=date,market=ref(folder/'market.json'),history=ref(historyfile),input_data_head=head_binding)
-    write(ROOT/'config/v4_market_operational_authority_v1.json',authority)
+    write(operational_path('v4_market_operational_authority_v1.json',for_write=True),authority)
     write(out/'SOURCE_AND_VALUE_READBACK.json',dict(authority=authority,raw=raw,row=row,regime=regime,bridge=bridge,qa='NATIVE_KERNELS_BOUND_TO_EXACT_REAL_INPUTS',old_path_modified=False))
     print(json.dumps(dict(status='MATERIALIZED',axes=row,regime=regime['value'],history_entities=len(history)),ensure_ascii=False))
 if __name__=='__main__':main()

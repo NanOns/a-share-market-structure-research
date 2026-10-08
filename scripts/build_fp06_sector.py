@@ -10,9 +10,9 @@ from datetime import date as Date
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 from scripts.fp01_evidence import write,ref
-from scripts.fp_domain_evidence import enter
+from scripts.fp_domain_evidence import enter,operational_path
 from scripts.build_fp05_market import verified
-from workbench_service.production_v4 import ProductionV4ResearchReader
+from workbench_service.production_v4 import frozen_current_reader
 from workbench_service.current_v4_context import canonical,digest
 from v4.factors.core import Bar,Observation,compute_core,rps_midrank,market_reference
 from v4.market_regime_ui import RegimeUI
@@ -39,8 +39,9 @@ def periods(bars,kind,target):
     return records
 
 def main():
-    out=enter(6);r=ProductionV4ResearchReader(ROOT);target=r.context['trade_date'];a=json.loads((ROOT/'config/v4_market_operational_authority_v1.json').read_bytes());assert a['trade_date']==target
-    market=json.loads(verified(a['market']).read_bytes());sources=dict(history=a['history'],market=a['market'],membership=r.manifest['sources']['membership'])
+    out=enter(6);r,_=frozen_current_reader(ROOT);context=r.load_context();contract,_=r._contract()
+    target=context['context']['accepted_trade_date'];a=json.loads((operational_path('v4_market_operational_authority_v1.json')).read_bytes());assert a['trade_date']==target
+    market=json.loads(verified(a['market']).read_bytes());sources=dict(history=a['history'],market=a['market'],membership=contract['sources']['membership'],projection_adapter=ref('scripts/build_fp06_sector.py'))
     sessions=json.loads(verified(market['sources']['calendar']).read_bytes())['session_dates'];sessions=[s for s in sessions if s<=target]
     identity=json.loads(verified(market['sources'][target+':IDENTITY_UNIVERSE']).read_bytes())['rows'];universe={x['security_id']:x for x in identity}
     statuses=defaultdict(dict)
@@ -103,7 +104,7 @@ def main():
     authority=dict(contract_id='FP06_SECTOR_OPERATIONAL_AUTHORITY_V1',trade_date=target,input_data_head=a['input_data_head'],sources=sources,
         factors=compress(folder/'factors.jsonl.gz',factors),profiles=compress(folder/'profiles.jsonl.gz',profiles),native=compress(folder/'native.jsonl.gz',native),
         quality='FIELD_LOCAL_DEGRADED',history_claim='CURRENT_MEMBERSHIP_NOT_REPLAYED_AS_PRIOR',profile_period_policy='LAST_FORMING_BUCKET_EXCLUDED')
-    write(ROOT/'config/v4_sector_operational_authority_v1.json',authority)
+    write(operational_path('v4_sector_operational_authority_v1.json',for_write=True),authority)
     known=Counter(k for row in native for k,v in row['fields'].items() if v['value'] is not None)
     write(out/'REAL_MATERIALIZATION.json',dict(authority=authority,core_rows=len(factors),profile_rows=len(profiles),sectors=len(native),known_native_fields=dict(known),prior_membership_fabricated=False))
     print(json.dumps(dict(status='MATERIALIZED',core_rows=len(factors),sectors=len(native),known_native_fields=dict(known)),ensure_ascii=False))

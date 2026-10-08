@@ -17,6 +17,8 @@ OUT = ROOT / 'docs/evidence/r2_data_algorithm_repair_20261008'
 
 
 def main():
+    if (OUT/'A0_GIT_AND_JOINT_MATRIX.json').exists():
+        raise RuntimeError('A0_BASELINE_ALREADY_FROZEN_USE_NEW_EVIDENCE_NAMESPACE')
     before = (ROOT / AUTHORITY).read_bytes()
     joint = json.loads(before)
     manifest = validate(ROOT, joint)

@@ -1,0 +1,22 @@
+{
+  "full_product_release": false,
+  "oracle": {
+    "bytes": 6051871,
+    "path": "docs/evidence/r2_data_algorithm_repair_20261008/R2_NUMERICAL_ORACLE.json",
+    "sha256": "4106770f223d49b81a0847e40383d26e6919d2b37af5b5f8bc43f320c3336fa5"
+  },
+  "passed": 22,
+  "real_daily": {
+    "bytes": 2819,
+    "path": "docs/evidence/r2_data_algorithm_repair_20261008/CLI_NOOP_AFTER_REPAIR.json",
+    "sha256": "d117a46fa3c9a74e9a7f7570befe4773efddf2ed3ba53d53d5b41594f12b10a0"
+  },
+  "result": "SCOPED_PASS",
+  "rollback": {
+    "bytes": 1675,
+    "path": "docs/evidence/r2_data_algorithm_repair_20261008/R2_DAILY_RELEASE_ROLLBACK.json",
+    "sha256": "9cb9f2638d04e47af1e208da9e981cfc4a081adbdbd7c43af471ad41bc3f8b97"
+  },
+  "strict_pit": false,
+  "test_command": "python -B -m pytest tests/test_r2_csv_pit.py tests/test_r2_joint_release.py tests/test_r2_forward_daily.py tests/test_r2_focus_native_core.py tests/test_r2_focus_path_outcome.py -q --basetemp=E:/codex_tmp/test_temp/r2_algorithm_final"
+}

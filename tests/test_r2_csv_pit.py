@@ -22,3 +22,13 @@ def test_first_observed_freeze_never_backdates_pit_and_rejects_future(tmp_path):
     first=freeze(r);assert first['strict_t0_pit_ready'] is False and first['AS_RECORDED'] is False
     assert freeze(r)==first
     with pytest.raises(SourceInvalid,match='FUTURE'):freeze(r,(datetime.now(timezone.utc)+timedelta(days=1)).isoformat())
+    with pytest.raises(SourceInvalid,match='BACKDATED'):freeze(r,(datetime.now(timezone.utc)-timedelta(days=30)).isoformat())
+
+
+def test_existing_first_observed_freeze_verifies_archived_bytes(tmp_path):
+    source=tmp_path/'source.json';source.write_text('{}')
+    binding=dict(path=source.name,sha256=digest(source.read_bytes()))
+    r=SimpleNamespace(root=tmp_path,context={'trade_date':'2026-09-30'},manifest={'sources':{'membership':binding}})
+    first=freeze(r);archive=tmp_path/first['sources']['membership']['path']
+    archive.write_text('{"tampered":true}')
+    with pytest.raises(SourceInvalid,match='DIGEST_MISMATCH'):freeze(r)

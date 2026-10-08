@@ -26,6 +26,31 @@ def validate(root,candidate):
     for binding in manifest['sources'].values():checked_path(root,binding)
     for binding in candidate['ui_assets'].values():checked_path(root,binding)
     if manifest['context']['accepted_trade_date']!=candidate['trade_date']:raise SourceInvalid('JOINT_DATE_MISMATCH')
+    # Production owner bindings must describe this exact snapshot, not merely
+    # individually readable files from another accepted day or input head.
+    owners=candidate.get('daily_owner_authorities')
+    if owners is not None:
+        for name in ('market','sector','stocks','market_center','forward'):
+            owner=owners.get(name,{})
+            if owner.get('trade_date')!=candidate['trade_date']:
+                raise SourceInvalid('JOINT_OWNER_DATE_MISMATCH:'+name)
+            head=owner.get('input_data_head',{})
+            if head.get('sha256')!=manifest['context'].get('data_head_digest'):
+                raise SourceInvalid('JOINT_OWNER_INPUT_HEAD_MISMATCH:'+name)
+            # The accepted-head path is a moving pointer. Compare its frozen
+            # identity to the manifest; read actual immutable payload bindings
+            # below so a later input day does not invalidate a healthy rollback.
+        features=manifest.get('domain_features',{})
+        for name,keys in {'sector':('native','factors','profiles'),
+                          'stocks':('series','factors','profiles')}.items():
+            for key in keys:
+                if owners[name].get(key)!=features.get(name,{}).get(key):
+                    raise SourceInvalid('JOINT_OWNER_SNAPSHOT_BINDING_MISMATCH:'+name+':'+key)
+                checked_path(root,owners[name][key])
+        for name,key in (('market','market'),('market_center','publication'),('forward','publication')):
+            binding=owners[name].get(key)
+            if not binding or json.loads(checked_path(root,binding).read_bytes())!=features.get(name):
+                raise SourceInvalid('JOINT_OWNER_SNAPSHOT_BINDING_MISMATCH:'+name+':'+key)
     if not candidate['operational_release_scope'] or candidate.get('trading') is not False:raise SourceInvalid('JOINT_SCOPE_INVALID')
     return manifest
 
@@ -42,6 +67,9 @@ def activate(root,candidate,expected,health):
         validate(root,candidate)
         raw=canonical(candidate)
         if before==raw:return dict(result='NOOP',activation_performed=False,authority_digest=digest(raw))
+        # An exact pointer restore is insufficient if its live dependencies have
+        # become unreadable. Reject before CAS while the old authority is intact.
+        if before is not None:validate(root,json.loads(before))
         folder.mkdir(parents=True)
         atomic_bytes(folder/'PREDECESSOR.json',canonical(dict(existed=before is not None,raw=before.decode() if before else None)))
         atomic_bytes(folder/'TRANSACTION.json',canonical(dict(state='PREPARED',candidate_digest=digest(raw))))

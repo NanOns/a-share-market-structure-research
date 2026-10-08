@@ -1,0 +1,34 @@
+{
+  "base": "http://127.0.0.1:28765",
+  "candidate_activation_performed": false,
+  "checks": [
+    {
+      "route": "/v4/research/stocks",
+      "visible_count": 5213
+    },
+    {
+      "action": "search code 688349",
+      "close": "13.240",
+      "entity": "三一重能 SH.688349",
+      "visible_count": 1
+    },
+    {
+      "action": "open stock detail link",
+      "actual_bars": 253,
+      "amount_unit": "元",
+      "as_of": "2026-09-30",
+      "displayed_bars": 120,
+      "heading": "三一重能 SH.688349",
+      "price_basis": "原生前复权",
+      "volume_unit": "股"
+    }
+  ],
+  "joint_authority": {
+    "bytes": 30362,
+    "path": "config/v4_joint_release_authority_v1.json",
+    "sha256": "5204fec1e9fcb11701c321d515a756acfaacea4d0fc1bb09443c34990ebd3a45"
+  },
+  "method": "CUA_IN_APP_BROWSER_VISIBLE_DOM_OBSERVATION",
+  "result": "PASS_EXISTING_SCOPED_RESEARCH_REACHABILITY",
+  "scope": "START_QUERY_CROSS_PAGE_RESULT_ONLY_NO_RESPONSIVE_OR_EDGE_SPECIALIST_TEST"
+}

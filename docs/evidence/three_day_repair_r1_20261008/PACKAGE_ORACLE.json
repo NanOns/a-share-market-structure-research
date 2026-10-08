@@ -1,0 +1,53 @@
+{
+  "independent_method": "TDX_BINARY_STRUCT_32_BYTES_NO_ETL_KERNEL_CALL",
+  "packages": [
+    {
+      "bytes": 551001603,
+      "path": "data/v4/source_snapshots/tdx/20260928/sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c/hsjday.zip",
+      "sha256": "70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c"
+    },
+    {
+      "bytes": 551362764,
+      "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261001T100202286790Z/sha256-d87d490151ffb45ff63c500f925be8acb7de992de693eb871029211d7ed87655/hsjday.zip",
+      "sha256": "d87d490151ffb45ff63c500f925be8acb7de992de693eb871029211d7ed87655"
+    },
+    {
+      "bytes": 550821395,
+      "path": "data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f/hsjday.zip",
+      "sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f"
+    }
+  ],
+  "results": [
+    {
+      "comparisons": {
+        "2026-09-28:OHLC": 20840,
+        "2026-09-28:amount": 5210,
+        "2026-09-28:volume": 5210
+      },
+      "errors": [],
+      "package": {
+        "bytes": 551001603,
+        "path": "data/v4/source_snapshots/tdx/20260928/sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c/hsjday.zip",
+        "sha256": "70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c"
+      },
+      "result": "PASS"
+    },
+    {
+      "comparisons": {
+        "2026-09-29:OHLC": 20844,
+        "2026-09-29:amount": 5211,
+        "2026-09-29:volume": 5211,
+        "2026-09-30:OHLC": 20852,
+        "2026-09-30:amount": 5213,
+        "2026-09-30:volume": 5213
+      },
+      "errors": [],
+      "package": {
+        "bytes": 551362764,
+        "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261001T100202286790Z/sha256-d87d490151ffb45ff63c500f925be8acb7de992de693eb871029211d7ed87655/hsjday.zip",
+        "sha256": "d87d490151ffb45ff63c500f925be8acb7de992de693eb871029211d7ed87655"
+      },
+      "result": "PASS"
+    }
+  ]
+}

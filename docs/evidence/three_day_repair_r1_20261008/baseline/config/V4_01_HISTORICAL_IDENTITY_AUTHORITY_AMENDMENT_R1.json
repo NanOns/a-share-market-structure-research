@@ -1,0 +1,58 @@
+{
+  "AS_RECORDED": false,
+  "authority_matrix": {
+    "bytes": 21007516,
+    "path": "reports/audits/V4_01_IDENTITY_FIELD_AUTHORITY_MATRIX_R1.json",
+    "sha256": "7ff163a3b0233e3bf6f82fbcc2f9fa43cac5e08e8c7e250212ad36f5c4a129f5"
+  },
+  "business_accepted_heads_modified": false,
+  "business_identity_bytes_unchanged": true,
+  "capability_limitations": [
+    "HISTORICAL_LEGAL_LIFECYCLE_AND_TYPE_NOT_LOCAL_TDX_CONFIRMED"
+  ],
+  "contract_id": "V4_01_HISTORICAL_IDENTITY_AUTHORITY_AMENDMENT_R1",
+  "downstream_business_rebuild_required": false,
+  "exceptions": "INDEPENDENTLY_OFFICIAL_CONFIRMED_FACTS_ONLY",
+  "external_acceptance": "PASS_RESULT_C_WITH_CAPABILITY_DOWNGRADE",
+  "external_authority": {
+    "audited_head": "1655f84d1a47faca43c281d66e7704f2fa56b1b8",
+    "document": {
+      "bytes": 17949,
+      "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+      "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+    },
+    "verdict": "PARTIAL_PASS_WITH_BLOCKERS"
+  },
+  "go_forward_accepted_head": {
+    "bytes": 1099,
+    "path": "data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json",
+    "sha256": "496d537f7c6b9c78cac3a084330f09132814165d2967e8991ffa1d6319092214"
+  },
+  "go_forward_official_identity_authority_unchanged": true,
+  "historical_pre_capture_fields": [
+    "security_type",
+    "lifecycle",
+    "listing_anchor_source_authority"
+  ],
+  "historical_provenance": "PROVIDER_RECONSTRUCTED_FACT / RECONSTRUCTED_CORRECTED",
+  "identity_equivalence": {
+    "bytes": 252577,
+    "path": "reports/audits/A11_DOWNSTREAM_CONSUMER_GRAPH_AND_BUSINESS_DIFF_R1.json",
+    "sha256": "7685306c33a0ece456d65ccc7637444d21e9f55013d07a9538e0b8dd3ab31771"
+  },
+  "local_tdx_legal_lifecycle_authority": false,
+  "official_case": {
+    "bytes": 2485,
+    "path": "reports/audits/A11_OFFICIAL_ANCHOR_ADJUDICATION_R1.json",
+    "sha256": "fa3ad51c99d2d9fb9eeb96e001b3122a08ceb17a748ac588a4b494e72765d140"
+  },
+  "permissions": {
+    "focus_cutover": false,
+    "production": false,
+    "shadow": false
+  },
+  "provider_observation_time_is_historical_fact_date": false,
+  "security_id_unchanged": true,
+  "sh_600018": "RETAIN_CURRENT_STABLE_IDENTITY_ANCHOR",
+  "stable_security_id_policy": "DO_NOT_RENUMBER"
+}

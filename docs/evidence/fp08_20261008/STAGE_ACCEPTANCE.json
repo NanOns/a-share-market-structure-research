@@ -1,0 +1,19 @@
+{
+  "acceptance": "DEGRADED_PASS_READ_ONLY",
+  "blockers": [
+    "Legacy PG_UNAVAILABLE: old ledger unmodified, migration reconciliation pending",
+    "V4 observation/path adapter not admitted; no invented path/outcome",
+    "Automatic Focus writes disabled in successor; historical flags unchanged"
+  ],
+  "browser": "focus.png",
+  "episodes": 469,
+  "events": 766,
+  "next_stage": "FP09",
+  "source_days": [
+    "2026-09-29",
+    "2026-09-30"
+  ],
+  "stage": "FP08",
+  "tests": "26 passed; pytest tests/test_fp08_focus.py tests/test_fp07_stock.py tests/test_fp02_research_snapshot.py -q",
+  "write_admission": false
+}

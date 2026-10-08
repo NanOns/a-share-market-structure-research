@@ -1,0 +1,1 @@
+"# FP08 Focus 独立读域\n\n真实 D2 冻结源 9月29/30日重建 469 Episode、766观察事件；来源身份、T0、父 Episode、退出/再入、锚点与幂等键留存。旧 Focus PostgreSQL 只读检查返回 PG_UNAVAILABLE，未修改旧账。\n\n自动写域尚缺路径观察适配准入与旧历史迁移对账；按任务卡要求仅阻止该写域。26测试通过，读域 DEGRADED_PASS，写域未通过。下一阶段 FP09。\n"

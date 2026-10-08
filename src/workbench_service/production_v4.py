@@ -234,6 +234,15 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
                             cell=dict(v,quality='UNKNOWN' if v.get('unknown_reason') or v.get('value') is None else 'KNOWN',reason=v.get('unknown_reason'),unit=units.get(k))
                             result['fields'][k]=compact_cell(cell,authority[kind],k,date)
                         db.execute("DELETE FROM objects WHERE domain='stocks' AND id=?",(row['security_id'],));put('stocks',result)
+        focus_authority=root/'config/v4_focus_operational_authority_v1.json'
+        if focus_authority.exists():
+            authority=json.loads(focus_authority.read_bytes())
+            if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('FOCUS_SOURCE_CONTEXT_MISMATCH')
+            publication=legacy._read(authority['publication']);domain_features['focus']=publication;sources['focus_operational']=authority['publication']
+            for episode in {e['entity_id']:e for e in sorted(publication['episodes'],key=lambda e:e['T0'])}.values():
+                last=episode['observations'][-1];stock=db.execute("SELECT payload FROM objects WHERE domain='stocks' AND id=?",(episode['entity_id'],)).fetchone();stock=json.loads(stock[0]) if stock else {}
+                fields={k:compact_cell(dict(value=v,quality='UNKNOWN' if v is None else 'KNOWN',contract_id=publication['contract_id']),authority['publication'],k,date) for k,v in {**last,**{k:episode[k] for k in ('episode_id','T0','end_date','parent_episode_id')}}.items()}
+                put('focus',dict(entity_id=episode['entity_id'],display_name=stock.get('display_name',episode['entity_id']),symbol=stock.get('symbol',''),fields=fields))
         counts={d:db.execute('SELECT count(*) FROM objects WHERE domain=?',(d,)).fetchone()[0] for d in DOMAINS}
         expected_stocks=len(legacy._source(contract,'RAW_DAILY')['rows'])
         expected_sectors=len({r['sector_id'] for r in legacy._source(contract,'membership')})
@@ -244,6 +253,8 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
               dict(domain='profile_identity',state='SOURCE_INCOMPLETE',reason='ADVANCED_ROWS_OUTSIDE_CURRENT_RAW_UNIVERSE',count=unmatched)]
         if 'market' in domain_features:gaps=[g for g in gaps if g['domain']!='market']
         if 'stocks' in domain_features:gaps=[g for g in gaps if g['domain']!='stocks']
+        if 'focus' in domain_features:
+            gaps=[g for g in gaps if g['domain']!='focus']+[dict(domain='focus',state='SOURCE_INCOMPLETE',reason='AUTOMATIC_WRITE_PATH_ADAPTER_AND_LEGACY_HISTORY_MIGRATION_NOT_ADMITTED',next='FP08_INDEPENDENT_FOCUS_WRITE_ADMISSION')]
         meta=dict(contract_id='V4_RESEARCH_SNAPSHOT_V1', domain_features=domain_features,context=context['context'],legacy_context_token=context['context_token'],
             source_contract_digest=contract_digest, sources=sources, owners=owners, counts=counts, gaps=gaps,
             field_registry=field_registry, operational_state='OPERATIONAL_PRODUCTION_ACTIVE',

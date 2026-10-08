@@ -46,6 +46,15 @@ class ResearchBFF:
                 control.update(scope='INPUT_PROGRESS_NOT_RESEARCH_CONTEXT',accepted_input_date=progress['context']['context']['accepted_trade_date'],indexed_trade_date=r.context['accepted_trade_date'])
                 return 200,r.envelope(status='READY',counts=r.manifest['counts'],gaps=r.manifest['gaps'],daily_refresh=control)
             if name=='home':return 200,home(r)
+            if name=='focus' and len(parts)>1:
+                publication=r.manifest.get('domain_features',{}).get('focus')
+                if publication:
+                    if parts[1]=='events':
+                        rows=[x for x in publication['events'] if x['trade_date']==r.context['trade_date']];offset=int(query.get('offset',0));limit=int(query.get('limit',30))
+                        return 200,r.envelope(status='READY',items=rows[offset:offset+limit],total=len(rows),offset=offset,limit=limit,has_next=offset+limit<len(rows),permissions=publication['permissions'])
+                    if len(parts)==3 and parts[2] in ('episodes','timeline','anchors','observations','outcomes'):
+                        rows=[x for x in publication['episodes'] if x['entity_id']==parts[1]]
+                        return 200,r.envelope(status='READY' if rows else 'EMPTY_VALID',items=rows,total=len(rows),has_next=False,permissions=publication['permissions'],write_block_reason=publication['write_block_reason'],legacy_history=publication['legacy_history'])
             if name=='market' and len(parts)==1:return 200,r.envelope(status='READY' if r.manifest.get('domain_features',{}).get('market') else 'SOURCE_INCOMPLETE',market=r.manifest.get('domain_features',{}).get('market'))
             if name=='diagnostics':
                 if len(parts)>1 and parts[1]=='fields':return 200,r.envelope(status='READY',fields=r.manifest['field_registry'])

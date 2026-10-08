@@ -35,6 +35,11 @@ def append(path,root,binding,expected,*,fail_after_append=False,path_inputs=None
             db.rollback();return dict(status='NOOP',head=head,trade_date=day)
         last=db.execute('SELECT max(day) FROM days').fetchone()[0]
         if last and day<=last:raise SourceInvalid('JOURNAL_NON_MONOTONIC_DAY')
+        if last and path_inputs:
+            previous_inputs=json.loads(db.execute('SELECT payload FROM day_inputs WHERE day=?',(last,)).fetchone()[0])
+            old_code={k:v['sha256'] for k,v in previous_inputs.get('implementation',{}).items()}
+            new_code={k:v['sha256'] for k,v in path_inputs.get('implementation',{}).items()}
+            if old_code!=new_code:raise SourceInvalid('JOURNAL_KERNEL_UPGRADE_REQUIRES_NEW_NAMESPACE')
         db.execute('INSERT INTO days VALUES(?,?,?)',(day,binding['sha256'],canonical(rows).decode()))
         days={d:json.loads(p) for d,p in db.execute('SELECT day,payload FROM days ORDER BY day')}
         if path_inputs:

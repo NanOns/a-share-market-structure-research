@@ -1,5 +1,5 @@
 """Immutable Focus successor snapshot; never mutate live authorities."""
-import copy,json,shutil,sqlite3,sys,uuid
+import copy,json,shutil,sqlite3,sys,uuid,subprocess
 from datetime import datetime,timezone
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')]
@@ -70,6 +70,7 @@ def main():
         if not target.exists():write(target,p.read_bytes())
         assets[p.name]=ref(target)
     candidate.update(ui_build_id=build,ui_assets=assets)
+    candidate['app_version']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     candidate['focus_journal_admission']=ref(OUT/'SHADOW_READBACK.json')
     candidate['focus_automatic_write']=False
     validate(ROOT,candidate)

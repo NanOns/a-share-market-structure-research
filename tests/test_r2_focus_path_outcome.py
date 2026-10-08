@@ -70,3 +70,31 @@ def test_missing_suspension_and_future_corporate_action(tmp_path, monkeypatch):
     assert fact['suspended_dates']==['2026-09-29']
     p.cache={};p.events['SH.600000'][0].event_date=20260930
     assert p.path('A','2026-09-28','2026-09-30')['quality']=='DATA_UNAVAILABLE'
+
+
+def test_dated_owner_updates_preserve_history_and_reject_kernel_change(tmp_path,monkeypatch):
+    class Dated(Paths):
+        def __init__(self,root,inputs):self.inputs=inputs
+        def path(self,sid,start,end):
+            result=super().path(sid,start,end)
+            result['metrics']['return_close']=self.inputs['owner']
+            return result
+    monkeypatch.setattr('focus_tracker.v4_path_adapter.AcceptedPaths',Dated)
+    bindings=[]
+    for day in Paths.calendar:
+        path=tmp_path/(day+'.json');path.write_text(json.dumps({'rows':[row(day)]}))
+        bindings.append(dict(path=path.name,sha256=digest(path.read_bytes())))
+    journal=tmp_path/'journal.sqlite'
+    inputs=dict(owner='0.1',implementation={'kernel':{'sha256':'old'}})
+    first=append(journal,tmp_path,bindings[0],None,path_inputs=inputs)
+    updated=dict(owner='0.2',implementation=inputs['implementation'])
+    second=append(journal,tmp_path,bindings[1],first['head'],path_inputs=updated)
+    with sqlite3.connect(journal) as db:
+        projection=json.loads(db.execute("SELECT value FROM metadata WHERE key='projection'").fetchone()[0])
+    observations=projection['episodes'][0]['observations']
+    assert observations[0]['price_path']['metrics']['return_close']=='0.1'
+    assert observations[1]['price_path']['metrics']['return_close']=='0.2'
+    with pytest.raises(SourceInvalid,match='DAY_INPUT_REVISION'):
+        append(journal,tmp_path,bindings[1],second['head'],path_inputs=inputs)
+    with pytest.raises(SourceInvalid,match='KERNEL_UPGRADE'):
+        append(journal,tmp_path,bindings[2],second['head'],path_inputs=dict(owner='0.3',implementation={'kernel':{'sha256':'new'}}))

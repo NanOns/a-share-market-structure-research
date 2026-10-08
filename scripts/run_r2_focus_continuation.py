@@ -22,8 +22,13 @@ def main():
     inputs=dict(series=reader.manifest['sources']['stock_series'],calendar=sources['calendar'],
                 gbbq=sources['gbbq'],classification=sources['adjustment_classification'],
                 status={k.split(':')[0]:v for k,v in sources.items() if k.endswith(':TRADING_STATUS')})
-    inputs['implementation']={name:ref('src/focus_tracker/'+name+'.py') for name in
-        ('v4_path_adapter','v4_successor','v4_journal','path_state_v2','states','outcomes','price_path')}
+    inputs['implementation']={}
+    for name in ('v4_path_adapter','v4_successor','v4_journal','path_state_v2','states','outcomes','price_path'):
+        source=ROOT/'src/focus_tracker'/(name+'.py');raw=source.read_bytes()
+        target=ROOT/'data/v4/r2_focus_journal/implementations'/digest(raw)/source.name
+        if target.exists() and target.read_bytes()!=raw:raise SourceInvalid('FOCUS_IMMUTABLE_KERNEL_CONFLICT')
+        if not target.exists():write(target,raw)
+        inputs['implementation'][name]=ref(target)
     path=Path('E:/codex_tmp/r2_focus_continuation')/(uuid.uuid4().hex+'.sqlite')
     first=append(path,ROOT,prior,None,path_inputs=inputs)
     try:append(path,ROOT,current,first['head'],path_inputs=inputs,fail_after_append=True)

@@ -60,5 +60,7 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--activate',action='store_true');parser.add_argument('--expected-authority-digest');args=parser.parse_args()
     if args.activate:
         candidate=json.loads((OUT/'R2_RELEASE_CANDIDATE.json').read_bytes());gate(candidate)
-        result=activate(ROOT,candidate,args.expected_authority_digest,health);write(OUT/'FP14_RELEASE_V2_FINAL.json',result);print(json.dumps(result))
+        result=activate(ROOT,candidate,args.expected_authority_digest,health)
+        if result['result']!='NOOP':write(OUT/'FP14_RELEASE_V2_FINAL.json',result)
+        print(json.dumps(result))
     else:print(json.dumps(dict(candidate=prepare()['ui_build_id'],activation_performed=False)))

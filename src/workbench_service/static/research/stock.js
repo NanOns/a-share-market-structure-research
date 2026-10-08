@@ -11,7 +11,9 @@ export async function stockDetail(main,id,signal){
  period.onchange=load;basis.onchange=load;await load();
  const p=await read('stocks/'+id+'/profile',{},signal);main.append(C.el('h2','事实 F / 研究状态 R / 假设 H'));
  for(const [name,fields] of [['事实',p.F],['研究状态',p.R]])main.append(C.el('h3',name),C.DataTable({items:Object.entries(fields).map(([k,v])=>({display_name:labels[k]||k,fields:{value:v}}))},['value'],'fields'));
- main.append(C.EmptyState('假设：当前没有已绑定的 owner 假设产物。等待条件与失效条件仅按实际源展示。'));const b=C.el('button','未入选原因、等待条件与证据');b.onclick=()=>C.EvidenceDrawer(p);main.append(b);
+ main.append(C.el('h3','当前变化原因与待补证据'));
+ for(const [key,title] of [['why_now','当前变化原因'],['waiting_for','等待条件'],['invalid_if','失效条件'],['hypothesis','研究假设']]){const field=p.owner_explanations?.[key];const section=C.el('section');section.append(C.el('h4',field?.basis==='MISSING_PREDICATE_EVIDENCE_ONLY'?'待补判定证据（owner 未发布等待条件）':title));if(!field?.source||field.source.quality==='UNKNOWN')section.append(C.EmptyState('来源未提供可用的'+title+'；责任 owner 与原因见证据。'));else if(Array.isArray(field.value))section.append(C.el('p',field.value.length?field.value.map(C.displayValue).join('、'):'已发布列表为空'));else section.append(C.el('p',C.displayValue(field.value)));const evidence=C.el('button',title+'来源');evidence.onclick=()=>C.EvidenceDrawer({field:key,...field,owner_specific_debt:p.owner_specific_debt.filter(d=>d.field===key)});section.append(evidence);main.append(section);}
+ const b=C.el('button','未入选原因、等待条件与证据');b.onclick=()=>C.EvidenceDrawer(p);main.append(b);
  const focus=C.el('button','关注事件时间线');focus.onclick=async()=>C.EvidenceDrawer(await read('focus/'+id+'/timeline',{limit:200},signal));
  const structure=C.el('button','结构锚点与事件');structure.onclick=async()=>C.EvidenceDrawer(await read('stocks/'+id+'/timeline',{limit:200},signal));main.append(focus,structure);
 }

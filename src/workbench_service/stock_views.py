@@ -37,6 +37,13 @@ def chart(reader,item,query):
 
 def explanation(reader,item):
     raw=value(item,'raw_qualification') or {};prewatch=raw.get('PREWATCH','UNKNOWN')
+    presentation={}
+    for name,fallback in [('why_now','transition_reasons'),('waiting_for','unknown_predicates'),('invalid_if',None),('hypothesis',None)]:
+        source=name if name in item['fields'] else fallback
+        cell=item['fields'].get(source) if source else None
+        presentation[name]=dict(source_field=source,source=cell,
+            basis='EXPLICIT_OWNER_FIELD' if source==name else 'OWNER_TRANSITION_REASONS' if name=='why_now' and cell else 'MISSING_PREDICATE_EVIDENCE_ONLY' if name=='waiting_for' and cell else 'OWNER_FIELD_NOT_BOUND',
+            value=value(item,source) if cell else None)
     return reader.envelope(status='READY',item=item,eligibility='NOT_ELIGIBLE' if prewatch=='FALSE' else 'ELIGIBLE' if prewatch=='TRUE' else 'UNKNOWN',
         satisfied=value(item,'matched_predicates') or [],not_satisfied=[],not_satisfied_reason='OWNER_FALSE_PREDICATE_LIST_NOT_PUBLISHED',
         indeterminate=value(item,'unknown_predicates') or [],not_implemented=value(item,'detector_statuses'),
@@ -46,7 +53,8 @@ def explanation(reader,item):
         waiting_for=value(item,'waiting_for') if 'waiting_for' in item['fields'] else value(item,'unknown_predicates'),
         why_now=value(item,'why_now') if 'why_now' in item['fields'] else value(item,'transition_reasons'),why_now_basis='OWNER_EMITTED_TRANSITION_REASONS',
         invalid_if=value(item,'invalid_if'),invalid_if_reason='OWNER_INVALIDATION_CONDITIONS_NOT_PUBLISHED' if 'invalid_if' not in item['fields'] else None,
-        owner_specific_debt=[dict(field=k,owner='V4_11_STATE' if k in ('waiting_for','invalid_if','why_now') else 'V4_13_PROFILE',reason='NO_EXPLICIT_OWNER_FIELD_PUBLISHED') for k in ('hypothesis','waiting_for','invalid_if','why_now') if k not in item['fields']])
+        explanation_contract_id='R2_OWNER_EXPLANATION_PRESENTATION_V1',owner_explanations=presentation,
+        owner_specific_debt=[dict(field=k,owner='V4_11_STATE' if k in ('waiting_for','invalid_if','why_now') else 'V4_13_PROFILE',reason='NO_EXPLICIT_OWNER_FIELD_PUBLISHED',fallback_basis=presentation[k]['basis']) for k in ('hypothesis','waiting_for','invalid_if','why_now') if k not in item['fields']])
 
 def timeline(reader,item,query):
     """Expose only bound owner structure records, with field-local debts."""

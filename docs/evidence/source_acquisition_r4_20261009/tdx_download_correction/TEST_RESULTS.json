@@ -1,7 +1,8 @@
 {
   "pytest_exit": 0,
   "tests": 62,
-  "elapsed_seconds": 24.46,
+  "elapsed_seconds": 23.47,
   "command": "python -X utf8 -B -m pytest tests/test_market_source_acquisition_r4.py tests/test_v4_current_daily_refresh.py tests/v4_dm01/test_official_daily_sources_v2.py -q --basetemp E:/codex_tmp/test_temp/r4_download_correction",
-  "acceptance": "PASS_DOWNLOAD_ADAPTER; NOT_OWNER_OR_RELEASE_ACCEPTANCE"
+  "acceptance": "PASS_DOWNLOAD_ADAPTER; NOT_OWNER_OR_RELEASE_ACCEPTANCE",
+  "index_exclusion": "SZ.399xxx, BJ.899050 and BJ.899601 excluded"
 }

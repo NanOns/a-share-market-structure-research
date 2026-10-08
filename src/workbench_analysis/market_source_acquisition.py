@@ -19,7 +19,7 @@ FIELDS = 'date,code,open,high,low,close,volume,amount,tradestatus,isST,adjustfla
 
 def is_stock_code(code):
     # SZ.399xxx is an index, not a CHINEXT stock.
-    return code.lower().startswith(('sh.6','sz.00','sz.30','bj.'))
+    return code.lower().startswith(('sh.6','sz.00','sz.30','bj.43','bj.83','bj.87','bj.92'))
 
 
 def now():

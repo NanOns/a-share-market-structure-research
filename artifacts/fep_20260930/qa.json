@@ -1,0 +1,63 @@
+{
+  "status": "DOCUMENT_QA_AND_HAND_VECTORS_PASS",
+  "numbered_headings": 309,
+  "ddl_tables": 27,
+  "ddl_reference_names": "PASS",
+  "sql_runtime": "NOT_EXECUTED",
+  "implementation_tests": "NOT_RUN",
+  "cases": [
+    {
+      "case": "single_matched_bucket_weight",
+      "actual": 1.0,
+      "expected": 1,
+      "status": "PASS"
+    },
+    {
+      "case": "single_matched_bucket_mean",
+      "actual": 0.1,
+      "expected": 0.1,
+      "status": "PASS"
+    },
+    {
+      "case": "single_matched_bucket_positive_rate",
+      "actual": 1.0,
+      "expected": 1,
+      "status": "PASS"
+    },
+    {
+      "case": "date_weighted_mean",
+      "actual": -6.938893903907228e-18,
+      "expected": 0,
+      "status": "PASS"
+    },
+    {
+      "case": "date_weighted_positive_rate",
+      "actual": 0.5,
+      "expected": 0.5,
+      "status": "PASS"
+    },
+    {
+      "case": "price_drawdown_atr",
+      "actual": -5.0,
+      "expected": -5,
+      "status": "PASS"
+    },
+    {
+      "case": "ratio_drawdown_over_atr_ratio_is_different",
+      "actual": -4.166666666666669,
+      "expected": -4.166666666666667,
+      "status": "PASS"
+    },
+    {
+      "case": "first_exit_vs_any_event",
+      "status": "PASS",
+      "first": "CONFIRMED",
+      "any_confirm": 1,
+      "any_invalidate": 1
+    },
+    {
+      "case": "late_label_revision_cutoff",
+      "status": "PASS"
+    }
+  ]
+}

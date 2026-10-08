@@ -1,0 +1,44 @@
+# FEP R2 独立集成复核（2026-09-30）
+
+状态：INTERNAL_TARGETED_REVIEW_COMPLETE / EXTERNAL_REAUDIT_PENDING。此报告不授予外部PASS，不执行数据库，不修改主稿。
+
+输入：桌面《V4_2_2_FEP_R1_EXTERNAL_CROSS_AUDIT_R1_20260930.md》；`artifacts/fep_r2_20260930/`内FEP_R2_SCHEMA_DESIGN_20260930.sql、FEP_R2_MODULE_DRAFT.md及FINAL_REV4_FEP_R2_DRAFT.md。
+
+## 外部P1-02：细粒度权限
+
+SQL permission_keys已定义(scope,target,horizon,feature_contract,model_set,capability)，复合FK引用target及model_set_members，scope含entity/variant。activation引用grant；acceptance_receipts以run/grant接受，priority_projection_grants引用同一receipt/run/grant；deployment head含target/horizon/feature_contract，model_set作为payload。模块第138行同样定义六元grant。因而原“只能scope/model_set宽授权”的结构缺口已修复。
+
+仍需落实E1接受服务校验run.model_set、prediction target及实际输出角色与grant一致，不仅有receipt就开放全部run。一个T5 MARKET_EXCESS授权不能扩大到T20 INVALIDATION；当前合同已经要求此粒度反例。
+
+## 外部P1-03：Deployment CAS
+
+新增deployment_heads及deployment_change_receipts，head主键不含model_set，因此模型替换竞争同一head。cas_deploy在expected_version=0时尝试唯一初始插入，更新时同时比较head_version和prior_activation_id；ROW_COUNT不等于1异常，activation/receipt/head均处同一事务，可回滚。函数不提前发布future-effective head。模块第141行与SQL一致，原“只有append-only activation而无CAS承载”缺口已修复。
+
+本次仅静态验证结构；SECURITY DEFINER/owner/search_path/EXECUTE与禁止直接DML、故障注入、同request_id重复readback仍为E1真实验收，不能视为已部署。函数本体不做request_id幂等readback，需由调用服务按模块测试16处理并验证原request内容相同，冲突内容不能返回旧成功。
+
+## 本轮建议闭合事项
+
+1. FINAL_REV4候选第7045行仍有“当前生效版本为REV3-FEP”，与header REV4候选不一致。改为明确REV4修订候选待外审，不用“外部已通过”措辞。
+2. permission_keys硬限定model_role=CHAMPION；model_set仍能含BASELINE/CHALLENGER，而prediction acceptance没有直接model_id/role绑定。需明确MODEL_DISPLAY/PRIORITY_USE只消费该grant对应champion输出；baseline/challenger只能进入明确允许的Shadow评估，不能借champion授予的模型集合权限展示/排序。可由接受/API validator实现，必须加入角色越权反例；如要授权其他角色则应显式增加角色维度及相应head key，不隐式扩大。
+3. priority_projection_grants当前projection_id FK和receipt/run/grant FK彼此独立，建议给priority_projection增加UNIQUE(projection_id,run_id)，再加(projection_id,run_id)复合FK。这属于可直接表达的局部一致性，避免只依赖末尾服务检查。
+
+## 整体边界
+
+两项外部指出的主要结构缺口已得到R2承载，未见原主链或accepted heads被扩大授权。进一步结果以主审处理上述明确项及外部R2复审为准。此报告不能用作FEP最终设计冻结、migration或E1任务卡的外部接受凭据；原V4主工程线继续独立推进。
+## R2候选修复后终轮只读复核
+
+已再次阅读候选模块、REV4主文及SQL。
+
+上述三项闭合事项已解决：主文7045明确REV4候选待外审；生产grant只准CHAMPION输出、BASELINE/CHALLENGER仅诊断/Shadow；priority_projection_grants新增(projection_id,run_id)复合FK。
+
+CAS现有SECURITY DEFINER固定search_path、REVOKE PUBLIC、受控head触发器、DELETE拒绝、expected version/prior校验、当前grant精确REVOKE及request_id readback。逐fold cutoff、label可见/成熟选择和dataset row新增参考触发器。接受receipt至少直接验证run与grant model_set一致，其余精确角色/target/有效activation校验明确留在接受服务门。
+
+本轮额外提出一个可立即修的小边界：cas_deploy的已存在request_id分支若参数比较使用<>，NULL可能使IF条件为UNKNOWN，从而接受参数不一致的重投。例如p_action=NULL其余一致可能回读旧成功。应改IS DISTINCT FROM或在readback前拒绝所有必需参数NULL。本项仅涉及参考函数的幂等输入，不改变整体权限设计。
+
+主审报告pglast顶层SQL语法检查89 statements通过；本审计未独立运行该检查，且这不证明PL/pgSQL函数体或真实数据库约束/并发正确。schema rowtype解析限制与未执行数据库验收必须保留。
+
+结论：原P1-02/P1-03结构修复与本轮三项加固已内部复核确认；参考CAS的NULL边界需小修。外部状态持续EXTERNAL_REAUDIT_PENDING，本报告不授予外部PASS、不授权最终冻结或migration。E1真实数据库/权限/并发/恢复门仍OPEN。
+
+## CAS NULL 边界补丁复核：PATCH_VERIFIED
+
+再次只读核对候选SQL：cas_deploy在读取receipt之前拒绝所有必需参数NULL；幂等分支的全部参数比较改为IS DISTINCT FROM，expected_prior允许初始NULL且用null-safe比较。原NULL绕过问题已在参考设计代码中修复，无此项剩余待修。最终内部结论为R2_TARGETED_PATCHES_VERIFIED，外部状态仍EXTERNAL_REAUDIT_PENDING。未执行数据库，不能据此授予外部PASS或证明运行验收通过。

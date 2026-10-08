@@ -1,0 +1,95 @@
+--- FEP-R1
++++ FEP-R2
+@@ -1,8 +1,9 @@
+-# FEP R1｜未来条件期望与研究优先级层
+-
+-文档编号：DA-MSR-V4.2.2-FEP-R1；日期：2026-09-30。
+-状态：DESIGN_REVISED / PARAMETER_AND_IMPLEMENTATION_GATES_PENDING。
+-这是R0的完整替代模块设计，保留其研究目标，不把R0内“必须”直接当用户授权或已冻结合同。合并只接受下述设计边界，不意味着代码、数据、概率校准或生产排序已通过。
++# FEP R2｜未来条件期望与研究优先级层
++
++文档编号：DA-MSR-V4.2.2-FEP-R2；日期：2026-09-30。
++状态：R2_PATCHED / EXTERNAL_REAUDIT_PENDING / IMPLEMENTATION_NOT_VERIFIED。
++外部R1审计结论EXTERNAL_DESIGN_ACCEPTANCE_BLOCKED_PENDING_R2作为既有回执保留；本次提出修复，不自行宣称EXTERNAL_DESIGN_ACCEPTANCE_PASS。FEP最终冻结、migration及E1正式任务卡等待外部R2复审；原主线不受此门阻断。
++这是R1外部审计后定点更新的模块设计，保留其研究目标，不把R0内“必须”直接当用户授权或已冻结合同。合并只接受下述设计边界，不意味着代码、数据、概率校准或生产排序已通过。
+ 现行实现参考HEAD为0581731c1284e82380fa115156f1dc0a16a38bd4；R0所列68276e4…已不是当前HEAD。以实施时accepted manifest和最新分阶段修订为实现权威，不能用早期REV2文本覆盖后续已接受的窗口/字段修复。
+ 
+ ## FEP.1 产品定位与权限
+@@ -37,11 +38,11 @@
+ 
+ ## FEP.3 三条时间链与防事后选择
+ 
+-区分feature_cutoff、label_event_end、label_due_at、label_system_available_at、dataset_cutoff、fit_started/finished、calibration_finished、model_accepted_at、activation_effective_at、prediction_started/finished/accepted、prediction_deadline；UTC保存，交易日按冻结Asia/Shanghai市场日历。
++区分feature_cutoff、label_event_end、source_fact_available_at、label_training_mature_at、label_revision_available_at、dataset_cutoff、fit_started/finished、calibration_finished、model_accepted_at、activation_effective_at、prediction_started/finished/accepted、prediction_deadline；UTC保存，交易日按冻结Asia/Shanghai市场日历。
+ 
+ 真实预测必须同时满足：
+ 1. 所选输入revision.system_available_at<=feature_cutoff，且实际消费manifest匹配；物化时间不代替知识时间。
+-2. 所选label revision及其全部派生依赖available_at<=dataset_cutoff<=fit_started；label_due_at<=dataset_cutoff，label_event_end不晚于允许边界。后到更正即使原标签早已成熟，也不允许进入更早模型。
++2. 所选label的source_fact_available_at、label_training_mature_at及label_revision_available_at分别<=该fold/partition的fold_dataset_cutoff；其余依赖同样需可见，fold cutoff不超过dataset manifest上界或所对应拟合/选择截止。label_event_end不晚于允许边界。后到更正即使原标签早已成熟，也不允许进入更早模型。
+ 3. fit_finished<=calibration_finished<=model_accepted_at<=activation_effective_at<=prediction_started<=prediction_finished<=prediction_accepted_at<=prediction_deadline；无校准的描述统计使用显式NOT_APPLICABLE且calibration_finished=fit_finished。
+ 4. activation在当日slot的model_selection_cutoff前冻结，prediction_started还须不早于依赖接受。不能看当日推理/事后结果再选model_set。
+ 5. observation_slot=(namespace,entity,observation_scope,signal_key,trade_date)固定首个合规accepted observation；prediction_slot=(observation_slot,model_family_scope,target,horizon)固定当时active model set。首个合规接受结果是FIRST_OBSERVED；失败/漏跑也写slot receipt，不挑最好revision。
+@@ -53,6 +54,8 @@
+ 
+ observation_id表示逻辑采样单位，不是UI行或publication revision。ENTRY按事件唯一，DAILY_LANDMARK按实体/日唯一；相同episode的多事件不同target分层，不能伪称独立episodes。feature revision和label revision各自append-only。
+ 全量目标人群先登记observation及期望targets，成功、UNKNOWN、OOD、缺失、漏预测均保留。UI Top-K、Focus与pin不能决定登记或结算。新增DAILY/MARKET_WIDE observation经独立任务请求同一Forward服务，不往Validation Cohort补造入选事件，不复制价格公式。
++完整N-window target三时间定义：source_fact_available_at为所绑定原事实及依赖实际系统可见时间；label_training_mature_at为冻结日历的N-window训练成熟时刻；label_revision_available_at为本次投影revision实际可用时间，至少不早于它消费的事实。事件可T+2已知且记录，而T+5 target统一等T+5成熟才训练；不要求source或revision可见时间>=成熟时刻，不倒填可见时间。早记录的revision尚不能证明其余N-window完整质量时保留PENDING，成熟后需权威状态/版本确认，不能仅等到日历日期就自动解锁缺失标签。
++
+ dataset为long form：一个observation revision × target × horizon × chosen label revision；每target独立quality/maturity/training_eligibility。一个sector label缺失不能删除同observation的absolute label。
+ 样本权重默认日期平权：日期d下n_d个合格单位，w_i=1/(D*n_d)；scope单独计算，不同scope不拼。权重、日期/episode去重及统计estimand进入contract；条件桶重新计算其内部日期权重见FEP.8。每次筛掉不可观测标签都保留原始全量分母与reason ledger。
+ 
+@@ -105,6 +108,8 @@
+ 
+ E1产生机器field rows，逐field保存producer、field path、type、unit、nullable、requiredness、window、quality allowlist、availability expression、allowed scopes、consumer contract。上表未验证存在的具体字段标NOT_IMPLEMENTED；不能为了覆盖R0列表临时发明因子。全字段逐一映射验收完成前，E1不记DATASET_COMPLETE。特征schema本身及转换artifact进入digest。
+ 
++R2 dataset完整分母ledger只记录expected scope/排除原因，不保存全局selected_label_revision。dataset_fold_cutoffs冻结(dataset,fold,partition)的as-of cutoff；dataset_fold_label_selection按同键加observation/target保存revision、digest、eligibility和选择原因。dataset_rows复合FK必须指向该fold/partition选择，不能从较晚全局dataset cutoff替早fold取latest。早fold可用r1、晚fold可用r2，dataset整体digest冻结全部cutoff/选择/分母。同fold的FIT/TUNE/CALIBRATION/OUTER_TEST不得复用同observation、同市场日期组或跨边界同episode，完整purge清单仍须接受服务验收；不同fold可在未来窗口中合法复用已可见历史。各phase时间显式进入fold cutoff表phase_started_at与training_run.phase_manifest：FIT cutoff<=本fold fit_started；TUNE cutoff<=预注册selection_started；CALIBRATION cutoff<=calibrator_fit_started；OUTER_TEST cutoff为冻结评分知识截止，可晚于原model fit，TEST labels仅用于evaluation且不得进该模型拟合/选参/校准。phase_started_at为实际消费者开始时间（TEST为评分开始），其cutoff不晚于该时刻，不能借全局fit_started代替。episode唯一身份为(scope_id,entity_id,episode_key)，不同股票复用局部episode号不能误判同episode。一个实验的FIT/TUNE/CALIBRATION/OUTER_TEST各自截止和label可见门不能共享较晚截止。设计DDL已有fold cutoff、selection可见性/成熟度及row ELIGIBLE与phase分离触发器参考，实际PostgreSQL执行/并发反例仍待E1。
++
+ ## FEP.8 条件统计的确定算法
+ 
+ CONDITIONAL_EXPECTANCY_V1以(entity_type,observation_scope,signal_type,target,horizon,feature_variant,evidence_origin,label_quality_policy,contract versions)为不可跨越的base partition。FIRST_EXIT类统计与连续收益分开。
+@@ -116,7 +121,7 @@
+ 
+ 先条件统计，再regularized logistic / multinomial / Huber / quantile；tree仅可选challenger，不是E5或原V4-16的前置门。模型Registry、baseline artifact和prediction日志在E1/E2已有，不能等E4才创建。
+ 按市场日期组切分，同日横截面不可分到两折；严格Train→内部时间选参→独立Calibration→一次性Outer Test。所有scaler、imputer、winsor、bins、feature selection、OOD reference都只fit所属训练段。禁止默认随机CV或用测试结果决定条件backoff/阈值。
+-每边界按真实label_event_end及label_system_available_at purge：训练/校准/选择各自不得消费后段才可知的标签；至少与目标最大观察跨度相匹配，最终记录排除清单而非仅声称gap=N。共享episode/重叠观察区间在边界明确分组清除；不要求同实体永远不能出现在未来测试，任务是未来预测而非新实体泛化。单向训练没有未来训练块时不机械双向embargo；若日后双向split须另合同，不沿用V1。
++每边界按真实label_event_end、source_fact_available_at及label_revision_available_at purge：训练/校准/选择各自不得消费后段才可知的标签；至少与目标最大观察跨度相匹配，最终记录排除清单而非仅声称gap=N。共享episode/重叠观察区间在边界明确分组清除；不要求同实体永远不能出现在未来测试，任务是未来预测而非新实体泛化。单向训练没有未来训练块时不机械双向embargo；若日后双向split须另合同，不沿用V1。
+ Calibrator用独立时间段，概率模型各class最低事件数不足则UNCALIBRATED。Sigmoid/isotonic等方法、bins、有效期和权重事前注册；Brier/LogLoss是proper scores但不单独证明校准，还看reliability/分组支持及不确定性。回归不存在“概率校准必需”伪门，分别验证quantile覆盖与损失。
+ 冻结primary target/horizon/metric、实验预算及一次性outer窗口；已用来调整模型的Shadow不再作为独立promotion证据。保留所有失败试验；new lineage不洗掉旧测试已被看过的事实。未来新窗口或预注册顺序检验才能重新举证。
+ 风险输出必须与收益同屏。quantiles应有序，MFE>=0，MAE/MDD<=0；嵌套horizon同一风险集的首事件CIF不减；只有同一冻结path/source且可统一到同一基准的同定义路径极值，才检验MFE不减、MAE/MDD不增。跨horizon调整源/仿射平移造成基准不同，或风险集/质量不同须先重锚并证明可比，否则COHERENCE_NOT_COMPARABLE，不机械改值。收益均值不要求单调。独立模型若违反这些结构，不静默裁剪：用预注册训练内约束/rearrangement，保存raw与coherent两版、重验校准；否则COHERENCE_FAILED，只诊断。
+@@ -130,17 +135,18 @@
+ 
+ 默认原PRIORITY_V1完全不变，FEP展示/Shadow排序独立。PRIORITY_V2若晋级，先固定展示scope与risk-event频道，再保留V1 bucket及已冻结emergence/structure/risk关键次序，只在预注册同层tie-break用FEP tuple；不能把高风险失效股票隐藏。收益、风险、结构分别轴，不合总分。
+ FEP state按first-true：必需quality/support/calibration/OOD/coherence不满足→UNKNOWN；horizon/模型冲突或positive收益且风险超限→CONFLICTING；relative lower/median等事前指定统计量过正门且风险可接受→POSITIVE；同一统计量低于负门→NEGATIVE；其余NEUTRAL。精确统计量、horizon、阈值、tie-break在E5预注册，未冻结只有各轴原值、state=NOT_FROZEN。不能看到成绩后决定用mean还是median。
+-production权限拆成DESCRIPTIVE_DISPLAY、MODEL_DISPLAY、PRIORITY_USE，并按实体/scope/target/horizon/variant/model_set授权；Core production不自动许可FEP。GLOBAL FEP PASS无效。FEP失败恢复原PRIORITY_V1，不影响Core/UI/Focus既有source。
++权限的grant_key=(scope_id,target_id,horizon,feature_contract_id,model_set_id,capability)，scope明确实体类型和variant；capability包括SHADOW_INFERENCE以及DESCRIPTIVE_DISPLAY、MODEL_DISPLAY、PRIORITY_USE。permission_keys限定CHAMPION；DESCRIPTIVE_DISPLAY/MODEL_DISPLAY/PRIORITY_USE只授权该目标CHAMPION输出，同集合BASELINE/CHALLENGER仍是诊断/Shadow，不继承展示/排序权限。SHADOW_INFERENCE可计算集合成员但不给生产展示权。permission_keys、activation、prediction acceptance receipt、priority引用和API readback使用同一key，不用scope+model_set宽授权覆盖全部target/horizon；Core production不自动许可FEP。GLOBAL FEP PASS无效。FEP失败恢复原PRIORITY_V1，不影响Core/UI/Focus既有source。
++ENTRY-only FEP只用于事件日ENTRY scope研究注释。今日Radar全候选PRIORITY_USE必须有DAILY_LANDMARK或明确注册的等价candidate-day scope、当日feature和当日预测，并满足预注册同候选覆盖门；不能把入选日预测长期挂靠为“今日预测”。持久候选尚无daily样本/模型时保留PRIORITY_V1，ENTRY历史预测只在历史面板注明as-of，不影响今日全池排序。E2→E5早期ENTRY展示可先行，但不授予daily Priority。
+ 评估须同日同候选集合、同K、同coverage及同可观察label与PRIORITY_V1成对比较；被OOD拒绝样本保留，报告全scope覆盖与拒绝切片。按日期先算loss/spread，再用保留横截面的时间块和实体/episode敏感性分析；block长度预注册覆盖重叠风险，行IID区间不作证据。旧Core入选Forward gate不能代替FEP OOS gate。
+-FEP accepted model-set deployment head以scope+capability CAS更新，activation receipt与指针同事务；并发切换失败重读不覆盖，既有slot不随head漂移。批次接受记录全scope期望行、成功/UNKNOWN/漏跑总数，部分target成功有明确scope而不冒充全批PASS。
++FEP deployment_heads受控可变指针按(scope,capability,target,horizon,feature_contract)唯一；model_set是替换payload而非head key。activation历史保留grant_key、prior_activation_id及expected_head_version；cas_deploy设计函数验证expected version+prior指针，初始0→1或更新v→v+1，并将activation、deployment_change_receipt和head同事务提交，CAS失败全部回滚。CAS请求重投按request_id及全参数一致性回读原receipt；请求内容改变则IDEMPOTENCY_CONFLICT。已有head的REVOKE仅允许其当前grant_id，不能伪造撤销另一个model_set。API只读对应accepted ALLOW head，REVOKE拒绝该精确key，既有slot不随head漂移。V1只允许实际切换时生效，不提前用未来activation占head；定时意图等生效时再CAS。应用角色不得直接UPDATE/DELETE head或事实表，触发器/函数权限及故障演练为E1实际验收门。批次接受记录全scope期望行、成功/UNKNOWN/漏跑总数，部分target成功有明确scope而不冒充全批PASS。
+ 页面显示训练人群、实际backoff条件、horizon、样本日期/blocks、结果质量、model版本、预测as-of与未启用原因。概率仅在相应MODEL_DISPLAY授权且校准有效时出现，避免百分位小数制造精度；例子数字均非真实预测。MFE/MAE是研究路径，非可执行盈亏。
+ API拟新增/api/v4/expectancy/context?publication_id=…作为bootstrap，返回冻结model_set/prediction_run/revision及所有依赖；随后stock/sector/market/model/evaluation请求使用现有完整context token加expectancy_model_set_id、prediction_run_id、prediction_revision。不存在返回NOT_READY，错配返回CONTEXT_MISMATCH，不偷换latest。token只代表一致性，不代表授权；服务端另校验capability grant。只读API不触发训练、在线下载或重新计算。
+ 
+ ## FEP.12 数据库与发布完整性
+ 
+-配套《FEP_R1_SCHEMA_DESIGN_20260930.sql》是未部署设计DDL，放docs/design，不放运行migration目录，不执行数据库操作。已有v4.publications publication_id为revision身份；FK对接当前schema，不沿用R0缺失revision语义。
+-包括contracts/field registry、observations及revision、feature snapshots及values、settlement source binding/target revision、dataset expected-target eligibility ledger和合格membership、training artifacts、model registry/sets/activations、无模型也可存在的planned prediction slots、独立model binding、runs/results、evaluation/quality报告与priority projection。具体PK/FK/index/check见附件，目标JSON不是跨实体无约束“万能结果表”。
+-所有事实表append-only；current指针为可重建投影；接受通过FEP独立事务验证同entity/scope/target/horizon/feature/model/manifest兼容性和时间链，写acceptance receipt后再更新可见head。DB constraints能保证局部关系；涉及JSON AST/accepted上游/时间跨表的validation必须实现为接受服务/触发器且有故意串对象的反例，不能仅靠调用者自觉。
++配套《FEP_R2_SCHEMA_DESIGN_20260930.sql》是未部署设计DDL，放docs/design，不放运行migration目录，不执行数据库操作。已有v4.publications publication_id为revision身份；FK对接当前schema，不沿用R0缺失revision语义。
++包括contracts/field registry、observations及revision、feature snapshots及values、settlement source binding/target revision、dataset expected-target eligibility ledger、逐fold/partition cutoff和label选择及合格membership、training artifacts、model registry/sets、细粒度permission keys/activations、deployment heads和CAS receipts、无模型也可存在的planned prediction slots、独立model binding、runs/results、evaluation/quality报告与priority projection。具体PK/FK/index/check见附件，目标JSON不是跨实体无约束“万能结果表”。
++所有事实/历史表append-only，当前deployment_heads是唯一受控UPDATE的指针表，禁止DELETE；每个当前及未来新增事实表migration必须显式建guard并通过表清单测试，不能假设一次pg_tables循环永久覆盖未来表。接受通过FEP独立事务验证同entity/scope/target/horizon/feature/model/manifest兼容性和时间链，写acceptance receipt后再更新可见head。DB constraints能保证局部关系；涉及JSON AST/accepted上游/时间跨表的validation必须实现为接受服务/触发器且有故意串对象的反例，不能仅靠调用者自觉。
+ Label Source Binding只由既有settlement authority adapter产生，含上游row key/revision/digest。V4-15尚未实现时source FK adapter是明确阶段门；本DDL不会伪造一个已存在的Forward表。禁止FEP自己重新结算价格；structured label来自冻结未来State/Event lineage及首事件reducer。
+ 训练artifacts只从本地受信路径读取，路径在项目产物目录、hash与manifest核对；不能自动反序列化外部pickle。保存dependency lock、schema版本、transform/calibrator/OOD引用、CPU/线程/seed、模型格式及退休原因。撤销权限append新activation/gate事件，不删除历史预测。
+ 
+@@ -201,6 +207,12 @@
+ 11. OOD拒绝一半候选后Top-K改善不能按原scope全覆盖算PASS；成对V1基线、同K/coverage、风险与不确定性同时报告。
+ 12. 模型在deadline之后接受、次日物化输入、模型缺失、重复slot、retracted artifact、旧context readback/回滚，按真实/重建与权限分开。
+ 13. 新champion只影响future activation slot；历史prediction/readback/原始cohort、Focus手工选择不变。
++14. 同dataset中早fold在r2可见前选r1，晚fold在r2可见后选r2；早fold行指向r2或错误partition选择必须拒绝。
++15. 多target model_set中仅T5 MARKET_EXCESS允许MODEL_DISPLAY，T20 INVALIDATION仍Shadow；错target/horizon/feature grant的receipt/API/priority引用必须拒绝。
++16. 两并发切换都携expected version=7/prior=A：只能一个提交version8，另一个CAS_CONFLICT且其activation/receipt不能残留；相同request_id重投必须readback原receipt而非重做切换。初始head创建、REVOKE/rollback也须验收。
++17. T+2事件可见、T+5训练成熟：T+3训练拒绝，成熟但revision迟到仍拒绝；事实可见时间不晚于成熟的合法记录不被CHECK拒绝。
++18. 持续PREWATCH无今日ENTRY：旧ENTRY forecast仅历史注释；无DAILY scope模型不能进入今日全Radar Priority。
++19. 新增事实表无append-only guard的migration应拒绝；head CAS允许受控更新但直接修改/删除应拒绝。
+ 
+ 本次仅执行文档/设计反例检查；这些完整功能测试是E1–E5验收要求，不声称已运行。独立审计项在报告中逐项处置，设计修复不自动关闭真实数据/统计效力/实现审计。
+ 

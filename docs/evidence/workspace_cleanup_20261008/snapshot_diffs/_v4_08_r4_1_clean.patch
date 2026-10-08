@@ -1,0 +1,130 @@
+diff --git a/reports/v4_08/V4_08_R4_CLEAN_CHECKOUT_RECEIPT.json b/reports/v4_08/V4_08_R4_CLEAN_CHECKOUT_RECEIPT.json
+index 574e2da6..4650d4d4 100644
+--- a/reports/v4_08/V4_08_R4_CLEAN_CHECKOUT_RECEIPT.json
++++ b/reports/v4_08/V4_08_R4_CLEAN_CHECKOUT_RECEIPT.json
+@@ -1,16 +1,16 @@
+ {
+   "config_dot_env_present": false,
+   "contract_id": "V4_08_R4_CLEAN_CHECKOUT_RECEIPT_V1",
+-  "created_at_utc": "2026-09-30T08:12:45.204813+00:00",
++  "created_at_utc": "2026-09-30T10:10:48.391852+00:00",
+   "detached_head": true,
+-  "elapsed_seconds": 41.626,
++  "elapsed_seconds": 93.558,
+   "git_status_after": "",
+   "git_status_before": "",
+   "isolated_regression_receipt": {
+     "config_dot_env_read": false,
+     "contract_id": "V4_08_R4_ISOLATED_REGRESSION_V1",
+     "dsn_source": "PROCESS_ENVIRONMENT_DISPOSABLE_CLUSTER",
+-    "junit_sha256": "579af9e05c463d914814ebc37c3ef665d377a1e54ee5a49ef1169d6d1e1beb65",
++    "junit_sha256": "0af05c525d9437195b05dadccc31953751d442d00b9ce7ff00812e4e1e38712b",
+     "pytest_return_code": 0,
+     "required_families": [
+       "tests/v4_01",
+@@ -23,19 +23,22 @@
+       "tests/v4_08",
+       "tests/v4_joint",
+       "tests/v4_phase0",
++      "tests/test_fixed_qfq_samples.py",
++      "tests/test_phase0_2a_gate.py",
++      "tests/test_phase1_qa_sample_selector.py",
+       "tests/governance/test_no_symbol_specific_runtime_logic.py"
+     ],
+     "status": "PASS",
+     "stderr": "",
+-    "stdout": "........................................................................ [ 11%]\n........................................................................ [ 23%]\n........................................................................ [ 34%]\n........................................................................ [ 46%]\n........................................................................ [ 57%]\n........................................................................ [ 69%]\n........................................................................ [ 80%]\n........................................................................ [ 92%]\n......s..........s................................                       [100%]\n624 passed, 2 skipped in 36.44s\n",
++    "stdout": "........................................................................ [ 11%]\n........................................................................ [ 22%]\n........................................................................ [ 33%]\n........................................................................ [ 44%]\n........................................................................ [ 55%]\n........................................................................ [ 67%]\n........................................................................ [ 78%]\n........................................................................ [ 89%]\n......s..........s.................................................      [100%]\n641 passed, 2 skipped in 88.21s (0:01:28)\n",
+     "summary": {
+       "errors": 0,
+       "failures": 0,
+-      "passed": 624,
++      "passed": 641,
+       "skipped": 2,
+-      "tests": 626
++      "tests": 643
+     },
+-    "tested_commit": "0eb4669a673bad4694bfe2ac26fc67f2e8920935"
++    "tested_commit": "60a18f9ce265a36547217c48dca3f3c0b2cd50a7"
+   },
+   "schema_migration_receipt": {
+     "checks": {
+@@ -58,7 +61,7 @@
+       "datctype": "Chinese (Simplified)_China.936",
+       "owner": "postgres",
+       "server_address": "127.0.0.1/32",
+-      "server_port": 1376,
++      "server_port": 9171,
+       "version": "PostgreSQL 18.6 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit"
+     },
+     "dsn_source": "PROCESS_ENVIRONMENT_DISPOSABLE_CLUSTER",
+@@ -161,9 +164,9 @@
+     ],
+     "status": "PASS",
+     "temporary_cluster_destroyed": true,
+-    "tested_commit": "0eb4669a673bad4694bfe2ac26fc67f2e8920935"
++    "tested_commit": "60a18f9ce265a36547217c48dca3f3c0b2cd50a7"
+   },
+   "status": "PASS_CLEAN_DETACHED_CHECKOUT",
+   "temporary_cluster_destroyed": true,
+-  "tested_commit": "0eb4669a673bad4694bfe2ac26fc67f2e8920935"
++  "tested_commit": "60a18f9ce265a36547217c48dca3f3c0b2cd50a7"
+ }
+diff --git a/reports/v4_08/V4_08_R4_ISOLATED_REGRESSION.json b/reports/v4_08/V4_08_R4_ISOLATED_REGRESSION.json
+index 73e8c03c..a7b4ea8d 100644
+--- a/reports/v4_08/V4_08_R4_ISOLATED_REGRESSION.json
++++ b/reports/v4_08/V4_08_R4_ISOLATED_REGRESSION.json
+@@ -2,7 +2,7 @@
+   "config_dot_env_read": false,
+   "contract_id": "V4_08_R4_ISOLATED_REGRESSION_V1",
+   "dsn_source": "PROCESS_ENVIRONMENT_DISPOSABLE_CLUSTER",
+-  "junit_sha256": "579af9e05c463d914814ebc37c3ef665d377a1e54ee5a49ef1169d6d1e1beb65",
++  "junit_sha256": "0af05c525d9437195b05dadccc31953751d442d00b9ce7ff00812e4e1e38712b",
+   "pytest_return_code": 0,
+   "required_families": [
+     "tests/v4_01",
+@@ -15,17 +15,20 @@
+     "tests/v4_08",
+     "tests/v4_joint",
+     "tests/v4_phase0",
++    "tests/test_fixed_qfq_samples.py",
++    "tests/test_phase0_2a_gate.py",
++    "tests/test_phase1_qa_sample_selector.py",
+     "tests/governance/test_no_symbol_specific_runtime_logic.py"
+   ],
+   "status": "PASS",
+   "stderr": "",
+-  "stdout": "........................................................................ [ 11%]\n........................................................................ [ 23%]\n........................................................................ [ 34%]\n........................................................................ [ 46%]\n........................................................................ [ 57%]\n........................................................................ [ 69%]\n........................................................................ [ 80%]\n........................................................................ [ 92%]\n......s..........s................................                       [100%]\n624 passed, 2 skipped in 36.44s\n",
++  "stdout": "........................................................................ [ 11%]\n........................................................................ [ 22%]\n........................................................................ [ 33%]\n........................................................................ [ 44%]\n........................................................................ [ 55%]\n........................................................................ [ 67%]\n........................................................................ [ 78%]\n........................................................................ [ 89%]\n......s..........s.................................................      [100%]\n641 passed, 2 skipped in 88.21s (0:01:28)\n",
+   "summary": {
+     "errors": 0,
+     "failures": 0,
+-    "passed": 624,
++    "passed": 641,
+     "skipped": 2,
+-    "tests": 626
++    "tests": 643
+   },
+-  "tested_commit": "0eb4669a673bad4694bfe2ac26fc67f2e8920935"
++  "tested_commit": "60a18f9ce265a36547217c48dca3f3c0b2cd50a7"
+ }
+diff --git a/reports/v4_08/V4_08_R4_SCHEMA_MIGRATION_RECEIPT.json b/reports/v4_08/V4_08_R4_SCHEMA_MIGRATION_RECEIPT.json
+index d354e4c3..0e15aaf4 100644
+--- a/reports/v4_08/V4_08_R4_SCHEMA_MIGRATION_RECEIPT.json
++++ b/reports/v4_08/V4_08_R4_SCHEMA_MIGRATION_RECEIPT.json
+@@ -19,7 +19,7 @@
+     "datctype": "Chinese (Simplified)_China.936",
+     "owner": "postgres",
+     "server_address": "127.0.0.1/32",
+-    "server_port": 1376,
++    "server_port": 9171,
+     "version": "PostgreSQL 18.6 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit"
+   },
+   "dsn_source": "PROCESS_ENVIRONMENT_DISPOSABLE_CLUSTER",
+@@ -122,5 +122,5 @@
+   ],
+   "status": "PASS",
+   "temporary_cluster_destroyed": true,
+-  "tested_commit": "0eb4669a673bad4694bfe2ac26fc67f2e8920935"
++  "tested_commit": "60a18f9ce265a36547217c48dca3f3c0b2cd50a7"
+ }

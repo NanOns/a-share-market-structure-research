@@ -1,0 +1,43 @@
+{
+  "schema": "WORKSPACE_CLEANUP_V1",
+  "date": "2026-10-08",
+  "operation": "maintenance_only_no_stage_gate_advance",
+  "cleanup_roots": 1129,
+  "fully_removed": 1128,
+  "partial_roots": [
+    "E:\\codex work\\titan_collector\\_codex_workspace"
+  ],
+  "observed_freed_bytes_after_worktree_removal": {
+    "C": 243765248,
+    "E": 115311407104,
+    "F": 1809133568,
+    "G": 134589976576
+  },
+  "recorded_removed_E_worktree_bytes": 26901867455,
+  "estimated_F_worktree_bytes": 39275359596,
+  "estimated_total_freed_GiB": 296.28,
+  "protected": [
+    "TDX input roots",
+    "production source/history/databases",
+    "Codex sessions/auth/config databases",
+    "C:/Users/lps/.codex/worktrees/f46d (saved conversation)"
+  ],
+  "blocked": [
+    {
+      "path": "C:/Users/lps/.codex/..codex-global-state.json*.tmp-*",
+      "reason": "automatic approval rejected; no detailed reason returned"
+    },
+    {
+      "path": "E:/titan_recovery",
+      "reason": "automatic approval rejected; four historical Git heads archived remotely"
+    },
+    {
+      "path": "E:/codex work/titan_collector/_codex_workspace/quarantine/pre_ws01_tmp/pytest",
+      "reason": "Windows access denied"
+    }
+  ],
+  "remaining_migration": "E:/codex work still authoritative; offline E-to-G rebind remains incomplete",
+  "titan_workspace_root_verification": "PASS",
+  "business_code_changed": false,
+  "business_tests": "not rerun; no business code changes"
+}

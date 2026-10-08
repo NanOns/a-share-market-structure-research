@@ -1,0 +1,17 @@
+{
+  "status": "R2_DOCUMENT_SQL_AST_AND_HAND_SCENARIOS_PASS",
+  "sql_parser": "pglast v8.4",
+  "sql_statements": 89,
+  "ddl_tables": 33,
+  "foreign_keys_checked": 85,
+  "immutable_fact_tables": 32,
+  "phase_revision_scenario": "early=r1,late=r2 PASS",
+  "three_times_scenario": "T2 fact,T5 mature: T3 reject,T5 eligible PASS",
+  "permission_scenario": "T5 grant does not imply T20 grant PASS",
+  "cas_scenario": "one v7 request commits,v8 rejects stale v7 PASS",
+  "priority_scope": "ENTRY is annotation only; daily PRIORITY_USE requires DAILY scope (document check)",
+  "plpgsql_execution": "NOT_RUN; parser cannot resolve fep schema rowtypes",
+  "database_constraints_and_concurrency": "NOT_RUN",
+  "external_acceptance": "EXTERNAL_REAUDIT_PENDING",
+  "source": "design/reference only"
+}

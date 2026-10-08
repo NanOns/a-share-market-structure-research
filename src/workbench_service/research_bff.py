@@ -101,7 +101,8 @@ class ResearchBFF:
             if name=='forward' and len(parts)>1 and parts[1] in ('settlement','outcomes'):return 200,r.query('settlement',query)
             if name not in ('stocks','sectors','events','radar','forward','focus','market','sources'):return 404,r.envelope(status='NOT_FOUND',code='ROUTE_NOT_FOUND')
             if len(parts)==1:return 200,r.query(name,query,summary=True)
-            detail=r.query(name,base_query,entity=parts[1])
+            identity_query={k:v for k,v in base_query.items() if k in ('context_token','trade_date','release_id','model_namespace')}
+            detail=r.query(name,identity_query,entity=parts[1])
             if not detail['total']:
                 outside=name=='stocks' and r.known_identity(parts[1])
                 return 404,r.envelope(status='OUTSIDE_CURRENT_POOL' if outside else 'NOT_FOUND',code='IDENTITY_OUTSIDE_CURRENT_DAILY_UNIVERSE' if outside else 'ENTITY_NOT_FOUND',items=[])

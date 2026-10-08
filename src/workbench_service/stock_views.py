@@ -35,6 +35,28 @@ def chart(reader,item,query):
             window=result[max(0,i-n+1):i+1];b['ma'+str(n)]=sum(x['close'] for x in window)/n if len(window)==n and all(x['close'] is not None for x in window) else None
     return reader.envelope(status='READY' if items else 'EMPTY_VALID',items=items,total=total,limit=limit,offset=offset,has_next=start>0,period=period,price_basis=basis,split_adjustment=authority['price_basis'] if basis=='QFQ' else 'NONE',as_of=reader.context['trade_date'],earliest_valid_date=rows[0]['trade_date'] if rows else None,volume_unit='SHARES',amount_unit='CNY',source=authority['sources']['history'],factor_registry_ref=reader.manifest['source_contract_digest'],knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False)
 
+def membership_relations(reader,item):
+    """Resolve only actual published current relations to bound sector identities."""
+    cells={k:item['fields'].get(k) for k in ('primary_industry','supporting_concepts')}
+    primary=value(item,'primary_industry');concepts=value(item,'supporting_concepts')
+    if concepts is not None and (not isinstance(concepts,list) or any(not isinstance(x,str) for x in concepts) or len(concepts)>378):
+        raise SourceInvalid('STOCK_MEMBERSHIP_RELATION_SHAPE')
+    requested=([('primary_industry',primary)] if primary else [])+[('supporting_concepts',x) for x in concepts or []]
+    rows=[]
+    with sqlite3.connect(reader.path.as_uri()+'?mode=ro',uri=True) as db:
+        for kind,sid in requested:
+            source=db.execute("SELECT payload FROM objects WHERE domain='sectors' AND id=?",(sid,)).fetchone()
+            member=db.execute('SELECT 1 FROM members WHERE sector=? AND security=?',(sid,item['entity_id'])).fetchone()
+            sector=json.loads(source[0]) if source else None;ready=bool(sector and member)
+            rows.append(dict(role=kind,sector_id=sid,display_name=sector['display_name'] if sector else None,
+                sector_type=value(sector,'sector_type') if sector else None,trade_date=reader.context['trade_date'],
+                membership_verified=bool(member),status='READY' if ready else 'SOURCE_INCOMPLETE',
+                href='/v4/research/sectors/'+sid if ready else None,source=cells[kind]))
+    return dict(contract_id='R2_CURRENT_MEMBERSHIP_NAMED_RELATIONS_V1',trade_date=reader.context['trade_date'],
+        knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,items=rows,source_cells=cells,
+        membership_source=reader.manifest['sources']['membership'],scope='CURRENT_PUBLISHED_RELATIONS_ONLY_NO_SUPPORT_ALGORITHM_OR_HISTORICAL_BASKET',
+        owner_gap=[k for k,c in cells.items() if not c or c.get('quality')=='UNKNOWN'])
+
 def explanation(reader,item):
     raw=value(item,'raw_qualification') or {};prewatch=raw.get('PREWATCH','UNKNOWN')
     presentation={}
@@ -44,7 +66,7 @@ def explanation(reader,item):
         presentation[name]=dict(source_field=source,source=cell,
             basis='EXPLICIT_OWNER_FIELD' if source==name else 'OWNER_TRANSITION_REASONS' if name=='why_now' and cell else 'MISSING_PREDICATE_EVIDENCE_ONLY' if name=='waiting_for' and cell else 'OWNER_FIELD_NOT_BOUND',
             value=value(item,source) if cell else None)
-    return reader.envelope(status='READY',item=item,eligibility='NOT_ELIGIBLE' if prewatch=='FALSE' else 'ELIGIBLE' if prewatch=='TRUE' else 'UNKNOWN',
+    return reader.envelope(status='READY',item=item,membership_relations=membership_relations(reader,item),eligibility='NOT_ELIGIBLE' if prewatch=='FALSE' else 'ELIGIBLE' if prewatch=='TRUE' else 'UNKNOWN',
         satisfied=value(item,'matched_predicates') or [],not_satisfied=[],not_satisfied_reason='OWNER_FALSE_PREDICATE_LIST_NOT_PUBLISHED',
         indeterminate=value(item,'unknown_predicates') or [],not_implemented=value(item,'detector_statuses'),
         F={k:v for k,v in item['fields'].items() if k in ('close','ma5','ma10','ma20','ma60','atr14','pos20','pos60','rps5','rps20','amount','volume','amount_ratio20','volume_ratio20','turnover')},

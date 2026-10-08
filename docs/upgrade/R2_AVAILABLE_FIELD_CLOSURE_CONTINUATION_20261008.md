@@ -9,3 +9,5 @@
 入口 Phase 0 DEGRADED_PASS；TDX 全路径只读，无 scanner。每个真实就绪字段必须实源 oracle、IAB 来源单元和两桌面；变化需新 snapshot/UI 联合 CAS 失败回滚与日更准入后继 NOOP；既有源值不变须全量核对。M10 Amount A、严格历史 PIT、未获历史成员/模型 known_at、分钟触板及官方事件均独立开放。
 
 阶段 IN_PROGRESS；下一关：单位元数据适配和各字段实际源 oracle。
+
+当期数值与单位子范围 DEGRADED_PASS；证据 docs/evidence/r2_available_fields_continuation_20261008/ACCEPTANCE.md。下一阶段：剩余结构字段和 Focus 原生 Core 接入。

@@ -1,0 +1,3073 @@
+{
+  "samples": [
+    {
+      "fields": {
+        "participation_proxy": {
+          "adjustment_basis": null,
+          "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "quality": "ACCEPTED",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "participation_proxy",
+          "unit": "ratio_or_percentile_points_as_field_contract",
+          "value": 0.603953080351812,
+          "window": null
+        },
+        "sector_rs20": {
+          "adjustment_basis": null,
+          "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+          "denominator": 25,
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "quality": "ACCEPTED",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "sector_rs20",
+          "unit": "return ratio median",
+          "value": -0.06400000000000006,
+          "window": null
+        },
+        "sector_rs5": {
+          "adjustment_basis": null,
+          "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+          "denominator": 25,
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "quality": "ACCEPTED",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "sector_rs5",
+          "unit": "return ratio median",
+          "value": -0.03021784961349261,
+          "window": null
+        },
+        "sector_type": {
+          "adjustment_basis": null,
+          "computation_domain": "OWNER_PROJECTION",
+          "denominator": null,
+          "parameter_set_id": null,
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": null,
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "sector_type",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": "INDUSTRY",
+          "window": null
+        }
+      },
+      "id": "INDUSTRY:T010101",
+      "name": "煤炭开采",
+      "overlap": {
+        "as_of": "2026-09-30",
+        "cluster": null,
+        "cluster_reason": "NO_VERSIONED_CLUSTER_ENGINE_OUTPUT",
+        "context": {
+          "accepted_trade_date": "2026-09-30",
+          "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+          "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+          "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+          "domain_readiness": {
+            "fep": {
+              "debt": [
+                "CURRENT_FEATURE_MODEL_INFERENCE"
+              ],
+              "released": false,
+              "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+            },
+            "focus": {
+              "debt": [
+                "UNRESOLVED_PATH_PREDICATE_OWNERS",
+                "LEGACY_PG_RECONCILIATION"
+              ],
+              "earliest_valid_date": "2026-09-29",
+              "released": false,
+              "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+            },
+            "forward": {
+              "debt": [
+                "CURRENT_FEP_INFERENCE",
+                "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+                "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+              ],
+              "released": false,
+              "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+            },
+            "market": {
+              "debt": [
+                "INTRADAY_TOUCH_BROKEN_LIMIT",
+                "OFFICIAL_FACT_NEWS"
+              ],
+              "released": false,
+              "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+            },
+            "sectors": {
+              "debt": [
+                "HISTORICAL_MEMBERSHIP",
+                "LIFECYCLE",
+                "ROTATION_HISTORY"
+              ],
+              "released": false,
+              "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+            },
+            "stocks": {
+              "debt": [
+                "HYPOTHESIS",
+                "INVALID_IF_OWNER",
+                "FULL_STRUCTURE_PATH"
+              ],
+              "released": false,
+              "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+            },
+            "strict_pit": {
+              "debt": [
+                "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+              ],
+              "released": false,
+              "scope": "NONE"
+            }
+          },
+          "factor_contract_id": null,
+          "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+          "full_product_release": false,
+          "historical_pit_effectiveness": "NOT_GRANTED",
+          "joint_release_digest": null,
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "last_accepted_trade_date": "2026-09-30",
+          "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+          "namespace": "V4_CURRENT_ACCEPTED",
+          "operational_release_scope": [],
+          "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "parameter_set_id": null,
+          "publication_id": "6866ff8c9a234d3b8190e7bdd46bf092",
+          "quality": "QUALITY_DEGRADED",
+          "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "release_id": "6866ff8c9a234d3b8190e7bdd46bf092",
+          "release_metadata": {
+            "contract_version": "1.0.0",
+            "data_quality_state": "QUALITY_DEGRADED",
+            "evidence_origin": "REAL_ACCEPTED_SOURCE",
+            "evidence_state": "VALIDATION_ONGOING",
+            "input_digest": "4bf0e9f4cbedcb1c3e749eec76c4b437a97648cc8031c59eabd24ffc1894b9a7",
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "owner": "FP02_RESEARCH_PROJECTION",
+            "published_at": "2026-10-08T09:32:32.953606+00:00",
+            "release_id": "6866ff8c9a234d3b8190e7bdd46bf092",
+            "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+            "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+            "trading_date": "2026-09-30"
+          },
+          "scoped_release": false,
+          "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+          "source_mode": "EXISTING_REAL_SNAPSHOT_PENDING_RELEASE",
+          "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+          "stage": "V4-15",
+          "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+          "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+          "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+          "trade_date": "2026-09-30",
+          "turnover_as_of": null
+        },
+        "context_token": "research-v4-2c2ae9ed3f480479adab6341767c05345f95c56f5e115ead1982948b841ffb72",
+        "contract_id": "FP06_PIT_MEMBERSHIP_JACCARD_V1",
+        "has_next": false,
+        "items": [
+          {
+            "display_name": "临界发电",
+            "href": "/v4/research/sectors/THEME:880627",
+            "intersection_count": 8,
+            "jaccard": 0.07692307692307693,
+            "overlap_share": 0.32,
+            "sector_id": "THEME:880627",
+            "union_count": 104
+          },
+          {
+            "display_name": "稀缺资源",
+            "href": "/v4/research/sectors/THEME:880505",
+            "intersection_count": 6,
+            "jaccard": 0.07228915662650602,
+            "overlap_share": 0.24,
+            "sector_id": "THEME:880505",
+            "union_count": 83
+          },
+          {
+            "display_name": "化肥概念",
+            "href": "/v4/research/sectors/THEME:880618",
+            "intersection_count": 3,
+            "jaccard": 0.03409090909090909,
+            "overlap_share": 0.12,
+            "sector_id": "THEME:880618",
+            "union_count": 88
+          },
+          {
+            "display_name": "中特估",
+            "href": "/v4/research/sectors/THEME:880671",
+            "intersection_count": 2,
+            "jaccard": 0.01652892561983471,
+            "overlap_share": 0.08,
+            "sector_id": "THEME:880671",
+            "union_count": 121
+          },
+          {
+            "display_name": "绿色电力",
+            "href": "/v4/research/sectors/THEME:880753",
+            "intersection_count": 7,
+            "jaccard": 0.016129032258064516,
+            "overlap_share": 0.28,
+            "sector_id": "THEME:880753",
+            "union_count": 434
+          },
+          {
+            "display_name": "风电",
+            "href": "/v4/research/sectors/THEME:880582",
+            "intersection_count": 7,
+            "jaccard": 0.015765765765765764,
+            "overlap_share": 0.28,
+            "sector_id": "THEME:880582",
+            "union_count": 444
+          },
+          {
+            "display_name": "海南自贸",
+            "href": "/v4/research/sectors/THEME:880567",
+            "intersection_count": 1,
+            "jaccard": 0.014084507042253521,
+            "overlap_share": 0.04,
+            "sector_id": "THEME:880567",
+            "union_count": 71
+          },
+          {
+            "display_name": "白酒概念",
+            "href": "/v4/research/sectors/THEME:880564",
+            "intersection_count": 1,
+            "jaccard": 0.013888888888888888,
+            "overlap_share": 0.04,
+            "sector_id": "THEME:880564",
+            "union_count": 72
+          },
+          {
+            "display_name": "含H股",
+            "href": "/v4/research/sectors/THEME:880501",
+            "intersection_count": 3,
+            "jaccard": 0.013215859030837005,
+            "overlap_share": 0.12,
+            "sector_id": "THEME:880501",
+            "union_count": 227
+          },
+          {
+            "display_name": "HJT电池",
+            "href": "/v4/research/sectors/THEME:880737",
+            "intersection_count": 1,
+            "jaccard": 0.012195121951219513,
+            "overlap_share": 0.04,
+            "sector_id": "THEME:880737",
+            "union_count": 82
+          },
+          {
+            "display_name": "碳纤维",
+            "href": "/v4/research/sectors/THEME:880571",
+            "intersection_count": 1,
+            "jaccard": 0.01020408163265306,
+            "overlap_share": 0.04,
+            "sector_id": "THEME:880571",
+            "union_count": 98
+          },
+          {
+            "display_name": "上海自贸",
+            "href": "/v4/research/sectors/THEME:880591",
+            "intersection_count": 1,
+            "jaccard": 0.009345794392523364,
+            "overlap_share": 0.04,
+            "sector_id": "THEME:880591",
+            "union_count": 107
+          },
+          {
+            "display_name": "航运概念",
+            "href": "/v4/research/sectors/THEME:880728",
+            "intersection_count": 1,
+            "jaccard": 0.009009009009009009,
+            "overlap_share": 0.04,
+            "sector_id": "THEME:880728",
+            "union_count": 111
+          },
+          {
+            "display_name": "通达信88",
+            "href": "/v4/research/sectors/THEME:880515",
+            "intersection_count": 1,
+            "jaccard": 0.008928571428571428,
+            "overlap_share": 0.04,
+            "sector_id": "THEME:880515",
+            "union_count": 112
+          },
+          {
+            "display_name": "钠电池",
+            "href": "/v4/research/sectors/THEME:880755",
+            "intersection_count": 1,
+            "jaccard": 0.00625,
+            "overlap_share": 0.04,
+            "sector_id": "THEME:880755",
+            "union_count": 160
+          },
+          {
+            "display_name": "天然气",
+            "href": "/v4/research/sectors/THEME:880750",
+            "intersection_count": 1,
+            "jaccard": 0.006134969325153374,
+            "overlap_share": 0.04,
+            "sector_id": "THEME:880750",
+            "union_count": 163
+          },
+          {
+            "display_name": "光伏",
+            "href": "/v4/research/sectors/THEME:880544",
+            "intersection_count": 3,
+            "jaccard": 0.005813953488372093,
+            "overlap_share": 0.12,
+            "sector_id": "THEME:880544",
+            "union_count": 516
+          },
+          {
+            "display_name": "大飞机",
+            "href": "/v4/research/sectors/THEME:880616",
+            "intersection_count": 1,
+            "jaccard": 0.005649717514124294,
+            "overlap_share": 0.04,
+            "sector_id": "THEME:880616",
+            "union_count": 177
+          },
+          {
+            "display_name": "虚拟电厂",
+            "href": "/v4/research/sectors/THEME:880630",
+            "intersection_count": 1,
+            "jaccard": 0.00558659217877095,
+            "overlap_share": 0.04,
+            "sector_id": "THEME:880630",
+            "union_count": 179
+          },
+          {
+            "display_name": "数据要素",
+            "href": "/v4/research/sectors/THEME:880667",
+            "intersection_count": 2,
+            "jaccard": 0.0049261083743842365,
+            "overlap_share": 0.08,
+            "sector_id": "THEME:880667",
+            "union_count": 406
+          },
+          {
+            "display_name": "氢能源",
+            "href": "/v4/research/sectors/THEME:880705",
+            "intersection_count": 2,
+            "jaccard": 0.004728132387706856,
+            "overlap_share": 0.08,
+            "sector_id": "THEME:880705",
+            "union_count": 423
+          },
+          {
+            "display_name": "储能",
+            "href": "/v4/research/sectors/THEME:880730",
+            "intersection_count": 4,
+            "jaccard": 0.004434589800443459,
+            "overlap_share": 0.16,
+            "sector_id": "THEME:880730",
+            "union_count": 902
+          },
+          {
+            "display_name": "雄安新区",
+            "href": "/v4/research/sectors/THEME:880911",
+            "intersection_count": 1,
+            "jaccard": 0.003937007874015748,
+            "overlap_share": 0.04,
+            "sector_id": "THEME:880911",
+            "union_count": 254
+          },
+          {
+            "display_name": "新零售",
+            "href": "/v4/research/sectors/THEME:880572",
+            "intersection_count": 1,
+            "jaccard": 0.002881844380403458,
+            "overlap_share": 0.04,
+            "sector_id": "THEME:880572",
+            "union_count": 347
+          },
+          {
+            "display_name": "工业互联",
+            "href": "/v4/research/sectors/THEME:880957",
+            "intersection_count": 1,
+            "jaccard": 0.0025575447570332483,
+            "overlap_share": 0.04,
+            "sector_id": "THEME:880957",
+            "union_count": 391
+          },
+          {
+            "display_name": "东数西算",
+            "href": "/v4/research/sectors/THEME:880607",
+            "intersection_count": 1,
+            "jaccard": 0.002347417840375587,
+            "overlap_share": 0.04,
+            "sector_id": "THEME:880607",
+            "union_count": 426
+          },
+          {
+            "display_name": "人形机器",
+            "href": "/v4/research/sectors/THEME:880703",
+            "intersection_count": 1,
+            "jaccard": 0.002127659574468085,
+            "overlap_share": 0.04,
+            "sector_id": "THEME:880703",
+            "union_count": 470
+          },
+          {
+            "display_name": "国防军工",
+            "href": "/v4/research/sectors/THEME:880507",
+            "intersection_count": 1,
+            "jaccard": 0.001876172607879925,
+            "overlap_share": 0.04,
+            "sector_id": "THEME:880507",
+            "union_count": 533
+          },
+          {
+            "display_name": "DeepSeek",
+            "href": "/v4/research/sectors/THEME:880978",
+            "intersection_count": 1,
+            "jaccard": 0.0012919896640826874,
+            "overlap_share": 0.04,
+            "sector_id": "THEME:880978",
+            "union_count": 774
+          },
+          {
+            "display_name": "智能机器",
+            "href": "/v4/research/sectors/THEME:880904",
+            "intersection_count": 1,
+            "jaccard": 0.0008460236886632825,
+            "overlap_share": 0.04,
+            "sector_id": "THEME:880904",
+            "union_count": 1182
+          }
+        ],
+        "limit": 200,
+        "member_count": 25,
+        "offset": 0,
+        "source": {
+          "bytes": 4004928,
+          "contract_id": "V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1",
+          "owner_stage": "V4-08",
+          "path": "data/v4/artifact_store/v4_08/V4_08_PIT_MEMBERSHIP_FACTS_20260930_R1.jsonl.gz",
+          "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+        },
+        "status": "READY",
+        "total": 30,
+        "unique_member_count": 3,
+        "unique_share": 0.12
+      }
+    },
+    {
+      "fields": {
+        "participation_proxy": {
+          "adjustment_basis": null,
+          "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "quality": "ACCEPTED",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "participation_proxy",
+          "unit": "ratio_or_percentile_points_as_field_contract",
+          "value": 0.5337772816425894,
+          "window": null
+        },
+        "sector_rs20": {
+          "adjustment_basis": null,
+          "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+          "denominator": 7,
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "quality": "ACCEPTED",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "sector_rs20",
+          "unit": "return ratio median",
+          "value": -0.07389162561576346,
+          "window": null
+        },
+        "sector_rs5": {
+          "adjustment_basis": null,
+          "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+          "denominator": 7,
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "quality": "ACCEPTED",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "sector_rs5",
+          "unit": "return ratio median",
+          "value": -0.03654485049833878,
+          "window": null
+        },
+        "sector_type": {
+          "adjustment_basis": null,
+          "computation_domain": "OWNER_PROJECTION",
+          "denominator": null,
+          "parameter_set_id": null,
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": null,
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "sector_type",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": "INDUSTRY",
+          "window": null
+        }
+      },
+      "id": "INDUSTRY:T010102",
+      "name": "焦炭加工",
+      "overlap": {
+        "as_of": "2026-09-30",
+        "cluster": null,
+        "cluster_reason": "NO_VERSIONED_CLUSTER_ENGINE_OUTPUT",
+        "context": {
+          "accepted_trade_date": "2026-09-30",
+          "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+          "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+          "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+          "domain_readiness": {
+            "fep": {
+              "debt": [
+                "CURRENT_FEATURE_MODEL_INFERENCE"
+              ],
+              "released": false,
+              "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+            },
+            "focus": {
+              "debt": [
+                "UNRESOLVED_PATH_PREDICATE_OWNERS",
+                "LEGACY_PG_RECONCILIATION"
+              ],
+              "earliest_valid_date": "2026-09-29",
+              "released": false,
+              "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+            },
+            "forward": {
+              "debt": [
+                "CURRENT_FEP_INFERENCE",
+                "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+                "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+              ],
+              "released": false,
+              "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+            },
+            "market": {
+              "debt": [
+                "INTRADAY_TOUCH_BROKEN_LIMIT",
+                "OFFICIAL_FACT_NEWS"
+              ],
+              "released": false,
+              "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+            },
+            "sectors": {
+              "debt": [
+                "HISTORICAL_MEMBERSHIP",
+                "LIFECYCLE",
+                "ROTATION_HISTORY"
+              ],
+              "released": false,
+              "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+            },
+            "stocks": {
+              "debt": [
+                "HYPOTHESIS",
+                "INVALID_IF_OWNER",
+                "FULL_STRUCTURE_PATH"
+              ],
+              "released": false,
+              "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+            },
+            "strict_pit": {
+              "debt": [
+                "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+              ],
+              "released": false,
+              "scope": "NONE"
+            }
+          },
+          "factor_contract_id": null,
+          "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+          "full_product_release": false,
+          "historical_pit_effectiveness": "NOT_GRANTED",
+          "joint_release_digest": null,
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "last_accepted_trade_date": "2026-09-30",
+          "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+          "namespace": "V4_CURRENT_ACCEPTED",
+          "operational_release_scope": [],
+          "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "parameter_set_id": null,
+          "publication_id": "6866ff8c9a234d3b8190e7bdd46bf092",
+          "quality": "QUALITY_DEGRADED",
+          "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "release_id": "6866ff8c9a234d3b8190e7bdd46bf092",
+          "release_metadata": {
+            "contract_version": "1.0.0",
+            "data_quality_state": "QUALITY_DEGRADED",
+            "evidence_origin": "REAL_ACCEPTED_SOURCE",
+            "evidence_state": "VALIDATION_ONGOING",
+            "input_digest": "4bf0e9f4cbedcb1c3e749eec76c4b437a97648cc8031c59eabd24ffc1894b9a7",
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "owner": "FP02_RESEARCH_PROJECTION",
+            "published_at": "2026-10-08T09:32:32.953606+00:00",
+            "release_id": "6866ff8c9a234d3b8190e7bdd46bf092",
+            "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+            "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+            "trading_date": "2026-09-30"
+          },
+          "scoped_release": false,
+          "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+          "source_mode": "EXISTING_REAL_SNAPSHOT_PENDING_RELEASE",
+          "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+          "stage": "V4-15",
+          "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+          "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+          "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+          "trade_date": "2026-09-30",
+          "turnover_as_of": null
+        },
+        "context_token": "research-v4-2c2ae9ed3f480479adab6341767c05345f95c56f5e115ead1982948b841ffb72",
+        "contract_id": "FP06_PIT_MEMBERSHIP_JACCARD_V1",
+        "has_next": false,
+        "items": [
+          {
+            "display_name": "超级电容",
+            "href": "/v4/research/sectors/THEME:880798",
+            "intersection_count": 1,
+            "jaccard": 0.018867924528301886,
+            "overlap_share": 0.14285714285714285,
+            "sector_id": "THEME:880798",
+            "union_count": 53
+          },
+          {
+            "display_name": "天然气",
+            "href": "/v4/research/sectors/THEME:880750",
+            "intersection_count": 2,
+            "jaccard": 0.013888888888888888,
+            "overlap_share": 0.2857142857142857,
+            "sector_id": "THEME:880750",
+            "union_count": 144
+          },
+          {
+            "display_name": "碳纤维",
+            "href": "/v4/research/sectors/THEME:880571",
+            "intersection_count": 1,
+            "jaccard": 0.0125,
+            "overlap_share": 0.14285714285714285,
+            "sector_id": "THEME:880571",
+            "union_count": 80
+          },
+          {
+            "display_name": "碳中和",
+            "href": "/v4/research/sectors/THEME:880519",
+            "intersection_count": 3,
+            "jaccard": 0.011363636363636364,
+            "overlap_share": 0.42857142857142855,
+            "sector_id": "THEME:880519",
+            "union_count": 264
+          },
+          {
+            "display_name": "石墨烯",
+            "href": "/v4/research/sectors/THEME:880584",
+            "intersection_count": 1,
+            "jaccard": 0.00980392156862745,
+            "overlap_share": 0.14285714285714285,
+            "sector_id": "THEME:880584",
+            "union_count": 102
+          },
+          {
+            "display_name": "氢能源",
+            "href": "/v4/research/sectors/THEME:880705",
+            "intersection_count": 3,
+            "jaccard": 0.007425742574257425,
+            "overlap_share": 0.42857142857142855,
+            "sector_id": "THEME:880705",
+            "union_count": 404
+          },
+          {
+            "display_name": "AI眼镜",
+            "href": "/v4/research/sectors/THEME:880566",
+            "intersection_count": 1,
+            "jaccard": 0.005128205128205128,
+            "overlap_share": 0.14285714285714285,
+            "sector_id": "THEME:880566",
+            "union_count": 195
+          },
+          {
+            "display_name": "燃料电池",
+            "href": "/v4/research/sectors/THEME:880909",
+            "intersection_count": 1,
+            "jaccard": 0.004694835680751174,
+            "overlap_share": 0.14285714285714285,
+            "sector_id": "THEME:880909",
+            "union_count": 213
+          },
+          {
+            "display_name": "工业互联",
+            "href": "/v4/research/sectors/THEME:880957",
+            "intersection_count": 1,
+            "jaccard": 0.002680965147453083,
+            "overlap_share": 0.14285714285714285,
+            "sector_id": "THEME:880957",
+            "union_count": 373
+          },
+          {
+            "display_name": "新材料",
+            "href": "/v4/research/sectors/THEME:880731",
+            "intersection_count": 1,
+            "jaccard": 0.0025906735751295338,
+            "overlap_share": 0.14285714285714285,
+            "sector_id": "THEME:880731",
+            "union_count": 386
+          },
+          {
+            "display_name": "无人驾驶",
+            "href": "/v4/research/sectors/THEME:880944",
+            "intersection_count": 1,
+            "jaccard": 0.0025906735751295338,
+            "overlap_share": 0.14285714285714285,
+            "sector_id": "THEME:880944",
+            "union_count": 386
+          },
+          {
+            "display_name": "消费电子",
+            "href": "/v4/research/sectors/THEME:880966",
+            "intersection_count": 1,
+            "jaccard": 0.00202020202020202,
+            "overlap_share": 0.14285714285714285,
+            "sector_id": "THEME:880966",
+            "union_count": 495
+          },
+          {
+            "display_name": "锂电池",
+            "href": "/v4/research/sectors/THEME:880534",
+            "intersection_count": 1,
+            "jaccard": 0.0016835016835016834,
+            "overlap_share": 0.14285714285714285,
+            "sector_id": "THEME:880534",
+            "union_count": 594
+          },
+          {
+            "display_name": "储能",
+            "href": "/v4/research/sectors/THEME:880730",
+            "intersection_count": 1,
+            "jaccard": 0.0011273957158962795,
+            "overlap_share": 0.14285714285714285,
+            "sector_id": "THEME:880730",
+            "union_count": 887
+          },
+          {
+            "display_name": "新能源车",
+            "href": "/v4/research/sectors/THEME:880951",
+            "intersection_count": 1,
+            "jaccard": 0.000970873786407767,
+            "overlap_share": 0.14285714285714285,
+            "sector_id": "THEME:880951",
+            "union_count": 1030
+          },
+          {
+            "display_name": "智能机器",
+            "href": "/v4/research/sectors/THEME:880904",
+            "intersection_count": 1,
+            "jaccard": 0.000859106529209622,
+            "overlap_share": 0.14285714285714285,
+            "sector_id": "THEME:880904",
+            "union_count": 1164
+          }
+        ],
+        "limit": 200,
+        "member_count": 7,
+        "offset": 0,
+        "source": {
+          "bytes": 4004928,
+          "contract_id": "V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1",
+          "owner_stage": "V4-08",
+          "path": "data/v4/artifact_store/v4_08/V4_08_PIT_MEMBERSHIP_FACTS_20260930_R1.jsonl.gz",
+          "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+        },
+        "status": "READY",
+        "total": 16,
+        "unique_member_count": 2,
+        "unique_share": 0.2857142857142857
+      }
+    },
+    {
+      "fields": {
+        "participation_proxy": {
+          "adjustment_basis": null,
+          "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "quality": "ACCEPTED",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "participation_proxy",
+          "unit": "ratio_or_percentile_points_as_field_contract",
+          "value": 0.6787650932247759,
+          "window": null
+        },
+        "sector_rs20": {
+          "adjustment_basis": null,
+          "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+          "denominator": 22,
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "quality": "ACCEPTED",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "sector_rs20",
+          "unit": "return ratio median",
+          "value": -0.02267869738829803,
+          "window": null
+        },
+        "sector_rs5": {
+          "adjustment_basis": null,
+          "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+          "denominator": 22,
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "quality": "ACCEPTED",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "sector_rs5",
+          "unit": "return ratio median",
+          "value": -0.01666675343742352,
+          "window": null
+        },
+        "sector_type": {
+          "adjustment_basis": null,
+          "computation_domain": "OWNER_PROJECTION",
+          "denominator": null,
+          "parameter_set_id": null,
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": null,
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "sector_type",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": "INDUSTRY",
+          "window": null
+        }
+      },
+      "id": "INDUSTRY:T010201",
+      "name": "水力发电",
+      "overlap": {
+        "as_of": "2026-09-30",
+        "cluster": null,
+        "cluster_reason": "NO_VERSIONED_CLUSTER_ENGINE_OUTPUT",
+        "context": {
+          "accepted_trade_date": "2026-09-30",
+          "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+          "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+          "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+          "domain_readiness": {
+            "fep": {
+              "debt": [
+                "CURRENT_FEATURE_MODEL_INFERENCE"
+              ],
+              "released": false,
+              "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+            },
+            "focus": {
+              "debt": [
+                "UNRESOLVED_PATH_PREDICATE_OWNERS",
+                "LEGACY_PG_RECONCILIATION"
+              ],
+              "earliest_valid_date": "2026-09-29",
+              "released": false,
+              "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+            },
+            "forward": {
+              "debt": [
+                "CURRENT_FEP_INFERENCE",
+                "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+                "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+              ],
+              "released": false,
+              "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+            },
+            "market": {
+              "debt": [
+                "INTRADAY_TOUCH_BROKEN_LIMIT",
+                "OFFICIAL_FACT_NEWS"
+              ],
+              "released": false,
+              "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+            },
+            "sectors": {
+              "debt": [
+                "HISTORICAL_MEMBERSHIP",
+                "LIFECYCLE",
+                "ROTATION_HISTORY"
+              ],
+              "released": false,
+              "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+            },
+            "stocks": {
+              "debt": [
+                "HYPOTHESIS",
+                "INVALID_IF_OWNER",
+                "FULL_STRUCTURE_PATH"
+              ],
+              "released": false,
+              "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+            },
+            "strict_pit": {
+              "debt": [
+                "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+              ],
+              "released": false,
+              "scope": "NONE"
+            }
+          },
+          "factor_contract_id": null,
+          "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+          "full_product_release": false,
+          "historical_pit_effectiveness": "NOT_GRANTED",
+          "joint_release_digest": null,
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "last_accepted_trade_date": "2026-09-30",
+          "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+          "namespace": "V4_CURRENT_ACCEPTED",
+          "operational_release_scope": [],
+          "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "parameter_set_id": null,
+          "publication_id": "6866ff8c9a234d3b8190e7bdd46bf092",
+          "quality": "QUALITY_DEGRADED",
+          "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "release_id": "6866ff8c9a234d3b8190e7bdd46bf092",
+          "release_metadata": {
+            "contract_version": "1.0.0",
+            "data_quality_state": "QUALITY_DEGRADED",
+            "evidence_origin": "REAL_ACCEPTED_SOURCE",
+            "evidence_state": "VALIDATION_ONGOING",
+            "input_digest": "4bf0e9f4cbedcb1c3e749eec76c4b437a97648cc8031c59eabd24ffc1894b9a7",
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "owner": "FP02_RESEARCH_PROJECTION",
+            "published_at": "2026-10-08T09:32:32.953606+00:00",
+            "release_id": "6866ff8c9a234d3b8190e7bdd46bf092",
+            "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+            "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+            "trading_date": "2026-09-30"
+          },
+          "scoped_release": false,
+          "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+          "source_mode": "EXISTING_REAL_SNAPSHOT_PENDING_RELEASE",
+          "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+          "stage": "V4-15",
+          "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+          "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+          "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+          "trade_date": "2026-09-30",
+          "turnover_as_of": null
+        },
+        "context_token": "research-v4-2c2ae9ed3f480479adab6341767c05345f95c56f5e115ead1982948b841ffb72",
+        "contract_id": "FP06_PIT_MEMBERSHIP_JACCARD_V1",
+        "has_next": false,
+        "items": [
+          {
+            "display_name": "绿色电力",
+            "href": "/v4/research/sectors/THEME:880753",
+            "intersection_count": 21,
+            "jaccard": 0.050359712230215826,
+            "overlap_share": 0.9545454545454546,
+            "sector_id": "THEME:880753",
+            "union_count": 417
+          },
+          {
+            "display_name": "含GDR",
+            "href": "/v4/research/sectors/THEME:880634",
+            "intersection_count": 2,
+            "jaccard": 0.046511627906976744,
+            "overlap_share": 0.09090909090909091,
+            "sector_id": "THEME:880634",
+            "union_count": 43
+          },
+          {
+            "display_name": "虚拟电厂",
+            "href": "/v4/research/sectors/THEME:880630",
+            "intersection_count": 6,
+            "jaccard": 0.03508771929824561,
+            "overlap_share": 0.2727272727272727,
+            "sector_id": "THEME:880630",
+            "union_count": 171
+          },
+          {
+            "display_name": "页岩气",
+            "href": "/v4/research/sectors/THEME:880553",
+            "intersection_count": 2,
+            "jaccard": 0.03076923076923077,
+            "overlap_share": 0.09090909090909091,
+            "sector_id": "THEME:880553",
+            "union_count": 65
+          },
+          {
+            "display_name": "临界发电",
+            "href": "/v4/research/sectors/THEME:880627",
+            "intersection_count": 3,
+            "jaccard": 0.02830188679245283,
+            "overlap_share": 0.13636363636363635,
+            "sector_id": "THEME:880627",
+            "union_count": 106
+          },
+          {
+            "display_name": "天然气",
+            "href": "/v4/research/sectors/THEME:880750",
+            "intersection_count": 4,
+            "jaccard": 0.025477707006369428,
+            "overlap_share": 0.18181818181818182,
+            "sector_id": "THEME:880750",
+            "union_count": 157
+          },
+          {
+            "display_name": "供销社",
+            "href": "/v4/research/sectors/THEME:880642",
+            "intersection_count": 1,
+            "jaccard": 0.025,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880642",
+            "union_count": 40
+          },
+          {
+            "display_name": "地下管网",
+            "href": "/v4/research/sectors/THEME:880724",
+            "intersection_count": 3,
+            "jaccard": 0.02459016393442623,
+            "overlap_share": 0.13636363636363635,
+            "sector_id": "THEME:880724",
+            "union_count": 122
+          },
+          {
+            "display_name": "生物质能",
+            "href": "/v4/research/sectors/THEME:880568",
+            "intersection_count": 2,
+            "jaccard": 0.023255813953488372,
+            "overlap_share": 0.09090909090909091,
+            "sector_id": "THEME:880568",
+            "union_count": 86
+          },
+          {
+            "display_name": "水利建设",
+            "href": "/v4/research/sectors/THEME:880542",
+            "intersection_count": 6,
+            "jaccard": 0.022900763358778626,
+            "overlap_share": 0.2727272727272727,
+            "sector_id": "THEME:880542",
+            "union_count": 262
+          },
+          {
+            "display_name": "风电",
+            "href": "/v4/research/sectors/THEME:880582",
+            "intersection_count": 10,
+            "jaccard": 0.0228310502283105,
+            "overlap_share": 0.45454545454545453,
+            "sector_id": "THEME:880582",
+            "union_count": 438
+          },
+          {
+            "display_name": "工业气体",
+            "href": "/v4/research/sectors/THEME:880734",
+            "intersection_count": 1,
+            "jaccard": 0.02040816326530612,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880734",
+            "union_count": 49
+          },
+          {
+            "display_name": "钒电池",
+            "href": "/v4/research/sectors/THEME:880628",
+            "intersection_count": 1,
+            "jaccard": 0.019230769230769232,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880628",
+            "union_count": 52
+          },
+          {
+            "display_name": "充电桩",
+            "href": "/v4/research/sectors/THEME:880583",
+            "intersection_count": 7,
+            "jaccard": 0.018229166666666668,
+            "overlap_share": 0.3181818181818182,
+            "sector_id": "THEME:880583",
+            "union_count": 384
+          },
+          {
+            "display_name": "中特估",
+            "href": "/v4/research/sectors/THEME:880671",
+            "intersection_count": 2,
+            "jaccard": 0.01694915254237288,
+            "overlap_share": 0.09090909090909091,
+            "sector_id": "THEME:880671",
+            "union_count": 118
+          },
+          {
+            "display_name": "国资云",
+            "href": "/v4/research/sectors/THEME:880746",
+            "intersection_count": 1,
+            "jaccard": 0.013888888888888888,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880746",
+            "union_count": 72
+          },
+          {
+            "display_name": "时空数据",
+            "href": "/v4/research/sectors/THEME:880662",
+            "intersection_count": 1,
+            "jaccard": 0.013513513513513514,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880662",
+            "union_count": 74
+          },
+          {
+            "display_name": "磷概念",
+            "href": "/v4/research/sectors/THEME:880715",
+            "intersection_count": 1,
+            "jaccard": 0.012658227848101266,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880715",
+            "union_count": 79
+          },
+          {
+            "display_name": "核污防治",
+            "href": "/v4/research/sectors/THEME:880611",
+            "intersection_count": 1,
+            "jaccard": 0.0125,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880611",
+            "union_count": 80
+          },
+          {
+            "display_name": "储能",
+            "href": "/v4/research/sectors/THEME:880730",
+            "intersection_count": 11,
+            "jaccard": 0.01233183856502242,
+            "overlap_share": 0.5,
+            "sector_id": "THEME:880730",
+            "union_count": 892
+          },
+          {
+            "display_name": "节能环保",
+            "href": "/v4/research/sectors/THEME:880558",
+            "intersection_count": 4,
+            "jaccard": 0.0111731843575419,
+            "overlap_share": 0.18181818181818182,
+            "sector_id": "THEME:880558",
+            "union_count": 358
+          },
+          {
+            "display_name": "碳中和",
+            "href": "/v4/research/sectors/THEME:880519",
+            "intersection_count": 3,
+            "jaccard": 0.010752688172043012,
+            "overlap_share": 0.13636363636363635,
+            "sector_id": "THEME:880519",
+            "union_count": 279
+          },
+          {
+            "display_name": "PPP概念",
+            "href": "/v4/research/sectors/THEME:880940",
+            "intersection_count": 2,
+            "jaccard": 0.010362694300518135,
+            "overlap_share": 0.09090909090909091,
+            "sector_id": "THEME:880940",
+            "union_count": 193
+          },
+          {
+            "display_name": "稀土永磁",
+            "href": "/v4/research/sectors/THEME:880535",
+            "intersection_count": 1,
+            "jaccard": 0.01,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880535",
+            "union_count": 100
+          },
+          {
+            "display_name": "口罩防护",
+            "href": "/v4/research/sectors/THEME:880795",
+            "intersection_count": 2,
+            "jaccard": 0.009302325581395349,
+            "overlap_share": 0.09090909090909091,
+            "sector_id": "THEME:880795",
+            "union_count": 215
+          },
+          {
+            "display_name": "航运概念",
+            "href": "/v4/research/sectors/THEME:880728",
+            "intersection_count": 1,
+            "jaccard": 0.009259259259259259,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880728",
+            "union_count": 108
+          },
+          {
+            "display_name": "通达信88",
+            "href": "/v4/research/sectors/THEME:880515",
+            "intersection_count": 1,
+            "jaccard": 0.009174311926605505,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880515",
+            "union_count": 109
+          },
+          {
+            "display_name": "电池回收",
+            "href": "/v4/research/sectors/THEME:880632",
+            "intersection_count": 1,
+            "jaccard": 0.00909090909090909,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880632",
+            "union_count": 110
+          },
+          {
+            "display_name": "创投概念",
+            "href": "/v4/research/sectors/THEME:880540",
+            "intersection_count": 4,
+            "jaccard": 0.008403361344537815,
+            "overlap_share": 0.18181818181818182,
+            "sector_id": "THEME:880540",
+            "union_count": 476
+          },
+          {
+            "display_name": "东数西算",
+            "href": "/v4/research/sectors/THEME:880607",
+            "intersection_count": 3,
+            "jaccard": 0.007125890736342043,
+            "overlap_share": 0.13636363636363635,
+            "sector_id": "THEME:880607",
+            "union_count": 421
+          },
+          {
+            "display_name": "智能电网",
+            "href": "/v4/research/sectors/THEME:880520",
+            "intersection_count": 2,
+            "jaccard": 0.006968641114982578,
+            "overlap_share": 0.09090909090909091,
+            "sector_id": "THEME:880520",
+            "union_count": 287
+          },
+          {
+            "display_name": "减速器",
+            "href": "/v4/research/sectors/THEME:880675",
+            "intersection_count": 1,
+            "jaccard": 0.006711409395973154,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880675",
+            "union_count": 149
+          },
+          {
+            "display_name": "BIPV概念",
+            "href": "/v4/research/sectors/THEME:880977",
+            "intersection_count": 1,
+            "jaccard": 0.006578947368421052,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880977",
+            "union_count": 152
+          },
+          {
+            "display_name": "钠电池",
+            "href": "/v4/research/sectors/THEME:880755",
+            "intersection_count": 1,
+            "jaccard": 0.006369426751592357,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880755",
+            "union_count": 157
+          },
+          {
+            "display_name": "光通信",
+            "href": "/v4/research/sectors/THEME:880670",
+            "intersection_count": 1,
+            "jaccard": 0.0058823529411764705,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880670",
+            "union_count": 170
+          },
+          {
+            "display_name": "核电核能",
+            "href": "/v4/research/sectors/THEME:880537",
+            "intersection_count": 2,
+            "jaccard": 0.005813953488372093,
+            "overlap_share": 0.09090909090909091,
+            "sector_id": "THEME:880537",
+            "union_count": 344
+          },
+          {
+            "display_name": "海峡西岸",
+            "href": "/v4/research/sectors/THEME:880513",
+            "intersection_count": 1,
+            "jaccard": 0.00546448087431694,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880513",
+            "union_count": 183
+          },
+          {
+            "display_name": "智慧城市",
+            "href": "/v4/research/sectors/THEME:880949",
+            "intersection_count": 2,
+            "jaccard": 0.005154639175257732,
+            "overlap_share": 0.09090909090909091,
+            "sector_id": "THEME:880949",
+            "union_count": 388
+          },
+          {
+            "display_name": "氢能源",
+            "href": "/v4/research/sectors/THEME:880705",
+            "intersection_count": 2,
+            "jaccard": 0.004761904761904762,
+            "overlap_share": 0.09090909090909091,
+            "sector_id": "THEME:880705",
+            "union_count": 420
+          },
+          {
+            "display_name": "互联金融",
+            "href": "/v4/research/sectors/THEME:880592",
+            "intersection_count": 1,
+            "jaccard": 0.004484304932735426,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880592",
+            "union_count": 223
+          },
+          {
+            "display_name": "新型城镇",
+            "href": "/v4/research/sectors/THEME:880624",
+            "intersection_count": 1,
+            "jaccard": 0.004424778761061947,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880624",
+            "union_count": 226
+          },
+          {
+            "display_name": "燃料电池",
+            "href": "/v4/research/sectors/THEME:880909",
+            "intersection_count": 1,
+            "jaccard": 0.0043859649122807015,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880909",
+            "union_count": 228
+          },
+          {
+            "display_name": "液冷服务",
+            "href": "/v4/research/sectors/THEME:880685",
+            "intersection_count": 1,
+            "jaccard": 0.004081632653061225,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880685",
+            "union_count": 245
+          },
+          {
+            "display_name": "DeepSeek",
+            "href": "/v4/research/sectors/THEME:880978",
+            "intersection_count": 3,
+            "jaccard": 0.0039011703511053317,
+            "overlap_share": 0.13636363636363635,
+            "sector_id": "THEME:880978",
+            "union_count": 769
+          },
+          {
+            "display_name": "光伏",
+            "href": "/v4/research/sectors/THEME:880544",
+            "intersection_count": 2,
+            "jaccard": 0.0038910505836575876,
+            "overlap_share": 0.09090909090909091,
+            "sector_id": "THEME:880544",
+            "union_count": 514
+          },
+          {
+            "display_name": "数据中心",
+            "href": "/v4/research/sectors/THEME:880799",
+            "intersection_count": 2,
+            "jaccard": 0.003048780487804878,
+            "overlap_share": 0.09090909090909091,
+            "sector_id": "THEME:880799",
+            "union_count": 656
+          },
+          {
+            "display_name": "粤港澳",
+            "href": "/v4/research/sectors/THEME:880919",
+            "intersection_count": 1,
+            "jaccard": 0.0025974025974025974,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880919",
+            "union_count": 385
+          },
+          {
+            "display_name": "新材料",
+            "href": "/v4/research/sectors/THEME:880731",
+            "intersection_count": 1,
+            "jaccard": 0.0024937655860349127,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880731",
+            "union_count": 401
+          },
+          {
+            "display_name": "乡村振兴",
+            "href": "/v4/research/sectors/THEME:880955",
+            "intersection_count": 1,
+            "jaccard": 0.0024937655860349127,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880955",
+            "union_count": 401
+          },
+          {
+            "display_name": "数据要素",
+            "href": "/v4/research/sectors/THEME:880667",
+            "intersection_count": 1,
+            "jaccard": 0.0024752475247524753,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880667",
+            "union_count": 404
+          },
+          {
+            "display_name": "低空经济",
+            "href": "/v4/research/sectors/THEME:880522",
+            "intersection_count": 1,
+            "jaccard": 0.002,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880522",
+            "union_count": 500
+          },
+          {
+            "display_name": "新能源车",
+            "href": "/v4/research/sectors/THEME:880951",
+            "intersection_count": 2,
+            "jaccard": 0.0019157088122605363,
+            "overlap_share": 0.09090909090909091,
+            "sector_id": "THEME:880951",
+            "union_count": 1044
+          },
+          {
+            "display_name": "锂电池",
+            "href": "/v4/research/sectors/THEME:880534",
+            "intersection_count": 1,
+            "jaccard": 0.0016420361247947454,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880534",
+            "union_count": 609
+          },
+          {
+            "display_name": "一带一路",
+            "href": "/v4/research/sectors/THEME:880594",
+            "intersection_count": 1,
+            "jaccard": 0.00130718954248366,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880594",
+            "union_count": 765
+          },
+          {
+            "display_name": "人工智能",
+            "href": "/v4/research/sectors/THEME:880948",
+            "intersection_count": 1,
+            "jaccard": 0.000946073793755913,
+            "overlap_share": 0.045454545454545456,
+            "sector_id": "THEME:880948",
+            "union_count": 1057
+          }
+        ],
+        "limit": 200,
+        "member_count": 22,
+        "offset": 0,
+        "source": {
+          "bytes": 4004928,
+          "contract_id": "V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1",
+          "owner_stage": "V4-08",
+          "path": "data/v4/artifact_store/v4_08/V4_08_PIT_MEMBERSHIP_FACTS_20260930_R1.jsonl.gz",
+          "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+        },
+        "status": "READY",
+        "total": 55,
+        "unique_member_count": 0,
+        "unique_share": 0.0
+      }
+    },
+    {
+      "fields": {
+        "participation_proxy": {
+          "adjustment_basis": null,
+          "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "quality": "ACCEPTED",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "participation_proxy",
+          "unit": "ratio_or_percentile_points_as_field_contract",
+          "value": 0.6690291173360847,
+          "window": null
+        },
+        "sector_rs20": {
+          "adjustment_basis": null,
+          "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+          "denominator": 31,
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "quality": "ACCEPTED",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "sector_rs20",
+          "unit": "return ratio median",
+          "value": -0.028625954198473358,
+          "window": null
+        },
+        "sector_rs5": {
+          "adjustment_basis": null,
+          "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+          "denominator": 31,
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "quality": "ACCEPTED",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "sector_rs5",
+          "unit": "return ratio median",
+          "value": -0.014869888475836368,
+          "window": null
+        },
+        "sector_type": {
+          "adjustment_basis": null,
+          "computation_domain": "OWNER_PROJECTION",
+          "denominator": null,
+          "parameter_set_id": null,
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": null,
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "sector_type",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": "INDUSTRY",
+          "window": null
+        }
+      },
+      "id": "INDUSTRY:T010202",
+      "name": "火力发电",
+      "overlap": {
+        "as_of": "2026-09-30",
+        "cluster": null,
+        "cluster_reason": "NO_VERSIONED_CLUSTER_ENGINE_OUTPUT",
+        "context": {
+          "accepted_trade_date": "2026-09-30",
+          "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+          "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+          "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+          "domain_readiness": {
+            "fep": {
+              "debt": [
+                "CURRENT_FEATURE_MODEL_INFERENCE"
+              ],
+              "released": false,
+              "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+            },
+            "focus": {
+              "debt": [
+                "UNRESOLVED_PATH_PREDICATE_OWNERS",
+                "LEGACY_PG_RECONCILIATION"
+              ],
+              "earliest_valid_date": "2026-09-29",
+              "released": false,
+              "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+            },
+            "forward": {
+              "debt": [
+                "CURRENT_FEP_INFERENCE",
+                "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+                "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+              ],
+              "released": false,
+              "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+            },
+            "market": {
+              "debt": [
+                "INTRADAY_TOUCH_BROKEN_LIMIT",
+                "OFFICIAL_FACT_NEWS"
+              ],
+              "released": false,
+              "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+            },
+            "sectors": {
+              "debt": [
+                "HISTORICAL_MEMBERSHIP",
+                "LIFECYCLE",
+                "ROTATION_HISTORY"
+              ],
+              "released": false,
+              "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+            },
+            "stocks": {
+              "debt": [
+                "HYPOTHESIS",
+                "INVALID_IF_OWNER",
+                "FULL_STRUCTURE_PATH"
+              ],
+              "released": false,
+              "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+            },
+            "strict_pit": {
+              "debt": [
+                "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+              ],
+              "released": false,
+              "scope": "NONE"
+            }
+          },
+          "factor_contract_id": null,
+          "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+          "full_product_release": false,
+          "historical_pit_effectiveness": "NOT_GRANTED",
+          "joint_release_digest": null,
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "last_accepted_trade_date": "2026-09-30",
+          "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+          "namespace": "V4_CURRENT_ACCEPTED",
+          "operational_release_scope": [],
+          "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "parameter_set_id": null,
+          "publication_id": "6866ff8c9a234d3b8190e7bdd46bf092",
+          "quality": "QUALITY_DEGRADED",
+          "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "release_id": "6866ff8c9a234d3b8190e7bdd46bf092",
+          "release_metadata": {
+            "contract_version": "1.0.0",
+            "data_quality_state": "QUALITY_DEGRADED",
+            "evidence_origin": "REAL_ACCEPTED_SOURCE",
+            "evidence_state": "VALIDATION_ONGOING",
+            "input_digest": "4bf0e9f4cbedcb1c3e749eec76c4b437a97648cc8031c59eabd24ffc1894b9a7",
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "owner": "FP02_RESEARCH_PROJECTION",
+            "published_at": "2026-10-08T09:32:32.953606+00:00",
+            "release_id": "6866ff8c9a234d3b8190e7bdd46bf092",
+            "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+            "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+            "trading_date": "2026-09-30"
+          },
+          "scoped_release": false,
+          "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+          "source_mode": "EXISTING_REAL_SNAPSHOT_PENDING_RELEASE",
+          "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+          "stage": "V4-15",
+          "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+          "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+          "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+          "trade_date": "2026-09-30",
+          "turnover_as_of": null
+        },
+        "context_token": "research-v4-2c2ae9ed3f480479adab6341767c05345f95c56f5e115ead1982948b841ffb72",
+        "contract_id": "FP06_PIT_MEMBERSHIP_JACCARD_V1",
+        "has_next": false,
+        "items": [
+          {
+            "display_name": "临界发电",
+            "href": "/v4/research/sectors/THEME:880627",
+            "intersection_count": 26,
+            "jaccard": 0.2826086956521739,
+            "overlap_share": 0.8387096774193549,
+            "sector_id": "THEME:880627",
+            "union_count": 92
+          },
+          {
+            "display_name": "虚拟电厂",
+            "href": "/v4/research/sectors/THEME:880630",
+            "intersection_count": 13,
+            "jaccard": 0.07514450867052024,
+            "overlap_share": 0.41935483870967744,
+            "sector_id": "THEME:880630",
+            "union_count": 173
+          },
+          {
+            "display_name": "绿色电力",
+            "href": "/v4/research/sectors/THEME:880753",
+            "intersection_count": 26,
+            "jaccard": 0.06175771971496437,
+            "overlap_share": 0.8387096774193549,
+            "sector_id": "THEME:880753",
+            "union_count": 421
+          },
+          {
+            "display_name": "风电",
+            "href": "/v4/research/sectors/THEME:880582",
+            "intersection_count": 22,
+            "jaccard": 0.05057471264367816,
+            "overlap_share": 0.7096774193548387,
+            "sector_id": "THEME:880582",
+            "union_count": 435
+          },
+          {
+            "display_name": "生物质能",
+            "href": "/v4/research/sectors/THEME:880568",
+            "intersection_count": 4,
+            "jaccard": 0.043010752688172046,
+            "overlap_share": 0.12903225806451613,
+            "sector_id": "THEME:880568",
+            "union_count": 93
+          },
+          {
+            "display_name": "页岩气",
+            "href": "/v4/research/sectors/THEME:880553",
+            "intersection_count": 3,
+            "jaccard": 0.0410958904109589,
+            "overlap_share": 0.0967741935483871,
+            "sector_id": "THEME:880553",
+            "union_count": 73
+          },
+          {
+            "display_name": "天然气",
+            "href": "/v4/research/sectors/THEME:880750",
+            "intersection_count": 6,
+            "jaccard": 0.036585365853658534,
+            "overlap_share": 0.1935483870967742,
+            "sector_id": "THEME:880750",
+            "union_count": 164
+          },
+          {
+            "display_name": "核电核能",
+            "href": "/v4/research/sectors/THEME:880537",
+            "intersection_count": 11,
+            "jaccard": 0.03197674418604651,
+            "overlap_share": 0.3548387096774194,
+            "sector_id": "THEME:880537",
+            "union_count": 344
+          },
+          {
+            "display_name": "含B股",
+            "href": "/v4/research/sectors/THEME:880502",
+            "intersection_count": 3,
+            "jaccard": 0.03,
+            "overlap_share": 0.0967741935483871,
+            "sector_id": "THEME:880502",
+            "union_count": 100
+          },
+          {
+            "display_name": "碳中和",
+            "href": "/v4/research/sectors/THEME:880519",
+            "intersection_count": 8,
+            "jaccard": 0.028268551236749116,
+            "overlap_share": 0.25806451612903225,
+            "sector_id": "THEME:880519",
+            "union_count": 283
+          },
+          {
+            "display_name": "光热发电",
+            "href": "/v4/research/sectors/THEME:880639",
+            "intersection_count": 2,
+            "jaccard": 0.027777777777777776,
+            "overlap_share": 0.06451612903225806,
+            "sector_id": "THEME:880639",
+            "union_count": 72
+          },
+          {
+            "display_name": "氢能源",
+            "href": "/v4/research/sectors/THEME:880705",
+            "intersection_count": 11,
+            "jaccard": 0.02619047619047619,
+            "overlap_share": 0.3548387096774194,
+            "sector_id": "THEME:880705",
+            "union_count": 420
+          },
+          {
+            "display_name": "储能",
+            "href": "/v4/research/sectors/THEME:880730",
+            "intersection_count": 21,
+            "jaccard": 0.02356902356902357,
+            "overlap_share": 0.6774193548387096,
+            "sector_id": "THEME:880730",
+            "union_count": 891
+          },
+          {
+            "display_name": "EDA概念",
+            "href": "/v4/research/sectors/THEME:880637",
+            "intersection_count": 1,
+            "jaccard": 0.02127659574468085,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880637",
+            "union_count": 47
+          },
+          {
+            "display_name": "赛马概念",
+            "href": "/v4/research/sectors/THEME:880923",
+            "intersection_count": 1,
+            "jaccard": 0.020833333333333332,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880923",
+            "union_count": 48
+          },
+          {
+            "display_name": "可燃冰",
+            "href": "/v4/research/sectors/THEME:880549",
+            "intersection_count": 1,
+            "jaccard": 0.01818181818181818,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880549",
+            "union_count": 55
+          },
+          {
+            "display_name": "租购同权",
+            "href": "/v4/research/sectors/THEME:880953",
+            "intersection_count": 1,
+            "jaccard": 0.017543859649122806,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880953",
+            "union_count": 57
+          },
+          {
+            "display_name": "钒电池",
+            "href": "/v4/research/sectors/THEME:880628",
+            "intersection_count": 1,
+            "jaccard": 0.01639344262295082,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880628",
+            "union_count": 61
+          },
+          {
+            "display_name": "雄安新区",
+            "href": "/v4/research/sectors/THEME:880911",
+            "intersection_count": 4,
+            "jaccard": 0.01556420233463035,
+            "overlap_share": 0.12903225806451613,
+            "sector_id": "THEME:880911",
+            "union_count": 257
+          },
+          {
+            "display_name": "充电桩",
+            "href": "/v4/research/sectors/THEME:880583",
+            "intersection_count": 6,
+            "jaccard": 0.015228426395939087,
+            "overlap_share": 0.1935483870967742,
+            "sector_id": "THEME:880583",
+            "union_count": 394
+          },
+          {
+            "display_name": "海南自贸",
+            "href": "/v4/research/sectors/THEME:880567",
+            "intersection_count": 1,
+            "jaccard": 0.012987012987012988,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880567",
+            "union_count": 77
+          },
+          {
+            "display_name": "超级电容",
+            "href": "/v4/research/sectors/THEME:880798",
+            "intersection_count": 1,
+            "jaccard": 0.012987012987012988,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880798",
+            "union_count": 77
+          },
+          {
+            "display_name": "含H股",
+            "href": "/v4/research/sectors/THEME:880501",
+            "intersection_count": 3,
+            "jaccard": 0.012875536480686695,
+            "overlap_share": 0.0967741935483871,
+            "sector_id": "THEME:880501",
+            "union_count": 233
+          },
+          {
+            "display_name": "粤港澳",
+            "href": "/v4/research/sectors/THEME:880919",
+            "intersection_count": 5,
+            "jaccard": 0.01282051282051282,
+            "overlap_share": 0.16129032258064516,
+            "sector_id": "THEME:880919",
+            "union_count": 390
+          },
+          {
+            "display_name": "BIPV概念",
+            "href": "/v4/research/sectors/THEME:880977",
+            "intersection_count": 2,
+            "jaccard": 0.0125,
+            "overlap_share": 0.06451612903225806,
+            "sector_id": "THEME:880977",
+            "union_count": 160
+          },
+          {
+            "display_name": "创投概念",
+            "href": "/v4/research/sectors/THEME:880540",
+            "intersection_count": 5,
+            "jaccard": 0.010330578512396695,
+            "overlap_share": 0.16129032258064516,
+            "sector_id": "THEME:880540",
+            "union_count": 484
+          },
+          {
+            "display_name": "PPP概念",
+            "href": "/v4/research/sectors/THEME:880940",
+            "intersection_count": 2,
+            "jaccard": 0.009900990099009901,
+            "overlap_share": 0.06451612903225806,
+            "sector_id": "THEME:880940",
+            "union_count": 202
+          },
+          {
+            "display_name": "光伏",
+            "href": "/v4/research/sectors/THEME:880544",
+            "intersection_count": 5,
+            "jaccard": 0.009615384615384616,
+            "overlap_share": 0.16129032258064516,
+            "sector_id": "THEME:880544",
+            "union_count": 520
+          },
+          {
+            "display_name": "燃料电池",
+            "href": "/v4/research/sectors/THEME:880909",
+            "intersection_count": 2,
+            "jaccard": 0.00847457627118644,
+            "overlap_share": 0.06451612903225806,
+            "sector_id": "THEME:880909",
+            "union_count": 236
+          },
+          {
+            "display_name": "换电概念",
+            "href": "/v4/research/sectors/THEME:880759",
+            "intersection_count": 1,
+            "jaccard": 0.008264462809917356,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880759",
+            "union_count": 121
+          },
+          {
+            "display_name": "石墨烯",
+            "href": "/v4/research/sectors/THEME:880584",
+            "intersection_count": 1,
+            "jaccard": 0.007936507936507936,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880584",
+            "union_count": 126
+          },
+          {
+            "display_name": "雅江水电",
+            "href": "/v4/research/sectors/THEME:880972",
+            "intersection_count": 1,
+            "jaccard": 0.007751937984496124,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880972",
+            "union_count": 129
+          },
+          {
+            "display_name": "垃圾分类",
+            "href": "/v4/research/sectors/THEME:880926",
+            "intersection_count": 1,
+            "jaccard": 0.007692307692307693,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880926",
+            "union_count": 130
+          },
+          {
+            "display_name": "可控核变",
+            "href": "/v4/research/sectors/THEME:880666",
+            "intersection_count": 1,
+            "jaccard": 0.006896551724137931,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880666",
+            "union_count": 145
+          },
+          {
+            "display_name": "一带一路",
+            "href": "/v4/research/sectors/THEME:880594",
+            "intersection_count": 5,
+            "jaccard": 0.006493506493506494,
+            "overlap_share": 0.16129032258064516,
+            "sector_id": "THEME:880594",
+            "union_count": 770
+          },
+          {
+            "display_name": "特高压",
+            "href": "/v4/research/sectors/THEME:880964",
+            "intersection_count": 1,
+            "jaccard": 0.006493506493506494,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880964",
+            "union_count": 154
+          },
+          {
+            "display_name": "节能环保",
+            "href": "/v4/research/sectors/THEME:880558",
+            "intersection_count": 2,
+            "jaccard": 0.005420054200542005,
+            "overlap_share": 0.06451612903225806,
+            "sector_id": "THEME:880558",
+            "union_count": 369
+          },
+          {
+            "display_name": "三代半导",
+            "href": "/v4/research/sectors/THEME:880608",
+            "intersection_count": 1,
+            "jaccard": 0.004761904761904762,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880608",
+            "union_count": 210
+          },
+          {
+            "display_name": "东数西算",
+            "href": "/v4/research/sectors/THEME:880607",
+            "intersection_count": 2,
+            "jaccard": 0.004640371229698376,
+            "overlap_share": 0.06451612903225806,
+            "sector_id": "THEME:880607",
+            "union_count": 431
+          },
+          {
+            "display_name": "AI眼镜",
+            "href": "/v4/research/sectors/THEME:880566",
+            "intersection_count": 1,
+            "jaccard": 0.0045662100456621,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880566",
+            "union_count": 219
+          },
+          {
+            "display_name": "算力租赁",
+            "href": "/v4/research/sectors/THEME:880669",
+            "intersection_count": 1,
+            "jaccard": 0.004132231404958678,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880669",
+            "union_count": 242
+          },
+          {
+            "display_name": "DeepSeek",
+            "href": "/v4/research/sectors/THEME:880978",
+            "intersection_count": 3,
+            "jaccard": 0.0038560411311053984,
+            "overlap_share": 0.0967741935483871,
+            "sector_id": "THEME:880978",
+            "union_count": 778
+          },
+          {
+            "display_name": "智能电网",
+            "href": "/v4/research/sectors/THEME:880520",
+            "intersection_count": 1,
+            "jaccard": 0.003367003367003367,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880520",
+            "union_count": 297
+          },
+          {
+            "display_name": "数据中心",
+            "href": "/v4/research/sectors/THEME:880799",
+            "intersection_count": 2,
+            "jaccard": 0.0030075187969924814,
+            "overlap_share": 0.06451612903225806,
+            "sector_id": "THEME:880799",
+            "union_count": 665
+          },
+          {
+            "display_name": "工业互联",
+            "href": "/v4/research/sectors/THEME:880957",
+            "intersection_count": 1,
+            "jaccard": 0.0025188916876574307,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880957",
+            "union_count": 397
+          },
+          {
+            "display_name": "无人驾驶",
+            "href": "/v4/research/sectors/THEME:880944",
+            "intersection_count": 1,
+            "jaccard": 0.0024390243902439024,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880944",
+            "union_count": 410
+          },
+          {
+            "display_name": "物联网",
+            "href": "/v4/research/sectors/THEME:880533",
+            "intersection_count": 1,
+            "jaccard": 0.0018832391713747645,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880533",
+            "union_count": 531
+          },
+          {
+            "display_name": "人工智能",
+            "href": "/v4/research/sectors/THEME:880948",
+            "intersection_count": 2,
+            "jaccard": 0.0018779342723004694,
+            "overlap_share": 0.06451612903225806,
+            "sector_id": "THEME:880948",
+            "union_count": 1065
+          },
+          {
+            "display_name": "智能机器",
+            "href": "/v4/research/sectors/THEME:880904",
+            "intersection_count": 2,
+            "jaccard": 0.0016849199663016006,
+            "overlap_share": 0.06451612903225806,
+            "sector_id": "THEME:880904",
+            "union_count": 1187
+          },
+          {
+            "display_name": "锂电池",
+            "href": "/v4/research/sectors/THEME:880534",
+            "intersection_count": 1,
+            "jaccard": 0.0016181229773462784,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880534",
+            "union_count": 618
+          },
+          {
+            "display_name": "芯片",
+            "href": "/v4/research/sectors/THEME:880952",
+            "intersection_count": 1,
+            "jaccard": 0.001091703056768559,
+            "overlap_share": 0.03225806451612903,
+            "sector_id": "THEME:880952",
+            "union_count": 916
+          }
+        ],
+        "limit": 200,
+        "member_count": 31,
+        "offset": 0,
+        "source": {
+          "bytes": 4004928,
+          "contract_id": "V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1",
+          "owner_stage": "V4-08",
+          "path": "data/v4/artifact_store/v4_08/V4_08_PIT_MEMBERSHIP_FACTS_20260930_R1.jsonl.gz",
+          "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+        },
+        "status": "READY",
+        "total": 51,
+        "unique_member_count": 0,
+        "unique_share": 0.0
+      }
+    },
+    {
+      "fields": {
+        "participation_proxy": {
+          "adjustment_basis": null,
+          "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "quality": "ACCEPTED",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "participation_proxy",
+          "unit": "ratio_or_percentile_points_as_field_contract",
+          "value": 0.6319428594690601,
+          "window": null
+        },
+        "sector_rs20": {
+          "adjustment_basis": null,
+          "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+          "denominator": 32,
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "quality": "ACCEPTED",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "sector_rs20",
+          "unit": "return ratio median",
+          "value": -0.033356702958319606,
+          "window": null
+        },
+        "sector_rs5": {
+          "adjustment_basis": null,
+          "computation_domain": "V4_08_SECTOR_NATIVE_V1",
+          "denominator": 32,
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "quality": "ACCEPTED",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "sector_rs5",
+          "unit": "return ratio median",
+          "value": -0.02474977053192895,
+          "window": null
+        },
+        "sector_type": {
+          "adjustment_basis": null,
+          "computation_domain": "OWNER_PROJECTION",
+          "denominator": null,
+          "parameter_set_id": null,
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-09-30",
+          "source_contract_id": null,
+          "source_digest": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc",
+          "source_field": "sector_type",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": "INDUSTRY",
+          "window": null
+        }
+      },
+      "id": "INDUSTRY:T010203",
+      "name": "新型电力",
+      "overlap": {
+        "as_of": "2026-09-30",
+        "cluster": null,
+        "cluster_reason": "NO_VERSIONED_CLUSTER_ENGINE_OUTPUT",
+        "context": {
+          "accepted_trade_date": "2026-09-30",
+          "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+          "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+          "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+          "domain_readiness": {
+            "fep": {
+              "debt": [
+                "CURRENT_FEATURE_MODEL_INFERENCE"
+              ],
+              "released": false,
+              "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+            },
+            "focus": {
+              "debt": [
+                "UNRESOLVED_PATH_PREDICATE_OWNERS",
+                "LEGACY_PG_RECONCILIATION"
+              ],
+              "earliest_valid_date": "2026-09-29",
+              "released": false,
+              "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+            },
+            "forward": {
+              "debt": [
+                "CURRENT_FEP_INFERENCE",
+                "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+                "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+              ],
+              "released": false,
+              "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+            },
+            "market": {
+              "debt": [
+                "INTRADAY_TOUCH_BROKEN_LIMIT",
+                "OFFICIAL_FACT_NEWS"
+              ],
+              "released": false,
+              "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+            },
+            "sectors": {
+              "debt": [
+                "HISTORICAL_MEMBERSHIP",
+                "LIFECYCLE",
+                "ROTATION_HISTORY"
+              ],
+              "released": false,
+              "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+            },
+            "stocks": {
+              "debt": [
+                "HYPOTHESIS",
+                "INVALID_IF_OWNER",
+                "FULL_STRUCTURE_PATH"
+              ],
+              "released": false,
+              "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+            },
+            "strict_pit": {
+              "debt": [
+                "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+              ],
+              "released": false,
+              "scope": "NONE"
+            }
+          },
+          "factor_contract_id": null,
+          "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+          "full_product_release": false,
+          "historical_pit_effectiveness": "NOT_GRANTED",
+          "joint_release_digest": null,
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "last_accepted_trade_date": "2026-09-30",
+          "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+          "namespace": "V4_CURRENT_ACCEPTED",
+          "operational_release_scope": [],
+          "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "parameter_set_id": null,
+          "publication_id": "6866ff8c9a234d3b8190e7bdd46bf092",
+          "quality": "QUALITY_DEGRADED",
+          "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "release_id": "6866ff8c9a234d3b8190e7bdd46bf092",
+          "release_metadata": {
+            "contract_version": "1.0.0",
+            "data_quality_state": "QUALITY_DEGRADED",
+            "evidence_origin": "REAL_ACCEPTED_SOURCE",
+            "evidence_state": "VALIDATION_ONGOING",
+            "input_digest": "4bf0e9f4cbedcb1c3e749eec76c4b437a97648cc8031c59eabd24ffc1894b9a7",
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "owner": "FP02_RESEARCH_PROJECTION",
+            "published_at": "2026-10-08T09:32:32.953606+00:00",
+            "release_id": "6866ff8c9a234d3b8190e7bdd46bf092",
+            "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+            "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+            "trading_date": "2026-09-30"
+          },
+          "scoped_release": false,
+          "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+          "source_mode": "EXISTING_REAL_SNAPSHOT_PENDING_RELEASE",
+          "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+          "stage": "V4-15",
+          "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+          "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+          "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+          "trade_date": "2026-09-30",
+          "turnover_as_of": null
+        },
+        "context_token": "research-v4-2c2ae9ed3f480479adab6341767c05345f95c56f5e115ead1982948b841ffb72",
+        "contract_id": "FP06_PIT_MEMBERSHIP_JACCARD_V1",
+        "has_next": false,
+        "items": [
+          {
+            "display_name": "绿色电力",
+            "href": "/v4/research/sectors/THEME:880753",
+            "intersection_count": 31,
+            "jaccard": 0.07434052757793765,
+            "overlap_share": 0.96875,
+            "sector_id": "THEME:880753",
+            "union_count": 417
+          },
+          {
+            "display_name": "风电",
+            "href": "/v4/research/sectors/THEME:880582",
+            "intersection_count": 26,
+            "jaccard": 0.06018518518518518,
+            "overlap_share": 0.8125,
+            "sector_id": "THEME:880582",
+            "union_count": 432
+          },
+          {
+            "display_name": "光热发电",
+            "href": "/v4/research/sectors/THEME:880639",
+            "intersection_count": 4,
+            "jaccard": 0.056338028169014086,
+            "overlap_share": 0.125,
+            "sector_id": "THEME:880639",
+            "union_count": 71
+          },
+          {
+            "display_name": "生物质能",
+            "href": "/v4/research/sectors/THEME:880568",
+            "intersection_count": 5,
+            "jaccard": 0.053763440860215055,
+            "overlap_share": 0.15625,
+            "sector_id": "THEME:880568",
+            "union_count": 93
+          },
+          {
+            "display_name": "BIPV概念",
+            "href": "/v4/research/sectors/THEME:880977",
+            "intersection_count": 7,
+            "jaccard": 0.04487179487179487,
+            "overlap_share": 0.21875,
+            "sector_id": "THEME:880977",
+            "union_count": 156
+          },
+          {
+            "display_name": "虚拟电厂",
+            "href": "/v4/research/sectors/THEME:880630",
+            "intersection_count": 6,
+            "jaccard": 0.03314917127071823,
+            "overlap_share": 0.1875,
+            "sector_id": "THEME:880630",
+            "union_count": 181
+          },
+          {
+            "display_name": "碳中和",
+            "href": "/v4/research/sectors/THEME:880519",
+            "intersection_count": 9,
+            "jaccard": 0.03180212014134275,
+            "overlap_share": 0.28125,
+            "sector_id": "THEME:880519",
+            "union_count": 283
+          },
+          {
+            "display_name": "钙钛矿",
+            "href": "/v4/research/sectors/THEME:880655",
+            "intersection_count": 3,
+            "jaccard": 0.025,
+            "overlap_share": 0.09375,
+            "sector_id": "THEME:880655",
+            "union_count": 120
+          },
+          {
+            "display_name": "储能",
+            "href": "/v4/research/sectors/THEME:880730",
+            "intersection_count": 22,
+            "jaccard": 0.024691358024691357,
+            "overlap_share": 0.6875,
+            "sector_id": "THEME:880730",
+            "union_count": 891
+          },
+          {
+            "display_name": "中特估",
+            "href": "/v4/research/sectors/THEME:880671",
+            "intersection_count": 3,
+            "jaccard": 0.023622047244094488,
+            "overlap_share": 0.09375,
+            "sector_id": "THEME:880671",
+            "union_count": 127
+          },
+          {
+            "display_name": "核污防治",
+            "href": "/v4/research/sectors/THEME:880611",
+            "intersection_count": 2,
+            "jaccard": 0.02247191011235955,
+            "overlap_share": 0.0625,
+            "sector_id": "THEME:880611",
+            "union_count": 89
+          },
+          {
+            "display_name": "草甘膦",
+            "href": "/v4/research/sectors/THEME:880910",
+            "intersection_count": 1,
+            "jaccard": 0.02127659574468085,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880910",
+            "union_count": 47
+          },
+          {
+            "display_name": "TOPCon",
+            "href": "/v4/research/sectors/THEME:880638",
+            "intersection_count": 2,
+            "jaccard": 0.021052631578947368,
+            "overlap_share": 0.0625,
+            "sector_id": "THEME:880638",
+            "union_count": 95
+          },
+          {
+            "display_name": "智能电网",
+            "href": "/v4/research/sectors/THEME:880520",
+            "intersection_count": 6,
+            "jaccard": 0.020477815699658702,
+            "overlap_share": 0.1875,
+            "sector_id": "THEME:880520",
+            "union_count": 293
+          },
+          {
+            "display_name": "分散染料",
+            "href": "/v4/research/sectors/THEME:880706",
+            "intersection_count": 1,
+            "jaccard": 0.02,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880706",
+            "union_count": 50
+          },
+          {
+            "display_name": "地热能",
+            "href": "/v4/research/sectors/THEME:880575",
+            "intersection_count": 1,
+            "jaccard": 0.0196078431372549,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880575",
+            "union_count": 51
+          },
+          {
+            "display_name": "汽车拆解",
+            "href": "/v4/research/sectors/THEME:880744",
+            "intersection_count": 1,
+            "jaccard": 0.01818181818181818,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880744",
+            "union_count": 55
+          },
+          {
+            "display_name": "钠电池",
+            "href": "/v4/research/sectors/THEME:880755",
+            "intersection_count": 3,
+            "jaccard": 0.01818181818181818,
+            "overlap_share": 0.09375,
+            "sector_id": "THEME:880755",
+            "union_count": 165
+          },
+          {
+            "display_name": "POE胶膜",
+            "href": "/v4/research/sectors/THEME:880649",
+            "intersection_count": 1,
+            "jaccard": 0.01694915254237288,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880649",
+            "union_count": 59
+          },
+          {
+            "display_name": "电池回收",
+            "href": "/v4/research/sectors/THEME:880632",
+            "intersection_count": 2,
+            "jaccard": 0.01680672268907563,
+            "overlap_share": 0.0625,
+            "sector_id": "THEME:880632",
+            "union_count": 119
+          },
+          {
+            "display_name": "节能环保",
+            "href": "/v4/research/sectors/THEME:880558",
+            "intersection_count": 6,
+            "jaccard": 0.01639344262295082,
+            "overlap_share": 0.1875,
+            "sector_id": "THEME:880558",
+            "union_count": 366
+          },
+          {
+            "display_name": "钒电池",
+            "href": "/v4/research/sectors/THEME:880628",
+            "intersection_count": 1,
+            "jaccard": 0.016129032258064516,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880628",
+            "union_count": 62
+          },
+          {
+            "display_name": "虫害防治",
+            "href": "/v4/research/sectors/THEME:880797",
+            "intersection_count": 1,
+            "jaccard": 0.015625,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880797",
+            "union_count": 64
+          },
+          {
+            "display_name": "垃圾分类",
+            "href": "/v4/research/sectors/THEME:880926",
+            "intersection_count": 2,
+            "jaccard": 0.015384615384615385,
+            "overlap_share": 0.0625,
+            "sector_id": "THEME:880926",
+            "union_count": 130
+          },
+          {
+            "display_name": "充电桩",
+            "href": "/v4/research/sectors/THEME:880583",
+            "intersection_count": 6,
+            "jaccard": 0.015189873417721518,
+            "overlap_share": 0.1875,
+            "sector_id": "THEME:880583",
+            "union_count": 395
+          },
+          {
+            "display_name": "核电核能",
+            "href": "/v4/research/sectors/THEME:880537",
+            "intersection_count": 5,
+            "jaccard": 0.014245014245014245,
+            "overlap_share": 0.15625,
+            "sector_id": "THEME:880537",
+            "union_count": 351
+          },
+          {
+            "display_name": "高压快充",
+            "href": "/v4/research/sectors/THEME:880658",
+            "intersection_count": 2,
+            "jaccard": 0.014184397163120567,
+            "overlap_share": 0.0625,
+            "sector_id": "THEME:880658",
+            "union_count": 141
+          },
+          {
+            "display_name": "东数西算",
+            "href": "/v4/research/sectors/THEME:880607",
+            "intersection_count": 6,
+            "jaccard": 0.014018691588785047,
+            "overlap_share": 0.1875,
+            "sector_id": "THEME:880607",
+            "union_count": 428
+          },
+          {
+            "display_name": "医废处理",
+            "href": "/v4/research/sectors/THEME:880796",
+            "intersection_count": 1,
+            "jaccard": 0.013888888888888888,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880796",
+            "union_count": 72
+          },
+          {
+            "display_name": "光伏",
+            "href": "/v4/research/sectors/THEME:880544",
+            "intersection_count": 7,
+            "jaccard": 0.01348747591522158,
+            "overlap_share": 0.21875,
+            "sector_id": "THEME:880544",
+            "union_count": 519
+          },
+          {
+            "display_name": "盐湖提锂",
+            "href": "/v4/research/sectors/THEME:880727",
+            "intersection_count": 1,
+            "jaccard": 0.013157894736842105,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880727",
+            "union_count": 76
+          },
+          {
+            "display_name": "海南自贸",
+            "href": "/v4/research/sectors/THEME:880567",
+            "intersection_count": 1,
+            "jaccard": 0.01282051282051282,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880567",
+            "union_count": 78
+          },
+          {
+            "display_name": "算力租赁",
+            "href": "/v4/research/sectors/THEME:880669",
+            "intersection_count": 3,
+            "jaccard": 0.012448132780082987,
+            "overlap_share": 0.09375,
+            "sector_id": "THEME:880669",
+            "union_count": 241
+          },
+          {
+            "display_name": "锂矿",
+            "href": "/v4/research/sectors/THEME:880761",
+            "intersection_count": 1,
+            "jaccard": 0.012195121951219513,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880761",
+            "union_count": 82
+          },
+          {
+            "display_name": "天然气",
+            "href": "/v4/research/sectors/THEME:880750",
+            "intersection_count": 2,
+            "jaccard": 0.011834319526627219,
+            "overlap_share": 0.0625,
+            "sector_id": "THEME:880750",
+            "union_count": 169
+          },
+          {
+            "display_name": "氢能源",
+            "href": "/v4/research/sectors/THEME:880705",
+            "intersection_count": 5,
+            "jaccard": 0.0117096018735363,
+            "overlap_share": 0.15625,
+            "sector_id": "THEME:880705",
+            "union_count": 427
+          },
+          {
+            "display_name": "雄安新区",
+            "href": "/v4/research/sectors/THEME:880911",
+            "intersection_count": 3,
+            "jaccard": 0.011583011583011582,
+            "overlap_share": 0.09375,
+            "sector_id": "THEME:880911",
+            "union_count": 259
+          },
+          {
+            "display_name": "磷概念",
+            "href": "/v4/research/sectors/THEME:880715",
+            "intersection_count": 1,
+            "jaccard": 0.011235955056179775,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880715",
+            "union_count": 89
+          },
+          {
+            "display_name": "HJT电池",
+            "href": "/v4/research/sectors/THEME:880737",
+            "intersection_count": 1,
+            "jaccard": 0.011235955056179775,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880737",
+            "union_count": 89
+          },
+          {
+            "display_name": "海峡西岸",
+            "href": "/v4/research/sectors/THEME:880513",
+            "intersection_count": 2,
+            "jaccard": 0.010416666666666666,
+            "overlap_share": 0.0625,
+            "sector_id": "THEME:880513",
+            "union_count": 192
+          },
+          {
+            "display_name": "PPP概念",
+            "href": "/v4/research/sectors/THEME:880940",
+            "intersection_count": 2,
+            "jaccard": 0.009852216748768473,
+            "overlap_share": 0.0625,
+            "sector_id": "THEME:880940",
+            "union_count": 203
+          },
+          {
+            "display_name": "乡村振兴",
+            "href": "/v4/research/sectors/THEME:880955",
+            "intersection_count": 4,
+            "jaccard": 0.00980392156862745,
+            "overlap_share": 0.125,
+            "sector_id": "THEME:880955",
+            "union_count": 408
+          },
+          {
+            "display_name": "绿色建筑",
+            "href": "/v4/research/sectors/THEME:880614",
+            "intersection_count": 1,
+            "jaccard": 0.009615384615384616,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880614",
+            "union_count": 104
+          },
+          {
+            "display_name": "AI手机PC",
+            "href": "/v4/research/sectors/THEME:880541",
+            "intersection_count": 1,
+            "jaccard": 0.009259259259259259,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880541",
+            "union_count": 108
+          },
+          {
+            "display_name": "黄金概念",
+            "href": "/v4/research/sectors/THEME:880521",
+            "intersection_count": 1,
+            "jaccard": 0.008771929824561403,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880521",
+            "union_count": 114
+          },
+          {
+            "display_name": "含H股",
+            "href": "/v4/research/sectors/THEME:880501",
+            "intersection_count": 2,
+            "jaccard": 0.00851063829787234,
+            "overlap_share": 0.0625,
+            "sector_id": "THEME:880501",
+            "union_count": 235
+          },
+          {
+            "display_name": "临界发电",
+            "href": "/v4/research/sectors/THEME:880627",
+            "intersection_count": 1,
+            "jaccard": 0.00847457627118644,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880627",
+            "union_count": 118
+          },
+          {
+            "display_name": "航运概念",
+            "href": "/v4/research/sectors/THEME:880728",
+            "intersection_count": 1,
+            "jaccard": 0.00847457627118644,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880728",
+            "union_count": 118
+          },
+          {
+            "display_name": "次新股",
+            "href": "/v4/research/sectors/THEME:880529",
+            "intersection_count": 1,
+            "jaccard": 0.00819672131147541,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880529",
+            "union_count": 122
+          },
+          {
+            "display_name": "换电概念",
+            "href": "/v4/research/sectors/THEME:880759",
+            "intersection_count": 1,
+            "jaccard": 0.00819672131147541,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880759",
+            "union_count": 122
+          },
+          {
+            "display_name": "英伟达",
+            "href": "/v4/research/sectors/THEME:880674",
+            "intersection_count": 1,
+            "jaccard": 0.008064516129032258,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880674",
+            "union_count": 124
+          },
+          {
+            "display_name": "粤港澳",
+            "href": "/v4/research/sectors/THEME:880919",
+            "intersection_count": 3,
+            "jaccard": 0.007633587786259542,
+            "overlap_share": 0.09375,
+            "sector_id": "THEME:880919",
+            "union_count": 393
+          },
+          {
+            "display_name": "水利建设",
+            "href": "/v4/research/sectors/THEME:880542",
+            "intersection_count": 2,
+            "jaccard": 0.007246376811594203,
+            "overlap_share": 0.0625,
+            "sector_id": "THEME:880542",
+            "union_count": 276
+          },
+          {
+            "display_name": "量子科技",
+            "href": "/v4/research/sectors/THEME:880943",
+            "intersection_count": 1,
+            "jaccard": 0.007042253521126761,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880943",
+            "union_count": 142
+          },
+          {
+            "display_name": "可控核变",
+            "href": "/v4/research/sectors/THEME:880666",
+            "intersection_count": 1,
+            "jaccard": 0.00684931506849315,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880666",
+            "union_count": 146
+          },
+          {
+            "display_name": "区块链",
+            "href": "/v4/research/sectors/THEME:880946",
+            "intersection_count": 2,
+            "jaccard": 0.006600660066006601,
+            "overlap_share": 0.0625,
+            "sector_id": "THEME:880946",
+            "union_count": 303
+          },
+          {
+            "display_name": "锂电池",
+            "href": "/v4/research/sectors/THEME:880534",
+            "intersection_count": 4,
+            "jaccard": 0.006493506493506494,
+            "overlap_share": 0.125,
+            "sector_id": "THEME:880534",
+            "union_count": 616
+          },
+          {
+            "display_name": "特高压",
+            "href": "/v4/research/sectors/THEME:880964",
+            "intersection_count": 1,
+            "jaccard": 0.0064516129032258064,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880964",
+            "union_count": 155
+          },
+          {
+            "display_name": "DeepSeek",
+            "href": "/v4/research/sectors/THEME:880978",
+            "intersection_count": 5,
+            "jaccard": 0.006435006435006435,
+            "overlap_share": 0.15625,
+            "sector_id": "THEME:880978",
+            "union_count": 777
+          },
+          {
+            "display_name": "飞行汽车",
+            "href": "/v4/research/sectors/THEME:880697",
+            "intersection_count": 1,
+            "jaccard": 0.006329113924050633,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880697",
+            "union_count": 158
+          },
+          {
+            "display_name": "高铁",
+            "href": "/v4/research/sectors/THEME:880525",
+            "intersection_count": 1,
+            "jaccard": 0.006097560975609756,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880525",
+            "union_count": 164
+          },
+          {
+            "display_name": "一带一路",
+            "href": "/v4/research/sectors/THEME:880594",
+            "intersection_count": 4,
+            "jaccard": 0.0051813471502590676,
+            "overlap_share": 0.125,
+            "sector_id": "THEME:880594",
+            "union_count": 772
+          },
+          {
+            "display_name": "数据中心",
+            "href": "/v4/research/sectors/THEME:880799",
+            "intersection_count": 3,
+            "jaccard": 0.004511278195488722,
+            "overlap_share": 0.09375,
+            "sector_id": "THEME:880799",
+            "union_count": 665
+          },
+          {
+            "display_name": "口罩防护",
+            "href": "/v4/research/sectors/THEME:880795",
+            "intersection_count": 1,
+            "jaccard": 0.004424778761061947,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880795",
+            "union_count": 226
+          },
+          {
+            "display_name": "数字孪生",
+            "href": "/v4/research/sectors/THEME:880738",
+            "intersection_count": 1,
+            "jaccard": 0.00425531914893617,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880738",
+            "union_count": 235
+          },
+          {
+            "display_name": "新型城镇",
+            "href": "/v4/research/sectors/THEME:880624",
+            "intersection_count": 1,
+            "jaccard": 0.00423728813559322,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880624",
+            "union_count": 236
+          },
+          {
+            "display_name": "百度概念",
+            "href": "/v4/research/sectors/THEME:880962",
+            "intersection_count": 1,
+            "jaccard": 0.003937007874015748,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880962",
+            "union_count": 254
+          },
+          {
+            "display_name": "物联网",
+            "href": "/v4/research/sectors/THEME:880533",
+            "intersection_count": 2,
+            "jaccard": 0.003766478342749529,
+            "overlap_share": 0.0625,
+            "sector_id": "THEME:880533",
+            "union_count": 531
+          },
+          {
+            "display_name": "卫星导航",
+            "href": "/v4/research/sectors/THEME:880546",
+            "intersection_count": 1,
+            "jaccard": 0.0033003300330033004,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880546",
+            "union_count": 303
+          },
+          {
+            "display_name": "腾讯概念",
+            "href": "/v4/research/sectors/THEME:880956",
+            "intersection_count": 1,
+            "jaccard": 0.00303951367781155,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880956",
+            "union_count": 329
+          },
+          {
+            "display_name": "阿里概念",
+            "href": "/v4/research/sectors/THEME:880921",
+            "intersection_count": 1,
+            "jaccard": 0.0027100271002710027,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880921",
+            "union_count": 369
+          },
+          {
+            "display_name": "工业互联",
+            "href": "/v4/research/sectors/THEME:880957",
+            "intersection_count": 1,
+            "jaccard": 0.002512562814070352,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880957",
+            "union_count": 398
+          },
+          {
+            "display_name": "低空经济",
+            "href": "/v4/research/sectors/THEME:880522",
+            "intersection_count": 1,
+            "jaccard": 0.00196078431372549,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880522",
+            "union_count": 510
+          },
+          {
+            "display_name": "新能源车",
+            "href": "/v4/research/sectors/THEME:880951",
+            "intersection_count": 2,
+            "jaccard": 0.0018975332068311196,
+            "overlap_share": 0.0625,
+            "sector_id": "THEME:880951",
+            "union_count": 1054
+          },
+          {
+            "display_name": "人工智能",
+            "href": "/v4/research/sectors/THEME:880948",
+            "intersection_count": 2,
+            "jaccard": 0.001876172607879925,
+            "overlap_share": 0.0625,
+            "sector_id": "THEME:880948",
+            "union_count": 1066
+          },
+          {
+            "display_name": "国防军工",
+            "href": "/v4/research/sectors/THEME:880507",
+            "intersection_count": 1,
+            "jaccard": 0.001851851851851852,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880507",
+            "union_count": 540
+          },
+          {
+            "display_name": "商业航天",
+            "href": "/v4/research/sectors/THEME:880548",
+            "intersection_count": 1,
+            "jaccard": 0.001851851851851852,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880548",
+            "union_count": 540
+          },
+          {
+            "display_name": "智能机器",
+            "href": "/v4/research/sectors/THEME:880904",
+            "intersection_count": 2,
+            "jaccard": 0.0016835016835016834,
+            "overlap_share": 0.0625,
+            "sector_id": "THEME:880904",
+            "union_count": 1188
+          },
+          {
+            "display_name": "芯片",
+            "href": "/v4/research/sectors/THEME:880952",
+            "intersection_count": 1,
+            "jaccard": 0.0010905125408942203,
+            "overlap_share": 0.03125,
+            "sector_id": "THEME:880952",
+            "union_count": 917
+          }
+        ],
+        "limit": 200,
+        "member_count": 32,
+        "offset": 0,
+        "source": {
+          "bytes": 4004928,
+          "contract_id": "V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1",
+          "owner_stage": "V4-08",
+          "path": "data/v4/artifact_store/v4_08/V4_08_PIT_MEMBERSHIP_FACTS_20260930_R1.jsonl.gz",
+          "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+        },
+        "status": "READY",
+        "total": 79,
+        "unique_member_count": 0,
+        "unique_share": 0.0
+      }
+    }
+  ]
+}

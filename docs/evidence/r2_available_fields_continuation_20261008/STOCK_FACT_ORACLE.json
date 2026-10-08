@@ -1,0 +1,78 @@
+{
+  "known_comparisons": {
+    "atr_ratio": 5164,
+    "core_extension_risk": 5213,
+    "core_price_damage": 5184,
+    "market_regime": 5213,
+    "range_ratio": 5164,
+    "rel_market_1": 5193,
+    "rel_market_3": 5191,
+    "rel_market_5": 5190,
+    "vol_ratio": 5164
+  },
+  "market": {
+    "bytes": 12201,
+    "path": "data/v4/fp05_market/e034e70084533be70892fd32d066139cbd273a36a8ada7e511a68f75fe1f1008/market.json",
+    "sha256": "3c5a189d65158ec6de5e4d0ea311e590874d53207fd271761ce45e5e2385254e"
+  },
+  "market_references": {
+    "1": {
+      "evaluable_count": 5193,
+      "missing_count": 30,
+      "start_date": "2026-09-29",
+      "universe_count": 5223,
+      "value": -0.001355799671516417
+    },
+    "3": {
+      "evaluable_count": 5191,
+      "missing_count": 31,
+      "start_date": "2026-09-24",
+      "universe_count": 5222,
+      "value": -0.016518859199766884
+    },
+    "5": {
+      "evaluable_count": 5190,
+      "missing_count": 32,
+      "start_date": "2026-09-22",
+      "universe_count": 5222,
+      "value": -0.032392109108564396
+    }
+  },
+  "parameters": [
+    {
+      "bytes": 649,
+      "path": "config/v4_03_parameter_set_v1.json",
+      "sha256": "2f3cc8ae2fdf4bffc098dc1a0dc90bf05bbb12557b45ea8ddc50048410314e18"
+    },
+    {
+      "bytes": 17586,
+      "path": "config/v4_04_parameter_set_v1.json",
+      "sha256": "5b19a23dfbf6b214f5ee7c7cce5df5674db69d099386038c082317819812ced5"
+    }
+  ],
+  "result": "PASS",
+  "scope": "CORRECTED_ACCEPTED_OWNER_UNIVERSES_EXPLICITLY_SEPARATE_FROM_CURRENT_RAW_DISPLAY_POOL",
+  "series": {
+    "bytes": 367886336,
+    "path": "data/v4/fp07_stocks/33d5a66f47870a29397a453132d9ea0ac3dbc0f82063902a60436992fe43c378/series.sqlite",
+    "sha256": "6b326dac93aacd63dc289895b1488f224843940154b6f4b89bc0df8af0a4518d"
+  },
+  "source_factor": {
+    "bytes": 19460170,
+    "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/factors.jsonl.gz",
+    "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+  },
+  "source_profile": {
+    "bytes": 44330385,
+    "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/profiles.jsonl.gz",
+    "sha256": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6"
+  },
+  "strict_pit": false,
+  "unknown_preserved": {
+    "compression_composite": 49,
+    "core_price_damage": 29,
+    "rel_market_1": 20,
+    "rel_market_3": 22,
+    "rel_market_5": 23
+  }
+}

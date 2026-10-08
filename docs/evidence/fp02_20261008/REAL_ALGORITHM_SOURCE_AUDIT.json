@@ -1,0 +1,60 @@
+{
+  "contract_id": "FP02_REAL_ALGORITHM_SOURCE_AUDIT_V1",
+  "modules": [
+    {
+      "domain": "D2_qualification_reasons",
+      "fields": [
+        "raw_qualification",
+        "matched_predicates",
+        "unknown_predicates",
+        "transition_reasons",
+        "tracking",
+        "validity"
+      ],
+      "producer": "RESEARCH_STATE_V1",
+      "source": {
+        "bytes": 12539130,
+        "path": "data/v4/confirmation_candidates_r5/D2_2026-09-30_CANDIDATE_R5.json.gz",
+        "sha256": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+      },
+      "state": "ADAPTED_EXISTING_REAL_OUTPUT"
+    },
+    {
+      "domain": "Expected_Engine_FEP_E1_E5",
+      "evidence": [
+        {
+          "bytes": 18000,
+          "path": "reports/fep_e5_r1r1c/API_READBACK.json",
+          "sha256": "64375d39777e8119319ce06e2d13b71b7bc54b6bd3851679669694dc995c6167"
+        },
+        {
+          "bytes": 714,
+          "path": "reports/fep_e5_final_external_acceptance_r1/STAGE_ACCEPTANCE_AND_NEXT.json",
+          "sha256": "2763e007a4ea59a0770ed0a67c60e08f503286c9730fbb0a5ef2df1fd1f7e99b"
+        }
+      ],
+      "next": "FP07_FP10_REAL_CURRENT_EXPECTED_PROJECTION",
+      "reason": "Existing E5 API proof is explicitly fixtures/historical reconstruction; no current 2026-09-30 daily inference publication is bound to the accepted current reader. Requires current feature/model/output binding and independent real QA, not waiting for long-term permission.",
+      "retained_engineering": "COMPLETE_FOR_CURRENT_SCOPE",
+      "state": "ENGINEERING_NOT_READY_CURRENT_OUTPUT_BINDING"
+    },
+    {
+      "bound": [
+        "health",
+        "validity",
+        "structure_health",
+        "support_state"
+      ],
+      "domain": "risk_primitives",
+      "next": "FP06_FP07_CURRENT_CORE_RISK_RECOMPUTE",
+      "reason": "Current Core owner output is 2026-09-28; current D2/advanced fields retain precise owner quality. Do not substitute old Core into 2026-09-30.",
+      "state": "PARTIAL_CURRENT_SOURCE_CAPABILITY",
+      "unbound": [
+        "current_core_extension_risk",
+        "current_sector_risk_change"
+      ]
+    }
+  ],
+  "scope": "CURRENT_OUTPUT_AVAILABILITY_NOT_STATISTICAL_PROOF",
+  "trade_date": "2026-09-30"
+}

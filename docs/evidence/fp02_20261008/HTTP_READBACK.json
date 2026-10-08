@@ -1,0 +1,65 @@
+[
+  {
+    "context_token": null,
+    "http": 200,
+    "path": "/api/operations/status",
+    "state": "READY",
+    "total": null
+  },
+  {
+    "context_token": "research-v4-bd76ccc5bc0f1c7bf4a6812f99ad6dc47dfaa456b355decabcf0b57b9ad905c8",
+    "http": 200,
+    "path": "/api/v4/context",
+    "state": "READY",
+    "total": null
+  },
+  {
+    "context_token": "research-v4-bd76ccc5bc0f1c7bf4a6812f99ad6dc47dfaa456b355decabcf0b57b9ad905c8",
+    "http": 200,
+    "path": "/api/v4/stocks?q=600000",
+    "state": "READY",
+    "total": 1
+  },
+  {
+    "context_token": "research-v4-bd76ccc5bc0f1c7bf4a6812f99ad6dc47dfaa456b355decabcf0b57b9ad905c8",
+    "http": 200,
+    "path": "/api/v4/stocks?state=LAUNCH_CONFIRM",
+    "state": "READY",
+    "total": 105
+  },
+  {
+    "context_token": "research-v4-bd76ccc5bc0f1c7bf4a6812f99ad6dc47dfaa456b355decabcf0b57b9ad905c8",
+    "http": 200,
+    "path": "/api/v4/sectors?offset=370&limit=200",
+    "state": "READY",
+    "total": 378
+  },
+  {
+    "context_token": null,
+    "http": 409,
+    "path": "/api/v4/stocks?context_token=stale",
+    "state": "CONTEXT_CONFLICT",
+    "total": null
+  },
+  {
+    "context_token": null,
+    "http": 400,
+    "path": "/api/v4/stocks?limit=201",
+    "state": "INVALID_REQUEST",
+    "total": null
+  },
+  {
+    "context_token": null,
+    "http": 400,
+    "path": "/api/v4/stocks?q=a&q=b",
+    "state": null,
+    "total": null
+  },
+  {
+    "context_token": "current-v4-8a7b8e3f8fe867183cbeefe8a1e48f9038b4ccf9aee778f10bfd9d4ba348afa1",
+    "http": 200,
+    "path": "/api/v4/current/context",
+    "state": "READY_CURRENT_ACCEPTED",
+    "total": null
+  }
+]

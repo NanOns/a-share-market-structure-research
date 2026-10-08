@@ -1,0 +1,51 @@
+{
+  "full_product_release": false,
+  "legacy_permission_modified": false,
+  "next_stage": "FP05_TO_FP11_DOMAIN_IMPLEMENTATION",
+  "stages": [
+    {
+      "gaps": [
+        {
+          "domain": "market",
+          "next": "FP05_TARGETED_CURRENT_FOUR_AXIS_RECOMPUTE",
+          "reason": "ACCEPTED_MARKET_OWNER_OUTPUT_NOT_BOUND_TO_20260930",
+          "state": "ENGINEERING_NOT_READY"
+        },
+        {
+          "domain": "focus",
+          "next": "FP08_PUBLISH_REAL_EPISODES",
+          "reason": "EPISODE_PROJECTION_NOT_PUBLISHED_IN_CURRENT_OWNER_CONTEXT",
+          "state": "ENGINEERING_NOT_READY"
+        },
+        {
+          "domain": "stocks",
+          "next": "FP07_CURRENT_CORE_RECOMPUTE",
+          "reason": "CURRENT_CORE_OWNER_PROFILE_IS_20260928_NOT_20260930",
+          "state": "SOURCE_INCOMPLETE"
+        },
+        {
+          "count": 11,
+          "domain": "profile_identity",
+          "reason": "ADVANCED_ROWS_OUTSIDE_CURRENT_RAW_UNIVERSE",
+          "state": "SOURCE_INCOMPLETE"
+        }
+      ],
+      "result": "DEGRADED_PASS",
+      "scope": "INDEXED_REAL_OUTPUTS",
+      "stage": "FP02"
+    },
+    {
+      "historical_routes": "EXPLICIT_501_UNTIL_DOMAIN_TASKS",
+      "result": "PASS",
+      "scope": "BFF_CURRENT_FIELD_CONTRACTS",
+      "stage": "FP03"
+    },
+    {
+      "limitation": "EDGE_NOT_CONNECTED",
+      "result": "DEGRADED_PASS",
+      "scope": "SIX_ENTRY_FRAMEWORK_IAB_BROWSER",
+      "stage": "FP04"
+    }
+  ],
+  "tdx_modified": false
+}

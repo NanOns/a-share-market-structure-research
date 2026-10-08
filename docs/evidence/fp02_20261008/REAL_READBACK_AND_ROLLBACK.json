@@ -1,0 +1,222 @@
+{
+  "context_conflicts": "PASS_4_DIMENSIONS",
+  "failed_publication": "PASS_EXACT_POINTER_PRESERVED",
+  "query_plan": [
+    [
+      4,
+      0,
+      46,
+      "SEARCH objects USING COVERING INDEX object_name (domain=? AND name>? AND name<?)"
+    ]
+  ],
+  "real_profile_oracle": {
+    "fields_per_sample": 5,
+    "result": "PASS",
+    "samples": [
+      "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+      "SEC-002610CF9EBB4227722834AADA8F757E",
+      "SEC-002E8949D07D2829AB967520C65C0845",
+      "SEC-0051683845B17D59641B7D1DC261FE2A",
+      "SEC-005EA670068174623A3C365FCA9A8B2D",
+      "SEC-0068F2B3CBB78D2F594248A35D1EF6E6",
+      "SEC-006D9F8F7EEAB00B95B63390341737B1",
+      "SEC-0081C3FB364C2FF2BBF61903A767EACB",
+      "SEC-0086F7F2614CE0006C835421BA75BD51",
+      "SEC-00B0B75CF5BA6E38D7C2D3FEBF949622",
+      "SEC-00B87010D45BBCB2A1CB277B6C177121"
+    ],
+    "source": {
+      "bytes": 37627535,
+      "path": "reports/v4_13_runtime_r16/real/2026-09-30/r6/profile_advanced.jsonl.gz",
+      "sha256": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    }
+  },
+  "rollback": "PASS_EXACT_PRIOR_TOKEN_AND_POINTER",
+  "route_coverage": [
+    {
+      "http": 200,
+      "route": "/api/v4/context",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/home",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/market",
+      "status": "ENGINEERING_NOT_READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/sectors",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/stocks",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/events",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/radar/sectors",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/radar/stocks",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/radar/events",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/focus",
+      "status": "ENGINEERING_NOT_READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/forward",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/forward/settlement",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/data-sources/status",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/diagnostics/sources",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/diagnostics/fields",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/diagnostics/rules",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/diagnostics/parameters",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/diagnostics/legacy",
+      "status": "READY"
+    },
+    {
+      "http": 501,
+      "route": "/api/v4/replay",
+      "status": "ENGINEERING_NOT_READY"
+    },
+    {
+      "http": 501,
+      "route": "/api/v4/compare",
+      "status": "ENGINEERING_NOT_READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/stocks/{id}",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/stocks/{id}/profile",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/stocks/{id}/evidence",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/stocks/{id}/why-not-prewatch",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/stocks/{id}/structure-events",
+      "status": "SOURCE_INCOMPLETE"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/stocks/{id}/anchors",
+      "status": "SOURCE_INCOMPLETE"
+    },
+    {
+      "http": 501,
+      "route": "/api/v4/stocks/{id}/timeline",
+      "status": "ENGINEERING_NOT_READY"
+    },
+    {
+      "http": 501,
+      "route": "/api/v4/stocks/{id}/chart",
+      "status": "ENGINEERING_NOT_READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/sectors/{id}",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/sectors/{id}/members",
+      "status": "READY"
+    },
+    {
+      "http": 200,
+      "route": "/api/v4/sectors/{id}/rotation",
+      "status": "READY"
+    },
+    {
+      "http": 501,
+      "route": "/api/v4/sectors/{id}/timeline",
+      "status": "ENGINEERING_NOT_READY"
+    },
+    {
+      "http": 501,
+      "route": "/api/v4/sectors/{id}/rotation-timeline",
+      "status": "ENGINEERING_NOT_READY"
+    }
+  ],
+  "search": {
+    "chinese_name": "浦发银行",
+    "code": "600000",
+    "result": "PASS"
+  },
+  "sectors": {
+    "page_max_ms": 24.69,
+    "page_p50_ms": 24.46,
+    "rows": 378,
+    "same_context": true,
+    "unique": 378
+  },
+  "stocks": {
+    "page_max_ms": 153.4,
+    "page_p50_ms": 98.25,
+    "rows": 5213,
+    "same_context": true,
+    "unique": 5213
+  }
+}

@@ -1,0 +1,1313 @@
+{
+  "contract_id": "V4_RESEARCH_BFF_V1",
+  "field_registry": {
+    "events": {
+      "counterevidence": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7de481708462bda5073031a129bc147279dc9f2c7741c389f14a8fc6f99dcd58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "effective_event": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7de481708462bda5073031a129bc147279dc9f2c7741c389f14a8fc6f99dcd58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "primary_scenario": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7de481708462bda5073031a129bc147279dc9f2c7741c389f14a8fc6f99dcd58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "trade_date": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7de481708462bda5073031a129bc147279dc9f2c7741c389f14a8fc6f99dcd58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      }
+    },
+    "forward": {
+      "T0": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "b448150f362d67cd7bea4fa2c56131f8becf6b8ceb52b8d231c0aef401dbe4a9",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "cohort_namespace": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "b448150f362d67cd7bea4fa2c56131f8becf6b8ceb52b8d231c0aef401dbe4a9",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "enrollment_id": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "b448150f362d67cd7bea4fa2c56131f8becf6b8ceb52b8d231c0aef401dbe4a9",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "entity_id": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "b448150f362d67cd7bea4fa2c56131f8becf6b8ceb52b8d231c0aef401dbe4a9",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "evidence_class": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "b448150f362d67cd7bea4fa2c56131f8becf6b8ceb52b8d231c0aef401dbe4a9",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      }
+    },
+    "radar": {
+      "eligibility_state": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "6a4c1e9b84968c8d0a84a3ccf89372ed1f0dd4b130a847b5f14bd12ba50a467b",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "entity_id": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "6a4c1e9b84968c8d0a84a3ccf89372ed1f0dd4b130a847b5f14bd12ba50a467b",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "priority_bucket": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "6a4c1e9b84968c8d0a84a3ccf89372ed1f0dd4b130a847b5f14bd12ba50a467b",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "signal_type": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "6a4c1e9b84968c8d0a84a3ccf89372ed1f0dd4b130a847b5f14bd12ba50a467b",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "trade_date": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "6a4c1e9b84968c8d0a84a3ccf89372ed1f0dd4b130a847b5f14bd12ba50a467b",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      }
+    },
+    "sectors": {
+      "base_seed_retention": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio"
+      },
+      "base_seed_width_adjusted": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio"
+      },
+      "basket_cumulative_return": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio"
+      },
+      "breadth_delta1": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio"
+      },
+      "breadth_delta3": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio"
+      },
+      "breadth_ret1": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio"
+      },
+      "breadth_ret20": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio_or_percentile_points_as_field_contract"
+      },
+      "breadth_ret5": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio_or_percentile_points_as_field_contract"
+      },
+      "breadth_retention": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio"
+      },
+      "dq5": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "percentile points"
+      },
+      "entered_count": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "members"
+      },
+      "episode_accepted": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "bool"
+      },
+      "episode_terminated": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "bool"
+      },
+      "ma20_delta1": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio_or_percentile_points_as_field_contract"
+      },
+      "ma20_delta3": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio"
+      },
+      "ma20_width": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio"
+      },
+      "mdd20": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio_or_percentile_points_as_field_contract"
+      },
+      "member_count": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "count"
+      },
+      "membership_ready": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "bool"
+      },
+      "negative_out_consecutive_evaluable_sessions": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "sessions"
+      },
+      "net_entered_count": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "members"
+      },
+      "output_state": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "participation_proxy": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio_or_percentile_points_as_field_contract"
+      },
+      "pos60": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio_or_percentile_points_as_field_contract"
+      },
+      "prior_maturity_state": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "enum"
+      },
+      "prior_rotation_state": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "enum"
+      },
+      "pulse_active": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "bool"
+      },
+      "pulse_age_sessions": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "sessions"
+      },
+      "rank_velocity3": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "percentile points"
+      },
+      "sector_id": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "sector_member_count": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "members"
+      },
+      "sector_name": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "sector_price_retention_core": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio_or_percentile_points_as_field_contract"
+      },
+      "sector_quote_coverage": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio"
+      },
+      "sector_rs1": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio_or_percentile_points_as_field_contract"
+      },
+      "sector_rs20": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "return ratio median"
+      },
+      "sector_rs20_pct": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio_or_percentile_points_as_field_contract"
+      },
+      "sector_rs5": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "return ratio median"
+      },
+      "sector_rs5_pct": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "percentile points"
+      },
+      "sector_rs60": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio_or_percentile_points_as_field_contract"
+      },
+      "sector_rs60_pct": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio_or_percentile_points_as_field_contract"
+      },
+      "seed_retention": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio_or_percentile_points_as_field_contract"
+      },
+      "seed_width": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio_or_percentile_points_as_field_contract"
+      },
+      "strong_member": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "member_set"
+      },
+      "strong_member_retention": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio_or_percentile_points_as_field_contract"
+      },
+      "strong_member_retention_1": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio"
+      },
+      "strong_prev": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "members"
+      },
+      "top1_concentration": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio"
+      },
+      "top3_concentration": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "ratio_or_percentile_points_as_field_contract"
+      },
+      "yesterday_dq5": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "points"
+      }
+    },
+    "settlement": {
+      "due_date": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "a4d251952ac7328a322eb7c32131659cfd44ebf943f9ee36444c77d8cb8c4df7",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "enrollment_id": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "a4d251952ac7328a322eb7c32131659cfd44ebf943f9ee36444c77d8cb8c4df7",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "horizon": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "a4d251952ac7328a322eb7c32131659cfd44ebf943f9ee36444c77d8cb8c4df7",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "OWNER_UNIT_NOT_DECLARED"
+      },
+      "outcome_status": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "a4d251952ac7328a322eb7c32131659cfd44ebf943f9ee36444c77d8cb8c4df7",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      }
+    },
+    "sources": {
+      "component": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "20798999bb3309aa93f42ebd075bc53cffb5337117f6fbccd7eafd14986f51bb",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "quality": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "row_count": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "20798999bb3309aa93f42ebd075bc53cffb5337117f6fbccd7eafd14986f51bb",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "count"
+      }
+    },
+    "stocks": {
+      "acceptance_state": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "active_anchor_id": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "algorithmic_support_sector": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "anchor_view_asof_t": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "basic_breakout_state": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "basic_pullback_state": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "basic_recovery_state": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "boundary_event": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "close": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "CNY"
+      },
+      "detector_statuses": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "downgrade_count": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "sessions"
+      },
+      "expiry_count": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "sessions"
+      },
+      "final_eligibility": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "health": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "high": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "CNY"
+      },
+      "improvement_baseline": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "list_date": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "low": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "CNY"
+      },
+      "market_age": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "sessions"
+      },
+      "matched_predicates": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "maturity": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "open": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "CNY"
+      },
+      "primary_industry": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "raw_qualification": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "relative_sector_state": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "retest_count": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "count"
+      },
+      "rotation_structure_enrichment": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "scenario": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "scenario_status": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "sector_context_quality": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "sector_context_state": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "source_security_key": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "state_freshness": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "structure_events": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "structure_health": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "support_state": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "supporting_concepts": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "tracking": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "trade_date": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "transition_reasons": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "unknown_predicates": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      },
+      "validity": {
+        "nullable": true,
+        "quality_required": true,
+        "reason_required_when_unknown": true,
+        "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+        "status": "ADAPTED_EXISTING_REAL_OUTPUT",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE"
+      }
+    }
+  },
+  "future_tasks": [
+    "FP05-11_DOMAIN_PAGES_AND_TARGETED_RECOMPUTE",
+    "FP12_REPLAY_COMPARE"
+  ],
+  "name_policy": "AUTHORITATIVE_AS_OF_IDENTITY_WITH_CODE_FALLBACK_NO_GUESSED_NAMES",
+  "null_policy": "NULL_IS_NOT_ZERO",
+  "planned_fields": {
+    "focus": {
+      "anchor": "EXISTING_ENGINE_REQUIRES_REAL_EPISODE_PROJECTION",
+      "entry_event": "EXISTING_ENGINE_REQUIRES_REAL_EPISODE_PROJECTION",
+      "episode_id": "EXISTING_ENGINE_REQUIRES_REAL_EPISODE_PROJECTION",
+      "exit": "EXISTING_ENGINE_REQUIRES_REAL_EPISODE_PROJECTION",
+      "observation": "EXISTING_ENGINE_REQUIRES_REAL_EPISODE_PROJECTION",
+      "reentry": "EXISTING_ENGINE_REQUIRES_REAL_EPISODE_PROJECTION"
+    },
+    "market": {
+      "breadth_axis": "EXISTING_PRODUCER_REQUIRES_CURRENT_DATE_OUTPUT_BINDING",
+      "market_regime": "EXISTING_PRODUCER_REQUIRES_CURRENT_DATE_OUTPUT_BINDING",
+      "participation_axis": "EXISTING_PRODUCER_REQUIRES_CURRENT_DATE_OUTPUT_BINDING",
+      "stress_change": "EXISTING_PRODUCER_REQUIRES_CURRENT_DATE_OUTPUT_BINDING",
+      "stress_level": "EXISTING_PRODUCER_REQUIRES_CURRENT_DATE_OUTPUT_BINDING",
+      "trend_axis": "EXISTING_PRODUCER_REQUIRES_CURRENT_DATE_OUTPUT_BINDING"
+    },
+    "replay_compare": {
+      "as_recorded_replay": "FP12_CONTEXT_INDEX_NOT_IMPLEMENTED",
+      "cross_date_compare": "FP12_CONTEXT_INDEX_NOT_IMPLEMENTED",
+      "cross_entity_compare": "FP12_CONTEXT_INDEX_NOT_IMPLEMENTED"
+    },
+    "sectors": {
+      "lifecycle": "EXISTING_PRODUCER_REQUIRES_DOMAIN_PAGE_ADAPTER",
+      "overlap": "EXISTING_PRODUCER_REQUIRES_DOMAIN_PAGE_ADAPTER",
+      "risk_changes": "EXISTING_PRODUCER_REQUIRES_DOMAIN_PAGE_ADAPTER",
+      "rotation_timeline": "EXISTING_PRODUCER_REQUIRES_DOMAIN_PAGE_ADAPTER"
+    },
+    "stocks": {
+      "F": "EXISTING_CORE_PRODUCER_REQUIRES_20260930_RECOMPUTE",
+      "H": "EXISTING_CORE_PRODUCER_REQUIRES_20260930_RECOMPUTE",
+      "R": "EXISTING_CORE_PRODUCER_REQUIRES_20260930_RECOMPUTE",
+      "compression_state": "EXISTING_CORE_PRODUCER_REQUIRES_20260930_RECOMPUTE",
+      "core_extension_risk": "EXISTING_CORE_PRODUCER_REQUIRES_20260930_RECOMPUTE",
+      "daily_bars": "EXISTING_CORE_PRODUCER_REQUIRES_20260930_RECOMPUTE",
+      "monthly_bars": "EXISTING_CORE_PRODUCER_REQUIRES_20260930_RECOMPUTE",
+      "participation_state": "EXISTING_CORE_PRODUCER_REQUIRES_20260930_RECOMPUTE",
+      "position_state": "EXISTING_CORE_PRODUCER_REQUIRES_20260930_RECOMPUTE",
+      "relative_market_state": "EXISTING_CORE_PRODUCER_REQUIRES_20260930_RECOMPUTE",
+      "trend_state": "EXISTING_CORE_PRODUCER_REQUIRES_20260930_RECOMPUTE",
+      "weekly_bars": "EXISTING_CORE_PRODUCER_REQUIRES_20260930_RECOMPUTE"
+    }
+  },
+  "query": {
+    "context_conflict_http": 409,
+    "limit": [
+      1,
+      200
+    ],
+    "offset": [
+      0,
+      1000000
+    ],
+    "q_max_chars": 80,
+    "rate_per_client_per_minute": 240,
+    "sort": [
+      "id",
+      "name",
+      "symbol",
+      "state"
+    ],
+    "sort_keys_max": 4,
+    "state_semantics": {
+      "radar": "eligibility_state",
+      "sectors": "output_state",
+      "settlement": "outcome_status",
+      "stocks": "scenario"
+    },
+    "unknown_parameter_http": 400
+  },
+  "response_schema": {
+    "$defs": {
+      "cell": {
+        "properties": {
+          "adjustment_basis": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "computation_domain": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "denominator": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "quality": {
+            "type": "string"
+          },
+          "reason": {
+            "type": [
+              "null",
+              "string",
+              "array",
+              "object"
+            ]
+          },
+          "source_as_of": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_digest": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "source_field": {
+            "type": "string"
+          },
+          "unit": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "value": {
+            "type": [
+              "null",
+              "number",
+              "integer",
+              "string",
+              "boolean",
+              "array",
+              "object"
+            ]
+          },
+          "window": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "value",
+          "quality",
+          "reason",
+          "source_digest",
+          "source_field",
+          "unit",
+          "denominator",
+          "window",
+          "adjustment_basis",
+          "source_as_of",
+          "computation_domain"
+        ],
+        "type": "object"
+      },
+      "item": {
+        "properties": {
+          "entity_id": {
+            "type": "string"
+          },
+          "fields": {
+            "additionalProperties": {
+              "$ref": "#/$defs/cell"
+            },
+            "type": "object"
+          },
+          "trade_date": {
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "entity_id",
+          "fields",
+          "trade_date"
+        ],
+        "type": "object"
+      }
+    },
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+      "context": {
+        "required": [
+          "accepted_trade_date",
+          "release_id",
+          "model_namespace",
+          "knowledge_lineage",
+          "source_mode"
+        ],
+        "type": "object"
+      },
+      "context_token": {
+        "pattern": "^research-v4-[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "has_next": {
+        "type": "boolean"
+      },
+      "items": {
+        "items": {
+          "$ref": "#/$defs/item"
+        },
+        "maxItems": 200,
+        "type": "array"
+      },
+      "total": {
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    "required": [
+      "context",
+      "context_token"
+    ],
+    "title": "V4_RESEARCH_BFF_V1",
+    "type": "object"
+  },
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/api/v4/context",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/home",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/market",
+      "status": "SOURCE_DOMAIN_GAP_WITH_200_METADATA"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/sectors",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/stocks",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/events",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/radar/sectors",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/radar/stocks",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/radar/events",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/focus",
+      "status": "SOURCE_DOMAIN_GAP_WITH_200_METADATA"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/forward",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/forward/settlement",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/data-sources/status",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/diagnostics/sources",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/diagnostics/fields",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/diagnostics/rules",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/diagnostics/parameters",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/diagnostics/legacy",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/replay",
+      "status": "ENGINEERING_NOT_READY_EXPLICIT_501"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/compare",
+      "status": "ENGINEERING_NOT_READY_EXPLICIT_501"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/stocks/{id}",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/stocks/{id}/profile",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/stocks/{id}/evidence",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/stocks/{id}/why-not-prewatch",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/stocks/{id}/structure-events",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/stocks/{id}/anchors",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/stocks/{id}/timeline",
+      "status": "ENGINEERING_NOT_READY_EXPLICIT_501"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/stocks/{id}/chart",
+      "status": "ENGINEERING_NOT_READY_EXPLICIT_501"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/sectors/{id}",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/sectors/{id}/members",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/sectors/{id}/rotation",
+      "status": "ADAPTED_REAL_OUTPUT"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/sectors/{id}/timeline",
+      "status": "ENGINEERING_NOT_READY_EXPLICIT_501"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/sectors/{id}/rotation-timeline",
+      "status": "ENGINEERING_NOT_READY_EXPLICIT_501"
+    }
+  ]
+}

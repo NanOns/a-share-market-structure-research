@@ -15,7 +15,7 @@ OWNERS={'market':(5,'v4_market_operational_authority_v1.json'),
         'stocks':(7,'v4_stock_operational_authority_v1.json'),
         'market_center':(9,'v4_market_center_authority_v1.json'),
         'forward':(10,'v4_forward_operational_authority_v1.json')}
-MODULES={5:'build_fp05_market',6:'build_fp06_sector_v2',7:'build_fp07_stock',9:'build_fp09_market_center',10:'build_fp10_forward'}
+MODULES={5:'build_fp05_market',6:'build_fp06_sector_v2',7:'build_fp07_stock',9:'build_fp09_market_center',10:'build_fp10_forward_v2'}
 
 def prepare(*,rebuild_owners=False,replay_namespace=False):
     live_before=(ROOT/AUTHORITY).read_bytes();live=ProductionV4ResearchReader(ROOT)
@@ -70,7 +70,7 @@ def prepare(*,rebuild_owners=False,replay_namespace=False):
         first_day=first,live_authority_preserved=True,automatic_production_write_admitted=False,full_daily_e2e_pass=False,
         next_stage='EXACT_CANDIDATE_UI_OWNER_QA_AND_JOINT_CAS')
     write(evidence/'CANDIDATE.json',result)
-    write(ROOT/'docs/evidence/r2_continuous_daily_20261008/OWNER_CHAIN_STAGING.json',dict(receipt=ref(evidence/'CANDIDATE.json'),**result))
+    write(ROOT/'runtime/research_daily/OWNER_CHAIN_STAGING_LATEST.json',dict(receipt=ref(evidence/'CANDIDATE.json'),**result))
     return result
 
 if __name__=='__main__':

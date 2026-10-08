@@ -6,7 +6,7 @@ import os
 import subprocess
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-sys.path.insert(0,str(ROOT/'src'))
+sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 from workbench_service.production_v4 import build_snapshot, ProductionV4ResearchReader, reference,rollback_snapshot,POINTER
 from workbench_service.current_v4_context import digest
 from workbench_service.v4_daily_refresh import atomic_bytes, refresh_status

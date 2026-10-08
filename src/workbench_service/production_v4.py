@@ -273,6 +273,20 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
                 result=json.loads(old[1]);keys=('signal_type','model_contract_id','parameter_digest','primary_industry','source_publication','control_assignment_ids','benchmark_ids','comparison_reference')
                 result['fields'].update({k:compact_cell(dict(value=row.get(k),quality='KNOWN' if row.get(k) is not None else 'UNKNOWN'),row['source'],k,date) for k in keys})
                 db.execute("UPDATE objects SET payload=? WHERE domain='forward' AND id=?",(canonical(result).decode(),old[0]))
+            if publication.get('adapter_contract_id'):
+                # Materialize the accepted continuation; legacy five-row
+                # settlement projection must not survive a new owner upgrade.
+                db.execute("DELETE FROM objects WHERE domain='settlement'")
+                entities={row['enrollment_id']:row['entity_id'] for row in publication['enrollments']}
+                for outcome in publication['outcomes']:
+                    sid=entities[outcome['enrollment_id']];fields={}
+                    for key,value in outcome.items():
+                        if key=='source':continue
+                        reason='NOT_YET_DUE' if outcome['outcome_status']=='PENDING' else outcome['outcome_status']
+                        unit='ratio' if key in ('R_N','MFE_N','MAE_N','PATH_MDD_CLOSE_N') else 'sessions' if key=='horizon' else 'date' if key in ('due_date','report_cutoff') else 'NOT_APPLICABLE_TYPED_VALUE'
+                        fields[key]=compact_cell(dict(value=value,quality='KNOWN' if value is not None else 'UNKNOWN',
+                            reason=None if value is not None else reason,unit=unit),outcome['source'],key,date)
+                    put('settlement',dict(entity_id=sid,fields=fields))
         replay_authority=root/'config/v4_replay_compare_authority_v1.json'
         authority=operational('replay',replay_authority)
         if authority is not None:
@@ -394,6 +408,10 @@ class ProductionV4ResearchReader:
             'fep':dict(released=False,scope='NOT_BOUND_TO_CURRENT_PRODUCTION',debt=['CURRENT_FEATURE_MODEL_INFERENCE']),
         }
         focus=self.manifest.get('domain_features',{}).get('focus') or {}
+        forward=self.manifest.get('domain_features',{}).get('forward') or {}
+        if forward.get('adapter_contract_id')=='R2_FORWARD_DUE_LOCAL_CORRECTED_V1':
+            self.context['domain_readiness']['forward'].update(scope='CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ',
+                debt=['CURRENT_FEP_INFERENCE','STRICT_T0_ELIGIBILITY_NOT_GRANTED','REAL_COHORT_MATURITY_NOT_YET_OBSERVED'])
         if focus.get('contract_id')=='R2_V4_FOCUS_PATH_OUTCOME_V2':
             self.context['domain_readiness']['focus'].update(
                 scope='CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ',

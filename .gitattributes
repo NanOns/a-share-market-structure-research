@@ -323,3 +323,9 @@ config/v4_continuous_daily_admission_v2.json -text
 data/v4/fp12_replay/** -text
 data/v4/fp12_replay/*/*/snapshot.json filter=lfs diff=lfs merge=lfs -text
 data/v4/display_names/** -text
+
+data/v4/r2_forward/** -text
+docs/evidence/r2_forward_continuation_20261008/** -text
+scripts/build_fp10_forward_v2.py -text
+src/workbench_service/forward_daily.py -text
+config/v4_continuous_daily_admission_v3.json -text

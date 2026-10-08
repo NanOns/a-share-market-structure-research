@@ -7,12 +7,12 @@ from .production_v4 import ProductionV4ResearchReader
 from .pit_observation import freeze
 from .v4_daily_refresh import atomic_bytes
 
-ADMISSION='config/v4_continuous_daily_admission_v2.json'
+ADMISSION='config/v4_continuous_daily_admission_v3.json'
 
 def promote(root,staged,health=None):
     root=Path(root).resolve();before=(root/AUTHORITY).read_bytes();previous=json.loads(before)
     admission=json.loads((root/ADMISSION).read_bytes())
-    if admission.get('contract_id')!='R2_CONTINUOUS_DAILY_ADMISSION_V2' or admission.get('result')!='DEGRADED_PASS':
+    if admission.get('contract_id')!='R2_CONTINUOUS_DAILY_ADMISSION_V3' or admission.get('result')!='DEGRADED_PASS':
         raise SourceInvalid('DAILY_ADMISSION_REQUIRED')
     for binding in admission['evidence']+list(admission['implementations'].values()):checked_path(root,binding)
     if previous['ui_build_id']!=admission['ui_build_id']:raise SourceInvalid('DAILY_UI_ADMISSION_VERSION_CONFLICT')
@@ -46,15 +46,33 @@ def promote(root,staged,health=None):
     for episode in focus['episodes']:
         if episode['T0']>day or any(o['trade_date']>day for o in episode['observations']):raise SourceInvalid('DAILY_FUTURE_FOCUS')
         if any(o['outcome_status']=='OBSERVED' and o['target_trade_date']>day for o in episode['outcomes']):raise SourceInvalid('DAILY_PREMATURE_OUTCOME')
-    pending=[p for p in manifest['domain_features']['forward']['plans'] if p.get('due_date') and p['due_date']<=day]
-    # Due settlement is an independent owner gate. Never publish a new day with
-    # matured plans silently left unprocessed by the existing Forward builder.
-    if pending:raise SourceInvalid('DAILY_FORWARD_DUE_REQUIRES_ACCEPTED_SETTLEMENT_OWNER')
+    from .forward_daily import verify_due_settlement
+    publication=manifest['domain_features']['forward']
+    due_count=verify_due_settlement(publication,day)
+    if publication.get('adapter_contract_id'):
+        def check_bindings(value):
+            if isinstance(value,dict):
+                if {'path','sha256'}<=value.keys():checked_path(root,value)
+                else:
+                    for item in value.values():check_bindings(item)
+            elif isinstance(value,list):
+                for item in value:check_bindings(item)
+        check_bindings(publication['sources'])
+        if publication['sources']['accepted_data_head']['sha256']!=manifest['context']['data_head_digest']:
+            raise SourceInvalid('DAILY_FORWARD_EVALUATION_HEAD_MISMATCH')
+        calendar=json.loads(checked_path(root,publication['sources']['evaluation_inputs']['calendar']).read_bytes())['session_dates']
+        for outcome in publication['outcomes']:
+            if outcome.get('adapter_contract_id')!=publication['adapter_contract_id']:raise SourceInvalid('DAILY_FORWARD_ADAPTER_MISMATCH')
+            if outcome['report_cutoff']!=day:raise SourceInvalid('DAILY_FORWARD_EVALUATION_CUTOFF_MISMATCH')
+            source=outcome['evaluation_source'];frozen=json.loads(checked_path(root,outcome['frozen_t0']).read_bytes())
+            expected=digest(canonical(dict(inputs=publication['sources']['evaluation_inputs'],t0=frozen['T0'],cutoff=day,
+                calendar=calendar,kernel=publication['sources']['kernel'])))
+            if source['sha256']!=expected:raise SourceInvalid('DAILY_FORWARD_EVALUATION_SOURCE_IDENTITY_MISMATCH')
     freeze_receipt=freeze(reader)
     if health is None:
         from scripts.activate_v4_full_product import health
     result=activate(root,candidate,digest(before),health)
     result.update(raw_oracle_comparisons=comparisons,first_observed_freeze=freeze_receipt,
-        forward_due='NO_DUE',strict_pit=False,full_product_release=False)
+        forward_due='DUE_PROCESSED' if due_count else 'NO_DUE',forward_due_count=due_count,strict_pit=False,full_product_release=False)
     atomic_bytes(root/'runtime/research_daily/JOINT_DAILY_LATEST.json',canonical(result))
     return result

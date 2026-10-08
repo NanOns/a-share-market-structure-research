@@ -12,6 +12,7 @@ from workbench_service.joint_release import AUTHORITY,validate
 
 
 def main():
+    if (OUT/'RELEASE_FINAL.json').exists():raise SourceInvalid('STAGE_RELEASED_CANDIDATE_IMMUTABLE')
     before=(ROOT/AUTHORITY).read_bytes();base=json.loads(before)
     receipt=json.loads((OUT/'SHADOW_READBACK.json').read_bytes())
     if receipt['status']!='SHADOW_SOURCE_PASS' or not receipt['append_failure_exact_rollback'] or not receipt['oracle']:

@@ -1,0 +1,78 @@
+{
+  "activation_performed": true,
+  "authority_digest": "8ab655770267a961b863e6118a07fe911bd06b5be9eaa55e65a30e7d2827eb9c",
+  "operational_release_scope": [
+    "stocks_daily",
+    "sectors_current_facts",
+    "market_current",
+    "focus_read_corrected",
+    "forward_read",
+    "diagnostics",
+    "compare_corrected"
+  ],
+  "readback": {
+    "app_read_pair_digest": "9b54d2caed1b3bc0ca44598a7877e9ac4b9f09b43afdfbfed93385f6878ef676",
+    "context_token": "research-v4-42fc754489f6a519ead205823a4f86138050a6349754f7fd3f28787c006b42ff",
+    "pass": true,
+    "pass_": true,
+    "routes": {
+      "/": {
+        "http": 200,
+        "sha256": "5d35b9b506a06901bcb4bc040fc6d1cf3e0ea2099212acf13b3a152316515ba9"
+      },
+      "/api/v4/diagnostics": {
+        "context_token": "research-v4-42fc754489f6a519ead205823a4f86138050a6349754f7fd3f28787c006b42ff",
+        "status": "READY"
+      },
+      "/api/v4/focus?limit=1": {
+        "context_token": "research-v4-42fc754489f6a519ead205823a4f86138050a6349754f7fd3f28787c006b42ff",
+        "status": "READY"
+      },
+      "/api/v4/home": {
+        "context_token": "research-v4-42fc754489f6a519ead205823a4f86138050a6349754f7fd3f28787c006b42ff",
+        "status": "READY"
+      },
+      "/api/v4/market": {
+        "context_token": "research-v4-42fc754489f6a519ead205823a4f86138050a6349754f7fd3f28787c006b42ff",
+        "status": "READY"
+      },
+      "/api/v4/sectors?limit=1": {
+        "context_token": "research-v4-42fc754489f6a519ead205823a4f86138050a6349754f7fd3f28787c006b42ff",
+        "status": "READY"
+      },
+      "/api/v4/stocks?limit=1": {
+        "context_token": "research-v4-42fc754489f6a519ead205823a4f86138050a6349754f7fd3f28787c006b42ff",
+        "status": "READY"
+      },
+      "/v4": {
+        "http": 200,
+        "sha256": "5d35b9b506a06901bcb4bc040fc6d1cf3e0ea2099212acf13b3a152316515ba9"
+      },
+      "/v4/research/diagnostics": {
+        "http": 200,
+        "sha256": "5d35b9b506a06901bcb4bc040fc6d1cf3e0ea2099212acf13b3a152316515ba9"
+      },
+      "/v4/research/focus": {
+        "http": 200,
+        "sha256": "5d35b9b506a06901bcb4bc040fc6d1cf3e0ea2099212acf13b3a152316515ba9"
+      },
+      "/v4/research/home": {
+        "http": 200,
+        "sha256": "5d35b9b506a06901bcb4bc040fc6d1cf3e0ea2099212acf13b3a152316515ba9"
+      },
+      "/v4/research/market": {
+        "http": 200,
+        "sha256": "5d35b9b506a06901bcb4bc040fc6d1cf3e0ea2099212acf13b3a152316515ba9"
+      },
+      "/v4/research/sectors": {
+        "http": 200,
+        "sha256": "5d35b9b506a06901bcb4bc040fc6d1cf3e0ea2099212acf13b3a152316515ba9"
+      },
+      "/v4/research/stocks": {
+        "http": 200,
+        "sha256": "5d35b9b506a06901bcb4bc040fc6d1cf3e0ea2099212acf13b3a152316515ba9"
+      }
+    }
+  },
+  "result": "SCOPED_OPERATIONAL_RELEASE_PASS"
+}

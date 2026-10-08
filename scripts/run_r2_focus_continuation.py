@@ -13,6 +13,7 @@ from workbench_service.joint_release import AUTHORITY
 OUT=ROOT/'docs/evidence/r2_focus_continuation_20261008'
 
 def main():
+    if (OUT/'RELEASE_FINAL.json').exists():raise SourceInvalid('STAGE_RELEASED_CREATE_NEW_VERSIONED_EVIDENCE_DIRECTORY')
     before=(ROOT/AUTHORITY).read_bytes();reader=ProductionV4ResearchReader(ROOT)
     current=reader.manifest['sources']['states']
     payload=json.load(gzip.open(checked(ROOT,current),'rt',encoding='utf8'))

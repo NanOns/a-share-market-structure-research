@@ -1,0 +1,1 @@
+"# 独立审计项：字面UNKNOWN误标KNOWN\n\n范围：跨域owner/projection语义质量，不与Focus价格路径门混算。原证据：docs/evidence/r2_repair_20261008/field_audit_v3/OWNER_QUALITY_ANOMALIES.json。修复只作用新snapshot投影及compact_cell，字面UNKNOWN不再称KNOWN；原owner、旧snapshot及旧QA收据保留。\n\n验收：新生产快照全objects扫描异常0，见r2_focus_continuation_20261008/POST_RELEASE_READBACK.json。结论PROJECTION_CORRECTION_PASS；不能推导底层owner缺源已修好。下一项：剩余字段生产者与逐字段浏览器准入。\n"

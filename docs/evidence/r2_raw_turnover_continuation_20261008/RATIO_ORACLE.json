@@ -1,0 +1,23 @@
+{
+  "existing_stock_fields_unchanged": true,
+  "formula": "current_actual_value / arithmetic_mean_of_previous_N_completed_session_values_excluding_current",
+  "independent_from_native_kernel": true,
+  "known_comparisons": {
+    "amount_ratio20": 5188,
+    "amount_ratio5": 5196,
+    "volume_ratio20": 5188,
+    "volume_ratio5": 5196
+  },
+  "result": "PASS",
+  "series": {
+    "bytes": 367886336,
+    "path": "data/v4/fp07_stocks/33d5a66f47870a29397a453132d9ea0ac3dbc0f82063902a60436992fe43c378/series.sqlite",
+    "sha256": "6b326dac93aacd63dc289895b1488f224843940154b6f4b89bc0df8af0a4518d"
+  },
+  "unknown_preserved": {
+    "amount_ratio20": 25,
+    "amount_ratio5": 17,
+    "volume_ratio20": 25,
+    "volume_ratio5": 17
+  }
+}

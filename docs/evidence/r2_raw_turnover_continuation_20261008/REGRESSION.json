@@ -1,0 +1,21 @@
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "--basetemp=E:/codex_tmp/test_temp/r2_raw_turnover_20261008",
+    "tests/test_r2_raw_turnover.py",
+    "tests/test_r2_owner_explanation.py",
+    "tests/test_r2_repairs.py",
+    "tests/test_fp07_stock.py",
+    "tests/test_r2_focus_path_outcome.py",
+    "tests/test_r2_joint_release.py",
+    "tests/test_r2_daily_driver.py"
+  ],
+  "exit_code": 0,
+  "result": "PASS",
+  "stderr": "",
+  "stdout": ".................                                                        [100%]\n17 passed in 0.38s\n"
+}

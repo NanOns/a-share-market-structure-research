@@ -9,3 +9,5 @@
 证据目录：docs/evidence/r2_data_algorithm_repair_20261008。每项 PASS 必须限定范围，未取得的真实数据标 NOT_VERIFIABLE，实际未实现标 FAIL。跨域缺口独立记账。原始 T0、入组、锚点不改。所有新写入原子进行且位于项目或 E:/codex_tmp；TDX 全部只读。
 
 A0 验收：CLI 已确认 origin/codex/v4-fp14-r2-repair 与入口 SHA 一致，指定 system-reform 远端仍为 682ed2d779e33d5cef24188ff5fa727d41626f70；需以正常 fast-forward 同步指定交付分支并回读。下一步：冻结 source/owner/read/Focus/Forward 联合矩阵与逐域债务定位。
+
+本轮结束记录：A0 已同步两条真实交付分支；发布绑定/现行前驱/首获时间定点修复通过限定范围验收，代码提交 ce84bb7105cb223ac765c69e3a135a8a424d7fdb；补充 oracle c11a0441b4ccb6b4310d1355f5404055a2286750。22 项测试、真实 NOOP 与隔离回滚只是相应范围证据；A1/A2/A3/A5 完整任务仍未完成，A4 真实到期 NOT_VERIFIABLE。逐卡判定见 R2_DATA_ALGORITHM_CLOSURE_FINAL.md，不推进全产品接受。下一阶段按报告逐域未闭项继续，需要真实新数据的证明保持延期而非补造。

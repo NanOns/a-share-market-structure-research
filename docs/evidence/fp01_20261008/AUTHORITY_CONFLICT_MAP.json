@@ -1,0 +1,278 @@
+[
+  {
+    "historical_semantics": "Shadow AND Forward AND Migration",
+    "json_pointer": "/production_permission",
+    "original_bytes": "PRESERVED",
+    "policy": {
+      "bytes": 5087,
+      "path": "config/v4_operational_production_release_policy_v1.json",
+      "sha256": "5035e1f80a8cfd1f7be17f0b2f85afb827395ad99de2f5a41f403e0aa1daccfe"
+    },
+    "source": {
+      "bytes": 7288,
+      "path": "config/v4_capability_cutover_policy_v1.json",
+      "sha256": "c23ed67c712f03b32b926a9553db88a99b0dcefd0ce338629b59a022611acdea"
+    },
+    "successor_rule": "Keep as historical proof dimension; operational release uses exact real output, integrity, independent QA and reversible receipt"
+  },
+  {
+    "historical_semantics": 20,
+    "json_pointer": "/shadow_stable_gate/accepted_consecutive_market_sessions",
+    "original_bytes": "PRESERVED",
+    "policy": {
+      "bytes": 5087,
+      "path": "config/v4_operational_production_release_policy_v1.json",
+      "sha256": "5035e1f80a8cfd1f7be17f0b2f85afb827395ad99de2f5a41f403e0aa1daccfe"
+    },
+    "source": {
+      "bytes": 7288,
+      "path": "config/v4_capability_cutover_policy_v1.json",
+      "sha256": "c23ed67c712f03b32b926a9553db88a99b0dcefd0ce338629b59a022611acdea"
+    },
+    "successor_rule": "Sample accumulation in evidence_state; no 20-session global operational delay"
+  },
+  {
+    "historical_semantics": "THRESHOLDS_UNSET_SHADOW_ONLY",
+    "json_pointer": "/sector_and_rotation_forward_gates/status",
+    "original_bytes": "PRESERVED",
+    "policy": {
+      "bytes": 5087,
+      "path": "config/v4_operational_production_release_policy_v1.json",
+      "sha256": "5035e1f80a8cfd1f7be17f0b2f85afb827395ad99de2f5a41f403e0aa1daccfe"
+    },
+    "source": {
+      "bytes": 7288,
+      "path": "config/v4_capability_cutover_policy_v1.json",
+      "sha256": "c23ed67c712f03b32b926a9553db88a99b0dcefd0ce338629b59a022611acdea"
+    },
+    "successor_rule": "No fabricated thresholds; operational integrity QA separate from unproved Forward efficacy"
+  },
+  {
+    "historical_semantics": {
+      "accepted_receipts": {
+        "dependencies": null,
+        "forward": null,
+        "migration": null,
+        "shadow": null
+      },
+      "production_permission": false,
+      "required_dependencies": [
+        "SECTOR_STAGE"
+      ]
+    },
+    "json_pointer": "/capability_registry/ROTATION",
+    "original_bytes": "PRESERVED",
+    "policy": {
+      "bytes": 5087,
+      "path": "config/v4_operational_production_release_policy_v1.json",
+      "sha256": "5035e1f80a8cfd1f7be17f0b2f85afb827395ad99de2f5a41f403e0aa1daccfe"
+    },
+    "source": {
+      "bytes": 30858,
+      "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+      "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+    },
+    "successor_rule": "Historical receipts remain null/false; successor operating receipt is separate. Dependency integrity remains capability-specific. Focus route CAS requires FP08 engineering QA, not fabricated historical gates."
+  },
+  {
+    "historical_semantics": {
+      "accepted_receipts": {
+        "dependencies": null,
+        "forward": null,
+        "migration": null,
+        "shadow": null
+      },
+      "production_permission": false,
+      "required_dependencies": [
+        "SECTOR_STAGE"
+      ]
+    },
+    "json_pointer": "/capability_registry/SECTOR_RISK_CHANGE",
+    "original_bytes": "PRESERVED",
+    "policy": {
+      "bytes": 5087,
+      "path": "config/v4_operational_production_release_policy_v1.json",
+      "sha256": "5035e1f80a8cfd1f7be17f0b2f85afb827395ad99de2f5a41f403e0aa1daccfe"
+    },
+    "source": {
+      "bytes": 30858,
+      "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+      "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+    },
+    "successor_rule": "Historical receipts remain null/false; successor operating receipt is separate. Dependency integrity remains capability-specific. Focus route CAS requires FP08 engineering QA, not fabricated historical gates."
+  },
+  {
+    "historical_semantics": {
+      "accepted_receipts": {
+        "dependencies": null,
+        "forward": null,
+        "migration": null,
+        "shadow": null
+      },
+      "production_permission": false,
+      "required_dependencies": []
+    },
+    "json_pointer": "/capability_registry/SECTOR_STAGE",
+    "original_bytes": "PRESERVED",
+    "policy": {
+      "bytes": 5087,
+      "path": "config/v4_operational_production_release_policy_v1.json",
+      "sha256": "5035e1f80a8cfd1f7be17f0b2f85afb827395ad99de2f5a41f403e0aa1daccfe"
+    },
+    "source": {
+      "bytes": 30858,
+      "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+      "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+    },
+    "successor_rule": "Historical receipts remain null/false; successor operating receipt is separate. Dependency integrity remains capability-specific. Focus route CAS requires FP08 engineering QA, not fabricated historical gates."
+  },
+  {
+    "historical_semantics": {
+      "accepted_receipts": {
+        "dependencies": null,
+        "forward": null,
+        "migration": null,
+        "shadow": null
+      },
+      "production_permission": false,
+      "required_dependencies": []
+    },
+    "json_pointer": "/capability_registry/STOCK_CORE",
+    "original_bytes": "PRESERVED",
+    "policy": {
+      "bytes": 5087,
+      "path": "config/v4_operational_production_release_policy_v1.json",
+      "sha256": "5035e1f80a8cfd1f7be17f0b2f85afb827395ad99de2f5a41f403e0aa1daccfe"
+    },
+    "source": {
+      "bytes": 30858,
+      "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+      "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+    },
+    "successor_rule": "Historical receipts remain null/false; successor operating receipt is separate. Dependency integrity remains capability-specific. Focus route CAS requires FP08 engineering QA, not fabricated historical gates."
+  },
+  {
+    "historical_semantics": {
+      "accepted_receipts": {
+        "dependencies": null,
+        "forward": null,
+        "migration": null,
+        "shadow": null
+      },
+      "production_permission": false,
+      "required_dependencies": [
+        "STOCK_CORE",
+        "SECTOR_STAGE"
+      ]
+    },
+    "json_pointer": "/capability_registry/STOCK_SECTOR_DEPENDENT",
+    "original_bytes": "PRESERVED",
+    "policy": {
+      "bytes": 5087,
+      "path": "config/v4_operational_production_release_policy_v1.json",
+      "sha256": "5035e1f80a8cfd1f7be17f0b2f85afb827395ad99de2f5a41f403e0aa1daccfe"
+    },
+    "source": {
+      "bytes": 30858,
+      "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+      "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+    },
+    "successor_rule": "Historical receipts remain null/false; successor operating receipt is separate. Dependency integrity remains capability-specific. Focus route CAS requires FP08 engineering QA, not fabricated historical gates."
+  },
+  {
+    "historical_semantics": "Old UI source modes resolve historical permission",
+    "json_pointer": "/",
+    "original_bytes": "PRESERVED",
+    "policy": {
+      "bytes": 5087,
+      "path": "config/v4_operational_production_release_policy_v1.json",
+      "sha256": "5035e1f80a8cfd1f7be17f0b2f85afb827395ad99de2f5a41f403e0aa1daccfe"
+    },
+    "source": {
+      "bytes": 31339,
+      "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+      "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+    },
+    "successor_rule": "FP03/04 consume three state dimensions; genuine operational-admitted output may display as normal research production; do not alter old permissions"
+  },
+  {
+    "historical_semantics": "Old UI source modes resolve historical permission",
+    "json_pointer": "/",
+    "original_bytes": "PRESERVED",
+    "policy": {
+      "bytes": 5087,
+      "path": "config/v4_operational_production_release_policy_v1.json",
+      "sha256": "5035e1f80a8cfd1f7be17f0b2f85afb827395ad99de2f5a41f403e0aa1daccfe"
+    },
+    "source": {
+      "bytes": 1003,
+      "path": "config/v4_20_default_ui_cutover_contract_v2.json",
+      "sha256": "db5eef2dc08aed21d96a13e4ff2adea85b89cd81ef13e084481b7204a9aabc63"
+    },
+    "successor_rule": "FP03/04 consume three state dimensions; genuine operational-admitted output may display as normal research production; do not alter old permissions"
+  },
+  {
+    "historical_semantics": "Frozen V4-15 seven-summary reader",
+    "json_pointer": "/read_authority",
+    "original_bytes": "PRESERVED",
+    "policy": {
+      "bytes": 5087,
+      "path": "config/v4_operational_production_release_policy_v1.json",
+      "sha256": "5035e1f80a8cfd1f7be17f0b2f85afb827395ad99de2f5a41f403e0aa1daccfe"
+    },
+    "source": {
+      "bytes": 3070,
+      "path": "config/v4_production_runtime_authority_v1.json",
+      "sha256": "f0187a8a1b0ed4f21d342c44104d1c3f0a2a4b14ad110625f139ee62aaff7f2d"
+    },
+    "successor_rule": "v2 scoped operational registry; FP02 domain adapter then FP14 service switch; retain exact v1 rollback and Shadow"
+  },
+  {
+    "historical_semantics": false,
+    "json_pointer": "/production",
+    "original_bytes": "PRESERVED",
+    "policy": {
+      "bytes": 5087,
+      "path": "config/v4_operational_production_release_policy_v1.json",
+      "sha256": "5035e1f80a8cfd1f7be17f0b2f85afb827395ad99de2f5a41f403e0aa1daccfe"
+    },
+    "source": {
+      "bytes": 4004,
+      "path": "config/v4_current_stage_authority_v2.json",
+      "sha256": "dc57e3957a1301ff3358f5012080027c47550559c4cd5d406065f98e4958a206"
+    },
+    "successor_rule": "Historical stage authority is not rewritten; new operating release authority is explicit and separately scoped"
+  },
+  {
+    "historical_semantics": "Scoped defects and evidence debt together in historical blockers",
+    "json_pointer": "/current_head",
+    "original_bytes": "PRESERVED",
+    "policy": {
+      "bytes": 5087,
+      "path": "config/v4_operational_production_release_policy_v1.json",
+      "sha256": "5035e1f80a8cfd1f7be17f0b2f85afb827395ad99de2f5a41f403e0aa1daccfe"
+    },
+    "source": {
+      "bytes": 3847,
+      "path": "config/v4_cross_stage_current_audit_authority_v4.json",
+      "sha256": "2d32331cd3f8aeaefa0f2fa519e846bb62269aa5af1ce1a5fc5d9cea71870bdb"
+    },
+    "successor_rule": "Each real source/engineering defect stays affected-scope blocking; maturity and historical availability debts cannot globally block unrelated operation"
+  },
+  {
+    "historical_semantics": "production/MODEL_DISPLAY/PRIORITY_USE false",
+    "json_pointer": "/",
+    "original_bytes": "PRESERVED",
+    "policy": {
+      "bytes": 5087,
+      "path": "config/v4_operational_production_release_policy_v1.json",
+      "sha256": "5035e1f80a8cfd1f7be17f0b2f85afb827395ad99de2f5a41f403e0aa1daccfe"
+    },
+    "source": {
+      "bytes": 495,
+      "path": "reports/fep_e5_r1r1c/STAGE_ACCEPTANCE_AND_NEXT.json",
+      "sha256": "80074ccb18ee2597b31cc58913495367eeca6d6d0c6d99fb482a7d11631b4b29"
+    },
+    "successor_rule": "Keep factual historical engineering scope; new model display/priority needs exact real dataset QA and successor receipt, no auto TRUE"
+  }
+]

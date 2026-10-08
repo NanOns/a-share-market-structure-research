@@ -1,0 +1,26 @@
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "E:\\codex_tmp\\test_temp\\fp01_final_7394bb65ebfb454fb726bde7a31bd478",
+    "tests/test_fp01_operational_release.py",
+    "tests/v4_phase0/test_phase0_final_gate.py",
+    "tests/test_v4_19_focus_cutover_contract.py",
+    "tests/test_v4_20_default_ui_contract.py",
+    "tests/test_v4_current_accepted_reader.py",
+    "tests/test_v4_current_daily_refresh.py"
+  ],
+  "output": {
+    "bytes": 184,
+    "path": "docs/evidence/fp01_20261008/regression.txt",
+    "sha256": "684367f884008072f4b48840b049306b9ec1601fe10009ae1731ad1ea439585a"
+  },
+  "returncode": 0,
+  "scope": "New policy counterexamples + existing phase0, V4-19/20, exact current reader and daily refresh; not entire repository regression."
+}

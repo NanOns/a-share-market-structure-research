@@ -1,0 +1,98 @@
+[
+  {
+    "acceptance": "Exact field/identity/context readback and full pagination",
+    "classification": "EXISTING_REAL_OUTPUT_NOT_READ_BY_FULL_UI",
+    "evidence": {
+      "bytes": 11314,
+      "path": "data/v4/V4_13_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "98f222ba4d62318ee900a69b8cad7c25359a30bcc7097efe0a55b8ffea09aa65"
+    },
+    "id": "FP01-GAP-01",
+    "next": "FP02/03/07 read real profile, preserve field quality",
+    "scope": "V4-13 advanced profile"
+  },
+  {
+    "acceptance": "Each affected field has exact real source and independent QA; unknown remains unknown",
+    "classification": "REAL_INPUT_OR_IMPLEMENTATION_SCOPE_GAP",
+    "evidence": {
+      "bytes": 11314,
+      "path": "data/v4/V4_13_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "98f222ba4d62318ee900a69b8cad7c25359a30bcc7097efe0a55b8ffea09aa65"
+    },
+    "id": "FP01-GAP-02",
+    "next": "FP02 targeted source/producer closure; do not blanket rerun foundations",
+    "scope": "V4-12/13 owner-dependent signal, LOO, legacy B2"
+  },
+  {
+    "acceptance": "Real runtime/receipts; never derive final PASS from design vectors",
+    "classification": "CONTRACT_ONLY_NO_OWNED_RUNTIME_FOUND",
+    "evidence": {
+      "bytes": 260496,
+      "path": "config/v4_22_independent_audit_contract_v1.json",
+      "sha256": "5686e19c8da14389baba61437347f7c54308479fb2afae32dc0c522a805dd599"
+    },
+    "id": "FP01-GAP-03",
+    "next": "FP11 diagnostic contract and FP13/14 actual audit/release evidence",
+    "scope": "V4-22 final independent-audit business runtime"
+  },
+  {
+    "acceptance": "Four axes, actual sector state and per-stock profiles sampled against exact owner output",
+    "classification": "EXISTING_PRODUCER_AND_OWNER_RESULTS_REQUIRE_DOMAIN_ADAPTER_QA",
+    "evidence": {
+      "bytes": 1651303,
+      "path": "docs/evidence/fp01_20261008/producer_inventory.json",
+      "sha256": "e74876fbcdd9d1f264d4d2f7dd016b52a8a18d5ea0566d976f6ecf9dfe450f62"
+    },
+    "id": "FP01-GAP-04",
+    "next": "FP02 source-version/date mapping, FP05/06/07 UI",
+    "scope": "Market Regime / sector rotation / core profiles"
+  },
+  {
+    "acceptance": "Episode history retained and not conflated with cohort",
+    "classification": "EXISTING_ENGINEERING_NEEDS_SOURCE_ROUTE_ADMISSION",
+    "evidence": {
+      "bytes": 180,
+      "path": "config/focus_core_release_gate_v1.json",
+      "sha256": "b11611b36496356c1d367cba7a707edac5ab357217bedd41ad77f42b8475741e"
+    },
+    "id": "FP01-GAP-05",
+    "next": "FP08 exact historical source and transaction/reentry QA; FP14 route CAS",
+    "scope": "Focus historical reader and V4 automatic tracking"
+  },
+  {
+    "acceptance": "No fixture/model priority/profit claim without scoped output QA",
+    "classification": "EXISTING_ENGINEERING_OR_RECONSTRUCTION_NOT_AUTOMATIC_REAL_PRODUCTION_OUTPUT",
+    "evidence": {
+      "bytes": 495,
+      "path": "reports/fep_e5_r1r1c/STAGE_ACCEPTANCE_AND_NEXT.json",
+      "sha256": "80074ccb18ee2597b31cc58913495367eeca6d6d0c6d99fb482a7d11631b4b29"
+    },
+    "id": "FP01-GAP-06",
+    "next": "FP02/10 bind real historical/current dataset vs engineering fixture lanes and QA",
+    "scope": "FEP E1-E5"
+  },
+  {
+    "acceptance": "Timestamps/cache boundaries/source failure isolation verified",
+    "classification": "EXISTING_OPTIONAL_PRODUCERS_REQUEST_BOUND_ADAPTER_REQUIRED",
+    "evidence": {
+      "bytes": 3963,
+      "path": "config/m14_source_registry_v1.json",
+      "sha256": "d91dcfc27b3b20b70fe2feb4c8eeecbcd806ccb5b06878bcf88822ab8a68f674"
+    },
+    "id": "FP01-GAP-07",
+    "next": "FP09 per-dataset gates, bounded real requests; no hot-rank persistence",
+    "scope": "M14 public sources"
+  },
+  {
+    "acceptance": "PENDING/right censoring retained; maturity never fabricated",
+    "classification": "VALID_LIFECYCLE_AND_VALIDATION_DEBT",
+    "evidence": {
+      "bytes": 4778,
+      "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+      "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+    },
+    "id": "FP01-GAP-08",
+    "next": "FP10 retain cohort/outcomes, FP02 daily safe no-op",
+    "scope": "Forward pending maturity and later dates"
+  }
+]

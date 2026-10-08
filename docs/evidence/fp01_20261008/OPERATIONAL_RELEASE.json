@@ -1,0 +1,79 @@
+{
+  "admissions": [
+    {
+      "data_quality_state": "QUALITY_DEGRADED",
+      "evidence_state": "VALIDATION_ONGOING",
+      "feature_id": "V4_13_PROFILE_ADVANCED",
+      "long_term_validation_blocks_operation": false,
+      "metadata": {
+        "contract_version": "e96934dbb69cfa8c52f7b8682ed2ab15f500f8e22be062c6cea2cb7d69bfa5da",
+        "data_quality_state": "QUALITY_DEGRADED",
+        "evidence_origin": "REAL_ACCEPTED_SOURCE",
+        "evidence_state": "VALIDATION_ONGOING",
+        "input_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "owner": "V4-13",
+        "published_at": "2026-10-08T02:14:44.659129+00:00",
+        "release_id": "FP01_RETAINED_REAL_PROFILE_20261008_R1",
+        "source_as_of": "2026-10-03T00:00:00+08:00",
+        "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "trading_date": "2026-09-30"
+      },
+      "old_permission_migration": "HISTORICAL_FACT_PRESERVED",
+      "operational_state": "OPERATIONAL_PRODUCTION_ACTIVE",
+      "policy": {
+        "bytes": 5087,
+        "path": "config/v4_operational_production_release_policy_v1.json",
+        "sha256": "5035e1f80a8cfd1f7be17f0b2f85afb827395ad99de2f5a41f403e0aa1daccfe"
+      },
+      "request": {
+        "code": {
+          "bytes": 10197,
+          "path": "reports/v4_13_runtime_r16/source_versions/c3d401811c4b065d3a00272d7f17ebb91f94154d6365342411dd681709471a38/v4_13_profile_runtime.py",
+          "sha256": "c3d401811c4b065d3a00272d7f17ebb91f94154d6365342411dd681709471a38"
+        },
+        "contract": {
+          "bytes": 7963,
+          "path": "config/v4_13_active_contract_family_closure_r17r1.json",
+          "sha256": "a883aeab9058c017806f62b78d6ea2eac6fab82fdbf4faaace3fdea4c967aea1"
+        },
+        "feature_id": "V4_13_PROFILE_ADVANCED",
+        "input": {
+          "bytes": 16890,
+          "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+          "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+        },
+        "metadata": {
+          "contract_version": "e96934dbb69cfa8c52f7b8682ed2ab15f500f8e22be062c6cea2cb7d69bfa5da",
+          "data_quality_state": "QUALITY_DEGRADED",
+          "evidence_origin": "REAL_ACCEPTED_SOURCE",
+          "evidence_state": "VALIDATION_ONGOING",
+          "input_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "owner": "V4-13",
+          "published_at": "2026-10-08T02:14:44.659129+00:00",
+          "release_id": "FP01_RETAINED_REAL_PROFILE_20261008_R1",
+          "source_as_of": "2026-10-03T00:00:00+08:00",
+          "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "trading_date": "2026-09-30"
+        },
+        "output": {
+          "bytes": 37627535,
+          "path": "reports/v4_13_runtime_r16/real/2026-09-30/r6/profile_advanced.jsonl.gz",
+          "sha256": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+        },
+        "qa": {
+          "bytes": 5387,
+          "path": "docs/evidence/fp01_20261008/QA_V4_13_PROFILE_ADVANCED_da441267461cb374a309de09e19d6a686d42c907566f70dd41fdc59f384f05dd.json",
+          "sha256": "da441267461cb374a309de09e19d6a686d42c907566f70dd41fdc59f384f05dd"
+        }
+      },
+      "trading_action_authorized": false
+    }
+  ],
+  "consumption_scope": "Existing real advanced-profile projection only; field UNKNOWN/degraded preserved. No newly computed sector/LOO signals or Focus writes.",
+  "contract_id": "V4_OPERATIONAL_RELEASE_V1",
+  "full_product_release": false,
+  "next_stage": "FP02_FP03_FP04_SEPARATE_TASK_DISPATCH",
+  "release_id": "FP01_RETAINED_REAL_PROFILE_20261008_R1"
+}

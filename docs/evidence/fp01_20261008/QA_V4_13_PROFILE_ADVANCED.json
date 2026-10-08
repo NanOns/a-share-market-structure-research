@@ -1,0 +1,149 @@
+{
+  "checked_by": "FP01_DIRECT_FILE_ORACLE",
+  "checks": {
+    "FIELD_QUALITY": "PASS",
+    "NO_FUTURE": "PASS",
+    "REAL_LINEAGE": "PASS",
+    "ROLLBACK_COMPATIBLE": "PASS",
+    "SCHEMA": "PASS",
+    "SOURCE_READBACK": "PASS"
+  },
+  "code": {
+    "bytes": 10197,
+    "path": "reports/v4_13_runtime_r16/source_versions/c3d401811c4b065d3a00272d7f17ebb91f94154d6365342411dd681709471a38/v4_13_profile_runtime.py",
+    "sha256": "c3d401811c4b065d3a00272d7f17ebb91f94154d6365342411dd681709471a38"
+  },
+  "contract": {
+    "bytes": 7963,
+    "path": "config/v4_13_active_contract_family_closure_r17r1.json",
+    "sha256": "a883aeab9058c017806f62b78d6ea2eac6fab82fdbf4faaace3fdea4c967aea1"
+  },
+  "contract_id": "V4_OPERATIONAL_INDEPENDENT_QA_V1",
+  "evidence_limit": "Real retained output and full schema/quality scan; not a fresh algorithm rerun, not historical AS_RECORDED, not maturity/profit evidence or external acceptance.",
+  "feature_id": "V4_13_PROFILE_ADVANCED",
+  "field_quality_counts": {
+    "DEGRADED": 5224,
+    "KNOWN": 20782,
+    "NOT_APPLICABLE": 114,
+    "UNKNOWN": 62688
+  },
+  "input": {
+    "bytes": 16890,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+  },
+  "metadata": {
+    "contract_version": "e96934dbb69cfa8c52f7b8682ed2ab15f500f8e22be062c6cea2cb7d69bfa5da",
+    "data_quality_state": "QUALITY_DEGRADED",
+    "evidence_origin": "REAL_ACCEPTED_SOURCE",
+    "evidence_state": "VALIDATION_ONGOING",
+    "input_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+    "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+    "owner": "V4-13",
+    "published_at": "2026-10-08T02:14:44.659129+00:00",
+    "release_id": "FP01_RETAINED_REAL_PROFILE_20261008_R1",
+    "source_as_of": "2026-10-03T00:00:00+08:00",
+    "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+    "trading_date": "2026-09-30"
+  },
+  "original_reason_gaps": {
+    "sector_context_state": 5224
+  },
+  "output": {
+    "bytes": 37627535,
+    "path": "reports/v4_13_runtime_r16/real/2026-09-30/r6/profile_advanced.jsonl.gz",
+    "sha256": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+  },
+  "owner": {
+    "bytes": 11314,
+    "path": "data/v4/V4_13_ACCEPTED_HEAD_AMENDED_R1.json",
+    "sha256": "98f222ba4d62318ee900a69b8cad7c25359a30bcc7097efe0a55b8ffea09aa65"
+  },
+  "policy": {
+    "bytes": 5087,
+    "path": "config/v4_operational_production_release_policy_v1.json",
+    "sha256": "5035e1f80a8cfd1f7be17f0b2f85afb827395ad99de2f5a41f403e0aa1daccfe"
+  },
+  "reason_gap_action": "AUD-FP01-FIELD-REASON-GAPS; preserve UNKNOWN and source identity; FP02/03 explicit reason adapter required, no new KNOWN values.",
+  "row_count": 5224,
+  "samples": [
+    {
+      "fields": {
+        "active_anchor_id": {
+          "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+          "quality": "KNOWN",
+          "reason": "NO_ACTIVE_ANCHOR",
+          "value": null
+        },
+        "algorithmic_support_sector": {
+          "producer_contract_id": "LOO_CONTEXT_V1",
+          "quality": "UNKNOWN",
+          "reason": "UNKNOWN_REQUIRED_LOO_AUTHORITY_OR_HISTORY",
+          "value": null
+        },
+        "primary_industry": {
+          "producer_contract_id": "MEMBERSHIP_RELATION_PROJECTION_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "value": "INDUSTRY:T0706"
+        }
+      },
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "trade_date": "2026-09-30"
+    },
+    {
+      "fields": {
+        "active_anchor_id": {
+          "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+          "quality": "KNOWN",
+          "reason": "NO_ACTIVE_ANCHOR",
+          "value": null
+        },
+        "algorithmic_support_sector": {
+          "producer_contract_id": "LOO_CONTEXT_V1",
+          "quality": "UNKNOWN",
+          "reason": "UNKNOWN_REQUIRED_LOO_AUTHORITY_OR_HISTORY",
+          "value": null
+        },
+        "primary_industry": {
+          "producer_contract_id": "MEMBERSHIP_RELATION_PROJECTION_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "value": "INDUSTRY:T1203"
+        }
+      },
+      "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+      "trade_date": "2026-09-30"
+    },
+    {
+      "fields": {
+        "active_anchor_id": {
+          "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+          "quality": "KNOWN",
+          "reason": "NO_ACTIVE_ANCHOR",
+          "value": null
+        },
+        "algorithmic_support_sector": {
+          "producer_contract_id": "LOO_CONTEXT_V1",
+          "quality": "UNKNOWN",
+          "reason": "UNKNOWN_REQUIRED_LOO_AUTHORITY_OR_HISTORY",
+          "value": null
+        },
+        "primary_industry": {
+          "producer_contract_id": "MEMBERSHIP_RELATION_PROJECTION_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "value": "INDUSTRY:T0701"
+        }
+      },
+      "security_id": "SEC-002610CF9EBB4227722834AADA8F757E",
+      "trade_date": "2026-09-30"
+    }
+  ],
+  "status": "PASS",
+  "verifier": {
+    "bytes": 7026,
+    "path": "docs/evidence/fp01_20261008/source_versions/7c668d589ee3a17770508be2a9b15f0e7a5eceb0f8950554b57b9e6612e55f62/verify_fp01_real_admission.py",
+    "sha256": "7c668d589ee3a17770508be2a9b15f0e7a5eceb0f8950554b57b9e6612e55f62"
+  }
+}

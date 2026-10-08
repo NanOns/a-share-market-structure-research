@@ -1,0 +1,48 @@
+{
+  "actual": {
+    "accepted_trade_date": "2026-09-30",
+    "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+    "current_accepted_reader": true,
+    "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+    "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+    "default_ui": "V4",
+    "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+    "historical_pit_effectiveness": "NOT_GRANTED",
+    "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+    "last_accepted_trade_date": "2026-09-30",
+    "legacy_v3_default": false,
+    "namespace": "V4_CURRENT_ACCEPTED",
+    "product_version": "V4",
+    "production_permission": {
+      "ROTATION": false,
+      "SECTOR_RISK_CHANGE": false,
+      "SECTOR_STAGE": false,
+      "STOCK_CORE": false,
+      "STOCK_SECTOR_DEPENDENT": false
+    },
+    "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+    "read_only_ui": true,
+    "service_control_contract": "V4_DEFAULT_WORKBENCH_SERVICE_V1",
+    "service_mode": "V4_DEFAULT_WORKBENCH",
+    "service_state": "READY",
+    "shadow_diagnostics": true,
+    "source_mode": "V4_ACCEPTED_RESEARCH_READONLY",
+    "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+    "stage": "V4-15",
+    "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+    "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+  },
+  "ax": {
+    "bytes": 19735,
+    "path": "docs/evidence/fp01_20261008/browser_compatibility_ax.txt",
+    "sha256": "9e9261f382c84383b091bdc35a91527ab082f984657358511dfb2ed4b20cd827"
+  },
+  "browser": "Codex in-app real browser; only IAB/MCP Apps connected, no Edge browser control available in this session.",
+  "limit": "Compatibility evidence only. Six-page Edge E2E belongs to FP13, not claimed by FP01.",
+  "screenshot": {
+    "bytes": 62349,
+    "path": "docs/evidence/fp01_20261008/browser_compatibility.png",
+    "sha256": "b58a10260376457f7732c539c8d0780b1c55e788706508506c30bdd884bb59a6"
+  },
+  "status": "PASS"
+}

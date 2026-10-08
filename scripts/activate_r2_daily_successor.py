@@ -14,6 +14,17 @@ def prepare():
     qa=json.loads((OUT/'QA_FINAL.json').read_bytes());sources=json.loads((OUT/'TWO_DATE_SOURCE_QA.json').read_bytes())
     joint=json.loads((OUT/'TWO_DATE_JOINT_SWITCH.json').read_bytes());regression=json.loads((OUT/'REGRESSION.json').read_bytes())
     chain=json.loads((OUT/'OWNER_CHAIN_STAGING.json').read_bytes());candidate=json.loads((OUT/'REPLAY_2026-09-30.json').read_bytes())
+    owners=chain.get('owner_authorities')
+    if owners is None:
+        run=Path(chain['receipt']['path']).parent.name
+        names={'market':'v4_market_operational_authority_v1.json','sector':'v4_sector_operational_authority_v1.json',
+            'stocks':'v4_stock_operational_authority_v1.json','market_center':'v4_market_center_authority_v1.json','forward':'v4_forward_operational_authority_v1.json'}
+        owners={key:json.loads((ROOT/'data/v4/r2_daily_candidates'/run/name).read_bytes()) for key,name in names.items()}
+        manifest=validate(ROOT,candidate)
+        for owner in owners.values():
+            if owner['trade_date']!=candidate['trade_date'] or owner['input_data_head']['sha256']!=manifest['context']['data_head_digest']:
+                raise SourceInvalid('SEALED_NATIVE_OWNER_CONTEXT_CONFLICT')
+        owners['replay']=manifest['domain_features'].get('replay')
     if not qa['iab_browser_pass'] or sources['result']!='PASS' or joint['result']!='PASS' or regression['passed']!=104:
         raise SourceInvalid('DAILY_ADMISSION_EVIDENCE_INCOMPLETE')
     if any(s['result']!='REBUILT' for s in chain['stages']):raise SourceInvalid('DAILY_NATIVE_OWNER_REBUILD_NOT_PROVEN')

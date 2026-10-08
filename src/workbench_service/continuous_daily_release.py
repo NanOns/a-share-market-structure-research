@@ -7,12 +7,12 @@ from .production_v4 import ProductionV4ResearchReader
 from .pit_observation import freeze
 from .v4_daily_refresh import atomic_bytes
 
-ADMISSION='config/v4_continuous_daily_admission_v8.json'
+ADMISSION='config/v4_continuous_daily_admission_v9.json'
 
 def promote(root,staged,health=None):
     root=Path(root).resolve();before=(root/AUTHORITY).read_bytes();previous=json.loads(before)
     admission=json.loads((root/ADMISSION).read_bytes())
-    if admission.get('contract_id')!='R2_CONTINUOUS_DAILY_ADMISSION_V8' or admission.get('result')!='DEGRADED_PASS':
+    if admission.get('contract_id')!='R2_CONTINUOUS_DAILY_ADMISSION_V9' or admission.get('result')!='DEGRADED_PASS':
         raise SourceInvalid('DAILY_ADMISSION_REQUIRED')
     for binding in admission['evidence']+list(admission['implementations'].values()):checked_path(root,binding)
     if previous['ui_build_id']!=admission['ui_build_id']:raise SourceInvalid('DAILY_UI_ADMISSION_VERSION_CONFLICT')

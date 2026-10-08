@@ -32,7 +32,7 @@ def execute(args):
         result=prepare()
     elif args.daily and not status['next_completed_session']:
         result=dict(status='NO_NEW_COMPLETED_SESSION',last_successful_date=status['context']['context']['accepted_trade_date'],source_requests=0,pointer_preserved=True)
-        from focus_tracker.v4_daily_driver import advance
+        from focus_tracker.v4_native_core_daily_driver import advance
         from scripts.run_r2_continuous_focus import head
         reader=ProductionV4ResearchReader(ROOT);binding=reader.manifest['sources'].get('focus_journal')
         if binding:result['focus_daily']=advance(ROOT,reader.manifest,previous_journal=binding,previous_publication=reader.manifest['sources']['focus_operational'],expected_head=head(binding))

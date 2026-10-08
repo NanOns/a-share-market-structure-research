@@ -1,0 +1,20 @@
+{
+  "acceptance": "DEGRADED_PASS",
+  "closed_code_defects": [
+    "AUD-R2-P0-04",
+    "AUD-R2-P0-05"
+  ],
+  "next_stage": "A2_JOINT_RELEASE_REHEARSAL_AND_B_DOMAIN_REPAIRS",
+  "oracle": "R2_REAL_VALUE_ORACLE.json",
+  "owner_matrix": "R2_OWNER_DATE_MATRIX.json",
+  "remaining": [
+    "QA_V2_BROWSER_COMPLETE",
+    "11_IDENTITY_OWNER_RECONCILIATION",
+    "FULL_FIELD_COVERAGE"
+  ],
+  "stage": "A1_CODE_AND_SOURCE",
+  "tests": {
+    "command": "python -B -m pytest tests/test_r2_repairs.py tests/test_fp05_home.py tests/test_fp08_focus.py tests/test_fp07_stock.py -q --basetemp E:/codex_tmp/test_temp/r2_a1",
+    "passed": 11
+  }
+}

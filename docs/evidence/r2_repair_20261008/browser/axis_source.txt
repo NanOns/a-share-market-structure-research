@@ -1,0 +1,428 @@
+- link "跳到主要内容":
+  - /url: "#content"
+- complementary:
+  - link "大 A V4 研究工作台":
+    - /url: /v4/research/home
+    - text: 大 A
+    - generic: V4 研究工作台
+  - navigation "主导航":
+    - link "今日总览":
+      - /url: /v4/research/home
+    - link "板块研究":
+      - /url: /v4/research/sectors
+    - link "个股研究":
+      - /url: /v4/research/stocks
+    - link "关注跟踪":
+      - /url: /v4/research/focus
+    - link "市场与事件":
+      - /url: /v4/research/market
+    - link "数据与诊断":
+      - /url: /v4/research/diagnostics
+  - paragraph:
+    - text: 真实生产快照
+    - text: 研究与持续验证
+- banner:
+  - strong: 当前已处理截至 2026-09-30
+  - generic: 数据更新时间：2026/10/1 20:25:10（北京时间） · 持续验证中
+  - generic: 现有真实快照 · 分域发布待验收
+- main:
+  - generic: 研究工作台 / 今日总览
+  - heading "今日总览" [level=1]
+  - paragraph: 真实结果、输入质量与持续验证进度分别呈现。
+  - link "PIT 冻结回放":
+    - /url: /v4/research/replay
+  - text: ·
+  - link "跨对象与跨日比较":
+    - /url: /v4/research/compare
+  - text: 全市场股票
+  - strong: "5213"
+  - link "进入研究 →":
+    - /url: /v4/research/stocks
+  - text: 行业与概念
+  - strong: "378"
+  - link "进入研究 →":
+    - /url: /v4/research/sectors
+  - text: 研究雷达
+  - strong: "117"
+  - link "进入研究 →":
+    - /url: /v4/research/stocks
+  - text: Forward 样本
+  - strong: "117"
+  - link "进入研究 →":
+    - /url: /v4/research/focus
+  - heading "市场四轴与环境" [level=2]
+  - text: 趋势
+  - strong: 偏弱
+  - button "数值与来源"
+  - text: 宽度变化
+  - strong: 改善
+  - button "数值与来源"
+  - text: 参与度
+  - strong: 偏低
+  - button "数值与来源"
+  - text: 压力
+  - strong: 低
+  - button "数值与来源"
+  - paragraph: 合成环境：中性环境 · 当前候选：尝试恢复 · 压力方向：回落
+  - paragraph: 部分高级画像对象不在当前日行情池，已隔离登记。
+  - paragraph: 已提供真实冻结源 Episode 重建；自动写入缺路径适配准入，旧 PostgreSQL 历史暂不可读。
+  - heading "轮动变化" [level=2]
+  - generic: 轮动输入缺少前日已接受成员/状态，不能生成变化事件。
+  - heading "板块变化" [level=2]
+  - generic: 当前没有来源完整的板块变化事件。
+  - heading "独立个股变化 · 符合 33 / 展示 30" [level=2]
+  - table:
+    - rowgroup:
+      - row "研究对象 有效事件 交易日期 证据":
+        - columnheader "研究对象"
+        - columnheader "有效事件"
+        - columnheader "交易日期"
+        - columnheader "证据"
+    - rowgroup:
+      - row "中华企业 SH.600675 新增确认 2026-09-30 来源":
+        - cell "中华企业 SH.600675":
+          - link "中华企业":
+            - /url: /v4/research/stocks/SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319
+          - text: SH.600675
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "华恒生物 SH.688639 新增确认 2026-09-30 来源":
+        - cell "华恒生物 SH.688639":
+          - link "华恒生物":
+            - /url: /v4/research/stocks/SEC-1AED7FE439435A519BA45E0858278357
+          - text: SH.688639
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "康希诺 SH.688185 新增确认 2026-09-30 来源":
+        - cell "康希诺 SH.688185":
+          - link "康希诺":
+            - /url: /v4/research/stocks/SEC-27594427F02DE9AB3A8FFC6155E19B42
+          - text: SH.688185
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "依依股份 SZ.001206 新增确认 2026-09-30 来源":
+        - cell "依依股份 SZ.001206":
+          - link "依依股份":
+            - /url: /v4/research/stocks/SEC-2A85E738DC98A007A61CC0431BEB11BA
+          - text: SZ.001206
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "奥赛康 SZ.002755 新增确认 2026-09-30 来源":
+        - cell "奥赛康 SZ.002755":
+          - link "奥赛康":
+            - /url: /v4/research/stocks/SEC-37B7C0C1D322DA05B7710C45830FED0D
+          - text: SZ.002755
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "键凯科技 SH.688356 新增确认 2026-09-30 来源":
+        - cell "键凯科技 SH.688356":
+          - link "键凯科技":
+            - /url: /v4/research/stocks/SEC-3E096480C6E918B190DBC47F699A99FD
+          - text: SH.688356
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "利德曼 SZ.300289 新增确认 2026-09-30 来源":
+        - cell "利德曼 SZ.300289":
+          - link "利德曼":
+            - /url: /v4/research/stocks/SEC-40961F027F865A2134E13F280E80AB4F
+          - text: SZ.300289
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "奥浦迈 SH.688293 新增确认 2026-09-30 来源":
+        - cell "奥浦迈 SH.688293":
+          - link "奥浦迈":
+            - /url: /v4/research/stocks/SEC-45D4E4F35C92EE31BEC932027063057E
+          - text: SH.688293
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "宁波东力 SZ.002164 新增确认 2026-09-30 来源":
+        - cell "宁波东力 SZ.002164":
+          - link "宁波东力":
+            - /url: /v4/research/stocks/SEC-461286554FC98079745C02C129BD280B
+          - text: SZ.002164
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "宏英智能 SZ.001266 新增确认 2026-09-30 来源":
+        - cell "宏英智能 SZ.001266":
+          - link "宏英智能":
+            - /url: /v4/research/stocks/SEC-465A229C0028F879ABA37578E00BEFFE
+          - text: SZ.001266
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "中源协和 SH.600645 新增确认 2026-09-30 来源":
+        - cell "中源协和 SH.600645":
+          - link "中源协和":
+            - /url: /v4/research/stocks/SEC-48F0EECD6ADC44E44C7918B5BF2B19E0
+          - text: SH.600645
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "中红医疗 SZ.300981 新增确认 2026-09-30 来源":
+        - cell "中红医疗 SZ.300981":
+          - link "中红医疗":
+            - /url: /v4/research/stocks/SEC-4FA588E6A8763AFC6A68A3A37D2C3456
+          - text: SZ.300981
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "优宁维 SZ.301166 新增确认 2026-09-30 来源":
+        - cell "优宁维 SZ.301166":
+          - link "优宁维":
+            - /url: /v4/research/stocks/SEC-5AD7AD0C37B9EF445D83CE0F26AC937C
+          - text: SZ.301166
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "达安基因 SZ.002030 新增确认 2026-09-30 来源":
+        - cell "达安基因 SZ.002030":
+          - link "达安基因":
+            - /url: /v4/research/stocks/SEC-6F8CCDAE51FAEFCC28DE507873F923D7
+          - text: SZ.002030
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "普蕊斯 SZ.301257 新增确认 2026-09-30 来源":
+        - cell "普蕊斯 SZ.301257":
+          - link "普蕊斯":
+            - /url: /v4/research/stocks/SEC-708D7D0F43825ED515518B2A8D77BEA9
+          - text: SZ.301257
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "新天地 SZ.301277 新增确认 2026-09-30 来源":
+        - cell "新天地 SZ.301277":
+          - link "新天地":
+            - /url: /v4/research/stocks/SEC-73B6D5450600D9651D50D072CAAFE651
+          - text: SZ.301277
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "药康生物 SH.688046 新增确认 2026-09-30 来源":
+        - cell "药康生物 SH.688046":
+          - link "药康生物":
+            - /url: /v4/research/stocks/SEC-78301DC4C8AD877227BA5DAF6130524C
+          - text: SH.688046
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "康泰生物 SZ.300601 新增确认 2026-09-30 来源":
+        - cell "康泰生物 SZ.300601":
+          - link "康泰生物":
+            - /url: /v4/research/stocks/SEC-8A8FC4FE4C6FCC2A2B267EBFA7C3DDB3
+          - text: SZ.300601
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "亨迪药业 SZ.301211 新增确认 2026-09-30 来源":
+        - cell "亨迪药业 SZ.301211":
+          - link "亨迪药业":
+            - /url: /v4/research/stocks/SEC-8C6DD2B05F525C2AA6F029A663A27569
+          - text: SZ.301211
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "永信至诚 SH.688244 新增确认 2026-09-30 来源":
+        - cell "永信至诚 SH.688244":
+          - link "永信至诚":
+            - /url: /v4/research/stocks/SEC-8DFDC187A8E6B382D20EEC42367B5236
+          - text: SH.688244
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "凯普生物 SZ.300639 新增确认 2026-09-30 来源":
+        - cell "凯普生物 SZ.300639":
+          - link "凯普生物":
+            - /url: /v4/research/stocks/SEC-97DFD98D98563D2C02EAA7339D22D104
+          - text: SZ.300639
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "特一药业 SZ.002728 新增确认 2026-09-30 来源":
+        - cell "特一药业 SZ.002728":
+          - link "特一药业":
+            - /url: /v4/research/stocks/SEC-98F547D1A56618E257B7DC8E5E5BFB3E
+          - text: SZ.002728
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "百普赛斯 SZ.301080 新增确认 2026-09-30 来源":
+        - cell "百普赛斯 SZ.301080":
+          - link "百普赛斯":
+            - /url: /v4/research/stocks/SEC-9DE8CC85BE88327F1C2D51513DB863FB
+          - text: SZ.301080
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "百亚股份 SZ.003006 新增确认 2026-09-30 来源":
+        - cell "百亚股份 SZ.003006":
+          - link "百亚股份":
+            - /url: /v4/research/stocks/SEC-AC976370C523C0E3D60432B433D30932
+          - text: SZ.003006
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "天新药业 SH.603235 新增确认 2026-09-30 来源":
+        - cell "天新药业 SH.603235":
+          - link "天新药业":
+            - /url: /v4/research/stocks/SEC-B0AE5C16FBB1EDDEAFAC81402E0EAACA
+          - text: SH.603235
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "彩蝶实业 SH.603073 新增确认 2026-09-30 来源":
+        - cell "彩蝶实业 SH.603073":
+          - link "彩蝶实业":
+            - /url: /v4/research/stocks/SEC-C7579B371E1C521D28DE5658F62FF928
+          - text: SH.603073
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "华兰疫苗 SZ.301207 新增确认 2026-09-30 来源":
+        - cell "华兰疫苗 SZ.301207":
+          - link "华兰疫苗":
+            - /url: /v4/research/stocks/SEC-D23A21C221A2E29C8733484C77660998
+          - text: SZ.301207
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "古越龙山 SH.600059 新增确认 2026-09-30 来源":
+        - cell "古越龙山 SH.600059":
+          - link "古越龙山":
+            - /url: /v4/research/stocks/SEC-DA1089D65D534B4764CB7865643D2C56
+          - text: SH.600059
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "圣湘生物 SH.688289 新增确认 2026-09-30 来源":
+        - cell "圣湘生物 SH.688289":
+          - link "圣湘生物":
+            - /url: /v4/research/stocks/SEC-DCBAB85CCEDE34FAA958947B39820676
+          - text: SH.688289
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+      - row "康华生物 SZ.300841 新增确认 2026-09-30 来源":
+        - cell "康华生物 SZ.300841":
+          - link "康华生物":
+            - /url: /v4/research/stocks/SEC-DCFFC52D86B1D2B1714F2A391754A6C5
+          - text: SZ.300841
+        - cell "新增确认":
+          - button "新增确认"
+        - cell "2026-09-30":
+          - button "2026-09-30"
+        - cell "来源":
+          - button "来源"
+  - heading "风险变化" [level=2]
+  - generic: 该已处理截面没有 owner 发出的风险变化。
+  - paragraph: 去重净变化 33 · 无变化持续记录 0
+  - link "板块雷达 →":
+    - /url: /v4/research/sectors
+  - link "个股观察 →":
+    - /url: /v4/research/stocks?state=LAUNCH_CONFIRM
+  - link "查看市场与事件 →":
+    - /url: /v4/research/market
+- contentinfo:
+  - text: V4 六入口框架 · 数据、证据与研究状态分别展示
+  - link "历史摘要":
+    - /url: /v4/legacy-summary
+- dialog:
+  - button "关闭来源详情" [active]: 关闭
+  - heading "字段来源与质量" [level=2]
+  - generic: "{ \"axis\": \"trend_axis\", \"value\": \"WEAK\", \"raw\": { \"breadth_common_count\": 5222, \"breadth_delta3\": 0.24209714726291445, \"breadth_evaluable_count\": 5188, \"breadth_t\": 0.4494988434849653, \"breadth_t_minus_3\": 0.20740169622205087, \"limit_coverage\": 0.9973200612557427, \"limit_evaluable_count\": 5210, \"participation_evaluable_count\": 5164, \"participation_median_amount_ratio20\": 0.718264696850696, \"stress_common_count\": 5206, \"stress_ratio\": 0.0023032629558541267, \"stress_same_member_current_ratio\": 0.0021129466000768342, \"stress_same_member_prior_ratio\": 0.002305032654629274, \"universe_count\": 5224 }, \"source\": { \"2026-09-28:ADJUSTED_DAILY\": { \"path\": \"data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/ADJUSTED_DAILY/artifact.json\", \"sha256\": \"bb6d4051d882210bf960389d4e6244bd6f61c4e6ab841fbf4523e0e7a37bc3b8\" }, \"2026-09-28:IDENTITY_UNIVERSE\": { \"path\": \"data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/IDENTITY_UNIVERSE/artifact.json\", \"sha256\": \"ac6cc9e6deb739efa2139d1b92f203feab5cc849603159740826c8aeb8c8c2e5\" }, \"2026-09-28:PRICE_LIMIT\": { \"path\": \"data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/PRICE_LIMIT/artifact.json\", \"sha256\": \"fb732f89a9b784f533e5944b2579e1260d2169e0e6dce48cb690de1313fdd950\" }, \"2026-09-28:RAW_DAILY\": { \"path\": \"data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/RAW_DAILY/artifact.json\", \"sha256\": \"b332846bdb00d5b412eb161ab4ec4e48f0602857d771755ce2bb9eca77ac58ac\" }, \"2026-09-28:TRADING_STATUS\": { \"path\": \"data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/TRADING_STATUS/artifact.json\", \"sha256\": \"2bc52361a02ecdae59d020fc87c30a73fd73e073c7dba95f247deb84931b25d4\" }, \"2026-09-29:ADJUSTED_DAILY\": { \"path\": \"data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/ADJUSTED_DAILY/artifact.json\", \"sha256\": \"e19ab5ef92b34935ba3a8635488110621814be3755d896ec11015840d87e9174\" }, \"2026-09-29:IDENTITY_UNIVERSE\": { \"path\": \"data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/IDENTITY_UNIVERSE/artifact.json\", \"sha256\": \"a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f\" }, \"2026-09-29:PRICE_LIMIT\": { \"path\": \"data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/PRICE_LIMIT/artifact.json\", \"sha256\": \"2d6c7f39c082fb96503303d59b7199438e3d82f271777d3dc70da4a46b756ea9\" }, \"2026-09-29:RAW_DAILY\": { \"path\": \"data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/RAW_DAILY/artifact.json\", \"sha256\": \"16e4daab101f671d894fbacbb37361c6bf8286e68e7170877aaec8d17f84dddf\" }, \"2026-09-29:TRADING_STATUS\": { \"path\": \"data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/TRADING_STATUS/artifact.json\", \"sha256\": \"1024bfcad1052635317351b9c3c730f9c09294de72b3f1358e45bbe0aac6dde4\" }, \"2026-09-30:ADJUSTED_DAILY\": { \"path\": \"data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/ADJUSTED_DAILY/artifact.json\", \"sha256\": \"a28b3a912e44a8cc6e3e7e43f37038b64e1f7b62024ec4887b5320ffd33d2e17\" }, \"2026-09-30:IDENTITY_UNIVERSE\": { \"path\": \"data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/artifact.json\", \"sha256\": \"926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf\" }, \"2026-09-30:PRICE_LIMIT\": { \"path\": \"data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/PRICE_LIMIT/artifact.json\", \"sha256\": \"808c3d48f22245a1cebe6234013fda18483a1c568d2bdfebbbc08aa41793d7a7\" }, \"2026-09-30:RAW_DAILY\": { \"path\": \"data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/RAW_DAILY/artifact.json\", \"sha256\": \"8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1\" }, \"2026-09-30:TRADING_STATUS\": { \"path\": \"data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/TRADING_STATUS/artifact.json\", \"sha256\": \"20798999bb3309aa93f42ebd075bc53cffb5337117f6fbccd7eafd14986f51bb\" }, \"accepted_chain\": { \"bytes\": 182128, \"path\": \"data/v4/DM01_A01_R3_ACCEPTED_CHAIN_20260924_20260930_R1.json\", \"sha256\": \"4d66105d7a5e759d8273a00a64d2ea80e1851090eeedde0c64c9c0d455d7e881\" }, \"adjustment_classification\": { \"bytes\": 4334, \"path\": \"config/v4_02_gbbq_price_impact_classification_v1.json\", \"sha256\": \"c39ff7e14209d250139352dcf78b326c7579721681fd467bac68d21d2515681c\" }, \"calendar\": { \"bytes\": 10739, \"path\": \"data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/calendar_union_2e0938120e3b371aa9c84422c06b4c14de0f8894cc8f3caa9dd9c61299239e74.json\", \"sha256\": \"629242b5074002dd8e889fdca5da9e1c05f9ae35357662d5c76a554117fc17f5\" }, \"data_head\": { \"bytes\": 16890, \"path\": \"data/v4/V4_DATA_ACCEPTED_HEAD.json\", \"sha256\": \"38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40\" }, \"execution\": { \"bytes\": 4040129, \"path\": \"data/v4/source_evidence/dm01_a01_r3/durable_chain_inputs_r2/chain_execution_context_f9d30ce43e29d7414832a2e43a41fc83cd1b9e5a1d073390fc2275abd61064c5.json\", \"sha256\": \"3ceca57357891ab6e9e5a56062c9831e6b39c03a66dd757558af1357f7816a4e\" }, \"gbbq\": { \"bytes\": 5607212, \"path\": \"data/v4/source_snapshot_store/gbbq/sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e/gbbq\", \"sha256\": \"f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1\" }, \"historical_universe\": { \"bytes\": 239298684, \"path\": \"data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz\", \"sha256\": \"3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b\" }, \"history\": { \"path\": \"reports/v4_05/staging/V4_05_R3_T0_COORDINATE_DAILY_HISTORY.jsonl.gz\", \"sha256\": \"7d67a7d49eb512c7f9e6f78bfde0b7dae329cda356006de1abe6b2dc679ff8c7\" }, \"history_receipt\": { \"bytes\": 1108, \"path\": \"reports/v4_05/V4_05_R4_DAILY_HISTORY_RECEIPT.json\", \"sha256\": \"bce60892915ea86ff65cb9672078fd807036013b79bb39f17db9e5cba667d6e4\" }, \"path_contract\": { \"bytes\": 656, \"path\": \"config/v4_market_path_successor_contract_v1.json\", \"sha256\": \"64ccdbfb0ee9fd74723a69db92d166e96f920b798f992a6d533d1b5edf8f9ab3\" }, \"prior_market_path\": { \"bytes\": 234720, \"path\": \"reports/v4_03/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R3.jsonl.gz\", \"sha256\": \"898a6554eaefae1206d5a228e2b99f78743ef2d749d40579862c9a5de1bdaedb\" } }, \"comparison\": \"2026-09-24\" }"

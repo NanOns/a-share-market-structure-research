@@ -1,0 +1,3050 @@
+{
+  "FEP": "NOT_BOUND_TO_CURRENT_PRODUCTION",
+  "LOO": "NOT_BOUND_TO_CURRENT_PRODUCTION",
+  "acceptance": "DEGRADED_PASS",
+  "advanced_extra_identities": [
+    {
+      "cutoff": "2026-10-03T00:00:00+08:00",
+      "disposition": "OUTSIDE_CURRENT_RAW_POOL_NOT_IMPLICITLY_ADMITTED",
+      "identity_reason": "REQUIRES_DATED_IDENTITY_OWNER_RECONCILIATION",
+      "security_id": "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9",
+      "trade_date": "2026-09-30"
+    },
+    {
+      "cutoff": "2026-10-03T00:00:00+08:00",
+      "disposition": "OUTSIDE_CURRENT_RAW_POOL_NOT_IMPLICITLY_ADMITTED",
+      "identity_reason": "REQUIRES_DATED_IDENTITY_OWNER_RECONCILIATION",
+      "security_id": "SEC-25106EB81E18F2C63CA4F3BD11EAD8DD",
+      "trade_date": "2026-09-30"
+    },
+    {
+      "cutoff": "2026-10-03T00:00:00+08:00",
+      "disposition": "OUTSIDE_CURRENT_RAW_POOL_NOT_IMPLICITLY_ADMITTED",
+      "identity_reason": "REQUIRES_DATED_IDENTITY_OWNER_RECONCILIATION",
+      "security_id": "SEC-6054AE867A60481EDA16B0E02AF1DB09",
+      "trade_date": "2026-09-30"
+    },
+    {
+      "cutoff": "2026-10-03T00:00:00+08:00",
+      "disposition": "OUTSIDE_CURRENT_RAW_POOL_NOT_IMPLICITLY_ADMITTED",
+      "identity_reason": "REQUIRES_DATED_IDENTITY_OWNER_RECONCILIATION",
+      "security_id": "SEC-6D84A4C76A0CC2B3A7FA63D68C75A433",
+      "trade_date": "2026-09-30"
+    },
+    {
+      "cutoff": "2026-10-03T00:00:00+08:00",
+      "disposition": "OUTSIDE_CURRENT_RAW_POOL_NOT_IMPLICITLY_ADMITTED",
+      "identity_reason": "REQUIRES_DATED_IDENTITY_OWNER_RECONCILIATION",
+      "security_id": "SEC-727B4462EB615309F3CF61974E3EF7FC",
+      "trade_date": "2026-09-30"
+    },
+    {
+      "cutoff": "2026-10-03T00:00:00+08:00",
+      "disposition": "OUTSIDE_CURRENT_RAW_POOL_NOT_IMPLICITLY_ADMITTED",
+      "identity_reason": "REQUIRES_DATED_IDENTITY_OWNER_RECONCILIATION",
+      "security_id": "SEC-9C973B4FDFA9C42E9574D1446FF54034",
+      "trade_date": "2026-09-30"
+    },
+    {
+      "cutoff": "2026-10-03T00:00:00+08:00",
+      "disposition": "OUTSIDE_CURRENT_RAW_POOL_NOT_IMPLICITLY_ADMITTED",
+      "identity_reason": "REQUIRES_DATED_IDENTITY_OWNER_RECONCILIATION",
+      "security_id": "SEC-A17F411A81787AFD319B23D4882D926A",
+      "trade_date": "2026-09-30"
+    },
+    {
+      "cutoff": "2026-10-03T00:00:00+08:00",
+      "disposition": "OUTSIDE_CURRENT_RAW_POOL_NOT_IMPLICITLY_ADMITTED",
+      "identity_reason": "REQUIRES_DATED_IDENTITY_OWNER_RECONCILIATION",
+      "security_id": "SEC-A94CC314405C8437CE79555A7DC05B82",
+      "trade_date": "2026-09-30"
+    },
+    {
+      "cutoff": "2026-10-03T00:00:00+08:00",
+      "disposition": "OUTSIDE_CURRENT_RAW_POOL_NOT_IMPLICITLY_ADMITTED",
+      "identity_reason": "REQUIRES_DATED_IDENTITY_OWNER_RECONCILIATION",
+      "security_id": "SEC-B17169139D0E3492B2CA012774B6B125",
+      "trade_date": "2026-09-30"
+    },
+    {
+      "cutoff": "2026-10-03T00:00:00+08:00",
+      "disposition": "OUTSIDE_CURRENT_RAW_POOL_NOT_IMPLICITLY_ADMITTED",
+      "identity_reason": "REQUIRES_DATED_IDENTITY_OWNER_RECONCILIATION",
+      "security_id": "SEC-DD31D8CAF1CF04404E91F12B636DFE6C",
+      "trade_date": "2026-09-30"
+    },
+    {
+      "cutoff": "2026-10-03T00:00:00+08:00",
+      "disposition": "OUTSIDE_CURRENT_RAW_POOL_NOT_IMPLICITLY_ADMITTED",
+      "identity_reason": "REQUIRES_DATED_IDENTITY_OWNER_RECONCILIATION",
+      "security_id": "SEC-E11DA4A25B7F65C3E8229D5A76504A94",
+      "trade_date": "2026-09-30"
+    }
+  ],
+  "contract_id": "R2_OWNER_DATE_DIGEST_MATRIX_V1",
+  "counts": {
+    "events": 33,
+    "focus": 469,
+    "forward": 117,
+    "market": 1,
+    "radar": 117,
+    "sectors": 378,
+    "settlement": 5,
+    "sources": 4,
+    "stocks": 5213
+  },
+  "current_core": "FP06_SUCCESSOR_CURRENT_0930_VERIFIED_NOT_LEGACY_0928",
+  "fields": [
+    {
+      "count": 5213,
+      "dependency": "acceptance_state",
+      "domain": "stocks",
+      "field": "acceptance_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 5213
+      },
+      "reasons": {
+        "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    },
+    {
+      "count": 5213,
+      "dependency": "active_anchor_id",
+      "domain": "stocks",
+      "field": "active_anchor_id",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {
+        "NO_ACTIVE_ANCHOR": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    },
+    {
+      "count": 5213,
+      "dependency": "algorithmic_support_sector",
+      "domain": "stocks",
+      "field": "algorithmic_support_sector",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 5213
+      },
+      "reasons": {
+        "UNKNOWN_REQUIRED_LOO_AUTHORITY_OR_HISTORY": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    },
+    {
+      "count": 5213,
+      "dependency": "amount_ratio20",
+      "domain": "stocks",
+      "field": "amount_ratio20",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5188,
+        "UNKNOWN": 25
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 10
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "amount_ratio5",
+      "domain": "stocks",
+      "field": "amount_ratio5",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5196,
+        "UNKNOWN": 17
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 2
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "amount_state",
+      "domain": "stocks",
+      "field": "amount_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5188,
+        "UNKNOWN": 25
+      },
+      "reasons": {
+        "REQUIRED_INPUT_UNKNOWN": 25
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "anchor_view_asof_t",
+      "domain": "stocks",
+      "field": "anchor_view_asof_t",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 5213
+      },
+      "reasons": {
+        "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    },
+    {
+      "count": 5213,
+      "dependency": "atr20",
+      "domain": "stocks",
+      "field": "atr20",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5188,
+        "UNKNOWN": 25
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 10
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "atr5",
+      "domain": "stocks",
+      "field": "atr5",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5196,
+        "UNKNOWN": 17
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 2
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "atr_ratio",
+      "domain": "stocks",
+      "field": "atr_ratio",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5188,
+        "UNKNOWN": 25
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 10
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "basic_breakout_state",
+      "domain": "stocks",
+      "field": "basic_breakout_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 5213
+      },
+      "reasons": {
+        "['ACCEPTED_ADJUSTMENT_NOT_READY;No exact prior ATR publication plus accepted cross-basis transform']": 176,
+        "['No exact prior ATR publication plus accepted cross-basis transform']": 5037
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    },
+    {
+      "count": 5213,
+      "dependency": "basic_pullback_state",
+      "domain": "stocks",
+      "field": "basic_pullback_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 5213
+      },
+      "reasons": {
+        "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    },
+    {
+      "count": 5213,
+      "dependency": "basic_recovery_state",
+      "domain": "stocks",
+      "field": "basic_recovery_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 5213
+      },
+      "reasons": {
+        "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    },
+    {
+      "count": 5213,
+      "dependency": "bias20_atr",
+      "domain": "stocks",
+      "field": "bias20_atr",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5188,
+        "UNKNOWN": 25
+      },
+      "reasons": {
+        "ATR_OR_PRICE_INPUT_UNAVAILABLE": 25
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "boundary_event",
+      "domain": "stocks",
+      "field": "boundary_event",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+      "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    {
+      "count": 5213,
+      "dependency": "close",
+      "domain": "stocks",
+      "field": "close",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1"
+    },
+    {
+      "count": 5213,
+      "dependency": "clv",
+      "domain": "stocks",
+      "field": "clv",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5191,
+        "UNKNOWN": 22
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "ZERO_DENOMINATOR": 7
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "compression_state",
+      "domain": "stocks",
+      "field": "compression_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5164,
+        "UNKNOWN": 49
+      },
+      "reasons": {
+        "REQUIRED_INPUT_UNKNOWN": 49
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "core_extension_risk",
+      "domain": "stocks",
+      "field": "core_extension_risk",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5181,
+        "UNKNOWN": 32
+      },
+      "reasons": {
+        "REQUIRED_INPUT_UNKNOWN": 32
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "core_participation_result",
+      "domain": "stocks",
+      "field": "core_participation_result",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5181,
+        "UNKNOWN": 32
+      },
+      "reasons": {
+        "CLV_REQUIRED_FOR_BRANCH": 3,
+        "REQUIRED_INPUT_UNKNOWN": 29
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "core_price_damage",
+      "domain": "stocks",
+      "field": "core_price_damage",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5184,
+        "UNKNOWN": 29
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 10,
+        "MISSING_OR_SUSPENDED_ENDPOINT": 4
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "detector_statuses",
+      "domain": "stocks",
+      "field": "detector_statuses",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+      "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    {
+      "count": 5213,
+      "dependency": "dist_high20_atr",
+      "domain": "stocks",
+      "field": "dist_high20_atr",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5188,
+        "UNKNOWN": 25
+      },
+      "reasons": {
+        "ATR_OR_PRICE_INPUT_UNAVAILABLE": 25
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "downgrade_count",
+      "domain": "stocks",
+      "field": "downgrade_count",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+      "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    {
+      "count": 5213,
+      "dependency": "drawdown20_state",
+      "domain": "stocks",
+      "field": "drawdown20_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5189,
+        "UNKNOWN": 24
+      },
+      "reasons": {
+        "REQUIRED_INPUT_UNKNOWN_OR_ZERO_HIGH": 24
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "drawdown60_state",
+      "domain": "stocks",
+      "field": "drawdown60_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5173,
+        "UNKNOWN": 40
+      },
+      "reasons": {
+        "REQUIRED_INPUT_UNKNOWN_OR_ZERO_HIGH": 40
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "expiry_count",
+      "domain": "stocks",
+      "field": "expiry_count",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+      "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    {
+      "count": 5213,
+      "dependency": "final_eligibility",
+      "domain": "stocks",
+      "field": "final_eligibility",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "DEGRADED": 868,
+        "UNKNOWN": 4345
+      },
+      "reasons": {
+        "ACCEPTED_OWNER_CAPABILITY_SCOPED": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    {
+      "count": 5213,
+      "dependency": "health",
+      "domain": "stocks",
+      "field": "health",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "DEGRADED": 867,
+        "UNKNOWN": 4346
+      },
+      "reasons": {
+        "ACCEPTED_OWNER_CAPABILITY_SCOPED": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    {
+      "count": 5213,
+      "dependency": "hh_progress",
+      "domain": "stocks",
+      "field": "hh_progress",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5194,
+        "UNKNOWN": 19
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 4
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "hhv20",
+      "domain": "stocks",
+      "field": "hhv20",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5189,
+        "UNKNOWN": 24
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 9
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "hhv5",
+      "domain": "stocks",
+      "field": "hhv5",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5196,
+        "UNKNOWN": 17
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 2
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "hhv60",
+      "domain": "stocks",
+      "field": "hhv60",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5173,
+        "UNKNOWN": 40
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 25
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "high",
+      "domain": "stocks",
+      "field": "high",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1"
+    },
+    {
+      "count": 5213,
+      "dependency": "improvement_baseline",
+      "domain": "stocks",
+      "field": "improvement_baseline",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+      "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    {
+      "count": 5213,
+      "dependency": "list_date",
+      "domain": "stocks",
+      "field": "list_date",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf"
+    },
+    {
+      "count": 5213,
+      "dependency": "ll_progress",
+      "domain": "stocks",
+      "field": "ll_progress",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5194,
+        "UNKNOWN": 19
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 4
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "llv20",
+      "domain": "stocks",
+      "field": "llv20",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5189,
+        "UNKNOWN": 24
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 9
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "llv5",
+      "domain": "stocks",
+      "field": "llv5",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5196,
+        "UNKNOWN": 17
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 2
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "llv60",
+      "domain": "stocks",
+      "field": "llv60",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5173,
+        "UNKNOWN": 40
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 25
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "low",
+      "domain": "stocks",
+      "field": "low",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1"
+    },
+    {
+      "count": 5213,
+      "dependency": "ma10",
+      "domain": "stocks",
+      "field": "ma10",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5194,
+        "UNKNOWN": 19
+      },
+      "reasons": {
+        "MA10_WINDOW_OR_ENDPOINT_UNAVAILABLE": 19
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "ma20",
+      "domain": "stocks",
+      "field": "ma20",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5189,
+        "UNKNOWN": 24
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 9
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "ma5",
+      "domain": "stocks",
+      "field": "ma5",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5196,
+        "UNKNOWN": 17
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 2
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "ma60",
+      "domain": "stocks",
+      "field": "ma60",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5173,
+        "UNKNOWN": 40
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 25
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "ma_structure_state",
+      "domain": "stocks",
+      "field": "ma_structure_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5186,
+        "UNKNOWN": 27
+      },
+      "reasons": {
+        "REQUIRED_INPUT_UNKNOWN": 27
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "market_age",
+      "domain": "stocks",
+      "field": "market_age",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+      "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    {
+      "count": 5213,
+      "dependency": "matched_predicates",
+      "domain": "stocks",
+      "field": "matched_predicates",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+      "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    {
+      "count": 5213,
+      "dependency": "maturity",
+      "domain": "stocks",
+      "field": "maturity",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "DEGRADED": 5213
+      },
+      "reasons": {
+        "ACCEPTED_OWNER_CAPABILITY_SCOPED": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    {
+      "count": 5213,
+      "dependency": "minimum_liquidity",
+      "domain": "stocks",
+      "field": "minimum_liquidity",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5188,
+        "UNKNOWN": 25
+      },
+      "reasons": {
+        "PRIOR20_AMOUNT_UNAVAILABLE": 25
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "monthly_trend_state",
+      "domain": "stocks",
+      "field": "monthly_trend_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5169,
+        "UNKNOWN": 44
+      },
+      "reasons": {
+        "CLOSED_PERIOD_OR_INPUT_UNAVAILABLE": 44
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "near_high20_state",
+      "domain": "stocks",
+      "field": "near_high20_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5188,
+        "UNKNOWN": 25
+      },
+      "reasons": {
+        "REQUIRED_INPUT_UNKNOWN_OR_ZERO_ATR": 25
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "near_high60_state",
+      "domain": "stocks",
+      "field": "near_high60_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5173,
+        "UNKNOWN": 40
+      },
+      "reasons": {
+        "REQUIRED_INPUT_UNKNOWN_OR_ZERO_ATR": 40
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "open",
+      "domain": "stocks",
+      "field": "open",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1"
+    },
+    {
+      "count": 5213,
+      "dependency": "pos250",
+      "domain": "stocks",
+      "field": "pos250",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5104,
+        "UNKNOWN": 109
+      },
+      "reasons": {
+        "POS250_WINDOW_OR_DENOMINATOR_UNAVAILABLE": 109
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "pos60",
+      "domain": "stocks",
+      "field": "pos60",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5173,
+        "UNKNOWN": 40
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 25
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "position_state",
+      "domain": "stocks",
+      "field": "position_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5173,
+        "UNKNOWN": 40
+      },
+      "reasons": {
+        "REQUIRED_INPUT_UNKNOWN": 40
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "primary_industry",
+      "domain": "stocks",
+      "field": "primary_industry",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    },
+    {
+      "count": 5213,
+      "dependency": "prior60_percentile",
+      "domain": "stocks",
+      "field": "prior60_percentile",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5173,
+        "UNKNOWN": 40
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 25
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "prior_high20",
+      "domain": "stocks",
+      "field": "prior_high20",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5188,
+        "UNKNOWN": 25
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 10
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "prior_high5",
+      "domain": "stocks",
+      "field": "prior_high5",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5196,
+        "UNKNOWN": 17
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 2
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "prior_high60",
+      "domain": "stocks",
+      "field": "prior_high60",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5173,
+        "UNKNOWN": 40
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 25
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "prior_low20",
+      "domain": "stocks",
+      "field": "prior_low20",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5188,
+        "UNKNOWN": 25
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 10
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "prior_low5",
+      "domain": "stocks",
+      "field": "prior_low5",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5196,
+        "UNKNOWN": 17
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 2
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "prior_low60",
+      "domain": "stocks",
+      "field": "prior_low60",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5173,
+        "UNKNOWN": 40
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 25
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "range_ratio",
+      "domain": "stocks",
+      "field": "range_ratio",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5189,
+        "UNKNOWN": 24
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 9
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "raw_qualification",
+      "domain": "stocks",
+      "field": "raw_qualification",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+      "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    {
+      "count": 5213,
+      "dependency": "regime_ui",
+      "domain": "stocks",
+      "field": "regime_ui",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "rel_market_1",
+      "domain": "stocks",
+      "field": "rel_market_1",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5193,
+        "UNKNOWN": 20
+      },
+      "reasons": {
+        "RETURN_OR_PIT_MARKET_REFERENCE_UNKNOWN": 20
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "rel_market_3",
+      "domain": "stocks",
+      "field": "rel_market_3",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5191,
+        "UNKNOWN": 22
+      },
+      "reasons": {
+        "RETURN_OR_PIT_MARKET_REFERENCE_UNKNOWN": 22
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "rel_market_5",
+      "domain": "stocks",
+      "field": "rel_market_5",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5190,
+        "UNKNOWN": 23
+      },
+      "reasons": {
+        "RETURN_OR_PIT_MARKET_REFERENCE_UNKNOWN": 23
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "relative_market_state",
+      "domain": "stocks",
+      "field": "relative_market_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 5213
+      },
+      "reasons": {
+        "REQUIRED_INPUT_UNKNOWN": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "relative_sector_state",
+      "domain": "stocks",
+      "field": "relative_sector_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 5213
+      },
+      "reasons": {
+        "UNKNOWN_INSUFFICIENT_LOO_MEMBERS_OR_COVERAGE": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    },
+    {
+      "count": 5213,
+      "dependency": "ret1",
+      "domain": "stocks",
+      "field": "ret1",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5193,
+        "UNKNOWN": 20
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_SESSION_HISTORY": 1,
+        "MISSING_OR_SUSPENDED_ENDPOINT": 4
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "ret20",
+      "domain": "stocks",
+      "field": "ret20",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5182,
+        "UNKNOWN": 31
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_SESSION_HISTORY": 10,
+        "MISSING_OR_SUSPENDED_ENDPOINT": 6
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "ret3",
+      "domain": "stocks",
+      "field": "ret3",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5191,
+        "UNKNOWN": 22
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_SESSION_HISTORY": 2,
+        "MISSING_OR_SUSPENDED_ENDPOINT": 5
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "ret5",
+      "domain": "stocks",
+      "field": "ret5",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5190,
+        "UNKNOWN": 23
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_SESSION_HISTORY": 2,
+        "MISSING_OR_SUSPENDED_ENDPOINT": 6
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "retest_count",
+      "domain": "stocks",
+      "field": "retest_count",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 5213
+      },
+      "reasons": {
+        "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    },
+    {
+      "count": 5213,
+      "dependency": "rotation_structure_enrichment",
+      "domain": "stocks",
+      "field": "rotation_structure_enrichment",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "DEGRADED": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    },
+    {
+      "count": 5213,
+      "dependency": "rps20",
+      "domain": "stocks",
+      "field": "rps20",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5182,
+        "UNKNOWN": 31
+      },
+      "reasons": {
+        "RETURN_OR_UNIVERSE_UNKNOWN": 31
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "rps20_delta3",
+      "domain": "stocks",
+      "field": "rps20_delta3",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 5213
+      },
+      "reasons": {
+        "PRIOR_PUBLISHED_RPS_NOT_BOUND_NOT_BACKFILLED": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "rps5",
+      "domain": "stocks",
+      "field": "rps5",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5190,
+        "UNKNOWN": 23
+      },
+      "reasons": {
+        "RETURN_OR_UNIVERSE_UNKNOWN": 23
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "rps5_delta1",
+      "domain": "stocks",
+      "field": "rps5_delta1",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 5213
+      },
+      "reasons": {
+        "PRIOR_PUBLISHED_RPS_NOT_BOUND_NOT_BACKFILLED": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "rps5_delta3",
+      "domain": "stocks",
+      "field": "rps5_delta3",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 5213
+      },
+      "reasons": {
+        "PRIOR_PUBLISHED_RPS_NOT_BOUND_NOT_BACKFILLED": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "scenario",
+      "domain": "stocks",
+      "field": "scenario",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "DEGRADED": 5213
+      },
+      "reasons": {
+        "ACCEPTED_OWNER_CAPABILITY_SCOPED": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    {
+      "count": 5213,
+      "dependency": "scenario_status",
+      "domain": "stocks",
+      "field": "scenario_status",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "DEGRADED": 868,
+        "UNKNOWN": 4345
+      },
+      "reasons": {
+        "ACCEPTED_OWNER_CAPABILITY_SCOPED": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    {
+      "count": 5213,
+      "dependency": "sector_context_quality",
+      "domain": "stocks",
+      "field": "sector_context_quality",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    },
+    {
+      "count": 5213,
+      "dependency": "sector_context_state",
+      "domain": "stocks",
+      "field": "sector_context_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 5213
+      },
+      "reasons": {
+        "OWNER_FIELD_REASON_MISSING_SEE_AUD_FP01_FIELD_REASON_GAPS": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    },
+    {
+      "count": 5213,
+      "dependency": "severe_extension",
+      "domain": "stocks",
+      "field": "severe_extension",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5181,
+        "UNKNOWN": 32
+      },
+      "reasons": {
+        "REQUIRED_INPUT_UNKNOWN": 32
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "slope20",
+      "domain": "stocks",
+      "field": "slope20",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5186,
+        "UNKNOWN": 27
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 12
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "slope60",
+      "domain": "stocks",
+      "field": "slope60",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5171,
+        "UNKNOWN": 42
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 27
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "source_security_key",
+      "domain": "stocks",
+      "field": "source_security_key",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1"
+    },
+    {
+      "count": 5213,
+      "dependency": "state_freshness",
+      "domain": "stocks",
+      "field": "state_freshness",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "DEGRADED": 5213
+      },
+      "reasons": {
+        "ACCEPTED_OWNER_CAPABILITY_SCOPED": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    {
+      "count": 5213,
+      "dependency": "structure_events",
+      "domain": "stocks",
+      "field": "structure_events",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 5213
+      },
+      "reasons": {
+        "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    },
+    {
+      "count": 5213,
+      "dependency": "structure_health",
+      "domain": "stocks",
+      "field": "structure_health",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 5213
+      },
+      "reasons": {
+        "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    },
+    {
+      "count": 5213,
+      "dependency": "support_state",
+      "domain": "stocks",
+      "field": "support_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 5213
+      },
+      "reasons": {
+        "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE": 5213
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    },
+    {
+      "count": 5213,
+      "dependency": "supporting_concepts",
+      "domain": "stocks",
+      "field": "supporting_concepts",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5101,
+        "NOT_APPLICABLE": 112
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    },
+    {
+      "count": 5213,
+      "dependency": "tr",
+      "domain": "stocks",
+      "field": "tr",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5197,
+        "UNKNOWN": 16
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 1
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "tracking",
+      "domain": "stocks",
+      "field": "tracking",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+      "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    {
+      "count": 5213,
+      "dependency": "trade_date",
+      "domain": "stocks",
+      "field": "trade_date",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1"
+    },
+    {
+      "count": 5213,
+      "dependency": "transition_reasons",
+      "domain": "stocks",
+      "field": "transition_reasons",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+      "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    {
+      "count": 5213,
+      "dependency": "trend_state",
+      "domain": "stocks",
+      "field": "trend_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5167,
+        "UNKNOWN": 46
+      },
+      "reasons": {
+        "REQUIRED_INPUT_UNKNOWN": 46
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "unknown_predicates",
+      "domain": "stocks",
+      "field": "unknown_predicates",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+      "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    {
+      "count": 5213,
+      "dependency": "validity",
+      "domain": "stocks",
+      "field": "validity",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 868,
+        "UNKNOWN": 4345
+      },
+      "reasons": {
+        "['CONFIRMED', 'PREWATCH', 'SEED', 'core_price_damage', 'delta3:OPTIONAL_INPUT_UNKNOWN', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN', 'risk:OPTIONAL_INPUT_UNKNOWN', 'scenario:OPTIONAL_INPUT_UNKNOWN']": 183,
+        "['CONFIRMED', 'PREWATCH', 'SEED', 'delta3:OPTIONAL_INPUT_UNKNOWN', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN', 'risk:OPTIONAL_INPUT_UNKNOWN', 'scenario:OPTIONAL_INPUT_UNKNOWN']": 3,
+        "['CONFIRMED', 'PREWATCH', 'SEED', 'delta3:OPTIONAL_INPUT_UNKNOWN', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN', 'scenario:OPTIONAL_INPUT_UNKNOWN']": 97,
+        "['CONFIRMED', 'PREWATCH', 'SEED', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN', 'scenario:OPTIONAL_INPUT_UNKNOWN']": 4,
+        "['CONFIRMED', 'PREWATCH', 'SEED', 'frozen_invalidation', 'delta3:OPTIONAL_INPUT_UNKNOWN', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN', 'scenario:OPTIONAL_INPUT_UNKNOWN']": 1,
+        "['CONFIRMED', 'PREWATCH', 'core_price_damage', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN', 'risk:OPTIONAL_INPUT_UNKNOWN', 'scenario:OPTIONAL_INPUT_UNKNOWN']": 7,
+        "['CONFIRMED', 'PREWATCH', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN', 'scenario:OPTIONAL_INPUT_UNKNOWN']": 2,
+        "['CONFIRMED', 'delta3:OPTIONAL_INPUT_UNKNOWN', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN', 'scenario:OPTIONAL_INPUT_UNKNOWN']": 67,
+        "['CONFIRMED', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN', 'scenario:OPTIONAL_INPUT_UNKNOWN']": 12,
+        "['PREWATCH', 'SEED', 'delta3:OPTIONAL_INPUT_UNKNOWN', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN']": 3,
+        "['PREWATCH', 'SEED', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN']": 393,
+        "['PREWATCH', 'SEED', 'frozen_invalidation', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN']": 35,
+        "['PREWATCH', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN']": 3392,
+        "['PREWATCH', 'frozen_invalidation', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN']": 37,
+        "['frozen_invalidation', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN']": 109
+      },
+      "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+      "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    {
+      "count": 5213,
+      "dependency": "vol20",
+      "domain": "stocks",
+      "field": "vol20",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5164,
+        "UNKNOWN": 49
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_SESSION_HISTORY": 10,
+        "MISSING_OR_SUSPENDED_ENDPOINT": 24
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "vol5",
+      "domain": "stocks",
+      "field": "vol5",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5186,
+        "UNKNOWN": 27
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_SESSION_HISTORY": 2,
+        "MISSING_OR_SUSPENDED_ENDPOINT": 10
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "vol_ratio",
+      "domain": "stocks",
+      "field": "vol_ratio",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5164,
+        "UNKNOWN": 49
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_SESSION_HISTORY": 10,
+        "MISSING_OR_SUSPENDED_ENDPOINT": 24
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "volume_ratio20",
+      "domain": "stocks",
+      "field": "volume_ratio20",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5188,
+        "UNKNOWN": 25
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 10
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "volume_ratio5",
+      "domain": "stocks",
+      "field": "volume_ratio5",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5196,
+        "UNKNOWN": 17
+      },
+      "reasons": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 2
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "count": 5213,
+      "dependency": "volume_state",
+      "domain": "stocks",
+      "field": "volume_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5188,
+        "UNKNOWN": 25
+      },
+      "reasons": {
+        "REQUIRED_INPUT_UNKNOWN": 25
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 5213,
+      "dependency": "weekly_trend_state",
+      "domain": "stocks",
+      "field": "weekly_trend_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 5185,
+        "UNKNOWN": 28
+      },
+      "reasons": {
+        "CLOSED_PERIOD_OR_INPUT_UNAVAILABLE": 28
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "count": 378,
+      "dependency": "base_seed_retention",
+      "domain": "sectors",
+      "field": "base_seed_retention",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667"
+    },
+    {
+      "count": 378,
+      "dependency": "base_seed_width_adjusted",
+      "domain": "sectors",
+      "field": "base_seed_width_adjusted",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "basket_cumulative_return",
+      "domain": "sectors",
+      "field": "basket_cumulative_return",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667"
+    },
+    {
+      "count": 378,
+      "dependency": "breadth_delta1",
+      "domain": "sectors",
+      "field": "breadth_delta1",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "breadth_delta3",
+      "domain": "sectors",
+      "field": "breadth_delta3",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "breadth_ret1",
+      "domain": "sectors",
+      "field": "breadth_ret1",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "ACCEPTED": 378
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "breadth_ret20",
+      "domain": "sectors",
+      "field": "breadth_ret20",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "ACCEPTED": 378
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "breadth_ret5",
+      "domain": "sectors",
+      "field": "breadth_ret5",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "ACCEPTED": 378
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "breadth_retention",
+      "domain": "sectors",
+      "field": "breadth_retention",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667"
+    },
+    {
+      "count": 378,
+      "dependency": "dq5",
+      "domain": "sectors",
+      "field": "dq5",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "entered_count",
+      "domain": "sectors",
+      "field": "entered_count",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "episode_accepted",
+      "domain": "sectors",
+      "field": "episode_accepted",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667"
+    },
+    {
+      "count": 378,
+      "dependency": "episode_terminated",
+      "domain": "sectors",
+      "field": "episode_terminated",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667"
+    },
+    {
+      "count": 378,
+      "dependency": "ma20_delta1",
+      "domain": "sectors",
+      "field": "ma20_delta1",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "ma20_delta3",
+      "domain": "sectors",
+      "field": "ma20_delta3",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "ma20_width",
+      "domain": "sectors",
+      "field": "ma20_width",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_TARGET_ACCEPTED_CORE_FACTS": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "mdd20",
+      "domain": "sectors",
+      "field": "mdd20",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_TARGET_ACCEPTED_CORE_FACTS": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "member_count",
+      "domain": "sectors",
+      "field": "member_count",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 378
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+    },
+    {
+      "count": 378,
+      "dependency": "membership_ready",
+      "domain": "sectors",
+      "field": "membership_ready",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "ACCEPTED": 378
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "negative_out_consecutive_evaluable_sessions",
+      "domain": "sectors",
+      "field": "negative_out_consecutive_evaluable_sessions",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667"
+    },
+    {
+      "count": 378,
+      "dependency": "net_entered_count",
+      "domain": "sectors",
+      "field": "net_entered_count",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "output_state",
+      "domain": "sectors",
+      "field": "output_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "['NO_PRIOR_ACCEPTED_PIT_HISTORY']": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667"
+    },
+    {
+      "count": 378,
+      "dependency": "participation_proxy",
+      "domain": "sectors",
+      "field": "participation_proxy",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "ACCEPTED": 378
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "pos60",
+      "domain": "sectors",
+      "field": "pos60",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "ACCEPTED": 378
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "prior_maturity_state",
+      "domain": "sectors",
+      "field": "prior_maturity_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667"
+    },
+    {
+      "count": 378,
+      "dependency": "prior_rotation_state",
+      "domain": "sectors",
+      "field": "prior_rotation_state",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667"
+    },
+    {
+      "count": 378,
+      "dependency": "pulse_active",
+      "domain": "sectors",
+      "field": "pulse_active",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667"
+    },
+    {
+      "count": 378,
+      "dependency": "pulse_age_sessions",
+      "domain": "sectors",
+      "field": "pulse_age_sessions",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667"
+    },
+    {
+      "count": 378,
+      "dependency": "rank_velocity3",
+      "domain": "sectors",
+      "field": "rank_velocity3",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "sector_id",
+      "domain": "sectors",
+      "field": "sector_id",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 378
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+    },
+    {
+      "count": 378,
+      "dependency": "sector_member_count",
+      "domain": "sectors",
+      "field": "sector_member_count",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "ACCEPTED": 378
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "sector_name",
+      "domain": "sectors",
+      "field": "sector_name",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 378
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+    },
+    {
+      "count": 378,
+      "dependency": "sector_price_retention_core",
+      "domain": "sectors",
+      "field": "sector_price_retention_core",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667"
+    },
+    {
+      "count": 378,
+      "dependency": "sector_quote_coverage",
+      "domain": "sectors",
+      "field": "sector_quote_coverage",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "ACCEPTED": 378
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "sector_rs1",
+      "domain": "sectors",
+      "field": "sector_rs1",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "ACCEPTED": 378
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "sector_rs20",
+      "domain": "sectors",
+      "field": "sector_rs20",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "ACCEPTED": 378
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "sector_rs20_pct",
+      "domain": "sectors",
+      "field": "sector_rs20_pct",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "ACCEPTED": 373,
+        "UNKNOWN": 5
+      },
+      "reasons": {
+        "NO_QUALIFIED_RANK_INPUT": 5
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "sector_rs5",
+      "domain": "sectors",
+      "field": "sector_rs5",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "ACCEPTED": 378
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "sector_rs5_pct",
+      "domain": "sectors",
+      "field": "sector_rs5_pct",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "ACCEPTED": 373,
+        "UNKNOWN": 5
+      },
+      "reasons": {
+        "NO_QUALIFIED_RANK_INPUT": 5
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "sector_rs60",
+      "domain": "sectors",
+      "field": "sector_rs60",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_TARGET_ACCEPTED_CORE_FACTS": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "sector_rs60_pct",
+      "domain": "sectors",
+      "field": "sector_rs60_pct",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_QUALIFIED_RANK_INPUT": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "sector_type",
+      "domain": "sectors",
+      "field": "sector_type",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 378
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "seed_retention",
+      "domain": "sectors",
+      "field": "seed_retention",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "seed_width",
+      "domain": "sectors",
+      "field": "seed_width",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "strong_member",
+      "domain": "sectors",
+      "field": "strong_member",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "ACCEPTED": 213,
+        "UNKNOWN": 165
+      },
+      "reasons": {
+        "INCOMPLETE_STRONG_MEMBER_OBSERVATIONS": 165
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "strong_member_retention",
+      "domain": "sectors",
+      "field": "strong_member_retention",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "strong_member_retention_1",
+      "domain": "sectors",
+      "field": "strong_member_retention_1",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667"
+    },
+    {
+      "count": 378,
+      "dependency": "strong_prev",
+      "domain": "sectors",
+      "field": "strong_prev",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667"
+    },
+    {
+      "count": 378,
+      "dependency": "top1_concentration",
+      "domain": "sectors",
+      "field": "top1_concentration",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "ACCEPTED": 378
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "top3_concentration",
+      "domain": "sectors",
+      "field": "top3_concentration",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "ACCEPTED": 378
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "count": 378,
+      "dependency": "yesterday_dq5",
+      "domain": "sectors",
+      "field": "yesterday_dq5",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "UNKNOWN": 378
+      },
+      "reasons": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "source_as_of": "2026-09-30",
+      "source_digest": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667"
+    },
+    {
+      "count": 1,
+      "dependency": "breadth_axis",
+      "domain": "market",
+      "field": "breadth_axis",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 1
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "3c5a189d65158ec6de5e4d0ea311e590874d53207fd271761ce45e5e2385254e"
+    },
+    {
+      "count": 1,
+      "dependency": "participation_axis",
+      "domain": "market",
+      "field": "participation_axis",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 1
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "3c5a189d65158ec6de5e4d0ea311e590874d53207fd271761ce45e5e2385254e"
+    },
+    {
+      "count": 1,
+      "dependency": "stress_change",
+      "domain": "market",
+      "field": "stress_change",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 1
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "3c5a189d65158ec6de5e4d0ea311e590874d53207fd271761ce45e5e2385254e"
+    },
+    {
+      "count": 1,
+      "dependency": "stress_level",
+      "domain": "market",
+      "field": "stress_level",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 1
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "3c5a189d65158ec6de5e4d0ea311e590874d53207fd271761ce45e5e2385254e"
+    },
+    {
+      "count": 1,
+      "dependency": "trade_date",
+      "domain": "market",
+      "field": "trade_date",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 1
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "3c5a189d65158ec6de5e4d0ea311e590874d53207fd271761ce45e5e2385254e"
+    },
+    {
+      "count": 1,
+      "dependency": "trend_axis",
+      "domain": "market",
+      "field": "trend_axis",
+      "owner": null,
+      "price_basis": null,
+      "quality_counts": {
+        "KNOWN": 1
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "3c5a189d65158ec6de5e4d0ea311e590874d53207fd271761ce45e5e2385254e"
+    }
+  ],
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED_NOT_STRICT_PIT",
+  "remaining_debt": [
+    "11_IDENTITY_OWNER_RECONCILIATION",
+    "STRICT_FIRST_AVAILABLE",
+    "FEP_CURRENT_INFERENCE",
+    "LOO_CURRENT_BINDING"
+  ],
+  "sources": [
+    {
+      "bytes": 6218836,
+      "name": "ADJUSTED_DAILY",
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/ADJUSTED_DAILY/artifact.json",
+      "sha256": "a28b3a912e44a8cc6e3e7e43f37038b64e1f7b62024ec4887b5320ffd33d2e17"
+    },
+    {
+      "bytes": 4947,
+      "name": "ADJUSTED_DAILY_receipt",
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/ADJUSTED_DAILY/receipt.json",
+      "sha256": "44adb831a810599ab6f3813e2c5902957e20c9ef6b1ae5b2ca8443d7dfe42cda"
+    },
+    {
+      "bytes": 3112040,
+      "name": "IDENTITY_UNIVERSE",
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/artifact.json",
+      "sha256": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf"
+    },
+    {
+      "bytes": 5029,
+      "name": "IDENTITY_UNIVERSE_receipt",
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/receipt.json",
+      "sha256": "d29192a8fbdeb5b03595f524502df9d9e3146282698ad52f2c1091bf7c553464"
+    },
+    {
+      "bytes": 4710499,
+      "name": "RAW_DAILY",
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/RAW_DAILY/artifact.json",
+      "sha256": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1"
+    },
+    {
+      "bytes": 4766,
+      "name": "RAW_DAILY_receipt",
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/RAW_DAILY/receipt.json",
+      "sha256": "6bb6dfba2700b56cca92ac5f9641a4b415c34a884d058bf4f9f36f7115ee134b"
+    },
+    {
+      "bytes": 1948501,
+      "name": "ROTATION",
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_bb8d0c0929f531e8cddf.jsonl.gz",
+      "sha256": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667"
+    },
+    {
+      "bytes": 2108127,
+      "name": "SECTOR_NATIVE",
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_bb8d0c0929f531e8cddf.jsonl.gz",
+      "sha256": "707a21982a8b26b688e3416388c73e64bfbb4d7bf2e04b7bc9df7297c979f53f"
+    },
+    {
+      "bytes": 2470841,
+      "name": "TRADING_STATUS",
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/TRADING_STATUS/artifact.json",
+      "sha256": "20798999bb3309aa93f42ebd075bc53cffb5337117f6fbccd7eafd14986f51bb"
+    },
+    {
+      "bytes": 4769,
+      "name": "TRADING_STATUS_receipt",
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/TRADING_STATUS/receipt.json",
+      "sha256": "c0589bb547b070c830e3ead5ca0ab41de5ca5592cd0cc7b3972b66f0f1557d7e"
+    },
+    {
+      "bytes": 37627535,
+      "name": "advanced",
+      "path": "reports/v4_13_runtime_r16/real/2026-09-30/r6/profile_advanced.jsonl.gz",
+      "sha256": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    },
+    {
+      "bytes": 1355970,
+      "name": "display_names",
+      "path": "data/v4/display_names/a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f/names.json",
+      "sha256": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+    },
+    {
+      "bytes": 1485,
+      "name": "domain_bff_contract",
+      "path": "config/v4_research_domain_bff_contract_v2.json",
+      "sha256": "1b4ab8c69ab7fc848b6ea2f1165646f4d9d79a42a5d3fee1e330eadebafc6404"
+    },
+    {
+      "bytes": 614785,
+      "name": "events",
+      "path": "data/v4/confirmation_candidates_r5/STATE_EVENT_2026-09-30_CANDIDATE_R5.json.gz",
+      "sha256": "7de481708462bda5073031a129bc147279dc9f2c7741c389f14a8fc6f99dcd58"
+    },
+    {
+      "bytes": 1701434,
+      "name": "focus_operational",
+      "path": "data/v4/fp08_focus/7286579d7ecf4082f7884eb346fe80f6af3d44ad6361e04481e118094cde9ed4/focus.json",
+      "sha256": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24"
+    },
+    {
+      "bytes": 915454,
+      "name": "forward_operational",
+      "path": "data/v4/fp10_forward/b21b0d0eae10ab2850da86578d0bb9a9f3a4db23eee3a13642be1046c7fb5e6b/forward.json",
+      "sha256": "7016dd55bccdfc8f7bf68e3b773837b1925457cb8e8a2ca14f4c0c7a8f4e6e8c"
+    },
+    {
+      "bytes": 5528197,
+      "name": "identity_names",
+      "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+    },
+    {
+      "bytes": 5291905,
+      "name": "market_center",
+      "path": "data/v4/fp09_market_center/64758fa8a60f31a847c0bdb45ba4ed6a753bfba5ca8198a991c1dd140689d263/market_center.json",
+      "sha256": "d96f943d6b013142928ebe8481efa35e7e35f942cff9e755d1538b4b79e4a98a"
+    },
+    {
+      "bytes": 12201,
+      "name": "market_operational",
+      "path": "data/v4/fp05_market/e034e70084533be70892fd32d066139cbd273a36a8ada7e511a68f75fe1f1008/market.json",
+      "sha256": "3c5a189d65158ec6de5e4d0ea311e590874d53207fd271761ce45e5e2385254e"
+    },
+    {
+      "bytes": 1843,
+      "name": "maturity",
+      "path": "reports/r20r1r2/MATURITY_DEBT_READBACK.json",
+      "sha256": "e40b89ce3d90cf2ad250abe00e111ec55263b25571067c981c645a4ce99c1a52"
+    },
+    {
+      "bytes": 4004928,
+      "name": "membership",
+      "path": "data/v4/artifact_store/v4_08/V4_08_PIT_MEMBERSHIP_FACTS_20260930_R1.jsonl.gz",
+      "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+    },
+    {
+      "bytes": 58749,
+      "name": "producer",
+      "path": "reports/r20e/PRODUCER_RECEIPT.json",
+      "sha256": "5cb082c7da886d771a4aa93c3962ec765c67a40394c51d9f336d473fe8044197"
+    },
+    {
+      "bytes": 104701,
+      "name": "radar",
+      "path": "reports/v4_15_runtime_r20/e2e_r2/radar_publication/7188d9c2c0ccb9337ae636e9168f3bb3f111a9f06cc69672f5842d365104b962.json",
+      "sha256": "4b0b9c8ac2c4702d0c2c8b17d601ebb63dbf818f5cbc13309024cf3b81124666"
+    },
+    {
+      "bytes": 138821,
+      "name": "read_contract",
+      "path": "data/v4/production_views/f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147/read_contract.json",
+      "sha256": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147"
+    },
+    {
+      "bytes": 3622812,
+      "name": "replay",
+      "path": "reports/v4_14_replay_r18/real/2026-09-30/r1/manifest.json",
+      "sha256": "f4c068afec2fdda754bce62a5f5773565c893be20554f871a25f11afee22e492"
+    },
+    {
+      "bytes": 18704,
+      "name": "replay_operational",
+      "path": "config/v4_replay_compare_authority_v1.json",
+      "sha256": "9f3cae61d1edf2a34d8ae1a1c77deebd44e75b5388bf11bbadef2bf7c6b1a924"
+    },
+    {
+      "bytes": 17581,
+      "name": "replay_seal",
+      "path": "reports/r18r1r1c/V4_14_RUNTIME_CANDIDATE_R18R1R1_SEAL.json",
+      "sha256": "bb4246bb807ee5020989b5f5458d8f0c18465b6680012fc7e52ad03903230ffd"
+    },
+    {
+      "bytes": 5308,
+      "name": "runtime_seal",
+      "path": "reports/r20e/V4_15_RUNTIME_CANDIDATE_R20_SEAL.json",
+      "sha256": "74dbcbd1ffefc8dfb20090776d861c96815e6b5fa22af49c8553e414a0be7653"
+    },
+    {
+      "bytes": 1548923,
+      "name": "sector_operational",
+      "path": "data/v4/fp06_sector/fc1c4411b3bdf36ed148223e02ca58c50e771364cef71fe72e6d8e527444df3f/native.jsonl.gz",
+      "sha256": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "bytes": 383581,
+      "name": "settlement_receipt",
+      "path": "reports/r20e/SETTLEMENT_RECEIPT.json",
+      "sha256": "4c07ffa7ed081dd297380b24159c0b11d4e3dc9d6b1504be503312a9e2fe608f"
+    },
+    {
+      "bytes": 3206718,
+      "name": "state_view",
+      "path": "data/v4/production_views/blobs/ac302f29f76c90ffbec424652fd5f232f76076aea7c14f54c392924bb14c4c1e.json",
+      "sha256": "ac302f29f76c90ffbec424652fd5f232f76076aea7c14f54c392924bb14c4c1e"
+    },
+    {
+      "bytes": 12539130,
+      "name": "states",
+      "path": "data/v4/confirmation_candidates_r5/D2_2026-09-30_CANDIDATE_R5.json.gz",
+      "sha256": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    {
+      "bytes": 19460170,
+      "name": "stock_factors",
+      "path": "data/v4/fp06_sector/fc1c4411b3bdf36ed148223e02ca58c50e771364cef71fe72e6d8e527444df3f/factors.jsonl.gz",
+      "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "bytes": 44321756,
+      "name": "stock_profiles",
+      "path": "data/v4/fp06_sector/fc1c4411b3bdf36ed148223e02ca58c50e771364cef71fe72e6d8e527444df3f/profiles.jsonl.gz",
+      "sha256": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    {
+      "bytes": 367886336,
+      "name": "stock_series",
+      "path": "data/v4/fp07_stocks/69bf874b4d7311a1ddd217846e716708d96a26aeea19ec289721ad2564bbb4d3/series.sqlite",
+      "sha256": "6b326dac93aacd63dc289895b1488f224843940154b6f4b89bc0df8af0a4518d"
+    }
+  ],
+  "trade_date": "2026-09-30"
+}

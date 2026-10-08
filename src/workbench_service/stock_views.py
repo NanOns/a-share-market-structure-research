@@ -43,3 +43,19 @@ def explanation(reader,item):
         F={k:v for k,v in item['fields'].items() if k in ('close','ma5','ma10','ma20','ma60','atr14','pos20','pos60','rps5','rps20','amount_ratio20','volume_ratio20','turnover')},
         R={k:v for k,v in item['fields'].items() if k.endswith('_state') or k in ('core_participation_result','core_extension_risk')},
         H=[],hypothesis_reason='NO_BOUND_OWNER_HYPOTHESIS_OUTPUT_NO_UI_INFERENCE',waiting_for=value(item,'unknown_predicates'),invalid_if=value(item,'invalid_if'),invalid_if_reason='OWNER_INVALIDATION_CONDITIONS_NOT_PUBLISHED' if 'invalid_if' not in item['fields'] else None)
+
+def timeline(reader,item,query):
+    """Expose only bound owner structure records, with field-local debts."""
+    rows=[];debts=[]
+    for field,kind in [('structure_events','STRUCTURE_EVENT'),('anchor_view_asof_t','ANCHOR')]:
+        cell=item['fields'].get(field)
+        if not cell or cell.get('quality')=='UNKNOWN' or cell.get('value') is None:
+            debts.append(dict(field=field,owner='V4_12',reason=cell.get('reason') if cell else 'OWNER_FIELD_NOT_BOUND'))
+            continue
+        values=cell['value'] if isinstance(cell['value'],list) else [cell['value']]
+        for entry in values:rows.append(dict(kind=kind,data=entry,source_field=field,source=cell))
+    offset=int(query.get('offset',0));limit=int(query.get('limit',30))
+    return reader.envelope(status='SOURCE_INCOMPLETE' if debts else 'READY' if rows else 'EMPTY_VALID',
+        resource_type='stock_owner_timeline',items=rows[offset:offset+limit],total=len(rows),offset=offset,limit=limit,
+        has_next=offset+limit<len(rows),owner_specific_debt=debts,contract_id='R2_STOCK_OWNER_TIMELINE_V1',
+        scope='BOUND_OWNER_RECORDS_ONLY_NO_RECONSTRUCTED_EVENT_DATES')

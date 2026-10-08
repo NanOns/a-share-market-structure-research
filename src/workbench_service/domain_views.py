@@ -38,14 +38,19 @@ def home(reader):
     members=defaultdict(set)
     with sqlite3.connect(reader.path.as_uri()+'?mode=ro',uri=True) as db:
         for s,e in db.execute('SELECT sector,security FROM members'):members[s].add(e)
+    # Rank before clipping; only displayed sectors may suppress independent changes.
+    priority={'INVALIDATED':0,'IMPORTANT_WEAKENED':1,'WEAKENED':2,'NEW_CONFIRMED':3,'UPGRADED':4}
+    rank=lambda r:(priority.get(value(r,'effective_event'),5),r['entity_id'])
+    changes.sort(key=rank)
+    sector_changes.sort(key=lambda r:(rank(r)[0],-sum(x['entity_id'] in members[r['entity_id']] for x in changes),r['entity_id']))
     covered=set();cards=[]
-    for row in sector_changes:
+    for row in sector_changes[:15]:
         related=[r for r in changes if r['entity_id'] in members[row['entity_id']]]
         fresh=[r for r in related if r['entity_id'] not in covered];covered.update(r['entity_id'] for r in related)
         cards.append(dict(item=row,member_previews=related[:5],change_counts=dict(Counter(value(r,'effective_event') for r in related)),net_information_count=len(fresh),member_total=len(members[row['entity_id']])))
     independent=[r for r in changes if r['entity_id'] not in covered]
     return reader.envelope(status='READY',counts=reader.manifest['counts'],gaps=reader.manifest['gaps'],market=reader.manifest.get('domain_features',{}).get('market'),
         changes=independent[:30],change_total=len(independent),persistent_count=sum(value(r,'effective_event')=='PERSISTENT' for r in events),
-        sector_changes=cards[:15],sector_change_total=len(cards),rotations=rotations[:15],rotation_total=len(rotations),risks=[r for r in changes if value(r,'effective_event') in RISK_EVENTS][:30],
+        sector_changes=cards,sector_change_total=len(sector_changes),rotations=sorted(rotations,key=rank)[:15],rotation_total=len(rotations),risks=[r for r in changes if value(r,'effective_event') in RISK_EVENTS][:30],
         net_information_count=len({r['entity_id'] for r in changes}),comparison=dict(trade_date=reader.context['trade_date'],mode='OWNER_EMITTED_STATE_EVENT_DELTA',source=reader.manifest['sources']['events'],sector_reason='CURRENT_OWNER_ROTATION_UNKNOWN_NO_PRIOR_ACCEPTED_MEMBERSHIP' if not rotations else None),
         radar=objects(reader,'radar')[:15])

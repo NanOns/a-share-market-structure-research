@@ -1,0 +1,52 @@
+{
+  "method": "query_adjust_factor",
+  "params": {
+    "code": "sh.600351",
+    "start_date": "2026-01-01",
+    "end_date": "2026-10-08"
+  },
+  "requested_at": "2026-10-08T23:18:06.401812+00:00",
+  "attempt": 0,
+  "source_revision": "495d5d76163f538a3d1466563e1eb3d8a5424cfb0651f6a30960403dff55350f",
+  "lineage": "RECONSTRUCTED_CORRECTED",
+  "status": "BAOSTOCK_FOUND",
+  "rows": [
+    {
+      "code": "sh.600351",
+      "dividOperateDate": "2026-02-06",
+      "foreAdjustFactor": "0.948733",
+      "backAdjustFactor": "8.369062",
+      "adjustFactor": "8.369062"
+    },
+    {
+      "code": "sh.600351",
+      "dividOperateDate": "2026-06-15",
+      "foreAdjustFactor": "0.971910",
+      "backAdjustFactor": "8.573518",
+      "adjustFactor": "8.573518"
+    },
+    {
+      "code": "sh.600351",
+      "dividOperateDate": "2026-09-01",
+      "foreAdjustFactor": "1.000000",
+      "backAdjustFactor": "8.821307",
+      "adjustFactor": "8.821307"
+    }
+  ],
+  "metadata": {
+    "error_code": "0",
+    "error_msg": "success",
+    "fields": [
+      "code",
+      "dividOperateDate",
+      "foreAdjustFactor",
+      "backAdjustFactor",
+      "adjustFactor"
+    ],
+    "page_count": 1,
+    "provider_date": null
+  },
+  "hash": "2455ae1e9fddcd2ac6ebe0dc44361a10c9b71b670fbae70ab2c8a231d4b342f9",
+  "received_at": "2026-10-08T23:18:06.667770+00:00",
+  "row_count": 3
+}

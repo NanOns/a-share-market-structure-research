@@ -1,0 +1,223 @@
+{
+  "status": "BLOCKED_SAFE_LAST_GOOD",
+  "preserved": {
+    "config/v4_joint_release_authority_v1.json": true,
+    "data/v4/V4_DATA_ACCEPTED_HEAD.json": true,
+    "config/v4_daily_source_freeze_v2.json": true,
+    "config/baostock_supplemental_contract_v1.json": true
+  },
+  "promoted": false,
+  "readback": [
+    {
+      "route": "/api/v4/context",
+      "status": "READ",
+      "payload": {
+        "context": {
+          "accepted_trade_date": "2026-09-30",
+          "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+          "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+          "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+          "historical_pit_effectiveness": "NOT_GRANTED",
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "last_accepted_trade_date": "2026-09-30",
+          "namespace": "V4_CURRENT_ACCEPTED",
+          "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "source_mode": "SCOPED_OPERATIONAL_RELEASE",
+          "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+          "stage": "V4-15",
+          "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+          "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+          "release_id": "3a3f5d9074b646189ccfd830c15e7161",
+          "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+          "publication_id": "3a3f5d9074b646189ccfd830c15e7161",
+          "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+          "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "turnover_as_of": null,
+          "quality": "QUALITY_DEGRADED",
+          "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+          "factor_contract_id": null,
+          "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+          "parameter_set_id": null,
+          "trade_date": "2026-09-30",
+          "release_metadata": {
+            "contract_version": "1.0.0",
+            "data_quality_state": "QUALITY_DEGRADED",
+            "evidence_origin": "REAL_ACCEPTED_SOURCE",
+            "evidence_state": "VALIDATION_ONGOING",
+            "input_digest": "3ac42e95013afe6e1a9436df789d067440abb68281ab6974315a3a1b55605ca0",
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "owner": "FP02_RESEARCH_PROJECTION",
+            "published_at": "2026-10-08T13:37:02.818531+00:00",
+            "release_id": "3a3f5d9074b646189ccfd830c15e7161",
+            "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+            "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+            "trading_date": "2026-09-30"
+          },
+          "scoped_release": true,
+          "operational_release_scope": [
+            "stocks_daily",
+            "sectors_current_facts",
+            "market_current",
+            "focus_read_corrected",
+            "forward_read",
+            "diagnostics",
+            "compare_corrected"
+          ],
+          "full_product_release": false,
+          "joint_release_digest": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298",
+          "domain_readiness": {
+            "stocks": {
+              "released": true,
+              "scope": "DATED_FACTORS_CHARTS_OWNER_STATE",
+              "debt": [
+                "HYPOTHESIS",
+                "INVALID_IF_OWNER",
+                "FULL_STRUCTURE_PATH"
+              ]
+            },
+            "sectors": {
+              "released": true,
+              "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP",
+              "debt": [
+                "HISTORICAL_MEMBERSHIP",
+                "LIFECYCLE",
+                "ROTATION_HISTORY"
+              ]
+            },
+            "market": {
+              "released": true,
+              "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS",
+              "debt": [
+                "INTRADAY_TOUCH_BROKEN_LIMIT",
+                "OFFICIAL_FACT_NEWS"
+              ]
+            },
+            "focus": {
+              "released": true,
+              "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ",
+              "debt": [
+                "UNRESOLVED_PATH_PREDICATE_OWNERS",
+                "LEGACY_PG_RECONCILIATION"
+              ],
+              "earliest_valid_date": "2026-09-29"
+            },
+            "forward": {
+              "released": true,
+              "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ",
+              "debt": [
+                "CURRENT_FEP_INFERENCE",
+                "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+                "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+              ]
+            },
+            "strict_pit": {
+              "released": false,
+              "scope": "NONE",
+              "debt": [
+                "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+              ]
+            },
+            "fep": {
+              "released": false,
+              "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION",
+              "debt": [
+                "CURRENT_FEATURE_MODEL_INFERENCE"
+              ]
+            }
+          }
+        },
+        "context_token": "research-v4-d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3",
+        "status": "READY",
+        "counts": {
+          "events": 33,
+          "focus": 469,
+          "forward": 117,
+          "market": 1,
+          "radar": 117,
+          "sectors": 378,
+          "settlement": 585,
+          "sources": 4,
+          "stocks": 5213
+        },
+        "gaps": [
+          {
+            "count": 11,
+            "domain": "profile_identity",
+            "reason": "ADVANCED_ROWS_OUTSIDE_CURRENT_RAW_UNIVERSE",
+            "state": "SOURCE_INCOMPLETE"
+          },
+          {
+            "domain": "focus",
+            "next": "FP08_INDEPENDENT_FOCUS_WRITE_ADMISSION",
+            "reason": "AUTOMATIC_WRITE_PATH_ADAPTER_AND_LEGACY_HISTORY_MIGRATION_NOT_ADMITTED",
+            "state": "SOURCE_INCOMPLETE"
+          }
+        ],
+        "daily_refresh": {
+          "status": "WAIT_NEXT_ACCEPTED_INPUT",
+          "next_completed_session": null,
+          "source_requests": 0,
+          "data_preserved": true,
+          "scope": "INPUT_PROGRESS_NOT_RESEARCH_CONTEXT",
+          "accepted_input_date": "2026-09-30",
+          "indexed_trade_date": "2026-09-30"
+        }
+      }
+    },
+    {
+      "route": "/api/operations/status",
+      "status": "READ",
+      "payload": {
+        "service_state": "READY",
+        "service_mode": "V4_DEFAULT_WORKBENCH",
+        "service_control_contract": "V4_DEFAULT_WORKBENCH_SERVICE_V1",
+        "product_version": "V4",
+        "default_ui": "V4",
+        "current_accepted_reader": true,
+        "shadow_diagnostics": true,
+        "legacy_v3_default": false,
+        "read_only_ui": true,
+        "production_permission": {
+          "ROTATION": false,
+          "SECTOR_RISK_CHANGE": false,
+          "SECTOR_STAGE": false,
+          "STOCK_CORE": false,
+          "STOCK_SECTOR_DEPENDENT": false
+        },
+        "source_mode": "V4_ACCEPTED_RESEARCH_READONLY",
+        "namespace": "V4_CURRENT_ACCEPTED",
+        "accepted_trade_date": "2026-09-30",
+        "last_accepted_trade_date": "2026-09-30",
+        "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+        "stage": "V4-15",
+        "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+        "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+        "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+        "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+        "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "historical_pit_effectiveness": "NOT_GRANTED",
+        "research_ui_contract": "V4_SIX_ENTRY_SHELL_V1",
+        "research_snapshot_state": "READY",
+        "research_counts": {
+          "events": 33,
+          "focus": 469,
+          "forward": 117,
+          "market": 1,
+          "radar": 117,
+          "sectors": 378,
+          "settlement": 585,
+          "sources": 4,
+          "stocks": 5213
+        },
+        "research_release_id": "3a3f5d9074b646189ccfd830c15e7161"
+      }
+    }
+  ],
+  "acceptance": "NO_NEW_OWNER_OR_SUCCESSOR_ACCEPTANCE",
+  "next_stage": "TDX_CAPTURE_AND_NATIVE_QFQ_OWNER_REPAIR"
+}

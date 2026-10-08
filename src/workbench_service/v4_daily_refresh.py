@@ -73,6 +73,12 @@ def refresh_status(root,*,now=None):
     sessions=calendar.get('session_dates') or calendar.get('sessions')
     if not sessions:raise SourceInvalid('OFFICIAL_CALENDAR_UNAVAILABLE')
     if isinstance(sessions[0],dict):sessions=sorted(set(row['trade_date'] for row in sessions))
+    # Capture discovery must not stop at the last accepted-data calendar cutoff.
+    # The hash-verified DM01 exchange calendar extends capture dates only; it
+    # never grants new owner or production publication permission.
+    if (root/'data/v4/DM01_R4_CALENDAR_HEAD_V1.json').exists():
+        from workbench_analysis.dm01_runtime_r4 import calendar as capture_calendar
+        sessions=sorted(set(sessions)|set(capture_calendar(root)['session_dates']))
     now=now or datetime.now(ZoneInfo('Asia/Shanghai'))
     completed=[d for d in sessions if context['context']['accepted_trade_date']<d<now.date().isoformat() or (d==now.date().isoformat() and now.hour>=15 and d>context['context']['accepted_trade_date'])]
     return dict(status='WAIT_NEXT_ACCEPTED_INPUT' if not completed else 'COMPLETED_INPUT_CAPTURE_REQUIRED',next_completed_session=min(completed) if completed else None,

@@ -1,0 +1,92 @@
+{
+  "method": "query_history_k_data_plus",
+  "params": {
+    "code": "sz.002742",
+    "fields": "date,code,open,high,low,close,volume,amount,tradestatus,isST,adjustflag",
+    "start_date": "2026-09-28",
+    "end_date": "2026-10-08",
+    "frequency": "d",
+    "adjustflag": "3"
+  },
+  "requested_at": "2026-10-08T23:21:38.268007+00:00",
+  "attempt": 0,
+  "source_revision": "5113bfa94a87657f17354ebb0f89a6e41a0115289f90467f5bd4bb2eb247b0a3",
+  "lineage": "RECONSTRUCTED_CORRECTED",
+  "status": "BAOSTOCK_FOUND",
+  "rows": [
+    {
+      "date": "2026-09-28",
+      "code": "sz.002742",
+      "open": "4.1500",
+      "high": "4.1900",
+      "low": "4.0500",
+      "close": "4.1000",
+      "volume": "16290100",
+      "amount": "66637400.0000",
+      "tradestatus": "1",
+      "isST": "0",
+      "adjustflag": "3"
+    },
+    {
+      "date": "2026-09-29",
+      "code": "sz.002742",
+      "open": "4.1100",
+      "high": "4.1900",
+      "low": "4.0700",
+      "close": "4.1000",
+      "volume": "13298550",
+      "amount": "54880378.0500",
+      "tradestatus": "1",
+      "isST": "0",
+      "adjustflag": "3"
+    },
+    {
+      "date": "2026-09-30",
+      "code": "sz.002742",
+      "open": "4.1100",
+      "high": "4.2000",
+      "low": "4.1100",
+      "close": "4.1600",
+      "volume": "19961900",
+      "amount": "83034487.0000",
+      "tradestatus": "1",
+      "isST": "0",
+      "adjustflag": "3"
+    },
+    {
+      "date": "2026-10-08",
+      "code": "sz.002742",
+      "open": "4.1800",
+      "high": "4.2400",
+      "low": "4.0700",
+      "close": "4.0900",
+      "volume": "18237600",
+      "amount": "75448952.0000",
+      "tradestatus": "1",
+      "isST": "0",
+      "adjustflag": "3"
+    }
+  ],
+  "metadata": {
+    "error_code": "0",
+    "error_msg": "success",
+    "fields": [
+      "date",
+      "code",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount",
+      "tradestatus",
+      "isST",
+      "adjustflag"
+    ],
+    "page_count": 1,
+    "provider_date": null
+  },
+  "hash": "5ffbd565febc64aca91940c134136ddea255616b51a94dcd084d1465720e3705",
+  "received_at": "2026-10-08T23:21:38.507166+00:00",
+  "row_count": 4
+}

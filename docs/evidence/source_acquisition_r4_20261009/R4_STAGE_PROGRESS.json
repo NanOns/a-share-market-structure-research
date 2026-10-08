@@ -1,0 +1,66 @@
+{
+  "stage_contract": "R4.1",
+  "phase0": "DEGRADED_PASS",
+  "source_acquisition_acceptance": "DEGRADED_PASS",
+  "overall_acceptance": "NOT_COMPLETE",
+  "stages": [
+    {
+      "stage": "P0_SOURCE_CAPTURE",
+      "contract": "V4_MARKET_SOURCE_FALLBACK_POLICY_V1",
+      "evidence": "01_TDX_LOCAL_OFFICIAL_BAOSTOCK_REAL_REQUEST_LEDGER.json",
+      "acceptance": "DEGRADED_PASS",
+      "next_stage": "INDEPENDENT_NATIVE_COORDINATE_ADMISSION"
+    },
+    {
+      "stage": "NEW_POLICY_AND_DAILY_HOOK",
+      "contract": "V4_MARKET_SOURCE_ACQUISITION_REGISTRY_V1",
+      "evidence": "07_DM01_20261008_INCREMENT_AND_HISTORICAL_REPAIR_E2E.json",
+      "acceptance": "STAGING_IMPLEMENTED_PRODUCTION_BLOCKED",
+      "next_stage": "CORRECTED_OWNER_BUILDERS"
+    },
+    {
+      "stage": "OWNER_AND_RELEASE",
+      "contract": "UNCHANGED_ORIGINAL_OWNER_CONTRACTS",
+      "evidence": "08_STRUCTURAL_OWNER_AFTER_SOURCE_REPAIR.json",
+      "acceptance": "BLOCKED",
+      "next_stage": "R4-A01_TO_A06_INDEPENDENT_ACCEPTANCE"
+    }
+  ],
+  "tests": {
+    "pytest_exit": 0,
+    "stdout": ".............................................................            [100%]\n61 passed in 24.27s\n",
+    "stderr": "",
+    "independent_real_receipt_invariants": {
+      "legacy_qfq_security_days": true,
+      "preserved_suspension_baseline": true,
+      "exact_four_dates": true,
+      "no_sz399_index_as_stock": true,
+      "real_sample_minimum": true,
+      "protected_heads_and_old_contracts": true
+    },
+    "matrix_counts": {
+      "2026-09-28": 5222,
+      "2026-09-29": 5223,
+      "2026-09-30": 5224,
+      "2026-10-08": 5224
+    },
+    "release_acceptance": false,
+    "stage_acceptance": "NOT_COMPLETE"
+  },
+  "real_request_count_current_day": 562,
+  "request_operations": {
+    "login": 4,
+    "logout": 4,
+    "r4_query_adjust_factor": 178,
+    "r4_query_all_stock": 5,
+    "r4_query_daily_adjust_factor": 5,
+    "r4_query_daily_history_k_AStock": 5,
+    "r4_query_history_k_data_plus": 354,
+    "r4_query_stock_industry": 5,
+    "r4_query_trade_dates": 2
+  },
+  "source_counts_note": "548 BaoStock calls in the four-date run; later normal daily executions share the same budget. 12 HTTP requests in the four-date official run; normal daily TDX calls are separately receipted.",
+  "no_external_acceptance": true,
+  "production_pointer_changed": false,
+  "tdx_write_count": 0
+}

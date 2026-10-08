@@ -10,7 +10,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+sys.path[:0] = [str(ROOT), str(ROOT / "src")]
 
 from workbench_analysis.daily_source_orchestrator import evaluate_daily_source_readiness  # noqa: E402
 from workbench_analysis.tdx_official_daily_source import capture_tdx_official_daily_package  # noqa: E402
@@ -44,7 +44,7 @@ def _runtime_acceptance(target_date: str) -> tuple[dict | None, str | None]:
 
 
 def _run_json_cli(*args: str) -> tuple[int, dict]:
-    result = subprocess.run([sys.executable, *args], cwd=ROOT, capture_output=True, text=True, timeout=900)
+    result = subprocess.run([sys.executable, '-X', 'utf8', *args], cwd=ROOT, capture_output=True, text=True, encoding='utf8', timeout=900)
     lines = [line for line in result.stdout.splitlines() if line.strip()]
     try:
         payload = json.loads(lines[-1]) if lines else {}
@@ -97,6 +97,8 @@ def main() -> int:
     parser.add_argument("--target-date", required=True)
     parser.add_argument("--snapshot-root", type=Path, default=ROOT / "data/v4/source_snapshots")
     parser.add_argument("--receipt-dir", type=Path, default=ROOT / "reports/v4_dm01")
+    parser.add_argument("--active-source-policy", action="store_true",
+                        help="Run versioned R4 corrected source capture independently of canonical admission.")
     args = parser.parse_args()
     now = datetime.now(timezone.utc).replace(microsecond=0)
     local = now.astimezone(ZoneInfo("Asia/Shanghai"))
@@ -104,10 +106,21 @@ def main() -> int:
         gate = session_gate(args.target_date, now.isoformat(), ROOT)
         if gate['status'] == 'WAIT_MARKET_CLOSE':
             print(json.dumps(gate)); return 0
-        builder_registry_result = validate_registry(BUILDERS, ROOT)
     except (ValueError, OSError, KeyError) as error:
         print(json.dumps(dict(status='BLOCKED',reason=str(error),source_requests=0,data_head_moved=False))); return 2
     official_sessions = calendar(ROOT)['session_dates']
+    try:
+        builder_registry_result = validate_registry(BUILDERS, ROOT)
+    except (ValueError, OSError, KeyError) as error:
+        # A stale producer seal blocks building, not independent source capture.
+        builder_registry_result = dict(status='BLOCKED_BUILDER_REGISTRY', reason=str(error))
+    acquisition = None
+    if args.active_source_policy and args.target_date in official_sessions:
+        from workbench_analysis.market_source_acquisition import acquire
+        try:
+            acquisition = acquire(ROOT, [args.target_date], args.receipt_dir / args.target_date / 'active_source_capture')
+        except (ValueError, OSError) as error:
+            acquisition = dict(status='SOURCE_CAPTURE_BLOCKED', reason=str(error))
     candidate_result = None
     promotion_result = None
     bao = None
@@ -130,11 +143,14 @@ def main() -> int:
         if local.date().isoformat() == args.target_date and local.time() < datetime.strptime("15:00:00", "%H:%M:%S").time():
             tdx = None
         else:
-            tdx = capture_tdx_official_daily_package(
-                target_date=args.target_date,
-                snapshot_root=args.snapshot_root,
-                tdx_root=Path("D:/new_tdx"),
-            )
+            try:
+                tdx = capture_tdx_official_daily_package(
+                    target_date=args.target_date,
+                    snapshot_root=args.snapshot_root,
+                    tdx_root=Path("D:/new_tdx"),
+                )
+            except (ValueError, OSError) as error:
+                tdx = dict(status='SOURCE_CAPTURE_BLOCKED', reason=str(error), target_date=args.target_date)
         if local.date().isoformat() == args.target_date and local.time() >= datetime.strptime("15:00:00", "%H:%M:%S").time():
             _run_json_cli("scripts/probe_v4_dm01_gbbq_revision.py", "--target-date", args.target_date)
             gbbq_probe_path = ROOT / "reports/v4_dm01" / args.target_date / "gbbq_revision_probe_receipt_v1.json"
@@ -178,7 +194,10 @@ def main() -> int:
             lifecycle_snapshot=lifecycle_snapshot,
             special_phase_snapshot=special_phase_snapshot,
         )
-        if readiness.get("status") == "SOURCE_FREEZE_READY" and tdx and bao and gbbq_probe:
+        if tdx and tdx.get('status') == 'SOURCE_CAPTURE_BLOCKED':
+            readiness = dict(readiness, status='SOURCE_CAPTURE_BLOCKED', reason=tdx.get('reason'), head_moved=False)
+        if (readiness.get("status") == "SOURCE_FREEZE_READY" and tdx and bao and gbbq_probe
+                and builder_registry_result.get('status') != 'BLOCKED_BUILDER_REGISTRY'):
             tdx_capture_path = Path(str(tdx.get("receipt_path") or ""))
             gbbq_probe_path = ROOT / "reports/v4_dm01" / args.target_date / "gbbq_revision_probe_receipt_v1.json"
             freeze_code, source_freeze = _run_json_cli(
@@ -204,6 +223,8 @@ def main() -> int:
                 readiness = {**readiness, "status": "BLOCKED_SOURCE_FREEZE_V2_INVALID",
                              "source_freeze_error": source_freeze.get("reason") or source_freeze.get("status"),
                              "head_moved": False}
+    if readiness.get('status') == 'SOURCE_FREEZE_READY' and builder_registry_result.get('status') == 'BLOCKED_BUILDER_REGISTRY':
+        readiness = dict(readiness, status='BLOCKED_BUILDER_REGISTRY', reason=builder_registry_result['reason'])
     result = {
         "contract_id": "V4_DM01_SOURCE_READINESS_RECEIPT_R2",
         "version": "2.0.0",
@@ -215,6 +236,8 @@ def main() -> int:
         "observed_at": now.isoformat(),
         "source_readiness": readiness,
         "tdx_page_capture": tdx,
+        "active_source_capture": ({k: v for k, v in acquisition.items() if k not in ('local', 'queries')}
+                                  if acquisition else None),
         "baostock_capture": bao,
         "baostock_runtime_acceptance": runtime_manifest,
         "baostock_runtime_error": runtime_error,

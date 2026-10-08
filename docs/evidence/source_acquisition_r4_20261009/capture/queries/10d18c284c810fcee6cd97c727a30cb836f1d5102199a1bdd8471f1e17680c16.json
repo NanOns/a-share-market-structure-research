@@ -1,0 +1,92 @@
+{
+  "method": "query_history_k_data_plus",
+  "params": {
+    "code": "sh.600381",
+    "fields": "date,code,open,high,low,close,volume,amount,tradestatus,isST,adjustflag",
+    "start_date": "2026-09-28",
+    "end_date": "2026-10-08",
+    "frequency": "d",
+    "adjustflag": "3"
+  },
+  "requested_at": "2026-10-08T23:18:08.160089+00:00",
+  "attempt": 0,
+  "source_revision": "10d18c284c810fcee6cd97c727a30cb836f1d5102199a1bdd8471f1e17680c16",
+  "lineage": "RECONSTRUCTED_CORRECTED",
+  "status": "BAOSTOCK_FOUND",
+  "rows": [
+    {
+      "date": "2026-09-28",
+      "code": "sh.600381",
+      "open": "4.1800",
+      "high": "4.2400",
+      "low": "4.0600",
+      "close": "4.1300",
+      "volume": "3476900",
+      "amount": "14413630.0000",
+      "tradestatus": "1",
+      "isST": "1",
+      "adjustflag": "3"
+    },
+    {
+      "date": "2026-09-29",
+      "code": "sh.600381",
+      "open": "4.1400",
+      "high": "4.2600",
+      "low": "4.0900",
+      "close": "4.1300",
+      "volume": "4678500",
+      "amount": "19569635.0000",
+      "tradestatus": "1",
+      "isST": "1",
+      "adjustflag": "3"
+    },
+    {
+      "date": "2026-09-30",
+      "code": "sh.600381",
+      "open": "4.1400",
+      "high": "4.2100",
+      "low": "4.1200",
+      "close": "4.2000",
+      "volume": "4133500",
+      "amount": "17232833.0000",
+      "tradestatus": "1",
+      "isST": "1",
+      "adjustflag": "3"
+    },
+    {
+      "date": "2026-10-08",
+      "code": "sh.600381",
+      "open": "4.1900",
+      "high": "4.2800",
+      "low": "4.0400",
+      "close": "4.1200",
+      "volume": "3636586",
+      "amount": "15253273.6200",
+      "tradestatus": "1",
+      "isST": "1",
+      "adjustflag": "3"
+    }
+  ],
+  "metadata": {
+    "error_code": "0",
+    "error_msg": "success",
+    "fields": [
+      "date",
+      "code",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount",
+      "tradestatus",
+      "isST",
+      "adjustflag"
+    ],
+    "page_count": 1,
+    "provider_date": null
+  },
+  "hash": "9aec46241aed81796bd4f0ba721645c313e548e9c9d5972c14d423194d85b0f9",
+  "received_at": "2026-10-08T23:18:08.473515+00:00",
+  "row_count": 4
+}

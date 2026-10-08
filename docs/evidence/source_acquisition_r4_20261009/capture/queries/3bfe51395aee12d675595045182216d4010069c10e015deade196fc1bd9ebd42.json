@@ -1,0 +1,92 @@
+{
+  "method": "query_history_k_data_plus",
+  "params": {
+    "code": "sh.600861",
+    "fields": "date,code,open,high,low,close,volume,amount,tradestatus,isST,adjustflag",
+    "start_date": "2026-09-28",
+    "end_date": "2026-10-08",
+    "frequency": "d",
+    "adjustflag": "3"
+  },
+  "requested_at": "2026-10-08T23:19:06.580550+00:00",
+  "attempt": 0,
+  "source_revision": "3bfe51395aee12d675595045182216d4010069c10e015deade196fc1bd9ebd42",
+  "lineage": "RECONSTRUCTED_CORRECTED",
+  "status": "BAOSTOCK_FOUND",
+  "rows": [
+    {
+      "date": "2026-09-28",
+      "code": "sh.600861",
+      "open": "12.7500",
+      "high": "12.8200",
+      "low": "12.5000",
+      "close": "12.5500",
+      "volume": "1253303",
+      "amount": "15832750.6500",
+      "tradestatus": "1",
+      "isST": "0",
+      "adjustflag": "3"
+    },
+    {
+      "date": "2026-09-29",
+      "code": "sh.600861",
+      "open": "12.6400",
+      "high": "12.8000",
+      "low": "12.5300",
+      "close": "12.6900",
+      "volume": "1717719",
+      "amount": "21845344.7000",
+      "tradestatus": "1",
+      "isST": "0",
+      "adjustflag": "3"
+    },
+    {
+      "date": "2026-09-30",
+      "code": "sh.600861",
+      "open": "12.7500",
+      "high": "12.8600",
+      "low": "12.6600",
+      "close": "12.8300",
+      "volume": "1286880",
+      "amount": "16438410.8000",
+      "tradestatus": "1",
+      "isST": "0",
+      "adjustflag": "3"
+    },
+    {
+      "date": "2026-10-08",
+      "code": "sh.600861",
+      "open": "12.8200",
+      "high": "12.8700",
+      "low": "12.7400",
+      "close": "12.8100",
+      "volume": "1632200",
+      "amount": "20895507.0000",
+      "tradestatus": "1",
+      "isST": "0",
+      "adjustflag": "3"
+    }
+  ],
+  "metadata": {
+    "error_code": "0",
+    "error_msg": "success",
+    "fields": [
+      "date",
+      "code",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount",
+      "tradestatus",
+      "isST",
+      "adjustflag"
+    ],
+    "page_count": 1,
+    "provider_date": null
+  },
+  "hash": "8ae267762d85802a4a9583c0d96e90827eaa82a77fa3831b8694dfc6073b384f",
+  "received_at": "2026-10-08T23:19:07.095401+00:00",
+  "row_count": 4
+}

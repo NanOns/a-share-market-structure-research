@@ -1,0 +1,18 @@
+{
+  "contract_id": "V4_MARKET_SOURCE_ACQUISITION_REGISTRY_V1",
+  "version": "1.0.0",
+  "policy": "config/v4_market_source_fallback_policy_v1.json",
+  "runtime": "workbench_analysis.market_source_acquisition.acquire",
+  "formal_entry": "scripts/run_v4_dm01_daily_increment.py --active-source-policy",
+  "daily_entry": "scripts/run_v4_current_daily.py",
+  "datasets": {
+    "TDX_LOCAL_DAY": {"gate": "READ_ONLY_EXACT_BAR", "fields": ["OHLCVA"], "role": "OBSERVATION"},
+    "TDX_OFFICIAL_PACKAGE": {"gate": "LIVE_METADATA_AND_VALID_ZIP", "fields": ["OHLCVA"], "role": "CANONICAL_CANDIDATE"},
+    "BAOSTOCK_DATE_BATCH": {"gate": "PINNED_PUBLIC_SDK_BOUNDED_QUERY", "fields": ["OHLCVA", "tradestatus", "isST"], "role": "CORRECTED_STAGING"},
+    "BAOSTOCK_HISTORY_RAW_QFQ": {"gate": "SMOKE_BEFORE_EXPANSION", "fields": ["RAW_OHLCVA", "PROVIDER_QFQ_OHLC"], "role": "INDEPENDENT_COORDINATES"},
+    "BAOSTOCK_ADJUST_FACTOR": {"gate": "EXACT_CODE_DATE_RANGE", "fields": ["foreAdjustFactor", "backAdjustFactor", "adjustFactor"], "role": "FACTOR_AUDIT"},
+    "MEMBERSHIP_OBSERVATION": {"gate": "FREEZE_EACH_RUN_NO_BACKDATED_EFFECTIVE_DATE", "fields": ["industry", "concept"], "role": "OBSERVATION_ONLY"}
+  },
+  "production_admission": false,
+  "historical_PIT_admission": false
+}

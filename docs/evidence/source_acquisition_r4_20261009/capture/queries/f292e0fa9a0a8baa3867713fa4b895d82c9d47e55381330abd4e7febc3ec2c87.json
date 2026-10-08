@@ -1,0 +1,38 @@
+{
+  "method": "query_adjust_factor",
+  "params": {
+    "code": "sz.000917",
+    "start_date": "2026-01-01",
+    "end_date": "2026-10-08"
+  },
+  "requested_at": "2026-10-08T23:20:41.014051+00:00",
+  "attempt": 0,
+  "source_revision": "f292e0fa9a0a8baa3867713fa4b895d82c9d47e55381330abd4e7febc3ec2c87",
+  "lineage": "RECONSTRUCTED_CORRECTED",
+  "status": "BAOSTOCK_FOUND",
+  "rows": [
+    {
+      "code": "sz.000917",
+      "dividOperateDate": "2026-07-07",
+      "foreAdjustFactor": "1.000000",
+      "backAdjustFactor": "6.284055",
+      "adjustFactor": "6.284055"
+    }
+  ],
+  "metadata": {
+    "error_code": "0",
+    "error_msg": "success",
+    "fields": [
+      "code",
+      "dividOperateDate",
+      "foreAdjustFactor",
+      "backAdjustFactor",
+      "adjustFactor"
+    ],
+    "page_count": 1,
+    "provider_date": null
+  },
+  "hash": "115980c14081e2d052108a49ef26f6315054575cd9aebcbcf840956662934789",
+  "received_at": "2026-10-08T23:20:41.242683+00:00",
+  "row_count": 1
+}

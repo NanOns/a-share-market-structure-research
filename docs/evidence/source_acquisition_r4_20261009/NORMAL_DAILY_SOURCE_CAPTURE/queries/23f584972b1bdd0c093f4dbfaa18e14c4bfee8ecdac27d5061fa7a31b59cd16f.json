@@ -1,0 +1,31 @@
+{
+  "method": "query_trade_dates",
+  "params": {
+    "start_date": "2026-10-08",
+    "end_date": "2026-10-08"
+  },
+  "requested_at": "2026-10-08T23:26:59.183540+00:00",
+  "attempt": 0,
+  "source_revision": "23f584972b1bdd0c093f4dbfaa18e14c4bfee8ecdac27d5061fa7a31b59cd16f",
+  "lineage": "RECONSTRUCTED_CORRECTED",
+  "status": "BAOSTOCK_FOUND",
+  "rows": [
+    {
+      "calendar_date": "2026-10-08",
+      "is_trading_day": "1"
+    }
+  ],
+  "metadata": {
+    "error_code": "0",
+    "error_msg": "success",
+    "fields": [
+      "calendar_date",
+      "is_trading_day"
+    ],
+    "page_count": 1,
+    "provider_date": null
+  },
+  "hash": "8b0dd3a54d3cbb5d6593bae665f37224d200587e48783171f22e3899907d3b0b",
+  "received_at": "2026-10-08T23:26:59.410720+00:00",
+  "row_count": 1
+}

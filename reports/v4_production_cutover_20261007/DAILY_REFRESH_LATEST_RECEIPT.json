@@ -30,8 +30,13 @@
     "status": "READY_CURRENT_ACCEPTED"
   },
   "contract_id": "V4_ACCEPTED_CURRENT_REFRESH_V1",
+  "daily_pipeline_error": "",
+  "daily_pipeline_exit_code": 2,
+  "daily_pipeline_output": "{\"status\": \"SOURCE_CAPTURE_BLOCKED\", \"target_date\": \"2026-10-08\", \"receipt\": \"G:\\\\codex work\\\\大A交易\\\\reports\\\\v4_dm01\\\\2026-10-08\\\\source_readiness_receipt_r2.json\", \"receipt_sha256\": \"b8f75b3a340336a25533fbf72bc6f32cfa5735928dbfbba12e43ba543879cbf1\"}\n",
   "data_preserved": true,
-  "next_completed_session": null,
-  "source_requests": 0,
-  "status": "WAIT_NEXT_ACCEPTED_INPUT"
+  "next_completed_session": "2026-10-08",
+  "source_request_count_scope": "BAOSTOCK_ONLY;TDX_REQUESTS_IN_CAPTURE_RECEIPTS",
+  "source_request_receipt": "G:\\codex work\\大A交易\\reports\\v4_dm01\\2026-10-08\\source_readiness_receipt_r2.json",
+  "source_requests": 2,
+  "status": "BLOCKED_SOURCE_OR_OWNER_GATE"
 }

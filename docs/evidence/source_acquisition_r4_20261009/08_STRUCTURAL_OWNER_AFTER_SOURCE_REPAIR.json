@@ -1,0 +1,32 @@
+{
+  "status": "NOT_COMPLETE",
+  "runtime_implementation_exists": true,
+  "probes": [
+    {
+      "trade_date": "2026-09-28",
+      "status": "RUNTIME_PROBE_BLOCKED",
+      "error": "ValueError:UNAUTHORIZED_V4_13_STAGE"
+    },
+    {
+      "trade_date": "2026-09-29",
+      "status": "RUNTIME_PROBE_BLOCKED",
+      "error": "ValueError:UNAUTHORIZED_V4_13_STAGE"
+    },
+    {
+      "trade_date": "2026-09-30",
+      "status": "RUNTIME_PROBE_BLOCKED",
+      "error": "ValueError:UNAUTHORIZED_V4_13_STAGE"
+    },
+    {
+      "trade_date": "2026-10-08",
+      "status": "RUNTIME_PROBE_BLOCKED",
+      "error": "ValueError:UNAUTHORIZED_V4_13_STAGE"
+    }
+  ],
+  "reason": "New observations cannot bypass accepted membership/Core/previous D1 owner bindings",
+  "calendar_correction": {
+    "sep30_T_minus_3": "2026-09-24",
+    "oct08_T_minus_1": "2026-09-30",
+    "oct08_T_minus_3": "2026-09-28"
+  }
+}

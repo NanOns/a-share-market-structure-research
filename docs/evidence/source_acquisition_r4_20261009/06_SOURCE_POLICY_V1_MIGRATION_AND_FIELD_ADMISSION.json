@@ -1,0 +1,67 @@
+{
+  "policy": {
+    "contract_id": "V4_MARKET_SOURCE_FALLBACK_POLICY_V1",
+    "version": "1.0.0",
+    "authority": "USER_AUTHORIZED_R4_1_20261009",
+    "status": "CORRECTED_STAGING_ONLY",
+    "canonical_priority": [
+      "ACCEPTED_TDX",
+      "LOCAL_TDX",
+      "LIVE_OFFICIAL_TDX",
+      "BAOSTOCK_FALLBACK_CORRECTED"
+    ],
+    "legacy_contracts_unchanged": true,
+    "production_admission": false,
+    "lineage": "RECONSTRUCTED_CORRECTED",
+    "AS_RECORDED": false,
+    "capabilities": {
+      "official_tdx_live_capture": true,
+      "baostock_public_live_smoke": true,
+      "baostock_date_batch": "PROBE_THEN_VALIDATE",
+      "baostock_history_raw_qfq_factor": "BOUNDED_AFTER_HISTORY_SMOKE",
+      "membership_daily_capture": "OBSERVATION_ONLY_EFFECTIVE_DATE_REQUIRES_PROOF"
+    },
+    "price_basis_ids": {
+      "3": "BAOSTOCK_RAW_V1",
+      "2": "BAOSTOCK_QFQ_PROVIDER_ANCHOR_UNPROVEN_V1"
+    },
+    "fallback_gates": [
+      "identity",
+      "official_session",
+      "trade_status",
+      "units",
+      "finite_valid_OHLCVA",
+      "independent_overlap_oracle",
+      "source_specific_accepted_tolerance",
+      "frozen_revision",
+      "target_coordinate_anchor"
+    ],
+    "cross_source_price_mixing": false,
+    "source_conflict": "PRESERVE_BOTH_DEGRADE_FIELD",
+    "empty_response_is_suspension": false,
+    "budget": {
+      "serial": true,
+      "timeout_seconds": 30,
+      "retries": 1,
+      "daily_soft_stop": 40000,
+      "daily_hard_stop": 45000,
+      "max_rows": 20000,
+      "max_pages": 10
+    },
+    "promotion_requires": [
+      "independent_numeric_oracle",
+      "accepted_owners",
+      "same_context_readback",
+      "CAS",
+      "external_scoped_admission"
+    ]
+  },
+  "legacy_digests_preserved": {
+    "config/v4_joint_release_authority_v1.json": true,
+    "data/v4/V4_DATA_ACCEPTED_HEAD.json": true,
+    "config/v4_daily_source_freeze_v2.json": true,
+    "config/baostock_supplemental_contract_v1.json": true
+  },
+  "status": "STAGING_IMPLEMENTED_PRODUCTION_NOT_ADMITTED",
+  "next_stage": "NATIVE_COORDINATE_ORACLE_AND_OWNER_ADMISSION"
+}

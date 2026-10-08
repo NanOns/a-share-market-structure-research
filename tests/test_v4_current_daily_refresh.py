@@ -32,6 +32,13 @@ def test_no_new_trading_day_preserves_current():
     assert status['context']['context']['accepted_trade_date']=='2026-09-30'
 
 
+def test_oct08_capture_is_discovered_from_extended_calendar():
+    status=refresh_status(ROOT,now=datetime(2026,10,9,8,tzinfo=ZoneInfo('Asia/Shanghai')))
+    assert status['next_completed_session']=='2026-10-08'
+    assert status['status']=='COMPLETED_INPUT_CAPTURE_REQUIRED'
+    assert status['data_preserved'] and status['source_requests']==0
+
+
 def test_atomic_publish_and_cas(tmp_path):
     root=disposable(tmp_path);before=digest((root/AUTHORITY).read_bytes())
     receipt=publish_accepted_view(root,'candidate.json',before)

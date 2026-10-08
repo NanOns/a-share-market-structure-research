@@ -1,0 +1,92 @@
+{
+  "method": "query_history_k_data_plus",
+  "params": {
+    "code": "sh.600606",
+    "fields": "date,code,open,high,low,close,volume,amount,tradestatus,isST,adjustflag",
+    "start_date": "2026-09-28",
+    "end_date": "2026-10-08",
+    "frequency": "d",
+    "adjustflag": "2"
+  },
+  "requested_at": "2026-10-08T23:18:31.225219+00:00",
+  "attempt": 0,
+  "source_revision": "7c18df2fd3f45a848d0f5abcbbe6cbde1911c0204ad96727f7581811d8f6ed60",
+  "lineage": "RECONSTRUCTED_CORRECTED",
+  "status": "BAOSTOCK_FOUND",
+  "rows": [
+    {
+      "date": "2026-09-28",
+      "code": "sh.600606",
+      "open": "1.4100000000",
+      "high": "1.4500000000",
+      "low": "1.3800000000",
+      "close": "1.4100000000",
+      "volume": "226539706",
+      "amount": "318339579.2500",
+      "tradestatus": "1",
+      "isST": "0",
+      "adjustflag": "2"
+    },
+    {
+      "date": "2026-09-29",
+      "code": "sh.600606",
+      "open": "1.4200000000",
+      "high": "1.5400000000",
+      "low": "1.4000000000",
+      "close": "1.5000000000",
+      "volume": "397263954",
+      "amount": "589053039.6200",
+      "tradestatus": "1",
+      "isST": "0",
+      "adjustflag": "2"
+    },
+    {
+      "date": "2026-09-30",
+      "code": "sh.600606",
+      "open": "1.4800000000",
+      "high": "1.5600000000",
+      "low": "1.3900000000",
+      "close": "1.5400000000",
+      "volume": "434201029",
+      "amount": "639832925.5800",
+      "tradestatus": "1",
+      "isST": "0",
+      "adjustflag": "2"
+    },
+    {
+      "date": "2026-10-08",
+      "code": "sh.600606",
+      "open": "1.5100000000",
+      "high": "1.5600000000",
+      "low": "1.4500000000",
+      "close": "1.4700000000",
+      "volume": "302021381",
+      "amount": "454481631.2100",
+      "tradestatus": "1",
+      "isST": "0",
+      "adjustflag": "2"
+    }
+  ],
+  "metadata": {
+    "error_code": "0",
+    "error_msg": "success",
+    "fields": [
+      "date",
+      "code",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount",
+      "tradestatus",
+      "isST",
+      "adjustflag"
+    ],
+    "page_count": 1,
+    "provider_date": null
+  },
+  "hash": "273604a73bb48ae79059fca2233cf6ba79d50eb2402720e11e6c17ad2c3c7f5d",
+  "received_at": "2026-10-08T23:18:31.693603+00:00",
+  "row_count": 4
+}

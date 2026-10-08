@@ -329,8 +329,16 @@ def capture_tdx_official_daily_package(
         )
         try:
             validation = _zip_validate(temporary_archive)
-        except Exception:
-            temporary_archive.unlink(missing_ok=True)
+        except Exception as exc:
+            # Keep rejected response bytes outside TDX for diagnosis; an HTML
+            # edge challenge is not evidence that the provider has no BARs.
+            rejected = capture_dir / 'rejected_package_response.bin'
+            os.replace(temporary_archive, rejected)
+            receipt.update(status='REJECTED_INVALID_PACKAGE_RESPONSE',
+                           error_type=type(exc).__name__, error=str(exc),
+                           rejected_response=dict(path=str(rejected.resolve()), bytes=byte_count,
+                               sha256=sha256_file(rejected), headers=download_headers, final_url=final_url))
+            _atomic_write(capture_dir / 'capture_receipt.json', _json_bytes(receipt), tdx_root=tdx_root)
             raise
         package_sha = download_headers.pop("sha256")
         snapshot_id = f"sha256-{package_sha}"

@@ -3,6 +3,8 @@ import argparse
 import json
 import subprocess
 import sys
+from pathlib import Path
+sys.path[:0]=[str(Path(__file__).resolve().parents[1]),str(Path(__file__).resolve().parents[1]/'src')]
 from scripts.v4_production_cutover_evidence import ROOT, REPORT, write
 from workbench_service.current_v4_context import digest
 from workbench_service.v4_daily_refresh import AUTHORITY, publish_accepted_view, refresh_status
@@ -16,8 +18,17 @@ def main():
         if args.candidate_contract:
             status=publish_accepted_view(ROOT,args.candidate_contract,before)
         elif status['next_completed_session']:
-            process=subprocess.run([sys.executable,str(ROOT/'scripts/run_v4_dm01_daily_increment.py'),'--target-date',status['next_completed_session']],cwd=ROOT,capture_output=True,text=True,encoding='utf8')
+            process=subprocess.run([sys.executable,'-X','utf8',str(ROOT/'scripts/run_v4_dm01_daily_increment.py'),'--target-date',status['next_completed_session'],'--active-source-policy'],cwd=ROOT,capture_output=True,text=True,encoding='utf8')
             status['daily_pipeline_exit_code']=process.returncode;status['daily_pipeline_output']=process.stdout;status['daily_pipeline_error']=process.stderr
+            try:
+                child=json.loads(process.stdout.strip().splitlines()[-1]);receipt=json.loads(Path(child['receipt']).read_bytes())
+                active=receipt.get('active_source_capture') or {}
+                status['source_requests']=active.get('baostock_request_count_this_run')
+                status['source_request_count_scope']='BAOSTOCK_ONLY;TDX_REQUESTS_IN_CAPTURE_RECEIPTS'
+                status['source_request_receipt']=child['receipt']
+            except (ValueError,KeyError,IndexError,OSError):
+                status['source_requests']=None
+                status['source_request_count_scope']='UNVERIFIED;INSPECT_CHILD_RECEIPT'
             if process.returncode==0:
                 build=subprocess.run([sys.executable,'-m','scripts.build_v4_current_read_contract'],cwd=ROOT,capture_output=True,text=True,encoding='utf8')
                 status['owner_view_build_exit_code']=build.returncode

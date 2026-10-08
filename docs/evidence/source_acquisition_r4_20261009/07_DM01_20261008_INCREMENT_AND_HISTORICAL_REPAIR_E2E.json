@@ -1,0 +1,327 @@
+{
+  "new_session_increment": {
+    "accepted_builder_registry": {
+      "reason": "INPUT_DIGEST_MISMATCH",
+      "status": "BLOCKED_BUILDER_REGISTRY"
+    },
+    "active_source_capture": null,
+    "baostock_capture": null,
+    "baostock_capture_error": null,
+    "baostock_live_smoke": null,
+    "baostock_runtime_acceptance": null,
+    "baostock_runtime_error": null,
+    "component_builds": null,
+    "contract_id": "V4_DM01_SOURCE_READINESS_RECEIPT_R2",
+    "contract_path": "config/v4_continuous_data_maintenance_v2.json",
+    "contract_sha256": "e31f94040d901cedcce64b4ef7775ef23afc816f82873dc7527d38675ec78d90",
+    "data_head_moved": false,
+    "dev_baseline_head_moved": false,
+    "gbbq_revision_probe": null,
+    "lifecycle_snapshot": null,
+    "lifecycle_snapshot_receipt": null,
+    "next_stage": "CAPTURE_TDX_AND_BAOSTOCK_AFTER_OFFICIAL_RELEASE; BUILD_ONLY_AFTER_ALL_V2_SOURCE_FAMILIES_READY",
+    "observed_at": "2026-10-08T23:22:27+00:00",
+    "promotion": null,
+    "source_freeze": null,
+    "source_readiness": {
+      "head_moved": false,
+      "observed_tdx_update_date": null,
+      "reason": "TDX_ZIP_INVALID",
+      "status": "SOURCE_CAPTURE_BLOCKED",
+      "trade_date": "2026-10-08"
+    },
+    "special_phase_snapshot": null,
+    "special_phase_source_receipt": null,
+    "stage_accepted_head_moved": false,
+    "stage_contract": "V4_CONTINUOUS_DATA_MAINTENANCE_V2",
+    "status": "SOURCE_CAPTURE_BLOCKED",
+    "target_date": "2026-10-08",
+    "tdx_delta_build": null,
+    "tdx_page_capture": {
+      "reason": "TDX_ZIP_INVALID",
+      "status": "SOURCE_CAPTURE_BLOCKED",
+      "target_date": "2026-10-08"
+    },
+    "tdx_root_write_count": 0,
+    "version": "2.0.0"
+  },
+  "historical_corrected_repair": "ACQUISITION_EXECUTED_OWNER_REBUILD_NOT_COMPLETE",
+  "OCT08_FULL_SOURCE_CAPTURE": "BAOSTOCK_CAPTURED_TDX_BLOCKED",
+  "OCT08_DAILY_INCREMENT": "BLOCKED_SOURCE_CAPTURE",
+  "OCT08_OWNER_MATERIALIZATION": "NOT_PASSED",
+  "OCT08_SCOPED_READBACK": "LAST_GOOD_ONLY",
+  "normal_daily_entry_run": {
+    "accepted_builder_registry": {
+      "reason": "INPUT_DIGEST_MISMATCH",
+      "status": "BLOCKED_BUILDER_REGISTRY"
+    },
+    "active_source_capture": {
+      "baostock_request_count_this_run": 2,
+      "completed_at": "2026-10-08T23:30:26.247336+00:00",
+      "contract_id": "V4_MARKET_SOURCE_FALLBACK_POLICY_V1",
+      "dates": [
+        "2026-10-08"
+      ],
+      "membership": {
+        "contract_id": "R4_DAILY_MEMBERSHIP_OBSERVATION_V1",
+        "effective_date_admission": false,
+        "files": [
+          {
+            "bytes": 150550,
+            "effective_date": null,
+            "hash": "638c58e095702469b9471da7e5bfd7bc63611059052ef22eccc0c6de5b66fe9a",
+            "historical_first_available": "UNKNOWN",
+            "mtime_utc": "2026-10-08T23:13:16.846706+00:00",
+            "observed_at": "2026-10-08T23:30:17.951218+00:00",
+            "path": "D:\\new_tdx\\T0002\\hq_cache\\tdxhy.cfg",
+            "snapshot": "G:\\codex work\\大A交易\\reports\\v4_dm01\\2026-10-08\\active_source_capture\\membership\\638c58e095702469b9471da7e5bfd7bc63611059052ef22eccc0c6de5b66fe9a\\tdxhy.cfg",
+            "status": "OBSERVED_CURRENT",
+            "target_dates": [
+              "2026-10-08"
+            ]
+          },
+          {
+            "bytes": 18272,
+            "effective_date": null,
+            "hash": "a33983fc8bb15c97db93fe9b60394b326b71a91e99e33b8b54700415442074da",
+            "historical_first_available": "UNKNOWN",
+            "mtime_utc": "2026-10-08T09:53:28+00:00",
+            "observed_at": "2026-10-08T23:30:17.951331+00:00",
+            "path": "D:\\new_tdx\\T0002\\hq_cache\\tdxzs.cfg",
+            "snapshot": "G:\\codex work\\大A交易\\reports\\v4_dm01\\2026-10-08\\active_source_capture\\membership\\a33983fc8bb15c97db93fe9b60394b326b71a91e99e33b8b54700415442074da\\tdxzs.cfg",
+            "status": "OBSERVED_CURRENT",
+            "target_dates": [
+              "2026-10-08"
+            ]
+          },
+          {
+            "bytes": 741571,
+            "effective_date": null,
+            "hash": "af3aff645fb9602a98871ba27ad88b54dda2ff47ba460c2ca90bfe448b469bd9",
+            "historical_first_available": "UNKNOWN",
+            "mtime_utc": "2026-10-08T23:13:16.576683+00:00",
+            "observed_at": "2026-10-08T23:30:17.952128+00:00",
+            "path": "D:\\new_tdx\\T0002\\hq_cache\\infoharbor_block.dat",
+            "snapshot": "G:\\codex work\\大A交易\\reports\\v4_dm01\\2026-10-08\\active_source_capture\\membership\\af3aff645fb9602a98871ba27ad88b54dda2ff47ba460c2ca90bfe448b469bd9\\infoharbor_block.dat",
+            "status": "OBSERVED_CURRENT",
+            "target_dates": [
+              "2026-10-08"
+            ]
+          },
+          {
+            "path": "D:\\new_tdx\\T0002\\hq_cache\\block_gn.dat",
+            "status": "LOCAL_FILE_ABSENT"
+          },
+          {
+            "path": "D:\\new_tdx\\T0002\\hq_cache\\block_fg.dat",
+            "status": "LOCAL_FILE_ABSENT"
+          },
+          {
+            "path": "D:\\new_tdx\\T0002\\hq_cache\\block_zs.dat",
+            "status": "LOCAL_FILE_ABSENT"
+          }
+        ],
+        "policy": "FREEZE_ON_EACH_DM01_RUN; NEVER_BACKDATE_MTIME_AS_EFFECTIVE_DATE"
+      },
+      "official": {
+        "2026-10-08": [
+          {
+            "attempt": 0,
+            "error": "TDXSourceError:TDX_ZIP_INVALID",
+            "received_at": "2026-10-08T23:26:58.058377+00:00",
+            "requested_at": "2026-10-08T23:26:57.441636+00:00",
+            "status": "PROVIDER_CALL_ERROR"
+          },
+          {
+            "attempt": 1,
+            "error": "TDXSourceError:TDX_ZIP_INVALID",
+            "received_at": "2026-10-08T23:26:58.716574+00:00",
+            "requested_at": "2026-10-08T23:26:58.108405+00:00",
+            "status": "PROVIDER_CALL_ERROR"
+          },
+          {
+            "attempt": 0,
+            "error": "TDXSourceError:TDX_ZIP_INVALID",
+            "received_at": "2026-10-08T23:28:48.133121+00:00",
+            "requested_at": "2026-10-08T23:28:47.432652+00:00",
+            "status": "PROVIDER_CALL_ERROR"
+          },
+          {
+            "attempt": 1,
+            "error": "TDXSourceError:TDX_ZIP_INVALID",
+            "received_at": "2026-10-08T23:28:48.991007+00:00",
+            "requested_at": "2026-10-08T23:28:48.182903+00:00",
+            "status": "PROVIDER_CALL_ERROR"
+          },
+          {
+            "attempt": 0,
+            "error": "TDXSourceError:TDX_ZIP_INVALID",
+            "received_at": "2026-10-08T23:30:23.399827+00:00",
+            "requested_at": "2026-10-08T23:30:22.300046+00:00",
+            "status": "PROVIDER_CALL_ERROR"
+          },
+          {
+            "attempt": 1,
+            "error": "TDXSourceError:TDX_ZIP_INVALID",
+            "received_at": "2026-10-08T23:30:24.674526+00:00",
+            "requested_at": "2026-10-08T23:30:23.450445+00:00",
+            "status": "PROVIDER_CALL_ERROR"
+          }
+        ]
+      },
+      "production_admission": false,
+      "requested_at": "2026-10-08T23:26:53.034869+00:00",
+      "sdk": {
+        "adjustflag": "3",
+        "default_auth_mode": "PUBLIC_ANONYMOUS",
+        "default_runtime_pin": "0.9.3",
+        "fields": "date,code,close,volume,amount,turn,tradestatus,isST",
+        "installed_python_sources_sha256": "32bd19deb872561c8f9c40063de38df4fe4ab0f1073685538f627a9238686bfe",
+        "package": "baostock",
+        "supported_auth_modes": "PUBLIC_ACCOUNT,PUBLIC_ANONYMOUS,VIP_API_KEY",
+        "version": "0.9.3"
+      },
+      "session_attempts": [
+        {
+          "attempt": 0,
+          "endpoint": {
+            "configured_host": "public-api.baostock.com",
+            "configured_port": 10030,
+            "connected_peer_ip": "114.94.20.42",
+            "connected_peer_port": 10030
+          },
+          "login": {
+            "error_code": "0",
+            "error_msg": "success"
+          },
+          "logout": {
+            "error_code": "0",
+            "error_msg": "success"
+          },
+          "requested_at": "2026-10-08T23:26:58.800201+00:00",
+          "status": "LOGIN_SUCCESS"
+        },
+        {
+          "attempt": 0,
+          "endpoint": {
+            "configured_host": "public-api.baostock.com",
+            "configured_port": 10030,
+            "connected_peer_ip": "114.94.20.42",
+            "connected_peer_port": 10030
+          },
+          "login": {
+            "error_code": "0",
+            "error_msg": "success"
+          },
+          "logout": {
+            "error_code": "0",
+            "error_msg": "success"
+          },
+          "requested_at": "2026-10-08T23:28:49.083181+00:00",
+          "status": "LOGIN_SUCCESS"
+        },
+        {
+          "attempt": 0,
+          "endpoint": {
+            "configured_host": "public-api.baostock.com",
+            "configured_port": 10030,
+            "connected_peer_ip": "114.94.20.42",
+            "connected_peer_port": 10030
+          },
+          "login": {
+            "error_code": "0",
+            "error_msg": "success"
+          },
+          "logout": {
+            "error_code": "0",
+            "error_msg": "success"
+          },
+          "requested_at": "2026-10-08T23:30:24.791623+00:00",
+          "status": "LOGIN_SUCCESS"
+        }
+      ],
+      "status": "CAPTURE_OBSERVATIONS_READY"
+    },
+    "baostock_capture": null,
+    "baostock_capture_error": null,
+    "baostock_live_smoke": null,
+    "baostock_runtime_acceptance": null,
+    "baostock_runtime_error": null,
+    "component_builds": null,
+    "contract_id": "V4_DM01_SOURCE_READINESS_RECEIPT_R2",
+    "contract_path": "config/v4_continuous_data_maintenance_v2.json",
+    "contract_sha256": "e31f94040d901cedcce64b4ef7775ef23afc816f82873dc7527d38675ec78d90",
+    "data_head_moved": false,
+    "dev_baseline_head_moved": false,
+    "gbbq_revision_probe": null,
+    "lifecycle_snapshot": null,
+    "lifecycle_snapshot_receipt": null,
+    "next_stage": "CAPTURE_TDX_AND_BAOSTOCK_AFTER_OFFICIAL_RELEASE; BUILD_ONLY_AFTER_ALL_V2_SOURCE_FAMILIES_READY",
+    "observed_at": "2026-10-08T23:30:15+00:00",
+    "promotion": null,
+    "source_freeze": null,
+    "source_readiness": {
+      "head_moved": false,
+      "observed_tdx_update_date": null,
+      "reason": "TDX_ZIP_INVALID",
+      "status": "SOURCE_CAPTURE_BLOCKED",
+      "trade_date": "2026-10-08"
+    },
+    "special_phase_snapshot": null,
+    "special_phase_source_receipt": null,
+    "stage_accepted_head_moved": false,
+    "stage_contract": "V4_CONTINUOUS_DATA_MAINTENANCE_V2",
+    "status": "SOURCE_CAPTURE_BLOCKED",
+    "target_date": "2026-10-08",
+    "tdx_delta_build": null,
+    "tdx_page_capture": {
+      "reason": "TDX_ZIP_INVALID",
+      "status": "SOURCE_CAPTURE_BLOCKED",
+      "target_date": "2026-10-08"
+    },
+    "tdx_root_write_count": 0,
+    "version": "2.0.0"
+  },
+  "normal_daily_entry_receipt": {
+    "context": {
+      "context": {
+        "accepted_trade_date": "2026-09-30",
+        "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+        "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+        "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+        "historical_pit_effectiveness": "NOT_GRANTED",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "last_accepted_trade_date": "2026-09-30",
+        "namespace": "V4_CURRENT_ACCEPTED",
+        "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "source_mode": "V4_ACCEPTED_RESEARCH_READONLY",
+        "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+        "stage": "V4-15",
+        "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+        "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+      },
+      "context_token": "current-v4-8a7b8e3f8fe867183cbeefe8a1e48f9038b4ccf9aee778f10bfd9d4ba348afa1",
+      "focus_write": false,
+      "production_permission": {
+        "ROTATION": false,
+        "SECTOR_RISK_CHANGE": false,
+        "SECTOR_STAGE": false,
+        "STOCK_CORE": false,
+        "STOCK_SECTOR_DEPENDENT": false
+      },
+      "source_mode": "V4_ACCEPTED_RESEARCH_READONLY",
+      "status": "READY_CURRENT_ACCEPTED"
+    },
+    "contract_id": "V4_ACCEPTED_CURRENT_REFRESH_V1",
+    "daily_pipeline_error": "",
+    "daily_pipeline_exit_code": 2,
+    "daily_pipeline_output": "{\"status\": \"SOURCE_CAPTURE_BLOCKED\", \"target_date\": \"2026-10-08\", \"receipt\": \"G:\\\\codex work\\\\大A交易\\\\reports\\\\v4_dm01\\\\2026-10-08\\\\source_readiness_receipt_r2.json\", \"receipt_sha256\": \"b8f75b3a340336a25533fbf72bc6f32cfa5735928dbfbba12e43ba543879cbf1\"}\n",
+    "data_preserved": true,
+    "next_completed_session": "2026-10-08",
+    "source_request_count_scope": "BAOSTOCK_ONLY;TDX_REQUESTS_IN_CAPTURE_RECEIPTS",
+    "source_request_receipt": "G:\\codex work\\大A交易\\reports\\v4_dm01\\2026-10-08\\source_readiness_receipt_r2.json",
+    "source_requests": 2,
+    "status": "BLOCKED_SOURCE_OR_OWNER_GATE"
+  }
+}

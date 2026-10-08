@@ -1,0 +1,92 @@
+{
+  "method": "query_history_k_data_plus",
+  "params": {
+    "code": "sz.000520",
+    "fields": "date,code,open,high,low,close,volume,amount,tradestatus,isST,adjustflag",
+    "start_date": "2026-09-28",
+    "end_date": "2026-10-08",
+    "frequency": "d",
+    "adjustflag": "3"
+  },
+  "requested_at": "2026-10-08T23:19:41.768891+00:00",
+  "attempt": 0,
+  "source_revision": "dec72978f5972e451d091943902f672a46270c5de8dab5e4f32ae932dc02ced6",
+  "lineage": "RECONSTRUCTED_CORRECTED",
+  "status": "BAOSTOCK_FOUND",
+  "rows": [
+    {
+      "date": "2026-09-28",
+      "code": "sz.000520",
+      "open": "4.1600",
+      "high": "4.1900",
+      "low": "4.0200",
+      "close": "4.0500",
+      "volume": "16613284",
+      "amount": "67591820.8800",
+      "tradestatus": "1",
+      "isST": "0",
+      "adjustflag": "3"
+    },
+    {
+      "date": "2026-09-29",
+      "code": "sz.000520",
+      "open": "4.0500",
+      "high": "4.1000",
+      "low": "4.0100",
+      "close": "4.0300",
+      "volume": "14094101",
+      "amount": "57064996.0300",
+      "tradestatus": "1",
+      "isST": "0",
+      "adjustflag": "3"
+    },
+    {
+      "date": "2026-09-30",
+      "code": "sz.000520",
+      "open": "4.0300",
+      "high": "4.0600",
+      "low": "3.9900",
+      "close": "4.0000",
+      "volume": "12183200",
+      "amount": "48907604.0000",
+      "tradestatus": "1",
+      "isST": "0",
+      "adjustflag": "3"
+    },
+    {
+      "date": "2026-10-08",
+      "code": "sz.000520",
+      "open": "4.0100",
+      "high": "4.2300",
+      "low": "4.0100",
+      "close": "4.0500",
+      "volume": "28465602",
+      "amount": "117114872.2600",
+      "tradestatus": "1",
+      "isST": "0",
+      "adjustflag": "3"
+    }
+  ],
+  "metadata": {
+    "error_code": "0",
+    "error_msg": "success",
+    "fields": [
+      "date",
+      "code",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount",
+      "tradestatus",
+      "isST",
+      "adjustflag"
+    ],
+    "page_count": 1,
+    "provider_date": null
+  },
+  "hash": "ec659532d6cb6dc9e3c8ec3e2701568154fc604555bfdc923b269afec21dce97",
+  "received_at": "2026-10-08T23:19:42.686556+00:00",
+  "row_count": 4
+}

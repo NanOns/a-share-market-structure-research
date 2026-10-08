@@ -3,13 +3,14 @@ import csv
 import gzip
 import hashlib
 import json
+import os
 from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "docs/evidence/three_day_repair_r2_20261008"
-AUTH = ROOT / "data/v4/r2_daily_candidates/three_day_repair_r2_20261008/v4_sector_operational_authority_v1.json"
-ORACLE = OUT / "R2_P0_2_SECTOR_INDEPENDENT_ORACLE.csv"
+OUT = ROOT / os.environ.get("R2_REPAIR_EVIDENCE_DIR", "docs/evidence/three_day_repair_r2_20261008")
+AUTH = ROOT / os.environ.get("R2_SECTOR_AUTHORITY_PATH", "data/v4/r2_daily_candidates/three_day_repair_r2_20261008/v4_sector_operational_authority_v1.json")
+ORACLE = OUT / ("R2_P0_4_SECTOR_INDEPENDENT_ORACLE.csv" if "R2_REPAIR_EVIDENCE_DIR" in os.environ else "R2_P0_2_SECTOR_INDEPENDENT_ORACLE.csv")
 TARGET = "2026-09-30"
 
 

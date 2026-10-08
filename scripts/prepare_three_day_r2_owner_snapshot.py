@@ -1,5 +1,6 @@
 """Stage the real 2026-09-30 sector candidate through the existing research reader."""
 import json
+import os
 import sqlite3
 import sys
 from pathlib import Path
@@ -11,8 +12,8 @@ from workbench_service.current_v4_context import digest
 from workbench_service.joint_release import AUTHORITY, validate
 from workbench_service.production_v4 import ProductionV4ResearchReader, build_snapshot
 
-EVIDENCE = ROOT / "docs/evidence/three_day_repair_r2_20261008"
-DAILY = ROOT / "data/v4/r2_daily_candidates/three_day_repair_r2_20261008"
+EVIDENCE = ROOT / os.environ.get("R2_REPAIR_EVIDENCE_DIR", "docs/evidence/three_day_repair_r2_20261008")
+DAILY = ROOT / os.environ.get("R2_DAILY_AUTHORITY_DIR", "data/v4/r2_daily_candidates/three_day_repair_r2_20261008")
 AUTHORITY_PATH = DAILY / "v4_sector_operational_authority_v1.json"
 
 
@@ -57,7 +58,7 @@ def main():
     assert (ROOT / AUTHORITY).read_bytes() == before, "live joint authority changed during staging"
     validate(ROOT, candidate)
     entry = {
-        "stage": "P0_2_CURRENT_OWNER_CONSUMER_SNAPSHOT",
+        "stage": "P0_4_SCOPED_CURRENT_OWNER_CONSUMER_SNAPSHOT" if "R2_REPAIR_EVIDENCE_DIR" in os.environ else "P0_2_CURRENT_OWNER_CONSUMER_SNAPSHOT",
         "contract": "V4_04_DERIVED_PRIMITIVES_V1 + V4_08_SECTOR_NATIVE_V1 + R2_CURRENT_SECTOR_MA20_WIDTH_ADAPTER_V2 + FP02_RESEARCH_SNAPSHOT_V1",
         "target": day,
         "scope": "SECTORS_CURRENT_STRENGTH_AND_PROFILE_CONSUMER_ONLY",
@@ -76,7 +77,8 @@ def main():
         "acceptance": "ENGINEERING_CONSUMER_PASS_ONLY",
         "next_stage": "E6_SCOPED_PUBLICATION_CAS_AND_TWO_RESOLUTION_IAB_OR_KEEP_GATED_IF_OWNER_SCOPE_FAILS",
     }
-    write(EVIDENCE / "R2_P0_2_OWNER_CONSUMER_SNAPSHOT.json", entry)
+    out_name = "R2_P0_4_OWNER_CONSUMER_SNAPSHOT.json" if "R2_REPAIR_EVIDENCE_DIR" in os.environ else "R2_P0_2_OWNER_CONSUMER_SNAPSHOT.json"
+    write(EVIDENCE / out_name, entry)
     print(json.dumps({"result": entry["result"], "counts": entry["counts"], "snapshot": snapshot["pointer"]["manifest"]["sha256"]}, ensure_ascii=False))
 
 

@@ -1,0 +1,20 @@
+{
+  "stage": "P0_4_ADAPTER_REBUILD_ATTEMPT",
+  "acceptance": "REJECTED_CANDIDATE_NOT_ELIGIBLE",
+  "attempt_namespace": "data/v4/r2_daily_candidates/three_day_repair_r2_p04_20261008",
+  "finding": "The first V3 basis-gate attempt looked for GBBQ sha256 at the wrong source-binding level; all 378 ma20_width facts degraded to UNKNOWN. This was detected from materialization counts before snapshot candidate acceptance.",
+  "impact": "No live joint authority, snapshot pointer, or TDX source changed. The incorrect isolated output remains a superseded diagnostic.",
+  "correction": "Read the accepted GBBQ binding from the bound market artifact and require exact equality with each member current price_basis_id. Corrected implementation is build_fp06_sector_v2.py V3.",
+  "rerun_namespace": "data/v4/r2_daily_candidates/three_day_repair_r2_p04b_20261008",
+  "corrected_result": "MA20_WIDTH=378/378; current sector oracle 2646/2646 passed; owner reader snapshot staged; no activation.",
+  "evidence": {
+    "failed_materialization": {
+      "path": "docs/evidence/r2_daily_runs/three_day_repair_r2_p04_20261008/fp06/REAL_MATERIALIZATION.json",
+      "sha256": "e6a1837270877e8bd4fe044d9cd3141a1ce48dde64a82253d4cb0d391a2d6772"
+    },
+    "corrected_materialization": {
+      "path": "docs/evidence/r2_daily_runs/three_day_repair_r2_p04b_20261008/fp06/REAL_MATERIALIZATION.json",
+      "sha256": "790f23a15aa3ae02cf76f640128d2a8d5a6faa0646bdf6d17503fa8250335a2f"
+    }
+  }
+}

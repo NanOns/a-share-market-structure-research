@@ -6,13 +6,15 @@ import gzip
 import hashlib
 import json
 import math
+import os
 import statistics
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATE = "2026-09-30"
-OUT = ROOT / "docs/evidence/three_day_repair_r2_20261008/R2_P0_2_SECTOR_INDEPENDENT_ORACLE.csv"
-AUTH = ROOT / "data/v4/r2_daily_candidates/three_day_repair_r2_20261008/v4_sector_operational_authority_v1.json"
+EVIDENCE_DIR = ROOT / os.environ.get("R2_REPAIR_EVIDENCE_DIR", "docs/evidence/three_day_repair_r2_20261008")
+AUTH = ROOT / os.environ.get("R2_SECTOR_AUTHORITY_PATH", "data/v4/r2_daily_candidates/three_day_repair_r2_20261008/v4_sector_operational_authority_v1.json")
+OUT = EVIDENCE_DIR / ("R2_P0_4_SECTOR_INDEPENDENT_ORACLE.csv" if "R2_REPAIR_EVIDENCE_DIR" in os.environ else "R2_P0_2_SECTOR_INDEPENDENT_ORACLE.csv")
 
 
 def read_jsonl_gz(path):
@@ -111,6 +113,19 @@ def main():
         writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
         writer.writeheader()
         writer.writerows(rows)
+    if "R2_REPAIR_EVIDENCE_DIR" in os.environ:
+        def binding(path):
+            return {"path": path.relative_to(ROOT).as_posix(), "bytes": path.stat().st_size, "sha256": file_digest(path)}
+        summary = {"contract_id": "R2_P0_4_INDEPENDENT_SECTOR_ORACLE_V1", "result": "PASS",
+                   "target": DATE, "sectors": len(native), "fields_per_sector": len(fields),
+                   "comparisons": len(rows), "fields": list(fields),
+                   "method": "Independent median, positive-return breadth, and same-date QFQ close versus accepted same-basis MA20 aggregation across accepted PIT membership groups; source hashes verified before calculation.",
+                   "source_bindings": {"candidate_authority": binding(AUTH), "native": binding(native_path),
+                                       "factors": binding(factors_path), "history": binding(hist_path),
+                                       "membership": binding(membership_path)},
+                   "detail": binding(OUT), "history_claim": auth["history_claim"]}
+        (EVIDENCE_DIR / "R2_P0_4_SECTOR_INDEPENDENT_ORACLE.json").write_text(
+            json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"result": "PASS", "sectors": len(groups), "fields_per_sector": len(fields),
                       "comparisons": len(rows), "membership_groups": len(groups), "target": DATE,
                       "history_claim": auth["history_claim"], "output": str(OUT.relative_to(ROOT))}, ensure_ascii=False))

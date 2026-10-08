@@ -1,0 +1,29 @@
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "tests/test_r2_csv_pit.py",
+    "tests/test_r2_repairs.py",
+    "tests/test_r2_joint_release.py",
+    "tests/test_r2_journal.py",
+    "tests/test_fp01_operational_release.py",
+    "tests/test_fp02_research_snapshot.py",
+    "tests/test_fp04_ui_authority.py",
+    "tests/test_fp05_home.py",
+    "tests/test_fp06_sector.py",
+    "tests/test_fp07_stock.py",
+    "tests/test_fp08_focus.py",
+    "tests/test_fp11_diagnostics.py",
+    "tests/test_fp12_replay.py",
+    "tests/test_fp14_release_readiness.py",
+    "tests/test_v4_current_daily_refresh.py",
+    "-q",
+    "--basetemp",
+    "E:/codex_tmp/test_temp/r2_release_final"
+  ],
+  "exit_code": 0,
+  "stderr": "",
+  "stdout": "........................................................................ [ 74%]\n.........................                                                [100%]\n97 passed in 25.33s\n"
+}

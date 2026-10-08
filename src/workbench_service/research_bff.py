@@ -11,6 +11,8 @@ from .domain_views import home,sector_view
 from .stock_views import chart,explanation
 from .diagnostic_views import diagnostic
 from .replay_views import replay,compare
+from .focus_views import focus_view,KINDS
+from .stock_views import timeline
 
 class ResearchBFF:
     def __init__(self,root):
@@ -19,7 +21,9 @@ class ResearchBFF:
 
     def current(self):
         with self.lock:
-            signature=digest((self.root/POINTER).read_bytes())
+            from .joint_release import AUTHORITY
+            pointer=self.root/AUTHORITY
+            signature=digest((pointer if pointer.exists() else self.root/POINTER).read_bytes())
             if self.reader is None or signature!=self.pointer_digest:
                 candidate=ProductionV4ResearchReader(self.root)
                 self.reader=candidate;self.pointer_digest=signature
@@ -57,7 +61,8 @@ class ResearchBFF:
             if name=='forward' and len(parts)>1 and parts[1] in ('statistics','plans','fep','risk'):
                 publication=r.manifest.get('domain_features',{}).get('forward')
                 if not publication:return 200,r.envelope(status='SOURCE_INCOMPLETE',items=[])
-                if parts[1] in ('statistics','fep'):return 200,r.envelope(status='READY',data=publication[parts[1]])
+                if parts[1]=='fep':return 200,r.envelope(status='SOURCE_INCOMPLETE',data=dict(publication['fep'],production_binding='NOT_BOUND_TO_CURRENT_PRODUCTION'),reason='NO_CURRENT_DAY_MODEL_INFERENCE_OWNER')
+                if parts[1]=='statistics':return 200,r.envelope(status='READY',data=publication['statistics'])
                 if parts[1]=='risk':return 200,r.query('stocks',query,summary=False)
                 rows=publication['plans'];offset=int(query.get('offset',0));limit=int(query.get('limit',30))
                 return 200,r.envelope(status='READY',items=rows[offset:offset+limit],total=len(rows),offset=offset,limit=limit,has_next=offset+limit<len(rows),scope='DUE_PLAN_ONLY_NOT_OUTCOMES')
@@ -69,6 +74,8 @@ class ResearchBFF:
                 if key=='limits':return 200,r.envelope(status='READY',items=payload['rows'][offset:offset+limit],total=len(payload['rows']),offset=offset,limit=limit,has_next=offset+limit<len(payload['rows']),counts=payload['counts'],rule_ids=payload['rule_ids'],sources=center['sources'])
                 return 200,r.envelope(status=payload.get('status','READY'),data=payload,sources=center['sources'],mode=center['mode'])
             if name=='focus' and len(parts)>1:
+                if len(parts)==3 and parts[2] in KINDS:
+                    return 200,focus_view(r,parts[1],parts[2],query)
                 publication=r.manifest.get('domain_features',{}).get('focus')
                 if publication:
                     if parts[1]=='events':
@@ -100,6 +107,7 @@ class ResearchBFF:
                 return 404,r.envelope(status='OUTSIDE_CURRENT_POOL' if outside else 'NOT_FOUND',code='IDENTITY_OUTSIDE_CURRENT_DAILY_UNIVERSE' if outside else 'ENTITY_NOT_FOUND',items=[])
             item=detail['items'][0]
             if chart_route:return 200,chart(r,item,query)
+            if name=='stocks' and len(parts)==3 and parts[2]=='timeline':return 200,timeline(r,item,query)
             if name=='stocks' and len(parts)>2 and parts[2] in ('profile','evidence','why-not','why-not-prewatch'):return 200,explanation(r,item)
             if name=='sectors' and len(parts)>2 and parts[2] in ('timeline','rotation-timeline','overlap'):return 200,sector_view(r,item,parts[2],query)
             if len(parts)==2 or parts[2] in ('profile','evidence','why-not','why-not-prewatch','rotation'):

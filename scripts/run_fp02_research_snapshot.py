@@ -34,6 +34,9 @@ def execute(args):
         if run.returncode==0:result=build_snapshot(ROOT)
         else:result=dict(status='BLOCKED_SOURCE_OR_OWNER_QA',next_session=status['next_completed_session'],pipeline_exit_code=run.returncode,pipeline_output=run.stdout[-4000:],pointer_preserved=True)
     else:result=build_snapshot(ROOT)
+    if not result['status'].startswith('BLOCKED'):
+        from workbench_service.pit_observation import freeze
+        result['first_observed_freeze']=freeze(ProductionV4ResearchReader(ROOT))
     atomic_bytes(ROOT/('runtime/research_daily/DAILY_LATEST.json' if args.daily else 'runtime/research_daily/BUILD_LATEST.json'),(json.dumps(result,ensure_ascii=False,indent=2)+'\n').encode())
     print(json.dumps(result,ensure_ascii=False))
     return 2 if result['status'].startswith('BLOCKED') else 0

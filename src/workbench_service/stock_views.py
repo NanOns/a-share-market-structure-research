@@ -42,7 +42,11 @@ def explanation(reader,item):
         indeterminate=value(item,'unknown_predicates') or [],not_implemented=value(item,'detector_statuses'),
         F={k:v for k,v in item['fields'].items() if k in ('close','ma5','ma10','ma20','ma60','atr14','pos20','pos60','rps5','rps20','amount_ratio20','volume_ratio20','turnover')},
         R={k:v for k,v in item['fields'].items() if k.endswith('_state') or k in ('core_participation_result','core_extension_risk')},
-        H=[],hypothesis_reason='NO_BOUND_OWNER_HYPOTHESIS_OUTPUT_NO_UI_INFERENCE',waiting_for=value(item,'unknown_predicates'),invalid_if=value(item,'invalid_if'),invalid_if_reason='OWNER_INVALIDATION_CONDITIONS_NOT_PUBLISHED' if 'invalid_if' not in item['fields'] else None)
+        H=value(item,'hypothesis') or [],hypothesis_reason='NO_BOUND_OWNER_HYPOTHESIS_OUTPUT_NO_UI_INFERENCE' if 'hypothesis' not in item['fields'] else None,
+        waiting_for=value(item,'waiting_for') if 'waiting_for' in item['fields'] else value(item,'unknown_predicates'),
+        why_now=value(item,'why_now') if 'why_now' in item['fields'] else value(item,'transition_reasons'),why_now_basis='OWNER_EMITTED_TRANSITION_REASONS',
+        invalid_if=value(item,'invalid_if'),invalid_if_reason='OWNER_INVALIDATION_CONDITIONS_NOT_PUBLISHED' if 'invalid_if' not in item['fields'] else None,
+        owner_specific_debt=[dict(field=k,owner='V4_11_STATE' if k in ('waiting_for','invalid_if','why_now') else 'V4_13_PROFILE',reason='NO_EXPLICIT_OWNER_FIELD_PUBLISHED') for k in ('hypothesis','waiting_for','invalid_if','why_now') if k not in item['fields']])
 
 def timeline(reader,item,query):
     """Expose only bound owner structure records, with field-local debts."""

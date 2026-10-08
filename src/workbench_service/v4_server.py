@@ -7,10 +7,12 @@ from urllib.parse import parse_qs, urlparse
 from .current_v4_context import CurrentAcceptedV4Reader
 from .shadow_server import make_shadow_handler
 from .research_bff import ResearchBFF
+from .joint_release import load as joint_load,checked_path,recover
 
 
 def make_v4_handler(root):
     root=Path(root)
+    recover(root)
     reader=CurrentAcceptedV4Reader(root,require_runtime=True)
     base=make_shadow_handler(root)
     static=root/'src/workbench_service/static'
@@ -25,13 +27,17 @@ def make_v4_handler(root):
                 except (ValueError,OSError,KeyError):return self.send(503,dict(code='UI_AUTHORITY_INVALID'))
                 if mode not in ('SIX_ENTRY','LEGACY_SUMMARY'):return self.send(503,dict(code='UI_AUTHORITY_INVALID'))
                 page=static/('research/index.html' if mode=='SIX_ENTRY' else 'v4-workbench.html')
+                joint=joint_load(root)
+                if joint:page=checked_path(root,joint['ui_assets']['index.html'])
                 return self.send(200,page.read_bytes(),'text/html; charset=utf-8')
             if parsed.path=='/v4/legacy-summary':
                 return self.send(200,(static/'v4-workbench.html').read_bytes(),'text/html; charset=utf-8')
             if parsed.path.startswith('/v4/assets/'):
                 name=parsed.path.removeprefix('/v4/assets/')
                 if name not in ('app.js','api.js','components.js','labels.js','stock.js','replay.js','style.css'):return self.send(404,dict(code='ASSET_NOT_FOUND'))
-                return self.send(200,(static/'research'/name).read_bytes(),'text/css; charset=utf-8' if name.endswith('.css') else 'application/javascript; charset=utf-8')
+                joint=joint_load(root)
+                asset=checked_path(root,joint['ui_assets'][name]) if joint else static/'research'/name
+                return self.send(200,asset.read_bytes(),'text/css; charset=utf-8' if name.endswith('.css') else 'application/javascript; charset=utf-8')
             if parsed.path=='/v4/workbench.js':
                 return self.send(200,(static/'v4-workbench.js').read_bytes(),'application/javascript; charset=utf-8')
             if parsed.path=='/v3':
@@ -61,6 +67,16 @@ def make_v4_handler(root):
                 if not bff.allowed(self.client_address[0]):return self.send(429,dict(code='RATE_LIMIT',retry_after_seconds=60))
                 values=parse_qs(parsed.query,keep_blank_values=True)
                 if any(len(v)!=1 for v in values.values()):return self.send(400,dict(code='DUPLICATE_PARAMETER'))
+                if parsed.path=='/api/v4/stocks.csv':
+                    from .csv_export import stock_csv
+                    from .current_v4_context import SourceInvalid
+                    try:raw,count=stock_csv(bff.current(),{k:v[0] for k,v in values.items()})
+                    except SourceInvalid:return self.send(409,dict(code='CONTEXT_CONFLICT'))
+                    except (ValueError,TypeError):return self.send(400,dict(code='INVALID_EXPORT_QUERY'))
+                    self.send_response(200);self.send_header('Content-Type','text/csv; charset=utf-8')
+                    self.send_header('Content-Disposition','attachment; filename="V4_stocks.csv"')
+                    self.send_header('Content-Length',str(len(raw)));self.send_header('Cache-Control','no-store')
+                    self.send_header('X-Row-Count',str(count));self.end_headers();self.wfile.write(raw);return
                 code,payload=bff.get(parsed.path,{k:v[0] for k,v in values.items()})
                 return self.send(code,payload)
             return super().do_GET()

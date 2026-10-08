@@ -1,0 +1,14 @@
+{
+  "acceptance": "PASS_SCOPED_EXECUTOR_PRE_ACTIVATION",
+  "activation_performed": false,
+  "code": [
+    "src/workbench_service/joint_release.py",
+    "scripts/activate_v4_full_product.py",
+    "scripts/rehearse_r2_joint_release.py"
+  ],
+  "evidence": "R2_LIVE_ROLLBACK_READBACK.json",
+  "full_product_release": false,
+  "next_stage": "R2_08_LIVE_SCOPED_ACTIVATION",
+  "stage": "R2_04_EXECUTOR_AND_REAL_JOINT_REHEARSAL",
+  "tests": "REGRESSION.json"
+}

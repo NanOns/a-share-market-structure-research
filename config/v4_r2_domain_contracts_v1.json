@@ -1,0 +1,31 @@
+{
+  "contract_id": "R2_DOMAIN_CONTRACTS_V1",
+  "csv": {
+    "context": "ONE_IMMUTABLE_READER",
+    "contract_id": "R2_STABLE_CSV_V1",
+    "encoding": "UTF8_BOM",
+    "identity_uniqueness": true,
+    "maximum_page_size": 200
+  },
+  "focus_journal": {
+    "contract_id": "R2_V4_FOCUS_JOURNAL_V1",
+    "idempotency": "SECURITY_DAY_SOURCE",
+    "legacy_reconciled": false,
+    "namespace": "INDEPENDENT_CORRECTED_V4",
+    "production_auto_write": false,
+    "source_gate": "SHA256_SINGLE_DATE_UNIQUE_IDENTITY"
+  },
+  "pit": {
+    "contract_id": "R2_FIRST_OBSERVED_FREEZE_V1",
+    "first_observed_is_historical_first_available": false,
+    "strict_pit_ready": false
+  },
+  "release": {
+    "authority": "config/v4_joint_release_authority_v1.json",
+    "contract_id": "V4_JOINT_RELEASE_V1",
+    "health_failure": "EXACT_PREDECESSOR_RESTORE",
+    "serialized_CAS": true,
+    "startup_crash_recovery": true,
+    "trading": false
+  }
+}

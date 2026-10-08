@@ -1,0 +1,59 @@
+{
+  "DM01": "ACCEPTED_REAL_INPUTS_REUSED_NOT_NEW_CAPTURE",
+  "append_failure_rollback": true,
+  "contract_id": "R2_REAL_ACCEPTED_DAY_REPLAY_V1",
+  "existing_projection_equal": true,
+  "first": {
+    "episodes": 297,
+    "events": 297,
+    "head": "033ddc165e1a8e6a36f85b7317a4eed0f322d74109d69e86b9330e3162b7f1f3",
+    "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+    "legacy_reconciled": false,
+    "outcomes_owner_admitted": false,
+    "path_owner_admitted": false,
+    "status": "APPENDED",
+    "trade_date": "2026-09-29"
+  },
+  "full_daily_e2e_pass": false,
+  "idempotent": {
+    "head": "a6fec7ca92112c4839b3544a21a13364f57425ccfac32f74c834da9cbaf0fbbe",
+    "status": "NOOP",
+    "trade_date": "2026-09-30"
+  },
+  "journal": "E:\\codex_tmp\\r2_daily_replay\\2497a15fcdca4186ab78dd10664a70cc.sqlite",
+  "legacy_migration": "NOT_RECONCILED_PG_UNAVAILABLE",
+  "live_last_good_preserved": true,
+  "next_stage": "DAILY_OWNER_BUILD_UI_JOURNAL_ORCHESTRATION",
+  "owner_snapshot_ui_chain": "NOT_YET_AUTOMATED_END_TO_END",
+  "path_outcome": "OWNER_NOT_ADMITTED",
+  "second": {
+    "episodes": 469,
+    "events": 766,
+    "head": "a6fec7ca92112c4839b3544a21a13364f57425ccfac32f74c834da9cbaf0fbbe",
+    "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+    "legacy_reconciled": false,
+    "outcomes_owner_admitted": false,
+    "path_owner_admitted": false,
+    "status": "APPENDED",
+    "trade_date": "2026-09-30"
+  },
+  "source_days": [
+    "2026-09-29",
+    "2026-09-30"
+  ],
+  "sources": [
+    {
+      "bytes": 7620107,
+      "path": "data/v4/confirmation_candidates_r5/D2_2026-09-29_CANDIDATE_R5.json.gz",
+      "sha256": "968caca5a9e7020e9f31299bf93e12de1a8e66f62562a0d1bd7b9217e3f60dfe"
+    },
+    {
+      "bytes": 12539130,
+      "contract_id": "RESEARCH_STATE_V1",
+      "owner_stage": "V4-11",
+      "path": "data/v4/confirmation_candidates_r5/D2_2026-09-30_CANDIDATE_R5.json.gz",
+      "sha256": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    }
+  ],
+  "status": "DEGRADED_PASS"
+}

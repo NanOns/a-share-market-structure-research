@@ -339,7 +339,9 @@ def rollback_snapshot(root,expected_pointer):
 class ProductionV4ResearchReader:
     def __init__(self, root):
         self.root=Path(root).resolve();verifier=CurrentAcceptedV4Reader(root)
-        self.authority=json.loads((self.root/POINTER).read_bytes())
+        from .joint_release import load
+        joint=load(self.root)
+        self.authority=joint['snapshot'] if joint else json.loads((self.root/POINTER).read_bytes())
         self.manifest=verifier._read(self.authority['manifest']);verifier._verify(self.manifest['database'])
         metadata=validate_release_metadata(self.manifest)
         self.path=verifier._path(self.manifest['database']['path'])
@@ -350,13 +352,23 @@ class ProductionV4ResearchReader:
             verifier._verify(stocks['series']);stat=verifier._path(stocks['series']['path']).stat();self.series_signature=(stat.st_size,stat.st_mtime_ns)
         self.token='research-v4-'+self.authority['manifest']['sha256']
         self.context=dict(release_id=self.manifest['release_id'],model_namespace='V4_RESEARCH_SNAPSHOT_V1',
-            source_mode='OPERATIONAL_PRODUCTION_ACTIVE',publication_id=self.manifest['release_id'],data_as_of=self.manifest['context']['data_updated_at'],
+            source_mode='SCOPED_OPERATIONAL_RELEASE' if joint else 'EXISTING_REAL_SNAPSHOT_PENDING_RELEASE',publication_id=self.manifest['release_id'],data_as_of=self.manifest['context']['data_updated_at'],
             core_revision=self.manifest['source_contract_digest'],optional_enrichment_revision=self.manifest['sources']['advanced']['sha256'],
             turnover_as_of=None,quality=self.manifest['quality'],source_contract_id='V4_RESEARCH_SNAPSHOT_V1',
             factor_contract_id=None,state_contract_id='ACCEPTED_OWNER_SCOPED',parameter_set_id=None)
         self.context={**self.manifest['context'],**self.context}
         self.context['trade_date']=self.context['accepted_trade_date']
         self.context['release_metadata']=metadata
+        self.context.update(scoped_release=bool(joint),operational_release_scope=joint['operational_release_scope'] if joint else [],full_product_release=joint.get('full_product_release',False) if joint else False,joint_release_digest=digest(canonical(joint)) if joint else None)
+        self.context['domain_readiness']={
+            'stocks':dict(released='stocks_daily' in self.context['operational_release_scope'],scope='DATED_FACTORS_CHARTS_OWNER_STATE',debt=['HYPOTHESIS','INVALID_IF_OWNER','FULL_STRUCTURE_PATH']),
+            'sectors':dict(released='sectors_current_facts' in self.context['operational_release_scope'],scope='CURRENT_MEMBERS_FACTORS_OVERLAP',debt=['HISTORICAL_MEMBERSHIP','LIFECYCLE','ROTATION_HISTORY']),
+            'market':dict(released='market_current' in self.context['operational_release_scope'],scope='DATED_FOUR_AXES_INDICES_CLOSE_LIMITS',debt=['INTRADAY_TOUCH_BROKEN_LIMIT','OFFICIAL_FACT_NEWS']),
+            'focus':dict(released='focus_read_corrected' in self.context['operational_release_scope'],scope='CORRECTED_EPISODE_READ_ONLY',debt=['AUTOMATIC_PATH_OUTCOME_WRITE','LEGACY_PG_RECONCILIATION']),
+            'forward':dict(released='forward_read' in self.context['operational_release_scope'],scope='REAL_COHORT_PLAN_READ_ONLY',debt=['CURRENT_FEP_INFERENCE','DUE_SETTLEMENT_OWNER_RECONCILIATION']),
+            'strict_pit':dict(released=False,scope='NONE',debt=['FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE']),
+            'fep':dict(released=False,scope='NOT_BOUND_TO_CURRENT_PRODUCTION',debt=['CURRENT_FEATURE_MODEL_INFERENCE']),
+        }
 
     def envelope(self, **payload):
         return dict(context=self.context,context_token=self.token,**payload)

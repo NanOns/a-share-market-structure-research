@@ -1,0 +1,68 @@
+- link "跳到主要内容":
+  - /url: "#content"
+- complementary:
+  - link "大 A V4 研究工作台":
+    - /url: /v4/research/home
+    - text: 大 A
+    - generic: V4 研究工作台
+  - navigation "主导航":
+    - link "今日总览":
+      - /url: /v4/research/home
+    - link "板块研究":
+      - /url: /v4/research/sectors
+    - link "个股研究":
+      - /url: /v4/research/stocks
+    - link "关注跟踪":
+      - /url: /v4/research/focus
+    - link "市场与事件":
+      - /url: /v4/research/market
+    - link "数据与诊断":
+      - /url: /v4/research/diagnostics
+  - paragraph:
+    - text: 真实生产快照
+    - text: 研究与持续验证
+- banner:
+  - strong: 当前已处理截至 2026-09-30
+  - generic: 数据更新时间：2026/10/1 20:25:10（北京时间） · 持续验证中
+  - generic: 现有真实快照 · 分域发布待验收
+- main:
+  - generic: 研究工作台 / 跨对象与跨日比较
+  - heading "跨对象与跨日比较" [level=1]
+  - paragraph: 真实结果、输入质量与持续验证进度分别呈现。
+  - heading "跨对象与跨日比较" [level=2]
+  - paragraph: 严格回放只显示 T0 当时可获知资料。事后重建比较必须单独选择，不代表当时已知。
+  - textbox "选定 T0 日期": 2026-09-29
+  - combobox "资料视图":
+    - option "严格 T0 冻结回放"
+    - option "事后重建对照（非 PIT）" [selected]
+  - textbox "左侧研究对象":
+    - /placeholder: 左侧股票代码 / 板块 ID
+    - text: "600000"
+  - combobox "比较方式":
+    - option "股票 vs 股票"
+    - option "当前 vs 上一交易日"
+    - option "股票 vs 市场" [selected]
+    - option "冻结板块基准 / 当前 LOO"
+    - option "板块 vs 市场"
+    - option "板块 vs 三交易日前"
+    - option "PREWATCH vs WARM 历史"
+  - textbox "右侧研究对象":
+    - /placeholder: 右侧股票代码
+  - button "读取选定版本"
+  - paragraph: 有绑定截面的日期：2026-09-28、2026-09-29、2026-09-30；严格 PIT 可用日期：0
+  - paragraph: 选定截至 2026-09-29 · 模型：重建版本 · 来源不完整
+  - paragraph: 事后重建比较；不代表 T0 当时已知。状态比较与收益口径分别标注。
+  - heading "SH.600000 · 同一复权坐标区间收益" [level=3]
+  - paragraph: 0.218%
+  - button "日期、模型与来源"
+  - heading "起点 Universe 市场等权参考 · 同窗" [level=3]
+  - paragraph: 来源未满足
+  - button "日期、模型与来源"
+  - paragraph: 共同起止：2026-09-28 → 2026-09-29 · 坐标截至 2026-09-30
+  - button "查看时序身份与缺口"
+  - link "进入冻结回放":
+    - /url: /v4/research/replay?as_of=2026-09-29
+- contentinfo:
+  - text: V4 六入口框架 · 数据、证据与研究状态分别展示
+  - link "历史摘要":
+    - /url: /v4/legacy-summary

@@ -1,0 +1,20 @@
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "--basetemp=E:/codex_tmp/r2_presentation_pytest_20261008",
+    "tests/test_r2_owner_explanation.py",
+    "tests/test_r2_repairs.py",
+    "tests/test_fp07_stock.py",
+    "tests/test_r2_focus_path_outcome.py",
+    "tests/test_r2_joint_release.py",
+    "tests/test_r2_daily_driver.py"
+  ],
+  "exit_code": 3,
+  "result": "FAIL",
+  "stderr": "",
+  "stdout": "INTERNALERROR> Traceback (most recent call last):\nINTERNALERROR>   File \"E:\\python\\Lib\\site-packages\\_pytest\\main.py\", line 328, in wrap_session\nINTERNALERROR>     config.hook.pytest_sessionstart(session=session)\nINTERNALERROR>     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\nINTERNALERROR>   File \"E:\\python\\Lib\\site-packages\\pluggy\\_hooks.py\", line 512, in __call__\nINTERNALERROR>     return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)\nINTERNALERROR>            ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nINTERNALERROR>   File \"E:\\python\\Lib\\site-packages\\pluggy\\_manager.py\", line 120, in _hookexec\nINTERNALERROR>     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)\nINTERNALERROR>            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nINTERNALERROR>   File \"E:\\python\\Lib\\site-packages\\pluggy\\_callers.py\", line 167, in _multicall\nINTERNALERROR>     raise exception\nINTERNALERROR>   File \"E:\\python\\Lib\\site-packages\\pluggy\\_callers.py\", line 139, in _multicall\nINTERNALERROR>     teardown.throw(exception)\nINTERNALERROR>     ~~~~~~~~~~~~~~^^^^^^^^^^^\nINTERNALERROR>   File \"E:\\python\\Lib\\site-packages\\_pytest\\logging.py\", line 795, in pytest_sessionstart\nINTERNALERROR>     return (yield)\nINTERNALERROR>             ^^^^^\nINTERNALERROR>   File \"E:\\python\\Lib\\site-packages\\pluggy\\_callers.py\", line 121, in _multicall\nINTERNALERROR>     res = hook_impl.function(*args)\nINTERNALERROR>   File \"G:\\codex work\\大A交易\\tests\\remainder_isolation_plugin.py\", line 171, in pytest_sessionstart\nINTERNALERROR>     if not _FAILURE_STREAM.is_relative_to(DISPOSABLE_BASE):raise ValueError('FAILURE_LOG_ESCAPE')\nINTERNALERROR>                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nINTERNALERROR> ValueError: FAILURE_LOG_ESCAPE\n"
+}

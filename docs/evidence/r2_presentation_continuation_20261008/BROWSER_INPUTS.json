@@ -1,0 +1,1804 @@
+[
+  {
+    "context_token": "research-v4-18ff7c8680d47ea4c28b378ddd8883badeaf6a3c90af534dd37144d9fddb5d01",
+    "explanations": {
+      "hypothesis": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "invalid_if": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "waiting_for": {
+        "basis": "MISSING_PREDICATE_EVIDENCE_ONLY",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "unknown_predicates",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [
+            "PREWATCH",
+            "SEED",
+            "dq5:OPTIONAL_INPUT_UNKNOWN",
+            "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+            "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+          ],
+          "window": null
+        },
+        "source_field": "unknown_predicates",
+        "value": [
+          "PREWATCH",
+          "SEED",
+          "dq5:OPTIONAL_INPUT_UNKNOWN",
+          "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+          "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+        ]
+      },
+      "why_now": {
+        "basis": "OWNER_TRANSITION_REASONS",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "transition_reasons",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [
+            "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+          ],
+          "window": null
+        },
+        "source_field": "transition_reasons",
+        "value": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      }
+    },
+    "id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+    "name": "三一重能",
+    "states": {
+      "amount_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "AMOUNT_VOLUME_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "amount_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "CONTRACTED",
+        "window": null
+      },
+      "compression_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "COMPRESSION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "compression_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "EXPANDING",
+        "window": null
+      },
+      "ma_structure_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "MA_STRUCTURE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "ma_structure_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MIXED",
+        "window": null
+      },
+      "monthly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "monthly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MONTHLY_DOWN",
+        "window": null
+      },
+      "position_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "POSITION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "position_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "LOW_ZONE",
+        "window": null
+      },
+      "trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "SIDEWAYS_STRONG",
+        "window": null
+      },
+      "weekly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "weekly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "WEEKLY_DOWN",
+        "window": null
+      }
+    }
+  },
+  {
+    "context_token": "research-v4-18ff7c8680d47ea4c28b378ddd8883badeaf6a3c90af534dd37144d9fddb5d01",
+    "explanations": {
+      "hypothesis": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "invalid_if": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "waiting_for": {
+        "basis": "MISSING_PREDICATE_EVIDENCE_ONLY",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "unknown_predicates",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [
+            "PREWATCH",
+            "dq5:OPTIONAL_INPUT_UNKNOWN",
+            "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+            "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+          ],
+          "window": null
+        },
+        "source_field": "unknown_predicates",
+        "value": [
+          "PREWATCH",
+          "dq5:OPTIONAL_INPUT_UNKNOWN",
+          "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+          "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+        ]
+      },
+      "why_now": {
+        "basis": "OWNER_TRANSITION_REASONS",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "transition_reasons",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [
+            "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+          ],
+          "window": null
+        },
+        "source_field": "transition_reasons",
+        "value": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      }
+    },
+    "id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+    "name": "三安光电",
+    "states": {
+      "amount_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "AMOUNT_VOLUME_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "amount_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "VERY_DRY",
+        "window": null
+      },
+      "compression_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "COMPRESSION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "compression_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "NORMAL",
+        "window": null
+      },
+      "ma_structure_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "MA_STRUCTURE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "ma_structure_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "BEAR_ALIGNED",
+        "window": null
+      },
+      "monthly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "monthly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MONTHLY_DOWN",
+        "window": null
+      },
+      "position_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "POSITION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "position_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "LOW_ZONE",
+        "window": null
+      },
+      "trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "DOWNTREND_STRONG",
+        "window": null
+      },
+      "weekly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "weekly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "WEEKLY_DOWN",
+        "window": null
+      }
+    }
+  },
+  {
+    "context_token": "research-v4-18ff7c8680d47ea4c28b378ddd8883badeaf6a3c90af534dd37144d9fddb5d01",
+    "explanations": {
+      "hypothesis": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "invalid_if": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "waiting_for": {
+        "basis": "MISSING_PREDICATE_EVIDENCE_ONLY",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "unknown_predicates",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [
+            "PREWATCH",
+            "dq5:OPTIONAL_INPUT_UNKNOWN",
+            "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+            "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+          ],
+          "window": null
+        },
+        "source_field": "unknown_predicates",
+        "value": [
+          "PREWATCH",
+          "dq5:OPTIONAL_INPUT_UNKNOWN",
+          "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+          "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+        ]
+      },
+      "why_now": {
+        "basis": "OWNER_TRANSITION_REASONS",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "transition_reasons",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [
+            "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+          ],
+          "window": null
+        },
+        "source_field": "transition_reasons",
+        "value": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      }
+    },
+    "id": "SEC-002610CF9EBB4227722834AADA8F757E",
+    "name": "晨曦航空",
+    "states": {
+      "amount_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "AMOUNT_VOLUME_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "amount_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "VERY_DRY",
+        "window": null
+      },
+      "compression_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "COMPRESSION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "compression_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "COMPRESSING",
+        "window": null
+      },
+      "ma_structure_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "MA_STRUCTURE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "ma_structure_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "BEAR_ALIGNED",
+        "window": null
+      },
+      "monthly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "monthly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MONTHLY_DOWN",
+        "window": null
+      },
+      "position_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "POSITION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "position_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MID_ZONE",
+        "window": null
+      },
+      "trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "DOWNTREND_STRONG",
+        "window": null
+      },
+      "weekly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "weekly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "WEEKLY_FLAT",
+        "window": null
+      }
+    }
+  },
+  {
+    "context_token": "research-v4-18ff7c8680d47ea4c28b378ddd8883badeaf6a3c90af534dd37144d9fddb5d01",
+    "explanations": {
+      "hypothesis": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "invalid_if": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "waiting_for": {
+        "basis": "MISSING_PREDICATE_EVIDENCE_ONLY",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "unknown_predicates",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [
+            "dq5:OPTIONAL_INPUT_UNKNOWN",
+            "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+            "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+          ],
+          "window": null
+        },
+        "source_field": "unknown_predicates",
+        "value": [
+          "dq5:OPTIONAL_INPUT_UNKNOWN",
+          "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+          "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+        ]
+      },
+      "why_now": {
+        "basis": "OWNER_TRANSITION_REASONS",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "transition_reasons",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [],
+          "window": null
+        },
+        "source_field": "transition_reasons",
+        "value": []
+      }
+    },
+    "id": "SEC-002E8949D07D2829AB967520C65C0845",
+    "name": "倍轻松",
+    "states": {
+      "amount_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "AMOUNT_VOLUME_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "amount_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "EXPANDED",
+        "window": null
+      },
+      "compression_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "COMPRESSION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "compression_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "EXPANDING",
+        "window": null
+      },
+      "ma_structure_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "MA_STRUCTURE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "ma_structure_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MIXED",
+        "window": null
+      },
+      "monthly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "monthly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MONTHLY_UP",
+        "window": null
+      },
+      "position_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "POSITION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "position_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MID_ZONE",
+        "window": null
+      },
+      "trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "SIDEWAYS_STRONG",
+        "window": null
+      },
+      "weekly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "weekly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "WEEKLY_FLAT",
+        "window": null
+      }
+    }
+  },
+  {
+    "context_token": "research-v4-18ff7c8680d47ea4c28b378ddd8883badeaf6a3c90af534dd37144d9fddb5d01",
+    "explanations": {
+      "hypothesis": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "invalid_if": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "waiting_for": {
+        "basis": "MISSING_PREDICATE_EVIDENCE_ONLY",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "unknown_predicates",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [
+            "PREWATCH",
+            "SEED",
+            "dq5:OPTIONAL_INPUT_UNKNOWN",
+            "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+            "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+          ],
+          "window": null
+        },
+        "source_field": "unknown_predicates",
+        "value": [
+          "PREWATCH",
+          "SEED",
+          "dq5:OPTIONAL_INPUT_UNKNOWN",
+          "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+          "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+        ]
+      },
+      "why_now": {
+        "basis": "OWNER_TRANSITION_REASONS",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "transition_reasons",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [
+            "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+          ],
+          "window": null
+        },
+        "source_field": "transition_reasons",
+        "value": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      }
+    },
+    "id": "SEC-0051683845B17D59641B7D1DC261FE2A",
+    "name": "兔 宝 宝",
+    "states": {
+      "amount_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "AMOUNT_VOLUME_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "amount_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "VERY_EXPANDED",
+        "window": null
+      },
+      "compression_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "COMPRESSION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "compression_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "EXPANDING",
+        "window": null
+      },
+      "ma_structure_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "MA_STRUCTURE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "ma_structure_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MIXED",
+        "window": null
+      },
+      "monthly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "monthly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MONTHLY_FLAT",
+        "window": null
+      },
+      "position_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "POSITION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "position_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MID_ZONE",
+        "window": null
+      },
+      "trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "SIDEWAYS_STRONG",
+        "window": null
+      },
+      "weekly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "weekly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "WEEKLY_DOWN",
+        "window": null
+      }
+    }
+  },
+  {
+    "context_token": "research-v4-18ff7c8680d47ea4c28b378ddd8883badeaf6a3c90af534dd37144d9fddb5d01",
+    "explanations": {
+      "hypothesis": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "invalid_if": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "waiting_for": {
+        "basis": "MISSING_PREDICATE_EVIDENCE_ONLY",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "unknown_predicates",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [
+            "CONFIRMED",
+            "delta3:OPTIONAL_INPUT_UNKNOWN",
+            "dq5:OPTIONAL_INPUT_UNKNOWN",
+            "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+            "followup_complete:OPTIONAL_INPUT_UNKNOWN",
+            "scenario:OPTIONAL_INPUT_UNKNOWN"
+          ],
+          "window": null
+        },
+        "source_field": "unknown_predicates",
+        "value": [
+          "CONFIRMED",
+          "delta3:OPTIONAL_INPUT_UNKNOWN",
+          "dq5:OPTIONAL_INPUT_UNKNOWN",
+          "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+          "followup_complete:OPTIONAL_INPUT_UNKNOWN",
+          "scenario:OPTIONAL_INPUT_UNKNOWN"
+        ]
+      },
+      "why_now": {
+        "basis": "OWNER_TRANSITION_REASONS",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "transition_reasons",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [
+            "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+          ],
+          "window": null
+        },
+        "source_field": "transition_reasons",
+        "value": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      }
+    },
+    "id": "SEC-005EA670068174623A3C365FCA9A8B2D",
+    "name": "春秋航空",
+    "states": {
+      "amount_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "AMOUNT_VOLUME_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "amount_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "NORMAL",
+        "window": null
+      },
+      "compression_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "COMPRESSION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "compression_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "EXPANDING_EXTREME",
+        "window": null
+      },
+      "ma_structure_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "MA_STRUCTURE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "ma_structure_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "BEAR_ALIGNED",
+        "window": null
+      },
+      "monthly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "monthly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MONTHLY_DOWN",
+        "window": null
+      },
+      "position_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "POSITION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "position_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MID_LOW",
+        "window": null
+      },
+      "trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "DOWNTREND_STRONG",
+        "window": null
+      },
+      "weekly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "weekly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "WEEKLY_DOWN",
+        "window": null
+      }
+    }
+  },
+  {
+    "context_token": "research-v4-18ff7c8680d47ea4c28b378ddd8883badeaf6a3c90af534dd37144d9fddb5d01",
+    "explanations": {
+      "hypothesis": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "invalid_if": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "waiting_for": {
+        "basis": "MISSING_PREDICATE_EVIDENCE_ONLY",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "unknown_predicates",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [
+            "PREWATCH",
+            "dq5:OPTIONAL_INPUT_UNKNOWN",
+            "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+            "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+          ],
+          "window": null
+        },
+        "source_field": "unknown_predicates",
+        "value": [
+          "PREWATCH",
+          "dq5:OPTIONAL_INPUT_UNKNOWN",
+          "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+          "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+        ]
+      },
+      "why_now": {
+        "basis": "OWNER_TRANSITION_REASONS",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "transition_reasons",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [
+            "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+          ],
+          "window": null
+        },
+        "source_field": "transition_reasons",
+        "value": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      }
+    },
+    "id": "SEC-0068F2B3CBB78D2F594248A35D1EF6E6",
+    "name": "节能铁汉",
+    "states": {
+      "amount_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "AMOUNT_VOLUME_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "amount_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "CONTRACTED",
+        "window": null
+      },
+      "compression_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "COMPRESSION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "compression_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "COMPRESSING",
+        "window": null
+      },
+      "ma_structure_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "MA_STRUCTURE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "ma_structure_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "BEAR_ALIGNED",
+        "window": null
+      },
+      "monthly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "monthly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MONTHLY_UP",
+        "window": null
+      },
+      "position_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "POSITION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "position_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MID_ZONE",
+        "window": null
+      },
+      "trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "DOWNTREND",
+        "window": null
+      },
+      "weekly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "weekly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "WEEKLY_DOWN",
+        "window": null
+      }
+    }
+  },
+  {
+    "context_token": "research-v4-18ff7c8680d47ea4c28b378ddd8883badeaf6a3c90af534dd37144d9fddb5d01",
+    "explanations": {
+      "hypothesis": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "invalid_if": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "waiting_for": {
+        "basis": "MISSING_PREDICATE_EVIDENCE_ONLY",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "unknown_predicates",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [
+            "PREWATCH",
+            "dq5:OPTIONAL_INPUT_UNKNOWN",
+            "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+            "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+          ],
+          "window": null
+        },
+        "source_field": "unknown_predicates",
+        "value": [
+          "PREWATCH",
+          "dq5:OPTIONAL_INPUT_UNKNOWN",
+          "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+          "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+        ]
+      },
+      "why_now": {
+        "basis": "OWNER_TRANSITION_REASONS",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "transition_reasons",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [
+            "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+          ],
+          "window": null
+        },
+        "source_field": "transition_reasons",
+        "value": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      }
+    },
+    "id": "SEC-006D9F8F7EEAB00B95B63390341737B1",
+    "name": "名雕股份",
+    "states": {
+      "amount_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "AMOUNT_VOLUME_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "amount_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "CONTRACTED",
+        "window": null
+      },
+      "compression_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "COMPRESSION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "compression_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "COMPRESSING",
+        "window": null
+      },
+      "ma_structure_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "MA_STRUCTURE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "ma_structure_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "BULL_TRANSITION",
+        "window": null
+      },
+      "monthly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "monthly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MONTHLY_UP",
+        "window": null
+      },
+      "position_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "POSITION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "position_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MID_ZONE",
+        "window": null
+      },
+      "trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "SIDEWAYS_WEAK",
+        "window": null
+      },
+      "weekly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "weekly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "WEEKLY_UP",
+        "window": null
+      }
+    }
+  },
+  {
+    "context_token": "research-v4-18ff7c8680d47ea4c28b378ddd8883badeaf6a3c90af534dd37144d9fddb5d01",
+    "explanations": {
+      "hypothesis": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "invalid_if": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "waiting_for": {
+        "basis": "MISSING_PREDICATE_EVIDENCE_ONLY",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "unknown_predicates",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [
+            "PREWATCH",
+            "dq5:OPTIONAL_INPUT_UNKNOWN",
+            "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+            "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+          ],
+          "window": null
+        },
+        "source_field": "unknown_predicates",
+        "value": [
+          "PREWATCH",
+          "dq5:OPTIONAL_INPUT_UNKNOWN",
+          "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+          "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+        ]
+      },
+      "why_now": {
+        "basis": "OWNER_TRANSITION_REASONS",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "transition_reasons",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [
+            "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+          ],
+          "window": null
+        },
+        "source_field": "transition_reasons",
+        "value": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      }
+    },
+    "id": "SEC-0081C3FB364C2FF2BBF61903A767EACB",
+    "name": "汉钟精机",
+    "states": {
+      "amount_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "AMOUNT_VOLUME_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "amount_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "VERY_DRY",
+        "window": null
+      },
+      "compression_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "COMPRESSION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "compression_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "EXPANDING",
+        "window": null
+      },
+      "ma_structure_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "MA_STRUCTURE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "ma_structure_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "BEAR_ALIGNED",
+        "window": null
+      },
+      "monthly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "monthly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MONTHLY_DOWN",
+        "window": null
+      },
+      "position_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "POSITION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "position_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "LOW_ZONE",
+        "window": null
+      },
+      "trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "DOWNTREND_STRONG",
+        "window": null
+      },
+      "weekly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "weekly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "WEEKLY_UP",
+        "window": null
+      }
+    }
+  },
+  {
+    "context_token": "research-v4-18ff7c8680d47ea4c28b378ddd8883badeaf6a3c90af534dd37144d9fddb5d01",
+    "explanations": {
+      "hypothesis": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "invalid_if": {
+        "basis": "OWNER_FIELD_NOT_BOUND",
+        "source": null,
+        "source_field": null,
+        "value": null
+      },
+      "waiting_for": {
+        "basis": "MISSING_PREDICATE_EVIDENCE_ONLY",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "unknown_predicates",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [
+            "PREWATCH",
+            "dq5:OPTIONAL_INPUT_UNKNOWN",
+            "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+            "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+          ],
+          "window": null
+        },
+        "source_field": "unknown_predicates",
+        "value": [
+          "PREWATCH",
+          "dq5:OPTIONAL_INPUT_UNKNOWN",
+          "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+          "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+        ]
+      },
+      "why_now": {
+        "basis": "OWNER_TRANSITION_REASONS",
+        "source": {
+          "adjustment_basis": null,
+          "computation_domain": "RESEARCH_STATE_V1",
+          "denominator": null,
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "quality": "KNOWN",
+          "reason": null,
+          "source_as_of": "2026-10-02T02:27:19.982404+00:00",
+          "source_contract_id": "RESEARCH_STATE_V1",
+          "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+          "source_field": "transition_reasons",
+          "unit": "NOT_APPLICABLE_TYPED_VALUE",
+          "value": [
+            "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+          ],
+          "window": null
+        },
+        "source_field": "transition_reasons",
+        "value": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      }
+    },
+    "id": "SEC-0086F7F2614CE0006C835421BA75BD51",
+    "name": "广州酒家",
+    "states": {
+      "amount_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "AMOUNT_VOLUME_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "amount_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "CONTRACTED",
+        "window": null
+      },
+      "compression_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "COMPRESSION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "compression_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "COMPRESSING",
+        "window": null
+      },
+      "ma_structure_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "MA_STRUCTURE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "ma_structure_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "BEAR_ALIGNED",
+        "window": null
+      },
+      "monthly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "monthly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MONTHLY_FLAT",
+        "window": null
+      },
+      "position_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "POSITION_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "position_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "MID_LOW",
+        "window": null
+      },
+      "trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "DOWNTREND",
+        "window": null
+      },
+      "weekly_trend_state": {
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "denominator": null,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "quality": "KNOWN",
+        "reason": null,
+        "source_as_of": "2026-09-30",
+        "source_contract_id": "TREND_STATE_V1",
+        "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+        "source_field": "weekly_trend_state",
+        "unit": "NOT_APPLICABLE_TYPED_VALUE",
+        "value": "WEEKLY_DOWN",
+        "window": null
+      }
+    }
+  }
+]

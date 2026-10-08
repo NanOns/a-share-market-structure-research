@@ -1,0 +1,92 @@
+{
+  "accepted_stock_count": 5213,
+  "comparison_count": 36491,
+  "excluded_owner_identities": [
+    {
+      "reason": "NOT_IN_ACCEPTED_CURRENT_RAW_STOCK_SCOPE",
+      "security_id": "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9"
+    },
+    {
+      "reason": "NOT_IN_ACCEPTED_CURRENT_RAW_STOCK_SCOPE",
+      "security_id": "SEC-25106EB81E18F2C63CA4F3BD11EAD8DD"
+    },
+    {
+      "reason": "NOT_IN_ACCEPTED_CURRENT_RAW_STOCK_SCOPE",
+      "security_id": "SEC-6054AE867A60481EDA16B0E02AF1DB09"
+    },
+    {
+      "reason": "NOT_IN_ACCEPTED_CURRENT_RAW_STOCK_SCOPE",
+      "security_id": "SEC-6D84A4C76A0CC2B3A7FA63D68C75A433"
+    },
+    {
+      "reason": "NOT_IN_ACCEPTED_CURRENT_RAW_STOCK_SCOPE",
+      "security_id": "SEC-727B4462EB615309F3CF61974E3EF7FC"
+    },
+    {
+      "reason": "NOT_IN_ACCEPTED_CURRENT_RAW_STOCK_SCOPE",
+      "security_id": "SEC-9C973B4FDFA9C42E9574D1446FF54034"
+    },
+    {
+      "reason": "NOT_IN_ACCEPTED_CURRENT_RAW_STOCK_SCOPE",
+      "security_id": "SEC-A17F411A81787AFD319B23D4882D926A"
+    },
+    {
+      "reason": "NOT_IN_ACCEPTED_CURRENT_RAW_STOCK_SCOPE",
+      "security_id": "SEC-A94CC314405C8437CE79555A7DC05B82"
+    },
+    {
+      "reason": "NOT_IN_ACCEPTED_CURRENT_RAW_STOCK_SCOPE",
+      "security_id": "SEC-B17169139D0E3492B2CA012774B6B125"
+    },
+    {
+      "reason": "NOT_IN_ACCEPTED_CURRENT_RAW_STOCK_SCOPE",
+      "security_id": "SEC-DD31D8CAF1CF04404E91F12B636DFE6C"
+    },
+    {
+      "reason": "NOT_IN_ACCEPTED_CURRENT_RAW_STOCK_SCOPE",
+      "security_id": "SEC-E11DA4A25B7F65C3E8229D5A76504A94"
+    }
+  ],
+  "fields": {
+    "amount_state": {
+      "known_verified": 5188,
+      "unknown_preserved": 25
+    },
+    "compression_state": {
+      "known_verified": 5164,
+      "unknown_preserved": 49
+    },
+    "ma_structure_state": {
+      "known_verified": 5186,
+      "unknown_preserved": 27
+    },
+    "monthly_trend_state": {
+      "known_verified": 5169,
+      "unknown_preserved": 44
+    },
+    "position_state": {
+      "known_verified": 5173,
+      "unknown_preserved": 40
+    },
+    "trend_state": {
+      "known_verified": 5167,
+      "unknown_preserved": 46
+    },
+    "weekly_trend_state": {
+      "known_verified": 5185,
+      "unknown_preserved": 28
+    }
+  },
+  "parameters": {
+    "bytes": 17586,
+    "path": "config/v4_04_parameter_set_v1.json",
+    "sha256": "5b19a23dfbf6b214f5ee7c7cce5df5674db69d099386038c082317819812ced5"
+  },
+  "result": "PASS",
+  "scope": "OWNER_INPUT_THRESHOLD_RULES_AND_SNAPSHOT_NOT_INDEPENDENT_RAW_INPUT_RECOMPUTATION",
+  "source": {
+    "bytes": 44330385,
+    "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/profiles.jsonl.gz",
+    "sha256": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6"
+  }
+}

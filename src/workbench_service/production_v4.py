@@ -244,6 +244,22 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
                             cell=dict(v,quality='UNKNOWN' if v.get('unknown_reason') or v.get('value') is None else 'KNOWN',reason=v.get('unknown_reason'),unit=units.get(k))
                             result['fields'][k]=compact_cell(cell,authority[kind],k,date)
                         db.execute("DELETE FROM objects WHERE domain='stocks' AND id=?",(row['security_id'],));put('stocks',result)
+        if authority is not None:
+            from .raw_turnover import cells as raw_turnover_cells
+            raw_turnover_contract=reference(root,root/'config/v4_raw_amount_volume_projection_v1.json')
+            raw_units=legacy._read(raw_turnover_contract)
+            if raw_units['unit_contract']!=authority['sources']['unit_contract'] or raw_units['contract_id']!='R2_RAW_AMOUNT_VOLUME_PROJECTION_V1':
+                raise SourceInvalid('RAW_TURNOVER_UNIT_SOURCE_CONTRACT_MISMATCH')
+            sources['raw_turnover_projection_contract']=raw_turnover_contract
+            sources['raw_turnover_unit_contract']=authority['sources']['unit_contract']
+            legacy._verify(sources['raw_turnover_unit_contract'])
+            for row in legacy._source(contract,'RAW_DAILY')['rows']:
+                old=db.execute("SELECT payload FROM objects WHERE domain='stocks' AND id=?",(row['security_id'],)).fetchone()
+                if not old:raise SourceInvalid('RAW_TURNOVER_STOCK_IDENTITY_NOT_BOUND')
+                result=json.loads(old[0])
+                for field,cell in raw_turnover_cells(row,date,authority['volume_unit'],authority['amount_unit']).items():
+                    result['fields'][field]=compact_cell(cell,sources['RAW_DAILY'],field,date)
+                db.execute("DELETE FROM objects WHERE domain='stocks' AND id=?",(row['security_id'],));put('stocks',result)
         focus_authority=root/'config/v4_focus_operational_authority_v1.json'
         if focus_override is not None or focus_authority.exists():
             authority=focus_override if focus_override is not None else json.loads(focus_authority.read_bytes())

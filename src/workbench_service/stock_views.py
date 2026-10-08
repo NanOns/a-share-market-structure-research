@@ -47,7 +47,7 @@ def explanation(reader,item):
     return reader.envelope(status='READY',item=item,eligibility='NOT_ELIGIBLE' if prewatch=='FALSE' else 'ELIGIBLE' if prewatch=='TRUE' else 'UNKNOWN',
         satisfied=value(item,'matched_predicates') or [],not_satisfied=[],not_satisfied_reason='OWNER_FALSE_PREDICATE_LIST_NOT_PUBLISHED',
         indeterminate=value(item,'unknown_predicates') or [],not_implemented=value(item,'detector_statuses'),
-        F={k:v for k,v in item['fields'].items() if k in ('close','ma5','ma10','ma20','ma60','atr14','pos20','pos60','rps5','rps20','amount_ratio20','volume_ratio20','turnover')},
+        F={k:v for k,v in item['fields'].items() if k in ('close','ma5','ma10','ma20','ma60','atr14','pos20','pos60','rps5','rps20','amount','volume','amount_ratio20','volume_ratio20','turnover')},
         R={k:v for k,v in item['fields'].items() if k.endswith('_state') or k in ('core_participation_result','core_extension_risk')},
         H=value(item,'hypothesis') or [],hypothesis_reason='NO_BOUND_OWNER_HYPOTHESIS_OUTPUT_NO_UI_INFERENCE' if 'hypothesis' not in item['fields'] else None,
         waiting_for=value(item,'waiting_for') if 'waiting_for' in item['fields'] else value(item,'unknown_predicates'),

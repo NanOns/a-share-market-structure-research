@@ -1,0 +1,1429 @@
+{
+  "context_token": "research-v4-4b1c722e14753e84e00a5b4a03779393348dbec5ab1fc1bf40e105af0f1a3936",
+  "samples": [
+    {
+      "id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "observations": {
+        "context": {
+          "accepted_trade_date": "2026-09-30",
+          "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+          "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+          "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+          "domain_readiness": {
+            "fep": {
+              "debt": [
+                "CURRENT_FEATURE_MODEL_INFERENCE"
+              ],
+              "released": false,
+              "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+            },
+            "focus": {
+              "debt": [
+                "UNRESOLVED_PATH_PREDICATE_OWNERS",
+                "LEGACY_PG_RECONCILIATION"
+              ],
+              "earliest_valid_date": "2026-09-29",
+              "released": false,
+              "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+            },
+            "forward": {
+              "debt": [
+                "CURRENT_FEP_INFERENCE",
+                "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+                "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+              ],
+              "released": false,
+              "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+            },
+            "market": {
+              "debt": [
+                "INTRADAY_TOUCH_BROKEN_LIMIT",
+                "OFFICIAL_FACT_NEWS"
+              ],
+              "released": false,
+              "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+            },
+            "sectors": {
+              "debt": [
+                "HISTORICAL_MEMBERSHIP",
+                "LIFECYCLE",
+                "ROTATION_HISTORY"
+              ],
+              "released": false,
+              "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+            },
+            "stocks": {
+              "debt": [
+                "HYPOTHESIS",
+                "INVALID_IF_OWNER",
+                "FULL_STRUCTURE_PATH"
+              ],
+              "released": false,
+              "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+            },
+            "strict_pit": {
+              "debt": [
+                "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+              ],
+              "released": false,
+              "scope": "NONE"
+            }
+          },
+          "factor_contract_id": null,
+          "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+          "full_product_release": false,
+          "historical_pit_effectiveness": "NOT_GRANTED",
+          "joint_release_digest": null,
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "last_accepted_trade_date": "2026-09-30",
+          "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+          "namespace": "V4_CURRENT_ACCEPTED",
+          "operational_release_scope": [],
+          "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "parameter_set_id": null,
+          "publication_id": "666645c83dfa4fe984c336f024f26f22",
+          "quality": "QUALITY_DEGRADED",
+          "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "release_id": "666645c83dfa4fe984c336f024f26f22",
+          "release_metadata": {
+            "contract_version": "1.0.0",
+            "data_quality_state": "QUALITY_DEGRADED",
+            "evidence_origin": "REAL_ACCEPTED_SOURCE",
+            "evidence_state": "VALIDATION_ONGOING",
+            "input_digest": "0107c813606e51bc631004f568a10b70ea9b47640c1e53117ca46ad789fcecbd",
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "owner": "FP02_RESEARCH_PROJECTION",
+            "published_at": "2026-10-08T11:16:40.088250+00:00",
+            "release_id": "666645c83dfa4fe984c336f024f26f22",
+            "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+            "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+            "trading_date": "2026-09-30"
+          },
+          "scoped_release": false,
+          "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+          "source_mode": "EXISTING_REAL_SNAPSHOT_PENDING_RELEASE",
+          "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+          "stage": "V4-15",
+          "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+          "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+          "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+          "trade_date": "2026-09-30",
+          "turnover_as_of": null
+        },
+        "context_token": "research-v4-4b1c722e14753e84e00a5b4a03779393348dbec5ab1fc1bf40e105af0f1a3936",
+        "contract_id": "R2_FOCUS_TYPED_READ_V2",
+        "has_next": false,
+        "item_schema": [
+          "episode_id",
+          "entity_id",
+          "trade_date",
+          "event",
+          "source_publication"
+        ],
+        "items": [
+          {
+            "AS_RECORDED": false,
+            "best_confirmed_state": "BREAKOUT_CONFIRMED",
+            "entity_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+            "episode_id": "418b3f37f6df01715feb073db27b0eb7609403b9c0644bde1a7ec72638f8aeda",
+            "event": "NEW",
+            "health": "STABLE",
+            "higher_priority_unresolved": [],
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "membership": "CURRENT",
+            "native_core_evidence": {
+              "contract_id": "R2_V4_FOCUS_NATIVE_CORE_FACTS_V1",
+              "facts": {
+                "ma20": 2.3365,
+                "r5": 0.04132231404958686,
+                "source_extended": false
+              },
+              "source": {
+                "contract_id": "R2_V4_FOCUS_NATIVE_CORE_FACTS_V1",
+                "factors": {
+                  "bytes": 19460170,
+                  "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/factors.jsonl.gz",
+                  "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+                },
+                "price_basis": "TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE",
+                "profiles": {
+                  "bytes": 44330385,
+                  "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/profiles.jsonl.gz",
+                  "sha256": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6"
+                },
+                "series": {
+                  "bytes": 367886336,
+                  "path": "data/v4/fp07_stocks/33d5a66f47870a29397a453132d9ea0ac3dbc0f82063902a60436992fe43c378/series.sqlite",
+                  "sha256": "6b326dac93aacd63dc289895b1488f224843940154b6f4b89bc0df8af0a4518d"
+                },
+                "trade_date": "2026-09-30"
+              },
+              "status": "BOUND",
+              "trade_date": "2026-09-30"
+            },
+            "path_contract_id": "R2_V4_FOCUS_NATIVE_CORE_PATH_V1",
+            "path_reason": null,
+            "path_resolution": "READY",
+            "path_state": "BREAKOUT_CONFIRMED",
+            "predicate_evidence": {
+              "BREAKOUT_CONFIRMED": "TRUE",
+              "EXITED_FOLLOW_UP": "FALSE",
+              "PULLBACK_HEALTHY": "FALSE",
+              "PULLBACK_UNCONFIRMED": "FALSE",
+              "SECTOR_DIVERGENCE": "UNKNOWN",
+              "STRUCTURE_DAMAGED": "FALSE",
+              "TOO_EXTENDED": "FALSE",
+              "TREND_ACCELERATING": "UNKNOWN",
+              "WAIT_CONFIRMATION": "FALSE",
+              "WEAKENING": "UNKNOWN"
+            },
+            "price_path": {
+              "anchor_actual_bar": true,
+              "close": "2.52",
+              "input_digest": "7a88059a75e492129c66465f9cfe31cc53da3ff84ba16b8d7a1e26cc35b266a8",
+              "metrics": {
+                "drawdown_current": "0",
+                "mae": "-0.1071428571428571428571428571",
+                "mdd_close": "0",
+                "mfe": "0.011904761904761904761904762",
+                "peak_close": "2.52",
+                "return_close": "0"
+              },
+              "missing_dates": [],
+              "price_basis": "TDX_NATIVE_AFFINE_AS_OF_OBSERVATION",
+              "quality": "READY",
+              "suspended_dates": [],
+              "target_state": "BAR"
+            },
+            "scenario": "LAUNCH_CONFIRM",
+            "source_publication": "V4_11_R5B_D2_ROW:983b94093f336b08b9230b1295fb2faa16703b4b1b47d1e30e608fbdb192b041",
+            "trade_date": "2026-09-30",
+            "validity": "VALID",
+            "waiting_for": [
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ]
+          }
+        ],
+        "legacy_history": {
+          "preserved": true,
+          "status": "UNRECONCILED_PG_UNAVAILABLE"
+        },
+        "limit": 200,
+        "offset": 0,
+        "permissions": {
+          "automatic_event_write": false,
+          "manual_pin": false,
+          "read": true
+        },
+        "reason": null,
+        "resource_type": "observations",
+        "source": {
+          "bytes": 6691248,
+          "path": "data/v4/r2_focus_native_core/1cdbd05a5ef0ca94505fd45dc977ab789c951d5f244ca69bca4256b92cbd31ca/focus.json",
+          "sha256": "94d0e53c8d1db7784cb27f2976e33488a6f7f0f94949bc1d6d9fd826d286a051"
+        },
+        "status": "READY",
+        "total": 1,
+        "write_block_reason": "NATIVE_CORE_CANDIDATE_REQUIRES_JOINT_QA"
+      },
+      "outcomes": {
+        "context": {
+          "accepted_trade_date": "2026-09-30",
+          "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+          "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+          "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+          "domain_readiness": {
+            "fep": {
+              "debt": [
+                "CURRENT_FEATURE_MODEL_INFERENCE"
+              ],
+              "released": false,
+              "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+            },
+            "focus": {
+              "debt": [
+                "UNRESOLVED_PATH_PREDICATE_OWNERS",
+                "LEGACY_PG_RECONCILIATION"
+              ],
+              "earliest_valid_date": "2026-09-29",
+              "released": false,
+              "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+            },
+            "forward": {
+              "debt": [
+                "CURRENT_FEP_INFERENCE",
+                "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+                "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+              ],
+              "released": false,
+              "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+            },
+            "market": {
+              "debt": [
+                "INTRADAY_TOUCH_BROKEN_LIMIT",
+                "OFFICIAL_FACT_NEWS"
+              ],
+              "released": false,
+              "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+            },
+            "sectors": {
+              "debt": [
+                "HISTORICAL_MEMBERSHIP",
+                "LIFECYCLE",
+                "ROTATION_HISTORY"
+              ],
+              "released": false,
+              "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+            },
+            "stocks": {
+              "debt": [
+                "HYPOTHESIS",
+                "INVALID_IF_OWNER",
+                "FULL_STRUCTURE_PATH"
+              ],
+              "released": false,
+              "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+            },
+            "strict_pit": {
+              "debt": [
+                "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+              ],
+              "released": false,
+              "scope": "NONE"
+            }
+          },
+          "factor_contract_id": null,
+          "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+          "full_product_release": false,
+          "historical_pit_effectiveness": "NOT_GRANTED",
+          "joint_release_digest": null,
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "last_accepted_trade_date": "2026-09-30",
+          "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+          "namespace": "V4_CURRENT_ACCEPTED",
+          "operational_release_scope": [],
+          "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "parameter_set_id": null,
+          "publication_id": "666645c83dfa4fe984c336f024f26f22",
+          "quality": "QUALITY_DEGRADED",
+          "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "release_id": "666645c83dfa4fe984c336f024f26f22",
+          "release_metadata": {
+            "contract_version": "1.0.0",
+            "data_quality_state": "QUALITY_DEGRADED",
+            "evidence_origin": "REAL_ACCEPTED_SOURCE",
+            "evidence_state": "VALIDATION_ONGOING",
+            "input_digest": "0107c813606e51bc631004f568a10b70ea9b47640c1e53117ca46ad789fcecbd",
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "owner": "FP02_RESEARCH_PROJECTION",
+            "published_at": "2026-10-08T11:16:40.088250+00:00",
+            "release_id": "666645c83dfa4fe984c336f024f26f22",
+            "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+            "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+            "trading_date": "2026-09-30"
+          },
+          "scoped_release": false,
+          "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+          "source_mode": "EXISTING_REAL_SNAPSHOT_PENDING_RELEASE",
+          "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+          "stage": "V4-15",
+          "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+          "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+          "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+          "trade_date": "2026-09-30",
+          "turnover_as_of": null
+        },
+        "context_token": "research-v4-4b1c722e14753e84e00a5b4a03779393348dbec5ab1fc1bf40e105af0f1a3936",
+        "contract_id": "R2_FOCUS_TYPED_READ_V2",
+        "has_next": false,
+        "item_schema": [
+          "episode_id",
+          "entity_id",
+          "trade_date",
+          "outcome_status"
+        ],
+        "items": [
+          {
+            "AS_RECORDED": false,
+            "anchor_id": "dba59336e8f58b60889b1b21b0f969c246366294be237c7754671f9e1ec5f69d",
+            "contract_id": "R2_V4_FOCUS_PATH_OUTCOME_V2",
+            "entity_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+            "episode_id": "418b3f37f6df01715feb073db27b0eb7609403b9c0644bde1a7ec72638f8aeda",
+            "horizon": 1,
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "metrics": null,
+            "outcome_status": "PENDING",
+            "reason_code": "NOT_DUE",
+            "target_trade_date": null,
+            "terminal": false,
+            "trade_date": "2026-09-30"
+          },
+          {
+            "AS_RECORDED": false,
+            "anchor_id": "dba59336e8f58b60889b1b21b0f969c246366294be237c7754671f9e1ec5f69d",
+            "contract_id": "R2_V4_FOCUS_PATH_OUTCOME_V2",
+            "entity_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+            "episode_id": "418b3f37f6df01715feb073db27b0eb7609403b9c0644bde1a7ec72638f8aeda",
+            "horizon": 3,
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "metrics": null,
+            "outcome_status": "PENDING",
+            "reason_code": "NOT_DUE",
+            "target_trade_date": null,
+            "terminal": false,
+            "trade_date": "2026-09-30"
+          },
+          {
+            "AS_RECORDED": false,
+            "anchor_id": "dba59336e8f58b60889b1b21b0f969c246366294be237c7754671f9e1ec5f69d",
+            "contract_id": "R2_V4_FOCUS_PATH_OUTCOME_V2",
+            "entity_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+            "episode_id": "418b3f37f6df01715feb073db27b0eb7609403b9c0644bde1a7ec72638f8aeda",
+            "horizon": 5,
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "metrics": null,
+            "outcome_status": "PENDING",
+            "reason_code": "NOT_DUE",
+            "target_trade_date": null,
+            "terminal": false,
+            "trade_date": "2026-09-30"
+          },
+          {
+            "AS_RECORDED": false,
+            "anchor_id": "dba59336e8f58b60889b1b21b0f969c246366294be237c7754671f9e1ec5f69d",
+            "contract_id": "R2_V4_FOCUS_PATH_OUTCOME_V2",
+            "entity_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+            "episode_id": "418b3f37f6df01715feb073db27b0eb7609403b9c0644bde1a7ec72638f8aeda",
+            "horizon": 10,
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "metrics": null,
+            "outcome_status": "PENDING",
+            "reason_code": "NOT_DUE",
+            "target_trade_date": null,
+            "terminal": false,
+            "trade_date": "2026-09-30"
+          },
+          {
+            "AS_RECORDED": false,
+            "anchor_id": "dba59336e8f58b60889b1b21b0f969c246366294be237c7754671f9e1ec5f69d",
+            "contract_id": "R2_V4_FOCUS_PATH_OUTCOME_V2",
+            "entity_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+            "episode_id": "418b3f37f6df01715feb073db27b0eb7609403b9c0644bde1a7ec72638f8aeda",
+            "horizon": 20,
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "metrics": null,
+            "outcome_status": "PENDING",
+            "reason_code": "NOT_DUE",
+            "target_trade_date": null,
+            "terminal": false,
+            "trade_date": "2026-09-30"
+          }
+        ],
+        "legacy_history": {
+          "preserved": true,
+          "status": "UNRECONCILED_PG_UNAVAILABLE"
+        },
+        "limit": 200,
+        "offset": 0,
+        "permissions": {
+          "automatic_event_write": false,
+          "manual_pin": false,
+          "read": true
+        },
+        "reason": null,
+        "resource_type": "outcomes",
+        "source": {
+          "bytes": 6691248,
+          "path": "data/v4/r2_focus_native_core/1cdbd05a5ef0ca94505fd45dc977ab789c951d5f244ca69bca4256b92cbd31ca/focus.json",
+          "sha256": "94d0e53c8d1db7784cb27f2976e33488a6f7f0f94949bc1d6d9fd826d286a051"
+        },
+        "status": "READY",
+        "total": 5,
+        "write_block_reason": "NATIVE_CORE_CANDIDATE_REQUIRES_JOINT_QA"
+      }
+    },
+    {
+      "id": "SEC-00F7600938E29E801B3FB9F22775458E",
+      "observations": {
+        "context": {
+          "accepted_trade_date": "2026-09-30",
+          "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+          "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+          "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+          "domain_readiness": {
+            "fep": {
+              "debt": [
+                "CURRENT_FEATURE_MODEL_INFERENCE"
+              ],
+              "released": false,
+              "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+            },
+            "focus": {
+              "debt": [
+                "UNRESOLVED_PATH_PREDICATE_OWNERS",
+                "LEGACY_PG_RECONCILIATION"
+              ],
+              "earliest_valid_date": "2026-09-29",
+              "released": false,
+              "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+            },
+            "forward": {
+              "debt": [
+                "CURRENT_FEP_INFERENCE",
+                "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+                "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+              ],
+              "released": false,
+              "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+            },
+            "market": {
+              "debt": [
+                "INTRADAY_TOUCH_BROKEN_LIMIT",
+                "OFFICIAL_FACT_NEWS"
+              ],
+              "released": false,
+              "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+            },
+            "sectors": {
+              "debt": [
+                "HISTORICAL_MEMBERSHIP",
+                "LIFECYCLE",
+                "ROTATION_HISTORY"
+              ],
+              "released": false,
+              "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+            },
+            "stocks": {
+              "debt": [
+                "HYPOTHESIS",
+                "INVALID_IF_OWNER",
+                "FULL_STRUCTURE_PATH"
+              ],
+              "released": false,
+              "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+            },
+            "strict_pit": {
+              "debt": [
+                "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+              ],
+              "released": false,
+              "scope": "NONE"
+            }
+          },
+          "factor_contract_id": null,
+          "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+          "full_product_release": false,
+          "historical_pit_effectiveness": "NOT_GRANTED",
+          "joint_release_digest": null,
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "last_accepted_trade_date": "2026-09-30",
+          "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+          "namespace": "V4_CURRENT_ACCEPTED",
+          "operational_release_scope": [],
+          "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "parameter_set_id": null,
+          "publication_id": "666645c83dfa4fe984c336f024f26f22",
+          "quality": "QUALITY_DEGRADED",
+          "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "release_id": "666645c83dfa4fe984c336f024f26f22",
+          "release_metadata": {
+            "contract_version": "1.0.0",
+            "data_quality_state": "QUALITY_DEGRADED",
+            "evidence_origin": "REAL_ACCEPTED_SOURCE",
+            "evidence_state": "VALIDATION_ONGOING",
+            "input_digest": "0107c813606e51bc631004f568a10b70ea9b47640c1e53117ca46ad789fcecbd",
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "owner": "FP02_RESEARCH_PROJECTION",
+            "published_at": "2026-10-08T11:16:40.088250+00:00",
+            "release_id": "666645c83dfa4fe984c336f024f26f22",
+            "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+            "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+            "trading_date": "2026-09-30"
+          },
+          "scoped_release": false,
+          "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+          "source_mode": "EXISTING_REAL_SNAPSHOT_PENDING_RELEASE",
+          "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+          "stage": "V4-15",
+          "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+          "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+          "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+          "trade_date": "2026-09-30",
+          "turnover_as_of": null
+        },
+        "context_token": "research-v4-4b1c722e14753e84e00a5b4a03779393348dbec5ab1fc1bf40e105af0f1a3936",
+        "contract_id": "R2_FOCUS_TYPED_READ_V2",
+        "has_next": false,
+        "item_schema": [
+          "episode_id",
+          "entity_id",
+          "trade_date",
+          "event",
+          "source_publication"
+        ],
+        "items": [
+          {
+            "AS_RECORDED": false,
+            "best_confirmed_state": "BREAKOUT_CONFIRMED",
+            "entity_id": "SEC-00F7600938E29E801B3FB9F22775458E",
+            "episode_id": "c6989b0e49ea82078b58249ea26e34ef4cc04b0497c61399c7043544165e3bdf",
+            "event": "NEW",
+            "health": "UNKNOWN",
+            "higher_priority_unresolved": [
+              "STRUCTURE_DAMAGED"
+            ],
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "membership": "CURRENT",
+            "native_core_evidence": {
+              "contract_id": "R2_V4_FOCUS_NATIVE_CORE_FACTS_V1",
+              "facts": {
+                "ma20": 15.769,
+                "r5": 0.07518796992481191,
+                "source_extended": false
+              },
+              "source": {
+                "contract_id": "R2_V4_FOCUS_NATIVE_CORE_FACTS_V1",
+                "factors": {
+                  "bytes": 19460170,
+                  "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/factors.jsonl.gz",
+                  "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+                },
+                "price_basis": "TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE",
+                "profiles": {
+                  "bytes": 44330385,
+                  "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/profiles.jsonl.gz",
+                  "sha256": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6"
+                },
+                "series": {
+                  "bytes": 367886336,
+                  "path": "data/v4/fp07_stocks/33d5a66f47870a29397a453132d9ea0ac3dbc0f82063902a60436992fe43c378/series.sqlite",
+                  "sha256": "6b326dac93aacd63dc289895b1488f224843940154b6f4b89bc0df8af0a4518d"
+                },
+                "trade_date": "2026-09-30"
+              },
+              "status": "BOUND",
+              "trade_date": "2026-09-30"
+            },
+            "path_contract_id": "R2_V4_FOCUS_NATIVE_CORE_PATH_V1",
+            "path_reason": "HIGHER_PRIORITY_UNRESOLVED",
+            "path_resolution": "PARTIAL",
+            "path_state": null,
+            "predicate_evidence": {
+              "BREAKOUT_CONFIRMED": "TRUE",
+              "EXITED_FOLLOW_UP": "FALSE",
+              "PULLBACK_HEALTHY": "FALSE",
+              "PULLBACK_UNCONFIRMED": "FALSE",
+              "SECTOR_DIVERGENCE": "UNKNOWN",
+              "STRUCTURE_DAMAGED": "UNKNOWN",
+              "TOO_EXTENDED": "FALSE",
+              "TREND_ACCELERATING": "UNKNOWN",
+              "WAIT_CONFIRMATION": "FALSE",
+              "WEAKENING": "UNKNOWN"
+            },
+            "price_path": {
+              "anchor_actual_bar": true,
+              "close": "17.16",
+              "input_digest": "5c0c0e4e5def3c41d08334d36b51eb5b1f63f9dada0071a2c0ddff3f914afc78",
+              "metrics": {
+                "drawdown_current": "0",
+                "mae": "-0.0850815850815850815850815851",
+                "mdd_close": "0",
+                "mfe": "0.042540792540792540792540793",
+                "peak_close": "17.16",
+                "return_close": "0"
+              },
+              "missing_dates": [],
+              "price_basis": "TDX_NATIVE_AFFINE_AS_OF_OBSERVATION",
+              "quality": "READY",
+              "suspended_dates": [],
+              "target_state": "BAR"
+            },
+            "scenario": "NONE",
+            "source_publication": "V4_11_R5B_D2_ROW:70e843328117029cf81514add54363a48f013a14177015392f92fdc6353bec90",
+            "trade_date": "2026-09-30",
+            "validity": "UNKNOWN",
+            "waiting_for": [
+              "PREWATCH",
+              "SEED",
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ]
+          }
+        ],
+        "legacy_history": {
+          "preserved": true,
+          "status": "UNRECONCILED_PG_UNAVAILABLE"
+        },
+        "limit": 200,
+        "offset": 0,
+        "permissions": {
+          "automatic_event_write": false,
+          "manual_pin": false,
+          "read": true
+        },
+        "reason": null,
+        "resource_type": "observations",
+        "source": {
+          "bytes": 6691248,
+          "path": "data/v4/r2_focus_native_core/1cdbd05a5ef0ca94505fd45dc977ab789c951d5f244ca69bca4256b92cbd31ca/focus.json",
+          "sha256": "94d0e53c8d1db7784cb27f2976e33488a6f7f0f94949bc1d6d9fd826d286a051"
+        },
+        "status": "READY",
+        "total": 1,
+        "write_block_reason": "NATIVE_CORE_CANDIDATE_REQUIRES_JOINT_QA"
+      },
+      "outcomes": {
+        "context": {
+          "accepted_trade_date": "2026-09-30",
+          "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+          "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+          "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+          "domain_readiness": {
+            "fep": {
+              "debt": [
+                "CURRENT_FEATURE_MODEL_INFERENCE"
+              ],
+              "released": false,
+              "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+            },
+            "focus": {
+              "debt": [
+                "UNRESOLVED_PATH_PREDICATE_OWNERS",
+                "LEGACY_PG_RECONCILIATION"
+              ],
+              "earliest_valid_date": "2026-09-29",
+              "released": false,
+              "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+            },
+            "forward": {
+              "debt": [
+                "CURRENT_FEP_INFERENCE",
+                "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+                "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+              ],
+              "released": false,
+              "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+            },
+            "market": {
+              "debt": [
+                "INTRADAY_TOUCH_BROKEN_LIMIT",
+                "OFFICIAL_FACT_NEWS"
+              ],
+              "released": false,
+              "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+            },
+            "sectors": {
+              "debt": [
+                "HISTORICAL_MEMBERSHIP",
+                "LIFECYCLE",
+                "ROTATION_HISTORY"
+              ],
+              "released": false,
+              "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+            },
+            "stocks": {
+              "debt": [
+                "HYPOTHESIS",
+                "INVALID_IF_OWNER",
+                "FULL_STRUCTURE_PATH"
+              ],
+              "released": false,
+              "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+            },
+            "strict_pit": {
+              "debt": [
+                "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+              ],
+              "released": false,
+              "scope": "NONE"
+            }
+          },
+          "factor_contract_id": null,
+          "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+          "full_product_release": false,
+          "historical_pit_effectiveness": "NOT_GRANTED",
+          "joint_release_digest": null,
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "last_accepted_trade_date": "2026-09-30",
+          "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+          "namespace": "V4_CURRENT_ACCEPTED",
+          "operational_release_scope": [],
+          "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "parameter_set_id": null,
+          "publication_id": "666645c83dfa4fe984c336f024f26f22",
+          "quality": "QUALITY_DEGRADED",
+          "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "release_id": "666645c83dfa4fe984c336f024f26f22",
+          "release_metadata": {
+            "contract_version": "1.0.0",
+            "data_quality_state": "QUALITY_DEGRADED",
+            "evidence_origin": "REAL_ACCEPTED_SOURCE",
+            "evidence_state": "VALIDATION_ONGOING",
+            "input_digest": "0107c813606e51bc631004f568a10b70ea9b47640c1e53117ca46ad789fcecbd",
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "owner": "FP02_RESEARCH_PROJECTION",
+            "published_at": "2026-10-08T11:16:40.088250+00:00",
+            "release_id": "666645c83dfa4fe984c336f024f26f22",
+            "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+            "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+            "trading_date": "2026-09-30"
+          },
+          "scoped_release": false,
+          "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+          "source_mode": "EXISTING_REAL_SNAPSHOT_PENDING_RELEASE",
+          "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+          "stage": "V4-15",
+          "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+          "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+          "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+          "trade_date": "2026-09-30",
+          "turnover_as_of": null
+        },
+        "context_token": "research-v4-4b1c722e14753e84e00a5b4a03779393348dbec5ab1fc1bf40e105af0f1a3936",
+        "contract_id": "R2_FOCUS_TYPED_READ_V2",
+        "has_next": false,
+        "item_schema": [
+          "episode_id",
+          "entity_id",
+          "trade_date",
+          "outcome_status"
+        ],
+        "items": [
+          {
+            "AS_RECORDED": false,
+            "anchor_id": "1f59112cbe480b65064d3ba3bf4593a87db9eb74b3c45de6b61e401a8e698a3e",
+            "contract_id": "R2_V4_FOCUS_PATH_OUTCOME_V2",
+            "entity_id": "SEC-00F7600938E29E801B3FB9F22775458E",
+            "episode_id": "c6989b0e49ea82078b58249ea26e34ef4cc04b0497c61399c7043544165e3bdf",
+            "horizon": 1,
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "metrics": null,
+            "outcome_status": "PENDING",
+            "reason_code": "NOT_DUE",
+            "target_trade_date": null,
+            "terminal": false,
+            "trade_date": "2026-09-30"
+          },
+          {
+            "AS_RECORDED": false,
+            "anchor_id": "1f59112cbe480b65064d3ba3bf4593a87db9eb74b3c45de6b61e401a8e698a3e",
+            "contract_id": "R2_V4_FOCUS_PATH_OUTCOME_V2",
+            "entity_id": "SEC-00F7600938E29E801B3FB9F22775458E",
+            "episode_id": "c6989b0e49ea82078b58249ea26e34ef4cc04b0497c61399c7043544165e3bdf",
+            "horizon": 3,
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "metrics": null,
+            "outcome_status": "PENDING",
+            "reason_code": "NOT_DUE",
+            "target_trade_date": null,
+            "terminal": false,
+            "trade_date": "2026-09-30"
+          },
+          {
+            "AS_RECORDED": false,
+            "anchor_id": "1f59112cbe480b65064d3ba3bf4593a87db9eb74b3c45de6b61e401a8e698a3e",
+            "contract_id": "R2_V4_FOCUS_PATH_OUTCOME_V2",
+            "entity_id": "SEC-00F7600938E29E801B3FB9F22775458E",
+            "episode_id": "c6989b0e49ea82078b58249ea26e34ef4cc04b0497c61399c7043544165e3bdf",
+            "horizon": 5,
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "metrics": null,
+            "outcome_status": "PENDING",
+            "reason_code": "NOT_DUE",
+            "target_trade_date": null,
+            "terminal": false,
+            "trade_date": "2026-09-30"
+          },
+          {
+            "AS_RECORDED": false,
+            "anchor_id": "1f59112cbe480b65064d3ba3bf4593a87db9eb74b3c45de6b61e401a8e698a3e",
+            "contract_id": "R2_V4_FOCUS_PATH_OUTCOME_V2",
+            "entity_id": "SEC-00F7600938E29E801B3FB9F22775458E",
+            "episode_id": "c6989b0e49ea82078b58249ea26e34ef4cc04b0497c61399c7043544165e3bdf",
+            "horizon": 10,
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "metrics": null,
+            "outcome_status": "PENDING",
+            "reason_code": "NOT_DUE",
+            "target_trade_date": null,
+            "terminal": false,
+            "trade_date": "2026-09-30"
+          },
+          {
+            "AS_RECORDED": false,
+            "anchor_id": "1f59112cbe480b65064d3ba3bf4593a87db9eb74b3c45de6b61e401a8e698a3e",
+            "contract_id": "R2_V4_FOCUS_PATH_OUTCOME_V2",
+            "entity_id": "SEC-00F7600938E29E801B3FB9F22775458E",
+            "episode_id": "c6989b0e49ea82078b58249ea26e34ef4cc04b0497c61399c7043544165e3bdf",
+            "horizon": 20,
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "metrics": null,
+            "outcome_status": "PENDING",
+            "reason_code": "NOT_DUE",
+            "target_trade_date": null,
+            "terminal": false,
+            "trade_date": "2026-09-30"
+          }
+        ],
+        "legacy_history": {
+          "preserved": true,
+          "status": "UNRECONCILED_PG_UNAVAILABLE"
+        },
+        "limit": 200,
+        "offset": 0,
+        "permissions": {
+          "automatic_event_write": false,
+          "manual_pin": false,
+          "read": true
+        },
+        "reason": null,
+        "resource_type": "outcomes",
+        "source": {
+          "bytes": 6691248,
+          "path": "data/v4/r2_focus_native_core/1cdbd05a5ef0ca94505fd45dc977ab789c951d5f244ca69bca4256b92cbd31ca/focus.json",
+          "sha256": "94d0e53c8d1db7784cb27f2976e33488a6f7f0f94949bc1d6d9fd826d286a051"
+        },
+        "status": "READY",
+        "total": 5,
+        "write_block_reason": "NATIVE_CORE_CANDIDATE_REQUIRES_JOINT_QA"
+      }
+    },
+    {
+      "id": "SEC-00E228DA7EBF038EA528EF36B65B4C97",
+      "observations": {
+        "context": {
+          "accepted_trade_date": "2026-09-30",
+          "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+          "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+          "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+          "domain_readiness": {
+            "fep": {
+              "debt": [
+                "CURRENT_FEATURE_MODEL_INFERENCE"
+              ],
+              "released": false,
+              "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+            },
+            "focus": {
+              "debt": [
+                "UNRESOLVED_PATH_PREDICATE_OWNERS",
+                "LEGACY_PG_RECONCILIATION"
+              ],
+              "earliest_valid_date": "2026-09-29",
+              "released": false,
+              "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+            },
+            "forward": {
+              "debt": [
+                "CURRENT_FEP_INFERENCE",
+                "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+                "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+              ],
+              "released": false,
+              "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+            },
+            "market": {
+              "debt": [
+                "INTRADAY_TOUCH_BROKEN_LIMIT",
+                "OFFICIAL_FACT_NEWS"
+              ],
+              "released": false,
+              "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+            },
+            "sectors": {
+              "debt": [
+                "HISTORICAL_MEMBERSHIP",
+                "LIFECYCLE",
+                "ROTATION_HISTORY"
+              ],
+              "released": false,
+              "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+            },
+            "stocks": {
+              "debt": [
+                "HYPOTHESIS",
+                "INVALID_IF_OWNER",
+                "FULL_STRUCTURE_PATH"
+              ],
+              "released": false,
+              "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+            },
+            "strict_pit": {
+              "debt": [
+                "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+              ],
+              "released": false,
+              "scope": "NONE"
+            }
+          },
+          "factor_contract_id": null,
+          "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+          "full_product_release": false,
+          "historical_pit_effectiveness": "NOT_GRANTED",
+          "joint_release_digest": null,
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "last_accepted_trade_date": "2026-09-30",
+          "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+          "namespace": "V4_CURRENT_ACCEPTED",
+          "operational_release_scope": [],
+          "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "parameter_set_id": null,
+          "publication_id": "666645c83dfa4fe984c336f024f26f22",
+          "quality": "QUALITY_DEGRADED",
+          "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "release_id": "666645c83dfa4fe984c336f024f26f22",
+          "release_metadata": {
+            "contract_version": "1.0.0",
+            "data_quality_state": "QUALITY_DEGRADED",
+            "evidence_origin": "REAL_ACCEPTED_SOURCE",
+            "evidence_state": "VALIDATION_ONGOING",
+            "input_digest": "0107c813606e51bc631004f568a10b70ea9b47640c1e53117ca46ad789fcecbd",
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "owner": "FP02_RESEARCH_PROJECTION",
+            "published_at": "2026-10-08T11:16:40.088250+00:00",
+            "release_id": "666645c83dfa4fe984c336f024f26f22",
+            "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+            "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+            "trading_date": "2026-09-30"
+          },
+          "scoped_release": false,
+          "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+          "source_mode": "EXISTING_REAL_SNAPSHOT_PENDING_RELEASE",
+          "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+          "stage": "V4-15",
+          "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+          "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+          "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+          "trade_date": "2026-09-30",
+          "turnover_as_of": null
+        },
+        "context_token": "research-v4-4b1c722e14753e84e00a5b4a03779393348dbec5ab1fc1bf40e105af0f1a3936",
+        "contract_id": "R2_FOCUS_TYPED_READ_V2",
+        "has_next": false,
+        "item_schema": [
+          "episode_id",
+          "entity_id",
+          "trade_date",
+          "event",
+          "source_publication"
+        ],
+        "items": [
+          {
+            "AS_RECORDED": false,
+            "best_confirmed_state": "WAIT_CONFIRMATION",
+            "entity_id": "SEC-00E228DA7EBF038EA528EF36B65B4C97",
+            "episode_id": "eff7d18dfe9ea5e4cc2f7b56f16a307e86c83b97347da4b312e2c67b6f47a167",
+            "event": "NEW",
+            "health": "IMPROVING",
+            "higher_priority_unresolved": [
+              "TOO_EXTENDED",
+              "TREND_ACCELERATING",
+              "SECTOR_DIVERGENCE",
+              "WEAKENING"
+            ],
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "membership": "EARLY",
+            "native_core_evidence": {
+              "contract_id": "R2_V4_FOCUS_NATIVE_CORE_FACTS_V1",
+              "facts": {},
+              "reason": "OBSERVATION_DAY_NATIVE_CORE_NOT_BOUND",
+              "status": "UNAVAILABLE"
+            },
+            "path_contract_id": "R2_V4_FOCUS_NATIVE_CORE_PATH_V1",
+            "path_reason": "HIGHER_PRIORITY_UNRESOLVED",
+            "path_resolution": "PARTIAL",
+            "path_state": null,
+            "predicate_evidence": {
+              "BREAKOUT_CONFIRMED": "FALSE",
+              "EXITED_FOLLOW_UP": "FALSE",
+              "PULLBACK_HEALTHY": "FALSE",
+              "PULLBACK_UNCONFIRMED": "FALSE",
+              "SECTOR_DIVERGENCE": "UNKNOWN",
+              "STRUCTURE_DAMAGED": "FALSE",
+              "TOO_EXTENDED": "UNKNOWN",
+              "TREND_ACCELERATING": "UNKNOWN",
+              "WAIT_CONFIRMATION": "TRUE",
+              "WEAKENING": "UNKNOWN"
+            },
+            "price_path": {
+              "anchor_actual_bar": true,
+              "close": "14.02",
+              "input_digest": "26dce94384d8e8c814132fe9aabf479fc1cd23a70cb599577ec63f35639c66d4",
+              "metrics": {
+                "drawdown_current": "0",
+                "mae": "-0.0570613409415121255349500713",
+                "mdd_close": "0",
+                "mfe": "0.011412268188302425106990014",
+                "peak_close": "14.02",
+                "return_close": "0"
+              },
+              "missing_dates": [],
+              "price_basis": "TDX_NATIVE_AFFINE_AS_OF_OBSERVATION",
+              "quality": "READY",
+              "suspended_dates": [],
+              "target_state": "BAR"
+            },
+            "scenario": "NONE",
+            "source_publication": "V4_11_R5B_D2_ROW:3b8c33c93906a5c33f82cf25223d51024395df9040f10bce7b9ead48705a9587",
+            "trade_date": "2026-09-29",
+            "validity": "VALID",
+            "waiting_for": [
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ]
+          },
+          {
+            "AS_RECORDED": false,
+            "best_confirmed_state": null,
+            "entity_id": "SEC-00E228DA7EBF038EA528EF36B65B4C97",
+            "episode_id": "eff7d18dfe9ea5e4cc2f7b56f16a307e86c83b97347da4b312e2c67b6f47a167",
+            "event": "DATA_UNAVAILABLE",
+            "health": "UNKNOWN",
+            "higher_priority_unresolved": [
+              "STRUCTURE_DAMAGED",
+              "SECTOR_DIVERGENCE",
+              "WEAKENING"
+            ],
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "membership": "UNKNOWN",
+            "native_core_evidence": {
+              "contract_id": "R2_V4_FOCUS_NATIVE_CORE_FACTS_V1",
+              "facts": {
+                "ma20": 14.006499999999999,
+                "r5": -0.014450867052023031,
+                "source_extended": false
+              },
+              "source": {
+                "contract_id": "R2_V4_FOCUS_NATIVE_CORE_FACTS_V1",
+                "factors": {
+                  "bytes": 19460170,
+                  "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/factors.jsonl.gz",
+                  "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+                },
+                "price_basis": "TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE",
+                "profiles": {
+                  "bytes": 44330385,
+                  "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/profiles.jsonl.gz",
+                  "sha256": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6"
+                },
+                "series": {
+                  "bytes": 367886336,
+                  "path": "data/v4/fp07_stocks/33d5a66f47870a29397a453132d9ea0ac3dbc0f82063902a60436992fe43c378/series.sqlite",
+                  "sha256": "6b326dac93aacd63dc289895b1488f224843940154b6f4b89bc0df8af0a4518d"
+                },
+                "trade_date": "2026-09-30"
+              },
+              "status": "BOUND",
+              "trade_date": "2026-09-30"
+            },
+            "path_contract_id": "R2_V4_FOCUS_NATIVE_CORE_PATH_V1",
+            "path_reason": "HIGHER_PRIORITY_UNRESOLVED",
+            "path_resolution": "UNAVAILABLE",
+            "path_state": null,
+            "predicate_evidence": {
+              "BREAKOUT_CONFIRMED": "FALSE",
+              "EXITED_FOLLOW_UP": "FALSE",
+              "PULLBACK_HEALTHY": "FALSE",
+              "PULLBACK_UNCONFIRMED": "FALSE",
+              "SECTOR_DIVERGENCE": "UNKNOWN",
+              "STRUCTURE_DAMAGED": "UNKNOWN",
+              "TOO_EXTENDED": "FALSE",
+              "TREND_ACCELERATING": "FALSE",
+              "WAIT_CONFIRMATION": "FALSE",
+              "WEAKENING": "UNKNOWN"
+            },
+            "price_path": {
+              "anchor_actual_bar": true,
+              "close": "13.64",
+              "input_digest": "1a4fc84444d489eab812e4ac03a57262448c724dfc67be5b354e11b03d403854",
+              "metrics": {
+                "drawdown_current": "-0.0271041369472182596291012839",
+                "mae": "-0.0570613409415121255349500713",
+                "mdd_close": "-0.0271041369472182596291012839",
+                "mfe": "0.011412268188302425106990014",
+                "peak_close": "14.02",
+                "return_close": "-0.0271041369472182596291012839"
+              },
+              "missing_dates": [],
+              "price_basis": "TDX_NATIVE_AFFINE_AS_OF_OBSERVATION",
+              "quality": "READY",
+              "suspended_dates": [],
+              "target_state": "BAR"
+            },
+            "scenario": "NONE",
+            "source_publication": "V4_11_R5B_D2_ROW:e2f8b61a35bdf0c75fefbd8775ec67f8277e5838e56934bf910fbb1f896537c9",
+            "trade_date": "2026-09-30",
+            "validity": "UNKNOWN",
+            "waiting_for": [
+              "PREWATCH",
+              "frozen_invalidation",
+              "dq5:OPTIONAL_INPUT_UNKNOWN",
+              "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN",
+              "followup_complete:OPTIONAL_INPUT_UNKNOWN"
+            ]
+          }
+        ],
+        "legacy_history": {
+          "preserved": true,
+          "status": "UNRECONCILED_PG_UNAVAILABLE"
+        },
+        "limit": 200,
+        "offset": 0,
+        "permissions": {
+          "automatic_event_write": false,
+          "manual_pin": false,
+          "read": true
+        },
+        "reason": null,
+        "resource_type": "observations",
+        "source": {
+          "bytes": 6691248,
+          "path": "data/v4/r2_focus_native_core/1cdbd05a5ef0ca94505fd45dc977ab789c951d5f244ca69bca4256b92cbd31ca/focus.json",
+          "sha256": "94d0e53c8d1db7784cb27f2976e33488a6f7f0f94949bc1d6d9fd826d286a051"
+        },
+        "status": "READY",
+        "total": 2,
+        "write_block_reason": "NATIVE_CORE_CANDIDATE_REQUIRES_JOINT_QA"
+      },
+      "outcomes": {
+        "context": {
+          "accepted_trade_date": "2026-09-30",
+          "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+          "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+          "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+          "domain_readiness": {
+            "fep": {
+              "debt": [
+                "CURRENT_FEATURE_MODEL_INFERENCE"
+              ],
+              "released": false,
+              "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+            },
+            "focus": {
+              "debt": [
+                "UNRESOLVED_PATH_PREDICATE_OWNERS",
+                "LEGACY_PG_RECONCILIATION"
+              ],
+              "earliest_valid_date": "2026-09-29",
+              "released": false,
+              "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+            },
+            "forward": {
+              "debt": [
+                "CURRENT_FEP_INFERENCE",
+                "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+                "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+              ],
+              "released": false,
+              "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+            },
+            "market": {
+              "debt": [
+                "INTRADAY_TOUCH_BROKEN_LIMIT",
+                "OFFICIAL_FACT_NEWS"
+              ],
+              "released": false,
+              "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+            },
+            "sectors": {
+              "debt": [
+                "HISTORICAL_MEMBERSHIP",
+                "LIFECYCLE",
+                "ROTATION_HISTORY"
+              ],
+              "released": false,
+              "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+            },
+            "stocks": {
+              "debt": [
+                "HYPOTHESIS",
+                "INVALID_IF_OWNER",
+                "FULL_STRUCTURE_PATH"
+              ],
+              "released": false,
+              "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+            },
+            "strict_pit": {
+              "debt": [
+                "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+              ],
+              "released": false,
+              "scope": "NONE"
+            }
+          },
+          "factor_contract_id": null,
+          "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+          "full_product_release": false,
+          "historical_pit_effectiveness": "NOT_GRANTED",
+          "joint_release_digest": null,
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "last_accepted_trade_date": "2026-09-30",
+          "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+          "namespace": "V4_CURRENT_ACCEPTED",
+          "operational_release_scope": [],
+          "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "parameter_set_id": null,
+          "publication_id": "666645c83dfa4fe984c336f024f26f22",
+          "quality": "QUALITY_DEGRADED",
+          "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+          "release_id": "666645c83dfa4fe984c336f024f26f22",
+          "release_metadata": {
+            "contract_version": "1.0.0",
+            "data_quality_state": "QUALITY_DEGRADED",
+            "evidence_origin": "REAL_ACCEPTED_SOURCE",
+            "evidence_state": "VALIDATION_ONGOING",
+            "input_digest": "0107c813606e51bc631004f568a10b70ea9b47640c1e53117ca46ad789fcecbd",
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "owner": "FP02_RESEARCH_PROJECTION",
+            "published_at": "2026-10-08T11:16:40.088250+00:00",
+            "release_id": "666645c83dfa4fe984c336f024f26f22",
+            "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+            "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+            "trading_date": "2026-09-30"
+          },
+          "scoped_release": false,
+          "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+          "source_mode": "EXISTING_REAL_SNAPSHOT_PENDING_RELEASE",
+          "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+          "stage": "V4-15",
+          "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+          "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+          "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+          "trade_date": "2026-09-30",
+          "turnover_as_of": null
+        },
+        "context_token": "research-v4-4b1c722e14753e84e00a5b4a03779393348dbec5ab1fc1bf40e105af0f1a3936",
+        "contract_id": "R2_FOCUS_TYPED_READ_V2",
+        "has_next": false,
+        "item_schema": [
+          "episode_id",
+          "entity_id",
+          "trade_date",
+          "outcome_status"
+        ],
+        "items": [
+          {
+            "AS_RECORDED": false,
+            "anchor_id": "dbfa7097282bc725ba7f1a8f77dee479e2b880ada3b50f15622fff9f59e470b9",
+            "contract_id": "R2_V4_FOCUS_PATH_OUTCOME_V2",
+            "entity_id": "SEC-00E228DA7EBF038EA528EF36B65B4C97",
+            "episode_id": "eff7d18dfe9ea5e4cc2f7b56f16a307e86c83b97347da4b312e2c67b6f47a167",
+            "horizon": 1,
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "metrics": {
+              "drawdown_current": "-0.0271041369472182596291012839",
+              "mae": "-0.0570613409415121255349500713",
+              "mdd_close": "-0.0271041369472182596291012839",
+              "mfe": "0.011412268188302425106990014",
+              "peak_close": "14.02",
+              "return_close": "-0.0271041369472182596291012839"
+            },
+            "outcome_status": "OBSERVED",
+            "reason_code": "COMPLETE_ACTUAL_PATH",
+            "target_trade_date": "2026-09-30",
+            "terminal": true,
+            "trade_date": "2026-09-30"
+          },
+          {
+            "AS_RECORDED": false,
+            "anchor_id": "dbfa7097282bc725ba7f1a8f77dee479e2b880ada3b50f15622fff9f59e470b9",
+            "contract_id": "R2_V4_FOCUS_PATH_OUTCOME_V2",
+            "entity_id": "SEC-00E228DA7EBF038EA528EF36B65B4C97",
+            "episode_id": "eff7d18dfe9ea5e4cc2f7b56f16a307e86c83b97347da4b312e2c67b6f47a167",
+            "horizon": 3,
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "metrics": null,
+            "outcome_status": "PENDING",
+            "reason_code": "NOT_DUE",
+            "target_trade_date": null,
+            "terminal": false,
+            "trade_date": "2026-09-30"
+          },
+          {
+            "AS_RECORDED": false,
+            "anchor_id": "dbfa7097282bc725ba7f1a8f77dee479e2b880ada3b50f15622fff9f59e470b9",
+            "contract_id": "R2_V4_FOCUS_PATH_OUTCOME_V2",
+            "entity_id": "SEC-00E228DA7EBF038EA528EF36B65B4C97",
+            "episode_id": "eff7d18dfe9ea5e4cc2f7b56f16a307e86c83b97347da4b312e2c67b6f47a167",
+            "horizon": 5,
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "metrics": null,
+            "outcome_status": "PENDING",
+            "reason_code": "NOT_DUE",
+            "target_trade_date": null,
+            "terminal": false,
+            "trade_date": "2026-09-30"
+          },
+          {
+            "AS_RECORDED": false,
+            "anchor_id": "dbfa7097282bc725ba7f1a8f77dee479e2b880ada3b50f15622fff9f59e470b9",
+            "contract_id": "R2_V4_FOCUS_PATH_OUTCOME_V2",
+            "entity_id": "SEC-00E228DA7EBF038EA528EF36B65B4C97",
+            "episode_id": "eff7d18dfe9ea5e4cc2f7b56f16a307e86c83b97347da4b312e2c67b6f47a167",
+            "horizon": 10,
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "metrics": null,
+            "outcome_status": "PENDING",
+            "reason_code": "NOT_DUE",
+            "target_trade_date": null,
+            "terminal": false,
+            "trade_date": "2026-09-30"
+          },
+          {
+            "AS_RECORDED": false,
+            "anchor_id": "dbfa7097282bc725ba7f1a8f77dee479e2b880ada3b50f15622fff9f59e470b9",
+            "contract_id": "R2_V4_FOCUS_PATH_OUTCOME_V2",
+            "entity_id": "SEC-00E228DA7EBF038EA528EF36B65B4C97",
+            "episode_id": "eff7d18dfe9ea5e4cc2f7b56f16a307e86c83b97347da4b312e2c67b6f47a167",
+            "horizon": 20,
+            "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+            "metrics": null,
+            "outcome_status": "PENDING",
+            "reason_code": "NOT_DUE",
+            "target_trade_date": null,
+            "terminal": false,
+            "trade_date": "2026-09-30"
+          }
+        ],
+        "legacy_history": {
+          "preserved": true,
+          "status": "UNRECONCILED_PG_UNAVAILABLE"
+        },
+        "limit": 200,
+        "offset": 0,
+        "permissions": {
+          "automatic_event_write": false,
+          "manual_pin": false,
+          "read": true
+        },
+        "reason": null,
+        "resource_type": "outcomes",
+        "source": {
+          "bytes": 6691248,
+          "path": "data/v4/r2_focus_native_core/1cdbd05a5ef0ca94505fd45dc977ab789c951d5f244ca69bca4256b92cbd31ca/focus.json",
+          "sha256": "94d0e53c8d1db7784cb27f2976e33488a6f7f0f94949bc1d6d9fd826d286a051"
+        },
+        "status": "READY",
+        "total": 5,
+        "write_block_reason": "NATIVE_CORE_CANDIDATE_REQUIRES_JOINT_QA"
+      }
+    }
+  ],
+  "ui_build_id": "f9230ef02d8971440fa8c1f2d6cc9422eda2a7f1e32fa063a718ead3d4846683"
+}

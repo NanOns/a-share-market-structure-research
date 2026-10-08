@@ -1,0 +1,386 @@
+{
+  "result": "PASS",
+  "ui_build_id": "f9230ef02d8971440fa8c1f2d6cc9422eda2a7f1e32fa063a718ead3d4846683",
+  "context_token": "research-v4-4b1c722e14753e84e00a5b4a03779393348dbec5ab1fc1bf40e105af0f1a3936",
+  "source_checks": [
+    {
+      "width": 1280,
+      "id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "path_resolution": "READY",
+      "native_core": {
+        "contract_id": "R2_V4_FOCUS_NATIVE_CORE_FACTS_V1",
+        "facts": {
+          "ma20": 2.3365,
+          "r5": 0.04132231404958686,
+          "source_extended": false
+        },
+        "source": {
+          "contract_id": "R2_V4_FOCUS_NATIVE_CORE_FACTS_V1",
+          "factors": {
+            "bytes": 19460170,
+            "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/factors.jsonl.gz",
+            "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+          },
+          "price_basis": "TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE",
+          "profiles": {
+            "bytes": 44330385,
+            "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/profiles.jsonl.gz",
+            "sha256": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6"
+          },
+          "series": {
+            "bytes": 367886336,
+            "path": "data/v4/fp07_stocks/33d5a66f47870a29397a453132d9ea0ac3dbc0f82063902a60436992fe43c378/series.sqlite",
+            "sha256": "6b326dac93aacd63dc289895b1488f224843940154b6f4b89bc0df8af0a4518d"
+          },
+          "trade_date": "2026-09-30"
+        },
+        "status": "BOUND",
+        "trade_date": "2026-09-30"
+      },
+      "predicate_evidence": {
+        "BREAKOUT_CONFIRMED": "TRUE",
+        "EXITED_FOLLOW_UP": "FALSE",
+        "PULLBACK_HEALTHY": "FALSE",
+        "PULLBACK_UNCONFIRMED": "FALSE",
+        "SECTOR_DIVERGENCE": "UNKNOWN",
+        "STRUCTURE_DAMAGED": "FALSE",
+        "TOO_EXTENDED": "FALSE",
+        "TREND_ACCELERATING": "UNKNOWN",
+        "WAIT_CONFIRMATION": "FALSE",
+        "WEAKENING": "UNKNOWN"
+      },
+      "result": "PASS"
+    },
+    {
+      "width": 1280,
+      "id": "SEC-00F7600938E29E801B3FB9F22775458E",
+      "path_resolution": "PARTIAL",
+      "native_core": {
+        "contract_id": "R2_V4_FOCUS_NATIVE_CORE_FACTS_V1",
+        "facts": {
+          "ma20": 15.769,
+          "r5": 0.07518796992481191,
+          "source_extended": false
+        },
+        "source": {
+          "contract_id": "R2_V4_FOCUS_NATIVE_CORE_FACTS_V1",
+          "factors": {
+            "bytes": 19460170,
+            "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/factors.jsonl.gz",
+            "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+          },
+          "price_basis": "TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE",
+          "profiles": {
+            "bytes": 44330385,
+            "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/profiles.jsonl.gz",
+            "sha256": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6"
+          },
+          "series": {
+            "bytes": 367886336,
+            "path": "data/v4/fp07_stocks/33d5a66f47870a29397a453132d9ea0ac3dbc0f82063902a60436992fe43c378/series.sqlite",
+            "sha256": "6b326dac93aacd63dc289895b1488f224843940154b6f4b89bc0df8af0a4518d"
+          },
+          "trade_date": "2026-09-30"
+        },
+        "status": "BOUND",
+        "trade_date": "2026-09-30"
+      },
+      "predicate_evidence": {
+        "BREAKOUT_CONFIRMED": "TRUE",
+        "EXITED_FOLLOW_UP": "FALSE",
+        "PULLBACK_HEALTHY": "FALSE",
+        "PULLBACK_UNCONFIRMED": "FALSE",
+        "SECTOR_DIVERGENCE": "UNKNOWN",
+        "STRUCTURE_DAMAGED": "UNKNOWN",
+        "TOO_EXTENDED": "FALSE",
+        "TREND_ACCELERATING": "UNKNOWN",
+        "WAIT_CONFIRMATION": "FALSE",
+        "WEAKENING": "UNKNOWN"
+      },
+      "result": "PASS"
+    },
+    {
+      "width": 1280,
+      "id": "SEC-00E228DA7EBF038EA528EF36B65B4C97",
+      "path_resolution": "UNAVAILABLE",
+      "native_core": {
+        "contract_id": "R2_V4_FOCUS_NATIVE_CORE_FACTS_V1",
+        "facts": {
+          "ma20": 14.006499999999999,
+          "r5": -0.014450867052023031,
+          "source_extended": false
+        },
+        "source": {
+          "contract_id": "R2_V4_FOCUS_NATIVE_CORE_FACTS_V1",
+          "factors": {
+            "bytes": 19460170,
+            "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/factors.jsonl.gz",
+            "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+          },
+          "price_basis": "TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE",
+          "profiles": {
+            "bytes": 44330385,
+            "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/profiles.jsonl.gz",
+            "sha256": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6"
+          },
+          "series": {
+            "bytes": 367886336,
+            "path": "data/v4/fp07_stocks/33d5a66f47870a29397a453132d9ea0ac3dbc0f82063902a60436992fe43c378/series.sqlite",
+            "sha256": "6b326dac93aacd63dc289895b1488f224843940154b6f4b89bc0df8af0a4518d"
+          },
+          "trade_date": "2026-09-30"
+        },
+        "status": "BOUND",
+        "trade_date": "2026-09-30"
+      },
+      "predicate_evidence": {
+        "BREAKOUT_CONFIRMED": "FALSE",
+        "EXITED_FOLLOW_UP": "FALSE",
+        "PULLBACK_HEALTHY": "FALSE",
+        "PULLBACK_UNCONFIRMED": "FALSE",
+        "SECTOR_DIVERGENCE": "UNKNOWN",
+        "STRUCTURE_DAMAGED": "UNKNOWN",
+        "TOO_EXTENDED": "FALSE",
+        "TREND_ACCELERATING": "FALSE",
+        "WAIT_CONFIRMATION": "FALSE",
+        "WEAKENING": "UNKNOWN"
+      },
+      "result": "PASS"
+    },
+    {
+      "width": 1920,
+      "id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "path_resolution": "READY",
+      "native_core": {
+        "contract_id": "R2_V4_FOCUS_NATIVE_CORE_FACTS_V1",
+        "facts": {
+          "ma20": 2.3365,
+          "r5": 0.04132231404958686,
+          "source_extended": false
+        },
+        "source": {
+          "contract_id": "R2_V4_FOCUS_NATIVE_CORE_FACTS_V1",
+          "factors": {
+            "bytes": 19460170,
+            "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/factors.jsonl.gz",
+            "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+          },
+          "price_basis": "TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE",
+          "profiles": {
+            "bytes": 44330385,
+            "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/profiles.jsonl.gz",
+            "sha256": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6"
+          },
+          "series": {
+            "bytes": 367886336,
+            "path": "data/v4/fp07_stocks/33d5a66f47870a29397a453132d9ea0ac3dbc0f82063902a60436992fe43c378/series.sqlite",
+            "sha256": "6b326dac93aacd63dc289895b1488f224843940154b6f4b89bc0df8af0a4518d"
+          },
+          "trade_date": "2026-09-30"
+        },
+        "status": "BOUND",
+        "trade_date": "2026-09-30"
+      },
+      "predicate_evidence": {
+        "BREAKOUT_CONFIRMED": "TRUE",
+        "EXITED_FOLLOW_UP": "FALSE",
+        "PULLBACK_HEALTHY": "FALSE",
+        "PULLBACK_UNCONFIRMED": "FALSE",
+        "SECTOR_DIVERGENCE": "UNKNOWN",
+        "STRUCTURE_DAMAGED": "FALSE",
+        "TOO_EXTENDED": "FALSE",
+        "TREND_ACCELERATING": "UNKNOWN",
+        "WAIT_CONFIRMATION": "FALSE",
+        "WEAKENING": "UNKNOWN"
+      },
+      "result": "PASS"
+    },
+    {
+      "width": 1920,
+      "id": "SEC-00F7600938E29E801B3FB9F22775458E",
+      "path_resolution": "PARTIAL",
+      "native_core": {
+        "contract_id": "R2_V4_FOCUS_NATIVE_CORE_FACTS_V1",
+        "facts": {
+          "ma20": 15.769,
+          "r5": 0.07518796992481191,
+          "source_extended": false
+        },
+        "source": {
+          "contract_id": "R2_V4_FOCUS_NATIVE_CORE_FACTS_V1",
+          "factors": {
+            "bytes": 19460170,
+            "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/factors.jsonl.gz",
+            "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+          },
+          "price_basis": "TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE",
+          "profiles": {
+            "bytes": 44330385,
+            "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/profiles.jsonl.gz",
+            "sha256": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6"
+          },
+          "series": {
+            "bytes": 367886336,
+            "path": "data/v4/fp07_stocks/33d5a66f47870a29397a453132d9ea0ac3dbc0f82063902a60436992fe43c378/series.sqlite",
+            "sha256": "6b326dac93aacd63dc289895b1488f224843940154b6f4b89bc0df8af0a4518d"
+          },
+          "trade_date": "2026-09-30"
+        },
+        "status": "BOUND",
+        "trade_date": "2026-09-30"
+      },
+      "predicate_evidence": {
+        "BREAKOUT_CONFIRMED": "TRUE",
+        "EXITED_FOLLOW_UP": "FALSE",
+        "PULLBACK_HEALTHY": "FALSE",
+        "PULLBACK_UNCONFIRMED": "FALSE",
+        "SECTOR_DIVERGENCE": "UNKNOWN",
+        "STRUCTURE_DAMAGED": "UNKNOWN",
+        "TOO_EXTENDED": "FALSE",
+        "TREND_ACCELERATING": "UNKNOWN",
+        "WAIT_CONFIRMATION": "FALSE",
+        "WEAKENING": "UNKNOWN"
+      },
+      "result": "PASS"
+    },
+    {
+      "width": 1920,
+      "id": "SEC-00E228DA7EBF038EA528EF36B65B4C97",
+      "path_resolution": "UNAVAILABLE",
+      "native_core": {
+        "contract_id": "R2_V4_FOCUS_NATIVE_CORE_FACTS_V1",
+        "facts": {
+          "ma20": 14.006499999999999,
+          "r5": -0.014450867052023031,
+          "source_extended": false
+        },
+        "source": {
+          "contract_id": "R2_V4_FOCUS_NATIVE_CORE_FACTS_V1",
+          "factors": {
+            "bytes": 19460170,
+            "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/factors.jsonl.gz",
+            "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+          },
+          "price_basis": "TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE",
+          "profiles": {
+            "bytes": 44330385,
+            "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/profiles.jsonl.gz",
+            "sha256": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6"
+          },
+          "series": {
+            "bytes": 367886336,
+            "path": "data/v4/fp07_stocks/33d5a66f47870a29397a453132d9ea0ac3dbc0f82063902a60436992fe43c378/series.sqlite",
+            "sha256": "6b326dac93aacd63dc289895b1488f224843940154b6f4b89bc0df8af0a4518d"
+          },
+          "trade_date": "2026-09-30"
+        },
+        "status": "BOUND",
+        "trade_date": "2026-09-30"
+      },
+      "predicate_evidence": {
+        "BREAKOUT_CONFIRMED": "FALSE",
+        "EXITED_FOLLOW_UP": "FALSE",
+        "PULLBACK_HEALTHY": "FALSE",
+        "PULLBACK_UNCONFIRMED": "FALSE",
+        "SECTOR_DIVERGENCE": "UNKNOWN",
+        "STRUCTURE_DAMAGED": "UNKNOWN",
+        "TOO_EXTENDED": "FALSE",
+        "TREND_ACCELERATING": "FALSE",
+        "WAIT_CONFIRMATION": "FALSE",
+        "WEAKENING": "UNKNOWN"
+      },
+      "result": "PASS"
+    }
+  ],
+  "records_checks": [
+    {
+      "width": 1280,
+      "id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "kind": "observations",
+      "rows": 1,
+      "result": "PASS"
+    },
+    {
+      "width": 1280,
+      "id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "kind": "outcomes",
+      "rows": 5,
+      "result": "PASS"
+    },
+    {
+      "width": 1280,
+      "id": "SEC-00F7600938E29E801B3FB9F22775458E",
+      "kind": "observations",
+      "rows": 1,
+      "result": "PASS"
+    },
+    {
+      "width": 1280,
+      "id": "SEC-00F7600938E29E801B3FB9F22775458E",
+      "kind": "outcomes",
+      "rows": 5,
+      "result": "PASS"
+    },
+    {
+      "width": 1280,
+      "id": "SEC-00E228DA7EBF038EA528EF36B65B4C97",
+      "kind": "observations",
+      "rows": 2,
+      "result": "PASS"
+    },
+    {
+      "width": 1280,
+      "id": "SEC-00E228DA7EBF038EA528EF36B65B4C97",
+      "kind": "outcomes",
+      "rows": 5,
+      "result": "PASS"
+    },
+    {
+      "width": 1920,
+      "id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "kind": "observations",
+      "rows": 1,
+      "result": "PASS"
+    },
+    {
+      "width": 1920,
+      "id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "kind": "outcomes",
+      "rows": 5,
+      "result": "PASS"
+    },
+    {
+      "width": 1920,
+      "id": "SEC-00F7600938E29E801B3FB9F22775458E",
+      "kind": "observations",
+      "rows": 1,
+      "result": "PASS"
+    },
+    {
+      "width": 1920,
+      "id": "SEC-00F7600938E29E801B3FB9F22775458E",
+      "kind": "outcomes",
+      "rows": 5,
+      "result": "PASS"
+    },
+    {
+      "width": 1920,
+      "id": "SEC-00E228DA7EBF038EA528EF36B65B4C97",
+      "kind": "observations",
+      "rows": 2,
+      "result": "PASS"
+    },
+    {
+      "width": 1920,
+      "id": "SEC-00E228DA7EBF038EA528EF36B65B4C97",
+      "kind": "outcomes",
+      "rows": 5,
+      "result": "PASS"
+    }
+  ],
+  "console_errors": [],
+  "desktop_widths": [
+    1280,
+    1920
+  ]
+}

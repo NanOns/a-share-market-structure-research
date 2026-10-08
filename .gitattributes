@@ -329,3 +329,20 @@ docs/evidence/r2_forward_continuation_20261008/** -text
 scripts/build_fp10_forward_v2.py -text
 src/workbench_service/forward_daily.py -text
 config/v4_continuous_daily_admission_v3.json -text
+
+docs/evidence/r2_available_fields_continuation_20261008/** -text
+docs/evidence/r2_focus_native_core_continuation_20261008/** -text
+data/v4/r2_focus_native_core/** -text
+data/v4/r2_focus_native_core/*/journal.sqlite filter=lfs diff=lfs merge=lfs -text
+
+scripts/audit_r2_focus_native_core.py -text
+scripts/prepare_r2_daily_candidate.py -text
+scripts/prepare_r2_focus_native_core.py -text
+scripts/run_fp02_research_snapshot.py -text
+scripts/seal_r2_available_fields_stage.py -text
+scripts/seal_r2_focus_native_core_stage.py -text
+scripts/seal_r2_native_daily_entry.py -text
+src/focus_tracker/v4_native_core_adapter.py -text
+src/focus_tracker/v4_native_core_daily_driver.py -text
+src/focus_tracker/v4_native_core_journal.py -text
+src/workbench_service/continuous_daily_release.py -text

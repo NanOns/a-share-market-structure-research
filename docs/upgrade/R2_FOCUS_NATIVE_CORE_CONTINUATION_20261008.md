@@ -5,3 +5,5 @@
 有实际当日因素绑定才可评估对应谓词。未绑定 9/29 Core 不以 9/30 回填；structure_break、confirmation、历史 RPS 序列和原行业相对强度缺源保持 UNKNOWN。不得用价格损伤替代结构失效。新日志从原有两日真实状态重放，保留事件/周期/锚点身份及每个旧观察价格、Outcome 值，只有新版本路径判断变化。
 
 验收：独立实源值/同坐标 oracle、未来日期和参数反例、两日重放身份/价格/结算保持、新旧差异、实际 IAB 两桌面、联合失败回滚和日更准入后继后方可正式切换；TDX 只读，Phase0 DEGRADED_PASS，strict_pit=false。阶段 IN_PROGRESS。
+
+阶段 DEGRADED_PASS，正式联合发布；证据 docs/evidence/r2_focus_native_core_continuation_20261008/ACCEPTANCE.md。下一阶段继续剩余字段和真正 owner 缺源核对。

@@ -1,0 +1,241 @@
+{
+  "continuous_daily_candidate_write": true,
+  "contract_id": "R2_CONTINUOUS_DAILY_ADMISSION_V9",
+  "due_forward": "ACCEPTED_CALENDAR_PREFIX_EXTENSION_FROZEN_T0_LOCAL_CORRECTED_SETTLEMENT_OR_PRECISE_FAILURE",
+  "evidence": [
+    {
+      "bytes": 2114,
+      "path": "docs/evidence/r2_continuous_daily_20261008/QA_FINAL.json",
+      "sha256": "b847160df0eb3150e4e0972c98aa276f34a471fbea4aae8e2f324cf12a58b61a"
+    },
+    {
+      "bytes": 793,
+      "path": "docs/evidence/r2_continuous_daily_20261008/TWO_DATE_SOURCE_QA.json",
+      "sha256": "2f9b0d2f4ef1acaaa099b414242dc3d11d8dcb803378866a4dffa0a6acd48943"
+    },
+    {
+      "bytes": 966,
+      "path": "docs/evidence/r2_continuous_daily_20261008/TWO_DATE_JOINT_SWITCH.json",
+      "sha256": "2f130d647a7e7f8471595ae2a9299e41a4a231c15564e4a9d540d8cca4b8940a"
+    },
+    {
+      "bytes": 123,
+      "path": "docs/evidence/r2_continuous_daily_20261008/REGRESSION.json",
+      "sha256": "6b6117564c7222f35bbe8d32e92e819acfdbc5c0a33af43992b47b6be9955496"
+    },
+    {
+      "bytes": 21452,
+      "path": "docs/evidence/r2_continuous_daily_20261008/OWNER_CHAIN_STAGING.json",
+      "sha256": "0edb3b82dfa2fc0567d2d7f872b22d7344dfaf428f14ac4665abc8b6446d4aae"
+    },
+    {
+      "bytes": 12859,
+      "path": "docs/evidence/r2_continuous_daily_20261008/CONTINUOUS_REPLAY.json",
+      "sha256": "22405b8d518e1fc63fa2217641719f12a6f73fd56b49d35a3c2d3ebdf6005c27"
+    },
+    {
+      "bytes": 7030,
+      "path": "docs/evidence/r2_field_continuation_20261008/QA_FINAL.json",
+      "sha256": "3ef3b1e7d672089fc65f1dcc061ed1bbc2c746f785eb21ade3eeb819a1f24bfc"
+    },
+    {
+      "bytes": 2865,
+      "path": "docs/evidence/r2_forward_continuation_20261008/QA_FINAL.json",
+      "sha256": "59216d5d50803b8995fb01e3e647be4ec2b625a8ce9d46643cd86f526be3af83"
+    },
+    {
+      "bytes": 12839,
+      "path": "docs/evidence/r2_presentation_continuation_20261008/QA_FINAL.json",
+      "sha256": "2fb23a87a9d529a4494ae8751da63da3d9f18dcc03141bafbe16f3e0b8273efc"
+    },
+    {
+      "bytes": 21163,
+      "path": "docs/evidence/r2_raw_turnover_continuation_20261008/QA_FINAL.json",
+      "sha256": "ec51a40a60cc62547dc009131fa9e947638e53e65bffb0b63c58019bf93e84f2"
+    },
+    {
+      "bytes": 9969,
+      "path": "docs/evidence/r2_available_fields_continuation_20261008/QA_FINAL.json",
+      "sha256": "cb0bdefb27212a275f6ff240e2968c6c310c3490d12cf1c5e208a52fbef2bb80"
+    },
+    {
+      "bytes": 7834,
+      "path": "docs/evidence/r2_focus_native_core_continuation_20261008/QA_FINAL.json",
+      "sha256": "351d6930cfe3c48e53c2949787aab9af1c3133a2f36763ddc5a2ec38aa57faf7"
+    },
+    {
+      "bytes": 1096,
+      "path": "docs/evidence/r2_focus_native_core_continuation_20261008/daily_entry_successor/QA.json",
+      "sha256": "ea3b2ccfb453adadc7b76aedd0b1f33376c272a17a893f41db1ca9b198ce2c7f"
+    }
+  ],
+  "full_product_release": false,
+  "historical_membership": "2026-09-29_UNAVAILABLE_NOT_BACKFILLED",
+  "implementations": {
+    "scripts/audit_r2_focus_native_core.py": {
+      "bytes": 3678,
+      "path": "scripts/audit_r2_focus_native_core.py",
+      "sha256": "f12ab1b0a4b8e9511432ecf7f2fadb35067a9335afe7f82ca1643e32bcd9a41e"
+    },
+    "scripts/audit_r2_profile_states.py": {
+      "bytes": 5641,
+      "path": "scripts/audit_r2_profile_states.py",
+      "sha256": "e9dc500ae918d5ba7e307fb89a495f903549a1b951296473d91fa1c34a8ba976"
+    },
+    "scripts/build_fp05_market.py": {
+      "bytes": 12075,
+      "path": "scripts/build_fp05_market.py",
+      "sha256": "ed5edbc787374f0b604758cc9d70fcfc82416a9247894d113030eeba7e57208a"
+    },
+    "scripts/build_fp06_sector.py": {
+      "bytes": 10603,
+      "path": "scripts/build_fp06_sector.py",
+      "sha256": "00b726e1ce7a635c0653bd6c187d56a4bd7e30e91c9f2d0662545033fba4b4f6"
+    },
+    "scripts/build_fp06_sector_v2.py": {
+      "bytes": 1765,
+      "path": "scripts/build_fp06_sector_v2.py",
+      "sha256": "8afeb452a558bdce976504d21fa9e793b96b6660b4ee9ef6b989f48bbcac26d0"
+    },
+    "scripts/build_fp07_stock.py": {
+      "bytes": 2598,
+      "path": "scripts/build_fp07_stock.py",
+      "sha256": "8cb6c48a3c5b83b22b71d15a9c51c1195c77d95a8fb146c8669677f046b2bb8c"
+    },
+    "scripts/build_fp09_market_center.py": {
+      "bytes": 5228,
+      "path": "scripts/build_fp09_market_center.py",
+      "sha256": "12ef9663d964941e85d33401c069e04c202843b029d1ed683a78204f3a8811ac"
+    },
+    "scripts/build_fp10_forward.py": {
+      "bytes": 3436,
+      "path": "scripts/build_fp10_forward.py",
+      "sha256": "2222b74b4e5acf0d137b88cbc2e88ad5eff98450c382bcbe2c14116cc268ceaa"
+    },
+    "scripts/build_fp10_forward_v2.py": {
+      "bytes": 8645,
+      "path": "scripts/build_fp10_forward_v2.py",
+      "sha256": "7ea3153481d82fc9fc6b54bf0d41d30de29b44a8ee05ecc7335bf2cfd405338a"
+    },
+    "scripts/fp_domain_evidence.py": {
+      "bytes": 2694,
+      "path": "scripts/fp_domain_evidence.py",
+      "sha256": "7278f59715bd3a2e3b287da76a9e76496e8eb6e95801729f4ee6d68294a998e2"
+    },
+    "scripts/prepare_r2_available_fields.py": {
+      "bytes": 4944,
+      "path": "scripts/prepare_r2_available_fields.py",
+      "sha256": "0956fa2c8d605154c62df93e096b4b4a78029d9b498ab9d10423d60488ba09d0"
+    },
+    "scripts/prepare_r2_daily_candidate.py": {
+      "bytes": 6080,
+      "path": "scripts/prepare_r2_daily_candidate.py",
+      "sha256": "417aa4447d3bd83e9a04d7b1f30b4f7c457cd68739600b7613e97bf0a5b40ee0"
+    },
+    "scripts/prepare_r2_focus_native_core.py": {
+      "bytes": 5411,
+      "path": "scripts/prepare_r2_focus_native_core.py",
+      "sha256": "60fdee7b70a9134f12107e03d8b473793ecc309678b61626b1a1da02e8b20385"
+    },
+    "scripts/prepare_r2_raw_turnover.py": {
+      "bytes": 5348,
+      "path": "scripts/prepare_r2_raw_turnover.py",
+      "sha256": "6d9637448775ed9d2d4883b1dc0fc84f9f8e0b5d65c0b407934b4e2515c841f4"
+    },
+    "scripts/run_fp02_research_snapshot.py": {
+      "bytes": 4066,
+      "path": "scripts/run_fp02_research_snapshot.py",
+      "sha256": "96ec12bb84a939ea8160a4028603047dcd024fa3aa5d95a6de220460bbac2175"
+    },
+    "scripts/seal_r2_available_fields_stage.py": {
+      "bytes": 4634,
+      "path": "scripts/seal_r2_available_fields_stage.py",
+      "sha256": "13908dffd27e924e51f744cfbc312daa5904153e8d185c97586b12634f10e9c3"
+    },
+    "scripts/seal_r2_focus_native_core_stage.py": {
+      "bytes": 4957,
+      "path": "scripts/seal_r2_focus_native_core_stage.py",
+      "sha256": "b4521a7c43fc31f850106e550804f60db02b6ab794c3693b08eaea9d8214b98a"
+    },
+    "scripts/seal_r2_native_daily_entry.py": {
+      "bytes": 3405,
+      "path": "scripts/seal_r2_native_daily_entry.py",
+      "sha256": "ed57a3b22411465a4776dfeca87298e6503fa11b62d3f21647eb711b59cdebd2"
+    },
+    "scripts/seal_r2_presentation_stage.py": {
+      "bytes": 4694,
+      "path": "scripts/seal_r2_presentation_stage.py",
+      "sha256": "585a9426c93b331ef033afa3a7a07068f90d9603131273b95f788fe895fa40a8"
+    },
+    "scripts/seal_r2_raw_turnover_stage.py": {
+      "bytes": 4367,
+      "path": "scripts/seal_r2_raw_turnover_stage.py",
+      "sha256": "64455923b800a3eeb89d78e98c097d64f17efa2774b147cb7eeb7fa7dc161577"
+    },
+    "src/focus_tracker/v4_daily_driver.py": {
+      "bytes": 5783,
+      "path": "src/focus_tracker/v4_daily_driver.py",
+      "sha256": "ea8c07f191c880db370bb0595be24a3ef0bf642eeae69d730babc743532ab5b3"
+    },
+    "src/focus_tracker/v4_native_core_adapter.py": {
+      "bytes": 6401,
+      "path": "src/focus_tracker/v4_native_core_adapter.py",
+      "sha256": "dda0e8df82f6967d065ebb93377265a9fcaff306f13cf061ecf0a5d6465933d5"
+    },
+    "src/focus_tracker/v4_native_core_daily_driver.py": {
+      "bytes": 6327,
+      "path": "src/focus_tracker/v4_native_core_daily_driver.py",
+      "sha256": "c41b09c7ab307dd4b8590a7d965ac10a5c09b95771b3150291b24e4adaf37e1d"
+    },
+    "src/focus_tracker/v4_native_core_journal.py": {
+      "bytes": 5614,
+      "path": "src/focus_tracker/v4_native_core_journal.py",
+      "sha256": "867c945bc8b2f46befb7edeb4b02ac52f52163e2d9159ecc6a7ec1b8eaff1516"
+    },
+    "src/workbench_analysis/v4_15_settlement.py": {
+      "bytes": 23641,
+      "path": "src/workbench_analysis/v4_15_settlement.py",
+      "sha256": "b24b31d4670160ca41e620e86ca9b6fa4d393a0112ea4251eda02edb38457697"
+    },
+    "src/workbench_analysis/v4_15_settlement_successor.py": {
+      "bytes": 4381,
+      "path": "src/workbench_analysis/v4_15_settlement_successor.py",
+      "sha256": "453df721d06ea94cb6593693585ac14bf9171dfb754890bb04b68257143cc2dc"
+    },
+    "src/workbench_service/continuous_daily_release.py": {
+      "bytes": 5899,
+      "path": "src/workbench_service/continuous_daily_release.py",
+      "sha256": "afa2a4dadee96670cf6d1efde5f91f5131866eecc08623adfc91426bf96e0291"
+    },
+    "src/workbench_service/forward_daily.py": {
+      "bytes": 7857,
+      "path": "src/workbench_service/forward_daily.py",
+      "sha256": "4846cd70afd7c2f4ddda4c2af4f55ca5e843624ada2542aae0f876feebabe825"
+    },
+    "src/workbench_service/production_v4.py": {
+      "bytes": 42460,
+      "path": "src/workbench_service/production_v4.py",
+      "sha256": "fa0ba4c5070820bdab5a6868b3fb2baf301f3d91459210fe0011c585cae75199"
+    },
+    "src/workbench_service/raw_turnover.py": {
+      "bytes": 1075,
+      "path": "src/workbench_service/raw_turnover.py",
+      "sha256": "8e3c62a43fb897a0a3dabb1693aa4dc3b4722cd271866a7f5da42bd1d9d89307"
+    },
+    "src/workbench_service/stock_unit_projection.py": {
+      "bytes": 978,
+      "path": "src/workbench_service/stock_unit_projection.py",
+      "sha256": "cee1e458148155eabe3bb258deffe05fae874d7db1d5bad4b55ea09eee619438"
+    },
+    "src/workbench_service/stock_views.py": {
+      "bytes": 6941,
+      "path": "src/workbench_service/stock_views.py",
+      "sha256": "86c8d223a79a94f233575f3ffea5a8895767414b5f5072391d3a34046044ec12"
+    }
+  },
+  "production_publish": "OWNER_RAW_TEMPORAL_QA_THEN_JOINT_CAS_WITH_HTTP_HEALTH",
+  "result": "DEGRADED_PASS",
+  "strict_pit": false,
+  "trading": false,
+  "ui_build_id": "f9230ef02d8971440fa8c1f2d6cc9422eda2a7f1e32fa063a718ead3d4846683"
+}

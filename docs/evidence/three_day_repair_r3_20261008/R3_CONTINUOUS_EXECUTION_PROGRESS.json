@@ -39,7 +39,7 @@
       "stage": "Entry and immutable release readback"
     },
     {
-      "before_after": "Core 9/28–9/30: 5222/5223/5224 rows; independent target MA20/ATR20/ret5 mismatches 0 and 30 anti-future checks pass. Profile corrected isolated owners materialized on 9/28 and 9/29 (5222/5223 rows, 5034/5035 target QFQ ready, 188 unknown each); existing 9/28 candidate checked across 195916 observed numeric values with 0 mismatch. 9/30 live Profile consumer mismatch 0/5213. All corrected historical owners are RECONSTRUCTED_CORRECTED, non-PIT, non-production.",
+      "before_after": "Core 9/28–9/30: 5222/5223/5224 rows; independent target MA20/ATR20/ret5 mismatches 0 and 30 anti-future checks pass. Profile corrected isolated owners materialized on 9/28 and 9/29 (5222/5223 rows, 5034/5035 target QFQ ready, 188 unknown each); existing 9/28 candidate checked across 195916 observed numeric values with 0 mismatch. 9/30 live Profile consumer mismatch 0/5213. All corrected historical owners are RECONSTRUCTED_CORRECTED, non-PIT, non-production. Target capability crosswalk: 176 actual-traded rows/day lack proven QFQ, separately from 12/12/11 accepted suspended no-bar rows; 9/28 and 9/29 profile unknown=188 reconciles as 176+12.",
       "commit": "Included in R3 implementation/evidence commit; hash recorded in handoff.",
       "evidence": [
         {
@@ -59,6 +59,12 @@
           "exists": true,
           "path": "docs/evidence/three_day_repair_r3_20261008/R3_CORE_PROFILE_REAL_ORACLE.json",
           "sha256": "046dec299f91d5951dc0bab188e53b227b29ed19bf2972681a24f35459c309da"
+        },
+        {
+          "bytes": 1855,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r3_20261008/R3_QFQ_CAPABILITY_CROSSWALK.json",
+          "sha256": "18b2a796ae553a6feecd542668127423e3ada7f7371d6cd092c10ea1b7395efc"
         }
       ],
       "result": "DEGRADED_PASS",

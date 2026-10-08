@@ -1,0 +1,50 @@
+{
+  "contract_id": "R3_QFQ_CAPABILITY_CROSSWALK_V1",
+  "dates": {
+    "2026-09-28": {
+      "source_diff_rows": 188,
+      "suspended_missing_bar": 12,
+      "unsupported_adjustment_actual_traded": 176
+    },
+    "2026-09-29": {
+      "source_diff_rows": 188,
+      "suspended_missing_bar": 12,
+      "unsupported_adjustment_actual_traded": 176
+    },
+    "2026-09-30": {
+      "source_diff_rows": 187,
+      "suspended_missing_bar": 11,
+      "unsupported_adjustment_actual_traded": 176
+    }
+  },
+  "policy": "Do not treat 176 actual-traded rows as missing RAW; fail closed on adjustment capability. Do not treat suspended rows as QFQ failures or fabricate bars. Short histories remain separately governed by profile field capability.",
+  "r3_profile_candidate_crosswalk": {
+    "2026-09-28": {
+      "ready": 5034,
+      "unknown": 188,
+      "unknown_explained_by_source_diff": {
+        "suspended_without_target_bar": 12,
+        "unproved_adjustment": 176
+      }
+    },
+    "2026-09-29": {
+      "ready": 5035,
+      "unknown": 188,
+      "unknown_explained_by_source_diff": {
+        "suspended_without_target_bar": 12,
+        "unproved_adjustment": 176
+      }
+    }
+  },
+  "result": "FAIL_CLOSED_CAPABILITY_PROOF_PRESERVED",
+  "source_diff": {
+    "bytes": 165082,
+    "limitations": "Inherited immutable R1 source inventory; R3 did not rewrite the earlier receipt or claim a full hard-drive/external search.",
+    "path": "docs/evidence/three_day_repair_r1_20261008/THREE_DAY_SOURCE_DIFF.csv",
+    "sha256": "aacf39e12a497d0e12922bd1902d69e48c6f358bfd85bce4e0abc64ce891079a",
+    "source_owner": {
+      "path": "docs/evidence/three_day_repair_r1_20261008/A_SOURCE_DISCOVERY_AND_MISSING_DIFF.md",
+      "sha256": "e3497dec8197ccdf8aa91e23e04899e5ff232c8959d4829f5919f5a8ffe07db9"
+    }
+  }
+}

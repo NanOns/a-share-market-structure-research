@@ -3,7 +3,7 @@
 - 阶段合同：`R2_DATA_ALGORITHM_REPAIR_V1`（按 `docs/upgrade/R2_DATA_ALGORITHM_REPAIR_EXECUTION_20261008.md`；当前结构连续任务另受 `docs/upgrade/R2_STRUCTURAL_FIELD_CONTINUATION_20261008.md` 约束）。
 - 阶段结果：`SCOPED_OPERATIONAL_RELEASE_PASS / E1_E5_FULL_ACCEPTANCE_BLOCKED`。
 - 目标日：2026-09-28、2026-09-29、2026-09-30；当前发布读域只落在接受目标日 2026-09-30。
-- 本阶段 source/code/evidence commit：待提交 SHA；审计基础 HEAD：`d571b23aec1d93ea79f633fcf8a5ee644527b6f3`。
+- 本阶段 source/code/evidence commit：`7fe1ae009d4a0871011e3da19462b524da0e80be`；审计基础 HEAD：`d571b23aec1d93ea79f633fcf8a5ee644527b6f3`。
 - Phase 0：沿用正式 `reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json` 的既有结果；本任务未启动 scanner。
 - TDX：`D:/new_tdx` 仅只读；未写入、重命名或删除其中文件。
 

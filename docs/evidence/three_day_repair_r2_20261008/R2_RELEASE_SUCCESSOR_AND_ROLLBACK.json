@@ -1,0 +1,57 @@
+{
+  "contract_id": "R2_RELEASE_SUCCESSOR_AND_ROLLBACK_V1",
+  "stage_contract": "V4_JOINT_RELEASE_V1 scoped successor; full_product_release=false",
+  "result": "SCOPED_OPERATIONAL_RELEASE_PASS",
+  "activation_performed": true,
+  "trade_date": "2026-09-30",
+  "predecessor_joint_authority_sha256": "5204fec1e9fcb11701c321d515a756acfaacea4d0fc1bb09443c34990ebd3a45",
+  "successor_joint_authority_sha256": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298",
+  "candidate": {
+    "path": "docs/evidence/three_day_repair_r2_20261008/p04c/R2_P0_4_RELEASE_CANDIDATE.json",
+    "bytes": 46089,
+    "sha256": "589338fe57c877282686c85f066b7aa7f489ceac15306a25851b39955e4b6cd5"
+  },
+  "snapshot_manifest": {
+    "path": "data/v4/research_snapshots/3a3f5d9074b646189ccfd830c15e7161/manifest.json",
+    "bytes": 15047444,
+    "sha256": "d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3"
+  },
+  "operational_scope": [
+    "stocks_daily",
+    "sectors_current_facts",
+    "market_current",
+    "focus_read_corrected",
+    "forward_read",
+    "diagnostics",
+    "compare_corrected"
+  ],
+  "readback": {
+    "pass": true,
+    "context_token": "research-v4-d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3",
+    "api_routes_ready": [
+      "context",
+      "home",
+      "stocks",
+      "sectors",
+      "focus",
+      "market",
+      "diagnostics"
+    ],
+    "same_context_token_all_api_routes": true,
+    "same_ui_asset_hash": true
+  },
+  "rollback": {
+    "isolated_health_failure_injection": "PASS",
+    "exact_predecessor_restore": true,
+    "stale_live_cas": "REJECTED",
+    "parallel_stale_writer": "REJECTED",
+    "production_rollback_performed": false,
+    "production_pointer_unchanged_after_success": false
+  },
+  "limitations": [
+    "full product release not claimed",
+    "stock structure predicates remain UNKNOWN",
+    "sector lifecycle/rotation remains UNKNOWN",
+    "strict PIT membership remains 0/3"
+  ]
+}

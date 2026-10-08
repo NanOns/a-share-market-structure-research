@@ -1,0 +1,54 @@
+{
+  "contract_id": "R2_FOCUS_FORWARD_TRANSITION_AND_DUE_ORACLE_V1",
+  "result": "PARTIAL_FOCUS_READS_PASS_FORWARD_PENDING_NO_REAL_DUE",
+  "source_evidence": {
+    "path": "docs/evidence/three_day_repair_r1_20261008/C_FOCUS_FORWARD_TEMPORAL_ORACLE.json",
+    "bytes": 5432,
+    "sha256": "56eed07fb67128acbf32e5ae355b97129a415788cd9ee33ed72b01029a368b3f"
+  },
+  "focus": {
+    "observations": {
+      "2026-09-29": 297,
+      "2026-09-30": 469
+    },
+    "independent_affine_samples": 6,
+    "affine_samples_result": true,
+    "full_episode_path_reentry_exception_matrix": false
+  },
+  "forward": {
+    "due": 0,
+    "enrollments": 117,
+    "frozen_T0_count": 117,
+    "plans": 585,
+    "result": "PASS_PENDING_NO_DUE",
+    "states": {
+      "PENDING": 585
+    }
+  },
+  "T0_immutable": true,
+  "isolated_fixture_matrix": [
+    "Focus exit/reentry",
+    "Focus invalidation settlement",
+    "suspension and missing bars",
+    "future corporate action non-leakage",
+    "owner revision and kernel change rejection",
+    "Forward real fixture pending to due",
+    "due missing-price state",
+    "append-only frozen T0",
+    "idempotent repeated due",
+    "late corrected outcome supersedes immutable prior revision",
+    "wrong basis/date/identity rejection"
+  ],
+  "isolated_fixture_results": {
+    "result": "PASS",
+    "tests_run": 65,
+    "duration_seconds": 7.49,
+    "command": "python -m pytest tests/test_r2_focus_path_outcome.py tests/test_r2_focus_native_core.py tests/test_r2_forward_daily.py tests/test_forward_r2.py -q --basetemp=E:/codex_tmp/test_temp/three_day_r2_focus_forward_tests",
+    "test_scope": "isolated synthetic/tmp-path fixtures only; no production data writes",
+    "live_cohort_untouched": true
+  },
+  "acceptance_boundary": "585 real plans remain PENDING; due=0 is not real settlement evidence.",
+  "full_focus_event_matrix": false,
+  "real_forward_due_count": 0,
+  "real_forward_outcome": "585 PENDING; no actual due settlement claimed"
+}

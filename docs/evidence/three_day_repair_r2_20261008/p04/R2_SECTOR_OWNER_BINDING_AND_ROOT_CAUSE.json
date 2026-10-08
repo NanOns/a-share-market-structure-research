@@ -1,0 +1,221 @@
+{
+  "contract_id": "R2_SECTOR_OWNER_BINDING_AND_ROOT_CAUSE_V1",
+  "target": "2026-09-30",
+  "result": "PARTIAL_CURRENT_FACTS_PASS_HISTORICAL_ROTATION_NOT_VERIFIABLE",
+  "stage_contract": "V4_08_SECTOR_NATIVE_V1 + R2_CURRENT_SECTOR_MA20_WIDTH_ADAPTER_V2",
+  "source_bindings": {
+    "candidate_authority": {
+      "path": "data/v4/r2_daily_candidates/three_day_repair_r2_p04b_20261008/v4_sector_operational_authority_v1.json",
+      "bytes": 3155,
+      "sha256": "7220d389cd1ad11929be96f2c83dda3d6e7e1003409b4142fb47cc6a4619893d"
+    },
+    "native": {
+      "path": "data/v4/fp06_sector/ea9490828de7fc60f5657cff900d0199741f06243ae4779b52e24efb832e7ef6/native.jsonl.gz",
+      "bytes": 1574230,
+      "sha256": "27e10f9a6b5e8ae2027dadd3a552467a532c6fa91aeaf423bb0826949ee0707c"
+    },
+    "independent_oracle": {
+      "path": "docs/evidence/three_day_repair_r2_20261008/p04/R2_P0_4_SECTOR_INDEPENDENT_ORACLE.csv",
+      "bytes": 947052,
+      "sha256": "3da24178ec80dc98901ecce053a8b601f475d2210552468e1109f016c89db377"
+    },
+    "membership": {
+      "path": "data/v4/artifact_store/v4_08/V4_08_PIT_MEMBERSHIP_FACTS_20260930_R1.jsonl.gz",
+      "bytes": 4004928,
+      "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+    }
+  },
+  "counts": {
+    "sectors": 378,
+    "current_rs1_rs5_rs20_known": [
+      378,
+      378,
+      378
+    ],
+    "current_breadth1_5_20_known": [
+      378,
+      378,
+      378
+    ],
+    "current_ma20_width_known": 378,
+    "rotation_output_state_unknown": 378,
+    "strict_pit_2026_09_28_to_30": "0/3_VERIFIABLE"
+  },
+  "field_acceptance_counts": {
+    "base_seed_width_adjusted": 0,
+    "breadth_delta1": 0,
+    "breadth_delta3": 0,
+    "breadth_ret1": 378,
+    "breadth_ret20": 378,
+    "breadth_ret5": 378,
+    "dq5": 0,
+    "entered_count": 0,
+    "ma20_delta1": 0,
+    "ma20_delta3": 0,
+    "ma20_width": 378,
+    "mdd20": 0,
+    "membership_ready": 378,
+    "net_entered_count": 0,
+    "participation_proxy": 378,
+    "pos60": 378,
+    "rank_velocity3": 0,
+    "sector_member_count": 378,
+    "sector_quote_coverage": 378,
+    "sector_rs1": 378,
+    "sector_rs20": 378,
+    "sector_rs20_pct": 373,
+    "sector_rs5": 378,
+    "sector_rs5_pct": 373,
+    "sector_rs60": 0,
+    "sector_rs60_pct": 0,
+    "seed_retention": 0,
+    "seed_width": 0,
+    "strong_member": 213,
+    "strong_member_retention": 0,
+    "top1_concentration": 378,
+    "top3_concentration": 378
+  },
+  "unaccepted_reason_counts": {
+    "base_seed_width_adjusted": {
+      "DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL": 378
+    },
+    "breadth_delta1": {
+      "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+    },
+    "breadth_delta3": {
+      "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+    },
+    "dq5": {
+      "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+    },
+    "entered_count": {
+      "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+    },
+    "ma20_delta1": {
+      "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+    },
+    "ma20_delta3": {
+      "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+    },
+    "mdd20": {
+      "NO_TARGET_ACCEPTED_CORE_FACTS": 378
+    },
+    "net_entered_count": {
+      "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+    },
+    "rank_velocity3": {
+      "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+    },
+    "sector_rs20_pct": {
+      "NO_QUALIFIED_RANK_INPUT": 5
+    },
+    "sector_rs5_pct": {
+      "NO_QUALIFIED_RANK_INPUT": 5
+    },
+    "sector_rs60": {
+      "NO_TARGET_ACCEPTED_CORE_FACTS": 378
+    },
+    "sector_rs60_pct": {
+      "NO_QUALIFIED_RANK_INPUT": 378
+    },
+    "seed_retention": {
+      "DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL": 378
+    },
+    "seed_width": {
+      "DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL": 378
+    },
+    "strong_member": {
+      "INCOMPLETE_STRONG_MEMBER_OBSERVATIONS": 165
+    },
+    "strong_member_retention": {
+      "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+    }
+  },
+  "five_sector_oracle": [
+    {
+      "sector_id": "INDUSTRY:T020204",
+      "sector_type": "INDUSTRY",
+      "selection_basis": "max_breadth_ret1",
+      "current_2026_09_30": {
+        "sector_rs1": 0.010208093833824816,
+        "sector_rs5": -0.08402136387569809,
+        "sector_rs20": -0.16470739868467082,
+        "breadth_ret1": 1.0,
+        "breadth_ret5": 0.0,
+        "breadth_ret20": 0.0,
+        "ma20_width": 0.0
+      },
+      "t_minus_1_2026_09_29": "NOT_VERIFIABLE_NO_ACCEPTED_ASOF_MEMBERSHIP_SNAPSHOT"
+    },
+    {
+      "sector_id": "THEME:880657",
+      "sector_type": "THEME",
+      "selection_basis": "min_breadth_ret1",
+      "current_2026_09_30": {
+        "sector_rs1": -0.017006802721088343,
+        "sector_rs5": -0.036792452830188616,
+        "sector_rs20": -0.04463814051769677,
+        "breadth_ret1": 0.06451612903225806,
+        "breadth_ret5": 0.0967741935483871,
+        "breadth_ret20": 0.2903225806451613,
+        "ma20_width": 0.3548387096774194
+      },
+      "t_minus_1_2026_09_29": "NOT_VERIFIABLE_NO_ACCEPTED_ASOF_MEMBERSHIP_SNAPSHOT"
+    },
+    {
+      "sector_id": "THEME:880729",
+      "sector_type": "THEME",
+      "selection_basis": "max_sector_rs20",
+      "current_2026_09_30": {
+        "sector_rs1": 0.024721248632487258,
+        "sector_rs5": 0.0007886435331230235,
+        "sector_rs20": 0.06328716862555739,
+        "breadth_ret1": 0.8461538461538461,
+        "breadth_ret5": 0.5,
+        "breadth_ret20": 0.6923076923076923,
+        "ma20_width": 0.7307692307692307
+      },
+      "t_minus_1_2026_09_29": "NOT_VERIFIABLE_NO_ACCEPTED_ASOF_MEMBERSHIP_SNAPSHOT"
+    },
+    {
+      "sector_id": "INDUSTRY:T020203",
+      "sector_type": "INDUSTRY",
+      "selection_basis": "min_sector_rs20",
+      "current_2026_09_30": {
+        "sector_rs1": -0.0008992805755395628,
+        "sector_rs5": -0.06736242884250465,
+        "sector_rs20": -0.14619883040935677,
+        "breadth_ret1": 0.46153846153846156,
+        "breadth_ret5": 0.0,
+        "breadth_ret20": 0.0,
+        "ma20_width": 0.0
+      },
+      "t_minus_1_2026_09_29": "NOT_VERIFIABLE_NO_ACCEPTED_ASOF_MEMBERSHIP_SNAPSHOT"
+    },
+    {
+      "sector_id": "INDUSTRY:T030203",
+      "sector_type": "INDUSTRY",
+      "selection_basis": "max_ma20_width",
+      "current_2026_09_30": {
+        "sector_rs1": 0.0072298353385917835,
+        "sector_rs5": 0.0061077390810425625,
+        "sector_rs20": -0.020899270072992693,
+        "breadth_ret1": 0.5,
+        "breadth_ret5": 0.75,
+        "breadth_ret20": 0.25,
+        "ma20_width": 1.0
+      },
+      "t_minus_1_2026_09_29": "NOT_VERIFIABLE_NO_ACCEPTED_ASOF_MEMBERSHIP_SNAPSHOT"
+    }
+  ],
+  "requested_lifecycle_strata": {
+    "high_level_stall": "NOT_VERIFIABLE_WITHOUT_ACCEPTED_2026_09_29_MEMBERSHIP_AND_PRIOR_NATIVE_OWNER",
+    "breadth_expansion": "NOT_VERIFIABLE_WITHOUT_ACCEPTED_2026_09_29_MEMBERSHIP_AND_PRIOR_NATIVE_OWNER",
+    "retreat": "NOT_VERIFIABLE_WITHOUT_ACCEPTED_2026_09_29_MEMBERSHIP_AND_PRIOR_NATIVE_OWNER",
+    "new_emergence": "NOT_VERIFIABLE_WITHOUT_ACCEPTED_2026_09_29_MEMBERSHIP_AND_PRIOR_NATIVE_OWNER",
+    "membership_change": "NOT_VERIFIABLE_WITHOUT_ACCEPTED_2026_09_29_MEMBERSHIP_AND_PRIOR_NATIVE_OWNER"
+  },
+  "release_boundary": "Current same-day facts may be scoped independently. No output_state, Base, Seed, emergence, confirmation, maturity, retention, or historical member comparison is inferred from current strength.",
+  "activation": false,
+  "next_stage": "P0_4_SCOPED_CURRENT_SECTOR_FACT_CANDIDATE_ONLY; ROTATION_REMAINS_GATED"
+}

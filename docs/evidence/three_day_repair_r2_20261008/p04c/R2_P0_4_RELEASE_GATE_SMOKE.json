@@ -1,0 +1,90 @@
+{
+  "activation_performed": false,
+  "candidate": {
+    "bytes": 46089,
+    "path": "docs/evidence/three_day_repair_r2_20261008/p04c/R2_P0_4_RELEASE_CANDIDATE.json",
+    "sha256": "589338fe57c877282686c85f066b7aa7f489ceac15306a25851b39955e4b6cd5"
+  },
+  "cases": {
+    "candidate": "PASS_VALIDATED_NOT_ACTIVATED",
+    "isolated_first_cas": {
+      "activation_performed": true,
+      "authority_digest": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298",
+      "operational_release_scope": [
+        "stocks_daily",
+        "sectors_current_facts",
+        "market_current",
+        "focus_read_corrected",
+        "forward_read",
+        "diagnostics",
+        "compare_corrected"
+      ],
+      "readback": {
+        "candidate_readback": true,
+        "pass": true
+      },
+      "result": "SCOPED_OPERATIONAL_RELEASE_PASS"
+    },
+    "parallel_stale_writer": {
+      "reason": "JOINT_CAS_CONFLICT",
+      "result": "PASS_REJECTED"
+    },
+    "rollback": {
+      "exact_predecessor_restore": true,
+      "reason": "JOINT_HEALTH_FAILED",
+      "restored_sha256": "5204fec1e9fcb11701c321d515a756acfaacea4d0fc1bb09443c34990ebd3a45",
+      "result": "PASS_REJECTED"
+    },
+    "source_hash": {
+      "reason": "JOINT_SOURCE_DIGEST_MISMATCH:data/v4/research_snapshots/3a3f5d9074b646189ccfd830c15e7161/manifest.json",
+      "result": "PASS_REJECTED"
+    },
+    "stale_live_cas": {
+      "reason": "JOINT_CAS_CONFLICT",
+      "result": "PASS_REJECTED"
+    },
+    "wrong_date": {
+      "reason": "JOINT_DATE_MISMATCH",
+      "result": "PASS_REJECTED"
+    },
+    "wrong_price_basis": {
+      "correct_basis": {
+        "contract_id": "R2_CURRENT_SECTOR_MA20_WIDTH_ADAPTER_V3",
+        "dependencies": [
+          "close",
+          "ma20"
+        ],
+        "max_source_date": "2026-09-30",
+        "price_basis_id": "EXPECTED",
+        "quality": "ACCEPTED",
+        "reason": null,
+        "value": 1.0
+      },
+      "field_scope": "ma20_width_only",
+      "result": "PASS_FAIL_CLOSED",
+      "wrong_basis": {
+        "contract_id": "R2_CURRENT_SECTOR_MA20_WIDTH_ADAPTER_V3",
+        "dependencies": [
+          "close",
+          "ma20"
+        ],
+        "max_source_date": "2026-09-30",
+        "price_basis_id": "WRONG",
+        "quality": "UNKNOWN",
+        "reason": "PRICE_BASIS_ID_MISMATCH",
+        "value": null
+      }
+    }
+  },
+  "contract_id": "R2_P0_4_RELEASE_GATE_SMOKE_V1",
+  "live_joint_authority_unchanged": true,
+  "next_stage": "IAB_MINIMAL_FIELD_SMOKE_THEN_PRODUCTION_CAS_AND_READBACK",
+  "predecessor_joint_authority_sha256": "5204fec1e9fcb11701c321d515a756acfaacea4d0fc1bb09443c34990ebd3a45",
+  "result": "PASS_ISOLATED_GATES_CANDIDATE_NOT_LIVE",
+  "sandbox": {
+    "preview_bindings": 1169,
+    "preview_root": "E:\\codex_tmp\\three_day_r2_p04_preview",
+    "transaction_bindings": 1169,
+    "transaction_root": "E:\\codex_tmp\\three_day_r2_p04_tx_preview"
+  }
+}

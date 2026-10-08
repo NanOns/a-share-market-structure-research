@@ -1,0 +1,96 @@
+{
+  "contract_id": "R2_IAB_MINIMAL_FIELD_SMOKE_V1",
+  "result": "PASS_SCOPED_PRODUCTION_POST_RELEASE",
+  "environment": "Codex In-app Browser",
+  "base_url": "http://127.0.0.1:28765/v4/research/",
+  "viewport_px": {
+    "width": 1180,
+    "height": 1244
+  },
+  "routes": {
+    "entry_home": {
+      "result": "PASS",
+      "observed": [
+        "accepted date 2026-09-30",
+        "5213 stocks",
+        "378 sectors",
+        "four market axes have values",
+        "rotation change gap explained"
+      ]
+    },
+    "sector_list": {
+      "result": "PASS",
+      "url": "/v4/research/sectors",
+      "observed": "Current sector RS/breadth shown; rotation and seed width explicitly source-capability insufficient."
+    },
+    "sector_detail": {
+      "result": "PASS",
+      "url": "/v4/research/sectors/INDUSTRY%3AT010101",
+      "observed": {
+        "煤炭开采": {
+          "member_count": 25,
+          "breadth_ret1": 0.72,
+          "breadth_ret5": 0.16,
+          "breadth_ret20": 0.08,
+          "sector_rs1": 0.009,
+          "sector_rs5": -0.03,
+          "sector_rs20": -0.064,
+          "ma20_width": 0.32,
+          "rotation": "UNKNOWN_SOURCE_CAPABILITY",
+          "history": "prior PIT membership not backfilled"
+        }
+      }
+    },
+    "stock_detail": {
+      "result": "PASS_WITH_EXPECTED_UNKNOWN",
+      "url": "/v4/research/stocks/SEC-22587521220590A4C04C6C5EB5BE7133",
+      "observed": {
+        "security": "SH.600971 恒源煤电",
+        "close": 8.19,
+        "date": "2026-09-30",
+        "chart": "actual QFQ",
+        "breakout": "UNKNOWN",
+        "pullback": "UNKNOWN",
+        "recovery": "UNKNOWN",
+        "structure_health": "UNKNOWN",
+        "support": "UNKNOWN"
+      }
+    },
+    "diagnostics": {
+      "result": "PASS",
+      "counts": {
+        "ADJUSTED_DAILY": {
+          "count": 5213,
+          "quality": "DEGRADED_PASS"
+        },
+        "IDENTITY_UNIVERSE": {
+          "count": 5224,
+          "quality": "PASS"
+        },
+        "RAW_DAILY": {
+          "count": 5213,
+          "quality": "PASS"
+        },
+        "TRADING_STATUS": {
+          "count": 5224,
+          "quality": "PASS"
+        }
+      }
+    },
+    "sources_and_time": {
+      "result": "PASS",
+      "accepted_trade_date": "2026-09-30",
+      "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+      "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+      "historical_pit_effectiveness": "NOT_GRANTED",
+      "quality": "QUALITY_DEGRADED",
+      "scope": "SCOPED_OPERATIONAL_RELEASE",
+      "full_product_release": false,
+      "joint_release_digest": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298",
+      "context_token": "research-v4-d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3"
+    }
+  },
+  "context_token": "research-v4-d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3",
+  "other_resolutions": "NOT_RUN; latest applicable R2 data/algorithm execution contract cancels multi-browser/multi-resolution work.",
+  "screenshots": "IAB screenshots inspected during smoke; no screenshot image persisted; DOM/accessibility snapshots and API readback recorded in this receipt."
+}

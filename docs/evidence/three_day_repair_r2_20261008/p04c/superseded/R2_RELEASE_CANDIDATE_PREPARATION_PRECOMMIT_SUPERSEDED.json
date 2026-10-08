@@ -1,0 +1,32 @@
+{
+  "activation": false,
+  "candidate": {
+    "path": "docs/evidence/three_day_repair_r2_20261008/R2_RELEASE_CANDIDATE.json",
+    "sha256": "46c4bb8a7f1393d1ad0c494833d0fabad9ba93b2b12717a3131b63e72c9a7270"
+  },
+  "live_authority_unchanged": true,
+  "manifest": {
+    "path": "data/v4/research_snapshots/4757e18c0ee7472981c1dbabb4e49dc7/manifest.json",
+    "sha256": "88071214b13a63d3936d16e502ae1d0d813b44d38f7884f9243c909de4e7ed97"
+  },
+  "next_stage": "P0_4_SCOPED_ACTIVATION_QA_AND_IAB_SMOKE",
+  "predecessor_authority_sha256": "5204fec1e9fcb11701c321d515a756acfaacea4d0fc1bb09443c34990ebd3a45",
+  "result": "VALIDATED_CANDIDATE_NOT_ACTIVATED",
+  "scope": {
+    "activation_performed": false,
+    "contract_id": "R2_SCOPED_SECTOR_CURRENT_FACTS_SUCCESSOR_V1",
+    "eligible_domain": "sectors_current_facts",
+    "independent_oracle": "docs/evidence/three_day_repair_r2_20261008/R2_P0_2_SECTOR_INDEPENDENT_ORACLE.json",
+    "sector_authority_sha256": "cb3a6442aa0d987d8252216a83f241b58c1d1d150d6bf3254bf24e2447e98f4b",
+    "target": "2026-09-30",
+    "unknown_capabilities": [
+      "historical_membership",
+      "Base",
+      "Seed",
+      "rotation_output_state",
+      "stock_structure"
+    ]
+  },
+  "strict_pit": false,
+  "target": "2026-09-30"
+}

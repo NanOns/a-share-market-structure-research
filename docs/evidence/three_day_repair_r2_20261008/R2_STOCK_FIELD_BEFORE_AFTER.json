@@ -1,0 +1,97 @@
+{
+  "contract_id": "R2_STOCK_FIELD_BEFORE_AFTER_V1",
+  "target_trade_date": "2026-09-30",
+  "comparison": "production predecessor manifest vs activated candidate manifest",
+  "predecessor_joint_authority_sha256": "5204fec1e9fcb11701c321d515a756acfaacea4d0fc1bb09443c34990ebd3a45",
+  "candidate_joint_authority_sha256": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298",
+  "predecessor_snapshot": {
+    "path": "data/v4/research_snapshots/666645c83dfa4fe984c336f024f26f22/manifest.json",
+    "sha256": "4b1c722e14753e84e00a5b4a03779393348dbec5ab1fc1bf40e105af0f1a3936"
+  },
+  "candidate_snapshot": {
+    "path": "data/v4/research_snapshots/3a3f5d9074b646189ccfd830c15e7161/manifest.json",
+    "bytes": 15047444,
+    "sha256": "d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3"
+  },
+  "field_counts": {
+    "basic_breakout_state": {
+      "before": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "after": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "change": "NONE_OWNER_UNAVAILABLE"
+    },
+    "basic_pullback_state": {
+      "before": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "after": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "change": "NONE_OWNER_UNAVAILABLE"
+    },
+    "basic_recovery_state": {
+      "before": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "after": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "change": "NONE_OWNER_UNAVAILABLE"
+    },
+    "structure_health": {
+      "before": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "after": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "change": "NONE_OWNER_UNAVAILABLE"
+    },
+    "support_state": {
+      "before": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "after": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "change": "NONE_OWNER_UNAVAILABLE"
+    },
+    "relative_market_state": {
+      "before": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "after": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "change": "NONE_OWNER_UNAVAILABLE"
+    },
+    "relative_sector_state": {
+      "before": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "after": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "change": "NONE_OWNER_UNAVAILABLE"
+    }
+  },
+  "interpretation": "Sector current facts were repaired and activated; stock structural fields were preserved exactly as unavailable. The product surface continues to explain source-capability debt.",
+  "source": "ProductionV4ResearchReader, read-only SQLite object payload comparison against exact predecessor and candidate manifests."
+}

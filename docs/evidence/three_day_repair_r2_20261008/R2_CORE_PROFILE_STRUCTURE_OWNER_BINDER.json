@@ -1,0 +1,45 @@
+{
+  "contract_id": "R2_CORE_PROFILE_STRUCTURE_OWNER_BINDER_V1",
+  "target_trade_dates": [
+    "2026-09-28",
+    "2026-09-29",
+    "2026-09-30"
+  ],
+  "result": "FAIL_ACCEPTANCE_OWNER_CHAIN_NOT_MATERIALIZED",
+  "stage_contract": "CORE_FACTOR_V1 -> CORE_PROFILE -> STRUCTURE_EVENT_V1",
+  "existing_replay_matrix": {
+    "path": "docs/evidence/three_day_repair_r1_20261008/B_THREE_DAY_SOURCE_AND_OWNER_MATRIX.json",
+    "bytes": 14472,
+    "sha256": "1062c92c32f00b48bf46c2cae3af0e59727081170fac87a408f89736916cb5e8"
+  },
+  "isolated_core_owner": {
+    "path": "docs/evidence/three_day_repair_r1_20261008/core_owner_r2/OWNER_REPLAY_PER_DAY.json",
+    "bytes": 13533,
+    "sha256": "49d9dd68df6c6f03e726c4e0aab4278fe1ab674dfa82031d68794adc9016036e"
+  },
+  "accepted_consumer_snapshot": {
+    "path": "docs/evidence/three_day_repair_r2_20261008/p04c/R2_P0_4_OWNER_CONSUMER_SNAPSHOT.json",
+    "bytes": 12076,
+    "sha256": "2fca0e6d9ea16aa5afda168467ca2a450dcb92d042331bb9c2157de3627922cd"
+  },
+  "owner_states": {
+    "core_factor": "ISOLATED_STAGING_ONLY_NOT_ACCEPTED",
+    "core_profile": "OWNER_NOT_MATERIALIZED_IN_THIS_REPLAY",
+    "structure": "OWNER_NOT_MATERIALIZED_IN_THIS_REPLAY"
+  },
+  "current_consumer_counts": {
+    "stocks": 5213,
+    "breakout_unknown": 5213,
+    "pullback_unknown": 5213,
+    "recovery_unknown": 5213,
+    "source_scope": "2026-09-30"
+  },
+  "source_capability_gaps": {
+    "adjustment_capability_unproven": 528,
+    "per_day": 176
+  },
+  "prior_atr_coordinate": "isolated target-coordinate prior Core exists; formal profile/structure binder absent",
+  "semantic_recompute_10_stocks": "NOT_RUN_NO_ACCEPTED_STRUCTURE_OWNER_AND_NO_VERSIONED_SEMANTIC_PREDICATE_CONTRACT_BOUND_TO_THIS_SUCCESSOR",
+  "forbidden_inference": "No UNKNOWN-to-FALSE conversion; no synthetic structural semantics; no formal owner accepted.",
+  "next_stage": "Reconstruct/admit Core Profile and Structure owners under their versioned contracts, then run real positive/negative/boundary and leakage vectors."
+}

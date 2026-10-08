@@ -1,0 +1,19 @@
+{
+  "contract_id": "R2_STOCK_SEMANTIC_ORACLE_V1",
+  "result": "FAIL_ACCEPTANCE_BLOCKED_NOT_EXECUTED",
+  "stage_contract": "CORE_FACTOR_V1 + CORE_PROFILE_V1 + STRUCTURE_EVENT_V1",
+  "required_real_semantic_samples": 10,
+  "executed_real_semantic_samples": 0,
+  "sample_classes": [
+    "positive",
+    "negative",
+    "boundary",
+    "listing/lifecycle",
+    "suspended",
+    "adjustment-capability"
+  ],
+  "reason": "No admitted 2026-09-28..30 Core Profile -> Structure owner binder/payload; rules are not inferred from output labels.",
+  "observed_live_consumer": "All 5213 stocks show basic_breakout_state, basic_pullback_state, basic_recovery_state, structure_health, support_state, relative_market_state and relative_sector_state UNKNOWN.",
+  "time_leakage_test": "NOT_RUN_WITHOUT_BOUND_OWNER_INPUTS_AND_RULE_CONTRACT",
+  "baseline_and_candidate": "R2_STOCK_FIELD_BEFORE_AFTER.json"
+}

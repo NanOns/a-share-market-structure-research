@@ -1,0 +1,183 @@
+{
+  "failures": [],
+  "focus_observations_by_day": {
+    "2026-09-29": 297,
+    "2026-09-30": 469
+  },
+  "focus_path_never_counted_as_forward_settlement": true,
+  "forward": {
+    "due": 0,
+    "enrollments": 117,
+    "frozen_T0_count": 117,
+    "plans": 585,
+    "result": "PASS_PENDING_NO_DUE",
+    "states": {
+      "PENDING": 585
+    }
+  },
+  "full_focus_event_matrix": false,
+  "gbbq": {
+    "bytes": 5607212,
+    "path": "data/v4/source_snapshot_store/gbbq/sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e/gbbq",
+    "sha256": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1"
+  },
+  "independent_affine_samples": [
+    {
+      "actual_return": "-0.0406260406260406260406260406",
+      "episode_id": "08f4a8c7db09ea19e8e713850260c59598d3d3b8f600f153c87db9738b55ba33",
+      "expected_return": "-0.0406260406260406260406260406260406260406",
+      "raw_target_close": 28.81,
+      "result": "PASS",
+      "rounded_anchor": "30.03",
+      "security_id": "SEC-15493DC4F54C7131642B71FECE8FE488",
+      "steps": [
+        {
+          "after": "30.03",
+          "before": "30.18",
+          "c": "0.1500",
+          "m": "1.00",
+          "raw_parameters": {
+            "bonus": "0.00",
+            "cash": "1.50",
+            "rights": "0.00",
+            "rights_price": "0.00"
+          },
+          "record_index": 110398
+        }
+      ],
+      "symbol": "SZ.301023"
+    },
+    {
+      "actual_return": "0.000753012048192771084337349",
+      "episode_id": "c809764a86741c971f85161da7f2f5b07af4c9ac66dae49dff13c2c182f80a47",
+      "expected_return": "0.000753012048192771084337349397590361446",
+      "raw_target_close": 26.58,
+      "result": "PASS",
+      "rounded_anchor": "26.56",
+      "security_id": "SEC-7DA835721566FD4893B46D5D0894B039",
+      "steps": [
+        {
+          "after": "26.56",
+          "before": "26.68",
+          "c": "0.1200",
+          "m": "1.00",
+          "raw_parameters": {
+            "bonus": "0.00",
+            "cash": "1.20",
+            "rights": "0.00",
+            "rights_price": "0.00"
+          },
+          "record_index": 102607
+        }
+      ],
+      "symbol": "SZ.300690"
+    },
+    {
+      "actual_return": "-0.0055523085914669783752191701",
+      "episode_id": "fa3d4949f33663897ce1cfa023d77a1ea1eb479f0dd60d95ede88be892803719",
+      "expected_return": "-0.0055523085914669783752191700759789596727",
+      "raw_target_close": 34.03,
+      "result": "PASS",
+      "rounded_anchor": "34.22",
+      "security_id": "SEC-8E82F45D1F201DB0D1F5BC12A05503B4",
+      "steps": [
+        {
+          "after": "34.22",
+          "before": "35.22",
+          "c": "1.0000",
+          "m": "1.00",
+          "raw_parameters": {
+            "bonus": "0.00",
+            "cash": "10.00",
+            "rights": "0.00",
+            "rights_price": "0.00"
+          },
+          "record_index": 105097
+        }
+      ],
+      "symbol": "SZ.300770"
+    },
+    {
+      "actual_return": "0",
+      "episode_id": "a6022fc204949440e97be06ee6a1250d48c767eb0ccd541f7400a5e01613e4ab",
+      "expected_return": "0",
+      "raw_target_close": 16.4,
+      "result": "PASS",
+      "rounded_anchor": "16.40",
+      "security_id": "SEC-8FC472AFAB0EDC7CD9FF48B22080CB12",
+      "steps": [
+        {
+          "after": "16.40",
+          "before": "16.45",
+          "c": "0.0500",
+          "m": "1.00",
+          "raw_parameters": {
+            "bonus": "0.00",
+            "cash": "0.50",
+            "rights": "0.00",
+            "rights_price": "0.00"
+          },
+          "record_index": 172052
+        }
+      ],
+      "symbol": "SH.605183"
+    },
+    {
+      "actual_return": "-0.0052015604681404421326397919",
+      "episode_id": "ce9e7d1c98efb565db869cbd75beb4cb986495c52a5c11a9493615fd184b572f",
+      "expected_return": "-0.0052015604681404421326397919375812743823",
+      "raw_target_close": 7.65,
+      "result": "PASS",
+      "rounded_anchor": "7.69",
+      "security_id": "SEC-D86603950234BEC24808ACD67BDB4423",
+      "steps": [
+        {
+          "after": "7.689",
+          "before": "7.71",
+          "c": "0.0210",
+          "m": "1.00",
+          "raw_parameters": {
+            "bonus": "0.00",
+            "cash": "0.21",
+            "rights": "0.00",
+            "rights_price": "0.00"
+          },
+          "record_index": 144451
+        }
+      ],
+      "symbol": "SH.600834"
+    },
+    {
+      "actual_return": "0.026420079260237780713342140",
+      "episode_id": "da83f1ccd4a066a7376eedd7f6cfe01545dd21b5f700e2d8e59f2037385e48fc",
+      "expected_return": "0.026420079260237780713342140026420079260",
+      "raw_target_close": 23.31,
+      "result": "PASS",
+      "rounded_anchor": "22.71",
+      "security_id": "SEC-E196EF9E315805DF5634C3E2C374AAE4",
+      "steps": [
+        {
+          "after": "22.71",
+          "before": "23.01",
+          "c": "0.3000",
+          "m": "1.00",
+          "raw_parameters": {
+            "bonus": "0.00",
+            "cash": "3.00",
+            "rights": "0.00",
+            "rights_price": "0.00"
+          },
+          "record_index": 170141
+        }
+      ],
+      "symbol": "SH.603939"
+    }
+  ],
+  "live_authority_changed": false,
+  "result": "PASS_SCOPED_AFFINE_AND_TEMPORAL",
+  "source": {
+    "bytes": 15047444,
+    "path": "data/v4/research_snapshots/666645c83dfa4fe984c336f024f26f22/manifest.json",
+    "sha256": "4b1c722e14753e84e00a5b4a03779393348dbec5ab1fc1bf40e105af0f1a3936"
+  }
+}

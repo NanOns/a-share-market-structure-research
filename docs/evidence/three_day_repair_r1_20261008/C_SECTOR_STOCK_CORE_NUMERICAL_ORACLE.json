@@ -1,0 +1,63 @@
+{
+  "full_core_semantics_acceptance": false,
+  "sector": "NOT_VERIFIABLE_HISTORICAL_MEMBERSHIP_UNBOUND",
+  "stock_scoped_oracle": [
+    {
+      "checks": {
+        "atr20:CHECKED": 5197,
+        "atr20:UNKNOWN": 25,
+        "ma20:CHECKED": 5197,
+        "ma20:UNKNOWN": 25,
+        "ret5:CHECKED": 5191,
+        "ret5:UNKNOWN": 31
+      },
+      "errors": [],
+      "method": "Independent arithmetic over saved QFQ inputs; QFQ coefficients use original accepted adjustment implementation, not independent coefficient acceptance",
+      "raw_inputs": {
+        "bytes": 1631826,
+        "path": "docs/evidence/three_day_repair_r1_20261008/owners/2026-09-28/oracle_inputs.jsonl.gz",
+        "sha256": "fe79aabc726e35a8dac6e12f2bd3fb946067a89b3a5083cf07044c0285dccd63"
+      },
+      "result": "PASS",
+      "trade_date": "2026-09-28"
+    },
+    {
+      "checks": {
+        "atr20:CHECKED": 5197,
+        "atr20:UNKNOWN": 26,
+        "ma20:CHECKED": 5199,
+        "ma20:UNKNOWN": 24,
+        "ret5:CHECKED": 5190,
+        "ret5:UNKNOWN": 33
+      },
+      "errors": [],
+      "method": "Independent arithmetic over saved QFQ inputs; QFQ coefficients use original accepted adjustment implementation, not independent coefficient acceptance",
+      "raw_inputs": {
+        "bytes": 1631941,
+        "path": "docs/evidence/three_day_repair_r1_20261008/owners/2026-09-29/oracle_inputs.jsonl.gz",
+        "sha256": "20ae8df07d923baaac00b594ccb1ceca211751c05953f6d4248a5ef402d2116f"
+      },
+      "result": "PASS",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "checks": {
+        "atr20:CHECKED": 5199,
+        "atr20:UNKNOWN": 25,
+        "ma20:CHECKED": 5200,
+        "ma20:UNKNOWN": 24,
+        "ret5:CHECKED": 5190,
+        "ret5:UNKNOWN": 34
+      },
+      "errors": [],
+      "method": "Independent arithmetic over saved QFQ inputs; QFQ coefficients use original accepted adjustment implementation, not independent coefficient acceptance",
+      "raw_inputs": {
+        "bytes": 1632249,
+        "path": "docs/evidence/three_day_repair_r1_20261008/owners/2026-09-30/oracle_inputs.jsonl.gz",
+        "sha256": "ac4cb6f3bb22610d8caf2d0ca8dcca486cb16553299db4126ed7ac7f53154f38"
+      },
+      "result": "PASS",
+      "trade_date": "2026-09-30"
+    }
+  ]
+}

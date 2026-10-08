@@ -1,0 +1,302 @@
+[
+  {
+    "CORE_PROFILE": "OWNER_NOT_MATERIALIZED_IN_THIS_REPLAY",
+    "STRUCTURE": "OWNER_NOT_MATERIALIZED_IN_THIS_REPLAY",
+    "historical_membership": "EXACT_20260930_ONLY",
+    "input_digest": "42dda1a6e0c4418be0245c79c5c964030f62df3d9fbe937c0360bd18f8b4f61e",
+    "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+    "not_rebuilt": [
+      "RPS",
+      "CORE_PROFILE",
+      "STRUCTURE",
+      "SECTOR_BASE_SEED_NATIVE_ROTATION"
+    ],
+    "owner": {
+      "bytes": 19260987,
+      "path": "docs/evidence/three_day_repair_r1_20261008/core_owner_r2/owners/2026-09-28/core.jsonl.gz",
+      "sha256": "03c4db8691aa6810437ad7f0f1daf5d5f1917d197453610f68f2e733cf71905c"
+    },
+    "owner_contract": "CORE_FACTOR_V1",
+    "parameter_digest": "2f3cc8ae2fdf4bffc098dc1a0dc90bf05bbb12557b45ea8ddc50048410314e18",
+    "price_basis_policy": "PER_TARGET_NATIVE_AFFINE_QFQ",
+    "prior_core_in_target_coordinate": {
+      "bytes": 19219766,
+      "path": "docs/evidence/three_day_repair_r1_20261008/core_owner_r2/owners/2026-09-28/prior_core_in_target_coordinate.jsonl.gz",
+      "sha256": "e4aae57142b71ff6a4a6922b0c1597394d64c8a278cbf4d7f0d11db1d1504621"
+    },
+    "prior_rows": 5222,
+    "publication_state": "ISOLATED_STAGING_NOT_ACCEPTED",
+    "publication_timestamp_reason": "STAGING_ONLY_NOT_FORMALLY_PUBLISHED",
+    "published_at": null,
+    "release_acceptance": "NOT_GRANTED",
+    "rows": 5222,
+    "sources": {
+      "adjusted": {
+        "bytes": 6215962,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/ADJUSTED_DAILY/artifact.json",
+        "sha256": "bb6d4051d882210bf960389d4e6244bd6f61c4e6ab841fbf4523e0e7a37bc3b8"
+      },
+      "calendar": {
+        "bytes": 10739,
+        "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/calendar_union_2e0938120e3b371aa9c84422c06b4c14de0f8894cc8f3caa9dd9c61299239e74.json",
+        "sha256": "629242b5074002dd8e889fdca5da9e1c05f9ae35357662d5c76a554117fc17f5"
+      },
+      "classification": {
+        "bytes": 4334,
+        "path": "config/v4_02_gbbq_price_impact_classification_v1.json",
+        "sha256": "c39ff7e14209d250139352dcf78b326c7579721681fd467bac68d21d2515681c"
+      },
+      "gbbq": {
+        "bytes": 5607212,
+        "path": "data/v4/source_snapshot_store/gbbq/sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e/gbbq",
+        "sha256": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1"
+      },
+      "historical_status": {
+        "bytes": 100075252,
+        "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+        "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+      },
+      "history": {
+        "bytes": 42168789,
+        "path": "data/v4/fp05_market/e034e70084533be70892fd32d066139cbd273a36a8ada7e511a68f75fe1f1008/history.jsonl.gz",
+        "sha256": "9f7ee99454374db02824b5c9d52e2da89fca30232bc291ddb1f48ef6db84b6c0"
+      },
+      "identity": {
+        "bytes": 3110619,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/IDENTITY_UNIVERSE/artifact.json",
+        "sha256": "ac6cc9e6deb739efa2139d1b92f203feab5cc849603159740826c8aeb8c8c2e5"
+      },
+      "kernel": {
+        "bytes": 16643,
+        "path": "src/v4/factors/core.py",
+        "sha256": "8986358268a5ae706c6cc46c95937ed381b65b55d3293667f840ff50008217f1"
+      },
+      "parameter_registry": {
+        "bytes": 10438,
+        "path": "config/v4_03_parameter_registry_v1.json",
+        "sha256": "c3cda61e604948935061b077f0f57777ac9dc9917263cab2217ca3c2ac9f28e3"
+      },
+      "parameters": {
+        "bytes": 649,
+        "path": "config/v4_03_parameter_set_v1.json",
+        "sha256": "2f3cc8ae2fdf4bffc098dc1a0dc90bf05bbb12557b45ea8ddc50048410314e18"
+      },
+      "producer": {
+        "bytes": 10154,
+        "path": "docs/evidence/three_day_repair_r1_20261008/core_owner_r2/implementations/6427e86000aa9536c1d494fd9509945995f6759e086fecbe91aeb3f53eafe30b/rebuild_three_day_core_r1.py",
+        "sha256": "6427e86000aa9536c1d494fd9509945995f6759e086fecbe91aeb3f53eafe30b"
+      },
+      "raw": {
+        "bytes": 4708369,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/RAW_DAILY/artifact.json",
+        "sha256": "b332846bdb00d5b412eb161ab4ec4e48f0602857d771755ce2bb9eca77ac58ac"
+      },
+      "status": {
+        "bytes": 2469877,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/TRADING_STATUS/artifact.json",
+        "sha256": "2bc52361a02ecdae59d020fc87c30a73fd73e073c7dba95f247deb84931b25d4"
+      }
+    },
+    "trade_date": "2026-09-28"
+  },
+  {
+    "CORE_PROFILE": "OWNER_NOT_MATERIALIZED_IN_THIS_REPLAY",
+    "STRUCTURE": "OWNER_NOT_MATERIALIZED_IN_THIS_REPLAY",
+    "historical_membership": "EXACT_20260930_ONLY",
+    "input_digest": "33c6b345c8d98753428354fb8686ac6487a124e479570f779ff789fa9729bfe0",
+    "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+    "not_rebuilt": [
+      "RPS",
+      "CORE_PROFILE",
+      "STRUCTURE",
+      "SECTOR_BASE_SEED_NATIVE_ROTATION"
+    ],
+    "owner": {
+      "bytes": 19267458,
+      "path": "docs/evidence/three_day_repair_r1_20261008/core_owner_r2/owners/2026-09-29/core.jsonl.gz",
+      "sha256": "beb303ff2cfb16d77b6848e1a4eee7707fe7f218975e5a6b42d5cf867cb25dd1"
+    },
+    "owner_contract": "CORE_FACTOR_V1",
+    "parameter_digest": "2f3cc8ae2fdf4bffc098dc1a0dc90bf05bbb12557b45ea8ddc50048410314e18",
+    "price_basis_policy": "PER_TARGET_NATIVE_AFFINE_QFQ",
+    "prior_core_in_target_coordinate": {
+      "bytes": 19221495,
+      "path": "docs/evidence/three_day_repair_r1_20261008/core_owner_r2/owners/2026-09-29/prior_core_in_target_coordinate.jsonl.gz",
+      "sha256": "a12391ccad61f3afebe89558c624ce785efc7cec66836db0bedf5c7f9afeac6e"
+    },
+    "prior_rows": 5222,
+    "publication_state": "ISOLATED_STAGING_NOT_ACCEPTED",
+    "publication_timestamp_reason": "STAGING_ONLY_NOT_FORMALLY_PUBLISHED",
+    "published_at": null,
+    "release_acceptance": "NOT_GRANTED",
+    "rows": 5223,
+    "sources": {
+      "adjusted": {
+        "bytes": 6216265,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/ADJUSTED_DAILY/artifact.json",
+        "sha256": "e19ab5ef92b34935ba3a8635488110621814be3755d896ec11015840d87e9174"
+      },
+      "calendar": {
+        "bytes": 10739,
+        "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/calendar_union_2e0938120e3b371aa9c84422c06b4c14de0f8894cc8f3caa9dd9c61299239e74.json",
+        "sha256": "629242b5074002dd8e889fdca5da9e1c05f9ae35357662d5c76a554117fc17f5"
+      },
+      "classification": {
+        "bytes": 4334,
+        "path": "config/v4_02_gbbq_price_impact_classification_v1.json",
+        "sha256": "c39ff7e14209d250139352dcf78b326c7579721681fd467bac68d21d2515681c"
+      },
+      "gbbq": {
+        "bytes": 5607212,
+        "path": "data/v4/source_snapshot_store/gbbq/sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e/gbbq",
+        "sha256": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1"
+      },
+      "historical_status": {
+        "bytes": 100075252,
+        "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+        "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+      },
+      "history": {
+        "bytes": 42168789,
+        "path": "data/v4/fp05_market/e034e70084533be70892fd32d066139cbd273a36a8ada7e511a68f75fe1f1008/history.jsonl.gz",
+        "sha256": "9f7ee99454374db02824b5c9d52e2da89fca30232bc291ddb1f48ef6db84b6c0"
+      },
+      "identity": {
+        "bytes": 3111444,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/IDENTITY_UNIVERSE/artifact.json",
+        "sha256": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f"
+      },
+      "kernel": {
+        "bytes": 16643,
+        "path": "src/v4/factors/core.py",
+        "sha256": "8986358268a5ae706c6cc46c95937ed381b65b55d3293667f840ff50008217f1"
+      },
+      "parameter_registry": {
+        "bytes": 10438,
+        "path": "config/v4_03_parameter_registry_v1.json",
+        "sha256": "c3cda61e604948935061b077f0f57777ac9dc9917263cab2217ca3c2ac9f28e3"
+      },
+      "parameters": {
+        "bytes": 649,
+        "path": "config/v4_03_parameter_set_v1.json",
+        "sha256": "2f3cc8ae2fdf4bffc098dc1a0dc90bf05bbb12557b45ea8ddc50048410314e18"
+      },
+      "producer": {
+        "bytes": 10154,
+        "path": "docs/evidence/three_day_repair_r1_20261008/core_owner_r2/implementations/6427e86000aa9536c1d494fd9509945995f6759e086fecbe91aeb3f53eafe30b/rebuild_three_day_core_r1.py",
+        "sha256": "6427e86000aa9536c1d494fd9509945995f6759e086fecbe91aeb3f53eafe30b"
+      },
+      "raw": {
+        "bytes": 4708451,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/RAW_DAILY/artifact.json",
+        "sha256": "16e4daab101f671d894fbacbb37361c6bf8286e68e7170877aaec8d17f84dddf"
+      },
+      "status": {
+        "bytes": 2470350,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/TRADING_STATUS/artifact.json",
+        "sha256": "1024bfcad1052635317351b9c3c730f9c09294de72b3f1358e45bbe0aac6dde4"
+      }
+    },
+    "trade_date": "2026-09-29"
+  },
+  {
+    "CORE_PROFILE": "OWNER_NOT_MATERIALIZED_IN_THIS_REPLAY",
+    "STRUCTURE": "OWNER_NOT_MATERIALIZED_IN_THIS_REPLAY",
+    "historical_membership": "EXACT_20260930_ONLY",
+    "input_digest": "b77a5b0b62fde699d93d281132b26a230d49a1fe519b29ea550fac42076614c5",
+    "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+    "not_rebuilt": [
+      "RPS",
+      "CORE_PROFILE",
+      "STRUCTURE",
+      "SECTOR_BASE_SEED_NATIVE_ROTATION"
+    ],
+    "owner": {
+      "bytes": 19282523,
+      "path": "docs/evidence/three_day_repair_r1_20261008/core_owner_r2/owners/2026-09-30/core.jsonl.gz",
+      "sha256": "0527d629f73ac46f1fa6fb2ac0213f8541d41f2b12c3dfdd68ee40cc1e98d011"
+    },
+    "owner_contract": "CORE_FACTOR_V1",
+    "parameter_digest": "2f3cc8ae2fdf4bffc098dc1a0dc90bf05bbb12557b45ea8ddc50048410314e18",
+    "price_basis_policy": "PER_TARGET_NATIVE_AFFINE_QFQ",
+    "prior_core_in_target_coordinate": {
+      "bytes": 19223828,
+      "path": "docs/evidence/three_day_repair_r1_20261008/core_owner_r2/owners/2026-09-30/prior_core_in_target_coordinate.jsonl.gz",
+      "sha256": "cfc42bf2c776e08c3ea2628527b97a6bf3f2a6dff915be622df0fa7adb2dc71f"
+    },
+    "prior_rows": 5223,
+    "publication_state": "ISOLATED_STAGING_NOT_ACCEPTED",
+    "publication_timestamp_reason": "STAGING_ONLY_NOT_FORMALLY_PUBLISHED",
+    "published_at": null,
+    "release_acceptance": "NOT_GRANTED",
+    "rows": 5224,
+    "sources": {
+      "adjusted": {
+        "bytes": 6218836,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/ADJUSTED_DAILY/artifact.json",
+        "sha256": "a28b3a912e44a8cc6e3e7e43f37038b64e1f7b62024ec4887b5320ffd33d2e17"
+      },
+      "calendar": {
+        "bytes": 10739,
+        "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/calendar_union_2e0938120e3b371aa9c84422c06b4c14de0f8894cc8f3caa9dd9c61299239e74.json",
+        "sha256": "629242b5074002dd8e889fdca5da9e1c05f9ae35357662d5c76a554117fc17f5"
+      },
+      "classification": {
+        "bytes": 4334,
+        "path": "config/v4_02_gbbq_price_impact_classification_v1.json",
+        "sha256": "c39ff7e14209d250139352dcf78b326c7579721681fd467bac68d21d2515681c"
+      },
+      "gbbq": {
+        "bytes": 5607212,
+        "path": "data/v4/source_snapshot_store/gbbq/sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e/gbbq",
+        "sha256": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1"
+      },
+      "historical_status": {
+        "bytes": 100075252,
+        "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+        "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+      },
+      "history": {
+        "bytes": 42168789,
+        "path": "data/v4/fp05_market/e034e70084533be70892fd32d066139cbd273a36a8ada7e511a68f75fe1f1008/history.jsonl.gz",
+        "sha256": "9f7ee99454374db02824b5c9d52e2da89fca30232bc291ddb1f48ef6db84b6c0"
+      },
+      "identity": {
+        "bytes": 3112040,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/artifact.json",
+        "sha256": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf"
+      },
+      "kernel": {
+        "bytes": 16643,
+        "path": "src/v4/factors/core.py",
+        "sha256": "8986358268a5ae706c6cc46c95937ed381b65b55d3293667f840ff50008217f1"
+      },
+      "parameter_registry": {
+        "bytes": 10438,
+        "path": "config/v4_03_parameter_registry_v1.json",
+        "sha256": "c3cda61e604948935061b077f0f57777ac9dc9917263cab2217ca3c2ac9f28e3"
+      },
+      "parameters": {
+        "bytes": 649,
+        "path": "config/v4_03_parameter_set_v1.json",
+        "sha256": "2f3cc8ae2fdf4bffc098dc1a0dc90bf05bbb12557b45ea8ddc50048410314e18"
+      },
+      "producer": {
+        "bytes": 10154,
+        "path": "docs/evidence/three_day_repair_r1_20261008/core_owner_r2/implementations/6427e86000aa9536c1d494fd9509945995f6759e086fecbe91aeb3f53eafe30b/rebuild_three_day_core_r1.py",
+        "sha256": "6427e86000aa9536c1d494fd9509945995f6759e086fecbe91aeb3f53eafe30b"
+      },
+      "raw": {
+        "bytes": 4710499,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/RAW_DAILY/artifact.json",
+        "sha256": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1"
+      },
+      "status": {
+        "bytes": 2470841,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/TRADING_STATUS/artifact.json",
+        "sha256": "20798999bb3309aa93f42ebd075bc53cffb5337117f6fbccd7eafd14986f51bb"
+      }
+    },
+    "trade_date": "2026-09-30"
+  }
+]

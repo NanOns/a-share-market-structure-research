@@ -1,0 +1,37 @@
+{
+  "items": [
+    {
+      "acceptance": "Per-security accepted readiness, source event interval and model binding independently reconciled; original staging remains rejected",
+      "evidence": {
+        "bytes": 571,
+        "path": "docs/evidence/three_day_repair_r1_20261008/B_FIRST_ATTEMPT_REJECTION.json",
+        "sha256": "32ebc7311c6303133f40d56b8265ce08e0636874b6043de293f5226bb93bbf2f"
+      },
+      "id": "THREE_DAY_ADJUSTMENT_CAPABILITY_SCOPE_R1",
+      "scope": "All historical owner replays",
+      "status": "OPEN"
+    },
+    {
+      "acceptance": "Original producers published per target and consumers validated; not satisfied by numeric factor replay",
+      "evidence": {
+        "bytes": 420488,
+        "path": "docs/evidence/three_day_repair_r1_20261008/OWNER_DEPENDENCY_ROOT_CAUSE.json",
+        "sha256": "8033087963172aa7137b012ee0db734c7b3a8c8e9c37f8b69b4a5a6669d41120"
+      },
+      "id": "THREE_DAY_OWNER_BINDER_COMPLETENESS_R1",
+      "scope": "Base/Seed/Profile/Structure/LOO across dates",
+      "status": "OPEN"
+    },
+    {
+      "acceptance": "Complete configured source roots and supported historic membership contracts; no absence claim from bounded search",
+      "evidence": {
+        "bytes": 21384,
+        "path": "docs/evidence/three_day_repair_r1_20261008/LOCAL_SOURCE_DISCOVERY.json",
+        "sha256": "19ef15c4626b9c00081bb1b63e144365636413763bdb03a7829a3b392e7d490a"
+      },
+      "id": "THREE_DAY_FULL_SOURCE_DISCOVERY_R1",
+      "scope": "Physical sources, effective memberships and historical model timestamps",
+      "status": "OPEN"
+    }
+  ]
+}

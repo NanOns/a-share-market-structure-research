@@ -13,7 +13,7 @@
 | E2 Core→Profile→Structure | `FAIL` | 当前候选消费 5,213 股票；独立对照旧/新 snapshot 的 7 个关键结构字段均 0 known / 5,213 unknown。隔离 Core 不等于接受 Owner。 | Profile/Structure正式 binder 未物化；10 只真实正反边界与时间泄漏重算未运行。|
 | E3 板块 | `NOT_VERIFIABLE`（当日事实子范围通过） | 378/378 当前 RS、breadth、MA20 width 可用；独立公式对照 2,646/2,646 PASS；修复了 MA20 adapter 的价格基准精确匹配门。 | Rotation 378/378 unknown；Base/Seed与历史成员生命周期未恢复；9/29不回填。|
 | E4 个股数值/结构 | `FAIL` | 真实消费保留当前 Core/Profile 数值；个股图表 QFQ 可见，单股显示明确根因状态。 | 结构谓词、支撑、相对状态缺 Owner，不能据基础数值推断突破/回踩等状态。|
-| E5 Focus/Forward | `NOT_VERIFIABLE` | Focus 有 297/469 observations 与 6 个仿射复核样本；Forward 117 enrollment / 585 plans 全部 PENDING，due=0。 | 完整 episode/path/reentry矩阵及独立隔离 fixture 本轮未执行；0 due不是结算通过。|
+| E5 Focus/Forward | `NOT_VERIFIABLE` | Focus 有 297/469 observations 与 6 个仿射复核样本；Forward 117 enrollment / 585 plans 全部 PENDING，due=0。 | 仓库隔离向量 65/65 通过（退出/重入、失效、停牌/缺价、T0冻结、due缺价、幂等与迟到修订）；完整 episode/path/reentry 异常矩阵仍未全覆盖，真实 due=0 不是结算通过。|
 | E6 运营发布 | `PASS`（受限范围） | 真实 joint CAS：`5204…`→`8d342…`；7类 API 同一 context token READY；IAB 首页/板块详情/个股详情/来源与诊断通过。健康失败的隔离精确回滚、坏日期/哈希/基准和并发拒绝均已验证。 | `full_product_release=false`；股票结构、板块轮动与 strict PIT债务仍显示为未知；生产成功后未执行实际反向切回。|
 
 ## 当前生产接受范围

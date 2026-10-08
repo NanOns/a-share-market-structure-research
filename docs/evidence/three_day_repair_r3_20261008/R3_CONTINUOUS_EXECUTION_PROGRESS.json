@@ -3,8 +3,14 @@
   "as_of": "2026-10-08",
   "baseline_head": "e85ce0fd177e7d8604bdb5f458cee387afbf03ae",
   "commit_push": {
-    "note": "Implementation/evidence will be committed and pushed to both frozen task branches before declaring this R3 bundle complete.",
-    "status": "PENDING_COMMIT_AND_PUSH"
+    "branches": [
+      "codex/v4-system-reform",
+      "codex/v4-fp14-r2-repair"
+    ],
+    "commit": "0bb8df116da9d654dc70c2b0ee4620ffc831f8e3",
+    "note": "The implementation/evidence bundle is committed; pushing both task branches is the remaining repository handoff action. Push is not external acceptance or permission for the next gated stage.",
+    "remote_heads_at_freeze": "e85ce0fd177e7d8604bdb5f458cee387afbf03ae",
+    "status": "COMMITTED_PENDING_PUSH"
   },
   "contract_id": "R3_CONTINUOUS_EXECUTION_PROGRESS_V1",
   "next_stage": "Obtain accepted effective-dated membership facts for 9/28–9/29 or continue future daily capture under an approved source contract; complete V4-12 exact target and T-1 accepted owner/admission, bind and materialize V4-13 runtime, bind accepted 9/25 RPS endpoint for 9/30, complete real Focus/Forward lifecycle E2E; then rerun scoped release gates and submit external audit. Do not promote until those gates pass.",

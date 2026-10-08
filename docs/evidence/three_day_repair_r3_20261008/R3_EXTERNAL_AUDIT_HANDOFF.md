@@ -29,4 +29,4 @@ Do not promote the isolated 9/28–9/29 Profile owners, structure candidates, or
 
 The detailed per-stage contract, before/after values, test results and evidence hashes are in [`R3_CONTINUOUS_EXECUTION_PROGRESS.json`](R3_CONTINUOUS_EXECUTION_PROGRESS.json). Main evidence directory: `docs/evidence/three_day_repair_r3_20261008/`.
 
-Commit and push are being recorded for both task branches: `codex/v4-system-reform` and `codex/v4-fp14-r2-repair`. Push means the evidence bundle is available for review; it is not external acceptance or authorization for another gated stage.
+Implementation/evidence commit: `0bb8df116da9d654dc70c2b0ee4620ffc831f8e3`. It will be pushed to both `codex/v4-system-reform` and `codex/v4-fp14-r2-repair`, whose frozen starting heads were `e85ce0fd177e7d8604bdb5f458cee387afbf03ae`. Push makes the evidence available for review; it is not external acceptance or authorization for another gated stage.

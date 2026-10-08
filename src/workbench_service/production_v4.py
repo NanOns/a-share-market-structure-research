@@ -57,6 +57,9 @@ def compact_cell(cell, ref, field, date):
     if not isinstance(cell, dict): cell = dict(value=cell, quality='KNOWN')
     quality = cell.get('quality', 'UNKNOWN')
     reason = cell.get('reason') or cell.get('reason_code') or cell.get('unknown_reason')
+    if cell.get('value') == 'UNKNOWN' and quality == 'KNOWN':
+        quality = 'UNKNOWN'
+        reason = reason or 'OWNER_LITERAL_UNKNOWN_NOT_A_KNOWN_VALUE'
     if quality in ('UNKNOWN', 'NOT_IMPLEMENTED') and not reason:
         reason = 'OWNER_FIELD_REASON_MISSING_SEE_AUD_FP01_FIELD_REASON_GAPS'
     price = field in ('open', 'high', 'low', 'close')
@@ -369,6 +372,11 @@ class ProductionV4ResearchReader:
             'strict_pit':dict(released=False,scope='NONE',debt=['FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE']),
             'fep':dict(released=False,scope='NOT_BOUND_TO_CURRENT_PRODUCTION',debt=['CURRENT_FEATURE_MODEL_INFERENCE']),
         }
+        focus=self.manifest.get('domain_features',{}).get('focus') or {}
+        if focus.get('contract_id')=='R2_V4_FOCUS_PATH_OUTCOME_V2':
+            self.context['domain_readiness']['focus'].update(
+                scope='CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ',
+                debt=['UNRESOLVED_PATH_PREDICATE_OWNERS','LEGACY_PG_RECONCILIATION'])
 
     def envelope(self, **payload):
         return dict(context=self.context,context_token=self.token,**payload)

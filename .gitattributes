@@ -289,3 +289,7 @@ scripts/validate_r25_preflight_v6.py -text
 data/v4/pit_first_observed/**/*.gz filter=lfs diff=lfs merge=lfs -text
 data/v4/ui_releases/** -text
 tests/test_a08_governance_propagation.py -text
+docs/evidence/r2_focus_continuation_20261008/** -text
+data/v4/r2_focus_journal/** -text
+data/v4/r2_focus_journal/*/journal.sqlite filter=lfs diff=lfs merge=lfs -text
+data/v4/research_snapshots/*/focus_research.sqlite filter=lfs diff=lfs merge=lfs -text

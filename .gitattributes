@@ -287,4 +287,5 @@ scripts/run_v4_16_settlement_v3.py -text
 scripts/build_r25_packet_r4r4.py -text
 scripts/validate_r25_preflight_v6.py -text
 data/v4/pit_first_observed/**/*.gz filter=lfs diff=lfs merge=lfs -text
+data/v4/ui_releases/** -text
 tests/test_a08_governance_propagation.py -text

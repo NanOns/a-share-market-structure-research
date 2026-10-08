@@ -1,5 +1,5 @@
 """R2 executable scoped/full cutover; no historical permission mutations."""
-import argparse,json,sys,urllib.request
+import argparse,json,sys,urllib.request,subprocess
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 from scripts.fp01_evidence import write,ref
@@ -20,6 +20,8 @@ def prepare():
         if not target.exists():write(target,p.read_bytes())
         assets[p.name]=ref(target)
     value=dict(contract_id='V4_JOINT_RELEASE_V1',ui_build_id=build,ui_assets=assets,snapshot=json.loads((ROOT/POINTER).read_bytes()),trade_date=r.context['trade_date'],operational_release_scope=SCOPES,full_product_release=False,trading=False,focus_automatic_write=False,read_only=True,owner_admission=ref(OUT/'R2_OWNER_DATE_MATRIX.json'),qa_contract=ref('config/v4_full_product_qa_contract_v2.json'),field_debt=ref(OUT/'R2_PRODUCT_FIELD_COVERAGE.json'))
+    value['app_version']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+    value['release_contract']=ref('config/v4_r2_domain_contracts_v1.json')
     validate(ROOT,value);write(OUT/'R2_RELEASE_CANDIDATE.json',value);return value
 
 def gate(candidate):

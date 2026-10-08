@@ -46,6 +46,13 @@ class ResearchBFF:
                 control.update(scope='INPUT_PROGRESS_NOT_RESEARCH_CONTEXT',accepted_input_date=progress['context']['context']['accepted_trade_date'],indexed_trade_date=r.context['accepted_trade_date'])
                 return 200,r.envelope(status='READY',counts=r.manifest['counts'],gaps=r.manifest['gaps'],daily_refresh=control)
             if name=='home':return 200,home(r)
+            if name=='forward' and len(parts)>1 and parts[1] in ('statistics','plans','fep','risk'):
+                publication=r.manifest.get('domain_features',{}).get('forward')
+                if not publication:return 200,r.envelope(status='SOURCE_INCOMPLETE',items=[])
+                if parts[1] in ('statistics','fep'):return 200,r.envelope(status='READY',data=publication[parts[1]])
+                if parts[1]=='risk':return 200,r.query('stocks',query,summary=False)
+                rows=publication['plans'];offset=int(query.get('offset',0));limit=int(query.get('limit',30))
+                return 200,r.envelope(status='READY',items=rows[offset:offset+limit],total=len(rows),offset=offset,limit=limit,has_next=offset+limit<len(rows),scope='DUE_PLAN_ONLY_NOT_OUTCOMES')
             if name=='market' and len(parts)==2 and parts[1] in ('indices','breadth','limits','ladders','facts-events'):
                 center=r.manifest.get('domain_features',{}).get('market_center')
                 if not center:return 200,r.envelope(status='SOURCE_INCOMPLETE',reason='MARKET_CENTER_NOT_BOUND',items=[])

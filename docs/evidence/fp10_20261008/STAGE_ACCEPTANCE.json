@@ -1,0 +1,18 @@
+{
+  "acceptance": "DEGRADED_PASS_READ_PROJECTION",
+  "actual_outcomes": 5,
+  "browser": "forward.png",
+  "due_plans": 585,
+  "enrollments": 117,
+  "excluded_verification": "Legacy test_settlement_r1r1 simulation fixture suite interrupted; outside this read projection scope, not counted as passing",
+  "limitations": [
+    "116 enrollments have no actual owner outcome publication; due plans are not outcomes",
+    "Calendar ends at T0, future due dates remain unknown",
+    "FEP historical engineering only, model display/production not granted"
+  ],
+  "mature_eligible": 0,
+  "next_stage": "FP11",
+  "published_enrollments": 1,
+  "stage": "FP10",
+  "tests": "55 passed; pytest tests/test_r20d_settlement.py tests/test_fp02_research_snapshot.py tests/test_fp08_focus.py -q"
+}

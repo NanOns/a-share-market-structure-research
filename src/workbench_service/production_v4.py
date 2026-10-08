@@ -248,6 +248,17 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
             authority=json.loads(center_authority.read_bytes())
             if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('MARKET_CENTER_CONTEXT_MISMATCH')
             domain_features['market_center']=legacy._read(authority['publication']);sources['market_center']=authority['publication']
+        forward_authority=root/'config/v4_forward_operational_authority_v1.json'
+        if forward_authority.exists():
+            authority=json.loads(forward_authority.read_bytes())
+            if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('FORWARD_SOURCE_CONTEXT_MISMATCH')
+            publication=legacy._read(authority['publication']);domain_features['forward']=publication;sources['forward_operational']=authority['publication']
+            for row in publication['enrollments']:
+                old=db.execute("SELECT id,payload FROM objects WHERE domain='forward' AND json_extract(payload,'$.fields.enrollment_id.value')=?",(row['enrollment_id'],)).fetchone()
+                if not old:raise SourceInvalid('FORWARD_ENROLLMENT_NOT_PRESERVED')
+                result=json.loads(old[1]);keys=('signal_type','model_contract_id','parameter_digest','primary_industry','source_publication','control_assignment_ids','benchmark_ids','comparison_reference')
+                result['fields'].update({k:compact_cell(dict(value=row.get(k),quality='KNOWN' if row.get(k) is not None else 'UNKNOWN'),row['source'],k,date) for k in keys})
+                db.execute("UPDATE objects SET payload=? WHERE domain='forward' AND id=?",(canonical(result).decode(),old[0]))
         counts={d:db.execute('SELECT count(*) FROM objects WHERE domain=?',(d,)).fetchone()[0] for d in DOMAINS}
         expected_stocks=len(legacy._source(contract,'RAW_DAILY')['rows'])
         expected_sectors=len({r['sector_id'] for r in legacy._source(contract,'membership')})

@@ -9,6 +9,7 @@ from .current_v4_context import SourceInvalid, digest
 from .v4_daily_refresh import refresh_status
 from .domain_views import home,sector_view
 from .stock_views import chart,explanation
+from .diagnostic_views import diagnostic
 
 class ResearchBFF:
     def __init__(self,root):
@@ -71,6 +72,9 @@ class ResearchBFF:
                         return 200,r.envelope(status='READY' if rows else 'EMPTY_VALID',items=rows,total=len(rows),has_next=False,permissions=publication['permissions'],write_block_reason=publication['write_block_reason'],legacy_history=publication['legacy_history'])
             if name=='market' and len(parts)==1:return 200,r.envelope(status='READY' if r.manifest.get('domain_features',{}).get('market') else 'SOURCE_INCOMPLETE',market=r.manifest.get('domain_features',{}).get('market'))
             if name=='diagnostics':
+                if len(parts)>1:
+                    scoped=diagnostic(r,parts[1])
+                    if scoped is not None:return 200,scoped
                 if len(parts)>1 and parts[1]=='fields':return 200,r.envelope(status='READY',fields=r.manifest['field_registry'])
                 if len(parts)>1 and parts[1]=='rules':return 200,r.envelope(status='READY',owners=r.manifest['owners'],source_contract_digest=r.manifest['source_contract_digest'])
                 if len(parts)>1 and parts[1]=='parameters':return 200,r.envelope(status='READY',parameter_set_ids=['V4_08_ALGORITHM_PARAMETER_SET_R5'],scope='BOUND_SECTOR_OUTPUT_PARAMETERS',missing_scope='OTHER_PARAMETER_SETS_NOT_YET_PROJECTED')

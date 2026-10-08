@@ -196,6 +196,8 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
                     result['fields'].update({k:compact_cell(dict(v,unit=units.get(k)),sources[kind],k,date) for k,v in cells.items()})
                     db.execute("DELETE FROM objects WHERE domain='sectors' AND id=?",(row['sector_id'],));put('sectors',result)
         domain_features={}
+        domain_contract=root/'config/v4_research_domain_bff_contract_v2.json'
+        if domain_contract.exists():sources['domain_bff_contract']=reference(root,domain_contract)
         market_authority=root/'config/v4_market_operational_authority_v1.json'
         if market_authority.exists():
             authority=json.loads(market_authority.read_bytes())

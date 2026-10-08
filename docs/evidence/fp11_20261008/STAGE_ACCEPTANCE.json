@@ -1,0 +1,14 @@
+{
+  "acceptance": "DEGRADED_PASS",
+  "browser": "diagnostics.png; zero captured console errors",
+  "http_subroutes": 6,
+  "limitations": [
+    "LOO not bound to current context",
+    "V3 database retired, no implicit restore",
+    "CSV download browser verification timed out; not counted as passed",
+    "Open cross-cutting audit items separately tracked"
+  ],
+  "next_stage": "RESOLVE_INDEPENDENT_PRODUCT_AUDIT_ITEMS; FP12_FP14_REQUIRE_SEPARATE_DISPATCH",
+  "stage": "FP11",
+  "tests": "110 passed; pytest tests/test_fp11_diagnostics.py tests/test_fp01_operational_release.py tests/test_fp02_research_snapshot.py tests/test_fp04_ui_authority.py tests/test_fp05_home.py tests/test_fp06_sector.py tests/test_fp07_stock.py tests/test_fp08_focus.py tests/upgrade_m8/test_limit_rules.py tests/v4_02/test_final_r4_special_price_phase.py tests/test_r20d_settlement.py -q --basetemp E:/codex_tmp/test_temp/fp11_final"
+}

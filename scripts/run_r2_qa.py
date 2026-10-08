@@ -1,5 +1,5 @@
 """R2 real-source inventory and independent values; browser acceptance stays separate."""
-import gzip,json,sys,subprocess,sqlite3
+import gzip,json,sys,subprocess,sqlite3,argparse
 from collections import Counter,defaultdict
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')]
@@ -16,7 +16,7 @@ def audit():
         if actual['sha256']!=b['sha256']:raise SourceInvalid('R2_SOURCE_MISMATCH:'+name)
         verified.append(dict(name=name,**actual))
     groups={};samples={};ids={};allrows={}
-    for domain,n in [('stocks',10),('sectors',5),('market',1)]:
+    for domain,n in [('stocks',10),('sectors',5),('market',1),('focus',3),('forward',3)]:
         rows=objects(r,domain);allrows[domain]=rows;ids[domain]={x['entity_id'] for x in rows};samples[domain]=rows[:n]
         assert len(ids[domain])==r.manifest['counts'][domain]
         for row in rows:
@@ -25,6 +25,9 @@ def audit():
                 key=(domain,field,c.get('source_digest'),str(c.get('source_as_of')))
                 g=groups.setdefault(key,dict(domain=domain,field=field,owner=c.get('source_contract_id') or c.get('producer_contract_id') or 'OWNER_CONTRACT_NOT_DECLARED',source_digest=c.get('source_digest'),source_as_of=c.get('source_as_of'),price_basis=c.get('adjustment_basis') or 'OWNER_CELL_BASIS_NOT_DECLARED',dependency=c.get('source_field'),count=0,quality_counts=Counter(),reasons=Counter()))
                 g['count']+=1;g['quality_counts'][c.get('quality','MISSING')]+=1
+                g.setdefault('usable_value_count',0)
+                if c.get('quality') in ('KNOWN','ACCEPTED','OBSERVED') and c.get('value') is not None and c.get('value')!='UNKNOWN':g['usable_value_count']+=1
+                if c.get('value')=='UNKNOWN' and c.get('quality')=='KNOWN':g['literal_unknown_with_known_quality']=g.get('literal_unknown_with_known_quality',0)+1
                 if c.get('reason'):g['reasons'][str(c['reason'])]+=1
     extras=[];factors={};profiles={}
     for name,destination in [('stock_factors',factors),('stock_profiles',profiles),('advanced',None)]:
@@ -83,10 +86,29 @@ def audit():
     write(OUT/'R2_REAL_VALUE_ORACLE.json',dict(checks=oracle,independent_arithmetic=independent,samples=samples,pass_count=len(oracle),scope='69_OWNER_VALUE_EQUALITIES_PLUS_NATIVE_QFQ_MA_INDEPENDENT_ARITHMETIC'))
     inventory=json.loads((ROOT/'docs/evidence/fp13_20261008/FEATURE_PRODUCER_API_UI_TEST_MATRIX.json').read_bytes())['rows'];coverage=[]
     for x in inventory:
-        domain=x['api'].split('/')[3];field=x['feature'];matched=[c for k,c in groups.items() if k[0]==domain and k[1]==field]
-        ready=bool(matched) and any(any(c['quality_counts'].get(q,0)>0 for q in ('KNOWN','ACCEPTED','OBSERVED')) for c in matched)
-        coverage.append(dict(x,production_required=True,owner_source_ready=ready,ui_rendered=False,numeric_oracle=any(o['field']==field for o in oracle),browser_pass=False,debt_reason=None if ready else x.get('reason') or 'OWNER_FIELD_NOT_PUBLISHED_OR_QUALITY_UNKNOWN',owner=x['producer'],due='NEXT_REAL_OWNER_ADMISSION' if not ready else 'R2_IAB_FIELD_VERIFICATION',product_pass=False))
+        domain=x['api'].split('/')[3];field=x['feature']
+        aliases={'price':['close','open','high','low'],'ma':['ma5','ma10','ma20','ma60'],'ma_structure':['ma_structure_state'],'atr_normalized_position':['bias20_atr'],'risk':['core_extension_risk'],'market_regime':['regime_ui'],'relative':['rel_market_5'],'compression':['compression_state'],'rank_velocity':['rank_velocity3'],'entered':['entered_count'],'retention':['seed_retention'],'waiting_for':['waiting_for','unknown_predicates']}
+        fields=aliases.get(field,[field]);matched=[c for k,c in groups.items() if k[0]==domain and k[1] in fields]
+        ready=bool(matched) and any(c.get('usable_value_count',0)>0 for c in matched)
+        source_mapping={'dependency_fields':fields,'groups':matched}
+        feature_ready={'market':{'indices','breadth','limits','ladders'},'diagnostics':{'health','sources','contracts','jobs','legacy','shadow'},'home':{'navigation','four_axes','stock_changes','risk_changes','member_preview'}}
+        if field in feature_ready.get(domain,set()):
+            ready=True;source_mapping={'bound_manifest_sources':r.manifest['sources'],'adapter':x['api'],'scope':'CURRENT_SOURCE_OR_DIAGNOSTIC_NOT_EXTENSION_SOURCE'}
+        if domain=='focus' and field in ('anchor','observation'):
+            ready=True;source_mapping={'publication':r.manifest['sources']['focus_operational'],'path_schema':'anchors' if field=='anchor' else 'observations'}
+        if domain=='focus' and field=='outcome_status':ready=False;source_mapping={'reason':'OBSERVATION_PENDING_IS_NOT_AN_OWNER_OUTCOME_RECORD'}
+        if domain=='sectors' and field in ('overlap','unique_member_share'):
+            ready=True;source_mapping={'membership':r.manifest['sources']['membership'],'scope':'SAME_DAY_ONLY'}
+        if domain.startswith('replay') and field in ('corrected_history','stock_previous','stock_market','followup','date_token'):
+            ready=True;source_mapping={'replay':r.manifest['sources']['replay_operational'],'scope':'CORRECTED_ONLY_NOT_STRICT_PIT'}
+        coverage.append(dict(x,production_required=True,owner_source_ready=ready,owner_source_mapping=source_mapping,ui_rendered=False,numeric_oracle=any(o['field'] in fields for o in oracle),browser_pass=False,debt_reason=None if ready else x.get('reason') or 'OWNER_FIELD_NOT_PUBLISHED_OR_QUALITY_UNKNOWN',owner=x['producer'],due='NEXT_REAL_OWNER_ADMISSION' if not ready else 'R2_IAB_FIELD_VERIFICATION',product_pass=False))
     write(OUT/'R2_PRODUCT_FIELD_COVERAGE.json',dict(contract_id='R2_FIELD_COVERAGE_V2',rows=coverage,full_product_pass=False,inventory_count=len(coverage),source_ready_count=sum(x['owner_source_ready'] for x in coverage)))
     print(json.dumps(dict(source_refs=len(verified),oracle=len(oracle),extras=len(extras),field_groups=len(groups),counts=r.manifest['counts'])))
 
-if __name__=='__main__':audit()
+if __name__=='__main__':
+    parser=argparse.ArgumentParser();parser.add_argument('--out');args=parser.parse_args()
+    if args.out:
+        OUT=(ROOT/args.out).resolve()
+        if not OUT.is_relative_to(ROOT):raise SourceInvalid('EVIDENCE_OUTPUT_OUTSIDE_PROJECT')
+    elif (ROOT/'config/v4_joint_release_authority_v1.json').exists():raise SourceInvalid('RELEASE_EVIDENCE_IMMUTABLE_USE_NEW_OUT')
+    audit()

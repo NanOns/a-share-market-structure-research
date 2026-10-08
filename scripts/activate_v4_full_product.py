@@ -63,4 +63,6 @@ if __name__=='__main__':
         result=activate(ROOT,candidate,args.expected_authority_digest,health)
         if result['result']!='NOOP':write(OUT/'FP14_RELEASE_V2_FINAL.json',result)
         print(json.dumps(result))
-    else:print(json.dumps(dict(candidate=prepare()['ui_build_id'],activation_performed=False)))
+    else:
+        if (ROOT/AUTHORITY).exists():raise SystemExit('RELEASE_CANDIDATE_FROZEN_CREATE_A_NEW_VERSIONED_STAGE')
+        print(json.dumps(dict(candidate=prepare()['ui_build_id'],activation_performed=False)))

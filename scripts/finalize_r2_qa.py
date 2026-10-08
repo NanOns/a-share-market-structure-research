@@ -1,5 +1,5 @@
 """Evidence-gated scoped QA successor; full-product omissions remain explicit."""
-import json,re,sys,urllib.request,urllib.error
+import json,re,sys,urllib.request,urllib.error,argparse
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 from scripts.fp01_evidence import write,ref
@@ -69,4 +69,11 @@ def main():
     qa=dict(contract_id='FP13_FULL_PRODUCT_QA_V2',acceptance='SCOPED_QA_PASS',product_complete=False,full_product_result='FULL_PRODUCT_RELEASE_BLOCKED',iab_browser_pass=True,service_disconnect_recovery_pass=True,field_scope_coverage_pass=True,required_full_field_coverage_pass=False,edge_pass=False,ui_build_id=candidate['ui_build_id'],context_token=r.token,operational_release_scope=candidate['operational_release_scope'],evidence=evidence+[ref(OUT/'R2_IAB_BROWSER_EVIDENCE.json')],independent_external_acceptance='PENDING')
     write(OUT/'FP13_QA_V2_FINAL.json',qa);print('SCOPED_QA_PASS / FULL_PRODUCT_RELEASE_BLOCKED')
 
-if __name__=='__main__':main()
+if __name__=='__main__':
+    parser=argparse.ArgumentParser();parser.add_argument('--verify-only',action='store_true');args=parser.parse_args()
+    if args.verify_only:
+        from scripts.activate_v4_full_product import gate,health
+        candidate=json.loads((OUT/'R2_RELEASE_CANDIDATE.json').read_bytes());gate(candidate);assert health(candidate)['pass'];print('SCOPED_RELEASE_EVIDENCE_AND_LIVE_READBACK_PASS')
+    else:
+        if (ROOT/'config/v4_joint_release_authority_v1.json').exists():raise SystemExit('FROZEN_RELEASE_QA_USE_VERIFY_ONLY_OR_NEW_VERSIONED_STAGE')
+        main()

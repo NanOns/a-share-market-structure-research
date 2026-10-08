@@ -12,3 +12,5 @@ Object.assign(states,{CLOSED:"已关闭",ACTIVE:"进行中",OPEN:"开放",IMPLEM
 Object.assign(labels,{trend_axis:'趋势轴',breadth_axis:'宽度轴',participation_axis:'参与轴',stress_level:'压力轴',stress_change:'压力方向'});
 
 Object.assign(states,{STRONG:'偏强',WEAK:'偏弱',IMPROVING:'改善',DETERIORATING:'恶化',STABLE:'稳定',THIN:'偏低',NORMAL:'正常',EXPANDING:'扩张',LOW:'低',ELEVATED:'升高',HIGH:'高',DECLINING:'回落',RISING:'上升',RISK_ON:'积极环境',RISK_OFF:'风险环境',NEUTRAL:'中性环境',RECOVERY_ATTEMPT:'尝试恢复',CAPITULATION:'集中释放'});
+
+Object.assign(labels,{sector_type:'板块类型'});Object.assign(states,{INDUSTRY:'行业',THEME:'概念'});

@@ -1,0 +1,71 @@
+{
+  "contract_id": "FP06_SECTOR_OPERATIONAL_AUTHORITY_V1",
+  "factors": {
+    "bytes": 19460170,
+    "path": "data/v4/fp06_sector/fc1c4411b3bdf36ed148223e02ca58c50e771364cef71fe72e6d8e527444df3f/factors.jsonl.gz",
+    "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+  },
+  "history_claim": "CURRENT_MEMBERSHIP_NOT_REPLAYED_AS_PRIOR",
+  "input_data_head": {
+    "bytes": 16890,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+  },
+  "native": {
+    "bytes": 1548923,
+    "path": "data/v4/fp06_sector/fc1c4411b3bdf36ed148223e02ca58c50e771364cef71fe72e6d8e527444df3f/native.jsonl.gz",
+    "sha256": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+  },
+  "profile_period_policy": "LAST_FORMING_BUCKET_EXCLUDED",
+  "profiles": {
+    "bytes": 44321756,
+    "path": "data/v4/fp06_sector/fc1c4411b3bdf36ed148223e02ca58c50e771364cef71fe72e6d8e527444df3f/profiles.jsonl.gz",
+    "sha256": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+  },
+  "quality": "FIELD_LOCAL_DEGRADED",
+  "sources": {
+    "core_kernel": {
+      "bytes": 16643,
+      "path": "src/v4/factors/core.py",
+      "sha256": "8986358268a5ae706c6cc46c95937ed381b65b55d3293667f840ff50008217f1"
+    },
+    "historical_status": {
+      "bytes": 100075252,
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+      "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+    },
+    "history": {
+      "bytes": 42168789,
+      "path": "data/v4/fp05_market/e034e70084533be70892fd32d066139cbd273a36a8ada7e511a68f75fe1f1008/history.jsonl.gz",
+      "sha256": "9f7ee99454374db02824b5c9d52e2da89fca30232bc291ddb1f48ef6db84b6c0"
+    },
+    "market": {
+      "bytes": 12201,
+      "path": "data/v4/fp05_market/e034e70084533be70892fd32d066139cbd273a36a8ada7e511a68f75fe1f1008/market.json",
+      "sha256": "3c5a189d65158ec6de5e4d0ea311e590874d53207fd271761ce45e5e2385254e"
+    },
+    "membership": {
+      "bytes": 4004928,
+      "contract_id": "V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1",
+      "owner_stage": "V4-08",
+      "path": "data/v4/artifact_store/v4_08/V4_08_PIT_MEMBERSHIP_FACTS_20260930_R1.jsonl.gz",
+      "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+    },
+    "native_kernel": {
+      "bytes": 11591,
+      "path": "src/sector/native_r5.py",
+      "sha256": "280f5315fbaef91cd8411924ad39d0436684380aec6d484619dbefc9238e9b01"
+    },
+    "profile_kernel": {
+      "bytes": 15008,
+      "path": "scripts/run_v4_04_full_market_candidate_r4.py",
+      "sha256": "263e1c54aed59026cef97061ef3f74bb184634d3589d2438a84a11baa71ab816"
+    },
+    "sector_parameters": {
+      "bytes": 4045,
+      "path": "config/v4_08_algorithm_parameter_set_r5.json",
+      "sha256": "0204d7c4fadf86871b6a079f755593b1a3f8ad18bb718f73ba33db0b70f67548"
+    }
+  },
+  "trade_date": "2026-09-30"
+}

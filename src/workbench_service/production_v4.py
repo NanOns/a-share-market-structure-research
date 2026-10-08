@@ -204,6 +204,18 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
             domain_features['market']=market
             fields={k:compact_cell(dict(value=v,quality='UNKNOWN' if v in (None,'UNKNOWN') else 'KNOWN',reason=market['trend'].get('unknown_reason') if k=='trend_axis' else market['axes']['field_quality'].get(k,{}).get('unknown_reason'),contract_id='FP05_CURRENT_MARKET_FOUR_AXES_V1',parameter_set_id='V4_03_CORE_FACTOR_PARAMETER_SET_V1'),authority['market'],k,date) for k,v in market['row'].items()}
             put('market',dict(entity_id='A_SHARE_RESEARCH_MARKET',display_name='全市场研究环境',fields=fields))
+        sector_authority=root/'config/v4_sector_operational_authority_v1.json'
+        if sector_authority.exists():
+            authority=json.loads(sector_authority.read_bytes())
+            if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('SECTOR_SOURCE_CONTEXT_MISMATCH')
+            legacy._verify(authority['native']);sources['sector_operational']=authority['native'];domain_features['sector']=authority
+            with gzip.open(root/authority['native']['path'],'rt',encoding='utf8') as f:
+                for line in f:
+                    row=json.loads(line);old=db.execute("SELECT payload FROM objects WHERE domain='sectors' AND id=?",(row['sector_id'],)).fetchone()
+                    if not old:raise SourceInvalid('SECTOR_IDENTITY_NOT_BOUND')
+                    result=json.loads(old[0]);result['fields'].update({k:compact_cell(dict(v,unit=units.get(k)),authority['native'],k,date) for k,v in row['fields'].items()})
+                    result['fields']['sector_type']=compact_cell(dict(value=row['sector_type'],quality='KNOWN'),authority['native'],'sector_type',date)
+                    db.execute("DELETE FROM objects WHERE domain='sectors' AND id=?",(row['sector_id'],));put('sectors',result)
         counts={d:db.execute('SELECT count(*) FROM objects WHERE domain=?',(d,)).fetchone()[0] for d in DOMAINS}
         expected_stocks=len(legacy._source(contract,'RAW_DAILY')['rows'])
         expected_sectors=len({r['sector_id'] for r in legacy._source(contract,'membership')})
@@ -299,7 +311,7 @@ class ProductionV4ResearchReader:
         stat=self.path.stat()
         if (stat.st_size,stat.st_mtime_ns)!=self.file_signature:raise SourceInvalid('IMMUTABLE_DATABASE_CHANGED')
         q=query or {}
-        allowed={'q','state','limit','offset','sort','context_token','trade_date','release_id','model_namespace'}
+        allowed={'q','state','limit','offset','sort','context_token','trade_date','release_id','model_namespace','type','maturity','health','rotation','quality','eligibility'}
         if set(q)-allowed:raise ValueError('UNKNOWN_PARAMETER')
         for key, expected in [('context_token',self.token),('trade_date',self.context['accepted_trade_date']),('release_id',self.context['release_id']),('model_namespace',self.context['model_namespace'])]:
             if key in q and q[key]!=expected:raise SourceInvalid('CONTEXT_CONFLICT:'+key)
@@ -309,8 +321,10 @@ class ProductionV4ResearchReader:
         sort=[]
         for entry in q.get('sort','id').split(','):
             column=entry.lstrip('-')
-            if column not in ('id','name','symbol','state'):raise ValueError('INVALID_SORT_FIELD')
-            sort.append(column+(' DESC' if entry.startswith('-') else ' ASC'))
+            numeric={'sector_rs20_pct','sector_rs5_pct','sector_rs20','sector_rs5','breadth_ret1','ma20_width','participation_proxy','member_count','close','rps5','rps20'}
+            if column not in {'id','name','symbol','state'}|numeric:raise ValueError('INVALID_SORT_FIELD')
+            expression=column if column in ('id','name','symbol','state') else "json_extract(payload,'$.fields."+column+".value')"
+            sort.append(expression+(' DESC' if entry.startswith('-') else ' ASC'))
         if len(sort)>4:raise ValueError('SORT_BOUND')
         sort.append('id ASC');where=['domain=?'];args=[domain]
         if needle:
@@ -318,6 +332,11 @@ class ProductionV4ResearchReader:
             where.append("id IN (SELECT id FROM objects WHERE domain=? AND id=? UNION SELECT id FROM objects WHERE domain=? AND symbol>=? AND symbol<? UNION SELECT id FROM objects WHERE domain=? AND name>=? AND name<? UNION SELECT id FROM aliases WHERE alias>=? AND alias<? UNION SELECT o.id FROM aliases a JOIN objects o ON o.domain=? AND o.id>=a.id||':' AND o.id<a.id||';' WHERE a.alias>=? AND a.alias<?)")
             args.extend((domain,needle.upper(),domain,needle.upper(),needle.upper()+'\uffff',domain,needle,needle+'\uffff',needle,needle+'\uffff',domain,needle,needle+'\uffff'))
         if q.get('state'):where.append('state=?');args.append(q['state'])
+        if domain in ('stocks','sectors','focus'):
+            for key,field in [('type','sector_type'),('maturity','maturity'),('health','health'),('rotation','output_state'),('quality','quality'),('eligibility','final_eligibility')]:
+                if q.get(key):
+                    if len(q[key])>60:raise ValueError('FILTER_BOUND')
+                    where.append("json_extract(payload,'$.fields."+field+".value')=?");args.append(q[key])
         if entity:
             where.append('id IN (SELECT ? UNION SELECT id FROM aliases WHERE alias=?)');args.extend((entity,entity.casefold()))
         if sector:where.append('id IN (SELECT security FROM members WHERE sector=?)');args.append(sector)
@@ -328,7 +347,7 @@ class ProductionV4ResearchReader:
         gap=next((g for g in self.manifest['gaps'] if g['domain']==domain),None)
         items=[json.loads(r[0]) for r in rows]
         if summary and domain in ('stocks','sectors'):
-            keys=('close','scenario','final_eligibility','primary_industry','source_security_key','trade_date') if domain=='stocks' else ('sector_name','member_count','output_state','trade_date')
+            keys=('close','scenario','final_eligibility','primary_industry','source_security_key','trade_date') if domain=='stocks' else ('sector_name','sector_type','member_count','output_state','prior_rotation_state','sector_rs20','sector_rs5','sector_rs20_pct','breadth_delta3','breadth_ret1','seed_width','participation_proxy','top3_concentration','trade_date')
             for row in items:row['fields']={k:v for k,v in row['fields'].items() if k in keys}
         return self.envelope(domain=domain,items=items,total=total,offset=offset,limit=limit,
             has_next=offset+limit<total,status=gap['state'] if not total and gap else ('READY' if total else 'EMPTY_VALID'),gap=gap)

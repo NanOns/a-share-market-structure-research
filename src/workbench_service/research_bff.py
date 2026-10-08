@@ -7,7 +7,7 @@ from urllib.parse import unquote
 from .production_v4 import ProductionV4ResearchReader, POINTER
 from .current_v4_context import SourceInvalid, digest
 from .v4_daily_refresh import refresh_status
-from .domain_views import home
+from .domain_views import home,sector_view
 
 class ResearchBFF:
     def __init__(self,root):
@@ -62,6 +62,7 @@ class ResearchBFF:
                 outside=name=='stocks' and r.known_identity(parts[1])
                 return 404,r.envelope(status='OUTSIDE_CURRENT_POOL' if outside else 'NOT_FOUND',code='IDENTITY_OUTSIDE_CURRENT_DAILY_UNIVERSE' if outside else 'ENTITY_NOT_FOUND',items=[])
             item=detail['items'][0]
+            if name=='sectors' and len(parts)>2 and parts[2] in ('timeline','rotation-timeline','overlap'):return 200,sector_view(r,item,parts[2],query)
             if len(parts)==2 or parts[2] in ('profile','evidence','why-not','why-not-prewatch','rotation'):
                 return 200,r.envelope(status='READY',item=item,eligibility=item['fields'].get('final_eligibility'),pool_membership='CURRENT_UNIVERSE',research_pool_eligibility='SEE_OWNER_FIELD')
             if parts[2]=='members' and name=='sectors':return 200,r.query('stocks',query,sector=item['entity_id'],summary=True)

@@ -1,1 +1,11 @@
-"# R2 Focus 持续修复合同\n\n承接用户原有修复授权及“为什么不继续修复”的纠正。读取 R2 master 的 R2-05 至 R2-08、既有 R2 执行合同和 FP08/FP10 执行记录。旧收据冻结，新证据写入 r2_focus_continuation_20261008。\n\n本阶段：独立 V4 journal 从真实已接收状态生成 observations、anchors、实际价格路径及按交易日到期的 Outcome；复用本地 GBBQ 调整和 Focus 路径/结算算子。每次观察只使用截至该日的行情及公司行动，不以 9/30 复权坐标回灌 9/29。原 PostgreSQL 账不可核对，明确保留；corrected 不冒充历史 PIT。\n\n门禁：真实 9/29→9/30 shadow；CAS、幂等、失败回滚；退出后继续观察与结算，失效/退出/重入独立反例；来源校验与实际价格 oracle。生产切换必须使用新的不可变 publication 和联合版本验收。未经验收不改变现有 live last-good。跨域日更链和字段覆盖独立记录，不能凭此阶段测试宣布全部关闭。\n\n状态：IN_PROGRESS。下一阶段：journal 接入 snapshot/UI/日更编排并完成独立发布验收。\n\n阶段验收：FOCUS_PRICE_OUTCOME_READ_RELEASE_PASS。101项测试、真实两日价格与297到期结果、双分辨率IAB、真实两版联合回滚及正式CAS均有独立证据，见 docs/evidence/r2_focus_continuation_20261008/ACCEPTANCE.md。自动连续写入与完整日更链尚未准入；下一阶段继续接入，不以本读域发布结束总修复任务。\n"
+# R2 Focus 持续修复合同
+
+承接用户原有修复授权及“为什么不继续修复”的纠正。读取 R2 master 的 R2-05 至 R2-08、既有 R2 执行合同和 FP08/FP10 执行记录。旧收据冻结，新证据写入 r2_focus_continuation_20261008。
+
+本阶段：独立 V4 journal 从真实已接收状态生成 observations、anchors、实际价格路径及按交易日到期的 Outcome；复用本地 GBBQ 调整和 Focus 路径/结算算子。每次观察只使用截至该日的行情及公司行动，不以 9/30 复权坐标回灌 9/29。原 PostgreSQL 账不可核对，明确保留；corrected 不冒充历史 PIT。
+
+门禁：真实 9/29→9/30 shadow；CAS、幂等、失败回滚；退出后继续观察与结算，失效/退出/重入独立反例；来源校验与实际价格 oracle。生产切换必须使用新的不可变 publication 和联合版本验收。未经验收不改变现有 live last-good。跨域日更链和字段覆盖独立记录，不能凭此阶段测试宣布全部关闭。
+
+状态：IN_PROGRESS。下一阶段：journal 接入 snapshot/UI/日更编排并完成独立发布验收。
+
+阶段验收：FOCUS_PRICE_OUTCOME_READ_RELEASE_PASS。101项测试、真实两日价格与297到期结果、双分辨率IAB、真实两版联合回滚及正式CAS均有独立证据，见 docs/evidence/r2_focus_continuation_20261008/ACCEPTANCE.md。自动连续写入与完整日更链尚未准入；下一阶段继续接入，不以本读域发布结束总修复任务。

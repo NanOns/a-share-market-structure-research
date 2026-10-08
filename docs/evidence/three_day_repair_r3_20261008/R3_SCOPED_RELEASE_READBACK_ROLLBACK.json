@@ -1,0 +1,168 @@
+{
+  "activation_of_new_fields": false,
+  "all_api_routes_pass": true,
+  "api_routes": [
+    {
+      "context_token": "research-v4-d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3",
+      "http_status": 200,
+      "joint_release_digest": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298",
+      "pass": true,
+      "top_keys": [
+        "context",
+        "context_token",
+        "status",
+        "counts",
+        "gaps",
+        "daily_refresh"
+      ],
+      "url": "http://127.0.0.1:28765/api/v4/context"
+    },
+    {
+      "context_token": "research-v4-d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3",
+      "http_status": 200,
+      "joint_release_digest": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298",
+      "pass": true,
+      "top_keys": [
+        "context",
+        "context_token",
+        "status",
+        "counts",
+        "gaps",
+        "market",
+        "changes",
+        "change_total"
+      ],
+      "url": "http://127.0.0.1:28765/api/v4/home?context_token=research-v4-d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3"
+    },
+    {
+      "context_token": "research-v4-d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3",
+      "http_status": 200,
+      "joint_release_digest": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298",
+      "pass": true,
+      "top_keys": [
+        "context",
+        "context_token",
+        "domain",
+        "items",
+        "total",
+        "offset",
+        "limit",
+        "has_next"
+      ],
+      "url": "http://127.0.0.1:28765/api/v4/stocks?limit=1&context_token=research-v4-d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3"
+    },
+    {
+      "context_token": "research-v4-d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3",
+      "http_status": 200,
+      "joint_release_digest": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298",
+      "pass": true,
+      "top_keys": [
+        "context",
+        "context_token",
+        "domain",
+        "items",
+        "total",
+        "offset",
+        "limit",
+        "has_next"
+      ],
+      "url": "http://127.0.0.1:28765/api/v4/sectors?limit=1&context_token=research-v4-d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3"
+    },
+    {
+      "context_token": "research-v4-d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3",
+      "http_status": 200,
+      "joint_release_digest": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298",
+      "pass": true,
+      "top_keys": [
+        "context",
+        "context_token",
+        "domain",
+        "items",
+        "total",
+        "offset",
+        "limit",
+        "has_next"
+      ],
+      "url": "http://127.0.0.1:28765/api/v4/focus?context_token=research-v4-d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3"
+    },
+    {
+      "context_token": "research-v4-d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3",
+      "http_status": 200,
+      "joint_release_digest": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298",
+      "pass": true,
+      "top_keys": [
+        "context",
+        "context_token",
+        "domain",
+        "items",
+        "total",
+        "offset",
+        "limit",
+        "has_next"
+      ],
+      "url": "http://127.0.0.1:28765/api/v4/forward?context_token=research-v4-d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3"
+    },
+    {
+      "context_token": "research-v4-d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3",
+      "http_status": 200,
+      "joint_release_digest": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298",
+      "pass": true,
+      "top_keys": [
+        "context",
+        "context_token",
+        "status",
+        "sources",
+        "field_registry",
+        "owners",
+        "source_contract_digest",
+        "domain_contracts"
+      ],
+      "url": "http://127.0.0.1:28765/api/v4/diagnostics/sources?context_token=research-v4-d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3"
+    }
+  ],
+  "context_token": "research-v4-d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3",
+  "contract_id": "R3_SCOPED_RELEASE_READBACK_ROLLBACK_V1",
+  "current_pointer_mutated": false,
+  "current_snapshot_manifest": {
+    "bytes": 15047444,
+    "exists": true,
+    "path": "data/v4/research_snapshots/3a3f5d9074b646189ccfd830c15e7161/manifest.json",
+    "sha256": "d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3"
+  },
+  "domains": [
+    "stocks_daily",
+    "sectors_current_facts",
+    "market_current",
+    "focus_read_corrected",
+    "forward_read",
+    "diagnostics",
+    "compare_corrected"
+  ],
+  "full_product_release": false,
+  "gate": "No newly materialized field is authorized for publication; retain the existing successful scoped release unchanged.",
+  "isolated_failure_and_stale_cas_rollback": {
+    "exact_predecessor_restore": true,
+    "isolated_health_failure_injection": "PASS",
+    "parallel_stale_writer": "REJECTED",
+    "production_pointer_unchanged_after_success": false,
+    "production_rollback_performed": false,
+    "stale_live_cas": "REJECTED"
+  },
+  "joint_release_sha256": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298",
+  "live_authority": {
+    "bytes": 30843,
+    "exists": true,
+    "path": "config/v4_joint_release_authority_v1.json",
+    "sha256": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298"
+  },
+  "predecessor": {
+    "bytes": 2012,
+    "exists": true,
+    "path": "docs/evidence/three_day_repair_r2_20261008/R2_RELEASE_SUCCESSOR_AND_ROLLBACK.json",
+    "sha256": "75bb51bd916b9e387b74afef295b8edffda08ec67b61d25061c2edf2c4ffd46c"
+  },
+  "production_rollback_executed": false,
+  "result": "PASS_CURRENT_SCOPED_READBACK_NO_NEW_AUTHORIZED_SCOPE",
+  "same_token": true,
+  "trade_date": "2026-09-30"
+}

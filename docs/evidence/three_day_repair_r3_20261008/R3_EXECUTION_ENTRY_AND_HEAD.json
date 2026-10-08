@@ -1,0 +1,104 @@
+{
+  "actual_head": "e85ce0fd177e7d8604bdb5f458cee387afbf03ae",
+  "applicable_upgrade_contracts": [
+    {
+      "bytes": 2171,
+      "exists": true,
+      "path": "docs/upgrade/R2_DATA_ALGORITHM_REPAIR_EXECUTION_20261008.md",
+      "sha256": "96a3f9daed1d55121b2e7321df16f09a740b1cca47ec6516baf3eb239d7585ad"
+    },
+    {
+      "bytes": 836,
+      "exists": true,
+      "path": "docs/upgrade/R2_STRUCTURAL_FIELD_CONTINUATION_20261008.md",
+      "sha256": "3400bb263c90e5a26b8390e6eb4ef91d97d3586c2a5266e4df508c234ed88976"
+    },
+    {
+      "bytes": 1970,
+      "exists": true,
+      "path": "docs/upgrade/R2_AVAILABLE_FIELD_CLOSURE_CONTINUATION_20261008.md",
+      "sha256": "812eda69126fc6abb5da461811b659e986cd3dbe8885ca8658170af141c52a38"
+    },
+    {
+      "bytes": 1356,
+      "exists": true,
+      "path": "docs/upgrade/R2_FOCUS_NATIVE_CORE_CONTINUATION_20261008.md",
+      "sha256": "0316a4800097658bbb7a13ea2f1af5d2f9a471b2258270ca7ea9a7dd911017a5"
+    },
+    {
+      "bytes": 1532,
+      "exists": true,
+      "path": "docs/upgrade/R2_FORWARD_DUE_CONTINUATION_20261008.md",
+      "sha256": "fbe3ab53a5b53c83574272014c598fa39984ca0f5a3200e031e18169b45ab1e8"
+    },
+    {
+      "bytes": 1311,
+      "exists": true,
+      "path": "docs/upgrade/R2_CONTINUOUS_DAILY_EXECUTION_20261008.md",
+      "sha256": "316d77456dd103e01de99de9979ab6409f8fb7183f5d2a9f2cd1513a045f5223"
+    },
+    {
+      "bytes": 465,
+      "exists": true,
+      "path": "docs/upgrade/R2_READ_DOMAINS_CONTINUATION_20261008.md",
+      "sha256": "2857474fc061bd9b6753de659c2c99ab4ad1e2075619948f8fd4005be17fe721"
+    }
+  ],
+  "contract_id": "R3_EXECUTION_ENTRY_AND_HEAD_V1",
+  "live_joint_authority": {
+    "full_product_release": false,
+    "ref": {
+      "bytes": 30843,
+      "exists": true,
+      "path": "config/v4_joint_release_authority_v1.json",
+      "sha256": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298"
+    },
+    "scope": [
+      "stocks_daily",
+      "sectors_current_facts",
+      "market_current",
+      "focus_read_corrected",
+      "forward_read",
+      "diagnostics",
+      "compare_corrected"
+    ],
+    "sha256": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298",
+    "snapshot": {
+      "bytes": 15047444,
+      "exists": true,
+      "path": "data/v4/research_snapshots/3a3f5d9074b646189ccfd830c15e7161/manifest.json",
+      "sha256": "d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3"
+    },
+    "snapshot_sha256": "d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3"
+  },
+  "next_stage": "P0-A materialized owner crosswalk, then continue P0-B/C/D/E independently",
+  "phase0": {
+    "receipt": {
+      "bytes": 14147,
+      "exists": true,
+      "path": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
+      "sha256": "313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59"
+    },
+    "result": "DEGRADED_PASS",
+    "scanner_started": false
+  },
+  "r2_disposition": {
+    "bytes": 3970,
+    "exists": true,
+    "path": "docs/evidence/three_day_repair_r2_20261008/R2_THREE_DAY_REPAIR_FULL_E1_E6_DISPOSITION.md",
+    "sha256": "d1d5a01aba5cd551035e141b58e5e6066fa44b3ca812cb2dc1edd2f4e4e5c9a1"
+  },
+  "remote_heads": {
+    "codex/v4-fp14-r2-repair": "e85ce0fd177e7d8604bdb5f458cee387afbf03ae",
+    "codex/v4-system-reform": "e85ce0fd177e7d8604bdb5f458cee387afbf03ae"
+  },
+  "stage_contract": "R3_THREE_DAY_DATA_ALGORITHM_REPAIR_CONTINUOUS_CLOSURE_V1",
+  "start_head": "e85ce0fd177e7d8604bdb5f458cee387afbf03ae",
+  "task_card": {
+    "bytes": 19084,
+    "exists": true,
+    "path": "D:/Users/lps/Desktop/阶段任务/V4_R2_B8E6A5AEE695BFE58D_BFE7AD89E88CB8E5BA88E9AD8EE4BB8AE5A1_R3_20261008.md",
+    "sha256": "0ae4ace355d00f1d4ad99f192bfce92fa1ab0d60b62bc03f2d3db4330f4d0a1a"
+  },
+  "worktree": "CLEAN_AT_ENTRY"
+}

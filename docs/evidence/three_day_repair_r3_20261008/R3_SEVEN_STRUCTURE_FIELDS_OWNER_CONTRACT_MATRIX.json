@@ -1,0 +1,648 @@
+{
+  "V4_12_breakout_rules": {
+    "op": "ordered_select",
+    "otherwise": {
+      "enum": "NO_BREAKOUT"
+    },
+    "rules": [
+      {
+        "then": {
+          "enum": "UNKNOWN"
+        },
+        "when": {
+          "args": [
+            {
+              "field": "evaluable"
+            }
+          ],
+          "op": "not"
+        }
+      },
+      {
+        "then": {
+          "enum": "FAILED_BREAKOUT"
+        },
+        "when": {
+          "args": [
+            {
+              "field": "prior_breakout_exists"
+            },
+            {
+              "args": [
+                {
+                  "args": [
+                    {
+                      "field": "prior_support_state"
+                    },
+                    {
+                      "enum": "BROKEN"
+                    }
+                  ],
+                  "op": "eq"
+                },
+                {
+                  "args": [
+                    {
+                      "field": "prior_support_state"
+                    },
+                    {
+                      "enum": "INVALIDATED"
+                    }
+                  ],
+                  "op": "eq"
+                }
+              ],
+              "op": "or"
+            }
+          ],
+          "op": "and"
+        }
+      },
+      {
+        "then": {
+          "enum": "BREAKOUT_ACCEPTED"
+        },
+        "when": {
+          "args": [
+            {
+              "field": "prior_breakout_exists"
+            },
+            {
+              "args": [
+                {
+                  "field": "post_creation_market_sessions"
+                },
+                {
+                  "parameter_id": "earliest_anchor_test_sessions"
+                }
+              ],
+              "op": "ge"
+            },
+            {
+              "args": [
+                {
+                  "args": [
+                    {
+                      "field": "support_today"
+                    },
+                    {
+                      "enum": "HELD_CONFIRMED"
+                    }
+                  ],
+                  "op": "eq"
+                },
+                {
+                  "args": [
+                    {
+                      "field": "held_count"
+                    },
+                    {
+                      "parameter_id": "acceptance_consecutive_sessions"
+                    }
+                  ],
+                  "op": "ge"
+                }
+              ],
+              "op": "or"
+            }
+          ],
+          "op": "and"
+        }
+      },
+      {
+        "then": {
+          "enum": "TESTING"
+        },
+        "when": {
+          "args": [
+            {
+              "field": "prior_breakout_exists"
+            },
+            {
+              "args": [
+                {
+                  "field": "post_creation_market_sessions"
+                },
+                {
+                  "parameter_id": "earliest_anchor_test_sessions"
+                }
+              ],
+              "op": "ge"
+            },
+            {
+              "field": "touch"
+            }
+          ],
+          "op": "and"
+        }
+      },
+      {
+        "then": {
+          "enum": "BREAKOUT_TENTATIVE"
+        },
+        "when": {
+          "field": "prior_breakout_exists"
+        }
+      },
+      {
+        "then": {
+          "enum": "BREAKOUT_TENTATIVE"
+        },
+        "when": {
+          "field": "breakout_trigger"
+        }
+      },
+      {
+        "then": {
+          "enum": "APPROACHING"
+        },
+        "when": {
+          "args": [
+            {
+              "field": "near_high20_state"
+            },
+            {
+              "enum": "NEAR"
+            }
+          ],
+          "op": "eq"
+        }
+      }
+    ],
+    "unknown": "STOP_WITH_UNKNOWN_BEFORE_LOWER_PRIORITY"
+  },
+  "V4_12_field_registry": {
+    "bytes": 324329,
+    "exists": true,
+    "path": "config/v4_12_field_registry_v1.json",
+    "sha256": "5f8653eacd456f1244c68349af31fb4731cc1d804d41495909da0eb3072be0f5"
+  },
+  "V4_12_pullback_rules": {
+    "op": "ordered_select",
+    "otherwise": {
+      "enum": "NOT_PULLBACK"
+    },
+    "rules": [
+      {
+        "then": {
+          "enum": "NOT_PULLBACK"
+        },
+        "when": {
+          "args": [
+            {
+              "field": "prior_valid_event"
+            }
+          ],
+          "op": "not"
+        }
+      },
+      {
+        "then": {
+          "enum": "PULLBACK_FAILED"
+        },
+        "when": {
+          "args": [
+            {
+              "args": [
+                {
+                  "field": "prior_support_state"
+                },
+                {
+                  "enum": "BROKEN"
+                }
+              ],
+              "op": "eq"
+            },
+            {
+              "args": [
+                {
+                  "field": "prior_support_state"
+                },
+                {
+                  "enum": "INVALIDATED"
+                }
+              ],
+              "op": "eq"
+            }
+          ],
+          "op": "or"
+        }
+      },
+      {
+        "then": {
+          "enum": "UNKNOWN"
+        },
+        "when": {
+          "args": [
+            {
+              "field": "evaluable"
+            }
+          ],
+          "op": "not"
+        }
+      },
+      {
+        "then": {
+          "enum": "PULLBACK_HELD"
+        },
+        "when": {
+          "args": [
+            {
+              "field": "support_today"
+            },
+            {
+              "enum": "HELD_CONFIRMED"
+            }
+          ],
+          "op": "eq"
+        }
+      },
+      {
+        "then": {
+          "enum": "PULLBACK_RECLAIMED"
+        },
+        "when": {
+          "args": [
+            {
+              "args": [
+                {
+                  "field": "support_today"
+                },
+                {
+                  "enum": "RECLAIMED"
+                }
+              ],
+              "op": "eq"
+            },
+            {
+              "args": [
+                {
+                  "field": "support_today"
+                },
+                {
+                  "enum": "HELD_TENTATIVE"
+                }
+              ],
+              "op": "eq"
+            }
+          ],
+          "op": "or"
+        }
+      },
+      {
+        "then": {
+          "enum": "PULLBACK_TO_MA"
+        },
+        "when": {
+          "args": [
+            {
+              "field": "touch"
+            },
+            {
+              "args": [
+                {
+                  "args": [
+                    {
+                      "field": "anchor_type"
+                    },
+                    {
+                      "enum": "MA20_DYNAMIC"
+                    }
+                  ],
+                  "op": "eq"
+                },
+                {
+                  "args": [
+                    {
+                      "field": "anchor_type"
+                    },
+                    {
+                      "enum": "MA60_DYNAMIC"
+                    }
+                  ],
+                  "op": "eq"
+                }
+              ],
+              "op": "or"
+            }
+          ],
+          "op": "and"
+        }
+      },
+      {
+        "then": {
+          "enum": "PULLBACK_TO_IMPULSE"
+        },
+        "when": {
+          "args": [
+            {
+              "field": "touch"
+            },
+            {
+              "args": [
+                {
+                  "args": [
+                    {
+                      "field": "anchor_type"
+                    },
+                    {
+                      "enum": "BULLISH_IMPULSE_BODY"
+                    }
+                  ],
+                  "op": "eq"
+                },
+                {
+                  "args": [
+                    {
+                      "field": "anchor_type"
+                    },
+                    {
+                      "enum": "BULLISH_IMPULSE_LOW"
+                    }
+                  ],
+                  "op": "eq"
+                }
+              ],
+              "op": "or"
+            }
+          ],
+          "op": "and"
+        }
+      },
+      {
+        "then": {
+          "enum": "PULLBACK_TO_BREAKOUT"
+        },
+        "when": {
+          "field": "touch"
+        }
+      },
+      {
+        "then": {
+          "enum": "PULLBACK_IN_PROGRESS"
+        },
+        "when": {
+          "field": "post_peak_drawdown"
+        }
+      }
+    ],
+    "unknown": "STOP_WITH_UNKNOWN_BEFORE_LOWER_PRIORITY"
+  },
+  "V4_12_recovery_rules": {
+    "op": "ordered_select",
+    "otherwise": {
+      "enum": "NONE"
+    },
+    "rules": [
+      {
+        "then": {
+          "enum": "RECOVERY_FAILED"
+        },
+        "when": {
+          "field": "prior_recovery_failed"
+        }
+      },
+      {
+        "then": {
+          "enum": "RECOVERY_CONFIRMED"
+        },
+        "when": {
+          "args": [
+            {
+              "field": "prior_recovery_exists"
+            },
+            {
+              "args": [
+                {
+                  "field": "post_creation_market_sessions"
+                },
+                {
+                  "parameter_id": "earliest_anchor_test_sessions"
+                }
+              ],
+              "op": "ge"
+            },
+            {
+              "args": [
+                {
+                  "field": "recovery_held_count"
+                },
+                {
+                  "parameter_id": "acceptance_consecutive_sessions"
+                }
+              ],
+              "op": "ge"
+            }
+          ],
+          "op": "and"
+        }
+      },
+      {
+        "then": {
+          "enum": "ANCHOR_RECLAIM"
+        },
+        "when": {
+          "args": [
+            {
+              "field": "prior_valid_event"
+            },
+            {
+              "args": [
+                {
+                  "field": "post_creation_market_sessions"
+                },
+                {
+                  "parameter_id": "earliest_anchor_test_sessions"
+                }
+              ],
+              "op": "ge"
+            },
+            {
+              "field": "eod_reclaim"
+            }
+          ],
+          "op": "and"
+        }
+      },
+      {
+        "then": {
+          "enum": "MA20_RECLAIM"
+        },
+        "when": {
+          "field": "ma20_reclaim"
+        }
+      },
+      {
+        "then": {
+          "enum": "RELATIVE_RECOVERY"
+        },
+        "when": {
+          "field": "relative_recovery"
+        }
+      },
+      {
+        "then": {
+          "enum": "BOUNCE_ONLY"
+        },
+        "when": {
+          "args": [
+            {
+              "field": "ret1"
+            },
+            {
+              "math_constant": "ZERO"
+            }
+          ],
+          "op": "gt"
+        }
+      }
+    ],
+    "unknown": "STOP_WITH_UNKNOWN_BEFORE_LOWER_PRIORITY"
+  },
+  "acceptance": "PARTIAL: contracts mapped; formal materialization blocked by owner capability and runtime admission",
+  "contract_id": "R3_SEVEN_STRUCTURE_FIELDS_OWNER_CONTRACT_MATRIX_V1",
+  "contract_refs": {
+    "v4_04_algorithm_contracts_v3.json": {
+      "bytes": 42408,
+      "exists": true,
+      "path": "config/v4_04_algorithm_contracts_v3.json",
+      "sha256": "0b144bd2a9f033336da338d5b71649f8e20ebafe65095efcd5c4a7d8663db970"
+    },
+    "v4_04_parameter_set_v1.json": {
+      "bytes": 17586,
+      "exists": true,
+      "path": "config/v4_04_parameter_set_v1.json",
+      "sha256": "5b19a23dfbf6b214f5ee7c7cce5df5674db69d099386038c082317819812ced5"
+    },
+    "v4_12_machine_ast_v1.json": {
+      "bytes": 41434,
+      "exists": true,
+      "path": "config/v4_12_machine_ast_v1.json",
+      "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
+    },
+    "v4_12_output_schema_v1.json": {
+      "bytes": 5027,
+      "exists": true,
+      "path": "config/v4_12_output_schema_v1.json",
+      "sha256": "d851adbca80d91ad6d88194104e5c258efbf6a8618484754b248b939f051b9fa"
+    },
+    "v4_12_parameter_set_v1.json": {
+      "bytes": 14895,
+      "exists": true,
+      "path": "config/v4_12_parameter_set_v1.json",
+      "sha256": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024"
+    },
+    "v4_12_producer_registry_v1.json": {
+      "bytes": 37224,
+      "exists": true,
+      "path": "config/v4_12_producer_registry_v1.json",
+      "sha256": "d6b689adb89f75122e3084402fd50bfbc2e22e9c8334dad0939b94576c7daf8c"
+    },
+    "v4_12_structure_event_contract_v1.json": {
+      "bytes": 2214,
+      "exists": true,
+      "path": "config/v4_12_structure_event_contract_v1.json",
+      "sha256": "b36a6e39a43665d5c07e52ad23fc3226d92cc73df6330a06606758cc38d1d99f"
+    },
+    "v4_12_support_state_contract_v1.json": {
+      "bytes": 1909,
+      "exists": true,
+      "path": "config/v4_12_support_state_contract_v1.json",
+      "sha256": "6f9f0ef21b1d911820fc985d905d7878eaf9a87c94e87460327464d68035d594"
+    },
+    "v4_13_loo_context_v1_1.json": {
+      "bytes": 9560,
+      "exists": true,
+      "path": "config/v4_13_loo_context_v1_1.json",
+      "sha256": "4a5ea382ec04e280228f70e134a1f524576fb882ec4950ad1997fe784a08529b"
+    }
+  },
+  "fields": {
+    "basic_breakout_state": {
+      "artifact": "V4-12 real R13 candidate runtime_security/state_observations",
+      "consumer": "FP07 stock snapshot → ProductionV4ResearchReader / stock_views.py",
+      "formula_or_projection": "ordered frozen-anchor breakout rules",
+      "owner_contract": "STRUCTURE_EVENT_V1 / breakout AST",
+      "quality_and_boundary": "UNKNOWN remains UNKNOWN with exact reason; no UNKNOWN-to-FALSE; no target date is inferred",
+      "root_cause": "target V4-03 Core owner fields are blocked; real R13 candidate has no anchors",
+      "state_space": "NO_BREAKOUT/APPROACHING/BREAKOUT_TENTATIVE/BREAKOUT_ACCEPTED/FAILED_BREAKOUT/UNKNOWN",
+      "status": "BLOCKED_WITH_EVIDENCE",
+      "window_and_inputs": "T with exact T-1 owner; ATR20, MA20/CLV and prior high/pivot"
+    },
+    "basic_pullback_state": {
+      "artifact": "V4-12 real R13 candidate runtime_security/state_observations",
+      "consumer": "FP07 stock snapshot → ProductionV4ResearchReader / stock_views.py",
+      "formula_or_projection": "per-anchor state machine with previous evaluable state",
+      "owner_contract": "STRUCTURE_EVENT_V1 / pullback AST",
+      "quality_and_boundary": "UNKNOWN remains UNKNOWN with exact reason; no UNKNOWN-to-FALSE; no target date is inferred",
+      "root_cause": "no accepted anchor or prior D1 owner materialized",
+      "state_space": "NOT_PULLBACK/PULLBACK_IN_PROGRESS/PULLBACK_TO_BREAKOUT/PULLBACK_TO_IMPULSE/PULLBACK_TO_MA/PULLBACK_HELD/PULLBACK_RECLAIMED/PULLBACK_FAILED/UNKNOWN",
+      "status": "BLOCKED_WITH_EVIDENCE",
+      "window_and_inputs": "per-anchor D0 and exact T-1 state; anchor geometry and accepted OHLC/ATR"
+    },
+    "basic_recovery_state": {
+      "artifact": "V4-12 real R13 candidate runtime_security/state_observations",
+      "consumer": "FP07 stock snapshot → ProductionV4ResearchReader / stock_views.py",
+      "formula_or_projection": "ordered recovery machine; missing prior inputs are not reconstructed",
+      "owner_contract": "STRUCTURE_EVENT_V1 / recovery AST",
+      "quality_and_boundary": "UNKNOWN remains UNKNOWN with exact reason; no UNKNOWN-to-FALSE; no target date is inferred",
+      "root_cause": "target Core and prior owner dependencies blocked",
+      "state_space": "BOUNCE_ONLY/MA20_RECLAIM/RELATIVE_RECOVERY/RECOVERY_CONFIRMED/RECOVERY_FAILED/UNKNOWN",
+      "status": "BLOCKED_WITH_EVIDENCE",
+      "window_and_inputs": "per-anchor evaluable sessions, prior close/MA20/ATR and accepted relative inputs"
+    },
+    "relative_market_state": {
+      "artifact": "9/30 FP06 profiles",
+      "consumer": "FP07 stock snapshot → ProductionV4ResearchReader / stock_views.py",
+      "formula_or_projection": "accepted AST on RPS5/RPS20/RPS20 delta3, relative market returns, compression and MA structure",
+      "owner_contract": "RELATIVE_STATE_V1 / V4-04",
+      "quality_and_boundary": "UNKNOWN remains UNKNOWN with exact reason; no UNKNOWN-to-FALSE; no target date is inferred",
+      "root_cause": "9/30 Profile exists; required RPS delta3 is explicitly not bound/backfilled",
+      "state_space": "ACTIVE_EMERGENCE/PASSIVE_RESILIENCE/LEADING_ACCELERATING/LAGGING/NEUTRAL/UNKNOWN",
+      "status": "OWNER_PRESENT_INPUT_BLOCKED",
+      "window_and_inputs": "same T plus accepted prior RPS endpoint for delta3"
+    },
+    "relative_sector_state": {
+      "artifact": "no accepted V4-13 owner artifact",
+      "consumer": "FP07 stock snapshot → ProductionV4ResearchReader / stock_views.py",
+      "formula_or_projection": "remove target before sector medians/ranks/base/seed; then exact relative-state AST",
+      "owner_contract": "LOO_CONTEXT_V1.1 / V4-13",
+      "quality_and_boundary": "UNKNOWN remains UNKNOWN with exact reason; no UNKNOWN-to-FALSE; no target date is inferred",
+      "root_cause": "contract is freeze-only, runtime_implemented=false; required accepted inputs not bound",
+      "state_space": "same relative-state enum plus UNKNOWN/NOT_APPLICABLE per complete-set rule",
+      "status": "BLOCKED_WITH_EVIDENCE",
+      "window_and_inputs": "T exact dated membership and non-target returns plus accepted stock relative fields"
+    },
+    "structure_health": {
+      "artifact": "V4-12 real R13 candidate runtime_security/state_observations",
+      "consumer": "FP07 stock snapshot → ProductionV4ResearchReader / stock_views.py",
+      "formula_or_projection": "BROKEN/INVALIDATED→DAMAGED; HELD_CONFIRMED→STABLE; RECLAIMED→IMPROVING; UNKNOWN→UNKNOWN",
+      "owner_contract": "V4_12_OUTPUT_SCHEMA_V1 selected-anchor projection",
+      "quality_and_boundary": "UNKNOWN remains UNKNOWN with exact reason; no UNKNOWN-to-FALSE; no target date is inferred",
+      "root_cause": "dependent selected-anchor/support owner absent",
+      "state_space": "STABLE/WEAKENING/DAMAGED/IMPROVING/UNKNOWN",
+      "status": "BLOCKED_WITH_EVIDENCE",
+      "window_and_inputs": "selected anchor and support-state owner at T"
+    },
+    "support_state": {
+      "artifact": "V4-12 real R13 candidate runtime_security/state_observations",
+      "consumer": "FP07 stock snapshot → ProductionV4ResearchReader / stock_views.py",
+      "formula_or_projection": "ordered support state/counters; separation, missing reset, terminal no-resurrection",
+      "owner_contract": "SUPPORT_STATE_V1",
+      "quality_and_boundary": "UNKNOWN remains UNKNOWN with exact reason; no UNKNOWN-to-FALSE; no target date is inferred",
+      "root_cause": "runtime candidate emits zero anchors due blocked target owner",
+      "state_space": "IDLE/TESTING/RETESTING/HELD_TENTATIVE/HELD_CONFIRMED/BREACHED_SHALLOW/BROKEN/RECLAIMED/INVALIDATED/UNKNOWN",
+      "status": "BLOCKED_WITH_EVIDENCE",
+      "window_and_inputs": "creation-bound anchor, target OHLC/ATR/MA20, exact prior state and counters"
+    }
+  },
+  "structure_health_mapping": {
+    "BREACHED_SHALLOW": "WEAKENING",
+    "BROKEN": "DAMAGED",
+    "HELD_CONFIRMED": "STABLE",
+    "INVALIDATED": "DAMAGED",
+    "RECLAIMED": "IMPROVING",
+    "UNKNOWN": "UNKNOWN",
+    "default": "STABLE"
+  }
+}

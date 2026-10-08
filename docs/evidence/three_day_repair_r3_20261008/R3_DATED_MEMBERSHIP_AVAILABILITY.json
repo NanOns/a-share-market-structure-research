@@ -1,0 +1,38 @@
+{
+  "accepted_source": {
+    "bytes": 4004928,
+    "exists": true,
+    "path": "data/v4/artifact_store/v4_08/V4_08_PIT_MEMBERSHIP_FACTS_20260930_R1.jsonl.gz",
+    "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+  },
+  "contract_id": "R3_DATED_MEMBERSHIP_AVAILABILITY_V1",
+  "dates_found": {
+    "2026-09-30": 50162
+  },
+  "limitation": "Bounded accepted-owner search; does not claim absence from inaccessible external official sources.",
+  "membership_basis_counts": {
+    "2026-09-30:PIT_OBSERVED": 50162
+  },
+  "search_scope": [
+    "current V4_08 PIT membership accepted head",
+    "its exact accepted artifact",
+    "data/v4/artifact_store/v4_08"
+  ],
+  "target_dates": {
+    "2026-09-28": {
+      "availability": "NO_ACCEPTED_EFFECTIVE_DATE_MEMBER_SOURCE_IN_SCOPED_OWNER_STORE",
+      "count": 0,
+      "strict_pit": "NOT_PROVEN"
+    },
+    "2026-09-29": {
+      "availability": "NO_ACCEPTED_EFFECTIVE_DATE_MEMBER_SOURCE_IN_SCOPED_OWNER_STORE",
+      "count": 0,
+      "strict_pit": "NOT_PROVEN"
+    },
+    "2026-09-30": {
+      "availability": "ACCEPTED_DATED_MEMBERSHIP_PRESENT",
+      "count": 50162,
+      "strict_pit": "PIT_OBSERVED"
+    }
+  }
+}

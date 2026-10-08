@@ -11,7 +11,26 @@ from typing import Mapping
 
 PRODUCER = 'V4_08_SECTOR_NATIVE_V1'
 SEED_DEGRADED = 'DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL'
-NO_HISTORY = 'NO_PRIOR_ACCEPTED_PIT_HISTORY'
+NO_HISTORY = 'NO_PRIOR_ACCEPTED_PIT_HISTORY'  # compatibility for frozen v1 consumers
+NO_EFFECTIVE_DATED_MEMBERSHIP = 'NO_EFFECTIVE_DATED_MEMBERSHIP'
+NO_PRIOR_OWNER_MATERIALIZED = 'NO_PRIOR_OWNER_MATERIALIZED'
+FIRST_AVAILABLE_UNPROVEN_ONLY = 'FIRST_AVAILABLE_UNPROVEN_ONLY'
+
+
+def prior_gap_reason(prior_members, availability=None):
+    """Return a field-local blocker; never infer absence from an empty set.
+
+    ``availability`` is explicit source-owner evidence. Callers can distinguish
+    an unavailable effective-date membership from an unmaterialized prior
+    producer, and can preserve a first-capture-only limitation when that is all
+    the accepted history proves.
+    """
+    if prior_members is not None:
+        return None
+    if availability in {NO_EFFECTIVE_DATED_MEMBERSHIP, NO_PRIOR_OWNER_MATERIALIZED,
+                        FIRST_AVAILABLE_UNPROVEN_ONLY}:
+        return availability
+    return NO_PRIOR_OWNER_MATERIALIZED
 
 
 def number(value):
@@ -42,7 +61,8 @@ def retention(previous_set, current_truth):
     return sum(current_truth[member] is True for member in previous_set) / len(previous_set), 'ACCEPTED', None
 
 
-def common_delta(current_members, prior_members, current, prior, field, target, prior_date, predicate):
+def common_delta(current_members, prior_members, current, prior, field, target, prior_date, predicate,
+                 missing_reason=None):
     common = set(current_members) & set(prior_members or ())
     endpoints = [(observed(current.get(m), field, target), observed(prior.get(m), field, prior_date)) for m in sorted(common)]
     known = [(a, b) for a, b in endpoints if a is not None and b is not None]
@@ -52,7 +72,7 @@ def common_delta(current_members, prior_members, current, prior, field, target, 
                 membership_entered_count=None if prior_members is None else len(set(current_members)-set(prior_members)),
                 membership_exited_count=None if prior_members is None else len(set(prior_members)-set(current_members)))
     if prior_members is None:
-        return None, NO_HISTORY, meta
+        return None, missing_reason or NO_PRIOR_OWNER_MATERIALIZED, meta
     if not known or len(known) != len(common):
         return None, 'INCOMPLETE_COMMON_MEMBER_ENDPOINTS', meta
     return sum(predicate(a)-predicate(b) for a, b in known)/len(known), None, meta
@@ -60,7 +80,8 @@ def common_delta(current_members, prior_members, current, prior, field, target, 
 
 def build_native(memberships, current, *, target, snapshot_id, publication_id, parameter_set,
                  source_bindings, prior=None, prior_memberships=None, prior_date=None,
-                 prior_sector_rows=None, seed=None, seed_capability=False, prior_seed=None, max_source_date=None):
+                 prior_sector_rows=None, seed=None, seed_capability=False, prior_seed=None, max_source_date=None,
+                 prior_membership_availability=None):
     params = {p['parameter_id']:p['value'] for p in parameter_set['parameters']}
     required = ('V4_08_SECTOR_MIN_MEMBERS','V4_08_SECTOR_MIN_QUOTE_COVERAGE','V4_08_SEED_WILSON_Z')
     if any(number(params.get(p)) is None for p in required):
@@ -119,7 +140,12 @@ def build_native(memberships, current, *, target, snapshot_id, publication_id, p
             history=prior.get(k,{})
             date=(prior_date or {}).get(k)
             for stem,field,pred in [('breadth','ret1',lambda v:int(v>0)),('ma20','close_minus_ma20',lambda v:int(v>0))]:
-                value,reason,meta=common_delta(members,entry,current,history,field,target,date,pred)
+                status=(prior_membership_availability or {}).get(k, {}).get(sid)
+                if status is None:
+                    status=(NO_PRIOR_OWNER_MATERIALIZED if prior_memberships is None
+                            else NO_EFFECTIVE_DATED_MEMBERSHIP)
+                value,reason,meta=common_delta(members,entry,current,history,field,target,date,pred,
+                                               prior_gap_reason(entry,status))
                 put(f'{stem}_delta{k}',value,reason);row['common_member_quality'][f'{stem}_delta{k}']=meta
         entry=(prior_memberships or {}).get(1,{}).get(sid)
         common=set(members)&set(entry or ())
@@ -128,8 +154,13 @@ def build_native(memberships, current, *, target, snapshot_id, publication_id, p
         old_set=None if entry is None or any(v is None for v in old.values()) else {m for m,v in old.items() if v>=80}
         value,quality,reason=retention(old_set,strong)
         put('strong_member_retention',value,reason,quality)
-        put('entered_count',None if old_set is None or any(strong[m] is None for m in common) else sum(old[m]<80 and strong[m] for m in common),NO_HISTORY if entry is None else None)
-        put('net_entered_count',None if old_set is None or any(strong[m] is None for m in common) else sum(int(strong[m])-int(old[m]>=80) for m in common),NO_HISTORY if entry is None else None)
+        membership_status=(prior_membership_availability or {}).get(1, {}).get(sid)
+        if membership_status is None:
+            membership_status=(NO_PRIOR_OWNER_MATERIALIZED if prior_memberships is None
+                               else NO_EFFECTIVE_DATED_MEMBERSHIP)
+        membership_reason=prior_gap_reason(entry,membership_status)
+        put('entered_count',None if old_set is None or any(strong[m] is None for m in common) else sum(old[m]<80 and strong[m] for m in common),membership_reason)
+        put('net_entered_count',None if old_set is None or any(strong[m] is None for m in common) else sum(int(strong[m])-int(old[m]>=80) for m in common),membership_reason)
         truths={m:seed.get(m) for m in members} if seed_capability else {m:None for m in members}
         known=[v for v in truths.values() if isinstance(v,bool)];n=len(known);k=sum(known);z=params[required[2]]
         p=k/n if n else None
@@ -162,5 +193,5 @@ def build_native(memberships, current, *, target, snapshot_id, publication_id, p
             before=old.get('fields',{}).get(f'sector_rs{n}_pct',{}) if old else {}
             value=now['value']-before['value'] if now['value'] is not None and before.get('quality')=='ACCEPTED' and before.get('value') is not None else None
             row['fields'][field]={**now,'value':value,'quality':'ACCEPTED' if value is not None else 'UNKNOWN',
-                'reason_code':None if value is not None else NO_HISTORY,'prior_membership_snapshot_id':old.get('membership_snapshot_id') if old else None}
+                'reason_code':None if value is not None else NO_PRIOR_OWNER_MATERIALIZED,'prior_membership_snapshot_id':old.get('membership_snapshot_id') if old else None}
     return rows

@@ -1,0 +1,183 @@
+{
+  "AS_RECORDED": false,
+  "accepted_contracts": {
+    "config/v4_04_algorithm_contracts_v3.json": "0b144bd2a9f033336da338d5b71649f8e20ebafe65095efcd5c4a7d8663db970",
+    "config/v4_04_field_registry_v2.json": "aceed3d159cf3c7beb3306fb2b90eb22af935bb7f27ebeb29a9e8abc5653f9c1",
+    "config/v4_04_field_window_mapping_v1.json": "0ee0312b48ace787c85890e60afb4a15a6c64d98d7956636c06e5bd87e09de4d",
+    "config/v4_04_output_schema_v2.json": "71f34fd701e61eb463666fc811fbb97dc7092a8f512d34c26b17888207bc78ee",
+    "config/v4_04_parameter_set_v1.json": "5b19a23dfbf6b214f5ee7c7cce5df5674db69d099386038c082317819812ced5"
+  },
+  "contract_id": "R3_V4_04_PROFILE_OWNER_REPLAY_V1",
+  "formal_acceptance": false,
+  "isolated_candidate_only": true,
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "notes": [
+    "No production head or live snapshot mutation.",
+    "188 target-date QFQ capabilities fail closed.",
+    "Regime UI remains UNKNOWN because no exact 9/29 market-regime owner is bound."
+  ],
+  "owner_artifact": {
+    "bytes": 43077618,
+    "path": "docs/evidence/three_day_repair_r3_20261008/R3_PROFILE_2026-09-28_CANDIDATE_R1.jsonl.gz",
+    "sha256": "405df53041ec33f37f02526758dde5e8968fd7022c01f6c00831f35a12cac633"
+  },
+  "owner_contract": "V4_04_CORE_PROFILE_RULES_V1",
+  "production_changed": false,
+  "profile_state_counts": {
+    "amount_state:CONTRACTED": 1715,
+    "amount_state:EXPANDED": 711,
+    "amount_state:NORMAL": 1853,
+    "amount_state:UNKNOWN": 198,
+    "amount_state:VERY_DRY": 475,
+    "amount_state:VERY_EXPANDED": 270,
+    "compression_state:COMPRESSING": 1160,
+    "compression_state:COMPRESSING_STRONG": 185,
+    "compression_state:EXPANDING": 1393,
+    "compression_state:EXPANDING_EXTREME": 409,
+    "compression_state:NORMAL": 1858,
+    "compression_state:UNKNOWN": 217,
+    "core_extension_risk:EXTREME": 33,
+    "core_extension_risk:HIGH": 55,
+    "core_extension_risk:LOW": 4811,
+    "core_extension_risk:MEDIUM": 122,
+    "core_extension_risk:UNKNOWN": 201,
+    "core_participation_result:HIGH_PARTICIPATION_EFFECTIVE_ADVANCE": 164,
+    "core_participation_result:HIGH_PARTICIPATION_LOW_EFFICIENCY": 209,
+    "core_participation_result:HIGH_PARTICIPATION_REVERSAL": 607,
+    "core_participation_result:LOW_PARTICIPATION_ADVANCE": 215,
+    "core_participation_result:LOW_PARTICIPATION_DECLINE": 1924,
+    "core_participation_result:NORMAL_PARTICIPATION": 1904,
+    "core_participation_result:UNKNOWN": 199,
+    "drawdown20_state:DEEP": 1070,
+    "drawdown20_state:MODERATE": 3168,
+    "drawdown20_state:SHALLOW": 786,
+    "drawdown20_state:UNKNOWN": 198,
+    "drawdown60_state:DEEP": 2612,
+    "drawdown60_state:MODERATE": 1964,
+    "drawdown60_state:SHALLOW": 435,
+    "drawdown60_state:UNKNOWN": 211,
+    "ma_structure_state:BEAR_ALIGNED": 1022,
+    "ma_structure_state:BEAR_TRANSITION": 994,
+    "ma_structure_state:BULL_ALIGNED": 1161,
+    "ma_structure_state:BULL_TRANSITION": 750,
+    "ma_structure_state:MIXED": 1096,
+    "ma_structure_state:UNKNOWN": 199,
+    "monthly_trend_state:MONTHLY_DOWN": 1627,
+    "monthly_trend_state:MONTHLY_FLAT": 2101,
+    "monthly_trend_state:MONTHLY_UP": 1272,
+    "monthly_trend_state:UNKNOWN": 222,
+    "near_high20_state:ABOVE_PRIOR_HIGH": 75,
+    "near_high20_state:BELOW": 4875,
+    "near_high20_state:NEAR": 74,
+    "near_high20_state:UNKNOWN": 198,
+    "near_high60_state:ABOVE_PRIOR_HIGH": 47,
+    "near_high60_state:BELOW": 4919,
+    "near_high60_state:NEAR": 45,
+    "near_high60_state:UNKNOWN": 211,
+    "position_state:EXTENDED": 73,
+    "position_state:HIGH_ZONE": 375,
+    "position_state:LOW_ZONE": 1224,
+    "position_state:MID_HIGH": 1006,
+    "position_state:MID_LOW": 1165,
+    "position_state:MID_ZONE": 1168,
+    "position_state:UNKNOWN": 211,
+    "regime_ui:UNKNOWN": 5222,
+    "relative_market_state:ACTIVE_EMERGENCE": 815,
+    "relative_market_state:IMPROVING": 1055,
+    "relative_market_state:LAGGING": 201,
+    "relative_market_state:LEADING_ACCELERATING": 358,
+    "relative_market_state:LEADING_STABLE": 117,
+    "relative_market_state:NEUTRAL": 220,
+    "relative_market_state:PASSIVE_RESILIENCE": 711,
+    "relative_market_state:UNKNOWN": 607,
+    "relative_market_state:WEAKENING": 1138,
+    "severe_extension:False": 4988,
+    "severe_extension:None": 201,
+    "severe_extension:True": 33,
+    "trend_state:DOWNTREND": 1209,
+    "trend_state:DOWNTREND_STRONG": 769,
+    "trend_state:SIDEWAYS": 3,
+    "trend_state:SIDEWAYS_STRONG": 282,
+    "trend_state:SIDEWAYS_WEAK": 1644,
+    "trend_state:UNKNOWN": 215,
+    "trend_state:UPTREND": 161,
+    "trend_state:UPTREND_STRONG": 939,
+    "volume_state:CONTRACTED": 1610,
+    "volume_state:EXPANDED": 757,
+    "volume_state:NORMAL": 2032,
+    "volume_state:UNKNOWN": 198,
+    "volume_state:VERY_DRY": 376,
+    "volume_state:VERY_EXPANDED": 249,
+    "weekly_trend_state:UNKNOWN": 202,
+    "weekly_trend_state:WEEKLY_DOWN": 1909,
+    "weekly_trend_state:WEEKLY_FLAT": 1242,
+    "weekly_trend_state:WEEKLY_UP": 1869
+  },
+  "rows": 5222,
+  "rps_endpoints": {
+    "current": "2026-09-28",
+    "current_count": 5222,
+    "historical_first_availability_proven": false,
+    "prior_count": 5222,
+    "prior_t_minus_3": "2026-09-22",
+    "provider_head": {
+      "bytes": 2776,
+      "path": "data/v4/V4_RPS_PIT_HISTORY_ACCEPTED_HEAD_R1.json",
+      "sha256": "4025dd5d3eb27c9086bca8e4861ad33842db8938dda370fb3d7f78b8d783398b"
+    }
+  },
+  "source_bindings": {
+    "core_owner": {
+      "bytes": 19260987,
+      "path": "docs/evidence/three_day_repair_r1_20261008/core_owner_r2/owners/2026-09-28/core.jsonl.gz",
+      "sha256": "03c4db8691aa6810437ad7f0f1daf5d5f1917d197453610f68f2e733cf71905c"
+    },
+    "full_history_periods": "RECOMPUTED_FROM_TARGET_COORDINATE_RAW_BARS_AND_ACCEPTED_CALENDAR",
+    "gbbq": {
+      "bytes": 5607212,
+      "path": "data/v4/source_snapshot_store/gbbq/sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e/gbbq",
+      "sha256": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1"
+    },
+    "profile_builder": {
+      "bytes": 15008,
+      "path": "scripts/run_v4_04_full_market_candidate_r4.py",
+      "sha256": "263e1c54aed59026cef97061ef3f74bb184634d3589d2438a84a11baa71ab816"
+    },
+    "raw_history": {
+      "bytes": 42168789,
+      "path": "data/v4/fp05_market/e034e70084533be70892fd32d066139cbd273a36a8ada7e511a68f75fe1f1008/history.jsonl.gz",
+      "sha256": "9f7ee99454374db02824b5c9d52e2da89fca30232bc291ddb1f48ef6db84b6c0"
+    },
+    "rps_current": {
+      "bytes": 1977213,
+      "path": "data/v4/a02_rps_history_r1/PUBLICATION_2026-09-28_1949078b441fe9e1478dce0c1e9ab14cc3a85f73f0fcab5acbcc8d7531f1bff4.json",
+      "sha256": "a9e7dddaea4366d91dc29d9a1ace2c6339c9801a2a03da9b60deadf61c72c584"
+    },
+    "rps_delta3": {
+      "bytes": 1975388,
+      "path": "data/v4/a02_rps_history_r1/PUBLICATION_2026-09-22_823614a84f08211fb25ce8cc142d9993475b7ec1d1896747dccbea864ece0fe2.json",
+      "sha256": "4482339cac5d91ec8e7690662d23907e245677979f6bdb9671672fb7832adec0"
+    },
+    "target_adjustment": {
+      "bytes": 6215962,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/ADJUSTED_DAILY/artifact.json",
+      "sha256": "bb6d4051d882210bf960389d4e6244bd6f61c4e6ab841fbf4523e0e7a37bc3b8"
+    },
+    "target_periods": {
+      "bytes": 14413900,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/PERIOD_ADJUSTED/artifact.json",
+      "sha256": "fad5076c4106e539feefbe9c5092771fd38c43da0a19c580539579def6f60c32"
+    },
+    "trading_status": {
+      "bytes": 2469877,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/TRADING_STATUS/artifact.json",
+      "sha256": "2bc52361a02ecdae59d020fc87c30a73fd73e073c7dba95f247deb84931b25d4"
+    }
+  },
+  "source_digest": "d56b467d5cff57aa9d926266bdc6aac4f2dd508542eeff2c46a46bb5e3a52460",
+  "target_qfq_capability": {
+    "ready": 5034,
+    "unknown": 188
+  },
+  "trade_date": "2026-09-28"
+}

@@ -1,0 +1,151 @@
+{
+  "all_boundary_probes_pass": true,
+  "contract_id": "R3_SECTOR_FIVE_CASES_REAL_ORACLE_V1",
+  "failure_boundaries": [
+    {
+      "case": "duplicate_membership",
+      "expected": "DUPLICATE_MEMBERSHIP",
+      "observed": "DUPLICATE_MEMBERSHIP",
+      "pass": true,
+      "writes": false
+    },
+    {
+      "case": "wrong_snapshot",
+      "expected": "INVALID_ACCEPTED_PIT_SCOPE",
+      "observed": "INVALID_ACCEPTED_PIT_SCOPE",
+      "pass": true,
+      "writes": false
+    },
+    {
+      "case": "future_fact_leak",
+      "expected": "FUTURE_MEMBER_FACT",
+      "observed": "FUTURE_MEMBER_FACT",
+      "pass": true,
+      "writes": false
+    },
+    {
+      "case": "prior_gap:NO_EFFECTIVE_DATED_MEMBERSHIP",
+      "expected": "NO_EFFECTIVE_DATED_MEMBERSHIP",
+      "observed": "NO_EFFECTIVE_DATED_MEMBERSHIP",
+      "pass": true,
+      "prior_member_count": null,
+      "writes": false
+    },
+    {
+      "case": "prior_gap:NO_PRIOR_OWNER_MATERIALIZED",
+      "expected": "NO_PRIOR_OWNER_MATERIALIZED",
+      "observed": "NO_PRIOR_OWNER_MATERIALIZED",
+      "pass": true,
+      "prior_member_count": null,
+      "writes": false
+    },
+    {
+      "case": "prior_gap:FIRST_AVAILABLE_UNPROVEN_ONLY",
+      "expected": "FIRST_AVAILABLE_UNPROVEN_ONLY",
+      "observed": "FIRST_AVAILABLE_UNPROVEN_ONLY",
+      "pass": true,
+      "prior_member_count": null,
+      "writes": false
+    },
+    {
+      "case": "parameter_digest_mutation",
+      "expected": "PARAMETER_INSTANCE_DIGEST_MISMATCH",
+      "observed": "PARAMETER_INSTANCE_DIGEST_MISMATCH",
+      "pass": true,
+      "writes": false
+    }
+  ],
+  "failure_boundary_count": 7,
+  "independent_full_numeric_oracle": {
+    "bytes": 2135,
+    "exists": true,
+    "path": "docs/evidence/three_day_repair_r2_20261008/p04c/R2_P0_4_SECTOR_INDEPENDENT_ORACLE.json",
+    "sha256": "dc626a283c3dd0525bc2606a5c8b4b944e79a023f59e9cb46c6c91cb3328cfb6"
+  },
+  "real_case_count": 5,
+  "real_cases": [
+    {
+      "current_2026_09_30": {
+        "breadth_ret1": 1.0,
+        "breadth_ret20": 0.0,
+        "breadth_ret5": 0.0,
+        "ma20_width": 0.0,
+        "sector_rs1": 0.010208093833824816,
+        "sector_rs20": -0.16470739868467082,
+        "sector_rs5": -0.08402136387569809
+      },
+      "sector_id": "INDUSTRY:T020204",
+      "sector_type": "INDUSTRY",
+      "selection_basis": "max_breadth_ret1",
+      "t_minus_1_2026_09_29": "NOT_VERIFIABLE_NO_ACCEPTED_ASOF_MEMBERSHIP_SNAPSHOT"
+    },
+    {
+      "current_2026_09_30": {
+        "breadth_ret1": 0.06451612903225806,
+        "breadth_ret20": 0.2903225806451613,
+        "breadth_ret5": 0.0967741935483871,
+        "ma20_width": 0.3548387096774194,
+        "sector_rs1": -0.017006802721088343,
+        "sector_rs20": -0.04463814051769677,
+        "sector_rs5": -0.036792452830188616
+      },
+      "sector_id": "THEME:880657",
+      "sector_type": "THEME",
+      "selection_basis": "min_breadth_ret1",
+      "t_minus_1_2026_09_29": "NOT_VERIFIABLE_NO_ACCEPTED_ASOF_MEMBERSHIP_SNAPSHOT"
+    },
+    {
+      "current_2026_09_30": {
+        "breadth_ret1": 0.8461538461538461,
+        "breadth_ret20": 0.6923076923076923,
+        "breadth_ret5": 0.5,
+        "ma20_width": 0.7307692307692307,
+        "sector_rs1": 0.024721248632487258,
+        "sector_rs20": 0.06328716862555739,
+        "sector_rs5": 0.0007886435331230235
+      },
+      "sector_id": "THEME:880729",
+      "sector_type": "THEME",
+      "selection_basis": "max_sector_rs20",
+      "t_minus_1_2026_09_29": "NOT_VERIFIABLE_NO_ACCEPTED_ASOF_MEMBERSHIP_SNAPSHOT"
+    },
+    {
+      "current_2026_09_30": {
+        "breadth_ret1": 0.46153846153846156,
+        "breadth_ret20": 0.0,
+        "breadth_ret5": 0.0,
+        "ma20_width": 0.0,
+        "sector_rs1": -0.0008992805755395628,
+        "sector_rs20": -0.14619883040935677,
+        "sector_rs5": -0.06736242884250465
+      },
+      "sector_id": "INDUSTRY:T020203",
+      "sector_type": "INDUSTRY",
+      "selection_basis": "min_sector_rs20",
+      "t_minus_1_2026_09_29": "NOT_VERIFIABLE_NO_ACCEPTED_ASOF_MEMBERSHIP_SNAPSHOT"
+    },
+    {
+      "current_2026_09_30": {
+        "breadth_ret1": 0.5,
+        "breadth_ret20": 0.25,
+        "breadth_ret5": 0.75,
+        "ma20_width": 1.0,
+        "sector_rs1": 0.0072298353385917835,
+        "sector_rs20": -0.020899270072992693,
+        "sector_rs5": 0.0061077390810425625
+      },
+      "sector_id": "INDUSTRY:T030203",
+      "sector_type": "INDUSTRY",
+      "selection_basis": "max_ma20_width",
+      "t_minus_1_2026_09_29": "NOT_VERIFIABLE_NO_ACCEPTED_ASOF_MEMBERSHIP_SNAPSHOT"
+    }
+  ],
+  "real_source": {
+    "bytes": 7540,
+    "exists": true,
+    "path": "docs/evidence/three_day_repair_r2_20261008/R2_SECTOR_OWNER_BINDING_AND_ROOT_CAUSE.json",
+    "sha256": "b98183caf8c9371c2da2a49a7325f30352849d28f040114e89dbbe5344ef1baf"
+  },
+  "result": "REAL_NUMERIC_ORACLE_REUSED_AND_BOUNDARY_MATRIX_PASS",
+  "target_prior_membership": "NOT_VERIFIABLE; no forward-fill or reverse-derived memberships"
+}

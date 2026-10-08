@@ -21,9 +21,23 @@ def main():
     if not args.replay:
         binding=manifest['sources'].get('focus_journal')
         if not binding:raise SourceInvalid('CONTINUOUS_JOURNAL_NOT_BOUND')
-        result=advance(ROOT,manifest,previous_journal=binding,
+        # The current joint release may bind the native-Core journal namespace.
+        # Use that exact driver's immutable input identity for same-day NOOP;
+        # the legacy path-only driver correctly rejects a cross-namespace retry.
+        journal_path=binding.get('path','').replace('\\','/')
+        if '/r2_focus_native_core/' in '/'+journal_path:
+            from focus_tracker.v4_native_core_daily_driver import advance as selected_advance, CONTRACT as selected_contract
+        else:
+            selected_advance,selected_contract=advance,CONTRACT
+        result=selected_advance(ROOT,manifest,previous_journal=binding,
             previous_publication=manifest['sources']['focus_operational'],expected_head=head(binding))
-        write(OUT/'DAILY_NOOP.json',result);print(json.dumps(result));return
+        if result['status']=='NOOP' and not result['production_changed'] and result['source_requests']==0:
+            write(ROOT/'docs/evidence/three_day_repair_r3_20261008'/'R3_DAILY_REAL_OR_NOOP.json',
+                  dict(stage_contract=selected_contract,result='NO_NEW_COMPLETED_SESSION_NOOP',**result,
+                       authority_sha256=__import__('hashlib').sha256(before).hexdigest(),live_authority_preserved=(ROOT/AUTHORITY).read_bytes()==before))
+        else:
+            write(OUT/'DAILY_NOOP.json',result)
+        print(json.dumps(result));return
     current=manifest['sources']['states'];payload=json.load(gzip.open(checked(ROOT,current),'rt',encoding='utf8'))
     prior=payload['prior_binding'];old=json.load(gzip.open(checked(ROOT,prior),'rt',encoding='utf8'))
     previous=copy.deepcopy(manifest);previous['context']['accepted_trade_date']=old['rows'][0]['trade_date'];previous['sources']['states']=prior

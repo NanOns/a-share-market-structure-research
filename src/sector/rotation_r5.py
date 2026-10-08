@@ -4,7 +4,9 @@ import copy
 import hashlib
 import json
 from sector.machine_ast_r3 import evaluate_ast_explain, validate_ast, ast_digest
-from sector.native_r5 import observed, retention, NO_HISTORY, SEED_DEGRADED
+from sector.native_r5 import (observed, retention, NO_HISTORY, NO_EFFECTIVE_DATED_MEMBERSHIP,
+                              NO_PRIOR_OWNER_MATERIALIZED, FIRST_AVAILABLE_UNPROVEN_ONLY,
+                              SEED_DEGRADED)
 
 
 def resolve_package(contract, parameter_set, parameter_bytes, registry):
@@ -40,7 +42,8 @@ def evaluate_b0(native,contract,parameters):
 
 def advance_rotation(native, current, *, prior_publication, prior_members, prior_core,
                      calendar_sessions, contract, registry, parameters, seed_truth=None,
-                     seed_capability=False, prior_maturity=None):
+                     seed_capability=False, prior_maturity=None,
+                     prior_membership_reason=NO_EFFECTIVE_DATED_MEMBERSHIP):
     target=native['target_trade_date'];sid=native['sector_id'];facts=copy.deepcopy(native['fields'])
     fields={f['field_id']:f for f in registry['fields']}
     def put(field,value,reason=None,quality=None):
@@ -55,19 +58,20 @@ def advance_rotation(native, current, *, prior_publication, prior_members, prior
     if prior is not None and (prior.get('acceptance')!='ACCEPTED' or prior['target_trade_date']>=target):
         raise ValueError('PRIOR_ROTATION_PUBLICATION_NOT_ACCEPTED_OR_NOT_PRIOR')
     episode=copy.deepcopy(prior.get('episode')) if prior else None
-    put('prior_rotation_state',prior.get('output_state') if prior else None,NO_HISTORY if not prior else None)
-    put('prior_maturity_state',prior_maturity,NO_HISTORY if prior_maturity is None else None)
-    put('yesterday_dq5',prior.get('native_fields',{}).get('dq5',{}).get('value') if prior else None,NO_HISTORY if not prior else None)
-    put('pulse_active',bool(episode and not episode.get('terminated')),NO_HISTORY if prior is None else None, 'UNKNOWN' if prior is None else 'ACCEPTED')
-    put('episode_accepted',episode.get('accepted') if episode else False,NO_HISTORY if prior is None else None, 'UNKNOWN' if prior is None else 'ACCEPTED')
-    put('episode_terminated',episode.get('terminated') if episode else False,NO_HISTORY if prior is None else None, 'UNKNOWN' if prior is None else 'ACCEPTED')
+    prior_owner_reason=NO_PRIOR_OWNER_MATERIALIZED
+    put('prior_rotation_state',prior.get('output_state') if prior else None,prior_owner_reason if not prior else None)
+    put('prior_maturity_state',prior_maturity,prior_owner_reason if prior_maturity is None else None)
+    put('yesterday_dq5',prior.get('native_fields',{}).get('dq5',{}).get('value') if prior else None,prior_owner_reason if not prior else None)
+    put('pulse_active',bool(episode and not episode.get('terminated')),prior_owner_reason if prior is None else None, 'UNKNOWN' if prior is None else 'ACCEPTED')
+    put('episode_accepted',episode.get('accepted') if episode else False,prior_owner_reason if prior is None else None, 'UNKNOWN' if prior is None else 'ACCEPTED')
+    put('episode_terminated',episode.get('terminated') if episode else False,prior_owner_reason if prior is None else None, 'UNKNOWN' if prior is None else 'ACCEPTED')
     sessions=sorted(set(calendar_sessions))
     if target not in sessions:raise ValueError('TARGET_NOT_IN_ACCEPTED_CALENDAR')
     age=None
     if episode:
         if episode['pulse_date'] not in sessions:raise ValueError('PULSE_NOT_IN_ACCEPTED_CALENDAR')
         age=sessions.index(target)-sessions.index(episode['pulse_date'])
-    put('pulse_age_sessions',age,NO_HISTORY if age is None else None)
+    put('pulse_age_sessions',age,prior_owner_reason if age is None else None)
     basket=episode.get('frozen_basket',[]) if episode else []
     ratios=[];price_truth={}
     for member in basket:
@@ -80,11 +84,11 @@ def advance_rotation(native, current, *, prior_publication, prior_members, prior
         if now is not None and base is not None and base>0:ratios.append(now/base-1)
         price_truth[member]=None if now is None or pulse is None else now>=pulse
     cumulative=sum(ratios)/len(basket) if basket and len(ratios)==len(basket) else None
-    put('basket_cumulative_return',cumulative,NO_HISTORY if not episode else 'INCOMPLETE_FROZEN_BASKET' if cumulative is None else None)
+    put('basket_cumulative_return',cumulative,prior_owner_reason if not episode else 'INCOMPLETE_FROZEN_BASKET' if cumulative is None else None)
     pulse_return=episode.get('pulse_basket_return') if episode else None
     price_retention=cumulative/pulse_return if cumulative is not None and pulse_return is not None and pulse_return>0 else None
     price_quality='NOT_APPLICABLE' if pulse_return is not None and pulse_return<=0 else 'ACCEPTED' if price_retention is not None else 'UNKNOWN'
-    put('sector_price_retention_core',price_retention, 'NONPOSITIVE_PULSE_RETURN' if price_quality=='NOT_APPLICABLE' else NO_HISTORY if not episode else 'INCOMPLETE_FROZEN_BASKET' if price_retention is None else None,price_quality)
+    put('sector_price_retention_core',price_retention, 'NONPOSITIVE_PULSE_RETURN' if price_quality=='NOT_APPLICABLE' else prior_owner_reason if not episode else 'INCOMPLETE_FROZEN_BASKET' if price_retention is None else None,price_quality)
     seed_value,seed_quality,seed_reason=retention(episode.get('base_seed_set') if episode else None,seed_truth or {})
     if not seed_capability:seed_value,seed_quality,seed_reason=None,'UNKNOWN',SEED_DEGRADED
     put('base_seed_retention',seed_value,seed_reason,seed_quality)
@@ -95,16 +99,17 @@ def advance_rotation(native, current, *, prior_publication, prior_members, prior
     old={m:observed((prior_core or {}).get(m),'rps20',prior_date) for m in common}
     old_set=None if prior_members is None or any(v is None for v in old.values()) else {m for m,v in old.items() if v>=80}
     now={m:None if (v:=observed(current.get(m),'rps20',target)) is None else v>=80 for m in common}
-    put('strong_prev',len(old_set) if old_set is not None else None,NO_HISTORY if old_set is None else None)
+    put('strong_prev',len(old_set) if old_set is not None else None,
+        prior_membership_reason if prior_members is None else 'INCOMPLETE_PRIOR_CORE_ENDPOINTS')
     value,quality,reason=retention(old_set,now);put('strong_member_retention_1',value,reason,quality)
     dq=facts.get('dq5',{}).get('value');breadth=facts.get('breadth_delta1',{}).get('value')
     prev_count=prior.get('negative_out_count',0) if prior else 0
     negative_count=prev_count if dq is None or breadth is None else prev_count+1 if dq<0 and breadth<0 else 0
-    put('negative_out_consecutive_evaluable_sessions',negative_count,NO_HISTORY if prior is None else None,'UNKNOWN' if prior is None else 'ACCEPTED')
+    put('negative_out_consecutive_evaluable_sessions',negative_count,prior_owner_reason if prior is None else None,'UNKNOWN' if prior is None else 'ACCEPTED')
     table=truth_table(contract,facts,parameters)
     output='UNKNOWN';reasons=[]
     if prior is None:
-        reasons=[NO_HISTORY]
+        reasons=[prior_owner_reason]
     else:
         output='NONE'
         for rule in contract['ordered_reduction']:

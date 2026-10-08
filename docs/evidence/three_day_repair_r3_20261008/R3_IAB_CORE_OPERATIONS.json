@@ -1,0 +1,21 @@
+{
+  "application_title": "大 A · V4 研究工作台",
+  "contract_id": "R3_IAB_CORE_OPERATIONS_V1",
+  "current_tab": "http://127.0.0.1:28765/v4/research/diagnostics/sources",
+  "dom_observation": "AX tree exposes the source evidence drawer and current context payload; no new feature controls were added in R3.",
+  "incremental_scope": "No IAB feature delta from the source-reason code and daily driver fix; all R3 code changes are backend/evidence scoped.",
+  "observed_core_operations": [
+    "diagnostics/sources page load",
+    "current context source drawer open",
+    "accepted date 2026-09-30",
+    "joint release digest readback"
+  ],
+  "r2_smoke_ref": {
+    "bytes": 3262,
+    "exists": true,
+    "path": "docs/evidence/three_day_repair_r2_20261008/R2_IAB_MINIMAL_FIELD_SMOKE.json",
+    "sha256": "feee8b13d03e5e3b52249e5311235d2b8e02ec5ad4565e687ccd358bc39be5f5"
+  },
+  "result": "PASS_EXISTING_CORE_OPERATIONS_NO_UI_CHANGE_IN_R3",
+  "same_token_api_ref": "R3_SCOPED_RELEASE_READBACK_ROLLBACK.json"
+}

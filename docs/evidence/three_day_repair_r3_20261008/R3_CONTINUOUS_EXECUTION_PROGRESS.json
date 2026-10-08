@@ -1,0 +1,168 @@
+{
+  "acceptance": "DEGRADED_PASS_SCOPED_REPAIR; OVERALL_R3_NOT_COMPLETED_PENDING_EXTERNAL_AUDIT_AND_BLOCKED_OWNER_INPUTS",
+  "as_of": "2026-10-08",
+  "baseline_head": "e85ce0fd177e7d8604bdb5f458cee387afbf03ae",
+  "commit_push": {
+    "note": "Implementation/evidence will be committed and pushed to both frozen task branches before declaring this R3 bundle complete.",
+    "status": "PENDING_COMMIT_AND_PUSH"
+  },
+  "contract_id": "R3_CONTINUOUS_EXECUTION_PROGRESS_V1",
+  "next_stage": "Obtain accepted effective-dated membership facts for 9/28–9/29 or continue future daily capture under an approved source contract; complete V4-12 exact target and T-1 accepted owner/admission, bind and materialize V4-13 runtime, bind accepted 9/25 RPS endpoint for 9/30, complete real Focus/Forward lifecycle E2E; then rerun scoped release gates and submit external audit. Do not promote until those gates pass.",
+  "phase0": {
+    "receipt": {
+      "bytes": 14147,
+      "exists": true,
+      "path": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
+      "sha256": "313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59"
+    },
+    "result": "DEGRADED_PASS",
+    "scanner_started": false
+  },
+  "stage_contract": "R3_THREE_DAY_DATA_ALGORITHM_REPAIR_CONTINUOUS_CLOSURE_V1",
+  "steps": [
+    {
+      "before_after": "Confirmed starting and remote heads e85ce0f; live joint authority/snapshot remain SHA 8d3423…/d9d052… with seven existing domains; no pointer mutation.",
+      "commit": "Included in R3 implementation/evidence commit; hash recorded in handoff.",
+      "evidence": {
+        "bytes": 3907,
+        "exists": true,
+        "path": "docs/evidence/three_day_repair_r3_20261008/R3_EXECUTION_ENTRY_AND_HEAD.json",
+        "sha256": "fc6938aab858644111bc2e5b2e5f6a7d2bbb441318e770fa63e598d4b7d6123b"
+      },
+      "result": "PASS",
+      "stage": "Entry and immutable release readback"
+    },
+    {
+      "before_after": "Core 9/28–9/30: 5222/5223/5224 rows; independent target MA20/ATR20/ret5 mismatches 0 and 30 anti-future checks pass. Profile corrected isolated owners materialized on 9/28 and 9/29 (5222/5223 rows, 5034/5035 target QFQ ready, 188 unknown each); existing 9/28 candidate checked across 195916 observed numeric values with 0 mismatch. 9/30 live Profile consumer mismatch 0/5213. All corrected historical owners are RECONSTRUCTED_CORRECTED, non-PIT, non-production.",
+      "commit": "Included in R3 implementation/evidence commit; hash recorded in handoff.",
+      "evidence": [
+        {
+          "bytes": 20451,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r3_20261008/R3_CORE_PROFILE_OWNER_MATERIALIZATION.json",
+          "sha256": "67b3cbde09b341dde0665bd85b5c044f66292b903b8e8f1519d3626bd8fe8cbd"
+        },
+        {
+          "bytes": 10786,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r3_20261008/R3_DATE_PRICE_BASIS_AND_CONSUMER_MATRIX.json",
+          "sha256": "a6649cea1b02a64d02e435fbf422fbb3e650c49b8916c930e6d414d5e02f60b6"
+        },
+        {
+          "bytes": 14779,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r3_20261008/R3_CORE_PROFILE_REAL_ORACLE.json",
+          "sha256": "046dec299f91d5951dc0bab188e53b227b29ed19bf2972681a24f35459c309da"
+        }
+      ],
+      "result": "DEGRADED_PASS",
+      "stage": "P0-A Core/Profile date owner materialization"
+    },
+    {
+      "before_after": "All seven fields remain 0 known/5213 unknown in live snapshot; UNKNOWN reasons preserved. Contract/AST semantics, state spaces, windows, owners, consumers and source gates mapped. Breakout anchors cannot bind authorized target Core plus exact T-1 structure owner; V4-12 target owner/runtime admission is not accepted. relative_sector_state has no implemented V4-13 runtime/accepted input binding. relative_market_state live 9/30 is missing accepted RPS T-3 endpoint. No unknown-to-false or semantic substitution was used.",
+      "commit": "Included in R3 evidence commit; hash recorded in handoff.",
+      "evidence": [
+        {
+          "bytes": 19685,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r3_20261008/R3_SEVEN_STRUCTURE_FIELDS_OWNER_CONTRACT_MATRIX.json",
+          "sha256": "b7d6b3500177ac1502cbc6b939879048219039d9dc74fcc7b0f0d9a325de2f34"
+        },
+        {
+          "bytes": 5709,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r3_20261008/R3_STOCK_STRUCTURE_REAL_ORACLE.json",
+          "sha256": "6d6a7be27c8ad73ae81f1e7a4d01ff4c1bd27ba3dd29377f73343d67e3566dd9"
+        },
+        {
+          "bytes": 11237,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r3_20261008/R3_STOCK_BEFORE_AFTER_ALL_5213.json",
+          "sha256": "0b54fae61083c61476435b9af5be712104597b3339b6d825efd56eed22ee0d33"
+        }
+      ],
+      "result": "BLOCKED_WITH_FIELD_LOCAL_EVIDENCE",
+      "stage": "P0-B seven stock structure fields"
+    },
+    {
+      "before_after": "Preserved 2646/2646 independent same-day numeric checks and 378/378 historical rotation UNKNOWN. Added field-local reasons NO_EFFECTIVE_DATED_MEMBERSHIP, NO_PRIOR_OWNER_MATERIALIZED, FIRST_AVAILABLE_UNPROVEN_ONLY. Five real sector vectors and seven failure boundaries are recorded; 71 scoped runtime/adapter/authority tests pass. Accepted membership artifact contains only 2026-09-30 (50162 facts); no accepted 9/28–9/29 effective member owner was found in bounded local store.",
+      "commit": "Included in R3 implementation/evidence commit; hash recorded in handoff.",
+      "evidence": [
+        {
+          "bytes": 6198,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r3_20261008/R3_SECTOR_BASE_SEED_ROTATION_ROOT_CAUSES.json",
+          "sha256": "86c0983547c089144d9222149cadf1ee83d06887e70e95782466ef56a28d425c"
+        },
+        {
+          "bytes": 5117,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r3_20261008/R3_SECTOR_FIVE_CASES_REAL_ORACLE.json",
+          "sha256": "920fbb76a7dfa94e4a7b65f82f509c22e8ee7c0484b47043a360d3ba37f1d2d7"
+        },
+        {
+          "bytes": 1223,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r3_20261008/R3_DATED_MEMBERSHIP_AVAILABILITY.json",
+          "sha256": "76f9224a9f57f7f9285dc633d60a065174d3acaa681e67832205975952f7b438"
+        },
+        {
+          "bytes": 2287,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r3_20261008/EXTERNAL_DEPENDENCY_PROOF.json",
+          "sha256": "85d1b610eba821a7733c67eaeb950413bc42b4e468cf3d55a457105b6dde9ea2"
+        }
+      ],
+      "result": "DEGRADED_PASS",
+      "stage": "P0-C Sector Base/Seed/Rotation"
+    },
+    {
+      "before_after": "Two real source days 9/29 and 9/30 replayed in isolation; 117 frozen T0 enrollments and 585 PENDING plans retained, due=0; no 10/09 input fabricated. Default daily driver handles native-Core namespace and current day is zero-request NOOP. 65 isolated fixture tests pass; complete real Focus exit/reentry/Anchor and Forward settlement event matrix remains incomplete.",
+      "commit": "Included in R3 implementation/evidence commit; hash recorded in handoff.",
+      "evidence": [
+        {
+          "bytes": 17747,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r3_20261008/R3_FOCUS_FORWARD_TWO_DAY_ISOLATED_E2E.json",
+          "sha256": "de90011c3626aba10e3a19460b3c4648396a152a2d37e15b44c178fb23568ddc"
+        },
+        {
+          "bytes": 984,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r3_20261008/R3_DAILY_REAL_OR_NOOP.json",
+          "sha256": "98047a33f2c05acd5a73886b76e54e626624716e11da9b1a0a28da77043102e2"
+        }
+      ],
+      "result": "PARTIAL_PASS",
+      "stage": "P1-D Focus/Forward daily flow"
+    },
+    {
+      "before_after": "Seven existing domains and all required API routes read back with one token and joint digest; live authority and snapshot pointer remain unchanged. Isolated health failure, stale CAS rejection and exact predecessor restore pass. Production rollback was not run because no authorized successor was published; no live forced rollback was needed.",
+      "commit": "Included in R3 evidence commit; hash recorded in handoff.",
+      "evidence": [
+        {
+          "bytes": 6090,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r3_20261008/R3_SCOPED_RELEASE_READBACK_ROLLBACK.json",
+          "sha256": "6558bba99a9acfa3b6c11ab02e049ebdf28bc68c73f2486cd31de855f590a334"
+        },
+        {
+          "bytes": 1034,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r3_20261008/R3_IAB_CORE_OPERATIONS.json",
+          "sha256": "6469f61a2f407b4e73b0694f487f4591d8cb59d4cdc45c4e603ca15181db8bfd"
+        }
+      ],
+      "result": "PASS_EXISTING_SCOPE; NO_NEW_SCOPE_AUTHORIZED",
+      "stage": "P0-E scoped release and IAB"
+    }
+  ],
+  "verification": {
+    "git_diff_check": "PASS",
+    "live_api_routes": "7/7 HTTP 200, one context token and authority digest",
+    "production_pointer_mutated": false,
+    "profile_artifact_receipts": "3 checked; SHA and row counts match",
+    "python_compile": "PASS",
+    "sector_tests": "71 passed"
+  }
+}

@@ -1,0 +1,319 @@
+{
+  "acceptance": "FAIL_STRUCTURE_OWNER_CHAIN_NOT_MATERIALIZED; reasons are field-local",
+  "contract_id": "R3_STOCK_BEFORE_AFTER_ALL_5213_V1",
+  "fields": {
+    "basic_breakout_state": {
+      "after_recomputed": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "before": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "change": "NO_CHANGE",
+      "sample_rows": [
+        {
+          "quality": "UNKNOWN",
+          "reason": [
+            "No exact prior ATR publication plus accepted cross-basis transform"
+          ],
+          "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+          "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "symbol": "SH.688349",
+          "value": "UNKNOWN"
+        },
+        {
+          "quality": "UNKNOWN",
+          "reason": [
+            "No exact prior ATR publication plus accepted cross-basis transform"
+          ],
+          "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+          "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "symbol": "SH.600703",
+          "value": "UNKNOWN"
+        },
+        {
+          "quality": "UNKNOWN",
+          "reason": [
+            "No exact prior ATR publication plus accepted cross-basis transform"
+          ],
+          "security_id": "SEC-002610CF9EBB4227722834AADA8F757E",
+          "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "symbol": "SZ.300581",
+          "value": "UNKNOWN"
+        }
+      ],
+      "unknown_reason_distribution": {
+        "['ACCEPTED_ADJUSTMENT_NOT_READY;No exact prior ATR publication plus accepted cross-basis transform']": 176,
+        "['No exact prior ATR publication plus accepted cross-basis transform']": 5037
+      }
+    },
+    "basic_pullback_state": {
+      "after_recomputed": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "before": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "change": "NO_CHANGE",
+      "sample_rows": [
+        {
+          "quality": "UNKNOWN",
+          "reason": "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE",
+          "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+          "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "symbol": "SH.688349",
+          "value": "UNKNOWN"
+        },
+        {
+          "quality": "UNKNOWN",
+          "reason": "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE",
+          "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+          "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "symbol": "SH.600703",
+          "value": "UNKNOWN"
+        },
+        {
+          "quality": "UNKNOWN",
+          "reason": "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE",
+          "security_id": "SEC-002610CF9EBB4227722834AADA8F757E",
+          "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "symbol": "SZ.300581",
+          "value": "UNKNOWN"
+        }
+      ],
+      "unknown_reason_distribution": {
+        "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE": 5213
+      }
+    },
+    "basic_recovery_state": {
+      "after_recomputed": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "before": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "change": "NO_CHANGE",
+      "sample_rows": [
+        {
+          "quality": "UNKNOWN",
+          "reason": "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE",
+          "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+          "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "symbol": "SH.688349",
+          "value": "UNKNOWN"
+        },
+        {
+          "quality": "UNKNOWN",
+          "reason": "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE",
+          "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+          "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "symbol": "SH.600703",
+          "value": "UNKNOWN"
+        },
+        {
+          "quality": "UNKNOWN",
+          "reason": "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE",
+          "security_id": "SEC-002610CF9EBB4227722834AADA8F757E",
+          "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "symbol": "SZ.300581",
+          "value": "UNKNOWN"
+        }
+      ],
+      "unknown_reason_distribution": {
+        "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE": 5213
+      }
+    },
+    "relative_market_state": {
+      "after_recomputed": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "before": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "change": "NO_CHANGE",
+      "sample_rows": [
+        {
+          "quality": "UNKNOWN",
+          "reason": "REQUIRED_INPUT_UNKNOWN",
+          "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+          "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+          "symbol": "SH.688349",
+          "value": "UNKNOWN"
+        },
+        {
+          "quality": "UNKNOWN",
+          "reason": "REQUIRED_INPUT_UNKNOWN",
+          "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+          "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+          "symbol": "SH.600703",
+          "value": "UNKNOWN"
+        },
+        {
+          "quality": "UNKNOWN",
+          "reason": "REQUIRED_INPUT_UNKNOWN",
+          "security_id": "SEC-002610CF9EBB4227722834AADA8F757E",
+          "source_digest": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6",
+          "symbol": "SZ.300581",
+          "value": "UNKNOWN"
+        }
+      ],
+      "unknown_reason_distribution": {
+        "REQUIRED_INPUT_UNKNOWN": 5213
+      }
+    },
+    "relative_sector_state": {
+      "after_recomputed": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "before": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "change": "NO_CHANGE",
+      "sample_rows": [
+        {
+          "quality": "UNKNOWN",
+          "reason": "UNKNOWN_INSUFFICIENT_LOO_MEMBERS_OR_COVERAGE",
+          "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+          "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "symbol": "SH.688349",
+          "value": null
+        },
+        {
+          "quality": "UNKNOWN",
+          "reason": "UNKNOWN_INSUFFICIENT_LOO_MEMBERS_OR_COVERAGE",
+          "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+          "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "symbol": "SH.600703",
+          "value": null
+        },
+        {
+          "quality": "UNKNOWN",
+          "reason": "UNKNOWN_INSUFFICIENT_LOO_MEMBERS_OR_COVERAGE",
+          "security_id": "SEC-002610CF9EBB4227722834AADA8F757E",
+          "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "symbol": "SZ.300581",
+          "value": null
+        }
+      ],
+      "unknown_reason_distribution": {
+        "UNKNOWN_INSUFFICIENT_LOO_MEMBERS_OR_COVERAGE": 5213
+      }
+    },
+    "structure_health": {
+      "after_recomputed": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "before": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "change": "NO_CHANGE",
+      "sample_rows": [
+        {
+          "quality": "UNKNOWN",
+          "reason": "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE",
+          "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+          "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "symbol": "SH.688349",
+          "value": null
+        },
+        {
+          "quality": "UNKNOWN",
+          "reason": "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE",
+          "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+          "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "symbol": "SH.600703",
+          "value": null
+        },
+        {
+          "quality": "UNKNOWN",
+          "reason": "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE",
+          "security_id": "SEC-002610CF9EBB4227722834AADA8F757E",
+          "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "symbol": "SZ.300581",
+          "value": null
+        }
+      ],
+      "unknown_reason_distribution": {
+        "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE": 5213
+      }
+    },
+    "support_state": {
+      "after_recomputed": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "before": {
+        "known": 0,
+        "unknown": 5213
+      },
+      "change": "NO_CHANGE",
+      "sample_rows": [
+        {
+          "quality": "UNKNOWN",
+          "reason": "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE",
+          "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+          "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "symbol": "SH.688349",
+          "value": "UNKNOWN"
+        },
+        {
+          "quality": "UNKNOWN",
+          "reason": "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE",
+          "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+          "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "symbol": "SH.600703",
+          "value": "UNKNOWN"
+        },
+        {
+          "quality": "UNKNOWN",
+          "reason": "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE",
+          "security_id": "SEC-002610CF9EBB4227722834AADA8F757E",
+          "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+          "symbol": "SZ.300581",
+          "value": "UNKNOWN"
+        }
+      ],
+      "unknown_reason_distribution": {
+        "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE": 5213
+      }
+    }
+  },
+  "population": {
+    "expected": 5213,
+    "match": true,
+    "observed": 5213
+  },
+  "source_hashes": {
+    "before_after": {
+      "bytes": 2798,
+      "exists": true,
+      "path": "docs/evidence/three_day_repair_r2_20261008/R2_STOCK_FIELD_BEFORE_AFTER.json",
+      "sha256": "584700a8f99ba42fb2676e6105f97a31e59337422541dd8a197c496f53ed4f93"
+    },
+    "current_snapshot": {
+      "bytes": 15047444,
+      "exists": true,
+      "path": "data/v4/research_snapshots/3a3f5d9074b646189ccfd830c15e7161/manifest.json",
+      "sha256": "d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3"
+    },
+    "structure_runtime": {
+      "bytes": 2066,
+      "exists": true,
+      "path": "reports/v4_12_runtime_r13/real/2026-09-30/r1/runtime_manifest.json",
+      "sha256": "0ae1fd6f7e90b520e691820df883e995c77ca39af591b28d769eef6e0a7a7ab1"
+    }
+  },
+  "target_trade_date": "2026-09-30"
+}

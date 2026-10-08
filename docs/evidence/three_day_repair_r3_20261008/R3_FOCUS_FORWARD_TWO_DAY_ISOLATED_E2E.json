@@ -1,0 +1,618 @@
+{
+  "contract_id": "R3_FOCUS_FORWARD_TWO_DAY_ISOLATED_E2E_V1",
+  "dates": {
+    "2026-09-29": {
+      "rows": 5223,
+      "source_digest": "968caca5a9e7020e9f31299bf93e12de1a8e66f62562a0d1bd7b9217e3f60dfe",
+      "unique_entity_episode_keys": 5223
+    },
+    "2026-09-30": {
+      "rows": 5224,
+      "source_digest": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58",
+      "unique_entity_episode_keys": 5224
+    }
+  },
+  "failure_retry_duplicate_resume_fixture_coverage": [
+    "Focus exit/reentry",
+    "Focus invalidation settlement",
+    "suspension and missing bars",
+    "future corporate action non-leakage",
+    "owner revision and kernel change rejection",
+    "Forward real fixture pending to due",
+    "due missing-price state",
+    "append-only frozen T0",
+    "idempotent repeated due",
+    "late corrected outcome supersedes immutable prior revision",
+    "wrong basis/date/identity rejection"
+  ],
+  "fixture_tests": {
+    "command": "python -m pytest tests/test_r2_focus_path_outcome.py tests/test_r2_focus_native_core.py tests/test_r2_forward_daily.py tests/test_forward_r2.py -q --basetemp=E:/codex_tmp/test_temp/three_day_r2_focus_forward_tests",
+    "duration_seconds": 7.49,
+    "live_cohort_untouched": true,
+    "result": "PASS",
+    "test_scope": "isolated synthetic/tmp-path fixtures only; no production data writes",
+    "tests_run": 65
+  },
+  "focus_vs_forward_separated": true,
+  "forward": {
+    "due": 0,
+    "enrollments": 117,
+    "frozen_T0_count": 117,
+    "plans": 585,
+    "result": "PASS_PENDING_NO_DUE",
+    "states": {
+      "PENDING": 585
+    }
+  },
+  "frozen_t0_immutable": true,
+  "real_forward_settlements_claimed": 0,
+  "real_two_day_comparison": {
+    "actual_days_only": [
+      "2026-09-29",
+      "2026-09-30"
+    ],
+    "changed_field_counts": {
+      "final_eligibility": 672,
+      "health": 841,
+      "raw_qualification": 1531,
+      "scenario_status": 672,
+      "transition_reasons": 672,
+      "validity": 672
+    },
+    "changed_keys": 1745,
+    "sample_transitions": [
+      {
+        "changed_fields": [
+          "health"
+        ],
+        "entity_id": "SEC-002E8949D07D2829AB967520C65C0845",
+        "episode_id": null,
+        "from": {
+          "health": "IMPROVING"
+        },
+        "to": {
+          "health": "WEAKENING"
+        }
+      },
+      {
+        "changed_fields": [
+          "raw_qualification"
+        ],
+        "entity_id": "SEC-0051683845B17D59641B7D1DC261FE2A",
+        "episode_id": null,
+        "from": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "FALSE"
+          }
+        },
+        "to": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "UNKNOWN"
+          }
+        }
+      },
+      {
+        "changed_fields": [
+          "raw_qualification"
+        ],
+        "entity_id": "SEC-00B0B75CF5BA6E38D7C2D3FEBF949622",
+        "episode_id": null,
+        "from": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "FALSE"
+          }
+        },
+        "to": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "TRUE"
+          }
+        }
+      },
+      {
+        "changed_fields": [
+          "raw_qualification"
+        ],
+        "entity_id": "SEC-00B87010D45BBCB2A1CB277B6C177121",
+        "episode_id": null,
+        "from": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "TRUE"
+          }
+        },
+        "to": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "FALSE"
+          }
+        }
+      },
+      {
+        "changed_fields": [
+          "raw_qualification"
+        ],
+        "entity_id": "SEC-00B93BC23F1AFA8F276F5C61207F5A4F",
+        "episode_id": null,
+        "from": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "FALSE"
+          }
+        },
+        "to": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "TRUE"
+          }
+        }
+      },
+      {
+        "changed_fields": [
+          "raw_qualification",
+          "final_eligibility",
+          "health",
+          "validity",
+          "scenario_status",
+          "transition_reasons"
+        ],
+        "entity_id": "SEC-00BE615596F05D4E950A4A0CF8A0DB73",
+        "episode_id": null,
+        "from": {
+          "final_eligibility": "FALSE",
+          "health": "WEAKENING",
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "FALSE",
+            "SEED": "FALSE"
+          },
+          "scenario_status": "KNOWN",
+          "transition_reasons": [],
+          "validity": "VALID"
+        },
+        "to": {
+          "final_eligibility": "UNKNOWN",
+          "health": "UNKNOWN",
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "FALSE"
+          },
+          "scenario_status": "UNKNOWN",
+          "transition_reasons": [
+            "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+          ],
+          "validity": "UNKNOWN"
+        }
+      },
+      {
+        "changed_fields": [
+          "raw_qualification",
+          "final_eligibility",
+          "health",
+          "validity",
+          "scenario_status",
+          "transition_reasons"
+        ],
+        "entity_id": "SEC-00E228DA7EBF038EA528EF36B65B4C97",
+        "episode_id": "V4_11_R5B_EP:866782cb24811e8bb0de17ca136bb11a658aa5c1ab205cf476510e0b3a7f031a",
+        "from": {
+          "final_eligibility": "TRUE",
+          "health": "IMPROVING",
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "TRUE",
+            "SEED": "TRUE"
+          },
+          "scenario_status": "KNOWN",
+          "transition_reasons": [
+            "UPGRADE_IMMEDIATE",
+            "ENROLLED"
+          ],
+          "validity": "VALID"
+        },
+        "to": {
+          "final_eligibility": "UNKNOWN",
+          "health": "UNKNOWN",
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "FALSE"
+          },
+          "scenario_status": "UNKNOWN",
+          "transition_reasons": [
+            "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+          ],
+          "validity": "UNKNOWN"
+        }
+      },
+      {
+        "changed_fields": [
+          "raw_qualification"
+        ],
+        "entity_id": "SEC-00F7600938E29E801B3FB9F22775458E",
+        "episode_id": null,
+        "from": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "UNKNOWN"
+          }
+        },
+        "to": {
+          "raw_qualification": {
+            "CONFIRMED": "TRUE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "UNKNOWN"
+          }
+        }
+      },
+      {
+        "changed_fields": [
+          "raw_qualification"
+        ],
+        "entity_id": "SEC-0133C24DA4D131FD193B382B8FF9E57C",
+        "episode_id": null,
+        "from": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "FALSE"
+          }
+        },
+        "to": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "UNKNOWN"
+          }
+        }
+      },
+      {
+        "changed_fields": [
+          "final_eligibility",
+          "health",
+          "validity",
+          "scenario_status",
+          "transition_reasons"
+        ],
+        "entity_id": "SEC-01503FBCF39C18F6512A1F63139DF7FA",
+        "episode_id": "V4_11_R5B_EP:942b40bc51ead8b92a07925b694ea9f580afa8c04cf506e70e4e4642197dd975",
+        "from": {
+          "final_eligibility": "TRUE",
+          "health": "IMPROVING",
+          "scenario_status": "KNOWN",
+          "transition_reasons": [
+            "UPGRADE_IMMEDIATE",
+            "ENROLLED"
+          ],
+          "validity": "VALID"
+        },
+        "to": {
+          "final_eligibility": "UNKNOWN",
+          "health": "UNKNOWN",
+          "scenario_status": "UNKNOWN",
+          "transition_reasons": [
+            "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+          ],
+          "validity": "UNKNOWN"
+        }
+      },
+      {
+        "changed_fields": [
+          "raw_qualification"
+        ],
+        "entity_id": "SEC-016E7A08F4649411F936422991E5AFD3",
+        "episode_id": null,
+        "from": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "FALSE"
+          }
+        },
+        "to": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "UNKNOWN"
+          }
+        }
+      },
+      {
+        "changed_fields": [
+          "raw_qualification"
+        ],
+        "entity_id": "SEC-01AE565AAB38D6DBE68548A166DA9001",
+        "episode_id": null,
+        "from": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "TRUE"
+          }
+        },
+        "to": {
+          "raw_qualification": {
+            "CONFIRMED": "TRUE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "TRUE"
+          }
+        }
+      },
+      {
+        "changed_fields": [
+          "final_eligibility",
+          "health",
+          "validity",
+          "scenario_status",
+          "transition_reasons"
+        ],
+        "entity_id": "SEC-01B755B34CE3712C3B8559DA825A14EF",
+        "episode_id": "V4_11_R5B_EP:ec84518659896b5a668edce94195012c5dc5c89acd3f549140c9746764643509",
+        "from": {
+          "final_eligibility": "TRUE",
+          "health": "IMPROVING",
+          "scenario_status": "KNOWN",
+          "transition_reasons": [
+            "UPGRADE_IMMEDIATE",
+            "ENROLLED"
+          ],
+          "validity": "VALID"
+        },
+        "to": {
+          "final_eligibility": "UNKNOWN",
+          "health": "UNKNOWN",
+          "scenario_status": "UNKNOWN",
+          "transition_reasons": [
+            "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+          ],
+          "validity": "UNKNOWN"
+        }
+      },
+      {
+        "changed_fields": [
+          "raw_qualification",
+          "final_eligibility",
+          "health",
+          "validity",
+          "scenario_status",
+          "transition_reasons"
+        ],
+        "entity_id": "SEC-01C3F7FE4A8F68A54FF3191D9F2E2BC9",
+        "episode_id": null,
+        "from": {
+          "final_eligibility": "FALSE",
+          "health": "WEAKENING",
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "FALSE",
+            "SEED": "FALSE"
+          },
+          "scenario_status": "KNOWN",
+          "transition_reasons": [],
+          "validity": "VALID"
+        },
+        "to": {
+          "final_eligibility": "UNKNOWN",
+          "health": "UNKNOWN",
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "FALSE"
+          },
+          "scenario_status": "UNKNOWN",
+          "transition_reasons": [
+            "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+          ],
+          "validity": "UNKNOWN"
+        }
+      },
+      {
+        "changed_fields": [
+          "raw_qualification"
+        ],
+        "entity_id": "SEC-01D04123834F9A8FE1E071507108E37A",
+        "episode_id": null,
+        "from": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "FALSE"
+          }
+        },
+        "to": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "TRUE"
+          }
+        }
+      },
+      {
+        "changed_fields": [
+          "raw_qualification"
+        ],
+        "entity_id": "SEC-01EBCDF66D7972914DC16BEEFD189612",
+        "episode_id": null,
+        "from": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "TRUE"
+          }
+        },
+        "to": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "FALSE"
+          }
+        }
+      },
+      {
+        "changed_fields": [
+          "raw_qualification",
+          "final_eligibility",
+          "health",
+          "validity",
+          "scenario_status",
+          "transition_reasons"
+        ],
+        "entity_id": "SEC-01F7A5B2131C95B8A893F567774BF761",
+        "episode_id": null,
+        "from": {
+          "final_eligibility": "FALSE",
+          "health": "WEAKENING",
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "FALSE",
+            "SEED": "FALSE"
+          },
+          "scenario_status": "KNOWN",
+          "transition_reasons": [],
+          "validity": "VALID"
+        },
+        "to": {
+          "final_eligibility": "UNKNOWN",
+          "health": "UNKNOWN",
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "FALSE"
+          },
+          "scenario_status": "UNKNOWN",
+          "transition_reasons": [
+            "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+          ],
+          "validity": "UNKNOWN"
+        }
+      },
+      {
+        "changed_fields": [
+          "raw_qualification",
+          "final_eligibility",
+          "health",
+          "validity",
+          "scenario_status",
+          "transition_reasons"
+        ],
+        "entity_id": "SEC-021EFEB8B38D5494021EC1CF872EE944",
+        "episode_id": null,
+        "from": {
+          "final_eligibility": "UNKNOWN",
+          "health": "UNKNOWN",
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "FALSE"
+          },
+          "scenario_status": "UNKNOWN",
+          "transition_reasons": [
+            "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+          ],
+          "validity": "UNKNOWN"
+        },
+        "to": {
+          "final_eligibility": "FALSE",
+          "health": "WEAKENING",
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "FALSE",
+            "SEED": "FALSE"
+          },
+          "scenario_status": "KNOWN",
+          "transition_reasons": [],
+          "validity": "VALID"
+        }
+      },
+      {
+        "changed_fields": [
+          "raw_qualification",
+          "final_eligibility",
+          "health",
+          "validity",
+          "scenario_status",
+          "transition_reasons"
+        ],
+        "entity_id": "SEC-02BFA56B08CB0447CDA0DA404AAFC42E",
+        "episode_id": null,
+        "from": {
+          "final_eligibility": "UNKNOWN",
+          "health": "UNKNOWN",
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "FALSE"
+          },
+          "scenario_status": "UNKNOWN",
+          "transition_reasons": [
+            "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+          ],
+          "validity": "UNKNOWN"
+        },
+        "to": {
+          "final_eligibility": "FALSE",
+          "health": "WEAKENING",
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "FALSE",
+            "SEED": "FALSE"
+          },
+          "scenario_status": "KNOWN",
+          "transition_reasons": [],
+          "validity": "VALID"
+        }
+      },
+      {
+        "changed_fields": [
+          "raw_qualification"
+        ],
+        "entity_id": "SEC-02CB94685C15997F2C96A83C735CEB32",
+        "episode_id": null,
+        "from": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "TRUE"
+          }
+        },
+        "to": {
+          "raw_qualification": {
+            "CONFIRMED": "FALSE",
+            "PREWATCH": "UNKNOWN",
+            "SEED": "FALSE"
+          }
+        }
+      }
+    ],
+    "shared_entity_episode_keys": 5106,
+    "uses_reconstructed_corrected_source": true
+  },
+  "replay_driver_evidence": {
+    "bytes": 12859,
+    "exists": true,
+    "path": "docs/evidence/r2_continuous_daily_20261008/CONTINUOUS_REPLAY.json",
+    "sha256": "22405b8d518e1fc63fa2217641719f12a6f73fd56b49d35a3c2d3ebdf6005c27"
+  },
+  "replay_driver_result": "CONTINUOUS_JOURNAL_REPLAY_PASS",
+  "result": "PARTIAL_PASS_REAL_TWO_DAY_OWNER_READBACK_NO_REAL_FORWARD_DUE",
+  "source": {
+    "bytes": 156246016,
+    "exists": true,
+    "path": "data/v4/r2_focus_native_core/1cdbd05a5ef0ca94505fd45dc977ab789c951d5f244ca69bca4256b92cbd31ca/journal.sqlite",
+    "sha256": "f23899ce5e10c35f975a10a94334fe6caa4e6a90bb01162384b9c3d3b798082c"
+  },
+  "unresolved": "full real episode path exit/reentry event matrix still incomplete; no 10/09 rows fabricated"
+}

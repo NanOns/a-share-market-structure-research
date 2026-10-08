@@ -24,7 +24,16 @@ def test_common_member_does_not_count_membership_changes():
 
 def test_missing_history_not_current_membership_replay():
     value,reason,meta=common_delta({'A'},None,{}, {},'ret1','2026-09-30',None,lambda v:int(v>0))
-    assert value is None and reason=='NO_PRIOR_ACCEPTED_PIT_HISTORY' and meta['prior_member_count'] is None
+    assert value is None and reason=='NO_PRIOR_OWNER_MATERIALIZED' and meta['prior_member_count'] is None
+
+@pytest.mark.parametrize('availability,expected',[
+    ('NO_EFFECTIVE_DATED_MEMBERSHIP','NO_EFFECTIVE_DATED_MEMBERSHIP'),
+    ('NO_PRIOR_OWNER_MATERIALIZED','NO_PRIOR_OWNER_MATERIALIZED'),
+    ('FIRST_AVAILABLE_UNPROVEN_ONLY','FIRST_AVAILABLE_UNPROVEN_ONLY')])
+def test_history_gap_reasons_follow_explicit_owner_evidence(availability,expected):
+    from sector.native_r5 import prior_gap_reason
+    assert prior_gap_reason(None,availability)==expected
+    assert prior_gap_reason({'A'},availability) is None
 
 def test_absent_target_publication_does_not_create_zero_quote_coverage():
     params,*_=package()
@@ -88,7 +97,8 @@ def test_first_pit_rotation_unknown():
     params,registry,contract,values,_=package()
     result=advance_rotation({'target_trade_date':'2026-09-30','sector_id':'TEST','membership_snapshot_id':'S','member_ids':[],'fields':{}},{},prior_publication=None,prior_members=None,prior_core=None,calendar_sessions=['2026-09-30'],contract=contract,registry=registry,parameters=values)
     assert result['output_state']=='UNKNOWN' and result['episode'] is None
-    assert result['reason_codes']==['NO_PRIOR_ACCEPTED_PIT_HISTORY']
+    assert result['reason_codes']==['NO_PRIOR_OWNER_MATERIALIZED']
+    assert result['fields']['strong_prev']['reason_code']=='NO_EFFECTIVE_DATED_MEMBERSHIP'
 
 def test_pulse_then_in_with_empty_prior_strong_cohort_and_degraded_seed():
     _,registry,contract,values,fields=package()

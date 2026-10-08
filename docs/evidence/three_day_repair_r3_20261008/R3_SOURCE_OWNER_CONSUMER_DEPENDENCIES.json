@@ -1,0 +1,237 @@
+{
+  "contract_id": "R3_SOURCE_OWNER_CONSUMER_DEPENDENCIES_V1",
+  "current_production_predecessor": {
+    "full_product_release": false,
+    "ref": {
+      "bytes": 30843,
+      "exists": true,
+      "path": "config/v4_joint_release_authority_v1.json",
+      "sha256": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298"
+    },
+    "scope": [
+      "stocks_daily",
+      "sectors_current_facts",
+      "market_current",
+      "focus_read_corrected",
+      "forward_read",
+      "diagnostics",
+      "compare_corrected"
+    ],
+    "sha256": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298",
+    "snapshot": {
+      "bytes": 15047444,
+      "exists": true,
+      "path": "data/v4/research_snapshots/3a3f5d9074b646189ccfd830c15e7161/manifest.json",
+      "sha256": "d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3"
+    },
+    "snapshot_sha256": "d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3"
+  },
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "preserve_immutable_receipts": true,
+  "price_basis": "TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE",
+  "source_owner_consumer": [
+    {
+      "consumer": "FP06 factor rows; FP07 stock projection",
+      "date_bindings": {
+        "bytes": 13533,
+        "exists": true,
+        "path": "docs/evidence/three_day_repair_r1_20261008/core_owner_r2/OWNER_REPLAY_PER_DAY.json",
+        "sha256": "49d9dd68df6c6f03e726c4e0aab4278fe1ab674dfa82031d68794adc9016036e"
+      },
+      "domain": "Core",
+      "owner": "CORE_FACTOR_V1; isolated corrected 3-date owner exists",
+      "scope_status": "Core owner available isolated for all 3 target coordinates; not accepted as target-date V4-03 promotion binding",
+      "source": "Accepted RAW_DAILY/GBBQ/date identity+trading status"
+    },
+    {
+      "consumer": "FP06 profiles → FP07 snapshot → ProductionV4ResearchReader",
+      "current_consumer_artifacts": {
+        "current_stock_authority": {
+          "bytes": 30843,
+          "path": "config/v4_joint_release_authority_v1.json",
+          "sha256": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298"
+        },
+        "factors": {
+          "bytes": 19460170,
+          "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/factors.jsonl.gz",
+          "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+        },
+        "profiles": {
+          "bytes": 44330385,
+          "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/profiles.jsonl.gz",
+          "sha256": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6"
+        }
+      },
+      "date_bindings": [
+        {
+          "artifact": {
+            "bytes": 43077618,
+            "path": "docs/evidence/three_day_repair_r3_20261008/R3_PROFILE_2026-09-28_CANDIDATE_R1.jsonl.gz",
+            "sha256": "405df53041ec33f37f02526758dde5e8968fd7022c01f6c00831f35a12cac633"
+          },
+          "core_owner_ref": {
+            "bytes": 19260987,
+            "exists": true,
+            "path": "docs/evidence/three_day_repair_r1_20261008/core_owner_r2/owners/2026-09-28/core.jsonl.gz",
+            "sha256": "03c4db8691aa6810437ad7f0f1daf5d5f1917d197453610f68f2e733cf71905c"
+          },
+          "core_rows": 5222,
+          "prior_rows": 5222,
+          "profile_owner": "R3_ISOLATED_CORRECTED_PROFILE_OWNER",
+          "status": "PROFILE_MATERIALIZED_NONPRODUCTION",
+          "trade_date": "2026-09-28"
+        },
+        {
+          "artifact": {
+            "bytes": 43074835,
+            "path": "docs/evidence/three_day_repair_r3_20261008/R3_PROFILE_2026-09-29_CANDIDATE_R2.jsonl.gz",
+            "sha256": "1af4b79636ea3f2a3b1e5210535cc3c10ff64dd4e6f9460e65fc4bd966898737"
+          },
+          "core_owner_ref": {
+            "bytes": 19267458,
+            "exists": true,
+            "path": "docs/evidence/three_day_repair_r1_20261008/core_owner_r2/owners/2026-09-29/core.jsonl.gz",
+            "sha256": "beb303ff2cfb16d77b6848e1a4eee7707fe7f218975e5a6b42d5cf867cb25dd1"
+          },
+          "core_rows": 5223,
+          "prior_rows": 5222,
+          "profile_owner": "R3_ISOLATED_CORRECTED_PROFILE_OWNER",
+          "status": "PROFILE_MATERIALIZED_NONPRODUCTION",
+          "trade_date": "2026-09-29"
+        },
+        {
+          "factor_artifact": {
+            "bytes": 19460170,
+            "exists": true,
+            "path": "data/v4/fp06_sector/ea9490828de7fc60f5657cff900d0199741f06243ae4779b52e24efb832e7ef6/factors.jsonl.gz",
+            "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+          },
+          "factor_rows": 5224,
+          "factor_trade_dates": [
+            "2026-09-30"
+          ],
+          "known_unknown_by_profile_state": {
+            "amount_state:KNOWN": 5188,
+            "amount_state:UNKNOWN": 36,
+            "compression_state:KNOWN": 5164,
+            "compression_state:UNKNOWN": 60,
+            "core_extension_risk:KNOWN": 5181,
+            "core_extension_risk:UNKNOWN": 43,
+            "core_participation_result:KNOWN": 5181,
+            "core_participation_result:UNKNOWN": 43,
+            "drawdown20_state:KNOWN": 5189,
+            "drawdown20_state:UNKNOWN": 35,
+            "drawdown60_state:KNOWN": 5173,
+            "drawdown60_state:UNKNOWN": 51,
+            "ma_structure_state:KNOWN": 5186,
+            "ma_structure_state:UNKNOWN": 38,
+            "monthly_trend_state:KNOWN": 5180,
+            "monthly_trend_state:UNKNOWN": 44,
+            "near_high20_state:KNOWN": 5188,
+            "near_high20_state:UNKNOWN": 36,
+            "near_high60_state:KNOWN": 5173,
+            "near_high60_state:UNKNOWN": 51,
+            "position_state:KNOWN": 5173,
+            "position_state:UNKNOWN": 51,
+            "regime_ui:KNOWN": 5224,
+            "relative_market_state:UNKNOWN": 5224,
+            "severe_extension:KNOWN": 5181,
+            "severe_extension:UNKNOWN": 43,
+            "trend_state:KNOWN": 5167,
+            "trend_state:UNKNOWN": 57,
+            "volume_state:KNOWN": 5188,
+            "volume_state:UNKNOWN": 36,
+            "weekly_trend_state:KNOWN": 5196,
+            "weekly_trend_state:UNKNOWN": 28
+          },
+          "profile_artifact": {
+            "bytes": 44329290,
+            "exists": true,
+            "path": "data/v4/fp06_sector/ea9490828de7fc60f5657cff900d0199741f06243ae4779b52e24efb832e7ef6/profiles.jsonl.gz",
+            "sha256": "ce494cd8e92f142944782863c444b7549a58d1fac4a5a4abab422f3a9f8ce824"
+          },
+          "profile_rows": 5224,
+          "profile_trade_dates": [
+            "2026-09-30"
+          ],
+          "status": "ACCEPTED_CURRENT_SCOPE_PROFILE_AND_CORE_PRESENT",
+          "trade_date": "2026-09-30"
+        }
+      ],
+      "domain": "Profile",
+      "owner": "V4_04_CORE_PROFILE_RULES_V1 / V4_04 accepted field contracts",
+      "scope_status": "9/30 Profile is exactly consumed by live FP07; corrected isolated V4-04 Profile owners are materialized for 9/28 and 9/29. Historical corrected owners are isolated, not production accepted.",
+      "source": "Core factors plus target OHLC/weekly/monthly and V4-04 contracts"
+    },
+    {
+      "consumer": "build_fp07_stock → production_v4 / stock_views",
+      "date_bindings": {
+        "bytes": 796484,
+        "exists": true,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "domain": "Structure",
+      "owner": "STRUCTURE_EVENT_V1 / SUPPORT_STATE_V1 runtime candidate",
+      "scope_status": "candidate runtime rows exist but 0 anchors/events; target ATR20/MA20/CLV accepted producer binding missing; no formal acceptance",
+      "source": "V4-12 R13 9/29 and 9/30 real candidate inputs; exact owner Core dependencies"
+    },
+    {
+      "consumer": "FP07 stock reader",
+      "date_bindings": {
+        "bytes": 44329290,
+        "exists": true,
+        "path": "data/v4/fp06_sector/ea9490828de7fc60f5657cff900d0199741f06243ae4779b52e24efb832e7ef6/profiles.jsonl.gz",
+        "sha256": "ce494cd8e92f142944782863c444b7549a58d1fac4a5a4abab422f3a9f8ce824"
+      },
+      "domain": "Relative market",
+      "owner": "RELATIVE_STATE_V1",
+      "scope_status": "current profile owner exists but unknown where required RPS delta3 is unavailable; not allowed to infer",
+      "source": "V4-04 profile plus market reference and RPS delta3"
+    },
+    {
+      "consumer": "V4-13 profile/context projection",
+      "date_bindings": {
+        "bytes": 2151,
+        "exists": true,
+        "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+        "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+      },
+      "domain": "Relative sector",
+      "owner": "V4_13 LOO_CONTEXT_V1.1 contract freeze",
+      "scope_status": "V4-13 runtime is not implemented; relative fields remain unknown",
+      "source": "V4-08 current dated membership and LOO same-day inputs"
+    },
+    {
+      "consumer": "FP06 sectors → snapshot/UI",
+      "date_bindings": {
+        "bytes": 2151,
+        "exists": true,
+        "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+        "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+      },
+      "domain": "Sector Base/Seed/Rotation",
+      "owner": "V4_08_SECTOR_NATIVE_V1 + B0/B1 R5",
+      "scope_status": "same-day native facts accepted; target-date seed owner and prior dated member source not bound for this run",
+      "source": "V4-08 PIT membership + V4-03 Core + V4-07 BaseSeed exact-date owner + prior dated membership/owner"
+    },
+    {
+      "consumer": "joint snapshot/UI/due check",
+      "date_bindings": {
+        "bytes": 2021,
+        "exists": true,
+        "path": "docs/evidence/three_day_repair_r2_20261008/R2_FOCUS_FORWARD_TRANSITION_AND_DUE_ORACLE.json",
+        "sha256": "65813206ef75a279df0bd6d28da06a58bb5e2130ab047a0c99fcb425303a894c"
+      },
+      "domain": "Focus/Forward",
+      "owner": "Focus daily journal V1; Forward existing V4-15 owners",
+      "scope_status": "117 enrollments, 585 pending, real due=0; fixture suite not real maturity",
+      "source": "accepted per-day states/RAW/calendar/GBBQ and frozen T0"
+    }
+  ],
+  "target_dates": [
+    "2026-09-28",
+    "2026-09-29",
+    "2026-09-30"
+  ]
+}

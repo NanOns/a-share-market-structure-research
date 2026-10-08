@@ -1,0 +1,260 @@
+{
+  "contract_id": "R3_DATE_PRICE_BASIS_AND_CONSUMER_MATRIX_V1",
+  "dates": [
+    {
+      "core": {
+        "input_digest": "42dda1a6e0c4418be0245c79c5c964030f62df3d9fbe937c0360bd18f8b4f61e",
+        "owner": {
+          "bytes": 19260987,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r1_20261008/core_owner_r2/owners/2026-09-28/core.jsonl.gz",
+          "sha256": "03c4db8691aa6810437ad7f0f1daf5d5f1917d197453610f68f2e733cf71905c"
+        },
+        "owner_contract": "CORE_FACTOR_V1",
+        "parameter_digest": "2f3cc8ae2fdf4bffc098dc1a0dc90bf05bbb12557b45ea8ddc50048410314e18",
+        "price_basis_policy": "PER_TARGET_NATIVE_AFFINE_QFQ",
+        "prior_rows_in_target_coordinate": 5222,
+        "rows": 5222,
+        "status": "ISOLATED_STAGING_ONLY"
+      },
+      "profile": {
+        "artifact": {
+          "bytes": 43077618,
+          "path": "docs/evidence/three_day_repair_r3_20261008/R3_PROFILE_2026-09-28_CANDIDATE_R1.jsonl.gz",
+          "sha256": "405df53041ec33f37f02526758dde5e8968fd7022c01f6c00831f35a12cac633"
+        },
+        "core_rows": 5222,
+        "formal_acceptance": false,
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "numeric_core_check": {
+          "checked": 195916,
+          "mismatches": 0
+        },
+        "preexisting_candidate_crosscheck": {
+          "artifact": {
+            "bytes": 48847143,
+            "exists": true,
+            "path": "reports/v4_05/staging/V4_05_R4_FULL_MARKET_CORE_PROFILE.jsonl.gz",
+            "sha256": "2b1f881fc408f044253df9a3fb605e5a6059a17be7b2310f97a46620a8d32d2f"
+          },
+          "checked": 195916,
+          "mismatches": 0,
+          "result": "PASS"
+        },
+        "prior_rows": 5222,
+        "production_binding": false,
+        "profile_owner": "R3_ISOLATED_CORRECTED_PROFILE_OWNER",
+        "receipt": {
+          "bytes": 8261,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r3_20261008/R3_PROFILE_2026-09-28_CANDIDATE_RECEIPT_R1.json",
+          "sha256": "b4d0dc458a89faf6b90ccd24e92d6585958e6b933b434ccf384f1f4e3b17f3f6"
+        },
+        "rows": 5222,
+        "rps_endpoints": {
+          "current": "2026-09-28",
+          "current_count": 5222,
+          "historical_first_availability_proven": false,
+          "prior_count": 5222,
+          "prior_t_minus_3": "2026-09-22",
+          "provider_head": {
+            "bytes": 2776,
+            "path": "data/v4/V4_RPS_PIT_HISTORY_ACCEPTED_HEAD_R1.json",
+            "sha256": "4025dd5d3eb27c9086bca8e4861ad33842db8938dda370fb3d7f78b8d783398b"
+          }
+        },
+        "status": "R3_ISOLATED_PROFILE_OWNER_MATERIALIZED",
+        "target_qfq_capability": {
+          "ready": 5034,
+          "unknown": 188
+        },
+        "trade_date": "2026-09-28"
+      },
+      "strict_pit": "NOT_GRANTED",
+      "structure": {
+        "result": "UNKNOWN_IS_LEGAL_UNDER_BOUND_CAPABILITY",
+        "status": "REAL_R13_CANDIDATE_NO_AUTHORIZED_INPUT_OWNER_ROWS_FOR_ANCHORS"
+      },
+      "trade_date": "2026-09-28",
+      "trade_date_clock": "T and prior valid session computed only in T target coordinate"
+    },
+    {
+      "core": {
+        "input_digest": "33c6b345c8d98753428354fb8686ac6487a124e479570f779ff789fa9729bfe0",
+        "owner": {
+          "bytes": 19267458,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r1_20261008/core_owner_r2/owners/2026-09-29/core.jsonl.gz",
+          "sha256": "beb303ff2cfb16d77b6848e1a4eee7707fe7f218975e5a6b42d5cf867cb25dd1"
+        },
+        "owner_contract": "CORE_FACTOR_V1",
+        "parameter_digest": "2f3cc8ae2fdf4bffc098dc1a0dc90bf05bbb12557b45ea8ddc50048410314e18",
+        "price_basis_policy": "PER_TARGET_NATIVE_AFFINE_QFQ",
+        "prior_rows_in_target_coordinate": 5222,
+        "rows": 5223,
+        "status": "ISOLATED_STAGING_ONLY"
+      },
+      "profile": {
+        "artifact": {
+          "bytes": 43074835,
+          "path": "docs/evidence/three_day_repair_r3_20261008/R3_PROFILE_2026-09-29_CANDIDATE_R2.jsonl.gz",
+          "sha256": "1af4b79636ea3f2a3b1e5210535cc3c10ff64dd4e6f9460e65fc4bd966898737"
+        },
+        "core_rows": 5223,
+        "formal_acceptance": false,
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "prior_rows": 5222,
+        "production_binding": false,
+        "profile_owner": "R3_ISOLATED_CORRECTED_PROFILE_OWNER",
+        "receipt": {
+          "bytes": 8262,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r3_20261008/R3_PROFILE_2026-09-29_CANDIDATE_RECEIPT_R2.json",
+          "sha256": "9b5d5717c162afedb35fdcc67df55fc1fd2bcfaa775fe1b825d17cc7b92dfa74"
+        },
+        "rows": 5223,
+        "rps_endpoints": {
+          "current": "2026-09-29",
+          "current_count": 5223,
+          "historical_first_availability_proven": false,
+          "prior_count": 5222,
+          "prior_t_minus_3": "2026-09-23",
+          "provider_head": {
+            "bytes": 2776,
+            "path": "data/v4/V4_RPS_PIT_HISTORY_ACCEPTED_HEAD_R1.json",
+            "sha256": "4025dd5d3eb27c9086bca8e4861ad33842db8938dda370fb3d7f78b8d783398b"
+          }
+        },
+        "status": "R3_ISOLATED_PROFILE_OWNER_MATERIALIZED",
+        "target_qfq_capability": {
+          "ready": 5035,
+          "unknown": 188
+        },
+        "trade_date": "2026-09-29"
+      },
+      "strict_pit": "NOT_GRANTED",
+      "structure": {
+        "result": "UNKNOWN_IS_LEGAL_UNDER_BOUND_CAPABILITY",
+        "status": "REAL_R13_CANDIDATE_NO_AUTHORIZED_INPUT_OWNER_ROWS_FOR_ANCHORS"
+      },
+      "trade_date": "2026-09-29",
+      "trade_date_clock": "T and prior valid session computed only in T target coordinate"
+    },
+    {
+      "core": {
+        "input_digest": "b77a5b0b62fde699d93d281132b26a230d49a1fe519b29ea550fac42076614c5",
+        "owner": {
+          "bytes": 19282523,
+          "exists": true,
+          "path": "docs/evidence/three_day_repair_r1_20261008/core_owner_r2/owners/2026-09-30/core.jsonl.gz",
+          "sha256": "0527d629f73ac46f1fa6fb2ac0213f8541d41f2b12c3dfdd68ee40cc1e98d011"
+        },
+        "owner_contract": "CORE_FACTOR_V1",
+        "parameter_digest": "2f3cc8ae2fdf4bffc098dc1a0dc90bf05bbb12557b45ea8ddc50048410314e18",
+        "price_basis_policy": "PER_TARGET_NATIVE_AFFINE_QFQ",
+        "prior_rows_in_target_coordinate": 5223,
+        "rows": 5224,
+        "status": "ISOLATED_STAGING_ONLY"
+      },
+      "profile": {
+        "consumer_mismatches": 0,
+        "consumer_readback_rows": 5213,
+        "factor_artifact": {
+          "bytes": 19460170,
+          "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/factors.jsonl.gz",
+          "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+        },
+        "factor_rows": 5224,
+        "factor_trade_dates": [
+          "2026-09-30"
+        ],
+        "known_unknown_by_profile_state": {
+          "amount_state:KNOWN": 5188,
+          "amount_state:UNKNOWN": 36,
+          "compression_state:KNOWN": 5164,
+          "compression_state:UNKNOWN": 60,
+          "core_extension_risk:KNOWN": 5181,
+          "core_extension_risk:UNKNOWN": 43,
+          "core_participation_result:KNOWN": 5181,
+          "core_participation_result:UNKNOWN": 43,
+          "drawdown20_state:KNOWN": 5189,
+          "drawdown20_state:UNKNOWN": 35,
+          "drawdown60_state:KNOWN": 5173,
+          "drawdown60_state:UNKNOWN": 51,
+          "ma_structure_state:KNOWN": 5186,
+          "ma_structure_state:UNKNOWN": 38,
+          "monthly_trend_state:KNOWN": 5180,
+          "monthly_trend_state:UNKNOWN": 44,
+          "near_high20_state:KNOWN": 5188,
+          "near_high20_state:UNKNOWN": 36,
+          "near_high60_state:KNOWN": 5173,
+          "near_high60_state:UNKNOWN": 51,
+          "position_state:KNOWN": 5173,
+          "position_state:UNKNOWN": 51,
+          "regime_ui:KNOWN": 5224,
+          "relative_market_state:UNKNOWN": 5224,
+          "severe_extension:KNOWN": 5181,
+          "severe_extension:UNKNOWN": 43,
+          "trend_state:KNOWN": 5167,
+          "trend_state:UNKNOWN": 57,
+          "volume_state:KNOWN": 5188,
+          "volume_state:UNKNOWN": 36,
+          "weekly_trend_state:KNOWN": 5196,
+          "weekly_trend_state:UNKNOWN": 28
+        },
+        "known_unknown_by_state": {
+          "amount_state:KNOWN": 5188,
+          "amount_state:UNKNOWN": 36,
+          "compression_state:KNOWN": 5164,
+          "compression_state:UNKNOWN": 60,
+          "core_extension_risk:KNOWN": 5181,
+          "core_extension_risk:UNKNOWN": 43,
+          "core_participation_result:KNOWN": 5181,
+          "core_participation_result:UNKNOWN": 43,
+          "drawdown20_state:KNOWN": 5189,
+          "drawdown20_state:UNKNOWN": 35,
+          "drawdown60_state:KNOWN": 5173,
+          "drawdown60_state:UNKNOWN": 51,
+          "ma_structure_state:KNOWN": 5186,
+          "ma_structure_state:UNKNOWN": 38,
+          "monthly_trend_state:KNOWN": 5180,
+          "monthly_trend_state:UNKNOWN": 44,
+          "near_high20_state:KNOWN": 5188,
+          "near_high20_state:UNKNOWN": 36,
+          "near_high60_state:KNOWN": 5173,
+          "near_high60_state:UNKNOWN": 51,
+          "position_state:KNOWN": 5173,
+          "position_state:UNKNOWN": 51,
+          "regime_ui:KNOWN": 5224,
+          "relative_market_state:UNKNOWN": 5224,
+          "severe_extension:KNOWN": 5181,
+          "severe_extension:UNKNOWN": 43,
+          "trend_state:KNOWN": 5167,
+          "trend_state:UNKNOWN": 57,
+          "volume_state:KNOWN": 5188,
+          "volume_state:UNKNOWN": 36,
+          "weekly_trend_state:KNOWN": 5196,
+          "weekly_trend_state:UNKNOWN": 28
+        },
+        "profile_artifact": {
+          "bytes": 44330385,
+          "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/profiles.jsonl.gz",
+          "sha256": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6"
+        },
+        "profile_rows": 5224,
+        "profile_trade_dates": [
+          "2026-09-30"
+        ],
+        "status": "FP06_PROFILE_OWNER_BOUND_AND_CONSUMED",
+        "trade_date": "2026-09-30"
+      },
+      "strict_pit": "NOT_GRANTED",
+      "structure": {
+        "result": "UNKNOWN_IS_LEGAL_UNDER_BOUND_CAPABILITY",
+        "status": "REAL_R13_CANDIDATE_NO_AUTHORIZED_INPUT_OWNER_ROWS_FOR_ANCHORS"
+      },
+      "trade_date": "2026-09-30",
+      "trade_date_clock": "T and prior valid session computed only in T target coordinate"
+    }
+  ]
+}

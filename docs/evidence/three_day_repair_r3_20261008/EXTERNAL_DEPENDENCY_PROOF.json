@@ -1,0 +1,42 @@
+{
+  "blockers": [
+    {
+      "alternative": "Never reverse-fill from 9/30; process immediately if exact historical owner arrives; preserve UNKNOWN meanwhile.",
+      "evidence": {
+        "bytes": 4004928,
+        "exists": true,
+        "path": "data/v4/artifact_store/v4_08/V4_08_PIT_MEMBERSHIP_FACTS_20260930_R1.jsonl.gz",
+        "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+      },
+      "minimum_input": "dated sector→security membership facts for 9/28 and 9/29 with source revision, provider availability and accepted identity link",
+      "reason": "Scoped accepted V4-08 membership owner contains 9/30 only; no effective-date member authority for the two prior dates.",
+      "scope": "9/28–9/29 historical sector rotation, deltas, retention"
+    },
+    {
+      "alternative": "Continue isolated candidate adapter/oracle; no formal publish before authority.",
+      "evidence": {
+        "bytes": 2066,
+        "exists": true,
+        "path": "reports/v4_12_runtime_r13/real/2026-09-30/r1/runtime_manifest.json",
+        "sha256": "0ae1fd6f7e90b520e691820df883e995c77ca39af591b28d769eef6e0a7a7ab1"
+      },
+      "minimum_input": "accepted target-date V4-03 publication for the required fields, exact T-1 structure owner, and explicit runtime admission",
+      "reason": "Accepted V4-12 head blocks target Core fields and prior owner; real candidate cannot create anchors; formal production permission is false.",
+      "scope": "9/30 V4-12 structure fields"
+    },
+    {
+      "alternative": "Keep same-day membership relationship projection; do not substitute self-including sector data.",
+      "evidence": {
+        "bytes": 9560,
+        "exists": true,
+        "path": "config/v4_13_loo_context_v1_1.json",
+        "sha256": "4a5ea382ec04e280228f70e134a1f524576fb882ec4950ad1997fe784a08529b"
+      },
+      "minimum_input": "implemented versioned LOO owner/consumer and accepted required factor endpoints",
+      "reason": "V4-13 LOO remains contract freeze only, runtime_implemented=false; accepted required stock-relative endpoints are not bound.",
+      "scope": "relative_sector_state"
+    }
+  ],
+  "contract_id": "R3_EXTERNAL_DEPENDENCY_PROOF_V1",
+  "independent_work_continues": true
+}

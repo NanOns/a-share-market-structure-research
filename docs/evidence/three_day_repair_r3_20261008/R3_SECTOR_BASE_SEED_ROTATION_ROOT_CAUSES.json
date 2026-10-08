@@ -1,0 +1,223 @@
+{
+  "acceptance": "DEGRADED_PASS for current same-day facts; history/Base/Seed/Rotation remain field-local UNKNOWN with differentiated dependency reasons",
+  "accepted_current_facts": {
+    "breadth_ret1": {
+      "known": 378,
+      "unknown": 0
+    },
+    "breadth_ret20": {
+      "known": 378,
+      "unknown": 0
+    },
+    "breadth_ret5": {
+      "known": 378,
+      "unknown": 0
+    },
+    "ma20_width": {
+      "known": 378,
+      "unknown": 0
+    },
+    "sector_rs1": {
+      "known": 378,
+      "unknown": 0
+    },
+    "sector_rs20": {
+      "known": 378,
+      "unknown": 0
+    },
+    "sector_rs5": {
+      "known": 378,
+      "unknown": 0
+    }
+  },
+  "contract_id": "R3_SECTOR_BASE_SEED_ROTATION_ROOT_CAUSES_V1",
+  "dependency_graph": [
+    {
+      "current_owner_state": "exact accepted 9/30 membership only; no accepted effective-date prior for 9/28/29",
+      "field_group": "native common-member deltas / entry-exit / retention",
+      "needs": [
+        "prior_memberships[k][sector_id]",
+        "prior_date[k]",
+        "prior_core[k]"
+      ],
+      "status": "NO_EFFECTIVE_DATED_MEMBERSHIP"
+    },
+    {
+      "current_owner_state": "V4-07 target source has prior-RPS bootstrap degradation; no accepted exact 9/30 Base/Seed signal bound",
+      "field_group": "Base/Seed width and retention",
+      "needs": [
+        "target-date accepted base-seed truth",
+        "exact seed capability",
+        "prior_seed for retention"
+      ],
+      "status": "UPSTREAM_CAPABILITY_NOT_BOUND"
+    },
+    {
+      "current_owner_state": "current rotation UNKNOWN 378/378; no prior accepted publication for target; algorithm remains candidate-only",
+      "field_group": "B0/Rotation state, episode, maturity",
+      "needs": [
+        "accepted B0 input fields",
+        "prior accepted rotation publication",
+        "frozen prior members/core/calendar"
+      ],
+      "status": "NO_PRIOR_OWNER_MATERIALIZED"
+    },
+    {
+      "current_owner_state": "accepted member artifact covers 9/30 only; historical first availability not proved",
+      "field_group": "strict PIT membership",
+      "needs": [
+        "provider availability and accepted dated membership capture for each target"
+      ],
+      "status": "FIRST_AVAILABLE_UNPROVEN_ONLY"
+    }
+  ],
+  "historical_fields": {
+    "base_seed_width_adjusted": {
+      "counts": {
+        "known": 0,
+        "unknown": 378
+      },
+      "reasons": {
+        "\"DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL\"": 378
+      }
+    },
+    "breadth_delta1": {
+      "counts": {
+        "known": 0,
+        "unknown": 378
+      },
+      "reasons": {
+        "\"NO_PRIOR_ACCEPTED_PIT_HISTORY\"": 378
+      }
+    },
+    "breadth_delta3": {
+      "counts": {
+        "known": 0,
+        "unknown": 378
+      },
+      "reasons": {
+        "\"NO_PRIOR_ACCEPTED_PIT_HISTORY\"": 378
+      }
+    },
+    "dq5": {
+      "counts": {
+        "known": 0,
+        "unknown": 378
+      },
+      "reasons": {
+        "\"NO_PRIOR_ACCEPTED_PIT_HISTORY\"": 378
+      }
+    },
+    "entered_count": {
+      "counts": {
+        "known": 0,
+        "unknown": 378
+      },
+      "reasons": {
+        "\"NO_PRIOR_ACCEPTED_PIT_HISTORY\"": 378
+      }
+    },
+    "ma20_delta1": {
+      "counts": {
+        "known": 0,
+        "unknown": 378
+      },
+      "reasons": {
+        "\"NO_PRIOR_ACCEPTED_PIT_HISTORY\"": 378
+      }
+    },
+    "ma20_delta3": {
+      "counts": {
+        "known": 0,
+        "unknown": 378
+      },
+      "reasons": {
+        "\"NO_PRIOR_ACCEPTED_PIT_HISTORY\"": 378
+      }
+    },
+    "net_entered_count": {
+      "counts": {
+        "known": 0,
+        "unknown": 378
+      },
+      "reasons": {
+        "\"NO_PRIOR_ACCEPTED_PIT_HISTORY\"": 378
+      }
+    },
+    "output_state": {
+      "counts": {
+        "known": 0,
+        "unknown": 378
+      },
+      "reasons": {
+        "[\"NO_PRIOR_ACCEPTED_PIT_HISTORY\"]": 378
+      }
+    },
+    "rank_velocity3": {
+      "counts": {
+        "known": 0,
+        "unknown": 378
+      },
+      "reasons": {
+        "\"NO_PRIOR_ACCEPTED_PIT_HISTORY\"": 378
+      }
+    },
+    "seed_width": {
+      "counts": {
+        "known": 0,
+        "unknown": 378
+      },
+      "reasons": {
+        "\"DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL\"": 378
+      }
+    },
+    "strong_member_retention": {
+      "counts": {
+        "known": 0,
+        "unknown": 378
+      },
+      "reasons": {
+        "\"NO_PRIOR_ACCEPTED_PIT_HISTORY\"": 378
+      }
+    }
+  },
+  "membership_source": {
+    "bytes": 4004928,
+    "exists": true,
+    "path": "data/v4/artifact_store/v4_08/V4_08_PIT_MEMBERSHIP_FACTS_20260930_R1.jsonl.gz",
+    "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+  },
+  "population": 378,
+  "preserved_2646_oracle": {
+    "bytes": 947052,
+    "exists": true,
+    "path": "docs/evidence/three_day_repair_r2_20261008/R2_P0_2_SECTOR_INDEPENDENT_ORACLE.csv",
+    "sha256": "3da24178ec80dc98901ecce053a8b601f475d2210552468e1109f016c89db377"
+  },
+  "r2_real_numeric_cases_source": {
+    "bytes": 7540,
+    "exists": true,
+    "path": "docs/evidence/three_day_repair_r2_20261008/R2_SECTOR_OWNER_BINDING_AND_ROOT_CAUSE.json",
+    "sha256": "b98183caf8c9371c2da2a49a7325f30352849d28f040114e89dbbe5344ef1baf"
+  },
+  "reason_code_fix": {
+    "accepted_live_snapshot_rewritten": false,
+    "codes": [
+      "NO_EFFECTIVE_DATED_MEMBERSHIP",
+      "NO_PRIOR_OWNER_MATERIALIZED",
+      "FIRST_AVAILABLE_UNPROVEN_ONLY"
+    ],
+    "files": [
+      "src/sector/native_r5.py",
+      "src/sector/rotation_r5.py"
+    ],
+    "legacy_reason_retained_for_frozen_compatibility": true,
+    "new_candidate_reason_codes_in_output": true,
+    "tests": {
+      "command": "python -B -m pytest -q -p no:cacheprovider --basetemp=E:/codex_tmp/test_temp/r3_sector_reason tests/v4_08/test_r5_runtime.py tests/v4_08/test_r5_1_accepted_adapter.py tests/v4_08/test_r5_2_context_authority.py",
+      "passed": 71
+    }
+  },
+  "result": "SAME_DAY_PASS_HISTORY_FIELDS_DEGRADED",
+  "target": "2026-09-30"
+}

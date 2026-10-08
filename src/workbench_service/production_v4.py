@@ -195,6 +195,15 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
                     if kind=='ROTATION': cells['output_state']=dict(value=row['output_state'],quality=row['quality'],reason=row.get('reason_codes'))
                     result['fields'].update({k:compact_cell(dict(v,unit=units.get(k)),sources[kind],k,date) for k,v in cells.items()})
                     db.execute("DELETE FROM objects WHERE domain='sectors' AND id=?",(row['sector_id'],));put('sectors',result)
+        domain_features={}
+        market_authority=root/'config/v4_market_operational_authority_v1.json'
+        if market_authority.exists():
+            authority=json.loads(market_authority.read_bytes())
+            if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('MARKET_SOURCE_CONTEXT_MISMATCH')
+            market=legacy._read(authority['market']);sources['market_operational']=authority['market']
+            domain_features['market']=market
+            fields={k:compact_cell(dict(value=v,quality='UNKNOWN' if v in (None,'UNKNOWN') else 'KNOWN',reason=market['trend'].get('unknown_reason') if k=='trend_axis' else market['axes']['field_quality'].get(k,{}).get('unknown_reason'),contract_id='FP05_CURRENT_MARKET_FOUR_AXES_V1',parameter_set_id='V4_03_CORE_FACTOR_PARAMETER_SET_V1'),authority['market'],k,date) for k,v in market['row'].items()}
+            put('market',dict(entity_id='A_SHARE_RESEARCH_MARKET',display_name='全市场研究环境',fields=fields))
         counts={d:db.execute('SELECT count(*) FROM objects WHERE domain=?',(d,)).fetchone()[0] for d in DOMAINS}
         expected_stocks=len(legacy._source(contract,'RAW_DAILY')['rows'])
         expected_sectors=len({r['sector_id'] for r in legacy._source(contract,'membership')})
@@ -203,7 +212,8 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
               dict(domain='focus',state='ENGINEERING_NOT_READY',reason='EPISODE_PROJECTION_NOT_PUBLISHED_IN_CURRENT_OWNER_CONTEXT',next='FP08_PUBLISH_REAL_EPISODES'),
               dict(domain='stocks',state='SOURCE_INCOMPLETE',reason='CURRENT_CORE_OWNER_PROFILE_IS_20260928_NOT_20260930',next='FP07_CURRENT_CORE_RECOMPUTE'),
               dict(domain='profile_identity',state='SOURCE_INCOMPLETE',reason='ADVANCED_ROWS_OUTSIDE_CURRENT_RAW_UNIVERSE',count=unmatched)]
-        meta=dict(contract_id='V4_RESEARCH_SNAPSHOT_V1', context=context['context'],legacy_context_token=context['context_token'],
+        if 'market' in domain_features:gaps=[g for g in gaps if g['domain']!='market']
+        meta=dict(contract_id='V4_RESEARCH_SNAPSHOT_V1', domain_features=domain_features,context=context['context'],legacy_context_token=context['context_token'],
             source_contract_digest=contract_digest, sources=sources, owners=owners, counts=counts, gaps=gaps,
             field_registry=field_registry, operational_state='OPERATIONAL_PRODUCTION_ACTIVE',
             evidence_state='VALIDATION_ONGOING', quality='QUALITY_DEGRADED', publication_scope='FP02_INDEXED_EXISTING_REAL_OUTPUTS',

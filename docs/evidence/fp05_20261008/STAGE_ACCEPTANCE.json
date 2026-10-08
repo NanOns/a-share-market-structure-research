@@ -1,0 +1,28 @@
+{
+  "browser": "IAB_VERIFIED_EDGE_PENDING_FP13",
+  "contract": {
+    "bytes": 656,
+    "path": "config/v4_market_path_successor_contract_v1.json",
+    "sha256": "64ccdbfb0ee9fd74723a69db92d166e96f920b798f992a6d533d1b5edf8f9ab3"
+  },
+  "gaps": [
+    "SECTOR_PRIOR_PIT_HISTORY_MISSING_FP06",
+    "INDEPENDENT_EDGE_PENDING"
+  ],
+  "next_stage": "FP06",
+  "protected": {
+    "changed": [],
+    "checked": 872
+  },
+  "result": "DEGRADED_PASS",
+  "source": {
+    "bytes": 730,
+    "path": "config/v4_market_operational_authority_v1.json",
+    "sha256": "95d35e0ce8a4629693a0ecb2728ba1439fb72a2fb1734c1f5084e21a1c4322fb"
+  },
+  "stage": "FP05",
+  "tests": {
+    "passed": 27,
+    "seconds": 1.19
+  }
+}

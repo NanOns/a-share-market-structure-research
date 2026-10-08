@@ -1,0 +1,15 @@
+{
+  "contract_id": "DAILY_REBALANCED_RESEARCH_INDEX_FP05_V2",
+  "version": "1.0.0",
+  "parent_series": "DAILY_REBALANCED_RESEARCH_INDEX_V1",
+  "prefix_policy": "EXACT_FROZEN_PREFIX_BYTES_WITH_EXPLICIT_BRIDGE",
+  "bridge_weight": "EQUAL_WEIGHT_START_SESSION_DATED_UNIVERSE",
+  "minimum_bridge_coverage": 0.9,
+  "coordinate": "TARGET_CURRENT_TDX_AFFINE_QFQ",
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "AS_RECORDED": false,
+  "missing_return_policy": "BREAK_SUFFIX_NO_FILL",
+  "missing_axis_policy": "RESET_HYSTERESIS_PENDING_KEEP_LAST_KNOWN_SEPARATELY",
+  "old_series_write": false,
+  "claims": "Research index, no probability or trading action"
+}

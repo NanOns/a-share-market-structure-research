@@ -7,6 +7,7 @@ from urllib.parse import unquote
 from .production_v4 import ProductionV4ResearchReader, POINTER
 from .current_v4_context import SourceInvalid, digest
 from .v4_daily_refresh import refresh_status
+from .domain_views import home
 
 class ResearchBFF:
     def __init__(self,root):
@@ -41,7 +42,8 @@ class ResearchBFF:
                 control={k:progress[k] for k in ('status','next_completed_session','source_requests','data_preserved')}
                 control.update(scope='INPUT_PROGRESS_NOT_RESEARCH_CONTEXT',accepted_input_date=progress['context']['context']['accepted_trade_date'],indexed_trade_date=r.context['accepted_trade_date'])
                 return 200,r.envelope(status='READY',counts=r.manifest['counts'],gaps=r.manifest['gaps'],daily_refresh=control)
-            if name=='home':return 200,r.envelope(status='READY',counts=r.manifest['counts'],gaps=r.manifest['gaps'],changes=r.query('events',dict(query,limit='15'))['items'],radar=r.query('radar',dict(query,limit='15'))['items'])
+            if name=='home':return 200,home(r)
+            if name=='market' and len(parts)==1:return 200,r.envelope(status='READY' if r.manifest.get('domain_features',{}).get('market') else 'SOURCE_INCOMPLETE',market=r.manifest.get('domain_features',{}).get('market'))
             if name=='diagnostics':
                 if len(parts)>1 and parts[1]=='fields':return 200,r.envelope(status='READY',fields=r.manifest['field_registry'])
                 if len(parts)>1 and parts[1]=='rules':return 200,r.envelope(status='READY',owners=r.manifest['owners'],source_contract_digest=r.manifest['source_contract_digest'])

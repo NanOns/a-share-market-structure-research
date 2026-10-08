@@ -1,0 +1,141 @@
+{
+  "breadth": {
+    "actual_quote_count": 5213,
+    "amount_cny": 1437835918700.0,
+    "denominator": 5224,
+    "down": 2712,
+    "flat": 155,
+    "unknown": 13,
+    "up": 2344
+  },
+  "indices": [
+    {
+      "bars": 120,
+      "last": {
+        "amount": 679398998016.0,
+        "close": 3842.19,
+        "high": 3851.22,
+        "low": 3833.09,
+        "open": 3839.25,
+        "quality": "KNOWN",
+        "trade_date": "2026-09-30",
+        "volume": 414560247
+      },
+      "name": "上证指数"
+    },
+    {
+      "bars": 120,
+      "last": {
+        "amount": 758619111424.0,
+        "close": 12887.62,
+        "high": 12966.45,
+        "low": 12854.78,
+        "open": 12958.08,
+        "quality": "KNOWN",
+        "trade_date": "2026-09-30",
+        "volume": 494715200
+      },
+      "name": "深证成指"
+    },
+    {
+      "bars": 120,
+      "last": {
+        "amount": 368971644928.0,
+        "close": 3135.28,
+        "high": 3173.36,
+        "low": 3125.49,
+        "open": 3164.7,
+        "quality": "KNOWN",
+        "trade_date": "2026-09-30",
+        "volume": 139371557
+      },
+      "name": "创业板指"
+    },
+    {
+      "bars": 120,
+      "last": {
+        "amount": 356491558912.0,
+        "close": 4357.62,
+        "high": 4368.61,
+        "low": 4341.88,
+        "open": 4356.8,
+        "quality": "KNOWN",
+        "trade_date": "2026-09-30",
+        "volume": 162949626
+      },
+      "name": "沪深300"
+    },
+    {
+      "bars": 120,
+      "last": {
+        "amount": 274499108864.0,
+        "close": 7298.82,
+        "high": 7375.44,
+        "low": 7288.98,
+        "open": 7361.14,
+        "quality": "KNOWN",
+        "trade_date": "2026-09-30",
+        "volume": 165675031
+      },
+      "name": "中证1000"
+    }
+  ],
+  "ladder_count": 56,
+  "limits": {
+    "LIMIT_DOWN": 12,
+    "LIMIT_UP": 56,
+    "NOT_LIMIT": 5142,
+    "NO_LIMIT": 2,
+    "SUSPENDED": 11,
+    "UNKNOWN": 1
+  },
+  "sources": {
+    "IDENTITY_UNIVERSE": {
+      "bytes": 3112040,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/artifact.json",
+      "sha256": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf"
+    },
+    "PRICE_LIMIT": {
+      "bytes": 3895313,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/PRICE_LIMIT/artifact.json",
+      "sha256": "808c3d48f22245a1cebe6234013fda18483a1c568d2bdfebbbc08aa41793d7a7"
+    },
+    "RAW_DAILY": {
+      "bytes": 4710499,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/RAW_DAILY/artifact.json",
+      "sha256": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1"
+    },
+    "TRADING_STATUS": {
+      "bytes": 2470841,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/TRADING_STATUS/artifact.json",
+      "sha256": "20798999bb3309aa93f42ebd075bc53cffb5337117f6fbccd7eafd14986f51bb"
+    },
+    "data_head": {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "index_archive": {
+      "bytes": 551362764,
+      "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261001T100202286790Z/sha256-d87d490151ffb45ff63c500f925be8acb7de992de693eb871029211d7ed87655/hsjday.zip",
+      "sha256": "d87d490151ffb45ff63c500f925be8acb7de992de693eb871029211d7ed87655"
+    },
+    "limits_2026-09-28": {
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/PRICE_LIMIT/artifact.json",
+      "sha256": "fb732f89a9b784f533e5944b2579e1260d2169e0e6dce48cb690de1313fdd950"
+    },
+    "limits_2026-09-29": {
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/PRICE_LIMIT/artifact.json",
+      "sha256": "2d6c7f39c082fb96503303d59b7199438e3d82f271777d3dc70da4a46b756ea9"
+    },
+    "limits_2026-09-30": {
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/PRICE_LIMIT/artifact.json",
+      "sha256": "808c3d48f22245a1cebe6234013fda18483a1c568d2bdfebbbc08aa41793d7a7"
+    },
+    "projection_adapter": {
+      "bytes": 5228,
+      "path": "scripts/build_fp09_market_center.py",
+      "sha256": "12ef9663d964941e85d33401c069e04c202843b029d1ed683a78204f3a8811ac"
+    }
+  }
+}

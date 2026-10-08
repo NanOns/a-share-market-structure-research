@@ -1,0 +1,62 @@
+{
+  "authority": {
+    "AS_RECORDED": false,
+    "amount_unit": "CNY",
+    "contract_id": "FP07_STOCK_OPERATIONAL_AUTHORITY_V1",
+    "factors": {
+      "bytes": 19460170,
+      "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/factors.jsonl.gz",
+      "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    "input_data_head": {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "intraday": "NOT_AVAILABLE_NO_FAKE_MINUTE_BARS",
+    "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+    "price_basis": "TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE",
+    "profiles": {
+      "bytes": 44330385,
+      "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/profiles.jsonl.gz",
+      "sha256": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6"
+    },
+    "series": {
+      "bytes": 367886336,
+      "path": "data/v4/fp07_stocks/33d5a66f47870a29397a453132d9ea0ac3dbc0f82063902a60436992fe43c378/series.sqlite",
+      "sha256": "6b326dac93aacd63dc289895b1488f224843940154b6f4b89bc0df8af0a4518d"
+    },
+    "sources": {
+      "factors": {
+        "bytes": 19460170,
+        "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/factors.jsonl.gz",
+        "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+      },
+      "history": {
+        "bytes": 42168789,
+        "path": "data/v4/fp05_market/c03f6866438cc08655f981b697409373fae7ee2f19eea7e6d6e2523559cdbab0/history.jsonl.gz",
+        "sha256": "9f7ee99454374db02824b5c9d52e2da89fca30232bc291ddb1f48ef6db84b6c0"
+      },
+      "profiles": {
+        "bytes": 44330385,
+        "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/profiles.jsonl.gz",
+        "sha256": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6"
+      },
+      "projection_adapter": {
+        "bytes": 2598,
+        "path": "scripts/build_fp07_stock.py",
+        "sha256": "8cb6c48a3c5b83b22b71d15a9c51c1195c77d95a8fb146c8669677f046b2bb8c"
+      },
+      "unit_contract": {
+        "bytes": 22120,
+        "path": "src/tdx/tdx_audit.py",
+        "sha256": "cbb1042ab37c12674d784509000e1da6076e63e86d5faace7ef0e732f79ab06e"
+      }
+    },
+    "trade_date": "2026-09-30",
+    "volume_unit": "SHARES"
+  },
+  "bars": 1309832,
+  "entities": 5224,
+  "status": "READY_REAL_SOURCE_INDEX"
+}

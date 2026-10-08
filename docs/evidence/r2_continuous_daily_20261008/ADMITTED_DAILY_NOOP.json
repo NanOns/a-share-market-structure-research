@@ -1,0 +1,50 @@
+{
+  "authority_preserved": true,
+  "receipt": {
+    "activation_performed": false,
+    "authority_digest": "549b7faa0735cbfe23794dbd0d4cb2acf4dda003c3351c576c19ba5cd01b9216",
+    "first_observed_freeze": {
+      "AS_RECORDED": false,
+      "contract_id": "R2_FIRST_OBSERVED_FREEZE_V1",
+      "first_observed_at": "2026-10-08T07:41:49.224466+00:00",
+      "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+      "reason": "FIRST_OBSERVED_TIME_IS_NOT_PROOF_OF_HISTORICAL_FIRST_AVAILABLE",
+      "source_identity": "2dbbbe309da7ae6f7269924ffeb4c5bed03238289691ce51df6ff03301f732d6",
+      "sources": {
+        "advanced": {
+          "bytes": 37627535,
+          "path": "data/v4/pit_first_observed/2026-09-30/2dbbbe309da7ae6f7269924ffeb4c5bed03238289691ce51df6ff03301f732d6/advanced.gz",
+          "sha256": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+        },
+        "membership": {
+          "bytes": 4004928,
+          "path": "data/v4/pit_first_observed/2026-09-30/2dbbbe309da7ae6f7269924ffeb4c5bed03238289691ce51df6ff03301f732d6/membership.gz",
+          "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+        },
+        "sector_operational": {
+          "bytes": 1570580,
+          "path": "data/v4/pit_first_observed/2026-09-30/2dbbbe309da7ae6f7269924ffeb4c5bed03238289691ce51df6ff03301f732d6/sector_operational.gz",
+          "sha256": "cd3b61b1d42e2722e4266a27d3c617906ed0dc5c810ffe663b4bf85152285335"
+        },
+        "states": {
+          "bytes": 12539130,
+          "path": "data/v4/pit_first_observed/2026-09-30/2dbbbe309da7ae6f7269924ffeb4c5bed03238289691ce51df6ff03301f732d6/states.gz",
+          "sha256": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+        },
+        "stock_factors": {
+          "bytes": 19460170,
+          "path": "data/v4/pit_first_observed/2026-09-30/2dbbbe309da7ae6f7269924ffeb4c5bed03238289691ce51df6ff03301f732d6/stock_factors.gz",
+          "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+        }
+      },
+      "strict_t0_pit_ready": false,
+      "trade_date": "2026-09-30"
+    },
+    "forward_due": "NO_DUE",
+    "full_product_release": false,
+    "raw_oracle_comparisons": 20852,
+    "result": "NOOP",
+    "strict_pit": false
+  },
+  "result": "PASS"
+}

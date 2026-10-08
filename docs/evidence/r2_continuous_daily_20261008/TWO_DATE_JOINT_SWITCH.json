@@ -1,0 +1,36 @@
+{
+  "activation": {
+    "activation_performed": true,
+    "authority_digest": "6912323b3b6abf78e82dd492eade6839271ba2055ec1bddc68f79f8704c95ac8",
+    "operational_release_scope": [
+      "focus_read_corrected",
+      "forward_read",
+      "diagnostics"
+    ],
+    "readback": {
+      "context_token": "research-v4-cd4d54043aef0e44517f69b23d58fa6bd4fa46dfefed43fe8668b691d4a9f394",
+      "counts": {
+        "events": 33,
+        "focus": 469,
+        "forward": 117,
+        "market": 1,
+        "radar": 117,
+        "sectors": 378,
+        "settlement": 5,
+        "sources": 4,
+        "stocks": 5213
+      },
+      "pass": true,
+      "pass_": true,
+      "trade_date": "2026-09-30"
+    },
+    "result": "SCOPED_OPERATIONAL_RELEASE_PASS"
+  },
+  "exact_failure_restore": true,
+  "noop": {
+    "activation_performed": false,
+    "authority_digest": "6912323b3b6abf78e82dd492eade6839271ba2055ec1bddc68f79f8704c95ac8",
+    "result": "NOOP"
+  },
+  "result": "PASS"
+}

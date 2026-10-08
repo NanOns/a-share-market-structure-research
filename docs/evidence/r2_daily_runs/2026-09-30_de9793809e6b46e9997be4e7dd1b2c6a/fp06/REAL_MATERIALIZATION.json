@@ -1,0 +1,100 @@
+{
+  "authority": {
+    "contract_id": "FP06_SECTOR_OPERATIONAL_AUTHORITY_V1",
+    "factors": {
+      "bytes": 19460170,
+      "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/factors.jsonl.gz",
+      "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    "history_claim": "CURRENT_MEMBERSHIP_NOT_REPLAYED_AS_PRIOR",
+    "input_data_head": {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "native": {
+      "bytes": 1570580,
+      "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/native.jsonl.gz",
+      "sha256": "cd3b61b1d42e2722e4266a27d3c617906ed0dc5c810ffe663b4bf85152285335"
+    },
+    "profile_period_policy": "LAST_FORMING_BUCKET_EXCLUDED",
+    "profiles": {
+      "bytes": 44330385,
+      "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/profiles.jsonl.gz",
+      "sha256": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6"
+    },
+    "quality": "FIELD_LOCAL_DEGRADED",
+    "sources": {
+      "core_kernel": {
+        "bytes": 16643,
+        "path": "src/v4/factors/core.py",
+        "sha256": "8986358268a5ae706c6cc46c95937ed381b65b55d3293667f840ff50008217f1"
+      },
+      "historical_status": {
+        "bytes": 100075252,
+        "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+        "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+      },
+      "history": {
+        "bytes": 42168789,
+        "path": "data/v4/fp05_market/c03f6866438cc08655f981b697409373fae7ee2f19eea7e6d6e2523559cdbab0/history.jsonl.gz",
+        "sha256": "9f7ee99454374db02824b5c9d52e2da89fca30232bc291ddb1f48ef6db84b6c0"
+      },
+      "market": {
+        "bytes": 12387,
+        "path": "data/v4/fp05_market/c03f6866438cc08655f981b697409373fae7ee2f19eea7e6d6e2523559cdbab0/market.json",
+        "sha256": "ce41b6bdaf574014948e817b03dc6e5d59f554d950d66462ec7517519e278d75"
+      },
+      "membership": {
+        "bytes": 4004928,
+        "contract_id": "V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1",
+        "owner_stage": "V4-08",
+        "path": "data/v4/artifact_store/v4_08/V4_08_PIT_MEMBERSHIP_FACTS_20260930_R1.jsonl.gz",
+        "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+      },
+      "native_kernel": {
+        "bytes": 11591,
+        "path": "src/sector/native_r5.py",
+        "sha256": "280f5315fbaef91cd8411924ad39d0436684380aec6d484619dbefc9238e9b01"
+      },
+      "profile_kernel": {
+        "bytes": 15008,
+        "path": "scripts/run_v4_04_full_market_candidate_r4.py",
+        "sha256": "263e1c54aed59026cef97061ef3f74bb184634d3589d2438a84a11baa71ab816"
+      },
+      "projection_adapter": {
+        "bytes": 10603,
+        "path": "scripts/build_fp06_sector.py",
+        "sha256": "00b726e1ce7a635c0653bd6c187d56a4bd7e30e91c9f2d0662545033fba4b4f6"
+      },
+      "sector_parameters": {
+        "bytes": 4045,
+        "path": "config/v4_08_algorithm_parameter_set_r5.json",
+        "sha256": "0204d7c4fadf86871b6a079f755593b1a3f8ad18bb718f73ba33db0b70f67548"
+      }
+    },
+    "trade_date": "2026-09-30"
+  },
+  "core_rows": 5224,
+  "known_native_fields": {
+    "breadth_ret1": 378,
+    "breadth_ret20": 378,
+    "breadth_ret5": 378,
+    "membership_ready": 378,
+    "participation_proxy": 378,
+    "pos60": 378,
+    "sector_member_count": 378,
+    "sector_quote_coverage": 378,
+    "sector_rs1": 378,
+    "sector_rs20": 378,
+    "sector_rs20_pct": 373,
+    "sector_rs5": 378,
+    "sector_rs5_pct": 373,
+    "strong_member": 213,
+    "top1_concentration": 378,
+    "top3_concentration": 378
+  },
+  "prior_membership_fabricated": false,
+  "profile_rows": 5224,
+  "sectors": 378
+}

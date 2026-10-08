@@ -1,0 +1,98 @@
+{
+  "authority": {
+    "contract_id": "FP05_MARKET_AUTHORITY_V1",
+    "history": {
+      "bytes": 42168789,
+      "path": "data/v4/fp05_market/c03f6866438cc08655f981b697409373fae7ee2f19eea7e6d6e2523559cdbab0/history.jsonl.gz",
+      "sha256": "9f7ee99454374db02824b5c9d52e2da89fca30232bc291ddb1f48ef6db84b6c0"
+    },
+    "input_data_head": {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "market": {
+      "bytes": 12387,
+      "path": "data/v4/fp05_market/c03f6866438cc08655f981b697409373fae7ee2f19eea7e6d6e2523559cdbab0/market.json",
+      "sha256": "ce41b6bdaf574014948e817b03dc6e5d59f554d950d66462ec7517519e278d75"
+    },
+    "trade_date": "2026-09-30"
+  },
+  "bridge": [
+    {
+      "coverage": 0.9946380697050938,
+      "evaluable_count": 5194,
+      "level": 1.370480352427638,
+      "return_value": -0.02231575496536778,
+      "start_member_count": 5222,
+      "start_member_digest": "3743887f6050124dc551184d86b3fd60a9388e7188fd7abfac165b21eb361cee",
+      "start_session": "2026-09-24",
+      "trade_date": "2026-09-28"
+    },
+    {
+      "coverage": 0.9942550746840291,
+      "evaluable_count": 5192,
+      "level": 1.3803090893458538,
+      "return_value": 0.007171745950830391,
+      "start_member_count": 5222,
+      "start_member_digest": "3743887f6050124dc551184d86b3fd60a9388e7188fd7abfac165b21eb361cee",
+      "start_session": "2026-09-28",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "coverage": 0.9942561746122918,
+      "evaluable_count": 5193,
+      "level": 1.3784376667359275,
+      "return_value": -0.001355799671516417,
+      "start_member_count": 5223,
+      "start_member_digest": "99c8c0faa9c5592beeb011157b5bb07cede50fae0e135c2f0016f994f4104e2a",
+      "start_session": "2026-09-29",
+      "trade_date": "2026-09-30"
+    }
+  ],
+  "old_path_modified": false,
+  "qa": "NATIVE_KERNELS_BOUND_TO_EXACT_REAL_INPUTS",
+  "raw": {
+    "breadth_common_count": 5222,
+    "breadth_delta3": 0.24209714726291445,
+    "breadth_evaluable_count": 5188,
+    "breadth_t": 0.4494988434849653,
+    "breadth_t_minus_3": 0.20740169622205087,
+    "limit_coverage": 0.9973200612557427,
+    "limit_evaluable_count": 5210,
+    "participation_evaluable_count": 5164,
+    "participation_median_amount_ratio20": 0.718264696850696,
+    "stress_common_count": 5206,
+    "stress_ratio": 0.0023032629558541267,
+    "stress_same_member_current_ratio": 0.0021129466000768342,
+    "stress_same_member_prior_ratio": 0.002305032654629274,
+    "universe_count": 5224
+  },
+  "regime": {
+    "candidate": "RECOVERY_ATTEMPT",
+    "consecutive_count": 1,
+    "contract_id": "MARKET_REGIME_V1",
+    "evidence": {
+      "breadth_axis": "IMPROVING",
+      "candidate": "RECOVERY_ATTEMPT",
+      "consecutive_count": 1,
+      "last_known": "NEUTRAL",
+      "market_input_digest": null,
+      "participation_axis": "THIN",
+      "stress_change": "DECLINING",
+      "stress_level": "LOW",
+      "trend_axis": "WEAK"
+    },
+    "last_known": "NEUTRAL",
+    "unknown_reason": null,
+    "value": "NEUTRAL"
+  },
+  "row": {
+    "breadth_axis": "IMPROVING",
+    "participation_axis": "THIN",
+    "stress_change": "DECLINING",
+    "stress_level": "LOW",
+    "trade_date": "2026-09-30",
+    "trend_axis": "WEAK"
+  }
+}

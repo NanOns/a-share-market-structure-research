@@ -1,0 +1,334 @@
+{
+  "context_token": "research-v4-4b1c722e14753e84e00a5b4a03779393348dbec5ab1fc1bf40e105af0f1a3936",
+  "domain_features": {
+    "focus": {
+      "contract_id": "R2_V4_FOCUS_NATIVE_CORE_PATH_V1",
+      "trade_date": "2026-09-30"
+    },
+    "forward": {
+      "contract_id": "FP10_FORWARD_READ_PROJECTION_V2",
+      "trade_date": "2026-09-30"
+    },
+    "market": {
+      "contract_id": "FP05_CURRENT_MARKET_FOUR_AXES_V1",
+      "trade_date": "2026-09-30"
+    },
+    "market_center": {
+      "contract_id": "FP09_MARKET_CENTER_V1",
+      "trade_date": "2026-09-30"
+    },
+    "replay": {
+      "contract_id": "FP12_REPLAY_COMPARE_AUTHORITY_V1",
+      "trade_date": "2026-09-30"
+    },
+    "sector": {
+      "contract_id": "FP06_SECTOR_OPERATIONAL_AUTHORITY_V1",
+      "trade_date": "2026-09-30"
+    },
+    "stocks": {
+      "contract_id": "FP07_STOCK_OPERATIONAL_AUTHORITY_V1",
+      "trade_date": "2026-09-30"
+    }
+  },
+  "field_matrix": {
+    "bytes": 119326,
+    "path": "docs/evidence/r2_read_domains_continuation_20261008/R2_PRODUCT_FIELD_COVERAGE.json",
+    "sha256": "6e282ba352618f011629e60eb7af4d59f0441b80cf174207454f6ef2b8c3cbf2"
+  },
+  "scope": "SOURCE_AS_OF_IS_NOT_HISTORICAL_KNOWN_AT",
+  "sources": {
+    "ADJUSTED_DAILY": {
+      "bytes": 6218836,
+      "contract_id": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "owner_stage": "V4-02",
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/ADJUSTED_DAILY/artifact.json",
+      "sha256": "a28b3a912e44a8cc6e3e7e43f37038b64e1f7b62024ec4887b5320ffd33d2e17"
+    },
+    "ADJUSTED_DAILY_receipt": {
+      "bytes": 4947,
+      "contract_id": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "owner_stage": "V4-02",
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/ADJUSTED_DAILY/receipt.json",
+      "sha256": "44adb831a810599ab6f3813e2c5902957e20c9ef6b1ae5b2ca8443d7dfe42cda"
+    },
+    "IDENTITY_UNIVERSE": {
+      "bytes": 3112040,
+      "contract_id": "SECURITY_IDENTITY_EVENT_DISCOVERY_V1",
+      "owner_stage": "V4-01 R8.1 baseline + DM-01 daily lifecycle adapter",
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/artifact.json",
+      "sha256": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf"
+    },
+    "IDENTITY_UNIVERSE_receipt": {
+      "bytes": 5029,
+      "contract_id": "SECURITY_IDENTITY_EVENT_DISCOVERY_V1",
+      "owner_stage": "V4-01 R8.1 baseline + DM-01 daily lifecycle adapter",
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/receipt.json",
+      "sha256": "d29192a8fbdeb5b03595f524502df9d9e3146282698ad52f2c1091bf7c553464"
+    },
+    "RAW_DAILY": {
+      "bytes": 4710499,
+      "contract_id": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+      "owner_stage": "V4-02",
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/RAW_DAILY/artifact.json",
+      "sha256": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1"
+    },
+    "RAW_DAILY_receipt": {
+      "bytes": 4766,
+      "contract_id": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+      "owner_stage": "V4-02",
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/RAW_DAILY/receipt.json",
+      "sha256": "6bb6dfba2700b56cca92ac5f9641a4b415c34a884d058bf4f9f36f7115ee134b"
+    },
+    "ROTATION": {
+      "byte_count": 1948501,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_bb8d0c0929f531e8cddf.jsonl.gz",
+      "sha256": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667"
+    },
+    "SECTOR_NATIVE": {
+      "byte_count": 2108127,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_bb8d0c0929f531e8cddf.jsonl.gz",
+      "sha256": "707a21982a8b26b688e3416388c73e64bfbb4d7bf2e04b7bc9df7297c979f53f"
+    },
+    "TRADING_STATUS": {
+      "bytes": 2470841,
+      "contract_id": "V4_02_DATED_TRADING_STATUS_V1",
+      "owner_stage": "V4-02",
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/TRADING_STATUS/artifact.json",
+      "sha256": "20798999bb3309aa93f42ebd075bc53cffb5337117f6fbccd7eafd14986f51bb"
+    },
+    "TRADING_STATUS_receipt": {
+      "bytes": 4769,
+      "contract_id": "V4_02_DATED_TRADING_STATUS_V1",
+      "owner_stage": "V4-02",
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/TRADING_STATUS/receipt.json",
+      "sha256": "c0589bb547b070c830e3ead5ca0ab41de5ca5592cd0cc7b3972b66f0f1557d7e"
+    },
+    "advanced": {
+      "bytes": 37627535,
+      "path": "reports/v4_13_runtime_r16/real/2026-09-30/r6/profile_advanced.jsonl.gz",
+      "sha256": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+    },
+    "display_names": {
+      "bytes": 1355970,
+      "path": "data/v4/display_names/a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f/names.json",
+      "sha256": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+    },
+    "domain_bff_contract": {
+      "bytes": 1485,
+      "path": "config/v4_research_domain_bff_contract_v2.json",
+      "sha256": "1b4ab8c69ab7fc848b6ea2f1165646f4d9d79a42a5d3fee1e330eadebafc6404"
+    },
+    "events": {
+      "bytes": 614785,
+      "contract_id": "STATE_EVENT_V1",
+      "owner_stage": "V4-11",
+      "path": "data/v4/confirmation_candidates_r5/STATE_EVENT_2026-09-30_CANDIDATE_R5.json.gz",
+      "sha256": "7de481708462bda5073031a129bc147279dc9f2c7741c389f14a8fc6f99dcd58"
+    },
+    "focus_journal": {
+      "bytes": 156246016,
+      "path": "data/v4/r2_focus_native_core/1cdbd05a5ef0ca94505fd45dc977ab789c951d5f244ca69bca4256b92cbd31ca/journal.sqlite",
+      "sha256": "f23899ce5e10c35f975a10a94334fe6caa4e6a90bb01162384b9c3d3b798082c"
+    },
+    "focus_kernel_outcomes": {
+      "bytes": 2828,
+      "path": "data/v4/r2_focus_native_core/implementations/c8ba08609f5c232c720717c000fa5adcf93acb3fe2a6fbd0483e579759d78646/outcomes.py",
+      "sha256": "c8ba08609f5c232c720717c000fa5adcf93acb3fe2a6fbd0483e579759d78646"
+    },
+    "focus_kernel_path_state_v2": {
+      "bytes": 5272,
+      "path": "data/v4/r2_focus_native_core/implementations/b959933d202484561515a0a31b251bdc1da93a77ad4e6ac4a50768dd48fba4db/path_state_v2.py",
+      "sha256": "b959933d202484561515a0a31b251bdc1da93a77ad4e6ac4a50768dd48fba4db"
+    },
+    "focus_kernel_price_path": {
+      "bytes": 8535,
+      "path": "data/v4/r2_focus_native_core/implementations/a262e64c3866f0976dc76f27d1a66a471d27c2e2a4ce3ac27a5f182c682b1824/price_path.py",
+      "sha256": "a262e64c3866f0976dc76f27d1a66a471d27c2e2a4ce3ac27a5f182c682b1824"
+    },
+    "focus_kernel_states": {
+      "bytes": 9335,
+      "path": "data/v4/r2_focus_native_core/implementations/f12ad0b9955904ac608f2f99a9e2304451a4f6d71c4326fc6619adca6910f96c/states.py",
+      "sha256": "f12ad0b9955904ac608f2f99a9e2304451a4f6d71c4326fc6619adca6910f96c"
+    },
+    "focus_kernel_v4_native_core_adapter": {
+      "bytes": 6401,
+      "path": "data/v4/r2_focus_native_core/implementations/dda0e8df82f6967d065ebb93377265a9fcaff306f13cf061ecf0a5d6465933d5/v4_native_core_adapter.py",
+      "sha256": "dda0e8df82f6967d065ebb93377265a9fcaff306f13cf061ecf0a5d6465933d5"
+    },
+    "focus_kernel_v4_native_core_daily_driver": {
+      "bytes": 6327,
+      "path": "data/v4/r2_focus_native_core/implementations/c41b09c7ab307dd4b8590a7d965ac10a5c09b95771b3150291b24e4adaf37e1d/v4_native_core_daily_driver.py",
+      "sha256": "c41b09c7ab307dd4b8590a7d965ac10a5c09b95771b3150291b24e4adaf37e1d"
+    },
+    "focus_kernel_v4_native_core_journal": {
+      "bytes": 5614,
+      "path": "data/v4/r2_focus_native_core/implementations/867c945bc8b2f46befb7edeb4b02ac52f52163e2d9159ecc6a7ec1b8eaff1516/v4_native_core_journal.py",
+      "sha256": "867c945bc8b2f46befb7edeb4b02ac52f52163e2d9159ecc6a7ec1b8eaff1516"
+    },
+    "focus_kernel_v4_path_adapter": {
+      "bytes": 9190,
+      "path": "data/v4/r2_focus_native_core/implementations/03d7cfd8fd08ba32532edf6da495ce17f8ac4fbc426da5aea0178b041f240fa4/v4_path_adapter.py",
+      "sha256": "03d7cfd8fd08ba32532edf6da495ce17f8ac4fbc426da5aea0178b041f240fa4"
+    },
+    "focus_kernel_v4_successor": {
+      "bytes": 2834,
+      "path": "data/v4/r2_focus_native_core/implementations/c71de45c15dd648484d3f90a8d7526ec96612a34a9c3f26556fc6b7f5dc797e9/v4_successor.py",
+      "sha256": "c71de45c15dd648484d3f90a8d7526ec96612a34a9c3f26556fc6b7f5dc797e9"
+    },
+    "focus_operational": {
+      "bytes": 6691248,
+      "path": "data/v4/r2_focus_native_core/1cdbd05a5ef0ca94505fd45dc977ab789c951d5f244ca69bca4256b92cbd31ca/focus.json",
+      "sha256": "94d0e53c8d1db7784cb27f2976e33488a6f7f0f94949bc1d6d9fd826d286a051"
+    },
+    "forward_operational": {
+      "bytes": 7926348,
+      "path": "data/v4/fp10_forward/8f8111d3a170dad2634629dfdd2ee6127a5eb796fac8cbcc0dc6dd0729c04686/forward.json",
+      "sha256": "a973cb466ec53d1c190fede59454ed51fd271add7191af29eed96035b5ba9e94"
+    },
+    "identity_names": {
+      "bytes": 5528197,
+      "contract_id": "SECURITY_ENTITY_MAP_R7",
+      "owner_stage": "V4-01",
+      "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+    },
+    "market_center": {
+      "bytes": 5292097,
+      "path": "data/v4/fp09_market_center/bdca1410ca197edfc249f7703dc481978f1a06af288e2e19e67c63bf3d4a232e/market_center.json",
+      "sha256": "e16120adee7ecce6d288eb85a2187c221276cf1a7c202270364b669b6e806270"
+    },
+    "market_operational": {
+      "bytes": 12387,
+      "path": "data/v4/fp05_market/c03f6866438cc08655f981b697409373fae7ee2f19eea7e6d6e2523559cdbab0/market.json",
+      "sha256": "ce41b6bdaf574014948e817b03dc6e5d59f554d950d66462ec7517519e278d75"
+    },
+    "maturity": {
+      "bytes": 1843,
+      "contract_id": "maturity",
+      "owner_stage": "V4-15",
+      "path": "reports/r20r1r2/MATURITY_DEBT_READBACK.json",
+      "sha256": "e40b89ce3d90cf2ad250abe00e111ec55263b25571067c981c645a4ce99c1a52"
+    },
+    "membership": {
+      "bytes": 4004928,
+      "contract_id": "V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1",
+      "owner_stage": "V4-08",
+      "path": "data/v4/artifact_store/v4_08/V4_08_PIT_MEMBERSHIP_FACTS_20260930_R1.jsonl.gz",
+      "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+    },
+    "producer": {
+      "bytes": 58749,
+      "contract_id": "V4_15_RUNTIME_CANDIDATE_R20_SEAL_V1",
+      "owner_stage": "V4-15",
+      "path": "reports/r20e/PRODUCER_RECEIPT.json",
+      "sha256": "5cb082c7da886d771a4aa93c3962ec765c67a40394c51d9f336d473fe8044197"
+    },
+    "radar": {
+      "bytes": 104701,
+      "contract_id": "V4_15_RADAR_COHORT_ENGINEERING_V1",
+      "owner_stage": "V4-15",
+      "path": "reports/v4_15_runtime_r20/e2e_r2/radar_publication/7188d9c2c0ccb9337ae636e9168f3bb3f111a9f06cc69672f5842d365104b962.json",
+      "sha256": "4b0b9c8ac2c4702d0c2c8b17d601ebb63dbf818f5cbc13309024cf3b81124666"
+    },
+    "raw_turnover_projection_contract": {
+      "bytes": 527,
+      "path": "config/v4_raw_amount_volume_projection_v1.json",
+      "sha256": "7ff05a935305d431b0f35d07f3fd82cae628383ba8258afe0f9b921ae418b50b"
+    },
+    "raw_turnover_unit_contract": {
+      "bytes": 22120,
+      "path": "src/tdx/tdx_audit.py",
+      "sha256": "cbb1042ab37c12674d784509000e1da6076e63e86d5faace7ef0e732f79ab06e"
+    },
+    "read_contract": {
+      "bytes": 138821,
+      "contract_id": "V4_CURRENT_ACCEPTED_READ_CONTRACT_V1",
+      "owner_stage": "CURRENT_ACCEPTED",
+      "path": "data/v4/production_views/f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147/read_contract.json",
+      "sha256": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147"
+    },
+    "replay": {
+      "bytes": 3622812,
+      "contract_id": "V4_14_ACCEPTED_HEAD_V1",
+      "owner_stage": "V4-14",
+      "path": "reports/v4_14_replay_r18/real/2026-09-30/r1/manifest.json",
+      "sha256": "f4c068afec2fdda754bce62a5f5773565c893be20554f871a25f11afee22e492"
+    },
+    "replay_operational": {
+      "bytes": 13990,
+      "path": "data/v4/research_snapshots/666645c83dfa4fe984c336f024f26f22/replay_authority.json",
+      "sha256": "3a60c09cb830bfe60ec2e190a114d4f34f8970c4f14b61e02325f169aff0b748"
+    },
+    "replay_seal": {
+      "bytes": 17581,
+      "contract_id": "replay_seal",
+      "owner_stage": "V4-14",
+      "path": "reports/r18r1r1c/V4_14_RUNTIME_CANDIDATE_R18R1R1_SEAL.json",
+      "sha256": "bb4246bb807ee5020989b5f5458d8f0c18465b6680012fc7e52ad03903230ffd"
+    },
+    "runtime_seal": {
+      "bytes": 5308,
+      "contract_id": "runtime_seal",
+      "owner_stage": "V4-15",
+      "path": "reports/r20e/V4_15_RUNTIME_CANDIDATE_R20_SEAL.json",
+      "sha256": "74dbcbd1ffefc8dfb20090776d861c96815e6b5fa22af49c8553e414a0be7653"
+    },
+    "sector_operational": {
+      "bytes": 1574482,
+      "path": "data/v4/fp06_sector/26f72f80f6623cadd5e9794eb9bedb461a8345f38bfd7e21670bd317c83165be/native.jsonl.gz",
+      "sha256": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc"
+    },
+    "settlement_receipt": {
+      "bytes": 383581,
+      "contract_id": "V4_15_RUNTIME_CANDIDATE_R20_SEAL_V1",
+      "owner_stage": "V4-15",
+      "path": "reports/r20e/SETTLEMENT_RECEIPT.json",
+      "sha256": "4c07ffa7ed081dd297380b24159c0b11d4e3dc9d6b1504be503312a9e2fe608f"
+    },
+    "state_view": {
+      "bytes": 3206718,
+      "contract_id": "V4_CURRENT_ACCEPTED_READ_CONTRACT_V1",
+      "owner_stage": "V4-11",
+      "path": "data/v4/production_views/blobs/ac302f29f76c90ffbec424652fd5f232f76076aea7c14f54c392924bb14c4c1e.json",
+      "sha256": "ac302f29f76c90ffbec424652fd5f232f76076aea7c14f54c392924bb14c4c1e"
+    },
+    "states": {
+      "bytes": 12539130,
+      "contract_id": "RESEARCH_STATE_V1",
+      "owner_stage": "V4-11",
+      "path": "data/v4/confirmation_candidates_r5/D2_2026-09-30_CANDIDATE_R5.json.gz",
+      "sha256": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+    },
+    "stock_factors": {
+      "bytes": 19460170,
+      "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/factors.jsonl.gz",
+      "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    "stock_profiles": {
+      "bytes": 44330385,
+      "path": "data/v4/fp06_sector/367a246f2f711a7df9a47015d372779dc30d538c965d6d73d602e11a51818790/profiles.jsonl.gz",
+      "sha256": "ddaf27fce8e8e32d057e8416c3975292b8b8f13efa829bab1ac9166d785557f6"
+    },
+    "stock_series": {
+      "bytes": 367886336,
+      "path": "data/v4/fp07_stocks/33d5a66f47870a29397a453132d9ea0ac3dbc0f82063902a60436992fe43c378/series.sqlite",
+      "sha256": "6b326dac93aacd63dc289895b1488f224843940154b6f4b89bc0df8af0a4518d"
+    },
+    "stock_unit_projection_contract": {
+      "bytes": 534,
+      "path": "config/v4_stock_unit_projection_v1.json",
+      "sha256": "7c648a1b9381e5d220a030440a67e4e09d0809807a865c0c0227d56e705bc2d3"
+    },
+    "stock_unit_registry_0": {
+      "bytes": 40715,
+      "path": "config/v4_03_field_registry_v1.json",
+      "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+    },
+    "stock_unit_registry_1": {
+      "bytes": 20506,
+      "path": "config/v4_04_field_registry_v2.json",
+      "sha256": "aceed3d159cf3c7beb3306fb2b90eb22af935bb7f27ebeb29a9e8abc5653f9c1"
+    }
+  },
+  "trade_date": "2026-09-30"
+}

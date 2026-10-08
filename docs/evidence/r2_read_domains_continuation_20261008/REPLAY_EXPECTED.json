@@ -1,0 +1,5406 @@
+[
+  {
+    "data": {
+      "AS_RECORDED": false,
+      "catalog": [
+        {
+          "as_of": "2026-09-28",
+          "corrected_status": "READY",
+          "first_available_proven": false,
+          "known_at": null,
+          "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+          "pit_status": "PIT_NOT_AVAILABLE",
+          "publication_date": "2026-10-01T12:25:10.846023+00:00",
+          "snapshot": {
+            "bytes": 19825883,
+            "path": "data/v4/fp12_replay/2026-09-28/bcaa8e56dab6b6e80bf2017744a5b4a3a9f7821c72a28eedec8dd6b0337f7ac9/snapshot.json",
+            "sha256": "fd440aef63595b0b53417e10431c90b8c1a2d828cf927e9d51d34d4d1985d230"
+          },
+          "stock_count": 5210
+        },
+        {
+          "as_of": "2026-09-29",
+          "corrected_status": "READY",
+          "first_available_proven": false,
+          "known_at": null,
+          "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+          "pit_status": "PIT_NOT_AVAILABLE",
+          "publication_date": "2026-10-01T12:25:10.846023+00:00",
+          "snapshot": {
+            "bytes": 34938141,
+            "path": "data/v4/fp12_replay/2026-09-29/a9ec1e1cc5aa51e1700acc5dd4147a08d0dead54eb13ff36efd95093699c8ad1/snapshot.json",
+            "sha256": "a86ef50b622adb6ca3f5b2b8626460c6b20841627743efb3486cd120871e0da9"
+          },
+          "stock_count": 5211
+        },
+        {
+          "as_of": "2026-09-30",
+          "corrected_status": "READY",
+          "first_available_proven": false,
+          "known_at": null,
+          "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+          "pit_status": "PIT_NOT_AVAILABLE",
+          "publication_date": "2026-10-01T12:25:10.846023+00:00",
+          "snapshot": {
+            "bytes": 37169011,
+            "path": "data/v4/fp12_replay/2026-09-30/2129f0eb66a445c01053dcf32cbeacbacf0d07375520c9ac27bbad3aed8d0ac6/snapshot.json",
+            "sha256": "409d5f230b8b2fe81efd42f3912c8adafc6aba78e53870d6a20756cce4a83d9e"
+          },
+          "stock_count": 5213
+        }
+      ],
+      "context": {
+        "accepted_trade_date": "2026-09-29",
+        "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+        "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+        "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+        "domain_readiness": {
+          "fep": {
+            "debt": [
+              "CURRENT_FEATURE_MODEL_INFERENCE"
+            ],
+            "released": false,
+            "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+          },
+          "focus": {
+            "debt": [
+              "UNRESOLVED_PATH_PREDICATE_OWNERS",
+              "LEGACY_PG_RECONCILIATION"
+            ],
+            "earliest_valid_date": "2026-09-29",
+            "released": true,
+            "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+          },
+          "forward": {
+            "debt": [
+              "CURRENT_FEP_INFERENCE",
+              "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+              "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+            ],
+            "released": true,
+            "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+          },
+          "market": {
+            "debt": [
+              "INTRADAY_TOUCH_BROKEN_LIMIT",
+              "OFFICIAL_FACT_NEWS"
+            ],
+            "released": true,
+            "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+          },
+          "sectors": {
+            "debt": [
+              "HISTORICAL_MEMBERSHIP",
+              "LIFECYCLE",
+              "ROTATION_HISTORY"
+            ],
+            "released": true,
+            "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+          },
+          "stocks": {
+            "debt": [
+              "HYPOTHESIS",
+              "INVALID_IF_OWNER",
+              "FULL_STRUCTURE_PATH"
+            ],
+            "released": true,
+            "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+          },
+          "strict_pit": {
+            "debt": [
+              "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+            ],
+            "released": false,
+            "scope": "NONE"
+          }
+        },
+        "factor_contract_id": null,
+        "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+        "full_product_release": false,
+        "historical_pit_effectiveness": "NOT_GRANTED",
+        "joint_release_digest": "5204fec1e9fcb11701c321d515a756acfaacea4d0fc1bb09443c34990ebd3a45",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "last_accepted_trade_date": "2026-09-30",
+        "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+        "namespace": "V4_CURRENT_ACCEPTED",
+        "operational_release_scope": [
+          "stocks_daily",
+          "sectors_current_facts",
+          "market_current",
+          "focus_read_corrected",
+          "forward_read",
+          "diagnostics",
+          "compare_corrected"
+        ],
+        "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "parameter_set_id": null,
+        "publication_id": "a86ef50b622adb6ca3f5b2b8626460c6b20841627743efb3486cd120871e0da9",
+        "quality": "QUALITY_DEGRADED",
+        "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "release_id": "a86ef50b622adb6ca3f5b2b8626460c6b20841627743efb3486cd120871e0da9",
+        "release_metadata": {
+          "contract_version": "1.0.0",
+          "data_quality_state": "QUALITY_DEGRADED",
+          "evidence_origin": "REAL_ACCEPTED_SOURCE",
+          "evidence_state": "VALIDATION_ONGOING",
+          "input_digest": "0107c813606e51bc631004f568a10b70ea9b47640c1e53117ca46ad789fcecbd",
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "owner": "FP02_RESEARCH_PROJECTION",
+          "published_at": "2026-10-08T11:16:40.088250+00:00",
+          "release_id": "666645c83dfa4fe984c336f024f26f22",
+          "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+          "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "trading_date": "2026-09-30"
+        },
+        "scoped_release": true,
+        "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+        "source_mode": "FROZEN_DATE_VIEW",
+        "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+        "stage": "V4-15",
+        "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+        "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+        "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+        "trade_date": "2026-09-29",
+        "turnover_as_of": null
+      },
+      "context_token": "fp12-a86ef50b622adb6ca3f5b2b8626460c6b20841627743efb3486cd120871e0da9",
+      "items": [],
+      "operational_context": {
+        "accepted_trade_date": "2026-09-30",
+        "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+        "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+        "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+        "domain_readiness": {
+          "fep": {
+            "debt": [
+              "CURRENT_FEATURE_MODEL_INFERENCE"
+            ],
+            "released": false,
+            "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+          },
+          "focus": {
+            "debt": [
+              "UNRESOLVED_PATH_PREDICATE_OWNERS",
+              "LEGACY_PG_RECONCILIATION"
+            ],
+            "earliest_valid_date": "2026-09-29",
+            "released": true,
+            "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+          },
+          "forward": {
+            "debt": [
+              "CURRENT_FEP_INFERENCE",
+              "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+              "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+            ],
+            "released": true,
+            "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+          },
+          "market": {
+            "debt": [
+              "INTRADAY_TOUCH_BROKEN_LIMIT",
+              "OFFICIAL_FACT_NEWS"
+            ],
+            "released": true,
+            "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+          },
+          "sectors": {
+            "debt": [
+              "HISTORICAL_MEMBERSHIP",
+              "LIFECYCLE",
+              "ROTATION_HISTORY"
+            ],
+            "released": true,
+            "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+          },
+          "stocks": {
+            "debt": [
+              "HYPOTHESIS",
+              "INVALID_IF_OWNER",
+              "FULL_STRUCTURE_PATH"
+            ],
+            "released": true,
+            "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+          },
+          "strict_pit": {
+            "debt": [
+              "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+            ],
+            "released": false,
+            "scope": "NONE"
+          }
+        },
+        "factor_contract_id": null,
+        "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+        "full_product_release": false,
+        "historical_pit_effectiveness": "NOT_GRANTED",
+        "joint_release_digest": "5204fec1e9fcb11701c321d515a756acfaacea4d0fc1bb09443c34990ebd3a45",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "last_accepted_trade_date": "2026-09-30",
+        "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+        "namespace": "V4_CURRENT_ACCEPTED",
+        "operational_release_scope": [
+          "stocks_daily",
+          "sectors_current_facts",
+          "market_current",
+          "focus_read_corrected",
+          "forward_read",
+          "diagnostics",
+          "compare_corrected"
+        ],
+        "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "parameter_set_id": null,
+        "publication_id": "666645c83dfa4fe984c336f024f26f22",
+        "quality": "QUALITY_DEGRADED",
+        "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "release_id": "666645c83dfa4fe984c336f024f26f22",
+        "release_metadata": {
+          "contract_version": "1.0.0",
+          "data_quality_state": "QUALITY_DEGRADED",
+          "evidence_origin": "REAL_ACCEPTED_SOURCE",
+          "evidence_state": "VALIDATION_ONGOING",
+          "input_digest": "0107c813606e51bc631004f568a10b70ea9b47640c1e53117ca46ad789fcecbd",
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "owner": "FP02_RESEARCH_PROJECTION",
+          "published_at": "2026-10-08T11:16:40.088250+00:00",
+          "release_id": "666645c83dfa4fe984c336f024f26f22",
+          "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+          "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "trading_date": "2026-09-30"
+        },
+        "scoped_release": true,
+        "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+        "source_mode": "SCOPED_OPERATIONAL_RELEASE",
+        "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+        "stage": "V4-15",
+        "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+        "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+        "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+        "trade_date": "2026-09-30",
+        "turnover_as_of": null
+      },
+      "reason": "NO_FIRST_AVAILABLE_AT_T0_PROOF_SOURCE_ACCEPTED_AFTER_T0",
+      "result_hash": "babfe33f9355c846da6616a0b3e03fdd0be46388a0f556091098bf61ec970f29",
+      "status": "PIT_NOT_AVAILABLE",
+      "total": 0
+    },
+    "query": {
+      "as_of": "2026-09-29",
+      "left": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "view": "frozen"
+    },
+    "route": "replay"
+  },
+  {
+    "data": {
+      "AS_RECORDED": false,
+      "catalog": [
+        {
+          "as_of": "2026-09-28",
+          "corrected_status": "READY",
+          "first_available_proven": false,
+          "known_at": null,
+          "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+          "pit_status": "PIT_NOT_AVAILABLE",
+          "publication_date": "2026-10-01T12:25:10.846023+00:00",
+          "snapshot": {
+            "bytes": 19825883,
+            "path": "data/v4/fp12_replay/2026-09-28/bcaa8e56dab6b6e80bf2017744a5b4a3a9f7821c72a28eedec8dd6b0337f7ac9/snapshot.json",
+            "sha256": "fd440aef63595b0b53417e10431c90b8c1a2d828cf927e9d51d34d4d1985d230"
+          },
+          "stock_count": 5210
+        },
+        {
+          "as_of": "2026-09-29",
+          "corrected_status": "READY",
+          "first_available_proven": false,
+          "known_at": null,
+          "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+          "pit_status": "PIT_NOT_AVAILABLE",
+          "publication_date": "2026-10-01T12:25:10.846023+00:00",
+          "snapshot": {
+            "bytes": 34938141,
+            "path": "data/v4/fp12_replay/2026-09-29/a9ec1e1cc5aa51e1700acc5dd4147a08d0dead54eb13ff36efd95093699c8ad1/snapshot.json",
+            "sha256": "a86ef50b622adb6ca3f5b2b8626460c6b20841627743efb3486cd120871e0da9"
+          },
+          "stock_count": 5211
+        },
+        {
+          "as_of": "2026-09-30",
+          "corrected_status": "READY",
+          "first_available_proven": false,
+          "known_at": null,
+          "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+          "pit_status": "PIT_NOT_AVAILABLE",
+          "publication_date": "2026-10-01T12:25:10.846023+00:00",
+          "snapshot": {
+            "bytes": 37169011,
+            "path": "data/v4/fp12_replay/2026-09-30/2129f0eb66a445c01053dcf32cbeacbacf0d07375520c9ac27bbad3aed8d0ac6/snapshot.json",
+            "sha256": "409d5f230b8b2fe81efd42f3912c8adafc6aba78e53870d6a20756cce4a83d9e"
+          },
+          "stock_count": 5213
+        }
+      ],
+      "context": {
+        "accepted_trade_date": "2026-09-29",
+        "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+        "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+        "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+        "domain_readiness": {
+          "fep": {
+            "debt": [
+              "CURRENT_FEATURE_MODEL_INFERENCE"
+            ],
+            "released": false,
+            "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+          },
+          "focus": {
+            "debt": [
+              "UNRESOLVED_PATH_PREDICATE_OWNERS",
+              "LEGACY_PG_RECONCILIATION"
+            ],
+            "earliest_valid_date": "2026-09-29",
+            "released": true,
+            "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+          },
+          "forward": {
+            "debt": [
+              "CURRENT_FEP_INFERENCE",
+              "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+              "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+            ],
+            "released": true,
+            "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+          },
+          "market": {
+            "debt": [
+              "INTRADAY_TOUCH_BROKEN_LIMIT",
+              "OFFICIAL_FACT_NEWS"
+            ],
+            "released": true,
+            "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+          },
+          "sectors": {
+            "debt": [
+              "HISTORICAL_MEMBERSHIP",
+              "LIFECYCLE",
+              "ROTATION_HISTORY"
+            ],
+            "released": true,
+            "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+          },
+          "stocks": {
+            "debt": [
+              "HYPOTHESIS",
+              "INVALID_IF_OWNER",
+              "FULL_STRUCTURE_PATH"
+            ],
+            "released": true,
+            "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+          },
+          "strict_pit": {
+            "debt": [
+              "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+            ],
+            "released": false,
+            "scope": "NONE"
+          }
+        },
+        "factor_contract_id": null,
+        "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+        "full_product_release": false,
+        "historical_pit_effectiveness": "NOT_GRANTED",
+        "joint_release_digest": "5204fec1e9fcb11701c321d515a756acfaacea4d0fc1bb09443c34990ebd3a45",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "last_accepted_trade_date": "2026-09-30",
+        "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+        "namespace": "V4_CURRENT_ACCEPTED",
+        "operational_release_scope": [
+          "stocks_daily",
+          "sectors_current_facts",
+          "market_current",
+          "focus_read_corrected",
+          "forward_read",
+          "diagnostics",
+          "compare_corrected"
+        ],
+        "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "parameter_set_id": null,
+        "publication_id": "a86ef50b622adb6ca3f5b2b8626460c6b20841627743efb3486cd120871e0da9",
+        "quality": "QUALITY_DEGRADED",
+        "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "release_id": "a86ef50b622adb6ca3f5b2b8626460c6b20841627743efb3486cd120871e0da9",
+        "release_metadata": {
+          "contract_version": "1.0.0",
+          "data_quality_state": "QUALITY_DEGRADED",
+          "evidence_origin": "REAL_ACCEPTED_SOURCE",
+          "evidence_state": "VALIDATION_ONGOING",
+          "input_digest": "0107c813606e51bc631004f568a10b70ea9b47640c1e53117ca46ad789fcecbd",
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "owner": "FP02_RESEARCH_PROJECTION",
+          "published_at": "2026-10-08T11:16:40.088250+00:00",
+          "release_id": "666645c83dfa4fe984c336f024f26f22",
+          "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+          "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "trading_date": "2026-09-30"
+        },
+        "scoped_release": true,
+        "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+        "source_mode": "FROZEN_DATE_VIEW",
+        "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+        "stage": "V4-15",
+        "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+        "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+        "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+        "trade_date": "2026-09-29",
+        "turnover_as_of": null
+      },
+      "context_token": "fp12-a86ef50b622adb6ca3f5b2b8626460c6b20841627743efb3486cd120871e0da9",
+      "followup": null,
+      "has_next": false,
+      "history": {
+        "AS_RECORDED": false,
+        "as_of": "2026-09-29",
+        "items": [
+          {
+            "amount": 70971440.0,
+            "close": 2.64,
+            "high": 2.64,
+            "low": 2.59,
+            "ma20": 2.6825,
+            "ma5": 2.594,
+            "ma60": 2.7975,
+            "open": 2.6,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-08",
+            "volume": 27083871
+          },
+          {
+            "amount": 51983912.0,
+            "close": 2.59,
+            "high": 2.63,
+            "low": 2.58,
+            "ma20": 2.674,
+            "ma5": 2.586,
+            "ma60": 2.7944999999999998,
+            "open": 2.62,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-09",
+            "volume": 19984909
+          },
+          {
+            "amount": 46373660.0,
+            "close": 2.61,
+            "high": 2.64,
+            "low": 2.59,
+            "ma20": 2.6655,
+            "ma5": 2.5919999999999996,
+            "ma60": 2.792333333333333,
+            "open": 2.6,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-10",
+            "volume": 17680280
+          },
+          {
+            "amount": 93613960.0,
+            "close": 2.66,
+            "high": 2.68,
+            "low": 2.6,
+            "ma20": 2.659,
+            "ma5": 2.614,
+            "ma60": 2.7903333333333333,
+            "open": 2.62,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-13",
+            "volume": 35257085
+          },
+          {
+            "amount": 136629472.0,
+            "close": 2.73,
+            "high": 2.74,
+            "low": 2.65,
+            "ma20": 2.6544999999999996,
+            "ma5": 2.646,
+            "ma60": 2.789333333333333,
+            "open": 2.68,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-14",
+            "volume": 50629505
+          },
+          {
+            "amount": 80773528.0,
+            "close": 2.66,
+            "high": 2.75,
+            "low": 2.66,
+            "ma20": 2.645,
+            "ma5": 2.65,
+            "ma60": 2.787,
+            "open": 2.74,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-15",
+            "volume": 30006601
+          },
+          {
+            "amount": 59070556.0,
+            "close": 2.65,
+            "high": 2.68,
+            "low": 2.63,
+            "ma20": 2.6384999999999996,
+            "ma5": 2.662,
+            "ma60": 2.7845,
+            "open": 2.65,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-16",
+            "volume": 22248973
+          },
+          {
+            "amount": 80467992.0,
+            "close": 2.67,
+            "high": 2.7,
+            "low": 2.64,
+            "ma20": 2.6355,
+            "ma5": 2.6740000000000004,
+            "ma60": 2.7826666666666666,
+            "open": 2.68,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-17",
+            "volume": 30119094
+          },
+          {
+            "amount": 64394448.0,
+            "close": 2.65,
+            "high": 2.67,
+            "low": 2.63,
+            "ma20": 2.632,
+            "ma5": 2.6719999999999997,
+            "ma60": 2.780333333333333,
+            "open": 2.66,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-20",
+            "volume": 24350199
+          },
+          {
+            "amount": 44961560.0,
+            "close": 2.65,
+            "high": 2.67,
+            "low": 2.63,
+            "ma20": 2.637,
+            "ma5": 2.6559999999999997,
+            "ma60": 2.778833333333333,
+            "open": 2.65,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-21",
+            "volume": 16984660
+          },
+          {
+            "amount": 53702804.0,
+            "close": 2.62,
+            "high": 2.65,
+            "low": 2.61,
+            "ma20": 2.6355,
+            "ma5": 2.648,
+            "ma60": 2.7765,
+            "open": 2.64,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-22",
+            "volume": 20444379
+          },
+          {
+            "amount": 60472008.0,
+            "close": 2.63,
+            "high": 2.65,
+            "low": 2.59,
+            "ma20": 2.6335,
+            "ma5": 2.6439999999999997,
+            "ma60": 2.7696666666666667,
+            "open": 2.62,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-23",
+            "volume": 23062448
+          },
+          {
+            "amount": 54806152.0,
+            "close": 2.6,
+            "high": 2.63,
+            "low": 2.58,
+            "ma20": 2.631,
+            "ma5": 2.63,
+            "ma60": 2.7635,
+            "open": 2.62,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-24",
+            "volume": 21075120
+          },
+          {
+            "amount": 51337960.0,
+            "close": 2.61,
+            "high": 2.62,
+            "low": 2.57,
+            "ma20": 2.6285,
+            "ma5": 2.622,
+            "ma60": 2.758,
+            "open": 2.6,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-27",
+            "volume": 19785850
+          },
+          {
+            "amount": 133414312.0,
+            "close": 2.53,
+            "high": 2.58,
+            "low": 2.5,
+            "ma20": 2.623,
+            "ma5": 2.598,
+            "ma60": 2.751,
+            "open": 2.58,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-28",
+            "volume": 52613592
+          },
+          {
+            "amount": 80983848.0,
+            "close": 2.56,
+            "high": 2.6,
+            "low": 2.52,
+            "ma20": 2.6195,
+            "ma5": 2.586,
+            "ma60": 2.7455,
+            "open": 2.52,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-29",
+            "volume": 31487931
+          },
+          {
+            "amount": 81215968.0,
+            "close": 2.58,
+            "high": 2.61,
+            "low": 2.55,
+            "ma20": 2.617,
+            "ma5": 2.5759999999999996,
+            "ma60": 2.7411666666666665,
+            "open": 2.57,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-30",
+            "volume": 31450586
+          },
+          {
+            "amount": 86444656.0,
+            "close": 2.63,
+            "high": 2.64,
+            "low": 2.58,
+            "ma20": 2.6195,
+            "ma5": 2.582,
+            "ma60": 2.7366666666666664,
+            "open": 2.6,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-06",
+            "volume": 33058908
+          },
+          {
+            "amount": 74167976.0,
+            "close": 2.59,
+            "high": 2.64,
+            "low": 2.58,
+            "ma20": 2.6215,
+            "ma5": 2.5780000000000003,
+            "ma60": 2.729833333333333,
+            "open": 2.63,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-07",
+            "volume": 28556150
+          },
+          {
+            "amount": 73048224.0,
+            "close": 2.61,
+            "high": 2.63,
+            "low": 2.58,
+            "ma20": 2.6235,
+            "ma5": 2.594,
+            "ma60": 2.7241666666666666,
+            "open": 2.59,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-08",
+            "volume": 27940219
+          },
+          {
+            "amount": 100948344.0,
+            "close": 2.64,
+            "high": 2.66,
+            "low": 2.6,
+            "ma20": 2.6235,
+            "ma5": 2.6100000000000003,
+            "ma60": 2.7215,
+            "open": 2.62,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-11",
+            "volume": 38223518
+          },
+          {
+            "amount": 86367912.0,
+            "close": 2.63,
+            "high": 2.67,
+            "low": 2.61,
+            "ma20": 2.6254999999999997,
+            "ma5": 2.62,
+            "ma60": 2.7176666666666667,
+            "open": 2.64,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-12",
+            "volume": 32717533
+          },
+          {
+            "amount": 69396400.0,
+            "close": 2.59,
+            "high": 2.64,
+            "low": 2.58,
+            "ma20": 2.6245000000000003,
+            "ma5": 2.6119999999999997,
+            "ma60": 2.7115,
+            "open": 2.63,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-13",
+            "volume": 26680741
+          },
+          {
+            "amount": 64222144.0,
+            "close": 2.56,
+            "high": 2.62,
+            "low": 2.54,
+            "ma20": 2.6195,
+            "ma5": 2.606,
+            "ma60": 2.7046666666666668,
+            "open": 2.61,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-14",
+            "volume": 25054078
+          },
+          {
+            "amount": 64359944.0,
+            "close": 2.53,
+            "high": 2.56,
+            "low": 2.51,
+            "ma20": 2.6094999999999997,
+            "ma5": 2.59,
+            "ma60": 2.6981666666666664,
+            "open": 2.55,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-15",
+            "volume": 25368059
+          },
+          {
+            "amount": 55465984.0,
+            "close": 2.54,
+            "high": 2.55,
+            "low": 2.49,
+            "ma20": 2.6035,
+            "ma5": 2.57,
+            "ma60": 2.6911666666666667,
+            "open": 2.52,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-18",
+            "volume": 22040497
+          },
+          {
+            "amount": 41612728.0,
+            "close": 2.55,
+            "high": 2.56,
+            "low": 2.53,
+            "ma20": 2.5985,
+            "ma5": 2.554,
+            "ma60": 2.685,
+            "open": 2.53,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-19",
+            "volume": 16333494
+          },
+          {
+            "amount": 40986424.0,
+            "close": 2.52,
+            "high": 2.56,
+            "low": 2.5,
+            "ma20": 2.591,
+            "ma5": 2.54,
+            "ma60": 2.6785,
+            "open": 2.55,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-20",
+            "volume": 16270364
+          },
+          {
+            "amount": 61517408.0,
+            "close": 2.46,
+            "high": 2.53,
+            "low": 2.44,
+            "ma20": 2.5814999999999997,
+            "ma5": 2.52,
+            "ma60": 2.6711666666666667,
+            "open": 2.51,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-21",
+            "volume": 24791572
+          },
+          {
+            "amount": 38284432.0,
+            "close": 2.44,
+            "high": 2.46,
+            "low": 2.43,
+            "ma20": 2.571,
+            "ma5": 2.502,
+            "ma60": 2.664,
+            "open": 2.45,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-22",
+            "volume": 15670870
+          },
+          {
+            "amount": 45380184.0,
+            "close": 2.42,
+            "high": 2.45,
+            "low": 2.4,
+            "ma20": 2.561,
+            "ma5": 2.478,
+            "ma60": 2.6565,
+            "open": 2.44,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-25",
+            "volume": 18723802
+          },
+          {
+            "amount": 47870640.0,
+            "close": 2.42,
+            "high": 2.43,
+            "low": 2.38,
+            "ma20": 2.5505,
+            "ma5": 2.452,
+            "ma60": 2.647,
+            "open": 2.42,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-26",
+            "volume": 19903176
+          },
+          {
+            "amount": 51835112.0,
+            "close": 2.35,
+            "high": 2.42,
+            "low": 2.33,
+            "ma20": 2.538,
+            "ma5": 2.418,
+            "ma60": 2.6381666666666663,
+            "open": 2.4,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-27",
+            "volume": 21983077
+          },
+          {
+            "amount": 37210280.0,
+            "close": 2.34,
+            "high": 2.39,
+            "low": 2.32,
+            "ma20": 2.5245,
+            "ma5": 2.3939999999999997,
+            "ma60": 2.629,
+            "open": 2.34,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-28",
+            "volume": 15840938
+          },
+          {
+            "amount": 88837784.0,
+            "close": 2.43,
+            "high": 2.48,
+            "low": 2.34,
+            "ma20": 2.5195,
+            "ma5": 2.3920000000000003,
+            "ma60": 2.6225,
+            "open": 2.34,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-29",
+            "volume": 36672685
+          },
+          {
+            "amount": 59770924.0,
+            "close": 2.47,
+            "high": 2.48,
+            "low": 2.38,
+            "ma20": 2.5149999999999997,
+            "ma5": 2.402,
+            "ma60": 2.6175,
+            "open": 2.42,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-01",
+            "volume": 24482108
+          },
+          {
+            "amount": 68597416.0,
+            "close": 2.43,
+            "high": 2.49,
+            "low": 2.41,
+            "ma20": 2.5075,
+            "ma5": 2.404,
+            "ma60": 2.613,
+            "open": 2.47,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-02",
+            "volume": 27889045
+          },
+          {
+            "amount": 57516816.0,
+            "close": 2.37,
+            "high": 2.44,
+            "low": 2.34,
+            "ma20": 2.4945,
+            "ma5": 2.4080000000000004,
+            "ma60": 2.6071666666666666,
+            "open": 2.43,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-03",
+            "volume": 24216650
+          },
+          {
+            "amount": 87834544.0,
+            "close": 2.4,
+            "high": 2.49,
+            "low": 2.36,
+            "ma20": 2.4850000000000003,
+            "ma5": 2.4200000000000004,
+            "ma60": 2.601,
+            "open": 2.36,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-04",
+            "volume": 36249519
+          },
+          {
+            "amount": 63535700.0,
+            "close": 2.4,
+            "high": 2.46,
+            "low": 2.39,
+            "ma20": 2.4745,
+            "ma5": 2.414,
+            "ma60": 2.5955,
+            "open": 2.4,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-05",
+            "volume": 26272171
+          },
+          {
+            "amount": 79824736.0,
+            "close": 2.41,
+            "high": 2.46,
+            "low": 2.36,
+            "ma20": 2.463,
+            "ma5": 2.402,
+            "ma60": 2.5896666666666666,
+            "open": 2.38,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-08",
+            "volume": 33020892
+          },
+          {
+            "amount": 58653088.0,
+            "close": 2.35,
+            "high": 2.41,
+            "low": 2.33,
+            "ma20": 2.449,
+            "ma5": 2.386,
+            "ma60": 2.5828333333333333,
+            "open": 2.41,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-09",
+            "volume": 24953570
+          },
+          {
+            "amount": 46490756.0,
+            "close": 2.38,
+            "high": 2.39,
+            "low": 2.32,
+            "ma20": 2.4385000000000003,
+            "ma5": 2.388,
+            "ma60": 2.5761666666666665,
+            "open": 2.34,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-10",
+            "volume": 19786940
+          },
+          {
+            "amount": 55140832.0,
+            "close": 2.36,
+            "high": 2.39,
+            "low": 2.32,
+            "ma20": 2.4285,
+            "ma5": 2.38,
+            "ma60": 2.569,
+            "open": 2.37,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-11",
+            "volume": 23440173
+          },
+          {
+            "amount": 67496104.0,
+            "close": 2.41,
+            "high": 2.42,
+            "low": 2.36,
+            "ma20": 2.4225000000000003,
+            "ma5": 2.382,
+            "ma60": 2.5621666666666667,
+            "open": 2.36,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-12",
+            "volume": 28189715
+          },
+          {
+            "amount": 50426544.0,
+            "close": 2.4,
+            "high": 2.45,
+            "low": 2.39,
+            "ma20": 2.4155,
+            "ma5": 2.38,
+            "ma60": 2.554666666666667,
+            "open": 2.41,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-15",
+            "volume": 20867677
+          },
+          {
+            "amount": 61748272.0,
+            "close": 2.34,
+            "high": 2.4,
+            "low": 2.33,
+            "ma20": 2.4050000000000002,
+            "ma5": 2.378,
+            "ma60": 2.5473333333333334,
+            "open": 2.39,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-16",
+            "volume": 26329723
+          },
+          {
+            "amount": 69386784.0,
+            "close": 2.26,
+            "high": 2.35,
+            "low": 2.24,
+            "ma20": 2.3920000000000003,
+            "ma5": 2.354,
+            "ma60": 2.5395,
+            "open": 2.35,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-17",
+            "volume": 30377272
+          },
+          {
+            "amount": 48203100.0,
+            "close": 2.22,
+            "high": 2.25,
+            "low": 2.18,
+            "ma20": 2.38,
+            "ma5": 2.3259999999999996,
+            "ma60": 2.5311666666666666,
+            "open": 2.24,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-18",
+            "volume": 21736626
+          },
+          {
+            "amount": 66677288.0,
+            "close": 2.2,
+            "high": 2.22,
+            "low": 2.14,
+            "ma20": 2.368,
+            "ma5": 2.284,
+            "ma60": 2.5253333333333337,
+            "open": 2.21,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-22",
+            "volume": 30650099
+          },
+          {
+            "amount": 60539656.0,
+            "close": 2.24,
+            "high": 2.27,
+            "low": 2.18,
+            "ma20": 2.359,
+            "ma5": 2.252,
+            "ma60": 2.5185,
+            "open": 2.19,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-23",
+            "volume": 27004904
+          },
+          {
+            "amount": 74076624.0,
+            "close": 2.13,
+            "high": 2.25,
+            "low": 2.13,
+            "ma20": 2.3445,
+            "ma5": 2.21,
+            "ma60": 2.5095,
+            "open": 2.25,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-24",
+            "volume": 34138495
+          },
+          {
+            "amount": 56018952.0,
+            "close": 2.12,
+            "high": 2.16,
+            "low": 2.09,
+            "ma20": 2.333,
+            "ma5": 2.182,
+            "ma60": 2.5006666666666666,
+            "open": 2.13,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-25",
+            "volume": 26410075
+          },
+          {
+            "amount": 62430752.0,
+            "close": 2.11,
+            "high": 2.15,
+            "low": 2.09,
+            "ma20": 2.3215,
+            "ma5": 2.16,
+            "ma60": 2.4915000000000003,
+            "open": 2.13,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-26",
+            "volume": 29424448
+          },
+          {
+            "amount": 73678992.0,
+            "close": 2.09,
+            "high": 2.11,
+            "low": 2.01,
+            "ma20": 2.3045,
+            "ma5": 2.138,
+            "ma60": 2.4823333333333335,
+            "open": 2.11,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-29",
+            "volume": 35730159
+          },
+          {
+            "amount": 47607984.0,
+            "close": 2.06,
+            "high": 2.09,
+            "low": 2.03,
+            "ma20": 2.284,
+            "ma5": 2.102,
+            "ma60": 2.4728333333333334,
+            "open": 2.08,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-30",
+            "volume": 23105374
+          },
+          {
+            "amount": 64475896.0,
+            "close": 2.12,
+            "high": 2.15,
+            "low": 2.05,
+            "ma20": 2.2685,
+            "ma5": 2.1,
+            "ma60": 2.4643333333333333,
+            "open": 2.05,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-01",
+            "volume": 30673926
+          },
+          {
+            "amount": 64209828.0,
+            "close": 2.11,
+            "high": 2.18,
+            "low": 2.07,
+            "ma20": 2.2555,
+            "ma5": 2.098,
+            "ma60": 2.4564999999999997,
+            "open": 2.13,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-02",
+            "volume": 30336592
+          },
+          {
+            "amount": 51419088.0,
+            "close": 2.12,
+            "high": 2.16,
+            "low": 2.09,
+            "ma20": 2.2415,
+            "ma5": 2.1,
+            "ma60": 2.4493333333333336,
+            "open": 2.11,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-03",
+            "volume": 24217723
+          },
+          {
+            "amount": 61067180.0,
+            "close": 2.15,
+            "high": 2.15,
+            "low": 2.09,
+            "ma20": 2.229,
+            "ma5": 2.112,
+            "ma60": 2.442333333333333,
+            "open": 2.12,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-06",
+            "volume": 28704190
+          },
+          {
+            "amount": 55761952.0,
+            "close": 2.07,
+            "high": 2.15,
+            "low": 2.06,
+            "ma20": 2.212,
+            "ma5": 2.114,
+            "ma60": 2.4328333333333334,
+            "open": 2.15,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-07",
+            "volume": 26739101
+          },
+          {
+            "amount": 51632888.0,
+            "close": 2.1,
+            "high": 2.12,
+            "low": 2.04,
+            "ma20": 2.1995,
+            "ma5": 2.1100000000000003,
+            "ma60": 2.4246666666666665,
+            "open": 2.06,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-08",
+            "volume": 24742692
+          },
+          {
+            "amount": 56246632.0,
+            "close": 2.09,
+            "high": 2.12,
+            "low": 2.06,
+            "ma20": 2.185,
+            "ma5": 2.106,
+            "ma60": 2.416,
+            "open": 2.09,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-09",
+            "volume": 26951256
+          },
+          {
+            "amount": 95993544.0,
+            "close": 2.14,
+            "high": 2.19,
+            "low": 2.05,
+            "ma20": 2.174,
+            "ma5": 2.1100000000000003,
+            "ma60": 2.4073333333333333,
+            "open": 2.08,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-10",
+            "volume": 44902821
+          },
+          {
+            "amount": 67121528.0,
+            "close": 2.12,
+            "high": 2.15,
+            "low": 2.1,
+            "ma20": 2.1595,
+            "ma5": 2.104,
+            "ma60": 2.3971666666666667,
+            "open": 2.15,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-13",
+            "volume": 31611800
+          },
+          {
+            "amount": 68511552.0,
+            "close": 2.14,
+            "high": 2.17,
+            "low": 2.1,
+            "ma20": 2.1465,
+            "ma5": 2.118,
+            "ma60": 2.3885,
+            "open": 2.11,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-14",
+            "volume": 32031520
+          },
+          {
+            "amount": 85707848.0,
+            "close": 2.2,
+            "high": 2.22,
+            "low": 2.12,
+            "ma20": 2.1395,
+            "ma5": 2.1380000000000003,
+            "ma60": 2.3810000000000002,
+            "open": 2.13,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-15",
+            "volume": 39115895
+          },
+          {
+            "amount": 66719004.0,
+            "close": 2.24,
+            "high": 2.25,
+            "low": 2.17,
+            "ma20": 2.1385,
+            "ma5": 2.168,
+            "ma60": 2.3738333333333332,
+            "open": 2.23,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-16",
+            "volume": 30002517
+          },
+          {
+            "amount": 86241936.0,
+            "close": 2.16,
+            "high": 2.29,
+            "low": 2.16,
+            "ma20": 2.1355,
+            "ma5": 2.172,
+            "ma60": 2.365666666666667,
+            "open": 2.23,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-17",
+            "volume": 38944074
+          },
+          {
+            "amount": 75732704.0,
+            "close": 2.18,
+            "high": 2.22,
+            "low": 2.15,
+            "ma20": 2.1345,
+            "ma5": 2.184,
+            "ma60": 2.3578333333333332,
+            "open": 2.16,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-20",
+            "volume": 34680771
+          },
+          {
+            "amount": 71559624.0,
+            "close": 2.15,
+            "high": 2.21,
+            "low": 2.14,
+            "ma20": 2.13,
+            "ma5": 2.186,
+            "ma60": 2.35,
+            "open": 2.18,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-21",
+            "volume": 32937159
+          },
+          {
+            "amount": 75608112.0,
+            "close": 2.16,
+            "high": 2.17,
+            "low": 2.12,
+            "ma20": 2.1315,
+            "ma5": 2.178,
+            "ma60": 2.3421666666666665,
+            "open": 2.15,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-22",
+            "volume": 35228358
+          },
+          {
+            "amount": 51378052.0,
+            "close": 2.18,
+            "high": 2.19,
+            "low": 2.13,
+            "ma20": 2.1345,
+            "ma5": 2.166,
+            "ma60": 2.335166666666667,
+            "open": 2.15,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-23",
+            "volume": 23738709
+          },
+          {
+            "amount": 56895272.0,
+            "close": 2.12,
+            "high": 2.22,
+            "low": 2.11,
+            "ma20": 2.1350000000000002,
+            "ma5": 2.1580000000000004,
+            "ma60": 2.327,
+            "open": 2.18,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-24",
+            "volume": 26427197
+          },
+          {
+            "amount": 50558988.0,
+            "close": 2.16,
+            "high": 2.17,
+            "low": 2.1,
+            "ma20": 2.1385,
+            "ma5": 2.154,
+            "ma60": 2.3208333333333333,
+            "open": 2.11,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-27",
+            "volume": 23479223
+          },
+          {
+            "amount": 69479800.0,
+            "close": 2.17,
+            "high": 2.2,
+            "low": 2.14,
+            "ma20": 2.144,
+            "ma5": 2.1580000000000004,
+            "ma60": 2.3143333333333334,
+            "open": 2.16,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-28",
+            "volume": 32026900
+          },
+          {
+            "amount": 78717104.0,
+            "close": 2.22,
+            "high": 2.25,
+            "low": 2.17,
+            "ma20": 2.149,
+            "ma5": 2.1700000000000004,
+            "ma60": 2.308333333333333,
+            "open": 2.18,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-29",
+            "volume": 35493535
+          },
+          {
+            "amount": 71474664.0,
+            "close": 2.26,
+            "high": 2.27,
+            "low": 2.21,
+            "ma20": 2.1565000000000003,
+            "ma5": 2.186,
+            "ma60": 2.3021666666666665,
+            "open": 2.22,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-30",
+            "volume": 31819113
+          },
+          {
+            "amount": 68669512.0,
+            "close": 2.26,
+            "high": 2.28,
+            "low": 2.23,
+            "ma20": 2.1635,
+            "ma5": 2.214,
+            "ma60": 2.296666666666667,
+            "open": 2.25,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-31",
+            "volume": 30506108
+          },
+          {
+            "amount": 79798904.0,
+            "close": 2.33,
+            "high": 2.34,
+            "low": 2.26,
+            "ma20": 2.1725000000000003,
+            "ma5": 2.248,
+            "ma60": 2.2920000000000003,
+            "open": 2.26,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-03",
+            "volume": 34653795
+          },
+          {
+            "amount": 63802256.0,
+            "close": 2.27,
+            "high": 2.34,
+            "low": 2.27,
+            "ma20": 2.1825,
+            "ma5": 2.268,
+            "ma60": 2.2858333333333336,
+            "open": 2.32,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-04",
+            "volume": 27859481
+          },
+          {
+            "amount": 48417812.0,
+            "close": 2.26,
+            "high": 2.28,
+            "low": 2.24,
+            "ma20": 2.1905,
+            "ma5": 2.276,
+            "ma60": 2.2796666666666665,
+            "open": 2.27,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-05",
+            "volume": 21423158
+          },
+          {
+            "amount": 65107148.0,
+            "close": 2.26,
+            "high": 2.28,
+            "low": 2.2,
+            "ma20": 2.1990000000000003,
+            "ma5": 2.276,
+            "ma60": 2.2741666666666664,
+            "open": 2.26,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-06",
+            "volume": 29034961
+          },
+          {
+            "amount": 77505880.0,
+            "close": 2.21,
+            "high": 2.26,
+            "low": 2.17,
+            "ma20": 2.2024999999999997,
+            "ma5": 2.266,
+            "ma60": 2.268333333333333,
+            "open": 2.26,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-07",
+            "volume": 35287206
+          },
+          {
+            "amount": 85181744.0,
+            "close": 2.26,
+            "high": 2.28,
+            "low": 2.2,
+            "ma20": 2.2095,
+            "ma5": 2.252,
+            "ma60": 2.2638333333333334,
+            "open": 2.21,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-10",
+            "volume": 37851124
+          },
+          {
+            "amount": 73177096.0,
+            "close": 2.28,
+            "high": 2.3,
+            "low": 2.24,
+            "ma20": 2.2165,
+            "ma5": 2.254,
+            "ma60": 2.2595,
+            "open": 2.27,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-11",
+            "volume": 32185533
+          },
+          {
+            "amount": 97704544.0,
+            "close": 2.35,
+            "high": 2.37,
+            "low": 2.27,
+            "ma20": 2.2239999999999998,
+            "ma5": 2.272,
+            "ma60": 2.2561666666666667,
+            "open": 2.28,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-12",
+            "volume": 41983349
+          },
+          {
+            "amount": 95312352.0,
+            "close": 2.27,
+            "high": 2.37,
+            "low": 2.26,
+            "ma20": 2.2255,
+            "ma5": 2.274,
+            "ma60": 2.2520000000000002,
+            "open": 2.35,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-13",
+            "volume": 41662961
+          },
+          {
+            "amount": 56723136.0,
+            "close": 2.22,
+            "high": 2.27,
+            "low": 2.21,
+            "ma20": 2.2285,
+            "ma5": 2.276,
+            "ma60": 2.2479999999999998,
+            "open": 2.27,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-14",
+            "volume": 25416482
+          },
+          {
+            "amount": 52313116.0,
+            "close": 2.24,
+            "high": 2.25,
+            "low": 2.19,
+            "ma20": 2.2315,
+            "ma5": 2.272,
+            "ma60": 2.244666666666667,
+            "open": 2.23,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-17",
+            "volume": 23483814
+          },
+          {
+            "amount": 103825808.0,
+            "close": 2.27,
+            "high": 2.37,
+            "low": 2.23,
+            "ma20": 2.2375,
+            "ma5": 2.2700000000000005,
+            "ma60": 2.242166666666667,
+            "open": 2.23,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-18",
+            "volume": 45433105
+          },
+          {
+            "amount": 67151368.0,
+            "close": 2.24,
+            "high": 2.29,
+            "low": 2.22,
+            "ma20": 2.2415,
+            "ma5": 2.248,
+            "ma60": 2.2391666666666667,
+            "open": 2.25,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-19",
+            "volume": 29847362
+          },
+          {
+            "amount": 131196208.0,
+            "close": 2.3,
+            "high": 2.35,
+            "low": 2.23,
+            "ma20": 2.2475,
+            "ma5": 2.254,
+            "ma60": 2.2383333333333337,
+            "open": 2.23,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-20",
+            "volume": 57163959
+          },
+          {
+            "amount": 120138336.0,
+            "close": 2.21,
+            "high": 2.29,
+            "low": 2.18,
+            "ma20": 2.252,
+            "ma5": 2.252,
+            "ma60": 2.2361666666666666,
+            "open": 2.28,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-21",
+            "volume": 54473895
+          },
+          {
+            "amount": 56908844.0,
+            "close": 2.2,
+            "high": 2.22,
+            "low": 2.17,
+            "ma20": 2.254,
+            "ma5": 2.244,
+            "ma60": 2.2323333333333335,
+            "open": 2.2,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-24",
+            "volume": 25963575
+          },
+          {
+            "amount": 80769000.0,
+            "close": 2.27,
+            "high": 2.27,
+            "low": 2.19,
+            "ma20": 2.259,
+            "ma5": 2.244,
+            "ma60": 2.229,
+            "open": 2.19,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-25",
+            "volume": 35949307
+          },
+          {
+            "amount": 70794376.0,
+            "close": 2.29,
+            "high": 2.32,
+            "low": 2.25,
+            "ma20": 2.2625,
+            "ma5": 2.254,
+            "ma60": 2.2266666666666666,
+            "open": 2.25,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-26",
+            "volume": 30818492
+          },
+          {
+            "amount": 68878576.0,
+            "close": 2.28,
+            "high": 2.31,
+            "low": 2.25,
+            "ma20": 2.2634999999999996,
+            "ma5": 2.25,
+            "ma60": 2.2251666666666665,
+            "open": 2.3,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-27",
+            "volume": 30242701
+          },
+          {
+            "amount": 101267704.0,
+            "close": 2.34,
+            "high": 2.36,
+            "low": 2.27,
+            "ma20": 2.2675,
+            "ma5": 2.276,
+            "ma60": 2.2241666666666666,
+            "open": 2.28,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-28",
+            "volume": 43581450
+          },
+          {
+            "amount": 174288016.0,
+            "close": 2.27,
+            "high": 2.44,
+            "low": 2.26,
+            "ma20": 2.2645,
+            "ma5": 2.29,
+            "ma60": 2.222,
+            "open": 2.41,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-31",
+            "volume": 74724600
+          },
+          {
+            "amount": 111124560.0,
+            "close": 2.3,
+            "high": 2.33,
+            "low": 2.24,
+            "ma20": 2.266,
+            "ma5": 2.2960000000000003,
+            "ma60": 2.2201666666666666,
+            "open": 2.24,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-01",
+            "volume": 48420603
+          },
+          {
+            "amount": 107083640.0,
+            "close": 2.28,
+            "high": 2.33,
+            "low": 2.23,
+            "ma20": 2.267,
+            "ma5": 2.2939999999999996,
+            "ma60": 2.219,
+            "open": 2.29,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-02",
+            "volume": 47376135
+          },
+          {
+            "amount": 92189824.0,
+            "close": 2.29,
+            "high": 2.34,
+            "low": 2.24,
+            "ma20": 2.2685,
+            "ma5": 2.2960000000000003,
+            "ma60": 2.2175000000000002,
+            "open": 2.28,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-03",
+            "volume": 40243381
+          },
+          {
+            "amount": 126628552.0,
+            "close": 2.32,
+            "high": 2.36,
+            "low": 2.27,
+            "ma20": 2.274,
+            "ma5": 2.292,
+            "ma60": 2.216833333333333,
+            "open": 2.29,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-04",
+            "volume": 54256798
+          },
+          {
+            "amount": 81905664.0,
+            "close": 2.3,
+            "high": 2.32,
+            "low": 2.29,
+            "ma20": 2.276,
+            "ma5": 2.2979999999999996,
+            "ma60": 2.2150000000000003,
+            "open": 2.32,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-07",
+            "volume": 35565047
+          },
+          {
+            "amount": 104139008.0,
+            "close": 2.35,
+            "high": 2.38,
+            "low": 2.29,
+            "ma20": 2.2795,
+            "ma5": 2.308,
+            "ma60": 2.2141666666666664,
+            "open": 2.29,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-08",
+            "volume": 44324307
+          },
+          {
+            "amount": 95878448.0,
+            "close": 2.31,
+            "high": 2.37,
+            "low": 2.29,
+            "ma20": 2.2775,
+            "ma5": 2.314,
+            "ma60": 2.2136666666666667,
+            "open": 2.35,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-09",
+            "volume": 41426471
+          },
+          {
+            "amount": 65613320.0,
+            "close": 2.29,
+            "high": 2.32,
+            "low": 2.26,
+            "ma20": 2.2785,
+            "ma5": 2.314,
+            "ma60": 2.2141666666666664,
+            "open": 2.31,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-10",
+            "volume": 28678391
+          },
+          {
+            "amount": 101912208.0,
+            "close": 2.21,
+            "high": 2.29,
+            "low": 2.19,
+            "ma20": 2.278,
+            "ma5": 2.2920000000000003,
+            "ma60": 2.214,
+            "open": 2.29,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-11",
+            "volume": 45964378
+          },
+          {
+            "amount": 60935508.0,
+            "close": 2.23,
+            "high": 2.24,
+            "low": 2.18,
+            "ma20": 2.2775,
+            "ma5": 2.278,
+            "ma60": 2.2145,
+            "open": 2.2,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-14",
+            "volume": 27528804
+          },
+          {
+            "amount": 47377608.0,
+            "close": 2.19,
+            "high": 2.23,
+            "low": 2.18,
+            "ma20": 2.2735,
+            "ma5": 2.246,
+            "ma60": 2.2136666666666667,
+            "open": 2.22,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-15",
+            "volume": 21549591
+          },
+          {
+            "amount": 50652672.0,
+            "close": 2.21,
+            "high": 2.22,
+            "low": 2.16,
+            "ma20": 2.272,
+            "ma5": 2.226,
+            "ma60": 2.2150000000000003,
+            "open": 2.19,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-16",
+            "volume": 23140085
+          },
+          {
+            "amount": 58425360.0,
+            "close": 2.23,
+            "high": 2.23,
+            "low": 2.18,
+            "ma20": 2.2685,
+            "ma5": 2.214,
+            "ma60": 2.216833333333333,
+            "open": 2.19,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-17",
+            "volume": 26462668
+          },
+          {
+            "amount": 115158008.0,
+            "close": 2.31,
+            "high": 2.33,
+            "low": 2.21,
+            "ma20": 2.2735,
+            "ma5": 2.234,
+            "ma60": 2.2201666666666666,
+            "open": 2.23,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-18",
+            "volume": 50777186
+          },
+          {
+            "amount": 278777184.0,
+            "close": 2.45,
+            "high": 2.54,
+            "low": 2.27,
+            "ma20": 2.286,
+            "ma5": 2.278,
+            "ma60": 2.2261666666666664,
+            "open": 2.29,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-21",
+            "volume": 115620235
+          },
+          {
+            "amount": 215442576.0,
+            "close": 2.42,
+            "high": 2.46,
+            "low": 2.36,
+            "ma20": 2.2935,
+            "ma5": 2.3240000000000003,
+            "ma60": 2.2321666666666666,
+            "open": 2.4,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-22",
+            "volume": 89306420
+          },
+          {
+            "amount": 455678080.0,
+            "close": 2.51,
+            "high": 2.66,
+            "low": 2.4,
+            "ma20": 2.3045,
+            "ma5": 2.384,
+            "ma60": 2.2386666666666666,
+            "open": 2.41,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-23",
+            "volume": 177044061
+          },
+          {
+            "amount": 411244480.0,
+            "close": 2.47,
+            "high": 2.66,
+            "low": 2.41,
+            "ma20": 2.314,
+            "ma5": 2.432,
+            "ma60": 2.244666666666667,
+            "open": 2.53,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-24",
+            "volume": 163998128
+          },
+          {
+            "amount": 241067936.0,
+            "close": 2.35,
+            "high": 2.43,
+            "low": 2.3,
+            "ma20": 2.3145,
+            "ma5": 2.44,
+            "ma60": 2.2485,
+            "open": 2.41,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-28",
+            "volume": 102008058
+          },
+          {
+            "amount": 299545696.0,
+            "close": 2.49,
+            "high": 2.59,
+            "low": 2.4,
+            "ma20": 2.3255,
+            "ma5": 2.448,
+            "ma60": 2.254166666666667,
+            "open": 2.4,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-29",
+            "volume": 120720436
+          }
+        ],
+        "price_basis": "RAW",
+        "source": {
+          "bytes": 367886336,
+          "path": "data/v4/fp07_stocks/69bf874b4d7311a1ddd217846e716708d96a26aeea19ec289721ad2564bbb4d3/series.sqlite",
+          "sha256": "6b326dac93aacd63dc289895b1488f224843940154b6f4b89bc0df8af0a4518d"
+        }
+      },
+      "items": [
+        {
+          "AS_RECORDED": false,
+          "entity_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+          "fields": {
+            "amount": {
+              "effective_date": "2026-09-29",
+              "known_at": null,
+              "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+              "publication_date": "2026-10-01T12:25:10.846023+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/RAW_DAILY/artifact.json",
+                "sha256": "16e4daab101f671d894fbacbb37361c6bf8286e68e7170877aaec8d17f84dddf"
+              },
+              "unit": "CNY",
+              "value": 299545696.0
+            },
+            "close": {
+              "effective_date": "2026-09-29",
+              "known_at": null,
+              "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+              "publication_date": "2026-10-01T12:25:10.846023+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/RAW_DAILY/artifact.json",
+                "sha256": "16e4daab101f671d894fbacbb37361c6bf8286e68e7170877aaec8d17f84dddf"
+              },
+              "unit": "CNY_PER_SHARE",
+              "value": 2.49
+            },
+            "health": {
+              "effective_date": "2026-09-29",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 7620107,
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-29_CANDIDATE_R5.json.gz",
+                "sha256": "968caca5a9e7020e9f31299bf93e12de1a8e66f62562a0d1bd7b9217e3f60dfe"
+              },
+              "unit": "ENUM",
+              "value": "WEAKENING"
+            },
+            "high": {
+              "effective_date": "2026-09-29",
+              "known_at": null,
+              "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+              "publication_date": "2026-10-01T12:25:10.846023+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/RAW_DAILY/artifact.json",
+                "sha256": "16e4daab101f671d894fbacbb37361c6bf8286e68e7170877aaec8d17f84dddf"
+              },
+              "unit": "CNY_PER_SHARE",
+              "value": 2.59
+            },
+            "low": {
+              "effective_date": "2026-09-29",
+              "known_at": null,
+              "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+              "publication_date": "2026-10-01T12:25:10.846023+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/RAW_DAILY/artifact.json",
+                "sha256": "16e4daab101f671d894fbacbb37361c6bf8286e68e7170877aaec8d17f84dddf"
+              },
+              "unit": "CNY_PER_SHARE",
+              "value": 2.4
+            },
+            "maturity": {
+              "effective_date": "2026-09-29",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 7620107,
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-29_CANDIDATE_R5.json.gz",
+                "sha256": "968caca5a9e7020e9f31299bf93e12de1a8e66f62562a0d1bd7b9217e3f60dfe"
+              },
+              "unit": "ENUM",
+              "value": "NONE"
+            },
+            "open": {
+              "effective_date": "2026-09-29",
+              "known_at": null,
+              "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+              "publication_date": "2026-10-01T12:25:10.846023+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/RAW_DAILY/artifact.json",
+                "sha256": "16e4daab101f671d894fbacbb37361c6bf8286e68e7170877aaec8d17f84dddf"
+              },
+              "unit": "CNY_PER_SHARE",
+              "value": 2.4
+            },
+            "scenario": {
+              "effective_date": "2026-09-29",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 7620107,
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-29_CANDIDATE_R5.json.gz",
+                "sha256": "968caca5a9e7020e9f31299bf93e12de1a8e66f62562a0d1bd7b9217e3f60dfe"
+              },
+              "unit": "ENUM",
+              "value": "NONE"
+            },
+            "tracking": {
+              "effective_date": "2026-09-29",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 7620107,
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-29_CANDIDATE_R5.json.gz",
+                "sha256": "968caca5a9e7020e9f31299bf93e12de1a8e66f62562a0d1bd7b9217e3f60dfe"
+              },
+              "unit": "ENUM",
+              "value": "CLOSED"
+            },
+            "validity": {
+              "effective_date": "2026-09-29",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 7620107,
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-29_CANDIDATE_R5.json.gz",
+                "sha256": "968caca5a9e7020e9f31299bf93e12de1a8e66f62562a0d1bd7b9217e3f60dfe"
+              },
+              "unit": "ENUM",
+              "value": "VALID"
+            },
+            "volume": {
+              "effective_date": "2026-09-29",
+              "known_at": null,
+              "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+              "publication_date": "2026-10-01T12:25:10.846023+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/RAW_DAILY/artifact.json",
+                "sha256": "16e4daab101f671d894fbacbb37361c6bf8286e68e7170877aaec8d17f84dddf"
+              },
+              "unit": "SHARES",
+              "value": 120720436
+            }
+          },
+          "price_basis": "RAW",
+          "symbol": "SH.600675",
+          "trading_status": null
+        }
+      ],
+      "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+      "limit": 30,
+      "offset": 0,
+      "operational_context": {
+        "accepted_trade_date": "2026-09-30",
+        "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+        "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+        "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+        "domain_readiness": {
+          "fep": {
+            "debt": [
+              "CURRENT_FEATURE_MODEL_INFERENCE"
+            ],
+            "released": false,
+            "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+          },
+          "focus": {
+            "debt": [
+              "UNRESOLVED_PATH_PREDICATE_OWNERS",
+              "LEGACY_PG_RECONCILIATION"
+            ],
+            "earliest_valid_date": "2026-09-29",
+            "released": true,
+            "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+          },
+          "forward": {
+            "debt": [
+              "CURRENT_FEP_INFERENCE",
+              "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+              "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+            ],
+            "released": true,
+            "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+          },
+          "market": {
+            "debt": [
+              "INTRADAY_TOUCH_BROKEN_LIMIT",
+              "OFFICIAL_FACT_NEWS"
+            ],
+            "released": true,
+            "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+          },
+          "sectors": {
+            "debt": [
+              "HISTORICAL_MEMBERSHIP",
+              "LIFECYCLE",
+              "ROTATION_HISTORY"
+            ],
+            "released": true,
+            "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+          },
+          "stocks": {
+            "debt": [
+              "HYPOTHESIS",
+              "INVALID_IF_OWNER",
+              "FULL_STRUCTURE_PATH"
+            ],
+            "released": true,
+            "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+          },
+          "strict_pit": {
+            "debt": [
+              "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+            ],
+            "released": false,
+            "scope": "NONE"
+          }
+        },
+        "factor_contract_id": null,
+        "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+        "full_product_release": false,
+        "historical_pit_effectiveness": "NOT_GRANTED",
+        "joint_release_digest": "5204fec1e9fcb11701c321d515a756acfaacea4d0fc1bb09443c34990ebd3a45",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "last_accepted_trade_date": "2026-09-30",
+        "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+        "namespace": "V4_CURRENT_ACCEPTED",
+        "operational_release_scope": [
+          "stocks_daily",
+          "sectors_current_facts",
+          "market_current",
+          "focus_read_corrected",
+          "forward_read",
+          "diagnostics",
+          "compare_corrected"
+        ],
+        "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "parameter_set_id": null,
+        "publication_id": "666645c83dfa4fe984c336f024f26f22",
+        "quality": "QUALITY_DEGRADED",
+        "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "release_id": "666645c83dfa4fe984c336f024f26f22",
+        "release_metadata": {
+          "contract_version": "1.0.0",
+          "data_quality_state": "QUALITY_DEGRADED",
+          "evidence_origin": "REAL_ACCEPTED_SOURCE",
+          "evidence_state": "VALIDATION_ONGOING",
+          "input_digest": "0107c813606e51bc631004f568a10b70ea9b47640c1e53117ca46ad789fcecbd",
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "owner": "FP02_RESEARCH_PROJECTION",
+          "published_at": "2026-10-08T11:16:40.088250+00:00",
+          "release_id": "666645c83dfa4fe984c336f024f26f22",
+          "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+          "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "trading_date": "2026-09-30"
+        },
+        "scoped_release": true,
+        "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+        "source_mode": "SCOPED_OPERATIONAL_RELEASE",
+        "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+        "stage": "V4-15",
+        "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+        "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+        "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+        "trade_date": "2026-09-30",
+        "turnover_as_of": null
+      },
+      "result_hash": "aae3befbe7c3f090f072ec2c1ee3b01feb234909595702944371bd5c9f5cbae1",
+      "sources": {
+        "ADJUSTED_DAILY": {
+          "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/ADJUSTED_DAILY/artifact.json",
+          "sha256": "e19ab5ef92b34935ba3a8635488110621814be3755d896ec11015840d87e9174"
+        },
+        "IDENTITY_UNIVERSE": {
+          "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/IDENTITY_UNIVERSE/artifact.json",
+          "sha256": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f"
+        },
+        "RAW_DAILY": {
+          "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/RAW_DAILY/artifact.json",
+          "sha256": "16e4daab101f671d894fbacbb37361c6bf8286e68e7170877aaec8d17f84dddf"
+        },
+        "TRADING_STATUS": {
+          "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/TRADING_STATUS/artifact.json",
+          "sha256": "1024bfcad1052635317351b9c3c730f9c09294de72b3f1358e45bbe0aac6dde4"
+        },
+        "states": {
+          "bytes": 7620107,
+          "path": "data/v4/confirmation_candidates_r5/D2_2026-09-29_CANDIDATE_R5.json.gz",
+          "sha256": "968caca5a9e7020e9f31299bf93e12de1a8e66f62562a0d1bd7b9217e3f60dfe"
+        }
+      },
+      "status": "READY",
+      "total": 1,
+      "view": "corrected",
+      "warning": "事后重建对照，不能作为当时可知的 PIT 判断"
+    },
+    "query": {
+      "as_of": "2026-09-29",
+      "left": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "view": "corrected"
+    },
+    "route": "replay"
+  },
+  {
+    "data": {
+      "AS_RECORDED": false,
+      "catalog": [
+        {
+          "as_of": "2026-09-28",
+          "corrected_status": "READY",
+          "first_available_proven": false,
+          "known_at": null,
+          "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+          "pit_status": "PIT_NOT_AVAILABLE",
+          "publication_date": "2026-10-01T12:25:10.846023+00:00",
+          "snapshot": {
+            "bytes": 19825883,
+            "path": "data/v4/fp12_replay/2026-09-28/bcaa8e56dab6b6e80bf2017744a5b4a3a9f7821c72a28eedec8dd6b0337f7ac9/snapshot.json",
+            "sha256": "fd440aef63595b0b53417e10431c90b8c1a2d828cf927e9d51d34d4d1985d230"
+          },
+          "stock_count": 5210
+        },
+        {
+          "as_of": "2026-09-29",
+          "corrected_status": "READY",
+          "first_available_proven": false,
+          "known_at": null,
+          "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+          "pit_status": "PIT_NOT_AVAILABLE",
+          "publication_date": "2026-10-01T12:25:10.846023+00:00",
+          "snapshot": {
+            "bytes": 34938141,
+            "path": "data/v4/fp12_replay/2026-09-29/a9ec1e1cc5aa51e1700acc5dd4147a08d0dead54eb13ff36efd95093699c8ad1/snapshot.json",
+            "sha256": "a86ef50b622adb6ca3f5b2b8626460c6b20841627743efb3486cd120871e0da9"
+          },
+          "stock_count": 5211
+        },
+        {
+          "as_of": "2026-09-30",
+          "corrected_status": "READY",
+          "first_available_proven": false,
+          "known_at": null,
+          "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+          "pit_status": "PIT_NOT_AVAILABLE",
+          "publication_date": "2026-10-01T12:25:10.846023+00:00",
+          "snapshot": {
+            "bytes": 37169011,
+            "path": "data/v4/fp12_replay/2026-09-30/2129f0eb66a445c01053dcf32cbeacbacf0d07375520c9ac27bbad3aed8d0ac6/snapshot.json",
+            "sha256": "409d5f230b8b2fe81efd42f3912c8adafc6aba78e53870d6a20756cce4a83d9e"
+          },
+          "stock_count": 5213
+        }
+      ],
+      "context": {
+        "accepted_trade_date": "2026-09-29",
+        "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+        "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+        "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+        "domain_readiness": {
+          "fep": {
+            "debt": [
+              "CURRENT_FEATURE_MODEL_INFERENCE"
+            ],
+            "released": false,
+            "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+          },
+          "focus": {
+            "debt": [
+              "UNRESOLVED_PATH_PREDICATE_OWNERS",
+              "LEGACY_PG_RECONCILIATION"
+            ],
+            "earliest_valid_date": "2026-09-29",
+            "released": true,
+            "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+          },
+          "forward": {
+            "debt": [
+              "CURRENT_FEP_INFERENCE",
+              "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+              "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+            ],
+            "released": true,
+            "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+          },
+          "market": {
+            "debt": [
+              "INTRADAY_TOUCH_BROKEN_LIMIT",
+              "OFFICIAL_FACT_NEWS"
+            ],
+            "released": true,
+            "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+          },
+          "sectors": {
+            "debt": [
+              "HISTORICAL_MEMBERSHIP",
+              "LIFECYCLE",
+              "ROTATION_HISTORY"
+            ],
+            "released": true,
+            "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+          },
+          "stocks": {
+            "debt": [
+              "HYPOTHESIS",
+              "INVALID_IF_OWNER",
+              "FULL_STRUCTURE_PATH"
+            ],
+            "released": true,
+            "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+          },
+          "strict_pit": {
+            "debt": [
+              "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+            ],
+            "released": false,
+            "scope": "NONE"
+          }
+        },
+        "factor_contract_id": null,
+        "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+        "full_product_release": false,
+        "historical_pit_effectiveness": "NOT_GRANTED",
+        "joint_release_digest": "5204fec1e9fcb11701c321d515a756acfaacea4d0fc1bb09443c34990ebd3a45",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "last_accepted_trade_date": "2026-09-30",
+        "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+        "namespace": "V4_CURRENT_ACCEPTED",
+        "operational_release_scope": [
+          "stocks_daily",
+          "sectors_current_facts",
+          "market_current",
+          "focus_read_corrected",
+          "forward_read",
+          "diagnostics",
+          "compare_corrected"
+        ],
+        "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "parameter_set_id": null,
+        "publication_id": "a86ef50b622adb6ca3f5b2b8626460c6b20841627743efb3486cd120871e0da9",
+        "quality": "QUALITY_DEGRADED",
+        "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "release_id": "a86ef50b622adb6ca3f5b2b8626460c6b20841627743efb3486cd120871e0da9",
+        "release_metadata": {
+          "contract_version": "1.0.0",
+          "data_quality_state": "QUALITY_DEGRADED",
+          "evidence_origin": "REAL_ACCEPTED_SOURCE",
+          "evidence_state": "VALIDATION_ONGOING",
+          "input_digest": "0107c813606e51bc631004f568a10b70ea9b47640c1e53117ca46ad789fcecbd",
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "owner": "FP02_RESEARCH_PROJECTION",
+          "published_at": "2026-10-08T11:16:40.088250+00:00",
+          "release_id": "666645c83dfa4fe984c336f024f26f22",
+          "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+          "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "trading_date": "2026-09-30"
+        },
+        "scoped_release": true,
+        "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+        "source_mode": "FROZEN_DATE_VIEW",
+        "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+        "stage": "V4-15",
+        "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+        "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+        "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+        "trade_date": "2026-09-29",
+        "turnover_as_of": null
+      },
+      "context_token": "fp12-a86ef50b622adb6ca3f5b2b8626460c6b20841627743efb3486cd120871e0da9",
+      "followup": {
+        "AS_RECORDED": false,
+        "coordinate_date": "2026-09-30",
+        "items": [
+          {
+            "bar": {
+              "amount": 323885760.0,
+              "close": 2.52,
+              "high": 2.55,
+              "low": 2.25,
+              "ma20": 2.3365,
+              "ma5": 2.468,
+              "ma60": 2.2584999999999997,
+              "open": 2.42,
+              "quality": "KNOWN",
+              "reason": null,
+              "trade_date": "2026-09-30",
+              "volume": 135013893
+            },
+            "horizon": 1,
+            "status": "OBSERVED_AFTER_T0",
+            "target_trade_date": "2026-09-30"
+          },
+          {
+            "bar": null,
+            "horizon": 3,
+            "status": "PENDING_NO_ACCEPTED_LATER_SESSION",
+            "target_trade_date": null
+          },
+          {
+            "bar": null,
+            "horizon": 5,
+            "status": "PENDING_NO_ACCEPTED_LATER_SESSION",
+            "target_trade_date": null
+          }
+        ],
+        "scope": "POST_T0_OBSERVATIONS_EXCLUDED_FROM_T0_HASH"
+      },
+      "has_next": false,
+      "history": {
+        "AS_RECORDED": false,
+        "as_of": "2026-09-29",
+        "items": [
+          {
+            "amount": 70971440.0,
+            "close": 2.64,
+            "high": 2.64,
+            "low": 2.59,
+            "ma20": 2.6825,
+            "ma5": 2.594,
+            "ma60": 2.7975,
+            "open": 2.6,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-08",
+            "volume": 27083871
+          },
+          {
+            "amount": 51983912.0,
+            "close": 2.59,
+            "high": 2.63,
+            "low": 2.58,
+            "ma20": 2.674,
+            "ma5": 2.586,
+            "ma60": 2.7944999999999998,
+            "open": 2.62,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-09",
+            "volume": 19984909
+          },
+          {
+            "amount": 46373660.0,
+            "close": 2.61,
+            "high": 2.64,
+            "low": 2.59,
+            "ma20": 2.6655,
+            "ma5": 2.5919999999999996,
+            "ma60": 2.792333333333333,
+            "open": 2.6,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-10",
+            "volume": 17680280
+          },
+          {
+            "amount": 93613960.0,
+            "close": 2.66,
+            "high": 2.68,
+            "low": 2.6,
+            "ma20": 2.659,
+            "ma5": 2.614,
+            "ma60": 2.7903333333333333,
+            "open": 2.62,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-13",
+            "volume": 35257085
+          },
+          {
+            "amount": 136629472.0,
+            "close": 2.73,
+            "high": 2.74,
+            "low": 2.65,
+            "ma20": 2.6544999999999996,
+            "ma5": 2.646,
+            "ma60": 2.789333333333333,
+            "open": 2.68,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-14",
+            "volume": 50629505
+          },
+          {
+            "amount": 80773528.0,
+            "close": 2.66,
+            "high": 2.75,
+            "low": 2.66,
+            "ma20": 2.645,
+            "ma5": 2.65,
+            "ma60": 2.787,
+            "open": 2.74,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-15",
+            "volume": 30006601
+          },
+          {
+            "amount": 59070556.0,
+            "close": 2.65,
+            "high": 2.68,
+            "low": 2.63,
+            "ma20": 2.6384999999999996,
+            "ma5": 2.662,
+            "ma60": 2.7845,
+            "open": 2.65,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-16",
+            "volume": 22248973
+          },
+          {
+            "amount": 80467992.0,
+            "close": 2.67,
+            "high": 2.7,
+            "low": 2.64,
+            "ma20": 2.6355,
+            "ma5": 2.6740000000000004,
+            "ma60": 2.7826666666666666,
+            "open": 2.68,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-17",
+            "volume": 30119094
+          },
+          {
+            "amount": 64394448.0,
+            "close": 2.65,
+            "high": 2.67,
+            "low": 2.63,
+            "ma20": 2.632,
+            "ma5": 2.6719999999999997,
+            "ma60": 2.780333333333333,
+            "open": 2.66,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-20",
+            "volume": 24350199
+          },
+          {
+            "amount": 44961560.0,
+            "close": 2.65,
+            "high": 2.67,
+            "low": 2.63,
+            "ma20": 2.637,
+            "ma5": 2.6559999999999997,
+            "ma60": 2.778833333333333,
+            "open": 2.65,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-21",
+            "volume": 16984660
+          },
+          {
+            "amount": 53702804.0,
+            "close": 2.62,
+            "high": 2.65,
+            "low": 2.61,
+            "ma20": 2.6355,
+            "ma5": 2.648,
+            "ma60": 2.7765,
+            "open": 2.64,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-22",
+            "volume": 20444379
+          },
+          {
+            "amount": 60472008.0,
+            "close": 2.63,
+            "high": 2.65,
+            "low": 2.59,
+            "ma20": 2.6335,
+            "ma5": 2.6439999999999997,
+            "ma60": 2.7696666666666667,
+            "open": 2.62,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-23",
+            "volume": 23062448
+          },
+          {
+            "amount": 54806152.0,
+            "close": 2.6,
+            "high": 2.63,
+            "low": 2.58,
+            "ma20": 2.631,
+            "ma5": 2.63,
+            "ma60": 2.7635,
+            "open": 2.62,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-24",
+            "volume": 21075120
+          },
+          {
+            "amount": 51337960.0,
+            "close": 2.61,
+            "high": 2.62,
+            "low": 2.57,
+            "ma20": 2.6285,
+            "ma5": 2.622,
+            "ma60": 2.758,
+            "open": 2.6,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-27",
+            "volume": 19785850
+          },
+          {
+            "amount": 133414312.0,
+            "close": 2.53,
+            "high": 2.58,
+            "low": 2.5,
+            "ma20": 2.623,
+            "ma5": 2.598,
+            "ma60": 2.751,
+            "open": 2.58,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-28",
+            "volume": 52613592
+          },
+          {
+            "amount": 80983848.0,
+            "close": 2.56,
+            "high": 2.6,
+            "low": 2.52,
+            "ma20": 2.6195,
+            "ma5": 2.586,
+            "ma60": 2.7455,
+            "open": 2.52,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-29",
+            "volume": 31487931
+          },
+          {
+            "amount": 81215968.0,
+            "close": 2.58,
+            "high": 2.61,
+            "low": 2.55,
+            "ma20": 2.617,
+            "ma5": 2.5759999999999996,
+            "ma60": 2.7411666666666665,
+            "open": 2.57,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-04-30",
+            "volume": 31450586
+          },
+          {
+            "amount": 86444656.0,
+            "close": 2.63,
+            "high": 2.64,
+            "low": 2.58,
+            "ma20": 2.6195,
+            "ma5": 2.582,
+            "ma60": 2.7366666666666664,
+            "open": 2.6,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-06",
+            "volume": 33058908
+          },
+          {
+            "amount": 74167976.0,
+            "close": 2.59,
+            "high": 2.64,
+            "low": 2.58,
+            "ma20": 2.6215,
+            "ma5": 2.5780000000000003,
+            "ma60": 2.729833333333333,
+            "open": 2.63,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-07",
+            "volume": 28556150
+          },
+          {
+            "amount": 73048224.0,
+            "close": 2.61,
+            "high": 2.63,
+            "low": 2.58,
+            "ma20": 2.6235,
+            "ma5": 2.594,
+            "ma60": 2.7241666666666666,
+            "open": 2.59,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-08",
+            "volume": 27940219
+          },
+          {
+            "amount": 100948344.0,
+            "close": 2.64,
+            "high": 2.66,
+            "low": 2.6,
+            "ma20": 2.6235,
+            "ma5": 2.6100000000000003,
+            "ma60": 2.7215,
+            "open": 2.62,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-11",
+            "volume": 38223518
+          },
+          {
+            "amount": 86367912.0,
+            "close": 2.63,
+            "high": 2.67,
+            "low": 2.61,
+            "ma20": 2.6254999999999997,
+            "ma5": 2.62,
+            "ma60": 2.7176666666666667,
+            "open": 2.64,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-12",
+            "volume": 32717533
+          },
+          {
+            "amount": 69396400.0,
+            "close": 2.59,
+            "high": 2.64,
+            "low": 2.58,
+            "ma20": 2.6245000000000003,
+            "ma5": 2.6119999999999997,
+            "ma60": 2.7115,
+            "open": 2.63,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-13",
+            "volume": 26680741
+          },
+          {
+            "amount": 64222144.0,
+            "close": 2.56,
+            "high": 2.62,
+            "low": 2.54,
+            "ma20": 2.6195,
+            "ma5": 2.606,
+            "ma60": 2.7046666666666668,
+            "open": 2.61,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-14",
+            "volume": 25054078
+          },
+          {
+            "amount": 64359944.0,
+            "close": 2.53,
+            "high": 2.56,
+            "low": 2.51,
+            "ma20": 2.6094999999999997,
+            "ma5": 2.59,
+            "ma60": 2.6981666666666664,
+            "open": 2.55,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-15",
+            "volume": 25368059
+          },
+          {
+            "amount": 55465984.0,
+            "close": 2.54,
+            "high": 2.55,
+            "low": 2.49,
+            "ma20": 2.6035,
+            "ma5": 2.57,
+            "ma60": 2.6911666666666667,
+            "open": 2.52,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-18",
+            "volume": 22040497
+          },
+          {
+            "amount": 41612728.0,
+            "close": 2.55,
+            "high": 2.56,
+            "low": 2.53,
+            "ma20": 2.5985,
+            "ma5": 2.554,
+            "ma60": 2.685,
+            "open": 2.53,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-19",
+            "volume": 16333494
+          },
+          {
+            "amount": 40986424.0,
+            "close": 2.52,
+            "high": 2.56,
+            "low": 2.5,
+            "ma20": 2.591,
+            "ma5": 2.54,
+            "ma60": 2.6785,
+            "open": 2.55,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-20",
+            "volume": 16270364
+          },
+          {
+            "amount": 61517408.0,
+            "close": 2.46,
+            "high": 2.53,
+            "low": 2.44,
+            "ma20": 2.5814999999999997,
+            "ma5": 2.52,
+            "ma60": 2.6711666666666667,
+            "open": 2.51,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-21",
+            "volume": 24791572
+          },
+          {
+            "amount": 38284432.0,
+            "close": 2.44,
+            "high": 2.46,
+            "low": 2.43,
+            "ma20": 2.571,
+            "ma5": 2.502,
+            "ma60": 2.664,
+            "open": 2.45,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-22",
+            "volume": 15670870
+          },
+          {
+            "amount": 45380184.0,
+            "close": 2.42,
+            "high": 2.45,
+            "low": 2.4,
+            "ma20": 2.561,
+            "ma5": 2.478,
+            "ma60": 2.6565,
+            "open": 2.44,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-25",
+            "volume": 18723802
+          },
+          {
+            "amount": 47870640.0,
+            "close": 2.42,
+            "high": 2.43,
+            "low": 2.38,
+            "ma20": 2.5505,
+            "ma5": 2.452,
+            "ma60": 2.647,
+            "open": 2.42,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-26",
+            "volume": 19903176
+          },
+          {
+            "amount": 51835112.0,
+            "close": 2.35,
+            "high": 2.42,
+            "low": 2.33,
+            "ma20": 2.538,
+            "ma5": 2.418,
+            "ma60": 2.6381666666666663,
+            "open": 2.4,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-27",
+            "volume": 21983077
+          },
+          {
+            "amount": 37210280.0,
+            "close": 2.34,
+            "high": 2.39,
+            "low": 2.32,
+            "ma20": 2.5245,
+            "ma5": 2.3939999999999997,
+            "ma60": 2.629,
+            "open": 2.34,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-28",
+            "volume": 15840938
+          },
+          {
+            "amount": 88837784.0,
+            "close": 2.43,
+            "high": 2.48,
+            "low": 2.34,
+            "ma20": 2.5195,
+            "ma5": 2.3920000000000003,
+            "ma60": 2.6225,
+            "open": 2.34,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-05-29",
+            "volume": 36672685
+          },
+          {
+            "amount": 59770924.0,
+            "close": 2.47,
+            "high": 2.48,
+            "low": 2.38,
+            "ma20": 2.5149999999999997,
+            "ma5": 2.402,
+            "ma60": 2.6175,
+            "open": 2.42,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-01",
+            "volume": 24482108
+          },
+          {
+            "amount": 68597416.0,
+            "close": 2.43,
+            "high": 2.49,
+            "low": 2.41,
+            "ma20": 2.5075,
+            "ma5": 2.404,
+            "ma60": 2.613,
+            "open": 2.47,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-02",
+            "volume": 27889045
+          },
+          {
+            "amount": 57516816.0,
+            "close": 2.37,
+            "high": 2.44,
+            "low": 2.34,
+            "ma20": 2.4945,
+            "ma5": 2.4080000000000004,
+            "ma60": 2.6071666666666666,
+            "open": 2.43,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-03",
+            "volume": 24216650
+          },
+          {
+            "amount": 87834544.0,
+            "close": 2.4,
+            "high": 2.49,
+            "low": 2.36,
+            "ma20": 2.4850000000000003,
+            "ma5": 2.4200000000000004,
+            "ma60": 2.601,
+            "open": 2.36,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-04",
+            "volume": 36249519
+          },
+          {
+            "amount": 63535700.0,
+            "close": 2.4,
+            "high": 2.46,
+            "low": 2.39,
+            "ma20": 2.4745,
+            "ma5": 2.414,
+            "ma60": 2.5955,
+            "open": 2.4,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-05",
+            "volume": 26272171
+          },
+          {
+            "amount": 79824736.0,
+            "close": 2.41,
+            "high": 2.46,
+            "low": 2.36,
+            "ma20": 2.463,
+            "ma5": 2.402,
+            "ma60": 2.5896666666666666,
+            "open": 2.38,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-08",
+            "volume": 33020892
+          },
+          {
+            "amount": 58653088.0,
+            "close": 2.35,
+            "high": 2.41,
+            "low": 2.33,
+            "ma20": 2.449,
+            "ma5": 2.386,
+            "ma60": 2.5828333333333333,
+            "open": 2.41,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-09",
+            "volume": 24953570
+          },
+          {
+            "amount": 46490756.0,
+            "close": 2.38,
+            "high": 2.39,
+            "low": 2.32,
+            "ma20": 2.4385000000000003,
+            "ma5": 2.388,
+            "ma60": 2.5761666666666665,
+            "open": 2.34,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-10",
+            "volume": 19786940
+          },
+          {
+            "amount": 55140832.0,
+            "close": 2.36,
+            "high": 2.39,
+            "low": 2.32,
+            "ma20": 2.4285,
+            "ma5": 2.38,
+            "ma60": 2.569,
+            "open": 2.37,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-11",
+            "volume": 23440173
+          },
+          {
+            "amount": 67496104.0,
+            "close": 2.41,
+            "high": 2.42,
+            "low": 2.36,
+            "ma20": 2.4225000000000003,
+            "ma5": 2.382,
+            "ma60": 2.5621666666666667,
+            "open": 2.36,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-12",
+            "volume": 28189715
+          },
+          {
+            "amount": 50426544.0,
+            "close": 2.4,
+            "high": 2.45,
+            "low": 2.39,
+            "ma20": 2.4155,
+            "ma5": 2.38,
+            "ma60": 2.554666666666667,
+            "open": 2.41,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-15",
+            "volume": 20867677
+          },
+          {
+            "amount": 61748272.0,
+            "close": 2.34,
+            "high": 2.4,
+            "low": 2.33,
+            "ma20": 2.4050000000000002,
+            "ma5": 2.378,
+            "ma60": 2.5473333333333334,
+            "open": 2.39,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-16",
+            "volume": 26329723
+          },
+          {
+            "amount": 69386784.0,
+            "close": 2.26,
+            "high": 2.35,
+            "low": 2.24,
+            "ma20": 2.3920000000000003,
+            "ma5": 2.354,
+            "ma60": 2.5395,
+            "open": 2.35,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-17",
+            "volume": 30377272
+          },
+          {
+            "amount": 48203100.0,
+            "close": 2.22,
+            "high": 2.25,
+            "low": 2.18,
+            "ma20": 2.38,
+            "ma5": 2.3259999999999996,
+            "ma60": 2.5311666666666666,
+            "open": 2.24,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-18",
+            "volume": 21736626
+          },
+          {
+            "amount": 66677288.0,
+            "close": 2.2,
+            "high": 2.22,
+            "low": 2.14,
+            "ma20": 2.368,
+            "ma5": 2.284,
+            "ma60": 2.5253333333333337,
+            "open": 2.21,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-22",
+            "volume": 30650099
+          },
+          {
+            "amount": 60539656.0,
+            "close": 2.24,
+            "high": 2.27,
+            "low": 2.18,
+            "ma20": 2.359,
+            "ma5": 2.252,
+            "ma60": 2.5185,
+            "open": 2.19,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-23",
+            "volume": 27004904
+          },
+          {
+            "amount": 74076624.0,
+            "close": 2.13,
+            "high": 2.25,
+            "low": 2.13,
+            "ma20": 2.3445,
+            "ma5": 2.21,
+            "ma60": 2.5095,
+            "open": 2.25,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-24",
+            "volume": 34138495
+          },
+          {
+            "amount": 56018952.0,
+            "close": 2.12,
+            "high": 2.16,
+            "low": 2.09,
+            "ma20": 2.333,
+            "ma5": 2.182,
+            "ma60": 2.5006666666666666,
+            "open": 2.13,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-25",
+            "volume": 26410075
+          },
+          {
+            "amount": 62430752.0,
+            "close": 2.11,
+            "high": 2.15,
+            "low": 2.09,
+            "ma20": 2.3215,
+            "ma5": 2.16,
+            "ma60": 2.4915000000000003,
+            "open": 2.13,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-26",
+            "volume": 29424448
+          },
+          {
+            "amount": 73678992.0,
+            "close": 2.09,
+            "high": 2.11,
+            "low": 2.01,
+            "ma20": 2.3045,
+            "ma5": 2.138,
+            "ma60": 2.4823333333333335,
+            "open": 2.11,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-29",
+            "volume": 35730159
+          },
+          {
+            "amount": 47607984.0,
+            "close": 2.06,
+            "high": 2.09,
+            "low": 2.03,
+            "ma20": 2.284,
+            "ma5": 2.102,
+            "ma60": 2.4728333333333334,
+            "open": 2.08,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-06-30",
+            "volume": 23105374
+          },
+          {
+            "amount": 64475896.0,
+            "close": 2.12,
+            "high": 2.15,
+            "low": 2.05,
+            "ma20": 2.2685,
+            "ma5": 2.1,
+            "ma60": 2.4643333333333333,
+            "open": 2.05,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-01",
+            "volume": 30673926
+          },
+          {
+            "amount": 64209828.0,
+            "close": 2.11,
+            "high": 2.18,
+            "low": 2.07,
+            "ma20": 2.2555,
+            "ma5": 2.098,
+            "ma60": 2.4564999999999997,
+            "open": 2.13,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-02",
+            "volume": 30336592
+          },
+          {
+            "amount": 51419088.0,
+            "close": 2.12,
+            "high": 2.16,
+            "low": 2.09,
+            "ma20": 2.2415,
+            "ma5": 2.1,
+            "ma60": 2.4493333333333336,
+            "open": 2.11,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-03",
+            "volume": 24217723
+          },
+          {
+            "amount": 61067180.0,
+            "close": 2.15,
+            "high": 2.15,
+            "low": 2.09,
+            "ma20": 2.229,
+            "ma5": 2.112,
+            "ma60": 2.442333333333333,
+            "open": 2.12,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-06",
+            "volume": 28704190
+          },
+          {
+            "amount": 55761952.0,
+            "close": 2.07,
+            "high": 2.15,
+            "low": 2.06,
+            "ma20": 2.212,
+            "ma5": 2.114,
+            "ma60": 2.4328333333333334,
+            "open": 2.15,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-07",
+            "volume": 26739101
+          },
+          {
+            "amount": 51632888.0,
+            "close": 2.1,
+            "high": 2.12,
+            "low": 2.04,
+            "ma20": 2.1995,
+            "ma5": 2.1100000000000003,
+            "ma60": 2.4246666666666665,
+            "open": 2.06,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-08",
+            "volume": 24742692
+          },
+          {
+            "amount": 56246632.0,
+            "close": 2.09,
+            "high": 2.12,
+            "low": 2.06,
+            "ma20": 2.185,
+            "ma5": 2.106,
+            "ma60": 2.416,
+            "open": 2.09,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-09",
+            "volume": 26951256
+          },
+          {
+            "amount": 95993544.0,
+            "close": 2.14,
+            "high": 2.19,
+            "low": 2.05,
+            "ma20": 2.174,
+            "ma5": 2.1100000000000003,
+            "ma60": 2.4073333333333333,
+            "open": 2.08,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-10",
+            "volume": 44902821
+          },
+          {
+            "amount": 67121528.0,
+            "close": 2.12,
+            "high": 2.15,
+            "low": 2.1,
+            "ma20": 2.1595,
+            "ma5": 2.104,
+            "ma60": 2.3971666666666667,
+            "open": 2.15,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-13",
+            "volume": 31611800
+          },
+          {
+            "amount": 68511552.0,
+            "close": 2.14,
+            "high": 2.17,
+            "low": 2.1,
+            "ma20": 2.1465,
+            "ma5": 2.118,
+            "ma60": 2.3885,
+            "open": 2.11,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-14",
+            "volume": 32031520
+          },
+          {
+            "amount": 85707848.0,
+            "close": 2.2,
+            "high": 2.22,
+            "low": 2.12,
+            "ma20": 2.1395,
+            "ma5": 2.1380000000000003,
+            "ma60": 2.3810000000000002,
+            "open": 2.13,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-15",
+            "volume": 39115895
+          },
+          {
+            "amount": 66719004.0,
+            "close": 2.24,
+            "high": 2.25,
+            "low": 2.17,
+            "ma20": 2.1385,
+            "ma5": 2.168,
+            "ma60": 2.3738333333333332,
+            "open": 2.23,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-16",
+            "volume": 30002517
+          },
+          {
+            "amount": 86241936.0,
+            "close": 2.16,
+            "high": 2.29,
+            "low": 2.16,
+            "ma20": 2.1355,
+            "ma5": 2.172,
+            "ma60": 2.365666666666667,
+            "open": 2.23,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-17",
+            "volume": 38944074
+          },
+          {
+            "amount": 75732704.0,
+            "close": 2.18,
+            "high": 2.22,
+            "low": 2.15,
+            "ma20": 2.1345,
+            "ma5": 2.184,
+            "ma60": 2.3578333333333332,
+            "open": 2.16,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-20",
+            "volume": 34680771
+          },
+          {
+            "amount": 71559624.0,
+            "close": 2.15,
+            "high": 2.21,
+            "low": 2.14,
+            "ma20": 2.13,
+            "ma5": 2.186,
+            "ma60": 2.35,
+            "open": 2.18,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-21",
+            "volume": 32937159
+          },
+          {
+            "amount": 75608112.0,
+            "close": 2.16,
+            "high": 2.17,
+            "low": 2.12,
+            "ma20": 2.1315,
+            "ma5": 2.178,
+            "ma60": 2.3421666666666665,
+            "open": 2.15,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-22",
+            "volume": 35228358
+          },
+          {
+            "amount": 51378052.0,
+            "close": 2.18,
+            "high": 2.19,
+            "low": 2.13,
+            "ma20": 2.1345,
+            "ma5": 2.166,
+            "ma60": 2.335166666666667,
+            "open": 2.15,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-23",
+            "volume": 23738709
+          },
+          {
+            "amount": 56895272.0,
+            "close": 2.12,
+            "high": 2.22,
+            "low": 2.11,
+            "ma20": 2.1350000000000002,
+            "ma5": 2.1580000000000004,
+            "ma60": 2.327,
+            "open": 2.18,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-24",
+            "volume": 26427197
+          },
+          {
+            "amount": 50558988.0,
+            "close": 2.16,
+            "high": 2.17,
+            "low": 2.1,
+            "ma20": 2.1385,
+            "ma5": 2.154,
+            "ma60": 2.3208333333333333,
+            "open": 2.11,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-27",
+            "volume": 23479223
+          },
+          {
+            "amount": 69479800.0,
+            "close": 2.17,
+            "high": 2.2,
+            "low": 2.14,
+            "ma20": 2.144,
+            "ma5": 2.1580000000000004,
+            "ma60": 2.3143333333333334,
+            "open": 2.16,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-28",
+            "volume": 32026900
+          },
+          {
+            "amount": 78717104.0,
+            "close": 2.22,
+            "high": 2.25,
+            "low": 2.17,
+            "ma20": 2.149,
+            "ma5": 2.1700000000000004,
+            "ma60": 2.308333333333333,
+            "open": 2.18,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-29",
+            "volume": 35493535
+          },
+          {
+            "amount": 71474664.0,
+            "close": 2.26,
+            "high": 2.27,
+            "low": 2.21,
+            "ma20": 2.1565000000000003,
+            "ma5": 2.186,
+            "ma60": 2.3021666666666665,
+            "open": 2.22,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-30",
+            "volume": 31819113
+          },
+          {
+            "amount": 68669512.0,
+            "close": 2.26,
+            "high": 2.28,
+            "low": 2.23,
+            "ma20": 2.1635,
+            "ma5": 2.214,
+            "ma60": 2.296666666666667,
+            "open": 2.25,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-07-31",
+            "volume": 30506108
+          },
+          {
+            "amount": 79798904.0,
+            "close": 2.33,
+            "high": 2.34,
+            "low": 2.26,
+            "ma20": 2.1725000000000003,
+            "ma5": 2.248,
+            "ma60": 2.2920000000000003,
+            "open": 2.26,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-03",
+            "volume": 34653795
+          },
+          {
+            "amount": 63802256.0,
+            "close": 2.27,
+            "high": 2.34,
+            "low": 2.27,
+            "ma20": 2.1825,
+            "ma5": 2.268,
+            "ma60": 2.2858333333333336,
+            "open": 2.32,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-04",
+            "volume": 27859481
+          },
+          {
+            "amount": 48417812.0,
+            "close": 2.26,
+            "high": 2.28,
+            "low": 2.24,
+            "ma20": 2.1905,
+            "ma5": 2.276,
+            "ma60": 2.2796666666666665,
+            "open": 2.27,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-05",
+            "volume": 21423158
+          },
+          {
+            "amount": 65107148.0,
+            "close": 2.26,
+            "high": 2.28,
+            "low": 2.2,
+            "ma20": 2.1990000000000003,
+            "ma5": 2.276,
+            "ma60": 2.2741666666666664,
+            "open": 2.26,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-06",
+            "volume": 29034961
+          },
+          {
+            "amount": 77505880.0,
+            "close": 2.21,
+            "high": 2.26,
+            "low": 2.17,
+            "ma20": 2.2024999999999997,
+            "ma5": 2.266,
+            "ma60": 2.268333333333333,
+            "open": 2.26,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-07",
+            "volume": 35287206
+          },
+          {
+            "amount": 85181744.0,
+            "close": 2.26,
+            "high": 2.28,
+            "low": 2.2,
+            "ma20": 2.2095,
+            "ma5": 2.252,
+            "ma60": 2.2638333333333334,
+            "open": 2.21,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-10",
+            "volume": 37851124
+          },
+          {
+            "amount": 73177096.0,
+            "close": 2.28,
+            "high": 2.3,
+            "low": 2.24,
+            "ma20": 2.2165,
+            "ma5": 2.254,
+            "ma60": 2.2595,
+            "open": 2.27,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-11",
+            "volume": 32185533
+          },
+          {
+            "amount": 97704544.0,
+            "close": 2.35,
+            "high": 2.37,
+            "low": 2.27,
+            "ma20": 2.2239999999999998,
+            "ma5": 2.272,
+            "ma60": 2.2561666666666667,
+            "open": 2.28,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-12",
+            "volume": 41983349
+          },
+          {
+            "amount": 95312352.0,
+            "close": 2.27,
+            "high": 2.37,
+            "low": 2.26,
+            "ma20": 2.2255,
+            "ma5": 2.274,
+            "ma60": 2.2520000000000002,
+            "open": 2.35,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-13",
+            "volume": 41662961
+          },
+          {
+            "amount": 56723136.0,
+            "close": 2.22,
+            "high": 2.27,
+            "low": 2.21,
+            "ma20": 2.2285,
+            "ma5": 2.276,
+            "ma60": 2.2479999999999998,
+            "open": 2.27,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-14",
+            "volume": 25416482
+          },
+          {
+            "amount": 52313116.0,
+            "close": 2.24,
+            "high": 2.25,
+            "low": 2.19,
+            "ma20": 2.2315,
+            "ma5": 2.272,
+            "ma60": 2.244666666666667,
+            "open": 2.23,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-17",
+            "volume": 23483814
+          },
+          {
+            "amount": 103825808.0,
+            "close": 2.27,
+            "high": 2.37,
+            "low": 2.23,
+            "ma20": 2.2375,
+            "ma5": 2.2700000000000005,
+            "ma60": 2.242166666666667,
+            "open": 2.23,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-18",
+            "volume": 45433105
+          },
+          {
+            "amount": 67151368.0,
+            "close": 2.24,
+            "high": 2.29,
+            "low": 2.22,
+            "ma20": 2.2415,
+            "ma5": 2.248,
+            "ma60": 2.2391666666666667,
+            "open": 2.25,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-19",
+            "volume": 29847362
+          },
+          {
+            "amount": 131196208.0,
+            "close": 2.3,
+            "high": 2.35,
+            "low": 2.23,
+            "ma20": 2.2475,
+            "ma5": 2.254,
+            "ma60": 2.2383333333333337,
+            "open": 2.23,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-20",
+            "volume": 57163959
+          },
+          {
+            "amount": 120138336.0,
+            "close": 2.21,
+            "high": 2.29,
+            "low": 2.18,
+            "ma20": 2.252,
+            "ma5": 2.252,
+            "ma60": 2.2361666666666666,
+            "open": 2.28,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-21",
+            "volume": 54473895
+          },
+          {
+            "amount": 56908844.0,
+            "close": 2.2,
+            "high": 2.22,
+            "low": 2.17,
+            "ma20": 2.254,
+            "ma5": 2.244,
+            "ma60": 2.2323333333333335,
+            "open": 2.2,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-24",
+            "volume": 25963575
+          },
+          {
+            "amount": 80769000.0,
+            "close": 2.27,
+            "high": 2.27,
+            "low": 2.19,
+            "ma20": 2.259,
+            "ma5": 2.244,
+            "ma60": 2.229,
+            "open": 2.19,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-25",
+            "volume": 35949307
+          },
+          {
+            "amount": 70794376.0,
+            "close": 2.29,
+            "high": 2.32,
+            "low": 2.25,
+            "ma20": 2.2625,
+            "ma5": 2.254,
+            "ma60": 2.2266666666666666,
+            "open": 2.25,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-26",
+            "volume": 30818492
+          },
+          {
+            "amount": 68878576.0,
+            "close": 2.28,
+            "high": 2.31,
+            "low": 2.25,
+            "ma20": 2.2634999999999996,
+            "ma5": 2.25,
+            "ma60": 2.2251666666666665,
+            "open": 2.3,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-27",
+            "volume": 30242701
+          },
+          {
+            "amount": 101267704.0,
+            "close": 2.34,
+            "high": 2.36,
+            "low": 2.27,
+            "ma20": 2.2675,
+            "ma5": 2.276,
+            "ma60": 2.2241666666666666,
+            "open": 2.28,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-28",
+            "volume": 43581450
+          },
+          {
+            "amount": 174288016.0,
+            "close": 2.27,
+            "high": 2.44,
+            "low": 2.26,
+            "ma20": 2.2645,
+            "ma5": 2.29,
+            "ma60": 2.222,
+            "open": 2.41,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-08-31",
+            "volume": 74724600
+          },
+          {
+            "amount": 111124560.0,
+            "close": 2.3,
+            "high": 2.33,
+            "low": 2.24,
+            "ma20": 2.266,
+            "ma5": 2.2960000000000003,
+            "ma60": 2.2201666666666666,
+            "open": 2.24,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-01",
+            "volume": 48420603
+          },
+          {
+            "amount": 107083640.0,
+            "close": 2.28,
+            "high": 2.33,
+            "low": 2.23,
+            "ma20": 2.267,
+            "ma5": 2.2939999999999996,
+            "ma60": 2.219,
+            "open": 2.29,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-02",
+            "volume": 47376135
+          },
+          {
+            "amount": 92189824.0,
+            "close": 2.29,
+            "high": 2.34,
+            "low": 2.24,
+            "ma20": 2.2685,
+            "ma5": 2.2960000000000003,
+            "ma60": 2.2175000000000002,
+            "open": 2.28,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-03",
+            "volume": 40243381
+          },
+          {
+            "amount": 126628552.0,
+            "close": 2.32,
+            "high": 2.36,
+            "low": 2.27,
+            "ma20": 2.274,
+            "ma5": 2.292,
+            "ma60": 2.216833333333333,
+            "open": 2.29,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-04",
+            "volume": 54256798
+          },
+          {
+            "amount": 81905664.0,
+            "close": 2.3,
+            "high": 2.32,
+            "low": 2.29,
+            "ma20": 2.276,
+            "ma5": 2.2979999999999996,
+            "ma60": 2.2150000000000003,
+            "open": 2.32,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-07",
+            "volume": 35565047
+          },
+          {
+            "amount": 104139008.0,
+            "close": 2.35,
+            "high": 2.38,
+            "low": 2.29,
+            "ma20": 2.2795,
+            "ma5": 2.308,
+            "ma60": 2.2141666666666664,
+            "open": 2.29,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-08",
+            "volume": 44324307
+          },
+          {
+            "amount": 95878448.0,
+            "close": 2.31,
+            "high": 2.37,
+            "low": 2.29,
+            "ma20": 2.2775,
+            "ma5": 2.314,
+            "ma60": 2.2136666666666667,
+            "open": 2.35,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-09",
+            "volume": 41426471
+          },
+          {
+            "amount": 65613320.0,
+            "close": 2.29,
+            "high": 2.32,
+            "low": 2.26,
+            "ma20": 2.2785,
+            "ma5": 2.314,
+            "ma60": 2.2141666666666664,
+            "open": 2.31,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-10",
+            "volume": 28678391
+          },
+          {
+            "amount": 101912208.0,
+            "close": 2.21,
+            "high": 2.29,
+            "low": 2.19,
+            "ma20": 2.278,
+            "ma5": 2.2920000000000003,
+            "ma60": 2.214,
+            "open": 2.29,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-11",
+            "volume": 45964378
+          },
+          {
+            "amount": 60935508.0,
+            "close": 2.23,
+            "high": 2.24,
+            "low": 2.18,
+            "ma20": 2.2775,
+            "ma5": 2.278,
+            "ma60": 2.2145,
+            "open": 2.2,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-14",
+            "volume": 27528804
+          },
+          {
+            "amount": 47377608.0,
+            "close": 2.19,
+            "high": 2.23,
+            "low": 2.18,
+            "ma20": 2.2735,
+            "ma5": 2.246,
+            "ma60": 2.2136666666666667,
+            "open": 2.22,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-15",
+            "volume": 21549591
+          },
+          {
+            "amount": 50652672.0,
+            "close": 2.21,
+            "high": 2.22,
+            "low": 2.16,
+            "ma20": 2.272,
+            "ma5": 2.226,
+            "ma60": 2.2150000000000003,
+            "open": 2.19,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-16",
+            "volume": 23140085
+          },
+          {
+            "amount": 58425360.0,
+            "close": 2.23,
+            "high": 2.23,
+            "low": 2.18,
+            "ma20": 2.2685,
+            "ma5": 2.214,
+            "ma60": 2.216833333333333,
+            "open": 2.19,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-17",
+            "volume": 26462668
+          },
+          {
+            "amount": 115158008.0,
+            "close": 2.31,
+            "high": 2.33,
+            "low": 2.21,
+            "ma20": 2.2735,
+            "ma5": 2.234,
+            "ma60": 2.2201666666666666,
+            "open": 2.23,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-18",
+            "volume": 50777186
+          },
+          {
+            "amount": 278777184.0,
+            "close": 2.45,
+            "high": 2.54,
+            "low": 2.27,
+            "ma20": 2.286,
+            "ma5": 2.278,
+            "ma60": 2.2261666666666664,
+            "open": 2.29,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-21",
+            "volume": 115620235
+          },
+          {
+            "amount": 215442576.0,
+            "close": 2.42,
+            "high": 2.46,
+            "low": 2.36,
+            "ma20": 2.2935,
+            "ma5": 2.3240000000000003,
+            "ma60": 2.2321666666666666,
+            "open": 2.4,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-22",
+            "volume": 89306420
+          },
+          {
+            "amount": 455678080.0,
+            "close": 2.51,
+            "high": 2.66,
+            "low": 2.4,
+            "ma20": 2.3045,
+            "ma5": 2.384,
+            "ma60": 2.2386666666666666,
+            "open": 2.41,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-23",
+            "volume": 177044061
+          },
+          {
+            "amount": 411244480.0,
+            "close": 2.47,
+            "high": 2.66,
+            "low": 2.41,
+            "ma20": 2.314,
+            "ma5": 2.432,
+            "ma60": 2.244666666666667,
+            "open": 2.53,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-24",
+            "volume": 163998128
+          },
+          {
+            "amount": 241067936.0,
+            "close": 2.35,
+            "high": 2.43,
+            "low": 2.3,
+            "ma20": 2.3145,
+            "ma5": 2.44,
+            "ma60": 2.2485,
+            "open": 2.41,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-28",
+            "volume": 102008058
+          },
+          {
+            "amount": 299545696.0,
+            "close": 2.49,
+            "high": 2.59,
+            "low": 2.4,
+            "ma20": 2.3255,
+            "ma5": 2.448,
+            "ma60": 2.254166666666667,
+            "open": 2.4,
+            "quality": "KNOWN",
+            "reason": null,
+            "trade_date": "2026-09-29",
+            "volume": 120720436
+          }
+        ],
+        "price_basis": "RAW",
+        "source": {
+          "bytes": 367886336,
+          "path": "data/v4/fp07_stocks/69bf874b4d7311a1ddd217846e716708d96a26aeea19ec289721ad2564bbb4d3/series.sqlite",
+          "sha256": "6b326dac93aacd63dc289895b1488f224843940154b6f4b89bc0df8af0a4518d"
+        }
+      },
+      "items": [
+        {
+          "AS_RECORDED": false,
+          "entity_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+          "fields": {
+            "amount": {
+              "effective_date": "2026-09-29",
+              "known_at": null,
+              "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+              "publication_date": "2026-10-01T12:25:10.846023+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/RAW_DAILY/artifact.json",
+                "sha256": "16e4daab101f671d894fbacbb37361c6bf8286e68e7170877aaec8d17f84dddf"
+              },
+              "unit": "CNY",
+              "value": 299545696.0
+            },
+            "close": {
+              "effective_date": "2026-09-29",
+              "known_at": null,
+              "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+              "publication_date": "2026-10-01T12:25:10.846023+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/RAW_DAILY/artifact.json",
+                "sha256": "16e4daab101f671d894fbacbb37361c6bf8286e68e7170877aaec8d17f84dddf"
+              },
+              "unit": "CNY_PER_SHARE",
+              "value": 2.49
+            },
+            "health": {
+              "effective_date": "2026-09-29",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 7620107,
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-29_CANDIDATE_R5.json.gz",
+                "sha256": "968caca5a9e7020e9f31299bf93e12de1a8e66f62562a0d1bd7b9217e3f60dfe"
+              },
+              "unit": "ENUM",
+              "value": "WEAKENING"
+            },
+            "high": {
+              "effective_date": "2026-09-29",
+              "known_at": null,
+              "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+              "publication_date": "2026-10-01T12:25:10.846023+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/RAW_DAILY/artifact.json",
+                "sha256": "16e4daab101f671d894fbacbb37361c6bf8286e68e7170877aaec8d17f84dddf"
+              },
+              "unit": "CNY_PER_SHARE",
+              "value": 2.59
+            },
+            "low": {
+              "effective_date": "2026-09-29",
+              "known_at": null,
+              "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+              "publication_date": "2026-10-01T12:25:10.846023+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/RAW_DAILY/artifact.json",
+                "sha256": "16e4daab101f671d894fbacbb37361c6bf8286e68e7170877aaec8d17f84dddf"
+              },
+              "unit": "CNY_PER_SHARE",
+              "value": 2.4
+            },
+            "maturity": {
+              "effective_date": "2026-09-29",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 7620107,
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-29_CANDIDATE_R5.json.gz",
+                "sha256": "968caca5a9e7020e9f31299bf93e12de1a8e66f62562a0d1bd7b9217e3f60dfe"
+              },
+              "unit": "ENUM",
+              "value": "NONE"
+            },
+            "open": {
+              "effective_date": "2026-09-29",
+              "known_at": null,
+              "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+              "publication_date": "2026-10-01T12:25:10.846023+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/RAW_DAILY/artifact.json",
+                "sha256": "16e4daab101f671d894fbacbb37361c6bf8286e68e7170877aaec8d17f84dddf"
+              },
+              "unit": "CNY_PER_SHARE",
+              "value": 2.4
+            },
+            "scenario": {
+              "effective_date": "2026-09-29",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 7620107,
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-29_CANDIDATE_R5.json.gz",
+                "sha256": "968caca5a9e7020e9f31299bf93e12de1a8e66f62562a0d1bd7b9217e3f60dfe"
+              },
+              "unit": "ENUM",
+              "value": "NONE"
+            },
+            "tracking": {
+              "effective_date": "2026-09-29",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 7620107,
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-29_CANDIDATE_R5.json.gz",
+                "sha256": "968caca5a9e7020e9f31299bf93e12de1a8e66f62562a0d1bd7b9217e3f60dfe"
+              },
+              "unit": "ENUM",
+              "value": "CLOSED"
+            },
+            "validity": {
+              "effective_date": "2026-09-29",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 7620107,
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-29_CANDIDATE_R5.json.gz",
+                "sha256": "968caca5a9e7020e9f31299bf93e12de1a8e66f62562a0d1bd7b9217e3f60dfe"
+              },
+              "unit": "ENUM",
+              "value": "VALID"
+            },
+            "volume": {
+              "effective_date": "2026-09-29",
+              "known_at": null,
+              "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+              "publication_date": "2026-10-01T12:25:10.846023+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/RAW_DAILY/artifact.json",
+                "sha256": "16e4daab101f671d894fbacbb37361c6bf8286e68e7170877aaec8d17f84dddf"
+              },
+              "unit": "SHARES",
+              "value": 120720436
+            }
+          },
+          "price_basis": "RAW",
+          "symbol": "SH.600675",
+          "trading_status": null
+        }
+      ],
+      "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+      "limit": 30,
+      "offset": 0,
+      "operational_context": {
+        "accepted_trade_date": "2026-09-30",
+        "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+        "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+        "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+        "domain_readiness": {
+          "fep": {
+            "debt": [
+              "CURRENT_FEATURE_MODEL_INFERENCE"
+            ],
+            "released": false,
+            "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+          },
+          "focus": {
+            "debt": [
+              "UNRESOLVED_PATH_PREDICATE_OWNERS",
+              "LEGACY_PG_RECONCILIATION"
+            ],
+            "earliest_valid_date": "2026-09-29",
+            "released": true,
+            "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+          },
+          "forward": {
+            "debt": [
+              "CURRENT_FEP_INFERENCE",
+              "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+              "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+            ],
+            "released": true,
+            "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+          },
+          "market": {
+            "debt": [
+              "INTRADAY_TOUCH_BROKEN_LIMIT",
+              "OFFICIAL_FACT_NEWS"
+            ],
+            "released": true,
+            "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+          },
+          "sectors": {
+            "debt": [
+              "HISTORICAL_MEMBERSHIP",
+              "LIFECYCLE",
+              "ROTATION_HISTORY"
+            ],
+            "released": true,
+            "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+          },
+          "stocks": {
+            "debt": [
+              "HYPOTHESIS",
+              "INVALID_IF_OWNER",
+              "FULL_STRUCTURE_PATH"
+            ],
+            "released": true,
+            "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+          },
+          "strict_pit": {
+            "debt": [
+              "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+            ],
+            "released": false,
+            "scope": "NONE"
+          }
+        },
+        "factor_contract_id": null,
+        "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+        "full_product_release": false,
+        "historical_pit_effectiveness": "NOT_GRANTED",
+        "joint_release_digest": "5204fec1e9fcb11701c321d515a756acfaacea4d0fc1bb09443c34990ebd3a45",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "last_accepted_trade_date": "2026-09-30",
+        "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+        "namespace": "V4_CURRENT_ACCEPTED",
+        "operational_release_scope": [
+          "stocks_daily",
+          "sectors_current_facts",
+          "market_current",
+          "focus_read_corrected",
+          "forward_read",
+          "diagnostics",
+          "compare_corrected"
+        ],
+        "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "parameter_set_id": null,
+        "publication_id": "666645c83dfa4fe984c336f024f26f22",
+        "quality": "QUALITY_DEGRADED",
+        "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "release_id": "666645c83dfa4fe984c336f024f26f22",
+        "release_metadata": {
+          "contract_version": "1.0.0",
+          "data_quality_state": "QUALITY_DEGRADED",
+          "evidence_origin": "REAL_ACCEPTED_SOURCE",
+          "evidence_state": "VALIDATION_ONGOING",
+          "input_digest": "0107c813606e51bc631004f568a10b70ea9b47640c1e53117ca46ad789fcecbd",
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "owner": "FP02_RESEARCH_PROJECTION",
+          "published_at": "2026-10-08T11:16:40.088250+00:00",
+          "release_id": "666645c83dfa4fe984c336f024f26f22",
+          "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+          "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "trading_date": "2026-09-30"
+        },
+        "scoped_release": true,
+        "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+        "source_mode": "SCOPED_OPERATIONAL_RELEASE",
+        "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+        "stage": "V4-15",
+        "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+        "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+        "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+        "trade_date": "2026-09-30",
+        "turnover_as_of": null
+      },
+      "result_hash": "aae3befbe7c3f090f072ec2c1ee3b01feb234909595702944371bd5c9f5cbae1",
+      "sources": {
+        "ADJUSTED_DAILY": {
+          "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/ADJUSTED_DAILY/artifact.json",
+          "sha256": "e19ab5ef92b34935ba3a8635488110621814be3755d896ec11015840d87e9174"
+        },
+        "IDENTITY_UNIVERSE": {
+          "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/IDENTITY_UNIVERSE/artifact.json",
+          "sha256": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f"
+        },
+        "RAW_DAILY": {
+          "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/RAW_DAILY/artifact.json",
+          "sha256": "16e4daab101f671d894fbacbb37361c6bf8286e68e7170877aaec8d17f84dddf"
+        },
+        "TRADING_STATUS": {
+          "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/TRADING_STATUS/artifact.json",
+          "sha256": "1024bfcad1052635317351b9c3c730f9c09294de72b3f1358e45bbe0aac6dde4"
+        },
+        "states": {
+          "bytes": 7620107,
+          "path": "data/v4/confirmation_candidates_r5/D2_2026-09-29_CANDIDATE_R5.json.gz",
+          "sha256": "968caca5a9e7020e9f31299bf93e12de1a8e66f62562a0d1bd7b9217e3f60dfe"
+        }
+      },
+      "status": "READY",
+      "total": 1,
+      "view": "corrected",
+      "warning": "事后重建对照，不能作为当时可知的 PIT 判断"
+    },
+    "query": {
+      "as_of": "2026-09-29",
+      "followup": "1",
+      "left": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "view": "corrected"
+    },
+    "route": "replay"
+  },
+  {
+    "data": {
+      "AS_RECORDED": false,
+      "context": {
+        "accepted_trade_date": "2026-09-30",
+        "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+        "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+        "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+        "domain_readiness": {
+          "fep": {
+            "debt": [
+              "CURRENT_FEATURE_MODEL_INFERENCE"
+            ],
+            "released": false,
+            "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+          },
+          "focus": {
+            "debt": [
+              "UNRESOLVED_PATH_PREDICATE_OWNERS",
+              "LEGACY_PG_RECONCILIATION"
+            ],
+            "earliest_valid_date": "2026-09-29",
+            "released": true,
+            "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+          },
+          "forward": {
+            "debt": [
+              "CURRENT_FEP_INFERENCE",
+              "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+              "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+            ],
+            "released": true,
+            "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+          },
+          "market": {
+            "debt": [
+              "INTRADAY_TOUCH_BROKEN_LIMIT",
+              "OFFICIAL_FACT_NEWS"
+            ],
+            "released": true,
+            "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+          },
+          "sectors": {
+            "debt": [
+              "HISTORICAL_MEMBERSHIP",
+              "LIFECYCLE",
+              "ROTATION_HISTORY"
+            ],
+            "released": true,
+            "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+          },
+          "stocks": {
+            "debt": [
+              "HYPOTHESIS",
+              "INVALID_IF_OWNER",
+              "FULL_STRUCTURE_PATH"
+            ],
+            "released": true,
+            "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+          },
+          "strict_pit": {
+            "debt": [
+              "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+            ],
+            "released": false,
+            "scope": "NONE"
+          }
+        },
+        "factor_contract_id": null,
+        "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+        "full_product_release": false,
+        "historical_pit_effectiveness": "NOT_GRANTED",
+        "joint_release_digest": "5204fec1e9fcb11701c321d515a756acfaacea4d0fc1bb09443c34990ebd3a45",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "last_accepted_trade_date": "2026-09-30",
+        "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+        "namespace": "V4_CURRENT_ACCEPTED",
+        "operational_release_scope": [
+          "stocks_daily",
+          "sectors_current_facts",
+          "market_current",
+          "focus_read_corrected",
+          "forward_read",
+          "diagnostics",
+          "compare_corrected"
+        ],
+        "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "parameter_set_id": null,
+        "publication_id": "409d5f230b8b2fe81efd42f3912c8adafc6aba78e53870d6a20756cce4a83d9e",
+        "quality": "QUALITY_DEGRADED",
+        "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "release_id": "409d5f230b8b2fe81efd42f3912c8adafc6aba78e53870d6a20756cce4a83d9e",
+        "release_metadata": {
+          "contract_version": "1.0.0",
+          "data_quality_state": "QUALITY_DEGRADED",
+          "evidence_origin": "REAL_ACCEPTED_SOURCE",
+          "evidence_state": "VALIDATION_ONGOING",
+          "input_digest": "0107c813606e51bc631004f568a10b70ea9b47640c1e53117ca46ad789fcecbd",
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "owner": "FP02_RESEARCH_PROJECTION",
+          "published_at": "2026-10-08T11:16:40.088250+00:00",
+          "release_id": "666645c83dfa4fe984c336f024f26f22",
+          "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+          "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "trading_date": "2026-09-30"
+        },
+        "scoped_release": true,
+        "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+        "source_mode": "FROZEN_DATE_VIEW",
+        "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+        "stage": "V4-15",
+        "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+        "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+        "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+        "trade_date": "2026-09-30",
+        "turnover_as_of": null
+      },
+      "context_token": "fp12-409d5f230b8b2fe81efd42f3912c8adafc6aba78e53870d6a20756cce4a83d9e",
+      "coordinate_date": "2026-09-30",
+      "end_date": "2026-09-30",
+      "items": [
+        {
+          "cell": {
+            "effective_date": "2026-09-30",
+            "known_at": null,
+            "known_at_status": "NOT_PROVEN_AT_T0",
+            "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+            "publication_date": null,
+            "publication_time_status": "NOT_BOUND",
+            "quality": "KNOWN",
+            "reason": null,
+            "source_digest": "6b326dac93aacd63dc289895b1488f224843940154b6f4b89bc0df8af0a4518d",
+            "unit": "RATIO",
+            "value": 0.012048192771084265
+          },
+          "name": "SH.600675 · 同一复权坐标区间收益"
+        },
+        {
+          "fields": {
+            "health": {
+              "effective_date": "2026-09-30",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 12539130,
+                "contract_id": "RESEARCH_STATE_V1",
+                "owner_stage": "V4-11",
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-30_CANDIDATE_R5.json.gz",
+                "sha256": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+              },
+              "unit": "ENUM",
+              "value": "STABLE"
+            },
+            "maturity": {
+              "effective_date": "2026-09-30",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 12539130,
+                "contract_id": "RESEARCH_STATE_V1",
+                "owner_stage": "V4-11",
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-30_CANDIDATE_R5.json.gz",
+                "sha256": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+              },
+              "unit": "ENUM",
+              "value": "CONFIRMED"
+            },
+            "scenario": {
+              "effective_date": "2026-09-30",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 12539130,
+                "contract_id": "RESEARCH_STATE_V1",
+                "owner_stage": "V4-11",
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-30_CANDIDATE_R5.json.gz",
+                "sha256": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+              },
+              "unit": "ENUM",
+              "value": "LAUNCH_CONFIRM"
+            },
+            "tracking": {
+              "effective_date": "2026-09-30",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 12539130,
+                "contract_id": "RESEARCH_STATE_V1",
+                "owner_stage": "V4-11",
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-30_CANDIDATE_R5.json.gz",
+                "sha256": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+              },
+              "unit": "ENUM",
+              "value": "ACTIVE"
+            },
+            "validity": {
+              "effective_date": "2026-09-30",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 12539130,
+                "contract_id": "RESEARCH_STATE_V1",
+                "owner_stage": "V4-11",
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-30_CANDIDATE_R5.json.gz",
+                "sha256": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+              },
+              "unit": "ENUM",
+              "value": "VALID"
+            }
+          },
+          "name": "当期状态"
+        },
+        {
+          "fields": {
+            "health": {
+              "effective_date": "2026-09-29",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 7620107,
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-29_CANDIDATE_R5.json.gz",
+                "sha256": "968caca5a9e7020e9f31299bf93e12de1a8e66f62562a0d1bd7b9217e3f60dfe"
+              },
+              "unit": "ENUM",
+              "value": "WEAKENING"
+            },
+            "maturity": {
+              "effective_date": "2026-09-29",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 7620107,
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-29_CANDIDATE_R5.json.gz",
+                "sha256": "968caca5a9e7020e9f31299bf93e12de1a8e66f62562a0d1bd7b9217e3f60dfe"
+              },
+              "unit": "ENUM",
+              "value": "NONE"
+            },
+            "scenario": {
+              "effective_date": "2026-09-29",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 7620107,
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-29_CANDIDATE_R5.json.gz",
+                "sha256": "968caca5a9e7020e9f31299bf93e12de1a8e66f62562a0d1bd7b9217e3f60dfe"
+              },
+              "unit": "ENUM",
+              "value": "NONE"
+            },
+            "tracking": {
+              "effective_date": "2026-09-29",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 7620107,
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-29_CANDIDATE_R5.json.gz",
+                "sha256": "968caca5a9e7020e9f31299bf93e12de1a8e66f62562a0d1bd7b9217e3f60dfe"
+              },
+              "unit": "ENUM",
+              "value": "CLOSED"
+            },
+            "validity": {
+              "effective_date": "2026-09-29",
+              "known_at": "2026-10-02T02:27:19.982404+00:00",
+              "model_namespace": "RESEARCH_STATE_V1",
+              "publication_date": "2026-10-02T02:27:19.982404+00:00",
+              "quality": "KNOWN",
+              "source": {
+                "bytes": 7620107,
+                "path": "data/v4/confirmation_candidates_r5/D2_2026-09-29_CANDIDATE_R5.json.gz",
+                "sha256": "968caca5a9e7020e9f31299bf93e12de1a8e66f62562a0d1bd7b9217e3f60dfe"
+              },
+              "unit": "ENUM",
+              "value": "VALID"
+            }
+          },
+          "name": "前日状态"
+        }
+      ],
+      "mode": "stock-previous",
+      "operational_context": {
+        "accepted_trade_date": "2026-09-30",
+        "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+        "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+        "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+        "domain_readiness": {
+          "fep": {
+            "debt": [
+              "CURRENT_FEATURE_MODEL_INFERENCE"
+            ],
+            "released": false,
+            "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+          },
+          "focus": {
+            "debt": [
+              "UNRESOLVED_PATH_PREDICATE_OWNERS",
+              "LEGACY_PG_RECONCILIATION"
+            ],
+            "earliest_valid_date": "2026-09-29",
+            "released": true,
+            "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+          },
+          "forward": {
+            "debt": [
+              "CURRENT_FEP_INFERENCE",
+              "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+              "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+            ],
+            "released": true,
+            "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+          },
+          "market": {
+            "debt": [
+              "INTRADAY_TOUCH_BROKEN_LIMIT",
+              "OFFICIAL_FACT_NEWS"
+            ],
+            "released": true,
+            "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+          },
+          "sectors": {
+            "debt": [
+              "HISTORICAL_MEMBERSHIP",
+              "LIFECYCLE",
+              "ROTATION_HISTORY"
+            ],
+            "released": true,
+            "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+          },
+          "stocks": {
+            "debt": [
+              "HYPOTHESIS",
+              "INVALID_IF_OWNER",
+              "FULL_STRUCTURE_PATH"
+            ],
+            "released": true,
+            "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+          },
+          "strict_pit": {
+            "debt": [
+              "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+            ],
+            "released": false,
+            "scope": "NONE"
+          }
+        },
+        "factor_contract_id": null,
+        "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+        "full_product_release": false,
+        "historical_pit_effectiveness": "NOT_GRANTED",
+        "joint_release_digest": "5204fec1e9fcb11701c321d515a756acfaacea4d0fc1bb09443c34990ebd3a45",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "last_accepted_trade_date": "2026-09-30",
+        "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+        "namespace": "V4_CURRENT_ACCEPTED",
+        "operational_release_scope": [
+          "stocks_daily",
+          "sectors_current_facts",
+          "market_current",
+          "focus_read_corrected",
+          "forward_read",
+          "diagnostics",
+          "compare_corrected"
+        ],
+        "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "parameter_set_id": null,
+        "publication_id": "666645c83dfa4fe984c336f024f26f22",
+        "quality": "QUALITY_DEGRADED",
+        "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "release_id": "666645c83dfa4fe984c336f024f26f22",
+        "release_metadata": {
+          "contract_version": "1.0.0",
+          "data_quality_state": "QUALITY_DEGRADED",
+          "evidence_origin": "REAL_ACCEPTED_SOURCE",
+          "evidence_state": "VALIDATION_ONGOING",
+          "input_digest": "0107c813606e51bc631004f568a10b70ea9b47640c1e53117ca46ad789fcecbd",
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "owner": "FP02_RESEARCH_PROJECTION",
+          "published_at": "2026-10-08T11:16:40.088250+00:00",
+          "release_id": "666645c83dfa4fe984c336f024f26f22",
+          "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+          "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "trading_date": "2026-09-30"
+        },
+        "scoped_release": true,
+        "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+        "source_mode": "SCOPED_OPERATIONAL_RELEASE",
+        "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+        "stage": "V4-15",
+        "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+        "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+        "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+        "trade_date": "2026-09-30",
+        "turnover_as_of": null
+      },
+      "price_basis": "FP07_TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE",
+      "result_hash": "4b1e646875ef013dc2676f31d31576d1a49902eaf02c5d33d6c60845f51bfd4a",
+      "source_snapshot": "409d5f230b8b2fe81efd42f3912c8adafc6aba78e53870d6a20756cce4a83d9e",
+      "start_date": "2026-09-29",
+      "status": "READY",
+      "warning": "事后重建比较；不代表 T0 当时已知。状态比较与收益口径分别标注。"
+    },
+    "query": {
+      "as_of": "2026-09-30",
+      "left": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "mode": "stock-previous",
+      "view": "corrected"
+    },
+    "route": "compare"
+  },
+  {
+    "data": {
+      "AS_RECORDED": false,
+      "context": {
+        "accepted_trade_date": "2026-09-30",
+        "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+        "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+        "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+        "domain_readiness": {
+          "fep": {
+            "debt": [
+              "CURRENT_FEATURE_MODEL_INFERENCE"
+            ],
+            "released": false,
+            "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+          },
+          "focus": {
+            "debt": [
+              "UNRESOLVED_PATH_PREDICATE_OWNERS",
+              "LEGACY_PG_RECONCILIATION"
+            ],
+            "earliest_valid_date": "2026-09-29",
+            "released": true,
+            "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+          },
+          "forward": {
+            "debt": [
+              "CURRENT_FEP_INFERENCE",
+              "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+              "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+            ],
+            "released": true,
+            "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+          },
+          "market": {
+            "debt": [
+              "INTRADAY_TOUCH_BROKEN_LIMIT",
+              "OFFICIAL_FACT_NEWS"
+            ],
+            "released": true,
+            "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+          },
+          "sectors": {
+            "debt": [
+              "HISTORICAL_MEMBERSHIP",
+              "LIFECYCLE",
+              "ROTATION_HISTORY"
+            ],
+            "released": true,
+            "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+          },
+          "stocks": {
+            "debt": [
+              "HYPOTHESIS",
+              "INVALID_IF_OWNER",
+              "FULL_STRUCTURE_PATH"
+            ],
+            "released": true,
+            "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+          },
+          "strict_pit": {
+            "debt": [
+              "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+            ],
+            "released": false,
+            "scope": "NONE"
+          }
+        },
+        "factor_contract_id": null,
+        "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+        "full_product_release": false,
+        "historical_pit_effectiveness": "NOT_GRANTED",
+        "joint_release_digest": "5204fec1e9fcb11701c321d515a756acfaacea4d0fc1bb09443c34990ebd3a45",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "last_accepted_trade_date": "2026-09-30",
+        "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+        "namespace": "V4_CURRENT_ACCEPTED",
+        "operational_release_scope": [
+          "stocks_daily",
+          "sectors_current_facts",
+          "market_current",
+          "focus_read_corrected",
+          "forward_read",
+          "diagnostics",
+          "compare_corrected"
+        ],
+        "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "parameter_set_id": null,
+        "publication_id": "409d5f230b8b2fe81efd42f3912c8adafc6aba78e53870d6a20756cce4a83d9e",
+        "quality": "QUALITY_DEGRADED",
+        "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "release_id": "409d5f230b8b2fe81efd42f3912c8adafc6aba78e53870d6a20756cce4a83d9e",
+        "release_metadata": {
+          "contract_version": "1.0.0",
+          "data_quality_state": "QUALITY_DEGRADED",
+          "evidence_origin": "REAL_ACCEPTED_SOURCE",
+          "evidence_state": "VALIDATION_ONGOING",
+          "input_digest": "0107c813606e51bc631004f568a10b70ea9b47640c1e53117ca46ad789fcecbd",
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "owner": "FP02_RESEARCH_PROJECTION",
+          "published_at": "2026-10-08T11:16:40.088250+00:00",
+          "release_id": "666645c83dfa4fe984c336f024f26f22",
+          "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+          "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "trading_date": "2026-09-30"
+        },
+        "scoped_release": true,
+        "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+        "source_mode": "FROZEN_DATE_VIEW",
+        "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+        "stage": "V4-15",
+        "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+        "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+        "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+        "trade_date": "2026-09-30",
+        "turnover_as_of": null
+      },
+      "context_token": "fp12-409d5f230b8b2fe81efd42f3912c8adafc6aba78e53870d6a20756cce4a83d9e",
+      "coordinate_date": "2026-09-30",
+      "end_date": "2026-09-30",
+      "items": [
+        {
+          "cell": {
+            "effective_date": "2026-09-30",
+            "known_at": null,
+            "known_at_status": "NOT_PROVEN_AT_T0",
+            "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+            "publication_date": null,
+            "publication_time_status": "NOT_BOUND",
+            "quality": "KNOWN",
+            "reason": null,
+            "source_digest": "6b326dac93aacd63dc289895b1488f224843940154b6f4b89bc0df8af0a4518d",
+            "unit": "RATIO",
+            "value": 0.012048192771084265
+          },
+          "name": "SH.600675 · 同一复权坐标区间收益"
+        },
+        {
+          "cell": {
+            "effective_date": "2026-09-30",
+            "known_at": null,
+            "known_at_status": "NOT_PROVEN_AT_T0",
+            "model_namespace": "FP12_RECONSTRUCTED_CORRECTED_V1",
+            "publication_date": null,
+            "publication_time_status": "NOT_BOUND",
+            "quality": "KNOWN",
+            "reason": null,
+            "source_digest": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265",
+            "unit": "RATIO",
+            "value": -0.0013557996715164167
+          },
+          "name": "起点 Universe 市场等权参考 · 同窗"
+        }
+      ],
+      "mode": "stock-market",
+      "operational_context": {
+        "accepted_trade_date": "2026-09-30",
+        "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+        "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+        "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+        "domain_readiness": {
+          "fep": {
+            "debt": [
+              "CURRENT_FEATURE_MODEL_INFERENCE"
+            ],
+            "released": false,
+            "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+          },
+          "focus": {
+            "debt": [
+              "UNRESOLVED_PATH_PREDICATE_OWNERS",
+              "LEGACY_PG_RECONCILIATION"
+            ],
+            "earliest_valid_date": "2026-09-29",
+            "released": true,
+            "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+          },
+          "forward": {
+            "debt": [
+              "CURRENT_FEP_INFERENCE",
+              "STRICT_T0_ELIGIBILITY_NOT_GRANTED",
+              "REAL_COHORT_MATURITY_NOT_YET_OBSERVED"
+            ],
+            "released": true,
+            "scope": "CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ"
+          },
+          "market": {
+            "debt": [
+              "INTRADAY_TOUCH_BROKEN_LIMIT",
+              "OFFICIAL_FACT_NEWS"
+            ],
+            "released": true,
+            "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+          },
+          "sectors": {
+            "debt": [
+              "HISTORICAL_MEMBERSHIP",
+              "LIFECYCLE",
+              "ROTATION_HISTORY"
+            ],
+            "released": true,
+            "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+          },
+          "stocks": {
+            "debt": [
+              "HYPOTHESIS",
+              "INVALID_IF_OWNER",
+              "FULL_STRUCTURE_PATH"
+            ],
+            "released": true,
+            "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+          },
+          "strict_pit": {
+            "debt": [
+              "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+            ],
+            "released": false,
+            "scope": "NONE"
+          }
+        },
+        "factor_contract_id": null,
+        "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+        "full_product_release": false,
+        "historical_pit_effectiveness": "NOT_GRANTED",
+        "joint_release_digest": "5204fec1e9fcb11701c321d515a756acfaacea4d0fc1bb09443c34990ebd3a45",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "last_accepted_trade_date": "2026-09-30",
+        "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+        "namespace": "V4_CURRENT_ACCEPTED",
+        "operational_release_scope": [
+          "stocks_daily",
+          "sectors_current_facts",
+          "market_current",
+          "focus_read_corrected",
+          "forward_read",
+          "diagnostics",
+          "compare_corrected"
+        ],
+        "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+        "parameter_set_id": null,
+        "publication_id": "666645c83dfa4fe984c336f024f26f22",
+        "quality": "QUALITY_DEGRADED",
+        "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+        "release_id": "666645c83dfa4fe984c336f024f26f22",
+        "release_metadata": {
+          "contract_version": "1.0.0",
+          "data_quality_state": "QUALITY_DEGRADED",
+          "evidence_origin": "REAL_ACCEPTED_SOURCE",
+          "evidence_state": "VALIDATION_ONGOING",
+          "input_digest": "0107c813606e51bc631004f568a10b70ea9b47640c1e53117ca46ad789fcecbd",
+          "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+          "owner": "FP02_RESEARCH_PROJECTION",
+          "published_at": "2026-10-08T11:16:40.088250+00:00",
+          "release_id": "666645c83dfa4fe984c336f024f26f22",
+          "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+          "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+          "trading_date": "2026-09-30"
+        },
+        "scoped_release": true,
+        "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+        "source_mode": "SCOPED_OPERATIONAL_RELEASE",
+        "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+        "stage": "V4-15",
+        "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+        "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+        "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+        "trade_date": "2026-09-30",
+        "turnover_as_of": null
+      },
+      "price_basis": "FP07_TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE",
+      "result_hash": "aa732df930c6ec63366562a44fb9cf0501aea83c0e2232b9b6e68e0afbbfdec3",
+      "source_snapshot": "409d5f230b8b2fe81efd42f3912c8adafc6aba78e53870d6a20756cce4a83d9e",
+      "start_date": "2026-09-29",
+      "status": "READY",
+      "warning": "事后重建比较；不代表 T0 当时已知。状态比较与收益口径分别标注。"
+    },
+    "query": {
+      "as_of": "2026-09-30",
+      "left": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "mode": "stock-market",
+      "view": "corrected"
+    },
+    "route": "compare"
+  }
+]

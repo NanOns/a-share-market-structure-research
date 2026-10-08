@@ -1,0 +1,3512 @@
+{
+  "audit_id": "AUD_R2_READ_DOMAINS",
+  "context_token": "research-v4-4b1c722e14753e84e00a5b4a03779393348dbec5ab1fc1bf40e105af0f1a3936",
+  "contract_id": "R2_FIELD_INVENTORY_V9",
+  "counts": {
+    "browser_pass": 60,
+    "numeric_oracle": 31,
+    "owner_source_ready": 63,
+    "product_pass": 60,
+    "ui_rendered": 62
+  },
+  "full_product_pass": false,
+  "inherited_admission_source": {
+    "bytes": 95977,
+    "path": "docs/evidence/r2_structural_fields_continuation_20261008/FIELD_INVENTORY_V8.json",
+    "sha256": "902d4ed5647f82025c286f92107c2d5c5cd303e6e16e1a6c27fbfa598bd6f895"
+  },
+  "inherited_stock_field_values_reverified": true,
+  "inherited_values_reverified": {
+    "bytes": 10254,
+    "path": "docs/evidence/r2_available_fields_continuation_20261008/UNIT_SOURCE_ORACLE.json",
+    "sha256": "13a0255416715197b51bb093e7f51490de130122d9731dad84478558fbcca676"
+  },
+  "inventory_count": 110,
+  "next_stage": "EXTERNAL_SCOPED_AUDIT_AND_INDEPENDENT_OWNER_SOURCE_DEBTS",
+  "rows": [
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 43631,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "fb07b91c4f33bdabd247f02866f080bc41fac72267e1c1b4d6a8b1c1e38186ad"
+        },
+        {
+          "bytes": 232790,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/SECTOR_FACT_ORACLE.json",
+          "sha256": "8ef1621ff6cb3e9a4633dcb2fb3ec4710b8d90445bc7c6b411223381ac010344"
+        }
+      ],
+      "feature": "sector_type",
+      "known_rows": 378,
+      "numeric_oracle": false,
+      "numeric_oracle_applicable": false,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {},
+      "scope": "CURRENT_DATED_ACCEPTED_OUTPUT_ONLY_UNKNOWN_VALUES_RETAINED",
+      "section": "62C/64",
+      "source_fields": [
+        "sector_type"
+      ],
+      "source_present_rows": 378,
+      "structural_oracle": true,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "maturity",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 378
+      },
+      "section": "62C/64",
+      "source_fields": [
+        "maturity"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": false,
+      "unknown_rows": 378
+    },
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "health",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 378
+      },
+      "section": "62C/64",
+      "source_fields": [
+        "health"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": false,
+      "unknown_rows": 378
+    },
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": false,
+      "debt_reason": "BOUND_OWNER_FIELD_UNAVAILABLE_SEE_EXACT_REASON_COUNTS",
+      "feature": "output_state",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "[\"NO_PRIOR_ACCEPTED_PIT_HISTORY\"]": 378
+      },
+      "section": "62C/64",
+      "source_fields": [
+        "output_state"
+      ],
+      "source_present_rows": 378,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": false,
+      "unknown_rows": 378
+    },
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "why_now",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 378
+      },
+      "section": "62C/64",
+      "source_fields": [
+        "why_now"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": false,
+      "unknown_rows": 378
+    },
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 43631,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "fb07b91c4f33bdabd247f02866f080bc41fac72267e1c1b4d6a8b1c1e38186ad"
+        },
+        {
+          "bytes": 232790,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/SECTOR_FACT_ORACLE.json",
+          "sha256": "8ef1621ff6cb3e9a4633dcb2fb3ec4710b8d90445bc7c6b411223381ac010344"
+        }
+      ],
+      "feature": "sector_rs20",
+      "known_rows": 378,
+      "numeric_oracle": true,
+      "numeric_oracle_applicable": true,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {},
+      "scope": "CURRENT_DATED_ACCEPTED_OUTPUT_ONLY_UNKNOWN_VALUES_RETAINED",
+      "section": "62C/64",
+      "source_fields": [
+        "sector_rs20"
+      ],
+      "source_present_rows": 378,
+      "structural_oracle": true,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 43631,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "fb07b91c4f33bdabd247f02866f080bc41fac72267e1c1b4d6a8b1c1e38186ad"
+        },
+        {
+          "bytes": 232790,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/SECTOR_FACT_ORACLE.json",
+          "sha256": "8ef1621ff6cb3e9a4633dcb2fb3ec4710b8d90445bc7c6b411223381ac010344"
+        }
+      ],
+      "feature": "sector_rs5",
+      "known_rows": 378,
+      "numeric_oracle": true,
+      "numeric_oracle_applicable": true,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {},
+      "scope": "CURRENT_DATED_ACCEPTED_OUTPUT_ONLY_UNKNOWN_VALUES_RETAINED",
+      "section": "62C/64",
+      "source_fields": [
+        "sector_rs5"
+      ],
+      "source_present_rows": 378,
+      "structural_oracle": true,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": false,
+      "debt_reason": "BOUND_OWNER_FIELD_UNAVAILABLE_SEE_EXACT_REASON_COUNTS",
+      "feature": "breadth_delta3",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "NO_PRIOR_ACCEPTED_PIT_HISTORY": 378
+      },
+      "section": "62C/64",
+      "source_fields": [
+        "breadth_delta3"
+      ],
+      "source_present_rows": 378,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": false,
+      "unknown_rows": 378
+    },
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": false,
+      "debt_reason": "BOUND_OWNER_FIELD_UNAVAILABLE_SEE_EXACT_REASON_COUNTS",
+      "feature": "seed_width",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL": 378
+      },
+      "section": "62C/64",
+      "source_fields": [
+        "seed_width"
+      ],
+      "source_present_rows": 378,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": false,
+      "unknown_rows": 378
+    },
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 43631,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "fb07b91c4f33bdabd247f02866f080bc41fac72267e1c1b4d6a8b1c1e38186ad"
+        },
+        {
+          "bytes": 232790,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/SECTOR_FACT_ORACLE.json",
+          "sha256": "8ef1621ff6cb3e9a4633dcb2fb3ec4710b8d90445bc7c6b411223381ac010344"
+        }
+      ],
+      "feature": "participation_proxy",
+      "known_rows": 378,
+      "numeric_oracle": true,
+      "numeric_oracle_applicable": true,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {},
+      "scope": "CURRENT_DATED_ACCEPTED_OUTPUT_ONLY_UNKNOWN_VALUES_RETAINED",
+      "section": "62C/64",
+      "source_fields": [
+        "participation_proxy"
+      ],
+      "source_present_rows": 378,
+      "structural_oracle": true,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "exhaustion",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 378
+      },
+      "section": "62C/64",
+      "source_fields": [
+        "exhaustion"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": false,
+      "unknown_rows": 378
+    },
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "quality",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 378
+      },
+      "section": "62C/64",
+      "source_fields": [
+        "quality"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": false,
+      "unknown_rows": 378
+    },
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "emergence",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 378
+      },
+      "section": "62C/64",
+      "source_fields": [
+        "emergence"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": false,
+      "unknown_rows": 378
+    },
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "confirmation",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 378
+      },
+      "section": "62C/64",
+      "source_fields": [
+        "confirmation"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": false,
+      "unknown_rows": 378
+    },
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "amount",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 1134
+      },
+      "section": "62C/64",
+      "source_fields": [
+        "amount",
+        "amount_ratio5",
+        "amount_ratio20"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": false,
+      "unknown_rows": 378
+    },
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "rank_velocity",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 378
+      },
+      "section": "62C/64",
+      "source_fields": [
+        "rank_velocity"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": false,
+      "unknown_rows": 378
+    },
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": true,
+      "debt_reason": null,
+      "feature": "ma20_width",
+      "known_rows": 378,
+      "numeric_oracle": true,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {},
+      "section": "62C/64",
+      "source_fields": [
+        "ma20_width"
+      ],
+      "source_present_rows": 378,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "entered",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 378
+      },
+      "section": "62C/64",
+      "source_fields": [
+        "entered"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": false,
+      "unknown_rows": 378
+    },
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "exited",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 378
+      },
+      "section": "62C/64",
+      "source_fields": [
+        "exited"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": false,
+      "unknown_rows": 378
+    },
+    {
+      "api": "/api/v4/sectors",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "retention",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 378
+      },
+      "section": "62C/64",
+      "source_fields": [
+        "retention"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": false,
+      "unknown_rows": 378
+    },
+    {
+      "api": "/api/v4/sectors/{id}/overlap",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 43631,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "fb07b91c4f33bdabd247f02866f080bc41fac72267e1c1b4d6a8b1c1e38186ad"
+        },
+        {
+          "bytes": 232790,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/SECTOR_FACT_ORACLE.json",
+          "sha256": "8ef1621ff6cb3e9a4633dcb2fb3ec4710b8d90445bc7c6b411223381ac010344"
+        }
+      ],
+      "feature": "overlap",
+      "known_rows": 0,
+      "numeric_oracle": true,
+      "numeric_oracle_applicable": true,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 378
+      },
+      "scope": "CURRENT_DATED_ACCEPTED_OUTPUT_ONLY_UNKNOWN_VALUES_RETAINED",
+      "section": "62C/64",
+      "source_fields": [
+        "overlap"
+      ],
+      "source_present_rows": 30,
+      "structural_oracle": true,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": true,
+      "unknown_rows": 378
+    },
+    {
+      "api": "/api/v4/sectors/{id}/overlap",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 43631,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "fb07b91c4f33bdabd247f02866f080bc41fac72267e1c1b4d6a8b1c1e38186ad"
+        },
+        {
+          "bytes": 232790,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/SECTOR_FACT_ORACLE.json",
+          "sha256": "8ef1621ff6cb3e9a4633dcb2fb3ec4710b8d90445bc7c6b411223381ac010344"
+        }
+      ],
+      "feature": "unique_member_share",
+      "known_rows": 0,
+      "numeric_oracle": true,
+      "numeric_oracle_applicable": true,
+      "owner": "scripts/build_fp06_sector.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 378
+      },
+      "scope": "CURRENT_DATED_ACCEPTED_OUTPUT_ONLY_UNKNOWN_VALUES_RETAINED",
+      "section": "62C/64",
+      "source_fields": [
+        "unique_member_share"
+      ],
+      "source_present_rows": 30,
+      "structural_oracle": true,
+      "ui": "/v4/research/sectors",
+      "ui_rendered": true,
+      "unknown_rows": 378
+    },
+    {
+      "admission_scope": "ACCEPTED_CURRENT_OWNER_STATE_THRESHOLDS_AND_TYPED_UNKNOWN",
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 2749,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/PROFILE_STATE_ORACLE.json",
+          "sha256": "8d83ff87778612d7fe0b919bf576aca00dede602bac2255b24a4b404696993cb"
+        },
+        {
+          "bytes": 14289,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/BROWSER_STATE_ORACLE.json",
+          "sha256": "e7286052de044a51d7a9884b1f3bd91fdf8ba3c70dfef081f7a4fe3a5ab1d9e3"
+        },
+        {
+          "bytes": 3791,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "3773eddcca3248c33a04f2d21bb54f82ba8b34ee1d9565bd6b664b7739bd7bee"
+        }
+      ],
+      "feature": "trend_state",
+      "known_rows": 5167,
+      "numeric_oracle": true,
+      "oracle_scope": "OWNER_INPUT_THRESHOLD_RULES_AND_SNAPSHOT_NOT_INDEPENDENT_RAW_INPUT_RECOMPUTATION",
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "REQUIRED_INPUT_UNKNOWN": 46
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "trend_state"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 46
+    },
+    {
+      "admission_scope": "ACCEPTED_CURRENT_OWNER_STATE_THRESHOLDS_AND_TYPED_UNKNOWN",
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 2749,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/PROFILE_STATE_ORACLE.json",
+          "sha256": "8d83ff87778612d7fe0b919bf576aca00dede602bac2255b24a4b404696993cb"
+        },
+        {
+          "bytes": 14289,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/BROWSER_STATE_ORACLE.json",
+          "sha256": "e7286052de044a51d7a9884b1f3bd91fdf8ba3c70dfef081f7a4fe3a5ab1d9e3"
+        },
+        {
+          "bytes": 3791,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "3773eddcca3248c33a04f2d21bb54f82ba8b34ee1d9565bd6b664b7739bd7bee"
+        }
+      ],
+      "feature": "weekly_trend_state",
+      "known_rows": 5185,
+      "numeric_oracle": true,
+      "oracle_scope": "OWNER_INPUT_THRESHOLD_RULES_AND_SNAPSHOT_NOT_INDEPENDENT_RAW_INPUT_RECOMPUTATION",
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "CLOSED_PERIOD_OR_INPUT_UNAVAILABLE": 28
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "weekly_trend_state"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 28
+    },
+    {
+      "admission_scope": "ACCEPTED_CURRENT_OWNER_STATE_THRESHOLDS_AND_TYPED_UNKNOWN",
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 2749,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/PROFILE_STATE_ORACLE.json",
+          "sha256": "8d83ff87778612d7fe0b919bf576aca00dede602bac2255b24a4b404696993cb"
+        },
+        {
+          "bytes": 14289,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/BROWSER_STATE_ORACLE.json",
+          "sha256": "e7286052de044a51d7a9884b1f3bd91fdf8ba3c70dfef081f7a4fe3a5ab1d9e3"
+        },
+        {
+          "bytes": 3791,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "3773eddcca3248c33a04f2d21bb54f82ba8b34ee1d9565bd6b664b7739bd7bee"
+        }
+      ],
+      "feature": "monthly_trend_state",
+      "known_rows": 5169,
+      "numeric_oracle": true,
+      "oracle_scope": "OWNER_INPUT_THRESHOLD_RULES_AND_SNAPSHOT_NOT_INDEPENDENT_RAW_INPUT_RECOMPUTATION",
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "CLOSED_PERIOD_OR_INPUT_UNAVAILABLE": 44
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "monthly_trend_state"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 44
+    },
+    {
+      "admission_scope": "ACCEPTED_CURRENT_OWNER_STATE_THRESHOLDS_AND_TYPED_UNKNOWN",
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 2749,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/PROFILE_STATE_ORACLE.json",
+          "sha256": "8d83ff87778612d7fe0b919bf576aca00dede602bac2255b24a4b404696993cb"
+        },
+        {
+          "bytes": 14289,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/BROWSER_STATE_ORACLE.json",
+          "sha256": "e7286052de044a51d7a9884b1f3bd91fdf8ba3c70dfef081f7a4fe3a5ab1d9e3"
+        },
+        {
+          "bytes": 3791,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "3773eddcca3248c33a04f2d21bb54f82ba8b34ee1d9565bd6b664b7739bd7bee"
+        }
+      ],
+      "feature": "position_state",
+      "known_rows": 5173,
+      "numeric_oracle": true,
+      "oracle_scope": "OWNER_INPUT_THRESHOLD_RULES_AND_SNAPSHOT_NOT_INDEPENDENT_RAW_INPUT_RECOMPUTATION",
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "REQUIRED_INPUT_UNKNOWN": 40
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "position_state"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 40
+    },
+    {
+      "admission_scope": "ACCEPTED_CURRENT_OWNER_STATE_THRESHOLDS_AND_TYPED_UNKNOWN",
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 2749,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/PROFILE_STATE_ORACLE.json",
+          "sha256": "8d83ff87778612d7fe0b919bf576aca00dede602bac2255b24a4b404696993cb"
+        },
+        {
+          "bytes": 14289,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/BROWSER_STATE_ORACLE.json",
+          "sha256": "e7286052de044a51d7a9884b1f3bd91fdf8ba3c70dfef081f7a4fe3a5ab1d9e3"
+        },
+        {
+          "bytes": 3791,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "3773eddcca3248c33a04f2d21bb54f82ba8b34ee1d9565bd6b664b7739bd7bee"
+        }
+      ],
+      "feature": "ma_structure",
+      "known_rows": 5186,
+      "numeric_oracle": true,
+      "oracle_scope": "OWNER_INPUT_THRESHOLD_RULES_AND_SNAPSHOT_NOT_INDEPENDENT_RAW_INPUT_RECOMPUTATION",
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "REQUIRED_INPUT_UNKNOWN": 27
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "ma_structure_state"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 27
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": false,
+      "debt_reason": "BOUND_OWNER_FIELD_UNAVAILABLE_SEE_EXACT_REASON_COUNTS",
+      "feature": "relative_state",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "REQUIRED_INPUT_UNKNOWN": 5213,
+        "UNKNOWN_INSUFFICIENT_LOO_MEMBERS_OR_COVERAGE": 5213
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "relative_market_state",
+        "relative_sector_state"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": false,
+      "unknown_rows": 5213
+    },
+    {
+      "admission_scope": "ACCEPTED_CURRENT_OWNER_STATE_THRESHOLDS_AND_TYPED_UNKNOWN",
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 2749,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/PROFILE_STATE_ORACLE.json",
+          "sha256": "8d83ff87778612d7fe0b919bf576aca00dede602bac2255b24a4b404696993cb"
+        },
+        {
+          "bytes": 14289,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/BROWSER_STATE_ORACLE.json",
+          "sha256": "e7286052de044a51d7a9884b1f3bd91fdf8ba3c70dfef081f7a4fe3a5ab1d9e3"
+        },
+        {
+          "bytes": 3791,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "3773eddcca3248c33a04f2d21bb54f82ba8b34ee1d9565bd6b664b7739bd7bee"
+        }
+      ],
+      "feature": "compression_state",
+      "known_rows": 5164,
+      "numeric_oracle": true,
+      "oracle_scope": "OWNER_INPUT_THRESHOLD_RULES_AND_SNAPSHOT_NOT_INDEPENDENT_RAW_INPUT_RECOMPUTATION",
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "REQUIRED_INPUT_UNKNOWN": 49
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "compression_state"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 49
+    },
+    {
+      "admission_scope": "ACCEPTED_CURRENT_OWNER_STATE_THRESHOLDS_AND_TYPED_UNKNOWN",
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 2749,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/PROFILE_STATE_ORACLE.json",
+          "sha256": "8d83ff87778612d7fe0b919bf576aca00dede602bac2255b24a4b404696993cb"
+        },
+        {
+          "bytes": 14289,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/BROWSER_STATE_ORACLE.json",
+          "sha256": "e7286052de044a51d7a9884b1f3bd91fdf8ba3c70dfef081f7a4fe3a5ab1d9e3"
+        },
+        {
+          "bytes": 3791,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "3773eddcca3248c33a04f2d21bb54f82ba8b34ee1d9565bd6b664b7739bd7bee"
+        }
+      ],
+      "feature": "amount_state",
+      "known_rows": 5188,
+      "numeric_oracle": true,
+      "oracle_scope": "OWNER_INPUT_THRESHOLD_RULES_AND_SNAPSHOT_NOT_INDEPENDENT_RAW_INPUT_RECOMPUTATION",
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "REQUIRED_INPUT_UNKNOWN": 25
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "amount_state"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 25
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "turnover_state",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 5213
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "turnover_state"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": false,
+      "unknown_rows": 5213
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": false,
+      "debt_reason": "BOUND_OWNER_FIELD_UNAVAILABLE_SEE_EXACT_REASON_COUNTS",
+      "feature": "basic_breakout_state",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "[\"ACCEPTED_ADJUSTMENT_NOT_READY;No exact prior ATR publication plus accepted cross-basis transform\"]": 176,
+        "[\"No exact prior ATR publication plus accepted cross-basis transform\"]": 5037
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "basic_breakout_state"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": false,
+      "unknown_rows": 5213
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": false,
+      "debt_reason": "BOUND_OWNER_FIELD_UNAVAILABLE_SEE_EXACT_REASON_COUNTS",
+      "feature": "basic_pullback_state",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE": 5213
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "basic_pullback_state"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": false,
+      "unknown_rows": 5213
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": false,
+      "debt_reason": "BOUND_OWNER_FIELD_UNAVAILABLE_SEE_EXACT_REASON_COUNTS",
+      "feature": "basic_recovery_state",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE": 5213
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "basic_recovery_state"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": false,
+      "unknown_rows": 5213
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": false,
+      "debt_reason": "BOUND_OWNER_FIELD_UNAVAILABLE_SEE_EXACT_REASON_COUNTS",
+      "feature": "support_state",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE": 5213
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "support_state"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": false,
+      "unknown_rows": 5213
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 43631,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "fb07b91c4f33bdabd247f02866f080bc41fac72267e1c1b4d6a8b1c1e38186ad"
+        },
+        {
+          "bytes": 2463,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/STOCK_FACT_ORACLE.json",
+          "sha256": "228aee72257557b731a1c55ae3d25fc53495214a7c216b3dacf9f5d32dc76be6"
+        }
+      ],
+      "feature": "risk",
+      "known_rows": 5181,
+      "numeric_oracle": true,
+      "numeric_oracle_applicable": true,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "ADJUSTMENT_UNKNOWN": 15,
+        "INSUFFICIENT_HISTORY": 10,
+        "MISSING_OR_SUSPENDED_ENDPOINT": 4,
+        "OWNER_NULL_OR_NON_READY_VALUE": 3,
+        "REQUIRED_INPUT_UNKNOWN": 32
+      },
+      "scope": "CURRENT_DATED_ACCEPTED_OUTPUT_ONLY_UNKNOWN_VALUES_RETAINED",
+      "section": "62D/65",
+      "source_fields": [
+        "core_price_damage",
+        "core_extension_risk"
+      ],
+      "source_present_rows": 5213,
+      "structural_oracle": true,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 32
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 43631,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "fb07b91c4f33bdabd247f02866f080bc41fac72267e1c1b4d6a8b1c1e38186ad"
+        },
+        {
+          "bytes": 2463,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/STOCK_FACT_ORACLE.json",
+          "sha256": "228aee72257557b731a1c55ae3d25fc53495214a7c216b3dacf9f5d32dc76be6"
+        }
+      ],
+      "feature": "market_regime",
+      "known_rows": 5213,
+      "numeric_oracle": false,
+      "numeric_oracle_applicable": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {},
+      "scope": "CURRENT_DATED_ACCEPTED_OUTPUT_ONLY_UNKNOWN_VALUES_RETAINED",
+      "section": "62D/65",
+      "source_fields": [
+        "regime_ui"
+      ],
+      "source_present_rows": 5213,
+      "structural_oracle": true,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 1641,
+          "path": "docs/evidence/r2_structural_fields_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "a857b1eec406e9effc9b76dcc4393f7ef083b40a8dfb9267975a641316f98050"
+        },
+        {
+          "bytes": 34223,
+          "path": "docs/evidence/r2_structural_fields_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e1448fefe8d8c74b98b76ca6623506067a6ee5f09c2196c765993d3b1f03fbe5"
+        }
+      ],
+      "feature": "primary_industry",
+      "known_rows": 5213,
+      "numeric_oracle": false,
+      "numeric_oracle_applicable": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {},
+      "scope": "CORRECTED_ACCEPTED_OWNER_OUTPUT_UNKNOWN_VALUES_RETAINED",
+      "section": "62D/65",
+      "source_fields": [
+        "primary_industry"
+      ],
+      "source_present_rows": 5213,
+      "structural_oracle": true,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 1641,
+          "path": "docs/evidence/r2_structural_fields_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "a857b1eec406e9effc9b76dcc4393f7ef083b40a8dfb9267975a641316f98050"
+        },
+        {
+          "bytes": 34223,
+          "path": "docs/evidence/r2_structural_fields_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e1448fefe8d8c74b98b76ca6623506067a6ee5f09c2196c765993d3b1f03fbe5"
+        }
+      ],
+      "feature": "supporting_concepts",
+      "known_rows": 5213,
+      "numeric_oracle": false,
+      "numeric_oracle_applicable": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {},
+      "scope": "CORRECTED_ACCEPTED_OWNER_OUTPUT_UNKNOWN_VALUES_RETAINED",
+      "section": "62D/65",
+      "source_fields": [
+        "supporting_concepts"
+      ],
+      "source_present_rows": 5213,
+      "structural_oracle": true,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 1641,
+          "path": "docs/evidence/r2_structural_fields_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "a857b1eec406e9effc9b76dcc4393f7ef083b40a8dfb9267975a641316f98050"
+        },
+        {
+          "bytes": 34223,
+          "path": "docs/evidence/r2_structural_fields_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e1448fefe8d8c74b98b76ca6623506067a6ee5f09c2196c765993d3b1f03fbe5"
+        }
+      ],
+      "feature": "maturity",
+      "known_rows": 5213,
+      "numeric_oracle": false,
+      "numeric_oracle_applicable": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {},
+      "scope": "CORRECTED_ACCEPTED_OWNER_OUTPUT_UNKNOWN_VALUES_RETAINED",
+      "section": "62D/65",
+      "source_fields": [
+        "maturity"
+      ],
+      "source_present_rows": 5213,
+      "structural_oracle": true,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 1641,
+          "path": "docs/evidence/r2_structural_fields_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "a857b1eec406e9effc9b76dcc4393f7ef083b40a8dfb9267975a641316f98050"
+        },
+        {
+          "bytes": 34223,
+          "path": "docs/evidence/r2_structural_fields_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e1448fefe8d8c74b98b76ca6623506067a6ee5f09c2196c765993d3b1f03fbe5"
+        }
+      ],
+      "feature": "health",
+      "known_rows": 867,
+      "numeric_oracle": false,
+      "numeric_oracle_applicable": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "ACCEPTED_OWNER_CAPABILITY_SCOPED": 4346
+      },
+      "scope": "CORRECTED_ACCEPTED_OWNER_OUTPUT_UNKNOWN_VALUES_RETAINED",
+      "section": "62D/65",
+      "source_fields": [
+        "health"
+      ],
+      "source_present_rows": 5213,
+      "structural_oracle": true,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 4346
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 1641,
+          "path": "docs/evidence/r2_structural_fields_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "a857b1eec406e9effc9b76dcc4393f7ef083b40a8dfb9267975a641316f98050"
+        },
+        {
+          "bytes": 34223,
+          "path": "docs/evidence/r2_structural_fields_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e1448fefe8d8c74b98b76ca6623506067a6ee5f09c2196c765993d3b1f03fbe5"
+        }
+      ],
+      "feature": "validity",
+      "known_rows": 868,
+      "numeric_oracle": false,
+      "numeric_oracle_applicable": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "[\"CONFIRMED\", \"PREWATCH\", \"SEED\", \"core_price_damage\", \"delta3:OPTIONAL_INPUT_UNKNOWN\", \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\", \"risk:OPTIONAL_INPUT_UNKNOWN\", \"scenario:OPTIONAL_INPUT_UNKNOWN\"]": 183,
+        "[\"CONFIRMED\", \"PREWATCH\", \"SEED\", \"delta3:OPTIONAL_INPUT_UNKNOWN\", \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\", \"risk:OPTIONAL_INPUT_UNKNOWN\", \"scenario:OPTIONAL_INPUT_UNKNOWN\"]": 3,
+        "[\"CONFIRMED\", \"PREWATCH\", \"SEED\", \"delta3:OPTIONAL_INPUT_UNKNOWN\", \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\", \"scenario:OPTIONAL_INPUT_UNKNOWN\"]": 97,
+        "[\"CONFIRMED\", \"PREWATCH\", \"SEED\", \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\", \"scenario:OPTIONAL_INPUT_UNKNOWN\"]": 4,
+        "[\"CONFIRMED\", \"PREWATCH\", \"SEED\", \"frozen_invalidation\", \"delta3:OPTIONAL_INPUT_UNKNOWN\", \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\", \"scenario:OPTIONAL_INPUT_UNKNOWN\"]": 1,
+        "[\"CONFIRMED\", \"PREWATCH\", \"core_price_damage\", \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\", \"risk:OPTIONAL_INPUT_UNKNOWN\", \"scenario:OPTIONAL_INPUT_UNKNOWN\"]": 7,
+        "[\"CONFIRMED\", \"PREWATCH\", \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\", \"scenario:OPTIONAL_INPUT_UNKNOWN\"]": 2,
+        "[\"CONFIRMED\", \"delta3:OPTIONAL_INPUT_UNKNOWN\", \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\", \"scenario:OPTIONAL_INPUT_UNKNOWN\"]": 67,
+        "[\"CONFIRMED\", \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\", \"scenario:OPTIONAL_INPUT_UNKNOWN\"]": 12,
+        "[\"PREWATCH\", \"SEED\", \"delta3:OPTIONAL_INPUT_UNKNOWN\", \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\"]": 3,
+        "[\"PREWATCH\", \"SEED\", \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\"]": 393,
+        "[\"PREWATCH\", \"SEED\", \"frozen_invalidation\", \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\"]": 35,
+        "[\"PREWATCH\", \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\"]": 3392,
+        "[\"PREWATCH\", \"frozen_invalidation\", \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\"]": 37,
+        "[\"frozen_invalidation\", \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\"]": 109
+      },
+      "scope": "CORRECTED_ACCEPTED_OWNER_OUTPUT_UNKNOWN_VALUES_RETAINED",
+      "section": "62D/65",
+      "source_fields": [
+        "validity"
+      ],
+      "source_present_rows": 5213,
+      "structural_oracle": true,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 4345
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 1641,
+          "path": "docs/evidence/r2_structural_fields_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "a857b1eec406e9effc9b76dcc4393f7ef083b40a8dfb9267975a641316f98050"
+        },
+        {
+          "bytes": 34223,
+          "path": "docs/evidence/r2_structural_fields_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e1448fefe8d8c74b98b76ca6623506067a6ee5f09c2196c765993d3b1f03fbe5"
+        }
+      ],
+      "feature": "tracking",
+      "known_rows": 5213,
+      "numeric_oracle": false,
+      "numeric_oracle_applicable": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {},
+      "scope": "CORRECTED_ACCEPTED_OWNER_OUTPUT_UNKNOWN_VALUES_RETAINED",
+      "section": "62D/65",
+      "source_fields": [
+        "tracking"
+      ],
+      "source_present_rows": 5213,
+      "structural_oracle": true,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 1641,
+          "path": "docs/evidence/r2_structural_fields_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "a857b1eec406e9effc9b76dcc4393f7ef083b40a8dfb9267975a641316f98050"
+        },
+        {
+          "bytes": 34223,
+          "path": "docs/evidence/r2_structural_fields_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e1448fefe8d8c74b98b76ca6623506067a6ee5f09c2196c765993d3b1f03fbe5"
+        }
+      ],
+      "feature": "scenario",
+      "known_rows": 5213,
+      "numeric_oracle": false,
+      "numeric_oracle_applicable": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {},
+      "scope": "CORRECTED_ACCEPTED_OWNER_OUTPUT_UNKNOWN_VALUES_RETAINED",
+      "section": "62D/65",
+      "source_fields": [
+        "scenario"
+      ],
+      "source_present_rows": 5213,
+      "structural_oracle": true,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "quality",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 5213
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "quality"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": false,
+      "unknown_rows": 5213
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_OWNER_FIELD_PUBLISHED_FALLBACK_IS_VISIBLY_DISTINGUISHED",
+      "feature": "why_now",
+      "known_rows": 5213,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 5213
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "transition_reasons"
+      ],
+      "source_mapping": "OWNER_TRANSITION_REASONS",
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 5213
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_OWNER_FIELD_PUBLISHED_FALLBACK_IS_VISIBLY_DISTINGUISHED",
+      "feature": "waiting_for",
+      "known_rows": 5213,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 5213
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "unknown_predicates"
+      ],
+      "source_mapping": "MISSING_PREDICATE_EVIDENCE_ONLY",
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 5213
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "invalid_if",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 5213
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "invalid_if"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": false,
+      "unknown_rows": 5213
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "feature": "price",
+      "known_rows": 5213,
+      "numeric_oracle": true,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {},
+      "section": "62D/65",
+      "source_fields": [
+        "open",
+        "high",
+        "low",
+        "close"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "feature": "ma",
+      "known_rows": 5173,
+      "numeric_oracle": true,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "ADJUSTMENT_UNKNOWN": 45,
+        "INSUFFICIENT_HISTORY": 36,
+        "MA10_WINDOW_OR_ENDPOINT_UNAVAILABLE": 19,
+        "OWNER_NULL_OR_NON_READY_VALUE": 60
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "ma5",
+        "ma10",
+        "ma20",
+        "ma60"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 40
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "feature": "atr_normalized_position",
+      "known_rows": 5188,
+      "numeric_oracle": true,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "ATR_OR_PRICE_INPUT_UNAVAILABLE": 50
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "bias20_atr",
+        "dist_high20_atr"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 25
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "feature": "rps5",
+      "known_rows": 5190,
+      "numeric_oracle": true,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "RETURN_OR_UNIVERSE_UNKNOWN": 23
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "rps5"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 23
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "feature": "rps20",
+      "known_rows": 5182,
+      "numeric_oracle": true,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "RETURN_OR_UNIVERSE_UNKNOWN": 31
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "rps20"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 31
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 43631,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "fb07b91c4f33bdabd247f02866f080bc41fac72267e1c1b4d6a8b1c1e38186ad"
+        },
+        {
+          "bytes": 2463,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/STOCK_FACT_ORACLE.json",
+          "sha256": "228aee72257557b731a1c55ae3d25fc53495214a7c216b3dacf9f5d32dc76be6"
+        }
+      ],
+      "feature": "relative",
+      "known_rows": 5187,
+      "numeric_oracle": true,
+      "numeric_oracle_applicable": true,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_NULL_OR_NON_READY_VALUE": 13,
+        "RETURN_OR_PIT_MARKET_REFERENCE_UNKNOWN": 65
+      },
+      "scope": "CURRENT_DATED_ACCEPTED_OUTPUT_ONLY_UNKNOWN_VALUES_RETAINED",
+      "section": "62D/65",
+      "source_fields": [
+        "rel_market_1",
+        "rel_market_3",
+        "rel_market_5"
+      ],
+      "source_present_rows": 5213,
+      "structural_oracle": true,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 26
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 43631,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "fb07b91c4f33bdabd247f02866f080bc41fac72267e1c1b4d6a8b1c1e38186ad"
+        },
+        {
+          "bytes": 2463,
+          "path": "docs/evidence/r2_available_fields_continuation_20261008/STOCK_FACT_ORACLE.json",
+          "sha256": "228aee72257557b731a1c55ae3d25fc53495214a7c216b3dacf9f5d32dc76be6"
+        }
+      ],
+      "feature": "compression",
+      "known_rows": 5164,
+      "numeric_oracle": true,
+      "numeric_oracle_applicable": true,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "ADJUSTMENT_UNKNOWN": 45,
+        "INSUFFICIENT_HISTORY": 19,
+        "INSUFFICIENT_SESSION_HISTORY": 10,
+        "MISSING_OR_SUSPENDED_ENDPOINT": 24,
+        "OWNER_NULL_OR_NON_READY_VALUE": 49
+      },
+      "scope": "CURRENT_DATED_ACCEPTED_OUTPUT_ONLY_UNKNOWN_VALUES_RETAINED",
+      "section": "62D/65",
+      "source_fields": [
+        "range_ratio",
+        "atr_ratio",
+        "vol_ratio"
+      ],
+      "source_present_rows": 5213,
+      "structural_oracle": true,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 49
+    },
+    {
+      "admission_scope": "CURRENT_RAW_AMOUNT_CNY_AND_ACCEPTED_PRIOR_WINDOW_RATIOS",
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 10724,
+          "path": "docs/evidence/r2_raw_turnover_continuation_20261008/REAL_SOURCE_ORACLE.json",
+          "sha256": "292a479f5a8575121bce09db1e10152f9c6982ea6d509d5ec451f79265ba9bbd"
+        },
+        {
+          "bytes": 728,
+          "path": "docs/evidence/r2_raw_turnover_continuation_20261008/RATIO_ORACLE.json",
+          "sha256": "c763361e13488e347b4c3acd958d773b05b44482bb1569afbf1ce5dec4da3415"
+        },
+        {
+          "bytes": 13260,
+          "path": "docs/evidence/r2_raw_turnover_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "91a04c6230553d11bb8b00db4d5468ff312f5230d5db4ecc95aeba917bff56f1"
+        }
+      ],
+      "feature": "amount",
+      "known_rows": 5188,
+      "numeric_oracle": true,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "ACCEPTED_OWNER_RATIO_UNAVAILABLE": 25
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "amount",
+        "amount_ratio5",
+        "amount_ratio20"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 25
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "turnover",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 5213
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "turnover"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": false,
+      "unknown_rows": 5213
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 1641,
+          "path": "docs/evidence/r2_structural_fields_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "a857b1eec406e9effc9b76dcc4393f7ef083b40a8dfb9267975a641316f98050"
+        },
+        {
+          "bytes": 34223,
+          "path": "docs/evidence/r2_structural_fields_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e1448fefe8d8c74b98b76ca6623506067a6ee5f09c2196c765993d3b1f03fbe5"
+        }
+      ],
+      "feature": "sector_facts",
+      "known_rows": 5213,
+      "numeric_oracle": false,
+      "numeric_oracle_applicable": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {},
+      "scope": "CORRECTED_ACCEPTED_OWNER_OUTPUT_UNKNOWN_VALUES_RETAINED",
+      "section": "62D/65",
+      "source_fields": [
+        "primary_industry",
+        "supporting_concepts"
+      ],
+      "source_present_rows": 5213,
+      "structural_oracle": true,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "hypothesis",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 5213
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "hypothesis"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": false,
+      "unknown_rows": 5213
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "supporting_evidence",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 5213
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "supporting_evidence"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": false,
+      "unknown_rows": 5213
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "counterevidence",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 5213
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "counterevidence"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": false,
+      "unknown_rows": 5213
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "next_discriminator",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 5213
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "next_discriminator"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": false,
+      "unknown_rows": 5213
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": false,
+      "debt_reason": "BOUND_OWNER_FIELD_UNAVAILABLE_SEE_EXACT_REASON_COUNTS",
+      "feature": "anchors",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE": 5213
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "anchor_view_asof_t"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": false,
+      "unknown_rows": 5213
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": false,
+      "debt_reason": "BOUND_OWNER_FIELD_UNAVAILABLE_SEE_EXACT_REASON_COUNTS",
+      "feature": "structure_events",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE": 5213
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "structure_events"
+      ],
+      "source_present_rows": 5213,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": false,
+      "unknown_rows": 5213
+    },
+    {
+      "api": "/api/v4/stocks",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "factor_timeline",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 5213
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "factor_timeline"
+      ],
+      "source_present_rows": 0,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": false,
+      "unknown_rows": 5213
+    },
+    {
+      "admission_scope": "CORRECTED_FOCUS_EVENTS_ONLY_NOT_STRUCTURE_EVENTS",
+      "api": "/api/v4/focus/{id}/timeline",
+      "browser_pass": true,
+      "debt_reason": null,
+      "feature": "focus_timeline",
+      "known_rows": 0,
+      "numeric_oracle": true,
+      "owner": "scripts/build_fp07_stock.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 5213
+      },
+      "section": "62D/65",
+      "source_fields": [
+        "focus_timeline"
+      ],
+      "source_present_rows": 766,
+      "ui": "/v4/research/stocks",
+      "ui_rendered": true,
+      "unknown_rows": 5213
+    },
+    {
+      "api": "/api/v4/focus",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "event",
+      "known_rows": 469,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp08_focus.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {},
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "62F",
+      "source_fields": [
+        "event"
+      ],
+      "source_present_rows": 469,
+      "structural_oracle": true,
+      "ui": "/v4/research/focus",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/focus",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "episode_id",
+      "known_rows": 469,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp08_focus.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {},
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "62F",
+      "source_fields": [
+        "episode_id"
+      ],
+      "source_present_rows": 469,
+      "structural_oracle": true,
+      "ui": "/v4/research/focus",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/focus",
+      "browser_pass": false,
+      "debt_reason": "BOUND_OWNER_FIELD_UNAVAILABLE_SEE_EXACT_REASON_COUNTS",
+      "feature": "parent_episode_id",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp08_focus.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_REASON_MISSING_SEE_AUD_FP01_FIELD_REASON_GAPS": 469
+      },
+      "section": "62F",
+      "source_fields": [
+        "parent_episode_id"
+      ],
+      "source_present_rows": 469,
+      "ui": "/v4/research/focus",
+      "ui_rendered": false,
+      "unknown_rows": 469
+    },
+    {
+      "api": "/api/v4/focus",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "health",
+      "known_rows": 141,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp08_focus.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_LITERAL_UNKNOWN_NOT_A_KNOWN_VALUE": 328
+      },
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "62F",
+      "source_fields": [
+        "health"
+      ],
+      "source_present_rows": 469,
+      "structural_oracle": true,
+      "ui": "/v4/research/focus",
+      "ui_rendered": true,
+      "unknown_rows": 328
+    },
+    {
+      "api": "/api/v4/focus",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "validity",
+      "known_rows": 142,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp08_focus.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_LITERAL_UNKNOWN_NOT_A_KNOWN_VALUE": 327
+      },
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "62F",
+      "source_fields": [
+        "validity"
+      ],
+      "source_present_rows": 469,
+      "structural_oracle": true,
+      "ui": "/v4/research/focus",
+      "ui_rendered": true,
+      "unknown_rows": 327
+    },
+    {
+      "api": "/api/v4/focus",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "membership",
+      "known_rows": 340,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp08_focus.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_LITERAL_UNKNOWN_NOT_A_KNOWN_VALUE": 129
+      },
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "62F",
+      "source_fields": [
+        "membership"
+      ],
+      "source_present_rows": 469,
+      "structural_oracle": true,
+      "ui": "/v4/research/focus",
+      "ui_rendered": true,
+      "unknown_rows": 129
+    },
+    {
+      "api": "/api/v4/focus",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 1103301,
+          "path": "docs/evidence/r2_focus_native_core_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "6b54099696dc37a9c09de399da8cad36ca6eb6defbb4b4a4519e29f5f06c71d0"
+        },
+        {
+          "bytes": 343485,
+          "path": "docs/evidence/r2_focus_native_core_continuation_20261008/NATIVE_CORE_ORACLE.json",
+          "sha256": "f6c6883a72cd3d7742d804e5e7d957a3dc511461ea328090ee4e4e84769a0e46"
+        },
+        {
+          "bytes": 13481,
+          "path": "docs/evidence/r2_focus_native_core_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "2fbe27e15c6c624e47c45fc53db0142969caebd4fa7c5a6a1a52ae8621533e7c"
+        },
+        {
+          "bytes": 2162,
+          "path": "docs/evidence/r2_focus_native_core_continuation_20261008/browser/outcome_status_checks.json",
+          "sha256": "74fd9561b7313c70fb3c58d7827d8ce8dc3df49e5b32034f63e8ffd5fad2fd6b"
+        }
+      ],
+      "feature": "path_state",
+      "known_rows": 66,
+      "numeric_oracle": false,
+      "numeric_oracle_applicable": false,
+      "owner": "scripts/build_fp08_focus.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_REASON_MISSING_SEE_AUD_FP01_FIELD_REASON_GAPS": 469
+      },
+      "scope": "CORRECTED_DATED_OUTPUT_WITH_EXPLICIT_UNKNOWN_NOT_FULL_PREDICATE_AVAILABILITY",
+      "section": "62F",
+      "source_fields": [
+        "path_state"
+      ],
+      "source_present_rows": 469,
+      "structural_oracle": true,
+      "ui": "/v4/research/focus",
+      "ui_rendered": true,
+      "unknown_rows": 403
+    },
+    {
+      "api": "/api/v4/focus/{id}/outcomes",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 1103301,
+          "path": "docs/evidence/r2_focus_native_core_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "6b54099696dc37a9c09de399da8cad36ca6eb6defbb4b4a4519e29f5f06c71d0"
+        },
+        {
+          "bytes": 343485,
+          "path": "docs/evidence/r2_focus_native_core_continuation_20261008/NATIVE_CORE_ORACLE.json",
+          "sha256": "f6c6883a72cd3d7742d804e5e7d957a3dc511461ea328090ee4e4e84769a0e46"
+        },
+        {
+          "bytes": 13481,
+          "path": "docs/evidence/r2_focus_native_core_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "2fbe27e15c6c624e47c45fc53db0142969caebd4fa7c5a6a1a52ae8621533e7c"
+        },
+        {
+          "bytes": 2162,
+          "path": "docs/evidence/r2_focus_native_core_continuation_20261008/browser/outcome_status_checks.json",
+          "sha256": "74fd9561b7313c70fb3c58d7827d8ce8dc3df49e5b32034f63e8ffd5fad2fd6b"
+        }
+      ],
+      "feature": "outcome_status",
+      "known_rows": 2820,
+      "numeric_oracle": true,
+      "numeric_oracle_applicable": true,
+      "owner": "scripts/build_fp08_focus.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 469
+      },
+      "scope": "CORRECTED_DATED_OUTPUT_WITH_EXPLICIT_UNKNOWN_NOT_FULL_PREDICATE_AVAILABILITY",
+      "section": "62F",
+      "source_fields": [
+        "outcome_status"
+      ],
+      "source_present_rows": 2820,
+      "structural_oracle": true,
+      "ui": "/v4/research/focus",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/focus",
+      "browser_pass": false,
+      "debt_reason": "FIELD_SCOPE_UI_ORACLE_OR_BROWSER_NOT_FULLY_PROVEN",
+      "feature": "waiting_for",
+      "known_rows": 469,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp08_focus.py",
+      "owner_source_ready": true,
+      "product_pass": false,
+      "production_required": true,
+      "reason_counts": {},
+      "section": "62F",
+      "source_fields": [
+        "waiting_for"
+      ],
+      "source_present_rows": 469,
+      "ui": "/v4/research/focus",
+      "ui_rendered": false,
+      "unknown_rows": 0
+    },
+    {
+      "admission_scope": "TYPED_FOCUS_EVENT_ANCHORS_ONLY_NOT_STRUCTURE_ANCHOR",
+      "api": "/api/v4/focus/{id}/anchors",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 10418,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/REAL_SOURCE_ORACLE.json",
+          "sha256": "3d5f7b79ff545dcb6e9b8d6d41b43a85a06b855b17bb0e43dc4a4419d50ce144"
+        },
+        {
+          "bytes": 3791,
+          "path": "docs/evidence/r2_presentation_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "3773eddcca3248c33a04f2d21bb54f82ba8b34ee1d9565bd6b664b7739bd7bee"
+        }
+      ],
+      "feature": "anchor",
+      "known_rows": 564,
+      "numeric_oracle": false,
+      "numeric_oracle_applicable": false,
+      "owner": "scripts/build_fp08_focus.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {
+        "OWNER_FIELD_NOT_PUBLISHED": 469
+      },
+      "section": "62F",
+      "source_fields": [
+        "anchor_id"
+      ],
+      "source_present_rows": 564,
+      "structural_oracle": true,
+      "ui": "/v4/research/focus",
+      "ui_rendered": true,
+      "unknown_rows": 469
+    },
+    {
+      "api": "/api/v4/focus/{id}/observations",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 1103301,
+          "path": "docs/evidence/r2_focus_native_core_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "6b54099696dc37a9c09de399da8cad36ca6eb6defbb4b4a4519e29f5f06c71d0"
+        },
+        {
+          "bytes": 343485,
+          "path": "docs/evidence/r2_focus_native_core_continuation_20261008/NATIVE_CORE_ORACLE.json",
+          "sha256": "f6c6883a72cd3d7742d804e5e7d957a3dc511461ea328090ee4e4e84769a0e46"
+        },
+        {
+          "bytes": 13481,
+          "path": "docs/evidence/r2_focus_native_core_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "2fbe27e15c6c624e47c45fc53db0142969caebd4fa7c5a6a1a52ae8621533e7c"
+        },
+        {
+          "bytes": 2162,
+          "path": "docs/evidence/r2_focus_native_core_continuation_20261008/browser/outcome_status_checks.json",
+          "sha256": "74fd9561b7313c70fb3c58d7827d8ce8dc3df49e5b32034f63e8ffd5fad2fd6b"
+        }
+      ],
+      "feature": "observation",
+      "known_rows": 766,
+      "numeric_oracle": true,
+      "numeric_oracle_applicable": true,
+      "owner": "scripts/build_fp08_focus.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "reason_counts": {},
+      "scope": "CORRECTED_DATED_OUTPUT_WITH_EXPLICIT_UNKNOWN_NOT_FULL_PREDICATE_AVAILABILITY",
+      "section": "62F",
+      "source_fields": [
+        "price_path"
+      ],
+      "source_present_rows": 766,
+      "structural_oracle": true,
+      "ui": "/v4/research/focus",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/market/indices",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "indices",
+      "known_rows": 0,
+      "numeric_oracle": true,
+      "numeric_oracle_applicable": true,
+      "owner": "scripts/build_fp09_market_center.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "62G",
+      "source_fields": [
+        "indices"
+      ],
+      "structural_oracle": true,
+      "ui": "/v4/research/market",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/market/breadth",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "breadth",
+      "known_rows": 0,
+      "numeric_oracle": true,
+      "numeric_oracle_applicable": true,
+      "owner": "scripts/build_fp09_market_center.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "62G",
+      "source_fields": [
+        "breadth"
+      ],
+      "structural_oracle": true,
+      "ui": "/v4/research/market",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/market/limits",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "limits",
+      "known_rows": 0,
+      "numeric_oracle": true,
+      "numeric_oracle_applicable": true,
+      "owner": "scripts/build_fp09_market_center.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "62G",
+      "source_fields": [
+        "limits"
+      ],
+      "structural_oracle": true,
+      "ui": "/v4/research/market",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/market/ladders",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "ladders",
+      "known_rows": 0,
+      "numeric_oracle": true,
+      "numeric_oracle_applicable": true,
+      "owner": "scripts/build_fp09_market_center.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "62G",
+      "source_fields": [
+        "ladders"
+      ],
+      "structural_oracle": true,
+      "ui": "/v4/research/market",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/market/broken-limit",
+      "browser_pass": false,
+      "debt_reason": "OWNER_SOURCE_NOT_AVAILABLE_NO_INTRADAY_OR_APPROVED_FACT_EVENT_SOURCE",
+      "feature": "broken_limit",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp09_market_center.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "section": "62G",
+      "source_fields": [
+        "broken_limit"
+      ],
+      "ui": "/v4/research/market",
+      "ui_rendered": false,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/market/facts-events",
+      "browser_pass": false,
+      "debt_reason": "OWNER_SOURCE_NOT_AVAILABLE_NO_INTRADAY_OR_APPROVED_FACT_EVENT_SOURCE",
+      "feature": "facts_events",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "scripts/build_fp09_market_center.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "section": "62G",
+      "source_fields": [
+        "facts_events"
+      ],
+      "ui": "/v4/research/market",
+      "ui_rendered": false,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/diagnostics/health",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "health",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/diagnostic_views.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "62H/68",
+      "source_fields": [
+        "health"
+      ],
+      "structural_oracle": true,
+      "ui": "/v4/research/diagnostics",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/diagnostics/sources",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "sources",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/diagnostic_views.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "62H/68",
+      "source_fields": [
+        "sources"
+      ],
+      "structural_oracle": true,
+      "ui": "/v4/research/diagnostics",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/diagnostics/contracts",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "contracts",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/diagnostic_views.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "62H/68",
+      "source_fields": [
+        "contracts"
+      ],
+      "structural_oracle": true,
+      "ui": "/v4/research/diagnostics",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/diagnostics/jobs",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "jobs",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/diagnostic_views.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "62H/68",
+      "source_fields": [
+        "jobs"
+      ],
+      "structural_oracle": true,
+      "ui": "/v4/research/diagnostics",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/diagnostics/legacy",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "legacy",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/diagnostic_views.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "62H/68",
+      "source_fields": [
+        "legacy"
+      ],
+      "structural_oracle": true,
+      "ui": "/v4/research/diagnostics",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/diagnostics/shadow",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "shadow",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/diagnostic_views.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "62H/68",
+      "source_fields": [
+        "shadow"
+      ],
+      "structural_oracle": true,
+      "ui": "/v4/research/diagnostics",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/diagnostics",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "rps20_matrix",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/diagnostic_views.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "section": "62H/68",
+      "source_fields": [
+        "rps20_matrix"
+      ],
+      "ui": "/v4/research/diagnostics",
+      "ui_rendered": false,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/diagnostics",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "technical_scanner",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/diagnostic_views.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "section": "62H/68",
+      "source_fields": [
+        "technical_scanner"
+      ],
+      "ui": "/v4/research/diagnostics",
+      "ui_rendered": false,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/diagnostics",
+      "browser_pass": false,
+      "debt_reason": "NO_EXPLICIT_BOUND_OWNER_OUTPUT",
+      "feature": "loo",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/diagnostic_views.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "section": "62H/68",
+      "source_fields": [
+        "loo"
+      ],
+      "ui": "/v4/research/diagnostics",
+      "ui_rendered": false,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/replay ; /api/v4/compare",
+      "browser_pass": false,
+      "debt_reason": "STRICT_PIT_OR_FROZEN_MEMBER_OR_LOO_OWNER_NOT_ADMITTED",
+      "feature": "strict_pit",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/replay_views.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "section": "66/67",
+      "source_fields": [
+        "strict_pit"
+      ],
+      "ui": "/v4/research/replay ; /v4/research/compare",
+      "ui_rendered": false,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/replay ; /api/v4/compare",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "corrected_history",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/replay_views.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "66/67",
+      "source_fields": [
+        "corrected_history"
+      ],
+      "structural_oracle": true,
+      "ui": "/v4/research/replay ; /v4/research/compare",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/replay ; /api/v4/compare",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "stock_previous",
+      "known_rows": 0,
+      "numeric_oracle": true,
+      "numeric_oracle_applicable": true,
+      "owner": "src/workbench_service/replay_views.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "66/67",
+      "source_fields": [
+        "stock_previous"
+      ],
+      "structural_oracle": true,
+      "ui": "/v4/research/replay ; /v4/research/compare",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/replay ; /api/v4/compare",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "stock_market",
+      "known_rows": 0,
+      "numeric_oracle": true,
+      "numeric_oracle_applicable": true,
+      "owner": "src/workbench_service/replay_views.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "66/67",
+      "source_fields": [
+        "stock_market"
+      ],
+      "structural_oracle": true,
+      "ui": "/v4/research/replay ; /v4/research/compare",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/replay ; /api/v4/compare",
+      "browser_pass": false,
+      "debt_reason": "STRICT_PIT_OR_FROZEN_MEMBER_OR_LOO_OWNER_NOT_ADMITTED",
+      "feature": "frozen_sector",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/replay_views.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "section": "66/67",
+      "source_fields": [
+        "frozen_sector"
+      ],
+      "ui": "/v4/research/replay ; /v4/research/compare",
+      "ui_rendered": false,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/replay ; /api/v4/compare",
+      "browser_pass": false,
+      "debt_reason": "STRICT_PIT_OR_FROZEN_MEMBER_OR_LOO_OWNER_NOT_ADMITTED",
+      "feature": "current_loo",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/replay_views.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "section": "66/67",
+      "source_fields": [
+        "current_loo"
+      ],
+      "ui": "/v4/research/replay ; /v4/research/compare",
+      "ui_rendered": false,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/replay ; /api/v4/compare",
+      "browser_pass": false,
+      "debt_reason": "STRICT_PIT_OR_FROZEN_MEMBER_OR_LOO_OWNER_NOT_ADMITTED",
+      "feature": "sector_market",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/replay_views.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "section": "66/67",
+      "source_fields": [
+        "sector_market"
+      ],
+      "ui": "/v4/research/replay ; /v4/research/compare",
+      "ui_rendered": false,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/replay ; /api/v4/compare",
+      "browser_pass": false,
+      "debt_reason": "STRICT_PIT_OR_FROZEN_MEMBER_OR_LOO_OWNER_NOT_ADMITTED",
+      "feature": "sector_three",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/replay_views.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "section": "66/67",
+      "source_fields": [
+        "sector_three"
+      ],
+      "ui": "/v4/research/replay ; /v4/research/compare",
+      "ui_rendered": false,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/replay ; /api/v4/compare",
+      "browser_pass": false,
+      "debt_reason": "STRICT_PIT_OR_FROZEN_MEMBER_OR_LOO_OWNER_NOT_ADMITTED",
+      "feature": "sector_lifecycle",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/replay_views.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "section": "66/67",
+      "source_fields": [
+        "sector_lifecycle"
+      ],
+      "ui": "/v4/research/replay ; /v4/research/compare",
+      "ui_rendered": false,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/replay ; /api/v4/compare",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "followup",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/replay_views.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "66/67",
+      "source_fields": [
+        "followup"
+      ],
+      "structural_oracle": true,
+      "ui": "/v4/research/replay ; /v4/research/compare",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/replay ; /api/v4/compare",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "date_token",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/replay_views.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "66/67",
+      "source_fields": [
+        "date_token"
+      ],
+      "structural_oracle": true,
+      "ui": "/v4/research/replay ; /v4/research/compare",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/home",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "navigation",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/domain_views.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "62A/62B/63",
+      "source_fields": [
+        "navigation"
+      ],
+      "structural_oracle": true,
+      "ui": "/v4/research/home",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/home",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "four_axes",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/domain_views.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "62A/62B/63",
+      "source_fields": [
+        "four_axes"
+      ],
+      "structural_oracle": true,
+      "ui": "/v4/research/home",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/home",
+      "browser_pass": false,
+      "debt_reason": "NO_ACCEPTED_EVENT_OR_NATIVE_HISTORY_FOR_THIS_HOME_SECTION",
+      "feature": "rotation_changes",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/domain_views.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "section": "62A/62B/63",
+      "source_fields": [
+        "rotation_changes"
+      ],
+      "ui": "/v4/research/home",
+      "ui_rendered": false,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/home",
+      "browser_pass": false,
+      "debt_reason": "NO_ACCEPTED_EVENT_OR_NATIVE_HISTORY_FOR_THIS_HOME_SECTION",
+      "feature": "sector_changes",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/domain_views.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "section": "62A/62B/63",
+      "source_fields": [
+        "sector_changes"
+      ],
+      "ui": "/v4/research/home",
+      "ui_rendered": false,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/home",
+      "browser_pass": true,
+      "debt_reason": null,
+      "evidence": [
+        {
+          "bytes": 3054,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/SOURCE_ORACLE.json",
+          "sha256": "045c7fbb17eb1ee3e161d0ab0579583aab32e9efde4c17f782c7f232ae8708fb"
+        },
+        {
+          "bytes": 704,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/REPLAY_ORACLE.json",
+          "sha256": "4275807a268e405f5dae53c343b9589487bfaa6928a6af8e2cb11ac425a212ee"
+        },
+        {
+          "bytes": 12686,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/BROWSER_ORACLE.json",
+          "sha256": "e47486da1197b447e933a6e45962cb970fb781f9c7f6fa1ba889921a1fad2bfa"
+        },
+        {
+          "bytes": 2366,
+          "path": "docs/evidence/r2_read_domains_continuation_20261008/EXACT_DESKTOP_BROWSER_FINAL.json",
+          "sha256": "fa8975a8ffc417ac3a1a993ff007fab8f1171e56083fa953f1fcbb4f45c52ec6"
+        }
+      ],
+      "feature": "stock_changes",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/domain_views.py",
+      "owner_source_ready": true,
+      "product_pass": true,
+      "production_required": true,
+      "scope": "CORRECTED_ACCEPTED_SOURCE_CURRENT_UI_EXPLICIT_TEMPORAL_BOUNDARY",
+      "section": "62A/62B/63",
+      "source_fields": [
+        "stock_changes"
+      ],
+      "structural_oracle": true,
+      "ui": "/v4/research/home",
+      "ui_rendered": true,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/home",
+      "browser_pass": false,
+      "debt_reason": "NO_ACCEPTED_EVENT_OR_NATIVE_HISTORY_FOR_THIS_HOME_SECTION",
+      "feature": "risk_changes",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/domain_views.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "section": "62A/62B/63",
+      "source_fields": [
+        "risk_changes"
+      ],
+      "ui": "/v4/research/home",
+      "ui_rendered": false,
+      "unknown_rows": 0
+    },
+    {
+      "api": "/api/v4/home",
+      "browser_pass": false,
+      "debt_reason": "NO_ACCEPTED_EVENT_OR_NATIVE_HISTORY_FOR_THIS_HOME_SECTION",
+      "feature": "member_preview",
+      "known_rows": 0,
+      "numeric_oracle": false,
+      "owner": "src/workbench_service/domain_views.py",
+      "owner_source_ready": false,
+      "product_pass": false,
+      "production_required": true,
+      "section": "62A/62B/63",
+      "source_fields": [
+        "member_preview"
+      ],
+      "ui": "/v4/research/home",
+      "ui_rendered": false,
+      "unknown_rows": 0
+    }
+  ],
+  "strict_pit": false,
+  "ui_build_id": "ab3f64fbed2a010ce7d9402ce7dae4762a062502fe89af1af5acd4afc77f4dd0"
+}

@@ -1,0 +1,19 @@
+{
+  "contract_id": "FP14_FULL_PRODUCT_RELEASE_V1",
+  "parent_policy": "config/v4_operational_production_release_policy_v1.json",
+  "required_qa": "FP13_FULL_PRODUCT_QA_V1",
+  "result_enum": ["FULL_PRODUCT_PRODUCTION_RELEASE_PASS", "BLOCKED"],
+  "require_fp13_pass": true,
+  "require_complete_product": true,
+  "require_exact_source_and_owner_digests": true,
+  "ui_and_read_authority_must_rollback_together": true,
+  "release_strategy": "IMMUTABLE_PAIR_SERIALIZED_CAS_READBACK_RESTORE_PREDECESSOR",
+  "preserve_focus_and_forward_history": true,
+  "sample_maturity_blocks_unrelated_modules": false,
+  "historical_permissions_are_immutable": true,
+  "candidate_preparation_grants_activation": false,
+  "rehearsal_root": "runtime/fp14_rehearsal",
+  "tdx_write": false,
+  "automatic_trading": false,
+  "profit_or_probability_claim": false
+}

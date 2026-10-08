@@ -1,0 +1,64 @@
+{
+  "activation_performed": false,
+  "browser": {
+    "browser": "IAB_NOT_EDGE",
+    "dom": {
+      "bytes": 16018,
+      "path": "docs/evidence/fp14_20261008/current_scoped_service.txt",
+      "sha256": "7311439e34f5d160394c750eaf64306b9ba102cfdf14128b3c66625b8e630a8a"
+    },
+    "scope": "EXISTING_SCOPED_SERVICE_AFTER_BLOCKED_RELEASE_NOT_POST_ACTIVATION",
+    "screenshot": {
+      "bytes": 95495,
+      "path": "docs/evidence/fp14_20261008/current_scoped_service.png",
+      "sha256": "662f8ba4a9b01aeabbe32707909cb05b29e67776280474aeecefe2883dc6810e"
+    }
+  },
+  "independent_external_acceptance": "PENDING",
+  "live_authorities_preserved": true,
+  "next_stage": "Resolve source/adapter/browser product audit items and rerun release gates",
+  "operating_manual": {
+    "bytes": 3781,
+    "path": "docs/operations/V4_DAILY_OPERATIONS_AND_ROLLBACK_R1_20261008.md",
+    "sha256": "8f8b270ad3b074d12edc14b0aa8ff742eabaf3481c75fa2baf7af76f175d858d"
+  },
+  "protected": {
+    "changed": [],
+    "checked": 872
+  },
+  "real_daily_noop": {
+    "bytes": 784,
+    "path": "docs/evidence/fp14_20261008/REAL_DAILY_NOOP.json",
+    "sha256": "593630ffc8b877d03f40dc5356deaf8fd246ccad658bd8226b9aea2e3c7d0388"
+  },
+  "result": "BLOCKED",
+  "rollback": {
+    "bytes": 901,
+    "path": "docs/evidence/fp14_20261008/REAL_ISOLATED_ROLLBACK.json",
+    "sha256": "72e9f649949280b43d594ab73681eab31c781b195de329e59e1c33fb66ec4224"
+  },
+  "service_log": {
+    "bytes": 0,
+    "path": "data/fp12_service_err.log",
+    "traceback_present": false
+  },
+  "source_digests_verified": 35,
+  "source_zero_write_evidence": [
+    {
+      "bytes": 159,
+      "path": "docs/evidence/fp13_20261008/TDX_PRE.json",
+      "sha256": "eb8aa1663b9c967c68066e42163b2c001818499765b96fe6d638ece32b07b422"
+    },
+    {
+      "bytes": 159,
+      "path": "docs/evidence/fp13_20261008/TDX_POST.json",
+      "sha256": "eb8aa1663b9c967c68066e42163b2c001818499765b96fe6d638ece32b07b422"
+    }
+  ],
+  "stage": "FP14",
+  "tdx_access_in_fp14": "NONE",
+  "tests": {
+    "command": "python -B -m pytest tests/test_fp14_release_readiness.py tests/test_fp02_research_snapshot.py tests/test_v4_current_daily_refresh.py -q --basetemp E:/codex_tmp/test_temp/fp14_gates",
+    "passed": 34
+  }
+}

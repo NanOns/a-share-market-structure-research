@@ -1,0 +1,22 @@
+{
+  "activation_performed": false,
+  "authorities_preserved": true,
+  "candidate": {
+    "bytes": 35597,
+    "path": "docs/evidence/fp14_20261008/RELEASE_CANDIDATE_MANIFEST.json",
+    "sha256": "6db09afb66a94046074acb06bbab2c147c67ce4ad133e98ba33ecfefcc603733"
+  },
+  "next_stage": "Resolve independent FP13 product/browser gates; then request stage re-evaluation",
+  "protected": {
+    "changed": [],
+    "checked": 872
+  },
+  "reasons": [
+    "FP13_GATE_NOT_PASSED:acceptance",
+    "FP13_GATE_NOT_PASSED:product_complete",
+    "FP13_GATE_NOT_PASSED:required_field_coverage_pass",
+    "FP13_GATE_NOT_PASSED:edge_pass",
+    "FP13_GATE_NOT_PASSED:offline_pass"
+  ],
+  "result": "BLOCKED"
+}

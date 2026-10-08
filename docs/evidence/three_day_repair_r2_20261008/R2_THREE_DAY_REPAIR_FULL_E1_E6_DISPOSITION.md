@@ -1,4 +1,4 @@
-"# R2 三日数据与算法修复 E1–E6 阶段处置
+# R2 三日数据与算法修复 E1–E6 阶段处置
 
 - 阶段合同：`R2_DATA_ALGORITHM_REPAIR_V1`（按 `docs/upgrade/R2_DATA_ALGORITHM_REPAIR_EXECUTION_20261008.md`；当前结构连续任务另受 `docs/upgrade/R2_STRUCTURAL_FIELD_CONTINUATION_20261008.md` 约束）。
 - 阶段结果：`SCOPED_OPERATIONAL_RELEASE_PASS / E1_E5_FULL_ACCEPTANCE_BLOCKED`。
@@ -27,4 +27,3 @@
 ## 下一阶段
 
 按最新结构连续合同，对接受快照完成完整 5,213 股票实源结构核验和关系展示核验；先补齐版本化结构 Owner/谓词与 positive/negative/boundary/leakage vectors，再重跑独立 Oracle。9/28–29成员有效日期缺权威时继续 `NOT_VERIFIABLE`。不因本次 push 自动推进该门。
-"

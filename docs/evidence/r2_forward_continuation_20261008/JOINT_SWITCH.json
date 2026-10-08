@@ -1,0 +1,28 @@
+{
+  "actual_candidate": true,
+  "failed_health_exact_restore": true,
+  "noop": {
+    "activation_performed": false,
+    "authority_digest": "7122bf744a53aeb51d7010808f0751b21d453fb7d0719046d10d7e64364e59d2",
+    "result": "NOOP"
+  },
+  "reason": "JOINT_HEALTH_FAILED",
+  "result": "PASS",
+  "successful": {
+    "activation_performed": true,
+    "authority_digest": "7122bf744a53aeb51d7010808f0751b21d453fb7d0719046d10d7e64364e59d2",
+    "operational_release_scope": [
+      "stocks_daily",
+      "sectors_current_facts",
+      "market_current",
+      "focus_read_corrected",
+      "forward_read",
+      "diagnostics",
+      "compare_corrected"
+    ],
+    "readback": {
+      "pass": true
+    },
+    "result": "SCOPED_OPERATIONAL_RELEASE_PASS"
+  }
+}

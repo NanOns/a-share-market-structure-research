@@ -1,0 +1,139 @@
+{
+  "context": {
+    "accepted_trade_date": "2026-09-30",
+    "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+    "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+    "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+    "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+    "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+    "domain_readiness": {
+      "fep": {
+        "debt": [
+          "CURRENT_FEATURE_MODEL_INFERENCE"
+        ],
+        "released": false,
+        "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+      },
+      "focus": {
+        "debt": [
+          "UNRESOLVED_PATH_PREDICATE_OWNERS",
+          "LEGACY_PG_RECONCILIATION"
+        ],
+        "earliest_valid_date": "2026-09-29",
+        "released": true,
+        "scope": "CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ"
+      },
+      "forward": {
+        "debt": [
+          "CURRENT_FEP_INFERENCE",
+          "DUE_SETTLEMENT_OWNER_RECONCILIATION"
+        ],
+        "released": true,
+        "scope": "REAL_COHORT_PLAN_READ_ONLY"
+      },
+      "market": {
+        "debt": [
+          "INTRADAY_TOUCH_BROKEN_LIMIT",
+          "OFFICIAL_FACT_NEWS"
+        ],
+        "released": true,
+        "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+      },
+      "sectors": {
+        "debt": [
+          "HISTORICAL_MEMBERSHIP",
+          "LIFECYCLE",
+          "ROTATION_HISTORY"
+        ],
+        "released": true,
+        "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+      },
+      "stocks": {
+        "debt": [
+          "HYPOTHESIS",
+          "INVALID_IF_OWNER",
+          "FULL_STRUCTURE_PATH"
+        ],
+        "released": true,
+        "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+      },
+      "strict_pit": {
+        "debt": [
+          "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+        ],
+        "released": false,
+        "scope": "NONE"
+      }
+    },
+    "factor_contract_id": null,
+    "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+    "full_product_release": false,
+    "historical_pit_effectiveness": "NOT_GRANTED",
+    "joint_release_digest": "a2c3d9e534e90082d380509090ef2a55c2edeadfef014f06c9c135d7f5cb2bd3",
+    "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+    "last_accepted_trade_date": "2026-09-30",
+    "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+    "namespace": "V4_CURRENT_ACCEPTED",
+    "operational_release_scope": [
+      "stocks_daily",
+      "sectors_current_facts",
+      "market_current",
+      "focus_read_corrected",
+      "forward_read",
+      "diagnostics",
+      "compare_corrected"
+    ],
+    "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+    "parameter_set_id": null,
+    "publication_id": "5bef6fcb71a14d22a4f6bc1f2d83b4c3",
+    "quality": "QUALITY_DEGRADED",
+    "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+    "release_id": "5bef6fcb71a14d22a4f6bc1f2d83b4c3",
+    "release_metadata": {
+      "contract_version": "1.0.0",
+      "data_quality_state": "QUALITY_DEGRADED",
+      "evidence_origin": "REAL_ACCEPTED_SOURCE",
+      "evidence_state": "VALIDATION_ONGOING",
+      "input_digest": "f76bba6a6ff6adb3142c6fc9e1efe0fcd82c8cb72157b1a784d196b9990ed6f5",
+      "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+      "owner": "FP02_RESEARCH_PROJECTION",
+      "published_at": "2026-10-08T07:53:02.657835+00:00",
+      "release_id": "5bef6fcb71a14d22a4f6bc1f2d83b4c3",
+      "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+      "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "trading_date": "2026-09-30"
+    },
+    "scoped_release": true,
+    "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+    "source_mode": "SCOPED_OPERATIONAL_RELEASE",
+    "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+    "stage": "V4-15",
+    "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+    "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+    "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+    "trade_date": "2026-09-30",
+    "turnover_as_of": null
+  },
+  "context_token": "research-v4-fdb9f0f62ed4d9df8364320c7d689ad8b65d762a0acc6820d4217f707bc64657",
+  "contract_id": "R2_STOCK_OWNER_TIMELINE_V1",
+  "has_next": false,
+  "items": [],
+  "limit": 200,
+  "offset": 0,
+  "owner_specific_debt": [
+    {
+      "field": "structure_events",
+      "owner": "V4_12",
+      "reason": "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE"
+    },
+    {
+      "field": "anchor_view_asof_t",
+      "owner": "V4_12",
+      "reason": "UNKNOWN_ACCEPTED_SOURCE_METADATA_UNAVAILABLE"
+    }
+  ],
+  "resource_type": "stock_owner_timeline",
+  "scope": "BOUND_OWNER_RECORDS_ONLY_NO_RECONSTRUCTED_EVENT_DATES",
+  "status": "SOURCE_INCOMPLETE",
+  "total": 0
+}

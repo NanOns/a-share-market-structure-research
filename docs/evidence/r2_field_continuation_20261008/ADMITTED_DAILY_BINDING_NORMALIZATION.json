@@ -1,0 +1,119 @@
+{
+  "activation_performed": true,
+  "authority_digest": "9ac4732cd9a18078fefb382aaa217a9be712d6a55cba45264fc925a1399ae670",
+  "first_observed_freeze": {
+    "AS_RECORDED": false,
+    "contract_id": "R2_FIRST_OBSERVED_FREEZE_V1",
+    "first_observed_at": "2026-10-08T08:14:06.067825+00:00",
+    "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+    "reason": "FIRST_OBSERVED_TIME_IS_NOT_PROOF_OF_HISTORICAL_FIRST_AVAILABLE",
+    "source_identity": "54d2b2adc1663b939cace7b165111cff1ec32ac1ce6bb6c9cdbeb4e8176a8a37",
+    "sources": {
+      "advanced": {
+        "bytes": 37627535,
+        "path": "data/v4/pit_first_observed/2026-09-30/54d2b2adc1663b939cace7b165111cff1ec32ac1ce6bb6c9cdbeb4e8176a8a37/advanced.gz",
+        "sha256": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+      },
+      "membership": {
+        "bytes": 4004928,
+        "path": "data/v4/pit_first_observed/2026-09-30/54d2b2adc1663b939cace7b165111cff1ec32ac1ce6bb6c9cdbeb4e8176a8a37/membership.gz",
+        "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+      },
+      "sector_operational": {
+        "bytes": 1574482,
+        "path": "data/v4/pit_first_observed/2026-09-30/54d2b2adc1663b939cace7b165111cff1ec32ac1ce6bb6c9cdbeb4e8176a8a37/sector_operational.gz",
+        "sha256": "5e4ccafff6a96cf5c2deeaa6b3b771b17c3d3e5141c0da9b660a609a6fe66bcc"
+      },
+      "states": {
+        "bytes": 12539130,
+        "path": "data/v4/pit_first_observed/2026-09-30/54d2b2adc1663b939cace7b165111cff1ec32ac1ce6bb6c9cdbeb4e8176a8a37/states.gz",
+        "sha256": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+      },
+      "stock_factors": {
+        "bytes": 19460170,
+        "path": "data/v4/pit_first_observed/2026-09-30/54d2b2adc1663b939cace7b165111cff1ec32ac1ce6bb6c9cdbeb4e8176a8a37/stock_factors.gz",
+        "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+      }
+    },
+    "strict_t0_pit_ready": false,
+    "trade_date": "2026-09-30"
+  },
+  "forward_due": "NO_DUE",
+  "full_product_release": false,
+  "operational_release_scope": [
+    "stocks_daily",
+    "sectors_current_facts",
+    "market_current",
+    "focus_read_corrected",
+    "forward_read",
+    "diagnostics",
+    "compare_corrected"
+  ],
+  "raw_oracle_comparisons": 20852,
+  "readback": {
+    "app_read_pair_digest": "730e8d227ef0dd5dc6aabf84bc3084f2428dc10c67aaea6894c0bea76612b779",
+    "context_token": "research-v4-fdb9f0f62ed4d9df8364320c7d689ad8b65d762a0acc6820d4217f707bc64657",
+    "pass": true,
+    "pass_": true,
+    "routes": {
+      "/": {
+        "http": 200,
+        "sha256": "5d35b9b506a06901bcb4bc040fc6d1cf3e0ea2099212acf13b3a152316515ba9"
+      },
+      "/api/v4/diagnostics": {
+        "context_token": "research-v4-fdb9f0f62ed4d9df8364320c7d689ad8b65d762a0acc6820d4217f707bc64657",
+        "status": "READY"
+      },
+      "/api/v4/focus?limit=1": {
+        "context_token": "research-v4-fdb9f0f62ed4d9df8364320c7d689ad8b65d762a0acc6820d4217f707bc64657",
+        "status": "READY"
+      },
+      "/api/v4/home": {
+        "context_token": "research-v4-fdb9f0f62ed4d9df8364320c7d689ad8b65d762a0acc6820d4217f707bc64657",
+        "status": "READY"
+      },
+      "/api/v4/market": {
+        "context_token": "research-v4-fdb9f0f62ed4d9df8364320c7d689ad8b65d762a0acc6820d4217f707bc64657",
+        "status": "READY"
+      },
+      "/api/v4/sectors?limit=1": {
+        "context_token": "research-v4-fdb9f0f62ed4d9df8364320c7d689ad8b65d762a0acc6820d4217f707bc64657",
+        "status": "READY"
+      },
+      "/api/v4/stocks?limit=1": {
+        "context_token": "research-v4-fdb9f0f62ed4d9df8364320c7d689ad8b65d762a0acc6820d4217f707bc64657",
+        "status": "READY"
+      },
+      "/v4": {
+        "http": 200,
+        "sha256": "5d35b9b506a06901bcb4bc040fc6d1cf3e0ea2099212acf13b3a152316515ba9"
+      },
+      "/v4/research/diagnostics": {
+        "http": 200,
+        "sha256": "5d35b9b506a06901bcb4bc040fc6d1cf3e0ea2099212acf13b3a152316515ba9"
+      },
+      "/v4/research/focus": {
+        "http": 200,
+        "sha256": "5d35b9b506a06901bcb4bc040fc6d1cf3e0ea2099212acf13b3a152316515ba9"
+      },
+      "/v4/research/home": {
+        "http": 200,
+        "sha256": "5d35b9b506a06901bcb4bc040fc6d1cf3e0ea2099212acf13b3a152316515ba9"
+      },
+      "/v4/research/market": {
+        "http": 200,
+        "sha256": "5d35b9b506a06901bcb4bc040fc6d1cf3e0ea2099212acf13b3a152316515ba9"
+      },
+      "/v4/research/sectors": {
+        "http": 200,
+        "sha256": "5d35b9b506a06901bcb4bc040fc6d1cf3e0ea2099212acf13b3a152316515ba9"
+      },
+      "/v4/research/stocks": {
+        "http": 200,
+        "sha256": "5d35b9b506a06901bcb4bc040fc6d1cf3e0ea2099212acf13b3a152316515ba9"
+      }
+    }
+  },
+  "result": "SCOPED_OPERATIONAL_RELEASE_PASS",
+  "strict_pit": false
+}

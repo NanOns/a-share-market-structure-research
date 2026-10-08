@@ -216,6 +216,24 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
                     result=json.loads(old[0]);result['fields'].update({k:compact_cell(dict(v,unit=units.get(k)),authority['native'],k,date) for k,v in row['fields'].items()})
                     result['fields']['sector_type']=compact_cell(dict(value=row['sector_type'],quality='KNOWN'),authority['native'],'sector_type',date)
                     db.execute("DELETE FROM objects WHERE domain='sectors' AND id=?",(row['sector_id'],));put('sectors',result)
+        stock_authority=root/'config/v4_stock_operational_authority_v1.json'
+        if stock_authority.exists():
+            authority=json.loads(stock_authority.read_bytes())
+            if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('STOCK_SOURCE_CONTEXT_MISMATCH')
+            for kind in ('factors','profiles','series'):legacy._verify(authority[kind]);sources['stock_'+kind]=authority[kind]
+            domain_features['stocks']=authority
+            for kind in ('factors','profiles'):
+                with gzip.open(root/authority[kind]['path'],'rt',encoding='utf8') as f:
+                    for line in f:
+                        row=json.loads(line)
+                        if row['trade_date']!=date:raise SourceInvalid('STOCK_DATE_MIX')
+                        old=db.execute("SELECT payload FROM objects WHERE domain='stocks' AND id=?",(row['security_id'],)).fetchone()
+                        if not old:continue
+                        result=json.loads(old[0]);cells=row['fields'] if kind=='factors' else {**row['derived_fields'],**row['states']}
+                        for k,v in cells.items():
+                            cell=dict(v,quality='UNKNOWN' if v.get('unknown_reason') or v.get('value') is None else 'KNOWN',reason=v.get('unknown_reason'),unit=units.get(k))
+                            result['fields'][k]=compact_cell(cell,authority[kind],k,date)
+                        db.execute("DELETE FROM objects WHERE domain='stocks' AND id=?",(row['security_id'],));put('stocks',result)
         counts={d:db.execute('SELECT count(*) FROM objects WHERE domain=?',(d,)).fetchone()[0] for d in DOMAINS}
         expected_stocks=len(legacy._source(contract,'RAW_DAILY')['rows'])
         expected_sectors=len({r['sector_id'] for r in legacy._source(contract,'membership')})
@@ -225,6 +243,7 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
               dict(domain='stocks',state='SOURCE_INCOMPLETE',reason='CURRENT_CORE_OWNER_PROFILE_IS_20260928_NOT_20260930',next='FP07_CURRENT_CORE_RECOMPUTE'),
               dict(domain='profile_identity',state='SOURCE_INCOMPLETE',reason='ADVANCED_ROWS_OUTSIDE_CURRENT_RAW_UNIVERSE',count=unmatched)]
         if 'market' in domain_features:gaps=[g for g in gaps if g['domain']!='market']
+        if 'stocks' in domain_features:gaps=[g for g in gaps if g['domain']!='stocks']
         meta=dict(contract_id='V4_RESEARCH_SNAPSHOT_V1', domain_features=domain_features,context=context['context'],legacy_context_token=context['context_token'],
             source_contract_digest=contract_digest, sources=sources, owners=owners, counts=counts, gaps=gaps,
             field_registry=field_registry, operational_state='OPERATIONAL_PRODUCTION_ACTIVE',
@@ -290,6 +309,10 @@ class ProductionV4ResearchReader:
         metadata=validate_release_metadata(self.manifest)
         self.path=verifier._path(self.manifest['database']['path'])
         stat=self.path.stat();self.file_signature=(stat.st_size,stat.st_mtime_ns)
+        stocks=self.manifest.get('domain_features',{}).get('stocks')
+        self.series_signature=None
+        if stocks:
+            verifier._verify(stocks['series']);stat=verifier._path(stocks['series']['path']).stat();self.series_signature=(stat.st_size,stat.st_mtime_ns)
         self.token='research-v4-'+self.authority['manifest']['sha256']
         self.context=dict(release_id=self.manifest['release_id'],model_namespace='V4_RESEARCH_SNAPSHOT_V1',
             source_mode='OPERATIONAL_PRODUCTION_ACTIVE',publication_id=self.manifest['release_id'],data_as_of=self.manifest['context']['data_updated_at'],

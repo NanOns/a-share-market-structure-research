@@ -30,7 +30,7 @@ def make_v4_handler(root):
                 return self.send(200,(static/'v4-workbench.html').read_bytes(),'text/html; charset=utf-8')
             if parsed.path.startswith('/v4/assets/'):
                 name=parsed.path.removeprefix('/v4/assets/')
-                if name not in ('app.js','api.js','components.js','labels.js','style.css'):return self.send(404,dict(code='ASSET_NOT_FOUND'))
+                if name not in ('app.js','api.js','components.js','labels.js','stock.js','style.css'):return self.send(404,dict(code='ASSET_NOT_FOUND'))
                 return self.send(200,(static/'research'/name).read_bytes(),'text/css; charset=utf-8' if name.endswith('.css') else 'application/javascript; charset=utf-8')
             if parsed.path=='/v4/workbench.js':
                 return self.send(200,(static/'v4-workbench.js').read_bytes(),'application/javascript; charset=utf-8')

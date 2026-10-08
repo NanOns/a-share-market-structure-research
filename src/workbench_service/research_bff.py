@@ -8,6 +8,7 @@ from .production_v4 import ProductionV4ResearchReader, POINTER
 from .current_v4_context import SourceInvalid, digest
 from .v4_daily_refresh import refresh_status
 from .domain_views import home,sector_view
+from .stock_views import chart,explanation
 
 class ResearchBFF:
     def __init__(self,root):
@@ -33,8 +34,10 @@ class ResearchBFF:
         try:
             r=self.current()
             # Validate context and parameter contracts even for singleton/diagnostic routes.
-            validation=r.query('sources',query)
             parts=[unquote(p) for p in path.removeprefix('/api/v4/').split('/') if p]
+            chart_route=len(parts)==3 and parts[0]=='stocks' and parts[2]=='chart'
+            base_query={k:v for k,v in query.items() if not chart_route or k not in ('period','price_basis')}
+            validation=r.query('sources',base_query)
             if not parts:return 404,r.envelope(status='NOT_FOUND',code='ROUTE_NOT_FOUND')
             name=parts[0]
             if name=='context':
@@ -57,11 +60,13 @@ class ResearchBFF:
             if name=='forward' and len(parts)>1 and parts[1] in ('settlement','outcomes'):return 200,r.query('settlement',query)
             if name not in ('stocks','sectors','events','radar','forward','focus','market','sources'):return 404,r.envelope(status='NOT_FOUND',code='ROUTE_NOT_FOUND')
             if len(parts)==1:return 200,r.query(name,query,summary=True)
-            detail=r.query(name,query,entity=parts[1])
+            detail=r.query(name,base_query,entity=parts[1])
             if not detail['total']:
                 outside=name=='stocks' and r.known_identity(parts[1])
                 return 404,r.envelope(status='OUTSIDE_CURRENT_POOL' if outside else 'NOT_FOUND',code='IDENTITY_OUTSIDE_CURRENT_DAILY_UNIVERSE' if outside else 'ENTITY_NOT_FOUND',items=[])
             item=detail['items'][0]
+            if chart_route:return 200,chart(r,item,query)
+            if name=='stocks' and len(parts)>2 and parts[2] in ('profile','evidence','why-not','why-not-prewatch'):return 200,explanation(r,item)
             if name=='sectors' and len(parts)>2 and parts[2] in ('timeline','rotation-timeline','overlap'):return 200,sector_view(r,item,parts[2],query)
             if len(parts)==2 or parts[2] in ('profile','evidence','why-not','why-not-prewatch','rotation'):
                 return 200,r.envelope(status='READY',item=item,eligibility=item['fields'].get('final_eligibility'),pool_membership='CURRENT_UNIVERSE',research_pool_eligibility='SEE_OWNER_FIELD')

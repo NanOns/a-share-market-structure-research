@@ -243,6 +243,11 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
                 last=episode['observations'][-1];stock=db.execute("SELECT payload FROM objects WHERE domain='stocks' AND id=?",(episode['entity_id'],)).fetchone();stock=json.loads(stock[0]) if stock else {}
                 fields={k:compact_cell(dict(value=v,quality='UNKNOWN' if v is None else 'KNOWN',contract_id=publication['contract_id']),authority['publication'],k,date) for k,v in {**last,**{k:episode[k] for k in ('episode_id','T0','end_date','parent_episode_id')}}.items()}
                 put('focus',dict(entity_id=episode['entity_id'],display_name=stock.get('display_name',episode['entity_id']),symbol=stock.get('symbol',''),fields=fields))
+        center_authority=root/'config/v4_market_center_authority_v1.json'
+        if center_authority.exists():
+            authority=json.loads(center_authority.read_bytes())
+            if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('MARKET_CENTER_CONTEXT_MISMATCH')
+            domain_features['market_center']=legacy._read(authority['publication']);sources['market_center']=authority['publication']
         counts={d:db.execute('SELECT count(*) FROM objects WHERE domain=?',(d,)).fetchone()[0] for d in DOMAINS}
         expected_stocks=len(legacy._source(contract,'RAW_DAILY')['rows'])
         expected_sectors=len({r['sector_id'] for r in legacy._source(contract,'membership')})

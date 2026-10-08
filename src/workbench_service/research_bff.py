@@ -46,6 +46,13 @@ class ResearchBFF:
                 control.update(scope='INPUT_PROGRESS_NOT_RESEARCH_CONTEXT',accepted_input_date=progress['context']['context']['accepted_trade_date'],indexed_trade_date=r.context['accepted_trade_date'])
                 return 200,r.envelope(status='READY',counts=r.manifest['counts'],gaps=r.manifest['gaps'],daily_refresh=control)
             if name=='home':return 200,home(r)
+            if name=='market' and len(parts)==2 and parts[1] in ('indices','breadth','limits','ladders','facts-events'):
+                center=r.manifest.get('domain_features',{}).get('market_center')
+                if not center:return 200,r.envelope(status='SOURCE_INCOMPLETE',reason='MARKET_CENTER_NOT_BOUND',items=[])
+                key=parts[1].replace('-','_');payload=center[key];offset=int(query.get('offset',0));limit=int(query.get('limit',30))
+                if isinstance(payload,list):return 200,r.envelope(status='READY',items=payload[offset:offset+limit],total=len(payload),offset=offset,limit=limit,has_next=offset+limit<len(payload),sources=center['sources'],mode=center['mode'])
+                if key=='limits':return 200,r.envelope(status='READY',items=payload['rows'][offset:offset+limit],total=len(payload['rows']),offset=offset,limit=limit,has_next=offset+limit<len(payload['rows']),counts=payload['counts'],rule_ids=payload['rule_ids'],sources=center['sources'])
+                return 200,r.envelope(status=payload.get('status','READY'),data=payload,sources=center['sources'],mode=center['mode'])
             if name=='focus' and len(parts)>1:
                 publication=r.manifest.get('domain_features',{}).get('focus')
                 if publication:

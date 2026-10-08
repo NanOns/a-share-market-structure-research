@@ -1,0 +1,18 @@
+{
+  "acceptance": "DEGRADED_PASS",
+  "browser": "market.png",
+  "indices": 5,
+  "limit_denominator": 5224,
+  "limit_down": 12,
+  "limit_up": 56,
+  "limitations": [
+    "No bound intraday touch sequence, no fabricated broken-limit data",
+    "No approved official/media event dataset",
+    "Three-session ladder has explicit lower bound when historical prefix unavailable",
+    "Independent Edge acceptance pending FP13"
+  ],
+  "next_stage": "FP10",
+  "source": "frozen official daily archive and accepted PRICE_LIMIT facts",
+  "stage": "FP09",
+  "tests": "42 passed; pytest tests/upgrade_m8/test_limit_rules.py tests/v4_02/test_final_r4_special_price_phase.py tests/test_fp08_focus.py tests/test_fp07_stock.py tests/test_fp02_research_snapshot.py -q"
+}

@@ -42,7 +42,7 @@ def prepare():
     write(ROOT/ADMISSION,admission)
     previous=json.loads((ROOT/AUTHORITY).read_bytes())
     candidate.update(operational_release_scope=previous['operational_release_scope'],
-        daily_owner_authorities=chain['owner_authorities'],continuous_daily_candidate_write=True,
+        daily_owner_authorities=owners,continuous_daily_candidate_write=True,
         daily_pipeline_admission=dict(path=ADMISSION,sha256=digest((ROOT/ADMISSION).read_bytes())),
         app_version=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
         focus_automatic_write=False,full_product_release=False)

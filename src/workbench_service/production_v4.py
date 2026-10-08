@@ -231,6 +231,15 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
         if authority is not None:
             if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('STOCK_SOURCE_CONTEXT_MISMATCH')
             for kind in ('factors','profiles','series'):legacy._verify(authority[kind]);sources['stock_'+kind]=authority[kind]
+            from .stock_unit_projection import project as project_stock_unit
+            unit_binding=reference(root,root/'config/v4_stock_unit_projection_v1.json');unit_contract=legacy._read(unit_binding)
+            if unit_contract['contract_id']!='R2_BOUND_OWNER_UNIT_PROJECTION_V1':raise SourceInvalid('STOCK_UNIT_PROJECTION_CONTRACT_MISMATCH')
+            sources['stock_unit_projection_contract']=unit_binding
+            registries=[]
+            for index,binding in enumerate(unit_contract['registries']):
+                registry=legacy._read(binding)
+                if registry['contract_id'] not in ('V4_03_FIELD_REGISTRY_V1','V4_04_FIELD_REGISTRY_V2'):raise SourceInvalid('UNADMITTED_STOCK_UNIT_REGISTRY')
+                sources['stock_unit_registry_'+str(index)]=binding;registries.append(registry)
             domain_features['stocks']=authority
             for kind in ('factors','profiles'):
                 with gzip.open(root/authority[kind]['path'],'rt',encoding='utf8') as f:
@@ -241,7 +250,8 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
                         if not old:continue
                         result=json.loads(old[0]);cells=row['fields'] if kind=='factors' else {**row['derived_fields'],**row['states']}
                         for k,v in cells.items():
-                            cell=dict(v,quality='UNKNOWN' if v.get('unknown_reason') or v.get('value') is None else 'KNOWN',reason=v.get('unknown_reason'),unit=units.get(k))
+                            declared=project_stock_unit(k,v,registries,authority['price_basis'])
+                            cell=dict(declared,quality='UNKNOWN' if v.get('unknown_reason') or v.get('value') is None else 'KNOWN',reason=v.get('unknown_reason'),unit=declared.get('unit') or units.get(k))
                             result['fields'][k]=compact_cell(cell,authority[kind],k,date)
                         db.execute("DELETE FROM objects WHERE domain='stocks' AND id=?",(row['security_id'],));put('stocks',result)
         if authority is not None:

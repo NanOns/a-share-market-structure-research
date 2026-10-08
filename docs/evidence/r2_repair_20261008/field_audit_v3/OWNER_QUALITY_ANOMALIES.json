@@ -1,0 +1,72 @@
+{
+  "admission_excludes_literal_unknown": true,
+  "audit_id": "AUD-R2-OWNER-LITERAL-UNKNOWN-QUALITY",
+  "groups": [
+    {
+      "count": 5213,
+      "dependency": "sector_context_quality",
+      "domain": "stocks",
+      "field": "sector_context_quality",
+      "literal_unknown_with_known_quality": 5213,
+      "owner": "SECTOR_CONTEXT_STATE_V1",
+      "price_basis": "OWNER_CELL_BASIS_NOT_DECLARED",
+      "quality_counts": {
+        "KNOWN": 5213
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+      "usable_value_count": 0
+    },
+    {
+      "count": 469,
+      "dependency": "health",
+      "domain": "focus",
+      "field": "health",
+      "literal_unknown_with_known_quality": 328,
+      "owner": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+      "price_basis": "OWNER_CELL_BASIS_NOT_DECLARED",
+      "quality_counts": {
+        "KNOWN": 469
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+      "usable_value_count": 141
+    },
+    {
+      "count": 469,
+      "dependency": "membership",
+      "domain": "focus",
+      "field": "membership",
+      "literal_unknown_with_known_quality": 129,
+      "owner": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+      "price_basis": "OWNER_CELL_BASIS_NOT_DECLARED",
+      "quality_counts": {
+        "KNOWN": 469
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+      "usable_value_count": 340
+    },
+    {
+      "count": 469,
+      "dependency": "validity",
+      "domain": "focus",
+      "field": "validity",
+      "literal_unknown_with_known_quality": 327,
+      "owner": "FP08_FOCUS_SUCCESSOR_PUBLICATION_V1",
+      "price_basis": "OWNER_CELL_BASIS_NOT_DECLARED",
+      "quality_counts": {
+        "KNOWN": 469
+      },
+      "reasons": {},
+      "source_as_of": "2026-09-30",
+      "source_digest": "b8af3cbf4fcfffde55db085e85c66b4470567fcfe2b9e56e16916a3324bf3a24",
+      "usable_value_count": 142
+    }
+  ],
+  "scope": "OWNER_LITERAL_UNKNOWN_MUST_NOT_RECEIVE_VALUE_READINESS_CREDIT",
+  "status": "OPEN"
+}

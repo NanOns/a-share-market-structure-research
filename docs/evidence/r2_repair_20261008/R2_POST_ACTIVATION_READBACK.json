@@ -1,0 +1,262 @@
+{
+  "TDX": "NO_WRITES_NO_R2_PRE_POST_CHECKSUM_CLAIM",
+  "authority": {
+    "bytes": 7796,
+    "path": "config/v4_joint_release_authority_v1.json",
+    "sha256": "9ceedadcb849ce6515d127f88b6d96c33d2dc4bdd04944cdffc5e0e00295f26a"
+  },
+  "browser": [
+    {
+      "bytes": 3427,
+      "path": "docs/evidence/r2_repair_20261008/browser/live_diagnostics.txt",
+      "sha256": "d76692706611085cfdb6219054e5aafd0c406648e703917376ce47e76b9e5943"
+    },
+    {
+      "bytes": 43681,
+      "path": "docs/evidence/r2_repair_20261008/browser/live_focus.txt",
+      "sha256": "0bb01c9e6225daaeafe7eae7abf07248dd694de7d2eda8ecd9fc9d90277c35ef"
+    },
+    {
+      "bytes": 66836,
+      "path": "docs/evidence/r2_repair_20261008/browser/live_home_1366.png",
+      "sha256": "a6b8c5ecee3a9a5021a1d597f2d43ff406049fd1b60d11f0b0191c0ff79d7ae0"
+    },
+    {
+      "bytes": 17979,
+      "path": "docs/evidence/r2_repair_20261008/browser/live_market.txt",
+      "sha256": "db2606dc03e83141116a324c9308383fc3359957ec00dc84e633af7af778fb44"
+    },
+    {
+      "bytes": 292,
+      "path": "docs/evidence/r2_repair_20261008/browser/LIVE_RUNS.json",
+      "sha256": "f991a6f2e399ae12dc70e465a3e151382a1c116e9de8b3d2544f51fec7f3586f"
+    },
+    {
+      "bytes": 98648,
+      "path": "docs/evidence/r2_repair_20261008/browser/live_scoped_home.png",
+      "sha256": "8e7b8857826a4c296739cc6d268e36b9fbb83f4e0dd64f0e9ee39722e2fd9f62"
+    },
+    {
+      "bytes": 16115,
+      "path": "docs/evidence/r2_repair_20261008/browser/live_scoped_home.txt",
+      "sha256": "476c985d716516c017b4b31cf0c5e5bb9bccc7095d50f7754c84c83ff2433a74"
+    },
+    {
+      "bytes": 24746,
+      "path": "docs/evidence/r2_repair_20261008/browser/live_sectors.txt",
+      "sha256": "a91854f4428cda2df784417108c9869ec54d1e69f402382960e86eedf72fd9b7"
+    },
+    {
+      "bytes": 21276,
+      "path": "docs/evidence/r2_repair_20261008/browser/live_stocks.txt",
+      "sha256": "1698a3e02705fa59f4efd8e1880d6ce6c117b56f54aa572fd40b063f9278cbea"
+    }
+  ],
+  "context": {
+    "context": {
+      "accepted_trade_date": "2026-09-30",
+      "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+      "core_revision": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+      "data_as_of": "2026-10-01T12:25:10.846023+00:00",
+      "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+      "domain_readiness": {
+        "fep": {
+          "debt": [
+            "CURRENT_FEATURE_MODEL_INFERENCE"
+          ],
+          "released": false,
+          "scope": "NOT_BOUND_TO_CURRENT_PRODUCTION"
+        },
+        "focus": {
+          "debt": [
+            "AUTOMATIC_PATH_OUTCOME_WRITE",
+            "LEGACY_PG_RECONCILIATION"
+          ],
+          "released": true,
+          "scope": "CORRECTED_EPISODE_READ_ONLY"
+        },
+        "forward": {
+          "debt": [
+            "CURRENT_FEP_INFERENCE",
+            "DUE_SETTLEMENT_OWNER_RECONCILIATION"
+          ],
+          "released": true,
+          "scope": "REAL_COHORT_PLAN_READ_ONLY"
+        },
+        "market": {
+          "debt": [
+            "INTRADAY_TOUCH_BROKEN_LIMIT",
+            "OFFICIAL_FACT_NEWS"
+          ],
+          "released": true,
+          "scope": "DATED_FOUR_AXES_INDICES_CLOSE_LIMITS"
+        },
+        "sectors": {
+          "debt": [
+            "HISTORICAL_MEMBERSHIP",
+            "LIFECYCLE",
+            "ROTATION_HISTORY"
+          ],
+          "released": true,
+          "scope": "CURRENT_MEMBERS_FACTORS_OVERLAP"
+        },
+        "stocks": {
+          "debt": [
+            "HYPOTHESIS",
+            "INVALID_IF_OWNER",
+            "FULL_STRUCTURE_PATH"
+          ],
+          "released": true,
+          "scope": "DATED_FACTORS_CHARTS_OWNER_STATE"
+        },
+        "strict_pit": {
+          "debt": [
+            "FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE"
+          ],
+          "released": false,
+          "scope": "NONE"
+        }
+      },
+      "factor_contract_id": null,
+      "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+      "full_product_release": false,
+      "historical_pit_effectiveness": "NOT_GRANTED",
+      "joint_release_digest": "9ceedadcb849ce6515d127f88b6d96c33d2dc4bdd04944cdffc5e0e00295f26a",
+      "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+      "last_accepted_trade_date": "2026-09-30",
+      "model_namespace": "V4_RESEARCH_SNAPSHOT_V1",
+      "namespace": "V4_CURRENT_ACCEPTED",
+      "operational_release_scope": [
+        "stocks_daily",
+        "sectors_current_facts",
+        "market_current",
+        "focus_read_corrected",
+        "forward_read",
+        "diagnostics",
+        "compare_corrected"
+      ],
+      "optional_enrichment_revision": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6",
+      "parameter_set_id": null,
+      "publication_id": "8b4bbcc6a81e48a6b158e3bdf3bb84c8",
+      "quality": "QUALITY_DEGRADED",
+      "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+      "release_id": "8b4bbcc6a81e48a6b158e3bdf3bb84c8",
+      "release_metadata": {
+        "contract_version": "1.0.0",
+        "data_quality_state": "QUALITY_DEGRADED",
+        "evidence_origin": "REAL_ACCEPTED_SOURCE",
+        "evidence_state": "VALIDATION_ONGOING",
+        "input_digest": "cece02b5b64ecf67d9953282347b247a7f91e747327b79e684f33b9ea621baf5",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "owner": "FP02_RESEARCH_PROJECTION",
+        "published_at": "2026-10-08T04:19:31.100225+00:00",
+        "release_id": "8b4bbcc6a81e48a6b158e3bdf3bb84c8",
+        "source_as_of": "2026-10-08T02:32:57.686901+00:00",
+        "source_snapshot": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "trading_date": "2026-09-30"
+      },
+      "scoped_release": true,
+      "source_contract_id": "V4_RESEARCH_SNAPSHOT_V1",
+      "source_mode": "SCOPED_OPERATIONAL_RELEASE",
+      "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+      "stage": "V4-15",
+      "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+      "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+      "state_contract_id": "ACCEPTED_OWNER_SCOPED",
+      "trade_date": "2026-09-30",
+      "turnover_as_of": null
+    },
+    "context_token": "research-v4-0244dcc3e92c20498abda8df4fd1e24c29794a6e31db18ad9037ccad1303ac6b",
+    "counts": {
+      "events": 33,
+      "focus": 469,
+      "forward": 117,
+      "market": 1,
+      "radar": 117,
+      "sectors": 378,
+      "settlement": 5,
+      "sources": 4,
+      "stocks": 5213
+    },
+    "daily_refresh": {
+      "accepted_input_date": "2026-09-30",
+      "data_preserved": true,
+      "indexed_trade_date": "2026-09-30",
+      "next_completed_session": null,
+      "scope": "INPUT_PROGRESS_NOT_RESEARCH_CONTEXT",
+      "source_requests": 0,
+      "status": "WAIT_NEXT_ACCEPTED_INPUT"
+    },
+    "gaps": [
+      {
+        "count": 11,
+        "domain": "profile_identity",
+        "reason": "ADVANCED_ROWS_OUTSIDE_CURRENT_RAW_UNIVERSE",
+        "state": "SOURCE_INCOMPLETE"
+      },
+      {
+        "domain": "focus",
+        "next": "FP08_INDEPENDENT_FOCUS_WRITE_ADMISSION",
+        "reason": "AUTOMATIC_WRITE_PATH_ADAPTER_AND_LEGACY_HISTORY_MIGRATION_NOT_ADMITTED",
+        "state": "SOURCE_INCOMPLETE"
+      }
+    ],
+    "status": "READY"
+  },
+  "daily_noop": {
+    "first_observed_freeze": {
+      "AS_RECORDED": false,
+      "contract_id": "R2_FIRST_OBSERVED_FREEZE_V1",
+      "first_observed_at": "2026-10-08T06:21:01.109787+00:00",
+      "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+      "reason": "FIRST_OBSERVED_TIME_IS_NOT_PROOF_OF_HISTORICAL_FIRST_AVAILABLE",
+      "source_identity": "6568319f87d731e87fa71d0e1e8f750bddd3f009abc7172bd95918b81a074bec",
+      "sources": {
+        "advanced": {
+          "bytes": 37627535,
+          "path": "data/v4/pit_first_observed/2026-09-30/6568319f87d731e87fa71d0e1e8f750bddd3f009abc7172bd95918b81a074bec/advanced.gz",
+          "sha256": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+        },
+        "membership": {
+          "bytes": 4004928,
+          "path": "data/v4/pit_first_observed/2026-09-30/6568319f87d731e87fa71d0e1e8f750bddd3f009abc7172bd95918b81a074bec/membership.gz",
+          "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+        },
+        "sector_operational": {
+          "bytes": 1548923,
+          "path": "data/v4/pit_first_observed/2026-09-30/6568319f87d731e87fa71d0e1e8f750bddd3f009abc7172bd95918b81a074bec/sector_operational.gz",
+          "sha256": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+        },
+        "states": {
+          "bytes": 12539130,
+          "path": "data/v4/pit_first_observed/2026-09-30/6568319f87d731e87fa71d0e1e8f750bddd3f009abc7172bd95918b81a074bec/states.gz",
+          "sha256": "12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58"
+        },
+        "stock_factors": {
+          "bytes": 19460170,
+          "path": "data/v4/pit_first_observed/2026-09-30/6568319f87d731e87fa71d0e1e8f750bddd3f009abc7172bd95918b81a074bec/stock_factors.gz",
+          "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+        }
+      },
+      "strict_t0_pit_ready": false,
+      "trade_date": "2026-09-30"
+    },
+    "last_successful_date": "2026-09-30",
+    "pointer_preserved": true,
+    "source_requests": 0,
+    "status": "NO_NEW_COMPLETED_SESSION"
+  },
+  "historical_receipts_unchanged": true,
+  "idempotent_live_rerun": "NOOP_SUCCESS_RECEIPT_PRESERVED",
+  "protected": {
+    "changed": [],
+    "checked": 872
+  },
+  "release_receipt": {
+    "bytes": 2808,
+    "path": "docs/evidence/r2_repair_20261008/FP14_RELEASE_V2_FINAL.json",
+    "sha256": "edc993df4e6deff189d8602b0d90c65ca0532bfcf6dafe6a919eb8502b795a5d"
+  },
+  "ui_git_bytes_verified": true
+}

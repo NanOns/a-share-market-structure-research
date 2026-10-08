@@ -17,7 +17,7 @@ def seal():
         real_cohort_maturity_proven=False,strict_pit=False,full_product_release=False)
     write(OUT/'QA_FINAL.json',qa)
     a=json.loads((ROOT/'config/v4_continuous_daily_admission_v2.json').read_bytes())
-    a.update(contract_id='R2_CONTINUOUS_DAILY_ADMISSION_V3',due_forward='ACCEPTED_CALENDAR_PREFIX_EXTENSION_FROZEN_T0_LOCAL_CORRECTED_SETTLEMENT_OR_PRECISE_FAILURE')
+    a.update(contract_id='R2_CONTINUOUS_DAILY_ADMISSION_V3',ui_build_id=candidate['ui_build_id'],due_forward='ACCEPTED_CALENDAR_PREFIX_EXTENSION_FROZEN_T0_LOCAL_CORRECTED_SETTLEMENT_OR_PRECISE_FAILURE')
     a['evidence'].append(ref(OUT/'QA_FINAL.json'));a['implementations']={p:ref(p) for p in a['implementations']}
     for p in ('scripts/build_fp10_forward_v2.py','src/workbench_service/forward_daily.py','src/workbench_analysis/v4_15_settlement.py','src/workbench_analysis/v4_15_settlement_successor.py'):
         a['implementations'][p]=ref(p)

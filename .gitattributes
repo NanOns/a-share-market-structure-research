@@ -319,3 +319,7 @@ docs/evidence/r2_field_continuation_20261008/** -text
 scripts/build_fp06_sector_v2.py -text
 scripts/seal_r2_field_stage.py -text
 config/v4_continuous_daily_admission_v2.json -text
+
+data/v4/fp12_replay/** -text
+data/v4/fp12_replay/*/*/snapshot.json filter=lfs diff=lfs merge=lfs -text
+data/v4/display_names/** -text

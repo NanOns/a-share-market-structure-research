@@ -10,6 +10,7 @@ from .v4_daily_refresh import refresh_status
 from .domain_views import home,sector_view
 from .stock_views import chart,explanation
 from .diagnostic_views import diagnostic
+from .replay_views import replay,compare
 
 class ResearchBFF:
     def __init__(self,root):
@@ -37,8 +38,14 @@ class ResearchBFF:
             # Validate context and parameter contracts even for singleton/diagnostic routes.
             parts=[unquote(p) for p in path.removeprefix('/api/v4/').split('/') if p]
             chart_route=len(parts)==3 and parts[0]=='stocks' and parts[2]=='chart'
-            base_query={k:v for k,v in query.items() if not chart_route or k not in ('period','price_basis')}
+            selection_route=len(parts)==1 and parts[0] in ('replay','compare')
+            selection_keys={'as_of','view','left','snapshot_token','followup'} if parts and parts[0]=='replay' else {'as_of','view','mode','left','right','snapshot_token'}
+            base_query={k:v for k,v in query.items() if not (chart_route and k in ('period','price_basis')) and not (selection_route and k in selection_keys)}
             validation=r.query('sources',base_query)
+            if selection_route:
+                for key in selection_keys:
+                    if key in query and (not isinstance(query[key],str) or len(query[key])>120):raise ValueError('SELECTION_PARAMETER_BOUND')
+                return 200,(replay if parts[0]=='replay' else compare)(r,query)
             if not parts:return 404,r.envelope(status='NOT_FOUND',code='ROUTE_NOT_FOUND')
             name=parts[0]
             if name=='context':

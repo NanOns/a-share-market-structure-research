@@ -261,6 +261,12 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False):
                 result=json.loads(old[1]);keys=('signal_type','model_contract_id','parameter_digest','primary_industry','source_publication','control_assignment_ids','benchmark_ids','comparison_reference')
                 result['fields'].update({k:compact_cell(dict(value=row.get(k),quality='KNOWN' if row.get(k) is not None else 'UNKNOWN'),row['source'],k,date) for k in keys})
                 db.execute("UPDATE objects SET payload=? WHERE domain='forward' AND id=?",(canonical(result).decode(),old[0]))
+        replay_authority=root/'config/v4_replay_compare_authority_v1.json'
+        if replay_authority.exists():
+            authority=json.loads(replay_authority.read_bytes())
+            if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('REPLAY_SOURCE_CONTEXT_MISMATCH')
+            for entry in authority['catalog']:legacy._verify(entry['snapshot'])
+            legacy._verify(authority['contract']);domain_features['replay']=authority;sources['replay_operational']=reference(root,replay_authority)
         counts={d:db.execute('SELECT count(*) FROM objects WHERE domain=?',(d,)).fetchone()[0] for d in DOMAINS}
         expected_stocks=len(legacy._source(contract,'RAW_DAILY')['rows'])
         expected_sectors=len({r['sector_id'] for r in legacy._source(contract,'membership')})

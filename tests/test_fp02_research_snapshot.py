@@ -57,7 +57,8 @@ def test_bff_error_semantics_and_pool_ineligibility(reader,monkeypatch):
     assert bff.get('/api/v4/stocks',{'limit':'201'})[0]==400
     assert bff.get('/api/v4/stocks/missing',{})[0]==404
     assert bff.get('/api/v4/stocks/SEC2',{})[0]==200
-    assert bff.get('/api/v4/compare',{})[0]==501
+    code,data=bff.get('/api/v4/compare',{})
+    assert code==200 and data['status']=='PIT_NOT_AVAILABLE' and data['items']==[]
 
 def test_rate_limit_does_not_reject_other_client(reader):
     bff=ResearchBFF(reader.root)

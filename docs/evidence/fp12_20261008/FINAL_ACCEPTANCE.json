@@ -1,0 +1,42 @@
+{
+  "acceptance": "DEGRADED_PASS",
+  "authority": {
+    "bytes": 18704,
+    "path": "config/v4_replay_compare_authority_v1.json",
+    "sha256": "9f3cae61d1edf2a34d8ae1a1c77deebd44e75b5388bf11bbadef2bf7c6b1a924"
+  },
+  "contract": {
+    "bytes": 1157,
+    "path": "config/v4_replay_compare_contract_v1.json",
+    "sha256": "a77e78e2e4fe67ee9a56d5b675e7847b9e6e6155cf5e546b79a8fcef63ba576f"
+  },
+  "corrected_dates": [
+    "2026-09-28",
+    "2026-09-29",
+    "2026-09-30"
+  ],
+  "followup_hash_unchanged": true,
+  "independent_audit": {
+    "bytes": 1157,
+    "path": "docs/audits/FP12_PIT_SOURCE_READINESS_20261008.md",
+    "sha256": "9c9eff4186c343a0da66e48c268e98c3a6eb49ee57969037e098330ab2ad974c"
+  },
+  "next_stage": "Independent PIT data readiness audit; no automatic FP13 admission",
+  "protected": {
+    "changed": [],
+    "checked": 872
+  },
+  "research_authority": {
+    "bytes": 4997,
+    "path": "config/v4_research_snapshot_authority_v1.json",
+    "sha256": "42333ea0beeb27524d009fe8755351e80a12bc5ccbe55380162a83614eb2d56c"
+  },
+  "scope": "Engineering delivery; strict production PIT source readiness NOT PASSED",
+  "stage": "FP12",
+  "strict_pit_available_dates": 0,
+  "tdx_access": "NONE",
+  "tests": {
+    "command": "pytest tests/test_fp01_operational_release.py tests/test_fp02_research_snapshot.py tests/test_fp04_ui_authority.py tests/test_fp05_home.py tests/test_fp06_sector.py tests/test_fp07_stock.py tests/test_fp08_focus.py tests/test_fp11_diagnostics.py tests/test_fp12_replay.py -q --basetemp E:/codex_tmp/test_temp/fp12_acceptance",
+    "passed": 76
+  }
+}

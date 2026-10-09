@@ -1,0 +1,745 @@
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-c",
+    "import sys,importlib.util;from pathlib import Path;sys.path.insert(0,'G:\\\\codex work\\\\大A交易\\\\src');spec=importlib.util.spec_from_file_location('workbench_analysis.r43_before_fix','G:\\\\codex work\\\\大A交易\\\\docs\\\\evidence\\\\r4_3_r1_targeted_repair_20261009\\\\before_fix\\\\tdx_member_retro_r43.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);module.reparse_verification(Path.cwd())"
+  ],
+  "cwd": "E:\\codex_tmp\\r43_r1_reparse_before_fix",
+  "exit_code": 1,
+  "stdout": "",
+  "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import sys,importlib.util;from pathlib import Path;sys.path.insert(0,'G:\\\\codex work\\\\大A交易\\\\src');spec=importlib.util.spec_from_file_location('workbench_analysis.r43_before_fix','G:\\\\codex work\\\\大A交易\\\\docs\\\\evidence\\\\r4_3_r1_targeted_repair_20261009\\\\before_fix\\\\tdx_member_retro_r43.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);module.reparse_verification(Path.cwd())\n                                                                                                                                                                                                                                                                                                                                                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"G:\\codex work\\大A交易\\docs\\evidence\\r4_3_r1_targeted_repair_20261009\\before_fix\\tdx_member_retro_r43.py\", line 73, in reparse_verification\n    assert rows==original and digest(rows)==s['member_digest']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "legacy_verifier": {
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "executed_verifier": {
+    "path": "docs/evidence/r4_3_r1_targeted_repair_20261009/before_fix/tdx_member_retro_r43.py",
+    "sha256": "6883083416f887b2c0fa193c3bd9bac736c48d667efe03b46cdb28b38fd1a629",
+    "bytes": 10646
+  },
+  "capture_projection_execution": "Exact current capture for-loop AST, real frozen parser frame and canonical identity mapping; no live TDX capture",
+  "frozen_sources": [
+    {
+      "address": "D:\\new_tdx\\T0002\\hq_cache\\tdxhy.cfg",
+      "observed_at": "2026-10-09T09:44:01.158745+08:00",
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/latest_member_raw/638c58e095702469b9471da7e5bfd7bc63611059052ef22eccc0c6de5b66fe9a/tdxhy.cfg",
+      "sha256": "638c58e095702469b9471da7e5bfd7bc63611059052ef22eccc0c6de5b66fe9a",
+      "bytes": 150550
+    },
+    {
+      "address": "D:\\new_tdx\\T0002\\hq_cache\\tdxzs.cfg",
+      "observed_at": "2026-10-09T09:44:01.158745+08:00",
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/latest_member_raw/a33983fc8bb15c97db93fe9b60394b326b71a91e99e33b8b54700415442074da/tdxzs.cfg",
+      "sha256": "a33983fc8bb15c97db93fe9b60394b326b71a91e99e33b8b54700415442074da",
+      "bytes": 18272
+    },
+    {
+      "address": "D:\\new_tdx\\T0002\\hq_cache\\infoharbor_block.dat",
+      "observed_at": "2026-10-09T09:44:01.158745+08:00",
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/latest_member_raw/af3aff645fb9602a98871ba27ad88b54dda2ff47ba460c2ca90bfe448b469bd9/infoharbor_block.dat",
+      "sha256": "af3aff645fb9602a98871ba27ad88b54dda2ff47ba460c2ca90bfe448b469bd9",
+      "bytes": 741571
+    }
+  ],
+  "original_field_names": [
+    "delist_date",
+    "identity_status",
+    "list_date",
+    "sector_code",
+    "sector_id",
+    "sector_name",
+    "sector_type",
+    "security_id",
+    "source",
+    "source_security_key"
+  ],
+  "current_capture_field_names": [
+    "delist_date",
+    "identity_status",
+    "industry_level",
+    "list_date",
+    "primary_industry_rank_eligible",
+    "sector_code",
+    "sector_id",
+    "sector_name",
+    "sector_type",
+    "security_id",
+    "source",
+    "source_security_key"
+  ],
+  "reparsed_field_names": [
+    "delist_date",
+    "identity_status",
+    "list_date",
+    "sector_code",
+    "sector_id",
+    "sector_name",
+    "sector_type",
+    "security_id",
+    "source",
+    "source_security_key"
+  ],
+  "original_digest": "44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+  "current_capture_digest": "4ba9b824c70ef55d65c62c37de03858c483599c89242a50ec89c571c6d0d9ddd",
+  "reparsed_digest": "44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+  "relation_count": 55136,
+  "legacy_mismatched_records": 0,
+  "mismatched_current_capture_records": 55136,
+  "first_difference": {
+    "index": 0,
+    "capture": {
+      "sector_id": "INDUSTRY:T00",
+      "sector_type": "INDUSTRY",
+      "sector_code": "T00",
+      "sector_name": "T00",
+      "source_security_key": "SH.688688",
+      "source": "tdxhy.cfg",
+      "industry_level": "LEAF",
+      "primary_industry_rank_eligible": true,
+      "security_id": null,
+      "identity_status": "UNMAPPED_QUARANTINED",
+      "list_date": null,
+      "delist_date": null
+    },
+    "reparse": {
+      "sector_id": "INDUSTRY:T00",
+      "sector_type": "INDUSTRY",
+      "sector_code": "T00",
+      "sector_name": "T00",
+      "source_security_key": "SH.688688",
+      "source": "tdxhy.cfg",
+      "security_id": null,
+      "identity_status": "UNMAPPED_QUARANTINED",
+      "list_date": null,
+      "delist_date": null
+    }
+  },
+  "samples": [
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "UNMAPPED_QUARANTINED",
+        "list_date": null,
+        "sector_code": "T00",
+        "sector_id": "INDUSTRY:T00",
+        "sector_name": "T00",
+        "sector_type": "INDUSTRY",
+        "security_id": null,
+        "source": "tdxhy.cfg",
+        "source_security_key": "SH.688688"
+      },
+      "reparsed": {
+        "sector_id": "INDUSTRY:T00",
+        "sector_type": "INDUSTRY",
+        "sector_code": "T00",
+        "sector_name": "T00",
+        "source_security_key": "SH.688688",
+        "source": "tdxhy.cfg",
+        "security_id": null,
+        "identity_status": "UNMAPPED_QUARANTINED",
+        "list_date": null,
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "1998-01-07",
+        "sector_code": "T010101",
+        "sector_id": "INDUSTRY:T010101",
+        "sector_name": "煤炭开采",
+        "sector_type": "INDUSTRY",
+        "security_id": "SEC-4F4EAA10CBA13DD8119C27C4C858036E",
+        "source": "tdxhy.cfg",
+        "source_security_key": "SH.600121"
+      },
+      "reparsed": {
+        "sector_id": "INDUSTRY:T010101",
+        "sector_type": "INDUSTRY",
+        "sector_code": "T010101",
+        "sector_name": "煤炭开采",
+        "source_security_key": "SH.600121",
+        "source": "tdxhy.cfg",
+        "security_id": "SEC-4F4EAA10CBA13DD8119C27C4C858036E",
+        "identity_status": "MAPPED",
+        "list_date": "1998-01-07",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "1998-12-17",
+        "sector_code": "T010101",
+        "sector_id": "INDUSTRY:T010101",
+        "sector_name": "煤炭开采",
+        "sector_type": "INDUSTRY",
+        "security_id": "SEC-530333EE89D97AB87B70B1DDD6276149",
+        "source": "tdxhy.cfg",
+        "source_security_key": "SH.600123"
+      },
+      "reparsed": {
+        "sector_id": "INDUSTRY:T010101",
+        "sector_type": "INDUSTRY",
+        "sector_code": "T010101",
+        "sector_name": "煤炭开采",
+        "source_security_key": "SH.600123",
+        "source": "tdxhy.cfg",
+        "security_id": "SEC-530333EE89D97AB87B70B1DDD6276149",
+        "identity_status": "MAPPED",
+        "list_date": "1998-12-17",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "1998-07-01",
+        "sector_code": "T010101",
+        "sector_id": "INDUSTRY:T010101",
+        "sector_name": "煤炭开采",
+        "sector_type": "INDUSTRY",
+        "security_id": "SEC-4366A67F5B8F066DE45C4BF3096186F0",
+        "source": "tdxhy.cfg",
+        "source_security_key": "SH.600188"
+      },
+      "reparsed": {
+        "sector_id": "INDUSTRY:T010101",
+        "sector_type": "INDUSTRY",
+        "sector_code": "T010101",
+        "sector_name": "煤炭开采",
+        "source_security_key": "SH.600188",
+        "source": "tdxhy.cfg",
+        "security_id": "SEC-4366A67F5B8F066DE45C4BF3096186F0",
+        "identity_status": "MAPPED",
+        "list_date": "1998-07-01",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "2003-08-21",
+        "sector_code": "T010101",
+        "sector_id": "INDUSTRY:T010101",
+        "sector_name": "煤炭开采",
+        "sector_type": "INDUSTRY",
+        "security_id": "SEC-B0B14E19BE8B97E585DE2F3DF8323267",
+        "source": "tdxhy.cfg",
+        "source_security_key": "SH.600348"
+      },
+      "reparsed": {
+        "sector_id": "INDUSTRY:T010101",
+        "sector_type": "INDUSTRY",
+        "sector_code": "T010101",
+        "sector_name": "煤炭开采",
+        "source_security_key": "SH.600348",
+        "source": "tdxhy.cfg",
+        "security_id": "SEC-B0B14E19BE8B97E585DE2F3DF8323267",
+        "identity_status": "MAPPED",
+        "list_date": "2003-08-21",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "2001-05-31",
+        "sector_code": "T010101",
+        "sector_id": "INDUSTRY:T010101",
+        "sector_name": "煤炭开采",
+        "sector_type": "INDUSTRY",
+        "security_id": "SEC-F546DE97026D819E7064CBBB6B87A4CA",
+        "source": "tdxhy.cfg",
+        "source_security_key": "SH.600395"
+      },
+      "reparsed": {
+        "sector_id": "INDUSTRY:T010101",
+        "sector_type": "INDUSTRY",
+        "sector_code": "T010101",
+        "sector_name": "煤炭开采",
+        "source_security_key": "SH.600395",
+        "source": "tdxhy.cfg",
+        "security_id": "SEC-F546DE97026D819E7064CBBB6B87A4CA",
+        "identity_status": "MAPPED",
+        "list_date": "2001-05-31",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "2003-10-09",
+        "sector_code": "T010101",
+        "sector_id": "INDUSTRY:T010101",
+        "sector_name": "煤炭开采",
+        "sector_type": "INDUSTRY",
+        "security_id": "SEC-ADBF2E7664E52BBDA731B903A90ACB22",
+        "source": "tdxhy.cfg",
+        "source_security_key": "SH.600403"
+      },
+      "reparsed": {
+        "sector_id": "INDUSTRY:T010101",
+        "sector_type": "INDUSTRY",
+        "sector_code": "T010101",
+        "sector_name": "煤炭开采",
+        "source_security_key": "SH.600403",
+        "source": "tdxhy.cfg",
+        "security_id": "SEC-ADBF2E7664E52BBDA731B903A90ACB22",
+        "identity_status": "MAPPED",
+        "list_date": "2003-10-09",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "2001-08-29",
+        "sector_code": "T010101",
+        "sector_id": "INDUSTRY:T010101",
+        "sector_name": "煤炭开采",
+        "sector_type": "INDUSTRY",
+        "security_id": "SEC-2EB9DF2C64F81F698476FDB0A2FAA058",
+        "source": "tdxhy.cfg",
+        "source_security_key": "SH.600508"
+      },
+      "reparsed": {
+        "sector_id": "INDUSTRY:T010101",
+        "sector_type": "INDUSTRY",
+        "sector_code": "T010101",
+        "sector_name": "煤炭开采",
+        "source_security_key": "SH.600508",
+        "source": "tdxhy.cfg",
+        "security_id": "SEC-2EB9DF2C64F81F698476FDB0A2FAA058",
+        "identity_status": "MAPPED",
+        "list_date": "2001-08-29",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "1998-01-07",
+        "sector_code": "T0101",
+        "sector_id": "INDUSTRY:T0101",
+        "sector_name": "煤炭",
+        "sector_type": "INDUSTRY",
+        "security_id": "SEC-4F4EAA10CBA13DD8119C27C4C858036E",
+        "source": "tdxhy.cfg:DERIVED_PARENT",
+        "source_security_key": "SH.600121"
+      },
+      "reparsed": {
+        "sector_id": "INDUSTRY:T0101",
+        "sector_type": "INDUSTRY",
+        "sector_code": "T0101",
+        "sector_name": "煤炭",
+        "source_security_key": "SH.600121",
+        "source": "tdxhy.cfg:DERIVED_PARENT",
+        "security_id": "SEC-4F4EAA10CBA13DD8119C27C4C858036E",
+        "identity_status": "MAPPED",
+        "list_date": "1998-01-07",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "1998-12-17",
+        "sector_code": "T0101",
+        "sector_id": "INDUSTRY:T0101",
+        "sector_name": "煤炭",
+        "sector_type": "INDUSTRY",
+        "security_id": "SEC-530333EE89D97AB87B70B1DDD6276149",
+        "source": "tdxhy.cfg:DERIVED_PARENT",
+        "source_security_key": "SH.600123"
+      },
+      "reparsed": {
+        "sector_id": "INDUSTRY:T0101",
+        "sector_type": "INDUSTRY",
+        "sector_code": "T0101",
+        "sector_name": "煤炭",
+        "source_security_key": "SH.600123",
+        "source": "tdxhy.cfg:DERIVED_PARENT",
+        "security_id": "SEC-530333EE89D97AB87B70B1DDD6276149",
+        "identity_status": "MAPPED",
+        "list_date": "1998-12-17",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "1998-07-01",
+        "sector_code": "T0101",
+        "sector_id": "INDUSTRY:T0101",
+        "sector_name": "煤炭",
+        "sector_type": "INDUSTRY",
+        "security_id": "SEC-4366A67F5B8F066DE45C4BF3096186F0",
+        "source": "tdxhy.cfg:DERIVED_PARENT",
+        "source_security_key": "SH.600188"
+      },
+      "reparsed": {
+        "sector_id": "INDUSTRY:T0101",
+        "sector_type": "INDUSTRY",
+        "sector_code": "T0101",
+        "sector_name": "煤炭",
+        "source_security_key": "SH.600188",
+        "source": "tdxhy.cfg:DERIVED_PARENT",
+        "security_id": "SEC-4366A67F5B8F066DE45C4BF3096186F0",
+        "identity_status": "MAPPED",
+        "list_date": "1998-07-01",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "2003-08-21",
+        "sector_code": "T0101",
+        "sector_id": "INDUSTRY:T0101",
+        "sector_name": "煤炭",
+        "sector_type": "INDUSTRY",
+        "security_id": "SEC-B0B14E19BE8B97E585DE2F3DF8323267",
+        "source": "tdxhy.cfg:DERIVED_PARENT",
+        "source_security_key": "SH.600348"
+      },
+      "reparsed": {
+        "sector_id": "INDUSTRY:T0101",
+        "sector_type": "INDUSTRY",
+        "sector_code": "T0101",
+        "sector_name": "煤炭",
+        "source_security_key": "SH.600348",
+        "source": "tdxhy.cfg:DERIVED_PARENT",
+        "security_id": "SEC-B0B14E19BE8B97E585DE2F3DF8323267",
+        "identity_status": "MAPPED",
+        "list_date": "2003-08-21",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "2001-05-31",
+        "sector_code": "T0101",
+        "sector_id": "INDUSTRY:T0101",
+        "sector_name": "煤炭",
+        "sector_type": "INDUSTRY",
+        "security_id": "SEC-F546DE97026D819E7064CBBB6B87A4CA",
+        "source": "tdxhy.cfg:DERIVED_PARENT",
+        "source_security_key": "SH.600395"
+      },
+      "reparsed": {
+        "sector_id": "INDUSTRY:T0101",
+        "sector_type": "INDUSTRY",
+        "sector_code": "T0101",
+        "sector_name": "煤炭",
+        "source_security_key": "SH.600395",
+        "source": "tdxhy.cfg:DERIVED_PARENT",
+        "security_id": "SEC-F546DE97026D819E7064CBBB6B87A4CA",
+        "identity_status": "MAPPED",
+        "list_date": "2001-05-31",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "2003-10-09",
+        "sector_code": "T0101",
+        "sector_id": "INDUSTRY:T0101",
+        "sector_name": "煤炭",
+        "sector_type": "INDUSTRY",
+        "security_id": "SEC-ADBF2E7664E52BBDA731B903A90ACB22",
+        "source": "tdxhy.cfg:DERIVED_PARENT",
+        "source_security_key": "SH.600403"
+      },
+      "reparsed": {
+        "sector_id": "INDUSTRY:T0101",
+        "sector_type": "INDUSTRY",
+        "sector_code": "T0101",
+        "sector_name": "煤炭",
+        "source_security_key": "SH.600403",
+        "source": "tdxhy.cfg:DERIVED_PARENT",
+        "security_id": "SEC-ADBF2E7664E52BBDA731B903A90ACB22",
+        "identity_status": "MAPPED",
+        "list_date": "2003-10-09",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "2003-02-12",
+        "sector_code": "T0101",
+        "sector_id": "INDUSTRY:T0101",
+        "sector_name": "煤炭",
+        "sector_type": "INDUSTRY",
+        "security_id": "SEC-2E6E26D5A984C70E6BA440C807F86A5C",
+        "source": "tdxhy.cfg:DERIVED_PARENT",
+        "source_security_key": "SH.600408"
+      },
+      "reparsed": {
+        "sector_id": "INDUSTRY:T0101",
+        "sector_type": "INDUSTRY",
+        "sector_code": "T0101",
+        "sector_name": "煤炭",
+        "source_security_key": "SH.600408",
+        "source": "tdxhy.cfg:DERIVED_PARENT",
+        "security_id": "SEC-2E6E26D5A984C70E6BA440C807F86A5C",
+        "identity_status": "MAPPED",
+        "list_date": "2003-02-12",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "2001-08-29",
+        "sector_code": "T0101",
+        "sector_id": "INDUSTRY:T0101",
+        "sector_name": "煤炭",
+        "sector_type": "INDUSTRY",
+        "security_id": "SEC-2EB9DF2C64F81F698476FDB0A2FAA058",
+        "source": "tdxhy.cfg:DERIVED_PARENT",
+        "source_security_key": "SH.600508"
+      },
+      "reparsed": {
+        "sector_id": "INDUSTRY:T0101",
+        "sector_type": "INDUSTRY",
+        "sector_code": "T0101",
+        "sector_name": "煤炭",
+        "source_security_key": "SH.600508",
+        "source": "tdxhy.cfg:DERIVED_PARENT",
+        "security_id": "SEC-2EB9DF2C64F81F698476FDB0A2FAA058",
+        "identity_status": "MAPPED",
+        "list_date": "2001-08-29",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "2001-12-06",
+        "sector_code": "880501",
+        "sector_id": "THEME:880501",
+        "sector_name": "含H股",
+        "sector_type": "THEME",
+        "security_id": "SEC-AC31F569C2040F3699BA9BEB59E6B097",
+        "source": "infoharbor_block.dat",
+        "source_security_key": "SH.600011"
+      },
+      "reparsed": {
+        "sector_id": "THEME:880501",
+        "sector_type": "THEME",
+        "sector_code": "880501",
+        "sector_name": "含H股",
+        "source_security_key": "SH.600011",
+        "source": "infoharbor_block.dat",
+        "security_id": "SEC-AC31F569C2040F3699BA9BEB59E6B097",
+        "identity_status": "MAPPED",
+        "list_date": "2001-12-06",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "2003-01-07",
+        "sector_code": "880501",
+        "sector_id": "THEME:880501",
+        "sector_name": "含H股",
+        "sector_type": "THEME",
+        "security_id": "SEC-C53D2F06A2A5918AD35F74B984FB4DC4",
+        "source": "infoharbor_block.dat",
+        "source_security_key": "SH.600012"
+      },
+      "reparsed": {
+        "sector_id": "THEME:880501",
+        "sector_type": "THEME",
+        "sector_code": "880501",
+        "sector_name": "含H股",
+        "source_security_key": "SH.600012",
+        "source": "infoharbor_block.dat",
+        "security_id": "SEC-C53D2F06A2A5918AD35F74B984FB4DC4",
+        "identity_status": "MAPPED",
+        "list_date": "2003-01-07",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "2000-12-19",
+        "sector_code": "880501",
+        "sector_id": "THEME:880501",
+        "sector_name": "含H股",
+        "sector_type": "THEME",
+        "security_id": "SEC-698DA67CE7DDD1D5B0A73A7DB8D1107D",
+        "source": "infoharbor_block.dat",
+        "source_security_key": "SH.600016"
+      },
+      "reparsed": {
+        "sector_id": "THEME:880501",
+        "sector_type": "THEME",
+        "sector_code": "880501",
+        "sector_name": "含H股",
+        "source_security_key": "SH.600016",
+        "source": "infoharbor_block.dat",
+        "security_id": "SEC-698DA67CE7DDD1D5B0A73A7DB8D1107D",
+        "identity_status": "MAPPED",
+        "list_date": "2000-12-19",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "2002-05-23",
+        "sector_code": "880501",
+        "sector_id": "THEME:880501",
+        "sector_name": "含H股",
+        "sector_type": "THEME",
+        "security_id": "SEC-6BA552EF6021B1F8EE3C4EE7B4A223B7",
+        "source": "infoharbor_block.dat",
+        "source_security_key": "SH.600026"
+      },
+      "reparsed": {
+        "sector_id": "THEME:880501",
+        "sector_type": "THEME",
+        "sector_code": "880501",
+        "sector_name": "含H股",
+        "source_security_key": "SH.600026",
+        "source": "infoharbor_block.dat",
+        "security_id": "SEC-6BA552EF6021B1F8EE3C4EE7B4A223B7",
+        "identity_status": "MAPPED",
+        "list_date": "2002-05-23",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "2005-02-03",
+        "sector_code": "880501",
+        "sector_id": "THEME:880501",
+        "sector_name": "含H股",
+        "sector_type": "THEME",
+        "security_id": "SEC-CA92DB5C48ABEC8A5A921DF07A1B5AC7",
+        "source": "infoharbor_block.dat",
+        "source_security_key": "SH.600027"
+      },
+      "reparsed": {
+        "sector_id": "THEME:880501",
+        "sector_type": "THEME",
+        "sector_code": "880501",
+        "sector_name": "含H股",
+        "source_security_key": "SH.600027",
+        "source": "infoharbor_block.dat",
+        "security_id": "SEC-CA92DB5C48ABEC8A5A921DF07A1B5AC7",
+        "identity_status": "MAPPED",
+        "list_date": "2005-02-03",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "2001-08-08",
+        "sector_code": "880501",
+        "sector_id": "THEME:880501",
+        "sector_name": "含H股",
+        "sector_type": "THEME",
+        "security_id": "SEC-0987FB39445E5E20111FE0496BC1D608",
+        "source": "infoharbor_block.dat",
+        "source_security_key": "SH.600028"
+      },
+      "reparsed": {
+        "sector_id": "THEME:880501",
+        "sector_type": "THEME",
+        "sector_code": "880501",
+        "sector_name": "含H股",
+        "source_security_key": "SH.600028",
+        "source": "infoharbor_block.dat",
+        "security_id": "SEC-0987FB39445E5E20111FE0496BC1D608",
+        "identity_status": "MAPPED",
+        "list_date": "2001-08-08",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "2003-07-25",
+        "sector_code": "880501",
+        "sector_id": "THEME:880501",
+        "sector_name": "含H股",
+        "sector_type": "THEME",
+        "security_id": "SEC-6749B3DF86F7774104F62A19165F921D",
+        "source": "infoharbor_block.dat",
+        "source_security_key": "SH.600029"
+      },
+      "reparsed": {
+        "sector_id": "THEME:880501",
+        "sector_type": "THEME",
+        "sector_code": "880501",
+        "sector_name": "含H股",
+        "source_security_key": "SH.600029",
+        "source": "infoharbor_block.dat",
+        "security_id": "SEC-6749B3DF86F7774104F62A19165F921D",
+        "identity_status": "MAPPED",
+        "list_date": "2003-07-25",
+        "delist_date": null
+      }
+    },
+    {
+      "original": {
+        "delist_date": null,
+        "identity_status": "MAPPED",
+        "list_date": "2003-01-06",
+        "sector_code": "880501",
+        "sector_id": "THEME:880501",
+        "sector_name": "含H股",
+        "sector_type": "THEME",
+        "security_id": "SEC-F77DF6BFA7EA33F7E34BA3C131567FDC",
+        "source": "infoharbor_block.dat",
+        "source_security_key": "SH.600030"
+      },
+      "reparsed": {
+        "sector_id": "THEME:880501",
+        "sector_type": "THEME",
+        "sector_code": "880501",
+        "sector_name": "含H股",
+        "source_security_key": "SH.600030",
+        "source": "infoharbor_block.dat",
+        "security_id": "SEC-F77DF6BFA7EA33F7E34BA3C131567FDC",
+        "identity_status": "MAPPED",
+        "list_date": "2003-01-06",
+        "delist_date": null
+      }
+    }
+  ],
+  "conclusion": "LEGACY_FROZEN_S_HAS_TEN_FIELDS_AND_OLD_VERIFIER_SUCCEEDS; CURRENT_CAPTURE_TWELVE_FIELDS_FAILS_OLD_VERIFIER; DO_NOT_FABRICATE_LEGACY_FAILURE"
+}

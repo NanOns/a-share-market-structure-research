@@ -1,0 +1,34 @@
+{
+  "contract_id": "R43_P0_A_REAL_SOURCE_REPAIR_V2",
+  "failure": {
+    "path": "docs/evidence/r4_3_r1_targeted_repair_20261009/R43_SOURCE_REPARSE_FAILURE_REPRODUCTION.json",
+    "sha256": "e9f193759a74c9e405304411ef0b3ba02468ace33892b5f062aadc4c8f64fadb",
+    "bytes": 25881
+  },
+  "legacy_original_actual_exit_code": 0,
+  "fresh_capture_before_fix_actual_exit_code": 1,
+  "after_fix": {
+    "path": "docs/evidence/r4_3_r1_targeted_repair_20261009/SOURCE_CAPTURE_REPARSE_VERIFICATION_V2.json",
+    "sha256": "ca592a232549573629ab76bf1e0f5a6891dab3025d9584758241409d0ba8f878",
+    "bytes": 26473
+  },
+  "executed_code": {
+    "path": "src/workbench_analysis/tdx_member_retro_r43.py",
+    "sha256": "75ead326d0a016fb10a16de0ef250696833e48cfb5d40144d319402de5a14b92",
+    "bytes": 12721
+  },
+  "scope": "Shared complete pure normalization, explicit additive view of frozen legacy10 S; original hash and all business classifications retained",
+  "snapshot_identity_preserved": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+  "snapshot_digest_preserved": "44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+  "normalized_view_digest": "4ba9b824c70ef55d65c62c37de03858c483599c89242a50ec89c571c6d0d9ddd",
+  "owner_rebuild_required": false,
+  "independent_external_signed": false,
+  "acceptance": "SOURCE_REPARSE_ENGINEERING_PASS_EXTERNAL_REVIEW_PENDING",
+  "complete_current_capture_after_fix": {
+    "path": "docs/evidence/r4_3_r1_targeted_repair_20261009/CURRENT_CAPTURE_TWELVE_COLUMN_AFTER_FIX.json",
+    "sha256": "a3bad9bab69c6875f1631a98e451331e142c515bc999eec4384df87b15094f6b",
+    "bytes": 1040
+  },
+  "complete_current_capture_after_fix_exit_code": 0,
+  "schema_compatibility": "Legacy ten-column S unchanged; complete twelve-column capture and reparse now share pure normalization. Additive classification agrees with every existing native owner; no source/member/business-scope change."
+}

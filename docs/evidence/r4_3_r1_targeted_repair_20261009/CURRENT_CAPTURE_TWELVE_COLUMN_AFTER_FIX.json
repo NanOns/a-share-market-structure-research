@@ -1,0 +1,12 @@
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-c",
+    "import sys,json;from pathlib import Path;sys.path.insert(0,'G:\\\\codex work\\\\大A交易\\\\src');from workbench_analysis.tdx_member_retro_r43 import reparse_verification;r=reparse_verification(Path.cwd());print(json.dumps({'acceptance':r['acceptance'],'columns':r['normalized_field_names'],'digest':r['member_digest']}))"
+  ],
+  "cwd": "E:\\codex_tmp\\r43_r1_reparse_before_fix",
+  "exit_code": 0,
+  "stdout": "{\"acceptance\": \"FROZEN_SOURCE_REPARSE_V2_PASS\", \"columns\": [\"delist_date\", \"identity_status\", \"industry_level\", \"list_date\", \"primary_industry_rank_eligible\", \"sector_code\", \"sector_id\", \"sector_name\", \"sector_type\", \"security_id\", \"source\", \"source_security_key\"], \"digest\": \"4ba9b824c70ef55d65c62c37de03858c483599c89242a50ec89c571c6d0d9ddd\"}\n",
+  "stderr": "",
+  "scope": "Actual before-fix capture row-loop projection on frozen sources, complete twelve-column snapshot, fixed shared normalization verifier; isolated E only"
+}

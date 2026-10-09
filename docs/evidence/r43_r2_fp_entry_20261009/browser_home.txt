@@ -1,0 +1,97 @@
+- link "跳到主要内容":
+  - /url: "#content"
+- complementary:
+  - link "大 A V4 研究工作台":
+    - /url: /v4/research/home
+    - text: 大 A
+    - generic: V4 研究工作台
+  - navigation "主导航":
+    - link "今日总览":
+      - /url: /v4/research/home
+    - link "板块研究":
+      - /url: /v4/research/sectors
+    - link "个股研究":
+      - /url: /v4/research/stocks
+    - link "关注跟踪":
+      - /url: /v4/research/focus
+    - link "市场与事件":
+      - /url: /v4/research/market
+    - link "数据与诊断":
+      - /url: /v4/research/diagnostics
+  - paragraph:
+    - text: 真实生产快照
+    - text: 研究与持续验证
+- banner:
+  - strong: 当前已处理截至 2026-10-08
+  - generic: 数据更新时间：2026/10/9 09:44:01（北京时间） · 持续验证中
+  - generic: 已发布分域：个股当期、板块当期、市场盘后、关注读域、诊断
+  - generic: 通达信最新成员回算；非历史当日成员 · 成员采集 2026-10-09T09:44:01.158745+08:00 · 存续偏差风险
+- main:
+  - generic: 研究工作台 / 今日总览
+  - heading "今日总览" [level=1]
+  - paragraph: 真实结果、输入质量与持续验证进度分别呈现。
+  - link "PIT 冻结回放":
+    - /url: /v4/research/replay
+  - text: ·
+  - link "跨对象与跨日比较":
+    - /url: /v4/research/compare
+  - text: 全市场股票
+  - strong: "5224"
+  - link "进入研究 →":
+    - /url: /v4/research/stocks
+  - text: 行业与概念
+  - strong: "400"
+  - link "进入研究 →":
+    - /url: /v4/research/sectors
+  - text: 研究雷达
+  - strong
+  - link "进入研究 →":
+    - /url: /v4/research/stocks
+  - text: Forward 样本
+  - strong
+  - link "进入研究 →":
+    - /url: /v4/research/focus
+  - heading "市场四轴与环境" [level=2]
+  - text: 趋势
+  - strong: 偏弱
+  - button "数值与来源"
+  - text: 宽度变化
+  - strong: 改善
+  - button "数值与来源"
+  - text: 参与度
+  - strong: 正常
+  - button "数值与来源"
+  - text: 压力
+  - strong: 低
+  - button "数值与来源"
+  - paragraph: 合成环境：来源能力不足 · 当前候选：风险环境 · 压力方向：上升
+  - paragraph: 来源尚未接入 · DATED_OPERATIONAL_FORWARD_OWNER · FP10
+  - paragraph: 来源尚未接入 · DATED_OPERATIONAL_HOME_CHANGES_OWNER · FP05
+  - paragraph: 来源尚未接入 · DATED_OPERATIONAL_HOME_RISKS_OWNER · FP05
+  - paragraph: 来源尚未接入 · DATED_OPERATIONAL_HOME_NET-INFORMATION_OWNER · FP05
+  - heading "轮动变化" [level=2]
+  - generic: 轮动输入缺少前日已接受成员/状态，不能生成变化事件。
+  - heading "板块变化" [level=2]
+  - generic: 当前没有来源完整的板块变化事件。
+  - heading "独立个股变化 · 符合 来源未接入 / 展示 来源未接入" [level=2]
+  - table:
+    - rowgroup:
+      - row "研究对象 有效事件 交易日期 证据":
+        - columnheader "研究对象"
+        - columnheader "有效事件"
+        - columnheader "交易日期"
+        - columnheader "证据"
+    - rowgroup
+  - heading "风险变化" [level=2]
+  - generic: 风险变化来源尚未接入：DATED_OPERATIONAL_RISK_CHANGE_OWNER · FP05；不能判定没有风险变化。
+  - paragraph: 去重净变化 来源未接入 · 无变化持续记录 来源未接入
+  - link "板块雷达 →":
+    - /url: /v4/research/sectors
+  - link "个股观察 →":
+    - /url: /v4/research/stocks?state=LAUNCH_CONFIRM
+  - link "查看市场与事件 →":
+    - /url: /v4/research/market
+- contentinfo:
+  - text: V4 六入口框架 · 数据、证据与研究状态分别展示
+  - link "历史摘要":
+    - /url: /v4/legacy-summary

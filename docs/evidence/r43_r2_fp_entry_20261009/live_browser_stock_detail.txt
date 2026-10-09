@@ -1,0 +1,546 @@
+- link "跳到主要内容":
+  - /url: "#content"
+- complementary:
+  - link "大 A V4 研究工作台":
+    - /url: /v4/research/home
+    - text: 大 A
+    - generic: V4 研究工作台
+  - navigation "主导航":
+    - link "今日总览":
+      - /url: /v4/research/home
+    - link "板块研究":
+      - /url: /v4/research/sectors
+    - link "个股研究":
+      - /url: /v4/research/stocks
+    - link "关注跟踪":
+      - /url: /v4/research/focus
+    - link "市场与事件":
+      - /url: /v4/research/market
+    - link "数据与诊断":
+      - /url: /v4/research/diagnostics
+  - paragraph:
+    - text: 真实生产快照
+    - text: 研究与持续验证
+- banner:
+  - strong: 当前已处理截至 2026-10-08
+  - generic: 数据更新时间：2026/10/9 09:44:01（北京时间） · 持续验证中
+  - generic: 已发布分域：个股当期、板块当期、市场盘后、关注读域、诊断
+  - generic: 通达信最新成员回算；非历史当日成员 · 成员采集 2026-10-09T09:44:01.158745+08:00 · 存续偏差风险
+- main:
+  - heading "技术图表 · 实际成交行情" [level=2]
+  - combobox "行情周期":
+    - option "日线" [selected]
+    - option "周线"
+    - option "月线"
+  - combobox "价格口径":
+    - option "原生前复权" [selected]
+    - option "不复权"
+  - alert:
+    - text: 该领域来源能力不足：NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE | DATED_OPERATIONAL_STOCKS_SEC-00096141BD5420F5CB3120E687CDA5B9_CHART_OWNER | FP07。当前没有混用旧日期数据。
+    - paragraph
+    - button "重试"
+  - generic: 研究工作台 / 个股研究
+  - heading "个股研究" [level=1]
+  - paragraph: 真实结果、输入质量与持续验证进度分别呈现。
+  - link "← 返回个股研究":
+    - /url: /v4/research/stocks?q=688349&sort=id&offset=0
+  - heading "SH.688349 SH.688349" [level=2]
+  - link "冻结回放":
+    - /url: /v4/research/replay?as_of=2026-10-08&left=SEC-00096141BD5420F5CB3120E687CDA5B9
+  - text: ·
+  - link "比较该对象":
+    - /url: /v4/research/compare?as_of=2026-10-08&left=SEC-00096141BD5420F5CB3120E687CDA5B9&mode=stock-market
+  - table:
+    - rowgroup:
+      - row "研究对象 数值 证据":
+        - columnheader "研究对象"
+        - columnheader "数值"
+        - columnheader "证据"
+    - rowgroup:
+      - row "二十会话均线ATR偏离 0.703 来源":
+        - cell "二十会话均线ATR偏离"
+        - cell "0.703":
+          - button "0.703"
+        - cell "来源":
+          - button "来源"
+      - row "距二十会话高点ATR距离 0.300 来源":
+        - cell "距二十会话高点ATR距离"
+        - cell "0.300":
+          - button "0.300"
+        - cell "来源":
+          - button "来源"
+      - row "十会话均线 13.091 来源":
+        - cell "十会话均线"
+        - cell "13.091":
+          - button "13.091"
+        - cell "来源":
+          - button "来源"
+      - row "最低流动性 是 来源":
+        - cell "最低流动性"
+        - cell "是":
+          - button "是"
+        - cell "来源":
+          - button "来源"
+      - row "二百五十会话位置 0.054 来源":
+        - cell "二百五十会话位置"
+        - cell "0.054":
+          - button "0.054"
+        - cell "来源":
+          - button "来源"
+      - row "成交额状态 正常 来源":
+        - cell "成交额状态"
+        - cell "正常":
+          - button "正常"
+        - cell "来源":
+          - button "来源"
+      - row "波动压缩状态 正常 来源":
+        - cell "波动压缩状态"
+        - cell "正常":
+          - button "正常"
+        - cell "来源":
+          - button "来源"
+      - row "核心延伸风险 低 来源":
+        - cell "核心延伸风险"
+        - cell "低":
+          - button "低"
+        - cell "来源":
+          - button "来源"
+      - row "核心参与度结果 正常参与度 来源":
+        - cell "核心参与度结果"
+        - cell "正常参与度":
+          - button "正常参与度"
+        - cell "来源":
+          - button "来源"
+      - row "二十会话回撤状态 浅回撤 来源":
+        - cell "二十会话回撤状态"
+        - cell "浅回撤":
+          - button "浅回撤"
+        - cell "来源":
+          - button "来源"
+      - row "六十会话回撤状态 深回撤 来源":
+        - cell "六十会话回撤状态"
+        - cell "深回撤":
+          - button "深回撤"
+        - cell "来源":
+          - button "来源"
+      - row "均线结构状态 混合排列 来源":
+        - cell "均线结构状态"
+        - cell "混合排列":
+          - button "混合排列"
+        - cell "来源":
+          - button "来源"
+      - row "月线趋势状态 月线下行 来源":
+        - cell "月线趋势状态"
+        - cell "月线下行":
+          - button "月线下行"
+        - cell "来源":
+          - button "来源"
+      - row "临近二十会话高点状态 接近前高 来源":
+        - cell "临近二十会话高点状态"
+        - cell "接近前高":
+          - button "接近前高"
+        - cell "来源":
+          - button "来源"
+      - row "临近六十会话高点状态 低于前高 来源":
+        - cell "临近六十会话高点状态"
+        - cell "低于前高":
+          - button "低于前高"
+        - cell "来源":
+          - button "来源"
+      - row "价格位置状态 中低位区 来源":
+        - cell "价格位置状态"
+        - cell "中低位区":
+          - button "中低位区"
+        - cell "来源":
+          - button "来源"
+      - row "市场环境显示 来源能力不足 来源":
+        - cell "市场环境显示"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "市场相对强度状态 改善 来源":
+        - cell "市场相对强度状态"
+        - cell "改善":
+          - button "改善"
+        - cell "来源":
+          - button "来源"
+      - row "相对板块状态 改善 来源":
+        - cell "相对板块状态"
+        - cell "改善":
+          - button "改善"
+        - cell "来源":
+          - button "来源"
+      - row "严重延伸 否 来源":
+        - cell "严重延伸"
+        - cell "否":
+          - button "否"
+        - cell "来源":
+          - button "来源"
+      - row "趋势状态 强横盘 来源":
+        - cell "趋势状态"
+        - cell "强横盘":
+          - button "强横盘"
+        - cell "来源":
+          - button "来源"
+      - row "成交量状态 正常 来源":
+        - cell "成交量状态"
+        - cell "正常":
+          - button "正常"
+        - cell "来源":
+          - button "来源"
+      - row "周线趋势状态 周线横盘 来源":
+        - cell "周线趋势状态"
+        - cell "周线横盘":
+          - button "周线横盘"
+        - cell "来源":
+          - button "来源"
+      - row "成交额（元） 108936064 来源":
+        - cell "成交额（元）"
+        - cell "108936064":
+          - button "108936064"
+        - cell "来源":
+          - button "来源"
+      - row "收盘价 13.300 来源":
+        - cell "收盘价"
+        - cell "13.300":
+          - button "13.300"
+        - cell "来源":
+          - button "来源"
+      - row "最高价 13.490 来源":
+        - cell "最高价"
+        - cell "13.490":
+          - button "13.490"
+        - cell "来源":
+          - button "来源"
+      - row "最低价 13.160 来源":
+        - cell "最低价"
+        - cell "13.160":
+          - button "13.160"
+        - cell "来源":
+          - button "来源"
+      - row "开盘价 13.240 来源":
+        - cell "开盘价"
+        - cell "13.240":
+          - button "13.240"
+        - cell "来源":
+          - button "来源"
+      - row "成交量（股） 8181168 来源":
+        - cell "成交量（股）"
+        - cell "8181168":
+          - button "8181168"
+        - cell "来源":
+          - button "来源"
+      - row "研究情景 无 来源":
+        - cell "研究情景"
+        - cell "无":
+          - button "无"
+        - cell "来源":
+          - button "来源"
+      - row "资格判断 来源能力不足 来源":
+        - cell "资格判断"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "成熟度 无 来源":
+        - cell "成熟度"
+        - cell "无":
+          - button "无"
+        - cell "来源":
+          - button "来源"
+      - row "健康度 来源能力不足 来源":
+        - cell "健康度"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "有效性 来源能力不足 来源":
+        - cell "有效性"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "跟踪状态 已关闭 来源":
+        - cell "跟踪状态"
+        - cell "已关闭":
+          - button "已关闭"
+        - cell "来源":
+          - button "来源"
+      - row "主行业 查看所属板块 来源":
+        - cell "主行业"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0706
+        - cell "来源":
+          - button "来源"
+  - heading "所属行业与关联概念" [level=2]
+  - heading "主行业" [level=3]
+  - link "电气设备 · 行业":
+    - /url: /v4/research/sectors/INDUSTRY:T0706
+  - heading "关联概念" [level=3]
+  - link "风电 · 概念":
+    - /url: /v4/research/sectors/THEME:880582
+  - link "氢能源 · 概念":
+    - /url: /v4/research/sectors/THEME:880705
+  - link "AI智能体 · 概念":
+    - /url: /v4/research/sectors/THEME:880732
+  - link "绿色电力 · 概念":
+    - /url: /v4/research/sectors/THEME:880753
+  - link "DeepSeek · 概念":
+    - /url: /v4/research/sectors/THEME:880978
+  - button "行业与概念关系来源"
+  - heading "事实 F / 研究状态 R / 假设 H" [level=2]
+  - heading "事实" [level=3]
+  - table:
+    - rowgroup:
+      - row "研究对象 数值 证据":
+        - columnheader "研究对象"
+        - columnheader "数值"
+        - columnheader "证据"
+    - rowgroup:
+      - row "成交额（元） 108936064 来源":
+        - cell "成交额（元）"
+        - cell "108936064":
+          - button "108936064"
+        - cell "来源":
+          - button "来源"
+      - row "收盘价 13.300 来源":
+        - cell "收盘价"
+        - cell "13.300":
+          - button "13.300"
+        - cell "来源":
+          - button "来源"
+      - row "最高价 13.490 来源":
+        - cell "最高价"
+        - cell "13.490":
+          - button "13.490"
+        - cell "来源":
+          - button "来源"
+      - row "最低价 13.160 来源":
+        - cell "最低价"
+        - cell "13.160":
+          - button "13.160"
+        - cell "来源":
+          - button "来源"
+      - row "开盘价 13.240 来源":
+        - cell "开盘价"
+        - cell "13.240":
+          - button "13.240"
+        - cell "来源":
+          - button "来源"
+      - row "成交量（股） 8181168 来源":
+        - cell "成交量（股）"
+        - cell "8181168":
+          - button "8181168"
+        - cell "来源":
+          - button "来源"
+  - heading "研究状态" [level=3]
+  - table:
+    - rowgroup:
+      - row "研究对象 数值 证据":
+        - columnheader "研究对象"
+        - columnheader "数值"
+        - columnheader "证据"
+    - rowgroup:
+      - row "二十会话均线ATR偏离 0.703 来源":
+        - cell "二十会话均线ATR偏离"
+        - cell "0.703":
+          - button "0.703"
+        - cell "来源":
+          - button "来源"
+      - row "距二十会话高点ATR距离 0.300 来源":
+        - cell "距二十会话高点ATR距离"
+        - cell "0.300":
+          - button "0.300"
+        - cell "来源":
+          - button "来源"
+      - row "十会话均线 13.091 来源":
+        - cell "十会话均线"
+        - cell "13.091":
+          - button "13.091"
+        - cell "来源":
+          - button "来源"
+      - row "最低流动性 是 来源":
+        - cell "最低流动性"
+        - cell "是":
+          - button "是"
+        - cell "来源":
+          - button "来源"
+      - row "二百五十会话位置 0.054 来源":
+        - cell "二百五十会话位置"
+        - cell "0.054":
+          - button "0.054"
+        - cell "来源":
+          - button "来源"
+      - row "成交额状态 正常 来源":
+        - cell "成交额状态"
+        - cell "正常":
+          - button "正常"
+        - cell "来源":
+          - button "来源"
+      - row "波动压缩状态 正常 来源":
+        - cell "波动压缩状态"
+        - cell "正常":
+          - button "正常"
+        - cell "来源":
+          - button "来源"
+      - row "核心延伸风险 低 来源":
+        - cell "核心延伸风险"
+        - cell "低":
+          - button "低"
+        - cell "来源":
+          - button "来源"
+      - row "核心参与度结果 正常参与度 来源":
+        - cell "核心参与度结果"
+        - cell "正常参与度":
+          - button "正常参与度"
+        - cell "来源":
+          - button "来源"
+      - row "二十会话回撤状态 浅回撤 来源":
+        - cell "二十会话回撤状态"
+        - cell "浅回撤":
+          - button "浅回撤"
+        - cell "来源":
+          - button "来源"
+      - row "六十会话回撤状态 深回撤 来源":
+        - cell "六十会话回撤状态"
+        - cell "深回撤":
+          - button "深回撤"
+        - cell "来源":
+          - button "来源"
+      - row "均线结构状态 混合排列 来源":
+        - cell "均线结构状态"
+        - cell "混合排列":
+          - button "混合排列"
+        - cell "来源":
+          - button "来源"
+      - row "月线趋势状态 月线下行 来源":
+        - cell "月线趋势状态"
+        - cell "月线下行":
+          - button "月线下行"
+        - cell "来源":
+          - button "来源"
+      - row "临近二十会话高点状态 接近前高 来源":
+        - cell "临近二十会话高点状态"
+        - cell "接近前高":
+          - button "接近前高"
+        - cell "来源":
+          - button "来源"
+      - row "临近六十会话高点状态 低于前高 来源":
+        - cell "临近六十会话高点状态"
+        - cell "低于前高":
+          - button "低于前高"
+        - cell "来源":
+          - button "来源"
+      - row "价格位置状态 中低位区 来源":
+        - cell "价格位置状态"
+        - cell "中低位区":
+          - button "中低位区"
+        - cell "来源":
+          - button "来源"
+      - row "市场环境显示 来源能力不足 来源":
+        - cell "市场环境显示"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "市场相对强度状态 改善 来源":
+        - cell "市场相对强度状态"
+        - cell "改善":
+          - button "改善"
+        - cell "来源":
+          - button "来源"
+      - row "相对板块状态 改善 来源":
+        - cell "相对板块状态"
+        - cell "改善":
+          - button "改善"
+        - cell "来源":
+          - button "来源"
+      - row "严重延伸 否 来源":
+        - cell "严重延伸"
+        - cell "否":
+          - button "否"
+        - cell "来源":
+          - button "来源"
+      - row "趋势状态 强横盘 来源":
+        - cell "趋势状态"
+        - cell "强横盘":
+          - button "强横盘"
+        - cell "来源":
+          - button "来源"
+      - row "成交量状态 正常 来源":
+        - cell "成交量状态"
+        - cell "正常":
+          - button "正常"
+        - cell "来源":
+          - button "来源"
+      - row "周线趋势状态 周线横盘 来源":
+        - cell "周线趋势状态"
+        - cell "周线横盘":
+          - button "周线横盘"
+        - cell "来源":
+          - button "来源"
+      - row "研究情景 无 来源":
+        - cell "研究情景"
+        - cell "无":
+          - button "无"
+        - cell "来源":
+          - button "来源"
+      - row "资格判断 来源能力不足 来源":
+        - cell "资格判断"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "成熟度 无 来源":
+        - cell "成熟度"
+        - cell "无":
+          - button "无"
+        - cell "来源":
+          - button "来源"
+      - row "健康度 来源能力不足 来源":
+        - cell "健康度"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "有效性 来源能力不足 来源":
+        - cell "有效性"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "跟踪状态 已关闭 来源":
+        - cell "跟踪状态"
+        - cell "已关闭":
+          - button "已关闭"
+        - cell "来源":
+          - button "来源"
+      - row "主行业 查看所属板块 来源":
+        - cell "主行业"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0706
+        - cell "来源":
+          - button "来源"
+  - heading "当前变化原因与待补证据" [level=3]
+  - heading "当前变化原因" [level=4]
+  - generic: 来源未提供可用的当前变化原因；责任 owner 与原因见证据。
+  - button "当前变化原因来源"
+  - heading "等待条件" [level=4]
+  - generic: 来源未提供可用的等待条件；责任 owner 与原因见证据。
+  - button "等待条件来源"
+  - heading "失效条件" [level=4]
+  - generic: 来源未提供可用的失效条件；责任 owner 与原因见证据。
+  - button "失效条件来源"
+  - heading "研究假设" [level=4]
+  - generic: 来源未提供可用的研究假设；责任 owner 与原因见证据。
+  - button "研究假设来源"
+  - button "未入选原因、等待条件与证据"
+  - button "关注事件时间线"
+  - button "结构锚点与事件"
+- contentinfo:
+  - text: V4 六入口框架 · 数据、证据与研究状态分别展示
+  - link "历史摘要":
+    - /url: /v4/legacy-summary

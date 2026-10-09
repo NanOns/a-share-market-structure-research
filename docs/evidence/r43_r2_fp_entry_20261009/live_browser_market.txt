@@ -1,0 +1,40 @@
+- link "跳到主要内容":
+  - /url: "#content"
+- complementary:
+  - link "大 A V4 研究工作台":
+    - /url: /v4/research/home
+    - text: 大 A
+    - generic: V4 研究工作台
+  - navigation "主导航":
+    - link "今日总览":
+      - /url: /v4/research/home
+    - link "板块研究":
+      - /url: /v4/research/sectors
+    - link "个股研究":
+      - /url: /v4/research/stocks
+    - link "关注跟踪":
+      - /url: /v4/research/focus
+    - link "市场与事件" [active]:
+      - /url: /v4/research/market
+    - link "数据与诊断":
+      - /url: /v4/research/diagnostics
+  - paragraph:
+    - text: 真实生产快照
+    - text: 研究与持续验证
+- banner:
+  - strong: 当前已处理截至 2026-10-08
+  - generic: 数据更新时间：2026/10/9 09:44:01（北京时间） · 持续验证中
+  - generic: 已发布分域：个股当期、板块当期、市场盘后、关注读域、诊断
+  - generic: 通达信最新成员回算；非历史当日成员 · 成员采集 2026-10-09T09:44:01.158745+08:00 · 存续偏差风险
+- main:
+  - generic: 研究工作台 / 市场与事件
+  - heading "市场与事件" [level=1]
+  - paragraph: 真实结果、输入质量与持续验证进度分别呈现。
+  - alert:
+    - text: 该领域来源能力不足：NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE | DATED_OPERATIONAL_MARKET_BREADTH_OWNER | FP09。当前没有混用旧日期数据。
+    - paragraph
+    - button "重试"
+- contentinfo:
+  - text: V4 六入口框架 · 数据、证据与研究状态分别展示
+  - link "历史摘要":
+    - /url: /v4/legacy-summary

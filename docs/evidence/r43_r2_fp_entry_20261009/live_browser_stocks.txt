@@ -1,0 +1,515 @@
+- link "跳到主要内容":
+  - /url: "#content"
+- complementary:
+  - link "大 A V4 研究工作台":
+    - /url: /v4/research/home
+    - text: 大 A
+    - generic: V4 研究工作台
+  - navigation "主导航":
+    - link "今日总览":
+      - /url: /v4/research/home
+    - link "板块研究":
+      - /url: /v4/research/sectors
+    - link "个股研究" [active]:
+      - /url: /v4/research/stocks
+    - link "关注跟踪":
+      - /url: /v4/research/focus
+    - link "市场与事件":
+      - /url: /v4/research/market
+    - link "数据与诊断":
+      - /url: /v4/research/diagnostics
+  - paragraph:
+    - text: 真实生产快照
+    - text: 研究与持续验证
+- banner:
+  - strong: 当前已处理截至 2026-10-08
+  - generic: 数据更新时间：2026/10/9 09:44:01（北京时间） · 持续验证中
+  - generic: 已发布分域：个股当期、板块当期、市场盘后、关注读域、诊断
+  - generic: 通达信最新成员回算；非历史当日成员 · 成员采集 2026-10-09T09:44:01.158745+08:00 · 存续偏差风险
+- main:
+  - generic: 研究工作台 / 个股研究
+  - heading "个股研究" [level=1]
+  - paragraph: 真实结果、输入质量与持续验证进度分别呈现。
+  - button "导出当前筛选全量画像 CSV"
+  - link "浏览器原生下载 CSV":
+    - /url: /api/v4/stocks.csv?context_token=e751fb6ebee81baa3fd213515800e220135738d485118828bc6c81fe9dd853c8
+  - searchbox "搜索代码或名称"
+  - combobox "排序":
+    - option "默认顺序" [selected]
+    - option "名称升序"
+    - option "名称降序"
+    - option "代码升序"
+  - combobox "研究状态筛选":
+    - option "全部情景" [selected]
+    - option "来源能力不足"
+    - option "无研究情景"
+    - option "启动确认"
+    - option "恢复转向"
+  - button "搜索"
+  - table:
+    - rowgroup:
+      - row "研究对象 收盘价 研究情景 资格判断 主行业 证据":
+        - columnheader "研究对象"
+        - columnheader "收盘价"
+        - columnheader "研究情景"
+        - columnheader "资格判断"
+        - columnheader "主行业"
+        - columnheader "证据"
+    - rowgroup:
+      - row "SH.688349 13.300 无 来源能力不足 查看所属板块 来源":
+        - cell "SH.688349":
+          - link "SH.688349":
+            - /url: /v4/research/stocks/SEC-00096141BD5420F5CB3120E687CDA5B9
+        - cell "13.300":
+          - button "13.300"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0706
+        - cell "来源":
+          - button "来源"
+      - row "SH.600703 11.880 无 来源能力不足 查看所属板块 来源":
+        - cell "SH.600703":
+          - link "SH.600703":
+            - /url: /v4/research/stocks/SEC-000A3F9053A2AA6112AAF248CBBD5912
+        - cell "11.880":
+          - button "11.880"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1203
+        - cell "来源":
+          - button "来源"
+      - row "SZ.300581 9.910 无 来源能力不足 查看所属板块 来源":
+        - cell "SZ.300581":
+          - link "SZ.300581":
+            - /url: /v4/research/stocks/SEC-002610CF9EBB4227722834AADA8F757E
+        - cell "9.910":
+          - button "9.910"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0701
+        - cell "来源":
+          - button "来源"
+      - row "SH.688793 17.630 无 来源能力不足 查看所属板块 来源":
+        - cell "SH.688793":
+          - link "SH.688793":
+            - /url: /v4/research/stocks/SEC-002E8949D07D2829AB967520C65C0845
+        - cell "17.630":
+          - button "17.630"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0401
+        - cell "来源":
+          - button "来源"
+      - row "SZ.002043 11.800 无 来源能力不足 查看所属板块 来源":
+        - cell "SZ.002043":
+          - link "SZ.002043":
+            - /url: /v4/research/stocks/SEC-0051683845B17D59641B7D1DC261FE2A
+        - cell "11.800":
+          - button "11.800"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT020604
+        - cell "来源":
+          - button "来源"
+      - row "SH.601021 39.650 无 来源能力不足 查看所属板块 来源":
+        - cell "SH.601021":
+          - link "SH.601021":
+            - /url: /v4/research/stocks/SEC-005EA670068174623A3C365FCA9A8B2D
+        - cell "39.650":
+          - button "39.650"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT090103
+        - cell "来源":
+          - button "来源"
+      - row "SZ.300197 1.970 无 来源能力不足 查看所属板块 来源":
+        - cell "SZ.300197":
+          - link "SZ.300197":
+            - /url: /v4/research/stocks/SEC-0068F2B3CBB78D2F594248A35D1EF6E6
+        - cell "1.970":
+          - button "1.970"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0805
+        - cell "来源":
+          - button "来源"
+      - row "SZ.002830 14.950 无 来源能力不足 查看所属板块 来源":
+        - cell "SZ.002830":
+          - link "SZ.002830":
+            - /url: /v4/research/stocks/SEC-006D9F8F7EEAB00B95B63390341737B1
+        - cell "14.950":
+          - button "14.950"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT110102
+        - cell "来源":
+          - button "来源"
+      - row "SZ.002158 24.030 无 来源能力不足 查看所属板块 来源":
+        - cell "SZ.002158":
+          - link "SZ.002158":
+            - /url: /v4/research/stocks/SEC-0081C3FB364C2FF2BBF61903A767EACB
+        - cell "24.030":
+          - button "24.030"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0707
+        - cell "来源":
+          - button "来源"
+      - row "SH.603043 13.290 无 来源能力不足 查看所属板块 来源":
+        - cell "SH.603043":
+          - link "SH.603043":
+            - /url: /v4/research/stocks/SEC-0086F7F2614CE0006C835421BA75BD51
+        - cell "13.290":
+          - button "13.290"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT030403
+        - cell "来源":
+          - button "来源"
+      - row "SH.600227 4.040 无 来源能力不足 查看所属板块 来源":
+        - cell "SH.600227":
+          - link "SH.600227":
+            - /url: /v4/research/stocks/SEC-00B0B75CF5BA6E38D7C2D3FEBF949622
+        - cell "4.040":
+          - button "4.040"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT020402
+        - cell "来源":
+          - button "来源"
+      - row "SH.601888 50.690 无 来源能力不足 查看所属板块 来源":
+        - cell "SH.601888":
+          - link "SH.601888":
+            - /url: /v4/research/stocks/SEC-00B87010D45BBCB2A1CB277B6C177121
+        - cell "50.690":
+          - button "50.690"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT060501
+        - cell "来源":
+          - button "来源"
+      - row "SZ.301629 242.770 无 来源能力不足 查看所属板块 来源":
+        - cell "SZ.301629":
+          - link "SZ.301629":
+            - /url: /v4/research/stocks/SEC-00B93BC23F1AFA8F276F5C61207F5A4F
+        - cell "242.770":
+          - button "242.770"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1203
+        - cell "来源":
+          - button "来源"
+      - row "SZ.300070 3.410 无 来源能力不足 查看所属板块 来源":
+        - cell "SZ.300070":
+          - link "SZ.300070":
+            - /url: /v4/research/stocks/SEC-00BA2362AC25C35CCF865BBC535D35A5
+        - cell "3.410":
+          - button "3.410"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0805
+        - cell "来源":
+          - button "来源"
+      - row "SZ.300782 64.650 无 来源能力不足 查看所属板块 来源":
+        - cell "SZ.300782":
+          - link "SZ.300782":
+            - /url: /v4/research/stocks/SEC-00BBE1A73FF15F55B1F79765E71E142E
+        - cell "64.650":
+          - button "64.650"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1203
+        - cell "来源":
+          - button "来源"
+      - row "SH.600685 29.190 无 来源能力不足 查看所属板块 来源":
+        - cell "SH.600685":
+          - link "SH.600685":
+            - /url: /v4/research/stocks/SEC-00BE615596F05D4E950A4A0CF8A0DB73
+        - cell "29.190":
+          - button "29.190"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0702
+        - cell "来源":
+          - button "来源"
+      - row "SZ.002771 13.410 无 来源能力不足 查看所属板块 来源":
+        - cell "SZ.002771":
+          - link "SZ.002771":
+            - /url: /v4/research/stocks/SEC-00E228DA7EBF038EA528EF36B65B4C97
+        - cell "13.410":
+          - button "13.410"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1205
+        - cell "来源":
+          - button "来源"
+      - row "SZ.301487 17.450 启动确认 来源能力不足 查看所属板块 来源":
+        - cell "SZ.301487":
+          - link "SZ.301487":
+            - /url: /v4/research/stocks/SEC-00F7600938E29E801B3FB9F22775458E
+        - cell "17.450":
+          - button "17.450"
+        - cell "启动确认":
+          - button "启动确认"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT020401
+        - cell "来源":
+          - button "来源"
+      - row "SZ.300695 47.180 无 来源能力不足 查看所属板块 来源":
+        - cell "SZ.300695":
+          - link "SZ.300695":
+            - /url: /v4/research/stocks/SEC-00F80FE8851D0D4EE1C4ABD4B7517B63
+        - cell "47.180":
+          - button "47.180"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT040202
+        - cell "来源":
+          - button "来源"
+      - row "SZ.000826 1.710 无 来源能力不足 查看所属板块 来源":
+        - cell "SZ.000826":
+          - link "SZ.000826":
+            - /url: /v4/research/stocks/SEC-01007B161569BFF64F7079B3DBACF9CC
+        - cell "1.710":
+          - button "1.710"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0805
+        - cell "来源":
+          - button "来源"
+      - row "SZ.301117 11.700 无 来源能力不足 查看所属板块 来源":
+        - cell "SZ.301117":
+          - link "SZ.301117":
+            - /url: /v4/research/stocks/SEC-010CC3E0E86D1885E84000A59CD4BD67
+        - cell "11.700":
+          - button "11.700"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1205
+        - cell "来源":
+          - button "来源"
+      - row "SZ.001373 30.440 无 来源能力不足 查看所属板块 来源":
+        - cell "SZ.001373":
+          - link "SZ.001373":
+            - /url: /v4/research/stocks/SEC-01302EC0CB4455B5FEFD11C9B0857198
+        - cell "30.440":
+          - button "30.440"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1204
+        - cell "来源":
+          - button "来源"
+      - row "SZ.002372 8.920 启动确认 符合 查看所属板块 来源":
+        - cell "SZ.002372":
+          - link "SZ.002372":
+            - /url: /v4/research/stocks/SEC-0133C24DA4D131FD193B382B8FF9E57C
+        - cell "8.920":
+          - button "8.920"
+        - cell "启动确认":
+          - button "启动确认"
+        - cell "符合":
+          - button "符合"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT020604
+        - cell "来源":
+          - button "来源"
+      - row "SH.605169 13.520 启动确认 符合 查看所属板块 来源":
+        - cell "SH.605169":
+          - link "SH.605169":
+            - /url: /v4/research/stocks/SEC-01503FBCF39C18F6512A1F63139DF7FA
+        - cell "13.520":
+          - button "13.520"
+        - cell "启动确认":
+          - button "启动确认"
+        - cell "符合":
+          - button "符合"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0804
+        - cell "来源":
+          - button "来源"
+      - row "SZ.300174 16.940 无 来源能力不足 查看所属板块 来源":
+        - cell "SZ.300174":
+          - link "SZ.300174":
+            - /url: /v4/research/stocks/SEC-01573CAE74FF0911E6CF4E148A380C29
+        - cell "16.940":
+          - button "16.940"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT020401
+        - cell "来源":
+          - button "来源"
+      - row "SZ.300010 5.020 无 来源能力不足 查看所属板块 来源":
+        - cell "SZ.300010":
+          - link "SZ.300010":
+            - /url: /v4/research/stocks/SEC-0157C18162F1E5F08F5949B6EA4A7514
+        - cell "5.020":
+          - button "5.020"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1205
+        - cell "来源":
+          - button "来源"
+      - row "SZ.002075 3.520 无 来源能力不足 查看所属板块 来源":
+        - cell "SZ.002075":
+          - link "SZ.002075":
+            - /url: /v4/research/stocks/SEC-01605B6700E395E5FABDC2DFFD85F5E8
+        - cell "3.520":
+          - button "3.520"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT020102
+        - cell "来源":
+          - button "来源"
+      - row "SH.600984 3.650 无 来源能力不足 查看所属板块 来源":
+        - cell "SH.600984":
+          - link "SH.600984":
+            - /url: /v4/research/stocks/SEC-016E7A08F4649411F936422991E5AFD3
+        - cell "3.650":
+          - button "3.650"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0707
+        - cell "来源":
+          - button "来源"
+      - row "SH.603928 14.380 恢复转向 来源能力不足 查看所属板块 来源":
+        - cell "SH.603928":
+          - link "SH.603928":
+            - /url: /v4/research/stocks/SEC-01759C0DD3567723A74069E26F961A95
+        - cell "14.380":
+          - button "14.380"
+        - cell "恢复转向":
+          - button "恢复转向"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT020401
+        - cell "来源":
+          - button "来源"
+      - row "SH.603536 10.190 无 来源能力不足 查看所属板块 来源":
+        - cell "SH.603536":
+          - link "SH.603536":
+            - /url: /v4/research/stocks/SEC-01790ECE7EBB0C0D3946582CCD3F15F6
+        - cell "10.190":
+          - button "10.190"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT030403
+        - cell "来源":
+          - button "来源"
+  - generic: 共 5224 条 · 第 1 页
+  - button "上一页" [disabled]
+  - button "下一页"
+- contentinfo:
+  - text: V4 六入口框架 · 数据、证据与研究状态分别展示
+  - link "历史摘要":
+    - /url: /v4/legacy-summary

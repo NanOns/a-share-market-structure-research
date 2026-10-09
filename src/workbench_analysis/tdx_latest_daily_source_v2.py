@@ -51,6 +51,14 @@ def extract_target_session_bars(latest_package_ref, trade_date, *, snapshot_root
     source=latest_package_ref['download']; package=Path(source['path'])
     if package.stat().st_size!=source['bytes'] or old.sha256_file(package)!=source['sha256']:
         raise ValueError('LATEST_PACKAGE_BINDING_MISMATCH')
+    cache=Path(snapshot_root)/'tdx_target_refs'/source['sha256']/(trade_date+'.json')
+    old.ensure_outside_tdx(cache,tdx_root)
+    if cache.is_file():
+        cached=json.loads(cache.read_bytes());binding=cached['artifact'];artifact=Path(binding['path'])
+        if artifact.is_file() and old.sha256_file(artifact)==binding['sha256']:
+            content=json.loads(artifact.read_bytes())
+            if content['target_session']==trade_date and content['source_sha256']==source['sha256']:
+                return dict(content,artifact=binding,frozen_at=cached['frozen_at'])
     old._zip_validate(package)
     target=int(trade_date.replace('-','')); bars=[]; maximum=0; coverage=set(); excluded=[]
     with zipfile.ZipFile(package) as archive:
@@ -102,5 +110,8 @@ def extract_target_session_bars(latest_package_ref, trade_date, *, snapshot_root
             raise ValueError('IMMUTABLE_TARGET_COLLISION')
     else:
         old._atomic_write(output,data,tdx_root=tdx_root)
-    return dict(content,artifact=dict(path=str(output.resolve()),sha256=key,bytes=len(data)),
-                frozen_at=datetime.now(timezone.utc).isoformat())
+    binding=dict(path=str(output.resolve()),sha256=key,bytes=len(data))
+    frozen_at=datetime.now(timezone.utc).isoformat()
+    old._atomic_write(cache,old._json_bytes(dict(artifact=binding,frozen_at=frozen_at)),tdx_root=tdx_root)
+    return dict(content,artifact=binding,
+                frozen_at=frozen_at)

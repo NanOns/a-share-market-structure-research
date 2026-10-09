@@ -23,6 +23,8 @@ def plan_sessions(last_good, now, cal, through_date=None, main_check='18:35'):
         raise ValueError('LAST_GOOD_OUTSIDE_CALENDAR')
     if requested < last_good:
         raise ValueError('TARGET_BEFORE_LAST_GOOD')
+    if through_date is not None and not cal['coverage_start'] <= requested <= cal['coverage_end']:
+        raise ValueError('REQUESTED_TARGET_OUTSIDE_OFFICIAL_CALENDAR')
     gate = time.fromisoformat(main_check)
     end = min(requested, now.date().isoformat())
     covered_end = min(end, cal['coverage_end'])
@@ -44,7 +46,9 @@ def plan_sessions(last_good, now, cal, through_date=None, main_check='18:35'):
                 next_trigger_at=next_trigger, calendar_binding=cal.get('binding'),
                 calendar_acceptance=cal.get('status'),
                 status='CALENDAR_COVERAGE_EXHAUSTED' if exhausted else
-                    ('TIME_ELIGIBLE' if eligible else 'WAIT_MARKET_CLOSE' if waiting else 'UP_TO_DATE'),
+                    ('TIME_ELIGIBLE' if eligible else
+                     ('WAIT_MARKET_CLOSE' if now < datetime.combine(date.fromisoformat(waiting[0]), time(15), SHANGHAI)
+                      else 'WAIT_BAOSTOCK_FACTOR') if waiting else 'UP_TO_DATE'),
                 source_ready=False, head_mutated=False, external_acceptance='NOT_GRANTED')
 
 

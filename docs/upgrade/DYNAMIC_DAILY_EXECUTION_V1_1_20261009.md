@@ -70,3 +70,59 @@ Acceptance: ENGINEERING_PASS_SCOPED for official latest-package historical extra
 and actual dated runtime smoke; complete source/identity reconciliation is pending.
 Next gated dependency: DD03 dated identity/lifecycle/GBBQ QA and full numeric Owner
 successor, alongside independent DD04 job/UI work. No 10/09 publication occurred.
+
+## DD03 prerequisite audit (not DD03 completion)
+
+Real 10/08 native extraction reconciles 5,209 actual OHLCV bars and 15 confirmed
+suspensions against 5,224 BaoStock rows and the frozen dated identity binding;
+zero OHLCV/identity anomalies. The 348 extra native entries are explicitly outside
+the target provider universe, not automatically labeled delisted.
+
+Amount representation is separately tracked in DD_A05_AMOUNT_REPRESENTATION_AUDIT.json.
+4,853 decimal values differ from native float32. Of these, 102 do not match direct
+decimal-to-float32 conversion. All observed differences match a candidate encoding:
+round to integer CNY with HALF_UP, then encode float32. This is an inference from
+these actual observations, not an accepted universal provider contract or closure
+of any historical sector Amount A audit. Neither source authority nor native amounts
+were changed. Independent numerical/representation acceptance is NOT_GRANTED.
+
+DD03 remains incomplete: no dynamic full Owner producer/OperationalSuccessorReaderV1
+has been admitted or published; dated GBBQ revisions and affected-history recomputation
+must be bound before this gate. Existing daily Owners remain intact.
+
+## DD04 / DD05 engineering slice
+
+V4_OPERATIONAL_DAILY_JOBS_V1 uses SQLite WAL for jobs, days, events, policy and scheduler
+dispatch. Kernel-owned file locks serialize processes and release on crashes. Defaults
+are AUTO=ON, persistent pause/resume, startup catch-up, bounded actual-attempt-day retry
+times, same-target deduplication, and failed-day retry that retains completed days.
+The policy binds this user's instruction and the supplied task SHA; it does not copy
+the prior one-time cutover signature or grant algorithm/PIT/trading permission.
+
+Actual capture executor downloads/freeze-checks the latest official package and extracts
+target bars; dated BaoStock smoke responses are reused with SHA checks. It stops at
+the missing full source/Owner gate. Probe performs actual small official metadata reads,
+does not download a ZIP or move a Head, and is independent of the full-day time gate.
+
+New localhost API has 202 job IDs, origin/custom-header protection, body bounds, a write
+rate limit, settings and event reads. LAN startup fails closed until an authenticated
+adapter is implemented. The existing V2 control source and frozen asset bindings are
+unchanged; the new service is a wrapper. Normal startup imports this wrapper.
+
+Real QA service is on port 28766. Port 28765 was NOT replaced. On startup with no page,
+the worker automatically scheduled 10/09 for 18:35. A real process restart retained its
+job and settings; browser clicks reused the same catch-up job and created a genuine
+metadata-probe job. Pause, page reload, resume and IAB screenshots were verified.
+Inherited last-good stocks/sectors/market/focus read back with the same old token.
+
+Acceptance: ENGINEERING_PASS_SCOPED for durable scheduling/source execution and
+the clickable update-center slice. DD04 is NOT complete: successor CAS, rollback,
+release-chain and cancellation gates remain to implement with DD03; Windows service
+or Task Scheduler auto-start has NOT been installed. DD05 full release-status/period
+display acceptance depends on the unfinished producer and publication chain.
+
+DD06 remains pending: no new operational-period incremental build/QA has been run.
+DD07 remains BLOCKED for full acceptance: no new successor CAS/recovery/readback;
+only IAB available, no connected Edge/Chrome; no independent external verdict.
+33 targeted and inherited regressions pass. Simulated queue executors/time cases
+are tests, and are explicitly separate from real source/service/browser evidence.

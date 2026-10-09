@@ -9,6 +9,7 @@ from .operational_runtime_acceptance_v2 import load as load_runtime_acceptance_m
 from .baostock_supplemental import package_metadata
 from .baostock_dm01_sdk_schema_v2 import normalize_response
 from .baostock_daily_update_source import DAILY_METHOD,FACTOR_METHOD,_canonical_rows_digest
+from .source_readiness_v2 import source_readiness
 
 
 def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,readback_url=None,progress=lambda *args:None):
@@ -32,6 +33,9 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
                     metadata_sha256=tdx.sha256_bytes(info),source_ready=False,
                     observed_at=datetime.now(timezone.utc).isoformat(),head_mutated=False,
                     baostock_state='NOT_QUERIED_DATE_METADATA_IS_NOT_READINESS')
+    now=datetime.now(timezone.utc)
+    time_check=source_readiness(day,now)
+    if not time_check['time_eligible']:return time_check
     snapshot=output_path(root,root/'data/v4/dynamic_daily_sources')
     package=capture_latest_tdx_package(snapshot_root=snapshot)
     if not package.get('download'):
@@ -101,6 +105,9 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
         source_freeze=dict(path=p.relative_to(root).as_posix(),sha256=tdx.sha256_file(p)),
         tdx_bar_count=bars['row_count'],baostock_row_count=len(normalized['daily']['rows']),
         source_captured=True,source_ready=False,derived_ready=False,published=False,last_good_preserved=True)
+    result,readiness=verify_source_gate(root,day,artifact,result)
+    progress(day,'SOURCE_READY' if readiness['source_ready'] else readiness['status'],result)
+    if not readiness['source_ready']:return dict(result,status=readiness['status'],reason=readiness['reason'])
     if capture_only:return result
     progress(day,'DERIVING',result)
     from .operational_daily_owner_v1 import build,seal
@@ -121,3 +128,52 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     progress(day,'PUBLISHING',dict(result,candidate=binding,derived_ready=True,source_ready=True))
     publication=promote(root,candidate,candidate['predecessor']['sha256'],lambda c:readback(readback_url,c))
     return dict(result,**publication,source_ready=True,derived_ready=True,published=True,candidate=binding)
+
+
+def verify_source_gate(root,day,artifact,result,now=None):
+    """Single audited gate shared by execution and isolated receipt replay."""
+    root=Path(root)
+    raw_path=root/artifact['native_baostock']['path']
+    if tdx.sha256_file(raw_path)!=artifact['native_baostock']['sha256']:raise ValueError('NATIVE_RESPONSE_DIGEST_MISMATCH')
+    raw=json.loads(raw_path.read_bytes());normalized=artifact['normalized'];package=artifact['effective_package']
+    bars=dict(artifact=artifact['tdx'],source_available_at=artifact['observed_at'])
+    snapshot=root/'data/v4/dynamic_daily_sources'
+    observed=raw['observed_at'];daily=normalized['daily']['rows'];factors=normalized['adjustment_factor']['rows']
+    native_path=Path(bars['artifact']['path'])
+    if not native_path.is_absolute():native_path=root/native_path
+    if tdx.sha256_file(native_path)!=bars['artifact']['sha256']:raise ValueError('NATIVE_TARGET_DIGEST_MISMATCH')
+    native=json.loads(native_path.read_bytes())['target_bars']
+    bycode={r['source_security_key'].upper():r for r in native}
+    codes=[r['code'].upper() for r in daily]
+    reconciled=bool(codes) and len(codes)==len(set(codes)) and len(bycode)==len(native)
+    for row in daily:
+        bar=bycode.get(row['code'].upper())
+        if row['date']!=day or row['tradestatus'] not in {'0','1'}:reconciled=False
+        if row['tradestatus']=='1' and (not bar or any(float(row[f])!=float(bar[f]) for f in ('open','high','low','close','volume'))):reconciled=False
+        if row['tradestatus']=='0' and bar:reconciled=False
+    sources={}
+    for name,rows in [('baostock_daily',daily),('baostock_factor',factors)]:
+        sources[name]=dict(status='VERIFIED',target_session=day,provider_date=day,
+            source_sha256=_canonical_rows_digest(rows),observed_at=observed,
+            row_count=len(rows),identity_reconciliation_passed=reconciled,
+            provider='BaoStock',artifact_family=name,capture_method='ACCEPTED_NATIVE_RESPONSE',
+            evidence_path=raw_path.relative_to(root).as_posix(),captured_at=observed,
+            verified_at=datetime.now(timezone.utc).isoformat())
+    if not factors:
+        sources['baostock_factor'].update(verified_no_change=True,proof_target_session=day,
+            no_change_proof_sha256=tdx.sha256_file(raw_path))
+    sources['tdx']=dict(status='VERIFIED',target_session=day,
+        source_sha256=bars['artifact']['sha256'],observed_at=bars['source_available_at'],
+        bars_date_coverage=[day],row_count=len(native),provider='TDX',
+        artifact_family='NATIVE_DAILY',capture_method='VERIFIED_TARGET_EXTRACTION',
+        provider_package_date=package['provider_package_date'],package=package.get('download'),
+        evidence_path=bars['artifact']['path'],captured_at=bars['source_available_at'],
+        verified_at=datetime.now(timezone.utc).isoformat())
+    readiness=source_readiness(day,now or datetime.now(timezone.utc),sources)
+    readiness.update(source_freeze=result['source_freeze'],AS_RECORDED=False,PIT_ELIGIBLE=False)
+    revision=readiness.get('source_revision_id') or tdx.sha256_bytes(tdx._json_bytes(readiness))
+    ready_path=snapshot/'source_readiness'/day/(revision+'.json')
+    if not ready_path.is_file():atomic_json(root,ready_path,readiness)
+    result.update(source_readiness=dict(path=ready_path.relative_to(root).as_posix(),sha256=tdx.sha256_file(ready_path)),
+                  source_ready=readiness['source_ready'])
+    return result,readiness

@@ -93,3 +93,29 @@ def test_executor_1834_blocks_before_any_capture(tmp_path,monkeypatch):
     monkeypatch.setattr(executor,'capture_latest_tdx_package',lambda **k:pytest.fail('CAPTURE_BEFORE_TIME_GATE'))
     result=executor.execute_sources(tmp_path,'2026-10-09','CATCH_UP',capture_only=True)
     assert not result['source_ready']
+
+
+@pytest.mark.parametrize('mutation,expected',[
+    ('good','SOURCE_READY'),('wrong_daily_date','WAIT_BAOSTOCK_DAILY'),
+    ('suspended_with_bar','WAIT_BAOSTOCK_DAILY'),('no_daily','WAIT_BAOSTOCK_DAILY')])
+def test_real_gate_reads_frozen_bytes_before_deriving(tmp_path,mutation,expected):
+    from hashlib import sha256
+    from workbench_analysis.operational_daily_storage_v1 import atomic_json
+    day='2026-10-09';observed=day+'T18:35:00+08:00'
+    row=dict(code='SH.600000',date=day,tradestatus='1',open=10,high=11,low=9,close=10,volume=1)
+    native=dict(row,source_security_key=row['code'])
+    if mutation=='wrong_daily_date':row['date']='2026-10-08'
+    if mutation=='suspended_with_bar':row['tradestatus']='0'
+    daily=[] if mutation=='no_daily' else [row]
+    def write(name,payload):
+        path=tmp_path/name;atomic_json(tmp_path,path,payload)
+        return dict(path=str(path),sha256=sha256(path.read_bytes()).hexdigest())
+    artifact=dict(native_baostock=write('raw.json',dict(observed_at=observed)),
+        tdx=write('bars.json',dict(target_bars=[native])),observed_at=observed,
+        effective_package=dict(provider_package_date=day),
+        normalized=dict(daily=dict(rows=daily),adjustment_factor=dict(rows=[])))
+    result,ready=executor.verify_source_gate(tmp_path,day,artifact,dict(source_freeze={'sha256':'a'*64}),
+        datetime.fromisoformat(day+'T19:00:00+08:00'))
+    assert ready['status']==expected
+    assert result['source_ready']==(expected=='SOURCE_READY')
+    assert (tmp_path/result['source_readiness']['path']).is_file()

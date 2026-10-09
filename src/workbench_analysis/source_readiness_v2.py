@@ -1,5 +1,6 @@
 """Evidence gates never infer provider readiness from the clock."""
 from datetime import date, datetime, time, timedelta
+import hashlib,json
 from .operational_daily_calendar_v2 import SHANGHAI
 
 CONTRACT = 'V4_DAILY_SOURCE_READINESS_V2'
@@ -50,4 +51,6 @@ def source_readiness(trade_date, now, evidence=None, main_check='18:35',
             return dict(result, status=wait, reason='DAILY_COVERAGE_RECONCILIATION_REQUIRED')
         if source == 'baostock_factor' and proof.get('row_count', 0) == 0 and not proof.get('verified_no_change'):
             return dict(result, status=wait, reason='EMPTY_FACTOR_PROOF_REQUIRED')
-    return dict(result, status='SOURCE_READY', source_ready=True)
+    identity={name:{k:v for k,v in proof.items() if k not in {'verified_at'}} for name,proof in evidence.items()}
+    revision=hashlib.sha256(json.dumps(identity,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+    return dict(result, status='SOURCE_READY', source_ready=True,sources=evidence,source_revision_id=revision)

@@ -1,0 +1,345 @@
+diff --git a/src/workbench_analysis/operational_daily_executor_v1.py b/src/workbench_analysis/operational_daily_executor_v1.py
+index bb011a53..2839b550 100644
+--- a/src/workbench_analysis/operational_daily_executor_v1.py
++++ b/src/workbench_analysis/operational_daily_executor_v1.py
+@@ -9,6 +9,25 @@ from .operational_runtime_acceptance_v2 import load as load_runtime_acceptance_m
+ from .baostock_supplemental import package_metadata
+ from .baostock_dm01_sdk_schema_v2 import normalize_response
+ from .baostock_daily_update_source import DAILY_METHOD,FACTOR_METHOD,_canonical_rows_digest
++from .source_readiness_v2 import source_readiness
++
++
++def probe_source_revision(day):
++    """Three bounded metadata requests; never download ZIP or query full market."""
++    from .tdx_latest_daily_source_v2 import _package_validator
++    response=tdx._request(tdx.PAGE_URL,timeout=5)
++    try:
++        page=tdx._read_bounded(response,tdx.DEFAULT_MAX_PAGE_BYTES)
++        url=tdx.discover_download_url(page,tdx.validate_official_url(response.geturl()))
++    finally:response.close()
++    response=tdx._request(tdx.discover_update_info_url(page,url),timeout=5)
++    try:info=tdx._read_bounded(response,tdx.DEFAULT_MAX_INFO_BYTES)
++    finally:response.close()
++    provider,_=tdx.parse_update_date(info);validator=_package_validator(url,5)
++    if provider<day or not validator:return dict(verified=False,status='WAIT_TDX')
++    return dict(verified=True,revision=tdx.sha256_bytes(tdx._json_bytes(dict(info_sha256=tdx.sha256_bytes(info),validator=validator))),
++        provider_date=provider,validator=validator,capture_method='BOUNDED_METADATA_ONLY',
++        source_ready=False,reason='EXECUTOR_MUST_VERIFY_ACTUAL_TARGET_AND_THREE_SOURCES')
+ 
+ 
+ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,readback_url=None,progress=lambda *args:None):
+@@ -32,6 +51,9 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
+                     metadata_sha256=tdx.sha256_bytes(info),source_ready=False,
+                     observed_at=datetime.now(timezone.utc).isoformat(),head_mutated=False,
+                     baostock_state='NOT_QUERIED_DATE_METADATA_IS_NOT_READINESS')
++    now=datetime.now(timezone.utc)
++    time_check=source_readiness(day,now)
++    if not time_check['time_eligible']:return time_check
+     snapshot=output_path(root,root/'data/v4/dynamic_daily_sources')
+     package=capture_latest_tdx_package(snapshot_root=snapshot)
+     if not package.get('download'):
+@@ -101,6 +123,9 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
+         source_freeze=dict(path=p.relative_to(root).as_posix(),sha256=tdx.sha256_file(p)),
+         tdx_bar_count=bars['row_count'],baostock_row_count=len(normalized['daily']['rows']),
+         source_captured=True,source_ready=False,derived_ready=False,published=False,last_good_preserved=True)
++    result,readiness=verify_source_gate(root,day,artifact,result)
++    progress(day,'SOURCE_READY' if readiness['source_ready'] else readiness['status'],result)
++    if not readiness['source_ready']:return dict(result,status=readiness['status'],reason=readiness['reason'])
+     if capture_only:return result
+     progress(day,'DERIVING',result)
+     from .operational_daily_owner_v1 import build,seal
+@@ -121,3 +146,52 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
+     progress(day,'PUBLISHING',dict(result,candidate=binding,derived_ready=True,source_ready=True))
+     publication=promote(root,candidate,candidate['predecessor']['sha256'],lambda c:readback(readback_url,c))
+     return dict(result,**publication,source_ready=True,derived_ready=True,published=True,candidate=binding)
++
++
++def verify_source_gate(root,day,artifact,result,now=None):
++    """Single audited gate shared by execution and isolated receipt replay."""
++    root=Path(root)
++    raw_path=root/artifact['native_baostock']['path']
++    if tdx.sha256_file(raw_path)!=artifact['native_baostock']['sha256']:raise ValueError('NATIVE_RESPONSE_DIGEST_MISMATCH')
++    raw=json.loads(raw_path.read_bytes());normalized=artifact['normalized'];package=artifact['effective_package']
++    bars=dict(artifact=artifact['tdx'],source_available_at=artifact['observed_at'])
++    snapshot=root/'data/v4/dynamic_daily_sources'
++    observed=raw['observed_at'];daily=normalized['daily']['rows'];factors=normalized['adjustment_factor']['rows']
++    native_path=Path(bars['artifact']['path'])
++    if not native_path.is_absolute():native_path=root/native_path
++    if tdx.sha256_file(native_path)!=bars['artifact']['sha256']:raise ValueError('NATIVE_TARGET_DIGEST_MISMATCH')
++    native=json.loads(native_path.read_bytes())['target_bars']
++    bycode={r['source_security_key'].upper():r for r in native}
++    codes=[r['code'].upper() for r in daily]
++    reconciled=bool(codes) and len(codes)==len(set(codes)) and len(bycode)==len(native)
++    for row in daily:
++        bar=bycode.get(row['code'].upper())
++        if row['date']!=day or row['tradestatus'] not in {'0','1'}:reconciled=False
++        if row['tradestatus']=='1' and (not bar or any(float(row[f])!=float(bar[f]) for f in ('open','high','low','close','volume'))):reconciled=False
++        if row['tradestatus']=='0' and bar:reconciled=False
++    sources={}
++    for name,rows in [('baostock_daily',daily),('baostock_factor',factors)]:
++        sources[name]=dict(status='VERIFIED',target_session=day,provider_date=day,
++            source_sha256=_canonical_rows_digest(rows),observed_at=observed,
++            row_count=len(rows),identity_reconciliation_passed=reconciled,
++            provider='BaoStock',artifact_family=name,capture_method='ACCEPTED_NATIVE_RESPONSE',
++            evidence_path=raw_path.relative_to(root).as_posix(),captured_at=observed,
++            verified_at=datetime.now(timezone.utc).isoformat())
++    if not factors:
++        sources['baostock_factor'].update(verified_no_change=True,proof_target_session=day,
++            no_change_proof_sha256=tdx.sha256_file(raw_path))
++    sources['tdx']=dict(status='VERIFIED',target_session=day,
++        source_sha256=bars['artifact']['sha256'],observed_at=bars['source_available_at'],
++        bars_date_coverage=[day],row_count=len(native),provider='TDX',
++        artifact_family='NATIVE_DAILY',capture_method='VERIFIED_TARGET_EXTRACTION',
++        provider_package_date=package['provider_package_date'],package=package.get('download'),
++        evidence_path=bars['artifact']['path'],captured_at=bars['source_available_at'],
++        verified_at=datetime.now(timezone.utc).isoformat())
++    readiness=source_readiness(day,now or datetime.now(timezone.utc),sources)
++    readiness.update(source_freeze=result['source_freeze'],AS_RECORDED=False,PIT_ELIGIBLE=False)
++    revision=readiness.get('source_revision_id') or tdx.sha256_bytes(tdx._json_bytes(readiness))
++    ready_path=snapshot/'source_readiness'/day/(revision+'.json')
++    if not ready_path.is_file():atomic_json(root,ready_path,readiness)
++    result.update(source_readiness=dict(path=ready_path.relative_to(root).as_posix(),sha256=tdx.sha256_file(ready_path)),
++                  source_ready=readiness['source_ready'])
++    return result,readiness
+diff --git a/src/workbench_analysis/operational_daily_jobs_v1.py b/src/workbench_analysis/operational_daily_jobs_v1.py
+index 343f6511..b13425aa 100644
+--- a/src/workbench_analysis/operational_daily_jobs_v1.py
++++ b/src/workbench_analysis/operational_daily_jobs_v1.py
+@@ -8,14 +8,15 @@ from .operational_daily_storage_v1 import output_path,exclusive_lock
+ 
+ CONTRACT='V4_OPERATIONAL_DAILY_JOBS_V1'
+ RETRY_TIMES=['19:05','19:35','20:05','20:35','21:05','22:05']
+-TERMINAL={'PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED'}
++TERMINAL={'PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED'}
+ 
+ 
+ class DailyJobs:
+-    def __init__(self,root,executor=None,clock=None):
++    def __init__(self,root,executor=None,clock=None,source_probe=None):
+         self.root=Path(root).resolve();self.clock=clock or (lambda:datetime.now(SHANGHAI))
+         self.executor=executor;self.stop=threading.Event();self.thread=None;self.worker_error=None
+         self.active_job_id=None
++        self.source_probe=source_probe
+         self.policy_binding=None
+         if (self.root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').is_file():
+             policy_path=self.root/'config/read_only_operational_daily_release_policy_v1_1.json'
+@@ -34,6 +35,10 @@ class DailyJobs:
+                 CREATE TABLE IF NOT EXISTS scheduler_policy(id INTEGER PRIMARY KEY, enabled INTEGER, revision INTEGER, updated_at TEXT);
+                 INSERT OR IGNORE INTO scheduler_policy VALUES(1,1,1,'DEFAULT_AUTO_ON');
+                 CREATE TABLE IF NOT EXISTS scheduler_dispatch(target TEXT PRIMARY KEY,job_id TEXT);
++                CREATE TABLE IF NOT EXISTS scheduler_attempts(target TEXT, attempt_ordinal INTEGER,
++                  job_id TEXT UNIQUE,old_job_id TEXT,source_revision TEXT,reason TEXT,created_at TEXT,
++                  PRIMARY KEY(target,attempt_ordinal));
++                CREATE TABLE IF NOT EXISTS scheduler_rearm(target TEXT PRIMARY KEY,revision TEXT,reason TEXT);
+                 CREATE TABLE IF NOT EXISTS update_jobs(job_id TEXT PRIMARY KEY, trigger TEXT, mode TEXT,
+                   through_date TEXT,status TEXT,created_at TEXT,finished_at TEXT,idempotency_key TEXT UNIQUE,error TEXT);
+                 CREATE TABLE IF NOT EXISTS update_job_days(job_id TEXT,trade_date TEXT,state TEXT,
+@@ -43,6 +48,100 @@ class DailyJobs:
+                   job_id TEXT,timestamp TEXT,stage TEXT,event_code TEXT,safe_detail TEXT);
+             ''')
+ 
++    def rearm(self,target,revision,reason='OPERATOR_REARM'):
++        """Explicit authorized recovery; never inferred from a user cancellation."""
++        if not revision or not reason:raise ValueError('REARM_EVIDENCE_REQUIRED')
++        with self.connect() as db:
++            db.execute('INSERT OR REPLACE INTO scheduler_rearm VALUES(?,?,?)',(target,revision,reason))
++            self.event(db,None,'REARM',reason,dict(target=target,revision=revision))
++
++    def source_revision(self,target):
++        """Local immutable validated freezes only; no network request per tick."""
++        from .source_readiness_v2 import source_readiness
++        folder=self.root/'data/v4/dynamic_daily_sources/source_readiness'/target
++        revisions=[]
++        for path in folder.glob('*.json'):
++            try:
++                record=json.loads(path.read_bytes())
++                verdict=source_readiness(target,self.clock(),record['sources'])
++                if verdict['source_ready'] and record['source_revision_id']==verdict['source_revision_id']:
++                    revisions.append(record['source_revision_id'])
++            except (OSError,ValueError,KeyError,TypeError):continue
++        # Accepted provider caches can change before a combined readiness record
++        # exists. Freeze their byte identities; the executor must still reverify
++        # all three sources and downstream QA before deriving/publishing.
++        manifest=self.root/'reports/v4_baostock/runtime_acceptance'/target.replace('-','')/'accepted_runtime_manifest.json'
++        if manifest.is_file():revisions.append(hashlib.sha256(manifest.read_bytes()).hexdigest())
++        if self.source_probe:
++            from .operational_daily_storage_v1 import atomic_json
++            probe_path=self.root/'runtime/dynamic_daily/recovery_probes'/ (target+'.json')
++            cached=json.loads(probe_path.read_bytes()) if probe_path.is_file() else {}
++            if not cached or self.clock()>=datetime.fromisoformat(cached['next_probe_at']):
++                try:
++                    probe=self.source_probe(target)
++                    if probe.get('verified') and probe.get('revision'):
++                        cached.update(probe)
++                    cached.update(observed_at=self.clock().isoformat(),next_probe_at=(self.clock()+timedelta(minutes=30)).isoformat())
++                except (OSError,ValueError,KeyError):
++                    cached.update(next_probe_at=(self.clock()+timedelta(minutes=30)).isoformat(),probe_state='WAIT_PROVIDER')
++                atomic_json(self.root,probe_path,cached)
++            if cached.get('verified'):revisions.append(cached['revision'])
++        return hashlib.sha256(json.dumps(sorted(revisions)).encode()).hexdigest() if revisions else None
++
++    def dispatch(self,plan):
++        target=plan['requested_through_date'];revision=self.source_revision(target)
++        with self.connect() as db:
++            db.execute('BEGIN IMMEDIATE')
++            if not db.execute('SELECT enabled FROM scheduler_policy WHERE id=1').fetchone()[0]:return
++            old=db.execute('SELECT job_id FROM scheduler_dispatch WHERE target=?',(target,)).fetchone()
++            previous=self.job(old['job_id']) if old else None
++            rearm=db.execute('SELECT * FROM scheduler_rearm WHERE target=?',(target,)).fetchone()
++            cancelled_days={r[0] for r in db.execute("SELECT d.trade_date FROM update_job_days d JOIN update_jobs j USING(job_id) WHERE j.status IN ('CANCELLED','CANCEL_REQUESTED')")}
++            if cancelled_days.intersection(plan['missing_sessions']) and not rearm:return
++            history=db.execute('SELECT * FROM scheduler_attempts WHERE target=? ORDER BY attempt_ordinal DESC LIMIT 1',(target,)).fetchone()
++            if previous:
++                if previous['status'] not in {'FAILED_TERMINAL','QA_BLOCKED','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED'}:return
++                if not history:
++                    db.execute('INSERT INTO scheduler_attempts VALUES(?,?,?,?,?,?,?)',
++                        (target,1,old['job_id'],None,revision,'LEGACY_DISPATCH_IMPORTED',previous['created_at']))
++                    history=db.execute('SELECT * FROM scheduler_attempts WHERE target=?',(target,)).fetchone()
++                if previous['status']=='CANCELLED' and not rearm:return
++                changed=revision is not None and revision!=history['source_revision']
++                last=previous['days'][0] if previous['days'] else {}
++                transient=last.get('source_checks',{}).get('retry_class')=='TRANSIENT_INFRASTRUCTURE'
++                healthy=False
++                if transient and self.source_probe:
++                    import shutil
++                    probe_path=self.root/'runtime/dynamic_daily/recovery_probes'/(target+'.json')
++                    probe=json.loads(probe_path.read_bytes()) if probe_path.is_file() else {}
++                    attempted=db.execute("SELECT timestamp FROM update_events WHERE job_id=? AND event_code='ATTEMPT_STARTED' ORDER BY event_id DESC LIMIT 1",(previous['job_id'],)).fetchone()
++                    healthy=bool(attempted and self.clock()>=datetime.fromisoformat(attempted[0])+timedelta(minutes=30)
++                        and probe.get('verified') and probe.get('probe_state')!='WAIT_PROVIDER'
++                        and shutil.disk_usage(self.root).free>100*1024*1024)
++                if not rearm and not changed and not healthy and previous['status'] not in {'CANCELLED_SYSTEM','INTERRUPTED'}:return
++                if history['attempt_ordinal']>=8 and not rearm:return
++            active=db.execute("SELECT job_id FROM update_jobs WHERE mode='CATCH_UP' AND status NOT IN ('PUBLISHED_FULL','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','QA_BLOCKED','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED') LIMIT 1").fetchone()
++            if active:
++                job=active['job_id']
++                if not db.execute('SELECT 1 FROM scheduler_attempts WHERE job_id=?',(job,)).fetchone():
++                    ordinal=history['attempt_ordinal']+1 if history else 1
++                    db.execute('INSERT INTO scheduler_attempts VALUES(?,?,?,?,?,?,?)',
++                        (target,ordinal,job,old['job_id'] if old else None,revision,'ADOPT_EXISTING_MANUAL_ATTEMPT',self.clock().isoformat()))
++            else:
++                ordinal=history['attempt_ordinal']+1 if history else 1
++                job=uuid.uuid4().hex
++                db.execute('INSERT INTO update_jobs VALUES(?,?,?,?,?,?,?,?,?)',
++                    (job,'SCHEDULER','CATCH_UP',target,'QUEUED',self.clock().isoformat(),None,'AUTO:'+target+':'+str(ordinal),None))
++                for day in plan['missing_sessions']:
++                    db.execute('INSERT INTO update_job_days(job_id,trade_date,state,next_retry_at) VALUES(?,?,?,?)',
++                        (job,day,'QUEUED' if day in plan['eligible_sessions'] else 'SCHEDULED',
++                         None if day in plan['eligible_sessions'] else day+'T18:35:00+08:00'))
++                db.execute('INSERT INTO scheduler_attempts VALUES(?,?,?,?,?,?,?)',
++                    (target,ordinal,job,old['job_id'] if old else None,revision,rearm['reason'] if rearm else 'SOURCE_REVISION_OR_SYSTEM_RECOVERY',self.clock().isoformat()))
++                self.event(db,job,'CALENDAR_GAP_PLAN','GAP_PLANNED',plan)
++            db.execute('INSERT OR REPLACE INTO scheduler_dispatch VALUES(?,?)',(target,job))
++            db.execute('DELETE FROM scheduler_rearm WHERE target=?',(target,))
++
+     def connect(self):
+         db=sqlite3.connect(self.path,timeout=5);db.row_factory=sqlite3.Row
+         db.execute('PRAGMA journal_mode=WAL');db.execute('PRAGMA synchronous=FULL')
+@@ -79,7 +178,7 @@ class DailyJobs:
+                 if prior['mode']!=mode or prior['through_date']!=plan['requested_through_date']:
+                     raise ValueError('IDEMPOTENCY_KEY_SCOPE_CONFLICT')
+                 return prior['job_id']
+-            prior=db.execute("SELECT job_id FROM update_jobs WHERE mode=? AND through_date=? AND status NOT IN ('PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED') ORDER BY created_at LIMIT 1",(mode,plan['requested_through_date'])).fetchone()
++            prior=db.execute("SELECT job_id FROM update_jobs WHERE mode=? AND through_date=? AND status NOT IN ('PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','QA_BLOCKED','CANCELLED') ORDER BY created_at LIMIT 1",(mode,plan['requested_through_date'])).fetchone()
+             if prior:return prior['job_id']
+             job=uuid.uuid4().hex
+             db.execute('INSERT INTO update_jobs VALUES(?,?,?,?,?,?,?,?,?)',
+@@ -120,10 +219,17 @@ class DailyJobs:
+                     worker_error=self.worker_error,last_good_preserved=True)
+ 
+     def retry(self,job):
++        record=self.job(job)
++        if record['status'] in {'FAILED_TERMINAL','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED'}:
++            self.rearm(record['through_date'],'MANUAL:'+uuid.uuid4().hex,'EXPLICIT_MANUAL_RETRY')
++            return self.enqueue(record['through_date'],record['mode'],'MANUAL',key='RETRY:'+job+':'+uuid.uuid4().hex)
+         with self.connect() as db:
+             db.execute('BEGIN IMMEDIATE');row=db.execute('SELECT status FROM update_jobs WHERE job_id=?',(job,)).fetchone()
+             if not row:raise ValueError('JOB_NOT_FOUND')
+             if row['status'] in {'RUNNING','PUBLISHING'}:raise ValueError('JOB_ACTIVE')
++            other=db.execute("SELECT job_id FROM update_jobs WHERE job_id!=? AND through_date=? AND mode=? AND status NOT IN ('PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','QA_BLOCKED','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED') LIMIT 1",
++                (job,record['through_date'],record['mode'])).fetchone()
++            if other:return other['job_id']
+             db.execute("UPDATE update_job_days SET state='QUEUED',next_retry_at=NULL WHERE job_id=? AND state NOT IN ('PUBLISHED','PROBED')",(job,))
+             db.execute("UPDATE update_jobs SET status='QUEUED',error=NULL,finished_at=NULL WHERE job_id=?",(job,))
+             self.event(db,job,'RETRY','RETRY_FAILED_ONLY',{})
+@@ -170,16 +276,10 @@ class DailyJobs:
+         with exclusive_lock(self.root,self.root/'runtime/dynamic_daily/worker.lock'):
+             if self.settings()['auto_enabled']:
+                 plan=gap_plan(self.root,self.clock())
+-                if plan['missing_sessions']:
+-                    target=plan['requested_through_date']
+-                    with self.connect() as db:
+-                        dispatched=db.execute('SELECT job_id FROM scheduler_dispatch WHERE target=?',(target,)).fetchone()
+-                    if not dispatched:
+-                        job_id=self.enqueue(trigger='SCHEDULER',key='AUTO:'+target)
+-                        with self.connect() as db:
+-                            db.execute('INSERT OR IGNORE INTO scheduler_dispatch VALUES(?,?)',(target,job_id))
++                if plan['missing_sessions'] and plan['eligible_sessions']:
++                    self.dispatch(plan)
+             with self.connect() as db:
+-                row=db.execute("SELECT job_id FROM update_jobs WHERE status NOT IN ('PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED','QA_BLOCKED') AND (trigger!='SCHEDULER' OR ?) ORDER BY CASE WHEN mode='PROBE' THEN 0 ELSE 1 END,created_at LIMIT 1",(self.settings()['auto_enabled'],)).fetchone()
++                row=db.execute("SELECT job_id FROM update_jobs WHERE status NOT IN ('PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED','QA_BLOCKED') AND (trigger!='SCHEDULER' OR ?) ORDER BY CASE WHEN mode='PROBE' THEN 0 ELSE 1 END,created_at LIMIT 1",(self.settings()['auto_enabled'],)).fetchone()
+             if not row:return
+             job=self.job(row['job_id'])
+             self.active_job_id=job['job_id']
+@@ -217,10 +317,12 @@ class DailyJobs:
+                                      'FULL_OWNER_LIFECYCLE_CONSERVATION_FAILED','FULL_CORE_NUMERIC_ORACLE_FAILED',
+                                      'FULL_PERIOD_NUMERIC_ORACLE_FAILED'}
+                     waiting_tdx=safe=='FALLBACK_LOCAL_ACTUAL_TARGET_ABSENT'
+-                    result=dict(status='WAIT_TDX' if waiting_tdx else 'QA_BLOCKED' if blocked else 'FAILED_RETRYABLE',reason='SOURCE_EXECUTION_'+safe)
++                    transient=isinstance(exc,(OSError,TimeoutError,ConnectionError))
++                    result=dict(status='WAIT_TDX' if waiting_tdx else 'QA_BLOCKED' if blocked or not transient else 'FAILED_RETRYABLE',reason='SOURCE_EXECUTION_'+safe,
++                        retry_class='TRANSIENT_INFRASTRUCTURE' if transient else 'DETERMINISTIC_SOURCE_OR_VALIDATION')
+                 state=result['status']; retry=None
+                 if self.publication_cancelled() and state!='PUBLISHED':state='CANCELLED'
+-                if state not in {'PUBLISHED','PROBED','QA_BLOCKED','FAILED_TERMINAL','CANCELLED'}:
++                if state not in {'PUBLISHED','PROBED','QA_BLOCKED','FAILED_TERMINAL','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED'}:
+                     retry=self.next_retry(day['trade_date'],day['attempt_count']+1)
+                     if retry is None:state='FAILED_TERMINAL'
+                 with self.connect() as db:
+diff --git a/src/workbench_analysis/source_readiness_v2.py b/src/workbench_analysis/source_readiness_v2.py
+index 3ee7ab1c..b4b76c4c 100644
+--- a/src/workbench_analysis/source_readiness_v2.py
++++ b/src/workbench_analysis/source_readiness_v2.py
+@@ -1,5 +1,6 @@
+ """Evidence gates never infer provider readiness from the clock."""
+ from datetime import date, datetime, time, timedelta
++import hashlib,json
+ from .operational_daily_calendar_v2 import SHANGHAI
+ 
+ CONTRACT = 'V4_DAILY_SOURCE_READINESS_V2'
+@@ -50,4 +51,6 @@ def source_readiness(trade_date, now, evidence=None, main_check='18:35',
+             return dict(result, status=wait, reason='DAILY_COVERAGE_RECONCILIATION_REQUIRED')
+         if source == 'baostock_factor' and proof.get('row_count', 0) == 0 and not proof.get('verified_no_change'):
+             return dict(result, status=wait, reason='EMPTY_FACTOR_PROOF_REQUIRED')
+-    return dict(result, status='SOURCE_READY', source_ready=True)
++    identity={name:{k:v for k,v in proof.items() if k not in {'verified_at'}} for name,proof in evidence.items()}
++    revision=hashlib.sha256(json.dumps(identity,sort_keys=True,separators=(',',':')).encode()).hexdigest()
++    return dict(result, status='SOURCE_READY', source_ready=True,sources=evidence,source_revision_id=revision)
+diff --git a/src/workbench_service/operational_daily_server_v1.py b/src/workbench_service/operational_daily_server_v1.py
+index db3eac40..0c13b0fd 100644
+--- a/src/workbench_service/operational_daily_server_v1.py
++++ b/src/workbench_service/operational_daily_server_v1.py
+@@ -151,7 +151,8 @@ def serve_v4(root,host='127.0.0.1',port=28765):
+     if host not in {'127.0.0.1','localhost'}:raise ValueError('LAN_DAILY_OPERATIONS_REQUIRE_AUTHENTICATED_ADAPTER')
+     from workbench_analysis.operational_successor_release_v1 import recover
+     recover(root)
+-    jobs=DailyJobs(root,executor=lambda day,mode:execute_sources(root,day,mode,cancelled=jobs.publication_cancelled,readback_url=f'http://127.0.0.1:{port}',progress=jobs.checkpoint))
++    from workbench_analysis.operational_daily_executor_v1 import probe_source_revision
++    jobs=DailyJobs(root,executor=lambda day,mode:execute_sources(root,day,mode,cancelled=jobs.publication_cancelled,readback_url=f'http://127.0.0.1:{port}',progress=jobs.checkpoint),source_probe=probe_source_revision)
+     server=ThreadingHTTPServer((host,port),make_daily_handler(root,jobs))
+     jobs.start()
+     try:server.serve_forever()
+diff --git a/src/workbench_service/operational_successor_bff_v1.py b/src/workbench_service/operational_successor_bff_v1.py
+index 594c623e..253d1ecd 100644
+--- a/src/workbench_service/operational_successor_bff_v1.py
++++ b/src/workbench_service/operational_successor_bff_v1.py
+@@ -14,6 +14,8 @@ class OperationalSuccessorBFFV1(OperationalGapBFFV2):
+ 
+     def get(self,path,query):
+         query=dict(query)
++        if 'context_token' in query and query['context_token']!=self.api.token:
++            raise ValueError('CONTEXT_TOKEN_MISMATCH')
+         query.setdefault('trade_date',self.api.candidate['accepted_trade_date'])
+         day=query['trade_date']
+         if day in self.api.candidate['source_registry']:

@@ -18,6 +18,7 @@ def source_readiness(trade_date, now, evidence=None, main_check='18:35',
                    datetime.combine(day, time.fromisoformat(factor_publication), SHANGHAI)
                    + timedelta(minutes=buffer_minutes))
     result = dict(contract_id=CONTRACT, trade_date=trade_date, observed_at=now.isoformat(),
+                  sources=evidence or {},
                   time_eligible=now >= earliest, eligible_at=earliest.isoformat(),
                   source_ready=False, derived_ready=False, published=False,
                   external_acceptance='NOT_GRANTED')

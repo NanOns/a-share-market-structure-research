@@ -208,7 +208,7 @@ class DailyJobs:
         plan=gap_plan(self.root,self.clock())
         with self.connect() as db:
             row=db.execute('SELECT job_id FROM update_jobs ORDER BY created_at DESC LIMIT 1').fetchone()
-            active=db.execute("SELECT job_id FROM update_jobs WHERE mode='CATCH_UP' AND status NOT IN ('PUBLISHED_FULL','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED') ORDER BY created_at LIMIT 1").fetchone()
+            active=db.execute("SELECT job_id FROM update_jobs WHERE mode='CATCH_UP' AND status NOT IN ('PUBLISHED_FULL','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED','QA_BLOCKED') ORDER BY created_at LIMIT 1").fetchone()
             last_catch_up=db.execute("SELECT job_id FROM update_jobs WHERE mode='CATCH_UP' ORDER BY created_at DESC LIMIT 1").fetchone()
         active_record=self.job(active['job_id']) if active else None
         retry_times=[d['next_retry_at'] for d in (active_record or {}).get('days',[]) if d['next_retry_at']]

@@ -127,6 +127,17 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     progress(day,'SOURCE_READY' if readiness['source_ready'] else readiness['status'],result)
     if not readiness['source_ready']:return dict(result,status=readiness['status'],reason=readiness['reason'])
     if capture_only:return result
+    return derive_ready_sources(root,day,result,cancelled=cancelled,readback_url=readback_url,progress=progress)
+
+
+def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=None,progress=lambda *args:None):
+    """Revalidate frozen bytes at the final boundary before any Owner work."""
+    from .r43_owner_replay import checked
+    root=Path(root)
+    artifact=json.loads(checked(root,result['source_freeze']).read_bytes())
+    result,readiness=verify_source_gate(root,day,artifact,result)
+    if not readiness['source_ready']:
+        return dict(result,status=readiness['status'],reason=readiness['reason'])
     progress(day,'DERIVING',result)
     from .operational_daily_ready_owner_v2 import build,seal
     produced,context=build(root,result['source_freeze'],source_readiness=result['source_readiness'])

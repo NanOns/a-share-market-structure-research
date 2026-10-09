@@ -3,7 +3,9 @@ from pathlib import Path
 import gzip,hashlib,json,sys
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'src'))
+sys.path.insert(0,str(ROOT))
 from workbench_analysis.operational_daily_storage_v1 import atomic_json
+from workbench_analysis.market_source_acquisition import official_sessions
 OUT=ROOT/'docs/evidence/dynamic_daily_r2_20261009/minipack'
 def load(p):return json.loads(p.read_bytes())
 def checked(binding):
@@ -39,5 +41,7 @@ def main():
         for sample in data['core']:
             sample['expected']={k:core[sample['security_id']]['fields'][k] for k in sample['expected']}
         atomic_json(ROOT,OUT/'numerical'/f'{day}.json',data)
+    sessions=official_sessions(ROOT)
+    atomic_json(ROOT,OUT/'periods/CALENDAR_STATE_INPUT.json',dict(contract='V4_02_FORMAL_RAW_QFQ_PERIODS_V1',session_dates=sessions,coverage_end=max(sessions),scope='calendar closure only; historical missing-day status counts not independently verified'))
     print('COMPACT_SUPPLEMENT_WRITTEN_WITH_VERIFIED_OWNER_BINDINGS')
 if __name__=='__main__':main()

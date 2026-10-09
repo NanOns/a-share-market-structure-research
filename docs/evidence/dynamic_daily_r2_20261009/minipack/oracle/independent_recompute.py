@@ -1,6 +1,7 @@
 """Offline Python stdlib oracle. Does not import repository producer modules."""
 from pathlib import Path
-from datetime import date
+from datetime import date,timedelta
+import calendar
 from decimal import Decimal
 from statistics import fmean,median
 import argparse,hashlib,json,math
@@ -69,6 +70,8 @@ def run(root):
             checks+=1
             if axis!=market['expected_axis']:errors.append(dict(label=day+'/market_participation',actual=axis,expected=market['expected_axis']))
     period_checks=0
+    calendar_path=root/'periods/CALENDAR_STATE_INPUT.json'
+    calendar_input=read(calendar_path) if calendar_path.is_file() else None
     for c in read(root/'periods/PERIOD_ORACLE_CASES.json'):
         p=c['expected'];bars=c['bars'];basis='raw_ohlc' if c['domain']=='period_raw' else 'qfq_ohlc'
         assert all(b['trade_date']<=c['trade_date'] for b in bars),'PERIOD_FUTURE_BAR'
@@ -76,6 +79,16 @@ def run(root):
             y,w,_=date.fromisoformat(d).isocalendar()
             return d[:7] if p['period_type']=='MONTHLY' else f'{y}-W{w:02d}'
         assert all(period_key(b['trade_date'])==p['period_key'] for b in bars),'PERIOD_MEMBERSHIP_MISMATCH'
+        if calendar_input and c['evidence_kind']!='FIXTURE':
+            dates=[d for d in calendar_input['session_dates'] if period_key(d)==p['period_key']]
+            if p['period_type']=='MONTHLY':
+                y,m=map(int,p['period_key'].split('-'));natural=date(y,m,calendar.monthrange(y,m)[1])
+            else:
+                y,w=p['period_key'].split('-W');natural=date.fromisocalendar(int(y),int(w),7)
+            closed=bool(dates) and calendar_input['coverage_end']>=natural.isoformat() and max(dates)<=c['trade_date']
+            view='CLOSED_ONLY' if closed else 'AS_OF_PARTIAL'
+            checks+=1;period_checks+=1
+            if view!=p['period_view']:errors.append(dict(label=c['trade_date']+'/'+p['period_key']+'/period_view',actual=view,expected=p['period_view']))
         expected=dict(actual_count=len(bars),volume=sum(b['volume'] for b in bars),amount=sum(b['amount'] for b in bars))
         if bars and all(b[basis] for b in bars):
             prices=[[Decimal(str(v)) for v in b[basis]] for b in bars]

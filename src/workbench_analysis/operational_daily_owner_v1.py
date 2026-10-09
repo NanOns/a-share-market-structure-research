@@ -44,8 +44,21 @@ def prepare(root,freeze_binding,*,replay_current=False):
         observations.append(dict(security_id=ident['security_id'],source_security_key=code,trade_date=day,status=state))
     if errors:raise ValueError('DATED_SOURCE_RECONCILIATION_FAILED:'+json.dumps(errors[:10]))
     if not observations:raise ValueError('DATED_SOURCE_EMPTY')
-    folder=root/'data/v4/dynamic_daily_owners'/day/freeze_binding['sha256']
+    snapshot=load(checked(root,parent['membership_snapshot']))
+    current_gbbq=Path('D:/new_tdx/T0002/hq_cache/gbbq')
+    before=current_gbbq.stat();blob=current_gbbq.read_bytes();after=current_gbbq.stat()
+    if (before.st_size,before.st_mtime_ns)!=(after.st_size,after.st_mtime_ns):raise ValueError('GBBQ_CHANGED_DURING_CAPTURE')
+    member_source_hashes={source['address']:sha256_file(Path(source['address'])) for source in snapshot['sources']}
+    generation=dict(contract_id='DYNAMIC_DAILY_OWNER_GENERATION_SCOPE_V1',source_freeze=freeze_binding['sha256'],
+        parent_head=sha256_file(root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'),identity=identity_binding['sha256'],
+        gbbq=hashlib.sha256(blob).hexdigest(),member_sources=member_source_hashes,
+        producer={name:sha256_file(root/'src/workbench_analysis'/name) for name in ('operational_daily_owner_v1.py','operational_owner_adapter_v1.py')})
+    generation_key=hashlib.sha256(json.dumps(generation,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+    folder=root/'data/v4/dynamic_daily_owners'/day/generation_key
     folder.mkdir(parents=True,exist_ok=True)
+    scope_path=folder/'GENERATION_SCOPE.json'
+    if scope_path.is_file() and load(scope_path)!=generation:raise ValueError('OWNER_GENERATION_SCOPE_COLLISION')
+    if not scope_path.is_file():atomic_json(root,scope_path,generation)
     phase_path=root/'reports/v4_phase0/V4_PHASE0_STAGE_RECEIPTS_R5_20260928.json'
     phase=load(phase_path)
     if phase['phase0_status'] not in ('FULL_PASS','DEGRADED_PASS'):raise ValueError('PHASE0_GATE_REQUIRED')
@@ -61,9 +74,7 @@ def prepare(root,freeze_binding,*,replay_current=False):
         next_stage='SEPARATE_CROSS_CUTTING_AMOUNT_AUDIT'))
     # A prior accepted GBBQ cannot substitute for a changed current local action source.
     oldcore=load(root/BASE/'owner_v3/CORE_REPLAY.json')['owners'][0]
-    oldgbbq=oldcore['sources']['gbbq'];current_gbbq=Path('D:/new_tdx/T0002/hq_cache/gbbq')
-    before=current_gbbq.stat();blob=current_gbbq.read_bytes();after=current_gbbq.stat()
-    if (before.st_size,before.st_mtime_ns)!=(after.st_size,after.st_mtime_ns):raise ValueError('GBBQ_CHANGED_DURING_CAPTURE')
+    oldgbbq=oldcore['sources']['gbbq']
     gb=folder/'sources/gbbq';_atomic_write(gb,blob,tdx_root=Path('D:/new_tdx'))
     from tdx.gbbq_reader import read_gbbq
     events=read_gbbq(gb)
@@ -72,7 +83,6 @@ def prepare(root,freeze_binding,*,replay_current=False):
         atomic_json(root,folder/'ACTION_QA_REQUIRED.json',dict(old=oldgbbq,new=ref(root,gb),records=len(events),target_session=day))
         # The unchanged affine oracle below must accept every rebuilt target
         # window before a revision becomes derived-ready.
-    snapshot=load(checked(root,parent['membership_snapshot']))
     membership_changed=False
     for source in snapshot['sources']:
         address=Path(source['address'])
@@ -86,6 +96,7 @@ def prepare(root,freeze_binding,*,replay_current=False):
         for source in snapshot['sources']:
             address=Path(source['address']);before=address.stat();data=address.read_bytes();after=address.stat()
             if (before.st_size,before.st_mtime_ns)!=(after.st_size,after.st_mtime_ns):raise ValueError('MEMBER_SOURCE_CHANGED_DURING_CAPTURE')
+            if hashlib.sha256(data).hexdigest()!=member_source_hashes[source['address']]:raise ValueError('MEMBER_GENERATION_SCOPE_MOVED')
             frozen=folder/'latest_member_raw'/hashlib.sha256(data).hexdigest()/address.name
             _atomic_write(frozen,data,tdx_root=Path('D:/new_tdx'))
             _atomic_write(parse/'T0002/hq_cache'/address.name,data,tdx_root=Path('D:/new_tdx'))
@@ -118,7 +129,7 @@ def prepare(root,freeze_binding,*,replay_current=False):
         from .baostock_supplemental import RequestBudget
         from .operational_baostock_client_v1 import BaoStockClient
         from .operational_runtime_acceptance_v2 import load as load_runtime_acceptance_manifest
-        manifest=load_runtime_acceptance_manifest(root/freeze['runtime_manifest']['path'],project_root=root)
+        manifest=load_runtime_acceptance_manifest(checked(root,freeze['runtime_manifest']),project_root=root)
         with BaoStockClient(RequestBudget(root/'reports/v4_baostock/request_ledger.json'),auth_mode=manifest['auth_mode'],runtime_acceptance_manifest=manifest) as client:
             for target in missing:
                 cache=root/'data/v4/dynamic_daily_sources/dated_universe'/target/'query_all_stock.json'
@@ -244,6 +255,7 @@ def seal(root,context):
         owners=owners,source_counts=context['source_counts'],numeric_core_oracle=ref(root,out/'CORE_REPLAY.json'),
         sector_oracle=owners['sector_receipt'],period_kernel=ref(root,root/'src/workbench_analysis/dm01_incremental_component_builders_r3_3.py'),
         source_freeze=context['freeze'],AS_RECORDED=False,PIT_ELIGIBLE=False,external_acceptance='NOT_GRANTED',
+        generation_scope=ref(root,folder/'GENERATION_SCOPE.json'),
         affected_history='Every saved rolling window and prior coordinate rebuilt from bound native package and GBBQ',
         rotation_validation='VALIDATION_ONGOING',next_stage='AUTHORIZED_CAS_HTTP_READBACK'))
     parent=context['parent'];parentpath=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
@@ -262,7 +274,7 @@ def seal(root,context):
     candidate['owners']=dict(parent['owners'],**{day:owners})
     candidate['source_registry']=dict(parent.get('source_registry',{
         d:dict(lifecycle=parent['owners'][d]['lifecycle'],membership=parent['membership_snapshot']) for d in parent['dates']}),
-        **{day:dict(freeze=context['freeze'],lifecycle=context['lifecycle'],gbbq=owner['sources']['gbbq'],membership=ref(root,folder/'MEMBER_SNAPSHOT_S.json'))})
+        **{day:dict(freeze=context['freeze'],generation=ref(root,folder/'GENERATION_SCOPE.json'),lifecycle=context['lifecycle'],gbbq=owner['sources']['gbbq'],membership=ref(root,folder/'MEMBER_SNAPSHOT_S.json'))})
     policy=load(root/'config/read_only_operational_daily_release_policy_v1_1.json')
     candidate['accepted_algorithm_bindings']=policy.get('accepted_algorithm_bindings',[])
     original_registry=load(checked(root,parent['registry']))
@@ -273,4 +285,6 @@ def seal(root,context):
     candidate['registry']=ref(root,registry)
     candidate['external_review_contract']='DYNAMIC_DAILY_EXTERNAL_ACCEPTANCE_SEPARATE_V1'
     path=folder/'SUCCESSOR_CANDIDATE.json';atomic_json(root,path,candidate)
+    entry=load(folder/'STAGE_ENTRY.json');entry.update(acceptance='DERIVED_READY',evidence=ref(root,receipt),next_stage='AUTHORIZED_CAS_HTTP_READBACK')
+    atomic_json(root,folder/'STAGE_ENTRY.json',entry)
     return candidate,ref(root,path)

@@ -55,7 +55,9 @@ def validate(root, candidate):
     sector=json.loads(checked(root,qa['sector_oracle']).read_bytes())
     if not any(row.get('trade_date')==day for row in sector.get('oracle',[])) or any(row.get('passed') is not True for row in sector['oracle']):
         raise ValueError('SUCCESSOR_SECTOR_ORACLE_NOT_VERIFIED')
-    checked(root,qa['source_freeze']);checked(root,qa['period_kernel'])
+    freeze=json.loads(checked(root,qa['source_freeze']).read_bytes())
+    if freeze.get('target_session')!=day:raise ValueError('SUCCESSOR_SOURCE_FREEZE_DATE_MISMATCH')
+    checked(root,qa['period_kernel'])
     snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
     if snapshot.get('membership_snapshot_id')!=candidate['membership_snapshot_id'] or snapshot.get('PIT_ELIGIBLE') is not False:
         raise ValueError('SUCCESSOR_MEMBERSHIP_LINEAGE_MISMATCH')

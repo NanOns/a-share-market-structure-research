@@ -7,3 +7,5 @@
 发布合同：用户本轮只读日更指令绑定的版本化策略；必须列出已接受且 SHA 未变的算法绑定。每个候选需新日 DERIVED_READY 收据、完整 Owner 和分日来源注册表。CAS 预期旧 SHA，归档精确前驱，再执行真实同 token 的 context、operations/status、stocks、sectors、market、focus HTTP 读回。失败原子回滚；读回未完成就崩溃时启动恢复精确前驱。取消在发布之前生效，已发布日保留。
 
 当前阶段：IN_PROGRESS。证据分别写入 `data/v4/dynamic_daily_owners/<day>/<source_sha>/`、事务日志及 `docs/evidence/dynamic_daily_20261009/`。四项事务故障注入通过仅证明工程事务行为，不代表真实 Owner 或独立外审通过。下一阶段：完成真实冻结来源全链重跑、数值与口径差异审计，然后准入用户绑定策略，再运行新目标日 CAS 与真实浏览器验收。
+
+生成检查点补强：生成目录标识绑定冻结日源、前驱 Head、身份、实际 GBBQ、全部成员源 SHA 和生产器 SHA。任一修订使用新目录，旧产物保持可追溯；runtime manifest 绑定不可变带时间戳版本。四日真实数值等价为 ENGINEERING_PASS，独立外审不签发。

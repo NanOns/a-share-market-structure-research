@@ -57,7 +57,7 @@ def archive():
     final=Path('E:/codex_tmp/DYNAMIC_DAILY_DELIVERY_20261009.zip');temporary=final.with_suffix('.tmp.zip')
     groups=[];group=[];size=0
     for item in payload:
-        if group and size+item['bytes']>128*1024*1024:
+        if group and size+item['bytes']>80*1024*1024:
             groups.append(group);group=[];size=0
         group.append(item);size+=item['bytes']
     if group:groups.append(group)

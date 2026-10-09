@@ -113,7 +113,7 @@ def pytest_collection_modifyitems(session,config,items):
             return psycopg.connect(proof['DSNS'][kind],*args,**kw)
         config._remainder_patch.setattr(module,'psycopg',SimpleNamespace(connect=historical_signal_connect,Error=psycopg.Error))
     if not selected:return
-    root=Path('E:/codex_tmp/test_temp/remainder_historical_stage13')
+    root=Path('G:/codex_tmp/test_temp/remainder_historical_stage13')
     if subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()!='7986acdb4db19e85f55045dbfc692c932d4e1499':raise ValueError('PINNED_HISTORICAL_STAGE13_REQUIRED')
     for module in selected:config._remainder_patch.setattr(module,'ROOT',root)
 
@@ -122,7 +122,7 @@ def pytest_collection_modifyitems(session,config,items):
 def pinned_r15_contract_profile(request,monkeypatch):
     if request.module.__name__.rsplit('.',1)[-1] not in ('test_v4_13_r15_contract','test_v4_13_r15r1_lineage'):return
     from scripts import repair_v4_13_r1_1 as owner,validate_v4_13_r1_1 as validator
-    root=Path('E:/codex_tmp/test_temp/remainder_historical_stage13')
+    root=Path('G:/codex_tmp/test_temp/remainder_historical_stage13')
     monkeypatch.setattr(owner,'ROOT',root);monkeypatch.setattr(validator,'ROOT',root)
 
 
@@ -135,8 +135,7 @@ def bounded_storage_contract_tmp_path(request,tmp_path):
     requires_e=relative.startswith(('tests/fep_e2/','tests/fep_e3/','tests/fep_e4/')) or relative=='tests/test_forward_r2_cli.py'
     if requires_e and DISPOSABLE_BASE.drive.lower()=='g:':
         import tempfile
-        # Frozen engineering writers and the accepted isolated CLI bootstrap
-        # retain their explicit E/F contract. These small outputs stay on E.
+        # The latest user storage instruction requires these outputs on G.
         return Path(tempfile.mkdtemp(prefix='remainder_bounded_engineering_',dir=PG_DISPOSABLE_BASE))
     return tmp_path
 
@@ -182,14 +181,14 @@ def pinned_r25_and_v3_simulation_profiles(request,monkeypatch):
     module=request.module;name=request.node.name
     if name in ('test_actual_authority_inventory_waits_without_target','test_V6_r25_selection_waits_for_real_target'):
         from scripts import validate_r25_preflight as old,validate_r25_preflight_v6 as current
-        root=Path('E:/codex_tmp/test_temp/remainder_entry_checkout')
+        root=Path('G:/codex_tmp/test_temp/remainder_entry_checkout')
         if name.startswith('test_actual'):
             monkeypatch.setattr(module,'selection',lambda:old.selection(root))
         else:
             original=current.selection;monkeypatch.setattr(current,'selection',lambda:original(root))
     if (module.__name__.rsplit('.',1)[-1]=='test_r25_packet' and name=='test_f12_valid_latest_decoy') or module.__name__.rsplit('.',1)[-1].startswith('test_r24r1_'):
         from scripts import r24r1_io as io,r24r1_simulation as simulation,validate_r24r1_activation as oracle
-        root=Path('E:/codex_tmp/test_temp/remainder_r24r1_simulation_profile')
+        root=Path('G:/codex_tmp/test_temp/remainder_r24r1_simulation_profile')
         read,ref,atomic=io.read,io.ref,io.atomic
         for owner in (io,simulation,oracle):
             monkeypatch.setattr(owner,'ROOT',root)
@@ -212,7 +211,7 @@ def pinned_v9_v10_publication_history_profile(request,monkeypatch):
     path=request.node.path.as_posix()
     if not any(path.endswith('/'+name) for name in ('tests/v4_10/test_promotion.py','tests/v4_10/test_accepted_head_r1.py')):return
     from scripts import promote_v4_09_accepted_head as v9,validate_v4_10_promotion_r1 as v10
-    root=Path('E:/codex_tmp/test_temp/remainder_historical_stage13')
+    root=Path('G:/codex_tmp/test_temp/remainder_historical_stage13')
     monkeypatch.setattr(v9,'ROOT',root);monkeypatch.setattr(v10,'ROOT',root)
 
 
@@ -480,7 +479,7 @@ def accepted_observation_projection_replay(request,monkeypatch):
     relative=request.node.path.relative_to(REPOSITORY).as_posix()
     if relative=='tests/v4_dm01_r4r2/test_acceptance_seal.py' and request.node.name=='test_sealed_future_wait_has_no_source_or_publication':
         from scripts import validate_r25_preflight
-        monkeypatch.setattr(request.module,'selection',lambda root:validate_r25_preflight.selection(Path('E:/codex_tmp/test_temp/remainder_entry_checkout')))
+        monkeypatch.setattr(request.module,'selection',lambda root:validate_r25_preflight.selection(Path('G:/codex_tmp/test_temp/remainder_entry_checkout')))
     if relative!='tests/v4_a03_a04_a07_r2/test_payload_governance_r2_1.py' or request.node.name!='test_real_accepted_baseline_r2_1_replay_retains_original_identity':return
     from scripts.forward_remainder_profiles import relative_reference
     import shutil

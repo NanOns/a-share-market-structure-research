@@ -1,7 +1,7 @@
-"""Explicit user-authorized E/G disposable roots; original guard stays intact."""
+"""Explicit user-authorized G-only disposable roots; original guard stays intact."""
 from pathlib import Path
 
-ALLOWED = {Path('E:/codex_tmp/test_temp').resolve(), Path('G:/codex_tmp/test_temp').resolve()}
+ALLOWED = {Path('G:/codex_tmp/test_temp').resolve()}
 
 
 def configure(base):

@@ -1,13 +1,21 @@
 {
   "contract_id": "PROJECT_WORKSPACE_STORAGE_POLICY_V1",
-  "version": "1.0.0",
-  "authority": "EXPLICIT_USER_TEMPORARY_STORAGE_PREFERENCE_20261004",
-  "allowed_temporary_drives": ["E:", "F:"],
+  "version": "1.1.0",
+  "authority": "EXPLICIT_USER_G_ONLY_STORAGE_PREFERENCE_20261009",
+  "allowed_temporary_drives": [
+    "G:"
+  ],
   "C_project_temporary_allocation": "FORBIDDEN",
-  "regression_workspace_root": "E:/codex_tmp",
-  "test_temporary_root": "E:/codex_tmp/test_temp",
-  "scope": ["temporary_checkouts", "regression_workspaces", "test_temporary_directories", "large_project_caches"],
+  "regression_workspace_root": "G:/codex_tmp",
+  "test_temporary_root": "G:/codex_tmp/test_temp",
+  "scope": [
+    "temporary_checkouts",
+    "regression_workspaces",
+    "test_temporary_directories",
+    "large_project_caches"
+  ],
   "planned_dedicated_disk": "USER_PLANNED_3_TB_MECHANICAL_DISK_FOR_PROJECT_DATABASE_AND_STOCK_DATA",
-  "future_disk_paths": "NOT_CONFIGURED",
-  "existing_TDX_source_roots": "READ_ONLY"
+  "future_disk_paths": "G_DRIVE_CONFIGURED_BY_USER",
+  "existing_TDX_source_roots": "READ_ONLY",
+  "new_workspace_root": "G:/codex work"
 }

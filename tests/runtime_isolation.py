@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 
 REPOSITORY = Path(__file__).resolve().parents[1]
-DISPOSABLE_BASE = Path('E:/codex_tmp/test_temp').resolve()
+DISPOSABLE_BASE = Path('G:/codex_tmp/test_temp').resolve()
 MARKER = '.disposable-runtime.json'
 
 def protected_roots():

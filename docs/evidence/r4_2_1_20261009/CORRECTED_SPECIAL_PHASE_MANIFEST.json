@@ -1,0 +1,41 @@
+{
+  "contract_id": "SPECIAL_PHASE_SOURCE_MANIFEST_V1",
+  "version": "1.0.0",
+  "status": "READY",
+  "trade_date": "2026-10-08",
+  "observed_at": "2026-10-09T01:22:47.085314+00:00",
+  "system_available_at": "2026-10-09T01:22:47.085314+00:00",
+  "accepted_v402_external_acceptance": {
+    "path": "reports/v4_02/V4_02_FINAL_EXTERNAL_ACCEPTANCE_R6.json",
+    "sha256": "42286da4305b792f5ecdc0fcc9a9d722e8ab3c23f6b618bf1ba15bd445ca6970"
+  },
+  "accepted_v402_stage_manifest": {
+    "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R6.json",
+    "sha256": "a83f90a0d1acc08e32db5dab049f3bf16a9284e5bf6785cd8f3a2b52aed31678"
+  },
+  "event_store": {
+    "path": "data/v4/bootstrap/special_price_phase_events_r4.jsonl",
+    "sha256": "bb357ad505a6ace734b6b47f4581efa34c582d8bbf82111d933af037ae9ad522",
+    "event_count": 22
+  },
+  "policy": {
+    "path": "config/special_price_phase_policy_r6.json",
+    "sha256": "cffd66e633ee2a34c712ee628dcace2026b49764bc9f593dacd90fe39e183c79",
+    "contract_id": "SPECIAL_PRICE_PHASE_POLICY_V2"
+  },
+  "lifecycle_snapshot": {
+    "path": "docs/evidence/r4_2_1_20261009/CORRECTED_LIFECYCLE_SNAPSHOT.json",
+    "sha256": "4593947107a306394703ef7842a28841a501e6e7daeca491820989cefd3babd9",
+    "source_revision": "f66931aaecfe783f21e2a16cd580f2248951aa3f5afc16edd1903ad7f62afdb0"
+  },
+  "active_event_count": 0,
+  "active_event_ids": [],
+  "newly_effective_event_count": 0,
+  "newly_effective_event_ids": [],
+  "event_status": "NO_NEW_SPECIAL_PHASE_EVENT",
+  "special_phase_runtime_reused": "src/workbench_analysis/special_price_phases.py",
+  "tdx_root_write_count": 0,
+  "manifest_sha256": "8b7dee845bc2e62cdc91e3f1c2895f231dead397ff5269242fd467e970adf733",
+  "AS_RECORDED": false,
+  "production_permission": false
+}

@@ -10,9 +10,23 @@ from workbench_analysis.tdx_snapshot_delta import build_tdx_package_delta
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--target-date',required=True)
-    parser.add_argument('--current-snapshot-id',required=True);args=parser.parse_args()
+    parser.add_argument('--current-snapshot-id',required=True)
+    parser.add_argument('--typed-scope-v2',action='store_true');args=parser.parse_args()
     gate=r.session_gate(args.target_date,datetime.now(timezone.utc).isoformat())
     if gate['status']=='WAIT_MARKET_CLOSE':print(json.dumps(gate));return 0
+    if args.typed_scope_v2:
+        receipt=ROOT/'docs/evidence/r4_2_1_20261009/TDX_A_STOCK_DELTA_V2_RUNTIME_RECEIPT.json'
+        value=json.loads(receipt.read_bytes())
+        r.require(value['acceptance']=='PASS_TYPED_A_STOCK_SCOPE','TYPED_SCOPE_NOT_READY')
+        r.require(value['current_package']['sha256']==args.current_snapshot_id.removeprefix('sha256-'),'TYPED_SOURCE_REVISION_MISMATCH')
+        r.require(value['source_scope_policy']['sha256']==r.sha(ROOT/'config/tdx_a_stock_delta_scope_policy_v2.json'),'TYPED_SCOPE_POLICY_CHANGED')
+        for binding in value['producer_bindings']:r.path(ROOT,binding)
+        target=value['targets'][args.target_date];path=r.path(ROOT,target['binding'])
+        print(json.dumps(dict(status=target['status'],contract_id=value['contract_id'],target_date=args.target_date,
+            target_bar_count=target['target_bar_count'],target_bar_digest=target['target_bar_digest'],
+            delta_path=str(path),delta_sha256=target['binding']['sha256'],receipt=str(receipt),
+            source_scope_admission='CORRECTED_STAGING_ONLY',AS_RECORDED=False,production_permission=False)))
+        return 0 if target['status']=='READY' else 2
     parent=parent_tdx_package(ROOT)
     current=ROOT/'data/v4/source_snapshots/tdx'/args.target_date.replace('-','')/args.current_snapshot_id/'hsjday.zip'
     r.require(args.current_snapshot_id=='sha256-'+r.sha(current),'CURRENT_TDX_SNAPSHOT_HASH_MISMATCH')

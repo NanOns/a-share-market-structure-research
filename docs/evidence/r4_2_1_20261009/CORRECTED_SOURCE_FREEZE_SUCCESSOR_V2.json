@@ -1,0 +1,51 @@
+{
+  "contract_id": "R421_CORRECTED_SOURCE_FREEZE_V2",
+  "target_date": "2026-10-08",
+  "observed_at": "2026-10-09T01:22:47.124914+00:00",
+  "source_families": {
+    "TDX_RAW": {
+      "path": "docs/evidence/r4_2_1_20261009/typed_delta/2026-10-08/delta_v2.json",
+      "sha256": "ae8c15da920115bd02ae4dd92e5c737310b2c60ef4fca2f17a7731f3c3ce59f0",
+      "bytes": 1465003
+    },
+    "GBBQ": {
+      "path": "data/v4/corrected_owner_sources/d5bedb98b2b772c4cdd69dd6dc6845e337e629275963a9a47437cf5f47abacc4/gbbq",
+      "sha256": "d5bedb98b2b772c4cdd69dd6dc6845e337e629275963a9a47437cf5f47abacc4",
+      "bytes": 5613070
+    },
+    "IDENTITY": {
+      "bytes": 3112040,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/artifact.json",
+      "sha256": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf"
+    },
+    "CORE": {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-10-08/core.jsonl.gz",
+      "sha256": "95f6274259d4881cc1be129b962db20b9a742f80c5db1b1873ce1229ede4179f",
+      "bytes": 19800613
+    },
+    "BAOSTOCK_SUPPLEMENTAL": {
+      "path": "data/v4/source_snapshots/baostock/20261008/sha256-3e8fc5901aa51852bd0694d8cbe4cfd9afee45da106c00068ab11ec92378c952/daily_update.json",
+      "sha256": "cd7a28397bcf0c46dcea2bf0c819c88343cd39b3002da4b34c0fa53d4a288f98",
+      "bytes": 2592794
+    },
+    "LIFECYCLE": {
+      "path": "docs/evidence/r4_2_1_20261009/CORRECTED_LIFECYCLE_SNAPSHOT.json",
+      "sha256": "4593947107a306394703ef7842a28841a501e6e7daeca491820989cefd3babd9",
+      "bytes": 1621241
+    },
+    "SPECIAL_PHASE": {
+      "path": "docs/evidence/r4_2_1_20261009/CORRECTED_SPECIAL_PHASE_MANIFEST.json",
+      "sha256": "720c025ce6efcae5fd6d2999bce7e5b142ea52ec08e65a5805ef0e5846b9d9cf",
+      "bytes": 1747
+    }
+  },
+  "AS_RECORDED": false,
+  "production_permission": false,
+  "legacy_project_source_freeze": "NOT_INVOKED_FOR_RETROSPECTIVE_INPUT: IT ASSERTS AS_RECORDED=True",
+  "registry": {
+    "path": "docs/evidence/r4_2_1_20261009/BUILDER_REGISTRY_SUCCESSOR_CANDIDATE_V1.json",
+    "sha256": "10e7e337e493edc2a1a4a24cb3fdb93648fd79ab37be4fc6d076df1adf74b05b",
+    "bytes": 7468
+  },
+  "admission": "CORRECTED_CANDIDATE_ONLY; NO_CURRENT_PRODUCTION_AUTHORITY"
+}

@@ -1,0 +1,50 @@
+{
+  "stage": "R4.2.1",
+  "acceptance": "PASS_TYPED_SCOPE_AND_TAXONOMY_ENGINEERING; PRODUCTION_NOT_ADMITTED",
+  "entry": {
+    "path": "docs/evidence/r4_2_1_20261009/ENTRY_SOURCE_AND_RELEASE_HEAD.json",
+    "sha256": "1e90cc2ebadfaa65c9003ce369cd615ff0b7947de4940b961ee9790de876b1e8",
+    "bytes": 1287
+  },
+  "typed_source": "PASS_TYPED_A_STOCK_SCOPE",
+  "target_counts": {
+    "2026-09-28": 5210,
+    "2026-09-29": 5211,
+    "2026-09-30": 5213,
+    "2026-10-08": 5209
+  },
+  "taxonomy": "PASS_ISOLATION_AND_STOCK_ONLY_REPLAY; SCOPED_TDX_HISTORY_INPUT_MISSING",
+  "actual_gate_trace": {
+    "path": "docs/evidence/r4_2_1_20261009/DM01_TDX_TO_BAOSTOCK_FULL_GATE_TRACE.json",
+    "sha256": "4bb17c0535afa33ddd1b73fe888311eac02911c444462d2f62d2bc63afd1f587",
+    "bytes": 4551
+  },
+  "p1": {
+    "acceptance": "PASS_ENGINEERING_AUDIT_WITH_SCOPED_IDENTITY_AND_PRIOR_GAPS",
+    "next_stage": "INDEPENDENT_SOURCE_OWNER_ADMISSION",
+    "identity_accepted": 0,
+    "production_changed": false,
+    "numeric_samples": 10,
+    "numeric_errors": 0
+  },
+  "successor": {
+    "path": "docs/evidence/r4_2_1_20261009/SCOPED_SUCCESSOR_QA_AND_CAS_READBACK.json",
+    "sha256": "9c4c035f5f558aefb94b3c14a3a245a791457d029e1492afcc28c167eb902e37",
+    "bytes": 2833
+  },
+  "source_requests_this_stage": 20,
+  "protected": {
+    "data/v4/V4_DATA_ACCEPTED_HEAD.json": true,
+    "config/v4_joint_release_authority_v1.json": true
+  },
+  "live_trade_date": "2026-09-30",
+  "single_domain_blockers": {
+    "TDX_HISTORICAL_MEMBERSHIP": "Missing accepted exact-date rows for 9/28,9/29,10/08; mtime insufficient",
+    "BJ": "246 source candidates/101 unresolved/1 new lifecycle require independent identity authority",
+    "BREAKOUT": "No accepted prior absence; actual real runtime episode quality UNKNOWN",
+    "PRICE_LIMIT": "Target dated limit owner not independently accepted",
+    "PRODUCTION": "Current all-nine PIT contract does not permit corrected RAW/Core/Profile subset"
+  },
+  "next_stage": "INDEPENDENT_SCOPED_ADMISSION_REQUEST_REVIEW",
+  "branch": "codex/v4-fp14-r2-repair"
+}

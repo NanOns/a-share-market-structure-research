@@ -1,0 +1,49 @@
+{
+  "contract": {
+    "path": "config/v4_primary_sector_taxonomy_v2.json",
+    "sha256": "4579ea22db97d252a3752a1e44e338a28781f2589bd8adf1130deccfd77b10a8",
+    "bytes": 798
+  },
+  "acceptance": "PASS_ISOLATION_AND_STOCK_ONLY_REPLAY; SCOPED_TDX_HISTORY_INPUT_MISSING",
+  "real_loo_samples": 30,
+  "stock_only_replay": [
+    {
+      "trade_date": "2026-09-28",
+      "rows": 5222,
+      "seed_exact_match": 5222,
+      "prewatch_exact_match": 5222,
+      "stock_only_result_digest": "05a937de18167c18be92b0442b6a76b30f137f42ec907e647b27b4c9495ac528",
+      "csrc_membership_reads": 0,
+      "tdx_membership_reads": 0
+    },
+    {
+      "trade_date": "2026-09-29",
+      "rows": 5223,
+      "seed_exact_match": 5223,
+      "prewatch_exact_match": 5223,
+      "stock_only_result_digest": "ffb9a1912528af13638ce7a9429232bcda496e4e9eb85c81b3e6d232aac6ec9c",
+      "csrc_membership_reads": 0,
+      "tdx_membership_reads": 0
+    },
+    {
+      "trade_date": "2026-09-30",
+      "rows": 5224,
+      "seed_exact_match": 5224,
+      "prewatch_exact_match": 5224,
+      "stock_only_result_digest": "2f24484032e3cbacff291b22dfa4ae61a2cbc65d7dda144c64c2da7ba186497c",
+      "csrc_membership_reads": 0,
+      "tdx_membership_reads": 0
+    },
+    {
+      "trade_date": "2026-10-08",
+      "rows": 5224,
+      "seed_exact_match": 5224,
+      "prewatch_exact_match": 5224,
+      "stock_only_result_digest": "4fbc4db3926cfce0f2793acc2e4e1bec92330451ffdbf5858f0ed3e56c8c647c",
+      "csrc_membership_reads": 0,
+      "tdx_membership_reads": 0
+    }
+  ],
+  "next_stage": "SCOPED_SUCCESSOR_QA",
+  "production_admission": false
+}

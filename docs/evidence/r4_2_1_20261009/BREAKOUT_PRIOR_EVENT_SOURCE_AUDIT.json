@@ -1,0 +1,1871 @@
+{
+  "contract": "R4_2_1_BREAKOUT_PRIOR_SOURCE_AUDIT_V1",
+  "corrected_runtime": [
+    {
+      "trade_date": "2026-09-28",
+      "runtime": {
+        "bytes": 31889793,
+        "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-28/structure/runtime_security.jsonl.gz",
+        "sha256": "a4a9446885e381814336bc1c8fedc4545edbf0a39b011fb06dde5993e5d5435d"
+      },
+      "manifest": {
+        "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-28/structure/runtime_manifest.json",
+        "sha256": "375ef63345b924314c995d185a2496c0cb3a67929d9016c203baa7cc5e03c7fd",
+        "bytes": 6176
+      },
+      "rows": 5222,
+      "breakout_counts": {
+        "UNKNOWN": 5222
+      },
+      "absence_quality": {
+        "UNKNOWN": 5222
+      },
+      "event_count": 182,
+      "episode_count": 0,
+      "real_event_samples": [
+        {
+          "anchor_id": "0db8db93f80cf623e71eeadd37789cf1f24a6f5b318dc0c0bd58623c467374be",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-28",
+          "event_id": "4f4205050d45801fbb78f2e27de1e8354b44ca73985882815416d1a8d6ebaae5",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-005EA670068174623A3C365FCA9A8B2D",
+          "source_fact_digest": "dcb3c51822f6cb8d36f654f9fab81cf078cb8a52ba029b0d1d324719a9922a07"
+        },
+        {
+          "anchor_id": "a7877519496499f2433f6655bc967e1f21258f373777391fa080ccb00d6dd424",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-28",
+          "event_id": "82fd2b75ece512137047a3463c772e87c02f7c9031829f29361d81e852f38259",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-005EA670068174623A3C365FCA9A8B2D",
+          "source_fact_digest": "dcb3c51822f6cb8d36f654f9fab81cf078cb8a52ba029b0d1d324719a9922a07"
+        },
+        {
+          "anchor_id": "8391176bd771c3f737a23c742c448958d6b3d19c8e6f6c003d5f97af4b1c1b1b",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-28",
+          "event_id": "89376a7935a462698b20d2fdb3545878ba1a38a1d995e72b1c39f488123b104a",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-03314BF998B2380880E2F17B9B816BDA",
+          "source_fact_digest": "78ab852ad1e05e3c2b3a13f91c9d74a6f791f34bd78dd16abc75d26ee19c46c0"
+        },
+        {
+          "anchor_id": "d95b2b3a6e1adf29b35bc992bcc70dda000e2ffa09350f27cb398b94ae7d7589",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-28",
+          "event_id": "3cb8096255c952e24eb4a04b6ae5a965395719a638d2ac1e288706805c3dc2e2",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-03314BF998B2380880E2F17B9B816BDA",
+          "source_fact_digest": "78ab852ad1e05e3c2b3a13f91c9d74a6f791f34bd78dd16abc75d26ee19c46c0"
+        },
+        {
+          "anchor_id": "8bd61840bfd850100f8c13cb11ff7f571a38d1040864eb24a292c91c30b73a62",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-28",
+          "event_id": "51fcc6b23f911073124c1a87ab7d288e18aa029bd604706c5811db9f854e1784",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-043473D20167BBE2EB87A5F8CA618EA4",
+          "source_fact_digest": "a8818ec95e9f6fe65913ade98cd53ae5916018bc370110e82cea8cfc6f00ff12"
+        },
+        {
+          "anchor_id": "2501715d3a21799990599c76f579a0f9e0ebd464f561a0cf95cdafe8e699f183",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-28",
+          "event_id": "041d0b35cfdd2f8b151609d38dd8d383749b351f5830254bf0f7d9ff76bac13a",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-043473D20167BBE2EB87A5F8CA618EA4",
+          "source_fact_digest": "a8818ec95e9f6fe65913ade98cd53ae5916018bc370110e82cea8cfc6f00ff12"
+        },
+        {
+          "anchor_id": "f03ca1cf8ebf92ede75c8d7f6d40dd5c3f7ecad7b1b1f067b2f50a6527df3ede",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-28",
+          "event_id": "567c84183e589ec88a9dcfa3995ae7f740d77d72c63cc5946dd39db2c3360da8",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-1444677F085CB5F8778705780CDBFBC6",
+          "source_fact_digest": "330b6f05a1b996ec96eef10a9d8c3eedcd9c2dfec3c12414e73663a30f4595f9"
+        },
+        {
+          "anchor_id": "5daeabbaee842c8b86deaaa441c66ef5cf3e6e936c46e3555eac10ae6c7a39bb",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-28",
+          "event_id": "38ff6a382d902231b64d57c9c8055ee06eeb9693d252e1f1cfab522199ddf0a3",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-1444677F085CB5F8778705780CDBFBC6",
+          "source_fact_digest": "330b6f05a1b996ec96eef10a9d8c3eedcd9c2dfec3c12414e73663a30f4595f9"
+        },
+        {
+          "anchor_id": "a9f1790812cd47ed6fc6c8b40dac51e6c407bbdbad405e0dfe5656e195f06298",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-28",
+          "event_id": "14e7a1003d6383abc9ee33dfd7ccc89a85fa73210ab366ed74884e89da741d7b",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-1BD7FFCDBB3CB39AA9AF4A4CBDE6BB45",
+          "source_fact_digest": "519f60596aef1a5f1255eda8486dbd47fcac7abf3b10d4cbba2a548da423a880"
+        },
+        {
+          "anchor_id": "8cdd1c0090187382226175d85efa0c15c8576d4a6bcd8bc6b0ebf7b80ccfeca6",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-28",
+          "event_id": "0adf83cfcd0679e20290edd575a716007965359d1738206bae7ecf9053c877c6",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-1BD7FFCDBB3CB39AA9AF4A4CBDE6BB45",
+          "source_fact_digest": "519f60596aef1a5f1255eda8486dbd47fcac7abf3b10d4cbba2a548da423a880"
+        }
+      ],
+      "prior": null,
+      "unknown_reason_counts": {
+        "[\"NO_ACCEPTED_PRIOR_D1_PUBLICATION\", \"NO_KNOWN_EMPTY_BREAKOUT_EPISODE\"]": 5200,
+        "[\"UNKNOWN_REQUIRED_OBSERVATION\"]": 12,
+        "[\"CORRECTED_FIELD_UNAVAILABLE\"]": 10
+      }
+    },
+    {
+      "trade_date": "2026-09-29",
+      "runtime": {
+        "bytes": 33868931,
+        "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/structure/runtime_security.jsonl.gz",
+        "sha256": "575f0cb069c9872a6c9f8e8b20d6610d10e26afd41f3f1215b46a8f9f28228a5"
+      },
+      "manifest": {
+        "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/structure/runtime_manifest.json",
+        "sha256": "7bb6d0c58f0335ffdc2b4effa7160ab21a9d837693e874e2f591e1812f684e57",
+        "bytes": 6425
+      },
+      "rows": 5223,
+      "breakout_counts": {
+        "UNKNOWN": 5223
+      },
+      "absence_quality": {
+        "UNKNOWN": 5223
+      },
+      "event_count": 393,
+      "episode_count": 0,
+      "real_event_samples": [
+        {
+          "anchor_id": "81302ee7c8ffdbe9ed06acf2997de6c2c153a5615182fa61ec11e778e7cdaad9",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-29",
+          "event_id": "7dccc42bab88b86a21dce19841afb9ed6bcf89adb9e8d8c5a533d4cc38c2ce5a",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-05D17AC0C8FF45DCA23BC336F6920412",
+          "source_fact_digest": "b8126098a6572e386ca9a0c9ecf36290ceff08f7e7a6dd9f4cd132f6459cf932"
+        },
+        {
+          "anchor_id": "3c10464651df00e1ff83435b225e196083547a0356b2382658ef9d35ff9daec5",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-29",
+          "event_id": "655e011242486e7ab91b1005d62d09cc8b02949e1ab52c4f0e7285f3bbd00b77",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-05D17AC0C8FF45DCA23BC336F6920412",
+          "source_fact_digest": "b8126098a6572e386ca9a0c9ecf36290ceff08f7e7a6dd9f4cd132f6459cf932"
+        },
+        {
+          "anchor_id": "40a48d66213931a7205d2debcbffc9e6bdf785bf46ef65efa6e3cf54cad22c45",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-29",
+          "event_id": "97fccb52437f9bf5e319a2539d1fdba7455cdc59535b311c07d3393efaf558b8",
+          "event_type": "GAP_REGISTERED",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-05D17AC0C8FF45DCA23BC336F6920412",
+          "source_fact_digest": "b8126098a6572e386ca9a0c9ecf36290ceff08f7e7a6dd9f4cd132f6459cf932"
+        },
+        {
+          "anchor_id": "3974df4dcae070b3e5d3b7680ac2d53f6d6d02b7785a1cded13f886dcb4304a3",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-29",
+          "event_id": "2753ac05191f727aaf72305233a66c5550105a5c0d3b4dd5b29638ff61c8dcde",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-07B6F071313AAAB7755DE3E8764FA9B2",
+          "source_fact_digest": "f671ae348f35001cd1eafe96f28c07e08d90197f7ca0ddc80c6c17142655380b"
+        },
+        {
+          "anchor_id": "17c3a28ea103122bbfd2301c860bec9174e5564071a4bffe60a71969f58005ef",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-29",
+          "event_id": "c542eb4930db1b3f4cb29c56c2ffd29dd9f20a63b5cb8e9fc3d46d939b791bd1",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-07B6F071313AAAB7755DE3E8764FA9B2",
+          "source_fact_digest": "f671ae348f35001cd1eafe96f28c07e08d90197f7ca0ddc80c6c17142655380b"
+        },
+        {
+          "anchor_id": "f2674d8b14c07a6a22038f9b975762bd03a5b1aa7ab4e44d1851c1ab7351e387",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-29",
+          "event_id": "c811712d209496248c8067fe8a0db3ab2f1b367ee236ec5910c568cb2619ff09",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-0ADE26C75239A6120EFC404DBFC85217",
+          "source_fact_digest": "cfb61c3645af4561c0d46a477359d2ffd379660c2d54887bc825cdf807afe2f6"
+        },
+        {
+          "anchor_id": "f1a413caee4f530831fa8a3e80eeb077618e39b2c2620a04e2a5d5bee6886072",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-29",
+          "event_id": "9f35f44d927146f5b969ffb0e15ebbcc13e05f2922075c1de1274bbb2063cbc3",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-0ADE26C75239A6120EFC404DBFC85217",
+          "source_fact_digest": "cfb61c3645af4561c0d46a477359d2ffd379660c2d54887bc825cdf807afe2f6"
+        },
+        {
+          "anchor_id": "4948b3549813eae36e42481ccf3f2ac247be635c5f5e358b8dc15fc101895d03",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-29",
+          "event_id": "e1c2047ea32a1a8a0c99706d0d6862d90246335fa28f8defc32aa74bcdf5a3bc",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-113544064D8ED3C2869CC86505748267",
+          "source_fact_digest": "d41e7d3852eba12454255ca0cd0981650a3f3416ccba564d32ba799d2c1684e8"
+        },
+        {
+          "anchor_id": "a0de47f348f5536e93bdccbb5d8160ea3e8fa989554a44d57426604ded19d316",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-29",
+          "event_id": "36bf42dac2bd9eec5a2d74167f51c9514326020a2576f8826dea9f0ad0197a61",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-113544064D8ED3C2869CC86505748267",
+          "source_fact_digest": "d41e7d3852eba12454255ca0cd0981650a3f3416ccba564d32ba799d2c1684e8"
+        },
+        {
+          "anchor_id": "77e950e4b5af19341657b486fd02e69b8f5ab5bc8580beefdd7e321740549e87",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-29",
+          "event_id": "9c302989bbfe3419aa5fb3e4a24b58cb500fa79dc01cbddcae4d6c8be42972b7",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-11386EF7469DDAA5F9B775CE62403999",
+          "source_fact_digest": "218d7aa5d077489fb67215be95d7b0b72fa9de16d8896207e3a2c7604e950eab"
+        }
+      ],
+      "prior": {
+        "frozen_manifest_episode": {
+          "bytes": 1683,
+          "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-28/structure/frozen_d1_episode_manifest.json",
+          "sha256": "dc3aadae79ab2cba580cd6b6b27c5bc5aebf5c86477ed123da2192892f40bdfb"
+        }
+      },
+      "unknown_reason_counts": {
+        "[\"NO_ACCEPTED_PRIOR_D1_PUBLICATION\", \"NO_KNOWN_EMPTY_BREAKOUT_EPISODE\"]": 5200,
+        "[\"UNKNOWN_REQUIRED_OBSERVATION\"]": 12,
+        "[\"CORRECTED_FIELD_UNAVAILABLE\"]": 11
+      }
+    },
+    {
+      "trade_date": "2026-09-30",
+      "runtime": {
+        "bytes": 35083282,
+        "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-30/structure/runtime_security.jsonl.gz",
+        "sha256": "f9129d4742b20086b7ca7c3ff9f957d9ba3b2e56646529590d4e3b8296bed6c3"
+      },
+      "manifest": {
+        "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-30/structure/runtime_manifest.json",
+        "sha256": "660027217df4044f3d02e80918d25a8f07ae00ba1137b917ad4b6d304c98b1e3",
+        "bytes": 6427
+      },
+      "rows": 5224,
+      "breakout_counts": {
+        "UNKNOWN": 5224
+      },
+      "absence_quality": {
+        "UNKNOWN": 5224
+      },
+      "event_count": 393,
+      "episode_count": 0,
+      "real_event_samples": [
+        {
+          "anchor_id": "b48aa9f2091a46893acaa32398b5c5ad9cc6ecc5d03b5237d108a9120282378b",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-30",
+          "event_id": "e5d7e0c0100b19f29a6455c5bb4ae7e0f7180330fcae0cadd015fd47c1ec9ec9",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-0051683845B17D59641B7D1DC261FE2A",
+          "source_fact_digest": "908d3e3dea3cac07ad9e3123509c1bfa93ff2cc4e61a1ce8919f5045332a0ee9"
+        },
+        {
+          "anchor_id": "09bacaef79e9dd441f3159379b9d1a9aa2b68bca71b36902495d6e4ba0317d1e",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-30",
+          "event_id": "50622eb7ee9465df2baec1ada8348d002439899e51db658bb46034261e8cf5da",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-0051683845B17D59641B7D1DC261FE2A",
+          "source_fact_digest": "908d3e3dea3cac07ad9e3123509c1bfa93ff2cc4e61a1ce8919f5045332a0ee9"
+        },
+        {
+          "anchor_id": "c3157c53716417b470e2cccb2ebaace0c6bcdfe1e1f2bb6e7e347e85cd76a004",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-30",
+          "event_id": "bbde6cb8388748625496af1e529b98f905c06298561efa069260537976b1d016",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-0133C24DA4D131FD193B382B8FF9E57C",
+          "source_fact_digest": "1cb336911fdccfa35e822ab0542bbc5b2259758afe4e369590917ba20eb2fe90"
+        },
+        {
+          "anchor_id": "8c13f876ac38b522d5b07567419d2531530ed2b8c1ed68e154be70f073ddbfa9",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-30",
+          "event_id": "df651b59d2a442463e3157be6d32252e844ebc4f889c16408dedd2f22f66adc5",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-0133C24DA4D131FD193B382B8FF9E57C",
+          "source_fact_digest": "1cb336911fdccfa35e822ab0542bbc5b2259758afe4e369590917ba20eb2fe90"
+        },
+        {
+          "anchor_id": "3851e85666a8084d67c0f1e59a227f3164b73241257971c241901b9703a83b5a",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-30",
+          "event_id": "080725c357043cfe57d7570aecadc3ad7acdfdcea96295d1261946cebb54d18b",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-01AE565AAB38D6DBE68548A166DA9001",
+          "source_fact_digest": "47b7ecb1d9ac9997c041b06ca5b46c1713893ad6658bf75d90a130cec11b8182"
+        },
+        {
+          "anchor_id": "6c89db636b3a562223fa850b9ac4a18c34bd3bb43b1cda5b7f82795b92d45434",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-30",
+          "event_id": "3a20bf3b5ccbe52d1263c4ab8c70832569661680dc4b31c1feca1327a1701d06",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-01AE565AAB38D6DBE68548A166DA9001",
+          "source_fact_digest": "47b7ecb1d9ac9997c041b06ca5b46c1713893ad6658bf75d90a130cec11b8182"
+        },
+        {
+          "anchor_id": "dc1f89e08cb3fb1c66b109378390665d8aef9c6dc1d34f71dd214c9f0e557176",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-30",
+          "event_id": "ce99a5ceded721f638e51c2722cfcdfadcf360b431dd89aba0ae58c9c1b55e2f",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-043473D20167BBE2EB87A5F8CA618EA4",
+          "source_fact_digest": "07adea8367a053c699ed4267aed813258500d3dde8f4b540ff18a8dc977b2644"
+        },
+        {
+          "anchor_id": "4a0538c688d3ac4e45040b644c512debdd4342e97e879ab8d81aa127f318d40a",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-30",
+          "event_id": "92ecb09d41fc0e96f19193878e4fdcf2ffdb1d89b238742414ec601fa3362c10",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-043473D20167BBE2EB87A5F8CA618EA4",
+          "source_fact_digest": "07adea8367a053c699ed4267aed813258500d3dde8f4b540ff18a8dc977b2644"
+        },
+        {
+          "anchor_id": "be8ed3976f4de3d38f6268fbba93865261705e23707617e03dbd71aaa483629f",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-30",
+          "event_id": "138c156bdd9801c66fcb44f6d360d2036d8d3339c2432e73204df8319eaae19a",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-04CCDCBE8CA51C23C1E2D0E623BF515A",
+          "source_fact_digest": "5924dd2d36d0872ccbf5ffe13b28a10eee8c8a43b8e3e676143b718a52fc5bc7"
+        },
+        {
+          "anchor_id": "775f57ea932c0fef8c5637fd74a7a0ca6c7facaf43f527ca71126108e04b6ab1",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-09-30",
+          "event_id": "4d95ce525398dd81091e76875d052e7df195a654480b3e25f1ad4ed4852799f8",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-04CCDCBE8CA51C23C1E2D0E623BF515A",
+          "source_fact_digest": "5924dd2d36d0872ccbf5ffe13b28a10eee8c8a43b8e3e676143b718a52fc5bc7"
+        }
+      ],
+      "prior": {
+        "frozen_manifest_episode": {
+          "bytes": 1683,
+          "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/structure/frozen_d1_episode_manifest.json",
+          "sha256": "bbfc413bae1d649ce4ba34f49cc26382ca505b55d0fe82c5d51fed8f67c32472"
+        }
+      },
+      "unknown_reason_counts": {
+        "[\"NO_ACCEPTED_PRIOR_D1_PUBLICATION\", \"NO_KNOWN_EMPTY_BREAKOUT_EPISODE\"]": 5201,
+        "[\"UNKNOWN_REQUIRED_OBSERVATION\"]": 11,
+        "[\"CORRECTED_FIELD_UNAVAILABLE\"]": 12
+      }
+    },
+    {
+      "trade_date": "2026-10-08",
+      "runtime": {
+        "bytes": 36330378,
+        "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-10-08/structure/runtime_security.jsonl.gz",
+        "sha256": "4e5401f039411aa7d1b6962b2406acaed6f15e2bf961e649554e850780641b6f"
+      },
+      "manifest": {
+        "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-10-08/structure/runtime_manifest.json",
+        "sha256": "d92a0f2e0c637b3cc753b1f90faf72715060707b1dfd454c81142c8ac718d733",
+        "bytes": 6427
+      },
+      "rows": 5224,
+      "breakout_counts": {
+        "UNKNOWN": 5224
+      },
+      "absence_quality": {
+        "UNKNOWN": 5224
+      },
+      "event_count": 409,
+      "episode_count": 0,
+      "real_event_samples": [
+        {
+          "anchor_id": "dbf9c83770e6fb40ed7b391b1f06d48635b75f652632d5e279a4cd93ff7f1ccc",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-10-08",
+          "event_id": "b3d55f966d7f0a7b0ebcb1b9a63c7f9b6609c781a0ac0774f83c4b1a659b95d4",
+          "event_type": "GAP_REGISTERED",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+          "source_fact_digest": "c0c38d38adf1957ef79dd8845c3d782a108bac70f83a5be6ab09ece5858bd345"
+        },
+        {
+          "anchor_id": "b8f223e189ba80c99a7a6946eac1b75c423fcc5ba72a4c9100706b962d4923cd",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-10-08",
+          "event_id": "2004e282949e4535478d2504423b4c6948c82634272cba873f0b57c8e0c988fd",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-01759C0DD3567723A74069E26F961A95",
+          "source_fact_digest": "3abe4267a4d763241ca603d63c74c54461808c059923948dfccf6bbefda588e6"
+        },
+        {
+          "anchor_id": "f4ff015ebb38c8285ab009a630552049b2367f103d69635aac5a1724065c3e75",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-10-08",
+          "event_id": "51f6c4964132cb3db67002cd42ce1edc0f90f99d5a29f6ebd9aa9e7688f28993",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-01759C0DD3567723A74069E26F961A95",
+          "source_fact_digest": "3abe4267a4d763241ca603d63c74c54461808c059923948dfccf6bbefda588e6"
+        },
+        {
+          "anchor_id": "320f23976f3c4c0d696de5ed2adea7511e0645bf9ba6f70b48d33e8729e91406",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-10-08",
+          "event_id": "a39dfd3fade0f0c3a55032e084c9e1f3b3e9f1e0fffd29de1693808692c8ef81",
+          "event_type": "GAP_REGISTERED",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-01759C0DD3567723A74069E26F961A95",
+          "source_fact_digest": "3abe4267a4d763241ca603d63c74c54461808c059923948dfccf6bbefda588e6"
+        },
+        {
+          "anchor_id": "b50a91b320278e74091442743842d45547bf55401d4104e8e9c300bb6c12ca6c",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-10-08",
+          "event_id": "9b2428559dc4d7c629ce09930053b72fbb186a81412ae257a75430118c6703eb",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-01A43DE232AC7DE094EC000A597C049A",
+          "source_fact_digest": "36f5317bc59f63269fd2fec74937969747271c7f8008dd81ba988ebea406665b"
+        },
+        {
+          "anchor_id": "f8242dc9f6efa5e2061cb50cf7ca3019c5f595ecfbb49d0b25dc1dd337bdf277",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-10-08",
+          "event_id": "70bb15328633146be62deecaac9caa7c3659a7ff43cdfa763eedbb20306ef25f",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-01A43DE232AC7DE094EC000A597C049A",
+          "source_fact_digest": "36f5317bc59f63269fd2fec74937969747271c7f8008dd81ba988ebea406665b"
+        },
+        {
+          "anchor_id": "f442298c56ca91b41065d1a77337fc4f21c29bb6142e0a1b508b0c5d6217b553",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-10-08",
+          "event_id": "219fbf47b68c9f6df1875e7e13ef43fb29dea0fc1786b8099b220cfc34ad0110",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-043473D20167BBE2EB87A5F8CA618EA4",
+          "source_fact_digest": "37b223639397c5660917ef29b82523aecd7a06220975b527721b1f4763df39e4"
+        },
+        {
+          "anchor_id": "b5d8a2291804f71807f88146e8415f8aa49ce982298d3f7e679b901f1475a74d",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-10-08",
+          "event_id": "c96baa77a28d033407ba262593088f230c9da56cd10a7f4426a9fe33cfc86c47",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-043473D20167BBE2EB87A5F8CA618EA4",
+          "source_fact_digest": "37b223639397c5660917ef29b82523aecd7a06220975b527721b1f4763df39e4"
+        },
+        {
+          "anchor_id": "be87ef86922ea2e4d12c6ccbbc91654ad1aa54d95d9a2c6489cc07d805980994",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-10-08",
+          "event_id": "96581296b3ef6bcf15b7341c47b80745c2f8a65092247b43602f7f08710d1607",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-05526F6F8CD9814DDB1A8BEB69D84564",
+          "source_fact_digest": "7997e1c8621548a4998c109d196198f0e36a37b612bc24691713544a3915d479"
+        },
+        {
+          "anchor_id": "bb33fa15b658a1a35ada0ad235d4c0dfbedf50eb3f67e8c01908300e41db4ca1",
+          "available_at": "2026-10-09T00:14:05.347296+00:00",
+          "candidate_only": true,
+          "contract_id": "STRUCTURE_EVENT_V1",
+          "created_trade_date": "2026-10-08",
+          "event_id": "80fca725804098339fa434cafa88217270f4fedbe50ec5a94c07e0b5c30f5068",
+          "event_type": "BULLISH_IMPULSE",
+          "frozen_invalidation_ast": {
+            "args": [
+              {
+                "field": "episode_owns_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "deep_breach"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "breach_count"
+                      },
+                      {
+                        "parameter_id": "support_break_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          },
+          "observation_revision": "r1",
+          "parameter_set_digest": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024",
+          "prior_session_event_id": null,
+          "quality": "KNOWN",
+          "security_id": "SEC-05526F6F8CD9814DDB1A8BEB69D84564",
+          "source_fact_digest": "7997e1c8621548a4998c109d196198f0e36a37b612bc24691713544a3915d479"
+        }
+      ],
+      "prior": {
+        "frozen_manifest_episode": {
+          "bytes": 1683,
+          "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-30/structure/frozen_d1_episode_manifest.json",
+          "sha256": "da3e06ff65008f0d9bb242cec28381bf31c24018601a7177ae127b97a5ae908d"
+        }
+      },
+      "unknown_reason_counts": {
+        "[\"NO_ACCEPTED_PRIOR_D1_PUBLICATION\", \"NO_KNOWN_EMPTY_BREAKOUT_EPISODE\"]": 5199,
+        "[\"UNKNOWN_REQUIRED_OBSERVATION\"]": 15,
+        "[\"CORRECTED_FIELD_UNAVAILABLE\"]": 10
+      }
+    }
+  ],
+  "real_historical_runtime": [
+    {
+      "source": {
+        "path": "reports/v4_12_runtime_r13/real/2026-09-29/r1/runtime_security.jsonl.gz",
+        "sha256": "285ccffce14e59d6e57eb09186d8e355f64915105ebfa8195bdccde67e32b61b",
+        "bytes": 31566624
+      },
+      "rows": 5224,
+      "event_count": 0,
+      "episode_count": 0,
+      "episode_set_quality": {
+        "UNKNOWN": 5224
+      },
+      "real_event_samples": [],
+      "real_episode_samples": []
+    },
+    {
+      "source": {
+        "path": "reports/v4_12_runtime_r13/real/2026-09-30/r1/runtime_security.jsonl.gz",
+        "sha256": "ea489cd86c02ebbe91febf1ce4ace8d1da4ac54c92204c7bb706a3e7bcaa6f38",
+        "bytes": 32785793
+      },
+      "rows": 5224,
+      "event_count": 0,
+      "episode_count": 0,
+      "episode_set_quality": {
+        "UNKNOWN": 5224
+      },
+      "real_event_samples": [],
+      "real_episode_samples": []
+    }
+  ],
+  "implementation": [
+    {
+      "path": "src/workbench_analysis/corrected_structure_replay.py",
+      "sha256": "5120f708278730556706f89820d8bd2ad785a1d6275bae5b16234668e14638a2",
+      "bytes": 13393
+    },
+    {
+      "path": "src/workbench_analysis/v4_12_breakout_episode.py",
+      "sha256": "49d024ec70542f318f8a66e3156374766c0a23c78be9b3460294b302183b83ea",
+      "bytes": 8613
+    }
+  ],
+  "root_cause": "Corrected replay starts prior=None on 2026-09-28 and engineering_empty_seed=False. Breakout creation requires KNOWN episode absence. UNKNOWN absence propagates through successors; OHLC trigger or empty event list does not establish prior absence.",
+  "repair_disposition": "NO_UNKNOWN_TO_FALSE_PATCH; missing accepted predecessor/complete episode coverage is source admission issue",
+  "production_changed": false,
+  "acceptance": "REAL_HISTORY_SCANNED_SOURCE_GAP_EXPLICIT"
+}

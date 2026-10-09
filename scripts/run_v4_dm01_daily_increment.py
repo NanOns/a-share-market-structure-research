@@ -106,6 +106,8 @@ def main() -> int:
                         help="Run versioned R4 corrected source capture independently of canonical admission.")
     parser.add_argument('--corrected-owner-repair', action='store_true',
                         help='Run the versioned reconstructed owner branch; preserve original PIT and live heads.')
+    parser.add_argument('--typed-scope-v2',action='store_true',
+                        help='Versioned typed source and corrected-only capture; cannot promote old PIT head.')
     args = parser.parse_args()
     if args.corrected_owner_repair:
         from workbench_analysis.corrected_owner_pipeline import run_corrected_owner_pipeline
@@ -174,13 +176,37 @@ def main() -> int:
             delta_code, tdx_delta_build = _run_json_cli(
                 "scripts/build_dm01_r4_tdx_delta.py", "--target-date", args.target_date,
                 "--current-snapshot-id", str(tdx.get("snapshot_id") or ""),
+                *(['--typed-scope-v2'] if args.typed_scope_v2 else []),
             )
             if delta_code != 0:
                 tdx_delta_build = {**tdx_delta_build, "status": tdx_delta_build.get("status", "BLOCKED_TDX_DELTA_NOT_READY")}
             if delta_code == 0 and tdx_delta_build.get("status") == "READY":
-                bao, bao_smoke, bao_error = _run_baostock_daily_capture(args.target_date)
-                runtime_manifest, runtime_error = _runtime_acceptance(args.target_date)
+                if args.typed_scope_v2:
+                    from workbench_analysis.dm01_corrected_source_capture_v2 import corrected_baostock_capture
+                    source,runtime_manifest,bao_error=corrected_baostock_capture(ROOT,args.target_date,args.receipt_dir/args.target_date/'baostock_v2')
+                    if source:
+                        snapshot=ROOT/'data/v4/source_snapshots/baostock'/args.target_date.replace('-','')/source['snapshot_id']/'daily_update.json'
+                        bao=json.loads(snapshot.read_bytes());bao_smoke=dict(status='ACCEPTED',scope='CORRECTED_READ_CAPABILITY_ONLY')
+                    else:bao_smoke=dict(status='BLOCKED',reason=bao_error)
+                    probe_code,gbbq_probe=_run_json_cli('-m','scripts.probe_v4_dm01_gbbq_revision','--target-date',args.target_date)
+                else:
+                    bao, bao_smoke, bao_error = _run_baostock_daily_capture(args.target_date)
+                    runtime_manifest, runtime_error = _runtime_acceptance(args.target_date)
             if bao is not None:
+                if args.typed_scope_v2:
+                    from workbench_analysis.dm01_sources_r4 import lifecycle as corrected_lifecycle
+                    try:
+                        lifecycle_snapshot=corrected_lifecycle(ROOT,args.target_date,bao,now.isoformat())
+                        lifecycle_receipt=dict(status=lifecycle_snapshot['status'],consumer_scope='CORRECTED_ONLY',AS_RECORDED=False)
+                    except (ValueError,OSError,KeyError) as error:
+                        lifecycle_receipt=dict(status='BLOCKED_CORRECTED_LIFECYCLE',reason=str(error))
+                    special_code,special_phase_receipt=_run_json_cli('-m','scripts.build_v4_dm01_special_phase_manifest','--target-date',args.target_date)
+                    if special_code==0 and special_phase_receipt.get('manifest_path'):
+                        special_phase_snapshot=json.loads(Path(special_phase_receipt['manifest_path']).read_bytes())
+                else:
+                    lifecycle_snapshot = None
+                # Legacy source commands retain their original accepted manifest gate.
+            if bao is not None and not args.typed_scope_v2:
                 lifecycle_code, lifecycle_receipt = _run_json_cli(
                     "scripts/build_v4_dm01_lifecycle_snapshot.py", "--target-date", args.target_date,
                     "--baostock-snapshot-id", str(bao.get("snapshot_id") or ""),
@@ -216,7 +242,7 @@ def main() -> int:
             readiness = dict(readiness, status='BLOCKED_TDX_DELTA_NOT_READY',
                              reason=tdx_delta_build.get('reason') or tdx_delta_build.get('status'),
                              baostock_capture_attempted=False, head_moved=False)
-        if (readiness.get("status") == "SOURCE_FREEZE_READY" and tdx and bao and gbbq_probe
+        if (not args.typed_scope_v2 and readiness.get("status") == "SOURCE_FREEZE_READY" and tdx and bao and gbbq_probe
                 and builder_registry_result.get('status') != 'BLOCKED_BUILDER_REGISTRY'):
             tdx_capture_path = Path(str(tdx.get("receipt_path") or ""))
             gbbq_probe_path = ROOT / "reports/v4_dm01" / args.target_date / "gbbq_revision_probe_receipt_v1.json"
@@ -245,6 +271,10 @@ def main() -> int:
                              "head_moved": False}
     if readiness.get('status') == 'SOURCE_FREEZE_READY' and builder_registry_result.get('status') == 'BLOCKED_BUILDER_REGISTRY':
         readiness = dict(readiness, status='BLOCKED_BUILDER_REGISTRY', reason=builder_registry_result['reason'])
+    if args.typed_scope_v2 and tdx_delta_build and tdx_delta_build.get('status')=='READY':
+        readiness=dict(readiness,canonical_pit_promotion=False,source_scope_admission='CORRECTED_STAGING_ONLY',
+                       corrected_source_status=readiness['status'],status='BLOCKED_SCOPED_SUCCESSOR_ADMISSION',
+                       reason='V2_TYPED_SOURCE_CANNOT_ENTER_V1_AS_RECORDED_FREEZE; SCOPED_SUCCESSOR_REVIEW_REQUIRED')
     result = {
         "contract_id": "V4_DM01_SOURCE_READINESS_RECEIPT_R2",
         "version": "2.0.0",
@@ -277,6 +307,7 @@ def main() -> int:
         "stage_accepted_head_moved": False,
         "dev_baseline_head_moved": False,
         "tdx_root_write_count": 0,
+        "typed_source_scope_v2": args.typed_scope_v2,
         "next_stage": ("WIRE_REAL_ACCEPTED_COMPONENT_BUILDERS_AND_INDEPENDENT_ARTIFACT_POSTCHECK"
                        if readiness["status"] == "BLOCKED_COMPONENT_BUILDERS_NOT_WIRED"
                        else "CAPTURE_TDX_AND_BAOSTOCK_AFTER_OFFICIAL_RELEASE; BUILD_ONLY_AFTER_ALL_V2_SOURCE_FAMILIES_READY"),

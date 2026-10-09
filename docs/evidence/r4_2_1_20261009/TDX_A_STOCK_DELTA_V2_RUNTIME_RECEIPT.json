@@ -1,0 +1,150 @@
+{
+  "contract_id": "TDX_A_STOCK_PACKAGE_DELTA_V2",
+  "version": "2.0.0",
+  "status": "READY",
+  "source_scope_policy": {
+    "path": "config/tdx_a_stock_delta_scope_policy_v2.json",
+    "sha256": "f7e1134867f2ec771d2ebcc21fec12d6b616e41efb68b6b1d6e0b932e8582647",
+    "bytes": 1288
+  },
+  "identity_binding": {
+    "bytes": 3112040,
+    "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/artifact.json",
+    "sha256": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf",
+    "dated_rosters": [
+      {
+        "trade_date": "2026-10-08",
+        "path": "docs/evidence/source_acquisition_r4_20261009/capture/queries/bea81bedf6c79d548083c1c768a31ead34fffa0556582a05ef39079f2532d35a.json",
+        "sha256": "1870f8427be56f7be70b5d72184530069d0133474ccc38e760cff981c98c5e44",
+        "bytes": 776794
+      },
+      {
+        "trade_date": "2026-09-30",
+        "path": "docs/evidence/source_acquisition_r4_20261009/capture/queries/e561a92f5935cc88abee51ff1aa4f21df639b511fa44f6cb3e864b6f99603c6c.json",
+        "sha256": "cf38815b4d334d31d9ccbbd9b76c4a633c1952d65d51f5980062f5840ae65d40",
+        "bytes": 776794
+      },
+      {
+        "trade_date": "2026-09-29",
+        "path": "docs/evidence/source_acquisition_r4_20261009/capture/queries/0930cd90c92e4bd3b00aace1cca266f283eca9104f3cb08795feb082c1143fe3.json",
+        "sha256": "2616f679f841ac2e12a65daff47dbd43bb82b8c05b668ee58996968e6625c359",
+        "bytes": 776080
+      },
+      {
+        "trade_date": "2026-09-28",
+        "path": "docs/evidence/source_acquisition_r4_20261009/capture/queries/1ba26784f262d8c898987daa22a9de76ec022afec50912621c4b90bf744484a4.json",
+        "sha256": "1298aa24b6377c977bf6f1076d13226179dff8f767efc411e36839e68f652e26",
+        "bytes": 775859
+      }
+    ]
+  },
+  "parent_package_sha256": "d87d490151ffb45ff63c500f925be8acb7de992de693eb871029211d7ed87655",
+  "current_package_sha256": "5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4",
+  "package_integrity": "PASS_SHA_CRC_PATHS_DUPLICATES_SYMLINKS",
+  "target_dates": [
+    "2026-09-28",
+    "2026-09-29",
+    "2026-09-30",
+    "2026-10-08"
+  ],
+  "targets": {
+    "2026-09-28": {
+      "status": "READY",
+      "target_bar_count": 5210,
+      "target_bar_digest": "1bc24c8fd4404d8156b18a1af69447f7fb76f4ed49a45dc4f9e19cc5a0fd125f",
+      "binding": {
+        "path": "docs/evidence/r4_2_1_20261009/typed_delta/2026-09-28/delta_v2.json",
+        "sha256": "731ddde7f0917d469eb4b55a5c1c584832e8b83e6262c4c1f59e4b44dec2aa68",
+        "bytes": 1465082
+      }
+    },
+    "2026-09-29": {
+      "status": "READY",
+      "target_bar_count": 5211,
+      "target_bar_digest": "98009d9bbe446b0e7456f8777ce26a86997f666fbf4290a2bacd51778aa60236",
+      "binding": {
+        "path": "docs/evidence/r4_2_1_20261009/typed_delta/2026-09-29/delta_v2.json",
+        "sha256": "9b9e55cc1892558a349251bb8dd27bb161af069e36e488d5b7fd62e9dae5e708",
+        "bytes": 1464541
+      }
+    },
+    "2026-09-30": {
+      "status": "READY",
+      "target_bar_count": 5213,
+      "target_bar_digest": "63b705477c9bb25ec0a016bbde11c380724668556c12275d7272aaa13a789ead",
+      "binding": {
+        "path": "docs/evidence/r4_2_1_20261009/typed_delta/2026-09-30/delta_v2.json",
+        "sha256": "6bd0b97f82f447742a78f086c8ad1cdf2977ab195f3746c9ca34ca00d397ddb6",
+        "bytes": 1465343
+      }
+    },
+    "2026-10-08": {
+      "status": "READY",
+      "target_bar_count": 5209,
+      "target_bar_digest": "24f57aaa3aa36de16153df27e8d87ae779b7e996272184c06972949fb6fe714e",
+      "binding": {
+        "path": "docs/evidence/r4_2_1_20261009/typed_delta/2026-10-08/delta_v2.json",
+        "sha256": "ae8c15da920115bd02ae4dd92e5c737310b2c60ef4fca2f17a7731f3c3ce59f0",
+        "bytes": 1465003
+      }
+    }
+  },
+  "entry_counts": {
+    "UNCHANGED": 2745,
+    "CHANGED": 9704
+  },
+  "consumer_counts": {
+    "CANONICAL_IDENTITY_UNPROVEN": 947,
+    "INDEX_SEPARATE_CONSUMER_REQUIRED": 801,
+    "NON_A_STOCK_ENTRY_QUARANTINED": 682,
+    "UNSUPPORTED_INSTRUMENT": 4795,
+    "A_STOCK_RESEARCH": 5224
+  },
+  "target_failures": [],
+  "revision_events": [],
+  "AS_RECORDED": false,
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "production_permission": false,
+  "price_limit_capability": "REQUIRES_SEPARATE_DATED_OWNER",
+  "delta_sha256": "5219431ce0caff4c5ee9c85bf5ce4d2d234bc322b524614542b563d1b2b91716",
+  "parent_package": {
+    "bytes": 551362764,
+    "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261001T100202286790Z/sha256-d87d490151ffb45ff63c500f925be8acb7de992de693eb871029211d7ed87655/hsjday.zip",
+    "sha256": "d87d490151ffb45ff63c500f925be8acb7de992de693eb871029211d7ed87655",
+    "source_revision": "sha256-d87d490151ffb45ff63c500f925be8acb7de992de693eb871029211d7ed87655"
+  },
+  "current_package": {
+    "bytes": 551544006,
+    "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261008T234926978138Z/sha256-5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4/hsjday.zip",
+    "sha256": "5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4"
+  },
+  "independent_target_counts": {
+    "2026-09-28": 5210,
+    "2026-09-29": 5211,
+    "2026-09-30": 5213,
+    "2026-10-08": 5209
+  },
+  "independent_target_errors": [],
+  "manifest": {
+    "path": "docs/evidence/r4_2_1_20261009/TYPED_ENTRY_MANIFEST.jsonl.gz",
+    "sha256": "9f67721d7b3cc0a33416656e1823952ff73a61b7c06ea4f71a76ae2054479ea0",
+    "bytes": 1117988
+  },
+  "prior_18_anomalies_accounted": 18,
+  "protected_unchanged": true,
+  "request_count_this_run": 0,
+  "cache_use": "HASH_VERIFIED_FROZEN_OFFICIAL_SOURCE",
+  "producer_bindings": [
+    {
+      "path": "src/workbench_analysis/tdx_snapshot_delta_v2.py",
+      "sha256": "d32d2f6f44ac14bc0c3df7de236b220c59808f68bc483d53207771137939ace2",
+      "bytes": 10480
+    },
+    {
+      "path": "scripts/execute_r4_2_typed_delta.py",
+      "sha256": "061cb5ec4313fecb1a30ef1130e537ad95967b4da25466b6d1dd2681c15eac83",
+      "bytes": 6940
+    }
+  ],
+  "acceptance": "PASS_TYPED_A_STOCK_SCOPE"
+}

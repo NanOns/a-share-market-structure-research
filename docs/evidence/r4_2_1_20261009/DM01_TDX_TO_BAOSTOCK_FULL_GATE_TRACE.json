@@ -1,0 +1,103 @@
+{
+  "contract_id": "R421_DM01_GATE_TRACE_V1",
+  "formal_entry_command": "run_v4_dm01_daily_increment.py --target-date 2026-10-08 --typed-scope-v2",
+  "trace_receipt": {
+    "path": "docs/evidence/r4_2_1_20261009/daily_v4/2026-10-08/source_readiness_receipt_r2.json",
+    "sha256": "ec55d8b577b53073bef209501be472478f2712780b5fca3fe382b0bcdd3b80e8",
+    "bytes": 4526801
+  },
+  "typed_delta": {
+    "AS_RECORDED": false,
+    "contract_id": "TDX_A_STOCK_PACKAGE_DELTA_V2",
+    "delta_path": "G:\\codex work\\大A交易\\docs\\evidence\\r4_2_1_20261009\\typed_delta\\2026-10-08\\delta_v2.json",
+    "delta_sha256": "ae8c15da920115bd02ae4dd92e5c737310b2c60ef4fca2f17a7731f3c3ce59f0",
+    "production_permission": false,
+    "receipt": "G:\\codex work\\大A交易\\docs\\evidence\\r4_2_1_20261009\\TDX_A_STOCK_DELTA_V2_RUNTIME_RECEIPT.json",
+    "source_scope_admission": "CORRECTED_STAGING_ONLY",
+    "status": "READY",
+    "target_bar_count": 5209,
+    "target_bar_digest": "24f57aaa3aa36de16153df27e8d87ae779b7e996272184c06972949fb6fe714e",
+    "target_date": "2026-10-08"
+  },
+  "baostock": {
+    "status": "BAOSTOCK_DAILY_SNAPSHOT_READY",
+    "reason": null,
+    "query_count": 2,
+    "request_count_including_sessions": 8,
+    "native_responses": {
+      "path": "docs/evidence/r4_2_1_20261009/daily_v4/2026-10-08/baostock_v2/CORRECTED_BAOSTOCK_FULL_TRACE.json",
+      "sha256": "11c7a5d96e8e98b657fa83ccfbdcf71ff4512b57d49e0451c2f004a8a5d768f2",
+      "bytes": 3011065
+    }
+  },
+  "gbbq": {
+    "contract_id": "R421_CORRECTED_GBBQ_REVISION_V1",
+    "source": {
+      "path": "data/v4/corrected_owner_sources/d5bedb98b2b772c4cdd69dd6dc6845e337e629275963a9a47437cf5f47abacc4/gbbq",
+      "sha256": "d5bedb98b2b772c4cdd69dd6dc6845e337e629275963a9a47437cf5f47abacc4",
+      "bytes": 5613070
+    },
+    "source_path": "D:\\new_tdx\\T0002\\hq_cache\\gbbq",
+    "frozen_sha_matches": true,
+    "local_current_sha": "d5bedb98b2b772c4cdd69dd6dc6845e337e629275963a9a47437cf5f47abacc4",
+    "source_matches_current": true,
+    "AS_RECORDED": false,
+    "classification": {
+      "path": "config/v4_02_gbbq_price_impact_classification_v1.json",
+      "sha256": "c39ff7e14209d250139352dcf78b326c7579721681fd467bac68d21d2515681c",
+      "bytes": 4334
+    },
+    "formal_probe": {
+      "exit_code": 2,
+      "receipt": "G:\\codex work\\大A交易\\reports\\v4_dm01\\2026-10-08\\gbbq_revision_probe_receipt_v1.json",
+      "receipt_sha256": "1d2ea930e937320bd5646e9a1123e7bdc2c11df5684eb1cf8e38ca236047df60",
+      "status": "WAIT_GBBQ_CURRENT_SOURCE_UNAVAILABLE",
+      "stderr": "",
+      "target_date": "2026-10-08",
+      "tdx_root_write_count": 0
+    },
+    "formal_legacy_missing_path": "D:/new_tdx/vipdoc/cw/gbbq(+gbbq.map)",
+    "corrected_use": "HASH_BOUND_SINGLE_BINARY_AND_EVENT_SCOPED_CLASSIFICATION",
+    "production_permission": false
+  },
+  "lifecycle": {
+    "AS_RECORDED": false,
+    "consumer_scope": "CORRECTED_ONLY",
+    "status": "READY"
+  },
+  "special_phase_legacy": {
+    "contract_id": "SPECIAL_PHASE_SOURCE_MANIFEST_V1",
+    "expected_lifecycle_path": "G:\\codex work\\大A交易\\reports\\v4_dm01\\2026-10-08\\current_lifecycle_snapshot.json",
+    "observed_at": "2026-10-09T01:19:48+00:00",
+    "reason": "CURRENT_LIFECYCLE_SNAPSHOT_NOT_AVAILABLE",
+    "receipt": "G:\\codex work\\大A交易\\reports\\v4_dm01\\2026-10-08\\special_phase_source_manifest_receipt_v1.json",
+    "receipt_sha256": "3fecd1caa46c31b991b1505d2903e9c52951c6ccd607507a8b4dc6ef129968ee",
+    "status": "WAIT_IDENTITY_LIFECYCLE_SNAPSHOT",
+    "tdx_root_write_count": 0,
+    "trade_date": "2026-10-08"
+  },
+  "special_phase_corrected": {
+    "status": "READY",
+    "binding": {
+      "path": "docs/evidence/r4_2_1_20261009/CORRECTED_SPECIAL_PHASE_MANIFEST.json",
+      "sha256": "720c025ce6efcae5fd6d2999bce7e5b142ea52ec08e65a5805ef0e5846b9d9cf",
+      "bytes": 1747
+    }
+  },
+  "source_freeze": {
+    "path": "docs/evidence/r4_2_1_20261009/CORRECTED_SOURCE_FREEZE_SUCCESSOR_V2.json",
+    "sha256": "aa46daf95bdffc644e7bfc26fe7060f5909b058c207f998b17deba8805ebac4d",
+    "bytes": 2333
+  },
+  "old_registry": {
+    "reason": "INPUT_DIGEST_MISMATCH",
+    "status": "BLOCKED_BUILDER_REGISTRY"
+  },
+  "successor_registry": {
+    "path": "docs/evidence/r4_2_1_20261009/BUILDER_REGISTRY_SUCCESSOR_CANDIDATE_V1.json",
+    "sha256": "10e7e337e493edc2a1a4a24cb3fdb93648fd79ab37be4fc6d076df1adf74b05b",
+    "bytes": 7468
+  },
+  "production_head_moved": false,
+  "exact_permission_blocker": "No independently accepted reconstructed corrected subset publication authority"
+}

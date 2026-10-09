@@ -1,0 +1,1328 @@
+{
+  "contract": "R4_2_1_REAL_BOUNDARY_ORACLE_V1",
+  "inputs": {
+    "core": {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-10-08/core.jsonl.gz",
+      "sha256": "95f6274259d4881cc1be129b962db20b9a742f80c5db1b1873ce1229ede4179f",
+      "bytes": 19800613
+    },
+    "prior_core": {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-10-08/prior_core_target_coordinate.jsonl.gz",
+      "sha256": "41aa8499ff87824134fde986ec61194e7d6447e8fe61c13693f4f16300c8af09",
+      "bytes": 19032271
+    },
+    "history": {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-10-08/history.jsonl.gz",
+      "sha256": "ff14ac6183b57fc289ea955f8437bd2d097641ca5540cab17ac945ab94fd9745",
+      "bytes": 67387462
+    },
+    "raw": {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-10-08/raw.jsonl.gz",
+      "sha256": "3414cbed04795b985c072104c0a8aa1433f0d9969f8a8570b50fbb7b98f80121",
+      "bytes": 241820
+    }
+  },
+  "sources": {
+    "package": {
+      "bytes": 551544006,
+      "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261008T234926978138Z/sha256-5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4/hsjday.zip",
+      "sha256": "5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4"
+    },
+    "receipt": {
+      "bytes": 3019,
+      "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261008T234926978138Z/request_receipt.json",
+      "sha256": "e72a09f21778a9da9d59736a8604d440dee4d18e143d6672bf1bbccf837698b9"
+    },
+    "gbbq": {
+      "path": "data/v4/corrected_owner_sources/d5bedb98b2b772c4cdd69dd6dc6845e337e629275963a9a47437cf5f47abacc4/gbbq",
+      "sha256": "d5bedb98b2b772c4cdd69dd6dc6845e337e629275963a9a47437cf5f47abacc4",
+      "bytes": 5613070
+    },
+    "identity": {
+      "bytes": 3112040,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/artifact.json",
+      "sha256": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf"
+    },
+    "contract": {
+      "path": "config/v4_corrected_owner_replay_v1.json",
+      "sha256": "64ac1f1dc7cb8cb00b352ee43144463a782796071274662502218ff6ee02a4e1",
+      "bytes": 1550
+    },
+    "core_kernel": {
+      "path": "src/v4/factors/core.py",
+      "sha256": "8986358268a5ae706c6cc46c95937ed381b65b55d3293667f840ff50008217f1",
+      "bytes": 16643
+    },
+    "adjustment_kernel": {
+      "path": "src/adjustment/tdx_adjustment.py",
+      "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0",
+      "bytes": 5366
+    }
+  },
+  "formula": "Chronological per event P=(10*P-cash+rights*price)/(10+bonus+rights); parameter and final cents ROUND_HALF_UP; MA20 mean 20 closes; ATR20 mean max(H-L,abs(H-priorC),abs(L-priorC)) over 20 transitions. No production adjustment or compute imports.",
+  "samples": [
+    {
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "source_security_key": "sh.688349",
+      "category": "CROSS_XRXD",
+      "zip_entry": "sh/lday/sh688349.day",
+      "zip_entry_sha256": "4eec0c60f8a8849b47262b1f9b07751324595a1af9180902f27dc297b8fb7e6d",
+      "target_bar_present": true,
+      "history_bar_count": 420,
+      "events": [
+        {
+          "date": 20250616,
+          "c1": 6.0,
+          "c2": 0.0,
+          "c3": 0.0,
+          "c4": 0.0,
+          "source_record_index": 179034
+        },
+        {
+          "date": 20260618,
+          "c1": 3.700000047683716,
+          "c2": 0.0,
+          "c3": 3.0,
+          "c4": 0.0,
+          "source_record_index": 179038
+        }
+      ],
+      "checks": [
+        {
+          "endpoint": "current",
+          "field": "ma20",
+          "expected": 13.0425,
+          "actual": 13.0425,
+          "unknown_reason": null,
+          "window_start": "2026-09-03",
+          "window_end": "2026-10-08"
+        },
+        {
+          "endpoint": "current",
+          "field": "atr20",
+          "expected": 0.3665000000000001,
+          "actual": 0.3665000000000001,
+          "unknown_reason": null,
+          "window_start": "2026-09-02",
+          "window_end": "2026-10-08"
+        },
+        {
+          "endpoint": "prior",
+          "field": "ma20",
+          "expected": 13.038999999999998,
+          "actual": 13.038999999999998,
+          "unknown_reason": null,
+          "window_start": "2026-09-02",
+          "window_end": "2026-09-30"
+        },
+        {
+          "endpoint": "prior",
+          "field": "atr20",
+          "expected": 0.36450000000000016,
+          "actual": 0.36450000000000016,
+          "unknown_reason": null,
+          "window_start": "2026-09-01",
+          "window_end": "2026-09-30"
+        }
+      ],
+      "ohlc_samples": [
+        {
+          "trade_date": "2025-01-09",
+          "raw": [
+            27.59,
+            28.23,
+            27.52,
+            27.63
+          ],
+          "independent_qfq": [
+            20.48,
+            20.97,
+            20.42,
+            20.51
+          ]
+        },
+        {
+          "trade_date": "2025-01-10",
+          "raw": [
+            27.76,
+            27.86,
+            27.1,
+            27.1
+          ],
+          "independent_qfq": [
+            20.61,
+            20.68,
+            20.1,
+            20.1
+          ]
+        },
+        {
+          "trade_date": "2026-09-30",
+          "raw": [
+            13.15,
+            13.34,
+            13.1,
+            13.24
+          ],
+          "independent_qfq": [
+            13.15,
+            13.34,
+            13.1,
+            13.24
+          ]
+        },
+        {
+          "trade_date": "2026-10-08",
+          "raw": [
+            13.24,
+            13.49,
+            13.16,
+            13.3
+          ],
+          "independent_qfq": [
+            13.24,
+            13.49,
+            13.16,
+            13.3
+          ]
+        }
+      ]
+    },
+    {
+      "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+      "source_security_key": "sh.600703",
+      "category": "CROSS_XRXD",
+      "zip_entry": "sh/lday/sh600703.day",
+      "zip_entry_sha256": "1960eb7fa0e56423f72ea3779914466bcac5e569d1ea859a56bd3b6e0714970c",
+      "target_bar_present": true,
+      "history_bar_count": 420,
+      "events": [
+        {
+          "date": 20250701,
+          "c1": 0.20000000298023224,
+          "c2": 0.0,
+          "c3": 0.0,
+          "c4": 0.0,
+          "source_record_index": 139916
+        }
+      ],
+      "checks": [
+        {
+          "endpoint": "current",
+          "field": "ma20",
+          "expected": 12.604000000000001,
+          "actual": 12.604000000000001,
+          "unknown_reason": null,
+          "window_start": "2026-09-03",
+          "window_end": "2026-10-08"
+        },
+        {
+          "endpoint": "current",
+          "field": "atr20",
+          "expected": 0.48149999999999993,
+          "actual": 0.48149999999999993,
+          "unknown_reason": null,
+          "window_start": "2026-09-02",
+          "window_end": "2026-10-08"
+        },
+        {
+          "endpoint": "prior",
+          "field": "ma20",
+          "expected": 12.6415,
+          "actual": 12.6415,
+          "unknown_reason": null,
+          "window_start": "2026-09-02",
+          "window_end": "2026-09-30"
+        },
+        {
+          "endpoint": "prior",
+          "field": "atr20",
+          "expected": 0.44349999999999995,
+          "actual": 0.44349999999999995,
+          "unknown_reason": null,
+          "window_start": "2026-09-01",
+          "window_end": "2026-09-30"
+        }
+      ],
+      "ohlc_samples": [
+        {
+          "trade_date": "2025-01-09",
+          "raw": [
+            11.53,
+            11.62,
+            11.39,
+            11.41
+          ],
+          "independent_qfq": [
+            11.51,
+            11.6,
+            11.37,
+            11.39
+          ]
+        },
+        {
+          "trade_date": "2025-01-10",
+          "raw": [
+            11.37,
+            11.53,
+            11.03,
+            11.04
+          ],
+          "independent_qfq": [
+            11.35,
+            11.51,
+            11.01,
+            11.02
+          ]
+        },
+        {
+          "trade_date": "2026-09-30",
+          "raw": [
+            11.49,
+            11.65,
+            11.4,
+            11.48
+          ],
+          "independent_qfq": [
+            11.49,
+            11.65,
+            11.4,
+            11.48
+          ]
+        },
+        {
+          "trade_date": "2026-10-08",
+          "raw": [
+            12.1,
+            12.6,
+            11.79,
+            11.88
+          ],
+          "independent_qfq": [
+            12.1,
+            12.6,
+            11.79,
+            11.88
+          ]
+        }
+      ]
+    },
+    {
+      "security_id": "SEC-002610CF9EBB4227722834AADA8F757E",
+      "source_security_key": "sz.300581",
+      "category": "ORDINARY_CONTROL",
+      "zip_entry": "sz/lday/sz300581.day",
+      "zip_entry_sha256": "047e635b2610d850fcae6ed376e5410d11bad60740d4580833b717b32fe826c9",
+      "target_bar_present": true,
+      "history_bar_count": 420,
+      "events": [],
+      "checks": [
+        {
+          "endpoint": "current",
+          "field": "ma20",
+          "expected": 10.442,
+          "actual": 10.442,
+          "unknown_reason": null,
+          "window_start": "2026-09-03",
+          "window_end": "2026-10-08"
+        },
+        {
+          "endpoint": "current",
+          "field": "atr20",
+          "expected": 0.3755,
+          "actual": 0.3755,
+          "unknown_reason": null,
+          "window_start": "2026-09-02",
+          "window_end": "2026-10-08"
+        },
+        {
+          "endpoint": "prior",
+          "field": "ma20",
+          "expected": 10.4885,
+          "actual": 10.4885,
+          "unknown_reason": null,
+          "window_start": "2026-09-02",
+          "window_end": "2026-09-30"
+        },
+        {
+          "endpoint": "prior",
+          "field": "atr20",
+          "expected": 0.38550000000000006,
+          "actual": 0.38550000000000006,
+          "unknown_reason": null,
+          "window_start": "2026-09-01",
+          "window_end": "2026-09-30"
+        }
+      ],
+      "ohlc_samples": [
+        {
+          "trade_date": "2025-01-09",
+          "raw": [
+            10.02,
+            10.54,
+            10.0,
+            10.4
+          ],
+          "independent_qfq": [
+            10.02,
+            10.54,
+            10.0,
+            10.4
+          ]
+        },
+        {
+          "trade_date": "2025-01-10",
+          "raw": [
+            10.3,
+            10.55,
+            10.08,
+            10.08
+          ],
+          "independent_qfq": [
+            10.3,
+            10.55,
+            10.08,
+            10.08
+          ]
+        },
+        {
+          "trade_date": "2026-09-30",
+          "raw": [
+            10.1,
+            10.15,
+            9.93,
+            9.95
+          ],
+          "independent_qfq": [
+            10.1,
+            10.15,
+            9.93,
+            9.95
+          ]
+        },
+        {
+          "trade_date": "2026-10-08",
+          "raw": [
+            10.06,
+            10.42,
+            9.84,
+            9.91
+          ],
+          "independent_qfq": [
+            10.06,
+            10.42,
+            9.84,
+            9.91
+          ]
+        }
+      ]
+    },
+    {
+      "security_id": "SEC-002E8949D07D2829AB967520C65C0845",
+      "source_security_key": "sh.688793",
+      "category": "ORDINARY_CONTROL",
+      "zip_entry": "sh/lday/sh688793.day",
+      "zip_entry_sha256": "0de8f757160ea021d1c8ba692ab3e1506b2b60f7966fb485c1bd6e6297589831",
+      "target_bar_present": true,
+      "history_bar_count": 420,
+      "events": [],
+      "checks": [
+        {
+          "endpoint": "current",
+          "field": "ma20",
+          "expected": 17.969,
+          "actual": 17.969,
+          "unknown_reason": null,
+          "window_start": "2026-09-03",
+          "window_end": "2026-10-08"
+        },
+        {
+          "endpoint": "current",
+          "field": "atr20",
+          "expected": 0.7745000000000001,
+          "actual": 0.7745000000000001,
+          "unknown_reason": null,
+          "window_start": "2026-09-02",
+          "window_end": "2026-10-08"
+        },
+        {
+          "endpoint": "prior",
+          "field": "ma20",
+          "expected": 18.026,
+          "actual": 18.026,
+          "unknown_reason": null,
+          "window_start": "2026-09-02",
+          "window_end": "2026-09-30"
+        },
+        {
+          "endpoint": "prior",
+          "field": "atr20",
+          "expected": 0.7470000000000001,
+          "actual": 0.7470000000000001,
+          "unknown_reason": null,
+          "window_start": "2026-09-01",
+          "window_end": "2026-09-30"
+        }
+      ],
+      "ohlc_samples": [
+        {
+          "trade_date": "2025-01-09",
+          "raw": [
+            29.7,
+            30.13,
+            29.5,
+            29.9
+          ],
+          "independent_qfq": [
+            29.7,
+            30.13,
+            29.5,
+            29.9
+          ]
+        },
+        {
+          "trade_date": "2025-01-10",
+          "raw": [
+            29.9,
+            30.15,
+            27.39,
+            27.4
+          ],
+          "independent_qfq": [
+            29.9,
+            30.15,
+            27.39,
+            27.4
+          ]
+        },
+        {
+          "trade_date": "2026-09-30",
+          "raw": [
+            18.95,
+            19.59,
+            18.32,
+            18.32
+          ],
+          "independent_qfq": [
+            18.95,
+            19.59,
+            18.32,
+            18.32
+          ]
+        },
+        {
+          "trade_date": "2026-10-08",
+          "raw": [
+            18.5,
+            18.51,
+            17.46,
+            17.63
+          ],
+          "independent_qfq": [
+            18.5,
+            18.51,
+            17.46,
+            17.63
+          ]
+        }
+      ]
+    },
+    {
+      "security_id": "SEC-0051683845B17D59641B7D1DC261FE2A",
+      "source_security_key": "sz.002043",
+      "category": "CROSS_XRXD",
+      "zip_entry": "sz/lday/sz002043.day",
+      "zip_entry_sha256": "97eb1aa44cd6f7499d83ae593d9320b79c53ec1ace6127df0d858ccb3aa076e0",
+      "target_bar_present": true,
+      "history_bar_count": 420,
+      "events": [
+        {
+          "date": 20250529,
+          "c1": 3.200000047683716,
+          "c2": 0.0,
+          "c3": 0.0,
+          "c4": 0.0,
+          "source_record_index": 26295
+        },
+        {
+          "date": 20250905,
+          "c1": 2.799999952316284,
+          "c2": 0.0,
+          "c3": 0.0,
+          "c4": 0.0,
+          "source_record_index": 26298
+        },
+        {
+          "date": 20260601,
+          "c1": 3.119999885559082,
+          "c2": 0.0,
+          "c3": 0.0,
+          "c4": 0.0,
+          "source_record_index": 26300
+        },
+        {
+          "date": 20260903,
+          "c1": 1.2000000476837158,
+          "c2": 0.0,
+          "c3": 0.0,
+          "c4": 0.0,
+          "source_record_index": 26302
+        }
+      ],
+      "checks": [
+        {
+          "endpoint": "current",
+          "field": "ma20",
+          "expected": 11.506499999999999,
+          "actual": 11.506499999999999,
+          "unknown_reason": null,
+          "window_start": "2026-09-03",
+          "window_end": "2026-10-08"
+        },
+        {
+          "endpoint": "current",
+          "field": "atr20",
+          "expected": 0.48699999999999993,
+          "actual": 0.48699999999999993,
+          "unknown_reason": null,
+          "window_start": "2026-09-02",
+          "window_end": "2026-10-08"
+        },
+        {
+          "endpoint": "prior",
+          "field": "ma20",
+          "expected": 11.5355,
+          "actual": 11.5355,
+          "unknown_reason": null,
+          "window_start": "2026-09-02",
+          "window_end": "2026-09-30"
+        },
+        {
+          "endpoint": "prior",
+          "field": "atr20",
+          "expected": 0.48100000000000004,
+          "actual": 0.48100000000000004,
+          "unknown_reason": null,
+          "window_start": "2026-09-01",
+          "window_end": "2026-09-30"
+        }
+      ],
+      "ohlc_samples": [
+        {
+          "trade_date": "2025-01-09",
+          "raw": [
+            11.35,
+            11.38,
+            11.0,
+            11.15
+          ],
+          "independent_qfq": [
+            10.32,
+            10.35,
+            9.97,
+            10.12
+          ]
+        },
+        {
+          "trade_date": "2025-01-10",
+          "raw": [
+            11.18,
+            11.22,
+            10.91,
+            10.92
+          ],
+          "independent_qfq": [
+            10.15,
+            10.19,
+            9.88,
+            9.89
+          ]
+        },
+        {
+          "trade_date": "2026-09-30",
+          "raw": [
+            11.16,
+            12.51,
+            10.87,
+            12.02
+          ],
+          "independent_qfq": [
+            11.16,
+            12.51,
+            10.87,
+            12.02
+          ]
+        },
+        {
+          "trade_date": "2026-10-08",
+          "raw": [
+            11.67,
+            11.94,
+            11.55,
+            11.8
+          ],
+          "independent_qfq": [
+            11.67,
+            11.94,
+            11.55,
+            11.8
+          ]
+        }
+      ]
+    },
+    {
+      "security_id": "SEC-005EA670068174623A3C365FCA9A8B2D",
+      "source_security_key": "sh.601021",
+      "category": "CROSS_XRXD",
+      "zip_entry": "sh/lday/sh601021.day",
+      "zip_entry_sha256": "c1486c9118f4239d4b86537ae03b6b75ed8105b2f6c3f009815182d838543a6e",
+      "target_bar_present": true,
+      "history_bar_count": 420,
+      "events": [
+        {
+          "date": 20250717,
+          "c1": 8.199999809265137,
+          "c2": 0.0,
+          "c3": 0.0,
+          "c4": 0.0,
+          "source_record_index": 149448
+        },
+        {
+          "date": 20251017,
+          "c1": 4.300000190734863,
+          "c2": 0.0,
+          "c3": 0.0,
+          "c4": 0.0,
+          "source_record_index": 149449
+        },
+        {
+          "date": 20260803,
+          "c1": 5.300000190734863,
+          "c2": 0.0,
+          "c3": 0.0,
+          "c4": 0.0,
+          "source_record_index": 149450
+        },
+        {
+          "date": 20260924,
+          "c1": 3.299999952316284,
+          "c2": 0.0,
+          "c3": 0.0,
+          "c4": 0.0,
+          "source_record_index": 149451
+        }
+      ],
+      "checks": [
+        {
+          "endpoint": "current",
+          "field": "ma20",
+          "expected": 41.8095,
+          "actual": 41.8095,
+          "unknown_reason": null,
+          "window_start": "2026-09-03",
+          "window_end": "2026-10-08"
+        },
+        {
+          "endpoint": "current",
+          "field": "atr20",
+          "expected": 0.9024999999999995,
+          "actual": 0.9024999999999995,
+          "unknown_reason": null,
+          "window_start": "2026-09-02",
+          "window_end": "2026-10-08"
+        },
+        {
+          "endpoint": "prior",
+          "field": "ma20",
+          "expected": 41.964,
+          "actual": 41.964,
+          "unknown_reason": null,
+          "window_start": "2026-09-02",
+          "window_end": "2026-09-30"
+        },
+        {
+          "endpoint": "prior",
+          "field": "atr20",
+          "expected": 0.8774999999999995,
+          "actual": 0.8774999999999995,
+          "unknown_reason": null,
+          "window_start": "2026-09-01",
+          "window_end": "2026-09-30"
+        }
+      ],
+      "ohlc_samples": [
+        {
+          "trade_date": "2025-01-09",
+          "raw": [
+            55.65,
+            57.05,
+            55.57,
+            56.41
+          ],
+          "independent_qfq": [
+            53.54,
+            54.94,
+            53.46,
+            54.3
+          ]
+        },
+        {
+          "trade_date": "2025-01-10",
+          "raw": [
+            56.11,
+            57.3,
+            54.7,
+            54.7
+          ],
+          "independent_qfq": [
+            54.0,
+            55.19,
+            52.59,
+            52.59
+          ]
+        },
+        {
+          "trade_date": "2026-09-30",
+          "raw": [
+            40.07,
+            40.86,
+            39.75,
+            40.76
+          ],
+          "independent_qfq": [
+            40.07,
+            40.86,
+            39.75,
+            40.76
+          ]
+        },
+        {
+          "trade_date": "2026-10-08",
+          "raw": [
+            40.2,
+            40.5,
+            39.52,
+            39.65
+          ],
+          "independent_qfq": [
+            40.2,
+            40.5,
+            39.52,
+            39.65
+          ]
+        }
+      ]
+    },
+    {
+      "security_id": "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9",
+      "source_security_key": "sh.601059",
+      "category": "SUSPENDED_NO_BAR",
+      "zip_entry": "sh/lday/sh601059.day",
+      "zip_entry_sha256": "9ab5c2936d6bf009767b37799db34ec8a78bfad5848a172e4be3738baf2ea22c",
+      "target_bar_present": false,
+      "history_bar_count": 420,
+      "events": [
+        {
+          "date": 20250815,
+          "c1": 0.27000001072883606,
+          "c2": 0.0,
+          "c3": 0.0,
+          "c4": 0.0,
+          "source_record_index": 149551
+        },
+        {
+          "date": 20251027,
+          "c1": 0.4699999988079071,
+          "c2": 0.0,
+          "c3": 0.0,
+          "c4": 0.0,
+          "source_record_index": 149552
+        },
+        {
+          "date": 20260728,
+          "c1": 0.4000000059604645,
+          "c2": 0.0,
+          "c3": 0.0,
+          "c4": 0.0,
+          "source_record_index": 149554
+        }
+      ],
+      "checks": [
+        {
+          "endpoint": "current",
+          "field": "ma20",
+          "expected": 16.5135,
+          "actual": 16.5135,
+          "unknown_reason": null,
+          "window_start": "2026-08-18",
+          "window_end": "2026-10-08"
+        },
+        {
+          "endpoint": "current",
+          "field": "atr20",
+          "expected": 0.37349999999999933,
+          "actual": 0.37349999999999933,
+          "unknown_reason": null,
+          "window_start": "2026-08-17",
+          "window_end": "2026-10-08"
+        },
+        {
+          "endpoint": "prior",
+          "field": "ma20",
+          "expected": 16.5135,
+          "actual": 16.5135,
+          "unknown_reason": null,
+          "window_start": "2026-08-18",
+          "window_end": "2026-09-30"
+        },
+        {
+          "endpoint": "prior",
+          "field": "atr20",
+          "expected": 0.37349999999999933,
+          "actual": 0.37349999999999933,
+          "unknown_reason": null,
+          "window_start": "2026-08-17",
+          "window_end": "2026-09-30"
+        }
+      ],
+      "ohlc_samples": [
+        {
+          "trade_date": "2024-11-25",
+          "raw": [
+            14.75,
+            14.8,
+            14.45,
+            14.71
+          ],
+          "independent_qfq": [
+            14.64,
+            14.69,
+            14.34,
+            14.6
+          ]
+        },
+        {
+          "trade_date": "2024-11-26",
+          "raw": [
+            14.64,
+            14.98,
+            14.61,
+            14.67
+          ],
+          "independent_qfq": [
+            14.53,
+            14.87,
+            14.5,
+            14.56
+          ]
+        },
+        {
+          "trade_date": "2026-09-11",
+          "raw": [
+            16.02,
+            16.02,
+            15.57,
+            15.62
+          ],
+          "independent_qfq": [
+            16.02,
+            16.02,
+            15.57,
+            15.62
+          ]
+        },
+        {
+          "trade_date": "2026-09-14",
+          "raw": [
+            15.63,
+            16.03,
+            15.41,
+            15.56
+          ],
+          "independent_qfq": [
+            15.63,
+            16.03,
+            15.41,
+            15.56
+          ]
+        }
+      ]
+    },
+    {
+      "security_id": "SEC-1522973706EBA28F6BA3EE086FA28B40",
+      "source_security_key": "sz.000582",
+      "category": "SUSPENDED_NO_BAR",
+      "zip_entry": "sz/lday/sz000582.day",
+      "zip_entry_sha256": "b0f7b1745c8df9453dfb9f5322c97b84e8ed32736690396c572572fee2c08728",
+      "target_bar_present": false,
+      "history_bar_count": 420,
+      "events": [
+        {
+          "date": 20250528,
+          "c1": 0.4699989855289459,
+          "c2": 0.0,
+          "c3": 0.0,
+          "c4": 0.0,
+          "source_record_index": 8676
+        },
+        {
+          "date": 20251022,
+          "c1": 0.8099989891052246,
+          "c2": 0.0,
+          "c3": 0.0,
+          "c4": 0.0,
+          "source_record_index": 8680
+        },
+        {
+          "date": 20260527,
+          "c1": 0.800000011920929,
+          "c2": 0.0,
+          "c3": 0.0,
+          "c4": 0.0,
+          "source_record_index": 8685
+        }
+      ],
+      "checks": [
+        {
+          "endpoint": "current",
+          "field": "ma20",
+          "expected": 10.485,
+          "actual": 10.485,
+          "unknown_reason": null,
+          "window_start": "2026-09-02",
+          "window_end": "2026-10-08"
+        },
+        {
+          "endpoint": "current",
+          "field": "atr20",
+          "expected": 0.519,
+          "actual": 0.519,
+          "unknown_reason": null,
+          "window_start": "2026-09-01",
+          "window_end": "2026-10-08"
+        },
+        {
+          "endpoint": "prior",
+          "field": "ma20",
+          "expected": 10.485,
+          "actual": 10.485,
+          "unknown_reason": null,
+          "window_start": "2026-09-02",
+          "window_end": "2026-09-30"
+        },
+        {
+          "endpoint": "prior",
+          "field": "atr20",
+          "expected": 0.519,
+          "actual": 0.519,
+          "unknown_reason": null,
+          "window_start": "2026-09-01",
+          "window_end": "2026-09-30"
+        }
+      ],
+      "ohlc_samples": [
+        {
+          "trade_date": "2025-01-08",
+          "raw": [
+            8.1,
+            8.33,
+            8.0,
+            8.09
+          ],
+          "independent_qfq": [
+            7.89,
+            8.12,
+            7.79,
+            7.88
+          ]
+        },
+        {
+          "trade_date": "2025-01-09",
+          "raw": [
+            8.03,
+            8.25,
+            7.94,
+            8.18
+          ],
+          "independent_qfq": [
+            7.82,
+            8.04,
+            7.73,
+            7.97
+          ]
+        },
+        {
+          "trade_date": "2026-09-29",
+          "raw": [
+            9.01,
+            9.09,
+            8.96,
+            8.97
+          ],
+          "independent_qfq": [
+            9.01,
+            9.09,
+            8.96,
+            8.97
+          ]
+        },
+        {
+          "trade_date": "2026-09-30",
+          "raw": [
+            9.0,
+            9.03,
+            8.9,
+            8.97
+          ],
+          "independent_qfq": [
+            9.0,
+            9.03,
+            8.9,
+            8.97
+          ]
+        }
+      ]
+    },
+    {
+      "security_id": "SEC-8CEBC4E7F06A6E43A7728C08F6D5911D",
+      "source_security_key": "sh.601091",
+      "category": "SHORT_LISTING_WINDOW",
+      "zip_entry": "sh/lday/sh601091.day",
+      "zip_entry_sha256": "79f2905c0fc5a5662475fbea479218a0fff79829e127cf125ae97db5e52cba37",
+      "target_bar_present": true,
+      "history_bar_count": 10,
+      "events": [],
+      "checks": [
+        {
+          "endpoint": "current",
+          "field": "ma20",
+          "expected": null,
+          "actual": null,
+          "unknown_reason": "INSUFFICIENT_HISTORY",
+          "window_start": null,
+          "window_end": null
+        },
+        {
+          "endpoint": "current",
+          "field": "atr20",
+          "expected": null,
+          "actual": null,
+          "unknown_reason": "INSUFFICIENT_HISTORY",
+          "window_start": null,
+          "window_end": null
+        },
+        {
+          "endpoint": "prior",
+          "field": "ma20",
+          "expected": null,
+          "actual": null,
+          "unknown_reason": "INSUFFICIENT_HISTORY",
+          "window_start": null,
+          "window_end": null
+        },
+        {
+          "endpoint": "prior",
+          "field": "atr20",
+          "expected": null,
+          "actual": null,
+          "unknown_reason": "INSUFFICIENT_HISTORY",
+          "window_start": null,
+          "window_end": null
+        }
+      ],
+      "ohlc_samples": [
+        {
+          "trade_date": "2026-09-17",
+          "raw": [
+            13.0,
+            20.8,
+            11.73,
+            20.8
+          ],
+          "independent_qfq": [
+            13.0,
+            20.8,
+            11.73,
+            20.8
+          ]
+        },
+        {
+          "trade_date": "2026-09-18",
+          "raw": [
+            15.0,
+            82.59,
+            14.68,
+            57.77
+          ],
+          "independent_qfq": [
+            15.0,
+            82.59,
+            14.68,
+            57.77
+          ]
+        },
+        {
+          "trade_date": "2026-09-30",
+          "raw": [
+            24.6,
+            25.18,
+            23.12,
+            23.15
+          ],
+          "independent_qfq": [
+            24.6,
+            25.18,
+            23.12,
+            23.15
+          ]
+        },
+        {
+          "trade_date": "2026-10-08",
+          "raw": [
+            23.55,
+            25.47,
+            23.2,
+            24.2
+          ],
+          "independent_qfq": [
+            23.55,
+            25.47,
+            23.2,
+            24.2
+          ]
+        }
+      ]
+    },
+    {
+      "security_id": "SEC-9A2222852908DCC43E96059AFF5737DD",
+      "source_security_key": "sz.001246",
+      "category": "SHORT_LISTING_WINDOW",
+      "zip_entry": "sz/lday/sz001246.day",
+      "zip_entry_sha256": "c1594ac8678637bd2b9a4b2caffef1f4893ac878a45ea7257cf01727d588bc58",
+      "target_bar_present": true,
+      "history_bar_count": 2,
+      "events": [],
+      "checks": [
+        {
+          "endpoint": "current",
+          "field": "ma20",
+          "expected": null,
+          "actual": null,
+          "unknown_reason": "INSUFFICIENT_HISTORY",
+          "window_start": null,
+          "window_end": null
+        },
+        {
+          "endpoint": "current",
+          "field": "atr20",
+          "expected": null,
+          "actual": null,
+          "unknown_reason": "INSUFFICIENT_HISTORY",
+          "window_start": null,
+          "window_end": null
+        },
+        {
+          "endpoint": "prior",
+          "field": "ma20",
+          "expected": null,
+          "actual": null,
+          "unknown_reason": "INSUFFICIENT_HISTORY",
+          "window_start": null,
+          "window_end": null
+        },
+        {
+          "endpoint": "prior",
+          "field": "atr20",
+          "expected": null,
+          "actual": null,
+          "unknown_reason": "INSUFFICIENT_HISTORY",
+          "window_start": null,
+          "window_end": null
+        }
+      ],
+      "ohlc_samples": [
+        {
+          "trade_date": "2026-09-30",
+          "raw": [
+            65.0,
+            84.85,
+            65.0,
+            65.09
+          ],
+          "independent_qfq": [
+            65.0,
+            84.85,
+            65.0,
+            65.09
+          ]
+        },
+        {
+          "trade_date": "2026-10-08",
+          "raw": [
+            60.63,
+            65.0,
+            52.22,
+            53.55
+          ],
+          "independent_qfq": [
+            60.63,
+            65.0,
+            52.22,
+            53.55
+          ]
+        },
+        {
+          "trade_date": "2026-09-30",
+          "raw": [
+            65.0,
+            84.85,
+            65.0,
+            65.09
+          ],
+          "independent_qfq": [
+            65.0,
+            84.85,
+            65.0,
+            65.09
+          ]
+        },
+        {
+          "trade_date": "2026-10-08",
+          "raw": [
+            60.63,
+            65.0,
+            52.22,
+            53.55
+          ],
+          "independent_qfq": [
+            60.63,
+            65.0,
+            52.22,
+            53.55
+          ]
+        }
+      ]
+    }
+  ],
+  "categories": {
+    "CROSS_XRXD": 4,
+    "ORDINARY_CONTROL": 2,
+    "SUSPENDED_NO_BAR": 2,
+    "SHORT_LISTING_WINDOW": 2
+  },
+  "errors": [],
+  "legacy_counts": {
+    "2026-09-28:True": 176,
+    "2026-09-28:False": 12,
+    "2026-09-29:True": 176,
+    "2026-09-29:False": 12,
+    "2026-09-30:True": 176,
+    "2026-09-30:False": 11
+  },
+  "source_conflict_real_count": 0,
+  "missing_real_cases": [
+    "No real cross-source OHLC conflict observed in LEGACY evidence; do not fabricate conflict",
+    "Code transfer is governed by separate BJ alias admission objects"
+  ],
+  "acceptance": "PASS_SCOPED_INDEPENDENT_ARITHMETIC"
+}

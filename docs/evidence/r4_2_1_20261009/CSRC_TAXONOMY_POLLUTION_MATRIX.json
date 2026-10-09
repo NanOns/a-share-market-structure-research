@@ -1,0 +1,103 @@
+{
+  "contract": {
+    "path": "config/v4_primary_sector_taxonomy_v2.json",
+    "sha256": "4579ea22db97d252a3752a1e44e338a28781f2589bd8adf1130deccfd77b10a8",
+    "bytes": 798
+  },
+  "fields": {
+    "sector_rs1": "TDX_PRIMARY",
+    "sector_rs5": "TDX_PRIMARY",
+    "sector_rs20": "TDX_PRIMARY",
+    "breadth": "TDX_PRIMARY",
+    "ma20_width": "TDX_PRIMARY",
+    "base_seed_aggregate": "TDX_PRIMARY",
+    "b0": "TDX_PRIMARY",
+    "rotation_state": "TDX_PRIMARY",
+    "relative_sector_state": "TDX_PRIMARY",
+    "homepage_sector_rank": "TDX_PRIMARY",
+    "focus_mainline_sector": "TDX_PRIMARY",
+    "CSRC_sector_rs1": "CSRC_AUX_ONLY",
+    "CSRC_sector_rs5": "CSRC_AUX_ONLY",
+    "CSRC_sector_rs20": "CSRC_AUX_ONLY",
+    "CSRC_breadth": "CSRC_AUX_ONLY",
+    "CSRC_ma20_width": "CSRC_AUX_ONLY",
+    "CSRC_base_seed_aggregate": "CSRC_AUX_ONLY",
+    "CSRC_b0": "CSRC_AUX_ONLY",
+    "CSRC_rotation_state": "CSRC_AUX_ONLY",
+    "CSRC_relative_sector_state": "CSRC_AUX_ONLY",
+    "CSRC_homepage_sector_rank": "CSRC_AUX_ONLY",
+    "CSRC_focus_mainline_sector": "CSRC_AUX_ONLY",
+    "stock.base_seed_state": "UNAFFECTED",
+    "PREWATCH": "UNAFFECTED",
+    "D0": "UNAFFECTED",
+    "D2": "UNAFFECTED",
+    "Focus.stock_episode": "UNAFFECTED",
+    "Forward.stock_outcome": "UNAFFECTED",
+    "relative_market_state": "STOCK_ONLY",
+    "individual_research_display": "UNKNOWN_UNTIL_PROVEN",
+    "sector_rs1/5/20": "TDX_PRIMARY",
+    "Breadth": "TDX_PRIMARY",
+    "MA20 width": "TDX_PRIMARY",
+    "Base/Seed industry aggregate": "TDX_PRIMARY",
+    "B0": "TDX_PRIMARY",
+    "Rotation": "TDX_PRIMARY",
+    "stock.relative_sector_state": "TDX_PRIMARY",
+    "homepage_sector_ranks": "TDX_PRIMARY",
+    "Focus.mainline_sector": "TDX_PRIMARY"
+  },
+  "focus_sector_subscript_reads": [
+    "seed"
+  ],
+  "focus_source": {
+    "path": "src/workbench_analysis/corrected_focus_replay.py",
+    "sha256": "a5cc6319ad886a4263550f800c3912a24dffca323810c1ebbe70d93ddab9bce7",
+    "bytes": 14520
+  },
+  "seed_source": {
+    "path": "src/workbench_analysis/corrected_sector_replay.py",
+    "sha256": "b9aa7ffa53e028158176fd102de5b9621cbb31c93dacb116f6531bc69250b830",
+    "bytes": 11660
+  },
+  "proof": "Seed evaluation precedes dated_industry_memberships; Focus consumes only exact seed binding, not native/LOO/rotation.",
+  "stock_seed_prewatch_rerun_required": false,
+  "mainline_sector": "UNKNOWN without accepted TDX predecessor",
+  "stock_only_numerical_replay": [
+    {
+      "trade_date": "2026-09-28",
+      "rows": 5222,
+      "seed_exact_match": 5222,
+      "prewatch_exact_match": 5222,
+      "stock_only_result_digest": "05a937de18167c18be92b0442b6a76b30f137f42ec907e647b27b4c9495ac528",
+      "csrc_membership_reads": 0,
+      "tdx_membership_reads": 0
+    },
+    {
+      "trade_date": "2026-09-29",
+      "rows": 5223,
+      "seed_exact_match": 5223,
+      "prewatch_exact_match": 5223,
+      "stock_only_result_digest": "ffb9a1912528af13638ce7a9429232bcda496e4e9eb85c81b3e6d232aac6ec9c",
+      "csrc_membership_reads": 0,
+      "tdx_membership_reads": 0
+    },
+    {
+      "trade_date": "2026-09-30",
+      "rows": 5224,
+      "seed_exact_match": 5224,
+      "prewatch_exact_match": 5224,
+      "stock_only_result_digest": "2f24484032e3cbacff291b22dfa4ae61a2cbc65d7dda144c64c2da7ba186497c",
+      "csrc_membership_reads": 0,
+      "tdx_membership_reads": 0
+    },
+    {
+      "trade_date": "2026-10-08",
+      "rows": 5224,
+      "seed_exact_match": 5224,
+      "prewatch_exact_match": 5224,
+      "stock_only_result_digest": "4fbc4db3926cfce0f2793acc2e4e1bec92330451ffdbf5858f0ed3e56c8c647c",
+      "csrc_membership_reads": 0,
+      "tdx_membership_reads": 0
+    }
+  ],
+  "audit_item": "P0-TAX independent of delta and scoped release gate"
+}

@@ -1,5 +1,10 @@
 * text=auto eol=lf
 docs/evidence/r4_1_audit_repair_r1_20261009/** -text
+docs/evidence/r4_2_1_20261009/** -text
+docs/evidence/r4_2_1_20261009/daily*/**/*.json filter=lfs diff=lfs merge=lfs -text
+docs/evidence/r4_2_1_20261009/taxonomy/**/*.gz filter=lfs diff=lfs merge=lfs -text
+data/v4/source_snapshots/baostock/20261008/sha256-3e8fc5901aa51852bd0694d8cbe4cfd9afee45da106c00068ab11ec92378c952/daily_update.json -text
+scripts/audit_r4_2_1_identity_breakout_boundaries.py -text
 docs/evidence/v4_production_cutover_20261007/** -text
 reports/v4_production_cutover_20261007/** -text
 data/v4/production_views/** -text

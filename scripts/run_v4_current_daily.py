@@ -23,7 +23,8 @@ def main():
         if args.candidate_contract:
             status=publish_accepted_view(ROOT,args.candidate_contract,before)
         elif status['next_completed_session']:
-            process=subprocess.run([sys.executable,'-X','utf8',str(ROOT/'scripts/run_v4_dm01_daily_increment.py'),'--target-date',status['next_completed_session'],'--active-source-policy'],cwd=ROOT,capture_output=True,text=True,encoding='utf8')
+            source_args=['--typed-scope-v2'] if (ROOT/'config/tdx_a_stock_delta_scope_policy_v2.json').exists() else []
+            process=subprocess.run([sys.executable,'-X','utf8',str(ROOT/'scripts/run_v4_dm01_daily_increment.py'),'--target-date',status['next_completed_session'],'--active-source-policy',*source_args],cwd=ROOT,capture_output=True,text=True,encoding='utf8')
             status['daily_pipeline_exit_code']=process.returncode;status['daily_pipeline_output']=process.stdout;status['daily_pipeline_error']=process.stderr
             child=None
             try:

@@ -1,0 +1,18 @@
+{
+  "contract_id": "DM01_CORRECTED_BAOSTOCK_SOURCE_CAPABILITY_V2",
+  "version": "2.0.0",
+  "consumer_scope": "CORRECTED_SOURCE_STAGING_ONLY",
+  "calendar": "VERIFIED_OFFICIAL_COMPLETED_SESSION",
+  "provider_methods": ["query_daily_history_k_AStock", "query_daily_adjust_factor"],
+  "max_smoke_queries": 2,
+  "max_capture_queries": 2,
+  "max_pages_per_query": 1,
+  "max_rows_per_query": 20000,
+  "factor_schema_adapter": {"native_field": "adjustFacto", "normalized_field": "adjustFactor", "policy": "PRESERVE_NATIVE_BYTES; SPELLING_ONLY; CONFLICT_FAIL_CLOSED; NEVER_PRICE_AUTHORITY"},
+  "missing_sdk_result_date": "DERIVE_ONLY_FROM_UNIQUE_VALIDATED_RESPONSE_ROW_DATES; NATIVE_METADATA_PRESERVED; CONFLICT_REJECTED",
+  "ledger": "reports/v4_baostock/request_ledger.json",
+  "runtime_acceptance": "NEW_HASH_BOUND_READ_CAPABILITY_CAPSULE; ORIGINAL_SAME_DAY_PIT_MANIFEST_UNCHANGED",
+  "AS_RECORDED": false,
+  "production_permission": false,
+  "failure": "FIELD_LOCAL_SOURCE_BLOCKER_WITH_ACTUAL_ERROR; NO_FICTITIOUS_EMPTY_DATA"
+}

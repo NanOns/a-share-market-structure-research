@@ -110,8 +110,12 @@ class DailyJobs:
             row=db.execute('SELECT job_id FROM update_jobs ORDER BY created_at DESC LIMIT 1').fetchone()
             active=db.execute("SELECT job_id FROM update_jobs WHERE mode='CATCH_UP' AND status NOT IN ('PUBLISHED_FULL','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED') ORDER BY created_at LIMIT 1").fetchone()
             last_catch_up=db.execute("SELECT job_id FROM update_jobs WHERE mode='CATCH_UP' ORDER BY created_at DESC LIMIT 1").fetchone()
+        active_record=self.job(active['job_id']) if active else None
+        retry_times=[d['next_retry_at'] for d in (active_record or {}).get('days',[]) if d['next_retry_at']]
+        if retry_times:
+            plan['next_trigger_at']=min(retry_times+([plan['next_trigger_at']] if plan.get('next_trigger_at') else []))
         return dict(plan,settings=self.settings(),last_job=self.job(row['job_id']) if row else None,
-                    active_job=self.job(active['job_id']) if active else None,
+                    active_job=active_record,
                     last_catch_up_job=self.job(last_catch_up['job_id']) if last_catch_up else None,
                     worker_error=self.worker_error,last_good_preserved=True)
 
@@ -210,8 +214,10 @@ class DailyJobs:
                     code=str(exc).split(':',1)[0]
                     safe=code if code and len(code)<=100 and all(c.isupper() or c.isdigit() or c=='_' for c in code) else type(exc).__name__
                     blocked=safe in {'NEW_CANONICAL_IDENTITY_REQUIRED','DATED_SOURCE_RECONCILIATION_FAILED','DAILY_ALGORITHM_ADMISSION_NOT_READY',
-                                     'FULL_OWNER_LIFECYCLE_CONSERVATION_FAILED','FULL_CORE_NUMERIC_ORACLE_FAILED'}
-                    result=dict(status='QA_BLOCKED' if blocked else 'FAILED_RETRYABLE',reason='SOURCE_EXECUTION_'+safe)
+                                     'FULL_OWNER_LIFECYCLE_CONSERVATION_FAILED','FULL_CORE_NUMERIC_ORACLE_FAILED',
+                                     'FULL_PERIOD_NUMERIC_ORACLE_FAILED'}
+                    waiting_tdx=safe=='FALLBACK_LOCAL_ACTUAL_TARGET_ABSENT'
+                    result=dict(status='WAIT_TDX' if waiting_tdx else 'QA_BLOCKED' if blocked else 'FAILED_RETRYABLE',reason='SOURCE_EXECUTION_'+safe)
                 state=result['status']; retry=None
                 if self.publication_cancelled() and state!='PUBLISHED':state='CANCELLED'
                 if state not in {'PUBLISHED','PROBED','QA_BLOCKED','FAILED_TERMINAL','CANCELLED'}:

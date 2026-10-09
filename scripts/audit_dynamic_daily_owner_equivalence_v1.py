@@ -20,7 +20,7 @@ def semantics(row,families):
     return {family:{key:value(cell) for key,cell in row.get(family,{}).items()} for family in families}
 
 
-def main(folder):
+def main(folder, output=None):
     root=Path(__file__).resolve().parents[1];folder=Path(folder)
     head=json.loads((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())
     replay=json.loads((folder/'owner_v3/PROFILE_STRUCTURE_REPLAY.json').read_bytes())
@@ -45,7 +45,7 @@ def main(folder):
                     differences={f:[k for k in set(av[f])|set(bv[f]) if av[f].get(k)!=bv[f].get(k)] for f in families}
                     errors.append(dict(day=day,domain=domain,entity=a[key],different_fields=differences))
             checks.append(dict(day=day,domain=domain,rows=count,baseline=old[domain],replayed=binding))
-    output=root/'docs/evidence/dynamic_daily_20261009/DD03_OWNER_EQUIVALENCE.json'
+    output=Path(output) if output else root/'docs/evidence/dynamic_daily_20261009/DD03_OWNER_EQUIVALENCE.json'
     atomic_json(root,output,dict(contract_id='DYNAMIC_DAILY_FROZEN_OWNER_EQUIVALENCE_V1',
         evidence_kind='REAL_FROZEN_INPUT_FULL_POPULATION',checks=checks,errors=errors,
         acceptance='PASS_EXACT_NUMERIC_AND_QUALITY_EQUIVALENCE' if not errors else 'FAIL_EQUIVALENCE',
@@ -56,5 +56,5 @@ def main(folder):
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--folder',required=True);args=parser.parse_args()
-    raise SystemExit(0 if main(args.folder) else 1)
+    parser=argparse.ArgumentParser();parser.add_argument('--folder',required=True);parser.add_argument('--output');args=parser.parse_args()
+    raise SystemExit(0 if main(args.folder,args.output) else 1)

@@ -1,11 +1,27 @@
 """Latest official package and actual historical bars, without changing V1."""
 from datetime import date, datetime, timezone
 from pathlib import Path
-import json, os, struct, tempfile, zipfile
+import json, os, struct, tempfile, zipfile, urllib.request
 from . import tdx_official_daily_source as old
 from .market_source_acquisition import is_stock_code
 
 CONTRACT = 'TDX_LATEST_PACKAGE_TARGET_SESSION_V2'
+
+
+def _package_validator(url,timeout):
+    """The provider can replace ZIP bytes without changing publication metadata."""
+    old.validate_official_url(url)
+    request=urllib.request.Request(url,method='HEAD',headers={'User-Agent':'Mozilla/5.0',
+        'Referer':old.PAGE_URL,'Cache-Control':'no-cache, max-age=0','Pragma':'no-cache'})
+    with urllib.request.build_opener(old._AllowlistedRedirect()).open(request,timeout=timeout) as response:
+        old.validate_official_url(response.geturl())
+        headers=response.headers
+        length=headers.get('Content-Length','')
+        if 'zip' not in headers.get('Content-Type','').lower() or not length.isdigit():
+            return None
+        etag=headers.get('ETag');modified=headers.get('Last-Modified')
+        if not etag and not modified:return None
+        return dict(bytes=int(length),etag=etag,last_modified=modified)
 
 
 def capture_latest_tdx_package(*, snapshot_root, tdx_root=Path('D:/new_tdx'), timeout=30):
@@ -26,11 +42,14 @@ def capture_latest_tdx_package(*, snapshot_root, tdx_root=Path('D:/new_tdx'), ti
         response.close()
     pointer=Path(snapshot_root)/'tdx_latest_v2.json'
     old.ensure_outside_tdx(pointer,tdx_root)
+    validator=_package_validator(url,timeout)
     if pointer.is_file():
         cached=json.loads(pointer.read_bytes())
         source=cached.get('download',{})
         artifact=Path(source.get('path',''))
         if (cached.get('probe_info_sha256')==old.sha256_bytes(info_bytes)
+                and validator is not None and cached.get('remote_package_validator')==validator
+                and validator['bytes']==source.get('bytes')
                 and cached.get('resolved_download_url')==url and artifact.is_file()
                 and artifact.stat().st_size==source.get('bytes')
                 and old.sha256_file(artifact)==source.get('sha256')):
@@ -39,8 +58,11 @@ def capture_latest_tdx_package(*, snapshot_root, tdx_root=Path('D:/new_tdx'), ti
                 snapshot_root=Path(snapshot_root),tdx_root=tdx_root,timeout=timeout)
     result=dict(receipt,contract_id=CONTRACT,provider_package_date=receipt['update_date'],
                 mode='LATEST_PACKAGE',strict_capture_contract=receipt['contract_id'],
-                probe_info_sha256=old.sha256_bytes(info_bytes))
+                probe_info_sha256=old.sha256_bytes(info_bytes),remote_package_validator=validator)
     if result.get('download'):
+        after=_package_validator(url,timeout)
+        if validator is not None and (after!=validator or result['download']['bytes']!=validator['bytes']):
+            return dict(result,status='WAIT_TDX_PACKAGE_REVISION_RACE',download=None)
         old._atomic_write(pointer,old._json_bytes(result),tdx_root=tdx_root)
     return result
 

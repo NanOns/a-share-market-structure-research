@@ -105,6 +105,19 @@ def test_source_wait_then_resume(tmp_path,plan):
     assert len(calls)==3
 
 
+def test_native_target_absent_waits_without_publication(tmp_path,plan):
+    def missing(day,mode):
+        raise ValueError('FALLBACK_LOCAL_ACTUAL_TARGET_ABSENT')
+    jobs=DailyJobs(tmp_path,missing,lambda:datetime.fromisoformat('2026-10-09T18:35+08:00'))
+    jobs.settings(False)
+    job=jobs.enqueue();jobs.tick()
+    record=jobs.job(job)
+    assert record['status']=='WAIT_TDX'
+    assert record['days'][0]['next_retry_at']=='2026-10-09T19:05:00+08:00'
+    assert record['days'][1]['attempt_count']==0
+    assert jobs.status()['next_trigger_at']=='2026-10-09T19:05:00+08:00'
+
+
 def test_restart_recovers_running_checkpoint(tmp_path,plan):
     jobs=DailyJobs(tmp_path);job=jobs.enqueue()
     with jobs.connect() as db:

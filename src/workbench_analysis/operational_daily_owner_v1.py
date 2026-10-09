@@ -254,7 +254,7 @@ def seal(root,context):
     atomic_json(root,receipt,dict(contract_id='DYNAMIC_DAILY_DERIVED_DAY_RECEIPT_V1',target_session=day,acceptance='DERIVED_READY',
         owners=owners,source_counts=context['source_counts'],numeric_core_oracle=ref(root,out/'CORE_REPLAY.json'),
         sector_oracle=owners['sector_receipt'],period_kernel=ref(root,root/'src/workbench_analysis/dm01_incremental_component_builders_r3_3.py'),
-        source_freeze=context['freeze'],AS_RECORDED=False,PIT_ELIGIBLE=False,external_acceptance='NOT_GRANTED',
+        source_freeze=context['freeze'],source_readiness=context.get('source_readiness'),AS_RECORDED=False,PIT_ELIGIBLE=False,external_acceptance='NOT_GRANTED',
         generation_scope=ref(root,folder/'GENERATION_SCOPE.json'),
         affected_history='Every saved rolling window and prior coordinate rebuilt from bound native package and GBBQ',
         rotation_validation='VALIDATION_ONGOING',next_stage='AUTHORIZED_CAS_HTTP_READBACK'))

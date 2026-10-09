@@ -109,7 +109,7 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
         return dict(status='WAIT_TDX',reason='ACTUAL_TARGET_SESSION_NOT_IN_VERIFIED_NATIVE_SOURCES',tdx=bars['artifact'])
     available=max(datetime.fromisoformat(raw['observed_at']),datetime.fromisoformat(bars['source_available_at'])).isoformat()
     artifact=dict(contract_id='DYNAMIC_DAILY_SOURCE_FREEZE_V1',target_session=day,
-        observed_at=available,AS_RECORDED=False,PIT_ELIGIBLE=False,
+        observed_at=available,tdx_source_available_at=bars['source_available_at'],AS_RECORDED=False,PIT_ELIGIBLE=False,
         tdx=bars['artifact'],native_baostock=dict(path=raw_path.relative_to(root).as_posix(),sha256=tdx.sha256_file(raw_path)),
         runtime_manifest=dict(path=immutable_manifest.relative_to(root).as_posix(),sha256=tdx.sha256_file(immutable_manifest)),
         effective_package=package,
@@ -130,6 +130,7 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     progress(day,'DERIVING',result)
     from .operational_daily_owner_v1 import build,seal
     produced,context=build(root,result['source_freeze'])
+    context['source_readiness']=result['source_readiness']
     if cancelled():return dict(result,status='CANCELLED',reason='CANCELLED_BEFORE_CAS')
     candidate,binding=seal(root,context)
     from scripts.audit_dynamic_daily_period_numbers_v1 import audit as audit_periods
@@ -154,13 +155,13 @@ def verify_source_gate(root,day,artifact,result,now=None):
     raw_path=root/artifact['native_baostock']['path']
     if tdx.sha256_file(raw_path)!=artifact['native_baostock']['sha256']:raise ValueError('NATIVE_RESPONSE_DIGEST_MISMATCH')
     raw=json.loads(raw_path.read_bytes());normalized=artifact['normalized'];package=artifact['effective_package']
-    bars=dict(artifact=artifact['tdx'],source_available_at=artifact['observed_at'])
+    bars=dict(artifact=artifact['tdx'],source_available_at=artifact.get('tdx_source_available_at',artifact['observed_at']))
     snapshot=root/'data/v4/dynamic_daily_sources'
     observed=raw['observed_at'];daily=normalized['daily']['rows'];factors=normalized['adjustment_factor']['rows']
     native_path=Path(bars['artifact']['path'])
     if not native_path.is_absolute():native_path=root/native_path
     if tdx.sha256_file(native_path)!=bars['artifact']['sha256']:raise ValueError('NATIVE_TARGET_DIGEST_MISMATCH')
-    native=json.loads(native_path.read_bytes())['target_bars']
+    native_document=json.loads(native_path.read_bytes());native=native_document['target_bars']
     bycode={r['source_security_key'].upper():r for r in native}
     codes=[r['code'].upper() for r in daily]
     reconciled=bool(codes) and len(codes)==len(set(codes)) and len(bycode)==len(native)
@@ -177,16 +178,24 @@ def verify_source_gate(root,day,artifact,result,now=None):
             provider='BaoStock',artifact_family=name,capture_method='ACCEPTED_NATIVE_RESPONSE',
             evidence_path=raw_path.relative_to(root).as_posix(),captured_at=observed,
             verified_at=datetime.now(timezone.utc).isoformat())
+        sources[name]['provider_observed_at']=observed
+    factor_proved=(raw.get('target_date')==day and 'adjustment_factor_rows' in raw
+        and raw.get('adjustment_factor_metadata',{}).get('error_code')=='0'
+        and all(r.get('dividOperateDate')==day for r in factors)
+        and bool(raw['adjustment_factor_rows'])==bool(factors))
+    if not factor_proved:sources['baostock_factor']['status']='UNVERIFIED'
     if not factors:
-        sources['baostock_factor'].update(verified_no_change=True,proof_target_session=day,
+        sources['baostock_factor'].update(verified_no_change=factor_proved,proof_target_session=day,
             no_change_proof_sha256=tdx.sha256_file(raw_path))
     sources['tdx']=dict(status='VERIFIED',target_session=day,
         source_sha256=bars['artifact']['sha256'],observed_at=bars['source_available_at'],
-        bars_date_coverage=[day],row_count=len(native),provider='TDX',
+        bars_date_coverage=sorted({r.get('trade_date') for r in native if r.get('trade_date')}),row_count=len(native),provider='TDX',
         artifact_family='NATIVE_DAILY',capture_method='VERIFIED_TARGET_EXTRACTION',
         provider_package_date=package['provider_package_date'],package=package.get('download'),
         evidence_path=bars['artifact']['path'],captured_at=bars['source_available_at'],
         verified_at=datetime.now(timezone.utc).isoformat())
+    sources['tdx']['provider_observed_at']=package.get('observed_at',bars['source_available_at'])
+    if any(r.get('trade_date')!=day for r in native):sources['tdx']['status']='UNVERIFIED'
     readiness=source_readiness(day,now or datetime.now(timezone.utc),sources)
     readiness.update(source_freeze=result['source_freeze'],AS_RECORDED=False,PIT_ELIGIBLE=False)
     revision=readiness.get('source_revision_id') or tdx.sha256_bytes(tdx._json_bytes(readiness))

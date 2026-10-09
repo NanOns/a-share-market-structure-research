@@ -18,3 +18,5 @@
 最小兼容范围：context/home、股票列表/详情/profile、板块列表/详情/成员、Focus列表与事件/episodes/anchors/observations/outcomes、根诊断/来源及原生四日领域。完整chart/PIT replay/compare、板块历史timeline/overlap、Market中心子页面、Forward enrollment统计/plans/FEP/settlement和诊断专用子页面未接完整Owner，明确SOURCE_INCOMPLETE；不是六入口完整FP功能验收。
 源修复已推送提交ad488763；最终代码与证据提交及Drive归档见 `R43_R1_DELIVERY_RECEIPT.json`。
 下一阶段：提交 `SCOPED_ADMISSION_REQUEST_V2.json` 所列精确候选给独立外审；在签署前不得执行生产切换或进入FP01–FP14。
+
+代码与全部验收证据提交：47a9c76797a1e80666976a188e9ddf19d9647d6a，已推送 origin/codex/v4-fp14-r2-repair。后续归档回执提交仅记录交付元数据。

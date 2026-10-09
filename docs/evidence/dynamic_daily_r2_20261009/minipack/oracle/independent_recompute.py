@@ -51,6 +51,23 @@ def run(root):
             values=[r['ret1'] for r in sector['contributions'] if r['ret1'] is not None]
             check(day+'/'+sector['sector_id']+'/median',median(values) if values else None,sector['expected']['sector_rs1'])
             check(day+'/'+sector['sector_id']+'/breadth',sum(v>0 for v in values)/len(values) if values else None,sector['expected']['breadth_ret1'])
+            for case in sector.get('loo_cases',[]):
+                others=[r for r in sector['contributions'] if r['security_id']!=case['excluded_target_id']]
+                check(day+'/'+sector['sector_id']+'/loo_member_count',len(others),case['non_target_member_count'])
+                assert all(r['security_id']!=case['excluded_target_id'] for r in others)
+                for n in (1,5):
+                    values=[r[f'ret{n}'] for r in others if r[f'ret{n}'] is not None]
+                    stock=case['stock_returns'][f'ret{n}']
+                    actual=stock-median(values) if stock is not None and values else None
+                    check(day+'/'+sector['sector_id']+f'/loo_rel{n}',actual,case['expected_relative_substitutions'][f'rel_market_{n}'])
+        market=data.get('market_participation')
+        if market:
+            assert {r['security_id'] for r in market['contributions']}==set(sample['accepted_pool'])
+            values=[r['amount_ratio20'] for r in market['contributions'] if r['amount_ratio20'] is not None]
+            value=median(values) if values else None
+            axis=None if value is None else 'EXPANDING' if value>=market['thresholds']['expanding'] else 'THIN' if value<market['thresholds']['thin'] else 'NORMAL'
+            checks+=1
+            if axis!=market['expected_axis']:errors.append(dict(label=day+'/market_participation',actual=axis,expected=market['expected_axis']))
     period_checks=0
     for c in read(root/'periods/PERIOD_ORACLE_CASES.json'):
         p=c['expected'];bars=c['bars'];basis='raw_ohlc' if c['domain']=='period_raw' else 'qfq_ohlc'

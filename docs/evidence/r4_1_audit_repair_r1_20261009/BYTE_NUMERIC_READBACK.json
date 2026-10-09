@@ -1,0 +1,135 @@
+{
+  "contract": "R4_1_AUDIT_R1_BYTES_NUMERIC_V1",
+  "observed_at": "2026-10-09T00:57:21.159622+00:00",
+  "head": "c010b818811689ed3056c6500ca5caa5cbadde4e",
+  "execution_scope": "LOCAL_ENGINEERING_REEXECUTION_NOT_EXTERNAL_ACCEPTANCE",
+  "package": {
+    "bytes": 551544006,
+    "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261008T234926978138Z/sha256-5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4/hsjday.zip",
+    "sha256": "5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4"
+  },
+  "zip_crc": "PASS",
+  "official_all_instrument_bars": {
+    "2026-09-28": 9717,
+    "2026-09-29": 9694,
+    "2026-09-30": 9697,
+    "2026-10-08": 9704
+  },
+  "numeric": [
+    {
+      "trade_date": "2026-09-28",
+      "checks": {
+        "raw_ohlcva": 31260,
+        "current_ma20": 5212,
+        "current_atr20": 5212,
+        "prior_ma20": 5212,
+        "prior_atr20": 5212,
+        "current_ma20_unknown": 10,
+        "current_atr20_unknown": 10,
+        "prior_ma20_unknown": 10,
+        "prior_atr20_unknown": 10
+      }
+    },
+    {
+      "trade_date": "2026-09-29",
+      "checks": {
+        "raw_ohlcva": 31266,
+        "current_ma20": 5214,
+        "current_atr20": 5212,
+        "prior_ma20": 5212,
+        "prior_atr20": 5212,
+        "current_atr20_unknown": 11,
+        "prior_ma20_unknown": 11,
+        "prior_atr20_unknown": 11,
+        "current_ma20_unknown": 9
+      }
+    },
+    {
+      "trade_date": "2026-09-30",
+      "checks": {
+        "raw_ohlcva": 31278,
+        "current_ma20": 5215,
+        "current_atr20": 5214,
+        "prior_ma20": 5214,
+        "prior_atr20": 5212,
+        "prior_atr20_unknown": 12,
+        "current_atr20_unknown": 10,
+        "prior_ma20_unknown": 10,
+        "current_ma20_unknown": 9
+      }
+    },
+    {
+      "trade_date": "2026-10-08",
+      "checks": {
+        "raw_ohlcva": 31254,
+        "current_ma20": 5215,
+        "current_atr20": 5215,
+        "prior_ma20": 5215,
+        "prior_atr20": 5214,
+        "prior_atr20_unknown": 10,
+        "current_ma20_unknown": 9,
+        "current_atr20_unknown": 9,
+        "prior_ma20_unknown": 9
+      }
+    }
+  ],
+  "errors": [],
+  "protected": {
+    "config/v4_joint_release_authority_v1.json": true,
+    "data/v4/V4_DATA_ACCEPTED_HEAD.json": true
+  },
+  "live_context": {
+    "status": "READY_CURRENT_ACCEPTED",
+    "context": {
+      "source_mode": "V4_ACCEPTED_RESEARCH_READONLY",
+      "namespace": "V4_CURRENT_ACCEPTED",
+      "accepted_trade_date": "2026-09-30",
+      "last_accepted_trade_date": "2026-09-30",
+      "data_head_digest": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "stage_head_digest": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0",
+      "stage": "V4-15",
+      "stage_contract_id": "V4_15_ACCEPTED_HEAD_V1",
+      "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+      "canonical_data_revision": "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08",
+      "read_contract_digest": "f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147",
+      "data_updated_at": "2026-10-01T12:25:10.846023+00:00",
+      "freshness_state": "WAIT_NEXT_ACCEPTED_INPUT",
+      "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+      "historical_pit_effectiveness": "NOT_GRANTED"
+    },
+    "context_token": "current-v4-8a7b8e3f8fe867183cbeefe8a1e48f9038b4ccf9aee778f10bfd9d4ba348afa1",
+    "production_permission": {
+      "ROTATION": false,
+      "SECTOR_RISK_CHANGE": false,
+      "SECTOR_STAGE": false,
+      "STOCK_CORE": false,
+      "STOCK_SECTOR_DEPENDENT": false
+    },
+    "focus_write": false,
+    "source_mode": "V4_ACCEPTED_RESEARCH_READONLY"
+  },
+  "paired_sample_categories": {
+    "2026-09-28:ADJUSTED_WINDOW": 10,
+    "2026-09-28:NORMAL_WINDOW": 10,
+    "2026-09-28:SUSPENDED_NO_CURRENT_BAR": 10,
+    "2026-09-28:SHORT_OR_UNKNOWN_WINDOW": 10,
+    "2026-09-29:ADJUSTED_WINDOW": 10,
+    "2026-09-29:NORMAL_WINDOW": 10,
+    "2026-09-29:SUSPENDED_NO_CURRENT_BAR": 10,
+    "2026-09-29:SHORT_OR_UNKNOWN_WINDOW": 10,
+    "2026-09-30:ADJUSTED_WINDOW": 10,
+    "2026-09-30:NORMAL_WINDOW": 10,
+    "2026-09-30:SUSPENDED_NO_CURRENT_BAR": 10,
+    "2026-09-30:SHORT_OR_UNKNOWN_WINDOW": 10,
+    "2026-10-08:ADJUSTED_WINDOW": 10,
+    "2026-10-08:NORMAL_WINDOW": 10,
+    "2026-10-08:SUSPENDED_NO_CURRENT_BAR": 10,
+    "2026-10-08:SHORT_OR_UNKNOWN_WINDOW": 9
+  },
+  "strict_delta_invalid_entries": 18,
+  "acceptance": "PASS_SCOPED_LOCAL_BYTES_AND_WINDOW_ARITHMETIC",
+  "limitation": "MA/ATR independently recomputed from hash-verified corrected OHLC; event semantics and full adjustment oracle remain external review objects",
+  "production": "BLOCKED_SCOPED_EXTERNAL_OWNER_ADMISSION",
+  "source_requests_this_run": 0,
+  "next_stage": "EXTERNAL_SOURCE_IDENTITY_COORDINATE_AND_OWNER_ADMISSION"
+}

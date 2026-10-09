@@ -50,6 +50,11 @@ def _run_json_cli(*args: str) -> tuple[int, dict]:
         payload = json.loads(lines[-1]) if lines else {}
     except ValueError:
         payload = {"status": "BLOCKED_CLI_OUTPUT_INVALID", "stderr": result.stderr[-300:]}
+    if not isinstance(payload, dict):
+        payload = {"status": "BLOCKED_CLI_OUTPUT_INVALID"}
+    if result.returncode != 0:
+        payload = {**payload, "status": payload.get("status") or "BLOCKED_CLI_EXECUTION_FAILED",
+                   "exit_code": result.returncode, "stderr": result.stderr[-2000:]}
     return result.returncode, payload
 
 
@@ -205,6 +210,12 @@ def main() -> int:
         )
         if tdx and tdx.get('status') == 'SOURCE_CAPTURE_BLOCKED':
             readiness = dict(readiness, status='SOURCE_CAPTURE_BLOCKED', reason=tdx.get('reason'), head_moved=False)
+        elif tdx_delta_build and tdx_delta_build.get('status') != 'READY':
+            # A failed upstream transformation means BaoStock was never reached.
+            # Do not misreport that as a provider publication delay.
+            readiness = dict(readiness, status='BLOCKED_TDX_DELTA_NOT_READY',
+                             reason=tdx_delta_build.get('reason') or tdx_delta_build.get('status'),
+                             baostock_capture_attempted=False, head_moved=False)
         if (readiness.get("status") == "SOURCE_FREEZE_READY" and tdx and bao and gbbq_probe
                 and builder_registry_result.get('status') != 'BLOCKED_BUILDER_REGISTRY'):
             tdx_capture_path = Path(str(tdx.get("receipt_path") or ""))

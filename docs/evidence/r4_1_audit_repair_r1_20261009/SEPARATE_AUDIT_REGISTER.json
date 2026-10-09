@@ -1,0 +1,64 @@
+{
+  "items": [
+    {
+      "id": "R4R1-P0-1",
+      "scope": "Actual LFS objects and arithmetic",
+      "evidence": [
+        "BYTE_NUMERIC_READBACK.json",
+        "NUMERIC_SAMPLES.json"
+      ],
+      "acceptance": "PASS_SCOPED_LOCAL_BYTES_AND_WINDOW_ARITHMETIC",
+      "remaining": "Independent external event semantics, source and field/owner approval"
+    },
+    {
+      "id": "R4R1-P0-2",
+      "scope": "Formal DM01 delta and source acceptance",
+      "evidence": [
+        "daily/2026-10-08/source_readiness_receipt_r2.json",
+        "OFFICIAL_PACKAGE_STRICT_DELTA_BLOCKERS.json"
+      ],
+      "acceptance": "BLOCKED_TDX_DELTA_NOT_READY",
+      "remaining": "Versioned scoped treatment of invalid vendor entries; separate successor runtime seal; original as-recorded flow cannot admit retrospective source"
+    },
+    {
+      "id": "R4R1-P0-3",
+      "scope": "Unbound identity rows",
+      "evidence": [
+        "UNBOUND_IDENTITY_CLASSIFICATION.json"
+      ],
+      "acceptance": "CLASSIFIED_NOT_ACCEPTED",
+      "remaining": "BSE candidate source/aliases need independent authority; unresolved identities stay null"
+    },
+    {
+      "id": "R4R1-P1-4",
+      "scope": "Breakout first event and prior episode",
+      "evidence": [
+        "PROFILE_STRUCTURE_REPLAY.json",
+        "SOURCE_BINDINGS.json"
+      ],
+      "acceptance": "BLOCKED_ACCEPTED_PRIOR_EPISODE",
+      "remaining": "No accepted initial prior episode/absence proof; no UNKNOWN to FALSE bootstrap"
+    },
+    {
+      "id": "R4R1-P1-5",
+      "scope": "TDX taxonomy and rotation",
+      "evidence": [
+        "SECTOR_REPLAY.json",
+        "MARKET_ROTATION_REPLAY.json"
+      ],
+      "acceptance": "BLOCKED_EFFECTIVE_MEMBERSHIP_AND_PRIOR_ROTATION",
+      "remaining": "83 CSRC categories never substitute 378 product sectors; no accepted TDX historical concepts or prior rotation"
+    },
+    {
+      "id": "R4R1-P1-6",
+      "scope": "Market limits and Focus/Forward first availability",
+      "evidence": [
+        "FOCUS_FORWARD_REPLAY.json",
+        "MARKET_ROTATION_REPLAY.json"
+      ],
+      "acceptance": "PARTIAL_CANDIDATES_NOT_FULL_ACCEPTANCE",
+      "remaining": "Dated limit owner and actual mature due/exit/reentry/T0 samples remain separate acceptance objects"
+    }
+  ],
+  "no_cross_gate_waiver": true
+}

@@ -1,0 +1,121 @@
+{
+  "accepted_builder_registry": {
+    "reason": "INPUT_DIGEST_MISMATCH",
+    "status": "BLOCKED_BUILDER_REGISTRY"
+  },
+  "active_source_capture": null,
+  "baostock_capture": null,
+  "baostock_capture_error": null,
+  "baostock_live_smoke": null,
+  "baostock_runtime_acceptance": null,
+  "baostock_runtime_error": null,
+  "component_builds": null,
+  "contract_id": "V4_DM01_SOURCE_READINESS_RECEIPT_R2",
+  "contract_path": "config/v4_continuous_data_maintenance_v2.json",
+  "contract_sha256": "e31f94040d901cedcce64b4ef7775ef23afc816f82873dc7527d38675ec78d90",
+  "data_head_moved": false,
+  "dev_baseline_head_moved": false,
+  "gbbq_revision_probe": null,
+  "lifecycle_snapshot": null,
+  "lifecycle_snapshot_receipt": null,
+  "next_stage": "CAPTURE_TDX_AND_BAOSTOCK_AFTER_OFFICIAL_RELEASE; BUILD_ONLY_AFTER_ALL_V2_SOURCE_FAMILIES_READY",
+  "observed_at": "2026-10-09T00:53:28+00:00",
+  "promotion": null,
+  "source_freeze": null,
+  "source_readiness": {
+    "baostock_capture_attempted": false,
+    "head_moved": false,
+    "reason": "BLOCKED_CLI_EXECUTION_FAILED",
+    "status": "BLOCKED_TDX_DELTA_NOT_READY",
+    "trade_date": "2026-10-08"
+  },
+  "special_phase_snapshot": null,
+  "special_phase_source_receipt": null,
+  "stage_accepted_head_moved": false,
+  "stage_contract": "V4_CONTINUOUS_DATA_MAINTENANCE_V2",
+  "status": "BLOCKED_TDX_DELTA_NOT_READY",
+  "target_date": "2026-10-08",
+  "tdx_delta_build": {
+    "exit_code": 1,
+    "status": "BLOCKED_CLI_EXECUTION_FAILED",
+    "stderr": "Traceback (most recent call last):\n  File \"G:\\codex work\\大A交易\\scripts\\build_dm01_r4_tdx_delta.py\", line 29, in <module>\n    if __name__=='__main__':raise SystemExit(main())\n                                             ~~~~^^\n  File \"G:\\codex work\\大A交易\\scripts\\build_dm01_r4_tdx_delta.py\", line 19, in main\n    delta=build_tdx_package_delta(parent_zip=r.path(ROOT,parent),current_zip=current,target_date=args.target_date,\n        parent_snapshot_id='sha256-'+parent['sha256'],current_snapshot_id=args.current_snapshot_id)\n  File \"G:\\codex work\\大A交易\\src\\workbench_analysis\\tdx_snapshot_delta.py\", line 131, in build_tdx_package_delta\n    new_records = _records(current_raw)\n  File \"G:\\codex work\\大A交易\\src\\workbench_analysis\\tdx_snapshot_delta.py\", line 56, in _records\n    raise TDXDeltaError(\"TDX_DAY_FILE_OHLC_INVALID\")\nworkbench_analysis.tdx_snapshot_delta.TDXDeltaError: TDX_DAY_FILE_OHLC_INVALID\n"
+  },
+  "tdx_page_capture": {
+    "contract_id": "TDX_OFFICIAL_DAILY_PACKAGE_SOURCE_V1",
+    "download": {
+      "bytes": 551544006,
+      "final_url": "https://data.tdx.com.cn/vipdoc/hsjday.zip",
+      "http_metadata": {},
+      "path": "G:\\codex work\\大A交易\\data\\v4\\source_snapshots\\tdx\\20261008\\sha256-5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4\\hsjday.zip",
+      "sha256": "5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4"
+    },
+    "downloaded_at": "2026-10-09T00:53:52+00:00",
+    "existing_downloader": {
+      "adapter_contract": "TDX_EXISTING_R3_DOWNLOADER_ADAPTER_V1",
+      "capture_receipt": {
+        "bytes": 3019,
+        "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261009T005332003477Z/request_receipt.json",
+        "sha256": "31267eb6a7f4c3e2ffbdd43cb453f67b88b76ea3e62902dada1427ba30f1fe48"
+      },
+      "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+      "package": {
+        "bytes": 551544006,
+        "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261009T005332003477Z/sha256-5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4/hsjday.zip",
+        "sha256": "5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4"
+      }
+    },
+    "observed_at": "2026-10-09T00:53:31+00:00",
+    "page_html_path": "G:\\codex work\\大A交易\\data\\v4\\source_snapshots\\tdx\\20261008\\capture-20261009T005331658832Z-38113b067ccedf5e\\page.html",
+    "page_http_metadata": {
+      "Content-Type": "text/html",
+      "ETag": "\"6ab0e845-6320\"",
+      "Last-Modified": "Mon, 21 Sep 2026 08:18:13 GMT"
+    },
+    "page_sha256": "92b455e0e5eb03637eb55c98514a3f392e071bb1bab1d7b639d9ca9919de0c61",
+    "page_url": "https://www.tdx.com.cn/article/vipdata.html",
+    "receipt_path": "G:\\codex work\\大A交易\\data\\v4\\source_snapshots\\tdx\\20261008\\capture-20261009T005331658832Z-38113b067ccedf5e\\capture_receipt.json",
+    "rejected_response": {
+      "bytes": 987,
+      "final_url": "https://data.tdx.com.cn/vipdoc/hsjday.zip",
+      "headers": {
+        "Content-Disposition": null,
+        "Content-Length": "987",
+        "ETag": null,
+        "Last-Modified": null,
+        "sha256": "abf5debe1fccb09133b3a114811965a936eb20c06c682f627439cfe4db7b3dee"
+      },
+      "path": "G:\\codex work\\大A交易\\data\\v4\\source_snapshots\\tdx\\20261008\\capture-20261009T005331658832Z-38113b067ccedf5e\\rejected_package_response.bin",
+      "sha256": "abf5debe1fccb09133b3a114811965a936eb20c06c682f627439cfe4db7b3dee"
+    },
+    "resolved_download_url": "https://data.tdx.com.cn/vipdoc/hsjday.zip",
+    "snapshot_id": "sha256-5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4",
+    "source_revision_number": 1,
+    "status": "NOOP_SOURCE_ALREADY_FROZEN",
+    "target_date": "2026-10-08",
+    "tdx_root_write_count": 0,
+    "update_date": "2026-10-08",
+    "update_info_http_metadata": {
+      "Content-Type": "application/javascript",
+      "ETag": "\"6ac75231-78\"",
+      "Last-Modified": "Thu, 08 Oct 2026 08:20:01 GMT"
+    },
+    "update_info_path": "G:\\codex work\\大A交易\\data\\v4\\source_snapshots\\tdx\\20261008\\capture-20261009T005331658832Z-38113b067ccedf5e\\update_info.js",
+    "update_info_sha256": "8a8e9e9757075b8ac5151a023dc2217894d2ce4543c24860842faeb4e8f3df21",
+    "update_info_url": "https://data.tdx.com.cn/vipdoc/_hsjdayinfo.js?t=179150721",
+    "update_time": "15:58:57",
+    "version": "1.0.0",
+    "zip_validation": {
+      "crc_integrity": "PASS",
+      "day_entry_markets": [
+        "bj",
+        "sh",
+        "sz"
+      ],
+      "entry_count": 12449,
+      "status": "PASS",
+      "uncompressed_bytes": 953828832
+    }
+  },
+  "tdx_root_write_count": 0,
+  "version": "2.0.0"
+}

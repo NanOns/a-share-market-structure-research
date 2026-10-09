@@ -1,0 +1,40 @@
+{
+  "stage_contract": "STAGE_CONTRACT.md",
+  "evidence": "PASS_SCOPED_LOCAL_BYTES_AND_WINDOW_ARITHMETIC",
+  "tests": "23 passed",
+  "official_request_count": 4,
+  "branch": "codex/v4-fp14-r2-repair",
+  "source_requests": "Fresh official acquisition retained in NEW_OFFICIAL_CAPTURE_RECEIPT; BaoStock formal capture not reached due to delta failure",
+  "identity_counts": {
+    "2026-09-28": {
+      "INDEX_EXCLUDED": 2,
+      "BSE_STABLE_ENTITY_CANDIDATE_NOT_ACCEPTED": 246,
+      "BSE_EXPLICIT_UNRESOLVED_SOURCE": 101
+    },
+    "2026-09-29": {
+      "INDEX_EXCLUDED": 2,
+      "BSE_STABLE_ENTITY_CANDIDATE_NOT_ACCEPTED": 246,
+      "BSE_EXPLICIT_UNRESOLVED_SOURCE": 101,
+      "BSE_LIFECYCLE_SOURCE_REQUIRED": 1
+    },
+    "2026-09-30": {
+      "INDEX_EXCLUDED": 2,
+      "BSE_STABLE_ENTITY_CANDIDATE_NOT_ACCEPTED": 246,
+      "BSE_EXPLICIT_UNRESOLVED_SOURCE": 101,
+      "BSE_LIFECYCLE_SOURCE_REQUIRED": 1
+    },
+    "2026-10-08": {
+      "INDEX_EXCLUDED": 2,
+      "BSE_STABLE_ENTITY_CANDIDATE_NOT_ACCEPTED": 246,
+      "BSE_EXPLICIT_UNRESOLVED_SOURCE": 101,
+      "BSE_LIFECYCLE_SOURCE_REQUIRED": 1
+    }
+  },
+  "invalid_delta_entries": 18,
+  "formal_daily": "BLOCKED_TDX_DELTA_NOT_READY",
+  "live_accepted_trade_date": "2026-09-30",
+  "acceptance": "DEGRADED_PASS_ENGINEERING_REPAIR; EXTERNAL_ACCEPTANCE_BLOCKED",
+  "production": "BLOCKED_SCOPED_EXTERNAL_OWNER_ADMISSION",
+  "next_stage": "INDEPENDENT_SOURCE_SCOPE_AND_OWNER_SUCCESSOR_ADMISSION",
+  "input_document_sha256": "a545609767314d23984c9c324e4b033a022104dab3dd26e3bbb5af628df78fed"
+}

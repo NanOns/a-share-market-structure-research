@@ -1,0 +1,51 @@
+{
+  "contract_id": "R4R1_SCOPED_EXTERNAL_ADMISSION_OBJECT_V1",
+  "approval_granted": false,
+  "requested_scope": [
+    "OFFICIAL_TDX_RAW_CURRENT_CANONICAL_SUBSET",
+    "CORRECTED_CORE_PROFILE"
+  ],
+  "excluded_scope": [
+    "UNBOUND_BSE_IDENTITIES",
+    "STRICT_PIT",
+    "TDX_HISTORICAL_CONCEPTS",
+    "ROTATION",
+    "BREAKOUT_UNKNOWN_PRIOR",
+    "DATED_LIMIT_OWNER"
+  ],
+  "source_observation": "2026-10-09 acquisition; never 2026-10-08 first availability",
+  "bindings": [
+    {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/CORE_REPLAY.json",
+      "sha256": "103598fe558b729548a5dcfc4b805caea2c09021d026bd492946ee6423645325",
+      "bytes": 1481017
+    },
+    {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/PROFILE_STRUCTURE_REPLAY.json",
+      "sha256": "1704b9c3fa06928ca921da6dde06bf08732af70ac7d4afafd6797631cba264f5",
+      "bytes": 28521
+    },
+    {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/SECTOR_REPLAY.json",
+      "sha256": "c9bfdebac3a41e8d7f373b601c12883f28bce92ba6bd00a07dfb910fa9d7a76b",
+      "bytes": 49793
+    },
+    {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/MARKET_ROTATION_REPLAY.json",
+      "sha256": "0d69c158d4afd5262d477b5c52bfc5b09d16d5975d2f2f871c7e00355818a30f",
+      "bytes": 2894
+    },
+    {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/FOCUS_FORWARD_REPLAY.json",
+      "sha256": "d2102005bd6c4b5a50c7e8827bf6b6ee240f7aa2a6a083598034cd4481ecc506",
+      "bytes": 4857
+    },
+    {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/OWNER_STAGE_SEAL_V1.json",
+      "sha256": "69f556ff89262d7c10b103d52c297aff0c2076f91e618c6f6789e73b814c735a",
+      "bytes": 4555
+    }
+  ],
+  "candidate_successor": "REQUIRES_NEW_VERSION_AND_HEAD; NO_REHASH_OF_HISTORICAL_SEAL",
+  "status": "BLOCKED_SCOPED_EXTERNAL_OWNER_ADMISSION"
+}

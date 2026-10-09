@@ -3,7 +3,7 @@ from datetime import datetime,timezone
 from pathlib import Path
 import argparse,json,sys
 ROOT=Path(__file__).resolve().parents[1]
-sys.path.insert(0,str(ROOT/'src'))
+sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 from workbench_analysis import dm01_runtime_r4 as r
 from workbench_analysis.dm01_sources_r4 import parent_tdx_package
 from workbench_analysis.tdx_snapshot_delta import build_tdx_package_delta

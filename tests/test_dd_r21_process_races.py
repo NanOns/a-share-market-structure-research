@@ -71,3 +71,50 @@ def test_disk_write_failure_before_cas_preserves_last_good(tmp_path,monkeypatch)
     with pytest.raises(OSError,match='ISOLATED_ENOSPC'):release.promote(tmp_path,candidate,old,lambda _:None)
     assert head.read_bytes()==before
     release.recover(tmp_path);assert head.read_bytes()==before
+
+
+def test_rollback_write_failure_recovers_in_fresh_process(tmp_path,monkeypatch):
+    """Failure during rollback must leave a recoverable journal, not COMMITTED."""
+    from workbench_analysis import operational_successor_release_v1 as release
+    head=tmp_path/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+    atomic_json(tmp_path,head,dict(accepted_trade_date='2026-10-08'))
+    before=head.read_bytes();old=sha256_file(head)
+    pre=head.parent/'predecessors'/(old+'.json');atomic_json(tmp_path,pre,json.loads(before))
+    candidate=dict(accepted_trade_date='2026-10-09',predecessor=dict(path=str(pre),sha256=old))
+    monkeypatch.setattr(release,'validate',lambda *a:True)
+    monkeypatch.setattr(release,'verify_policy',lambda *a:True)
+    original=release._atomic_write
+    def failed_rollback(path,*args,**kwargs):
+        if Path(path)==head:raise OSError('ISOLATED_ROLLBACK_WRITE_FAILURE')
+        return original(path,*args,**kwargs)
+    monkeypatch.setattr(release,'_atomic_write',failed_rollback)
+    with pytest.raises(OSError,match='ISOLATED_ROLLBACK_WRITE_FAILURE'):
+        release.promote(tmp_path,candidate,old,lambda _:dict(status='FAIL'))
+    transaction=tmp_path/'runtime/dynamic_daily/publication_transaction.json'
+    assert json.loads(transaction.read_bytes())['state']=='CAS_COMPLETE_READBACK_PENDING'
+    assert json.loads(head.read_bytes())==candidate
+    env=dict(os.environ,PYTHONPATH=str(Path(__file__).resolve().parents[1]/'src'))
+    result=subprocess.run([sys.executable,'-c',
+        'from pathlib import Path;import sys;from workbench_analysis.operational_successor_release_v1 import recover;recover(Path(sys.argv[1]));recover(Path(sys.argv[1]))',
+        str(tmp_path)],capture_output=True,text=True,env=env,timeout=30)
+    assert result.returncode==0,result.stderr
+    assert head.read_bytes()==before
+    assert json.loads(transaction.read_bytes())['state']=='RECOVERED_EXACT_PREDECESSOR'
+    print(json.dumps(dict(case='ROLLBACK_WRITE_FAILURE_FRESH_PROCESS_RECOVERY',evidence_kind='ISOLATED_INJECTION',exit_code=result.returncode,predecessor_sha256=old)))
+
+
+def test_process_crash_releases_kernel_lock(tmp_path):
+    """A stale lock file cannot retain ownership after its owning process dies."""
+    from workbench_analysis.operational_daily_storage_v1 import exclusive_lock
+    env=dict(os.environ,PYTHONPATH=str(Path(__file__).resolve().parents[1]/'src'))
+    worker='from pathlib import Path;import sys,time;from workbench_analysis.operational_daily_storage_v1 import exclusive_lock\nroot=Path(sys.argv[1])\nwith exclusive_lock(root,root/"worker.lock"):\n print("LOCKED",flush=True)\n time.sleep(60)'
+    process=subprocess.Popen([sys.executable,'-c',worker,str(tmp_path)],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,env=env)
+    try:
+        assert process.stdout.readline().strip()=='LOCKED'
+        with pytest.raises(OSError):
+            with exclusive_lock(tmp_path,tmp_path/'worker.lock'):pass
+    finally:
+        process.kill();process.wait(timeout=10)
+    with exclusive_lock(tmp_path,tmp_path/'worker.lock'):
+        assert (tmp_path/'worker.lock').is_file()
+    print(json.dumps(dict(case='KERNEL_LOCK_OWNER_CRASH_RECOVERY',evidence_kind='ISOLATED_INJECTION',crashed_pid=process.pid)))

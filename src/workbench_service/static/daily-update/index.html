@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>V4 数据更新中心</title>
-<style>body{margin:0;background:#f4f6f8;color:#152438;font:16px system-ui,sans-serif}main{max-width:1100px;margin:40px auto;padding:24px}a{color:#15659b}h1{font-size:32px}button{padding:12px 18px;margin:6px;border:1px solid #bbc9d6;border-radius:7px;background:white;color:#153957;cursor:pointer}button:hover{background:#e6f1fa}section{background:white;border:1px solid #dbe2e9;border-radius:10px;padding:22px;margin:18px 0}table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:12px;border-bottom:1px solid #e0e6ec}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}input{font:inherit;padding:8px}.muted{color:#536676}#error{color:#a43c24}</style>
+<style>body{margin:0;background:#f4f6f8;color:#152438;font:16px system-ui,sans-serif}main{max-width:1100px;margin:40px auto;padding:24px}a{color:#15659b}h1{font-size:32px}button{padding:12px 18px;margin:6px;border:1px solid #bbc9d6;border-radius:7px;background:white;color:#153957;cursor:pointer}button:hover{background:#e6f1fa}section{background:white;border:1px solid #dbe2e9;border-radius:10px;padding:22px;margin:18px 0}table{width:100%;border-collapse:collapse}td,th{overflow-wrap:anywhere;max-width:220px;text-align:left;padding:12px;border-bottom:1px solid #e0e6ec}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}input{font:inherit;padding:8px}.muted{color:#536676}#error{color:#a43c24}</style>
 <main><a href="/v4">← 返回研究工作台</a><h1>数据更新中心</h1>
 <p class="muted">按正式交易日历连续补齐。后台服务运行时自动更新默认开启。</p>
 <section><div id="status">读取持久状态…</div><p id="gate"></p>
 <label>补齐结束日期 <input id="through" type="date" aria-label="补齐结束日期"></label>
-<div><button id="probe">检查数据源</button><button id="catchup">立即补齐</button><button id="auto">自动更新设置</button><button id="retry">重试失败日</button><button id="logs">查看详细日志</button></div><p id="error" role="alert"></p></section>
-<section><h2>分交易日进度</h2><p id="job">尚无任务</p><table><thead><tr><th>交易日</th><th>状态</th><th>尝试</th><th>下次重试</th></tr></thead><tbody id="days"></tbody></table></section>
+<div><button id="probe">检查数据源</button><button id="catchup">立即补齐</button><button id="auto">自动更新设置</button><button id="retry">重试失败日</button><button id="cancel">取消未发布部分</button><button id="logs">查看详细日志</button><button id="releases">查看发布版本</button></div><p id="error" role="alert"></p></section>
+<section><h2>分交易日进度</h2><p id="job">尚无任务</p><table><thead><tr><th>交易日</th><th>状态</th><th>尝试</th><th>下次重试</th><th>来源验收</th><th>阶段 SHA</th></tr></thead><tbody id="days"></tbody></table></section>
 <section><h2>周／月 K 与发布边界</h2><p>周/月 K 沿用已接受日 K 的本地 RAW/QFQ 聚合链，未完成周期与正式收盘状态分开。禁止 BaoStock 周/月和分钟下载。</p><p id="release"></p><pre id="details"></pre></section>
 </main><script src="/v4/daily-update.js" defer></script></html>

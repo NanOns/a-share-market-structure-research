@@ -34,6 +34,10 @@ class DailyJobs:
                 CREATE TABLE IF NOT EXISTS scheduler_policy(id INTEGER PRIMARY KEY, enabled INTEGER, revision INTEGER, updated_at TEXT);
                 INSERT OR IGNORE INTO scheduler_policy VALUES(1,1,1,'DEFAULT_AUTO_ON');
                 CREATE TABLE IF NOT EXISTS scheduler_dispatch(target TEXT PRIMARY KEY,job_id TEXT);
+                CREATE TABLE IF NOT EXISTS scheduler_attempts(target TEXT, attempt_ordinal INTEGER,
+                  job_id TEXT UNIQUE,old_job_id TEXT,source_revision TEXT,reason TEXT,created_at TEXT,
+                  PRIMARY KEY(target,attempt_ordinal));
+                CREATE TABLE IF NOT EXISTS scheduler_rearm(target TEXT PRIMARY KEY,revision TEXT,reason TEXT);
                 CREATE TABLE IF NOT EXISTS update_jobs(job_id TEXT PRIMARY KEY, trigger TEXT, mode TEXT,
                   through_date TEXT,status TEXT,created_at TEXT,finished_at TEXT,idempotency_key TEXT UNIQUE,error TEXT);
                 CREATE TABLE IF NOT EXISTS update_job_days(job_id TEXT,trade_date TEXT,state TEXT,
@@ -42,6 +46,71 @@ class DailyJobs:
                 CREATE TABLE IF NOT EXISTS update_events(event_id INTEGER PRIMARY KEY AUTOINCREMENT,
                   job_id TEXT,timestamp TEXT,stage TEXT,event_code TEXT,safe_detail TEXT);
             ''')
+
+    def rearm(self,target,revision,reason='OPERATOR_REARM'):
+        """Explicit authorized recovery; never inferred from a user cancellation."""
+        if not revision or not reason:raise ValueError('REARM_EVIDENCE_REQUIRED')
+        with self.connect() as db:
+            db.execute('INSERT OR REPLACE INTO scheduler_rearm VALUES(?,?,?)',(target,revision,reason))
+            self.event(db,None,'REARM',reason,dict(target=target,revision=revision))
+
+    def source_revision(self,target):
+        """Local immutable validated freezes only; no network request per tick."""
+        from .source_readiness_v2 import source_readiness
+        folder=self.root/'data/v4/dynamic_daily_sources/source_readiness'/target
+        revisions=[]
+        for path in folder.glob('*.json'):
+            try:
+                record=json.loads(path.read_bytes())
+                verdict=source_readiness(target,self.clock(),record['sources'])
+                if verdict['source_ready'] and record['source_revision_id']==verdict['source_revision_id']:
+                    revisions.append(record['source_revision_id'])
+            except (OSError,ValueError,KeyError,TypeError):continue
+        # Accepted provider caches can change before a combined readiness record
+        # exists. Freeze their byte identities; the executor must still reverify
+        # all three sources and downstream QA before deriving/publishing.
+        manifest=self.root/'reports/v4_baostock/runtime_acceptance'/target.replace('-','')/'accepted_runtime_manifest.json'
+        if manifest.is_file():revisions.append(hashlib.sha256(manifest.read_bytes()).hexdigest())
+        return hashlib.sha256(json.dumps(sorted(revisions)).encode()).hexdigest() if revisions else None
+
+    def dispatch(self,plan):
+        target=plan['requested_through_date'];revision=self.source_revision(target)
+        with self.connect() as db:
+            db.execute('BEGIN IMMEDIATE')
+            if not db.execute('SELECT enabled FROM scheduler_policy WHERE id=1').fetchone()[0]:return
+            old=db.execute('SELECT job_id FROM scheduler_dispatch WHERE target=?',(target,)).fetchone()
+            previous=self.job(old['job_id']) if old else None
+            rearm=db.execute('SELECT * FROM scheduler_rearm WHERE target=?',(target,)).fetchone()
+            cancelled_days={r[0] for r in db.execute("SELECT d.trade_date FROM update_job_days d JOIN update_jobs j USING(job_id) WHERE j.status IN ('CANCELLED','CANCEL_REQUESTED')")}
+            if cancelled_days.intersection(plan['missing_sessions']) and not rearm:return
+            history=db.execute('SELECT * FROM scheduler_attempts WHERE target=? ORDER BY attempt_ordinal DESC LIMIT 1',(target,)).fetchone()
+            if previous:
+                if previous['status'] not in {'FAILED_TERMINAL','QA_BLOCKED','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED'}:return
+                if not history:
+                    db.execute('INSERT INTO scheduler_attempts VALUES(?,?,?,?,?,?,?)',
+                        (target,1,old['job_id'],None,revision,'LEGACY_DISPATCH_IMPORTED',previous['created_at']))
+                    history=db.execute('SELECT * FROM scheduler_attempts WHERE target=?',(target,)).fetchone()
+                if previous['status']=='CANCELLED' and not rearm:return
+                changed=revision is not None and revision!=history['source_revision']
+                if not rearm and not changed and previous['status'] not in {'CANCELLED_SYSTEM','INTERRUPTED'}:return
+                if history['attempt_ordinal']>=8 and not rearm:return
+            active=db.execute("SELECT job_id FROM update_jobs WHERE mode='CATCH_UP' AND status NOT IN ('PUBLISHED_FULL','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','QA_BLOCKED','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED') LIMIT 1").fetchone()
+            if active:
+                job=active['job_id']
+            else:
+                ordinal=history['attempt_ordinal']+1 if history else 1
+                job=uuid.uuid4().hex
+                db.execute('INSERT INTO update_jobs VALUES(?,?,?,?,?,?,?,?,?)',
+                    (job,'SCHEDULER','CATCH_UP',target,'QUEUED',self.clock().isoformat(),None,'AUTO:'+target+':'+str(ordinal),None))
+                for day in plan['missing_sessions']:
+                    db.execute('INSERT INTO update_job_days(job_id,trade_date,state,next_retry_at) VALUES(?,?,?,?)',
+                        (job,day,'QUEUED' if day in plan['eligible_sessions'] else 'SCHEDULED',
+                         None if day in plan['eligible_sessions'] else day+'T18:35:00+08:00'))
+                db.execute('INSERT INTO scheduler_attempts VALUES(?,?,?,?,?,?,?)',
+                    (target,ordinal,job,old['job_id'] if old else None,revision,rearm['reason'] if rearm else 'SOURCE_REVISION_OR_SYSTEM_RECOVERY',self.clock().isoformat()))
+                self.event(db,job,'CALENDAR_GAP_PLAN','GAP_PLANNED',plan)
+            db.execute('INSERT OR REPLACE INTO scheduler_dispatch VALUES(?,?)',(target,job))
+            db.execute('DELETE FROM scheduler_rearm WHERE target=?',(target,))
 
     def connect(self):
         db=sqlite3.connect(self.path,timeout=5);db.row_factory=sqlite3.Row
@@ -79,7 +148,7 @@ class DailyJobs:
                 if prior['mode']!=mode or prior['through_date']!=plan['requested_through_date']:
                     raise ValueError('IDEMPOTENCY_KEY_SCOPE_CONFLICT')
                 return prior['job_id']
-            prior=db.execute("SELECT job_id FROM update_jobs WHERE mode=? AND through_date=? AND status NOT IN ('PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED') ORDER BY created_at LIMIT 1",(mode,plan['requested_through_date'])).fetchone()
+            prior=db.execute("SELECT job_id FROM update_jobs WHERE mode=? AND through_date=? AND status NOT IN ('PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','QA_BLOCKED','CANCELLED') ORDER BY created_at LIMIT 1",(mode,plan['requested_through_date'])).fetchone()
             if prior:return prior['job_id']
             job=uuid.uuid4().hex
             db.execute('INSERT INTO update_jobs VALUES(?,?,?,?,?,?,?,?,?)',
@@ -170,14 +239,8 @@ class DailyJobs:
         with exclusive_lock(self.root,self.root/'runtime/dynamic_daily/worker.lock'):
             if self.settings()['auto_enabled']:
                 plan=gap_plan(self.root,self.clock())
-                if plan['missing_sessions']:
-                    target=plan['requested_through_date']
-                    with self.connect() as db:
-                        dispatched=db.execute('SELECT job_id FROM scheduler_dispatch WHERE target=?',(target,)).fetchone()
-                    if not dispatched:
-                        job_id=self.enqueue(trigger='SCHEDULER',key='AUTO:'+target)
-                        with self.connect() as db:
-                            db.execute('INSERT OR IGNORE INTO scheduler_dispatch VALUES(?,?)',(target,job_id))
+                if plan['missing_sessions'] and plan['eligible_sessions']:
+                    self.dispatch(plan)
             with self.connect() as db:
                 row=db.execute("SELECT job_id FROM update_jobs WHERE status NOT IN ('PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED','QA_BLOCKED') AND (trigger!='SCHEDULER' OR ?) ORDER BY CASE WHEN mode='PROBE' THEN 0 ELSE 1 END,created_at LIMIT 1",(self.settings()['auto_enabled'],)).fetchone()
             if not row:return

@@ -8,7 +8,7 @@
 | DD-A02 | Rotation 全量递归状态机；原 R4.3 独立审计 | VALIDATION_ONGOING；需独立全量 oracle，与非依赖日更门分开 |
 | DD-A03 | 请求账本、跨进程 SDK 锁、崩溃恢复；BUDGET_LEDGER_CORRECTION 与 SDK 测试 | 工程恢复通过；请求始终累计，未重置预算；模拟锁测试不是 provider 实测 |
 | DD-A04 | 原算法字节绑定与新 IO successor；DD03_OWNER_EQUIVALENCE、DD03_KERNEL_ADMISSION | 原算法保持，12 组全市场数值/质量等价；新日逐日 oracle/CAS 独立记录；外审 NOT_GRANTED |
-| DD-A05 | 全匹配 TDX/BaoStock Amount 表示差异；DD_A05_AMOUNT_REPRESENTATION_AUDIT | 不替换 Native、不套任意容差；整数 CNY 再 float32 只是现有样本推断；需独立表示合同 |
+| DD-A05 | 全匹配 TDX/BaoStock Amount 表示差异；10/08 DD_A05_AMOUNT_REPRESENTATION_AUDIT，10/09 DAY AMOUNT_CROSS_SOURCE_AUDIT 共4946差异（DD03_REAL_NEW_DAY_SOURCE_SCOPE） | 不替换 Native、不套任意容差；整数 CNY 再 float32 只是现有样本推断；需独立表示合同 |
 | 历史 Amount A | 原板块/历史成交额综合审计 | 不由 DD-A05 或当前阶段门自动关闭，保留原范围与证据 |
 | DD-A06 | 证券身份/代码变更、新上市 canonical 权威 | 已接受身份链保留；无接受证据的新 canonical 证券 fail-closed，禁止按名称合并；日更遇到新身份必须生成明确阻断证据及独立身份准入 |
 | DD-A07 | Forward 成熟度、样本与效果验证 | VALIDATION_ONGOING/PENDING/RIGHT_CENSORED 按原产物保留；日更不授予收益证明 |

@@ -1,7 +1,7 @@
 """Latest official package and actual historical bars, without changing V1."""
 from datetime import date, datetime, timezone
 from pathlib import Path
-import json, os, struct, tempfile, zipfile, urllib.request
+import json, os, struct, tempfile, zipfile, urllib.request, subprocess, sys
 from . import tdx_official_daily_source as old
 from .market_source_acquisition import is_stock_code
 
@@ -22,6 +22,16 @@ def _package_validator(url,timeout):
         etag=headers.get('ETag');modified=headers.get('Last-Modified')
         if not etag and not modified:return None
         return dict(bytes=int(length),etag=etag,last_modified=modified)
+
+
+def _refresh_existing_downloader():
+    # V1's challenge adapter can share a one-hour receipt. A provider revision
+    # must refresh that receipt too, including when the new ZIP has equal size.
+    root=Path(__file__).resolve().parents[2]
+    result=subprocess.run([sys.executable,'-X','utf8','-B',
+        str(root/'scripts/capture_dm01_a01_r3_tdx_package.py')],cwd=root,
+        capture_output=True,timeout=480)
+    if result.returncode:raise ValueError('TDX_REVISED_PACKAGE_FRESH_ADAPTER_FAILED')
 
 
 def capture_latest_tdx_package(*, snapshot_root, tdx_root=Path('D:/new_tdx'), timeout=30):
@@ -54,6 +64,7 @@ def capture_latest_tdx_package(*, snapshot_root, tdx_root=Path('D:/new_tdx'), ti
                 and artifact.stat().st_size==source.get('bytes')
                 and old.sha256_file(artifact)==source.get('sha256')):
             return dict(cached,status='NOOP_SOURCE_ALREADY_FROZEN')
+    _refresh_existing_downloader()
     receipt=old.capture_tdx_official_daily_package(target_date=provider_day,
                 snapshot_root=Path(snapshot_root),tdx_root=tdx_root,timeout=timeout)
     result=dict(receipt,contract_id=CONTRACT,provider_package_date=receipt['update_date'],

@@ -51,9 +51,10 @@ def test_same_page_metadata_replaced_zip_invalidates_cache(tmp_path,monkeypatch)
     cached=dict(original,resolved_download_url=url,probe_info_sha256=old.sha256_bytes(b'same metadata'),
                 remote_package_validator=dict(validator,etag='old'))
     (tmp_path/'tdx_latest_v2.json').write_text(json.dumps(cached))
-    calls=[]
+    calls=[];fresh=[]
+    monkeypatch.setattr(module,'_refresh_existing_downloader',lambda:fresh.append(True))
     monkeypatch.setattr(old,'capture_tdx_official_daily_package',lambda **k:(calls.append(k) or dict(original,update_date='2026-10-09',contract_id='OLD',resolved_download_url=url)))
     first=module.capture_latest_tdx_package(snapshot_root=tmp_path)
-    assert len(calls)==1 and first['remote_package_validator']==validator
+    assert len(calls)==1 and fresh==[True] and first['remote_package_validator']==validator
     second=module.capture_latest_tdx_package(snapshot_root=tmp_path)
-    assert len(calls)==1 and second['status']=='NOOP_SOURCE_ALREADY_FROZEN'
+    assert len(calls)==1 and fresh==[True] and second['status']=='NOOP_SOURCE_ALREADY_FROZEN'

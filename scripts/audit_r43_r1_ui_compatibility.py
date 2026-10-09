@@ -125,7 +125,7 @@ def main():
                 assert any(x['role']=='primary_industry' for x in profile['membership_relations']['items'])
                 focus_search=read(state,'/api/v4/focus'+suffix+'&q=600000')
                 assert all(x['symbol']=='SH.600000' for x in focus_search['items'])
-                for path in ('stocks/'+stocks['items'][0]['entity_id']+'/chart','forward/statistics','replay'):
+                for path in ('stocks/'+stocks['items'][0]['entity_id']+'/chart','forward/statistics','replay','diagnostics/health','diagnostics/jobs','focus/statistics'):
                     missing=read(state,'/api/v4/'+path+suffix);assert missing['status']=='SOURCE_INCOMPLETE' and missing['reason'] and not missing['mixed_date_fallback']
                 read(state,'/api/v4/stocks?context_token=wrong',409)
                 for day in candidate['dates']:

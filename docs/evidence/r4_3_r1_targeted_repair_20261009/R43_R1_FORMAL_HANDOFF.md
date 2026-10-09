@@ -9,10 +9,12 @@
 | P0-C | PASS（工程限定范围）/ NOT_VERIFIABLE（独立外审） | 319实际文件、2,389,921,416字节全摘要及独立数值证据；完整递归Rotation外部oracle未获签署。 |
 | P0-D | PASS（候选与隔离CAS）/ NOT_VERIFIABLE（生产准入） | 新候选与52读回通过；缺少最终摘要签署，生产CAS未执行。 |
 
-最终候选摘要：`290d67fe737cd1f9761a29e65b8cba8fc0ecb794aec15294f5eb770b9caaacc1`。
+最终候选摘要：`9c42365c777df3facf13b31639102f11c4e8321536de33af965213f71e04c55e`。
+最终真实HTTP读取 120 次，精确绑定该摘要，未重新绑定模拟代码。
 回归测试：32 passed，33.57秒。原216证据及3个保护头摘要全部保持。
 源分类校正为110叶级、22派生父级、1占位项，268概念；错误“23父级”另立独立审计，不改写旧证据。
 当前生产接受日期仍为2026-09-30，`R43_LIVE_1008_FINAL_READBACK.json`明确不是10/08接受回执。
 
+最小兼容范围：context/home、股票列表/详情/profile、板块列表/详情/成员、Focus列表与事件/episodes/anchors/observations/outcomes、根诊断/来源及原生四日领域。完整chart/PIT replay/compare、板块历史timeline/overlap、Market中心子页面、Forward enrollment统计/plans/FEP/settlement和诊断专用子页面未接完整Owner，明确SOURCE_INCOMPLETE；不是六入口完整FP功能验收。
 源修复已推送提交ad488763；最终代码与证据提交及Drive归档见 `R43_R1_DELIVERY_RECEIPT.json`。
 下一阶段：提交 `SCOPED_ADMISSION_REQUEST_V2.json` 所列精确候选给独立外审；在签署前不得执行生产切换或进入FP01–FP14。

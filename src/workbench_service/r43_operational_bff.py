@@ -127,8 +127,11 @@ class OperationalResearchBFF:
             market=self.source('market',day);axes=market.get('axes',{});axes.update(trend_axis=market.get('trend',{}).get('trend_axis','UNKNOWN'))
             return 200,self.envelope(day,status='READY',counts={d:len(self.project(d,day)) for d in ('stocks','sectors','focus')}|{'radar':None,'forward':None},market=dict(row=axes,raw=market,sources=market.get('input_bindings'),regime=market.get('regime',{}),comparison_trade_date=market.get('comparison_trade_date')),gaps=[dict(domain='forward',state='SOURCE_INCOMPLETE')],rotations=[],sector_changes=[],events=[])
         if name in ('diagnostics','sources','data-sources'):
+            if len(parts)>1:return self.missing(day,'/'.join(parts),'NO_OPERATIONAL_DIAGNOSTIC_SUBPAGE_OWNER')
             return 200,self.envelope(day,status='READY',items=self.project('sources',day),total=1,offset=0,limit=30,has_next=False,sources=self.api.candidate['owners'][day],gaps=[dict(domain='forward/statistics',reason='NO_FORWARD_ENROLLMENT_STATISTICS_OWNER')],publication_scope=self.api.candidate['production_eligible_scope'],code_contract=CONTRACT)
         if name=='focus' and len(parts)>1:
+            if parts[1]!='events' and (not parts[1].startswith('SEC-') or (len(parts)>2 and parts[2] not in ('episodes','timeline','anchors','observations','outcomes'))):
+                return self.missing(day,'/'.join(parts),'NO_OPERATIONAL_FOCUS_SUBPAGE_OWNER')
             forward=self.source('forward',day)
             if parts[1]=='events':data=forward.get('events',[])
             else:

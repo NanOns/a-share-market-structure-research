@@ -28,7 +28,7 @@ def main():
             actual.append(value)
         except Exception as exc:actual.append(dict(route=route,result='NOT_VERIFIABLE',error=str(exc)))
     write('R43_LIVE_1008_FINAL_READBACK.json',dict(receipt_type='NOT_A_1008_ACCEPTANCE_RECEIPT',target_trade_date='2026-10-08',observed_accepted_trade_date='2026-09-30',production_CAS_executed=False,operational_head_exists=(ROOT/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').exists(),live_http=actual,protected_heads=entry['protected'],acceptance='NOT_VERIFIABLE_NO_INDEPENDENT_SIGNED_ACCEPTANCE'))
-    write('R43_R1_FINAL_TEST_RECEIPT.json',dict(command='E:/python/python.exe -m pytest tests/test_v4_default_workbench_service.py tests/test_r43_member_normalization_v2.py tests/test_tdx_member_retro_r43.py tests/test_r43_operational_bff.py tests/test_r43_operational_sources.py tests/test_v4_current_daily_refresh.py --basetemp E:/codex_tmp/test_temp/r43_r1_complete -q',exit_code=0,passed=32,duration_seconds=33.57,external_acceptance=False))
+    write('R43_R1_FINAL_TEST_RECEIPT.json',dict(command='E:/python/python.exe -m pytest tests/test_v4_default_workbench_service.py tests/test_r43_member_normalization_v2.py tests/test_tdx_member_retro_r43.py tests/test_r43_operational_bff.py tests/test_r43_operational_sources.py tests/test_v4_current_daily_refresh.py --basetemp E:/codex_tmp/test_temp/r43_r1_complete -q',exit_code=0,passed=32,duration_seconds=33.57,post_final_missing_route_patch=dict(command='E:/python/python.exe -m pytest tests/test_r43_operational_bff.py --basetemp E:/codex_tmp/test_temp/r43_r1_explicit_missing -q',passed=7,exit_code=0,duration_seconds=0.16),external_acceptance=False))
     drift=read('AUDIT_LEGACY_SERVICE_TITLE_ASSERTION_DRIFT.json');drift.update(status='RESOLVED_TEST_CONTRACT_ALIGNMENT',resolution='Three original entry routes must equal exact approved joint-authority HTML bytes; original HTML untouched',final_regression='32 passed');write('AUDIT_LEGACY_SERVICE_TITLE_ASSERTION_DRIFT.json',drift)
     write('SCOPED_ADMISSION_REQUEST_V2.json',dict(status='PENDING_INDEPENDENT_EXTERNAL_REVIEW',candidate=cas['candidate'],candidate_digest=digest,reviewer=None,signature=None,external_acceptance_granted=False,production_permission=False,FP01_FP14_authorized=False,engineering_evidence=['R43_SOURCE_REPARSE_CONTRADICTION_AND_FIX_V2.json','R43_PRODUCTION_UI_ROUTE_AND_BFF_COMPATIBILITY_QA.json','R43_SCOPED_EXTERNAL_SOURCE_NUMERIC_REVIEW_V2.md','R43_NEW_OPERATIONAL_CANDIDATE_AND_CAS_V2.json'],scope='Four-session operational research with latest observed membership; not historical PIT',limitations=['2224 unmapped relations excluded','No strict historical PIT or AS_RECORDED claim','No external full recursive rotation-state oracle','Unpublished chart/replay/statistics/CSV capabilities remain explicit SOURCE_INCOMPLETE','No automated trading or probability claims'],required_next='Independent source/numeric/compatibility acceptance signed against exact candidate digest before production CAS'))
     text=f'''# R4.3 R1 正式交接
@@ -43,10 +43,12 @@ def main():
 | P0-D | PASS（候选与隔离CAS）/ NOT_VERIFIABLE（生产准入） | 新候选与52读回通过；缺少最终摘要签署，生产CAS未执行。 |
 
 最终候选摘要：`{digest}`。
+最终真实HTTP读取 {len(ui['actual_http_readbacks'])} 次，精确绑定该摘要，未重新绑定模拟代码。
 回归测试：32 passed，33.57秒。原216证据及3个保护头摘要全部保持。
 源分类校正为110叶级、22派生父级、1占位项，268概念；错误“23父级”另立独立审计，不改写旧证据。
 当前生产接受日期仍为2026-09-30，`R43_LIVE_1008_FINAL_READBACK.json`明确不是10/08接受回执。
 
+最小兼容范围：context/home、股票列表/详情/profile、板块列表/详情/成员、Focus列表与事件/episodes/anchors/observations/outcomes、根诊断/来源及原生四日领域。完整chart/PIT replay/compare、板块历史timeline/overlap、Market中心子页面、Forward enrollment统计/plans/FEP/settlement和诊断专用子页面未接完整Owner，明确SOURCE_INCOMPLETE；不是六入口完整FP功能验收。
 源修复已推送提交ad488763；最终代码与证据提交及Drive归档见 `R43_R1_DELIVERY_RECEIPT.json`。
 下一阶段：提交 `SCOPED_ADMISSION_REQUEST_V2.json` 所列精确候选给独立外审；在签署前不得执行生产切换或进入FP01–FP14。
 '''

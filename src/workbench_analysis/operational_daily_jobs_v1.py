@@ -81,6 +81,7 @@ class DailyJobs:
                     probe=self.source_probe(target)
                     if probe.get('verified') and probe.get('revision'):
                         cached.update(probe)
+                        cached['probe_state']='VERIFIED'
                     cached.update(observed_at=self.clock().isoformat(),next_probe_at=(self.clock()+timedelta(minutes=30)).isoformat())
                 except (OSError,ValueError,KeyError):
                     cached.update(next_probe_at=(self.clock()+timedelta(minutes=30)).isoformat(),probe_state='WAIT_PROVIDER')
@@ -107,7 +108,7 @@ class DailyJobs:
                     history=db.execute('SELECT * FROM scheduler_attempts WHERE target=?',(target,)).fetchone()
                 if previous['status']=='CANCELLED' and not rearm:return
                 changed=revision is not None and revision!=history['source_revision']
-                last=previous['days'][0] if previous['days'] else {}
+                last=next((day for day in previous['days'] if day['state'] not in {'PUBLISHED','PROBED'}),{})
                 transient=last.get('source_checks',{}).get('retry_class')=='TRANSIENT_INFRASTRUCTURE'
                 healthy=False
                 if transient and self.source_probe:
@@ -178,7 +179,7 @@ class DailyJobs:
                 if prior['mode']!=mode or prior['through_date']!=plan['requested_through_date']:
                     raise ValueError('IDEMPOTENCY_KEY_SCOPE_CONFLICT')
                 return prior['job_id']
-            prior=db.execute("SELECT job_id FROM update_jobs WHERE mode=? AND through_date=? AND status NOT IN ('PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','QA_BLOCKED','CANCELLED') ORDER BY created_at LIMIT 1",(mode,plan['requested_through_date'])).fetchone()
+            prior=db.execute("SELECT job_id FROM update_jobs WHERE mode=? AND through_date=? AND status NOT IN ('PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','QA_BLOCKED','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED') ORDER BY created_at LIMIT 1",(mode,plan['requested_through_date'])).fetchone()
             if prior:return prior['job_id']
             job=uuid.uuid4().hex
             db.execute('INSERT INTO update_jobs VALUES(?,?,?,?,?,?,?,?,?)',

@@ -1,6 +1,8 @@
 """R2.1 isolated queue and readiness injections; no production DB/network."""
 from datetime import datetime
 import json
+import subprocess,types
+from pathlib import Path
 import pytest
 from workbench_analysis.operational_daily_jobs_v1 import DailyJobs
 from workbench_analysis.source_readiness_v2 import source_readiness
@@ -30,6 +32,28 @@ def test_terminal_changed_source_creates_successor_preserves_history(queue):
     assert len(rows)==2 and rows[1]['old_job_id']==old
     assert q.job(old)['status']=='FAILED_TERMINAL'
     assert calls==['2026-10-08','2026-10-08','2026-10-09']
+
+
+def test_frozen_baseline_and_repair_use_identical_failure_source_restore_fixture(tmp_path,monkeypatch):
+    baseline='851770b1932d95836ce76bb44fd292117958bf04'
+    source=subprocess.check_output(['git','show',baseline+':src/workbench_analysis/operational_daily_jobs_v1.py'],cwd=Path(__file__).resolve().parents[1])
+    old=types.ModuleType('workbench_analysis.r21_frozen_jobs')
+    old.__package__='workbench_analysis';exec(compile(source,'frozen_baseline_jobs.py','exec'),old.__dict__)
+    plan=lambda *a,**k:dict(status='TIME_ELIGIBLE',requested_through_date='2026-10-09',missing_sessions=['2026-10-08','2026-10-09'],eligible_sessions=['2026-10-08','2026-10-09'],last_good_trade_date='2026-09-30')
+    monkeypatch.setattr(old,'gap_plan',plan);monkeypatch.setattr(jobs_module,'gap_plan',plan)
+    results=[]
+    for label,klass in [('FROZEN_BASELINE',old.DailyJobs),('REPAIRED',DailyJobs)]:
+        state={'source':'unavailable'};calls=[]
+        def execute(day,mode):
+            calls.append(day)
+            return dict(status='FAILED_TERMINAL' if state['source']=='unavailable' else 'PUBLISHED')
+        q=klass(tmp_path/label,execute,lambda:datetime.fromisoformat('2026-10-09T22:10:00+08:00'))
+        if hasattr(q,'source_revision'):monkeypatch.setattr(q,'source_revision',lambda _:state['source'])
+        q.tick();q.tick();state['source']='restored';q.tick()
+        results.append(dict(version=label,calls=list(calls)))
+        assert calls==(['2026-10-08'] if label=='FROZEN_BASELINE' else ['2026-10-08','2026-10-08','2026-10-09'])
+        q.close()
+    print(json.dumps(dict(case='IDENTICAL_TERMINAL_FAILURE_SOURCE_RESTORE',baseline_sha=baseline,evidence_kind='ISOLATED_INJECTION',results=results)))
 
 
 def test_user_cancel_pause_rearm(queue):
@@ -79,6 +103,19 @@ def test_bounded_recovery_probe_has_persistent_cooldown(queue,monkeypatch):
     q.source_probe=lambda d:(probes.append(d) or dict(verified=True,revision='fixture-proof',source_ready=False))
     q.tick();q.tick();assert probes==['2026-10-09']
     assert len(calls)==1
+
+
+def test_failed_probe_health_clears_after_verified_recovery(tmp_path):
+    now=[datetime.fromisoformat('2026-10-09T22:10:00+08:00')]
+    def probe(day):
+        if now[0].minute==10:raise OSError('FIXTURE_PROVIDER_OFFLINE')
+        return dict(verified=True,revision='restored')
+    q=DailyJobs(tmp_path,clock=lambda:now[0],source_probe=probe)
+    q.source_revision('2026-10-09')
+    now[0]=datetime.fromisoformat('2026-10-09T22:45:00+08:00')
+    assert q.source_revision('2026-10-09')
+    receipt=json.loads((tmp_path/'runtime/dynamic_daily/recovery_probes/2026-10-09.json').read_bytes())
+    assert receipt['probe_state']=='VERIFIED'
 
 
 def proofs():

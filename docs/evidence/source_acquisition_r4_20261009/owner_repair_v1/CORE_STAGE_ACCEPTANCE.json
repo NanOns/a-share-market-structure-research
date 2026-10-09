@@ -1,0 +1,69 @@
+{
+  "contract": {
+    "path": "config/v4_corrected_owner_replay_v1.json",
+    "sha256": "64ac1f1dc7cb8cb00b352ee43144463a782796071274662502218ff6ee02a4e1",
+    "bytes": 1550
+  },
+  "evidence": {
+    "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/CORE_REPLAY.json",
+    "sha256": "103598fe558b729548a5dcfc4b805caea2c09021d026bd492946ee6423645325",
+    "bytes": 1481017
+  },
+  "implementation": {
+    "path": "src/workbench_analysis/corrected_owner_replay.py",
+    "sha256": "dbb1dfbc53b2493cdb30787c7c810b279b997d5ccdca728c3cccf6d69cd665b4",
+    "bytes": 16935
+  },
+  "acceptance": "PASS_CORRECTED_CORE_NUMERIC_SCOPE",
+  "date_counts": [
+    {
+      "date": "2026-09-28",
+      "identity": 5222,
+      "raw": 5210,
+      "atr20": 5212
+    },
+    {
+      "date": "2026-09-29",
+      "identity": 5223,
+      "raw": 5211,
+      "atr20": 5212
+    },
+    {
+      "date": "2026-09-30",
+      "identity": 5224,
+      "raw": 5213,
+      "atr20": 5214
+    },
+    {
+      "date": "2026-10-08",
+      "identity": 5224,
+      "raw": 5209,
+      "atr20": 5215
+    }
+  ],
+  "independent_oracle_checks": {
+    "2026-09-28": {
+      "ma20": 5212,
+      "atr20": 5212,
+      "independent_affine_ohlc": 1561984
+    },
+    "2026-09-29": {
+      "ma20": 5214,
+      "atr20": 5212,
+      "independent_affine_ohlc": 1562096
+    },
+    "2026-09-30": {
+      "ma20": 5215,
+      "atr20": 5214,
+      "independent_affine_ohlc": 1562212
+    },
+    "2026-10-08": {
+      "ma20": 5215,
+      "atr20": 5215,
+      "independent_affine_ohlc": 1562328
+    }
+  },
+  "tests": "4 passed; test_corrected_owner_replay_r4.py",
+  "next_stage": "PROFILE_STRUCTURE_SECTOR_FOCUS_FORWARD",
+  "production_release": false
+}

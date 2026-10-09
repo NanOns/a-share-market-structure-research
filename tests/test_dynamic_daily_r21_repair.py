@@ -68,6 +68,9 @@ def test_manual_retry_scheduler_collision_one_executor(queue):
     manual=q.retry(old);rev[0]='b';outcome[0]='PUBLISHED';q.tick()
     assert q.job(old)['status']=='FAILED_TERMINAL' and q.job(manual)['status']=='PUBLISHED_FULL'
     assert calls==['2026-10-08','2026-10-08','2026-10-09']
+    with q.connect() as db:
+        adopted=db.execute('SELECT * FROM scheduler_attempts WHERE job_id=?',(manual,)).fetchone()
+    assert adopted['old_job_id']==old and adopted['attempt_ordinal']==2
 
 
 def test_bounded_recovery_probe_has_persistent_cooldown(queue,monkeypatch):

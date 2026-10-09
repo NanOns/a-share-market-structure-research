@@ -123,6 +123,10 @@ class DailyJobs:
             active=db.execute("SELECT job_id FROM update_jobs WHERE mode='CATCH_UP' AND status NOT IN ('PUBLISHED_FULL','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','QA_BLOCKED','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED') LIMIT 1").fetchone()
             if active:
                 job=active['job_id']
+                if not db.execute('SELECT 1 FROM scheduler_attempts WHERE job_id=?',(job,)).fetchone():
+                    ordinal=history['attempt_ordinal']+1 if history else 1
+                    db.execute('INSERT INTO scheduler_attempts VALUES(?,?,?,?,?,?,?)',
+                        (target,ordinal,job,old['job_id'] if old else None,revision,'ADOPT_EXISTING_MANUAL_ATTEMPT',self.clock().isoformat()))
             else:
                 ordinal=history['attempt_ordinal']+1 if history else 1
                 job=uuid.uuid4().hex

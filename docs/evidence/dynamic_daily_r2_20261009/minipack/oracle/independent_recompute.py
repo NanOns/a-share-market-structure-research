@@ -2,7 +2,7 @@
 from pathlib import Path
 from datetime import date,timedelta
 import calendar
-from decimal import Decimal
+from decimal import Decimal,ROUND_HALF_UP,localcontext
 from statistics import fmean,median
 import argparse,hashlib,json,math
 
@@ -12,19 +12,56 @@ def match(actual,expected):
     return math.isclose(float(actual),float(expected),rel_tol=1e-10,abs_tol=1e-10)
 
 def run(root):
-    errors=[];checks=0;unverifiable=[];examples=[]
+    errors=[];checks=0;unverifiable=[];examples=[];results=[];input_sha=None
     def check(label,a,b):
         nonlocal checks
         checks+=1
-        if not match(a,b):errors.append(dict(label=label,actual=a,expected=b))
+        passed=match(a,b)
+        if not passed:errors.append(dict(label=label,actual=a,expected=b))
+        diff=float(a)-float(b) if a is not None and b is not None else None
+        results.append(dict(label=label,actual=a,expected=b,diff=diff,verdict='PASS' if passed else 'FAIL',used_input_sha256=input_sha))
         if len(examples)<8:examples.append(dict(label=label,actual=a,expected=b))
+    def check_state(label,a,b):
+        nonlocal checks
+        checks+=1
+        if a!=b:errors.append(dict(label=label,actual=a,expected=b))
+        results.append(dict(label=label,actual=a,expected=b,diff=None,verdict='PASS' if a==b else 'FAIL',used_input_sha256=input_sha))
     for day in ['2026-10-08','2026-10-09']:
         sample=read(root/'sampling'/f'{day}.json')
         order=sorted(sample['accepted_pool'],key=lambda s:hashlib.sha256((sample['seed']+'|'+day+'|'+s).encode()).hexdigest())
         assert sample['seeded_random_sample']==order[:25],'SAMPLE_FREEZE_MISMATCH'
+        if sample.get('version')=='2.0.0':
+            edges=[]
+            for name in sample['selection_sequence']:
+                candidates=sample['strata_candidates'][name]
+                assert candidates==[s for s in order if s in set(candidates)],'STRATUM_ORDER_MISMATCH'
+                pick=next((s for s in candidates if s not in order[:25]+edges),None)
+                if pick:edges.append(pick)
+                elif candidates:pick=next(s for s in order[:25]+edges if s in candidates)
+                if pick:assert sample['strata_picks'][name]==pick,'STRATUM_PICK_MISMATCH'
+            assert edges==sample['mandatory_edge_cases'],'EDGE_SAMPLE_FREEZE_MISMATCH'
+            assert 5<=len(edges)<=10
         data=read(root/'numerical'/f'{day}.json')
+        input_sha=hashlib.sha256((root/'numerical'/f'{day}.json').read_bytes()).hexdigest()
         for s in data['core']:
             bars=s['bars'];assert all(b['trade_date']<=day for b in bars),'FUTURE_BAR'
+            if 'adjustment_events' in s:
+                events=s['adjustment_events']
+                assert all(e['category']==1 and e['event_date']<=int(day.replace('-','')) for e in events)
+                with localcontext() as ctx:
+                    ctx.prec=40
+                    for bar in bars:
+                        if not bar.get('qfq_ohlc'):continue
+                        mul=Decimal(1);add=Decimal(0)
+                        effective=sorted((e for e in events if e['event_date']>int(bar['trade_date'].replace('-',''))),key=lambda e:(e['event_date'],e['source_record_index']),reverse=True)
+                        for event in effective:
+                            cash,rights_price,bonus,rights=[Decimal(str(event[k])).quantize(Decimal('.01'),rounding=ROUND_HALF_UP) for k in ('c1','c2','c3','c4')]
+                            mul=mul/((Decimal(10)+bonus+rights)/Decimal(10));add=add-mul*((cash-rights*rights_price)/Decimal(10))
+                        check(day+'/'+s['security_id']+'/'+bar['trade_date']+'/qfq_mul',mul,bar['qfq_mul'])
+                        check(day+'/'+s['security_id']+'/'+bar['trade_date']+'/qfq_add',add,bar['qfq_add'])
+                        for i,raw in enumerate(bar['raw_ohlc']):
+                            value=(mul*Decimal(str(raw))+add).quantize(Decimal('.01'),rounding=ROUND_HALF_UP)
+                            check(day+'/'+s['security_id']+'/'+bar['trade_date']+f'/adjusted_ohlc_{i}',value,bar['qfq_ohlc'][i])
             q=[b for b in bars if b.get('qfq_ohlc')]
             for key,expected in s['expected'].items():
                 value=expected['value']
@@ -67,9 +104,9 @@ def run(root):
             values=[r['amount_ratio20'] for r in market['contributions'] if r['amount_ratio20'] is not None]
             value=median(values) if values else None
             axis=None if value is None else 'EXPANDING' if value>=market['thresholds']['expanding'] else 'THIN' if value<market['thresholds']['thin'] else 'NORMAL'
-            checks+=1
-            if axis!=market['expected_axis']:errors.append(dict(label=day+'/market_participation',actual=axis,expected=market['expected_axis']))
+            check_state(day+'/market_participation',axis,market['expected_axis'])
     period_checks=0
+    input_sha=hashlib.sha256((root/'periods/PERIOD_ORACLE_CASES.json').read_bytes()).hexdigest()
     calendar_path=root/'periods/CALENDAR_STATE_INPUT.json'
     calendar_input=read(calendar_path) if calendar_path.is_file() else None
     for c in read(root/'periods/PERIOD_ORACLE_CASES.json'):
@@ -87,8 +124,7 @@ def run(root):
                 y,w=p['period_key'].split('-W');natural=date.fromisocalendar(int(y),int(w),7)
             closed=bool(dates) and calendar_input['coverage_end']>=natural.isoformat() and max(dates)<=c['trade_date']
             view='CLOSED_ONLY' if closed else 'AS_OF_PARTIAL'
-            checks+=1;period_checks+=1
-            if view!=p['period_view']:errors.append(dict(label=c['trade_date']+'/'+p['period_key']+'/period_view',actual=view,expected=p['period_view']))
+            check_state(c['trade_date']+'/'+p['period_key']+'/period_view',view,p['period_view']);period_checks+=1
         expected=dict(actual_count=len(bars),volume=sum(b['volume'] for b in bars),amount=sum(b['amount'] for b in bars))
         if bars and all(b[basis] for b in bars):
             prices=[[Decimal(str(v)) for v in b[basis]] for b in bars]
@@ -99,6 +135,7 @@ def run(root):
     fixture_path=root/'periods/STATE_BOUNDARY_FIXTURES.json'
     state_checks=0
     if fixture_path.is_file():
+        input_sha=hashlib.sha256(fixture_path.read_bytes()).hexdigest()
         for case in read(fixture_path):
             assert case['evidence_kind']=='FIXTURE'
             history={b['trade_date']:b for b in case['history']}
@@ -121,14 +158,13 @@ def run(root):
                     view='CLOSED_ONLY' if closed else 'AS_OF_PARTIAL'
                     status='BLOCKED_BY_ADJUSTMENT' if unready else 'BLOCKED_BY_DATA_GAP' if 'DATA_GAP' in states else 'BLOCKED_BY_UNKNOWN_STATUS' if 'UNKNOWN' in states else 'NO_ACTUAL_BARS' if 'ACTUAL_TRADED' not in states else 'CLOSED_ONLY_READY' if closed else 'AS_OF_PARTIAL_READY'
                     for field,value in [('period_view',view),('period_status',status)]:
-                        checks+=1;state_checks+=1
-                        if p[field]!=value:errors.append(dict(label=case['case']+'/'+domain+'/'+field,actual=value,expected=p[field]))
+                        check_state(case['case']+'/'+domain+'/'+field,value,p[field]);state_checks+=1
                     if unready or 'ACTUAL_TRADED' not in states:
                         for field in ('open','high','low','close'):
                             check(case['case']+'/'+domain+'/'+field,None,p[field]);state_checks+=1
     return dict(acceptance='ENGINEERING_SCOPED_PASS' if not errors else 'FAIL',checks=checks,period_checks=period_checks,state_boundary_checks=state_checks,
-        errors=errors,examples=examples,unverifiable=unverifiable,
-        NOT_VERIFIABLE=['full source-to-normalized history provenance','all-cohort antecedent returns','event-to-affine adjustment chain','full Native/LOO state beyond selected substitutions','Market axes/path beyond participation','real historical missing-day status accounting','full population factor QA'],external_acceptance='NOT_GRANTED')
+        errors=errors,examples=examples,results=results,unverifiable=unverifiable,
+        NOT_VERIFIABLE=['full raw ZIP/GBBQ encrypted bytes to normalized excerpts provenance','all-cohort antecedent returns','full Native/LOO state beyond selected substitutions','Market axes/path beyond participation','real historical missing-day status accounting','full population factor QA'],external_acceptance='NOT_GRANTED')
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--input',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);a=parser.parse_args()

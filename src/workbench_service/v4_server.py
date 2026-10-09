@@ -24,7 +24,7 @@ def make_v4_handler(root):
     def operational_reader():
         from workbench_analysis.r43_operational_publication import accepted_api
         head=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
-        authority=root/'data/v4/R43_OPERATIONAL_EXTERNAL_ACCEPTANCE.json'
+        authority=root/('data/v4/R43_OPERATIONAL_USER_AUTHORIZATION.json' if head.exists() and json.loads(head.read_bytes()).get('authority_mode')=='USER_AUTHORIZED_SCOPED_OPERATIONAL_V1' else 'data/v4/R43_OPERATIONAL_EXTERNAL_ACCEPTANCE.json')
         if not head.exists():
             operational_cache.clear();return None
         signature=hashlib.sha256(head.read_bytes()+(authority.read_bytes() if authority.exists() else b'')).hexdigest()
@@ -114,9 +114,19 @@ def make_v4_handler(root):
                         return self.send(503,dict(service_state='BLOCKED',service_mode='V4_DEFAULT_WORKBENCH',reason='RESEARCH_SNAPSHOT_INVALID',detail=type(error).__name__))
                 code,payload=reader.read('context')
                 if code!=200:return self.send(code,dict(service_state='BLOCKED',service_mode='V4_DEFAULT_WORKBENCH',reason=payload))
+                try:operational=operational_reader()
+                except (ValueError,KeyError,OSError) as error:
+                    return self.send(503,dict(service_state='BLOCKED',service_mode='V4_DEFAULT_WORKBENCH',reason='OPERATIONAL_ACCEPTED_SOURCE_INVALID',detail=str(error)))
+                legacy_context=payload['context']
+                control=dict(legacy_context)
+                control.update(current_operational_trade_date=None,strict_pit_legacy_trade_date=legacy_context['accepted_trade_date'],legacy_strict_pit_date=legacy_context['accepted_trade_date'],operational_accepted_trade_date=None,control_date_source='LEGACY_STRICT_PIT_HEAD',strict_pit_context_token=legacy_context.get('context_token'))
+                if operational is not None:
+                    context=operational.context()
+                    control.update(context,current_operational_trade_date=context['accepted_trade_date'],operational_accepted_trade_date=context['accepted_trade_date'],control_date_source='USER_AUTHORIZED_OPERATIONAL_HEAD' if context.get('authorization_mode')=='DIRECT_HUMAN_USER' else 'INDEPENDENTLY_ACCEPTED_OPERATIONAL_HEAD')
+                    research.update(research_snapshot_state='OPERATIONAL_SCOPED_READY',legacy_research_release_id=research.get('research_release_id'),research_release_id=context['context_token'],legacy_research_counts=research.pop('research_counts',None))
                 return self.send(200,dict(service_state='READY',service_mode='V4_DEFAULT_WORKBENCH',service_control_contract='V4_DEFAULT_WORKBENCH_SERVICE_V1',product_version='V4',default_ui='V4',
                     current_accepted_reader=True,shadow_diagnostics=True,legacy_v3_default=False,read_only_ui=True,
-                    production_permission=payload['production_permission'],**payload['context'],**research))
+                    production_permission=payload['production_permission'],**control,**research))
             if parsed.path.startswith('/api/v4/current/'):
                 values=parse_qs(parsed.query,keep_blank_values=True)
                 if any(len(v)!=1 for v in values.values()):return self.send(409,dict(status='BLOCKED',code='DUPLICATE_CONTEXT_PARAMETER'))

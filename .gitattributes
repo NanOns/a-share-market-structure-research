@@ -367,6 +367,12 @@ docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/*.sqlite filter=lfs
 
 docs/evidence/r4_3_four_session_closeout_20261009/** -text -whitespace
 docs/evidence/r4_3_r1_targeted_repair_20261009/** -text -whitespace
+docs/evidence/r4_3_r2_release_control_20261009/** -text -whitespace
+scripts/promote_r43_operational_v1.py -text -whitespace
+src/workbench_analysis/r43_release_control.py -text -whitespace
+config/v4_r43_user_authorized_cutover_v1.json -text -whitespace
+data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json -text -whitespace
+data/v4/R43_OPERATIONAL_USER_AUTHORIZATION.json -text -whitespace
 src/workbench_service/r43_operational_bff.py -text -whitespace
 src/workbench_service/v4_server.py -text -whitespace
 src/workbench_service/static/r43-compat/** -text -whitespace

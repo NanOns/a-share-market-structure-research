@@ -26,6 +26,9 @@ class OperationalResearchBFF:
     def envelope(self,day,**payload):
         c=self.api.context();c.update(trade_date=day,accepted_trade_date='2026-10-08',release_id=self.api.token,model_namespace='TDX_INDUSTRY_CONCEPT',data_updated_at=self.api.candidate['membership_observed_at'],scoped_release=True,operational_release_scope=['stocks_daily','sectors_current_facts','market_current','focus_read_corrected','diagnostics'],domain_readiness={'focus':{'earliest_valid_date':'2026-09-28'}},read_source_label='通达信最新成员回算；非历史当日成员',bff_contract_id=CONTRACT)
         return dict(context=c,context_token=self.api.token,production_accepted=c.get('production_accepted',False),**payload)
+    def counts(self,day):
+        admitted=getattr(self.api,'domain_disposition',None)
+        return {d:(None if admitted is not None and admitted.get({'stocks':'profile','sectors':'sector','focus':'forward'}[d])!='ACCEPTED' and not getattr(self.api,'user_authorized_cutover',False) else len(self.project(d,day))) for d in ('stocks','sectors','focus')}
     def source(self,domain,day):return self.api.read(domain,day,self.api.token).get('rows')
     def missing(self,day,path,reason='NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE'):
         return 200,self.envelope(day,status='SOURCE_INCOMPLETE',reason=reason,code=reason,domain=path,gap=dict(domain=path,state='SOURCE_INCOMPLETE',reason=reason),items=[],total=0,offset=0,limit=30,has_next=False,legacy_diagnostic='/api/v4/original-0930/'+path,legacy_trade_date='2026-09-30',mixed_date_fallback=False)
@@ -72,6 +75,8 @@ class OperationalResearchBFF:
             elif domain=='sectors':
                 rot=rotation.get(identity,{}).get('rotation',{})
                 fs.update(sector_type=r.get('sector_type'),member_count=r.get('current_member_count'),output_state=rot.get('output_state','UNKNOWN'),prior_rotation_state=rot.get('prior_rotation_state','UNKNOWN'))
+                if self.api.candidate.get('external_review_contract') and getattr(self.api,'domain_disposition',{}).get('rotation')!='ACCEPTED':
+                    for k in ('output_state','prior_rotation_state'):fs[k]=dict(value=fs[k] if getattr(self.api,'user_authorized_cutover',False) else None,quality='VALIDATION_ONGOING',reason='FULL_ROTATION_NOT_INDEPENDENTLY_ACCEPTED')
                 field_refs.update({k:self.api.candidate['owners'][day]['rotation'] for k in ('output_state','prior_rotation_state')})
                 field_paths.update(output_state='rotation.output_state',prior_rotation_state='rotation.prior_rotation_state',member_count='current_member_count',sector_type='sector_type')
                 for target,source in [('sector_rs20','sector_rs20_pct'),('sector_rs5','sector_rs5_pct'),('seed_width','base_seed_width_adjusted')]:
@@ -114,6 +119,12 @@ class OperationalResearchBFF:
         for k,v in [('release_id',self.api.token),('model_namespace','TDX_INDUSTRY_CONCEPT')]:
             if k in q and q[k]!=v:raise ValueError('CONTEXT_TOKEN_MISMATCH')
         name=parts[0] if parts else ''
+        admission=getattr(self.api,'domain_disposition',None)
+        admitted_domain={'stocks':'profile','sectors':'sector','focus':'forward','diagnostics':'diagnostic','sources':'diagnostic','data-sources':'diagnostic'}.get(name,name)
+        if admission is not None and admitted_domain in admission and admission[admitted_domain]!='ACCEPTED' and not getattr(self.api,'user_authorized_cutover',False):
+            status,response=self.missing(day,'/'.join(parts),'DOMAIN_NOT_INDEPENDENTLY_ACCEPTED')
+            response['validation_state']=admission[admitted_domain]
+            return status,response
         if name=='stocks.csv':
             return 501,self.envelope(day,status='SOURCE_INCOMPLETE',code='OPERATIONAL_CSV_EXPORT_NOT_BOUND',reason='OPERATIONAL_CSV_EXPORT_NOT_BOUND',mixed_date_fallback=False)
         if name=='current':
@@ -122,10 +133,10 @@ class OperationalResearchBFF:
             return self.get('/api/v4/'+'/'.join(parts),q)
         offset=int(q.get('offset',0));limit=int(q.get('limit',30))
         if not 1<=limit<=200 or not 0<=offset<=1000000:raise ValueError('INVALID_QUERY_BOUND')
-        if name=='context':return 200,self.envelope(day,status='READY',counts={d:len(self.project(d,day)) for d in ('stocks','sectors','focus')},gaps=[dict(domain='forward',state='SOURCE_INCOMPLETE',reason='NO_FORWARD_ENROLLMENT_STATISTICS_OWNER')])
+        if name=='context':return 200,self.envelope(day,status='READY',counts=self.counts(day),gaps=[dict(domain=k,state='SOURCE_INCOMPLETE',validation_state=v) for k,v in getattr(self.api,'domain_disposition',{}).items() if v!='ACCEPTED']+[dict(domain='forward/statistics',state='SOURCE_INCOMPLETE',reason='NO_FORWARD_ENROLLMENT_STATISTICS_OWNER')])
         if name=='home':
             market=self.source('market',day);axes=market.get('axes',{});axes.update(trend_axis=market.get('trend',{}).get('trend_axis','UNKNOWN'))
-            return 200,self.envelope(day,status='READY',counts={d:len(self.project(d,day)) for d in ('stocks','sectors','focus')}|{'radar':None,'forward':None},market=dict(row=axes,raw=market,sources=market.get('input_bindings'),regime=market.get('regime',{}),comparison_trade_date=market.get('comparison_trade_date')),gaps=[dict(domain='forward',state='SOURCE_INCOMPLETE')],rotations=[],sector_changes=[],events=[])
+            return 200,self.envelope(day,status='READY',counts=self.counts(day)|{'radar':None,'forward':None},market=dict(row=axes,raw=market,sources=market.get('input_bindings'),regime=market.get('regime',{}),comparison_trade_date=market.get('comparison_trade_date')),gaps=[dict(domain='forward',state='SOURCE_INCOMPLETE')],rotations=[],sector_changes=[],events=[])
         if name in ('diagnostics','sources','data-sources'):
             if len(parts)>1:return self.missing(day,'/'.join(parts),'NO_OPERATIONAL_DIAGNOSTIC_SUBPAGE_OWNER')
             return 200,self.envelope(day,status='READY',items=self.project('sources',day),total=1,offset=0,limit=30,has_next=False,sources=self.api.candidate['owners'][day],gaps=[dict(domain='forward/statistics',reason='NO_FORWARD_ENROLLMENT_STATISTICS_OWNER')],publication_scope=self.api.candidate['production_eligible_scope'],code_contract=CONTRACT)

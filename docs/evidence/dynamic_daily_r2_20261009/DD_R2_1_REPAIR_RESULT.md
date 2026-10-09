@@ -1,57 +1,25 @@
-# DD R2.1 定点修复结果
+# DD R2.1 继续修复记录（2026-10-09）
 
-BASE_SHA: 851770b1932d95836ce76bb44fd292117958bf04。RESULT_CODE_SHA: 7c72943140f05e92539da95dffead3365c307637。分支 codex/v4-fp14-r2-repair；AGENTS.md 根规则及 scripts/AGENTS.md 均遵守，临时验收位于 E:。
+总状态：BLOCKED_PENDING_REMAINING_MANDATORY_GATES。没有授予外审通过。Windows 整机重启按用户指令暂不纳入。
 
-工程结论：ENGINEERING_SCOPED_PASS / EXTERNAL_RECHECK_REQUESTED。不签 EXTERNAL_ACCEPTANCE_PASS，不宣称 DD01–DD07 全量独立数值通过。
+代码版本：a8e5c2cf31ce8c9739ad6d6e225f7c224319504c；审计基线 851770b1932d95836ce76bb44fd292117958bf04。临时文件统一 G:/codex_tmp，项目/工作空间主目录 G:/codex work。
 
-| 工作包 | 实现和证据 | 判定 |
-|---|---|---|
-| R2-01 | cb74f61f；append-only scheduler_attempts、旧 Job/事件留存、source revision 后继、8 次有界尝试、用户取消抑制/rearm、暂停、checkpoint；后续 18ba69c0 补30分钟持久探测冷却和瞬时基础设施恢复 | ENGINEERING_SCOPED_PASS |
-| R2-02 | 9620bda7；executor 正式调用 source_readiness_v2，实读冻结摘要/日期/停牌 OHLCV 对账，合法零因子查询证明、不可变逐源记录；SOURCE_READY 后才 DERIVING | ENGINEERING_SCOPED_PASS |
-| R2-03 | 51a863fb；两日各25个 seeded +8个边界证券，先冻结名单后读数；完整5224成员列表与RPS cohort；三个板块完整ret1贡献 | SCOPED_ARITHMETIC_PASS；完整前置链/LOO/Market NOT_VERIFIABLE |
-| R2-04 | 18ba69c0 / 1c1d6ddf；真实双进程CAS、崩溃恢复、HTTP失败回滚、ENOSPC隔离注入；生产无活跃任务时重载修复代码，六接口真实新token一致、旧token全409 | ENGINEERING_SCOPED_PASS |
-| R2-05 | 1c1d6ddf；244组真实冻结周期样本及6组明确FIXTURE；RAW/QFQ sums/extrema，闭包窗口无未来K | SCOPED_ARITHMETIC_PASS；完整日历/closure状态链 NOT_VERIFIABLE |
-| R2-06 | 单ZIP隔离解压CRC/全部SHA、标准Python无网络oracle、轻量上传和实际回读；最终Git/Drive结果以配套index及云端回读收据为准 | EXTERNAL_RECHECK_REQUESTED |
+已补齐：
+- R2-01：冻结旧版本与修复版本使用同一终止失败/源恢复场景；旧版不恢复，修复版创建新尝试并按序执行。实际旧 schema WAL 创建、升级和旧读取器兼容验证保留全部原历史。修复探测健康恢复和中断任务误复用。
+- R2-02：实际 Bar 日期、成功目标日因子查询及零变化证明；就绪记录绑定生命周期、身份、5224 接受池、GBBQ、成员快照。10/09 冻结重放缺失/未知代码均 0。新增 V2 IO 适配绑定日收据；旧 Owner 源码字节恢复以维持已发布 Head 摘要。曾因修改该文件导致 HTTP 503，恢复后真实 HTTP 200；没有改旧日收据。
+- R2-03：两日各 3 个完整板块贡献，6 个目标剔除相对收益用例；两日完整 Market 参与度贡献向量。保留 Core 字段完整窗口/来源元数据。
+- R2-04：回滚写入故障后新进程恢复、持锁进程崩溃后重新获取锁、双调度进程和手工重试并发只有一个任务与执行进程。
+- R2-05：244 项真实周期日历视图检查，6 类明确 FIXTURE 的 192 项状态/计数/null 检查。
+- R2-06：本地轻量 ZIP 重建并在 G 盘隔离解压，CRC/载荷 SHA/独立 oracle 全部通过。
 
-59项回归，退出码0；完整命令和stdout在 R2_04_TEST_RECEIPT.json。小包实际离线oracle 22840项，差异0，其中周/月字段1750项。独立公式未调用任何producer；运行主体仍为本轮工程执行方，外审签发尚未授予。
+测试：68 passed，退出码 0。命令：python -m pytest -q tests/test_dd_r21_process_races.py tests/test_dynamic_daily_r21_repair.py tests/test_operational_daily_jobs_v1.py tests/test_operational_daily_executor_v1.py tests/test_operational_daily_calendar_v2.py tests/test_operational_successor_release_v1.py tests/test_operational_daily_periods_v1.py tests/test_operational_successor_control_v1.py --basetemp G:/codex_tmp/test_temp/dd_r21_g_only_adapter_v2。
 
-| Gate | 本轮结果和边界 |
-|---|---|
-| G01 | PASS_SCOPED：source revision变更后同target新attempt、旧Job不改成成功 |
-| G02 | PASS：用户取消/暂停/稳定硬错误/8次上限/显式rearm负测 |
-| G03 | PASS：SOURCE_READY实调在DERIVING之前，逐源日期/摘要/时刻可读 |
-| G04 | PASS_SCOPED：缺源/错日期/停牌冲突阻断，零因子变化需原始响应SHA |
-| G05 | PASS：SHA256(seed|day|security_id)离线名单复做；event/异常价量/沿袭身份分层未全部保证，单列不足 |
-| G06 | PASS_SCOPED：MA20/ATR20/量额比、完整RPS排名、选定板块median/breadth；前置收益率全链、完整Native/LOO/Market NOT_VERIFIABLE |
-| G07 | PASS_SCOPED：RAW/QFQ周期OHLCV/amount；闭合状态/官方日历原始历史签发 NOT_VERIFIABLE |
-| G08 | PASS_SCOPED：双进程发布锁/CAS、readback回滚、PREPARED和CAS后重启恢复、checkpoint顺序保留last-good；全故障矩阵未签全量PASS |
-| G09 | PASS：真实运营Head与严格PIT SHA保持锚值；Amount Native主权威未改 |
-| G10 | PASS_SCOPED：实际28765六HTTP同token、旧token六个409 |
-| G11 | PASS：ZIP CRC、全部SHA、隔离无网络oracle退出0 |
-| G12 | PASS_DISCLOSURE：Windows整机重启/登录前NOT_TESTED，全量Owner/源数值NOT_VERIFIABLE |
-| G13 | 以配套EVIDENCE_INDEX和最终CLOUD_READBACK的真实URL、SHA、Git远端精确HEAD为准；单报告不替代实际上传回读 |
-| G14 | PASS_SCOPED：两个原P1风险对应实码/负测，另修context旧token一致性 |
+离线 oracle：23296 checks，0 errors；其中周期算术/真实视图 1994 项，状态边界 192 项。只验证列出的字段，不代表全部 Owner/源或全部 Market/LOO 正确。
 
-真实运营Head变更：NO。SHA 55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e。
-严格PIT变更：NO。SHA 38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40。
-10/09官方ZIP锚635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6，仅复用现有冻结材料，不重新下载、打包或上传。
-source readiness新记录为SOURCE_RECEIPT_REPLAY，未将事后收据回填as-recorded/PIT。包内real服务回读为REAL_LOCAL；源/故障注入为ISOLATED_INJECTION/FIXTURE。
+仍未签收：样本事件/异常量价/身份沿袭分层的完整证明；原始源到仿射复权的全链；全 cohort 前置收益率；全部 Native/LOO 状态、Market 其他轴；真实历史缺失日状态守恒；新增代码生产部署与新日实际三源门后的完整派生；本次新 ZIP 的云端替换和回读。必过门不能由 scoped PASS 顶替。
 
-AUTO保持ON；真实服务pid37196→41528，代码重载后仍UP_TO_DATE，下一门2026-10-12 18:35 +08:00（不是10/12已成功的断言）；新日需要全部源门和QA，后继另记，不回写10/09。
+云端已有三份文件及旧回读保持历史有效，但它们不等于本次本地新包。此前累计上传 1870325 字节，本次尚未新增上传；预算不能重置。新包大小和摘要见 R2_06_OFFLINE_ACCEPTANCE.json。
 
-DD-A01（官方日历原始历史签发）、DD-A02（全量Rotation oracle）、DD-A05（10/09当时4946项Amount表示差异/历史Amount A）、DD-A06（新canonical准入）、DD-A07（Forward成熟）、DD-A08（Windows登录前/整机启动）均OPEN，责任为各自后续独立审计阶段。Amount小包15代表样本及分布保留Native权威，不把4946固定成未来日期计数。
-另外未测试：rollback写失败、双进程scheduler与manual竞争、过期锁/消息重复完整故障矩阵。当前单进程manual/scheduler去重、真实双publisher竞争和旧schema留存有证据；不合成为完整系统场景PASS。数据库旧schema为新增表迁移，未删除旧Job，未声称down-migration已经实测。
+DD-A01/A02/A05/A06/A07/A08 继续独立开放；Amount Native 主权威未替换。严格 PIT 与运营 Head 保持原摘要；TDX 输入只读。
 
-大卷均本机保留，manifest记录path/size/既有绑定SHA，未进行本轮全部大卷重哈希。路径/摘要不能替代外部上游数值验证。只交付3个轻量文件，单件<=10MiB、合计<=20MiB，禁止规避预算；最终实际字节总和见index。未续传旧分卷、未清理旧云端分卷。
-
-离线复验：解压ZIP至全新目录，运行 `python oracle/independent_recompute.py --input . --output <separate_output>`；仅Python3.11+标准库，无本机DB/网络/登录依赖。精确校验命令及输出在EXTERNAL_REPLAY_README.md和oracle/ORACLE_RUN.txt。
-
-REQUEST_INDEPENDENT_REAUDIT_R2
-
-已上传离线ZIP：https://drive.google.com/file/d/1D9eln-o5zdYV24eHCuQEQ9tFH9WsH4HE/view?usp=drivesdk
-实际云端回读 922122 字节，SHA 130858ffd901d0b593cc730a26c4247421fa5fdc832a69c208f36e9d29f91867；CRC及全部载荷SHA通过。鉴权下载引用返回403后改用连接器有界原字节回读，未续传/下载大卷。
-
-7c729431补充：调度器接管手动retry时创建attempt ordinal及old_job_id关联；最终59项回归仍通过，完整命令指向dd_r21_final_v4。第二次停止并重载服务被自动审批拒绝，仅返回blocked by policy，未给具体理由；未绕过。运行pid41528已加载两项主风险与token修复，新增manual ordinal补录待下一次服务重载，不能声称补录已在运行实例执行。
-
-云端报告URL：https://drive.google.com/file/d/1xiXFW2FnfPAmKItmUY36mA8VpC0WfvGt/view?usp=drivesdk
-替换仍复用同一ZIP/MD文件ID；原上传版本和替换版本均计入累计上传字节预算，不借改名或版本逃避20MiB硬上限。
+下一阶段：补齐样本剩余分层/事件链、生产部署与门控复验，并在总上传预算内更新三份轻量交付及实际回读。外部验收仍需独立签发。

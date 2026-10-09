@@ -10,11 +10,11 @@ def write(path,data):_atomic_write(path,data,tdx_root=Path('D:/new_tdx'))
 def bind(p):return dict(name=p.name,path=str(p),bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest())
 
 def main():
-    for name in ['R2_02_SOURCE_RECEIPT_REPLAY.json','R2_04_TEST_RECEIPT.json','R2_04_AFTER_SERVICE_RELOAD.json','STAGE_LEDGER.json']:
+    for name in ['R2_02_SOURCE_RECEIPT_REPLAY.json','R2_04_TEST_RECEIPT.json','R2_04_AFTER_SERVICE_RELOAD.json','STAGE_LEDGER.json','R2_01_BASELINE_REPLAY_RECEIPT.json','R2_04_CONTINUATION_RECOVERY.json','R2_04_MIGRATION_CONCURRENCY_RECEIPT.json','R2_03_COMPACT_SUPPLEMENT_RECEIPT.json','R2_05_CALENDAR_SUPPLEMENT_RECEIPT.json','R2_02_PROOF_CONTINUATION_RECEIPT.json','R2_02_FROZEN_OWNER_ADAPTER_RECEIPT.json']:
         write(PACK/'receipts'/name,(OUT/name).read_bytes())
     for name in ['test_dynamic_daily_r21_repair.py','test_dd_r21_process_races.py','test_operational_successor_release_v1.py','test_operational_daily_periods_v1.py']:
         write(PACK/'tests'/name,(ROOT/'tests'/name).read_bytes())
-    delta=subprocess.check_output(['git','diff','851770b1932d95836ce76bb44fd292117958bf04','HEAD','--','src/workbench_analysis/operational_daily_jobs_v1.py','src/workbench_analysis/operational_daily_executor_v1.py','src/workbench_analysis/source_readiness_v2.py','src/workbench_service/operational_daily_server_v1.py','src/workbench_service/operational_successor_bff_v1.py'],cwd=ROOT)
+    delta=subprocess.check_output(['git','diff','851770b1932d95836ce76bb44fd292117958bf04','HEAD','--','src/workbench_analysis/operational_daily_jobs_v1.py','src/workbench_analysis/operational_daily_executor_v1.py','src/workbench_analysis/operational_daily_ready_owner_v2.py','src/workbench_analysis/source_readiness_v2.py','src/workbench_service/operational_daily_server_v1.py','src/workbench_service/operational_successor_bff_v1.py'],cwd=ROOT)
     write(PACK/'code/REPAIR.diff',delta)
     readme='''# R2.1 offline replay
 
@@ -30,9 +30,12 @@ with Python zipfile.ZipFile(...).testzip(). All sampling names were frozen
 before reading factor values. Numerical inputs are bounded excerpts from frozen
 normalized Owner history, not independent copies of raw official ZIP bytes.
 Core rolling formulas, full-cohort RPS ranks/ties, selected-sector medians and
-breadth, and period OHLCV/amount are reproducible. Event-to-affine provenance,
-all-cohort antecedent returns, full Native/LOO/Market and period calendar/status
-closure are NOT_VERIFIABLE. Full market/Owner independent acceptance is NOT_GRANTED.
+breadth, selected target-excluded relative returns, Market participation,
+period OHLCV/amount and real calendar views are reproducible. Six explicit
+FIXTURE scenarios also verify period counts, nulls and status boundaries.
+Event-to-affine provenance, all-cohort antecedent returns, full Native/LOO/Market
+and real historical missing-day status accounting are NOT_VERIFIABLE.
+Full market/Owner independent acceptance is NOT_GRANTED.
 
 The repository tests need pytest and repository src; they are included for
 review, separately from the standalone offline numerical oracle. Their source
@@ -45,9 +48,9 @@ Windows machine reboot/pre-login was NOT_TESTED.
         files=[p for p in PACK.rglob('*') if p.is_file() and p!=PACK/'checksums/SHA256SUMS.txt']
         write(PACK/'checksums/SHA256SUMS.txt',''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.relative_to(PACK).as_posix()+'\n' for p in sorted(files)).encode())
     sums()
-    result=subprocess.run([sys.executable,str(PACK/'oracle/independent_recompute.py'),'--input',str(PACK),'--output','E:/codex_tmp/dd_r21_oracle_final'],capture_output=True,text=True)
+    result=subprocess.run([sys.executable,str(PACK/'oracle/independent_recompute.py'),'--input',str(PACK),'--output','G:/codex_tmp/dd_r21_oracle_final'],capture_output=True,text=True)
     if result.returncode:raise ValueError(result.stdout+result.stderr)
-    write(PACK/'oracle/ORACLE_OUTPUT.json',Path('E:/codex_tmp/dd_r21_oracle_final/ORACLE_OUTPUT.json').read_bytes())
+    write(PACK/'oracle/ORACLE_OUTPUT.json',Path('G:/codex_tmp/dd_r21_oracle_final/ORACLE_OUTPUT.json').read_bytes())
     write(PACK/'oracle/ORACLE_RUN.txt',(result.stdout+'exit_code=0\n').encode());sums()
     zip_path=OUT/'DD_R2_1_AUDIT_MINIPACK.zip';tmp=zip_path.with_suffix('.tmp')
     with zipfile.ZipFile(tmp,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as z:
@@ -55,7 +58,7 @@ Windows machine reboot/pre-login was NOT_TESTED.
             if p.is_file():z.write(p,p.relative_to(PACK).as_posix())
     if tmp.stat().st_size>10*1024*1024:raise ValueError('UPLOAD_BLOCKED_OVERSIZE')
     os.replace(tmp,zip_path)
-    isolated=Path('E:/codex_tmp')/('dd_r21_offline_'+hashlib.sha256(zip_path.read_bytes()).hexdigest()[:16])
+    isolated=Path('G:/codex_tmp')/('dd_r21_offline_'+hashlib.sha256(zip_path.read_bytes()).hexdigest()[:16])
     with zipfile.ZipFile(zip_path) as z:
         if z.testzip() is not None:raise ValueError('ZIP_CRC_FAILED')
         for name in z.namelist():

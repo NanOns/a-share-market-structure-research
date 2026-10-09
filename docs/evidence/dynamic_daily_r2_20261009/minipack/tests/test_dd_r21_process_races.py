@@ -71,3 +71,103 @@ def test_disk_write_failure_before_cas_preserves_last_good(tmp_path,monkeypatch)
     with pytest.raises(OSError,match='ISOLATED_ENOSPC'):release.promote(tmp_path,candidate,old,lambda _:None)
     assert head.read_bytes()==before
     release.recover(tmp_path);assert head.read_bytes()==before
+
+
+def test_rollback_write_failure_recovers_in_fresh_process(tmp_path,monkeypatch):
+    """Failure during rollback must leave a recoverable journal, not COMMITTED."""
+    from workbench_analysis import operational_successor_release_v1 as release
+    head=tmp_path/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+    atomic_json(tmp_path,head,dict(accepted_trade_date='2026-10-08'))
+    before=head.read_bytes();old=sha256_file(head)
+    pre=head.parent/'predecessors'/(old+'.json');atomic_json(tmp_path,pre,json.loads(before))
+    candidate=dict(accepted_trade_date='2026-10-09',predecessor=dict(path=str(pre),sha256=old))
+    monkeypatch.setattr(release,'validate',lambda *a:True)
+    monkeypatch.setattr(release,'verify_policy',lambda *a:True)
+    original=release._atomic_write
+    def failed_rollback(path,*args,**kwargs):
+        if Path(path)==head:raise OSError('ISOLATED_ROLLBACK_WRITE_FAILURE')
+        return original(path,*args,**kwargs)
+    monkeypatch.setattr(release,'_atomic_write',failed_rollback)
+    with pytest.raises(OSError,match='ISOLATED_ROLLBACK_WRITE_FAILURE'):
+        release.promote(tmp_path,candidate,old,lambda _:dict(status='FAIL'))
+    transaction=tmp_path/'runtime/dynamic_daily/publication_transaction.json'
+    assert json.loads(transaction.read_bytes())['state']=='CAS_COMPLETE_READBACK_PENDING'
+    assert json.loads(head.read_bytes())==candidate
+    env=dict(os.environ,PYTHONPATH=str(Path(__file__).resolve().parents[1]/'src'))
+    result=subprocess.run([sys.executable,'-c',
+        'from pathlib import Path;import sys;from workbench_analysis.operational_successor_release_v1 import recover;recover(Path(sys.argv[1]));recover(Path(sys.argv[1]))',
+        str(tmp_path)],capture_output=True,text=True,env=env,timeout=30)
+    assert result.returncode==0,result.stderr
+    assert head.read_bytes()==before
+    assert json.loads(transaction.read_bytes())['state']=='RECOVERED_EXACT_PREDECESSOR'
+    print(json.dumps(dict(case='ROLLBACK_WRITE_FAILURE_FRESH_PROCESS_RECOVERY',evidence_kind='ISOLATED_INJECTION',exit_code=result.returncode,predecessor_sha256=old)))
+
+
+def test_process_crash_releases_kernel_lock(tmp_path):
+    """A stale lock file cannot retain ownership after its owning process dies."""
+    from workbench_analysis.operational_daily_storage_v1 import exclusive_lock
+    env=dict(os.environ,PYTHONPATH=str(Path(__file__).resolve().parents[1]/'src'))
+    worker='from pathlib import Path;import sys,time;from workbench_analysis.operational_daily_storage_v1 import exclusive_lock\nroot=Path(sys.argv[1])\nwith exclusive_lock(root,root/"worker.lock"):\n print("LOCKED",flush=True)\n time.sleep(60)'
+    process=subprocess.Popen([sys.executable,'-c',worker,str(tmp_path)],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,env=env)
+    try:
+        assert process.stdout.readline().strip()=='LOCKED'
+        with pytest.raises(OSError):
+            with exclusive_lock(tmp_path,tmp_path/'worker.lock'):pass
+    finally:
+        process.kill();process.wait(timeout=10)
+    with exclusive_lock(tmp_path,tmp_path/'worker.lock'):
+        assert (tmp_path/'worker.lock').is_file()
+    print(json.dumps(dict(case='KERNEL_LOCK_OWNER_CRASH_RECOVERY',evidence_kind='ISOLATED_INJECTION',crashed_pid=process.pid)))
+
+
+def test_two_scheduler_processes_and_manual_retry_share_one_attempt(tmp_path,monkeypatch):
+    from datetime import datetime
+    from workbench_analysis import operational_daily_jobs_v1 as jobs
+    plan=dict(status='TIME_ELIGIBLE',requested_through_date='2026-10-09',missing_sessions=['2026-10-08','2026-10-09'],eligible_sessions=['2026-10-08','2026-10-09'],last_good_trade_date='2026-09-30')
+    monkeypatch.setattr(jobs,'gap_plan',lambda *a,**k:plan)
+    clock=lambda:datetime.fromisoformat('2026-10-09T22:10:00+08:00')
+    q=jobs.DailyJobs(tmp_path,lambda *a:dict(status='FAILED_TERMINAL'),clock)
+    monkeypatch.setattr(q,'source_revision',lambda _:'a');q.tick()
+    with q.connect() as db:old=db.execute('SELECT job_id FROM scheduler_dispatch').fetchone()[0]
+    atomic_json(tmp_path,tmp_path/'plan.json',plan)
+    worker=r'''
+from pathlib import Path
+from datetime import datetime
+import sys,json,time,os
+from workbench_analysis import operational_daily_jobs_v1 as jobs
+root=Path(sys.argv[1]);jobs.gap_plan=lambda *a,**k:json.loads((root/'plan.json').read_bytes())
+def execute(day,mode):
+ with (root/'calls.jsonl').open('a') as f:f.write(json.dumps(dict(day=day,pid=os.getpid()))+'\n')
+ time.sleep(.4)
+ return dict(status='PUBLISHED')
+q=jobs.DailyJobs(root,execute,lambda:datetime.fromisoformat('2026-10-09T22:10:00+08:00'));q.source_revision=lambda _:'b'
+ready=root/('ready_'+sys.argv[2]);ready.write_text('ready')
+while not (root/'GO').exists():time.sleep(.01)
+if sys.argv[2]=='manual':result=q.retry(sys.argv[3])
+else:
+ try:q.tick();result='TICKED'
+ except PermissionError:result='WORKER_LOCK_CONFLICT'
+print(json.dumps(dict(role=sys.argv[2],pid=os.getpid(),result=result)))
+'''
+    env=dict(os.environ,PYTHONPATH=str(Path(__file__).resolve().parents[1]/'src'))
+    processes=[subprocess.Popen([sys.executable,'-c',worker,str(tmp_path),role,old],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,env=env) for role in ('tick1','tick2','manual')]
+    import time
+    try:
+        deadline=time.monotonic()+20
+        while len(list(tmp_path.glob('ready_*')))<3:
+            assert time.monotonic()<deadline,'CHILD_START_TIMEOUT'
+            time.sleep(.01)
+        (tmp_path/'GO').write_text('go')
+        results=[]
+        for process in processes:
+            out,err=process.communicate(timeout=30);assert process.returncode==0,err;results.append(json.loads(out))
+    finally:
+        for process in processes:
+            if process.poll() is None:process.kill();process.wait()
+    calls=[json.loads(line) for line in (tmp_path/'calls.jsonl').read_text().splitlines()]
+    assert [r['day'] for r in calls]==['2026-10-08','2026-10-09']
+    assert len({r['pid'] for r in calls})==1
+    assert q.job(old)['status']=='FAILED_TERMINAL'
+    with q.connect() as db:
+        assert db.execute('SELECT COUNT(*) FROM update_jobs').fetchone()[0]==2
+    print(json.dumps(dict(case='TWO_SCHEDULERS_MANUAL_RETRY_CONCURRENT',evidence_kind='ISOLATED_INJECTION',results=results,calls=calls)))

@@ -96,9 +96,39 @@ def run(root):
         else:expected.update(open=None,high=None,low=None,close=None)
         for key,value in expected.items():
             check(c['trade_date']+'/'+p['security_id']+'/'+c['domain']+'/'+p['period_key']+'/'+key,value,p[key]);period_checks+=1
-    return dict(acceptance='ENGINEERING_SCOPED_PASS' if not errors else 'FAIL',checks=checks,period_checks=period_checks,
+    fixture_path=root/'periods/STATE_BOUNDARY_FIXTURES.json'
+    state_checks=0
+    if fixture_path.is_file():
+        for case in read(fixture_path):
+            assert case['evidence_kind']=='FIXTURE'
+            history={b['trade_date']:b for b in case['history']}
+            for domain,periods in case['expected'].items():
+                for p in periods:
+                    def key(d):
+                        y,w,_=date.fromisoformat(d).isocalendar()
+                        return d[:7] if p['period_type']=='MONTHLY' else f'{y}-W{w:02d}'
+                    dates=[d for d in case['session_dates'] if case['start']<=d<=case['target'] and key(d)==p['period_key']]
+                    states=['ACTUAL_TRADED' if d in history else case['statuses'].get(d,'UNKNOWN') for d in dates]
+                    for field,value in dict(calendar_count=len(dates),actual_count=states.count('ACTUAL_TRADED'),suspended_count=states.count('SUSPENDED'),data_gap_count=states.count('DATA_GAP'),unknown_count=states.count('UNKNOWN')).items():
+                        check(case['case']+'/'+domain+'/'+field,value,p[field]);state_checks+=1
+                    unready=domain=='PERIOD_ADJUSTED' and any(not history[d]['qfq_ohlc'] for d in dates if d in history)
+                    all_dates=[d for d in case['session_dates'] if key(d)==p['period_key']]
+                    if p['period_type']=='MONTHLY':
+                        y,m=map(int,p['period_key'].split('-'));natural=date(y,m,calendar.monthrange(y,m)[1])
+                    else:
+                        y,w=p['period_key'].split('-W');natural=date.fromisocalendar(int(y),int(w),7)
+                    closed=case['coverage_end']>=natural.isoformat() and max(all_dates)<=case['target']
+                    view='CLOSED_ONLY' if closed else 'AS_OF_PARTIAL'
+                    status='BLOCKED_BY_ADJUSTMENT' if unready else 'BLOCKED_BY_DATA_GAP' if 'DATA_GAP' in states else 'BLOCKED_BY_UNKNOWN_STATUS' if 'UNKNOWN' in states else 'NO_ACTUAL_BARS' if 'ACTUAL_TRADED' not in states else 'CLOSED_ONLY_READY' if closed else 'AS_OF_PARTIAL_READY'
+                    for field,value in [('period_view',view),('period_status',status)]:
+                        checks+=1;state_checks+=1
+                        if p[field]!=value:errors.append(dict(label=case['case']+'/'+domain+'/'+field,actual=value,expected=p[field]))
+                    if unready or 'ACTUAL_TRADED' not in states:
+                        for field in ('open','high','low','close'):
+                            check(case['case']+'/'+domain+'/'+field,None,p[field]);state_checks+=1
+    return dict(acceptance='ENGINEERING_SCOPED_PASS' if not errors else 'FAIL',checks=checks,period_checks=period_checks,state_boundary_checks=state_checks,
         errors=errors,examples=examples,unverifiable=unverifiable,
-        NOT_VERIFIABLE=['full source-to-normalized history provenance','all-cohort antecedent returns','event-to-affine adjustment chain','full Native/LOO state','Market axes/path','period closure calendar/state boundary','full population factor QA'],external_acceptance='NOT_GRANTED')
+        NOT_VERIFIABLE=['full source-to-normalized history provenance','all-cohort antecedent returns','event-to-affine adjustment chain','full Native/LOO state beyond selected substitutions','Market axes/path beyond participation','real historical missing-day status accounting','full population factor QA'],external_acceptance='NOT_GRANTED')
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--input',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);a=parser.parse_args()

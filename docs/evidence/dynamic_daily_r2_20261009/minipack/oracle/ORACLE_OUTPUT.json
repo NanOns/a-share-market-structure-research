@@ -1,7 +1,8 @@
 {
   "acceptance": "ENGINEERING_SCOPED_PASS",
-  "checks": 22840,
-  "period_checks": 1750,
+  "checks": 23296,
+  "period_checks": 1994,
+  "state_boundary_checks": 192,
   "errors": [],
   "examples": [
     {
@@ -447,9 +448,9 @@
     "full source-to-normalized history provenance",
     "all-cohort antecedent returns",
     "event-to-affine adjustment chain",
-    "full Native/LOO state",
-    "Market axes/path",
-    "period closure calendar/state boundary",
+    "full Native/LOO state beyond selected substitutions",
+    "Market axes/path beyond participation",
+    "real historical missing-day status accounting",
     "full population factor QA"
   ],
   "external_acceptance": "NOT_GRANTED"

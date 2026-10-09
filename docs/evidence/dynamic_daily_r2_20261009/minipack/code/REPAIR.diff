@@ -1,5 +1,5 @@
 diff --git a/src/workbench_analysis/operational_daily_executor_v1.py b/src/workbench_analysis/operational_daily_executor_v1.py
-index bb011a53..2839b550 100644
+index bb011a53..2a824cd3 100644
 --- a/src/workbench_analysis/operational_daily_executor_v1.py
 +++ b/src/workbench_analysis/operational_daily_executor_v1.py
 @@ -9,6 +9,25 @@ from .operational_runtime_acceptance_v2 import load as load_runtime_acceptance_m
@@ -38,7 +38,16 @@ index bb011a53..2839b550 100644
      snapshot=output_path(root,root/'data/v4/dynamic_daily_sources')
      package=capture_latest_tdx_package(snapshot_root=snapshot)
      if not package.get('download'):
-@@ -101,6 +123,9 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
+@@ -87,7 +109,7 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
+         return dict(status='WAIT_TDX',reason='ACTUAL_TARGET_SESSION_NOT_IN_VERIFIED_NATIVE_SOURCES',tdx=bars['artifact'])
+     available=max(datetime.fromisoformat(raw['observed_at']),datetime.fromisoformat(bars['source_available_at'])).isoformat()
+     artifact=dict(contract_id='DYNAMIC_DAILY_SOURCE_FREEZE_V1',target_session=day,
+-        observed_at=available,AS_RECORDED=False,PIT_ELIGIBLE=False,
++        observed_at=available,tdx_source_available_at=bars['source_available_at'],AS_RECORDED=False,PIT_ELIGIBLE=False,
+         tdx=bars['artifact'],native_baostock=dict(path=raw_path.relative_to(root).as_posix(),sha256=tdx.sha256_file(raw_path)),
+         runtime_manifest=dict(path=immutable_manifest.relative_to(root).as_posix(),sha256=tdx.sha256_file(immutable_manifest)),
+         effective_package=package,
+@@ -101,10 +123,14 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
          source_freeze=dict(path=p.relative_to(root).as_posix(),sha256=tdx.sha256_file(p)),
          tdx_bar_count=bars['row_count'],baostock_row_count=len(normalized['daily']['rows']),
          source_captured=True,source_ready=False,derived_ready=False,published=False,last_good_preserved=True)
@@ -47,8 +56,15 @@ index bb011a53..2839b550 100644
 +    if not readiness['source_ready']:return dict(result,status=readiness['status'],reason=readiness['reason'])
      if capture_only:return result
      progress(day,'DERIVING',result)
-     from .operational_daily_owner_v1 import build,seal
-@@ -121,3 +146,52 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
+-    from .operational_daily_owner_v1 import build,seal
+-    produced,context=build(root,result['source_freeze'])
++    from .operational_daily_ready_owner_v2 import build,seal
++    produced,context=build(root,result['source_freeze'],source_readiness=result['source_readiness'])
++    context['source_readiness']=result['source_readiness']
+     if cancelled():return dict(result,status='CANCELLED',reason='CANCELLED_BEFORE_CAS')
+     candidate,binding=seal(root,context)
+     from scripts.audit_dynamic_daily_period_numbers_v1 import audit as audit_periods
+@@ -121,3 +147,82 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
      progress(day,'PUBLISHING',dict(result,candidate=binding,derived_ready=True,source_ready=True))
      publication=promote(root,candidate,candidate['predecessor']['sha256'],lambda c:readback(readback_url,c))
      return dict(result,**publication,source_ready=True,derived_ready=True,published=True,candidate=binding)
@@ -60,13 +76,13 @@ index bb011a53..2839b550 100644
 +    raw_path=root/artifact['native_baostock']['path']
 +    if tdx.sha256_file(raw_path)!=artifact['native_baostock']['sha256']:raise ValueError('NATIVE_RESPONSE_DIGEST_MISMATCH')
 +    raw=json.loads(raw_path.read_bytes());normalized=artifact['normalized'];package=artifact['effective_package']
-+    bars=dict(artifact=artifact['tdx'],source_available_at=artifact['observed_at'])
++    bars=dict(artifact=artifact['tdx'],source_available_at=artifact.get('tdx_source_available_at',artifact['observed_at']))
 +    snapshot=root/'data/v4/dynamic_daily_sources'
 +    observed=raw['observed_at'];daily=normalized['daily']['rows'];factors=normalized['adjustment_factor']['rows']
 +    native_path=Path(bars['artifact']['path'])
 +    if not native_path.is_absolute():native_path=root/native_path
 +    if tdx.sha256_file(native_path)!=bars['artifact']['sha256']:raise ValueError('NATIVE_TARGET_DIGEST_MISMATCH')
-+    native=json.loads(native_path.read_bytes())['target_bars']
++    native_document=json.loads(native_path.read_bytes());native=native_document['target_bars']
 +    bycode={r['source_security_key'].upper():r for r in native}
 +    codes=[r['code'].upper() for r in daily]
 +    reconciled=bool(codes) and len(codes)==len(set(codes)) and len(bycode)==len(native)
@@ -83,18 +99,48 @@ index bb011a53..2839b550 100644
 +            provider='BaoStock',artifact_family=name,capture_method='ACCEPTED_NATIVE_RESPONSE',
 +            evidence_path=raw_path.relative_to(root).as_posix(),captured_at=observed,
 +            verified_at=datetime.now(timezone.utc).isoformat())
++        sources[name]['provider_observed_at']=observed
++    factor_proved=(raw.get('target_date')==day and 'adjustment_factor_rows' in raw
++        and raw.get('adjustment_factor_metadata',{}).get('error_code')=='0'
++        and all(r.get('dividOperateDate')==day for r in factors)
++        and bool(raw['adjustment_factor_rows'])==bool(factors))
++    if not factor_proved:sources['baostock_factor']['status']='UNVERIFIED'
 +    if not factors:
-+        sources['baostock_factor'].update(verified_no_change=True,proof_target_session=day,
++        sources['baostock_factor'].update(verified_no_change=factor_proved,proof_target_session=day,
 +            no_change_proof_sha256=tdx.sha256_file(raw_path))
 +    sources['tdx']=dict(status='VERIFIED',target_session=day,
 +        source_sha256=bars['artifact']['sha256'],observed_at=bars['source_available_at'],
-+        bars_date_coverage=[day],row_count=len(native),provider='TDX',
++        bars_date_coverage=sorted({r.get('trade_date') for r in native if r.get('trade_date')}),row_count=len(native),provider='TDX',
 +        artifact_family='NATIVE_DAILY',capture_method='VERIFIED_TARGET_EXTRACTION',
 +        provider_package_date=package['provider_package_date'],package=package.get('download'),
 +        evidence_path=bars['artifact']['path'],captured_at=bars['source_available_at'],
 +        verified_at=datetime.now(timezone.utc).isoformat())
++    sources['tdx']['provider_observed_at']=package.get('observed_at',bars['source_available_at'])
++    if any(r.get('trade_date')!=day for r in native):sources['tdx']['status']='UNVERIFIED'
++    dependencies={}
++    head_path=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
++    if head_path.is_file():
++        from .r43_owner_replay import checked,ref
++        from .r43_operational_sources import date_valid_identity
++        head=json.loads(head_path.read_bytes())
++        life_binding=head['owners'][head['accepted_trade_date']]['lifecycle']
++        life=json.loads(checked(root,life_binding).read_bytes())
++        identity=json.loads(checked(root,life['identity']).read_bytes())['rows']
++        expected_codes={r['source_security_key'].upper() for r in identity if r.get('board_scope') in {'SH_MAIN','SZ_MAIN','CHINEXT','STAR'} and date_valid_identity(r,day)}
++        actual_codes={code for code in codes if code.startswith(('SH.','SZ.'))}
++        if actual_codes!=expected_codes:sources['baostock_daily']['status']='UNVERIFIED'
++        gbbq=Path('D:/new_tdx/T0002/hq_cache/gbbq')
++        before=gbbq.stat();gbbq_sha=tdx.sha256_file(gbbq);after=gbbq.stat()
++        if (before.st_size,before.st_mtime_ns)!=(after.st_size,after.st_mtime_ns):raise ValueError('GBBQ_CHANGED_DURING_READINESS')
++        dependencies=dict(parent_head=ref(root,head_path),lifecycle=life_binding,identity=life['identity'],
++            accepted_pool_sha256=tdx.sha256_bytes(tdx._json_bytes(sorted(expected_codes))),
++            accepted_pool_count=len(expected_codes),missing_codes=sorted(expected_codes-actual_codes),unknown_codes=sorted(actual_codes-expected_codes),
++            gbbq=dict(path=str(gbbq),sha256=gbbq_sha,bytes=before.st_size),membership_snapshot=head['membership_snapshot'])
++        # Dependency revisions belong to the source gate identity, so a changed
++        # pool or action source cannot borrow a previously ready revision.
++        sources['baostock_daily']['dependency_bindings']=dependencies
 +    readiness=source_readiness(day,now or datetime.now(timezone.utc),sources)
-+    readiness.update(source_freeze=result['source_freeze'],AS_RECORDED=False,PIT_ELIGIBLE=False)
++    readiness.update(source_freeze=result['source_freeze'],dependency_bindings=dependencies,AS_RECORDED=False,PIT_ELIGIBLE=False)
 +    revision=readiness.get('source_revision_id') or tdx.sha256_bytes(tdx._json_bytes(readiness))
 +    ready_path=snapshot/'source_readiness'/day/(revision+'.json')
 +    if not ready_path.is_file():atomic_json(root,ready_path,readiness)
@@ -102,7 +148,7 @@ index bb011a53..2839b550 100644
 +                  source_ready=readiness['source_ready'])
 +    return result,readiness
 diff --git a/src/workbench_analysis/operational_daily_jobs_v1.py b/src/workbench_analysis/operational_daily_jobs_v1.py
-index 343f6511..b13425aa 100644
+index 343f6511..c62f46da 100644
 --- a/src/workbench_analysis/operational_daily_jobs_v1.py
 +++ b/src/workbench_analysis/operational_daily_jobs_v1.py
 @@ -8,14 +8,15 @@ from .operational_daily_storage_v1 import output_path,exclusive_lock
@@ -134,7 +180,7 @@ index 343f6511..b13425aa 100644
                  CREATE TABLE IF NOT EXISTS update_jobs(job_id TEXT PRIMARY KEY, trigger TEXT, mode TEXT,
                    through_date TEXT,status TEXT,created_at TEXT,finished_at TEXT,idempotency_key TEXT UNIQUE,error TEXT);
                  CREATE TABLE IF NOT EXISTS update_job_days(job_id TEXT,trade_date TEXT,state TEXT,
-@@ -43,6 +48,100 @@ class DailyJobs:
+@@ -43,6 +48,101 @@ class DailyJobs:
                    job_id TEXT,timestamp TEXT,stage TEXT,event_code TEXT,safe_detail TEXT);
              ''')
  
@@ -171,6 +217,7 @@ index 343f6511..b13425aa 100644
 +                    probe=self.source_probe(target)
 +                    if probe.get('verified') and probe.get('revision'):
 +                        cached.update(probe)
++                        cached['probe_state']='VERIFIED'
 +                    cached.update(observed_at=self.clock().isoformat(),next_probe_at=(self.clock()+timedelta(minutes=30)).isoformat())
 +                except (OSError,ValueError,KeyError):
 +                    cached.update(next_probe_at=(self.clock()+timedelta(minutes=30)).isoformat(),probe_state='WAIT_PROVIDER')
@@ -197,7 +244,7 @@ index 343f6511..b13425aa 100644
 +                    history=db.execute('SELECT * FROM scheduler_attempts WHERE target=?',(target,)).fetchone()
 +                if previous['status']=='CANCELLED' and not rearm:return
 +                changed=revision is not None and revision!=history['source_revision']
-+                last=previous['days'][0] if previous['days'] else {}
++                last=next((day for day in previous['days'] if day['state'] not in {'PUBLISHED','PROBED'}),{})
 +                transient=last.get('source_checks',{}).get('retry_class')=='TRANSIENT_INFRASTRUCTURE'
 +                healthy=False
 +                if transient and self.source_probe:
@@ -235,16 +282,16 @@ index 343f6511..b13425aa 100644
      def connect(self):
          db=sqlite3.connect(self.path,timeout=5);db.row_factory=sqlite3.Row
          db.execute('PRAGMA journal_mode=WAL');db.execute('PRAGMA synchronous=FULL')
-@@ -79,7 +178,7 @@ class DailyJobs:
+@@ -79,7 +179,7 @@ class DailyJobs:
                  if prior['mode']!=mode or prior['through_date']!=plan['requested_through_date']:
                      raise ValueError('IDEMPOTENCY_KEY_SCOPE_CONFLICT')
                  return prior['job_id']
 -            prior=db.execute("SELECT job_id FROM update_jobs WHERE mode=? AND through_date=? AND status NOT IN ('PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED') ORDER BY created_at LIMIT 1",(mode,plan['requested_through_date'])).fetchone()
-+            prior=db.execute("SELECT job_id FROM update_jobs WHERE mode=? AND through_date=? AND status NOT IN ('PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','QA_BLOCKED','CANCELLED') ORDER BY created_at LIMIT 1",(mode,plan['requested_through_date'])).fetchone()
++            prior=db.execute("SELECT job_id FROM update_jobs WHERE mode=? AND through_date=? AND status NOT IN ('PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','QA_BLOCKED','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED') ORDER BY created_at LIMIT 1",(mode,plan['requested_through_date'])).fetchone()
              if prior:return prior['job_id']
              job=uuid.uuid4().hex
              db.execute('INSERT INTO update_jobs VALUES(?,?,?,?,?,?,?,?,?)',
-@@ -120,10 +219,17 @@ class DailyJobs:
+@@ -120,10 +220,17 @@ class DailyJobs:
                      worker_error=self.worker_error,last_good_preserved=True)
  
      def retry(self,job):
@@ -262,7 +309,7 @@ index 343f6511..b13425aa 100644
              db.execute("UPDATE update_job_days SET state='QUEUED',next_retry_at=NULL WHERE job_id=? AND state NOT IN ('PUBLISHED','PROBED')",(job,))
              db.execute("UPDATE update_jobs SET status='QUEUED',error=NULL,finished_at=NULL WHERE job_id=?",(job,))
              self.event(db,job,'RETRY','RETRY_FAILED_ONLY',{})
-@@ -170,16 +276,10 @@ class DailyJobs:
+@@ -170,16 +277,10 @@ class DailyJobs:
          with exclusive_lock(self.root,self.root/'runtime/dynamic_daily/worker.lock'):
              if self.settings()['auto_enabled']:
                  plan=gap_plan(self.root,self.clock())
@@ -282,7 +329,7 @@ index 343f6511..b13425aa 100644
              if not row:return
              job=self.job(row['job_id'])
              self.active_job_id=job['job_id']
-@@ -217,10 +317,12 @@ class DailyJobs:
+@@ -217,10 +318,12 @@ class DailyJobs:
                                       'FULL_OWNER_LIFECYCLE_CONSERVATION_FAILED','FULL_CORE_NUMERIC_ORACLE_FAILED',
                                       'FULL_PERIOD_NUMERIC_ORACLE_FAILED'}
                      waiting_tdx=safe=='FALLBACK_LOCAL_ACTUAL_TARGET_ABSENT'
@@ -297,6 +344,45 @@ index 343f6511..b13425aa 100644
                      retry=self.next_retry(day['trade_date'],day['attempt_count']+1)
                      if retry is None:state='FAILED_TERMINAL'
                  with self.connect() as db:
+diff --git a/src/workbench_analysis/operational_daily_ready_owner_v2.py b/src/workbench_analysis/operational_daily_ready_owner_v2.py
+new file mode 100644
+index 00000000..af61eb5d
+--- /dev/null
++++ b/src/workbench_analysis/operational_daily_ready_owner_v2.py
+@@ -0,0 +1,33 @@
++"""Readiness IO adapter; preserves every byte of the accepted V1 owner."""
++from pathlib import Path
++from . import operational_daily_owner_v1 as owner
++from .r43_owner_replay import checked,load,ref
++from .tdx_official_daily_source import sha256_file
++from .operational_daily_storage_v1 import atomic_json
++
++CONTRACT='DYNAMIC_DAILY_READY_OWNER_ADAPTER_V2'
++
++def build(root,freeze_binding,*,source_readiness):
++    root=Path(root);gate=load(checked(root,source_readiness))
++    if not gate.get('source_ready') or gate.get('source_freeze')!=freeze_binding:
++        raise ValueError('OWNER_READY_FREEZE_BINDING_REQUIRED')
++    deps=gate['dependency_bindings']
++    for key in ('parent_head','lifecycle','identity','membership_snapshot'):checked(root,deps[key])
++    if sha256_file(Path(deps['gbbq']['path']))!=deps['gbbq']['sha256']:
++        raise ValueError('SOURCE_READY_GBBQ_REVISION_MOVED')
++    context=owner.prepare(root,freeze_binding)
++    if sha256_file(context['folder']/'sources/gbbq')!=deps['gbbq']['sha256']:
++        raise ValueError('SOURCE_READY_GBBQ_REVISION_MOVED')
++    context['source_readiness']=source_readiness
++    produced=owner.replay(root,context['folder'],context['dates'],context['mappings'],
++        membership_snapshot=context['snapshot'],seed_registry=context['seed_registry'],
++        observed_at=load(checked(root,context['freeze']))['observed_at'])
++    return produced,context
++
++def seal(root,context):
++    root=Path(root);candidate,binding=owner.seal(root,context)
++    receipt_path=checked(root,candidate['day_receipt']);receipt=load(receipt_path)
++    atomic_json(root,receipt_path,dict(receipt,source_readiness=context['source_readiness'],readiness_adapter_contract=CONTRACT))
++    candidate['day_receipt']=ref(root,receipt_path)
++    atomic_json(root,root/binding['path'],candidate)
++    return candidate,ref(root,root/binding['path'])
 diff --git a/src/workbench_analysis/source_readiness_v2.py b/src/workbench_analysis/source_readiness_v2.py
 index 3ee7ab1c..b4b76c4c 100644
 --- a/src/workbench_analysis/source_readiness_v2.py

@@ -6,6 +6,7 @@ sys.path.insert(0,str(ROOT/'src'))
 sys.path.insert(0,str(ROOT))
 from workbench_analysis.operational_daily_storage_v1 import atomic_json
 from workbench_analysis.market_source_acquisition import official_sessions
+from workbench_analysis.operational_daily_periods_v1 import derive_periods
 OUT=ROOT/'docs/evidence/dynamic_daily_r2_20261009/minipack'
 def load(p):return json.loads(p.read_bytes())
 def checked(binding):
@@ -43,5 +44,19 @@ def main():
         atomic_json(ROOT,OUT/'numerical'/f'{day}.json',data)
     sessions=official_sessions(ROOT)
     atomic_json(ROOT,OUT/'periods/CALENDAR_STATE_INPUT.json',dict(contract='V4_02_FORMAL_RAW_QFQ_PERIODS_V1',session_dates=sessions,coverage_end=max(sessions),scope='calendar closure only; historical missing-day status counts not independently verified'))
+    fixture_sessions=['2026-09-29','2026-09-30','2026-10-08','2026-10-09','2026-10-12','2026-10-13']
+    def bar(day,known=True):return dict(trade_date=day,raw_ohlc=[10,12,9,11],qfq_ohlc=[5,6,4.5,5.5] if known else [],volume=10,amount=100)
+    fixtures=[]
+    for name,history,statuses,target,start in [
+        ('CLOSED_WEEK_PARTIAL_MONTH',[bar('2026-10-08'),bar('2026-10-09')],{},'2026-10-09','2026-10-08'),
+        ('SUSPENDED_NO_FAKE_BAR',[bar('2026-10-08')],{'2026-10-09':'SUSPENDED'},'2026-10-09','2026-10-08'),
+        ('DATA_GAP',[bar('2026-10-08')],{'2026-10-09':'DATA_GAP'},'2026-10-09','2026-10-08'),
+        ('UNKNOWN_STATUS',[bar('2026-10-08')],{},'2026-10-09','2026-10-08'),
+        ('QFQ_UNREADY',[bar('2026-10-08'),bar('2026-10-09',False)],{},'2026-10-09','2026-10-08'),
+        ('ALL_SUSPENDED',[],{'2026-10-08':'SUSPENDED','2026-10-09':'SUSPENDED'},'2026-10-09','2026-10-08')]:
+        member=dict(security_id='FIXTURE_SECURITY',source_security_key='SH.600000')
+        expected=derive_periods(member,history,statuses,fixture_sessions,target,'2026-10-31',start_session=start)
+        fixtures.append(dict(case=name,evidence_kind='FIXTURE',history=history,statuses=statuses,target=target,start=start,session_dates=fixture_sessions,coverage_end='2026-10-31',expected=expected))
+    atomic_json(ROOT,OUT/'periods/STATE_BOUNDARY_FIXTURES.json',fixtures)
     print('COMPACT_SUPPLEMENT_WRITTEN_WITH_VERIFIED_OWNER_BINDINGS')
 if __name__=='__main__':main()

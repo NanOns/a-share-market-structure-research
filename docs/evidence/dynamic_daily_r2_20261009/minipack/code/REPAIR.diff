@@ -1,5 +1,5 @@
 diff --git a/src/workbench_analysis/operational_daily_executor_v1.py b/src/workbench_analysis/operational_daily_executor_v1.py
-index bb011a53..2a824cd3 100644
+index bb011a53..1762d585 100644
 --- a/src/workbench_analysis/operational_daily_executor_v1.py
 +++ b/src/workbench_analysis/operational_daily_executor_v1.py
 @@ -9,6 +9,25 @@ from .operational_runtime_acceptance_v2 import load as load_runtime_acceptance_m
@@ -47,7 +47,7 @@ index bb011a53..2a824cd3 100644
          tdx=bars['artifact'],native_baostock=dict(path=raw_path.relative_to(root).as_posix(),sha256=tdx.sha256_file(raw_path)),
          runtime_manifest=dict(path=immutable_manifest.relative_to(root).as_posix(),sha256=tdx.sha256_file(immutable_manifest)),
          effective_package=package,
-@@ -101,10 +123,14 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
+@@ -101,10 +123,25 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
          source_freeze=dict(path=p.relative_to(root).as_posix(),sha256=tdx.sha256_file(p)),
          tdx_bar_count=bars['row_count'],baostock_row_count=len(normalized['daily']['rows']),
          source_captured=True,source_ready=False,derived_ready=False,published=False,last_good_preserved=True)
@@ -55,6 +55,17 @@ index bb011a53..2a824cd3 100644
 +    progress(day,'SOURCE_READY' if readiness['source_ready'] else readiness['status'],result)
 +    if not readiness['source_ready']:return dict(result,status=readiness['status'],reason=readiness['reason'])
      if capture_only:return result
++    return derive_ready_sources(root,day,result,cancelled=cancelled,readback_url=readback_url,progress=progress)
++
++
++def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=None,progress=lambda *args:None):
++    """Revalidate frozen bytes at the final boundary before any Owner work."""
++    from .r43_owner_replay import checked
++    root=Path(root)
++    artifact=json.loads(checked(root,result['source_freeze']).read_bytes())
++    result,readiness=verify_source_gate(root,day,artifact,result)
++    if not readiness['source_ready']:
++        return dict(result,status=readiness['status'],reason=readiness['reason'])
      progress(day,'DERIVING',result)
 -    from .operational_daily_owner_v1 import build,seal
 -    produced,context=build(root,result['source_freeze'])
@@ -64,7 +75,7 @@ index bb011a53..2a824cd3 100644
      if cancelled():return dict(result,status='CANCELLED',reason='CANCELLED_BEFORE_CAS')
      candidate,binding=seal(root,context)
      from scripts.audit_dynamic_daily_period_numbers_v1 import audit as audit_periods
-@@ -121,3 +147,82 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
+@@ -121,3 +158,82 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
      progress(day,'PUBLISHING',dict(result,candidate=binding,derived_ready=True,source_ready=True))
      publication=promote(root,candidate,candidate['predecessor']['sha256'],lambda c:readback(readback_url,c))
      return dict(result,**publication,source_ready=True,derived_ready=True,published=True,candidate=binding)
@@ -148,7 +159,7 @@ index bb011a53..2a824cd3 100644
 +                  source_ready=readiness['source_ready'])
 +    return result,readiness
 diff --git a/src/workbench_analysis/operational_daily_jobs_v1.py b/src/workbench_analysis/operational_daily_jobs_v1.py
-index 343f6511..c62f46da 100644
+index 343f6511..208ca8b4 100644
 --- a/src/workbench_analysis/operational_daily_jobs_v1.py
 +++ b/src/workbench_analysis/operational_daily_jobs_v1.py
 @@ -8,14 +8,15 @@ from .operational_daily_storage_v1 import output_path,exclusive_lock
@@ -291,6 +302,15 @@ index 343f6511..c62f46da 100644
              if prior:return prior['job_id']
              job=uuid.uuid4().hex
              db.execute('INSERT INTO update_jobs VALUES(?,?,?,?,?,?,?,?,?)',
+@@ -108,7 +208,7 @@ class DailyJobs:
+         plan=gap_plan(self.root,self.clock())
+         with self.connect() as db:
+             row=db.execute('SELECT job_id FROM update_jobs ORDER BY created_at DESC LIMIT 1').fetchone()
+-            active=db.execute("SELECT job_id FROM update_jobs WHERE mode='CATCH_UP' AND status NOT IN ('PUBLISHED_FULL','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED') ORDER BY created_at LIMIT 1").fetchone()
++            active=db.execute("SELECT job_id FROM update_jobs WHERE mode='CATCH_UP' AND status NOT IN ('PUBLISHED_FULL','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED','QA_BLOCKED') ORDER BY created_at LIMIT 1").fetchone()
+             last_catch_up=db.execute("SELECT job_id FROM update_jobs WHERE mode='CATCH_UP' ORDER BY created_at DESC LIMIT 1").fetchone()
+         active_record=self.job(active['job_id']) if active else None
+         retry_times=[d['next_retry_at'] for d in (active_record or {}).get('days',[]) if d['next_retry_at']]
 @@ -120,10 +220,17 @@ class DailyJobs:
                      worker_error=self.worker_error,last_good_preserved=True)
  
@@ -384,7 +404,7 @@ index 00000000..af61eb5d
 +    atomic_json(root,root/binding['path'],candidate)
 +    return candidate,ref(root,root/binding['path'])
 diff --git a/src/workbench_analysis/source_readiness_v2.py b/src/workbench_analysis/source_readiness_v2.py
-index 3ee7ab1c..b4b76c4c 100644
+index 3ee7ab1c..6ca87e8c 100644
 --- a/src/workbench_analysis/source_readiness_v2.py
 +++ b/src/workbench_analysis/source_readiness_v2.py
 @@ -1,5 +1,6 @@
@@ -394,7 +414,15 @@ index 3ee7ab1c..b4b76c4c 100644
  from .operational_daily_calendar_v2 import SHANGHAI
  
  CONTRACT = 'V4_DAILY_SOURCE_READINESS_V2'
-@@ -50,4 +51,6 @@ def source_readiness(trade_date, now, evidence=None, main_check='18:35',
+@@ -17,6 +18,7 @@ def source_readiness(trade_date, now, evidence=None, main_check='18:35',
+                    datetime.combine(day, time.fromisoformat(factor_publication), SHANGHAI)
+                    + timedelta(minutes=buffer_minutes))
+     result = dict(contract_id=CONTRACT, trade_date=trade_date, observed_at=now.isoformat(),
++                  sources=evidence or {},
+                   time_eligible=now >= earliest, eligible_at=earliest.isoformat(),
+                   source_ready=False, derived_ready=False, published=False,
+                   external_acceptance='NOT_GRANTED')
+@@ -50,4 +52,6 @@ def source_readiness(trade_date, now, evidence=None, main_check='18:35',
              return dict(result, status=wait, reason='DAILY_COVERAGE_RECONCILIATION_REQUIRED')
          if source == 'baostock_factor' and proof.get('row_count', 0) == 0 and not proof.get('verified_no_change'):
              return dict(result, status=wait, reason='EMPTY_FACTOR_PROOF_REQUIRED')
@@ -429,3 +457,16 @@ index 594c623e..253d1ecd 100644
          query.setdefault('trade_date',self.api.candidate['accepted_trade_date'])
          day=query['trade_date']
          if day in self.api.candidate['source_registry']:
+diff --git a/src/workbench_service/static/daily-update/app.js b/src/workbench_service/static/daily-update/app.js
+index 0f44aec8..a1fbebf2 100644
+--- a/src/workbench_service/static/daily-update/app.js
++++ b/src/workbench_service/static/daily-update/app.js
+@@ -2,7 +2,7 @@ const prefix='/api/v4/operations/daily-update';let latest=null,busy=false;
+ const $=id=>document.getElementById(id);
+ const labels={DERIVING:'来源已冻结，计算中',DERIVED_READY:'数值验收通过',PUBLISHING:'原子发布与同 token 读回中',CANCEL_REQUESTED:'等待安全边界取消',CANCELLED:'已取消未发布部分',QUEUED:'已入队',SCHEDULED:'等待入库时间',SOURCE_CHECKING:'检查来源',PROBED:'来源预检完成',PROBE_COMPLETE:'预检完成（未发布）',WAIT_TDX:'等待通达信',WAIT_BAOSTOCK_FACTOR:'等待复权因子',WAIT_BAOSTOCK_DAILY_UPDATE:'等待 BaoStock 日期源',QA_BLOCKED:'质量验收阻断',FAILED_TERMINAL:'重试已耗尽，需人工处理',NOOP_ALREADY_CURRENT:'已是最新有效版本',RUNNING:'后台执行中',PUBLISHED:'已发布',PUBLISHED_FULL:'全部已发布',FAILED_RETRYABLE:'失败，可重试'};
+ async function api(tail,method='GET',body){const options={method,headers:{'X-V4-Operation':'daily-update'}};if(body){options.headers['Content-Type']='application/json';options.headers['Idempotency-Key']=crypto.randomUUID();options.body=JSON.stringify(body)}const response=await fetch(prefix+'/'+tail,options);const payload=await response.json();if(!response.ok)throw Error(payload.reason||payload.code||'服务连接异常');return payload}
+-async function refresh(){try{latest=await api('status');const s=latest.settings;$('status').textContent=`正式运营截止：${latest.last_good_trade_date}　应补：${latest.missing_sessions.join('、')||'无'}　自动更新：${s.auto_enabled?'开启':'用户已暂停'}　后台：${s.service_alive?'存活':'未运行'}`;$('gate').textContent=`首次完整校验：北京时间 18:35；下一触发：${latest.next_trigger_at||'官方日历覆盖已到边界'}。达到时间不等于来源就绪。`;$('release').textContent=s.publication_ready?'后继发布链已准入。':'后继 Owner／发布链尚未准入。任务可真实采集来源，验收阻断时保留最后有效 Head；不宣称已完成日更或外审。';const job=latest.active_job||latest.last_catch_up_job||latest.last_job;$('job').textContent=job?`任务 ${job.job_id} · ${labels[job.status]||job.status} · ${job.error||''}`:'尚无持久任务';if(latest.last_job?.mode==='PROBE')$('job').textContent+=`；上次预检：${labels[latest.last_job.status]||latest.last_job.status}`;$('days').replaceChildren();for(const day of job?.days||[]){const tr=document.createElement('tr');for(const val of [day.trade_date,labels[day.state]||day.state,day.attempt_count,day.next_retry_at||'—',day.source_checks?.source_ready?'已校验':(day.source_checks?.reason||'尚未校验'),day.source_checks?.candidate?.sha256||day.source_checks?.source_freeze?.sha256||'—']){const td=document.createElement('td');td.textContent=val;tr.append(td)}$('days').append(tr)}}catch(e){$('error').textContent=e.message+'；页面保留上次有效状态。'}}
++async function refresh(){try{latest=await api('status');$('error').textContent='';const s=latest.settings;$('status').textContent=`正式运营截止：${latest.last_good_trade_date}　应补：${latest.missing_sessions.join('、')||'无'}　自动更新：${s.auto_enabled?'开启':'用户已暂停'}　后台：${s.service_alive?'存活':'未运行'}`;$('gate').textContent=`首次完整校验：北京时间 18:35；下一触发：${latest.next_trigger_at||'官方日历覆盖已到边界'}。达到时间不等于来源就绪。`;$('release').textContent=s.publication_ready?'后继发布链已准入。':'后继 Owner／发布链尚未准入。任务可真实采集来源，验收阻断时保留最后有效 Head；不宣称已完成日更或外审。';const job=latest.active_job||latest.last_catch_up_job||latest.last_job;$('job').textContent=job?`任务 ${job.job_id} · ${labels[job.status]||job.status} · ${job.error||''}`:'尚无持久任务';if(latest.last_job?.mode==='PROBE')$('job').textContent+=`；上次预检：${labels[latest.last_job.status]||latest.last_job.status}`;$('days').replaceChildren();for(const day of job?.days||[]){const tr=document.createElement('tr');for(const val of [day.trade_date,labels[day.state]||day.state,day.attempt_count,day.next_retry_at||'—',day.source_checks?.source_ready?'已校验':(day.source_checks?.reason||'尚未校验'),day.source_checks?.candidate?.sha256||day.source_checks?.source_freeze?.sha256||'—']){const td=document.createElement('td');td.textContent=val;tr.append(td)}$('days').append(tr)}}catch(e){$('error').textContent=e.message+'；服务连接不可达，当前执行状态无法确认。';$('status').textContent='后台服务连接不可达；当前执行状态无法确认。';$('job').textContent='上次任务记录仅供追溯，当前是否执行无法确认。';$('days').replaceChildren()}}
+ async function action(fn){if(busy)return;busy=true;$('error').textContent='';try{await fn();await refresh()}catch(e){$('error').textContent=e.message}finally{busy=false}}
+ $('probe').onclick=()=>action(()=>api('probe','POST',{}));
+ $('catchup').onclick=()=>action(()=>api('jobs','POST',{mode:'CATCH_UP',...($('through').value?{through_date:$('through').value}:{})}));

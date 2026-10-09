@@ -1,0 +1,20 @@
+{
+  "contract": "V4-DD-EXTERNAL-REMEDIATION-R2.1",
+  "acceptance": "ENGINEERING_PASS_WITH_DEPLOYMENT_BLOCK",
+  "regression": {
+    "tests": 77,
+    "exit_code": 0,
+    "log": "........................................................................ [ 93%]\n.....                                                                    [100%]\n77 passed in 25.49s\n"
+  },
+  "process_followup": {
+    "tests": 8,
+    "includes_two_new_checkpoint_cases": true,
+    "exit_code": 0,
+    "log": "{\"case\": \"FRESH_PROCESS_CHECKPOINT_RESUME\", \"failure\": \"crash\", \"evidence_kind\": \"ISOLATED_INJECTION\", \"capture_count\": 1, \"source_sha256\": \"d546a5625fa3f260b628f94e24a93ca6f80452245d3041ef5c3853c37ff9a90c\"}\n.{\"case\": \"FRESH_PROCESS_CHECKPOINT_RESUME\", \"failure\": \"retryable\", \"evidence_kind\": \"ISOLATED_INJECTION\", \"capture_count\": 1, \"source_sha256\": \"d546a5625fa3f260b628f94e24a93ca6f80452245d3041ef5c3853c37ff9a90c\"}\n.{\"evidence_kind\": \"ISOLATED_INJECTION\", \"results\": [{\"status\": \"PUBLISHED\", \"accepted_trade_date\": \"2026-10-09\", \"context_token\": \"c761a39c4058fa72a9d8dd86901a3b07254220f90c9cd1a0556ade528e37888d\", \"head_sha256\": \"c761a39c4058fa72a9d8dd86901a3b07254220f90c9cd1a0556ade528e37888d\", \"pid\": 45648, \"isolated_root\": \"G:\\\\codex_tmp\\\\test_temp\\\\dd_r21_checkpoint\\\\test_two_real_process_publishe0\"}, {\"status\": \"CONFLICT\", \"error\": \"[Errno 13] Permission denied\", \"pid\": 48616, \"isolated_root\": \"G:\\\\codex_tmp\\\\test_temp\\\\dd_r21_checkpoint\\\\test_two_real_process_publishe0\"}], \"transaction\": {\"head_sha256\": \"c761a39c4058fa72a9d8dd86901a3b07254220f90c9cd1a0556ade528e37888d\", \"predecessor\": {\"bytes\": 74, \"path\": \"data/v4/predecessors/0c37067536cfcd07b9027eafe9d8bdaa3fb8629c7910f1dfe32b7c7f09206335.json\", \"sha256\": \"0c37067536cfcd07b9027eafe9d8bdaa3fb8629c7910f1dfe32b7c7f09206335\"}, \"readback\": {\"accepted_trade_date\": \"2026-10-09\", \"context_token\": \"c761a39c4058fa72a9d8dd86901a3b07254220f90c9cd1a0556ade528e37888d\", \"status\": \"PASS\"}, \"state\": \"COMMITTED\"}}\n...{\"case\": \"ROLLBACK_WRITE_FAILURE_FRESH_PROCESS_RECOVERY\", \"evidence_kind\": \"ISOLATED_INJECTION\", \"exit_code\": 0, \"predecessor_sha256\": \"3a282ac07d1b503e4ca7556210a25660fa1ffe579a59214caf04303d417d7720\"}\n.{\"case\": \"KERNEL_LOCK_OWNER_CRASH_RECOVERY\", \"evidence_kind\": \"ISOLATED_INJECTION\", \"crashed_pid\": 36692}\n.{\"case\": \"TWO_SCHEDULERS_MANUAL_RETRY_CONCURRENT\", \"evidence_kind\": \"ISOLATED_INJECTION\", \"results\": [{\"role\": \"tick1\", \"pid\": 45516, \"result\": \"TICKED\"}, {\"role\": \"tick2\", \"pid\": 38376, \"result\": \"WORKER_LOCK_CONFLICT\"}, {\"role\": \"manual\", \"pid\": 48352, \"result\": \"781c0cafeb724e838f05de3dd9f131d1\"}], \"calls\": [{\"day\": \"2026-10-08\", \"pid\": 45516}, {\"day\": \"2026-10-09\", \"pid\": 45516}]}\n.\n8 passed in 6.49s\n"
+  },
+  "evidence_kind": "ISOLATED_INJECTION",
+  "browser_close": "REAL_LOCAL_PASS",
+  "service_stop_reload": "AUTO_REVIEW_REJECTED_BLOCKED_BY_POLICY",
+  "machine_reboot": "EXCLUDED_BY_USER",
+  "external_acceptance": "NOT_GRANTED"
+}

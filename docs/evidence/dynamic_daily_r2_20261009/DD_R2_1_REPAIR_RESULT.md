@@ -1,25 +1,22 @@
-# DD R2.1 继续修复记录（2026-10-09）
+# DD R2.1 最终工程交付核查（2026-10-09）
 
-总状态：BLOCKED_PENDING_REMAINING_MANDATORY_GATES。没有授予外审通过。Windows 整机重启按用户指令暂不纳入。
+总体状态：BLOCKED_DEPLOYMENT；外审签收未授予。用户暂不考虑 Windows 整机重启。
 
-代码版本：a8e5c2cf31ce8c9739ad6d6e225f7c224319504c；审计基线 851770b1932d95836ce76bb44fd292117958bf04。临时文件统一 G:/codex_tmp，项目/工作空间主目录 G:/codex work。
+六个修复包的代码、隔离回归和轻量数值证据已完成。仍有一个明确阻断：生产 PID 41528 尚未加载最后的调度、来源重校验和 V2 Owner 适配代码。停止并重载服务被自动审批拒绝，返回 blocked by policy，未提供进一步原因；没有停止服务或绕过拒绝。实际主服务完全关闭/重载测试不能标 PASS。
 
-已补齐：
-- R2-01：冻结旧版本与修复版本使用同一终止失败/源恢复场景；旧版不恢复，修复版创建新尝试并按序执行。实际旧 schema WAL 创建、升级和旧读取器兼容验证保留全部原历史。修复探测健康恢复和中断任务误复用。
-- R2-02：实际 Bar 日期、成功目标日因子查询及零变化证明；就绪记录绑定生命周期、身份、5224 接受池、GBBQ、成员快照。10/09 冻结重放缺失/未知代码均 0。新增 V2 IO 适配绑定日收据；旧 Owner 源码字节恢复以维持已发布 Head 摘要。曾因修改该文件导致 HTTP 503，恢复后真实 HTTP 200；没有改旧日收据。
-- R2-03：两日各 3 个完整板块贡献，6 个目标剔除相对收益用例；两日完整 Market 参与度贡献向量。保留 Core 字段完整窗口/来源元数据。
-- R2-04：回滚写入故障后新进程恢复、持锁进程崩溃后重新获取锁、双调度进程和手工重试并发只有一个任务与执行进程。
-- R2-05：244 项真实周期日历视图检查，6 类明确 FIXTURE 的 192 项状态/计数/null 检查。
-- R2-06：本地轻量 ZIP 重建并在 G 盘隔离解压，CRC/载荷 SHA/独立 oracle 全部通过。
+R2-01：冻结旧版同场景对照、终态源恢复新 attempt、旧历史保留、取消/暂停、有限重试、旧 WAL 升级与旧读取器兼容。
+R2-02：真实三源共同门在派生前调用并再次核验摘要；日期、合法零因子、生命周期/身份/5224 接受池及 GBBQ 绑定；异常门阻断派生与 CAS。新增日期完整 Owner 的生产运行尚未验证。
+R2-03：冻结 SHA 抽样两日 25 个核心加 9/10 边界样本；原始 32 字节行情解码、原始加密 GBBQ 记录独立解码及仿射复权；Core/MA/ATR/RPS、完整选定板块贡献、6 个剔除目标的相对收益、Market 参与度。
+R2-04：77 项全套回归通过；后续 8 项进程测试含两个新增崩溃/FAILED_RETRYABLE 新进程恢复用例通过，缓存采集次数保持 1。实际测试页关闭后后台 HTTP 200；断连界面不会继续显示执行中。发布竞争、回读失败及回滚写入失败的新进程恢复通过隔离注入。
+R2-05：RAW/QFQ 周/月算术、真实目标日 provider 状态与官方日历/身份守恒；6 类独立标识 FIXTURE 边界检查。
+R2-06：轻量 ZIP 3052805 字节；G 盘隔离解压，CRC、全部载荷 SHA、标准库独立 oracle 45559 项检查、3578 项周期检查、0 差异。云端更新及回读结果单独见 R2_06_CLOUD_READBACK.json。
 
-测试：68 passed，退出码 0。命令：python -m pytest -q tests/test_dd_r21_process_races.py tests/test_dynamic_daily_r21_repair.py tests/test_operational_daily_jobs_v1.py tests/test_operational_daily_executor_v1.py tests/test_operational_daily_calendar_v2.py tests/test_operational_successor_release_v1.py tests/test_operational_daily_periods_v1.py tests/test_operational_successor_control_v1.py --basetemp G:/codex_tmp/test_temp/dd_r21_g_only_adapter_v2。
+门检查：G01/G02/G03/G04/G05/G09/G11/G14 工程 PASS；G06/G07 为明确抽样范围 SCOPED_PASS；G08 隔离恢复 PASS，生产重载仍 BLOCKED；G10 既有六 HTTP 同 token/旧 token 409 为历史 REAL_LOCAL_SCOPED_PASS；G12 PASS_DISCLOSURE；G13 以最终 push 精确对齐及实际云端回读收据为准。不能把隔离测试或 push 当成生产/外部验收。
 
-离线 oracle：23296 checks，0 errors；其中周期算术/真实视图 1994 项，状态边界 192 项。只验证列出的字段，不代表全部 Owner/源或全部 Market/LOO 正确。
+NOT_VERIFIABLE：全 cohort 上游前置收益率、全部 Native/LOO 状态与 Market 其他轴、抽样之外历史状态、全量源/Owner 独立验收。10/08 合法停牌分层候选为零，已明确记录而未虚构样本。
 
-仍未签收：样本事件/异常量价/身份沿袭分层的完整证明；原始源到仿射复权的全链；全 cohort 前置收益率；全部 Native/LOO 状态、Market 其他轴；真实历史缺失日状态守恒；新增代码生产部署与新日实际三源门后的完整派生；本次新 ZIP 的云端替换和回读。必过门不能由 scoped PASS 顶替。
+原 10/09 运营 Head 与严格 PIT Head 摘要保持不变；TDX 只读。DD-A01/A02/A05/A06/A07/A08 保持独立开放，Amount Native 主权威不替换。所有新临时文件使用 G:/codex_tmp，项目工作空间使用 G:/codex work。
 
-云端已有三份文件及旧回读保持历史有效，但它们不等于本次本地新包。此前累计上传 1870325 字节，本次尚未新增上传；预算不能重置。新包大小和摘要见 R2_06_OFFLINE_ACCEPTANCE.json。
+下一步：由用户手动重载现有工作台服务后，对最新代码执行生产状态/HTTP 回读。下一实际交易日三源到齐后才能签收新日运行；外部签收仍由外部审核者独立作出。
 
-DD-A01/A02/A05/A06/A07/A08 继续独立开放；Amount Native 主权威未替换。严格 PIT 与运营 Head 保持原摘要；TDX 输入只读。
-
-下一阶段：补齐样本剩余分层/事件链、生产部署与门控复验，并在总上传预算内更新三份轻量交付及实际回读。外部验收仍需独立签发。
+代码 SHA：6316ab62a1d17ac19d82e5de5404f48a1bf176c2

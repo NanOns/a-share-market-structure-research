@@ -9,14 +9,15 @@ python oracle/independent_recompute.py --input . --output <separate_output_direc
 
 The script first verifies every SHA256SUMS entry. ZIP CRC must also be checked
 with Python zipfile.ZipFile(...).testzip(). All sampling names were frozen
-before reading factor values. Numerical inputs are bounded excerpts from frozen
-normalized Owner history, not independent copies of raw official ZIP bytes.
+before reading factor values. Inputs include original daily and encrypted GBBQ
+record excerpts with independent decoding and affine recomputation.
 Core rolling formulas, full-cohort RPS ranks/ties, selected-sector medians and
 breadth, selected target-excluded relative returns, Market participation,
 period OHLCV/amount and real calendar views are reproducible. Six explicit
 FIXTURE scenarios also verify period counts, nulls and status boundaries.
-Event-to-affine provenance, all-cohort antecedent returns, full Native/LOO/Market
-and real historical missing-day status accounting are NOT_VERIFIABLE.
+Selected real period states bind provider status, calendar and identity dates.
+All-cohort antecedent returns, full Native/LOO/Market and unsampled historical
+missing-day status accounting are NOT_VERIFIABLE.
 Full market/Owner independent acceptance is NOT_GRANTED.
 
 The repository tests need pytest and repository src; they are included for

@@ -71,7 +71,10 @@ def rows(root,binding):
             if '.jsonl.' in p.name:return [json.loads(x) for x in stream if x.strip()]
             payload=json.load(stream)
             return payload.get('rows',payload) if isinstance(payload,dict) else payload
-    x=json.loads(p.read_bytes());return x.get('rows',x.get('target_bars',x.get('sectors',x)))
+    x=json.loads(p.read_bytes())
+    for key in ('rows','target_bars','sectors'):
+        if isinstance(x.get(key),list):return x[key]
+    return x
 
 def rollback_staging(root,head_path,current_sha,predecessor_sha):
     root=Path(root).resolve();head_path=Path(head_path).resolve()
@@ -110,7 +113,7 @@ class CandidateReadV2:
             content['events']=[x for x in original.get('events',[]) if x.get('trade_date',x.get('event_date'))==day]
             episodes=[]
             for x in original.get('episodes',[]):
-                if x.get('start_date','9999')>day:continue
+                if x.get('start_date',x.get('T0','9999'))>day:continue
                 observations=[o for o in x.get('observations',[]) if o.get('trade_date','9999')<=day]
                 episodes.append(dict(x,observations=observations,anchors=[a for a in x.get('anchors',[]) if a.get('trade_date','9999')<=day],outcomes=[o for o in x.get('outcomes',[]) if o.get('trade_date','9999')<=day],end_date=x.get('end_date') if x.get('end_date') and x['end_date']<=day else None,membership=observations[-1].get('membership') if observations else None))
             content['episodes']=episodes

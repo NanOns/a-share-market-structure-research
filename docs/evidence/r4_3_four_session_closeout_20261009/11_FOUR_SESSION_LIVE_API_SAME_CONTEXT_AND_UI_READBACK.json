@@ -1,0 +1,38 @@
+{
+  "contract_id": "R43_READBACK_SCOPE_SEPARATION_V1",
+  "candidate_context_token": "a1ce9f862d14cf970004704a0cb0c6d09694e552b82fbd41fe43df5268a212ed",
+  "candidate_http": "FOUR_DATE_SAME_CONTEXT_PASS",
+  "candidate_ui": "ACTUAL_1008_PROFILE_AX_READBACK",
+  "production_readback": "ORIGINAL_0930_LAST_GOOD_PRESERVED",
+  "production_cutover": false,
+  "FOUR_SESSION_PRODUCTION_ACCEPTANCE_PASS": false,
+  "external_acceptance": "ABSENT",
+  "UI_scope_limit": "Candidate Profile and date/domain controls read; no claim of all-domain UI or W8 acceptance",
+  "bindings": [
+    {
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/CANDIDATE_HTTP_FOUR_DATE_SAME_CONTEXT_READBACK.json",
+      "sha256": "81f69164dde4d01c24c405dfc06b7cf59db56d29ce9df3fa6b287c701a279fb1",
+      "bytes": 5049427
+    },
+    {
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/LIVE_ORIGINAL_0930_SAME_CONTEXT_READBACK.json",
+      "sha256": "52c92724a4ca37beeafb5d3cf379e95c3cc2f61bba2f4a58d66a48fd21d50a72",
+      "bytes": 136676
+    },
+    {
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/UI_CANDIDATE_1008_AX.txt",
+      "sha256": "a522ad450282bdc1e426559144658151283f160a5481043b5d761a3eab769551",
+      "bytes": 605520
+    },
+    {
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/UI_ORIGINAL_0930_AX.txt",
+      "sha256": "c3ff36e51bbc513173a3afea9206d1bcd0f23484312f40afbd812c50a7c425ab",
+      "bytes": 12567
+    },
+    {
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/W6_CANDIDATE_API_SAME_CONTEXT_READBACK.json",
+      "sha256": "9d8c8b078ada0cdc3cc7a496a6c97f941a51feb13c71fdac180eef93b7ce5475",
+      "bytes": 1764346
+    }
+  ]
+}

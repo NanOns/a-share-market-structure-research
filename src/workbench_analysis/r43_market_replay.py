@@ -24,7 +24,7 @@ def materialize_market(root):
     limits_receipts=materialize_daily_limits(root)
     limit_sources={r['trade_date']:r['artifact'] for r in limits_receipts}
     limits={d:{r['security_id']:r['limit_state'] for r in gzrows(checked(root,binding)) if r['limit_state'] in ('LIMIT_UP','LIMIT_DOWN','NOT_LIMIT')} for d,binding in limit_sources.items()}
-    receipts=[]
+    receipts=[];regime_rows=[]
     for item in profiles['owners']:
         owner=item['owner'];day=owner['trade_date'];folder=out/'owners'/day
         factors={r['security_id']:r for r in gzrows(checked(root,owner['core']))}
@@ -92,7 +92,8 @@ def materialize_market(root):
         def ma(values):return fmean(values) if len(values)==20 and all(x is not None for x in values) else None
         trend=market_trend_axis(index_close=level,index_ma20=ma(levels[-20:]),index_ma20_t_minus_5=ma(levels[-25:-5]),**identity)
         row=dict(trade_date=day,trend_axis=trend['trend_axis'],**{k:axes[k] for k in ('breadth_axis','participation_axis','stress_level','stress_change')})
-        regime=asdict(project([row])[day])
+        regime_rows.append(row)
+        regime=asdict(project(regime_rows)[day])
         write(folder/'market_owner_candidate_v2.json',dict(trade_date=day,axes=axes,trend=trend,regime=regime,
               breadth_common_count=len(common),breadth_evaluable=len(comparisons),comparison_trade_date=prior3,
               input_bindings=[owner['core'],owner['history'],membership,ref(root,prefixpath),limit_sources[day]]+([limit_sources[previous]] if previous in limit_sources else []),AS_RECORDED=False,accepted=False,

@@ -130,6 +130,11 @@ class DailyJobs:
             db.execute('BEGIN IMMEDIATE');row=db.execute('SELECT status FROM update_jobs WHERE job_id=?',(job,)).fetchone()
             if not row:raise ValueError('JOB_NOT_FOUND')
             if row['status'] in TERMINAL:return job
+            if row['status'] not in {'RUNNING','PUBLISHING'}:
+                db.execute("UPDATE update_jobs SET status='CANCELLED',finished_at=? WHERE job_id=?",(self.clock().isoformat(),job))
+                db.execute("UPDATE update_job_days SET state='CANCELLED' WHERE job_id=? AND state NOT IN ('PUBLISHED','PROBED')",(job,))
+                self.event(db,job,'CANCEL','CANCELLED',dict(boundary='No in-flight executor'))
+                return job
             db.execute("UPDATE update_jobs SET status='CANCEL_REQUESTED' WHERE job_id=?",(job,))
             self.event(db,job,'CANCEL','CANCEL_REQUESTED',dict(boundary='Finish current immutable capture; stop before publication'))
         return job
@@ -139,6 +144,14 @@ class DailyJobs:
         with self.connect() as db:
             row=db.execute('SELECT status FROM update_jobs WHERE job_id=?',(self.active_job_id,)).fetchone()
         return bool(row and row['status'] in {'CANCEL_REQUESTED','CANCELLED'})
+
+    def checkpoint(self,day,stage,detail):
+        if not self.active_job_id:return
+        with self.connect() as db:
+            db.execute('BEGIN IMMEDIATE')
+            db.execute('UPDATE update_job_days SET state=?,source_checks=? WHERE job_id=? AND trade_date=?',
+                (stage,json.dumps(detail),self.active_job_id,day))
+            self.event(db,self.active_job_id,stage,'IMMUTABLE_STAGE_CHECKPOINT',dict(trade_date=day,**detail))
 
     def next_retry(self,day,attempt):
         now=self.clock()
@@ -162,7 +175,7 @@ class DailyJobs:
                         with self.connect() as db:
                             db.execute('INSERT OR IGNORE INTO scheduler_dispatch VALUES(?,?)',(target,job_id))
             with self.connect() as db:
-                row=db.execute("SELECT job_id FROM update_jobs WHERE status NOT IN ('PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED','QA_BLOCKED') ORDER BY CASE WHEN mode='PROBE' THEN 0 ELSE 1 END,created_at LIMIT 1").fetchone()
+                row=db.execute("SELECT job_id FROM update_jobs WHERE status NOT IN ('PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED','QA_BLOCKED') AND (trigger!='SCHEDULER' OR ?) ORDER BY CASE WHEN mode='PROBE' THEN 0 ELSE 1 END,created_at LIMIT 1",(self.settings()['auto_enabled'],)).fetchone()
             if not row:return
             job=self.job(row['job_id'])
             self.active_job_id=job['job_id']
@@ -178,6 +191,7 @@ class DailyJobs:
                 return
             for day in job['days']:
                 if day['state'] in {'PUBLISHED','PROBED'}:continue
+                if job['trigger']=='SCHEDULER' and not self.settings()['auto_enabled']:return
                 if self.publication_cancelled():return
                 if job['mode']!='PROBE':
                     if day['next_retry_at'] and datetime.fromisoformat(day['next_retry_at'])>self.clock():return

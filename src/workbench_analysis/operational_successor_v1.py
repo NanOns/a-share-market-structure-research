@@ -58,6 +58,14 @@ def validate(root, candidate):
     freeze=json.loads(checked(root,qa['source_freeze']).read_bytes())
     if freeze.get('target_session')!=day:raise ValueError('SUCCESSOR_SOURCE_FREEZE_DATE_MISMATCH')
     checked(root,qa['period_kernel'])
+    period=json.loads(checked(root,candidate['period_numeric_oracle']).read_bytes())
+    if period.get('target_session')!=day or period.get('acceptance')!='PASS' or period.get('errors') or period.get('checks',0)<=0:
+        raise ValueError('SUCCESSOR_PERIOD_ORACLE_NOT_VERIFIED')
+    if period.get('owners')!={k:owners[k] for k in ('period_raw','period_adjusted')}:
+        raise ValueError('SUCCESSOR_PERIOD_ORACLE_BINDING_MISMATCH')
+    if period.get('input_history')!=target_owners[0]['history']:
+        raise ValueError('SUCCESSOR_PERIOD_HISTORY_BINDING_MISMATCH')
+    checked(root,period['input_history']);checked(root,period['verifier'])
     snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
     if snapshot.get('membership_snapshot_id')!=candidate['membership_snapshot_id'] or snapshot.get('PIT_ELIGIBLE') is not False:
         raise ValueError('SUCCESSOR_MEMBERSHIP_LINEAGE_MISMATCH')

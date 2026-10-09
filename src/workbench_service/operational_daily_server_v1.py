@@ -136,7 +136,7 @@ def serve_v4(root,host='127.0.0.1',port=28765):
     if host not in {'127.0.0.1','localhost'}:raise ValueError('LAN_DAILY_OPERATIONS_REQUIRE_AUTHENTICATED_ADAPTER')
     from workbench_analysis.operational_successor_release_v1 import recover
     recover(root)
-    jobs=DailyJobs(root,executor=lambda day,mode:execute_sources(root,day,mode,cancelled=jobs.publication_cancelled,readback_url=f'http://127.0.0.1:{port}'))
+    jobs=DailyJobs(root,executor=lambda day,mode:execute_sources(root,day,mode,cancelled=jobs.publication_cancelled,readback_url=f'http://127.0.0.1:{port}',progress=jobs.checkpoint))
     server=ThreadingHTTPServer((host,port),make_daily_handler(root,jobs))
     jobs.start()
     try:server.serve_forever()

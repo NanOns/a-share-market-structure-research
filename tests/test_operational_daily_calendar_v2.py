@@ -50,6 +50,8 @@ def test_sources_and_empty_factors():
     assert source_readiness(day,now,evidence)['status']=='WAIT_BAOSTOCK_FACTOR'
     evidence['baostock_factor']['verified_no_change']=True
     assert source_readiness(day,now,evidence)['source_ready']
+    evidence['baostock_factor'].update(provider_date=None,proof_target_session=day,no_change_proof_sha256='b'*64)
+    assert source_readiness(day,now,evidence)['source_ready']
     evidence['baostock_daily']['provider_date']='2026-10-08'
     assert source_readiness(day,now,evidence)['reason']=='PROVIDER_DATE_MISMATCH'
 

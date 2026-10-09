@@ -11,7 +11,7 @@ from .baostock_dm01_sdk_schema_v2 import normalize_response
 from .baostock_daily_update_source import DAILY_METHOD,FACTOR_METHOD,_canonical_rows_digest
 
 
-def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,readback_url=None):
+def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,readback_url=None,progress=lambda *args:None):
     root=Path(root)
     if mode!='PROBE' and not capture_only:
         head=json.loads((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())
@@ -53,6 +53,9 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     # Reuse them by their live receipt rather than issuing two more full queries.
     raw_path=smoke.with_name(smoke.name.replace('_live_smoke_receipt.json','_raw_responses.json'))
     raw=json.loads(raw_path.read_bytes())
+    immutable_manifest=smoke.with_name(smoke.name.replace('_live_smoke_receipt.json','_accepted_runtime_manifest.json'))
+    if not immutable_manifest.is_file() or immutable_manifest.read_bytes()!=manifest_path.read_bytes():
+        raise ValueError('IMMUTABLE_RUNTIME_MANIFEST_REQUIRED')
     receipt=json.loads(smoke.read_bytes())
     if raw['target_date']!=day or raw['observed_at']!=receipt['observed_at']:
         raise ValueError('NATIVE_RESPONSE_OBSERVATION_MISMATCH')
@@ -75,7 +78,8 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     artifact=dict(contract_id='DYNAMIC_DAILY_SOURCE_FREEZE_V1',target_session=day,
         observed_at=available,AS_RECORDED=False,PIT_ELIGIBLE=False,
         tdx=bars['artifact'],native_baostock=dict(path=raw_path.relative_to(root).as_posix(),sha256=tdx.sha256_file(raw_path)),
-        runtime_manifest=dict(path=manifest_path.relative_to(root).as_posix(),sha256=tdx.sha256_file(manifest_path)),
+        runtime_manifest=dict(path=immutable_manifest.relative_to(root).as_posix(),sha256=tdx.sha256_file(immutable_manifest)),
+        effective_package=package,
         normalized=normalized,canonical_qfq_authority='TDX_GBBQ_UNCHANGED',
         factor_role='AUDIT_FACT_NOT_CANONICAL_QFQ_AUTHORITY')
     if local_receipt:artifact.update(local_fallback=local_receipt,effective_package=package)
@@ -87,13 +91,22 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
         tdx_bar_count=bars['row_count'],baostock_row_count=len(normalized['daily']['rows']),
         source_captured=True,source_ready=False,derived_ready=False,published=False,last_good_preserved=True)
     if capture_only:return result
+    progress(day,'DERIVING',result)
     from .operational_daily_owner_v1 import build,seal
     produced,context=build(root,result['source_freeze'])
     if cancelled():return dict(result,status='CANCELLED',reason='CANCELLED_BEFORE_CAS')
     candidate,binding=seal(root,context)
+    from scripts.audit_dynamic_daily_period_numbers_v1 import audit as audit_periods
+    from .r43_owner_replay import ref
+    period_qa=audit_periods(root,context['folder'])
+    if period_qa['acceptance']!='PASS':raise ValueError('FULL_PERIOD_NUMERIC_ORACLE_FAILED')
+    candidate['period_numeric_oracle']=ref(root,context['folder']/'PERIOD_NUMERIC_ORACLE.json')
+    candidate_path=root/binding['path'];atomic_json(root,candidate_path,candidate);binding=ref(root,candidate_path)
+    progress(day,'DERIVED_READY',dict(result,candidate=binding,derived_ready=True,source_ready=True))
     if cancelled():return dict(result,status='CANCELLED',reason='CANCELLED_BEFORE_CAS')
     if not readback_url:return dict(result,status='QA_BLOCKED',reason='LIVE_SERVICE_READBACK_ENDPOINT_REQUIRED',candidate=binding)
     from .operational_successor_release_v1 import promote
     from .operational_daily_http_readback_v1 import readback
+    progress(day,'PUBLISHING',dict(result,candidate=binding,derived_ready=True,source_ready=True))
     publication=promote(root,candidate,candidate['predecessor']['sha256'],lambda c:readback(readback_url,c))
     return dict(result,**publication,source_ready=True,derived_ready=True,published=True,candidate=binding)

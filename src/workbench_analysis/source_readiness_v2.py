@@ -40,7 +40,10 @@ def source_readiness(trade_date, now, evidence=None, main_check='18:35',
             return dict(result, status=wait, reason='AUDITABLE_OBSERVATION_REQUIRED', source=source)
         if source == 'tdx' and trade_date not in proof.get('bars_date_coverage', []):
             return dict(result, status=wait, reason='ACTUAL_BAR_COVERAGE_REQUIRED')
-        if source != 'tdx' and proof.get('provider_date') != trade_date:
+        no_change=(source=='baostock_factor' and proof.get('row_count')==0 and proof.get('verified_no_change') is True
+                   and proof.get('proof_target_session')==trade_date and len(proof.get('no_change_proof_sha256',''))==64
+                   and all(c in '0123456789abcdef' for c in proof.get('no_change_proof_sha256','')))
+        if source != 'tdx' and proof.get('provider_date') != trade_date and not (no_change and proof.get('provider_date') is None):
             return dict(result, status=wait, reason='PROVIDER_DATE_MISMATCH')
         if source == 'baostock_daily' and (proof.get('row_count', 0) <= 0 or
                                            not proof.get('identity_reconciliation_passed')):

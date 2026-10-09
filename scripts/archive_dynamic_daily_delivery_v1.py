@@ -54,7 +54,7 @@ def archive():
         scope='DD engineering code/evidence and all newly referenced daily owner/source artifacts; inherited original owners stay in prior archive')
     # Independent ZIP volumes keep connector transfers bounded. The master
     # manifest binds every volume and payload; no binary concatenation needed.
-    final=Path('E:/codex_tmp/DYNAMIC_DAILY_DELIVERY_20261009.zip');temporary=final.with_suffix('.tmp.zip')
+    final=Path('E:/codex_tmp/DYNAMIC_DAILY_DELIVERY_20261009_BOUNDED.zip');temporary=final.with_suffix('.tmp.zip')
     groups=[];group=[];size=0
     for item in payload:
         if group and size+item['bytes']>80*1024*1024:

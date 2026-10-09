@@ -1,128 +1,15 @@
-# Dynamic daily execution V1.1
+# V4-DYNAMIC-DAILY-R1.1 执行总合同与进度
 
-User request: execute the supplied V4-DYNAMIC-DAILY-R1.1 document. Scope DD01–DD07;
-read-only operational research, AUTO default ON when the service runs. No minute
-bars, new financial chain, external adjustment authority, BaoStock week/month calls,
-or historical PIT escalation. Frozen R43 code and old Owners remain immutable.
+用户授权执行全部 DD01–DD07；默认 AUTO=ON，只读运营研究，不写 TDX、不增加分钟/财务/外部复权或交易/PIT权限。原冻结R4.3、原Owner与严格9/30 PIT保留。
+基线Git 6f0cf3c5a983eab481283d0436e050d70b77fe29。最新Drive FP/DRIVER回读已保存contracts/DD07_FP_CURRENT_READBACK.md与DD07_DRIVER_CURRENT_READBACK.md。Phase0继承FULL_PASS，来源reports/v4_phase0/V4_PHASE0_STAGE_RECEIPTS_R5_20260928.json。
 
-Baseline Git: 6f0cf3c5a983eab481283d0436e050d70b77fe29. Clean worktree at entry.
-Latest applicable Drive FP contracts read from 17tbCyE-gYhe2pwoy2gLFeoNNwq9NPKxu;
-latest independent driver/audit read from 15GsPpj_0OiOAUd41b4TqjGs0Vi2TBJxn.
-Local FP02/FP11/FP14 records and FP ingress gap matrix continue to apply.
-Phase 0 FULL_PASS is inherited from the FP02 recorded receipt; no scanner scope is added.
+阶段具体合同、证据、验收与下一门：
+- DD01：V4_OPERATIONAL_DAILY_CALENDAR_V2、V4_DAILY_SOURCE_READINESS_V2；实际官方日历回读、任意缺口受控时钟测试通过；日历独立签发状态不升级。
+- DD02：TDX_LATEST_PACKAGE_TARGET_SESSION_V2；实际10/08抽取与10/08、10/09每日期真实BaoStock双响应通过；10/09页面metadata不变但ZIP替换，已加入HEAD ETag/Last-Modified/Content-Length缓存验证；详见DD02_FRESH_OFFICIAL_PACKAGE_RECHECK与DD02_SAME_METADATA_ZIP_REVISION_FIX。
+- DD03：DYNAMIC_DAILY_DD03_SUCCESSOR_V1_20261009.md；独立IO适配复用原算法，immutable generation绑定真实源/GBBQ/成员/producer；10/08真实全市场最终IO12组数值和质量等价0错；10/09源真实冻结后正在完整Owner与动作/rolling重算。
+- DD04：DYNAMIC_DAILY_DD04_20261009.md；持久Job、默认ON、18:35/重试/恢复/去重/锁/安全取消、受限publication策略与CAS/WAL回滚实现；真实浏览器关闭18:35启动、服务重启/暂停恢复通过，真实新日CAS待DD03数值门。
+- DD05：DYNAMIC_DAILY_DD05_20261009.md；正式28765实际按钮与持久API，用户将Chrome/Edge改为内置IAB；1366/1920真实验收通过，新日期刷新待CAS。
+- DD06：DYNAMIC_DAILY_DD06_20261009.md；原本地日线聚合RAW/QFQ周月，当前月实际全市场146272独立检查0错；边界/事件/停牌/UNKNOWN受控测试；10/09独立oracle待生成。
+- DD07：阶段入口DD07_STAGE_ENTRY.json；最新合同/冻结SHA/六HTTP rehearsal/真实服务与IAB、多缺口和负向事务证据齐备；下一门真实10/09 CAS、六入口同token/UI、发布后重启、最终Git/Drive逐payload回读。
 
-## DD01 contract and acceptance
-
-V4_OPERATIONAL_DAILY_CALENDAR_V2 enumerates every missing official SSE/SZSE
-session, separates eligible and waiting dates, accepts timezone-aware clocks only,
-and explicitly reports calendar coverage exhaustion. The frozen calendar head is
-LOCAL_READY_FOR_EXTERNAL_AUDIT; reading its SHA-verified official bytes does not
-promote its independent acceptance. Calendar admission must remain explicit downstream.
-
-V4_DAILY_SOURCE_READINESS_V2 requires the 18:35 time gate and at least 30 minutes
-after the factor publication baseline. Clock passage never creates source readiness.
-Per-day verified proofs require digest, observed time, real TDX bar coverage,
-BaoStock provider dates, daily identity reconciliation, and proof for zero factor changes.
-
-Evidence: DD01_REAL_CALENDAR_READBACK.json (real official frozen bytes, explicitly
-simulated clocks/downtime) and 13 targeted pytest cases. Protected operational and
-strict PIT Head SHA values are checked before/after.
-
-Acceptance: ENGINEERING_PASS_SCOPED for gap planning and source-proof gates;
-EXTERNAL_ACCEPTANCE_NOT_GRANTED. No new session is published by DD01.
-Next: DD02 latest-package extraction and genuine date-specific BaoStock runtime.
-
-## Independent audit tracking
-
-DD-A01: official calendar candidate admission scope; independent from DD01 tests.
-DD-A02: full Rotation state-machine oracle, inherited VALIDATION_ONGOING.
-DD-A03: request-ledger cross-midnight accounting and multi-process locking;
-independent of source ingestion status, requires actual source-code and race evidence.
-DD-A04: algorithm acceptance and affected-history recomputation must be bound before
-successor production. No old one-time user cutover signature may be reused.
-
-Overall DD01–DD07 delivery is IN_PROGRESS, not a final release acceptance.
-
-## DD02 source execution
-
-Real official metadata reports package date 2026-10-09 15:58:53. The 551,544,006
-byte ZIP (SHA256 5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4)
-contains actual A-stock bars only through 2026-10-08 at this observation. Thus
-package publication date cannot prove 10/09 bars. Historical extraction produced
-5,557 native A-stock rows for 10/08, with later-snapshot reconstruction explicit.
-This includes rows outside the canonical daily market and is NOT a coverage QA pass.
-
-Initial extraction rejected a date-order defect in sh000833 (an index). The successor
-now uses the existing typed A-stock classification before parsing market-specific
-stock bars; index data is explicitly excluded, not silently repaired. Stock order
-defects remain fatal. Source download used the existing R3 official challenge adapter;
-rejected response bytes and actual ZIP receipt are preserved outside TDX.
-
-10/08 real BaoStock smoke initially failed on factor header `adjustFacto`. Reused
-the existing exact SDK SHA schema adapter (0.9.3, 32bd19de…8686bfe), retaining native
-responses. Normalized provider dates are derived from actual returned daily/effective
-dates, never request echoes. The actual dual-series runtime subsequently passed.
-Schema independent external acceptance remains NOT_GRANTED; no QFQ authority change.
-
-Evidence: DD02_REAL_TDX_EXTRACTION.json and DD02_BAOSTOCK_RUNTIME_READBACK.json,
-actual smoke manifests/native rows, shared request ledger, latest capture receipt.
-Acceptance: ENGINEERING_PASS_SCOPED for official latest-package historical extraction
-and actual dated runtime smoke; complete source/identity reconciliation is pending.
-Next gated dependency: DD03 dated identity/lifecycle/GBBQ QA and full numeric Owner
-successor, alongside independent DD04 job/UI work. No 10/09 publication occurred.
-
-## DD03 prerequisite audit (not DD03 completion)
-
-Real 10/08 native extraction reconciles 5,209 actual OHLCV bars and 15 confirmed
-suspensions against 5,224 BaoStock rows and the frozen dated identity binding;
-zero OHLCV/identity anomalies. The 348 extra native entries are explicitly outside
-the target provider universe, not automatically labeled delisted.
-
-Amount representation is separately tracked in DD_A05_AMOUNT_REPRESENTATION_AUDIT.json.
-4,853 decimal values differ from native float32. Of these, 102 do not match direct
-decimal-to-float32 conversion. All observed differences match a candidate encoding:
-round to integer CNY with HALF_UP, then encode float32. This is an inference from
-these actual observations, not an accepted universal provider contract or closure
-of any historical sector Amount A audit. Neither source authority nor native amounts
-were changed. Independent numerical/representation acceptance is NOT_GRANTED.
-
-DD03 remains incomplete: no dynamic full Owner producer/OperationalSuccessorReaderV1
-has been admitted or published; dated GBBQ revisions and affected-history recomputation
-must be bound before this gate. Existing daily Owners remain intact.
-
-## DD04 / DD05 engineering slice
-
-V4_OPERATIONAL_DAILY_JOBS_V1 uses SQLite WAL for jobs, days, events, policy and scheduler
-dispatch. Kernel-owned file locks serialize processes and release on crashes. Defaults
-are AUTO=ON, persistent pause/resume, startup catch-up, bounded actual-attempt-day retry
-times, same-target deduplication, and failed-day retry that retains completed days.
-The policy binds this user's instruction and the supplied task SHA; it does not copy
-the prior one-time cutover signature or grant algorithm/PIT/trading permission.
-
-Actual capture executor downloads/freeze-checks the latest official package and extracts
-target bars; dated BaoStock smoke responses are reused with SHA checks. It stops at
-the missing full source/Owner gate. Probe performs actual small official metadata reads,
-does not download a ZIP or move a Head, and is independent of the full-day time gate.
-
-New localhost API has 202 job IDs, origin/custom-header protection, body bounds, a write
-rate limit, settings and event reads. LAN startup fails closed until an authenticated
-adapter is implemented. The existing V2 control source and frozen asset bindings are
-unchanged; the new service is a wrapper. Normal startup imports this wrapper.
-
-Real QA service is on port 28766. Port 28765 was NOT replaced. On startup with no page,
-the worker automatically scheduled 10/09 for 18:35. A real process restart retained its
-job and settings; browser clicks reused the same catch-up job and created a genuine
-metadata-probe job. Pause, page reload, resume and IAB screenshots were verified.
-Inherited last-good stocks/sectors/market/focus read back with the same old token.
-
-Acceptance: ENGINEERING_PASS_SCOPED for durable scheduling/source execution and
-the clickable update-center slice. DD04 is NOT complete: successor CAS, rollback,
-release-chain and cancellation gates remain to implement with DD03; Windows service
-or Task Scheduler auto-start has NOT been installed. DD05 full release-status/period
-display acceptance depends on the unfinished producer and publication chain.
-
-DD06 remains pending: no new operational-period incremental build/QA has been run.
-DD07 remains BLOCKED for full acceptance: no new successor CAS/recovery/readback;
-only IAB available, no connected Edge/Chrome; no independent external verdict.
-33 targeted and inherited regressions pass. Simulated queue executors/time cases
-are tests, and are explicitly separate from real source/service/browser evidence.
+总状态IN_PROGRESS_REAL_20261009_OWNER_BUILD。全部七项已经实施，但不能把新日CAS前的工程证据写成全门PASS。实时24门范围与真实/模拟分别记录于docs/evidence/dynamic_daily_20261009/DYNAMIC_DAILY_EXTERNAL_AUDIT.md；独立事项INDEPENDENT_AUDIT_ITEMS.md。EXTERNAL_ACCEPTANCE始终NOT_GRANTED；提交推送不授予下一未授权门，当前全部七项用户已授权。

@@ -54,3 +54,20 @@ def test_prepared_crash_and_repeated_rollback_restart(tmp_path,monkeypatch):
     release.recover(tmp_path);release.recover(tmp_path)
     assert head.read_bytes()==before
     assert json.loads(transaction.read_bytes())['state']=='RECOVERED_PRE_CAS'
+
+
+def test_disk_write_failure_before_cas_preserves_last_good(tmp_path,monkeypatch):
+    from workbench_analysis import operational_successor_release_v1 as release
+    head=tmp_path/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+    atomic_json(tmp_path,head,dict(accepted_trade_date='2026-10-08'));before=head.read_bytes();old=sha256_file(head)
+    pre=head.parent/'predecessors'/(old+'.json');atomic_json(tmp_path,pre,json.loads(before))
+    candidate=dict(accepted_trade_date='2026-10-09',predecessor=dict(path=str(pre),sha256=old))
+    monkeypatch.setattr(release,'validate',lambda *a:True);monkeypatch.setattr(release,'verify_policy',lambda *a:True)
+    original=release.atomic_json
+    def no_space(root,path,payload):
+        if Path(path)==head:raise OSError('ISOLATED_ENOSPC')
+        return original(root,path,payload)
+    monkeypatch.setattr(release,'atomic_json',no_space)
+    with pytest.raises(OSError,match='ISOLATED_ENOSPC'):release.promote(tmp_path,candidate,old,lambda _:None)
+    assert head.read_bytes()==before
+    release.recover(tmp_path);assert head.read_bytes()==before

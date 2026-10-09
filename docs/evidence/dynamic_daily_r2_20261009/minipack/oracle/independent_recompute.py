@@ -55,6 +55,10 @@ def run(root):
     for c in read(root/'periods/PERIOD_ORACLE_CASES.json'):
         p=c['expected'];bars=c['bars'];basis='raw_ohlc' if c['domain']=='period_raw' else 'qfq_ohlc'
         assert all(b['trade_date']<=c['trade_date'] for b in bars),'PERIOD_FUTURE_BAR'
+        def period_key(d):
+            y,w,_=date.fromisoformat(d).isocalendar()
+            return d[:7] if p['period_type']=='MONTHLY' else f'{y}-W{w:02d}'
+        assert all(period_key(b['trade_date'])==p['period_key'] for b in bars),'PERIOD_MEMBERSHIP_MISMATCH'
         expected=dict(actual_count=len(bars),volume=sum(b['volume'] for b in bars),amount=sum(b['amount'] for b in bars))
         if bars and all(b[basis] for b in bars):
             prices=[[Decimal(str(v)) for v in b[basis]] for b in bars]

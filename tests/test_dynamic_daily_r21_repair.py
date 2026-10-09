@@ -62,6 +62,22 @@ def test_migration_preserves_legacy_dispatch(queue):
     assert q.job(old)['status']=='FAILED_TERMINAL'
 
 
+def test_manual_retry_scheduler_collision_one_executor(queue):
+    q,rev,calls,outcome=queue;q.tick()
+    with q.connect() as db:old=db.execute('SELECT job_id FROM scheduler_dispatch').fetchone()[0]
+    manual=q.retry(old);rev[0]='b';outcome[0]='PUBLISHED';q.tick()
+    assert q.job(old)['status']=='FAILED_TERMINAL' and q.job(manual)['status']=='PUBLISHED_FULL'
+    assert calls==['2026-10-08','2026-10-08','2026-10-09']
+
+
+def test_bounded_recovery_probe_has_persistent_cooldown(queue,monkeypatch):
+    q,rev,calls,outcome=queue;probes=[]
+    monkeypatch.setattr(q,'source_revision',jobs_module.DailyJobs.source_revision.__get__(q))
+    q.source_probe=lambda d:(probes.append(d) or dict(verified=True,revision='fixture-proof',source_ready=False))
+    q.tick();q.tick();assert probes==['2026-10-09']
+    assert len(calls)==1
+
+
 def proofs():
     common=dict(status='VERIFIED',target_session='2026-10-09',source_sha256='a'*64,
         observed_at='2026-10-09T18:35:00+08:00',provider_date='2026-10-09',row_count=1)

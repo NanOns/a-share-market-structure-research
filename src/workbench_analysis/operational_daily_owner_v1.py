@@ -16,15 +16,9 @@ BASE='docs/evidence/r4_3_four_session_closeout_20261009'
 ACQUISITION='docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json'
 
 
-def prepare(root,freeze_binding,*,replay_current=False,source_readiness=None):
+def prepare(root,freeze_binding,*,replay_current=False):
     root=Path(root).resolve();freeze=load(checked(root,freeze_binding));day=freeze['target_session']
     parent=load(root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json')
-    gate=load(checked(root,source_readiness)) if source_readiness else None
-    if gate:
-        if not gate.get('source_ready') or gate.get('source_freeze')!=freeze_binding:
-            raise ValueError('OWNER_READY_FREEZE_BINDING_REQUIRED')
-        for key in ('parent_head','lifecycle','identity','membership_snapshot'):
-            checked(root,gate['dependency_bindings'][key])
     sessions=official_sessions(root);previous=parent['accepted_trade_date']
     if not replay_current and sessions.index(day)!=sessions.index(previous)+1:
         raise ValueError('OWNER_NEXT_OFFICIAL_SESSION_REQUIRED')
@@ -54,8 +48,6 @@ def prepare(root,freeze_binding,*,replay_current=False,source_readiness=None):
     current_gbbq=Path('D:/new_tdx/T0002/hq_cache/gbbq')
     before=current_gbbq.stat();blob=current_gbbq.read_bytes();after=current_gbbq.stat()
     if (before.st_size,before.st_mtime_ns)!=(after.st_size,after.st_mtime_ns):raise ValueError('GBBQ_CHANGED_DURING_CAPTURE')
-    if gate and hashlib.sha256(blob).hexdigest()!=gate['dependency_bindings']['gbbq']['sha256']:
-        raise ValueError('SOURCE_READY_GBBQ_REVISION_MOVED')
     member_source_hashes={source['address']:sha256_file(Path(source['address'])) for source in snapshot['sources']}
     generation=dict(contract_id='DYNAMIC_DAILY_OWNER_GENERATION_SCOPE_V1',source_freeze=freeze_binding['sha256'],
         parent_head=sha256_file(root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'),identity=identity_binding['sha256'],
@@ -193,9 +185,8 @@ def prepare(root,freeze_binding,*,replay_current=False,source_readiness=None):
                 source_counts=dict(Counter(r['status'] for r in observations)))
 
 
-def build(root,freeze_binding,*,replay_current=False,source_readiness=None):
-    context=prepare(root,freeze_binding,replay_current=replay_current,source_readiness=source_readiness)
-    if source_readiness:context['source_readiness']=source_readiness
+def build(root,freeze_binding,*,replay_current=False):
+    context=prepare(root,freeze_binding,replay_current=replay_current)
     return replay(root,context['folder'],context['dates'],context['mappings'],
                   membership_snapshot=context['snapshot'],seed_registry=context['seed_registry'],
                   observed_at=load(checked(root,context['freeze']))['observed_at']),context
@@ -263,7 +254,7 @@ def seal(root,context):
     atomic_json(root,receipt,dict(contract_id='DYNAMIC_DAILY_DERIVED_DAY_RECEIPT_V1',target_session=day,acceptance='DERIVED_READY',
         owners=owners,source_counts=context['source_counts'],numeric_core_oracle=ref(root,out/'CORE_REPLAY.json'),
         sector_oracle=owners['sector_receipt'],period_kernel=ref(root,root/'src/workbench_analysis/dm01_incremental_component_builders_r3_3.py'),
-        source_freeze=context['freeze'],source_readiness=context.get('source_readiness'),AS_RECORDED=False,PIT_ELIGIBLE=False,external_acceptance='NOT_GRANTED',
+        source_freeze=context['freeze'],AS_RECORDED=False,PIT_ELIGIBLE=False,external_acceptance='NOT_GRANTED',
         generation_scope=ref(root,folder/'GENERATION_SCOPE.json'),
         affected_history='Every saved rolling window and prior coordinate rebuilt from bound native package and GBBQ',
         rotation_validation='VALIDATION_ONGOING',next_stage='AUTHORIZED_CAS_HTTP_READBACK'))

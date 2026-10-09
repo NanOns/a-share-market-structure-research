@@ -128,7 +128,7 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     if not readiness['source_ready']:return dict(result,status=readiness['status'],reason=readiness['reason'])
     if capture_only:return result
     progress(day,'DERIVING',result)
-    from .operational_daily_owner_v1 import build,seal
+    from .operational_daily_ready_owner_v2 import build,seal
     produced,context=build(root,result['source_freeze'],source_readiness=result['source_readiness'])
     context['source_readiness']=result['source_readiness']
     if cancelled():return dict(result,status='CANCELLED',reason='CANCELLED_BEFORE_CAS')

@@ -1,0 +1,10 @@
+{
+  "command": "E:/python/python.exe scripts/build_r43_r1_operational_candidate.py",
+  "exit_code": 1,
+  "phase": "Actual source copy into isolated CAS store",
+  "reason": "R43_SOURCE_DIGEST_MISMATCH:src/workbench_service/r43_operational_bff.py",
+  "traceback": "Traceback (most recent call last):\n  File scripts/build_r43_r1_operational_candidate.py, line 71, in <module>\n    main()\n  File scripts/build_r43_r1_operational_candidate.py, line 42, in main\n    shutil.copyfile(checked(ROOT,b),p)\n  File src/workbench_analysis/r43_operational_sources.py, line 23, in checked\n    raise ValueError('R43_SOURCE_DIGEST_MISMATCH:'+binding['path'])\nValueError: R43_SOURCE_DIGEST_MISMATCH:src/workbench_service/r43_operational_bff.py\n",
+  "cause": "Concurrent final provenance code edit during provisional candidate sealing",
+  "result": "FAIL_CLOSED_NO_PRODUCTION_CAS",
+  "remediation": "Freeze code then rebuild candidate registry and repeat actual isolated QA"
+}

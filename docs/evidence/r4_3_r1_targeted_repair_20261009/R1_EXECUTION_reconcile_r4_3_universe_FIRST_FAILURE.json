@@ -1,0 +1,12 @@
+{
+  "original_source": {
+    "path": "scripts/reconcile_r4_3_universe.py",
+    "bytes": 8288,
+    "sha256": "d30eb2babf32bfbd84ff217fcae26115b8276d8b6f8f1a944216ad3cb5308647"
+  },
+  "executed_source_sha256": "d30eb2babf32bfbd84ff217fcae26115b8276d8b6f8f1a944216ad3cb5308647",
+  "output_redirect_only": true,
+  "exit_code": 1,
+  "traceback": "Traceback (most recent call last):\n  File \"G:\\codex work\\大A交易\\scripts\\audit_r43_r1_scoped_numeric.py\", line 57, in run_frozen_oracle\n    ns['main']()\n    ~~~~~~~~~~^^\n  File \"G:\\codex work\\大A交易\\scripts\\reconcile_r4_3_universe.py\", line 105, in main\n    _atomic_write(OUT / '03_FOUR_SESSION_UNIVERSE_BAR_SUSPENSION_BJ_RECONCILIATION.csv', stream.getvalue().encode('utf8'), tdx_root=Path('D:/new_tdx'))\n    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: run_frozen_oracle.<locals>.redirected_atomic() got an unexpected keyword argument 'tdx_root'\n",
+  "elapsed_seconds": 23.237
+}

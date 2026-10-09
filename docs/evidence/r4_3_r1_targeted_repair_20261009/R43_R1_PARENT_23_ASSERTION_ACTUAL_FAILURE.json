@@ -1,0 +1,13 @@
+{
+  "command": [
+    "E:/python/python.exe",
+    "scripts\\reproduce_r43_r1_declared_parent_count.py"
+  ],
+  "actual_exit_code": 1,
+  "stdout": "{\"actual_named_leaf\": 110, \"actual_derived_parent\": 22, \"unclassified\": [\"INDUSTRY:T00\"], \"source_industry_count\": 133, \"parent_ids\": [\"INDUSTRY:T0101\", \"INDUSTRY:T0102\", \"INDUSTRY:T0103\", \"INDUSTRY:T0201\", \"INDUSTRY:T0202\", \"INDUSTRY:T0204\", \"INDUSTRY:T0206\", \"INDUSTRY:T0302\", \"INDUSTRY:T0303\", \"INDUSTRY:T0304\", \"INDUSTRY:T0305\", \"INDUSTRY:T0402\", \"INDUSTRY:T0405\", \"INDUSTRY:T0501\", \"INDUSTRY:T0601\", \"INDUSTRY:T0605\", \"INDUSTRY:T0704\", \"INDUSTRY:T0705\", \"INDUSTRY:T0901\", \"INDUSTRY:T0903\", \"INDUSTRY:T1101\", \"INDUSTRY:T1102\"]}\r\n",
+  "stderr_traceback": "Traceback (most recent call last):\r\n  File \"G:\\codex work\\��A����\\scripts\\reproduce_r43_r1_declared_parent_count.py\", line 17, in <module>\r\n    if __name__=='__main__':main()\r\n                            ~~~~^^\r\n  File \"G:\\codex work\\��A����\\scripts\\reproduce_r43_r1_declared_parent_count.py\", line 15, in main\r\n    assert (len(leaf),len(parent))==(110,23), 'FROZEN_23_PARENT_COUNT_CLAIM_CONTRADICTS_ACTUAL_MEMBER_SOURCE'\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nAssertionError: FROZEN_23_PARENT_COUNT_CLAIM_CONTRADICTS_ACTUAL_MEMBER_SOURCE\r\n",
+  "executed_source_sha256": "6de57bef72ec4d87422bfea13ece117e05c853f54837f2333912a1d5bfd7cf76",
+  "expected_failure": true,
+  "cross_cutting_audit_item": "R43-R1-CROSS-TAXONOMY-DENOMINATOR",
+  "classification": "FROZEN_COUNT_REPORTING_CONTRADICTION_NOT_MEMBER_SET_CHANGE"
+}

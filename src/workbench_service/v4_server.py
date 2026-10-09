@@ -1,5 +1,7 @@
 """V4_DEFAULT_WORKBENCH_SERVICE_V1. Product version and permissions are separate."""
 import json
+import hashlib
+import threading
 from http.server import ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -17,16 +19,40 @@ def make_v4_handler(root):
     base=make_shadow_handler(root)
     static=root/'src/workbench_service/static'
     bff=ResearchBFF(root)
+    operational_cache={};operational_lock=threading.RLock()
+
+    def operational_reader():
+        from workbench_analysis.r43_operational_publication import accepted_api
+        head=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+        authority=root/'data/v4/R43_OPERATIONAL_EXTERNAL_ACCEPTANCE.json'
+        if not head.exists():
+            operational_cache.clear();return None
+        signature=hashlib.sha256(head.read_bytes()+(authority.read_bytes() if authority.exists() else b'')).hexdigest()
+        with operational_lock:
+            cached=operational_cache.get('reader')
+            signatures=operational_cache.get('sources',{})
+            changed=any(not p.is_file() or (p.stat().st_size,p.stat().st_mtime_ns)!=stat for p,stat in signatures.items())
+            if cached is None or signature!=operational_cache.get('signature') or changed:
+                operational_cache.clear()
+                cached=accepted_api(root)
+                registry=json.loads((root/cached.candidate['registry']['path']).read_bytes())
+                bindings=[]
+                def collect(value):
+                    if isinstance(value,dict):
+                        if value.get('path') and value.get('sha256'):bindings.append(value)
+                        for child in value.values():collect(child)
+                    elif isinstance(value,list):
+                        for child in value:collect(child)
+                collect(registry);collect(cached.candidate);collect(cached.snapshot)
+                paths={root/b['path'] for b in bindings}
+                operational_cache.update(reader=cached,signature=signature,sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
+            return cached
 
     class Handler(base):
         def do_GET(self):
             parsed=urlparse(self.path)
-            if parsed.path in ('/','/v4','/v4/','/v4/operational'):
-                from workbench_analysis.r43_operational_publication import accepted_api
-                try:
-                    operational=accepted_api(root)
-                    if operational is not None:return self.send(200,(static/'r43-operational-preview.html').read_bytes(),'text/html; charset=utf-8')
-                except (ValueError,KeyError,OSError) as error:return self.send(503,dict(code='OPERATIONAL_ACCEPTED_SOURCE_INVALID',reason=str(error)))
+            if parsed.path=='/v4/operational-preview':
+                return self.send(200,(static/'r43-operational-preview.html').read_bytes(),'text/html; charset=utf-8')
             if parsed.path.startswith('/api/v4/original-0930/'):
                 values=parse_qs(parsed.query,keep_blank_values=True)
                 if any(len(v)!=1 for v in values.values()):return self.send(400,dict(code='DUPLICATE_PARAMETER'))
@@ -35,11 +61,16 @@ def make_v4_handler(root):
             if parsed.path.startswith('/api/v4/') and not parsed.path.startswith('/api/v4/shadow/'):
                 from workbench_analysis.r43_operational_publication import accepted_api
                 try:
-                    operational=accepted_api(root)
+                    operational=operational_reader()
                 except (ValueError,KeyError,OSError) as error:
                     return self.send(503,dict(code='OPERATIONAL_ACCEPTED_SOURCE_INVALID',reason=str(error)))
                 if operational is not None:
-                    try:return self.send(200,operational.dispatch(self.path))
+                    from .r43_operational_bff import OperationalResearchBFF
+                    try:
+                        values=parse_qs(parsed.query,keep_blank_values=True)
+                        if any(len(v)!=1 for v in values.values()):raise ValueError('DUPLICATE_PARAMETER')
+                        code,payload=OperationalResearchBFF(operational,bff).get(parsed.path,{k:v[0] for k,v in values.items()})
+                        return self.send(code,payload)
                     except (ValueError,KeyError) as error:
                         return self.send(409 if str(error)=='CONTEXT_TOKEN_MISMATCH' else 400,dict(code='INVALID_OPERATIONAL_QUERY',reason=str(error)))
             if parsed.path in ('/','/v4','/v4/') or parsed.path.startswith('/v4/research/'):
@@ -58,6 +89,16 @@ def make_v4_handler(root):
                 if name not in ('app.js','api.js','components.js','labels.js','stock.js','replay.js','style.css'):return self.send(404,dict(code='ASSET_NOT_FOUND'))
                 joint=joint_load(root)
                 asset=checked_path(root,joint['ui_assets'][name]) if joint else static/'research'/name
+                if name in ('api.js','components.js','app.js'):
+                    try:operational=operational_reader()
+                    except (ValueError,KeyError,OSError) as error:return self.send(503,dict(code='OPERATIONAL_ACCEPTED_SOURCE_INVALID',reason=str(error)))
+                    if operational is not None:
+                        relative='src/workbench_service/static/r43-compat/'+name
+                        registry=json.loads((root/operational.candidate['registry']['path']).read_bytes())
+                        binding=next((b for b in registry['bindings'] if b['path']==relative),None)
+                        if binding is None:return self.send(503,dict(code='OPERATIONAL_UI_COMPATIBILITY_ASSET_NOT_BOUND'))
+                        from workbench_analysis.r43_operational_sources import checked
+                        asset=checked(root,binding)
                 return self.send(200,asset.read_bytes(),'text/css; charset=utf-8' if name.endswith('.css') else 'application/javascript; charset=utf-8')
             if parsed.path=='/v4/workbench.js':
                 return self.send(200,(static/'v4-workbench.js').read_bytes(),'application/javascript; charset=utf-8')

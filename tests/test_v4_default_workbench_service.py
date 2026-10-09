@@ -29,8 +29,12 @@ def get(base,path):
 
 
 def test_service_starts_without_legacy_and_root_is_v4(service):
-    for path in ['/','/v4']:
-        assert 'V4 工作台'.encode() in get(service,path)[1]
+    from workbench_service.joint_release import load,checked_path
+    authority=load(ROOT)
+    assert authority is not None
+    approved_html=checked_path(ROOT,authority['ui_assets']['index.html']).read_bytes()
+    for path in ['/','/v4','/v4/']:
+        assert get(service,path)[1]==approved_html
     status=get(service,'/api/operations/status')[1]
     assert status['service_mode']=='V4_DEFAULT_WORKBENCH'
     assert status['read_only_ui'] and not status['legacy_v3_default']

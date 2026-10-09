@@ -1,0 +1,532 @@
+{
+  "contract": "R43_INDEPENDENT_DATED_DAILY_LIMIT_ORACLE_V1",
+  "sources": [
+    {
+      "trade_date": "2026-09-28",
+      "known": 5192,
+      "source": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/daily_price_limits_v1.jsonl.gz",
+        "sha256": "ff1651509bcebf5d733e74c1b1e29c318f2331e0eab51089318df0a17b3c1381",
+        "bytes": 251118
+      },
+      "reported_counts": {
+        "NOT_LIMIT": 5097,
+        "LIMIT_DOWN": 60,
+        "UNKNOWN": 18,
+        "LIMIT_UP": 35,
+        "SUSPENDED": 12
+      },
+      "unknown_reasons": {
+        "REFERENCE_PRICE_UNKNOWN": 17,
+        "NO_PRICE_LIMIT_SPECIAL_PERIOD": 1
+      }
+    },
+    {
+      "trade_date": "2026-09-29",
+      "known": 5174,
+      "source": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/daily_price_limits_v1.jsonl.gz",
+        "sha256": "342098d0834c7ae8682b6e30b353389a3efcbdd285be096a4e60902854423f18",
+        "bytes": 251393
+      },
+      "reported_counts": {
+        "NOT_LIMIT": 5108,
+        "LIMIT_UP": 54,
+        "UNKNOWN": 37,
+        "SUSPENDED": 12,
+        "LIMIT_DOWN": 12
+      },
+      "unknown_reasons": {
+        "REFERENCE_PRICE_UNKNOWN": 36,
+        "NO_PRICE_LIMIT_SPECIAL_PERIOD": 1
+      }
+    },
+    {
+      "trade_date": "2026-09-30",
+      "known": 5169,
+      "source": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/daily_price_limits_v1.jsonl.gz",
+        "sha256": "508f7367e101940618f5991b1a8177277f3c67faf7262d0224d614ecdbff3268",
+        "bytes": 252047
+      },
+      "reported_counts": {
+        "NOT_LIMIT": 5102,
+        "LIMIT_UP": 56,
+        "UNKNOWN": 44,
+        "SUSPENDED": 11,
+        "LIMIT_DOWN": 11
+      },
+      "unknown_reasons": {
+        "REFERENCE_PRICE_UNKNOWN": 43,
+        "NO_PRICE_LIMIT_SPECIAL_PERIOD": 1
+      }
+    },
+    {
+      "trade_date": "2026-10-08",
+      "known": 5201,
+      "source": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/daily_price_limits_v1.jsonl.gz",
+        "sha256": "96354288b1b97fd78750812c9f7ae32b4d62c4c4fe15d25a84177fa7a9be32e5",
+        "bytes": 249981
+      },
+      "reported_counts": {
+        "NOT_LIMIT": 5141,
+        "LIMIT_UP": 44,
+        "UNKNOWN": 8,
+        "SUSPENDED": 15,
+        "LIMIT_DOWN": 16
+      },
+      "unknown_reasons": {
+        "REFERENCE_PRICE_UNKNOWN": 6,
+        "NO_PRICE_LIMIT_SPECIAL_PERIOD": 2
+      }
+    }
+  ],
+  "checks": 103680,
+  "samples": [
+    {
+      "security_id": "SEC-0081C3FB364C2FF2BBF61903A767EACB",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "native_isST": "0",
+      "previous": "27.4000",
+      "up": "30.14",
+      "down": "24.66",
+      "close": "24.66",
+      "state": "LIMIT_DOWN"
+    },
+    {
+      "security_id": "SEC-01007B161569BFF64F7079B3DBACF9CC",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_RISK_WARNING_20260706_V1",
+      "native_isST": "1",
+      "previous": "1.7800",
+      "up": "1.96",
+      "down": "1.60",
+      "close": "1.76",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-010CC3E0E86D1885E84000A59CD4BD67",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_GROWTH_RISK_WARNING_20230704_V1",
+      "native_isST": "1",
+      "previous": "12.9800",
+      "up": "15.58",
+      "down": "10.38",
+      "close": "11.91",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-0157C18162F1E5F08F5949B6EA4A7514",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_GROWTH_RISK_WARNING_20230704_V1",
+      "native_isST": "1",
+      "previous": "5.3400",
+      "up": "6.41",
+      "down": "4.27",
+      "close": "4.98",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-01AE565AAB38D6DBE68548A166DA9001",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_GROWTH_RISK_WARNING_20230704_V1",
+      "native_isST": "1",
+      "previous": "2.6400",
+      "up": "3.17",
+      "down": "2.11",
+      "close": "2.64",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-01AEABA52190D2FADA47F333541450C9",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_GROWTH_RISK_WARNING_20230704_V1",
+      "native_isST": "1",
+      "previous": "6.8700",
+      "up": "8.24",
+      "down": "5.50",
+      "close": "6.66",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-025B71A288DA1070DC2299964C634BC4",
+      "trade_date": "2026-09-28",
+      "rule_id": "SSE_MAIN_NORMAL_20230704_V1",
+      "native_isST": "0",
+      "previous": "29.0700",
+      "up": "31.98",
+      "down": "26.16",
+      "close": "26.16",
+      "state": "LIMIT_DOWN"
+    },
+    {
+      "security_id": "SEC-0304DE76E543B5A34C5F0F329E5E0904",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_RISK_WARNING_20260706_V1",
+      "native_isST": "1",
+      "previous": "3.8000",
+      "up": "4.18",
+      "down": "3.42",
+      "close": "3.69",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-043473D20167BBE2EB87A5F8CA618EA4",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "native_isST": "0",
+      "previous": "13.4200",
+      "up": "14.76",
+      "down": "12.08",
+      "close": "14.76",
+      "state": "LIMIT_UP"
+    },
+    {
+      "security_id": "SEC-0625BE26C9B998123F628BA59C658FE7",
+      "trade_date": "2026-09-28",
+      "rule_id": "SSE_MAIN_RISK_WARNING_20260706_V1",
+      "native_isST": "1",
+      "previous": "3.1900",
+      "up": "3.51",
+      "down": "2.87",
+      "close": "3.06",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-0697EB9A39E1B781FC1399F32BB96C25",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_GROWTH_RISK_WARNING_20230704_V1",
+      "native_isST": "1",
+      "previous": "11.7000",
+      "up": "14.04",
+      "down": "9.36",
+      "close": "11.43",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-09A49B69E80FED7933BCE3C84BA58AAB",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_RISK_WARNING_20260706_V1",
+      "native_isST": "1",
+      "previous": "1.3000",
+      "up": "1.43",
+      "down": "1.17",
+      "close": "1.27",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-09B525248CF6630EACCF3455040CDF3D",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_RISK_WARNING_20260706_V1",
+      "native_isST": "1",
+      "previous": "2.7600",
+      "up": "3.04",
+      "down": "2.48",
+      "close": "2.73",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-0AA5919ABBC61A9FB8FAD6A7819806A8",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "native_isST": "0",
+      "previous": "28.6000",
+      "up": "31.46",
+      "down": "25.74",
+      "close": "25.74",
+      "state": "LIMIT_DOWN"
+    },
+    {
+      "security_id": "SEC-0CC432EF26A906A8CD620AD1791F586D",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_GROWTH_RISK_WARNING_20230704_V1",
+      "native_isST": "1",
+      "previous": "4.5900",
+      "up": "5.51",
+      "down": "3.67",
+      "close": "4.32",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-0D1951EB75E2D35DEDDF75E4AF40EBD2",
+      "trade_date": "2026-09-28",
+      "rule_id": "SSE_MAIN_RISK_WARNING_20260706_V1",
+      "native_isST": "1",
+      "previous": "18.8200",
+      "up": "20.70",
+      "down": "16.94",
+      "close": "18.81",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-0DBF6CA285B41127A993B44469F51C16",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_RISK_WARNING_20260706_V1",
+      "native_isST": "1",
+      "previous": "4.0400",
+      "up": "4.44",
+      "down": "3.64",
+      "close": "4.04",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-0E9E572277E0FB942B9290477927DBCA",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "native_isST": "0",
+      "previous": "6.4400",
+      "up": "7.08",
+      "down": "5.80",
+      "close": "5.8",
+      "state": "LIMIT_DOWN"
+    },
+    {
+      "security_id": "SEC-0EDB5E5082E33C2E3D14F075703C23F8",
+      "trade_date": "2026-09-28",
+      "rule_id": "SSE_MAIN_NORMAL_20230704_V1",
+      "native_isST": "0",
+      "previous": "79.4000",
+      "up": "87.34",
+      "down": "71.46",
+      "close": "71.46",
+      "state": "LIMIT_DOWN"
+    },
+    {
+      "security_id": "SEC-0F09488DDB4D6D0CB767AEB5F7DBB7B4",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_GROWTH_RISK_WARNING_20230704_V1",
+      "native_isST": "1",
+      "previous": "1.6800",
+      "up": "2.02",
+      "down": "1.34",
+      "close": "1.64",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-0F48D06C83768D5FA460971B73F36719",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_RISK_WARNING_20260706_V1",
+      "native_isST": "1",
+      "previous": "6.5400",
+      "up": "7.19",
+      "down": "5.89",
+      "close": "6.32",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-126944E1B2F50B7ECFE5B0F7A59451CF",
+      "trade_date": "2026-09-28",
+      "rule_id": "SSE_MAIN_RISK_WARNING_20260706_V1",
+      "native_isST": "1",
+      "previous": "8.5200",
+      "up": "9.37",
+      "down": "7.67",
+      "close": "8.37",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-129D32DEDAF9E5D5D21090A3BFC2DB5B",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "native_isST": "0",
+      "previous": "24.7500",
+      "up": "27.23",
+      "down": "22.28",
+      "close": "22.28",
+      "state": "LIMIT_DOWN"
+    },
+    {
+      "security_id": "SEC-12E2CEBE73B6700349FBF959B02EBE99",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "native_isST": "0",
+      "previous": "9.2000",
+      "up": "10.12",
+      "down": "8.28",
+      "close": "10.12",
+      "state": "LIMIT_UP"
+    },
+    {
+      "security_id": "SEC-137A92AD87106E7239E871782CFB887B",
+      "trade_date": "2026-09-28",
+      "rule_id": "SSE_MAIN_RISK_WARNING_20260706_V1",
+      "native_isST": "1",
+      "previous": "1.9200",
+      "up": "2.11",
+      "down": "1.73",
+      "close": "1.91",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-1427BD3164262BB765DC5A578E30BE8F",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_RISK_WARNING_20260706_V1",
+      "native_isST": "1",
+      "previous": "3.2000",
+      "up": "3.52",
+      "down": "2.88",
+      "close": "3.16",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-1444677F085CB5F8778705780CDBFBC6",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "native_isST": "0",
+      "previous": "5.8400",
+      "up": "6.42",
+      "down": "5.26",
+      "close": "6.42",
+      "state": "LIMIT_UP"
+    },
+    {
+      "security_id": "SEC-15AAA9A4A9AD0D56F35FB8EF77FF705C",
+      "trade_date": "2026-09-28",
+      "rule_id": "SSE_MAIN_RISK_WARNING_20260706_V1",
+      "native_isST": "1",
+      "previous": "1.4300",
+      "up": "1.57",
+      "down": "1.29",
+      "close": "1.42",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-15E519B06C47BB7420666BA190A06945",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "native_isST": "0",
+      "previous": "36.6500",
+      "up": "40.32",
+      "down": "32.99",
+      "close": "32.99",
+      "state": "LIMIT_DOWN"
+    },
+    {
+      "security_id": "SEC-1A97A19B9832F4ED9A9883638D432D07",
+      "trade_date": "2026-09-28",
+      "rule_id": "SSE_MAIN_NORMAL_20230704_V1",
+      "native_isST": "0",
+      "previous": "31.1500",
+      "up": "34.27",
+      "down": "28.04",
+      "close": "28.04",
+      "state": "LIMIT_DOWN"
+    },
+    {
+      "security_id": "SEC-1AA862F53770B0A2CE8F144759DD18AE",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "native_isST": "0",
+      "previous": "102.9000",
+      "up": "113.19",
+      "down": "92.61",
+      "close": "92.61",
+      "state": "LIMIT_DOWN"
+    },
+    {
+      "security_id": "SEC-1B5F45F91B6F77C0F538079642B5CF6F",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "native_isST": "0",
+      "previous": "56.0200",
+      "up": "61.62",
+      "down": "50.42",
+      "close": "50.42",
+      "state": "LIMIT_DOWN"
+    },
+    {
+      "security_id": "SEC-1B706EC558E96853E48AEF2EDDDB8162",
+      "trade_date": "2026-09-28",
+      "rule_id": "SSE_MAIN_RISK_WARNING_20260706_V1",
+      "native_isST": "1",
+      "previous": "1.6200",
+      "up": "1.78",
+      "down": "1.46",
+      "close": "1.52",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-1DF472F8D2BDA9F4213B11FCA17A8D40",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_RISK_WARNING_20260706_V1",
+      "native_isST": "1",
+      "previous": "0.8500",
+      "up": "0.94",
+      "down": "0.77",
+      "close": "0.77",
+      "state": "LIMIT_DOWN"
+    },
+    {
+      "security_id": "SEC-1F2F66AF646112DB9B0D15C2B75E83C6",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_RISK_WARNING_20260706_V1",
+      "native_isST": "1",
+      "previous": "2.4900",
+      "up": "2.74",
+      "down": "2.24",
+      "close": "2.54",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-21542FAD798EC0680E769B8C9EEF34E9",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "native_isST": "0",
+      "previous": "9.3900",
+      "up": "10.33",
+      "down": "8.45",
+      "close": "10.33",
+      "state": "LIMIT_UP"
+    },
+    {
+      "security_id": "SEC-23B8BA8B39B08861F8D457DD7199AC21",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "native_isST": "0",
+      "previous": "8.2900",
+      "up": "9.12",
+      "down": "7.46",
+      "close": "7.46",
+      "state": "LIMIT_DOWN"
+    },
+    {
+      "security_id": "SEC-2533FF148E8C82DB7DBC4E7310B034B7",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_GROWTH_RISK_WARNING_20230704_V1",
+      "native_isST": "1",
+      "previous": "7.0500",
+      "up": "8.46",
+      "down": "5.64",
+      "close": "6.99",
+      "state": "NOT_LIMIT"
+    },
+    {
+      "security_id": "SEC-26F44C01446C8E86B1E48CD0600495CA",
+      "trade_date": "2026-09-28",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "native_isST": "0",
+      "previous": "8.0900",
+      "up": "8.90",
+      "down": "7.28",
+      "close": "8.9",
+      "state": "LIMIT_UP"
+    },
+    {
+      "security_id": "SEC-27B75D739CAA25AE4E398D6DFDABA742",
+      "trade_date": "2026-09-28",
+      "rule_id": "SSE_MAIN_RISK_WARNING_20260706_V1",
+      "native_isST": "1",
+      "previous": "2.9000",
+      "up": "3.19",
+      "down": "2.61",
+      "close": "2.88",
+      "state": "NOT_LIMIT"
+    }
+  ],
+  "errors": [],
+  "precision": "Exact Decimal tick HALF_UP; minimum tick movement",
+  "intraday": "NOT_OBSERVABLE_FROM_DAILY",
+  "acceptance": "PASS"
+}

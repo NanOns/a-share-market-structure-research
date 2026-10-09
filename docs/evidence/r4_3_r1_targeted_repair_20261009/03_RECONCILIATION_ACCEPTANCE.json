@@ -1,0 +1,103 @@
+{
+  "contract_id": "R43_NATIVE_SECURITY_DATE_RECONCILIATION_V1",
+  "summary": [
+    {
+      "trade_date": "2026-09-28",
+      "canonical_rows": 5222,
+      "actual_raw": 5210,
+      "states": {
+        "ACTUAL_NATIVE_BAR": 5210,
+        "VERIFIED_SUSPENSION_NO_NATIVE_BAR": 12
+      },
+      "BSE_and_excluded_counts": {
+        "INDEX_EXCLUDED": 2,
+        "BSE_STABLE_ENTITY_CANDIDATE_NOT_ACCEPTED": 246,
+        "BSE_EXPLICIT_UNRESOLVED_SOURCE": 101
+      },
+      "T1": "2026-09-24",
+      "T3": "2026-09-22"
+    },
+    {
+      "trade_date": "2026-09-29",
+      "canonical_rows": 5223,
+      "actual_raw": 5211,
+      "states": {
+        "ACTUAL_NATIVE_BAR": 5211,
+        "VERIFIED_SUSPENSION_NO_NATIVE_BAR": 12
+      },
+      "BSE_and_excluded_counts": {
+        "INDEX_EXCLUDED": 2,
+        "BSE_STABLE_ENTITY_CANDIDATE_NOT_ACCEPTED": 246,
+        "BSE_EXPLICIT_UNRESOLVED_SOURCE": 101,
+        "BSE_LIFECYCLE_SOURCE_REQUIRED": 1
+      },
+      "T1": "2026-09-28",
+      "T3": "2026-09-23"
+    },
+    {
+      "trade_date": "2026-09-30",
+      "canonical_rows": 5224,
+      "actual_raw": 5213,
+      "states": {
+        "ACTUAL_NATIVE_BAR": 5213,
+        "VERIFIED_SUSPENSION_NO_NATIVE_BAR": 11
+      },
+      "BSE_and_excluded_counts": {
+        "INDEX_EXCLUDED": 2,
+        "BSE_STABLE_ENTITY_CANDIDATE_NOT_ACCEPTED": 246,
+        "BSE_EXPLICIT_UNRESOLVED_SOURCE": 101,
+        "BSE_LIFECYCLE_SOURCE_REQUIRED": 1
+      },
+      "T1": "2026-09-29",
+      "T3": "2026-09-24"
+    },
+    {
+      "trade_date": "2026-10-08",
+      "canonical_rows": 5224,
+      "actual_raw": 5209,
+      "states": {
+        "ACTUAL_NATIVE_BAR": 5209,
+        "VERIFIED_SUSPENSION_NO_NATIVE_BAR": 15
+      },
+      "BSE_and_excluded_counts": {
+        "INDEX_EXCLUDED": 2,
+        "BSE_STABLE_ENTITY_CANDIDATE_NOT_ACCEPTED": 246,
+        "BSE_EXPLICIT_UNRESOLVED_SOURCE": 101,
+        "BSE_LIFECYCLE_SOURCE_REQUIRED": 1
+      },
+      "T1": "2026-09-30",
+      "T3": "2026-09-28"
+    }
+  ],
+  "errors": [],
+  "row_count": 22292,
+  "evidence": {
+    "path": "docs/evidence/r4_3_four_session_closeout_20261009/03_FOUR_SESSION_UNIVERSE_BAR_SUSPENSION_BJ_RECONCILIATION.csv",
+    "sha256": "0dee76e22225aec4c34b1562f481d5e29593811fd0a3240bf9e5f2365e3b14d0",
+    "bytes": 7209758
+  },
+  "inherited_scope_contracts": [
+    {
+      "path": "config/v4_02_final_closure_contract_v1.json",
+      "sha256": "edd5a7d6e5f45b08beba20a2229e064b02cc03dcfaf50ff16e9e83c9cb7b9292",
+      "bytes": 3011
+    },
+    {
+      "path": "config/v4_01_historical_code_change_alias_completeness_v1.json",
+      "sha256": "968021b907d8e89e2ec070c352d3c597773e2f52f97068970ea499b51c044668",
+      "bytes": 1853
+    }
+  ],
+  "required_boards": [
+    "SH_MAIN",
+    "SZ_MAIN",
+    "CHINEXT",
+    "STAR"
+  ],
+  "BSE_scope": "INHERITED_EXTERNALLY_ACCEPTED_OPTIONAL_DEGRADED_BSE; NOT_A_NEW_SCOPE_REDUCTION",
+  "acceptance": "PASS_CANONICAL_NATIVE_BAR_AND_SUSPENSION_RECONCILIATION",
+  "BSE_acceptance": "NOT_GRANTED_UNRESOLVED_SOURCE_AND_INDEPENDENT_IDENTITY_ADMISSION",
+  "comprehensive_audit_item": "R43_BSE_IDENTITY_SCOPE_001",
+  "full_market_claim": false,
+  "next_stage": "W3_NUMERIC_W4_RETRO_SECTOR"
+}

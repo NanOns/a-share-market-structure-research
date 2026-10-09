@@ -1,6 +1,6 @@
 # V4-DYNAMIC-DAILY-R1.1 — 全部七项工程验收记录
 
-当前总门：PASS_ALL_SEVEN_ENGINEERING_REAL_20261009_RELEASE_ARCHIVE_PENDING。独立外审 NOT_GRANTED，不能以工程测试或 Git 推送替代。用户明确将 Chrome/Edge 改为默认内置浏览器；1366/1920 两种宽度保留。
+当前总门：PASS_ALL_SEVEN_ENGINEERING_KEY_DELIVERY_USER_MANUAL_UPLOAD。独立外审 NOT_GRANTED，不能以工程测试或 Git 推送替代。用户明确将 Chrome/Edge 改为默认内置浏览器；1366/1920 两种宽度保留。
 
 | 任务 | 已实现和实测证据 | 下一验收门 |
 |---|---|---|
@@ -10,7 +10,7 @@
 | DD04 | SQLite WAL Job/Day/Event、AUTO默认ON、调度/持久重试/启动恢复、锁、取消边界、受限策略、CAS/WAL/回滚 | 真实无浏览器18:35启动、服务重启持久通过；隔离事务负测通过；真实10/09 CAS COMMITTED，六HTTP与发布后服务重启通过 |
 | DD05 | 正式28765真实按钮/API、诊断入口、补齐/预检/重试/开关/取消/日志/版本 | IAB真实点击和1366/1920通过；新截止10/09页与工作台实际验收通过 |
 | DD06 | 原PERIOD_RAW/PERIOD_ADJUSTED/正式聚合合同；本地RAW/QFQ周月；事件/边界/停牌/UNKNOWN | 实际当前月全证券146272独立求和/极值检查0错；10/09真实全市场146272独立检查0错 |
-| DD07 | 最新Drive合同回读、冻结SHA、实际源/服务/浏览器证据、多缺口/负向事务测试、六HTTP rehearsal | 真实10/09 CAS、六入口、双宽度、发布后重启通过；最终Git/Drive归档待回读 |
+| DD07 | 最新Drive合同回读、冻结SHA、实际源/服务/浏览器证据、多缺口/负向事务测试、六HTTP rehearsal | 真实10/09 CAS、六入口、双宽度、发布后重启通过；用户改为关键文件本地交付，自行网页上传 |
 
 ## 同页面日期、不同包文件的实际修订
 
@@ -34,10 +34,13 @@
 21：实际六HTTP rehearsal同token/日期PASS（真实产物加显式模拟前驱）；正式新日六入口同token/日期PASS，实际IAB两宽度PASS。
 22：Rotation/Forward原VALIDATION_ONGOING/UNKNOWN/RIGHT_CENSORED保留，不授予收益/PIT权限。
 23：实际当前月RAW/QFQ全证券146272独立检查；跨周月/事件/停牌隔离测试；无BaoStock周月或分钟接口。
-24：分阶段代码和证据已commit/push；最终新Owner/源SHA清单已生成，Drive归档回读为最后交付步骤。
+24：分阶段代码和证据已commit/push；最终新Owner/源SHA清单已生成，用户最新要求仅交付关键数据，不继续全量API上传。
 
 独立事项详见INDEPENDENT_AUDIT_ITEMS.md。DD-A05 Amount表示差异保持独立开放，Native不替换、不任意容差，不关闭历史Amount A。原FP页面缺口、Rotation/Forward外审仍沿用原状态，不声称FP01–FP14整体PASS。
 正式last-good 10/09 SHA 55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e；前驱10/08 SHA e751fb6ebee81baa3fd213515800e220135738d485118828bc6c81fe9dd853c8；strict9/30 PIT SHA 38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40。D:/new_tdx只读；不增scanner、分钟、财务、外部复权、概率或交易权限。真实新日已发布，工程绿不替代独立外审。
 
 
 最终真实证据：DD07_REAL_20261009_RELEASE_READBACK.json、DD07_REAL_POST_CAS_SERVICE_RESTART.json、DD07_REAL_20261009_PERIOD_NUMERIC_ORACLE.json、DD07_FULL_FROZEN_REBUILD_DETERMINISM.json，以及PUBLISHED_1366/1920与WORKBENCH截图。60项回归全部通过。实际计算仍沿用已接受5224证券池；349包内额外证券不冒称新增Owner准入。独立Amount差异4946项继续开放。
+
+
+用户最终归档范围：只要关键数据，大文件不通过API上传，提供散文件供用户网页端自行上传。大批量传输已停止；此前全量分卷仅部分上传/回读，不宣称全量云端归档PASS。最终报告DYNAMIC_DAILY_FINAL_DELIVERY.md、关键数字DD07_KEY_DATA.json、本地小包验收DD07_KEY_DELIVERY_LOCAL_RECEIPT.json。工程七项已完成，独立外审NOT_GRANTED。

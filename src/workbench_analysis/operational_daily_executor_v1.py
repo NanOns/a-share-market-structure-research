@@ -12,6 +12,24 @@ from .baostock_daily_update_source import DAILY_METHOD,FACTOR_METHOD,_canonical_
 from .source_readiness_v2 import source_readiness
 
 
+def probe_source_revision(day):
+    """Three bounded metadata requests; never download ZIP or query full market."""
+    from .tdx_latest_daily_source_v2 import _package_validator
+    response=tdx._request(tdx.PAGE_URL,timeout=5)
+    try:
+        page=tdx._read_bounded(response,tdx.DEFAULT_MAX_PAGE_BYTES)
+        url=tdx.discover_download_url(page,tdx.validate_official_url(response.geturl()))
+    finally:response.close()
+    response=tdx._request(tdx.discover_update_info_url(page,url),timeout=5)
+    try:info=tdx._read_bounded(response,tdx.DEFAULT_MAX_INFO_BYTES)
+    finally:response.close()
+    provider,_=tdx.parse_update_date(info);validator=_package_validator(url,5)
+    if provider<day or not validator:return dict(verified=False,status='WAIT_TDX')
+    return dict(verified=True,revision=tdx.sha256_bytes(tdx._json_bytes(dict(info_sha256=tdx.sha256_bytes(info),validator=validator))),
+        provider_date=provider,validator=validator,capture_method='BOUNDED_METADATA_ONLY',
+        source_ready=False,reason='EXECUTOR_MUST_VERIFY_ACTUAL_TARGET_AND_THREE_SOURCES')
+
+
 def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,readback_url=None,progress=lambda *args:None):
     root=Path(root)
     if mode!='PROBE' and not capture_only:

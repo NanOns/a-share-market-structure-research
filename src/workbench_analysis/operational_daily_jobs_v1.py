@@ -8,14 +8,15 @@ from .operational_daily_storage_v1 import output_path,exclusive_lock
 
 CONTRACT='V4_OPERATIONAL_DAILY_JOBS_V1'
 RETRY_TIMES=['19:05','19:35','20:05','20:35','21:05','22:05']
-TERMINAL={'PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED'}
+TERMINAL={'PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED'}
 
 
 class DailyJobs:
-    def __init__(self,root,executor=None,clock=None):
+    def __init__(self,root,executor=None,clock=None,source_probe=None):
         self.root=Path(root).resolve();self.clock=clock or (lambda:datetime.now(SHANGHAI))
         self.executor=executor;self.stop=threading.Event();self.thread=None;self.worker_error=None
         self.active_job_id=None
+        self.source_probe=source_probe
         self.policy_binding=None
         if (self.root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').is_file():
             policy_path=self.root/'config/read_only_operational_daily_release_policy_v1_1.json'
@@ -71,6 +72,20 @@ class DailyJobs:
         # all three sources and downstream QA before deriving/publishing.
         manifest=self.root/'reports/v4_baostock/runtime_acceptance'/target.replace('-','')/'accepted_runtime_manifest.json'
         if manifest.is_file():revisions.append(hashlib.sha256(manifest.read_bytes()).hexdigest())
+        if self.source_probe:
+            from .operational_daily_storage_v1 import atomic_json
+            probe_path=self.root/'runtime/dynamic_daily/recovery_probes'/ (target+'.json')
+            cached=json.loads(probe_path.read_bytes()) if probe_path.is_file() else {}
+            if not cached or self.clock()>=datetime.fromisoformat(cached['next_probe_at']):
+                try:
+                    probe=self.source_probe(target)
+                    if probe.get('verified') and probe.get('revision'):
+                        cached.update(probe)
+                    cached.update(observed_at=self.clock().isoformat(),next_probe_at=(self.clock()+timedelta(minutes=30)).isoformat())
+                except (OSError,ValueError,KeyError):
+                    cached.update(next_probe_at=(self.clock()+timedelta(minutes=30)).isoformat(),probe_state='WAIT_PROVIDER')
+                atomic_json(self.root,probe_path,cached)
+            if cached.get('verified'):revisions.append(cached['revision'])
         return hashlib.sha256(json.dumps(sorted(revisions)).encode()).hexdigest() if revisions else None
 
     def dispatch(self,plan):
@@ -92,7 +107,18 @@ class DailyJobs:
                     history=db.execute('SELECT * FROM scheduler_attempts WHERE target=?',(target,)).fetchone()
                 if previous['status']=='CANCELLED' and not rearm:return
                 changed=revision is not None and revision!=history['source_revision']
-                if not rearm and not changed and previous['status'] not in {'CANCELLED_SYSTEM','INTERRUPTED'}:return
+                last=previous['days'][0] if previous['days'] else {}
+                transient=last.get('source_checks',{}).get('retry_class')=='TRANSIENT_INFRASTRUCTURE'
+                healthy=False
+                if transient and self.source_probe:
+                    import shutil
+                    probe_path=self.root/'runtime/dynamic_daily/recovery_probes'/(target+'.json')
+                    probe=json.loads(probe_path.read_bytes()) if probe_path.is_file() else {}
+                    attempted=db.execute("SELECT timestamp FROM update_events WHERE job_id=? AND event_code='ATTEMPT_STARTED' ORDER BY event_id DESC LIMIT 1",(previous['job_id'],)).fetchone()
+                    healthy=bool(attempted and self.clock()>=datetime.fromisoformat(attempted[0])+timedelta(minutes=30)
+                        and probe.get('verified') and probe.get('probe_state')!='WAIT_PROVIDER'
+                        and shutil.disk_usage(self.root).free>100*1024*1024)
+                if not rearm and not changed and not healthy and previous['status'] not in {'CANCELLED_SYSTEM','INTERRUPTED'}:return
                 if history['attempt_ordinal']>=8 and not rearm:return
             active=db.execute("SELECT job_id FROM update_jobs WHERE mode='CATCH_UP' AND status NOT IN ('PUBLISHED_FULL','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','QA_BLOCKED','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED') LIMIT 1").fetchone()
             if active:
@@ -189,10 +215,17 @@ class DailyJobs:
                     worker_error=self.worker_error,last_good_preserved=True)
 
     def retry(self,job):
+        record=self.job(job)
+        if record['status'] in {'FAILED_TERMINAL','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED'}:
+            self.rearm(record['through_date'],'MANUAL:'+uuid.uuid4().hex,'EXPLICIT_MANUAL_RETRY')
+            return self.enqueue(record['through_date'],record['mode'],'MANUAL',key='RETRY:'+job+':'+uuid.uuid4().hex)
         with self.connect() as db:
             db.execute('BEGIN IMMEDIATE');row=db.execute('SELECT status FROM update_jobs WHERE job_id=?',(job,)).fetchone()
             if not row:raise ValueError('JOB_NOT_FOUND')
             if row['status'] in {'RUNNING','PUBLISHING'}:raise ValueError('JOB_ACTIVE')
+            other=db.execute("SELECT job_id FROM update_jobs WHERE job_id!=? AND through_date=? AND mode=? AND status NOT IN ('PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','QA_BLOCKED','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED') LIMIT 1",
+                (job,record['through_date'],record['mode'])).fetchone()
+            if other:return other['job_id']
             db.execute("UPDATE update_job_days SET state='QUEUED',next_retry_at=NULL WHERE job_id=? AND state NOT IN ('PUBLISHED','PROBED')",(job,))
             db.execute("UPDATE update_jobs SET status='QUEUED',error=NULL,finished_at=NULL WHERE job_id=?",(job,))
             self.event(db,job,'RETRY','RETRY_FAILED_ONLY',{})
@@ -242,7 +275,7 @@ class DailyJobs:
                 if plan['missing_sessions'] and plan['eligible_sessions']:
                     self.dispatch(plan)
             with self.connect() as db:
-                row=db.execute("SELECT job_id FROM update_jobs WHERE status NOT IN ('PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED','QA_BLOCKED') AND (trigger!='SCHEDULER' OR ?) ORDER BY CASE WHEN mode='PROBE' THEN 0 ELSE 1 END,created_at LIMIT 1",(self.settings()['auto_enabled'],)).fetchone()
+                row=db.execute("SELECT job_id FROM update_jobs WHERE status NOT IN ('PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED','QA_BLOCKED') AND (trigger!='SCHEDULER' OR ?) ORDER BY CASE WHEN mode='PROBE' THEN 0 ELSE 1 END,created_at LIMIT 1",(self.settings()['auto_enabled'],)).fetchone()
             if not row:return
             job=self.job(row['job_id'])
             self.active_job_id=job['job_id']
@@ -280,10 +313,12 @@ class DailyJobs:
                                      'FULL_OWNER_LIFECYCLE_CONSERVATION_FAILED','FULL_CORE_NUMERIC_ORACLE_FAILED',
                                      'FULL_PERIOD_NUMERIC_ORACLE_FAILED'}
                     waiting_tdx=safe=='FALLBACK_LOCAL_ACTUAL_TARGET_ABSENT'
-                    result=dict(status='WAIT_TDX' if waiting_tdx else 'QA_BLOCKED' if blocked else 'FAILED_RETRYABLE',reason='SOURCE_EXECUTION_'+safe)
+                    transient=isinstance(exc,(OSError,TimeoutError,ConnectionError))
+                    result=dict(status='WAIT_TDX' if waiting_tdx else 'QA_BLOCKED' if blocked or not transient else 'FAILED_RETRYABLE',reason='SOURCE_EXECUTION_'+safe,
+                        retry_class='TRANSIENT_INFRASTRUCTURE' if transient else 'DETERMINISTIC_SOURCE_OR_VALIDATION')
                 state=result['status']; retry=None
                 if self.publication_cancelled() and state!='PUBLISHED':state='CANCELLED'
-                if state not in {'PUBLISHED','PROBED','QA_BLOCKED','FAILED_TERMINAL','CANCELLED'}:
+                if state not in {'PUBLISHED','PROBED','QA_BLOCKED','FAILED_TERMINAL','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED'}:
                     retry=self.next_retry(day['trade_date'],day['attempt_count']+1)
                     if retry is None:state='FAILED_TERMINAL'
                 with self.connect() as db:

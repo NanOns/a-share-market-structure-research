@@ -1,5 +1,14 @@
 """Synthetic namespace regression; not publication/source acceptance."""
 from workbench_service.operational_daily_server_v1 import successor_control
+import pytest
+
+
+def test_context_rejects_explicit_stale_token_before_any_source_read():
+    from workbench_service.operational_successor_bff_v1 import OperationalSuccessorBFFV1
+    class API:token='current'
+    bff=OperationalSuccessorBFFV1(API(),None)
+    with pytest.raises(ValueError,match='CONTEXT_TOKEN_MISMATCH'):
+        bff.get('/api/v4/context',{'context_token':'old'})
 
 def test_new_date_never_relabels_old_pit_permissions():
     class API:

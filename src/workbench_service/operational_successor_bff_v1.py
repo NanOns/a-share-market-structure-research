@@ -14,6 +14,8 @@ class OperationalSuccessorBFFV1(OperationalGapBFFV2):
 
     def get(self,path,query):
         query=dict(query)
+        if 'context_token' in query and query['context_token']!=self.api.token:
+            raise ValueError('CONTEXT_TOKEN_MISMATCH')
         query.setdefault('trade_date',self.api.candidate['accepted_trade_date'])
         day=query['trade_date']
         if day in self.api.candidate['source_registry']:

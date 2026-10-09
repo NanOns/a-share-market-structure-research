@@ -37,6 +37,17 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     if not package.get('download'):
         return dict(status='WAIT_TDX',reason='LATEST_OFFICIAL_PACKAGE_NOT_FROZEN')
     bars=extract_target_session_bars(package,day,snapshot_root=snapshot)
+    # A pre-gate package with absent target bars receives one bounded fresh
+    # post-gate capture, even if CDN validators/publication text are unchanged.
+    # downloaded_at tracks the full request, independently of earliest source
+    # availability, so subsequent retries reuse that verified capture.
+    gate=datetime.fromisoformat(day+'T18:35:00+08:00')
+    checked_at=package.get('downloaded_at') or package['observed_at']
+    if (bars['status']!='TARGET_BARS_EXTRACTED' and package['provider_package_date']>=day
+            and datetime.fromisoformat(checked_at)<gate<=datetime.now(timezone.utc)):
+        package=capture_latest_tdx_package(snapshot_root=snapshot,force_refresh=True)
+        if not package.get('download'):return dict(status='WAIT_TDX',reason='POST_GATE_OFFICIAL_CAPTURE_NOT_FROZEN')
+        bars=extract_target_session_bars(package,day,snapshot_root=snapshot)
     manifest_path=root/'reports/v4_baostock/runtime_acceptance'/day.replace('-','')/'accepted_runtime_manifest.json'
     try:
         manifest=load_runtime_acceptance_manifest(manifest_path,project_root=root)

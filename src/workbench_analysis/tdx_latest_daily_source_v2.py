@@ -34,7 +34,7 @@ def _refresh_existing_downloader():
     if result.returncode:raise ValueError('TDX_REVISED_PACKAGE_FRESH_ADAPTER_FAILED')
 
 
-def capture_latest_tdx_package(*, snapshot_root, tdx_root=Path('D:/new_tdx'), timeout=30):
+def capture_latest_tdx_package(*, snapshot_root, tdx_root=Path('D:/new_tdx'), timeout=30, force_refresh=False):
     # Probe current metadata first. V1 rechecks it before downloading, so a
     # provider revision race becomes WAIT rather than mislabeled bytes.
     response=old._request(old.PAGE_URL, timeout=timeout)
@@ -57,7 +57,7 @@ def capture_latest_tdx_package(*, snapshot_root, tdx_root=Path('D:/new_tdx'), ti
         cached=json.loads(pointer.read_bytes())
         source=cached.get('download',{})
         artifact=Path(source.get('path',''))
-        if (cached.get('probe_info_sha256')==old.sha256_bytes(info_bytes)
+        if (not force_refresh and cached.get('probe_info_sha256')==old.sha256_bytes(info_bytes)
                 and validator is not None and cached.get('remote_package_validator')==validator
                 and validator['bytes']==source.get('bytes')
                 and cached.get('resolved_download_url')==url and artifact.is_file()

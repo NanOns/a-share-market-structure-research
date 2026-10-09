@@ -58,3 +58,5 @@ def test_same_page_metadata_replaced_zip_invalidates_cache(tmp_path,monkeypatch)
     assert len(calls)==1 and fresh==[True] and first['remote_package_validator']==validator
     second=module.capture_latest_tdx_package(snapshot_root=tmp_path)
     assert len(calls)==1 and fresh==[True] and second['status']=='NOOP_SOURCE_ALREADY_FROZEN'
+    module.capture_latest_tdx_package(snapshot_root=tmp_path,force_refresh=True)
+    assert len(calls)==2 and fresh==[True,True]

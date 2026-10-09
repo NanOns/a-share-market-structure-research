@@ -10,6 +10,7 @@ def archive():
     changes=subprocess.check_output(['git','diff','--name-only','6f0cf3c5a983eab481283d0436e050d70b77fe29',head],cwd=ROOT,text=True,encoding='utf8').splitlines()
     files={ROOT/p for p in changes if (ROOT/p).is_file()}
     files.update(p for p in (ROOT/'docs/evidence/dynamic_daily_20261009').rglob('*') if p.is_file() and '.tmp' not in p.name)
+    files={p for p in files if p.name not in {'DELIVERY_ARCHIVE_LOCAL.json','DELIVERY_DRIVE_FINAL_READBACK.json'}}
     operational=ROOT/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
     candidate=json.loads(operational.read_bytes());files.add(operational)
     omitted=[];seen=set();historical_references=[]

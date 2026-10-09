@@ -1,0 +1,783 @@
+{
+  "contract": "V4_R43_CORRECTED_OWNER_REPLAY_V3",
+  "owners": [
+    {
+      "owner": {
+        "trade_date": "2026-09-28",
+        "rows": 5222,
+        "source_digest": "6c64d2ce96d73923c87ca7c69eff1bd863e3df510ee9ab7912afc1f1a3d7727f",
+        "sources": {
+          "package": {
+            "bytes": 551544006,
+            "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261008T234926978138Z/sha256-5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4/hsjday.zip",
+            "sha256": "5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4"
+          },
+          "receipt": {
+            "bytes": 3019,
+            "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261008T234926978138Z/request_receipt.json",
+            "sha256": "e72a09f21778a9da9d59736a8604d440dee4d18e143d6672bf1bbccf837698b9"
+          },
+          "gbbq": {
+            "path": "data/v4/corrected_owner_sources/d5bedb98b2b772c4cdd69dd6dc6845e337e629275963a9a47437cf5f47abacc4/gbbq",
+            "sha256": "d5bedb98b2b772c4cdd69dd6dc6845e337e629275963a9a47437cf5f47abacc4",
+            "bytes": 5613070
+          },
+          "identity": {
+            "bytes": 3112040,
+            "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/artifact.json",
+            "sha256": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf"
+          },
+          "contract": {
+            "path": "config/v4_r43_corrected_owner_replay_v3.json",
+            "sha256": "4bd93d66ae6a6d16b9ac08e5b381c9eb0e0047ea1291ef13d84a3dc6c594ee99",
+            "bytes": 1728
+          },
+          "core_kernel": {
+            "path": "src/v4/factors/core.py",
+            "sha256": "8986358268a5ae706c6cc46c95937ed381b65b55d3293667f840ff50008217f1",
+            "bytes": 16643
+          },
+          "adjustment_kernel": {
+            "path": "src/adjustment/tdx_adjustment.py",
+            "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0",
+            "bytes": 5366
+          },
+          "latest_tdx_member_snapshot": {
+            "path": "docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json",
+            "sha256": "aa1b102cada2d82b68edcc08e812d42a035dc2fdc4f0528da5d1aa65d4593c30",
+            "bytes": 2568
+          },
+          "r43_producer": {
+            "path": "src/workbench_analysis/r43_owner_replay.py",
+            "sha256": "d98307908784e760f8f6a747b795bffc42ab85756364bd325013ff4f3c617018",
+            "bytes": 17647
+          },
+          "typed_delta_v2": {
+            "path": "docs/evidence/r4_2_1_20261009/TDX_A_STOCK_DELTA_V2_RUNTIME_RECEIPT.json",
+            "sha256": "d57a4875b28fa4fdb88917bac881b174450174e62754a3c31bf2a56aaa24a23b",
+            "bytes": 6067
+          }
+        },
+        "core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/core.jsonl.gz",
+          "sha256": "1d4dc8dfd74361f02a1eefe002e74f4838a37e54b1a1de04ab57adcf92e68841",
+          "bytes": 19774972
+        },
+        "prior_core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/prior_core_target_coordinate.jsonl.gz",
+          "sha256": "c4e1ee4e113641dd0aa1c2c8d8f8fc0285ea9ebf6ce2b5e9ebb130d8ee3a1d3c",
+          "bytes": 19018586
+        },
+        "history": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/history.jsonl.gz",
+          "sha256": "82028f9696c749f91eafcf3ecea28c14bf10a49866d72560389a8f3a0d0b7362",
+          "bytes": 66901010
+        },
+        "raw": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/raw.jsonl.gz",
+          "sha256": "ca66d601903947b83a185fd14ed798fa250247ccdbcba140746da504cb68c3eb",
+          "bytes": 242415
+        },
+        "adjusted": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/adjusted.jsonl.gz",
+          "sha256": "aa6b7fffed7d1c578212efe0266915fe674c331d617e7e71bc9f39e30e5224fc",
+          "bytes": 410769
+        },
+        "actual_raw_rows": 5210,
+        "adjustment_current_ready": 5210,
+        "known_fields": {
+          "ma5": 5221,
+          "ma20": 5212,
+          "ma60": 5199,
+          "hhv5": 5221,
+          "llv5": 5221,
+          "hhv20": 5212,
+          "llv20": 5212,
+          "hhv60": 5199,
+          "llv60": 5199,
+          "prior_high5": 5221,
+          "prior_low5": 5221,
+          "prior_high20": 5212,
+          "prior_low20": 5212,
+          "prior_high60": 5199,
+          "prior_low60": 5199,
+          "amount_ratio5": 5209,
+          "volume_ratio5": 5209,
+          "amount_ratio20": 5200,
+          "volume_ratio20": 5200,
+          "ret1": 5209,
+          "ret3": 5208,
+          "ret5": 5206,
+          "ret20": 5196,
+          "vol5": 5204,
+          "vol20": 5180,
+          "tr": 5210,
+          "atr5": 5221,
+          "atr20": 5212,
+          "slope20": 5211,
+          "slope60": 5195,
+          "hh_progress": 5219,
+          "ll_progress": 5219,
+          "clv": 5207,
+          "prior60_percentile": 5187,
+          "pos60": 5187,
+          "range_ratio": 5212,
+          "atr_ratio": 5212,
+          "vol_ratio": 5180,
+          "core_price_damage": 5199,
+          "rps5": 5206,
+          "rps20": 5196,
+          "rel_market_1": 5209,
+          "rel_market_3": 5208,
+          "rel_market_5": 5206,
+          "rps5_delta1": 5205,
+          "rps5_delta3": 5201,
+          "rps20_delta3": 5191
+        },
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "AS_RECORDED": false,
+        "publication_state": "STAGING_NOT_ACCEPTED",
+        "profiles": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/profiles.jsonl.gz",
+          "sha256": "ddf76f07f47ed2dc89337ac1f2bba19c92d11dab0d986ac881a0e792fd20d566",
+          "bytes": 43553133
+        },
+        "status": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/status.jsonl.gz",
+          "sha256": "232bf43e22073878cdbcd03a45536d78ec0b72b2d0a30906291c0be23b7eb4d8",
+          "bytes": 118815
+        }
+      },
+      "structure_manifest": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/structure/runtime_manifest.json",
+        "sha256": "c7edfaea98edf53ebda4aae2a894462bd87fa5bffb7d210ba08d15901ab3497d",
+        "bytes": 6710
+      },
+      "snapshot": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/structure/frozen_d1_episode_manifest.json",
+        "sha256": "dfbb16efe9a0055163f91933c392fcb6fad975a38067d3f991f2ba4c98bc21ce",
+        "bytes": 1677
+      },
+      "rows": 5222,
+      "counts": {
+        "basic_breakout_state": {
+          "known": 0,
+          "unknown": 5222
+        },
+        "basic_pullback_state": {
+          "known": 96,
+          "unknown": 5126
+        },
+        "basic_recovery_state": {
+          "known": 96,
+          "unknown": 5126
+        },
+        "support_state": {
+          "known": 96,
+          "unknown": 5126
+        },
+        "structure_health": {
+          "known": 0,
+          "unknown": 5222
+        },
+        "relative_market_state": {
+          "known": 5176,
+          "unknown": 46
+        }
+      },
+      "advanced_projection": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/advanced_structure_projection.jsonl.gz",
+        "sha256": "b79a9f7b119cdab1a470ec073cdca3d6bf5208cfe93541f0558e397c6d3b9dca",
+        "bytes": 1202743
+      },
+      "anchors": 182,
+      "events": 182,
+      "prior_unknown_absence_preserved": true,
+      "acceptance": "MATERIALIZED_CORRECTED_CANDIDATE_NOT_PRODUCTION"
+    },
+    {
+      "owner": {
+        "trade_date": "2026-09-29",
+        "rows": 5223,
+        "source_digest": "6c64d2ce96d73923c87ca7c69eff1bd863e3df510ee9ab7912afc1f1a3d7727f",
+        "sources": {
+          "package": {
+            "bytes": 551544006,
+            "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261008T234926978138Z/sha256-5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4/hsjday.zip",
+            "sha256": "5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4"
+          },
+          "receipt": {
+            "bytes": 3019,
+            "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261008T234926978138Z/request_receipt.json",
+            "sha256": "e72a09f21778a9da9d59736a8604d440dee4d18e143d6672bf1bbccf837698b9"
+          },
+          "gbbq": {
+            "path": "data/v4/corrected_owner_sources/d5bedb98b2b772c4cdd69dd6dc6845e337e629275963a9a47437cf5f47abacc4/gbbq",
+            "sha256": "d5bedb98b2b772c4cdd69dd6dc6845e337e629275963a9a47437cf5f47abacc4",
+            "bytes": 5613070
+          },
+          "identity": {
+            "bytes": 3112040,
+            "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/artifact.json",
+            "sha256": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf"
+          },
+          "contract": {
+            "path": "config/v4_r43_corrected_owner_replay_v3.json",
+            "sha256": "4bd93d66ae6a6d16b9ac08e5b381c9eb0e0047ea1291ef13d84a3dc6c594ee99",
+            "bytes": 1728
+          },
+          "core_kernel": {
+            "path": "src/v4/factors/core.py",
+            "sha256": "8986358268a5ae706c6cc46c95937ed381b65b55d3293667f840ff50008217f1",
+            "bytes": 16643
+          },
+          "adjustment_kernel": {
+            "path": "src/adjustment/tdx_adjustment.py",
+            "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0",
+            "bytes": 5366
+          },
+          "latest_tdx_member_snapshot": {
+            "path": "docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json",
+            "sha256": "aa1b102cada2d82b68edcc08e812d42a035dc2fdc4f0528da5d1aa65d4593c30",
+            "bytes": 2568
+          },
+          "r43_producer": {
+            "path": "src/workbench_analysis/r43_owner_replay.py",
+            "sha256": "d98307908784e760f8f6a747b795bffc42ab85756364bd325013ff4f3c617018",
+            "bytes": 17647
+          },
+          "typed_delta_v2": {
+            "path": "docs/evidence/r4_2_1_20261009/TDX_A_STOCK_DELTA_V2_RUNTIME_RECEIPT.json",
+            "sha256": "d57a4875b28fa4fdb88917bac881b174450174e62754a3c31bf2a56aaa24a23b",
+            "bytes": 6067
+          }
+        },
+        "core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/core.jsonl.gz",
+          "sha256": "b880b389c65b9b1dcfe716ff0a9bda5933f2708e4e51c438ad85456a2c3cbea2",
+          "bytes": 19780365
+        },
+        "prior_core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/prior_core_target_coordinate.jsonl.gz",
+          "sha256": "b8de3d2bb1d011fe205a9ef404717ceaece5c7dccefb70d54e563631c188e01f",
+          "bytes": 19015754
+        },
+        "history": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/history.jsonl.gz",
+          "sha256": "1759aa5b9694b37af71dd0f2ef7d3efc429f1ca33786a7f84c3090fdd135a88b",
+          "bytes": 67060458
+        },
+        "raw": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/raw.jsonl.gz",
+          "sha256": "6d69f34b598196aff7d4a3552e9cf7c6f626e66cb40b81869c417dd63a2cef43",
+          "bytes": 241245
+        },
+        "adjusted": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/adjusted.jsonl.gz",
+          "sha256": "2c6ed0bbd2787a89c2424ba169bd670fca150108555d0a6331e54c810ee7548e",
+          "bytes": 410545
+        },
+        "actual_raw_rows": 5211,
+        "adjustment_current_ready": 5211,
+        "known_fields": {
+          "ma5": 5222,
+          "ma20": 5214,
+          "ma60": 5199,
+          "hhv5": 5222,
+          "llv5": 5222,
+          "hhv20": 5214,
+          "llv20": 5214,
+          "hhv60": 5199,
+          "llv60": 5199,
+          "prior_high5": 5221,
+          "prior_low5": 5221,
+          "prior_high20": 5212,
+          "prior_low20": 5212,
+          "prior_high60": 5199,
+          "prior_low60": 5199,
+          "amount_ratio5": 5209,
+          "volume_ratio5": 5209,
+          "amount_ratio20": 5200,
+          "volume_ratio20": 5200,
+          "ret1": 5207,
+          "ret3": 5207,
+          "ret5": 5205,
+          "ret20": 5195,
+          "vol5": 5203,
+          "vol20": 5179,
+          "tr": 5210,
+          "atr5": 5221,
+          "atr20": 5212,
+          "slope20": 5212,
+          "slope60": 5196,
+          "hh_progress": 5219,
+          "ll_progress": 5219,
+          "clv": 5203,
+          "prior60_percentile": 5187,
+          "pos60": 5187,
+          "range_ratio": 5214,
+          "atr_ratio": 5212,
+          "vol_ratio": 5179,
+          "core_price_damage": 5197,
+          "rps5": 5205,
+          "rps20": 5195,
+          "rel_market_1": 5207,
+          "rel_market_3": 5207,
+          "rel_market_5": 5205,
+          "rps5_delta1": 5202,
+          "rps5_delta3": 5200,
+          "rps20_delta3": 5191
+        },
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "AS_RECORDED": false,
+        "publication_state": "STAGING_NOT_ACCEPTED",
+        "profiles": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/profiles.jsonl.gz",
+          "sha256": "1f2dfb7d5856ea064744e8e81a0f5341bc10364b6cc67b24e8f529bc59fa1b21",
+          "bytes": 43570978
+        },
+        "status": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/status.jsonl.gz",
+          "sha256": "f295c122580b3a17b7b02589991812c10f57e8dee31136738671bc8822520808",
+          "bytes": 118839
+        }
+      },
+      "structure_manifest": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/structure/runtime_manifest.json",
+        "sha256": "048d76bcc6e2e512e5519720d93689d4ae68d7117aa0b8dc87ec4a88a13bb5fb",
+        "bytes": 6957
+      },
+      "snapshot": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/structure/frozen_d1_episode_manifest.json",
+        "sha256": "138f9a06ce2c99c5e051532d313c2849a89b7b38c4fb3a2e5858b8951404184c",
+        "bytes": 1677
+      },
+      "rows": 5223,
+      "counts": {
+        "basic_breakout_state": {
+          "known": 0,
+          "unknown": 5223
+        },
+        "basic_pullback_state": {
+          "known": 264,
+          "unknown": 4959
+        },
+        "basic_recovery_state": {
+          "known": 272,
+          "unknown": 4951
+        },
+        "support_state": {
+          "known": 279,
+          "unknown": 4944
+        },
+        "structure_health": {
+          "known": 0,
+          "unknown": 5223
+        },
+        "relative_market_state": {
+          "known": 5178,
+          "unknown": 45
+        }
+      },
+      "advanced_projection": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/advanced_structure_projection.jsonl.gz",
+        "sha256": "9b4dfd184a5a21cdc388d0c4b03409fc60563f7d8488e8cc7a39f6c9543ff8a7",
+        "bytes": 1349358
+      },
+      "anchors": 575,
+      "events": 393,
+      "prior_unknown_absence_preserved": true,
+      "acceptance": "MATERIALIZED_CORRECTED_CANDIDATE_NOT_PRODUCTION"
+    },
+    {
+      "owner": {
+        "trade_date": "2026-09-30",
+        "rows": 5224,
+        "source_digest": "6c64d2ce96d73923c87ca7c69eff1bd863e3df510ee9ab7912afc1f1a3d7727f",
+        "sources": {
+          "package": {
+            "bytes": 551544006,
+            "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261008T234926978138Z/sha256-5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4/hsjday.zip",
+            "sha256": "5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4"
+          },
+          "receipt": {
+            "bytes": 3019,
+            "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261008T234926978138Z/request_receipt.json",
+            "sha256": "e72a09f21778a9da9d59736a8604d440dee4d18e143d6672bf1bbccf837698b9"
+          },
+          "gbbq": {
+            "path": "data/v4/corrected_owner_sources/d5bedb98b2b772c4cdd69dd6dc6845e337e629275963a9a47437cf5f47abacc4/gbbq",
+            "sha256": "d5bedb98b2b772c4cdd69dd6dc6845e337e629275963a9a47437cf5f47abacc4",
+            "bytes": 5613070
+          },
+          "identity": {
+            "bytes": 3112040,
+            "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/artifact.json",
+            "sha256": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf"
+          },
+          "contract": {
+            "path": "config/v4_r43_corrected_owner_replay_v3.json",
+            "sha256": "4bd93d66ae6a6d16b9ac08e5b381c9eb0e0047ea1291ef13d84a3dc6c594ee99",
+            "bytes": 1728
+          },
+          "core_kernel": {
+            "path": "src/v4/factors/core.py",
+            "sha256": "8986358268a5ae706c6cc46c95937ed381b65b55d3293667f840ff50008217f1",
+            "bytes": 16643
+          },
+          "adjustment_kernel": {
+            "path": "src/adjustment/tdx_adjustment.py",
+            "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0",
+            "bytes": 5366
+          },
+          "latest_tdx_member_snapshot": {
+            "path": "docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json",
+            "sha256": "aa1b102cada2d82b68edcc08e812d42a035dc2fdc4f0528da5d1aa65d4593c30",
+            "bytes": 2568
+          },
+          "r43_producer": {
+            "path": "src/workbench_analysis/r43_owner_replay.py",
+            "sha256": "d98307908784e760f8f6a747b795bffc42ab85756364bd325013ff4f3c617018",
+            "bytes": 17647
+          },
+          "typed_delta_v2": {
+            "path": "docs/evidence/r4_2_1_20261009/TDX_A_STOCK_DELTA_V2_RUNTIME_RECEIPT.json",
+            "sha256": "d57a4875b28fa4fdb88917bac881b174450174e62754a3c31bf2a56aaa24a23b",
+            "bytes": 6067
+          }
+        },
+        "core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/core.jsonl.gz",
+          "sha256": "a6d4bd42de00003095e1a65fae29cdbbfad5ab8e04f0983c5df4d99a8822bc7d",
+          "bytes": 19794746
+        },
+        "prior_core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/prior_core_target_coordinate.jsonl.gz",
+          "sha256": "48ed40e1cdeccbe8a32ff36e600876157c625794b3df376cc27bfbf8c5d7448c",
+          "bytes": 19016939
+        },
+        "history": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/history.jsonl.gz",
+          "sha256": "e67d7931e6ae176a5526472cf9dcd56e7520c474e99361ee57ebeebd16208dd6",
+          "bytes": 67226640
+        },
+        "raw": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/raw.jsonl.gz",
+          "sha256": "87f6876854dcae42f4dfaed7c2258a91b2c563846caa92076f0dd30ca199991b",
+          "bytes": 241684
+        },
+        "adjusted": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/adjusted.jsonl.gz",
+          "sha256": "87c7675f82de6d7ef024c4a07c9643ebb2e2a1ec64ac9634fb0c0961bdae8041",
+          "bytes": 411029
+        },
+        "actual_raw_rows": 5213,
+        "adjustment_current_ready": 5213,
+        "known_fields": {
+          "ma5": 5222,
+          "ma20": 5215,
+          "ma60": 5199,
+          "hhv5": 5222,
+          "llv5": 5222,
+          "hhv20": 5215,
+          "llv20": 5215,
+          "hhv60": 5199,
+          "llv60": 5199,
+          "prior_high5": 5222,
+          "prior_low5": 5222,
+          "prior_high20": 5214,
+          "prior_low20": 5214,
+          "prior_high60": 5199,
+          "prior_low60": 5199,
+          "amount_ratio5": 5211,
+          "volume_ratio5": 5211,
+          "amount_ratio20": 5203,
+          "volume_ratio20": 5203,
+          "ret1": 5208,
+          "ret3": 5206,
+          "ret5": 5205,
+          "ret20": 5197,
+          "vol5": 5201,
+          "vol20": 5179,
+          "tr": 5212,
+          "atr5": 5222,
+          "atr20": 5214,
+          "slope20": 5212,
+          "slope60": 5197,
+          "hh_progress": 5220,
+          "ll_progress": 5220,
+          "clv": 5206,
+          "prior60_percentile": 5188,
+          "pos60": 5188,
+          "range_ratio": 5215,
+          "atr_ratio": 5214,
+          "vol_ratio": 5179,
+          "core_price_damage": 5199,
+          "rps5": 5205,
+          "rps20": 5197,
+          "rel_market_1": 5208,
+          "rel_market_3": 5206,
+          "rel_market_5": 5205,
+          "rps5_delta1": 5202,
+          "rps5_delta3": 5201,
+          "rps20_delta3": 5190
+        },
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "AS_RECORDED": false,
+        "publication_state": "STAGING_NOT_ACCEPTED",
+        "profiles": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/profiles.jsonl.gz",
+          "sha256": "2ae6e3938d569105737450a0d596b17f65e4fb9f7db72a973f6a23b5c3fae4fe",
+          "bytes": 43603917
+        },
+        "status": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/status.jsonl.gz",
+          "sha256": "2b3d1242d6690f3134cce25db8203cb1008f23cf46578eae063203da3d9e33c5",
+          "bytes": 118825
+        }
+      },
+      "structure_manifest": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/structure/runtime_manifest.json",
+        "sha256": "b3afbb6767ff31bcdd8c3d372f9374d615ba3d1bbf130c25b5ca1d773527f302",
+        "bytes": 6959
+      },
+      "snapshot": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/structure/frozen_d1_episode_manifest.json",
+        "sha256": "862e26e14813779a547361b72e99e09dc4140cae4bf0c79c4cd6cb6df4844fa1",
+        "bytes": 1677
+      },
+      "rows": 5224,
+      "counts": {
+        "basic_breakout_state": {
+          "known": 0,
+          "unknown": 5224
+        },
+        "basic_pullback_state": {
+          "known": 380,
+          "unknown": 4844
+        },
+        "basic_recovery_state": {
+          "known": 379,
+          "unknown": 4845
+        },
+        "support_state": {
+          "known": 433,
+          "unknown": 4791
+        },
+        "structure_health": {
+          "known": 0,
+          "unknown": 5224
+        },
+        "relative_market_state": {
+          "known": 5176,
+          "unknown": 48
+        }
+      },
+      "advanced_projection": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/advanced_structure_projection.jsonl.gz",
+        "sha256": "a4ce10ae214327622589a54ea4f0d4806633d50076fe44b59ca8c15bb188a212",
+        "bytes": 1422908
+      },
+      "anchors": 968,
+      "events": 393,
+      "prior_unknown_absence_preserved": true,
+      "acceptance": "MATERIALIZED_CORRECTED_CANDIDATE_NOT_PRODUCTION"
+    },
+    {
+      "owner": {
+        "trade_date": "2026-10-08",
+        "rows": 5224,
+        "source_digest": "6c64d2ce96d73923c87ca7c69eff1bd863e3df510ee9ab7912afc1f1a3d7727f",
+        "sources": {
+          "package": {
+            "bytes": 551544006,
+            "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261008T234926978138Z/sha256-5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4/hsjday.zip",
+            "sha256": "5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4"
+          },
+          "receipt": {
+            "bytes": 3019,
+            "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261008T234926978138Z/request_receipt.json",
+            "sha256": "e72a09f21778a9da9d59736a8604d440dee4d18e143d6672bf1bbccf837698b9"
+          },
+          "gbbq": {
+            "path": "data/v4/corrected_owner_sources/d5bedb98b2b772c4cdd69dd6dc6845e337e629275963a9a47437cf5f47abacc4/gbbq",
+            "sha256": "d5bedb98b2b772c4cdd69dd6dc6845e337e629275963a9a47437cf5f47abacc4",
+            "bytes": 5613070
+          },
+          "identity": {
+            "bytes": 3112040,
+            "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/artifact.json",
+            "sha256": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf"
+          },
+          "contract": {
+            "path": "config/v4_r43_corrected_owner_replay_v3.json",
+            "sha256": "4bd93d66ae6a6d16b9ac08e5b381c9eb0e0047ea1291ef13d84a3dc6c594ee99",
+            "bytes": 1728
+          },
+          "core_kernel": {
+            "path": "src/v4/factors/core.py",
+            "sha256": "8986358268a5ae706c6cc46c95937ed381b65b55d3293667f840ff50008217f1",
+            "bytes": 16643
+          },
+          "adjustment_kernel": {
+            "path": "src/adjustment/tdx_adjustment.py",
+            "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0",
+            "bytes": 5366
+          },
+          "latest_tdx_member_snapshot": {
+            "path": "docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json",
+            "sha256": "aa1b102cada2d82b68edcc08e812d42a035dc2fdc4f0528da5d1aa65d4593c30",
+            "bytes": 2568
+          },
+          "r43_producer": {
+            "path": "src/workbench_analysis/r43_owner_replay.py",
+            "sha256": "d98307908784e760f8f6a747b795bffc42ab85756364bd325013ff4f3c617018",
+            "bytes": 17647
+          },
+          "typed_delta_v2": {
+            "path": "docs/evidence/r4_2_1_20261009/TDX_A_STOCK_DELTA_V2_RUNTIME_RECEIPT.json",
+            "sha256": "d57a4875b28fa4fdb88917bac881b174450174e62754a3c31bf2a56aaa24a23b",
+            "bytes": 6067
+          }
+        },
+        "core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/core.jsonl.gz",
+          "sha256": "0bc8413c7f64c72547609e78cfef4410e19d1d3b07bd54957b6bbb6eb11fb944",
+          "bytes": 19803337
+        },
+        "prior_core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/prior_core_target_coordinate.jsonl.gz",
+          "sha256": "dff5f79b1916b74e557862f540e63e0af03409af4fdd63c0c3e14146553fb259",
+          "bytes": 19031827
+        },
+        "history": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/history.jsonl.gz",
+          "sha256": "ff14ac6183b57fc289ea955f8437bd2d097641ca5540cab17ac945ab94fd9745",
+          "bytes": 67387462
+        },
+        "raw": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/raw.jsonl.gz",
+          "sha256": "3414cbed04795b985c072104c0a8aa1433f0d9969f8a8570b50fbb7b98f80121",
+          "bytes": 241820
+        },
+        "adjusted": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/adjusted.jsonl.gz",
+          "sha256": "2dd0af389cfc8cd46ca17eab86ad66fa5b43d4eabd7e5a5c81ef3d3af78dba17",
+          "bytes": 410863
+        },
+        "actual_raw_rows": 5209,
+        "adjustment_current_ready": 5209,
+        "known_fields": {
+          "ma5": 5222,
+          "ma20": 5215,
+          "ma60": 5199,
+          "hhv5": 5222,
+          "llv5": 5222,
+          "hhv20": 5215,
+          "llv20": 5215,
+          "hhv60": 5199,
+          "llv60": 5199,
+          "prior_high5": 5222,
+          "prior_low5": 5222,
+          "prior_high20": 5215,
+          "prior_low20": 5215,
+          "prior_high60": 5199,
+          "prior_low60": 5199,
+          "amount_ratio5": 5207,
+          "volume_ratio5": 5207,
+          "amount_ratio20": 5200,
+          "volume_ratio20": 5200,
+          "ret1": 5209,
+          "ret3": 5202,
+          "ret5": 5202,
+          "ret20": 5194,
+          "vol5": 5198,
+          "vol20": 5177,
+          "tr": 5209,
+          "atr5": 5222,
+          "atr20": 5215,
+          "slope20": 5212,
+          "slope60": 5197,
+          "hh_progress": 5221,
+          "ll_progress": 5221,
+          "clv": 5205,
+          "prior60_percentile": 5184,
+          "pos60": 5184,
+          "range_ratio": 5215,
+          "atr_ratio": 5215,
+          "vol_ratio": 5177,
+          "core_price_damage": 5200,
+          "rps5": 5202,
+          "rps20": 5194,
+          "rel_market_1": 5209,
+          "rel_market_3": 5202,
+          "rel_market_5": 5202,
+          "rps5_delta1": 5201,
+          "rps5_delta3": 5197,
+          "rps20_delta3": 5183
+        },
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "AS_RECORDED": false,
+        "publication_state": "STAGING_NOT_ACCEPTED",
+        "profiles": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/profiles.jsonl.gz",
+          "sha256": "f9f01d74ae6e271b2cece5a4e4e0af11dee67fe615e40af7bf45fc137b5a1156",
+          "bytes": 43507388
+        },
+        "status": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/status.jsonl.gz",
+          "sha256": "8d47c46ccb24f558531d0a59f4b4515d3f60840d95118ebd204249311956f5de",
+          "bytes": 118890
+        }
+      },
+      "structure_manifest": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/structure/runtime_manifest.json",
+        "sha256": "7c03ccd3e080513bfa62128773e0b88e110949bbfacfcfcbc18be1c03c113048",
+        "bytes": 6959
+      },
+      "snapshot": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/structure/frozen_d1_episode_manifest.json",
+        "sha256": "5ea50f00ef029ae3797256c6cc6ae549357a5b46c5890da01a620b59b9c253da",
+        "bytes": 1677
+      },
+      "rows": 5224,
+      "counts": {
+        "basic_breakout_state": {
+          "known": 0,
+          "unknown": 5224
+        },
+        "basic_pullback_state": {
+          "known": 520,
+          "unknown": 4704
+        },
+        "basic_recovery_state": {
+          "known": 445,
+          "unknown": 4779
+        },
+        "support_state": {
+          "known": 590,
+          "unknown": 4634
+        },
+        "structure_health": {
+          "known": 0,
+          "unknown": 5224
+        },
+        "relative_market_state": {
+          "known": 5170,
+          "unknown": 54
+        }
+      },
+      "advanced_projection": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/advanced_structure_projection.jsonl.gz",
+        "sha256": "37100bfb64246aaf0f4f5633960d47c6822f5515247f5ecbf95fca18bd79df63",
+        "bytes": 1495836
+      },
+      "anchors": 1377,
+      "events": 409,
+      "prior_unknown_absence_preserved": true,
+      "acceptance": "MATERIALIZED_CORRECTED_CANDIDATE_NOT_PRODUCTION"
+    }
+  ],
+  "acceptance": "REAL_MATERIALIZATION_COMPLETE_PENDING_INDEPENDENT_STRUCTURE_ORACLE",
+  "next_stage": "SECTOR_FOCUS_FORWARD_AND_RELEASE_QA"
+}

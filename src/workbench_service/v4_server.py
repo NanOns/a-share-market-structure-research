@@ -21,6 +21,27 @@ def make_v4_handler(root):
     class Handler(base):
         def do_GET(self):
             parsed=urlparse(self.path)
+            if parsed.path in ('/','/v4','/v4/','/v4/operational'):
+                from workbench_analysis.r43_operational_publication import accepted_api
+                try:
+                    operational=accepted_api(root)
+                    if operational is not None:return self.send(200,(static/'r43-operational-preview.html').read_bytes(),'text/html; charset=utf-8')
+                except (ValueError,KeyError,OSError) as error:return self.send(503,dict(code='OPERATIONAL_ACCEPTED_SOURCE_INVALID',reason=str(error)))
+            if parsed.path.startswith('/api/v4/original-0930/'):
+                values=parse_qs(parsed.query,keep_blank_values=True)
+                if any(len(v)!=1 for v in values.values()):return self.send(400,dict(code='DUPLICATE_PARAMETER'))
+                code,payload=bff.get('/api/v4/'+parsed.path.removeprefix('/api/v4/original-0930/'),{k:v[0] for k,v in values.items()})
+                return self.send(code,payload)
+            if parsed.path.startswith('/api/v4/') and not parsed.path.startswith('/api/v4/shadow/'):
+                from workbench_analysis.r43_operational_publication import accepted_api
+                try:
+                    operational=accepted_api(root)
+                except (ValueError,KeyError,OSError) as error:
+                    return self.send(503,dict(code='OPERATIONAL_ACCEPTED_SOURCE_INVALID',reason=str(error)))
+                if operational is not None:
+                    try:return self.send(200,operational.dispatch(self.path))
+                    except (ValueError,KeyError) as error:
+                        return self.send(409 if str(error)=='CONTEXT_TOKEN_MISMATCH' else 400,dict(code='INVALID_OPERATIONAL_QUERY',reason=str(error)))
             if parsed.path in ('/','/v4','/v4/') or parsed.path.startswith('/v4/research/'):
                 authority=root/'config/v4_research_ui_authority_v1.json'
                 try:mode=json.loads(authority.read_bytes())['mode'] if authority.exists() else 'LEGACY_SUMMARY'

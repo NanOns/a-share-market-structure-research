@@ -1,0 +1,13 @@
+{
+  "historical_status": {
+    "bytes": 100075252,
+    "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+    "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+  },
+  "acquisition": {
+    "path": "docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json",
+    "sha256": "68ed7dfcf6e7de7893e4da6759dddb4dbc4e6642783344fb2d4659ec5fb37790",
+    "bytes": 3006866
+  },
+  "rule": "Actual ZIP BAR takes precedence; missing BAR is SUSPENDED only when saved provider or accepted historical status proves suspension, otherwise UNKNOWN"
+}

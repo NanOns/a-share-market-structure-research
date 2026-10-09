@@ -1,0 +1,24 @@
+{
+  "contract_id": "R43_RECONSTRUCTED_DAILY_PRICE_LIMIT_V1",
+  "task": "R4.3 W5",
+  "identity": "Accepted canonical board and dated saved BaoStock native isST; never infer ST from code or current name",
+  "reference": "Saved native preclose must equal preceding official raw close; ex-right day unavailable official ex-reference remains UNKNOWN",
+  "daily_observable": [
+    "close_limit_up",
+    "close_limit_down",
+    "daily_high_equals_limit_up",
+    "daily_low_equals_limit_down",
+    "one_price_limit_bar"
+  ],
+  "intraday": "NOT_OBSERVABLE_FROM_DAILY",
+  "legal_rules": {
+    "path": "config/v4_02_price_limit_rules_r3.json",
+    "sha256": "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0",
+    "bytes": 15757
+  },
+  "AS_RECORDED": false,
+  "PIT_ELIGIBLE": false,
+  "production_admission": false,
+  "acceptance": "IN_PROGRESS",
+  "next_stage": "INDEPENDENT_DATED_LIMIT_QA"
+}

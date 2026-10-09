@@ -1,0 +1,21 @@
+{
+  "contract_id": "V4_DATED_OPERATIONAL_RECONSTRUCTED_OWNER_V1",
+  "version": "1.0.0",
+  "current_read_contract": "V4_CURRENT_ACCEPTED_READ_V2",
+  "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+  "taxonomy": "TDX_INDUSTRY_CONCEPT",
+  "source_mode": "RECONSTRUCTED_CORRECTED",
+  "AS_RECORDED": false,
+  "historical_PIT_permission": false,
+  "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+  "production_admission_required": "EXTERNALLY_ACCEPTED_R43_OPERATIONAL_EXACT_CANDIDATE_DIGEST",
+  "operational_head": "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json",
+  "external_authority": "data/v4/R43_OPERATIONAL_EXTERNAL_ACCEPTANCE.json",
+  "original_strict_PIT_head": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+  "strict_PIT_head_mutation_allowed": false,
+  "required_domains": ["raw", "core", "profile", "sector", "relative_sector", "rotation", "lifecycle", "special_phase"],
+  "dates": ["2026-09-28", "2026-09-29", "2026-09-30", "2026-10-08"],
+  "required_scope": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"],
+  "optional_degraded_scope": ["BSE"],
+  "fallback": "OLD_20260930_ACCEPTED_BFF_UNCHANGED_WHEN_OPERATIONAL_HEAD_ABSENT"
+}

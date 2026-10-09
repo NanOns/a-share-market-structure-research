@@ -1,0 +1,1728 @@
+{
+  "owners": [
+    {
+      "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+      "taxonomy": "TDX_INDUSTRY_CONCEPT",
+      "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+      "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+      "AS_RECORDED": false,
+      "PIT_ELIGIBLE": false,
+      "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+      "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+      "survivorship_bias_risk": true,
+      "trade_date": "2026-09-28",
+      "publication_id": "R43_TDX_RETRO:0b2efc03d22e8b7399a214dabe5a45ba5483bbc12024a6574061117deda99175",
+      "source_bindings": {
+        "core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/core.jsonl.gz",
+          "sha256": "1d4dc8dfd74361f02a1eefe002e74f4838a37e54b1a1de04ab57adcf92e68841",
+          "bytes": 19774972
+        },
+        "profiles": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/profiles.jsonl.gz",
+          "sha256": "ddf76f07f47ed2dc89337ac1f2bba19c92d11dab0d986ac881a0e792fd20d566",
+          "bytes": 43553133
+        },
+        "membership_snapshot": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json",
+          "sha256": "aa1b102cada2d82b68edcc08e812d42a035dc2fdc4f0528da5d1aa65d4593c30",
+          "bytes": 2568
+        },
+        "seed": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-28/base_seed.jsonl.gz",
+          "sha256": "37af9c37b3d9a22d6220ca28294fea940fe893a9fee58970871feef81e3270b9",
+          "bytes": 149377
+        }
+      },
+      "native": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-28/native.jsonl.gz",
+        "sha256": "4f636f2f0774f921e48fe260f00611aaf556204e96f59c0f06ad346393f0d8a1",
+        "bytes": 1674056
+      },
+      "relative_sector": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-28/relative_sector_loo.jsonl.gz",
+        "sha256": "d1c8c3690f6897650b8debd693e02238079d47dbbdcbc4002302a17c4678102b",
+        "bytes": 2212445
+      },
+      "enriched_profiles": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-28/profiles_with_tdx_relative.jsonl.gz",
+        "sha256": "99a68fafe53f182616f4faff785d977d20051a009e0c5d3c8cb6f77661a80c69",
+        "bytes": 48097596
+      },
+      "rotation": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-28/rotation.jsonl.gz",
+        "sha256": "1945edfe1fb4c81ceb989623019048af312c4fbc32929b7fa7311da80beb20d1",
+        "bytes": 2766381
+      },
+      "seed": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-28/base_seed.jsonl.gz",
+        "sha256": "37af9c37b3d9a22d6220ca28294fea940fe893a9fee58970871feef81e3270b9",
+        "bytes": 149377
+      },
+      "excluded_members": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-28/excluded_members.jsonl.gz",
+        "sha256": "e31a18ba8c4c009e8c3c19832252b3d29b3c2627d607b23fef78ee5e7b0de0f0",
+        "bytes": 16109
+      },
+      "membership_count": 52900,
+      "sector_count": 400,
+      "known_fields": {
+        "membership_ready": 400,
+        "sector_member_count": 400,
+        "sector_quote_coverage": 400,
+        "sector_rs1": 400,
+        "sector_rs5": 400,
+        "sector_rs20": 400,
+        "breadth_ret1": 400,
+        "ma20_width": 400,
+        "breadth_ret5": 400,
+        "breadth_ret20": 400,
+        "participation_proxy": 400,
+        "pos60": 400,
+        "top1_concentration": 400,
+        "top3_concentration": 400,
+        "strong_member": 280,
+        "breadth_delta1": 291,
+        "ma20_delta1": 229,
+        "breadth_delta3": 287,
+        "ma20_delta3": 237,
+        "seed_width": 400,
+        "base_seed_width_adjusted": 400,
+        "sector_rs5_pct": 395,
+        "sector_rs20_pct": 395,
+        "dq5": 395,
+        "rank_velocity3": 395
+      },
+      "stock_only_seed_reuse": {
+        "old_binding": {
+          "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-28/base_seed.jsonl.gz",
+          "sha256": "3d5197e06fab8c8411f08303fa0e20ca3f444cf167184a7f1328db567576b556",
+          "bytes": 147025
+        },
+        "new_binding": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-28/base_seed.jsonl.gz",
+          "sha256": "37af9c37b3d9a22d6220ca28294fea940fe893a9fee58970871feef81e3270b9",
+          "bytes": 149377
+        },
+        "new_core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/core.jsonl.gz",
+          "sha256": "1d4dc8dfd74361f02a1eefe002e74f4838a37e54b1a1de04ab57adcf92e68841",
+          "bytes": 19774972
+        },
+        "new_profiles": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/profiles.jsonl.gz",
+          "sha256": "ddf76f07f47ed2dc89337ac1f2bba19c92d11dab0d986ac881a0e792fd20d566",
+          "bytes": 43553133
+        },
+        "numerical_matches": 5209,
+        "rows": 5222,
+        "changes": [
+          {
+            "security_id": "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-17E76DA217E5C1BCC40497E9331DED2E",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-25106EB81E18F2C63CA4F3BD11EAD8DD",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-340382159F3CB4C7713AEC707561055E",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-3AF86E6FE8E230C902EDEBCF49B8FB9B",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-6054AE867A60481EDA16B0E02AF1DB09",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-7A1F28C9234719290BCA8EEC1F18AFAD",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-81531C3188983ED8D033E29A6CDDA524",
+            "old": "UNKNOWN",
+            "new": "TRUE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-9C973B4FDFA9C42E9574D1446FF54034",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-A94CC314405C8437CE79555A7DC05B82",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-B17169139D0E3492B2CA012774B6B125",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-CAFBE206FEA136BCF9C5923BDC15586A",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-E11DA4A25B7F65C3E8229D5A76504A94",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          }
+        ]
+      },
+      "independent_native_width_breadth_checks": 800,
+      "relative_sector_known": 5134,
+      "rotation_counts": {
+        "NONE": 328,
+        "ROTATION_PULSE": 36,
+        "UNKNOWN": 36
+      },
+      "b0_counts": {
+        "FALSE": 197,
+        "TRUE": 26,
+        "UNKNOWN": 177
+      }
+    },
+    {
+      "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+      "taxonomy": "TDX_INDUSTRY_CONCEPT",
+      "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+      "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+      "AS_RECORDED": false,
+      "PIT_ELIGIBLE": false,
+      "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+      "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+      "survivorship_bias_risk": true,
+      "trade_date": "2026-09-29",
+      "publication_id": "R43_TDX_RETRO:215982263a3ccfb3e362f0fef8b6ab6229941b630177dc9b35e43903fdd89dec",
+      "source_bindings": {
+        "core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/core.jsonl.gz",
+          "sha256": "b880b389c65b9b1dcfe716ff0a9bda5933f2708e4e51c438ad85456a2c3cbea2",
+          "bytes": 19780365
+        },
+        "profiles": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/profiles.jsonl.gz",
+          "sha256": "1f2dfb7d5856ea064744e8e81a0f5341bc10364b6cc67b24e8f529bc59fa1b21",
+          "bytes": 43570978
+        },
+        "membership_snapshot": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json",
+          "sha256": "aa1b102cada2d82b68edcc08e812d42a035dc2fdc4f0528da5d1aa65d4593c30",
+          "bytes": 2568
+        },
+        "seed": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-29/base_seed.jsonl.gz",
+          "sha256": "e80ab0cac7178a42deb722472f2d6e0a28500ece22d711e0263a371e5700a8f7",
+          "bytes": 148888
+        }
+      },
+      "native": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-29/native.jsonl.gz",
+        "sha256": "125ff505e372d355e9c7b0185a153b8c9b8b2b395d6f92ab48c9e0047c6b9479",
+        "bytes": 1679056
+      },
+      "relative_sector": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-29/relative_sector_loo.jsonl.gz",
+        "sha256": "00fb289d388307faf790658cc9f6e2815e11fcad5462068c211d44ef63efcab7",
+        "bytes": 2204500
+      },
+      "enriched_profiles": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-29/profiles_with_tdx_relative.jsonl.gz",
+        "sha256": "bd38398c7029c5dedef2e284b52ba347d1a63c326d8636418503cbfb906d52ba",
+        "bytes": 48091165
+      },
+      "rotation": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-29/rotation.jsonl.gz",
+        "sha256": "592b4565c14a4525d3d393d2c33802fc8d0181742f8f09e49bf5858ec75e6882",
+        "bytes": 3193734
+      },
+      "seed": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-29/base_seed.jsonl.gz",
+        "sha256": "e80ab0cac7178a42deb722472f2d6e0a28500ece22d711e0263a371e5700a8f7",
+        "bytes": 148888
+      },
+      "excluded_members": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-29/excluded_members.jsonl.gz",
+        "sha256": "8f98ac13d64d22e60c76a64d1f7b57057e196b1edefa0cef4a52423b578e740a",
+        "bytes": 15794
+      },
+      "membership_count": 52905,
+      "sector_count": 400,
+      "known_fields": {
+        "membership_ready": 400,
+        "sector_member_count": 400,
+        "sector_quote_coverage": 400,
+        "sector_rs1": 400,
+        "sector_rs5": 400,
+        "sector_rs20": 400,
+        "breadth_ret1": 400,
+        "ma20_width": 400,
+        "breadth_ret5": 400,
+        "breadth_ret20": 400,
+        "participation_proxy": 400,
+        "pos60": 400,
+        "top1_concentration": 400,
+        "top3_concentration": 400,
+        "strong_member": 291,
+        "breadth_delta1": 281,
+        "ma20_delta1": 279,
+        "breadth_delta3": 295,
+        "ma20_delta3": 232,
+        "strong_member_retention": 257,
+        "entered_count": 262,
+        "net_entered_count": 262,
+        "seed_width": 400,
+        "base_seed_width_adjusted": 400,
+        "seed_retention": 321,
+        "sector_rs5_pct": 395,
+        "sector_rs20_pct": 395,
+        "dq5": 395,
+        "rank_velocity3": 395
+      },
+      "stock_only_seed_reuse": {
+        "old_binding": {
+          "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/base_seed.jsonl.gz",
+          "sha256": "70defbb258e54a1864daf6694afd4384a9c81587873f296438395a179127e3b4",
+          "bytes": 146346
+        },
+        "new_binding": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-29/base_seed.jsonl.gz",
+          "sha256": "e80ab0cac7178a42deb722472f2d6e0a28500ece22d711e0263a371e5700a8f7",
+          "bytes": 148888
+        },
+        "new_core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/core.jsonl.gz",
+          "sha256": "b880b389c65b9b1dcfe716ff0a9bda5933f2708e4e51c438ad85456a2c3cbea2",
+          "bytes": 19780365
+        },
+        "new_profiles": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/profiles.jsonl.gz",
+          "sha256": "1f2dfb7d5856ea064744e8e81a0f5341bc10364b6cc67b24e8f529bc59fa1b21",
+          "bytes": 43570978
+        },
+        "numerical_matches": 5210,
+        "rows": 5223,
+        "changes": [
+          {
+            "security_id": "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-17E76DA217E5C1BCC40497E9331DED2E",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-25106EB81E18F2C63CA4F3BD11EAD8DD",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-3AF86E6FE8E230C902EDEBCF49B8FB9B",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-6054AE867A60481EDA16B0E02AF1DB09",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-6D84A4C76A0CC2B3A7FA63D68C75A433",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-81531C3188983ED8D033E29A6CDDA524",
+            "old": "UNKNOWN",
+            "new": "TRUE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-8A47636032C3650935607E15AD1C72C8",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-9C973B4FDFA9C42E9574D1446FF54034",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-A94CC314405C8437CE79555A7DC05B82",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-B17169139D0E3492B2CA012774B6B125",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-BD56D2178EF33FD038FB5A12E09D445B",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-E11DA4A25B7F65C3E8229D5A76504A94",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          }
+        ]
+      },
+      "independent_native_width_breadth_checks": 800,
+      "relative_sector_known": 5136,
+      "rotation_counts": {
+        "NONE": 233,
+        "ROTATION_PULSE": 81,
+        "ROTATION_FAILED": 4,
+        "UNKNOWN": 79,
+        "ROTATION_IN": 3
+      },
+      "b0_counts": {
+        "TRUE": 104,
+        "FALSE": 121,
+        "UNKNOWN": 175
+      }
+    },
+    {
+      "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+      "taxonomy": "TDX_INDUSTRY_CONCEPT",
+      "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+      "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+      "AS_RECORDED": false,
+      "PIT_ELIGIBLE": false,
+      "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+      "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+      "survivorship_bias_risk": true,
+      "trade_date": "2026-09-30",
+      "publication_id": "R43_TDX_RETRO:28f642347a569b566ddea951ce7764e07f88ea1f0adffe70883b26d85b40dce0",
+      "source_bindings": {
+        "core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/core.jsonl.gz",
+          "sha256": "a6d4bd42de00003095e1a65fae29cdbbfad5ab8e04f0983c5df4d99a8822bc7d",
+          "bytes": 19794746
+        },
+        "profiles": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/profiles.jsonl.gz",
+          "sha256": "2ae6e3938d569105737450a0d596b17f65e4fb9f7db72a973f6a23b5c3fae4fe",
+          "bytes": 43603917
+        },
+        "membership_snapshot": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json",
+          "sha256": "aa1b102cada2d82b68edcc08e812d42a035dc2fdc4f0528da5d1aa65d4593c30",
+          "bytes": 2568
+        },
+        "seed": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-30/base_seed.jsonl.gz",
+          "sha256": "e4879db2c5a8a7d9297ce2f889f7d45fac655866d4e057f3e90bb7443671e77b",
+          "bytes": 149064
+        }
+      },
+      "native": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-30/native.jsonl.gz",
+        "sha256": "8065e6d5fb45c7c6927645bd49ce8e33c4cf3d52e35ec3815a9df78c5dd55596",
+        "bytes": 1677860
+      },
+      "relative_sector": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-30/relative_sector_loo.jsonl.gz",
+        "sha256": "6a42e363a4b577a09dc2fcd83f84da3ede92f16fe53ab85fa1ae6f80f78d82aa",
+        "bytes": 2210633
+      },
+      "enriched_profiles": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-30/profiles_with_tdx_relative.jsonl.gz",
+        "sha256": "73982508306b6388c290cab38322e9cb1ebc0212dac77a2c6e3de4fc75b18c6d",
+        "bytes": 48142712
+      },
+      "rotation": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-30/rotation.jsonl.gz",
+        "sha256": "c4e0aeb4c5c1a03ad402fa23fa4d215db4a67ec41ae1a22127be18a7e8c305ff",
+        "bytes": 3147584
+      },
+      "seed": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-30/base_seed.jsonl.gz",
+        "sha256": "e4879db2c5a8a7d9297ce2f889f7d45fac655866d4e057f3e90bb7443671e77b",
+        "bytes": 149064
+      },
+      "excluded_members": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-30/excluded_members.jsonl.gz",
+        "sha256": "934b7b851aed29d5033887bb6b774dfd91e6c550b2caf148ec65f89831b85e9d",
+        "bytes": 15275
+      },
+      "membership_count": 52912,
+      "sector_count": 400,
+      "known_fields": {
+        "membership_ready": 400,
+        "sector_member_count": 400,
+        "sector_quote_coverage": 400,
+        "sector_rs1": 400,
+        "sector_rs5": 400,
+        "sector_rs20": 400,
+        "breadth_ret1": 400,
+        "ma20_width": 400,
+        "breadth_ret5": 400,
+        "breadth_ret20": 400,
+        "participation_proxy": 400,
+        "pos60": 400,
+        "top1_concentration": 400,
+        "top3_concentration": 400,
+        "strong_member": 275,
+        "breadth_delta1": 284,
+        "ma20_delta1": 287,
+        "breadth_delta3": 270,
+        "ma20_delta3": 221,
+        "strong_member_retention": 254,
+        "entered_count": 266,
+        "net_entered_count": 266,
+        "seed_width": 400,
+        "base_seed_width_adjusted": 400,
+        "seed_retention": 306,
+        "sector_rs5_pct": 395,
+        "sector_rs20_pct": 395,
+        "dq5": 395,
+        "rank_velocity3": 395
+      },
+      "stock_only_seed_reuse": {
+        "old_binding": {
+          "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-30/base_seed.jsonl.gz",
+          "sha256": "877d67fe55d8ec3f3ea42264a2681d357931ef809ca1ec34fc033f7563badad7",
+          "bytes": 146686
+        },
+        "new_binding": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-30/base_seed.jsonl.gz",
+          "sha256": "e4879db2c5a8a7d9297ce2f889f7d45fac655866d4e057f3e90bb7443671e77b",
+          "bytes": 149064
+        },
+        "new_core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/core.jsonl.gz",
+          "sha256": "a6d4bd42de00003095e1a65fae29cdbbfad5ab8e04f0983c5df4d99a8822bc7d",
+          "bytes": 19794746
+        },
+        "new_profiles": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/profiles.jsonl.gz",
+          "sha256": "2ae6e3938d569105737450a0d596b17f65e4fb9f7db72a973f6a23b5c3fae4fe",
+          "bytes": 43603917
+        },
+        "numerical_matches": 5213,
+        "rows": 5224,
+        "changes": [
+          {
+            "security_id": "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-25106EB81E18F2C63CA4F3BD11EAD8DD",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-6054AE867A60481EDA16B0E02AF1DB09",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-6D84A4C76A0CC2B3A7FA63D68C75A433",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-727B4462EB615309F3CF61974E3EF7FC",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-9C973B4FDFA9C42E9574D1446FF54034",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-A17F411A81787AFD319B23D4882D926A",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-A94CC314405C8437CE79555A7DC05B82",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-B17169139D0E3492B2CA012774B6B125",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-DD31D8CAF1CF04404E91F12B636DFE6C",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-E11DA4A25B7F65C3E8229D5A76504A94",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          }
+        ]
+      },
+      "independent_native_width_breadth_checks": 800,
+      "relative_sector_known": 5134,
+      "rotation_counts": {
+        "NONE": 252,
+        "ROTATION_PULSE": 49,
+        "UNKNOWN": 77,
+        "ROTATION_IN": 18,
+        "ROTATION_ACCEPTED": 1,
+        "ROTATION_FAILED": 3
+      },
+      "b0_counts": {
+        "FALSE": 111,
+        "TRUE": 101,
+        "UNKNOWN": 188
+      }
+    },
+    {
+      "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+      "taxonomy": "TDX_INDUSTRY_CONCEPT",
+      "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+      "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+      "AS_RECORDED": false,
+      "PIT_ELIGIBLE": false,
+      "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+      "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+      "survivorship_bias_risk": true,
+      "trade_date": "2026-10-08",
+      "publication_id": "R43_TDX_RETRO:1fdbceca9bc2522931f9a3803fae4bc16b91cfdc677cfbae5a7ba3e00d9cd3b7",
+      "source_bindings": {
+        "core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/core.jsonl.gz",
+          "sha256": "0bc8413c7f64c72547609e78cfef4410e19d1d3b07bd54957b6bbb6eb11fb944",
+          "bytes": 19803337
+        },
+        "profiles": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/profiles.jsonl.gz",
+          "sha256": "f9f01d74ae6e271b2cece5a4e4e0af11dee67fe615e40af7bf45fc137b5a1156",
+          "bytes": 43507388
+        },
+        "membership_snapshot": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json",
+          "sha256": "aa1b102cada2d82b68edcc08e812d42a035dc2fdc4f0528da5d1aa65d4593c30",
+          "bytes": 2568
+        },
+        "seed": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-10-08/base_seed.jsonl.gz",
+          "sha256": "bff7f8fb5297e4c823fc75b3bb7a9d8039f1707fcc8c72882623ab9ce2bc4d81",
+          "bytes": 149541
+        }
+      },
+      "native": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-10-08/native.jsonl.gz",
+        "sha256": "ebccf89ddabcd362b2c7845276a8968a6e6768a84529f550d4fb32570678e01d",
+        "bytes": 1675681
+      },
+      "relative_sector": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-10-08/relative_sector_loo.jsonl.gz",
+        "sha256": "d5729445430deda4bb5056a6b1ce11b2dd3fda32eb5cd06ad20be3932d0afcd5",
+        "bytes": 2210682
+      },
+      "enriched_profiles": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-10-08/profiles_with_tdx_relative.jsonl.gz",
+        "sha256": "179ee9527dc26bdf436706e381d8b740e6a99d3e779e640e0ca6e4ab02827e4c",
+        "bytes": 48056445
+      },
+      "rotation": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-10-08/rotation.jsonl.gz",
+        "sha256": "133d8584698afe00b5b96feef4fe9f3935b996b06f11e5db47c99282cc9523fc",
+        "bytes": 3116152
+      },
+      "seed": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-10-08/base_seed.jsonl.gz",
+        "sha256": "bff7f8fb5297e4c823fc75b3bb7a9d8039f1707fcc8c72882623ab9ce2bc4d81",
+        "bytes": 149541
+      },
+      "excluded_members": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-10-08/excluded_members.jsonl.gz",
+        "sha256": "934b7b851aed29d5033887bb6b774dfd91e6c550b2caf148ec65f89831b85e9d",
+        "bytes": 15275
+      },
+      "membership_count": 52912,
+      "sector_count": 400,
+      "known_fields": {
+        "membership_ready": 400,
+        "sector_member_count": 400,
+        "sector_quote_coverage": 400,
+        "sector_rs1": 400,
+        "sector_rs5": 400,
+        "sector_rs20": 400,
+        "breadth_ret1": 400,
+        "ma20_width": 400,
+        "breadth_ret5": 400,
+        "breadth_ret20": 400,
+        "participation_proxy": 400,
+        "pos60": 400,
+        "top1_concentration": 400,
+        "top3_concentration": 400,
+        "strong_member": 250,
+        "breadth_delta1": 276,
+        "ma20_delta1": 272,
+        "breadth_delta3": 261,
+        "ma20_delta3": 256,
+        "strong_member_retention": 250,
+        "entered_count": 248,
+        "net_entered_count": 248,
+        "seed_width": 400,
+        "base_seed_width_adjusted": 400,
+        "seed_retention": 294,
+        "sector_rs5_pct": 395,
+        "sector_rs20_pct": 395,
+        "dq5": 395,
+        "rank_velocity3": 395
+      },
+      "stock_only_seed_reuse": {
+        "old_binding": {
+          "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-10-08/base_seed.jsonl.gz",
+          "sha256": "ef977096c2f58007e498102ff2f80d94a0df3bbb24235213ebae4ad598ff2354",
+          "bytes": 146722
+        },
+        "new_binding": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-10-08/base_seed.jsonl.gz",
+          "sha256": "bff7f8fb5297e4c823fc75b3bb7a9d8039f1707fcc8c72882623ab9ce2bc4d81",
+          "bytes": 149541
+        },
+        "new_core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/core.jsonl.gz",
+          "sha256": "0bc8413c7f64c72547609e78cfef4410e19d1d3b07bd54957b6bbb6eb11fb944",
+          "bytes": 19803337
+        },
+        "new_profiles": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/profiles.jsonl.gz",
+          "sha256": "f9f01d74ae6e271b2cece5a4e4e0af11dee67fe615e40af7bf45fc137b5a1156",
+          "bytes": 43507388
+        },
+        "numerical_matches": 5208,
+        "rows": 5224,
+        "changes": [
+          {
+            "security_id": "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-1522973706EBA28F6BA3EE086FA28B40",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-19B69D0E609E7CF7A37FE9B6611A98E1",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-25106EB81E18F2C63CA4F3BD11EAD8DD",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-6054AE867A60481EDA16B0E02AF1DB09",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-6D84A4C76A0CC2B3A7FA63D68C75A433",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-727B4462EB615309F3CF61974E3EF7FC",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-9C973B4FDFA9C42E9574D1446FF54034",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-A17F411A81787AFD319B23D4882D926A",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-A94CC314405C8437CE79555A7DC05B82",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-AC08013664C6EE8A51147B45617A314F",
+            "old": "UNKNOWN",
+            "new": "TRUE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-B17169139D0E3492B2CA012774B6B125",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-DBA72E9F1B99EF0636647A50EB77B57B",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-DD31D8CAF1CF04404E91F12B636DFE6C",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-E11DA4A25B7F65C3E8229D5A76504A94",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          },
+          {
+            "security_id": "SEC-E607E5BB9794A7D1B98A109A1F75DCA2",
+            "old": "UNKNOWN",
+            "new": "FALSE",
+            "reason": "New verified dated Profile source adaptation; no member input"
+          }
+        ]
+      },
+      "independent_native_width_breadth_checks": 800,
+      "relative_sector_known": 5128,
+      "rotation_counts": {
+        "NONE": 201,
+        "ROTATION_IN": 14,
+        "ROTATION_ACCEPTED": 2,
+        "ROTATION_PULSE": 29,
+        "UNKNOWN": 130,
+        "ROTATION_FAILED": 24
+      },
+      "b0_counts": {
+        "TRUE": 89,
+        "UNKNOWN": 161,
+        "FALSE": 150
+      }
+    }
+  ],
+  "source_snapshot": {
+    "path": "docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json",
+    "sha256": "aa1b102cada2d82b68edcc08e812d42a035dc2fdc4f0528da5d1aa65d4593c30",
+    "bytes": 2568
+  },
+  "oracle": [
+    {
+      "trade_date": "2026-09-28",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "INDUSTRY:T0706",
+      "others": 321,
+      "values": {
+        "sector_rs1": {
+          "value": -0.02317253001895936
+        },
+        "sector_rs5": {
+          "value": -0.038918918918918854
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.02317253001895936,
+        "ret5": -0.038918918918918854
+      },
+      "t_minus_1": "2026-09-24",
+      "t_minus_3": "2026-09-22",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-28",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880582",
+      "others": 425,
+      "values": {
+        "sector_rs1": {
+          "value": -0.016949152542372947
+        },
+        "sector_rs5": {
+          "value": -0.02714932126696834
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.016949152542372947,
+        "ret5": -0.02714932126696834
+      },
+      "t_minus_1": "2026-09-24",
+      "t_minus_3": "2026-09-22",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-28",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880705",
+      "others": 400,
+      "values": {
+        "sector_rs1": {
+          "value": -0.01966011329556816
+        },
+        "sector_rs5": {
+          "value": -0.030008826125331067
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.01966011329556816,
+        "ret5": -0.030008826125331067
+      },
+      "t_minus_1": "2026-09-24",
+      "t_minus_3": "2026-09-22",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-28",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880732",
+      "others": 453,
+      "values": {
+        "sector_rs1": {
+          "value": -0.01891472868217048
+        },
+        "sector_rs5": {
+          "value": -0.01952277657266832
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.01891472868217048,
+        "ret5": -0.01952277657266832
+      },
+      "t_minus_1": "2026-09-24",
+      "t_minus_3": "2026-09-22",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-28",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880753",
+      "others": 421,
+      "values": {
+        "sector_rs1": {
+          "value": -0.01108340345554043
+        },
+        "sector_rs5": {
+          "value": -0.023530072380353373
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.01108340345554043,
+        "ret5": -0.023530072380353373
+      },
+      "t_minus_1": "2026-09-24",
+      "t_minus_3": "2026-09-22",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-28",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880978",
+      "others": 749,
+      "values": {
+        "sector_rs1": {
+          "value": -0.0174193548387096
+        },
+        "sector_rs5": {
+          "value": -0.01724137931034475
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.0174193548387096,
+        "ret5": -0.01724137931034475
+      },
+      "t_minus_1": "2026-09-24",
+      "t_minus_3": "2026-09-22",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-28",
+      "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+      "sector_id": "INDUSTRY:T1203",
+      "others": 196,
+      "values": {
+        "sector_rs1": {
+          "value": -0.046130669425261506
+        },
+        "sector_rs5": {
+          "value": -0.05574403247564397
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.046130669425261506,
+        "ret5": -0.05574403247564397
+      },
+      "t_minus_1": "2026-09-24",
+      "t_minus_3": "2026-09-22",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-28",
+      "security_id": "SEC-002610CF9EBB4227722834AADA8F757E",
+      "sector_id": "INDUSTRY:T0701",
+      "others": 50,
+      "values": {
+        "sector_rs1": {
+          "value": -0.01870259156084564
+        },
+        "sector_rs5": {
+          "value": -0.026610717168329412
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.01870259156084564,
+        "ret5": -0.026610717168329412
+      },
+      "t_minus_1": "2026-09-24",
+      "t_minus_3": "2026-09-22",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-28",
+      "security_id": "SEC-002E8949D07D2829AB967520C65C0845",
+      "sector_id": "INDUSTRY:T0401",
+      "others": 83,
+      "values": {
+        "sector_rs1": {
+          "value": -0.009453072248480798
+        },
+        "sector_rs5": {
+          "value": 0.0013157894736843812
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.009453072248480798,
+        "ret5": 0.0013157894736843812
+      },
+      "t_minus_1": "2026-09-24",
+      "t_minus_3": "2026-09-22",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-28",
+      "security_id": "SEC-0051683845B17D59641B7D1DC261FE2A",
+      "sector_id": "INDUSTRY:T020604",
+      "others": 26,
+      "values": {
+        "sector_rs1": {
+          "value": -0.017009320175438547
+        },
+        "sector_rs5": {
+          "value": -0.01399934383202106
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.017009320175438547,
+        "ret5": -0.01399934383202106
+      },
+      "t_minus_1": "2026-09-24",
+      "t_minus_3": "2026-09-22",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "INDUSTRY:T0706",
+      "others": 321,
+      "values": {
+        "sector_rs1": {
+          "value": 0.00943396226415083
+        },
+        "sector_rs5": {
+          "value": -0.03743315508021394
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": 0.00943396226415083,
+        "ret5": -0.03743315508021394
+      },
+      "t_minus_1": "2026-09-28",
+      "t_minus_3": "2026-09-23",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880582",
+      "others": 425,
+      "values": {
+        "sector_rs1": {
+          "value": 0.00426742532005675
+        },
+        "sector_rs5": {
+          "value": -0.03296703296703296
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": 0.00426742532005675,
+        "ret5": -0.03296703296703296
+      },
+      "t_minus_1": "2026-09-28",
+      "t_minus_3": "2026-09-23",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880705",
+      "others": 400,
+      "values": {
+        "sector_rs1": {
+          "value": 0.004576659038901587
+        },
+        "sector_rs5": {
+          "value": -0.037209302325581395
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": 0.004576659038901587,
+        "ret5": -0.037209302325581395
+      },
+      "t_minus_1": "2026-09-28",
+      "t_minus_3": "2026-09-23",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880732",
+      "others": 453,
+      "values": {
+        "sector_rs1": {
+          "value": 0.011956521739130643
+        },
+        "sector_rs5": {
+          "value": -0.021259842519685046
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": 0.011956521739130643,
+        "ret5": -0.021259842519685046
+      },
+      "t_minus_1": "2026-09-28",
+      "t_minus_3": "2026-09-23",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880753",
+      "others": 421,
+      "values": {
+        "sector_rs1": {
+          "value": 0.003673172015084103
+        },
+        "sector_rs5": {
+          "value": -0.028197933898144956
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": 0.003673172015084103,
+        "ret5": -0.028197933898144956
+      },
+      "t_minus_1": "2026-09-28",
+      "t_minus_3": "2026-09-23",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880978",
+      "others": 749,
+      "values": {
+        "sector_rs1": {
+          "value": 0.008694354934956405
+        },
+        "sector_rs5": {
+          "value": -0.022191109716942936
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": 0.008694354934956405,
+        "ret5": -0.022191109716942936
+      },
+      "t_minus_1": "2026-09-28",
+      "t_minus_3": "2026-09-23",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+      "sector_id": "INDUSTRY:T1203",
+      "others": 197,
+      "values": {
+        "sector_rs1": {
+          "value": 0.002194371134048967
+        },
+        "sector_rs5": {
+          "value": -0.05071585575782234
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": 0.002194371134048967,
+        "ret5": -0.05071585575782234
+      },
+      "t_minus_1": "2026-09-28",
+      "t_minus_3": "2026-09-23",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-002610CF9EBB4227722834AADA8F757E",
+      "sector_id": "INDUSTRY:T0701",
+      "others": 50,
+      "values": {
+        "sector_rs1": {
+          "value": -0.007988680929275627
+        },
+        "sector_rs5": {
+          "value": -0.057919388495735746
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.007988680929275627,
+        "ret5": -0.057919388495735746
+      },
+      "t_minus_1": "2026-09-28",
+      "t_minus_3": "2026-09-23",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-002E8949D07D2829AB967520C65C0845",
+      "sector_id": "INDUSTRY:T0401",
+      "others": 83,
+      "values": {
+        "sector_rs1": {
+          "value": 0.002083333333333215
+        },
+        "sector_rs5": {
+          "value": -0.0016366612111293755
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": 0.002083333333333215,
+        "ret5": -0.0016366612111293755
+      },
+      "t_minus_1": "2026-09-28",
+      "t_minus_3": "2026-09-23",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-0051683845B17D59641B7D1DC261FE2A",
+      "sector_id": "INDUSTRY:T020604",
+      "others": 26,
+      "values": {
+        "sector_rs1": {
+          "value": 0.009501485062023085
+        },
+        "sector_rs5": {
+          "value": -0.028590690398345275
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": 0.009501485062023085,
+        "ret5": -0.028590690398345275
+      },
+      "t_minus_1": "2026-09-28",
+      "t_minus_3": "2026-09-23",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-30",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "INDUSTRY:T0706",
+      "others": 321,
+      "values": {
+        "sector_rs1": {
+          "value": -0.001175088131609825
+        },
+        "sector_rs5": {
+          "value": -0.029252437703141898
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.001175088131609825,
+        "ret5": -0.029252437703141898
+      },
+      "t_minus_1": "2026-09-29",
+      "t_minus_3": "2026-09-24",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-30",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880582",
+      "others": 425,
+      "values": {
+        "sector_rs1": {
+          "value": 0.0007818608287724071
+        },
+        "sector_rs5": {
+          "value": -0.025423728813559254
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": 0.0007818608287724071,
+        "ret5": -0.025423728813559254
+      },
+      "t_minus_1": "2026-09-29",
+      "t_minus_3": "2026-09-24",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-30",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880705",
+      "others": 400,
+      "values": {
+        "sector_rs1": {
+          "value": 0.0007084275632818215
+        },
+        "sector_rs5": {
+          "value": -0.029556650246305383
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": 0.0007084275632818215,
+        "ret5": -0.029556650246305383
+      },
+      "t_minus_1": "2026-09-29",
+      "t_minus_3": "2026-09-24",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-30",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880732",
+      "others": 453,
+      "values": {
+        "sector_rs1": {
+          "value": -0.00747198007471972
+        },
+        "sector_rs5": {
+          "value": -0.04122137404580151
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.00747198007471972,
+        "ret5": -0.04122137404580151
+      },
+      "t_minus_1": "2026-09-29",
+      "t_minus_3": "2026-09-24",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-30",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880753",
+      "others": 421,
+      "values": {
+        "sector_rs1": {
+          "value": 0.0034812907135282067
+        },
+        "sector_rs5": {
+          "value": -0.019551401243805666
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": 0.0034812907135282067,
+        "ret5": -0.019551401243805666
+      },
+      "t_minus_1": "2026-09-29",
+      "t_minus_3": "2026-09-24",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-30",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880978",
+      "others": 749,
+      "values": {
+        "sector_rs1": {
+          "value": -0.005154639175257714
+        },
+        "sector_rs5": {
+          "value": -0.03353658536585358
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.005154639175257714,
+        "ret5": -0.03353658536585358
+      },
+      "t_minus_1": "2026-09-29",
+      "t_minus_3": "2026-09-24",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-30",
+      "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+      "sector_id": "INDUSTRY:T1203",
+      "others": 197,
+      "values": {
+        "sector_rs1": {
+          "value": -0.028765481422293293
+        },
+        "sector_rs5": {
+          "value": -0.07907244182902529
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.028765481422293293,
+        "ret5": -0.07907244182902529
+      },
+      "t_minus_1": "2026-09-29",
+      "t_minus_3": "2026-09-24",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-30",
+      "security_id": "SEC-002610CF9EBB4227722834AADA8F757E",
+      "sector_id": "INDUSTRY:T0701",
+      "others": 50,
+      "values": {
+        "sector_rs1": {
+          "value": -0.0017542423616755953
+        },
+        "sector_rs5": {
+          "value": -0.04842451777279233
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.0017542423616755953,
+        "ret5": -0.04842451777279233
+      },
+      "t_minus_1": "2026-09-29",
+      "t_minus_3": "2026-09-24",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-30",
+      "security_id": "SEC-002E8949D07D2829AB967520C65C0845",
+      "sector_id": "INDUSTRY:T0401",
+      "others": 83,
+      "values": {
+        "sector_rs1": {
+          "value": -0.0012953367875647714
+        },
+        "sector_rs5": {
+          "value": -0.011290322580645218
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.0012953367875647714,
+        "ret5": -0.011290322580645218
+      },
+      "t_minus_1": "2026-09-29",
+      "t_minus_3": "2026-09-24",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-09-30",
+      "security_id": "SEC-0051683845B17D59641B7D1DC261FE2A",
+      "sector_id": "INDUSTRY:T020604",
+      "others": 26,
+      "values": {
+        "sector_rs1": {
+          "value": -0.0019362663098026478
+        },
+        "sector_rs5": {
+          "value": -0.022779157993688293
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.0019362663098026478,
+        "ret5": -0.022779157993688293
+      },
+      "t_minus_1": "2026-09-29",
+      "t_minus_3": "2026-09-24",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-10-08",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "INDUSTRY:T0706",
+      "others": 321,
+      "values": {
+        "sector_rs1": {
+          "value": -0.003043213633597164
+        },
+        "sector_rs5": {
+          "value": -0.023446658851113633
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.003043213633597164,
+        "ret5": -0.023446658851113633
+      },
+      "t_minus_1": "2026-09-30",
+      "t_minus_3": "2026-09-28",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-10-08",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880582",
+      "others": 425,
+      "values": {
+        "sector_rs1": {
+          "value": 0.0
+        },
+        "sector_rs5": {
+          "value": -0.011152416356877248
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": 0.0,
+        "ret5": -0.011152416356877248
+      },
+      "t_minus_1": "2026-09-30",
+      "t_minus_3": "2026-09-28",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-10-08",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880705",
+      "others": 400,
+      "values": {
+        "sector_rs1": {
+          "value": -0.00145654928115313
+        },
+        "sector_rs5": {
+          "value": -0.016606822262118515
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.00145654928115313,
+        "ret5": -0.016606822262118515
+      },
+      "t_minus_1": "2026-09-30",
+      "t_minus_3": "2026-09-28",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-10-08",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880732",
+      "others": 453,
+      "values": {
+        "sector_rs1": {
+          "value": -0.01785292152731388
+        },
+        "sector_rs5": {
+          "value": -0.04137385948531458
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.01785292152731388,
+        "ret5": -0.04137385948531458
+      },
+      "t_minus_1": "2026-09-30",
+      "t_minus_3": "2026-09-28",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-10-08",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880753",
+      "others": 421,
+      "values": {
+        "sector_rs1": {
+          "value": 0.0021978446631018
+        },
+        "sector_rs5": {
+          "value": -0.004484304932735328
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": 0.0021978446631018,
+        "ret5": -0.004484304932735328
+      },
+      "t_minus_1": "2026-09-30",
+      "t_minus_3": "2026-09-28",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-10-08",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector_id": "THEME:880978",
+      "others": 749,
+      "values": {
+        "sector_rs1": {
+          "value": -0.015706806282722474
+        },
+        "sector_rs5": {
+          "value": -0.033371691599539566
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.015706806282722474,
+        "ret5": -0.033371691599539566
+      },
+      "t_minus_1": "2026-09-30",
+      "t_minus_3": "2026-09-28",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-10-08",
+      "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+      "sector_id": "INDUSTRY:T1203",
+      "others": 197,
+      "values": {
+        "sector_rs1": {
+          "value": -0.04673008323424488
+        },
+        "sector_rs5": {
+          "value": -0.13318595927116822
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.04673008323424488,
+        "ret5": -0.13318595927116822
+      },
+      "t_minus_1": "2026-09-30",
+      "t_minus_3": "2026-09-28",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-10-08",
+      "security_id": "SEC-002610CF9EBB4227722834AADA8F757E",
+      "sector_id": "INDUSTRY:T0701",
+      "others": 50,
+      "values": {
+        "sector_rs1": {
+          "value": -0.011401478910323448
+        },
+        "sector_rs5": {
+          "value": -0.040769561505594576
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.011401478910323448,
+        "ret5": -0.040769561505594576
+      },
+      "t_minus_1": "2026-09-30",
+      "t_minus_3": "2026-09-28",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-10-08",
+      "security_id": "SEC-002E8949D07D2829AB967520C65C0845",
+      "sector_id": "INDUSTRY:T0401",
+      "others": 83,
+      "values": {
+        "sector_rs1": {
+          "value": -0.0055749128919860835
+        },
+        "sector_rs5": {
+          "value": -0.0053050397877983935
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.0055749128919860835,
+        "ret5": -0.0053050397877983935
+      },
+      "t_minus_1": "2026-09-30",
+      "t_minus_3": "2026-09-28",
+      "passed": true
+    },
+    {
+      "trade_date": "2026-10-08",
+      "security_id": "SEC-0051683845B17D59641B7D1DC261FE2A",
+      "sector_id": "INDUSTRY:T020604",
+      "others": 26,
+      "values": {
+        "sector_rs1": {
+          "value": -0.00518741633199471
+        },
+        "sector_rs5": {
+          "value": -0.012630759494804078
+        }
+      },
+      "independent_sorted_middle": {
+        "ret1": -0.00518741633199471,
+        "ret5": -0.012630759494804078
+      },
+      "t_minus_1": "2026-09-30",
+      "t_minus_3": "2026-09-28",
+      "passed": true
+    }
+  ],
+  "acceptance": "FOUR_DAY_RETRO_SECTOR_PASS",
+  "strict_historical_pit": "NOT_GRANTED",
+  "production_admission": "INDEPENDENT_QA_REQUIRED"
+}

@@ -1,0 +1,86 @@
+{
+  "contract_id": "V4_R4_CORRECTED_D0_D2_FOCUS_FORWARD_V1",
+  "task": "R4.3",
+  "source_admission": "Exact R4 sealed owner files; corrected candidate only",
+  "D0": "Original scanner/parameters/priority and UNKNOWN-dominant wrapper",
+  "D2": "Unchanged R5 candidate reducer and full field/temporal/publication validator",
+  "focus": "Original membership/path/outcome kernels; independent corrected namespace",
+  "accepted": false,
+  "AS_RECORDED": false,
+  "production_admission": false,
+  "exact_business_AST": {
+    "contract_id": "V4_11_R5B_CANDIDATE_ADMISSION_AST_EVIDENCE_V1",
+    "accepted_source_bindings": {
+      "reducer": {
+        "path": "src/v4/research_state.py",
+        "bytes": 13989,
+        "sha256": "58fde91734f5d1192a43174052c3c10ce6a41a65facce2076b9bf0798d0e5bfb"
+      },
+      "output_admission": {
+        "path": "src/v4/state_provenance.py",
+        "bytes": 24944,
+        "sha256": "f4a5f0683a2735488d285f74f91d1c0dc3ff25112060c485debf22615f811a77"
+      }
+    },
+    "mechanical_whitelist_changes": {
+      "removed_unaccepted_D0_D1_admission_gate": 1,
+      "reducer_allowed_mode_tuple_changes": 1,
+      "row_namespace_changes": 1,
+      "episode_namespace_changes": 1,
+      "output_allowed_mode_tuple_changes": 1,
+      "output_reconstructed_cutoff_admission_changes": 1
+    },
+    "business_AST_comparisons": {
+      "reducer": {
+        "source_AST_sha256": "3ca6734ba18eb974f29857443f2297bef560ad06e39c3d124b19c63df5a46f6a",
+        "candidate_AST_sha256": "9f9b8e2034b2f76cbb3069b928dd1ed9db580a40f4b8ae42fbd0a7848021978c",
+        "normalized_business_AST_sha256": "e67e6323fd4ed2911b85b762ebe9cb3b38d3233130bafb180fb87aa1a388f9b0",
+        "normalized_business_AST_exact": true
+      },
+      "output_admission": {
+        "source_AST_sha256": "e973873cff65cfbd0954c4dcd649e461313a7c872774bd552bc4923d5ff7bd0a",
+        "candidate_AST_sha256": "e933181733f89afd11f659de5fbeff37e0aad417f88000ea9957e46866ae6498",
+        "normalized_business_AST_sha256": "4c798d952fc399071a5e44e00fc9dc3c17438fa5e1269c3a7efadc5cdc8d90d2",
+        "normalized_business_AST_exact": true
+      }
+    },
+    "rule_order": [
+      "R1_MODEL_BOUNDARY",
+      "R2_HARD_INVALIDATION",
+      "R3_REQUIRED_UNKNOWN",
+      "R4_STAGE_SELECTION",
+      "R5_HYSTERESIS",
+      "R6_HEALTH",
+      "R7_TRACKING",
+      "R8_EXPIRY",
+      "R9_REENTRY"
+    ],
+    "unchanged_parameter_set": {
+      "authority": {
+        "byte_count": 224998,
+        "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+        "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+      },
+      "downgrade_sessions": 2,
+      "expiry_improvement_pp": 3,
+      "expiry_sessions": 10,
+      "health_deadband_pp": 3,
+      "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+      "version": "1.0.0"
+    },
+    "exact_rule_order": true,
+    "exact_business_thresholds": true,
+    "admission_functions": "New sealed-file candidate validate_inputs + candidate validate_output; old accepted ledger unchanged",
+    "capability_addition": "CONFIRMATION_DETECTOR_V1 candidate producer identity, not acceptance",
+    "reconstructed_cutoff_scope": "Actual knowledge timestamp; never historical first availability or AS_RECORDED",
+    "candidate_business_consumer_external_acceptance": false,
+    "accepted": false,
+    "candidate_namespace": "V4_11_R5B_CANDIDATE_D2_INTERFACE_V1",
+    "permissions": {
+      "production": false,
+      "shadow": false,
+      "focus": false,
+      "global_mandatory_adoption": false
+    }
+  }
+}

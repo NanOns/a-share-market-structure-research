@@ -1,0 +1,99 @@
+{
+  "contract": {
+    "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/DAILY_PRICE_LIMIT_CONTRACT_V1.json",
+    "sha256": "212744ad41d2e602b1f95c6944c43ec00d60a0c46046e9279040af575ed3b3c9",
+    "bytes": 899
+  },
+  "owners": [
+    {
+      "trade_date": "2026-09-28",
+      "artifact": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/daily_price_limits_v1.jsonl.gz",
+        "sha256": "ff1651509bcebf5d733e74c1b1e29c318f2331e0eab51089318df0a17b3c1381",
+        "bytes": 251118
+      },
+      "rows": 5222,
+      "counts": {
+        "NOT_LIMIT": 5097,
+        "LIMIT_DOWN": 60,
+        "UNKNOWN": 18,
+        "LIMIT_UP": 35,
+        "SUSPENDED": 12
+      },
+      "unknown_reasons": {
+        "REFERENCE_PRICE_UNKNOWN": 17,
+        "NO_PRICE_LIMIT_SPECIAL_PERIOD": 1
+      },
+      "limit_coverage": 0.9942550746840291,
+      "daily_observable_known": 5192
+    },
+    {
+      "trade_date": "2026-09-29",
+      "artifact": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/daily_price_limits_v1.jsonl.gz",
+        "sha256": "342098d0834c7ae8682b6e30b353389a3efcbdd285be096a4e60902854423f18",
+        "bytes": 251393
+      },
+      "rows": 5223,
+      "counts": {
+        "NOT_LIMIT": 5108,
+        "LIMIT_UP": 54,
+        "UNKNOWN": 37,
+        "SUSPENDED": 12,
+        "LIMIT_DOWN": 12
+      },
+      "unknown_reasons": {
+        "REFERENCE_PRICE_UNKNOWN": 36,
+        "NO_PRICE_LIMIT_SPECIAL_PERIOD": 1
+      },
+      "limit_coverage": 0.9906184185334099,
+      "daily_observable_known": 5174
+    },
+    {
+      "trade_date": "2026-09-30",
+      "artifact": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/daily_price_limits_v1.jsonl.gz",
+        "sha256": "508f7367e101940618f5991b1a8177277f3c67faf7262d0224d614ecdbff3268",
+        "bytes": 252047
+      },
+      "rows": 5224,
+      "counts": {
+        "NOT_LIMIT": 5102,
+        "LIMIT_UP": 56,
+        "UNKNOWN": 44,
+        "SUSPENDED": 11,
+        "LIMIT_DOWN": 11
+      },
+      "unknown_reasons": {
+        "REFERENCE_PRICE_UNKNOWN": 43,
+        "NO_PRICE_LIMIT_SPECIAL_PERIOD": 1
+      },
+      "limit_coverage": 0.9894716692189893,
+      "daily_observable_known": 5169
+    },
+    {
+      "trade_date": "2026-10-08",
+      "artifact": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/daily_price_limits_v1.jsonl.gz",
+        "sha256": "96354288b1b97fd78750812c9f7ae32b4d62c4c4fe15d25a84177fa7a9be32e5",
+        "bytes": 249981
+      },
+      "rows": 5224,
+      "counts": {
+        "NOT_LIMIT": 5141,
+        "LIMIT_UP": 44,
+        "UNKNOWN": 8,
+        "SUSPENDED": 15,
+        "LIMIT_DOWN": 16
+      },
+      "unknown_reasons": {
+        "REFERENCE_PRICE_UNKNOWN": 6,
+        "NO_PRICE_LIMIT_SPECIAL_PERIOD": 2
+      },
+      "limit_coverage": 0.9955972434915773,
+      "daily_observable_known": 5201
+    }
+  ],
+  "acceptance": "EXECUTED_DATED_DAILY_CLOSE_AND_EXTREMA_LIMIT_OBSERVATIONS",
+  "production_admission": false
+}

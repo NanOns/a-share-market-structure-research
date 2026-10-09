@@ -1,0 +1,78 @@
+{
+  "contract_id": "R43_INDEPENDENT_RPS_ORACLE_V1",
+  "absolute_tolerance": 1e-08,
+  "independent_formula": "Sorted return frequency groups; cumulative smaller count plus half tie positions, divided by N-1",
+  "full_cross_sections": [
+    {
+      "trade_date": "2026-09-28",
+      "full_rank_checks": 10444,
+      "core": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/core.jsonl.gz",
+        "sha256": "1d4dc8dfd74361f02a1eefe002e74f4838a37e54b1a1de04ab57adcf92e68841",
+        "bytes": 19774972
+      }
+    },
+    {
+      "trade_date": "2026-09-29",
+      "full_rank_checks": 10446,
+      "core": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/core.jsonl.gz",
+        "sha256": "b880b389c65b9b1dcfe716ff0a9bda5933f2708e4e51c438ad85456a2c3cbea2",
+        "bytes": 19780365
+      }
+    },
+    {
+      "trade_date": "2026-09-30",
+      "full_rank_checks": 10448,
+      "core": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/core.jsonl.gz",
+        "sha256": "a6d4bd42de00003095e1a65fae29cdbbfad5ab8e04f0983c5df4d99a8822bc7d",
+        "bytes": 19794746
+      }
+    },
+    {
+      "trade_date": "2026-10-08",
+      "full_rank_checks": 10448,
+      "core": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/core.jsonl.gz",
+        "sha256": "0bc8413c7f64c72547609e78cfef4410e19d1d3b07bd54957b6bbb6eb11fb944",
+        "bytes": 19803337
+      }
+    }
+  ],
+  "exact_endpoint_checks": [
+    {
+      "trade_date": "2026-09-29",
+      "field": "rps5_delta1",
+      "predecessor": "2026-09-28",
+      "checks": 5223
+    },
+    {
+      "trade_date": "2026-09-30",
+      "field": "rps5_delta1",
+      "predecessor": "2026-09-29",
+      "checks": 5224
+    },
+    {
+      "trade_date": "2026-10-08",
+      "field": "rps20_delta3",
+      "predecessor": "2026-09-28",
+      "checks": 5224
+    },
+    {
+      "trade_date": "2026-10-08",
+      "field": "rps5_delta1",
+      "predecessor": "2026-09-30",
+      "checks": 5224
+    },
+    {
+      "trade_date": "2026-10-08",
+      "field": "rps5_delta3",
+      "predecessor": "2026-09-28",
+      "checks": 5224
+    }
+  ],
+  "errors": [],
+  "unknown_reason": "Return unavailable remains unknown; predecessors outside four target owners are validated by the separate raw-window oracle",
+  "acceptance": "PASS_FULL_CURRENT_RANK_AND_AVAILABLE_EXACT_PREDECESSORS"
+}

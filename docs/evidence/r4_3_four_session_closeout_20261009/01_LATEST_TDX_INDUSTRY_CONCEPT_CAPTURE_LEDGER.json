@@ -1,0 +1,72 @@
+{
+  "snapshot": {
+    "path": "docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json",
+    "sha256": "aa1b102cada2d82b68edcc08e812d42a035dc2fdc4f0528da5d1aa65d4593c30",
+    "bytes": 2568
+  },
+  "sources": [
+    {
+      "address": "D:\\new_tdx\\T0002\\hq_cache\\tdxhy.cfg",
+      "observed_at": "2026-10-09T09:44:01.158745+08:00",
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/latest_member_raw/638c58e095702469b9471da7e5bfd7bc63611059052ef22eccc0c6de5b66fe9a/tdxhy.cfg",
+      "sha256": "638c58e095702469b9471da7e5bfd7bc63611059052ef22eccc0c6de5b66fe9a",
+      "bytes": 150550
+    },
+    {
+      "address": "D:\\new_tdx\\T0002\\hq_cache\\tdxzs.cfg",
+      "observed_at": "2026-10-09T09:44:01.158745+08:00",
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/latest_member_raw/a33983fc8bb15c97db93fe9b60394b326b71a91e99e33b8b54700415442074da/tdxzs.cfg",
+      "sha256": "a33983fc8bb15c97db93fe9b60394b326b71a91e99e33b8b54700415442074da",
+      "bytes": 18272
+    },
+    {
+      "address": "D:\\new_tdx\\T0002\\hq_cache\\infoharbor_block.dat",
+      "observed_at": "2026-10-09T09:44:01.158745+08:00",
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/latest_member_raw/af3aff645fb9602a98871ba27ad88b54dda2ff47ba460c2ca90bfe448b469bd9/infoharbor_block.dat",
+      "sha256": "af3aff645fb9602a98871ba27ad88b54dda2ff47ba460c2ca90bfe448b469bd9",
+      "bytes": 741571
+    }
+  ],
+  "parser": {
+    "path": "src/sector/membership_snapshot.py",
+    "sha256": "89f819ce4c383425eea8f7845510ce17d6125fd6778513e8b6269edc3e5704b2",
+    "bytes": 2477
+  },
+  "block_reader": {
+    "path": "src/tdx/block_reader.py",
+    "sha256": "2ae8758870826b1a6b41cfdc9fc3c5e88de617e3e70a0bf9c42aa8cd77033edf",
+    "bytes": 6273
+  },
+  "code": {
+    "path": "src/workbench_analysis/tdx_member_retro_r43.py",
+    "sha256": "9ee3be6d532182c194f25d6968d0cb63004ba644b74aa8d2cb4c6bcf017e0c6b",
+    "bytes": 6570
+  },
+  "block_dat_inventory": [],
+  "accepted_0930": {
+    "bytes": 4004928,
+    "contract_id": "V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1",
+    "owner_stage": "V4-08",
+    "path": "data/v4/artifact_store/v4_08/V4_08_PIT_MEMBERSHIP_FACTS_20260930_R1.jsonl.gz",
+    "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+  },
+  "old_members": 50162,
+  "old_sectors": 378,
+  "added": 4995,
+  "removed": 21,
+  "same_membership": false,
+  "quarantine": {
+    "path": "docs/evidence/r4_3_four_session_closeout_20261009/latest_member_unmapped.jsonl.gz",
+    "sha256": "4fdd60d1893be1d89086e178c19525ca3bbe3f662f675a8affb13faaaa435eda",
+    "bytes": 14774
+  },
+  "diff": {
+    "path": "docs/evidence/r4_3_four_session_closeout_20261009/02_TDX_MEMBER_SNAPSHOT_S_AND_0930_PIT_DIFF.jsonl.gz",
+    "sha256": "0365e0cccb365d46ea334a8ac7d6444acdbbc8e88fc3707ea276eaa439f23559",
+    "bytes": 19290
+  },
+  "acceptance": "TDX_LATEST_SNAPSHOT_SOURCE_PASS",
+  "next_stage": "FOUR_DAY_RETRO_SECTOR",
+  "historical_effective_date": "NOT_CLAIMED; mtime never used",
+  "download": "NOT_REQUIRED: complete local industry/concept source parsed"
+}

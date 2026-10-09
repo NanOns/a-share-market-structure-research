@@ -1,0 +1,61 @@
+{
+  "original_capture": {
+    "path": "docs/evidence/r4_3_four_session_closeout_20261009/01_LATEST_TDX_INDUSTRY_CONCEPT_CAPTURE_LEDGER.json",
+    "sha256": "bfb8405b1ca84787ba425df0ec83592b4b47bb90b0843d2dcd87855aa2143d9d",
+    "bytes": 3086
+  },
+  "verification_observed_at": "2026-10-09T09:54:40.925666+08:00",
+  "snapshot": {
+    "path": "docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json",
+    "sha256": "aa1b102cada2d82b68edcc08e812d42a035dc2fdc4f0528da5d1aa65d4593c30",
+    "bytes": 2568
+  },
+  "frozen_sources": [
+    {
+      "address": "D:\\new_tdx\\T0002\\hq_cache\\tdxhy.cfg",
+      "observed_at": "2026-10-09T09:44:01.158745+08:00",
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/latest_member_raw/638c58e095702469b9471da7e5bfd7bc63611059052ef22eccc0c6de5b66fe9a/tdxhy.cfg",
+      "sha256": "638c58e095702469b9471da7e5bfd7bc63611059052ef22eccc0c6de5b66fe9a",
+      "bytes": 150550
+    },
+    {
+      "address": "D:\\new_tdx\\T0002\\hq_cache\\tdxzs.cfg",
+      "observed_at": "2026-10-09T09:44:01.158745+08:00",
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/latest_member_raw/a33983fc8bb15c97db93fe9b60394b326b71a91e99e33b8b54700415442074da/tdxzs.cfg",
+      "sha256": "a33983fc8bb15c97db93fe9b60394b326b71a91e99e33b8b54700415442074da",
+      "bytes": 18272
+    },
+    {
+      "address": "D:\\new_tdx\\T0002\\hq_cache\\infoharbor_block.dat",
+      "observed_at": "2026-10-09T09:44:01.158745+08:00",
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/latest_member_raw/af3aff645fb9602a98871ba27ad88b54dda2ff47ba460c2ca90bfe448b469bd9/infoharbor_block.dat",
+      "sha256": "af3aff645fb9602a98871ba27ad88b54dda2ff47ba460c2ca90bfe448b469bd9",
+      "bytes": 741571
+    }
+  ],
+  "executed_parser": {
+    "path": "src/sector/membership_snapshot.py",
+    "sha256": "89f819ce4c383425eea8f7845510ce17d6125fd6778513e8b6269edc3e5704b2",
+    "bytes": 2477
+  },
+  "executed_block_reader": {
+    "path": "src/tdx/block_reader.py",
+    "sha256": "2ae8758870826b1a6b41cfdc9fc3c5e88de617e3e70a0bf9c42aa8cd77033edf",
+    "bytes": 6273
+  },
+  "executed_verifier": {
+    "path": "src/workbench_analysis/tdx_member_retro_r43.py",
+    "sha256": "6883083416f887b2c0fa193c3bd9bac736c48d667efe03b46cdb28b38fd1a629",
+    "bytes": 10646
+  },
+  "frozen_executed_verifier": {
+    "path": "docs/evidence/r4_3_four_session_closeout_20261009/capture_builder_versions/6883083416f887b2c0fa193c3bd9bac736c48d667efe03b46cdb28b38fd1a629/tdx_member_retro_r43.py",
+    "sha256": "6883083416f887b2c0fa193c3bd9bac736c48d667efe03b46cdb28b38fd1a629",
+    "bytes": 10646
+  },
+  "member_digest": "44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+  "relation_count": 55136,
+  "exact_names_identity_members_equal": true,
+  "acceptance": "FROZEN_SOURCE_REPARSE_PASS",
+  "original_capture_code_hash_preserved": true
+}

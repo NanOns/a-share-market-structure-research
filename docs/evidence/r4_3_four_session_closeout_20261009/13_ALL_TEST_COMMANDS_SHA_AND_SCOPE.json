@@ -1,0 +1,53 @@
+{
+  "pytest": {
+    "command": "E:/python/python.exe -m pytest tests/test_r43_operational_sources.py tests/test_tdx_member_retro_r43.py tests/test_tdx_snapshot_delta_v2.py tests/test_sector_taxonomy_v2.py tests/test_dm01_corrected_source_v2.py tests/test_v4_current_daily_refresh.py --basetemp E:/codex_tmp/test_temp/r43_final -q",
+    "exit_code": 0,
+    "passed": 37,
+    "seconds": 26.46,
+    "scope": "New operational sources/date/namespace, actual S, member move, episode type, typed ZIP, CSRC isolation, Bao corrected adapter, original daily refresh"
+  },
+  "real_oracles": [
+    {
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/05_FOUR_SESSION_RAW_QFQ_CORE_PROFILE_NUMERIC_ORACLE.json",
+      "sha256": "c910e62d7010b366362fd072968e0ba8cb4e47d247bd5382c5e15dc3dd23e9e3",
+      "bytes": 1410631,
+      "scope": "Actual frozen bytes and full numeric outputs; engineering verification, not external acceptance"
+    },
+    {
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/05_INDEPENDENT_DAILY_PRICE_LIMIT_ORACLE.json",
+      "sha256": "1c278df7afdffecbced8fdd4e79d17d4eba99d69fd05d326719a03c50f420305",
+      "bytes": 15571,
+      "scope": "Actual frozen bytes and full numeric outputs; engineering verification, not external acceptance"
+    },
+    {
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/05_INDEPENDENT_FULL_RPS_AND_EXACT_ENDPOINT_ORACLE.json",
+      "sha256": "67f799681b02a2ba0aa3f231fa833a2705ffa1356106008a2e0faaea014a5df4",
+      "bytes": 2481,
+      "scope": "Actual frozen bytes and full numeric outputs; engineering verification, not external acceptance"
+    },
+    {
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/05_INDEPENDENT_PROFILE_BRANCH_AND_METADATA_ORACLE.json",
+      "sha256": "21c69df395766f57abe853ab154d04e826dedc878ac72db258b2d7ee1ef9fe7c",
+      "bytes": 94064,
+      "scope": "Actual frozen bytes and full numeric outputs; engineering verification, not external acceptance"
+    },
+    {
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/W4_MEMBERSHIP_MOVE_AND_DETERMINISM_QA.json",
+      "sha256": "60b3937cc84471b5c6e85d9285cafbce47af8fef4b45ff0a331e716e1a7d9a8b",
+      "bytes": 1844
+    }
+  ],
+  "external_acceptance": false,
+  "test_sources": [
+    {
+      "path": "tests/test_r43_operational_sources.py",
+      "sha256": "7bc466e21d89c1250b394ad1a122596b4ed3750a7309ba587855fde4eae4bd01",
+      "bytes": 1534
+    },
+    {
+      "path": "tests/test_tdx_member_retro_r43.py",
+      "sha256": "b51f184b2410e221a3d677e0c105db65f88a792d870baa3d883265fd67a63312",
+      "bytes": 2478
+    }
+  ]
+}

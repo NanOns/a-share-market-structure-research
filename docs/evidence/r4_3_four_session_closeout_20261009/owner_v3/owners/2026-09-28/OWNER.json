@@ -1,0 +1,136 @@
+{
+  "trade_date": "2026-09-28",
+  "rows": 5222,
+  "source_digest": "6c64d2ce96d73923c87ca7c69eff1bd863e3df510ee9ab7912afc1f1a3d7727f",
+  "sources": {
+    "package": {
+      "bytes": 551544006,
+      "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261008T234926978138Z/sha256-5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4/hsjday.zip",
+      "sha256": "5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4"
+    },
+    "receipt": {
+      "bytes": 3019,
+      "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261008T234926978138Z/request_receipt.json",
+      "sha256": "e72a09f21778a9da9d59736a8604d440dee4d18e143d6672bf1bbccf837698b9"
+    },
+    "gbbq": {
+      "path": "data/v4/corrected_owner_sources/d5bedb98b2b772c4cdd69dd6dc6845e337e629275963a9a47437cf5f47abacc4/gbbq",
+      "sha256": "d5bedb98b2b772c4cdd69dd6dc6845e337e629275963a9a47437cf5f47abacc4",
+      "bytes": 5613070
+    },
+    "identity": {
+      "bytes": 3112040,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/artifact.json",
+      "sha256": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf"
+    },
+    "contract": {
+      "path": "config/v4_r43_corrected_owner_replay_v3.json",
+      "sha256": "4bd93d66ae6a6d16b9ac08e5b381c9eb0e0047ea1291ef13d84a3dc6c594ee99",
+      "bytes": 1728
+    },
+    "core_kernel": {
+      "path": "src/v4/factors/core.py",
+      "sha256": "8986358268a5ae706c6cc46c95937ed381b65b55d3293667f840ff50008217f1",
+      "bytes": 16643
+    },
+    "adjustment_kernel": {
+      "path": "src/adjustment/tdx_adjustment.py",
+      "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0",
+      "bytes": 5366
+    },
+    "latest_tdx_member_snapshot": {
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json",
+      "sha256": "aa1b102cada2d82b68edcc08e812d42a035dc2fdc4f0528da5d1aa65d4593c30",
+      "bytes": 2568
+    },
+    "r43_producer": {
+      "path": "src/workbench_analysis/r43_owner_replay.py",
+      "sha256": "d98307908784e760f8f6a747b795bffc42ab85756364bd325013ff4f3c617018",
+      "bytes": 17647
+    },
+    "typed_delta_v2": {
+      "path": "docs/evidence/r4_2_1_20261009/TDX_A_STOCK_DELTA_V2_RUNTIME_RECEIPT.json",
+      "sha256": "d57a4875b28fa4fdb88917bac881b174450174e62754a3c31bf2a56aaa24a23b",
+      "bytes": 6067
+    }
+  },
+  "core": {
+    "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/core.jsonl.gz",
+    "sha256": "1d4dc8dfd74361f02a1eefe002e74f4838a37e54b1a1de04ab57adcf92e68841",
+    "bytes": 19774972
+  },
+  "prior_core": {
+    "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/prior_core_target_coordinate.jsonl.gz",
+    "sha256": "c4e1ee4e113641dd0aa1c2c8d8f8fc0285ea9ebf6ce2b5e9ebb130d8ee3a1d3c",
+    "bytes": 19018586
+  },
+  "history": {
+    "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/history.jsonl.gz",
+    "sha256": "82028f9696c749f91eafcf3ecea28c14bf10a49866d72560389a8f3a0d0b7362",
+    "bytes": 66901010
+  },
+  "raw": {
+    "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/raw.jsonl.gz",
+    "sha256": "ca66d601903947b83a185fd14ed798fa250247ccdbcba140746da504cb68c3eb",
+    "bytes": 242415
+  },
+  "adjusted": {
+    "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/adjusted.jsonl.gz",
+    "sha256": "aa6b7fffed7d1c578212efe0266915fe674c331d617e7e71bc9f39e30e5224fc",
+    "bytes": 410769
+  },
+  "actual_raw_rows": 5210,
+  "adjustment_current_ready": 5210,
+  "known_fields": {
+    "ma5": 5221,
+    "ma20": 5212,
+    "ma60": 5199,
+    "hhv5": 5221,
+    "llv5": 5221,
+    "hhv20": 5212,
+    "llv20": 5212,
+    "hhv60": 5199,
+    "llv60": 5199,
+    "prior_high5": 5221,
+    "prior_low5": 5221,
+    "prior_high20": 5212,
+    "prior_low20": 5212,
+    "prior_high60": 5199,
+    "prior_low60": 5199,
+    "amount_ratio5": 5209,
+    "volume_ratio5": 5209,
+    "amount_ratio20": 5200,
+    "volume_ratio20": 5200,
+    "ret1": 5209,
+    "ret3": 5208,
+    "ret5": 5206,
+    "ret20": 5196,
+    "vol5": 5204,
+    "vol20": 5180,
+    "tr": 5210,
+    "atr5": 5221,
+    "atr20": 5212,
+    "slope20": 5211,
+    "slope60": 5195,
+    "hh_progress": 5219,
+    "ll_progress": 5219,
+    "clv": 5207,
+    "prior60_percentile": 5187,
+    "pos60": 5187,
+    "range_ratio": 5212,
+    "atr_ratio": 5212,
+    "vol_ratio": 5180,
+    "core_price_damage": 5199,
+    "rps5": 5206,
+    "rps20": 5196,
+    "rel_market_1": 5209,
+    "rel_market_3": 5208,
+    "rel_market_5": 5206,
+    "rps5_delta1": 5205,
+    "rps5_delta3": 5201,
+    "rps20_delta3": 5191
+  },
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "AS_RECORDED": false,
+  "publication_state": "STAGING_NOT_ACCEPTED"
+}

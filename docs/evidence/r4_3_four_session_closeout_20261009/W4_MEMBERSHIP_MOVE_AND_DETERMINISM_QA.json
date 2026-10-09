@@ -1,0 +1,52 @@
+{
+  "trade_date": "2026-09-28",
+  "actual_snapshot": {
+    "path": "docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json",
+    "sha256": "aa1b102cada2d82b68edcc08e812d42a035dc2fdc4f0528da5d1aa65d4593c30",
+    "bytes": 2568
+  },
+  "actual_core": {
+    "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/core.jsonl.gz",
+    "sha256": "1d4dc8dfd74361f02a1eefe002e74f4838a37e54b1a1de04ab57adcf92e68841",
+    "bytes": 19774972
+  },
+  "actual_raw": {
+    "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/raw.jsonl.gz",
+    "sha256": "ca66d601903947b83a185fd14ed798fa250247ccdbcba140746da504cb68c3eb",
+    "bytes": 242415
+  },
+  "security_id": "SEC-00B87010D45BBCB2A1CB277B6C177121",
+  "moved_from": "THEME:880501",
+  "moved_to": "THEME:880502",
+  "affected_native_primitives": [
+    "THEME:880501",
+    "THEME:880502"
+  ],
+  "unaffected_native_primitive_count": 376,
+  "cross_section_rank_changes": [
+    "THEME:880501",
+    "THEME:880502",
+    "THEME:880506",
+    "THEME:880507",
+    "THEME:880513",
+    "THEME:880583",
+    "THEME:880598",
+    "THEME:880616",
+    "THEME:880703",
+    "THEME:880738",
+    "THEME:880906",
+    "THEME:880916",
+    "THEME:880939",
+    "THEME:880940",
+    "THEME:880953",
+    "THEME:880954",
+    "THEME:880962",
+    "THEME:880966"
+  ],
+  "cross_section_rank_policy": "Ranking is a global downstream dependency; unrelated group primitives stay fixed but cross-section percentile may change",
+  "two_same_input_native_digest": "4ee2a378a6eba5dd35c5ddb4d68f14cc7c0360d0b65807995597f3904e56845e",
+  "deterministic": true,
+  "test_mutation_new_snapshot_id": "QA_NEW_MEMBER_S:1aecc32b1094255b55d53a7ea96305e634ac52aa35700e8dfd92a0307e0b2863",
+  "acceptance": "REAL_S_MEMBER_MOVE_AND_DETERMINISM_PASS",
+  "production_mutation": false
+}

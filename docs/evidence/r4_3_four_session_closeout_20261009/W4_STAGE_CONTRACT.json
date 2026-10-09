@@ -1,0 +1,24 @@
+{
+  "contract_id": "TDX_LATEST_MEMBER_RETRO_SECTOR_V1",
+  "upgrade": "R4.3 W4",
+  "contract": {
+    "path": "config/v4_tdx_latest_member_retro_sector_r43_v1.json",
+    "sha256": "30107ad870312ae068ad1c5ee3207f4a429d38a00fe2d48c601a3736aa185685",
+    "bytes": 1664
+  },
+  "source": {
+    "path": "docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json",
+    "sha256": "aa1b102cada2d82b68edcc08e812d42a035dc2fdc4f0528da5d1aa65d4593c30",
+    "bytes": 2568
+  },
+  "kernel": {
+    "path": "src/sector/native_r5.py",
+    "sha256": "c9240c8658902601c7e018de667796c4e6bce3bfec247c99cb21a24eaba7cc06",
+    "bytes": 13283
+  },
+  "relative_aggregation": "ALL memberships required KNOWN; select best original RELATIVE_STATE_V1 state by frozen precedence then sector_id; retain every original kernel envelope",
+  "production_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+  "strict_pit": false,
+  "acceptance": "IN_PROGRESS",
+  "next_stage": "INDEPENDENT_NUMERIC_QA"
+}

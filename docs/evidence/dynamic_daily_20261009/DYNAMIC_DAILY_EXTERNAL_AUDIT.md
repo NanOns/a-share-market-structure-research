@@ -1,6 +1,6 @@
 # V4-DYNAMIC-DAILY-R1.1 — 全部七项工程验收记录
 
-当前总门：PASS_ALL_SEVEN_ENGINEERING_KEY_DELIVERY_USER_MANUAL_UPLOAD。独立外审 NOT_GRANTED，不能以工程测试或 Git 推送替代。用户明确将 Chrome/Edge 改为默认内置浏览器；1366/1920 两种宽度保留。
+当前总门：PASS_ALL_SEVEN_ENGINEERING_KEY_CLOUD_READBACK。独立外审 NOT_GRANTED，不能以工程测试或 Git 推送替代。用户明确将 Chrome/Edge 改为默认内置浏览器；1366/1920 两种宽度保留。
 
 | 任务 | 已实现和实测证据 | 下一验收门 |
 |---|---|---|
@@ -44,3 +44,6 @@
 
 
 用户最终归档范围：只要关键数据，大文件不通过API上传，提供散文件供用户网页端自行上传。大批量传输已停止；此前全量分卷仅部分上传/回读，不宣称全量云端归档PASS。最终报告DYNAMIC_DAILY_FINAL_DELIVERY.md、关键数字DD07_KEY_DATA.json、本地小包验收DD07_KEY_DELIVERY_LOCAL_RECEIPT.json。工程七项已完成，独立外审NOT_GRANTED。
+
+
+用户最终明确：1 MB以下文件直接API上传Drive，大文件本地提供供网页端上传。现250 KB关键ZIP、2.4 KB交付Markdown、1.6 KB关键JSON已真实上传并原始字节回读；三个SHA、ZIP CRC及14个payload SHA全部PASS，见DD07_KEY_DRIVE_READBACK.json。大文件上传仍停止，独立外审NOT_GRANTED。

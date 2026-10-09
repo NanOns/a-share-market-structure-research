@@ -10,3 +10,6 @@
 下一阶段：提交推送代码与有界证据；生成绑定当前Head与Git的完整新增数值产物分卷清单；通过Google Drive插件归档正式Markdown、master和全部分卷，逐字节CRC/SHA回读；仅外审独立签发可以提升外审状态。
 
 用户最终修订交付范围：停止大批量数值产物API上传，仅本地交付关键报告、真实发布/QA/重启/测试JSON及截图。关键小包逐文件SHA/CRC检查，散文件可直接网页上传。工程已完成，下一门为用户可选上传及独立外审，不以部分云端分卷授予通过。
+
+
+用户最终明确：1 MB以下文件直接API上传Drive，大文件本地提供供网页端上传。现250 KB关键ZIP、2.4 KB交付Markdown、1.6 KB关键JSON已真实上传并原始字节回读；三个SHA、ZIP CRC及14个payload SHA全部PASS，见DD07_KEY_DRIVE_READBACK.json。大文件上传仍停止，独立外审NOT_GRANTED。

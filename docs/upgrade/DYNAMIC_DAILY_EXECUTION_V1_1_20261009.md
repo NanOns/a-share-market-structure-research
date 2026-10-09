@@ -12,7 +12,10 @@
 - DD06：DYNAMIC_DAILY_DD06_20261009.md；原本地日线聚合RAW/QFQ周月，当前月实际全市场146272独立检查0错；边界/事件/停牌/UNKNOWN受控测试；10/09独立oracle146272检查0错。
 - DD07：阶段入口DD07_STAGE_ENTRY.json；最新合同/冻结SHA/六HTTP rehearsal/真实服务与IAB、多缺口和负向事务证据齐备；真实10/09 CAS、六入口同token/UI、发布后重启已PASS；下一门关键文件交付及用户可选网页上传。
 
-总状态PASS_ALL_SEVEN_ENGINEERING_KEY_DELIVERY_USER_MANUAL_UPLOAD。全部七项工程实施与真实新日发布验收完成，关键文件本地交付，用户自行网页上传；独立外审不升级。实时24门范围与真实/模拟分别记录于docs/evidence/dynamic_daily_20261009/DYNAMIC_DAILY_EXTERNAL_AUDIT.md；独立事项INDEPENDENT_AUDIT_ITEMS.md。EXTERNAL_ACCEPTANCE始终NOT_GRANTED；提交推送不授予下一未授权门，当前全部七项用户已授权。
+总状态PASS_ALL_SEVEN_ENGINEERING_KEY_CLOUD_READBACK。全部七项工程实施与真实新日发布验收完成，关键文件本地交付，用户自行网页上传；独立外审不升级。实时24门范围与真实/模拟分别记录于docs/evidence/dynamic_daily_20261009/DYNAMIC_DAILY_EXTERNAL_AUDIT.md；独立事项INDEPENDENT_AUDIT_ITEMS.md。EXTERNAL_ACCEPTANCE始终NOT_GRANTED；提交推送不授予下一未授权门，当前全部七项用户已授权。
 
 
 用户最终归档范围：只要关键数据，大文件不通过API上传，提供散文件供用户网页端自行上传。大批量传输已停止；此前全量分卷仅部分上传/回读，不宣称全量云端归档PASS。最终报告DYNAMIC_DAILY_FINAL_DELIVERY.md、关键数字DD07_KEY_DATA.json、本地小包验收DD07_KEY_DELIVERY_LOCAL_RECEIPT.json。工程七项已完成，独立外审NOT_GRANTED。
+
+
+用户最终明确：1 MB以下文件直接API上传Drive，大文件本地提供供网页端上传。现250 KB关键ZIP、2.4 KB交付Markdown、1.6 KB关键JSON已真实上传并原始字节回读；三个SHA、ZIP CRC及14个payload SHA全部PASS，见DD07_KEY_DRIVE_READBACK.json。大文件上传仍停止，独立外审NOT_GRANTED。

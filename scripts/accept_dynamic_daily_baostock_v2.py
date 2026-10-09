@@ -5,7 +5,8 @@ import argparse,json,sys
 ROOT=Path(__file__).resolve().parents[1]
 sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 from scripts.accept_v4_dm01_baostock_runtime import _record, REQUIRED_DAILY_FIELDS, REQUIRED_FACTOR_FIELDS
-from workbench_analysis.baostock_supplemental import BaoStockClient, RequestBudget, package_metadata
+from workbench_analysis.baostock_supplemental import RequestBudget, package_metadata
+from workbench_analysis.operational_baostock_client_v1 import BaoStockClient
 from workbench_analysis.baostock_daily_update_source import DAILY_METHOD, FACTOR_METHOD, _validate_daily_rows, _validate_factor_rows
 from workbench_analysis.baostock_runtime_acceptance import build_runtime_acceptance_manifest
 from workbench_analysis.daily_data_head import write_json_atomic
@@ -49,18 +50,31 @@ def accept_runtime(target, root=ROOT):
             _validate_daily_rows(daily,target);_validate_factor_rows(factor,target)
             if not daily:
                 raise ValueError('BAOSTOCK_LIVE_SMOKE_NO_TARGET_DATE_DAILY_ROWS')
+            if not factor:
+                from workbench_analysis.operational_runtime_acceptance_v2 import prove_no_change
+                from workbench_analysis.baostock_daily_update_source import _canonical_rows_digest
+                proof=prove_no_change(root,target,daily,client,runtime)
+                factor_record=dict(method=FACTOR_METHOD,provider_date=None,row_count=0,fields=fm['fields'],
+                    response_sha256=_canonical_rows_digest(factor),no_change_target_session=target,no_change_proof=proof)
+            else:factor_record=_record(FACTOR_METHOD,factor,fm,REQUIRED_FACTOR_FIELDS,target)
             smoke=dict(status='PASS',target_date=target,auth_mode=client.auth_mode,
                 endpoint=dict(client.runtime_endpoint),daily=_record(DAILY_METHOD,daily,dm,REQUIRED_DAILY_FIELDS,target),
-                adjustment_factor=_record(FACTOR_METHOD,factor,fm,REQUIRED_FACTOR_FIELDS,target))
+                adjustment_factor=factor_record)
             receipt.update(status='PASS',live_smoke=smoke)
-    except (ValueError,OSError) as exc:
+    except (ValueError,OSError,RuntimeError) as exc:
         receipt['reason']=str(exc)[:160]
     digest=write_json_atomic(smoke_path,receipt,tdx_root=Path('D:/new_tdx'))
     if receipt['status']!='PASS':
         return dict(status='WAIT_BAOSTOCK_DAILY_UPDATE',reason=receipt.get('reason'),
                     smoke_receipt=smoke_path.relative_to(root).as_posix(),source_sha256=digest)
-    manifest=build_runtime_acceptance_manifest(sdk=runtime,auth_mode=receipt['auth_mode'],live_smoke=receipt['live_smoke'],
-        smoke_receipt_path=smoke_path.relative_to(root).as_posix(),smoke_receipt_sha256=digest)
+    if receipt['live_smoke']['adjustment_factor']['row_count']==0:
+        from workbench_analysis.operational_runtime_acceptance_v2 import CONTRACT,canonical_sha256
+        manifest=dict(contract_id=CONTRACT,version='2.0.0',status='ACCEPTED',runtime=receipt['runtime'],auth_mode=receipt['auth_mode'],
+            live_smoke=receipt['live_smoke'],smoke_receipt=dict(path=smoke_path.relative_to(root).as_posix(),sha256=digest))
+        manifest['manifest_sha256']=canonical_sha256(manifest)
+    else:
+        manifest=build_runtime_acceptance_manifest(sdk=runtime,auth_mode=receipt['auth_mode'],live_smoke=receipt['live_smoke'],
+            smoke_receipt_path=smoke_path.relative_to(root).as_posix(),smoke_receipt_sha256=digest)
     write_json_atomic(folder/(stamp+'_accepted_runtime_manifest.json'),manifest,tdx_root=Path('D:/new_tdx'))
     write_json_atomic(folder/'accepted_runtime_manifest.json',manifest,tdx_root=Path('D:/new_tdx'))
     return dict(status='ACCEPTED',target_date=target,manifest= (folder/'accepted_runtime_manifest.json').relative_to(root).as_posix())

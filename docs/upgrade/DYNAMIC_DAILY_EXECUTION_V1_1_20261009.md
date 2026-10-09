@@ -42,3 +42,31 @@ DD-A04: algorithm acceptance and affected-history recomputation must be bound be
 successor production. No old one-time user cutover signature may be reused.
 
 Overall DD01–DD07 delivery is IN_PROGRESS, not a final release acceptance.
+
+## DD02 source execution
+
+Real official metadata reports package date 2026-10-09 15:58:53. The 551,544,006
+byte ZIP (SHA256 5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4)
+contains actual A-stock bars only through 2026-10-08 at this observation. Thus
+package publication date cannot prove 10/09 bars. Historical extraction produced
+5,557 native A-stock rows for 10/08, with later-snapshot reconstruction explicit.
+This includes rows outside the canonical daily market and is NOT a coverage QA pass.
+
+Initial extraction rejected a date-order defect in sh000833 (an index). The successor
+now uses the existing typed A-stock classification before parsing market-specific
+stock bars; index data is explicitly excluded, not silently repaired. Stock order
+defects remain fatal. Source download used the existing R3 official challenge adapter;
+rejected response bytes and actual ZIP receipt are preserved outside TDX.
+
+10/08 real BaoStock smoke initially failed on factor header `adjustFacto`. Reused
+the existing exact SDK SHA schema adapter (0.9.3, 32bd19de…8686bfe), retaining native
+responses. Normalized provider dates are derived from actual returned daily/effective
+dates, never request echoes. The actual dual-series runtime subsequently passed.
+Schema independent external acceptance remains NOT_GRANTED; no QFQ authority change.
+
+Evidence: DD02_REAL_TDX_EXTRACTION.json and DD02_BAOSTOCK_RUNTIME_READBACK.json,
+actual smoke manifests/native rows, shared request ledger, latest capture receipt.
+Acceptance: ENGINEERING_PASS_SCOPED for official latest-package historical extraction
+and actual dated runtime smoke; complete source/identity reconciliation is pending.
+Next gated dependency: DD03 dated identity/lifecycle/GBBQ QA and full numeric Owner
+successor, alongside independent DD04 job/UI work. No 10/09 publication occurred.

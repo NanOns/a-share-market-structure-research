@@ -1,0 +1,74 @@
+{
+  "auth_mode": "PUBLIC_ANONYMOUS",
+  "contract_id": "BAOSTOCK_DAILY_UPDATE_RUNTIME_ACCEPTANCE_V1",
+  "live_smoke": {
+    "adjustment_factor": {
+      "error_code": "0",
+      "fields": [
+        "code",
+        "dividOperateDate",
+        "foreAdjustFactor",
+        "backAdjustFactor",
+        "adjustFactor"
+      ],
+      "method": "query_daily_adjust_factor",
+      "page_count": 1,
+      "provider_date": "2026-10-08",
+      "response_sha256": "29ef57c477b03a47008cadc0290dacb3c3ee82efd9062a04c13eda51d9a73988",
+      "row_count": 6
+    },
+    "auth_mode": "PUBLIC_ANONYMOUS",
+    "daily": {
+      "error_code": "0",
+      "fields": [
+        "date",
+        "code",
+        "open",
+        "high",
+        "low",
+        "close",
+        "preclose",
+        "volume",
+        "amount",
+        "adjustflag",
+        "turn",
+        "tradestatus",
+        "pctChg",
+        "peTTM",
+        "pbMRQ",
+        "psTTM",
+        "pcfNcfTTM",
+        "isST"
+      ],
+      "method": "query_daily_history_k_AStock",
+      "page_count": 1,
+      "provider_date": "2026-10-08",
+      "response_sha256": "49d6a3de8d86b90e913e624171d5c9d3e88f8f06eb4d631fb08629e62482c7d9",
+      "row_count": 5224
+    },
+    "endpoint": {
+      "configured_host": "public-api.baostock.com",
+      "configured_port": 10030,
+      "connected_peer_ip": "114.94.20.42",
+      "connected_peer_port": 10030
+    },
+    "status": "PASS",
+    "target_date": "2026-10-08"
+  },
+  "manifest_sha256": "54760933496147ebe1588a25cce218d6165accef7ca193e88693999efeb5acdc",
+  "runtime": {
+    "installed_python_sources_sha256": "32bd19deb872561c8f9c40063de38df4fe4ab0f1073685538f627a9238686bfe",
+    "package": "baostock",
+    "version": "0.9.3"
+  },
+  "smoke_receipt": {
+    "path": "reports/v4_baostock/runtime_acceptance/20261008/20261009T162731618848_live_smoke_receipt.json",
+    "sha256": "5aa8dbacde8daca32b3dbe8e004e478d7a2b6b24cf2bb5d1701b1c6f4180c904"
+  },
+  "status": "ACCEPTED",
+  "supported_methods": [
+    "query_daily_history_k_AStock",
+    "query_daily_adjust_factor"
+  ],
+  "version": "1.0.0"
+}

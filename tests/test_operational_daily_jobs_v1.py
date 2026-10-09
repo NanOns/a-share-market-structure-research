@@ -27,6 +27,37 @@ def test_persistent_default_pause_restart(tmp_path,plan):
     assert len(again.events(again.enqueue(key='manual')))==1
 
 
+def test_cancel_after_success_keeps_publication_and_stops_next_day(tmp_path,plan):
+    calls=[]
+    def executor(day,mode):
+        calls.append(day);jobs.cancel(job)
+        return dict(status='PUBLISHED',evidence_kind='SIMULATED_EXECUTOR_ONLY')
+    jobs=DailyJobs(tmp_path,executor,lambda:datetime.fromisoformat('2026-10-09T22:10+08:00'))
+    jobs.settings(False);job=jobs.enqueue();jobs.tick();jobs.tick()
+    assert calls==['2026-10-08']
+    assert jobs.job(job)['status']=='CANCELLED'
+    assert jobs.job(job)['days'][0]['state']=='PUBLISHED'
+
+
+@pytest.mark.parametrize('count',[1,2,5,10,20])
+def test_gap_order_restart_and_no_republish(tmp_path,monkeypatch,count):
+    # Simulated sources/executor; the durable queue and restart are real.
+    from test_operational_daily_calendar_v2 import calendar
+    dates=calendar()['session_dates'][1:count+1]
+    monkeypatch.setattr(module,'gap_plan',lambda *a,**k:dict(status='TIME_ELIGIBLE',requested_through_date=dates[-1],
+        missing_sessions=dates,eligible_sessions=dates,last_good_trade_date='2026-09-01'))
+    calls=[];failed=[True]
+    def executor(day,mode):
+        calls.append(day)
+        return dict(status='QA_BLOCKED' if day==dates[-1] and failed[0] else 'PUBLISHED',
+                    evidence_kind='SIMULATED_SOURCE_AND_OWNER_ONLY')
+    clock=lambda:datetime.fromisoformat('2026-12-01T22:10+08:00')
+    jobs=DailyJobs(tmp_path,executor,clock);jobs.settings(False);job=jobs.enqueue();jobs.tick()
+    assert calls==dates and jobs.job(job)['status']=='QA_BLOCKED'
+    failed[0]=False;restart=DailyJobs(tmp_path,executor,clock);restart.retry(job);restart.tick()
+    assert calls==dates+[dates[-1]] and restart.job(job)['status']=='PUBLISHED_FULL'
+
+
 def test_concurrent_idempotency_and_days(tmp_path,plan):
     jobs=DailyJobs(tmp_path)
     with ThreadPoolExecutor(max_workers=4) as pool:

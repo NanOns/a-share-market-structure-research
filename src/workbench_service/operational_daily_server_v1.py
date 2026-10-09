@@ -13,9 +13,49 @@ PREFIX='/api/v4/operations/daily-update'
 
 def make_daily_handler(root,jobs):
     root=Path(root);base=make_v4_handler(root);writes={};mutex=threading.Lock()
+    successor_cache={};successor_lock=threading.RLock()
+    def successor_reader():
+        import hashlib
+        from workbench_analysis.operational_successor_v1 import accepted_api
+        head=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+        signature=hashlib.sha256(head.read_bytes()).hexdigest()
+        changed=any(not p.is_file() or (p.stat().st_size,p.stat().st_mtime_ns)!=stat for p,stat in successor_cache.get('sources',{}).items())
+        if changed or signature!=successor_cache.get('signature'):
+            api=accepted_api(root);bindings=[]
+            def collect(value):
+                if isinstance(value,dict):
+                    if value.get('path') and value.get('sha256'):bindings.append(value)
+                    for child in value.values():collect(child)
+                elif isinstance(value,list):
+                    for child in value:collect(child)
+            collect(api.candidate);collect(api.snapshot)
+            collect(json.loads((root/api.candidate['registry']['path']).read_bytes()))
+            paths={root/b['path'] for b in bindings}
+            successor_cache.clear()
+            successor_cache.update(signature=signature,api=api,sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
+        from copy import copy
+        return copy(successor_cache['api'])
     class Handler(base):
         def do_GET(self):
             parsed=urlparse(self.path);path=parsed.path
+            if (path.startswith('/api/v4/') and not path.startswith(PREFIX) and not path.startswith('/api/v4/original-0930/')) or path=='/api/operations/status':
+                from workbench_analysis.operational_successor_v1 import CONTRACT,accepted_api
+                head=json.loads((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())
+                if head.get('contract_id')==CONTRACT:
+                    try:
+                        with successor_lock:
+                            api=successor_reader()
+                            if path=='/api/operations/status':
+                                return self.send(200,dict(service_state='RUNNING',service_mode='V4_DEFAULT_WORKBENCH',
+                                    context=api.context(),context_token=api.token,daily_update=jobs.status()))
+                            from .operational_successor_bff_v1 import OperationalSuccessorBFFV1
+                            from .research_bff import ResearchBFF
+                            params=parse_qs(parsed.query,keep_blank_values=True)
+                            if any(len(v)!=1 for v in params.values()):raise ValueError('DUPLICATE_PARAMETER')
+                            code,payload=OperationalSuccessorBFFV1(api,ResearchBFF(root)).get(path,{k:v[0] for k,v in params.items()})
+                        return self.send(code,payload)
+                    except (ValueError,KeyError,OSError) as exc:
+                        return self.send(409 if str(exc)=='CONTEXT_TOKEN_MISMATCH' else 503,dict(code='SUCCESSOR_READ_FAILED',reason=str(exc)[:180]))
             if path=='/v4/research/data-update':
                 return self.send(200,(root/'src/workbench_service/static/daily-update/index.html').read_bytes(),'text/html; charset=utf-8')
             if path=='/v4/daily-update.js':
@@ -26,6 +66,20 @@ def make_daily_handler(root,jobs):
                 raw=checked(root,adapter['ui_assets']['app.js']).read_bytes()
                 enhancement=(root/'src/workbench_service/static/daily-update/entry.js').read_bytes()
                 return self.send(200,raw+b'\n'+enhancement,'application/javascript; charset=utf-8')
+            if path in ('/v4/assets/api.js','/v4/assets/components.js'):
+                from workbench_analysis.operational_successor_v1 import CONTRACT
+                from workbench_analysis.r43_owner_replay import checked
+                head=json.loads((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())
+                if head.get('contract_id')==CONTRACT:
+                    registry=json.loads(checked(root,head['registry']).read_bytes())
+                    relative='src/workbench_service/static/r43-compat/'+path.rsplit('/',1)[1]
+                    binding=next(b for b in registry['bindings'] if b['path']==relative)
+                    return self.send(200,checked(root,binding).read_bytes(),'application/javascript; charset=utf-8')
+            if path==PREFIX+'/releases':
+                from workbench_analysis.r43_owner_replay import ref
+                head=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+                archives=sorted((head.parent/'predecessors').glob('*.json'),key=lambda p:p.stat().st_mtime_ns,reverse=True)
+                return self.send(200,dict(current=ref(root,head),predecessors=[ref(root,p) for p in archives[:100]]))
             if path.startswith(PREFIX):
                 try:
                     tail=path.removeprefix(PREFIX).strip('/').split('/')
@@ -68,6 +122,8 @@ def make_daily_handler(root,jobs):
                     return self.send(202,dict(job_id=job))
                 if self.command=='POST' and len(tail)==3 and tail[0]=='jobs' and tail[2]=='retry':
                     return self.send(202,dict(job_id=jobs.retry(tail[1])))
+                if self.command=='POST' and len(tail)==3 and tail[0]=='jobs' and tail[2]=='cancel':
+                    return self.send(202,dict(job_id=jobs.cancel(tail[1])))
                 return self.send(404,dict(code='DAILY_ROUTE_NOT_FOUND'))
             except (ValueError,TypeError,KeyError) as exc:
                 return self.send(400,dict(code='INVALID_DAILY_REQUEST',reason=str(exc)[:100]))
@@ -78,7 +134,9 @@ def make_daily_handler(root,jobs):
 
 def serve_v4(root,host='127.0.0.1',port=28765):
     if host not in {'127.0.0.1','localhost'}:raise ValueError('LAN_DAILY_OPERATIONS_REQUIRE_AUTHENTICATED_ADAPTER')
-    jobs=DailyJobs(root,executor=lambda day,mode:execute_sources(root,day,mode))
+    from workbench_analysis.operational_successor_release_v1 import recover
+    recover(root)
+    jobs=DailyJobs(root,executor=lambda day,mode:execute_sources(root,day,mode,cancelled=jobs.publication_cancelled,readback_url=f'http://127.0.0.1:{port}'))
     server=ThreadingHTTPServer((host,port),make_daily_handler(root,jobs))
     jobs.start()
     try:server.serve_forever()

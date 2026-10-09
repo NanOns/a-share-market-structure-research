@@ -5,14 +5,18 @@ import json
 from . import tdx_official_daily_source as tdx
 from .tdx_latest_daily_source_v2 import capture_latest_tdx_package,extract_target_session_bars
 from .operational_daily_storage_v1 import output_path,atomic_json
-from .baostock_runtime_acceptance import load_runtime_acceptance_manifest,runtime_acceptance_error
+from .operational_runtime_acceptance_v2 import load as load_runtime_acceptance_manifest,error as runtime_acceptance_error
 from .baostock_supplemental import package_metadata
 from .baostock_dm01_sdk_schema_v2 import normalize_response
 from .baostock_daily_update_source import DAILY_METHOD,FACTOR_METHOD,_canonical_rows_digest
 
 
-def execute_sources(root,day,mode):
+def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,readback_url=None):
     root=Path(root)
+    if mode!='PROBE' and not capture_only:
+        head=json.loads((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())
+        if day<=head['accepted_trade_date']:
+            return dict(status='PUBLISHED',reason='NOOP_ALREADY_CURRENT',accepted_trade_date=head['accepted_trade_date'],recovered_after_cas=True)
     if mode=='PROBE':
         response=tdx._request(tdx.PAGE_URL)
         try:
@@ -33,8 +37,6 @@ def execute_sources(root,day,mode):
     if not package.get('download'):
         return dict(status='WAIT_TDX',reason='LATEST_OFFICIAL_PACKAGE_NOT_FROZEN')
     bars=extract_target_session_bars(package,day,snapshot_root=snapshot)
-    if bars['status']!='TARGET_BARS_EXTRACTED':
-        return dict(status='WAIT_TDX',reason='ACTUAL_TARGET_SESSION_NOT_IN_LATEST_PACKAGE',tdx=bars['artifact'])
     manifest_path=root/'reports/v4_baostock/runtime_acceptance'/day.replace('-','')/'accepted_runtime_manifest.json'
     try:
         manifest=load_runtime_acceptance_manifest(manifest_path,project_root=root)
@@ -65,15 +67,33 @@ def execute_sources(root,day,mode):
         expected=manifest['live_smoke']['daily' if name=='daily' else 'adjustment_factor']
         if _canonical_rows_digest(rows)!=expected['response_sha256']:
             raise ValueError('SOURCE_RESPONSE_RUNTIME_DIGEST_MISMATCH')
+    from .tdx_local_daily_fallback_v1 import fallback
+    package,bars,local_receipt=fallback(package,bars,day,normalized['daily']['rows'],snapshot_root=snapshot)
+    if bars['status']!='TARGET_BARS_EXTRACTED':
+        return dict(status='WAIT_TDX',reason='ACTUAL_TARGET_SESSION_NOT_IN_VERIFIED_NATIVE_SOURCES',tdx=bars['artifact'])
+    available=max(datetime.fromisoformat(raw['observed_at']),datetime.fromisoformat(bars['source_available_at'])).isoformat()
     artifact=dict(contract_id='DYNAMIC_DAILY_SOURCE_FREEZE_V1',target_session=day,
-        observed_at=raw['observed_at'],AS_RECORDED=False,PIT_ELIGIBLE=False,
+        observed_at=available,AS_RECORDED=False,PIT_ELIGIBLE=False,
         tdx=bars['artifact'],native_baostock=dict(path=raw_path.relative_to(root).as_posix(),sha256=tdx.sha256_file(raw_path)),
         runtime_manifest=dict(path=manifest_path.relative_to(root).as_posix(),sha256=tdx.sha256_file(manifest_path)),
         normalized=normalized,canonical_qfq_authority='TDX_GBBQ_UNCHANGED',
         factor_role='AUDIT_FACT_NOT_CANONICAL_QFQ_AUTHORITY')
+    if local_receipt:artifact.update(local_fallback=local_receipt,effective_package=package)
     digest=tdx.sha256_bytes(tdx._json_bytes(artifact));p=snapshot/'daily_freezes'/day/(digest+'.json')
     if not p.is_file():atomic_json(root,p,artifact)
-    return dict(status='QA_BLOCKED',reason='DATED_IDENTITY_LIFECYCLE_GBBQ_AND_SUCCESSOR_OWNER_CHAIN_NOT_ADMITTED',
+    elif json.loads(p.read_bytes())!=artifact:raise ValueError('IMMUTABLE_SOURCE_FREEZE_COLLISION')
+    result=dict(status='SOURCE_CAPTURED',
         source_freeze=dict(path=p.relative_to(root).as_posix(),sha256=tdx.sha256_file(p)),
         tdx_bar_count=bars['row_count'],baostock_row_count=len(normalized['daily']['rows']),
         source_captured=True,source_ready=False,derived_ready=False,published=False,last_good_preserved=True)
+    if capture_only:return result
+    from .operational_daily_owner_v1 import build,seal
+    produced,context=build(root,result['source_freeze'])
+    if cancelled():return dict(result,status='CANCELLED',reason='CANCELLED_BEFORE_CAS')
+    candidate,binding=seal(root,context)
+    if cancelled():return dict(result,status='CANCELLED',reason='CANCELLED_BEFORE_CAS')
+    if not readback_url:return dict(result,status='QA_BLOCKED',reason='LIVE_SERVICE_READBACK_ENDPOINT_REQUIRED',candidate=binding)
+    from .operational_successor_release_v1 import promote
+    from .operational_daily_http_readback_v1 import readback
+    publication=promote(root,candidate,candidate['predecessor']['sha256'],lambda c:readback(readback_url,c))
+    return dict(result,**publication,source_ready=True,derived_ready=True,published=True,candidate=binding)

@@ -1,0 +1,159 @@
+{
+  "contract_id": "V4_R4_CORRECTED_OWNER_INDEPENDENT_READBACK_V1",
+  "dates": [
+    {
+      "trade_date": "2026-09-28",
+      "identities": 5222,
+      "structure_rows": 5222,
+      "new_anchors": 182,
+      "preserved_anchor_observations": 0,
+      "source_oracle": {
+        "ma20": 5212,
+        "atr20": 5212,
+        "independent_affine_ohlc": 1561984
+      },
+      "source_oracle_samples": 30,
+      "health_known": 96,
+      "relative_sector_known": 5135,
+      "independent_LOO_samples": 30,
+      "D0": {
+        "UNKNOWN": 5108,
+        "TRUE": 114
+      },
+      "PREWATCH": {
+        "FALSE": 4085,
+        "TRUE": 1105,
+        "UNKNOWN": 32
+      },
+      "D2_freshness": {
+        "STALE": 5108,
+        "FRESH": 114
+      },
+      "T_minus_1": "2026-09-24",
+      "T_minus_3": "2026-09-22"
+    },
+    {
+      "trade_date": "2026-09-29",
+      "identities": 5223,
+      "structure_rows": 5223,
+      "new_anchors": 393,
+      "preserved_anchor_observations": 182,
+      "source_oracle": {
+        "ma20": 5214,
+        "atr20": 5212,
+        "independent_affine_ohlc": 1562096
+      },
+      "source_oracle_samples": 30,
+      "health_known": 279,
+      "relative_sector_known": 5137,
+      "independent_LOO_samples": 30,
+      "D0": {
+        "UNKNOWN": 5033,
+        "TRUE": 190
+      },
+      "PREWATCH": {
+        "TRUE": 1189,
+        "FALSE": 4001,
+        "UNKNOWN": 33
+      },
+      "D2_freshness": {
+        "STALE": 5054,
+        "FRESH": 169
+      },
+      "T_minus_1": "2026-09-28",
+      "T_minus_3": "2026-09-23"
+    },
+    {
+      "trade_date": "2026-09-30",
+      "identities": 5224,
+      "structure_rows": 5224,
+      "new_anchors": 393,
+      "preserved_anchor_observations": 575,
+      "source_oracle": {
+        "ma20": 5215,
+        "atr20": 5214,
+        "independent_affine_ohlc": 1562212
+      },
+      "source_oracle_samples": 30,
+      "health_known": 433,
+      "relative_sector_known": 5135,
+      "independent_LOO_samples": 30,
+      "D0": {
+        "UNKNOWN": 5049,
+        "TRUE": 175
+      },
+      "PREWATCH": {
+        "FALSE": 4069,
+        "TRUE": 1120,
+        "UNKNOWN": 35
+      },
+      "D2_freshness": {
+        "STALE": 5102,
+        "FRESH": 122
+      },
+      "T_minus_1": "2026-09-29",
+      "T_minus_3": "2026-09-24"
+    },
+    {
+      "trade_date": "2026-10-08",
+      "identities": 5224,
+      "structure_rows": 5224,
+      "new_anchors": 409,
+      "preserved_anchor_observations": 968,
+      "source_oracle": {
+        "ma20": 5215,
+        "atr20": 5215,
+        "independent_affine_ohlc": 1562328
+      },
+      "source_oracle_samples": 30,
+      "health_known": 590,
+      "relative_sector_known": 5129,
+      "independent_LOO_samples": 30,
+      "D0": {
+        "UNKNOWN": 5074,
+        "TRUE": 150
+      },
+      "PREWATCH": {
+        "FALSE": 4282,
+        "TRUE": 909,
+        "UNKNOWN": 33
+      },
+      "D2_freshness": {
+        "STALE": 5124,
+        "FRESH": 100
+      },
+      "T_minus_1": "2026-09-30",
+      "T_minus_3": "2026-09-28"
+    }
+  ],
+  "errors": [],
+  "acceptance": "PASS_CORRECTED_CANDIDATE_SCOPE",
+  "journal_checks": [
+    "REAL_LAST_SESSION_APPEND_FAILURE_ROLLED_BACK",
+    "IDENTICAL_CANDIDATE_NOOP",
+    "STALE_CAS_REJECTED"
+  ],
+  "focus_episodes": 2476,
+  "forward_outcomes": {
+    "OBSERVED": 3417,
+    "PENDING": 9738
+  },
+  "protected": {
+    "config/v4_joint_release_authority_v1.json": true,
+    "data/v4/V4_DATA_ACCEPTED_HEAD.json": true
+  },
+  "future_membership_capture": true,
+  "change_count": 0,
+  "production_release": "BLOCKED_SCOPED_EXTERNAL_OWNER_ADMISSION",
+  "production_admission": false,
+  "remaining_independent_items": [
+    "TDX_CONCEPT_EFFECTIVE_HISTORY",
+    "CANONICAL_BJ_IDENTITY",
+    "UNKNOWN_PRIOR_EPISODE_ABSENCE",
+    "ACCEPTED_CORRECTED_ROTATION_EPISODE",
+    "TARGET_PRICE_LIMIT_OWNER",
+    "EXTERNAL_SCOPED_OWNER_ADMISSION"
+  ],
+  "current_live_trade_date": "2026-09-30",
+  "next_stage": "INDEPENDENT_EXTERNAL_REVIEW_OF_SEALED_CORRECTED_OWNERS"
+}

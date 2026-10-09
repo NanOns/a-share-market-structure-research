@@ -111,6 +111,17 @@ def freeze_membership_observation(root, folder, dates, roots):
     record=dict(contract_id='R4_DAILY_MEMBERSHIP_OBSERVATION_V1', files=files,
                 policy='FREEZE_ON_EACH_DM01_RUN; NEVER_BACKDATE_MTIME_AS_EFFECTIVE_DATE',
                 effective_date_admission=False)
+    pointer=Path(root)/'data/v4/membership_observations/LATEST.json'
+    previous=json.loads(pointer.read_bytes()) if pointer.exists() else None
+    old={f['path']:f.get('hash') for f in (previous or {}).get('files',[])}
+    record['previous_observation_digest']=digest(json.dumps(previous,sort_keys=True).encode()) if previous else None
+    record['changes']=[dict(path=f['path'],before=old.get(f['path']),after=f.get('hash'),
+                          kind='FIRST_OBSERVATION' if f['path'] not in old else 'CONTENT_CHANGED')
+                       for f in files if f.get('hash') and old.get(f['path'])!=f.get('hash')]
+    record['target_sessions']=list(dates)
+    immutable=pointer.parent/digest(json.dumps(record,sort_keys=True).encode())/'observation.json'
+    write(immutable,record)
+    write(pointer,record)
     write(folder / 'membership_observation.json',record)
     return record
 

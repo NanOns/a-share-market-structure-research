@@ -1,0 +1,24 @@
+{
+  "contract_id": "V4_DATED_MEMBERSHIP_SOURCE_POLICY_V1",
+  "version": "1.0.0",
+  "baostock_industry": {
+    "dataset_id": "BAOSTOCK_CSRC_INDUSTRY",
+    "source_method": "query_stock_industry",
+    "date_parameter_required": true,
+    "provider_revision_field": "updateDate",
+    "revision_must_not_exceed_target": true,
+    "taxonomy": "证监会行业分类",
+    "sector_namespace": "BAO_CSRC:",
+    "lineage": "DATE_EFFECTIVE_RECONSTRUCTED",
+    "historical_first_available": "UNKNOWN",
+    "TDX_taxonomy_substitution": false,
+    "concept_coverage": false
+  },
+  "tdx_current_files": {
+    "capture": "AUTOMATIC_CONTENT_ADDRESSED_OBSERVATION",
+    "mtime_as_effective_date": false,
+    "historical_backfill": false,
+    "previous_revision_diff": true
+  },
+  "permissions": {"production": false, "shadow": false}
+}

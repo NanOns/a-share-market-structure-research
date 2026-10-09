@@ -12,3 +12,19 @@ These items have independent acceptance; passing acquisition tests closes none o
 | R4-A06 | 9/30 T-3 is 9/24. New discovery uses verified calendar union and 10/08 T-1=9/30. Existing published RPS/structure owners were not republished. | Bind actual RPS predecessor owners and verify all seven structural fields against actual-date populations, then same-context CAS/readback. |
 
 Overall R4.1 acceptance remains **NOT_COMPLETE / BLOCKED_SAFE_LAST_GOOD**. Source acquisition is substantive progress; it is not full stage acceptance.
+
+## Corrected owner execution update
+
+The table above preserves the acquisition-stage baseline. Current evidence is under `docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/`; the current handoff supersedes the earlier unmaterialized-owner claims.
+
+| Item | Current evidence and scoped result | Remaining independent acceptance |
+|---|---|---|
+| R4-A02 | All 528 original security-days now have current and exact-prior ATR20 windows. Unsupported historical events block only bars whose transform crosses the event. Original affine kernel and cent rounding retained; independent chronological OHLC arithmetic has zero errors across over 6.2 million values. | Longer windows crossing unsupported events remain UNKNOWN. BaoStock QFQ is never relabelled native. Historical first availability remains unproved. |
+| R4-A03 | Four real date-parameter industry responses are frozen; provider updateDate never exceeds target. Separate CSRC taxonomy has 83 industries and 5222/5222/5222/5224 memberships. Automatic TDX byte snapshots and revision comparisons now run through DM01. | Effective historical TDX concepts are not proved. CSRC industry is not a replacement for that taxonomy. |
+| R4-A04 | Exact descendant reader and registered historical producer bytes resolve. All four dates have full Core/Profile, V4-12 episode snapshots, V4-13 projections and target-excluded relative-sector materialization. Health producer metadata repaired separately. | Breakout prior-episode absence stays UNKNOWN. No fabricated empty prior or FALSE substitution. |
+| R4-A05 | Formal current daily entry actually captures source then invokes shared corrected owners, including D0/D2/Focus/Forward. Fixed WAIT exit-code-zero publishing bug: publication additionally requires admitted promotion status and the requested accepted date. Real candidate CAS/noop/rollback passes. | Scoped production/external owner admission remains separate; original joint/data/runtime authorities preserved. |
+| R4-A06 | Exact calendar endpoints and RPS deltas are materialized. Four dates independently verified; Oct08 T-1=Sep30, T-3=Sep28; Sep30 T-3=Sep24. | Production successor requires independent scoped review. |
+| R4-A07 | Separate comprehensive audit: market stress needs a dated legal price-limit owner; remaining unknown BJ canonical identities are raw observations only. Market trend/breadth/participation execute; CSRC native current facts and B0 execute. Scope/evidence: MARKET_ROTATION_REPLAY and FOUR_SESSION_FINAL_RECONCILIATION. | Date-effective identity and price-limit source contracts plus independent acceptance; not waived by Core or source QA. |
+| R4-A08 | Separate rotation audit: original rotation kernel runs for all 83 dated CSRC groups on each date. Oct08 B0 has 21 TRUE, 32 FALSE, 30 UNKNOWN. | No accepted corrected prior rotation episode; rotation stays UNKNOWN. Do not tag a candidate prior as accepted to force a result. |
+
+Engineering repair/materialization scope: **PASS_CORRECTED_CANDIDATE_SCOPE**. Production cutover: **BLOCKED_SCOPED_EXTERNAL_OWNER_ADMISSION**. These are distinct conclusions.

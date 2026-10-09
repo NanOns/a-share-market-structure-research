@@ -44,3 +44,33 @@ def test_descendant_reader_preserves_exact_head_and_producer_identities():
     assert c.authority['production'] is False
     assert c.digest==c.authority['contract_digest']
     assert c.resolutions
+
+
+def test_health_metadata_does_not_promote_unknown_support():
+    from workbench_analysis.corrected_health_projection import health_cell
+    mapping={'HELD_CONFIRMED':'STABLE','default':'STABLE'}
+    state={'state_observations':{'support':{'state':'HELD_CONFIRMED','quality':'UNKNOWN','reason':['MISSING_PRIOR']}}}
+    assert health_cell(state,mapping)==dict(value=None,quality='UNKNOWN',reason=['MISSING_PRIOR'])
+    state['state_observations']['support']['quality']='KNOWN'
+    assert health_cell(state,mapping)['value']=='STABLE'
+
+
+def test_new_d0_wrapper_preserves_unknown_dominant_rules():
+    from workbench_analysis.corrected_focus_replay import confirmation
+    from v4.confirmation import package,SCENARIO_KEYS
+    _,manifest,_,machine,scanner=package()
+    values={f:None for f in manifest['input_fields']}
+    values.update(security_id='REAL_INPUT_NOT_A_SOURCE_ADMISSION',trade_date='2026-10-08')
+    result=confirmation(values);legacy=scanner(values)
+    assert result['confirmation_status']=='UNKNOWN'
+    for evidence in result['scenario_evidence']:
+        assert evidence['checks']==legacy[SCENARIO_KEYS[evidence['scenario']]]['checks']
+        assert evidence['status']=='UNKNOWN'
+
+
+def test_wait_exit_zero_cannot_publish_or_publish_old_session():
+    from scripts.run_v4_current_daily import can_publish_increment
+    assert not can_publish_increment({'status':'WAIT_PROVIDER'},0,'2026-09-30','2026-10-08')
+    assert not can_publish_increment({'status':'PROMOTED_V2'},0,'2026-09-30','2026-10-08')
+    assert not can_publish_increment({'status':'PROMOTED_V2'},2,'2026-10-08','2026-10-08')
+    assert can_publish_increment({'status':'PROMOTED_V2'},0,'2026-10-08','2026-10-08')

@@ -99,7 +99,16 @@ def main() -> int:
     parser.add_argument("--receipt-dir", type=Path, default=ROOT / "reports/v4_dm01")
     parser.add_argument("--active-source-policy", action="store_true",
                         help="Run versioned R4 corrected source capture independently of canonical admission.")
+    parser.add_argument('--corrected-owner-repair', action='store_true',
+                        help='Run the versioned reconstructed owner branch; preserve original PIT and live heads.')
     args = parser.parse_args()
+    if args.corrected_owner_repair:
+        from workbench_analysis.corrected_owner_pipeline import run_corrected_owner_pipeline
+        try:
+            result=run_corrected_owner_pipeline(ROOT,target_date=args.target_date)
+            print(json.dumps(result));return 2 if not result.get('production_admission') else 0
+        except (ValueError,OSError,KeyError) as error:
+            print(json.dumps(dict(status='BLOCKED_CORRECTED_OWNER_GATE',reason=str(error),data_head_moved=False)));return 2
     now = datetime.now(timezone.utc).replace(microsecond=0)
     local = now.astimezone(ZoneInfo("Asia/Shanghai"))
     try:

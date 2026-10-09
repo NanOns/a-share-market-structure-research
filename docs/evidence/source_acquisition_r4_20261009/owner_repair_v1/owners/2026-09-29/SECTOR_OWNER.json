@@ -1,0 +1,328 @@
+{
+  "trade_date": "2026-09-29",
+  "taxonomy": "BAOSTOCK_CSRC_INDUSTRY",
+  "membership": {
+    "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/dated_csrc_memberships.jsonl.gz",
+    "sha256": "225e13395fcfec7cccfb7634b71a86b8d8168e89695886bf13bac1eba6b4dd96",
+    "bytes": 162704
+  },
+  "membership_count": 5222,
+  "sector_count": 83,
+  "query": {
+    "method": "query_stock_industry",
+    "params": {
+      "date": "2026-09-29"
+    },
+    "requested_at": "2026-10-08T23:22:11.899081+00:00",
+    "attempt": 0,
+    "source_revision": "2417741c187ee02a5af9bfd23da1bf97ba416959532fda5b0ab10896f17546df",
+    "lineage": "RECONSTRUCTED_CORRECTED",
+    "status": "BAOSTOCK_FOUND",
+    "metadata": {
+      "error_code": "0",
+      "error_msg": "success",
+      "fields": [
+        "updateDate",
+        "code",
+        "code_name",
+        "industry",
+        "industryClassification"
+      ],
+      "page_count": 1,
+      "provider_date": "2026-09-29"
+    },
+    "hash": "7c04214b2ece955bfd64a23c8a8ea7b351314a49994281db5fab3049f44124e2",
+    "received_at": "2026-10-08T23:22:25.895395+00:00",
+    "row_count": 5556,
+    "path": "G:\\codex work\\大A交易\\docs\\evidence\\source_acquisition_r4_20261009\\capture\\queries\\2417741c187ee02a5af9bfd23da1bf97ba416959532fda5b0ab10896f17546df.json"
+  },
+  "native": {
+    "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/csrc_sector_native.jsonl.gz",
+    "sha256": "6933385f2e87454aee5d085053076748f7e6018f2e18280f504667fe564768b2",
+    "bytes": 201919
+  },
+  "seed": {
+    "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/base_seed.jsonl.gz",
+    "sha256": "70defbb258e54a1864daf6694afd4384a9c81587873f296438395a179127e3b4",
+    "bytes": 146346
+  },
+  "relative_sector": {
+    "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/csrc_relative_sector_loo.jsonl.gz",
+    "sha256": "94a97df0084a9555c77bfb60cbf0b6e0ddda46ace86f5411a0ef0c4b38b72ea7",
+    "bytes": 22037383
+  },
+  "known_fields": {
+    "membership_ready": 83,
+    "sector_member_count": 83,
+    "sector_quote_coverage": 83,
+    "sector_rs1": 83,
+    "sector_rs5": 83,
+    "sector_rs20": 83,
+    "breadth_ret1": 83,
+    "ma20_width": 83,
+    "breadth_ret5": 83,
+    "breadth_ret20": 83,
+    "participation_proxy": 83,
+    "pos60": 83,
+    "top1_concentration": 83,
+    "top3_concentration": 83,
+    "strong_member": 68,
+    "breadth_delta1": 72,
+    "ma20_delta1": 68,
+    "strong_member_retention": 54,
+    "entered_count": 66,
+    "net_entered_count": 66,
+    "seed_width": 83,
+    "base_seed_width_adjusted": 83,
+    "sector_rs5_pct": 71,
+    "sector_rs20_pct": 71,
+    "seed_retention": 58
+  },
+  "relative_sector_known": 5137,
+  "oracle": [
+    {
+      "sid": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "sector": "BAO_CSRC:C38电气机械和器材制造业",
+      "target_removed": true,
+      "expected_median": -0.03070761014686252,
+      "actual": -0.03070761014686252,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+      "sector": "BAO_CSRC:C39计算机、通信和其他电子设备制造业",
+      "target_removed": true,
+      "expected_median": -0.05138108017565968,
+      "actual": -0.05138108017565968,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-002610CF9EBB4227722834AADA8F757E",
+      "sector": "BAO_CSRC:C39计算机、通信和其他电子设备制造业",
+      "target_removed": true,
+      "expected_median": -0.05155145004424111,
+      "actual": -0.05155145004424111,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-002E8949D07D2829AB967520C65C0845",
+      "sector": "BAO_CSRC:C38电气机械和器材制造业",
+      "target_removed": true,
+      "expected_median": -0.03070761014686252,
+      "actual": -0.03070761014686252,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-0051683845B17D59641B7D1DC261FE2A",
+      "sector": "BAO_CSRC:C20木材加工和木、竹、藤、棕、草制品业",
+      "target_removed": true,
+      "expected_median": 0.002877855321778977,
+      "actual": 0.002877855321778977,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-005EA670068174623A3C365FCA9A8B2D",
+      "sector": "BAO_CSRC:G56航空运输业",
+      "target_removed": true,
+      "expected_median": -0.023134002618943716,
+      "actual": -0.023134002618943716,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-0068F2B3CBB78D2F594248A35D1EF6E6",
+      "sector": "BAO_CSRC:N77生态保护和环境治理业",
+      "target_removed": true,
+      "expected_median": -0.0172433815980787,
+      "actual": -0.0172433815980787,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-006D9F8F7EEAB00B95B63390341737B1",
+      "sector": "BAO_CSRC:E50建筑装饰、装修和其他建筑业",
+      "target_removed": true,
+      "expected_median": -0.050194480282288234,
+      "actual": -0.050194480282288234,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-0081C3FB364C2FF2BBF61903A767EACB",
+      "sector": "BAO_CSRC:C34通用设备制造业",
+      "target_removed": true,
+      "expected_median": -0.028412256267409397,
+      "actual": -0.028412256267409397,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-0086F7F2614CE0006C835421BA75BD51",
+      "sector": "BAO_CSRC:C14食品制造业",
+      "target_removed": true,
+      "expected_median": -0.015214384508990375,
+      "actual": -0.015214384508990375,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-00B0B75CF5BA6E38D7C2D3FEBF949622",
+      "sector": "BAO_CSRC:C26化学原料和化学制品制造业",
+      "target_removed": true,
+      "expected_median": -0.03981799283636556,
+      "actual": -0.03981799283636556,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-00B87010D45BBCB2A1CB277B6C177121",
+      "sector": "BAO_CSRC:L72商务服务业",
+      "target_removed": true,
+      "expected_median": -0.019607843137254943,
+      "actual": -0.019607843137254943,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-00B93BC23F1AFA8F276F5C61207F5A4F",
+      "sector": "BAO_CSRC:C35专用设备制造业",
+      "target_removed": true,
+      "expected_median": -0.026566757493188042,
+      "actual": -0.026566757493188042,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-00BA2362AC25C35CCF865BBC535D35A5",
+      "sector": "BAO_CSRC:N77生态保护和环境治理业",
+      "target_removed": true,
+      "expected_median": -0.0177675217409774,
+      "actual": -0.0177675217409774,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-00BBE1A73FF15F55B1F79765E71E142E",
+      "sector": "BAO_CSRC:C39计算机、通信和其他电子设备制造业",
+      "target_removed": true,
+      "expected_median": -0.05138108017565968,
+      "actual": -0.05138108017565968,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-00BE615596F05D4E950A4A0CF8A0DB73",
+      "sector": "BAO_CSRC:C37铁路、船舶、航空航天和其他运输设备制造业",
+      "target_removed": true,
+      "expected_median": -0.03153703312027473,
+      "actual": -0.03153703312027473,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-00E228DA7EBF038EA528EF36B65B4C97",
+      "sector": "BAO_CSRC:I65软件和信息技术服务业",
+      "target_removed": true,
+      "expected_median": -0.02139917695473248,
+      "actual": -0.02139917695473248,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-00F7600938E29E801B3FB9F22775458E",
+      "sector": "BAO_CSRC:C26化学原料和化学制品制造业",
+      "target_removed": true,
+      "expected_median": -0.040299851936384135,
+      "actual": -0.040299851936384135,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-00F80FE8851D0D4EE1C4ABD4B7517B63",
+      "sector": "BAO_CSRC:C36汽车制造业",
+      "target_removed": true,
+      "expected_median": -0.018726355713493847,
+      "actual": -0.018726355713493847,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-01007B161569BFF64F7079B3DBACF9CC",
+      "sector": "BAO_CSRC:N78公共设施管理业",
+      "target_removed": true,
+      "expected_median": -0.048218029350104774,
+      "actual": -0.048218029350104774,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-010CC3E0E86D1885E84000A59CD4BD67",
+      "sector": "BAO_CSRC:I65软件和信息技术服务业",
+      "target_removed": true,
+      "expected_median": -0.021124417831004605,
+      "actual": -0.021124417831004605,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-01302EC0CB4455B5FEFD11C9B0857198",
+      "sector": "BAO_CSRC:C39计算机、通信和其他电子设备制造业",
+      "target_removed": true,
+      "expected_median": -0.05155145004424111,
+      "actual": -0.05155145004424111,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-0133C24DA4D131FD193B382B8FF9E57C",
+      "sector": "BAO_CSRC:C29橡胶和塑料制品业",
+      "target_removed": true,
+      "expected_median": -0.029927007299270114,
+      "actual": -0.029927007299270114,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-01503FBCF39C18F6512A1F63139DF7FA",
+      "sector": "BAO_CSRC:D45燃气生产和供应业",
+      "target_removed": true,
+      "expected_median": -0.024816874146045165,
+      "actual": -0.024816874146045165,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-01573CAE74FF0911E6CF4E148A380C29",
+      "sector": "BAO_CSRC:C26化学原料和化学制品制造业",
+      "target_removed": true,
+      "expected_median": -0.03981799283636556,
+      "actual": -0.03981799283636556,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-0157C18162F1E5F08F5949B6EA4A7514",
+      "sector": "BAO_CSRC:I65软件和信息技术服务业",
+      "target_removed": true,
+      "expected_median": -0.021124417831004605,
+      "actual": -0.021124417831004605,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-01605B6700E395E5FABDC2DFFD85F5E8",
+      "sector": "BAO_CSRC:C31黑色金属冶炼和压延加工业",
+      "target_removed": true,
+      "expected_median": -0.024780298385448596,
+      "actual": -0.024780298385448596,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-016E7A08F4649411F936422991E5AFD3",
+      "sector": "BAO_CSRC:L71租赁业",
+      "target_removed": true,
+      "expected_median": -0.046950507632967264,
+      "actual": -0.046950507632967264,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-01759C0DD3567723A74069E26F961A95",
+      "sector": "BAO_CSRC:C26化学原料和化学制品制造业",
+      "target_removed": true,
+      "expected_median": -0.040299851936384135,
+      "actual": -0.040299851936384135,
+      "pass_": true
+    },
+    {
+      "sid": "SEC-01790ECE7EBB0C0D3946582CCD3F15F6",
+      "sector": "BAO_CSRC:C13农副食品加工业",
+      "target_removed": true,
+      "expected_median": -0.03962848297213617,
+      "actual": -0.03962848297213617,
+      "pass_": true
+    }
+  ],
+  "original_tdx_concept_membership": "ACCEPTED_20260930_ONLY; OTHER_DATES_UNPROVEN",
+  "source_taxonomy_substitution": false,
+  "production_admission": false,
+  "relative_only_optimization": "Original per-group kernel; rs1/rs5 and eligibility checked against full exclusion cross-section on first 30 identities; cross-section percentiles are not consumed by relative_sector."
+}

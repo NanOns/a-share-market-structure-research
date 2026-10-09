@@ -1,0 +1,6 @@
+{
+  "result": "PASS",
+  "tests": 72,
+  "command": "python -B -m pytest tests/test_corrected_owner_replay_r4.py tests/test_market_source_acquisition_r4.py tests/test_r2_focus_native_core.py tests/test_r2_daily_driver.py tests/test_v4_current_daily_refresh.py tests/v4_dm01/test_official_daily_sources_v2.py -q -p no:cacheprovider --basetemp E:/codex_tmp/test_temp/r4_final_owner_20261009",
+  "release_readiness": "Separate independent source/owner/readback gates; tests alone are insufficient"
+}

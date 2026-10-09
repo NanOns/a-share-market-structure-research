@@ -1,0 +1,18 @@
+{
+  "contract_id": "V4_R4_STRUCTURE_HEALTH_METADATA_REPAIR_V1",
+  "mapping": {
+    "BREACHED_SHALLOW": "WEAKENING",
+    "BROKEN": "DAMAGED",
+    "HELD_CONFIRMED": "STABLE",
+    "INVALIDATED": "DAMAGED",
+    "RECLAIMED": "IMPROVING",
+    "UNKNOWN": "UNKNOWN",
+    "default": "STABLE"
+  },
+  "source": "Published active anchor support machine only",
+  "unknown_support": "UNKNOWN",
+  "anchor_selection": "COPY_PUBLISHED_ACTIVE_ID",
+  "business_threshold_changes": false,
+  "original_projection_preserved": true,
+  "production_admission": false
+}

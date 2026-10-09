@@ -1,0 +1,179 @@
+{
+  "owner": {
+    "trade_date": "2026-09-29",
+    "rows": 5223,
+    "source_digest": "e4fb31a3e75d163ec0d086fea7ff728a703defc088d840f5ccd6df5fe8c56f86",
+    "sources": {
+      "package": {
+        "bytes": 551544006,
+        "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261008T234926978138Z/sha256-5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4/hsjday.zip",
+        "sha256": "5e973fa2b8919635f7f5f10212ef4c4c33e7a05503c01e58650a2ac376d99ca4"
+      },
+      "receipt": {
+        "bytes": 3019,
+        "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261008T234926978138Z/request_receipt.json",
+        "sha256": "e72a09f21778a9da9d59736a8604d440dee4d18e143d6672bf1bbccf837698b9"
+      },
+      "gbbq": {
+        "path": "data/v4/corrected_owner_sources/d5bedb98b2b772c4cdd69dd6dc6845e337e629275963a9a47437cf5f47abacc4/gbbq",
+        "sha256": "d5bedb98b2b772c4cdd69dd6dc6845e337e629275963a9a47437cf5f47abacc4",
+        "bytes": 5613070
+      },
+      "identity": {
+        "bytes": 3112040,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/artifact.json",
+        "sha256": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf"
+      },
+      "contract": {
+        "path": "config/v4_corrected_owner_replay_v1.json",
+        "sha256": "64ac1f1dc7cb8cb00b352ee43144463a782796071274662502218ff6ee02a4e1",
+        "bytes": 1550
+      },
+      "core_kernel": {
+        "path": "src/v4/factors/core.py",
+        "sha256": "8986358268a5ae706c6cc46c95937ed381b65b55d3293667f840ff50008217f1",
+        "bytes": 16643
+      },
+      "adjustment_kernel": {
+        "path": "src/adjustment/tdx_adjustment.py",
+        "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0",
+        "bytes": 5366
+      }
+    },
+    "core": {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/core.jsonl.gz",
+      "sha256": "07e7f4644db304aecee11b53ae98e76180d61bc0be64ccae6559bbd24b3cf330",
+      "bytes": 19778498
+    },
+    "prior_core": {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/prior_core_target_coordinate.jsonl.gz",
+      "sha256": "bc846ee510cbb5dfe16cc8328978ce64337fa925158dc0a111748e175fe2d4cc",
+      "bytes": 19016766
+    },
+    "history": {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/history.jsonl.gz",
+      "sha256": "1759aa5b9694b37af71dd0f2ef7d3efc429f1ca33786a7f84c3090fdd135a88b",
+      "bytes": 67060458
+    },
+    "raw": {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/raw.jsonl.gz",
+      "sha256": "6d69f34b598196aff7d4a3552e9cf7c6f626e66cb40b81869c417dd63a2cef43",
+      "bytes": 241245
+    },
+    "adjusted": {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/adjusted.jsonl.gz",
+      "sha256": "2c6ed0bbd2787a89c2424ba169bd670fca150108555d0a6331e54c810ee7548e",
+      "bytes": 410545
+    },
+    "actual_raw_rows": 5211,
+    "adjustment_current_ready": 5211,
+    "known_fields": {
+      "ma5": 5222,
+      "ma20": 5214,
+      "ma60": 5199,
+      "hhv5": 5222,
+      "llv5": 5222,
+      "hhv20": 5214,
+      "llv20": 5214,
+      "hhv60": 5199,
+      "llv60": 5199,
+      "prior_high5": 5221,
+      "prior_low5": 5221,
+      "prior_high20": 5212,
+      "prior_low20": 5212,
+      "prior_high60": 5199,
+      "prior_low60": 5199,
+      "amount_ratio5": 5209,
+      "volume_ratio5": 5209,
+      "amount_ratio20": 5200,
+      "volume_ratio20": 5200,
+      "ret1": 5207,
+      "ret3": 5207,
+      "ret5": 5205,
+      "ret20": 5195,
+      "vol5": 5203,
+      "vol20": 5179,
+      "tr": 5210,
+      "atr5": 5221,
+      "atr20": 5212,
+      "slope20": 5212,
+      "slope60": 5196,
+      "hh_progress": 5219,
+      "ll_progress": 5219,
+      "clv": 5203,
+      "prior60_percentile": 5187,
+      "pos60": 5187,
+      "range_ratio": 5214,
+      "atr_ratio": 5212,
+      "vol_ratio": 5179,
+      "core_price_damage": 5197,
+      "rps5": 5205,
+      "rps20": 5195,
+      "rel_market_1": 5207,
+      "rel_market_3": 5207,
+      "rel_market_5": 5205,
+      "rps5_delta1": 5202,
+      "rps5_delta3": 5200,
+      "rps20_delta3": 5191
+    },
+    "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+    "AS_RECORDED": false,
+    "publication_state": "STAGING_NOT_ACCEPTED",
+    "profiles": {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/profiles.jsonl.gz",
+      "sha256": "062361da3561e9c601fa4013df7467efdff617f8f8b56b5b0a3c49c77600ff6e",
+      "bytes": 42574043
+    },
+    "status": {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/status.jsonl.gz",
+      "sha256": "a0b42b39bc8dcb2a8da03d969e79ee1d6b764639fc8853ffa9292b0de60d570b",
+      "bytes": 105813
+    }
+  },
+  "structure_manifest": {
+    "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/structure/runtime_manifest.json",
+    "sha256": "7bb6d0c58f0335ffdc2b4effa7160ab21a9d837693e874e2f591e1812f684e57",
+    "bytes": 6425
+  },
+  "snapshot": {
+    "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/structure/frozen_d1_episode_manifest.json",
+    "sha256": "bbfc413bae1d649ce4ba34f49cc26382ca505b55d0fe82c5d51fed8f67c32472",
+    "bytes": 1683
+  },
+  "rows": 5223,
+  "counts": {
+    "basic_breakout_state": {
+      "known": 0,
+      "unknown": 5223
+    },
+    "basic_pullback_state": {
+      "known": 264,
+      "unknown": 4959
+    },
+    "basic_recovery_state": {
+      "known": 272,
+      "unknown": 4951
+    },
+    "support_state": {
+      "known": 279,
+      "unknown": 4944
+    },
+    "structure_health": {
+      "known": 0,
+      "unknown": 5223
+    },
+    "relative_market_state": {
+      "known": 5178,
+      "unknown": 45
+    }
+  },
+  "advanced_projection": {
+    "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/advanced_structure_projection.jsonl.gz",
+    "sha256": "fb3789b65f5e8d0bb66ff3980d0dda27cb01833c3042c57df3cab0d059c052a6",
+    "bytes": 1101532
+  },
+  "anchors": 575,
+  "events": 393,
+  "prior_unknown_absence_preserved": true,
+  "acceptance": "MATERIALIZED_CORRECTED_CANDIDATE_NOT_PRODUCTION"
+}

@@ -1,0 +1,102 @@
+{
+  "trade_date": "2026-09-29",
+  "axes": {
+    "contract_id": "MARKET_REGIME_V1_PRIMITIVES",
+    "contract_version": "1.0.0",
+    "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+    "as_of": "2026-09-29",
+    "identity": {
+      "trade_date": "2026-09-29",
+      "market_calendar_id": "R4_OFFICIAL",
+      "market_snapshot_id": "e4fb31a3e75d163ec0d086fea7ff728a703defc088d840f5ccd6df5fe8c56f86",
+      "adjustment_basis_id": "e4fb31a3e75d163ec0d086fea7ff728a703defc088d840f5ccd6df5fe8c56f86",
+      "input_source_digest": "e4fb31a3e75d163ec0d086fea7ff728a703defc088d840f5ccd6df5fe8c56f86"
+    },
+    "breadth_axis": "IMPROVING",
+    "participation_axis": "THIN",
+    "stress_level": null,
+    "stress_change": null,
+    "regime_ui_publication": "NOT_PUBLISHED_V4_03",
+    "field_quality": {
+      "breadth_axis": {
+        "quality_state": "OBSERVED",
+        "unknown_reason": null
+      },
+      "participation_axis": {
+        "quality_state": "OBSERVED",
+        "unknown_reason": null
+      },
+      "stress_level": {
+        "quality_state": "UNKNOWN",
+        "unknown_reason": "STRESS_INPUT_OR_COVERAGE_UNKNOWN"
+      },
+      "stress_change": {
+        "quality_state": "UNKNOWN",
+        "unknown_reason": "STRESS_CHANGE_INPUT_UNKNOWN"
+      }
+    },
+    "input_digest": "7c22a48d323356c3db9f4e1ff7f137dbee0f7b5c88044da7a92a9dac36a032fa",
+    "output_digest": "0ed88b05ef5a59ab5aef1870ed3e368e92a779a23002e4d64956846e18aca7a1"
+  },
+  "trend": {
+    "contract_id": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+    "contract_version": "1.0.0",
+    "trend_axis": "UNKNOWN",
+    "quality_state": "UNKNOWN",
+    "unknown_reason": "REQUIRED_TREND_INPUT_UNKNOWN",
+    "regime_ui_publication": "NOT_PUBLISHED_V4_03",
+    "identity": {
+      "trade_date": "2026-09-29",
+      "market_calendar_id": "R4_OFFICIAL",
+      "market_snapshot_id": "e4fb31a3e75d163ec0d086fea7ff728a703defc088d840f5ccd6df5fe8c56f86",
+      "adjustment_basis_id": "e4fb31a3e75d163ec0d086fea7ff728a703defc088d840f5ccd6df5fe8c56f86",
+      "input_source_digest": "e4fb31a3e75d163ec0d086fea7ff728a703defc088d840f5ccd6df5fe8c56f86"
+    },
+    "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+    "input_digest": "fb66ad2ee543f959ce4f85903e3e7da4b928d6f449cc2e92aa6b52ed7d591877",
+    "output_digest": "6a3b60f791bbf06e8b7055f4190e3628d3842bb56fd77eb3caabfb37f58a7f90"
+  },
+  "regime": {
+    "value": "UNKNOWN",
+    "candidate": "UNKNOWN",
+    "last_known": null,
+    "consecutive_count": 0,
+    "evidence": {
+      "trend_axis": "UNKNOWN",
+      "breadth_axis": "IMPROVING",
+      "participation_axis": "THIN",
+      "stress_level": null,
+      "stress_change": null,
+      "candidate": "UNKNOWN",
+      "last_known": null,
+      "consecutive_count": 0,
+      "market_input_digest": null
+    },
+    "unknown_reason": "REQUIRED_MARKET_AXIS_UNKNOWN",
+    "contract_id": "MARKET_REGIME_V1"
+  },
+  "breadth_common_count": 5222,
+  "breadth_evaluable": 5205,
+  "comparison_trade_date": "2026-09-23",
+  "input_bindings": [
+    {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/core.jsonl.gz",
+      "sha256": "07e7f4644db304aecee11b53ae98e76180d61bc0be64ccae6559bbd24b3cf330",
+      "bytes": 19778498
+    },
+    {
+      "path": "docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/owners/2026-09-29/history.jsonl.gz",
+      "sha256": "1759aa5b9694b37af71dd0f2ef7d3efc429f1ca33786a7f84c3090fdd135a88b",
+      "bytes": 67060458
+    },
+    {
+      "bytes": 239298684,
+      "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+    }
+  ],
+  "AS_RECORDED": false,
+  "accepted": false,
+  "trend_blocker": "CORRECTED_INDEX_PATH_SUCCESSOR_NOT_ADMITTED",
+  "stress_blocker": "TARGET_PRICE_LIMIT_OWNER_NOT_BOUND"
+}

@@ -27,6 +27,16 @@ def test_persistent_default_pause_restart(tmp_path,plan):
     assert len(again.events(again.enqueue(key='manual')))==1
 
 
+def test_pause_preserves_auto_queue_and_allows_explicit_probe(tmp_path,plan):
+    calls=[]
+    jobs=DailyJobs(tmp_path,lambda day,mode:(calls.append(mode) or dict(status='PROBED' if mode=='PROBE' else 'PUBLISHED')),
+                   lambda:datetime.fromisoformat('2026-10-09T22:10+08:00'))
+    auto=jobs.enqueue(trigger='SCHEDULER');jobs.settings(False)
+    probe=jobs.enqueue(mode='PROBE');jobs.tick();jobs.tick()
+    assert calls==['PROBE','PROBE'] and jobs.job(auto)['status']=='QUEUED'
+    jobs.settings(True);jobs.tick();assert calls==['PROBE','PROBE','CATCH_UP','CATCH_UP']
+
+
 def test_cancel_after_success_keeps_publication_and_stops_next_day(tmp_path,plan):
     calls=[]
     def executor(day,mode):

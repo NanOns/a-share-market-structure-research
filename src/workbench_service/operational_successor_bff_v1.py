@@ -20,4 +20,7 @@ class OperationalSuccessorBFFV1(OperationalGapBFFV2):
             import json
             from workbench_analysis.r43_owner_replay import checked
             self.api.snapshot=json.loads(checked(self.api.root,self.api.candidate['source_registry'][day]['membership']).read_bytes())
-        return super().get(path,query)
+        code,payload=super().get(path,query)
+        for gap in payload.get('gaps',[])+([payload['gap']] if payload.get('gap') else []):
+            gap['owner_scope']=day+' operational research'
+        return code,payload

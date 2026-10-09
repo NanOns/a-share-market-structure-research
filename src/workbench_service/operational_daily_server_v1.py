@@ -11,8 +11,18 @@ from workbench_analysis.operational_daily_executor_v1 import execute_sources
 PREFIX='/api/v4/operations/daily-update'
 
 
+def successor_control(api,legacy):
+    from .operational_control_status import control_status
+    current=api.context();current['authorization_mode']='DIRECT_HUMAN_USER'
+    control=control_status(legacy,current,api.token)
+    control['data_updated_at']=api.candidate['observed_at']
+    return dict(control,context=current)
+
+
 def make_daily_handler(root,jobs):
     root=Path(root);base=make_v4_handler(root);writes={};mutex=threading.Lock()
+    from .current_v4_context import CurrentAcceptedV4Reader
+    strict_reader=CurrentAcceptedV4Reader(root,require_runtime=True)
     successor_cache={};successor_lock=threading.RLock()
     def successor_reader():
         import hashlib
@@ -45,13 +55,18 @@ def make_daily_handler(root,jobs):
                     try:
                         with successor_lock:
                             api=successor_reader()
-                            if path=='/api/operations/status':
-                                return self.send(200,dict(service_state='RUNNING',service_mode='V4_DEFAULT_WORKBENCH',
-                                    context=api.context(),context_token=api.token,daily_update=jobs.status()))
-                            from .operational_successor_bff_v1 import OperationalSuccessorBFFV1
-                            from .research_bff import ResearchBFF
                             params=parse_qs(parsed.query,keep_blank_values=True)
                             if any(len(v)!=1 for v in params.values()):raise ValueError('DUPLICATE_PARAMETER')
+                            if path=='/api/operations/status':
+                                if params.get('context_token',[api.token])[0]!=api.token:raise ValueError('CONTEXT_TOKEN_MISMATCH')
+                                code,legacy=strict_reader.read('context')
+                                if code!=200:raise ValueError('STRICT_CONTEXT_NOT_VERIFIED')
+                                from .operational_control_status import CONTRACT as CONTROL_CONTRACT
+                                return self.send(200,dict(successor_control(api,legacy),service_state='READY',service_mode='V4_DEFAULT_WORKBENCH',
+                                    service_control_contract=CONTROL_CONTRACT,product_version='V4',default_ui='V4',
+                                    daily_update=jobs.status()))
+                            from .operational_successor_bff_v1 import OperationalSuccessorBFFV1
+                            from .research_bff import ResearchBFF
                             code,payload=OperationalSuccessorBFFV1(api,ResearchBFF(root)).get(path,{k:v[0] for k,v in params.items()})
                         return self.send(code,payload)
                     except (ValueError,KeyError,OSError) as exc:

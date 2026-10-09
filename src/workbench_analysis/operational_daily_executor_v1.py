@@ -129,7 +129,7 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     if capture_only:return result
     progress(day,'DERIVING',result)
     from .operational_daily_owner_v1 import build,seal
-    produced,context=build(root,result['source_freeze'])
+    produced,context=build(root,result['source_freeze'],source_readiness=result['source_readiness'])
     context['source_readiness']=result['source_readiness']
     if cancelled():return dict(result,status='CANCELLED',reason='CANCELLED_BEFORE_CAS')
     candidate,binding=seal(root,context)
@@ -196,8 +196,30 @@ def verify_source_gate(root,day,artifact,result,now=None):
         verified_at=datetime.now(timezone.utc).isoformat())
     sources['tdx']['provider_observed_at']=package.get('observed_at',bars['source_available_at'])
     if any(r.get('trade_date')!=day for r in native):sources['tdx']['status']='UNVERIFIED'
+    dependencies={}
+    head_path=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+    if head_path.is_file():
+        from .r43_owner_replay import checked,ref
+        from .r43_operational_sources import date_valid_identity
+        head=json.loads(head_path.read_bytes())
+        life_binding=head['owners'][head['accepted_trade_date']]['lifecycle']
+        life=json.loads(checked(root,life_binding).read_bytes())
+        identity=json.loads(checked(root,life['identity']).read_bytes())['rows']
+        expected_codes={r['source_security_key'].upper() for r in identity if r.get('board_scope') in {'SH_MAIN','SZ_MAIN','CHINEXT','STAR'} and date_valid_identity(r,day)}
+        actual_codes={code for code in codes if code.startswith(('SH.','SZ.'))}
+        if actual_codes!=expected_codes:sources['baostock_daily']['status']='UNVERIFIED'
+        gbbq=Path('D:/new_tdx/T0002/hq_cache/gbbq')
+        before=gbbq.stat();gbbq_sha=tdx.sha256_file(gbbq);after=gbbq.stat()
+        if (before.st_size,before.st_mtime_ns)!=(after.st_size,after.st_mtime_ns):raise ValueError('GBBQ_CHANGED_DURING_READINESS')
+        dependencies=dict(parent_head=ref(root,head_path),lifecycle=life_binding,identity=life['identity'],
+            accepted_pool_sha256=tdx.sha256_bytes(tdx._json_bytes(sorted(expected_codes))),
+            accepted_pool_count=len(expected_codes),missing_codes=sorted(expected_codes-actual_codes),unknown_codes=sorted(actual_codes-expected_codes),
+            gbbq=dict(path=str(gbbq),sha256=gbbq_sha,bytes=before.st_size),membership_snapshot=head['membership_snapshot'])
+        # Dependency revisions belong to the source gate identity, so a changed
+        # pool or action source cannot borrow a previously ready revision.
+        sources['baostock_daily']['dependency_bindings']=dependencies
     readiness=source_readiness(day,now or datetime.now(timezone.utc),sources)
-    readiness.update(source_freeze=result['source_freeze'],AS_RECORDED=False,PIT_ELIGIBLE=False)
+    readiness.update(source_freeze=result['source_freeze'],dependency_bindings=dependencies,AS_RECORDED=False,PIT_ELIGIBLE=False)
     revision=readiness.get('source_revision_id') or tdx.sha256_bytes(tdx._json_bytes(readiness))
     ready_path=snapshot/'source_readiness'/day/(revision+'.json')
     if not ready_path.is_file():atomic_json(root,ready_path,readiness)

@@ -12,9 +12,11 @@ def bind(p):return dict(name=p.name,path=str(p),bytes=p.stat().st_size,sha256=ha
 def main():
     for name in ['R2_02_SOURCE_RECEIPT_REPLAY.json','R2_04_TEST_RECEIPT.json','R2_04_AFTER_SERVICE_RELOAD.json','STAGE_LEDGER.json','R2_01_BASELINE_REPLAY_RECEIPT.json','R2_04_CONTINUATION_RECOVERY.json','R2_04_MIGRATION_CONCURRENCY_RECEIPT.json','R2_03_COMPACT_SUPPLEMENT_RECEIPT.json','R2_05_CALENDAR_SUPPLEMENT_RECEIPT.json','R2_02_PROOF_CONTINUATION_RECEIPT.json','R2_02_FROZEN_OWNER_ADAPTER_RECEIPT.json']:
         write(PACK/'receipts'/name,(OUT/name).read_bytes())
-    for name in ['test_dynamic_daily_r21_repair.py','test_dd_r21_process_races.py','test_operational_successor_release_v1.py','test_operational_daily_periods_v1.py']:
+    for name in ['R2_03_STRATA_EVENT_RECEIPT.json','R2_02_FINAL_BOUNDARY_RECEIPT.json','R2_04_BROWSER_CLOSE_RECEIPT.json','R2_04_FINAL_TEST_RECEIPT.json']:
+        write(PACK/'receipts'/name,(OUT/name).read_bytes())
+    for name in ['test_dd_r21_source_orchestration.py','test_dd_r21_browser_status.py','test_dynamic_daily_r21_repair.py','test_dd_r21_process_races.py','test_operational_successor_release_v1.py','test_operational_daily_periods_v1.py']:
         write(PACK/'tests'/name,(ROOT/'tests'/name).read_bytes())
-    delta=subprocess.check_output(['git','diff','851770b1932d95836ce76bb44fd292117958bf04','HEAD','--','src/workbench_analysis/operational_daily_jobs_v1.py','src/workbench_analysis/operational_daily_executor_v1.py','src/workbench_analysis/operational_daily_ready_owner_v2.py','src/workbench_analysis/source_readiness_v2.py','src/workbench_service/operational_daily_server_v1.py','src/workbench_service/operational_successor_bff_v1.py'],cwd=ROOT)
+    delta=subprocess.check_output(['git','diff','851770b1932d95836ce76bb44fd292117958bf04','HEAD','--','src/workbench_analysis/operational_daily_jobs_v1.py','src/workbench_analysis/operational_daily_executor_v1.py','src/workbench_analysis/operational_daily_ready_owner_v2.py','src/workbench_analysis/source_readiness_v2.py','src/workbench_service/operational_daily_server_v1.py','src/workbench_service/operational_successor_bff_v1.py','src/workbench_service/static/daily-update/app.js'],cwd=ROOT)
     write(PACK/'code/REPAIR.diff',delta)
     readme='''# R2.1 offline replay
 
@@ -27,14 +29,15 @@ python oracle/independent_recompute.py --input . --output <separate_output_direc
 
 The script first verifies every SHA256SUMS entry. ZIP CRC must also be checked
 with Python zipfile.ZipFile(...).testzip(). All sampling names were frozen
-before reading factor values. Numerical inputs are bounded excerpts from frozen
-normalized Owner history, not independent copies of raw official ZIP bytes.
+before reading factor values. Inputs include original daily and encrypted GBBQ
+record excerpts with independent decoding and affine recomputation.
 Core rolling formulas, full-cohort RPS ranks/ties, selected-sector medians and
 breadth, selected target-excluded relative returns, Market participation,
 period OHLCV/amount and real calendar views are reproducible. Six explicit
 FIXTURE scenarios also verify period counts, nulls and status boundaries.
-Event-to-affine provenance, all-cohort antecedent returns, full Native/LOO/Market
-and real historical missing-day status accounting are NOT_VERIFIABLE.
+Selected real period states bind provider status, calendar and identity dates.
+All-cohort antecedent returns, full Native/LOO/Market and unsampled historical
+missing-day status accounting are NOT_VERIFIABLE.
 Full market/Owner independent acceptance is NOT_GRANTED.
 
 The repository tests need pytest and repository src; they are included for

@@ -1,12 +1,13 @@
 """Extract bounded frozen samples; never run a producer or download a source."""
 from pathlib import Path
-import gzip,hashlib,json,sys
+import gzip,hashlib,json,sys,base64,struct,zipfile
 from collections import defaultdict
 from statistics import median
 from datetime import datetime,timezone
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'src'))
 from workbench_analysis.operational_daily_storage_v1 import atomic_json
 from tdx.gbbq_reader import read_gbbq
+from tdx._gbbq_key import GBBQ_KEY_BYTES
 OUT=ROOT/'docs/evidence/dynamic_daily_r2_20261009/minipack'
 SEED='V4-DD-R2.1-20261009-SHA256-PREFROZEN'
 
@@ -22,9 +23,47 @@ def checked(binding):
     if digest!=binding['sha256']:raise ValueError('FROZEN_BINDING_MISMATCH:'+str(p))
     return p
 
+def attach_native_records(package,identities,histories):
+    path=Path(package['path']);path=path if path.is_absolute() else ROOT/path
+    if package.get('bytes') and path.stat().st_size!=package['bytes']:raise ValueError('PACKAGE_SIZE_CHANGED')
+    with zipfile.ZipFile(path) as archive:
+        entries={}
+        for name in archive.namelist():
+            leaf=name.lower().replace('\\','/').split('/')[-1]
+            if len(leaf)==12 and leaf.endswith('.day') and leaf[:2] in {'sh','sz','bj'}:
+                code=leaf[:2].upper()+'.'+leaf[2:8]
+                if code in entries:raise ValueError('DUPLICATE_NATIVE_CODE_ENTRY')
+                entries[code]=name
+        for sid,bars in histories.items():
+            code=identities[sid]['source_security_key'].upper()
+            if code not in entries:
+                if bars:raise ValueError('SAMPLE_NATIVE_ENTRY_MISSING:'+code)
+                continue
+            blob=archive.read(entries[code]);entry_sha=hashlib.sha256(blob).hexdigest()
+            bydate={struct.unpack_from('<I',blob,offset)[0]:(offset,blob[offset:offset+32]) for offset in range(0,len(blob),32)}
+            for bar in bars:
+                offset,record=bydate[int(bar['trade_date'].replace('-',''))]
+                bar['native_record']=dict(encoded=base64.b64encode(record).decode(),sha256=hashlib.sha256(record).hexdigest(),entry=entries[code],entry_sha256=entry_sha,byte_offset=offset,source_package=package)
+
+def provider_status_sources(head):
+    acquisition=load(ROOT/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json');result={}
+    for day in ('2026-10-08','2026-10-09'):
+        registry=head.get('source_registry',{}).get(day,{})
+        if registry.get('freeze'):
+            freeze=load(checked(registry['freeze']));binding=freeze['native_baostock'];payload=load(checked(binding))
+            daily=payload['daily_rows'];observed=payload['observed_at']
+        else:
+            query=next(q for q in acquisition['queries'] if q['method']=='query_daily_history_k_AStock' and q['params'].get('date',q['params'].get('day'))==day)
+            path=Path(query['path']);payload=load(path);binding=dict(path=str(path),sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+            daily=payload['rows'];observed=payload['received_at']
+        result[day]=dict(rows={r['code'].upper():r for r in daily},source_binding=binding,provider_observed_at=observed)
+    return result
+
 def main():
     head=load(ROOT/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json');local=[];cases=[]
+    status_sources=provider_status_sources(head)
     old_cases=load(OUT/'periods/PERIOD_ORACLE_CASES.json') if (OUT/'periods/PERIOD_ORACLE_CASES.json').is_file() else []
+    write('sources/GBBQ_PUBLIC_KEY_SCHEDULE.json',dict(contract='TDX_PUBLIC_BLOWFISH_KEY_SCHEDULE_V1',encoded=base64.b64encode(GBBQ_KEY_BYTES).decode(),sha256=hashlib.sha256(GBBQ_KEY_BYTES).hexdigest(),role='public format decoding constant; not account credential'))
     for day in ['2026-10-08','2026-10-09']:
         owners=head['owners'][day];life=load(checked(owners['lifecycle']))
         identity_document=load(checked(life['identity']))
@@ -34,8 +73,8 @@ def main():
         replay=load(Path(owners['core']['path']).parent.parent.parent/'CORE_REPLAY.json')
         owner=next(r for r in replay['owners'] if r['trade_date']==day)
         history_binding=owner['history'];checked(history_binding)
-        events=defaultdict(list)
-        for event in read_gbbq(checked(owner['sources']['gbbq'])):
+        events=defaultdict(list);action_path=checked(owner['sources']['gbbq']);action_bytes=action_path.read_bytes()
+        for event in read_gbbq(action_path):
             if event.category==1 and event.event_date<=int(day.replace('-','')):events[event.security_id.upper()].append(event)
         # Eligibility is classified from source history and identity facts only.
         # No measured Core/Profile/period expected values are opened before freeze.
@@ -76,6 +115,7 @@ def main():
             stratification_gaps=gaps,identity_scope='dated listing boundary; no active accepted code-change relation proved',measured_values_read_after_freeze=True))
         core={r['security_id']:r for r in rows(owners['core'])}
         history={r['security_id']:r['bars'] for r in rows(history_binding) if r['security_id'] in chosen}
+        attach_native_records(owner['sources']['package'],identity,history)
         wanted=['ma20','atr20','amount_ratio20','volume_ratio20']
         samples=[]
         for sid in chosen:
@@ -83,7 +123,7 @@ def main():
             bars=[b for b in history[sid] if start<=b['trade_date']<=day]
             samples.append(dict(security_id=sid,bars=bars,status=observations.get(sid,{}).get('status'),
                 expected={k:fields[k] for k in wanted},source_core=owners['core'],source_revision=owner['source_digest'],
-                adjustment_events=[e.as_dict() for e in events[identity[sid]['source_security_key'].upper()] if int(start.replace('-',''))<e.event_date<=int(day.replace('-',''))],
+                adjustment_events=[dict(e.as_dict(),raw_record_base64=base64.b64encode(action_bytes[4+29*e.source_record_index:4+29*(e.source_record_index+1)]).decode(),raw_record_sha256=hashlib.sha256(action_bytes[4+29*e.source_record_index:4+29*(e.source_record_index+1)]).hexdigest(),byte_offset=4+29*e.source_record_index) for e in events[identity[sid]['source_security_key'].upper()] if int(start.replace('-',''))<e.event_date<=int(day.replace('-',''))],
                 source_actions=owner['sources']['gbbq'],formula_contract='CORE_FACTOR_V1 / tdx-affine-qfq-v0.2',T0=day,
                 source_history=history_binding,scope='frozen normalized daily RAW/QFQ inputs and category1 event parameters; raw ZIP antecedent remains local only'))
         cohort=[dict(security_id=s,ret5=core[s]['fields']['ret5']['value'],ret20=core[s]['fields']['ret20']['value'],
@@ -118,6 +158,7 @@ def main():
                 cases.append(dict(trade_date=day,evidence_kind='SOURCE_RECEIPT_REPLAY',domain=domain,
                     expected=period,bars=bars,source_history=history_binding,source_period=binding,
                     algorithm_contract_id='V4_02_FORMAL_RAW_QFQ_PERIODS_V1',window_identity=period['source_daily_digest'],source_revision=history_binding['sha256'],
+                    identity=identity[sid],source_identity=life['identity'],status_inputs={d:dict(provider_row=source['rows'].get(identity[sid]['source_security_key'].upper()),source_binding=source['source_binding'],provider_observed_at=source['provider_observed_at']) for d,source in status_sources.items() if d<=day and pkey(d)==key},
                     scope='OHLCV/amount over frozen as-of daily inputs; source adjustment lineage NOT_VERIFIABLE'))
         for binding in [owners['core'],history_binding,*period_bindings.values(),*owner['sources'].values()]:
             if not isinstance(binding,dict) or 'path' not in binding:continue

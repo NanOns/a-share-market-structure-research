@@ -1,0 +1,35 @@
+{
+  "evidence_kind": "REAL_LOCAL",
+  "case": "AGENT_TEST_TAB_CLOSED_BACKEND_SURVIVES",
+  "tab_id": "1",
+  "remaining_agent_tabs": 0,
+  "http_status": 200,
+  "settings": {
+    "contract_id": "READ_ONLY_OPERATIONAL_DAILY_RELEASE_POLICY_V1_1",
+    "auto_enabled": true,
+    "revision": 5,
+    "updated_at": "2026-10-09T18:07:28.119164+08:00",
+    "first_check": "18:35",
+    "timezone": "Asia/Shanghai",
+    "retry_times": [
+      "19:05",
+      "19:35",
+      "20:05",
+      "20:35",
+      "21:05",
+      "22:05"
+    ],
+    "service_alive": true,
+    "operational_mode": "AUTO_ON",
+    "permission_scope": "READ_ONLY_OPERATIONAL_RESEARCH",
+    "publication_ready": true,
+    "policy_binding": {
+      "path": "config/read_only_operational_daily_release_policy_v1_1.json",
+      "sha256": "5c025d6c40774241ac86637f883824b5b98d14ce1c186c5b25fdcc162215a53a"
+    }
+  },
+  "last_good_trade_date": "2026-10-09",
+  "next_trigger_at": "2026-10-12T18:35:00+08:00",
+  "active_job": null,
+  "scope": "Test tab closure only; machine reboot excluded; latest backend deployment pending"
+}

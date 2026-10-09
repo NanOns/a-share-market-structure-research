@@ -5,6 +5,48 @@ import pytest
 from workbench_analysis.operational_daily_storage_v1 import atomic_json
 from workbench_analysis.tdx_official_daily_source import sha256_file
 
+@pytest.mark.parametrize('failure',['crash','retryable'])
+def test_fresh_process_resumes_cached_source_checkpoint(tmp_path,failure):
+    worker=r'''
+from pathlib import Path
+from datetime import datetime
+import sys,json,time,hashlib
+from workbench_analysis import operational_daily_jobs_v1 as jobs
+root=Path(sys.argv[1]);phase=sys.argv[2];failure=sys.argv[3]
+jobs.gap_plan=lambda *a,**k:dict(status='TIME_ELIGIBLE',requested_through_date='2026-10-09',missing_sessions=['2026-10-09'],eligible_sessions=['2026-10-09'],last_good_trade_date='2026-10-08')
+def execute(day,mode):
+ cache=root/'source.bin'
+ if not cache.exists():
+  cache.write_bytes(b'IMMUTABLE_ISOLATED_SOURCE');(root/'captures.txt').write_text('1')
+ sha=hashlib.sha256(cache.read_bytes()).hexdigest()
+ q.checkpoint(day,'SOURCE_CAPTURED',dict(source_sha256=sha))
+ if phase=='first':
+  if failure=='crash':
+   print('CHECKPOINT_READY',flush=True);time.sleep(60)
+  return dict(status='FAILED_RETRYABLE',source_sha256=sha)
+ return dict(status='PUBLISHED',source_sha256=sha)
+q=jobs.DailyJobs(root,execute,lambda:datetime.fromisoformat('2026-10-09T'+('18:35' if phase=='first' else '19:05')+':00+08:00'));q.source_revision=lambda _:'validated_fixture';q.tick()
+print(json.dumps(dict(status=q.status()['last_job']['status'])),flush=True)
+'''
+    env=dict(os.environ,PYTHONPATH=str(Path(__file__).resolve().parents[1]/'src'))
+    p=subprocess.Popen([sys.executable,'-c',worker,str(tmp_path),'first',failure],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,env=env)
+    try:
+        if failure=='crash':
+            assert p.stdout.readline().strip()=='CHECKPOINT_READY'
+            p.kill();p.wait(timeout=10)
+        else:
+            out,err=p.communicate(timeout=20);assert p.returncode==0,err
+            assert json.loads(out)['status']=='FAILED_RETRYABLE'
+        sha=sha256_file(tmp_path/'source.bin')
+        resumed=subprocess.run([sys.executable,'-c',worker,str(tmp_path),'resume',failure],capture_output=True,text=True,env=env,timeout=20)
+        assert resumed.returncode==0,resumed.stderr
+        assert json.loads(resumed.stdout)['status']=='PUBLISHED_FULL'
+        assert (tmp_path/'captures.txt').read_text()=='1'
+        assert sha256_file(tmp_path/'source.bin')==sha
+        print(json.dumps(dict(case='FRESH_PROCESS_CHECKPOINT_RESUME',failure=failure,evidence_kind='ISOLATED_INJECTION',capture_count=1,source_sha256=sha)))
+    finally:
+        if p.poll() is None:p.kill();p.wait(timeout=10)
+
 WORKER=r'''
 from pathlib import Path
 import json,os,sys,time

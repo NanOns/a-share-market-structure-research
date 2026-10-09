@@ -4,15 +4,42 @@ from datetime import date,timedelta
 import calendar
 from decimal import Decimal,ROUND_HALF_UP,localcontext
 from statistics import fmean,median
-import argparse,hashlib,json,math
+import argparse,hashlib,json,math,base64,struct
 
 def read(p):return json.loads(p.read_bytes())
 def match(actual,expected):
     if actual is None or expected is None:return actual is expected
     return math.isclose(float(actual),float(expected),rel_tol=1e-10,abs_tol=1e-10)
 
+def witness_bytes(encoded,digest):
+    raw=base64.b64decode(encoded,validate=True)
+    assert hashlib.sha256(raw).hexdigest()==digest,'SOURCE_RECORD_SHA_MISMATCH'
+    return raw
+
+def decode_action(record,schedule):
+    """Standalone public Blowfish format decoder; no project code imports."""
+    words=struct.unpack('<'+str(len(schedule)//4)+'I',schedule)
+    mask=(1<<32)-1
+    def round_value(value):
+        boxes=[(value>>shift)&255 for shift in (24,16,8,0)]
+        total=(words[18+boxes[0]]+words[274+boxes[1]])&mask
+        return ((total^words[530+boxes[2]])+words[786+boxes[3]])&mask
+    decoded=bytearray()
+    for offset in (0,8,16):
+        left,right=struct.unpack_from('<II',record,offset);left^=words[17]
+        for index in range(16,0,-1):
+            right^=round_value(left)^words[index]
+            left,right=right&mask,left
+        decoded.extend(struct.pack('<II',right^words[0],left))
+    decoded.extend(record[24:])
+    code={0:'SZ',1:'SH',2:'BJ'}[decoded[0]]+'.'+bytes(decoded[1:8]).rstrip(b'\0').decode('ascii')
+    return dict(security_id=code,event_date=struct.unpack_from('<I',decoded,8)[0],category=decoded[12],**dict(zip(('c1','c2','c3','c4'),struct.unpack_from('<ffff',decoded,13))))
+
 def run(root):
     errors=[];checks=0;unverifiable=[];examples=[];results=[];input_sha=None
+    schedule_path=root/'sources/GBBQ_PUBLIC_KEY_SCHEDULE.json'
+    schedule_proof=read(schedule_path) if schedule_path.is_file() else None
+    schedule=witness_bytes(schedule_proof['encoded'],schedule_proof['sha256']) if schedule_proof else None
     def check(label,a,b):
         nonlocal checks
         checks+=1
@@ -26,6 +53,14 @@ def run(root):
         checks+=1
         if a!=b:errors.append(dict(label=label,actual=a,expected=b))
         results.append(dict(label=label,actual=a,expected=b,diff=None,verdict='PASS' if a==b else 'FAIL',used_input_sha256=input_sha))
+    def check_native_bar(label,bar):
+        proof=bar.get('native_record')
+        if not proof:return
+        raw=witness_bytes(proof['encoded'],proof['sha256']);assert len(raw)==32
+        decoded=struct.unpack('<IIIIIfII',raw)
+        check(label+'/record_date',decoded[0],int(bar['trade_date'].replace('-','')))
+        for i,value in enumerate(decoded[1:5]):check(label+f'/raw_ohlc_{i}',value/100,bar['raw_ohlc'][i])
+        check(label+'/raw_amount',decoded[5],bar['amount']);check(label+'/raw_volume',decoded[6],bar['volume'])
     for day in ['2026-10-08','2026-10-09']:
         sample=read(root/'sampling'/f'{day}.json')
         order=sorted(sample['accepted_pool'],key=lambda s:hashlib.sha256((sample['seed']+'|'+day+'|'+s).encode()).hexdigest())
@@ -45,9 +80,18 @@ def run(root):
         input_sha=hashlib.sha256((root/'numerical'/f'{day}.json').read_bytes()).hexdigest()
         for s in data['core']:
             bars=s['bars'];assert all(b['trade_date']<=day for b in bars),'FUTURE_BAR'
+            for bar in bars:check_native_bar(day+'/'+s['security_id']+'/'+bar['trade_date'],bar)
             if 'adjustment_events' in s:
                 events=s['adjustment_events']
                 assert all(e['category']==1 and e['event_date']<=int(day.replace('-','')) for e in events)
+                for event in events:
+                    if 'raw_record_base64' not in event:continue
+                    assert schedule is not None,'PUBLIC_ACTION_DECODER_SCHEDULE_REQUIRED'
+                    record=witness_bytes(event['raw_record_base64'],event['raw_record_sha256']);assert len(record)==29
+                    decoded=decode_action(record,schedule)
+                    check_state(day+'/'+s['security_id']+'/raw_action_code',decoded['security_id'],event['security_id'])
+                    for field in ('event_date','category','c1','c2','c3','c4'):
+                        check(day+'/'+s['security_id']+'/raw_action_'+field,decoded[field],event[field])
                 with localcontext() as ctx:
                     ctx.prec=40
                     for bar in bars:
@@ -111,6 +155,7 @@ def run(root):
     calendar_input=read(calendar_path) if calendar_path.is_file() else None
     for c in read(root/'periods/PERIOD_ORACLE_CASES.json'):
         p=c['expected'];bars=c['bars'];basis='raw_ohlc' if c['domain']=='period_raw' else 'qfq_ohlc'
+        for bar in bars:check_native_bar(c['trade_date']+'/'+p['security_id']+'/'+c['domain']+'/'+bar['trade_date'],bar)
         assert all(b['trade_date']<=c['trade_date'] for b in bars),'PERIOD_FUTURE_BAR'
         def period_key(d):
             y,w,_=date.fromisoformat(d).isocalendar()
@@ -125,6 +170,23 @@ def run(root):
             closed=bool(dates) and calendar_input['coverage_end']>=natural.isoformat() and max(dates)<=c['trade_date']
             view='CLOSED_ONLY' if closed else 'AS_OF_PARTIAL'
             check_state(c['trade_date']+'/'+p['period_key']+'/period_view',view,p['period_view']);period_checks+=1
+            if 'status_inputs' in c:
+                ident=c['identity'];bydate={b['trade_date']:b for b in bars}
+                active_dates=[d for d in dates if ident['list_date']<=d<=c['trade_date'] and (not ident.get('delist_date') or d<ident['delist_date'])]
+                states=[]
+                for d in active_dates:
+                    provider=c['status_inputs'].get(d,{}).get('provider_row')
+                    if not provider:states.append('UNKNOWN');continue
+                    assert provider['date']==d and provider['code'].upper()==ident['source_security_key'].upper(),'PERIOD_PROVIDER_IDENTITY_DATE_MISMATCH'
+                    if provider['tradestatus']=='0':
+                        assert d not in bydate,'PERIOD_SUSPENSION_HAS_FAKE_BAR';states.append('SUSPENDED')
+                    elif provider['tradestatus']=='1':states.append('ACTUAL_TRADED' if d in bydate else 'DATA_GAP')
+                    else:states.append('UNKNOWN')
+                for field,value in dict(calendar_count=len(states),suspended_count=states.count('SUSPENDED'),data_gap_count=states.count('DATA_GAP'),unknown_count=states.count('UNKNOWN')).items():
+                    check(c['trade_date']+'/'+p['security_id']+'/'+c['domain']+'/'+p['period_key']+'/'+field,value,p[field]);period_checks+=1
+                unready=c['domain']=='period_adjusted' and any(not b.get('qfq_ohlc') for b in bars)
+                status='BLOCKED_BY_ADJUSTMENT' if unready else 'BLOCKED_BY_DATA_GAP' if 'DATA_GAP' in states else 'BLOCKED_BY_UNKNOWN_STATUS' if 'UNKNOWN' in states else 'NO_ACTUAL_BARS' if not bars else 'CLOSED_ONLY_READY' if closed else 'AS_OF_PARTIAL_READY'
+                check_state(c['trade_date']+'/'+p['security_id']+'/'+c['domain']+'/period_status',status,p['period_status']);period_checks+=1
         expected=dict(actual_count=len(bars),volume=sum(b['volume'] for b in bars),amount=sum(b['amount'] for b in bars))
         if bars and all(b[basis] for b in bars):
             prices=[[Decimal(str(v)) for v in b[basis]] for b in bars]
@@ -164,7 +226,7 @@ def run(root):
                             check(case['case']+'/'+domain+'/'+field,None,p[field]);state_checks+=1
     return dict(acceptance='ENGINEERING_SCOPED_PASS' if not errors else 'FAIL',checks=checks,period_checks=period_checks,state_boundary_checks=state_checks,
         errors=errors,examples=examples,results=results,unverifiable=unverifiable,
-        NOT_VERIFIABLE=['full raw ZIP/GBBQ encrypted bytes to normalized excerpts provenance','all-cohort antecedent returns','full Native/LOO state beyond selected substitutions','Market axes/path beyond participation','real historical missing-day status accounting','full population factor QA'],external_acceptance='NOT_GRANTED')
+        NOT_VERIFIABLE=['full archive/source membership authentication beyond included source-record excerpts','all-cohort antecedent returns','full Native/LOO state beyond selected substitutions','Market axes/path beyond participation','status sources outside selected days and samples','full population factor QA'],external_acceptance='NOT_GRANTED')
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--input',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);a=parser.parse_args()

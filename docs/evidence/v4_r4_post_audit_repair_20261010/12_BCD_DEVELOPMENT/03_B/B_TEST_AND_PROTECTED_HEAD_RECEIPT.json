@@ -1,0 +1,62 @@
+{
+  "BASE_SHA": "05d5f9e3ad9e6091e01af9f265998c240b79e9c7",
+  "test_files": [
+    "tests/test_sector_producer_entry_r1.py"
+  ],
+  "test_command": "E:/python/python.exe -B -m pytest tests/test_sector_producer_entry_r1.py -q -o cache_dir=G:/codex_tmp/b_producer_pytest_cache --basetemp=G:/codex_tmp/test_temp/b_producer_entry4",
+  "test_result": {
+    "passed": 30,
+    "exit_code": 0
+  },
+  "real_native_entry": "B_REAL_NATIVE_SOURCE_ENTRY_R2.json",
+  "real_native_idempotent_replay_exit_code": 0,
+  "exact_legacy_real_goldens": {
+    "checked": 3,
+    "mismatches": 0,
+    "exit_code": 0
+  },
+  "protected_operational_head_before": {
+    "path": "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json",
+    "bytes": 29799,
+    "sha256": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e"
+  },
+  "protected_operational_head_after": {
+    "path": "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json",
+    "bytes": 29799,
+    "sha256": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e"
+  },
+  "protected_strict_head": {
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "bytes": 16890,
+    "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+  },
+  "code_bindings": [
+    {
+      "path": "src/sector/producer_entry_r1.py",
+      "bytes": 5144,
+      "sha256": "3c2364d8b3ebbc4e81c1a4917db34fac42ba623e7207f3a90272bd6d1a9c5340"
+    },
+    {
+      "path": "src/sector/legacy_producer_candidate_r1.py",
+      "bytes": 2481,
+      "sha256": "87a87854dd84aa0abe63c7a0d5c973aa444b3899d2daceafb54ae1a939d5add0"
+    },
+    {
+      "path": "scripts/prepare_sector_producer_entry_r1.py",
+      "bytes": 2835,
+      "sha256": "6ed4d394953e5fee901b22cbaddccd33927f392fcf341d5a2646f88b4e517b7a"
+    },
+    {
+      "path": "scripts/evidence_sector_producer_development_r1.py",
+      "bytes": 8538,
+      "sha256": "f15a792e79ee5cda3d8cd39e2723bf5d3f03862ded13182c9b080d4994a85427"
+    },
+    {
+      "path": "tests/test_sector_producer_entry_r1.py",
+      "bytes": 8632,
+      "sha256": "ae9c7c115f4735cc6ee762df13dc61a33d27be333291223e482a6af9a21f4e91"
+    }
+  ],
+  "production_promotion": false,
+  "frozen_contracts_modified": false
+}

@@ -371,7 +371,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             return 200,self.envelope(day,status='SOURCE_INCOMPLETE',reason='MODEL_OR_PERMISSION_NOT_READY',
                 contract_id=gate['contract_id'],source=None,reason_text='；'.join(gate['reason_text']),
                 data=dict(model_version=None,prediction_revision=None,permission_gate='MODEL_OR_PERMISSION_NOT_READY',
-                    required_grant_key=['scope_id','target_id','horizon','feature_contract_id','model_set_id','capability'],
+                    required_grant_key=['scope_id','target_id','horizon','feature_contract_id','model_set_id','model_revision','capability'],
                     capabilities={k:'NOT_GRANTED' for k in ('SHADOW_INFERENCE','DESCRIPTIVE_DISPLAY','MODEL_DISPLAY','PRIORITY_USE')},
                     prediction=None,training_authorized=False,focus_write_authorized=False,priority_v1_unchanged=True,
                     admission_gate=gate))

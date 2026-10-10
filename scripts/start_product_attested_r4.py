@@ -17,7 +17,10 @@ def main():
             raise SystemExit('PORT_OCCUPIED: previous service must exit normally; no process stopped')
     names=['workbench_service.core_product_server_r1','workbench_service.core_product_bff_r1',
            'workbench_service.research_hypotheses_r3','workbench_analysis.validation_cohort_read_contract_r3',
-           'workbench_analysis.operational_daily_jobs_v1','workbench_analysis.operational_daily_executor_v1']
+           'workbench_analysis.operational_daily_jobs_v1','workbench_analysis.operational_daily_executor_v1',
+           'workbench_analysis.fep_e5.admission','workbench_analysis.fep_e5.trusted_authority',
+           'workbench_analysis.cohort_capture_readiness_r1','workbench_analysis.cohort_first_capture_producer_r1',
+           'sector.producer_entry_r1','sector.legacy_producer_candidate_r1']
     before={name:hashlib.sha256((ROOT/'src'/Path(*name.split('.')).with_suffix('.py')).read_bytes()).hexdigest() for name in names}
     modules=[]
     for name in names:

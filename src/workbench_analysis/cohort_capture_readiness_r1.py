@@ -28,6 +28,17 @@ def inspect_daily_candidate(root, *, candidate_binding, trade_date, cutoff):
                   production_write_authorized=False, observed_count=None,
                   matured_count=None, settled_count=None,
                   blocks_local_daily_publication=False)
+    # Extraction is separate from read/write admission. DD can freeze a full
+    # legal producer even while the independently issued grant is unavailable.
+    if candidate.get('cohort_signal_producers', {}).get(trade_date):
+        from .cohort_first_capture_producer_r1 import extract_candidate
+        try:
+            result['first_capture_extraction'] = extract_candidate(
+                root, candidate_binding=candidate_binding, trade_date=trade_date,
+                cutoff=cutoff, candidate_directory='docs/evidence/cohort_first_capture_candidates_r1')
+        except (ValueError, KeyError, TypeError, OSError, AttributeError, IndexError) as exc:
+            result['first_capture_extraction'] = dict(status='CAPTURE_PRODUCER_REJECTED',
+                reason=str(exc), observed_count=None, production_write_authorized=False)
     if missing:
         return dict(result, status='SOURCE_INCOMPLETE', missing_inputs=missing,
                     preflight_invoked=False, reason='REAL_FULL_SIGNAL_PRODUCER_AND_ADMISSION_REQUIRED')
@@ -36,7 +47,7 @@ def inspect_daily_candidate(root, *, candidate_binding, trade_date, cutoff):
         preflight = prepare_capture(root, accepted_head=candidate_binding,
                                     owner_binding=owner, trade_date=trade_date,
                                     revision=owner_document['revision'], cutoff=cutoff)
-    except (ValueError, KeyError, TypeError) as exc:
+    except (ValueError, KeyError, TypeError, OSError, AttributeError, IndexError) as exc:
         return dict(result, status='CAPTURE_PREFLIGHT_REJECTED',
                     preflight_invoked=True, reason=str(exc))
     return dict(result, status='ISOLATED_CAPTURE_CANDIDATE_READY',

@@ -5,7 +5,7 @@ from pathlib import Path
 
 VERSION = 'FEP_CURRENT_ADMISSION_R4_V2'
 REASONS = {
-    'TRUSTED_AUTHORITY_UNAVAILABLE': '尚无正式 registry、首次可用源、Head/DB CAS 及外审批准的可信生产解析器。',
+    'TRUSTED_AUTHORITY_UNAVAILABLE': '已实现 canonical DB 只读解析；正式生产 Owner、模型版本及独立能力批准源尚未接纳。',
     'PREDICTION_OWNER_MISSING': '缺少已接纳的预测消费 Owner。',
     'MODEL_NOT_FOUND': '未找到匹配当前用途的模型注册。',
     'MODEL_NOT_ACCEPTED': '已有历史工程模型，但尚未接受为当前生产模型。',
@@ -42,7 +42,8 @@ def evaluate(model=None, *, accepted=False, grant=None, request=None, input_asof
     # only; no formal authority adapter has been admitted.
     reasons.extend(['TRUSTED_AUTHORITY_UNAVAILABLE', 'PREDICTION_OWNER_MISSING'])
     return dict(gate_candidate_status='GATE_ELIGIBLE_CANDIDATE' if candidate_eligible else 'NOT_ELIGIBLE',
-        authority=resolve_current_authority(), contract_id=VERSION, engineering_status='FEP_ENGINEERING_GATE_READY',
+        authority=dict(status='TRUSTED_AUTHORITY_UNAVAILABLE', production_authorized=False,
+            formal_owner=None, evidence_trust='DISPLAY_CLAIMS_ONLY'), contract_id=VERSION, engineering_status='FEP_ENGINEERING_GATE_READY',
         production_status='BLOCKED',
         status='FEP_CAPABILITY_NOT_READY', reasons=reasons,
         reason_text=[REASONS[k] for k in reasons],
@@ -50,19 +51,14 @@ def evaluate(model=None, *, accepted=False, grant=None, request=None, input_asof
         production_authorized=False, prediction_generated=False)
 
 def resolve_current_authority():
-    """Production trust boundary, deliberately closed until independently admitted.
+    """Actual source discovery; canonical DB reader exists but Owner admission is absent.
 
-    Existing PostgreSQL Ledger is HISTORICAL_ENGINEERING_FIXTURE_ONLY and cannot
-    supply production authority. Future adapter must read exact registered model
-    revision, current ALLOW head, immutable CAS receipt, first-asof source and
-    external approval from their actual Owners in one consistent read. Caller
-    dictionaries, context tokens and shadow receipts are never authority.
+    The engineering Ledger remains HISTORICAL_ENGINEERING_FIXTURE_ONLY. The
+    canonical readonly adapter validates DB snapshots without issuing rights.
+    Caller dictionaries, context tokens and shadow receipts are never authority.
     """
-    return dict(contract_id='FEP_TRUSTED_AUTHORITY_R4_V1',
-        status='TRUSTED_AUTHORITY_UNAVAILABLE', production_authorized=False,
-        formal_owner=None, registry_verified=False, first_asof_verified=False,
-        deployment_head_verified=False, cas_receipt_verified=False,
-        independent_approval_verified=False)
+    from .trusted_authority import resolve_current_sources
+    return resolve_current_sources(Path(__file__).resolve().parents[3])
 
 
 def inspect_isolated_candidate(bundle, request, *, at):
@@ -124,6 +120,8 @@ def current_gate(root):
     except (OSError, ValueError, AttributeError):
         models=[]
     result = evaluate(models[0] if models else None)
+    from .trusted_authority import resolve_current_sources
+    result['authority'] = resolve_current_sources(root)
     result['historical_engineering_model_count'] = len(models)
     result['source_sha256'] = hashlib.sha256(path.read_bytes()).hexdigest() if path.exists() else None
     return result

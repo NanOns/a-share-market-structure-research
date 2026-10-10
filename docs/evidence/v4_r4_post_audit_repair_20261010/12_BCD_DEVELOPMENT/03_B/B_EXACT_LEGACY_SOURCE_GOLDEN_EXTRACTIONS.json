@@ -1,0 +1,626 @@
+{
+  "status": "PASS_SCOPED_EXACT_EXTRACTION",
+  "rechecked_sectors": 3,
+  "full_541_replay_repeated": false,
+  "real_golden_date": "2026-09-24",
+  "current_T0": "2026-10-09",
+  "original_golden_binding": {
+    "bytes": 74443,
+    "path": "data/v4/a05_b2_amendment_r2/B2_CURRENT_SNAPSHOT_OLD_NEW_REPLAY_R1.jsonl.gz",
+    "sha256": "4e152273cdd55c2a04b9f9a17a8b49a34b131fe6e1f7ce96a30d5442b7800470"
+  },
+  "original_receipt_binding": {
+    "path": "reports/audits/next_round_r2/V4_08_ACCEPTED_HEAD_B2_CAPABILITY_AMENDMENT_CANDIDATE_R2.json",
+    "bytes": 5817,
+    "sha256": "be0f13c4c6a70e7cd605854934888904838abf487dc6d405b650453edf54d978"
+  },
+  "samples": [
+    {
+      "expected": "TRUE",
+      "actual": "TRUE",
+      "oracle": {
+        "accepted_scope": "CURRENT_SNAPSHOT_ONLY",
+        "ast_digest": "503ce6e3145f94caeebfddfc3235f9deb59ab4ff32b641408738c6eb97495818",
+        "capabilities": {
+          "B2_AMOUNT_A": "DIAGNOSTIC_AUDIT_OPEN",
+          "B2_NON_AMOUNT_A": "EXACT_CURRENT_SNAPSHOT_PRODUCER_BOUND_CANDIDATE"
+        },
+        "confirmed_diagnostic": "TRUE",
+        "confirmed_raw": "TRUE",
+        "confirmed_reason": "A05_EXACT_CURRENT_SNAPSHOT_PRODUCER_BOUND",
+        "historical_PIT_equivalent": false,
+        "model_contract_id": "V4_08_SECTOR_LEGACY_ADAPTER_B2_R5",
+        "predicates": {
+          "BASE_BUILD": {
+            "reason_code": "REQUIRED_BRANCH_FALSE",
+            "state": "FALSE"
+          },
+          "BREADTH_BUILD": {
+            "reason_code": "REQUIRED_BRANCH_FALSE",
+            "state": "FALSE"
+          },
+          "RECOVERY_BUILD": {
+            "reason_code": "REQUIRED_BRANCH_FALSE",
+            "state": "FALSE"
+          },
+          "confirmed_raw": {
+            "reason_code": "A05_EXACT_CURRENT_SNAPSHOT_PRODUCER_BOUND",
+            "state": "TRUE"
+          },
+          "warm_diagnostic": {
+            "reason_code": null,
+            "state": "FALSE"
+          },
+          "weak": {
+            "reason_code": null,
+            "state": "FALSE"
+          }
+        },
+        "warm_diagnostic": "FALSE",
+        "warm_raw": "UNKNOWN",
+        "warm_reason": "AUD_AMOUNT_A_06_OPEN"
+      },
+      "extracted": {
+        "contract_id": "SECTOR_LEGACY_PRODUCER_EXTRACTION_R1",
+        "entity_type": "SECTOR",
+        "entity_id": "INDUSTRY:T030301",
+        "trade_date": "2026-09-24",
+        "input_owner": {
+          "bytes": 74443,
+          "path": "data/v4/a05_b2_amendment_r2/B2_CURRENT_SNAPSHOT_OLD_NEW_REPLAY_R1.jsonl.gz",
+          "sha256": "4e152273cdd55c2a04b9f9a17a8b49a34b131fe6e1f7ce96a30d5442b7800470"
+        },
+        "ast_binding": {
+          "path": "config/v4_08_b2_machine_ast_r5.json",
+          "bytes": 28799,
+          "sha256": "838f167f0eb7ec3797240cc7488e8121901b7bb4f8d926d3cb4e378adc4b1155"
+        },
+        "source_bindings": {
+          "source": {
+            "path": "src/workbench_analysis/sector_attention.py",
+            "bytes": 29860,
+            "sha256": "e4e39f51abb64d4e3359451e794842c1da06f641d1598d2aac5a6477fc89916a"
+          },
+          "source_parameters": {
+            "path": "config/research_attention_v3.yaml",
+            "bytes": 6277,
+            "sha256": "559e026897c5fd03d451af409438e90d1c535b69aecb1c2b336209e3ac9c96ec"
+          },
+          "parameters": {
+            "path": "config/v4_08_algorithm_parameter_set_r5.json",
+            "bytes": 4045,
+            "sha256": "0204d7c4fadf86871b6a079f755593b1a3f8ad18bb718f73ba33db0b70f67548"
+          }
+        },
+        "original_input_facts": {
+          "allowed_sector_type": {
+            "quality": "ACCEPTED",
+            "value": true
+          },
+          "b1": {
+            "quality": "ACCEPTED",
+            "value": 0.6046511627906976
+          },
+          "b_delta3": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "dq5_3": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "m1": {
+            "quality": "ACCEPTED",
+            "value": 0.0030674846625766694
+          },
+          "ma20_delta3": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "ma20_width": {
+            "quality": "ACCEPTED",
+            "value": 0.5681818181818182
+          },
+          "market_ok": {
+            "quality": "ACCEPTED",
+            "value": true
+          },
+          "normal_rank_eligible": {
+            "quality": "ACCEPTED",
+            "value": true
+          },
+          "p1": {
+            "quality": "ACCEPTED",
+            "value": 0.9809523809523809
+          },
+          "positive_count": {
+            "quality": "ACCEPTED",
+            "value": 26
+          },
+          "q20": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "quote_coverage": {
+            "quality": "ACCEPTED",
+            "value": 0.9772727272727273
+          },
+          "rel1": {
+            "quality": "ACCEPTED",
+            "value": 0.015991555744967578
+          },
+          "top1_positive_share": {
+            "quality": "ACCEPTED",
+            "value": 0.19053869907910437
+          },
+          "total_member_count": {
+            "quality": "ACCEPTED",
+            "value": 44
+          },
+          "type_cross_section_coverage": {
+            "quality": "ACCEPTED",
+            "value": 1.0
+          }
+        },
+        "CONFIRMED": {
+          "value": null,
+          "status": "NOT_FORMALLY_ADMITTED",
+          "candidate_value": "TRUE"
+        },
+        "WARM": {
+          "value": null,
+          "status": "NOT_FORMALLY_ADMITTED",
+          "candidate_value": "FALSE",
+          "branches": {
+            "BREADTH_BUILD": {
+              "state": "FALSE",
+              "reason_code": "REQUIRED_BRANCH_FALSE"
+            },
+            "BASE_BUILD": {
+              "state": "FALSE",
+              "reason_code": "REQUIRED_BRANCH_FALSE"
+            },
+            "RECOVERY_BUILD": {
+              "state": "FALSE",
+              "reason_code": "REQUIRED_BRANCH_FALSE"
+            }
+          }
+        },
+        "exact_predicates": {
+          "confirmed_raw": {
+            "state": "UNKNOWN",
+            "reason_code": "NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE"
+          },
+          "weak": {
+            "state": "FALSE",
+            "reason_code": null
+          },
+          "BREADTH_BUILD": {
+            "state": "FALSE",
+            "reason_code": "REQUIRED_BRANCH_FALSE"
+          },
+          "BASE_BUILD": {
+            "state": "FALSE",
+            "reason_code": "REQUIRED_BRANCH_FALSE"
+          },
+          "RECOVERY_BUILD": {
+            "state": "FALSE",
+            "reason_code": "REQUIRED_BRANCH_FALSE"
+          },
+          "warm_diagnostic": {
+            "state": "FALSE",
+            "reason_code": null
+          }
+        },
+        "accepted": false,
+        "formal_consumer_enabled": false,
+        "production_authorized": false,
+        "AS_RECORDED": false,
+        "historical_PIT_equivalent": false
+      },
+      "pass_result": true
+    },
+    {
+      "expected": "FALSE",
+      "actual": "FALSE",
+      "oracle": {
+        "accepted_scope": "CURRENT_SNAPSHOT_ONLY",
+        "ast_digest": "503ce6e3145f94caeebfddfc3235f9deb59ab4ff32b641408738c6eb97495818",
+        "capabilities": {
+          "B2_AMOUNT_A": "DIAGNOSTIC_AUDIT_OPEN",
+          "B2_NON_AMOUNT_A": "EXACT_CURRENT_SNAPSHOT_PRODUCER_BOUND_CANDIDATE"
+        },
+        "confirmed_diagnostic": "FALSE",
+        "confirmed_raw": "FALSE",
+        "confirmed_reason": "A05_EXACT_CURRENT_SNAPSHOT_PRODUCER_BOUND",
+        "historical_PIT_equivalent": false,
+        "model_contract_id": "V4_08_SECTOR_LEGACY_ADAPTER_B2_R5",
+        "predicates": {
+          "BASE_BUILD": {
+            "reason_code": "REQUIRED_BRANCH_FALSE",
+            "state": "FALSE"
+          },
+          "BREADTH_BUILD": {
+            "reason_code": "REQUIRED_BRANCH_FALSE",
+            "state": "FALSE"
+          },
+          "RECOVERY_BUILD": {
+            "reason_code": "REQUIRED_BRANCH_FALSE",
+            "state": "FALSE"
+          },
+          "confirmed_raw": {
+            "reason_code": "A05_EXACT_CURRENT_SNAPSHOT_PRODUCER_BOUND",
+            "state": "FALSE"
+          },
+          "warm_diagnostic": {
+            "reason_code": null,
+            "state": "FALSE"
+          },
+          "weak": {
+            "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+            "state": "UNKNOWN"
+          }
+        },
+        "warm_diagnostic": "FALSE",
+        "warm_raw": "UNKNOWN",
+        "warm_reason": "AUD_AMOUNT_A_06_OPEN"
+      },
+      "extracted": {
+        "contract_id": "SECTOR_LEGACY_PRODUCER_EXTRACTION_R1",
+        "entity_type": "SECTOR",
+        "entity_id": "INDUSTRY:T00",
+        "trade_date": "2026-09-24",
+        "input_owner": {
+          "bytes": 74443,
+          "path": "data/v4/a05_b2_amendment_r2/B2_CURRENT_SNAPSHOT_OLD_NEW_REPLAY_R1.jsonl.gz",
+          "sha256": "4e152273cdd55c2a04b9f9a17a8b49a34b131fe6e1f7ce96a30d5442b7800470"
+        },
+        "ast_binding": {
+          "path": "config/v4_08_b2_machine_ast_r5.json",
+          "bytes": 28799,
+          "sha256": "838f167f0eb7ec3797240cc7488e8121901b7bb4f8d926d3cb4e378adc4b1155"
+        },
+        "source_bindings": {
+          "source": {
+            "path": "src/workbench_analysis/sector_attention.py",
+            "bytes": 29860,
+            "sha256": "e4e39f51abb64d4e3359451e794842c1da06f641d1598d2aac5a6477fc89916a"
+          },
+          "source_parameters": {
+            "path": "config/research_attention_v3.yaml",
+            "bytes": 6277,
+            "sha256": "559e026897c5fd03d451af409438e90d1c535b69aecb1c2b336209e3ac9c96ec"
+          },
+          "parameters": {
+            "path": "config/v4_08_algorithm_parameter_set_r5.json",
+            "bytes": 4045,
+            "sha256": "0204d7c4fadf86871b6a079f755593b1a3f8ad18bb718f73ba33db0b70f67548"
+          }
+        },
+        "original_input_facts": {
+          "allowed_sector_type": {
+            "quality": "ACCEPTED",
+            "value": true
+          },
+          "b1": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "b_delta3": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "dq5_3": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "m1": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "ma20_delta3": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "ma20_width": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "market_ok": {
+            "quality": "ACCEPTED",
+            "value": true
+          },
+          "normal_rank_eligible": {
+            "quality": "ACCEPTED",
+            "value": false
+          },
+          "p1": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "positive_count": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "q20": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "quote_coverage": {
+            "quality": "ACCEPTED",
+            "value": 0.0
+          },
+          "rel1": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "top1_positive_share": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "total_member_count": {
+            "quality": "ACCEPTED",
+            "value": 1
+          },
+          "type_cross_section_coverage": {
+            "quality": "ACCEPTED",
+            "value": 1.0
+          }
+        },
+        "CONFIRMED": {
+          "value": null,
+          "status": "NOT_FORMALLY_ADMITTED",
+          "candidate_value": "FALSE"
+        },
+        "WARM": {
+          "value": null,
+          "status": "NOT_FORMALLY_ADMITTED",
+          "candidate_value": "FALSE",
+          "branches": {
+            "BREADTH_BUILD": {
+              "state": "FALSE",
+              "reason_code": "REQUIRED_BRANCH_FALSE"
+            },
+            "BASE_BUILD": {
+              "state": "FALSE",
+              "reason_code": "REQUIRED_BRANCH_FALSE"
+            },
+            "RECOVERY_BUILD": {
+              "state": "FALSE",
+              "reason_code": "REQUIRED_BRANCH_FALSE"
+            }
+          }
+        },
+        "exact_predicates": {
+          "confirmed_raw": {
+            "state": "UNKNOWN",
+            "reason_code": "NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE"
+          },
+          "weak": {
+            "state": "UNKNOWN",
+            "reason_code": "REQUIRED_QUALITY_UNAVAILABLE"
+          },
+          "BREADTH_BUILD": {
+            "state": "FALSE",
+            "reason_code": "REQUIRED_BRANCH_FALSE"
+          },
+          "BASE_BUILD": {
+            "state": "FALSE",
+            "reason_code": "REQUIRED_BRANCH_FALSE"
+          },
+          "RECOVERY_BUILD": {
+            "state": "FALSE",
+            "reason_code": "REQUIRED_BRANCH_FALSE"
+          },
+          "warm_diagnostic": {
+            "state": "FALSE",
+            "reason_code": null
+          }
+        },
+        "accepted": false,
+        "formal_consumer_enabled": false,
+        "production_authorized": false,
+        "AS_RECORDED": false,
+        "historical_PIT_equivalent": false
+      },
+      "pass_result": true
+    },
+    {
+      "expected": "UNKNOWN",
+      "actual": "UNKNOWN",
+      "oracle": {
+        "ast_digest": "503ce6e3145f94caeebfddfc3235f9deb59ab4ff32b641408738c6eb97495818",
+        "capabilities": {
+          "B2_AMOUNT_A": "DIAGNOSTIC_AUDIT_OPEN",
+          "B2_NON_AMOUNT_A": "NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE"
+        },
+        "confirmed_diagnostic": "UNKNOWN",
+        "confirmed_raw": "UNKNOWN",
+        "confirmed_reason": "NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE",
+        "model_contract_id": "V4_08_SECTOR_LEGACY_ADAPTER_B2_R5",
+        "predicates": {
+          "BASE_BUILD": {
+            "reason_code": "REQUIRED_BRANCH_FALSE",
+            "state": "FALSE"
+          },
+          "BREADTH_BUILD": {
+            "reason_code": "REQUIRED_BRANCH_FALSE",
+            "state": "FALSE"
+          },
+          "RECOVERY_BUILD": {
+            "reason_code": "REQUIRED_BRANCH_FALSE",
+            "state": "FALSE"
+          },
+          "confirmed_raw": {
+            "reason_code": "NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE",
+            "state": "UNKNOWN"
+          },
+          "warm_diagnostic": {
+            "reason_code": null,
+            "state": "FALSE"
+          },
+          "weak": {
+            "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+            "state": "UNKNOWN"
+          }
+        },
+        "warm_diagnostic": "FALSE",
+        "warm_raw": "UNKNOWN",
+        "warm_reason": "AUD_AMOUNT_A_06_OPEN"
+      },
+      "extracted": {
+        "contract_id": "SECTOR_LEGACY_PRODUCER_EXTRACTION_R1",
+        "entity_type": "SECTOR",
+        "entity_id": "STYLE:880081",
+        "trade_date": "2026-09-24",
+        "input_owner": {
+          "bytes": 74443,
+          "path": "data/v4/a05_b2_amendment_r2/B2_CURRENT_SNAPSHOT_OLD_NEW_REPLAY_R1.jsonl.gz",
+          "sha256": "4e152273cdd55c2a04b9f9a17a8b49a34b131fe6e1f7ce96a30d5442b7800470"
+        },
+        "ast_binding": {
+          "path": "config/v4_08_b2_machine_ast_r5.json",
+          "bytes": 28799,
+          "sha256": "838f167f0eb7ec3797240cc7488e8121901b7bb4f8d926d3cb4e378adc4b1155"
+        },
+        "source_bindings": {
+          "source": {
+            "path": "src/workbench_analysis/sector_attention.py",
+            "bytes": 29860,
+            "sha256": "e4e39f51abb64d4e3359451e794842c1da06f641d1598d2aac5a6477fc89916a"
+          },
+          "source_parameters": {
+            "path": "config/research_attention_v3.yaml",
+            "bytes": 6277,
+            "sha256": "559e026897c5fd03d451af409438e90d1c535b69aecb1c2b336209e3ac9c96ec"
+          },
+          "parameters": {
+            "path": "config/v4_08_algorithm_parameter_set_r5.json",
+            "bytes": 4045,
+            "sha256": "0204d7c4fadf86871b6a079f755593b1a3f8ad18bb718f73ba33db0b70f67548"
+          }
+        },
+        "original_input_facts": {
+          "allowed_sector_type": {
+            "quality": "ACCEPTED",
+            "value": false
+          },
+          "b1": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "b_delta3": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "dq5_3": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "m1": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "ma20_delta3": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "ma20_width": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "market_ok": {
+            "quality": "ACCEPTED",
+            "value": true
+          },
+          "normal_rank_eligible": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "positive_count": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "q20": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "quote_coverage": {
+            "quality": "ACCEPTED",
+            "value": 0.0
+          },
+          "rel1": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "top1_positive_share": {
+            "quality": "UNKNOWN",
+            "value": null
+          },
+          "total_member_count": {
+            "quality": "ACCEPTED",
+            "value": 2
+          }
+        },
+        "CONFIRMED": {
+          "value": null,
+          "status": "NOT_FORMALLY_ADMITTED",
+          "candidate_value": "UNKNOWN"
+        },
+        "WARM": {
+          "value": null,
+          "status": "NOT_FORMALLY_ADMITTED",
+          "candidate_value": "FALSE",
+          "branches": {
+            "BREADTH_BUILD": {
+              "state": "FALSE",
+              "reason_code": "REQUIRED_BRANCH_FALSE"
+            },
+            "BASE_BUILD": {
+              "state": "FALSE",
+              "reason_code": "REQUIRED_BRANCH_FALSE"
+            },
+            "RECOVERY_BUILD": {
+              "state": "FALSE",
+              "reason_code": "REQUIRED_BRANCH_FALSE"
+            }
+          }
+        },
+        "exact_predicates": {
+          "confirmed_raw": {
+            "state": "UNKNOWN",
+            "reason_code": "NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE"
+          },
+          "weak": {
+            "state": "UNKNOWN",
+            "reason_code": "REQUIRED_QUALITY_UNAVAILABLE"
+          },
+          "BREADTH_BUILD": {
+            "state": "FALSE",
+            "reason_code": "REQUIRED_BRANCH_FALSE"
+          },
+          "BASE_BUILD": {
+            "state": "FALSE",
+            "reason_code": "REQUIRED_BRANCH_FALSE"
+          },
+          "RECOVERY_BUILD": {
+            "state": "FALSE",
+            "reason_code": "REQUIRED_BRANCH_FALSE"
+          },
+          "warm_diagnostic": {
+            "state": "FALSE",
+            "reason_code": null
+          }
+        },
+        "accepted": false,
+        "formal_consumer_enabled": false,
+        "production_authorized": false,
+        "AS_RECORDED": false,
+        "historical_PIT_equivalent": false
+      },
+      "pass_result": true
+    }
+  ],
+  "production_authorized": false,
+  "formal_current_owner_recovered": false
+}

@@ -1,10 +1,33 @@
 """Optional, head-bound candidate display. No formal fields or counts change."""
 import json
+import re
 from pathlib import Path
 from workbench_analysis.r43_owner_replay import checked
 from workbench_analysis.r43_operational_publication import digest
 
 CONTRACT='OPERATIONAL_CANDIDATE_DISPLAY_READ_V2'
+
+
+def checked_dependency(root,binding):
+    """Verify original computation bytes after a source-code revision.
+
+    Only model/config dependencies can use this content-addressed archive.
+    Owner/source data and the accepted release chain never fall back here.
+    """
+    relative=Path(binding['path'])
+    if relative.is_absolute() or '..' in relative.parts or not relative.parts or relative.parts[0] not in ('src','config'):
+        return checked(root,binding)
+    try:
+        return checked(root,binding)
+    except (ValueError,OSError):
+        sha=binding['sha256']
+        if not isinstance(sha,str) or not re.fullmatch('[0-9a-f]{64}',sha):
+            raise ValueError('FROZEN_DEPENDENCY_SHA_REQUIRED')
+        archive='docs/evidence/producer_dependency_archive_v1/'+sha+'.bin'
+        try:
+            return checked(root,dict(binding,path=archive))
+        except (ValueError,OSError) as exc:
+            raise ValueError('HISTORICAL_COMPUTATION_BYTES_NOT_CAPTURED') from exc
 
 
 def accepted_candidate_head(root, current, token, binding, day):
@@ -71,7 +94,7 @@ def read_candidates(root, *, head, token, day, sector_id=None):
                 checked(root,source)
             if document['membership']!=head['membership_snapshot']:raise ValueError('CANDIDATE_MEMBERSHIP_MISMATCH')
             checked(root,document['membership'])
-            for dep in document['dependencies']+[document['model']]:checked(root,dep)
+            for dep in document['dependencies']+[document['model']]:checked_dependency(root,dep)
             rows=[r for r in document['rows'] if r['sector_id']==sector_id]
             if len(rows)>1:raise ValueError('DUPLICATE_SECTOR_CANDIDATE')
             for row in rows:
@@ -92,11 +115,13 @@ def read_candidates(root, *, head, token, day, sector_id=None):
             raise ValueError('STATE_CANDIDATE_SCOPE_REQUIRED')
         if state:
             if state['membership']!=head['membership_snapshot']:raise ValueError('STATE_MEMBERSHIP_MISMATCH')
-            for key in ('source','membership','model','config','implementation'):checked(root,state[key])
+            for key in ('source','membership'):checked(root,state[key])
+            for key in ('model','config','implementation'):checked_dependency(root,state[key])
         if strict:
             if (strict['T0']!=day or strict['production'] is not False or strict['candidate_head']!=entry['head']
                     or strict['source_capture']!=bindings['source_capture']):raise ValueError('STRICT_CANDIDATE_SCOPE_REQUIRED')
-            for key in ('frozen_scanner_inputs','calendar','model','config','implementation','state_implementation'):checked(root,strict[key])
+            for key in ('frozen_scanner_inputs','calendar'):checked(root,strict[key])
+            for key in ('model','config','implementation','state_implementation'):checked_dependency(root,strict[key])
             for name,source in strict['input_bindings'].items():
                 if source!=head['owners'][day][name]:raise ValueError('STRICT_INPUT_BINDING_MISMATCH')
                 checked(root,source)

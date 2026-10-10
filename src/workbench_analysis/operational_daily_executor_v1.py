@@ -125,6 +125,11 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
         source_freeze=dict(path=p.relative_to(root).as_posix(),sha256=tdx.sha256_file(p)),
         tdx_bar_count=bars['row_count'],baostock_row_count=len(normalized['daily']['rows']),
         source_captured=True,source_ready=False,derived_ready=False,published=False,last_good_preserved=True)
+    # Freeze real bytes even when the previous accepted identity pool is no
+    # longer the new day's universe. The gate below still controls Owner work.
+    from .producer_bootstrap_v1 import capture_daily_sources, optional_step
+    result=dict(result,first_capture_source_candidate=optional_step(
+        capture_daily_sources,root,day,result['source_freeze']))
     result,readiness=verify_source_gate(root,day,artifact,result)
     progress(day,'SOURCE_READY' if readiness['source_ready'] else readiness['status'],result)
     if not readiness['source_ready']:return dict(result,status=readiness['status'],reason=readiness['reason'])
@@ -137,10 +142,11 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
     from .r43_owner_replay import checked
     root=Path(root)
     artifact=json.loads(checked(root,result['source_freeze']).read_bytes())
-    result,readiness=verify_source_gate(root,day,artifact,result)
     from .producer_bootstrap_v1 import capture_daily_sources, optional_step
-    result=dict(result,first_capture_source_candidate=optional_step(
-        capture_daily_sources,root,day,result['source_freeze']))
+    if not result.get('first_capture_source_candidate',{}).get('candidate'):
+        result=dict(result,first_capture_source_candidate=optional_step(
+            capture_daily_sources,root,day,result['source_freeze']))
+    result,readiness=verify_source_gate(root,day,artifact,result)
     if not readiness['source_ready']:
         return dict(result,status=readiness['status'],reason=readiness['reason'])
     progress(day,'DERIVING',result)

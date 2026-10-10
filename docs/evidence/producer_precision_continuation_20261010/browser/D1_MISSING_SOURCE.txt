@@ -1,0 +1,86 @@
+- text: 隔离工程测试；D1 为固定模拟日期，不是实际首获。
+- button "切换到 D1（隔离测试）"
+- link "跳到主要内容":
+  - /url: "#content"
+- complementary:
+  - link "大 A V4 研究工作台":
+    - /url: /v4/research/home
+    - text: 大 A
+    - generic: V4 研究工作台
+  - navigation "主导航":
+    - link "今日总览":
+      - /url: /v4/research/home
+    - link "板块研究":
+      - /url: /v4/research/sectors
+    - link "个股研究":
+      - /url: /v4/research/stocks
+    - link "关注跟踪":
+      - /url: /v4/research/focus
+    - link "市场与事件":
+      - /url: /v4/research/market
+    - link "数据与诊断":
+      - /url: /v4/research/diagnostics
+  - paragraph:
+    - text: 隔离 synthetic 双 Head 案例
+    - text: 研究与持续验证
+- banner:
+  - strong: 当前已处理截至 2026-10-12
+  - generic: 数据更新时间：2026/10/9 16:00:00（北京时间） · 持续验证中
+  - generic: 已发布分域：个股当期、板块当期、市场盘后、关注读域、诊断
+  - generic: 通达信最新成员回算；非历史当日成员 · 成员采集 undefined · 存续偏差风险
+  - generic: 当前研究日期 2026-10-12 · 当前成员重建，非严格 PIT
+  - combobox "研究日期":
+    - option "2026-10-09"
+    - option "2026-10-12" [selected]
+- main:
+  - generic: 研究工作台 / 关注跟踪
+  - heading "关注跟踪" [level=1]
+  - paragraph: 真实结果、输入质量与持续验证进度分别呈现。
+  - paragraph: 真实已发布的重建研究跟踪读域；不是 Validation Cohort，也不表示持仓。用户新增与自动写入未获准，保持只读。
+  - heading "同板块跟踪集中度 · 不代表持仓" [level=2]
+  - paragraph: 未结束的唯一跟踪对象 0 · 行业未映射 0
+  - button "完整集中度与成员来源"
+  - heading "Focus 独立关注清单" [level=2]
+  - searchbox "搜索代码或名称"
+  - combobox "排序":
+    - option "默认顺序" [selected]
+    - option "名称升序"
+    - option "名称降序"
+    - option "代码升序"
+  - button "搜索"
+  - generic: 当前筛选下无记录；筛选条件保留。
+  - generic: 共 0 条 · 第 1 页
+  - button "上一页" [disabled]
+  - button "下一页" [disabled]
+  - heading "持续事件（与股票画像互相导航）" [level=2]
+  - paragraph: 事件总数 0；各对象详情包含完整分层记录。
+  - heading "Forward Validation Cohort · 独立检验样本" [level=2]
+  - alert:
+    - text: 该领域来源能力不足：NO_AUTHORIZED_COHORT_OWNER。当前没有混用旧日期数据。
+    - paragraph
+    - button "重试"
+  - heading "Cohort 来源准备 · 独立研究候选" [level=2]
+  - paragraph: 独立运营候选 · 最新成员回算 · 非正式 D2 / 非严格 PIT / 不计入胜率
+  - paragraph: 该日期未保存候选原始来源，无法回放；不会用新日数据补算。
+  - button "候选条件、来源与准入边界"
+  - heading "Forward 期限结算" [level=2]
+  - searchbox "搜索代码或名称"
+  - combobox "排序":
+    - option "默认顺序" [selected]
+    - option "名称升序"
+    - option "名称降序"
+    - option "代码升序"
+  - button "搜索"
+  - alert:
+    - text: 该领域来源能力不足：NO_AUTHORIZED_COHORT_SETTLEMENT_OWNER。当前没有混用旧日期数据。
+    - paragraph
+    - button "重试"
+  - heading "FEP 模型读域" [level=2]
+  - alert:
+    - text: 该领域来源能力不足：MODEL_OR_PERMISSION_NOT_READY。当前没有混用旧日期数据。
+    - paragraph
+    - button "重试"
+- contentinfo:
+  - text: V4 六入口框架 · 数据、证据与研究状态分别展示
+  - link "历史摘要":
+    - /url: /v4/legacy-summary

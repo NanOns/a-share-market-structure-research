@@ -1,0 +1,966 @@
+{
+  "adapter_model_digest": "bb0ef9611c01db2cfd493a82037fb20f64aad15fba0c7e8e7433a0f5d28f11da",
+  "ast_digest": "503ce6e3145f94caeebfddfc3235f9deb59ab4ff32b641408738c6eb97495818",
+  "current_market_gate": "UNKNOWN_IF_MARKET_OK_NOT_TRUE",
+  "field_registry_digest": "8b37903493791811936efc145791f93c7c27278555f68e3b0cbdb4dffb32adfe",
+  "fields": {
+    "allowed_sector_type": {
+      "field_id": "allowed_sector_type",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "amount_A": {
+      "field_id": "amount_A",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "b1": {
+      "field_id": "b1",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "b_delta3": {
+      "field_id": "b_delta3",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "current": {
+      "field_id": "current",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "dq5_3": {
+      "field_id": "dq5_3",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "early_count": {
+      "field_id": "early_count",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "early_width": {
+      "field_id": "early_width",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "extended_share": {
+      "field_id": "extended_share",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "m1": {
+      "field_id": "m1",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "ma20_delta3": {
+      "field_id": "ma20_delta3",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "ma20_width": {
+      "field_id": "ma20_width",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "market_ok": {
+      "field_id": "market_ok",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "normal_rank_eligible": {
+      "field_id": "normal_rank_eligible",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "p1": {
+      "field_id": "p1",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "positive_count": {
+      "field_id": "positive_count",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "prior_current_within10": {
+      "field_id": "prior_current_within10",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "q20": {
+      "field_id": "q20",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "quote_coverage": {
+      "field_id": "quote_coverage",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "rel1": {
+      "field_id": "rel1",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "risk_coverage": {
+      "field_id": "risk_coverage",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "setup_count_gate": {
+      "field_id": "setup_count_gate",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "top1_positive_share": {
+      "field_id": "top1_positive_share",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "total_member_count": {
+      "field_id": "total_member_count",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "type_cross_section_coverage": {
+      "field_id": "type_cross_section_coverage",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    },
+    "weak": {
+      "field_id": "weak",
+      "producer": "V4_08_B2_CORE_ADAPTER",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_boolean_as_source",
+      "unknown_behavior": "UNKNOWN"
+    }
+  },
+  "model_contract_id": "V4_08_SECTOR_LEGACY_ADAPTER_B2_R5",
+  "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+  "parameter_set_sha256": "0204d7c4fadf86871b6a079f755593b1a3f8ad18bb718f73ba33db0b70f67548",
+  "rules": {
+    "BASE_BUILD": {
+      "children": [
+        {
+          "constant": true,
+          "field_id": "normal_rank_eligible",
+          "operator": "EQ",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 5,
+          "field_id": "total_member_count",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": false,
+          "field_id": "current",
+          "operator": "EQ",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": false,
+          "field_id": "weak",
+          "operator": "EQ",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": -0.01,
+          "field_id": "m1",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.45,
+          "field_id": "ma20_width",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.7,
+          "field_id": "risk_coverage",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.5,
+          "field_id": "extended_share",
+          "operator": "LTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.4,
+          "field_id": "q20",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.55,
+          "field_id": "ma20_width",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.0,
+          "field_id": "ma20_delta3",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": true,
+          "field_id": "setup_count_gate",
+          "operator": "EQ",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.8,
+          "field_id": "amount_A",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 1.3,
+          "field_id": "amount_A",
+          "operator": "LTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.0,
+          "field_id": "b_delta3",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        }
+      ],
+      "operator": "AND"
+    },
+    "BREADTH_BUILD": {
+      "children": [
+        {
+          "constant": true,
+          "field_id": "normal_rank_eligible",
+          "operator": "EQ",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 5,
+          "field_id": "total_member_count",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": false,
+          "field_id": "current",
+          "operator": "EQ",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": false,
+          "field_id": "weak",
+          "operator": "EQ",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": -0.01,
+          "field_id": "m1",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.45,
+          "field_id": "ma20_width",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.7,
+          "field_id": "risk_coverage",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.5,
+          "field_id": "extended_share",
+          "operator": "LTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.1,
+          "field_id": "dq5_3",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.1,
+          "field_id": "b_delta3",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.05,
+          "field_id": "ma20_delta3",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.1,
+          "field_id": "early_width",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 2,
+          "field_id": "early_count",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 1.05,
+          "field_id": "amount_A",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        }
+      ],
+      "operator": "AND"
+    },
+    "RECOVERY_BUILD": {
+      "children": [
+        {
+          "constant": true,
+          "field_id": "normal_rank_eligible",
+          "operator": "EQ",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 5,
+          "field_id": "total_member_count",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": false,
+          "field_id": "current",
+          "operator": "EQ",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": false,
+          "field_id": "weak",
+          "operator": "EQ",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": -0.01,
+          "field_id": "m1",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.45,
+          "field_id": "ma20_width",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.7,
+          "field_id": "risk_coverage",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.5,
+          "field_id": "extended_share",
+          "operator": "LTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": true,
+          "field_id": "prior_current_within10",
+          "operator": "EQ",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.0,
+          "field_id": "rel1",
+          "operator": "GT",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.1,
+          "field_id": "b_delta3",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.0,
+          "field_id": "ma20_delta3",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 1.05,
+          "field_id": "amount_A",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 2,
+          "field_id": "early_count",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        }
+      ],
+      "operator": "AND"
+    },
+    "confirmed_raw": {
+      "children": [
+        {
+          "constant": true,
+          "field_id": "allowed_sector_type",
+          "operator": "EQ",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": true,
+          "field_id": "normal_rank_eligible",
+          "operator": "EQ",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 5,
+          "field_id": "total_member_count",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.7,
+          "field_id": "quote_coverage",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": true,
+          "field_id": "market_ok",
+          "operator": "EQ",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.7,
+          "field_id": "type_cross_section_coverage",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.0,
+          "field_id": "m1",
+          "operator": "GT",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.6,
+          "field_id": "b1",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.003,
+          "field_id": "rel1",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.8,
+          "field_id": "p1",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 3,
+          "field_id": "positive_count",
+          "operator": "GTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0.5,
+          "field_id": "top1_positive_share",
+          "operator": "LTE",
+          "producer": "V4_08_B2_CORE_ADAPTER",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        }
+      ],
+      "operator": "AND"
+    },
+    "warm_diagnostic": {
+      "children": [
+        {
+          "operator": "REF",
+          "rule_id": "BREADTH_BUILD"
+        },
+        {
+          "operator": "REF",
+          "rule_id": "BASE_BUILD"
+        },
+        {
+          "operator": "REF",
+          "rule_id": "RECOVERY_BUILD"
+        }
+      ],
+      "operator": "OR"
+    },
+    "weak": {
+      "children": [
+        {
+          "children": [
+            {
+              "constant": 0.0,
+              "field_id": "m1",
+              "operator": "LT",
+              "producer": "V4_08_B2_CORE_ADAPTER",
+              "quality_requirement": [
+                "ACCEPTED"
+              ],
+              "time_role": "TARGET_CUTOFF",
+              "unknown_behavior": "UNKNOWN"
+            },
+            {
+              "constant": 0.35,
+              "field_id": "b1",
+              "operator": "LT",
+              "producer": "V4_08_B2_CORE_ADAPTER",
+              "quality_requirement": [
+                "ACCEPTED"
+              ],
+              "time_role": "TARGET_CUTOFF",
+              "unknown_behavior": "UNKNOWN"
+            }
+          ],
+          "operator": "AND"
+        },
+        {
+          "children": [
+            {
+              "constant": 0.0,
+              "field_id": "m1",
+              "operator": "LT",
+              "producer": "V4_08_B2_CORE_ADAPTER",
+              "quality_requirement": [
+                "ACCEPTED"
+              ],
+              "time_role": "TARGET_CUTOFF",
+              "unknown_behavior": "UNKNOWN"
+            },
+            {
+              "constant": -0.2,
+              "field_id": "b_delta3",
+              "operator": "LTE",
+              "producer": "V4_08_B2_CORE_ADAPTER",
+              "quality_requirement": [
+                "ACCEPTED"
+              ],
+              "time_role": "TARGET_CUTOFF",
+              "unknown_behavior": "UNKNOWN"
+            }
+          ],
+          "operator": "AND"
+        }
+      ],
+      "operator": "OR"
+    }
+  },
+  "semantic_dependencies": [
+    {
+      "path": "config/sector_semantics.yaml",
+      "role": "declaration; exact legacy resolver uses explicit fields, empty override registry",
+      "sha256": "e0b133f2ff37c5480d3683ee283ccb976d8da69d1eca886ca8a4e9daf0f77303",
+      "version": "workbench-semantic-v2.1"
+    },
+    {
+      "path": "config/sector_roles.yaml",
+      "role": "declaration of excluded theme names",
+      "sha256": "98cb07c5b2ec0e22f2ff5e788d8130319f672ef89df7fdef6f7614aa92ed2975",
+      "version": "sector-role-v0.1"
+    },
+    {
+      "path": "src/workbench_service/semantic.py",
+      "role": "exact resolve_semantics",
+      "sha256": "116e91557d403c37512d153506d40b6b0aedb9dca594769720345f7a87821cb0",
+      "version": "workbench-semantic-v2.1"
+    },
+    {
+      "path": "src/sector/roles.py",
+      "role": "exact name/type role producer",
+      "sha256": "fd361e8b2410871505a5e48db250e9c0c31343b7c14ca34667d246d4d874b17a",
+      "version": "sector-role-v0.1"
+    },
+    {
+      "path": "src/sector/phase2.py",
+      "role": "prepare valid_member and validity sector_valid producer",
+      "sha256": "9455bae1578c4a785e034eb0ff852dcd98d7218a66027e0ea3f11489fd3727a1",
+      "version": "sector-factor-contract-v1.1-correctness"
+    },
+    {
+      "path": "src/workbench_service/strength_association.py",
+      "role": "EXCLUDED_ROLES and keyword hint sets",
+      "sha256": "f9a39a9bc100e932fa04f32c46bf3aa62287b6a358382d4f6b01e4b02084be29",
+      "version": "semantic-keyword-dependency-r5.1"
+    },
+    {
+      "path": "src/sector/semantic_input_r5_1.py",
+      "role": "accepted mapping and fail-closed semantics",
+      "sha256": "f8760dd0420e803ff28915afd43a9ff54635dde6a16f1fa515a05c7b0193cde4",
+      "version": "V4_08_B2_SEMANTIC_MAPPING_R5_1"
+    }
+  ],
+  "semantic_dependency_digest": "722bda6bfb247f7d7b4a0ce5de3928d2b3458393ff96e77fd8cedee53f37d828",
+  "setup_count_gate": {
+    "formula": "setup_count >= max(setup_count_min, ceil(setup_count_ratio * setup_evaluable_count))",
+    "parameters": {
+      "amount_A_max": 1.3,
+      "amount_A_min": 0.8,
+      "b_delta3_gte": 0.0,
+      "ma20_delta3_gte": 0.0,
+      "ma20_width_gte": 0.55,
+      "q20_gte": 0.4,
+      "setup_count_min": 2,
+      "setup_count_ratio": 0.15
+    }
+  },
+  "source_parameter_path": "config/research_attention_v3.yaml",
+  "source_parameter_sha256": "559e026897c5fd03d451af409438e90d1c535b69aecb1c2b336209e3ac9c96ec",
+  "source_path": "src/workbench_analysis/sector_attention.py",
+  "source_sha256": "e4e39f51abb64d4e3359451e794842c1da06f641d1598d2aac5a6477fc89916a",
+  "source_time": "accepted target cutoff; history accepted prior publications only",
+  "source_units": {
+    "amount_A": "actual sector_amount_vs_prior20 only; no participation proxy",
+    "p1/q20/dq5_3": "ratio; V4 percentile points require division by 100",
+    "returns": "decimal"
+  },
+  "unknown_behavior": "preserve source three-valued logic; no unavailable inputs coerced to bool or integer",
+  "warm_formal": "UNKNOWN_AMOUNT_A_AUDIT_OPEN"
+}

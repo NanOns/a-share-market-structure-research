@@ -42,9 +42,12 @@ def build(root, *, candidate_binding, trade_date):
         'src/sector/legacy_valid_member_a05_v1.py', 'src/sector/legacy_b2_r5.py',
         'config/v4_08_b2_machine_ast_r5.json', 'config/research_attention_v3.yaml',
         'src/sector/research_rank_source_v2.py')]
+    from workbench_analysis.producer_dependency_archive_v1 import freeze_dependencies
+    archive = freeze_dependencies(root,dependencies+[model])
     document = dict(contract_id=CONTRACT, T0=trade_date, rows=rows, sources=sources,
         membership=head['membership_snapshot'], model=model, dependencies=dependencies,
         qualification_audit=list(validity.values()), validity_contract=VALIDITY_CONTRACT,
+        frozen_computation_dependencies=archive,
         formal_consumer_enabled=False, production=False, PIT_ELIGIBLE=False,
         evidence_class='RECONSTRUCTED_RESEARCH_ONLY', historical_authority_changed=False, rank_source_gap=rank_gap)
     slot = digest([candidate_binding, sources, model, dependencies])

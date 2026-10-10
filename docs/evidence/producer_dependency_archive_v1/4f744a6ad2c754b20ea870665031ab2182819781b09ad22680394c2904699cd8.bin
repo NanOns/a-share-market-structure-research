@@ -1,0 +1,103 @@
+"""Exact extracted V3 raw qualification; Amount A branches stay diagnostic."""
+import math
+from statistics import median
+from sector.native_r5 import observed
+from sector.machine_ast_r3 import ast_digest,validate_ast,evaluate_ast_explain
+from sector.semantic_input_r5_1 import eligibility
+
+
+def build_b2_inputs(native_rows,current,target,source_config,semantic_records=None):
+    """Reproduce CURRENT quote facts on accepted PIT membership and Core.
+
+    Market reference uses the unique Core universe, never flattened memberships.
+    Original SETUP/RECOVERY and Amount A facts are unavailable unless supplied
+    by a separately accepted exact producer; Base Seed is not an alias.
+    """
+    cfg=source_config['thresholds'];coverage=cfg['coverage']
+    all_ret=[v for r in current.values() if (v:=observed(r,'ret1',target)) is not None]
+    market_coverage=len(all_ret)/len(current) if current else None
+    market_median=median(all_ret) if all_ret else None
+    result={}
+    for row in native_rows:
+        returns=[v for m in row['member_ids'] if (v:=observed(current.get(m),'ret1',target)) is not None]
+        m1=median(returns) if returns else None
+        positive=[max(v,0) for v in returns]
+        rel=m1-market_median if m1 is not None and market_median is not None else None
+        semantic=(semantic_records or {}).get(row['sector_id'])
+        values=dict(allowed_sector_type=row['sector_type'] in cfg['current']['allowed_sector_types'],normal_rank_eligible=eligibility(semantic),
+            total_member_count=len(row['member_ids']),quote_coverage=len(returns)/len(row['member_ids']) if current else None,
+            market_ok=market_coverage>=coverage['min_full_market_quote_coverage'] if market_coverage is not None else None,
+            m1=m1,b1=sum(v>0 for v in returns)/len(returns) if returns else None,rel1=rel,
+            positive_count=sum(v>0 for v in returns) if returns else None,
+            top1_positive_share=max(positive)/sum(positive) if sum(positive)>0 else None,
+            ma20_width=row['fields']['ma20_width']['value'],b_delta3=row['fields']['breadth_delta3']['value'],ma20_delta3=row['fields']['ma20_delta3']['value'],
+            # Legacy cycle q20/dq5_3 have their own rank universe and average
+            # rank/N semantics. V4 section 10A0 ranks are not equivalent.
+            # No accepted exact legacy rank publication is admitted here.
+            dq5_3=None,q20=None)
+        result[row['sector_id']]={k:{'value':v,'quality':'ACCEPTED' if v is not None else 'UNKNOWN'} for k,v in values.items()}
+    for typ in ('INDUSTRY','THEME'):
+        rows=[r for r in native_rows if r['sector_type']==typ]
+        normal=[r for r in rows if result[r['sector_id']]['normal_rank_eligible']['value'] is True]
+        qualified=[r for r in normal if result[r['sector_id']]['rel1']['value'] is not None]
+        universe_known=all(result[r['sector_id']]['normal_rank_eligible']['value'] is not None for r in rows)
+        cross=len(qualified)/len(normal) if normal and current and universe_known else None
+        for row in rows:
+            facts=result[row['sector_id']];facts['type_cross_section_coverage']={'value':cross,'quality':'ACCEPTED' if cross is not None else 'UNKNOWN'}
+            value=None
+            if len(qualified)>=5 and cross is not None and cross>=coverage['min_sector_cross_section_coverage'] and row in qualified:
+                rel=facts['rel1']['value'];values=[result[r['sector_id']]['rel1']['value'] for r in qualified]
+                value=(sum(v<rel for v in values)+(sum(v==rel for v in values)+1)/2)/len(values)
+            facts['p1']={'value':value,'quality':'ACCEPTED' if value is not None else 'UNKNOWN'}
+    return result
+
+
+def evaluate_b2(values, ast, *, source_sha256, source_parameter_sha256, parameter_set_sha256):
+    if ast.get('semantic_dependencies'):
+        from pathlib import Path
+        import hashlib
+        root=Path(__file__).resolve().parents[2]
+        dependencies=ast['semantic_dependencies']
+        if ast_digest(dependencies)!=ast['semantic_dependency_digest']:
+            raise ValueError('B2_SEMANTIC_BINDING_MISMATCH')
+        if ast_digest(dict(ast_digest=ast['ast_digest'],semantic_dependency_digest=ast['semantic_dependency_digest'],mapping_contract='V4_08_B2_SEMANTIC_MAPPING_R5_1'))!=ast['adapter_model_digest']:
+            raise ValueError('B2_ADAPTER_MODEL_DIGEST_MISMATCH')
+        for binding in dependencies:
+            if hashlib.sha256((root/binding['path']).read_bytes()).hexdigest()!=binding['sha256']:
+                raise ValueError('B2_SEMANTIC_SOURCE_DIGEST_MISMATCH')
+    if source_sha256!=ast['source_sha256'] or source_parameter_sha256!=ast['source_parameter_sha256'] or parameter_set_sha256!=ast['parameter_set_sha256']:
+        raise ValueError('B2_SOURCE_OR_PARAMETER_BINDING_MISMATCH')
+    if ast_digest(ast['rules'])!=ast['ast_digest'] or ast_digest(ast['fields'])!=ast['field_registry_digest']:
+        raise ValueError('B2_AST_OR_FIELD_DIGEST_MISMATCH')
+    validate_ast(ast['rules'],ast['fields'],{})
+    facts={}
+    for field,spec in ast['fields'].items():
+        entry=values.get(field,{})
+        facts[field]={**spec,'value':entry.get('value'),'quality':entry.get('quality','UNKNOWN'),'reason_code':entry.get('reason_code')}
+    count=facts.get('risk_coverage',{}).get('value')
+    if count==0:
+        facts['risk_coverage']['quality']='UNKNOWN';facts['extended_share']['quality']='UNKNOWN'
+    setup=values.get('setup_count',{});evaluable=values.get('setup_evaluable_count',{})
+    cfg=ast['setup_count_gate']['parameters']
+    if setup.get('quality')=='ACCEPTED' and evaluable.get('quality')=='ACCEPTED' and setup.get('value') is not None and evaluable.get('value') is not None:
+        facts['setup_count_gate'].update(value=setup['value']>=max(cfg['setup_count_min'],math.ceil(cfg['setup_count_ratio']*evaluable['value'])),quality='ACCEPTED')
+    table={}
+    def run(rule):
+        result=evaluate_ast_explain(rule,ast['rules'],facts,{})
+        table[rule]={'state':'TRUE' if result.state is True else 'FALSE' if result.state is False else 'UNKNOWN','reason_code':result.reason_code}
+        return result.state
+    current=run('confirmed_raw')
+    if facts['normal_rank_eligible'].get('value') is None or facts['normal_rank_eligible']['quality']!='ACCEPTED':
+        current=None;table['confirmed_raw']={'state':'UNKNOWN','reason_code':'UNKNOWN_SEMANTIC_PROVENANCE'}
+    # Source explicitly treats full-market coverage as a publication gate.
+    if facts['market_ok'].get('value') is not True or facts['market_ok']['quality']!='ACCEPTED':
+        current=None;table['confirmed_raw']={'state':'UNKNOWN','reason_code':'UNKNOWN_MARKET_COVERAGE'}
+    facts['current']={**facts['current'],'value':current,'quality':'ACCEPTED' if current is not None else 'UNKNOWN'}
+    weak=run('weak');facts['weak']={**facts['weak'],'value':weak,'quality':'ACCEPTED' if weak is not None else 'UNKNOWN'}
+    for rule in ('BREADTH_BUILD','BASE_BUILD','RECOVERY_BUILD','warm_diagnostic'):run(rule)
+    diagnostic=table['confirmed_raw']['state']
+    table['confirmed_raw']={'state':'UNKNOWN','reason_code':'NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE'}
+    return dict(model_contract_id=ast['model_contract_id'],confirmed_raw='UNKNOWN',confirmed_diagnostic=diagnostic,warm_raw='UNKNOWN',
+        confirmed_reason='NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE',
+        warm_reason='AUD_AMOUNT_A_06_OPEN',warm_diagnostic=table['warm_diagnostic']['state'],predicates=table,
+        capabilities={'B2_NON_AMOUNT_A':'NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE','B2_AMOUNT_A':'DIAGNOSTIC_AUDIT_OPEN'},ast_digest=ast['ast_digest'])

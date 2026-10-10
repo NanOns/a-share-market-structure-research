@@ -17,11 +17,13 @@ def capture_daily_sources(root, day, freeze_binding, *, research_replay=False):
     native = artifact['native_baostock']
     native_doc = json.loads(checked(root, native).read_bytes())
     native_time = native_doc['observed_at']
+    transport=native_doc.get('source_transport_v2',{})
+    native_requested = native_doc.get('requested_at') or transport.get('requested_at') or transport.get('daily',{}).get('requested_at')
     target_doc=json.loads(Path(artifact['tdx']['path']).read_bytes())
     sources = [dict(name='daily_freeze', path=freeze_binding['path'], sha256=freeze_binding['sha256'],
-                    trade_date=day, requested_at=native_doc.get('requested_at'), received_at=artifact['observed_at']),
+                    trade_date=day, requested_at=native_requested, received_at=artifact['observed_at']),
                dict(name='native_baostock', path=native['path'], sha256=native['sha256'], trade_date=day,
-                    requested_at=native_doc.get('requested_at'), received_at=native_time),
+                    requested_at=native_requested, received_at=native_time),
                dict(name='tdx_target',path=artifact['tdx']['path'],sha256=artifact['tdx']['sha256'],trade_date=day,
                     requested_at=target_doc.get('source_transport_v2',{}).get('requested_at'),received_at=target_doc['source_available_at'])]
     # Local member bytes are observed again now, even if their SHA is unchanged.
@@ -60,6 +62,8 @@ def produce_daily_state(root, day, candidate_binding):
     document = produce(rows, universe=life['active_security_ids'], trade_date=day,
         source_binding=owner['prewatch'], membership_binding=head['membership_snapshot'],
         model_binding=model,config_binding=config,captured_at=datetime.now(timezone.utc).isoformat())
+    from .producer_dependency_archive_v1 import freeze_dependencies
+    freeze_dependencies(root,[model,config,implementation])
     return publish(root,path,dict(document,implementation=implementation,publication_id=owner['prewatch']['sha256'],revision='r2',
         frozen_clock_basis='ACTUAL_CANDIDATE_FREEZE_TIME'))
 
@@ -72,6 +76,7 @@ def build_review_and_display_candidates(root,day,candidate_binding,capture_resul
     root=Path(root)
     sector=optional_step(build_sector,root,candidate_binding=candidate_binding,trade_date=day)
     state=optional_step(produce_daily_state,root,day,candidate_binding)
+    first_observed=optional_step(produce_first_observed_state,root,day,candidate_binding)
     strict=(optional_step(freeze_for_review,root,capture_binding=capture_result['candidate'],candidate_binding=candidate_binding,
                 trade_date=day,research_replay=research_replay) if capture_result.get('candidate') else
             dict(status='CANDIDATE_FAILED',reason='INITIAL_CAPTURE_FAILED',production=False))
@@ -84,7 +89,29 @@ def build_review_and_display_candidates(root,day,candidate_binding,capture_resul
         else:entry[key+'_failure']=result.get('reason')
     index['sessions'][day]=entry
     atomic_json(root,index_path,index)
-    return dict(sector=sector,full_state=state,strict_source=strict,index=ref(root,index_path))
+    return dict(sector=sector,full_state=state,first_observed_state=first_observed,strict_source=strict,index=ref(root,index_path))
+
+
+def produce_first_observed_state(root, day, candidate_binding):
+    """Capture an explicitly supplied full-market source without admitting it.
+
+    No fallback from reconstructed prewatch, no grants, no accepted Head edits.
+    The optional input must bind all three source versions for this exact day.
+    """
+    root=Path(root)
+    head=json.loads(checked(root,candidate_binding).read_bytes())
+    if head.get('accepted_trade_date')!=day:
+        raise ValueError('FIRST_OBSERVED_STATE_TARGET_DATE_REQUIRED')
+    inputs=head.get('first_observed_state_sources',{}).get(day)
+    if not inputs:
+        return dict(status='SOURCE_INCOMPLETE',formal_status='BLOCKED',
+                    reason='AUTHORITATIVE_FULL_MARKET_STATE_SOURCE_NOT_SUPPLIED',
+                    production_write_authorized=False,observed_count=None)
+    if set(inputs)!=set(('state','membership','model')):
+        raise ValueError('FIRST_OBSERVED_STATE_VERSIONED_INPUTS_REQUIRED')
+    from .full_state_first_observed_v1 import freeze_first_observed
+    return freeze_first_observed(root,state_binding=inputs['state'],membership_binding=inputs['membership'],
+        model_binding=inputs['model'],candidate_directory='docs/evidence/full_state_first_observed_candidates_v1')
 
 
 def produce_daily_sector(root, day, candidate_binding):

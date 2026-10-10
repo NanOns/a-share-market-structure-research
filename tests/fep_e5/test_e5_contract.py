@@ -139,8 +139,12 @@ def test_prediction_persisted_then_priority_fails_independently(db):
 
 def test_idempotence_semantic_clock_metadata(db):
     m,s,g=activated(db);first=p.accept(db,s['slot_id'],input_row(),output(),AT,AT);before=db.inventory()
-    later='2026-01-02T00:01:00+00:00';again=p.accept(db,s['slot_id'],input_row(),output(),later,later)
+    again=p.accept(db,s['slot_id'],input_row(),output(),AT,AT)
     assert again==first and db.inventory()==before
+    later='2026-01-02T00:01:00+00:00'
+    with pytest.raises(ValueError,match='FROZEN_PREDICTION_MUTATION'):
+        p.accept(db,s['slot_id'],input_row(),output(),later,later)
+    assert db.inventory()==before and db.get('predictions',first['prediction_id'])==first
     assert c.logical({'value':1,'created_at':'a','run_id':'one'})==c.logical({'value':1,'created_at':'b','run_id':'two'})
 
 def test_priority_fixture_full_pool_and_risk_preserved():

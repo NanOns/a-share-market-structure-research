@@ -30,6 +30,9 @@ class Ledger:
         c.write_target(SCHEMA);c.require(table in TABLES and table!='deployment_heads','IMMUTABLE_TABLE_REQUIRED')
         old=self.get(table,key)
         if old is not None:
+            if table in ('predictions','projections'):
+                from .admission import frozen_equal
+                frozen_equal(old,payload)
             c.require(c.logical(old)==c.logical(payload),'APPEND_ONLY_IDEMPOTENCY_CONFLICT');return old
         names=['id',*columns,'payload'];values=[key,*columns.values(),Jsonb(payload)]
         self.pg.execute(sql.SQL('insert into {}.{} ({}) values ({})').format(sql.Identifier(SCHEMA),sql.Identifier(table),

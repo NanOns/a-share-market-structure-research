@@ -1,0 +1,27 @@
+{
+  "reasons": {
+    "MODEL_NOT_FOUND": "未找到匹配当前用途的模型注册。",
+    "MODEL_NOT_ACCEPTED": "已有历史工程模型，但尚未接受为当前生产模型。",
+    "GRANT_MISSING": "缺少当前模型、范围和能力的正式授权。",
+    "INPUT_ASOF_NOT_VERIFIED": "训练或预测输入的当时首次可用时间尚未核验。",
+    "SAMPLE_NOT_MATURE": "当前用途的真实前瞻样本尚未成熟。",
+    "NO_SCORING_AUTHORITY": "尚无生产评分或排序权限。"
+  },
+  "tests": "tests/fep_e5/test_r4_admission.py",
+  "result": "14 PASSED",
+  "frozen_fields": [
+    "accepted_at",
+    "revision",
+    "model_id",
+    "input_digest",
+    "axes"
+  ],
+  "shadow_cannot_grant_model_display": true,
+  "broader_check": {
+    "passed": 41,
+    "setup_errors": 22,
+    "reason": "DISPOSABLE_PG_CLUSTER_REQUIRED; default legacy port blocked before DB access"
+  },
+  "no_prediction": true,
+  "no_grant_issued": true
+}

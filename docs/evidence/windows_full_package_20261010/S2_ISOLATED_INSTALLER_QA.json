@@ -1,0 +1,203 @@
+{
+  "actual_windows_reboot": false,
+  "build_receipt_sha256": "4ba56d290886613af2c1f769b448902b83f934ffc94d4d2f08fa67fe96e3bf39",
+  "checks": [
+    "BUSY_WORKSPACE_INSTALL_REFUSED_BEFORE_DEPLOY",
+    "NON_G_PROGRAM_ROOT_FAILS_BEFORE_EXTRACTION",
+    "MISSING_WORKSPACE_FAILS_WITHOUT_EMPTY_DATA_ROOT",
+    "CONFIGURED_NESTED_G_READ_ONLY_SOURCE_REFUSED_BEFORE_ANY_EXTRACTION",
+    "FIRST_INSTALL_LOGIN_DEFAULT_OFF",
+    "ACTUAL_INSTALL_AND_ISOLATED_CURRENT_USER_LOGIN_VALUE",
+    "SAME_VERSION_REPAIR_PRESERVES_DATA_AND_LOGIN_CHOICE",
+    "EXPLICIT_LOGIN_DISABLE_AND_ENABLE_RESPECTED",
+    "INDEPENDENT_VERSION_DEPLOY_AND_LOGIN_SWITCH",
+    "SAME_BINARY_DIRECTORY_ROLLBACK_REHEARSAL_NO_HEAD_RESTORE",
+    "BUSY_WORKSPACE_UNINSTALL_REFUSED",
+    "UNSELECTED_VERSION_UNINSTALL_PRESERVES_SELECTED_LOGIN",
+    "SELECTED_VERSION_UNINSTALL_RETAINS_HEAD_SQLITE_CANCEL_AND_SETTINGS"
+  ],
+  "commands": [
+    {
+      "arguments": [
+        "/VERYSILENT",
+        "/SUPPRESSMSGBOXES",
+        "/NORESTART",
+        "/WORKSPACE=G:\\codex_tmp\\test_temp\\package_installer_workspace_27b2_r3",
+        "/DIR=G:\\codex_tmp\\test_temp\\package_installer_versions\\V4_PACKAGE_1.0.0_27b2ec1ed284_A"
+      ],
+      "executable": "G:\\codex_tmp\\windows_installer_v1\\V4_PACKAGE_1.0.0_27b2ec1ed284\\qa\\大A交易系统安装程序_QA.exe",
+      "exit_code": 1,
+      "expected": "NONZERO"
+    },
+    {
+      "arguments": [
+        "/VERYSILENT",
+        "/SUPPRESSMSGBOXES",
+        "/NORESTART",
+        "/WORKSPACE=G:\\codex_tmp\\test_temp\\package_installer_workspace_27b2_r3",
+        "/DIR=C:\\codex_package_forbidden"
+      ],
+      "executable": "G:\\codex_tmp\\windows_installer_v1\\V4_PACKAGE_1.0.0_27b2ec1ed284\\qa\\大A交易系统安装程序_QA.exe",
+      "exit_code": 2,
+      "expected": "NONZERO"
+    },
+    {
+      "arguments": [
+        "/VERYSILENT",
+        "/SUPPRESSMSGBOXES",
+        "/NORESTART",
+        "/WORKSPACE=G:\\codex_tmp\\test_temp\\package_installer_workspace_27b2_r3\\nonexistent",
+        "/DIR=G:\\codex_tmp\\test_temp\\package_installer_versions\\V4_PACKAGE_1.0.0_27b2ec1ed284_A"
+      ],
+      "executable": "G:\\codex_tmp\\windows_installer_v1\\V4_PACKAGE_1.0.0_27b2ec1ed284\\qa\\大A交易系统安装程序_QA.exe",
+      "exit_code": 2,
+      "expected": "NONZERO"
+    },
+    {
+      "arguments": [
+        "/VERYSILENT",
+        "/SUPPRESSMSGBOXES",
+        "/NORESTART",
+        "/WORKSPACE=G:\\codex_tmp\\test_temp\\package_installer_workspace_27b2_r3",
+        "/DIR=G:\\codex_tmp\\test_temp\\package_installer_versions\\V4_PACKAGE_1.0.0_27b2ec1ed284_A"
+      ],
+      "executable": "G:\\codex_tmp\\windows_installer_v1\\V4_PACKAGE_1.0.0_27b2ec1ed284\\qa\\大A交易系统安装程序_QA.exe",
+      "exit_code": 2,
+      "expected": "NONZERO"
+    },
+    {
+      "arguments": [
+        "/VERYSILENT",
+        "/SUPPRESSMSGBOXES",
+        "/NORESTART",
+        "/WORKSPACE=G:\\codex_tmp\\test_temp\\package_installer_workspace_27b2_r3",
+        "/DIR=G:\\codex_tmp\\test_temp\\package_installer_versions\\V4_PACKAGE_1.0.0_27b2ec1ed284_A"
+      ],
+      "executable": "G:\\codex_tmp\\windows_installer_v1\\V4_PACKAGE_1.0.0_27b2ec1ed284\\qa\\大A交易系统安装程序_QA.exe",
+      "exit_code": 0,
+      "expected": 0
+    },
+    {
+      "arguments": [
+        "/VERYSILENT",
+        "/SUPPRESSMSGBOXES",
+        "/NORESTART",
+        "/WORKSPACE=G:\\codex_tmp\\test_temp\\package_installer_workspace_27b2_r3",
+        "/DIR=G:\\codex_tmp\\test_temp\\package_installer_versions\\V4_PACKAGE_1.0.0_27b2ec1ed284_A",
+        "/TASKS=autologin"
+      ],
+      "executable": "G:\\codex_tmp\\windows_installer_v1\\V4_PACKAGE_1.0.0_27b2ec1ed284\\qa\\大A交易系统安装程序_QA.exe",
+      "exit_code": 0,
+      "expected": 0
+    },
+    {
+      "arguments": [
+        "/VERYSILENT",
+        "/SUPPRESSMSGBOXES",
+        "/NORESTART",
+        "/WORKSPACE=G:\\codex_tmp\\test_temp\\package_installer_workspace_27b2_r3",
+        "/DIR=G:\\codex_tmp\\test_temp\\package_installer_versions\\V4_PACKAGE_1.0.0_27b2ec1ed284_A"
+      ],
+      "executable": "G:\\codex_tmp\\windows_installer_v1\\V4_PACKAGE_1.0.0_27b2ec1ed284\\qa\\大A交易系统安装程序_QA.exe",
+      "exit_code": 0,
+      "expected": 0
+    },
+    {
+      "arguments": [
+        "/VERYSILENT",
+        "/SUPPRESSMSGBOXES",
+        "/NORESTART",
+        "/WORKSPACE=G:\\codex_tmp\\test_temp\\package_installer_workspace_27b2_r3",
+        "/DIR=G:\\codex_tmp\\test_temp\\package_installer_versions\\V4_PACKAGE_1.0.0_27b2ec1ed284_A",
+        "/TASKS="
+      ],
+      "executable": "G:\\codex_tmp\\windows_installer_v1\\V4_PACKAGE_1.0.0_27b2ec1ed284\\qa\\大A交易系统安装程序_QA.exe",
+      "exit_code": 0,
+      "expected": 0
+    },
+    {
+      "arguments": [
+        "/VERYSILENT",
+        "/SUPPRESSMSGBOXES",
+        "/NORESTART",
+        "/WORKSPACE=G:\\codex_tmp\\test_temp\\package_installer_workspace_27b2_r3",
+        "/DIR=G:\\codex_tmp\\test_temp\\package_installer_versions\\V4_PACKAGE_1.0.0_27b2ec1ed284_A",
+        "/TASKS=autologin"
+      ],
+      "executable": "G:\\codex_tmp\\windows_installer_v1\\V4_PACKAGE_1.0.0_27b2ec1ed284\\qa\\大A交易系统安装程序_QA.exe",
+      "exit_code": 0,
+      "expected": 0
+    },
+    {
+      "arguments": [
+        "/VERYSILENT",
+        "/SUPPRESSMSGBOXES",
+        "/NORESTART",
+        "/WORKSPACE=G:\\codex_tmp\\test_temp\\package_installer_workspace_27b2_r3",
+        "/DIR=G:\\codex_tmp\\test_temp\\package_installer_versions\\V4_PACKAGE_1.0.0_27b2ec1ed284_B"
+      ],
+      "executable": "G:\\codex_tmp\\windows_installer_v1\\V4_PACKAGE_1.0.0_27b2ec1ed284\\qa\\大A交易系统安装程序_QA.exe",
+      "exit_code": 0,
+      "expected": 0
+    },
+    {
+      "arguments": [
+        "/VERYSILENT",
+        "/SUPPRESSMSGBOXES",
+        "/NORESTART",
+        "/WORKSPACE=G:\\codex_tmp\\test_temp\\package_installer_workspace_27b2_r3",
+        "/DIR=G:\\codex_tmp\\test_temp\\package_installer_versions\\V4_PACKAGE_1.0.0_27b2ec1ed284_A"
+      ],
+      "executable": "G:\\codex_tmp\\windows_installer_v1\\V4_PACKAGE_1.0.0_27b2ec1ed284\\qa\\大A交易系统安装程序_QA.exe",
+      "exit_code": 0,
+      "expected": 0
+    },
+    {
+      "arguments": [
+        "/VERYSILENT",
+        "/SUPPRESSMSGBOXES",
+        "/NORESTART"
+      ],
+      "executable": "G:\\codex_tmp\\test_temp\\package_installer_versions\\V4_PACKAGE_1.0.0_27b2ec1ed284_A\\unins000.exe",
+      "exit_code": 1,
+      "expected": "NONZERO"
+    },
+    {
+      "arguments": [
+        "/VERYSILENT",
+        "/SUPPRESSMSGBOXES",
+        "/NORESTART"
+      ],
+      "executable": "G:\\codex_tmp\\test_temp\\package_installer_versions\\V4_PACKAGE_1.0.0_27b2ec1ed284_B\\unins000.exe",
+      "exit_code": 0,
+      "expected": 0
+    },
+    {
+      "arguments": [
+        "/VERYSILENT",
+        "/SUPPRESSMSGBOXES",
+        "/NORESTART"
+      ],
+      "executable": "G:\\codex_tmp\\test_temp\\package_installer_versions\\V4_PACKAGE_1.0.0_27b2ec1ed284_A\\unins000.exe",
+      "exit_code": 0,
+      "expected": 0
+    }
+  ],
+  "compatibility_claim": "Same frozen binary in two isolated version directories; actual historical binary/schema compatibility not granted",
+  "contract_id": "V4_ISOLATED_ACTUAL_INSTALLER_QA_V1",
+  "external_acceptance": "NOT_GRANTED",
+  "finished_at": "2026-10-10T22:42:01.438563+00:00",
+  "installer_sha256": "e89cffd739b832aee087a159c926b982a29237053a73ac53ae68b603e1d0bf4c",
+  "physical_ui_verified": false,
+  "production_modified": false,
+  "protected_files": {
+    "config\\dm01_go_forward_runtime_contract_r4r1.json": "6452a8398800d2728df8bbfc7dfe84786790d988a70905ecc2c61b77a2201b17",
+    "data\\v4\\V4_DATA_ACCEPTED_HEAD.json": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+    "data\\v4\\V4_OPERATIONAL_RESEARCH_HEAD.json": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+    "runtime\\desktop\\app.lock": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+    "runtime\\dynamic_daily\\qa-retained.sqlite3": "675b6ad41fdc0bc8a71a7f30fb13b65c6b16511b26f5205a54f03f710a556f99"
+  },
+  "started_at": "2026-10-10T22:40:15.323181+00:00",
+  "status": "PASS",
+  "workspace": "G:\\codex_tmp\\test_temp\\package_installer_workspace_27b2_r3"
+}

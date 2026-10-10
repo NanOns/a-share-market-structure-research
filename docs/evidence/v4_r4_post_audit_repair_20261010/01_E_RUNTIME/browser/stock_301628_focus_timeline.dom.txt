@@ -1,0 +1,554 @@
+- link "跳到主要内容":
+  - /url: "#content"
+- complementary:
+  - link "大 A V4 研究工作台":
+    - /url: /v4/research/home
+    - text: 大 A
+    - generic: V4 研究工作台
+  - navigation "主导航":
+    - link "今日总览":
+      - /url: /v4/research/home
+    - link "板块研究":
+      - /url: /v4/research/sectors
+    - link "个股研究":
+      - /url: /v4/research/stocks
+    - link "关注跟踪":
+      - /url: /v4/research/focus
+    - link "市场与事件":
+      - /url: /v4/research/market
+    - link "数据与诊断":
+      - /url: /v4/research/diagnostics
+    - link "数据更新 · 截至 2026-10-09 · 已同步":
+      - /url: /v4/research/data-update
+  - paragraph:
+    - text: 真实生产快照
+    - text: 研究与持续验证
+- banner:
+  - strong: 当前已处理截至 2026-10-09
+  - generic: 数据更新时间：2026/10/9 19:56:56（北京时间） · 持续验证中
+  - generic: 已发布分域：个股当期、板块当期、市场盘后、关注读域、诊断
+  - generic: 通达信最新成员回算；非历史当日成员 · 成员采集 2026-10-09T09:44:01.158745+08:00 · 存续偏差风险
+- main:
+  - heading "技术图表 · 实际成交行情" [level=2]
+  - combobox "行情周期":
+    - option "日线" [selected]
+    - option "周线"
+    - option "月线"
+  - combobox "价格口径":
+    - option "原生前复权" [selected]
+    - option "不复权"
+  - alert:
+    - text: 该领域来源能力不足：NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE | DATED_OPERATIONAL_STOCKS_SEC-C08B6C24E4F39D8E85C03F8588661538_CHART_OWNER | FP07。当前没有混用旧日期数据。
+    - paragraph
+    - button "重试"
+  - generic: 研究工作台 / 个股研究
+  - heading "个股研究" [level=1]
+  - paragraph: 真实结果、输入质量与持续验证进度分别呈现。
+  - link "← 返回个股研究":
+    - /url: /v4/research/stocks?offset=0&q=301628&sort=id
+  - heading "SZ.301628 SZ.301628" [level=2]
+  - link "冻结回放":
+    - /url: /v4/research/replay?as_of=2026-10-09&left=SEC-C08B6C24E4F39D8E85C03F8588661538
+  - text: ·
+  - link "比较该对象":
+    - /url: /v4/research/compare?as_of=2026-10-09&left=SEC-C08B6C24E4F39D8E85C03F8588661538&mode=stock-market
+  - table:
+    - rowgroup:
+      - row "研究对象 数值 证据":
+        - columnheader "研究对象"
+        - columnheader "数值"
+        - columnheader "证据"
+    - rowgroup:
+      - row "二十会话均线ATR偏离 -2.054 来源":
+        - cell "二十会话均线ATR偏离"
+        - cell "-2.054":
+          - button "-2.054"
+        - cell "来源":
+          - button "来源"
+      - row "距二十会话高点ATR距离 4.076 来源":
+        - cell "距二十会话高点ATR距离"
+        - cell "4.076":
+          - button "4.076"
+        - cell "来源":
+          - button "来源"
+      - row "十会话均线 111.882 来源":
+        - cell "十会话均线"
+        - cell "111.882":
+          - button "111.882"
+        - cell "来源":
+          - button "来源"
+      - row "最低流动性 是 来源":
+        - cell "最低流动性"
+        - cell "是":
+          - button "是"
+        - cell "来源":
+          - button "来源"
+      - row "二百五十会话位置 0.408 来源":
+        - cell "二百五十会话位置"
+        - cell "0.408":
+          - button "0.408"
+        - cell "来源":
+          - button "来源"
+      - row "成交额状态 收缩 来源":
+        - cell "成交额状态"
+        - cell "收缩":
+          - button "收缩"
+        - cell "来源":
+          - button "来源"
+      - row "波动压缩状态 扩张 来源":
+        - cell "波动压缩状态"
+        - cell "扩张":
+          - button "扩张"
+        - cell "来源":
+          - button "来源"
+      - row "核心延伸风险 低 来源":
+        - cell "核心延伸风险"
+        - cell "低":
+          - button "低"
+        - cell "来源":
+          - button "来源"
+      - row "核心参与度结果 低参与度下跌 来源":
+        - cell "核心参与度结果"
+        - cell "低参与度下跌":
+          - button "低参与度下跌"
+        - cell "来源":
+          - button "来源"
+      - row "二十会话回撤状态 深回撤 来源":
+        - cell "二十会话回撤状态"
+        - cell "深回撤":
+          - button "深回撤"
+        - cell "来源":
+          - button "来源"
+      - row "六十会话回撤状态 深回撤 来源":
+        - cell "六十会话回撤状态"
+        - cell "深回撤":
+          - button "深回撤"
+        - cell "来源":
+          - button "来源"
+      - row "均线结构状态 混合排列 来源":
+        - cell "均线结构状态"
+        - cell "混合排列":
+          - button "混合排列"
+        - cell "来源":
+          - button "来源"
+      - row "月线趋势状态 月线上行 来源":
+        - cell "月线趋势状态"
+        - cell "月线上行":
+          - button "月线上行"
+        - cell "来源":
+          - button "来源"
+      - row "临近二十会话高点状态 低于前高 来源":
+        - cell "临近二十会话高点状态"
+        - cell "低于前高":
+          - button "低于前高"
+        - cell "来源":
+          - button "来源"
+      - row "临近六十会话高点状态 低于前高 来源":
+        - cell "临近六十会话高点状态"
+        - cell "低于前高":
+          - button "低于前高"
+        - cell "来源":
+          - button "来源"
+      - row "价格位置状态 中位区 来源":
+        - cell "价格位置状态"
+        - cell "中位区":
+          - button "中位区"
+        - cell "来源":
+          - button "来源"
+      - row "市场环境显示 来源能力不足 来源":
+        - cell "市场环境显示"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "市场相对强度状态 走弱 来源":
+        - cell "市场相对强度状态"
+        - cell "走弱":
+          - button "走弱"
+        - cell "来源":
+          - button "来源"
+      - row "相对板块状态 走弱 来源":
+        - cell "相对板块状态"
+        - cell "走弱":
+          - button "走弱"
+        - cell "来源":
+          - button "来源"
+      - row "严重延伸 否 来源":
+        - cell "严重延伸"
+        - cell "否":
+          - button "否"
+        - cell "来源":
+          - button "来源"
+      - row "趋势状态 弱横盘 来源":
+        - cell "趋势状态"
+        - cell "弱横盘":
+          - button "弱横盘"
+        - cell "来源":
+          - button "来源"
+      - row "成交量状态 正常 来源":
+        - cell "成交量状态"
+        - cell "正常":
+          - button "正常"
+        - cell "来源":
+          - button "来源"
+      - row "周线趋势状态 周线横盘 来源":
+        - cell "周线趋势状态"
+        - cell "周线横盘":
+          - button "周线横盘"
+        - cell "来源":
+          - button "来源"
+      - row "成交额（元） 385869024 来源":
+        - cell "成交额（元）"
+        - cell "385869024":
+          - button "385869024"
+        - cell "来源":
+          - button "来源"
+      - row "收盘价 97.550 来源":
+        - cell "收盘价"
+        - cell "97.550":
+          - button "97.550"
+        - cell "来源":
+          - button "来源"
+      - row "最高价 106.280 来源":
+        - cell "最高价"
+        - cell "106.280":
+          - button "106.280"
+        - cell "来源":
+          - button "来源"
+      - row "最低价 93.500 来源":
+        - cell "最低价"
+        - cell "93.500":
+          - button "93.500"
+        - cell "来源":
+          - button "来源"
+      - row "开盘价 106.270 来源":
+        - cell "开盘价"
+        - cell "106.270":
+          - button "106.270"
+        - cell "来源":
+          - button "来源"
+      - row "成交量（股） 3913328 来源":
+        - cell "成交量（股）"
+        - cell "3913328":
+          - button "3913328"
+        - cell "来源":
+          - button "来源"
+      - row "研究情景 恢复转向 来源":
+        - cell "研究情景"
+        - cell "恢复转向":
+          - button "恢复转向"
+        - cell "来源":
+          - button "来源"
+      - row "资格判断 不符合 来源":
+        - cell "资格判断"
+        - cell "不符合":
+          - button "不符合"
+        - cell "来源":
+          - button "来源"
+      - row "成熟度 无 来源":
+        - cell "成熟度"
+        - cell "无":
+          - button "无"
+        - cell "来源":
+          - button "来源"
+      - row "健康度 查看研究状态 来源":
+        - cell "健康度"
+        - cell "查看研究状态":
+          - button "查看研究状态"
+        - cell "来源":
+          - button "来源"
+      - row "有效性 失效 来源":
+        - cell "有效性"
+        - cell "失效":
+          - button "失效"
+        - cell "来源":
+          - button "来源"
+      - row "跟踪状态 查看研究状态 来源":
+        - cell "跟踪状态"
+        - cell "查看研究状态":
+          - button "查看研究状态"
+        - cell "来源":
+          - button "来源"
+      - row "主行业 查看所属板块 来源":
+        - cell "主行业"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1204
+        - cell "来源":
+          - button "来源"
+  - heading "所属行业与关联概念" [level=2]
+  - heading "主行业" [level=3]
+  - link "元器件 · 行业":
+    - /url: /v4/research/sectors/INDUSTRY:T1204
+  - heading "关联概念" [level=3]
+  - link "5G概念 · 概念":
+    - /url: /v4/research/sectors/THEME:880506
+  - link "PCB概念 · 概念":
+    - /url: /v4/research/sectors/THEME:880550
+  - link "CPO概念 · 概念":
+    - /url: /v4/research/sectors/THEME:880656
+  - link "毫米雷达 · 概念":
+    - /url: /v4/research/sectors/THEME:880659
+  - link "智能机器 · 概念":
+    - /url: /v4/research/sectors/THEME:880904
+  - link "量子科技 · 概念":
+    - /url: /v4/research/sectors/THEME:880943
+  - button "行业与概念关系来源"
+  - heading "事实 F / 研究状态 R / 假设 H" [level=2]
+  - heading "事实" [level=3]
+  - table:
+    - rowgroup:
+      - row "研究对象 数值 证据":
+        - columnheader "研究对象"
+        - columnheader "数值"
+        - columnheader "证据"
+    - rowgroup:
+      - row "成交额（元） 385869024 来源":
+        - cell "成交额（元）"
+        - cell "385869024":
+          - button "385869024"
+        - cell "来源":
+          - button "来源"
+      - row "收盘价 97.550 来源":
+        - cell "收盘价"
+        - cell "97.550":
+          - button "97.550"
+        - cell "来源":
+          - button "来源"
+      - row "最高价 106.280 来源":
+        - cell "最高价"
+        - cell "106.280":
+          - button "106.280"
+        - cell "来源":
+          - button "来源"
+      - row "最低价 93.500 来源":
+        - cell "最低价"
+        - cell "93.500":
+          - button "93.500"
+        - cell "来源":
+          - button "来源"
+      - row "开盘价 106.270 来源":
+        - cell "开盘价"
+        - cell "106.270":
+          - button "106.270"
+        - cell "来源":
+          - button "来源"
+      - row "成交量（股） 3913328 来源":
+        - cell "成交量（股）"
+        - cell "3913328":
+          - button "3913328"
+        - cell "来源":
+          - button "来源"
+  - heading "研究状态" [level=3]
+  - table:
+    - rowgroup:
+      - row "研究对象 数值 证据":
+        - columnheader "研究对象"
+        - columnheader "数值"
+        - columnheader "证据"
+    - rowgroup:
+      - row "二十会话均线ATR偏离 -2.054 来源":
+        - cell "二十会话均线ATR偏离"
+        - cell "-2.054":
+          - button "-2.054"
+        - cell "来源":
+          - button "来源"
+      - row "距二十会话高点ATR距离 4.076 来源":
+        - cell "距二十会话高点ATR距离"
+        - cell "4.076":
+          - button "4.076"
+        - cell "来源":
+          - button "来源"
+      - row "十会话均线 111.882 来源":
+        - cell "十会话均线"
+        - cell "111.882":
+          - button "111.882"
+        - cell "来源":
+          - button "来源"
+      - row "最低流动性 是 来源":
+        - cell "最低流动性"
+        - cell "是":
+          - button "是"
+        - cell "来源":
+          - button "来源"
+      - row "二百五十会话位置 0.408 来源":
+        - cell "二百五十会话位置"
+        - cell "0.408":
+          - button "0.408"
+        - cell "来源":
+          - button "来源"
+      - row "成交额状态 收缩 来源":
+        - cell "成交额状态"
+        - cell "收缩":
+          - button "收缩"
+        - cell "来源":
+          - button "来源"
+      - row "波动压缩状态 扩张 来源":
+        - cell "波动压缩状态"
+        - cell "扩张":
+          - button "扩张"
+        - cell "来源":
+          - button "来源"
+      - row "核心延伸风险 低 来源":
+        - cell "核心延伸风险"
+        - cell "低":
+          - button "低"
+        - cell "来源":
+          - button "来源"
+      - row "核心参与度结果 低参与度下跌 来源":
+        - cell "核心参与度结果"
+        - cell "低参与度下跌":
+          - button "低参与度下跌"
+        - cell "来源":
+          - button "来源"
+      - row "二十会话回撤状态 深回撤 来源":
+        - cell "二十会话回撤状态"
+        - cell "深回撤":
+          - button "深回撤"
+        - cell "来源":
+          - button "来源"
+      - row "六十会话回撤状态 深回撤 来源":
+        - cell "六十会话回撤状态"
+        - cell "深回撤":
+          - button "深回撤"
+        - cell "来源":
+          - button "来源"
+      - row "均线结构状态 混合排列 来源":
+        - cell "均线结构状态"
+        - cell "混合排列":
+          - button "混合排列"
+        - cell "来源":
+          - button "来源"
+      - row "月线趋势状态 月线上行 来源":
+        - cell "月线趋势状态"
+        - cell "月线上行":
+          - button "月线上行"
+        - cell "来源":
+          - button "来源"
+      - row "临近二十会话高点状态 低于前高 来源":
+        - cell "临近二十会话高点状态"
+        - cell "低于前高":
+          - button "低于前高"
+        - cell "来源":
+          - button "来源"
+      - row "临近六十会话高点状态 低于前高 来源":
+        - cell "临近六十会话高点状态"
+        - cell "低于前高":
+          - button "低于前高"
+        - cell "来源":
+          - button "来源"
+      - row "价格位置状态 中位区 来源":
+        - cell "价格位置状态"
+        - cell "中位区":
+          - button "中位区"
+        - cell "来源":
+          - button "来源"
+      - row "市场环境显示 来源能力不足 来源":
+        - cell "市场环境显示"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "市场相对强度状态 走弱 来源":
+        - cell "市场相对强度状态"
+        - cell "走弱":
+          - button "走弱"
+        - cell "来源":
+          - button "来源"
+      - row "相对板块状态 走弱 来源":
+        - cell "相对板块状态"
+        - cell "走弱":
+          - button "走弱"
+        - cell "来源":
+          - button "来源"
+      - row "严重延伸 否 来源":
+        - cell "严重延伸"
+        - cell "否":
+          - button "否"
+        - cell "来源":
+          - button "来源"
+      - row "趋势状态 弱横盘 来源":
+        - cell "趋势状态"
+        - cell "弱横盘":
+          - button "弱横盘"
+        - cell "来源":
+          - button "来源"
+      - row "成交量状态 正常 来源":
+        - cell "成交量状态"
+        - cell "正常":
+          - button "正常"
+        - cell "来源":
+          - button "来源"
+      - row "周线趋势状态 周线横盘 来源":
+        - cell "周线趋势状态"
+        - cell "周线横盘":
+          - button "周线横盘"
+        - cell "来源":
+          - button "来源"
+      - row "研究情景 恢复转向 来源":
+        - cell "研究情景"
+        - cell "恢复转向":
+          - button "恢复转向"
+        - cell "来源":
+          - button "来源"
+      - row "资格判断 不符合 来源":
+        - cell "资格判断"
+        - cell "不符合":
+          - button "不符合"
+        - cell "来源":
+          - button "来源"
+      - row "成熟度 无 来源":
+        - cell "成熟度"
+        - cell "无":
+          - button "无"
+        - cell "来源":
+          - button "来源"
+      - row "健康度 查看研究状态 来源":
+        - cell "健康度"
+        - cell "查看研究状态":
+          - button "查看研究状态"
+        - cell "来源":
+          - button "来源"
+      - row "有效性 失效 来源":
+        - cell "有效性"
+        - cell "失效":
+          - button "失效"
+        - cell "来源":
+          - button "来源"
+      - row "跟踪状态 查看研究状态 来源":
+        - cell "跟踪状态"
+        - cell "查看研究状态":
+          - button "查看研究状态"
+        - cell "来源":
+          - button "来源"
+      - row "主行业 查看所属板块 来源":
+        - cell "主行业"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1204
+        - cell "来源":
+          - button "来源"
+  - heading "当前变化原因与待补证据" [level=3]
+  - heading "当前变化原因" [level=4]
+  - generic: 来源未提供可用的当前变化原因；责任 owner 与原因见证据。
+  - button "当前变化原因来源"
+  - heading "等待条件" [level=4]
+  - generic: 来源未提供可用的等待条件；责任 owner 与原因见证据。
+  - button "等待条件来源"
+  - heading "失效条件" [level=4]
+  - generic: 来源未提供可用的失效条件；责任 owner 与原因见证据。
+  - button "失效条件来源"
+  - heading "研究假设" [level=4]
+  - generic: 来源未提供可用的研究假设；责任 owner 与原因见证据。
+  - button "研究假设来源"
+  - button "未入选原因、等待条件与证据"
+  - button "关注事件时间线"
+  - button "结构锚点与事件"
+- contentinfo:
+  - text: V4 六入口框架 · 数据、证据与研究状态分别展示
+  - link "历史摘要":
+    - /url: /v4/legacy-summary
+- dialog:
+  - button "关闭来源详情" [active]: 关闭
+  - heading "字段来源与质量" [level=2]
+  - generic: "{ \"context\": { \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"AS_RECORDED\": false, \"PIT_ELIGIBLE\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"survivorship_bias_risk\": true, \"trade_date\": \"2026-10-09\", \"contract_id\": \"V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1\", \"context_token\": \"55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e\", \"publication_id\": \"55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e\", \"accepted_trade_date\": \"2026-10-09\", \"data_cutoff_date\": \"2026-10-09\", \"available_trade_dates\": [ \"2026-09-28\", \"2026-09-29\", \"2026-09-30\", \"2026-10-08\", \"2026-10-09\" ], \"membership_snapshot\": { \"bytes\": 2281, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json\", \"sha256\": \"11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258\" }, \"historical_PIT_permission\": false, \"read_scope\": \"USER_AUTHORIZED_OPERATIONAL_DAILY\", \"production_accepted\": true, \"independent_external_acceptance\": false, \"external_domain_disposition\": { \"rotation\": \"VALIDATION_ONGOING\", \"forward\": \"VALIDATION_ONGOING\" }, \"rotation_validation_state\": \"VALIDATION_ONGOING\", \"release_id\": \"55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e\", \"model_namespace\": \"TDX_INDUSTRY_CONCEPT\", \"data_updated_at\": \"2026-10-09T11:56:56.437273+00:00\", \"scoped_release\": true, \"operational_release_scope\": [ \"stocks_daily\", \"sectors_current_facts\", \"market_current\", \"focus_read_corrected\", \"diagnostics\" ], \"domain_readiness\": { \"focus\": { \"earliest_valid_date\": \"2026-09-28\" } }, \"read_source_label\": \"通达信最新成员回算；非历史当日成员\", \"bff_contract_id\": \"OPERATIONAL_SUCCESSOR_BFF_V1\" }, \"context_token\": \"55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e\", \"production_accepted\": true, \"status\": \"READY\", \"items\": [ { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"T0\": \"2026-09-28\", \"anchors\": [ { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"anchor_id\": \"45332bf5e981531744d3a36268ed1faddea874aa965a581388b2bfcdfdfe1780\", \"kind\": \"FIRST_FOCUS\", \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-09-28\" }, { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"anchor_id\": \"e3d59eab4ebee36217902228a965678a40a909c401279e52a2aab96d8fd731e1\", \"kind\": \"CURRENT_UPGRADE\", \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-09-29\" } ], \"end_date\": null, \"entity_id\": \"SEC-C08B6C24E4F39D8E85C03F8588661538\", \"episode_id\": \"97cdc0bc8b72d457424f2a35132de469a58235954dff1248bdd2bf1324c46152\", \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership\": \"UNKNOWN\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"observations\": [ { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"best_confirmed_state\": \"WAIT_CONFIRMATION\", \"event\": \"NEW\", \"health\": \"UNKNOWN\", \"higher_priority_unresolved\": [ \"STRUCTURE_DAMAGED\", \"BREAKOUT_CONFIRMED\", \"SECTOR_DIVERGENCE\", \"WEAKENING\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership\": \"EARLY\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"native_core_evidence\": { \"contract_id\": \"R2_V4_FOCUS_NATIVE_CORE_FACTS_V1\", \"facts\": { \"ma20\": 115.9665, \"r5\": -0.08469565217391295, \"source_extended\": false }, \"source\": { \"contract_id\": \"R2_V4_FOCUS_NATIVE_CORE_FACTS_V1\", \"factors\": { \"bytes\": 19774743, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-09-28/core.jsonl.gz\", \"sha256\": \"dc3a361aa80735154f61c5170eeb582e7561ccc961f3687ba17d6c4ad535b273\" }, \"price_basis\": \"TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE\", \"profiles\": { \"bytes\": 43544789, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-09-28/profiles.jsonl.gz\", \"sha256\": \"2fc1c204592f70d9dc5ca1fe7ab3f3ba64f38edc8da3f3fb0d222edc1fada9d8\" }, \"series\": { \"bytes\": 9834496, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/focus_actual_bars.sqlite\", \"sha256\": \"3c7407f6ce62e58d1f69b40b7f1b0130bc51408eb56a80fa41fd981b45292302\" }, \"trade_date\": \"2026-09-28\" }, \"status\": \"BOUND\", \"trade_date\": \"2026-09-28\" }, \"path_contract_id\": \"R2_V4_FOCUS_NATIVE_CORE_PATH_V1\", \"path_reason\": \"HIGHER_PRIORITY_UNRESOLVED\", \"path_resolution\": \"PARTIAL\", \"path_state\": null, \"predicate_evidence\": { \"BREAKOUT_CONFIRMED\": \"UNKNOWN\", \"EXITED_FOLLOW_UP\": \"FALSE\", \"PULLBACK_HEALTHY\": \"FALSE\", \"PULLBACK_UNCONFIRMED\": \"FALSE\", \"SECTOR_DIVERGENCE\": \"UNKNOWN\", \"STRUCTURE_DAMAGED\": \"UNKNOWN\", \"TOO_EXTENDED\": \"FALSE\", \"TREND_ACCELERATING\": \"FALSE\", \"WAIT_CONFIRMATION\": \"TRUE\", \"WEAKENING\": \"UNKNOWN\" }, \"price_path\": { \"anchor_actual_bar\": true, \"close\": \"105.26\", \"input_digest\": \"f87c2c628aa0d13c1d08e096411555f21cf9a2314c2f6274688bccc9d91bb7c8\", \"metrics\": { \"drawdown_current\": \"0\", \"mae\": \"-0.0060801824054721641649249477\", \"mdd_close\": \"0\", \"mfe\": \"0.077807334220026600798023941\", \"peak_close\": \"105.26\", \"return_close\": \"0\" }, \"missing_dates\": [], \"price_basis\": \"TDX_NATIVE_AFFINE_AS_OF_OBSERVATION\", \"quality\": \"READY\", \"suspended_dates\": [], \"target_state\": \"BAR\" }, \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"research_mainline_context\": { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"all_member_sector_ids\": [ \"INDUSTRY:T1204\", \"THEME:880506\", \"THEME:880550\", \"THEME:880656\", \"THEME:880659\", \"THEME:880904\", \"THEME:880943\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"meaning\": \"TDX industry/concept LOO association for retrospective research; not historical T0 selection\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"quality\": \"KNOWN\", \"reason\": null, \"relative_sector_state\": \"LEADING_STABLE\", \"selected_sector_id\": \"INDUSTRY:T1204\", \"source_refs\": [ { \"bytes\": 2212445, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-09-28/relative_sector_loo.jsonl.gz\", \"sha256\": \"d1c8c3690f6897650b8debd693e02238079d47dbbdcbc4002302a17c4678102b\" }, { \"bytes\": 2281, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json\", \"sha256\": \"11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258\" } ], \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-09-28\" }, \"scenario\": \"NONE\", \"source_publication\": \"V4_11_R5B_D2_ROW:08c3446fd10ec2b9a1ce81e83e90acf3ab7aac6618853efb477c7761eb0e795c\", \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-09-28\", \"validity\": \"UNKNOWN\", \"waiting_for\": [ \"CONFIRMED\", \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\", \"scenario:OPTIONAL_INPUT_UNKNOWN\" ] }, { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"best_confirmed_state\": \"BREAKOUT_CONFIRMED\", \"event\": \"UPGRADED\", \"health\": \"IMPROVING\", \"higher_priority_unresolved\": [], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership\": \"CURRENT\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"native_core_evidence\": { \"contract_id\": \"R2_V4_FOCUS_NATIVE_CORE_FACTS_V1\", \"facts\": { \"ma20\": 116.65950000000001, \"r5\": 0.02112367429222539, \"source_extended\": false }, \"source\": { \"contract_id\": \"R2_V4_FOCUS_NATIVE_CORE_FACTS_V1\", \"factors\": { \"bytes\": 19778364, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-09-29/core.jsonl.gz\", \"sha256\": \"4f37f66eedd25142a7233dcf7776992a9ab5c22418a5fd1672806bee6dc17350\" }, \"price_basis\": \"TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE\", \"profiles\": { \"bytes\": 43551763, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-09-29/profiles.jsonl.gz\", \"sha256\": \"cd62cd76f12ba0e9d54c11322e22777583e27fd45370c77a77a05256d45909a7\" }, \"series\": { \"bytes\": 9834496, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/focus_actual_bars.sqlite\", \"sha256\": \"3c7407f6ce62e58d1f69b40b7f1b0130bc51408eb56a80fa41fd981b45292302\" }, \"trade_date\": \"2026-09-29\" }, \"status\": \"BOUND\", \"trade_date\": \"2026-09-29\" }, \"path_contract_id\": \"R2_V4_FOCUS_NATIVE_CORE_PATH_V1\", \"path_reason\": null, \"path_resolution\": \"READY\", \"path_state\": \"BREAKOUT_CONFIRMED\", \"predicate_evidence\": { \"BREAKOUT_CONFIRMED\": \"TRUE\", \"EXITED_FOLLOW_UP\": \"FALSE\", \"PULLBACK_HEALTHY\": \"FALSE\", \"PULLBACK_UNCONFIRMED\": \"FALSE\", \"SECTOR_DIVERGENCE\": \"UNKNOWN\", \"STRUCTURE_DAMAGED\": \"FALSE\", \"TOO_EXTENDED\": \"FALSE\", \"TREND_ACCELERATING\": \"UNKNOWN\", \"WAIT_CONFIRMATION\": \"FALSE\", \"WEAKENING\": \"TRUE\" }, \"price_path\": { \"anchor_actual_bar\": true, \"close\": \"116.50\", \"input_digest\": \"cad14b00471858fab6b6fae3e405a49dc51e0e88b05f5696384c914097b34356\", \"metrics\": { \"drawdown_current\": \"0\", \"mae\": \"-0.0167205016150484514535436063\", \"mdd_close\": \"0\", \"mfe\": \"0.119893596807904237127113813\", \"peak_close\": \"116.50\", \"return_close\": \"0.106783203496104883146494395\" }, \"missing_dates\": [], \"price_basis\": \"TDX_NATIVE_AFFINE_AS_OF_OBSERVATION\", \"quality\": \"READY\", \"suspended_dates\": [], \"target_state\": \"BAR\" }, \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"research_mainline_context\": { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"all_member_sector_ids\": [ \"INDUSTRY:T1204\", \"THEME:880506\", \"THEME:880550\", \"THEME:880656\", \"THEME:880659\", \"THEME:880904\", \"THEME:880943\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"meaning\": \"TDX industry/concept LOO association for retrospective research; not historical T0 selection\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"quality\": \"KNOWN\", \"reason\": null, \"relative_sector_state\": \"PASSIVE_RESILIENCE\", \"selected_sector_id\": \"INDUSTRY:T1204\", \"source_refs\": [ { \"bytes\": 2204500, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-09-29/relative_sector_loo.jsonl.gz\", \"sha256\": \"00fb289d388307faf790658cc9f6e2815e11fcad5462068c211d44ef63efcab7\" }, { \"bytes\": 2281, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json\", \"sha256\": \"11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258\" } ], \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-09-29\" }, \"scenario\": \"RECOVERY_TURN\", \"source_publication\": \"V4_11_R5B_D2_ROW:63e9080724e5e354b4846bbfdd4e416afc42a1753c1feea50b3f7877ebabb5d6\", \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-09-29\", \"validity\": \"VALID\", \"waiting_for\": [ \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\" ] }, { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"best_confirmed_state\": null, \"event\": \"DATA_UNAVAILABLE\", \"health\": \"UNKNOWN\", \"higher_priority_unresolved\": [ \"STRUCTURE_DAMAGED\", \"PULLBACK_UNCONFIRMED\", \"BREAKOUT_CONFIRMED\", \"SECTOR_DIVERGENCE\", \"WEAKENING\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership\": \"UNKNOWN\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"native_core_evidence\": { \"contract_id\": \"R2_V4_FOCUS_NATIVE_CORE_FACTS_V1\", \"facts\": { \"ma20\": 116.9905, \"r5\": -0.07975971967295181, \"source_extended\": false }, \"source\": { \"contract_id\": \"R2_V4_FOCUS_NATIVE_CORE_FACTS_V1\", \"factors\": { \"bytes\": 19793812, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-09-30/core.jsonl.gz\", \"sha256\": \"b80655aeeb0c48cd071bfe7cd7d95018660f23bee393c0cc8a38c0fde222cef6\" }, \"price_basis\": \"TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE\", \"profiles\": { \"bytes\": 43602878, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-09-30/profiles.jsonl.gz\", \"sha256\": \"15b84428c8aeb62b6a2fea43dc67e99f637c105159241ef9721b26baa5343995\" }, \"series\": { \"bytes\": 9834496, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/focus_actual_bars.sqlite\", \"sha256\": \"3c7407f6ce62e58d1f69b40b7f1b0130bc51408eb56a80fa41fd981b45292302\" }, \"trade_date\": \"2026-09-30\" }, \"status\": \"BOUND\", \"trade_date\": \"2026-09-30\" }, \"path_contract_id\": \"R2_V4_FOCUS_NATIVE_CORE_PATH_V1\", \"path_reason\": \"HIGHER_PRIORITY_UNRESOLVED\", \"path_resolution\": \"UNAVAILABLE\", \"path_state\": null, \"predicate_evidence\": { \"BREAKOUT_CONFIRMED\": \"UNKNOWN\", \"EXITED_FOLLOW_UP\": \"FALSE\", \"PULLBACK_HEALTHY\": \"FALSE\", \"PULLBACK_UNCONFIRMED\": \"UNKNOWN\", \"SECTOR_DIVERGENCE\": \"UNKNOWN\", \"STRUCTURE_DAMAGED\": \"UNKNOWN\", \"TOO_EXTENDED\": \"FALSE\", \"TREND_ACCELERATING\": \"FALSE\", \"WAIT_CONFIRMATION\": \"FALSE\", \"WEAKENING\": \"UNKNOWN\" }, \"price_path\": { \"anchor_actual_bar\": true, \"close\": \"110.30\", \"input_digest\": \"71611d76db4d8f267f824b36f78bb8f6ea8a21422de2b8fe393dc52f8ac12d41\", \"metrics\": { \"drawdown_current\": \"-0.0532188841201716738197424893\", \"mae\": \"-0.0167205016150484514535436063\", \"mdd_close\": \"-0.0532188841201716738197424893\", \"mfe\": \"0.121033631008930267908037241\", \"peak_close\": \"116.50\", \"return_close\": \"0.047881436443093292798783964\" }, \"missing_dates\": [], \"price_basis\": \"TDX_NATIVE_AFFINE_AS_OF_OBSERVATION\", \"quality\": \"READY\", \"suspended_dates\": [], \"target_state\": \"BAR\" }, \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"research_mainline_context\": { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"all_member_sector_ids\": [ \"INDUSTRY:T1204\", \"THEME:880506\", \"THEME:880550\", \"THEME:880656\", \"THEME:880659\", \"THEME:880904\", \"THEME:880943\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"meaning\": \"TDX industry/concept LOO association for retrospective research; not historical T0 selection\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"quality\": \"KNOWN\", \"reason\": null, \"relative_sector_state\": \"WEAKENING\", \"selected_sector_id\": \"INDUSTRY:T1204\", \"source_refs\": [ { \"bytes\": 2210633, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-09-30/relative_sector_loo.jsonl.gz\", \"sha256\": \"6a42e363a4b577a09dc2fcd83f84da3ede92f16fe53ab85fa1ae6f80f78d82aa\" }, { \"bytes\": 2281, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json\", \"sha256\": \"11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258\" } ], \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-09-30\" }, \"scenario\": \"RECOVERY_TURN\", \"source_publication\": \"V4_11_R5B_D2_ROW:457a204b07a91f768b61195358ee95e001ac0efff1cc5f556dbf4a24190050f0\", \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-09-30\", \"validity\": \"UNKNOWN\", \"waiting_for\": [ \"CONFIRMED\", \"frozen_invalidation\", \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\", \"scenario:OPTIONAL_INPUT_UNKNOWN\" ] }, { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"best_confirmed_state\": null, \"event\": \"DATA_UNAVAILABLE\", \"health\": \"UNKNOWN\", \"higher_priority_unresolved\": [ \"STRUCTURE_DAMAGED\", \"PULLBACK_UNCONFIRMED\", \"BREAKOUT_CONFIRMED\", \"SECTOR_DIVERGENCE\", \"WEAKENING\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership\": \"UNKNOWN\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"native_core_evidence\": { \"contract_id\": \"R2_V4_FOCUS_NATIVE_CORE_FACTS_V1\", \"facts\": { \"ma20\": 117.09349999999999, \"r5\": -0.11770565285963308, \"source_extended\": false }, \"source\": { \"contract_id\": \"R2_V4_FOCUS_NATIVE_CORE_FACTS_V1\", \"factors\": { \"bytes\": 19801167, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-08/core.jsonl.gz\", \"sha256\": \"fe92ea622dd13cdca4ee690fe6c91b9f4ae1fef2321fa78a6c0b66a734b6c9a4\" }, \"price_basis\": \"TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE\", \"profiles\": { \"bytes\": 43532664, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-08/profiles.jsonl.gz\", \"sha256\": \"641f6aa349c8bb203fa4abdf160dfbb4cc9ce4c21a15c8d9fbba0411cd40a9e6\" }, \"series\": { \"bytes\": 9834496, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/focus_actual_bars.sqlite\", \"sha256\": \"3c7407f6ce62e58d1f69b40b7f1b0130bc51408eb56a80fa41fd981b45292302\" }, \"trade_date\": \"2026-10-08\" }, \"status\": \"BOUND\", \"trade_date\": \"2026-10-08\" }, \"path_contract_id\": \"R2_V4_FOCUS_NATIVE_CORE_PATH_V1\", \"path_reason\": \"HIGHER_PRIORITY_UNRESOLVED\", \"path_resolution\": \"UNAVAILABLE\", \"path_state\": null, \"predicate_evidence\": { \"BREAKOUT_CONFIRMED\": \"UNKNOWN\", \"EXITED_FOLLOW_UP\": \"FALSE\", \"PULLBACK_HEALTHY\": \"FALSE\", \"PULLBACK_UNCONFIRMED\": \"UNKNOWN\", \"SECTOR_DIVERGENCE\": \"UNKNOWN\", \"STRUCTURE_DAMAGED\": \"UNKNOWN\", \"TOO_EXTENDED\": \"FALSE\", \"TREND_ACCELERATING\": \"FALSE\", \"WAIT_CONFIRMATION\": \"FALSE\", \"WEAKENING\": \"UNKNOWN\" }, \"price_path\": { \"anchor_actual_bar\": true, \"close\": \"106.29\", \"input_digest\": \"d18b32ad9bf4dece08d671f2fe7c9ce4c876e23a2654ec8dfe155edebbbd5388\", \"metrics\": { \"drawdown_current\": \"-0.0876394849785407725321888412\", \"mae\": \"-0.0167205016150484514535436063\", \"mdd_close\": \"-0.0876394849785407725321888412\", \"mfe\": \"0.121033631008930267908037241\", \"peak_close\": \"116.50\", \"return_close\": \"0.009785293558806764202926088\" }, \"missing_dates\": [], \"price_basis\": \"TDX_NATIVE_AFFINE_AS_OF_OBSERVATION\", \"quality\": \"READY\", \"suspended_dates\": [], \"target_state\": \"BAR\" }, \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"research_mainline_context\": { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"all_member_sector_ids\": [ \"INDUSTRY:T1204\", \"THEME:880506\", \"THEME:880550\", \"THEME:880656\", \"THEME:880659\", \"THEME:880904\", \"THEME:880943\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"meaning\": \"TDX industry/concept LOO association for retrospective research; not historical T0 selection\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"quality\": \"KNOWN\", \"reason\": null, \"relative_sector_state\": \"WEAKENING\", \"selected_sector_id\": \"INDUSTRY:T1204\", \"source_refs\": [ { \"bytes\": 2210682, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-08/relative_sector_loo.jsonl.gz\", \"sha256\": \"d5729445430deda4bb5056a6b1ce11b2dd3fda32eb5cd06ad20be3932d0afcd5\" }, { \"bytes\": 2281, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json\", \"sha256\": \"11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258\" } ], \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-10-08\" }, \"scenario\": \"RECOVERY_TURN\", \"source_publication\": \"V4_11_R5B_D2_ROW:d14a6e573d562621ea6730b231fe6e6c0f7704e0b209a65e933564c6f7c8d661\", \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-10-08\", \"validity\": \"UNKNOWN\", \"waiting_for\": [ \"CONFIRMED\", \"frozen_invalidation\", \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\", \"scenario:OPTIONAL_INPUT_UNKNOWN\" ] }, { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"best_confirmed_state\": null, \"event\": \"DATA_UNAVAILABLE\", \"health\": \"DAMAGED\", \"higher_priority_unresolved\": [ \"STRUCTURE_DAMAGED\", \"BREAKOUT_CONFIRMED\", \"SECTOR_DIVERGENCE\", \"WEAKENING\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership\": \"UNKNOWN\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"native_core_evidence\": { \"contract_id\": \"R2_V4_FOCUS_NATIVE_CORE_FACTS_V1\", \"facts\": { \"ma20\": 116.428, \"r5\": -0.14052863436123353, \"source_extended\": false }, \"source\": { \"contract_id\": \"R2_V4_FOCUS_NATIVE_CORE_FACTS_V1\", \"factors\": { \"bytes\": 19792536, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz\", \"sha256\": \"0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270\" }, \"price_basis\": \"TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE\", \"profiles\": { \"bytes\": 43509662, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/profiles.jsonl.gz\", \"sha256\": \"a05e55312744aa79340d09165bc7c39ab70c57720a7c7ff133ee7a7529acd57e\" }, \"series\": { \"bytes\": 9834496, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/focus_actual_bars.sqlite\", \"sha256\": \"3c7407f6ce62e58d1f69b40b7f1b0130bc51408eb56a80fa41fd981b45292302\" }, \"trade_date\": \"2026-10-09\" }, \"status\": \"BOUND\", \"trade_date\": \"2026-10-09\" }, \"path_contract_id\": \"R2_V4_FOCUS_NATIVE_CORE_PATH_V1\", \"path_reason\": \"HIGHER_PRIORITY_UNRESOLVED\", \"path_resolution\": \"UNAVAILABLE\", \"path_state\": null, \"predicate_evidence\": { \"BREAKOUT_CONFIRMED\": \"UNKNOWN\", \"EXITED_FOLLOW_UP\": \"FALSE\", \"PULLBACK_HEALTHY\": \"FALSE\", \"PULLBACK_UNCONFIRMED\": \"FALSE\", \"SECTOR_DIVERGENCE\": \"UNKNOWN\", \"STRUCTURE_DAMAGED\": \"UNKNOWN\", \"TOO_EXTENDED\": \"FALSE\", \"TREND_ACCELERATING\": \"FALSE\", \"WAIT_CONFIRMATION\": \"FALSE\", \"WEAKENING\": \"UNKNOWN\" }, \"price_path\": { \"anchor_actual_bar\": true, \"close\": \"97.55\", \"input_digest\": \"5faa9c22a30555e59511d948e8f05f7a8f72ad377bfd49d31d18cc06f138fad6\", \"metrics\": { \"drawdown_current\": \"-0.1626609442060085836909871245\", \"mae\": \"-0.1117233517005510165304959149\", \"mdd_close\": \"-0.1626609442060085836909871245\", \"mfe\": \"0.121033631008930267908037241\", \"peak_close\": \"116.50\", \"return_close\": \"-0.0732471974159224776743302299\" }, \"missing_dates\": [], \"price_basis\": \"TDX_NATIVE_AFFINE_AS_OF_OBSERVATION\", \"quality\": \"READY\", \"suspended_dates\": [], \"target_state\": \"BAR\" }, \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"research_mainline_context\": { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"all_member_sector_ids\": [ \"INDUSTRY:T1204\", \"THEME:880506\", \"THEME:880550\", \"THEME:880656\", \"THEME:880659\", \"THEME:880904\", \"THEME:880943\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"meaning\": \"TDX industry/concept LOO association for retrospective research; not historical T0 selection\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"quality\": \"KNOWN\", \"reason\": null, \"relative_sector_state\": \"WEAKENING\", \"selected_sector_id\": \"INDUSTRY:T1204\", \"source_refs\": [ { \"bytes\": 2196363, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/relative_sector_loo.jsonl.gz\", \"sha256\": \"2aa20444dcf82aed5bd61c55a76a0950722cf76168f838f4ccb62ceb974cbb2b\" }, { \"bytes\": 2281, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json\", \"sha256\": \"11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258\" } ], \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-10-09\" }, \"scenario\": \"RECOVERY_TURN\", \"source_publication\": \"V4_11_R5B_D2_ROW:78a914e79a1dd24738f47e90660855b62ef901efcbbf99df877812058b296258\", \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-10-09\", \"validity\": \"INVALIDATED\", \"waiting_for\": [ \"CONFIRMED\", \"frozen_invalidation\", \"dq5:OPTIONAL_INPUT_UNKNOWN\", \"episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN\", \"followup_complete:OPTIONAL_INPUT_UNKNOWN\", \"scenario:OPTIONAL_INPUT_UNKNOWN\" ] } ], \"outcomes\": [ { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"anchor_id\": \"45332bf5e981531744d3a36268ed1faddea874aa965a581388b2bfcdfdfe1780\", \"contract_id\": \"R2_V4_FOCUS_PATH_OUTCOME_V2\", \"horizon\": 1, \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"metrics\": { \"drawdown_current\": \"0\", \"mae\": \"-0.0167205016150484514535436063\", \"mdd_close\": \"0\", \"mfe\": \"0.119893596807904237127113813\", \"peak_close\": \"116.50\", \"return_close\": \"0.106783203496104883146494395\" }, \"outcome_status\": \"OBSERVED\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"reason_code\": \"COMPLETE_ACTUAL_PATH\", \"research_mainline_context\": { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"all_member_sector_ids\": [ \"INDUSTRY:T1204\", \"THEME:880506\", \"THEME:880550\", \"THEME:880656\", \"THEME:880659\", \"THEME:880904\", \"THEME:880943\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"meaning\": \"TDX industry/concept LOO association for retrospective research; not historical T0 selection\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"quality\": \"KNOWN\", \"reason\": null, \"relative_sector_state\": \"WEAKENING\", \"selected_sector_id\": \"INDUSTRY:T1204\", \"source_refs\": [ { \"bytes\": 2196363, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/relative_sector_loo.jsonl.gz\", \"sha256\": \"2aa20444dcf82aed5bd61c55a76a0950722cf76168f838f4ccb62ceb974cbb2b\" }, { \"bytes\": 2281, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json\", \"sha256\": \"11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258\" } ], \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-10-09\" }, \"survivorship_bias_risk\": true, \"target_trade_date\": \"2026-09-29\", \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"terminal\": true, \"trade_date\": \"2026-10-09\" }, { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"anchor_id\": \"45332bf5e981531744d3a36268ed1faddea874aa965a581388b2bfcdfdfe1780\", \"contract_id\": \"R2_V4_FOCUS_PATH_OUTCOME_V2\", \"horizon\": 3, \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"metrics\": { \"drawdown_current\": \"-0.0876394849785407725321888412\", \"mae\": \"-0.0167205016150484514535436063\", \"mdd_close\": \"-0.0876394849785407725321888412\", \"mfe\": \"0.121033631008930267908037241\", \"peak_close\": \"116.50\", \"return_close\": \"0.009785293558806764202926088\" }, \"outcome_status\": \"OBSERVED\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"reason_code\": \"COMPLETE_ACTUAL_PATH\", \"research_mainline_context\": { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"all_member_sector_ids\": [ \"INDUSTRY:T1204\", \"THEME:880506\", \"THEME:880550\", \"THEME:880656\", \"THEME:880659\", \"THEME:880904\", \"THEME:880943\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"meaning\": \"TDX industry/concept LOO association for retrospective research; not historical T0 selection\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"quality\": \"KNOWN\", \"reason\": null, \"relative_sector_state\": \"WEAKENING\", \"selected_sector_id\": \"INDUSTRY:T1204\", \"source_refs\": [ { \"bytes\": 2196363, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/relative_sector_loo.jsonl.gz\", \"sha256\": \"2aa20444dcf82aed5bd61c55a76a0950722cf76168f838f4ccb62ceb974cbb2b\" }, { \"bytes\": 2281, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json\", \"sha256\": \"11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258\" } ], \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-10-09\" }, \"survivorship_bias_risk\": true, \"target_trade_date\": \"2026-10-08\", \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"terminal\": true, \"trade_date\": \"2026-10-09\" }, { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"anchor_id\": \"45332bf5e981531744d3a36268ed1faddea874aa965a581388b2bfcdfdfe1780\", \"contract_id\": \"R2_V4_FOCUS_PATH_OUTCOME_V2\", \"horizon\": 5, \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"metrics\": null, \"outcome_status\": \"PENDING\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"reason_code\": \"NOT_DUE\", \"research_mainline_context\": { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"all_member_sector_ids\": [ \"INDUSTRY:T1204\", \"THEME:880506\", \"THEME:880550\", \"THEME:880656\", \"THEME:880659\", \"THEME:880904\", \"THEME:880943\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"meaning\": \"TDX industry/concept LOO association for retrospective research; not historical T0 selection\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"quality\": \"KNOWN\", \"reason\": null, \"relative_sector_state\": \"WEAKENING\", \"selected_sector_id\": \"INDUSTRY:T1204\", \"source_refs\": [ { \"bytes\": 2196363, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/relative_sector_loo.jsonl.gz\", \"sha256\": \"2aa20444dcf82aed5bd61c55a76a0950722cf76168f838f4ccb62ceb974cbb2b\" }, { \"bytes\": 2281, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json\", \"sha256\": \"11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258\" } ], \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-10-09\" }, \"survivorship_bias_risk\": true, \"target_trade_date\": null, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"terminal\": false, \"trade_date\": \"2026-10-09\" }, { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"anchor_id\": \"45332bf5e981531744d3a36268ed1faddea874aa965a581388b2bfcdfdfe1780\", \"contract_id\": \"R2_V4_FOCUS_PATH_OUTCOME_V2\", \"horizon\": 10, \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"metrics\": null, \"outcome_status\": \"PENDING\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"reason_code\": \"NOT_DUE\", \"research_mainline_context\": { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"all_member_sector_ids\": [ \"INDUSTRY:T1204\", \"THEME:880506\", \"THEME:880550\", \"THEME:880656\", \"THEME:880659\", \"THEME:880904\", \"THEME:880943\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"meaning\": \"TDX industry/concept LOO association for retrospective research; not historical T0 selection\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"quality\": \"KNOWN\", \"reason\": null, \"relative_sector_state\": \"WEAKENING\", \"selected_sector_id\": \"INDUSTRY:T1204\", \"source_refs\": [ { \"bytes\": 2196363, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/relative_sector_loo.jsonl.gz\", \"sha256\": \"2aa20444dcf82aed5bd61c55a76a0950722cf76168f838f4ccb62ceb974cbb2b\" }, { \"bytes\": 2281, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json\", \"sha256\": \"11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258\" } ], \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-10-09\" }, \"survivorship_bias_risk\": true, \"target_trade_date\": null, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"terminal\": false, \"trade_date\": \"2026-10-09\" }, { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"anchor_id\": \"45332bf5e981531744d3a36268ed1faddea874aa965a581388b2bfcdfdfe1780\", \"contract_id\": \"R2_V4_FOCUS_PATH_OUTCOME_V2\", \"horizon\": 20, \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"metrics\": null, \"outcome_status\": \"PENDING\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"reason_code\": \"NOT_DUE\", \"research_mainline_context\": { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"all_member_sector_ids\": [ \"INDUSTRY:T1204\", \"THEME:880506\", \"THEME:880550\", \"THEME:880656\", \"THEME:880659\", \"THEME:880904\", \"THEME:880943\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"meaning\": \"TDX industry/concept LOO association for retrospective research; not historical T0 selection\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"quality\": \"KNOWN\", \"reason\": null, \"relative_sector_state\": \"WEAKENING\", \"selected_sector_id\": \"INDUSTRY:T1204\", \"source_refs\": [ { \"bytes\": 2196363, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/relative_sector_loo.jsonl.gz\", \"sha256\": \"2aa20444dcf82aed5bd61c55a76a0950722cf76168f838f4ccb62ceb974cbb2b\" }, { \"bytes\": 2281, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json\", \"sha256\": \"11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258\" } ], \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-10-09\" }, \"survivorship_bias_risk\": true, \"target_trade_date\": null, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"terminal\": false, \"trade_date\": \"2026-10-09\" }, { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"anchor_id\": \"e3d59eab4ebee36217902228a965678a40a909c401279e52a2aab96d8fd731e1\", \"contract_id\": \"R2_V4_FOCUS_PATH_OUTCOME_V2\", \"horizon\": 1, \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"metrics\": { \"drawdown_current\": \"-0.0532188841201716738197424893\", \"mae\": \"-0.1115879828326180257510729614\", \"mdd_close\": \"-0.0532188841201716738197424893\", \"mfe\": \"0.012875536480686695278969957\", \"peak_close\": \"116.50\", \"return_close\": \"-0.0532188841201716738197424893\" }, \"outcome_status\": \"OBSERVED\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"reason_code\": \"COMPLETE_ACTUAL_PATH\", \"research_mainline_context\": { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"all_member_sector_ids\": [ \"INDUSTRY:T1204\", \"THEME:880506\", \"THEME:880550\", \"THEME:880656\", \"THEME:880659\", \"THEME:880904\", \"THEME:880943\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"meaning\": \"TDX industry/concept LOO association for retrospective research; not historical T0 selection\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"quality\": \"KNOWN\", \"reason\": null, \"relative_sector_state\": \"WEAKENING\", \"selected_sector_id\": \"INDUSTRY:T1204\", \"source_refs\": [ { \"bytes\": 2196363, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/relative_sector_loo.jsonl.gz\", \"sha256\": \"2aa20444dcf82aed5bd61c55a76a0950722cf76168f838f4ccb62ceb974cbb2b\" }, { \"bytes\": 2281, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json\", \"sha256\": \"11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258\" } ], \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-10-09\" }, \"survivorship_bias_risk\": true, \"target_trade_date\": \"2026-09-30\", \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"terminal\": true, \"trade_date\": \"2026-10-09\" }, { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"anchor_id\": \"e3d59eab4ebee36217902228a965678a40a909c401279e52a2aab96d8fd731e1\", \"contract_id\": \"R2_V4_FOCUS_PATH_OUTCOME_V2\", \"horizon\": 3, \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"metrics\": { \"drawdown_current\": \"-0.1626609442060085836909871245\", \"mae\": \"-0.1974248927038626609442060086\", \"mdd_close\": \"-0.1626609442060085836909871245\", \"mfe\": \"0.012875536480686695278969957\", \"peak_close\": \"116.50\", \"return_close\": \"-0.1626609442060085836909871245\" }, \"outcome_status\": \"OBSERVED\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"reason_code\": \"COMPLETE_ACTUAL_PATH\", \"research_mainline_context\": { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"all_member_sector_ids\": [ \"INDUSTRY:T1204\", \"THEME:880506\", \"THEME:880550\", \"THEME:880656\", \"THEME:880659\", \"THEME:880904\", \"THEME:880943\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"meaning\": \"TDX industry/concept LOO association for retrospective research; not historical T0 selection\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"quality\": \"KNOWN\", \"reason\": null, \"relative_sector_state\": \"WEAKENING\", \"selected_sector_id\": \"INDUSTRY:T1204\", \"source_refs\": [ { \"bytes\": 2196363, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/relative_sector_loo.jsonl.gz\", \"sha256\": \"2aa20444dcf82aed5bd61c55a76a0950722cf76168f838f4ccb62ceb974cbb2b\" }, { \"bytes\": 2281, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json\", \"sha256\": \"11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258\" } ], \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-10-09\" }, \"survivorship_bias_risk\": true, \"target_trade_date\": \"2026-10-09\", \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"terminal\": true, \"trade_date\": \"2026-10-09\" }, { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"anchor_id\": \"e3d59eab4ebee36217902228a965678a40a909c401279e52a2aab96d8fd731e1\", \"contract_id\": \"R2_V4_FOCUS_PATH_OUTCOME_V2\", \"horizon\": 5, \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"metrics\": null, \"outcome_status\": \"PENDING\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"reason_code\": \"NOT_DUE\", \"research_mainline_context\": { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"all_member_sector_ids\": [ \"INDUSTRY:T1204\", \"THEME:880506\", \"THEME:880550\", \"THEME:880656\", \"THEME:880659\", \"THEME:880904\", \"THEME:880943\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"meaning\": \"TDX industry/concept LOO association for retrospective research; not historical T0 selection\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"quality\": \"KNOWN\", \"reason\": null, \"relative_sector_state\": \"WEAKENING\", \"selected_sector_id\": \"INDUSTRY:T1204\", \"source_refs\": [ { \"bytes\": 2196363, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/relative_sector_loo.jsonl.gz\", \"sha256\": \"2aa20444dcf82aed5bd61c55a76a0950722cf76168f838f4ccb62ceb974cbb2b\" }, { \"bytes\": 2281, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json\", \"sha256\": \"11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258\" } ], \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-10-09\" }, \"survivorship_bias_risk\": true, \"target_trade_date\": null, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"terminal\": false, \"trade_date\": \"2026-10-09\" }, { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"anchor_id\": \"e3d59eab4ebee36217902228a965678a40a909c401279e52a2aab96d8fd731e1\", \"contract_id\": \"R2_V4_FOCUS_PATH_OUTCOME_V2\", \"horizon\": 10, \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"metrics\": null, \"outcome_status\": \"PENDING\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"reason_code\": \"NOT_DUE\", \"research_mainline_context\": { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"all_member_sector_ids\": [ \"INDUSTRY:T1204\", \"THEME:880506\", \"THEME:880550\", \"THEME:880656\", \"THEME:880659\", \"THEME:880904\", \"THEME:880943\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"meaning\": \"TDX industry/concept LOO association for retrospective research; not historical T0 selection\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"quality\": \"KNOWN\", \"reason\": null, \"relative_sector_state\": \"WEAKENING\", \"selected_sector_id\": \"INDUSTRY:T1204\", \"source_refs\": [ { \"bytes\": 2196363, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/relative_sector_loo.jsonl.gz\", \"sha256\": \"2aa20444dcf82aed5bd61c55a76a0950722cf76168f838f4ccb62ceb974cbb2b\" }, { \"bytes\": 2281, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json\", \"sha256\": \"11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258\" } ], \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-10-09\" }, \"survivorship_bias_risk\": true, \"target_trade_date\": null, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"terminal\": false, \"trade_date\": \"2026-10-09\" }, { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"anchor_id\": \"e3d59eab4ebee36217902228a965678a40a909c401279e52a2aab96d8fd731e1\", \"contract_id\": \"R2_V4_FOCUS_PATH_OUTCOME_V2\", \"horizon\": 20, \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"metrics\": null, \"outcome_status\": \"PENDING\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"reason_code\": \"NOT_DUE\", \"research_mainline_context\": { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"all_member_sector_ids\": [ \"INDUSTRY:T1204\", \"THEME:880506\", \"THEME:880550\", \"THEME:880656\", \"THEME:880659\", \"THEME:880904\", \"THEME:880943\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"meaning\": \"TDX industry/concept LOO association for retrospective research; not historical T0 selection\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"quality\": \"KNOWN\", \"reason\": null, \"relative_sector_state\": \"WEAKENING\", \"selected_sector_id\": \"INDUSTRY:T1204\", \"source_refs\": [ { \"bytes\": 2196363, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/relative_sector_loo.jsonl.gz\", \"sha256\": \"2aa20444dcf82aed5bd61c55a76a0950722cf76168f838f4ccb62ceb974cbb2b\" }, { \"bytes\": 2281, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json\", \"sha256\": \"11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258\" } ], \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-10-09\" }, \"survivorship_bias_risk\": true, \"target_trade_date\": null, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"terminal\": false, \"trade_date\": \"2026-10-09\" } ], \"parent_episode_id\": null, \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"research_mainline_context\": { \"AS_RECORDED\": false, \"HISTORICAL_FIRST_AVAILABLE_PROVEN\": false, \"PIT_ELIGIBLE\": false, \"all_member_sector_ids\": [ \"INDUSTRY:T1204\", \"THEME:880506\", \"THEME:880550\", \"THEME:880656\", \"THEME:880659\", \"THEME:880904\", \"THEME:880943\" ], \"knowledge_lineage\": \"RECONSTRUCTED_LATEST_MEMBERSHIP\", \"meaning\": \"TDX industry/concept LOO association for retrospective research; not historical T0 selection\", \"member_set_asof\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_mode\": \"TDX_LATEST_MEMBER_RETRO_V1\", \"membership_observed_at\": \"2026-10-09T09:44:01.158745+08:00\", \"membership_snapshot_id\": \"TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca\", \"production_eligible_scope\": \"DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY\", \"quality\": \"KNOWN\", \"reason\": null, \"relative_sector_state\": \"LEADING_STABLE\", \"selected_sector_id\": \"INDUSTRY:T1204\", \"source_refs\": [ { \"bytes\": 2212445, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-09-28/relative_sector_loo.jsonl.gz\", \"sha256\": \"d1c8c3690f6897650b8debd693e02238079d47dbbdcbc4002302a17c4678102b\" }, { \"bytes\": 2281, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json\", \"sha256\": \"11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258\" } ], \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\", \"trade_date\": \"2026-09-28\" }, \"start_date\": \"2026-09-28\", \"survivorship_bias_risk\": true, \"taxonomy\": \"TDX_INDUSTRY_CONCEPT\" } ], \"total\": 1, \"offset\": 0, \"limit\": 200, \"has_next\": false, \"source\": { \"bytes\": 7651845, \"path\": \"data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/CORRECTED_FOCUS_FORWARD.json.gz\", \"sha256\": \"70906072fc9e1a6816af665943a4da22e7b209c4dd0dc1d58b08d3ea9fee9128\" }, \"contract_id\": \"R43_OPERATIONAL_RESEARCH_BFF_V1\", \"legacy_history\": \"NOT_MIXED_WITH_OPERATIONAL\" }"

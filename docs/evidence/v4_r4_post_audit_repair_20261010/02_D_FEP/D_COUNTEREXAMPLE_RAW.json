@@ -1,0 +1,164 @@
+{
+  "base_sha": "5ad4bb8da48196d9e902d48ece510a15136c4210",
+  "old_source_sha256": "055e56d4e00a235fb3fa5a53d797520c5b090b0b72598b4fd88b5af103779ad9",
+  "model": {
+    "scope_id": "S",
+    "target_id": "T",
+    "horizon": "T1",
+    "feature_contract_id": "F",
+    "model_set_id": "M",
+    "model_revision": 1,
+    "capability": "MODEL_DISPLAY",
+    "production_role": "ACCEPTED_PRODUCTION",
+    "champion": true
+  },
+  "arguments": {
+    "accepted": true,
+    "grant": {
+      "scope_id": "S",
+      "target_id": "T",
+      "horizon": "T1",
+      "feature_contract_id": "F",
+      "model_set_id": "M",
+      "model_revision": 1,
+      "capability": "MODEL_DISPLAY",
+      "grant_id": "G",
+      "formal_approval": true,
+      "active": true,
+      "valid_from": "2026-10-09T00:00:00+00:00",
+      "expires_at": "2026-10-10T00:00:00+00:00"
+    },
+    "request": {
+      "scope_id": "S",
+      "target_id": "T",
+      "horizon": "T1",
+      "feature_contract_id": "F",
+      "model_set_id": "M",
+      "model_revision": 1,
+      "capability": "MODEL_DISPLAY"
+    },
+    "input_asof": true,
+    "mature": true,
+    "scoring": true
+  },
+  "before": {
+    "contract_id": "FEP_CURRENT_ADMISSION_R4_V1",
+    "engineering_status": "FEP_ENGINEERING_GATE_READY",
+    "production_status": "FEP_PRODUCTION_AUTHORIZED",
+    "status": "READY",
+    "reasons": [],
+    "reason_text": [],
+    "fields": {
+      "return_expectancy": {
+        "value": null,
+        "status": "FEP_CAPABILITY_NOT_READY",
+        "reasons": []
+      },
+      "downside_risk": {
+        "value": null,
+        "status": "FEP_CAPABILITY_NOT_READY",
+        "reasons": []
+      },
+      "return_quantiles": {
+        "value": null,
+        "status": "FEP_CAPABILITY_NOT_READY",
+        "reasons": []
+      },
+      "prediction_revision": {
+        "value": null,
+        "status": "FEP_CAPABILITY_NOT_READY",
+        "reasons": []
+      },
+      "model_display": {
+        "value": null,
+        "status": "FEP_CAPABILITY_NOT_READY",
+        "reasons": []
+      },
+      "priority_use": {
+        "value": null,
+        "status": "FEP_CAPABILITY_NOT_READY",
+        "reasons": []
+      }
+    },
+    "production_authorized": true,
+    "prediction_generated": false
+  },
+  "after": {
+    "gate_candidate_status": "GATE_ELIGIBLE_CANDIDATE",
+    "authority": {
+      "contract_id": "FEP_TRUSTED_AUTHORITY_R4_V1",
+      "status": "TRUSTED_AUTHORITY_UNAVAILABLE",
+      "production_authorized": false,
+      "formal_owner": null,
+      "registry_verified": false,
+      "first_asof_verified": false,
+      "deployment_head_verified": false,
+      "cas_receipt_verified": false,
+      "independent_approval_verified": false
+    },
+    "contract_id": "FEP_CURRENT_ADMISSION_R4_V2",
+    "engineering_status": "FEP_ENGINEERING_GATE_READY",
+    "production_status": "BLOCKED",
+    "status": "FEP_CAPABILITY_NOT_READY",
+    "reasons": [
+      "TRUSTED_AUTHORITY_UNAVAILABLE",
+      "PREDICTION_OWNER_MISSING"
+    ],
+    "reason_text": [
+      "尚无正式 registry、首次可用源、Head/DB CAS 及外审批准的可信生产解析器。",
+      "缺少已接纳的预测消费 Owner。"
+    ],
+    "fields": {
+      "return_expectancy": {
+        "value": null,
+        "status": "SOURCE_INCOMPLETE",
+        "reasons": [
+          "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "PREDICTION_OWNER_MISSING"
+        ]
+      },
+      "downside_risk": {
+        "value": null,
+        "status": "SOURCE_INCOMPLETE",
+        "reasons": [
+          "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "PREDICTION_OWNER_MISSING"
+        ]
+      },
+      "return_quantiles": {
+        "value": null,
+        "status": "SOURCE_INCOMPLETE",
+        "reasons": [
+          "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "PREDICTION_OWNER_MISSING"
+        ]
+      },
+      "prediction_revision": {
+        "value": null,
+        "status": "SOURCE_INCOMPLETE",
+        "reasons": [
+          "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "PREDICTION_OWNER_MISSING"
+        ]
+      },
+      "model_display": {
+        "value": null,
+        "status": "SOURCE_INCOMPLETE",
+        "reasons": [
+          "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "PREDICTION_OWNER_MISSING"
+        ]
+      },
+      "priority_use": {
+        "value": null,
+        "status": "SOURCE_INCOMPLETE",
+        "reasons": [
+          "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "PREDICTION_OWNER_MISSING"
+        ]
+      }
+    },
+    "production_authorized": false,
+    "prediction_generated": false
+  }
+}

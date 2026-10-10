@@ -1,0 +1,1144 @@
+{
+  "contract": "FEP_CURRENT_ADMISSION_R4_V2",
+  "base_sha": "5ad4bb8da48196d9e902d48ece510a15136c4210",
+  "cases": [
+    {
+      "case": "forged_grant",
+      "input": {
+        "grant": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "grant_id": "G",
+          "formal_approval": true,
+          "active": true,
+          "valid_from": "2026-10-09T00:00:00+00:00",
+          "expires_at": "2026-10-10T00:00:00+00:00"
+        },
+        "model": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "production_role": "ACCEPTED_PRODUCTION",
+          "champion": true
+        },
+        "head": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "cas_receipt": {
+          "action": "ALLOW",
+          "grant_id": "FORGED",
+          "activation_id": "A",
+          "version": 1
+        },
+        "external_approval_id": "ISOLATED_APPROVAL",
+        "source": {
+          "input_mode": "AS_RECORDED",
+          "digest": "D",
+          "first_available_at": "2026-10-09T00:00:00+00:00"
+        },
+        "mature_count": 1,
+        "prediction_owner": "ISOLATED_OWNER",
+        "frozen_digest": "D",
+        "original_frozen_digest": "D"
+      },
+      "request": {
+        "scope_id": "S",
+        "target_id": "T",
+        "horizon": "T1",
+        "feature_contract_id": "F",
+        "model_set_id": "M",
+        "model_revision": 1,
+        "capability": "MODEL_DISPLAY"
+      },
+      "expected_error": "CAS_RECEIPT_MISMATCH",
+      "actual": {
+        "status": "NOT_ELIGIBLE",
+        "evidence_trust": "UNTRUSTED_ISOLATED_FIXTURE",
+        "errors": [
+          "CAS_RECEIPT_MISMATCH"
+        ],
+        "production_authorized": false,
+        "prediction_generated": false
+      },
+      "matched": true
+    },
+    {
+      "case": "wrong_model_set",
+      "input": {
+        "grant": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "OTHER",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "grant_id": "G",
+          "formal_approval": true,
+          "active": true,
+          "valid_from": "2026-10-09T00:00:00+00:00",
+          "expires_at": "2026-10-10T00:00:00+00:00"
+        },
+        "model": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "production_role": "ACCEPTED_PRODUCTION",
+          "champion": true
+        },
+        "head": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "cas_receipt": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "external_approval_id": "ISOLATED_APPROVAL",
+        "source": {
+          "input_mode": "AS_RECORDED",
+          "digest": "D",
+          "first_available_at": "2026-10-09T00:00:00+00:00"
+        },
+        "mature_count": 1,
+        "prediction_owner": "ISOLATED_OWNER",
+        "frozen_digest": "D",
+        "original_frozen_digest": "D"
+      },
+      "request": {
+        "scope_id": "S",
+        "target_id": "T",
+        "horizon": "T1",
+        "feature_contract_id": "F",
+        "model_set_id": "M",
+        "model_revision": 1,
+        "capability": "MODEL_DISPLAY"
+      },
+      "expected_error": "GRANT_BINDING_MISMATCH",
+      "actual": {
+        "status": "NOT_ELIGIBLE",
+        "evidence_trust": "UNTRUSTED_ISOLATED_FIXTURE",
+        "errors": [
+          "GRANT_BINDING_MISMATCH:model_set_id"
+        ],
+        "production_authorized": false,
+        "prediction_generated": false
+      },
+      "matched": true
+    },
+    {
+      "case": "wrong_revision",
+      "input": {
+        "grant": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "grant_id": "G",
+          "formal_approval": true,
+          "active": true,
+          "valid_from": "2026-10-09T00:00:00+00:00",
+          "expires_at": "2026-10-10T00:00:00+00:00"
+        },
+        "model": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 2,
+          "capability": "MODEL_DISPLAY",
+          "production_role": "ACCEPTED_PRODUCTION",
+          "champion": true
+        },
+        "head": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "cas_receipt": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "external_approval_id": "ISOLATED_APPROVAL",
+        "source": {
+          "input_mode": "AS_RECORDED",
+          "digest": "D",
+          "first_available_at": "2026-10-09T00:00:00+00:00"
+        },
+        "mature_count": 1,
+        "prediction_owner": "ISOLATED_OWNER",
+        "frozen_digest": "D",
+        "original_frozen_digest": "D"
+      },
+      "request": {
+        "scope_id": "S",
+        "target_id": "T",
+        "horizon": "T1",
+        "feature_contract_id": "F",
+        "model_set_id": "M",
+        "model_revision": 1,
+        "capability": "MODEL_DISPLAY"
+      },
+      "expected_error": "REGISTRY_BINDING_MISMATCH",
+      "actual": {
+        "status": "NOT_ELIGIBLE",
+        "evidence_trust": "UNTRUSTED_ISOLATED_FIXTURE",
+        "errors": [
+          "REGISTRY_BINDING_MISMATCH:model_revision"
+        ],
+        "production_authorized": false,
+        "prediction_generated": false
+      },
+      "matched": true
+    },
+    {
+      "case": "expired",
+      "input": {
+        "grant": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "grant_id": "G",
+          "formal_approval": true,
+          "active": true,
+          "valid_from": "2026-10-09T00:00:00+00:00",
+          "expires_at": "2026-10-08T00:00:00+00:00"
+        },
+        "model": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "production_role": "ACCEPTED_PRODUCTION",
+          "champion": true
+        },
+        "head": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "cas_receipt": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "external_approval_id": "ISOLATED_APPROVAL",
+        "source": {
+          "input_mode": "AS_RECORDED",
+          "digest": "D",
+          "first_available_at": "2026-10-09T00:00:00+00:00"
+        },
+        "mature_count": 1,
+        "prediction_owner": "ISOLATED_OWNER",
+        "frozen_digest": "D",
+        "original_frozen_digest": "D"
+      },
+      "request": {
+        "scope_id": "S",
+        "target_id": "T",
+        "horizon": "T1",
+        "feature_contract_id": "F",
+        "model_set_id": "M",
+        "model_revision": 1,
+        "capability": "MODEL_DISPLAY"
+      },
+      "expected_error": "GRANT_TIME_INVALID",
+      "actual": {
+        "status": "NOT_ELIGIBLE",
+        "evidence_trust": "UNTRUSTED_ISOLATED_FIXTURE",
+        "errors": [
+          "GRANT_TIME_INVALID"
+        ],
+        "production_authorized": false,
+        "prediction_generated": false
+      },
+      "matched": true
+    },
+    {
+      "case": "revoked",
+      "input": {
+        "grant": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "grant_id": "G",
+          "formal_approval": true,
+          "active": true,
+          "valid_from": "2026-10-09T00:00:00+00:00",
+          "expires_at": "2026-10-10T00:00:00+00:00",
+          "revoked": true
+        },
+        "model": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "production_role": "ACCEPTED_PRODUCTION",
+          "champion": true
+        },
+        "head": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "cas_receipt": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "external_approval_id": "ISOLATED_APPROVAL",
+        "source": {
+          "input_mode": "AS_RECORDED",
+          "digest": "D",
+          "first_available_at": "2026-10-09T00:00:00+00:00"
+        },
+        "mature_count": 1,
+        "prediction_owner": "ISOLATED_OWNER",
+        "frozen_digest": "D",
+        "original_frozen_digest": "D"
+      },
+      "request": {
+        "scope_id": "S",
+        "target_id": "T",
+        "horizon": "T1",
+        "feature_contract_id": "F",
+        "model_set_id": "M",
+        "model_revision": 1,
+        "capability": "MODEL_DISPLAY"
+      },
+      "expected_error": "GRANT_INACTIVE",
+      "actual": {
+        "status": "NOT_ELIGIBLE",
+        "evidence_trust": "UNTRUSTED_ISOLATED_FIXTURE",
+        "errors": [
+          "GRANT_INACTIVE"
+        ],
+        "production_authorized": false,
+        "prediction_generated": false
+      },
+      "matched": true
+    },
+    {
+      "case": "non_as_recorded",
+      "input": {
+        "grant": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "grant_id": "G",
+          "formal_approval": true,
+          "active": true,
+          "valid_from": "2026-10-09T00:00:00+00:00",
+          "expires_at": "2026-10-10T00:00:00+00:00"
+        },
+        "model": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "production_role": "ACCEPTED_PRODUCTION",
+          "champion": true
+        },
+        "head": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "cas_receipt": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "external_approval_id": "ISOLATED_APPROVAL",
+        "source": {
+          "input_mode": "RECONSTRUCTED_CORRECTED",
+          "digest": "D",
+          "first_available_at": "2026-10-09T00:00:00+00:00"
+        },
+        "mature_count": 1,
+        "prediction_owner": "ISOLATED_OWNER",
+        "frozen_digest": "D",
+        "original_frozen_digest": "D"
+      },
+      "request": {
+        "scope_id": "S",
+        "target_id": "T",
+        "horizon": "T1",
+        "feature_contract_id": "F",
+        "model_set_id": "M",
+        "model_revision": 1,
+        "capability": "MODEL_DISPLAY"
+      },
+      "expected_error": "INPUT_ASOF_NOT_VERIFIED",
+      "actual": {
+        "status": "NOT_ELIGIBLE",
+        "evidence_trust": "UNTRUSTED_ISOLATED_FIXTURE",
+        "errors": [
+          "INPUT_ASOF_NOT_VERIFIED"
+        ],
+        "production_authorized": false,
+        "prediction_generated": false
+      },
+      "matched": true
+    },
+    {
+      "case": "future_source",
+      "input": {
+        "grant": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "grant_id": "G",
+          "formal_approval": true,
+          "active": true,
+          "valid_from": "2026-10-09T00:00:00+00:00",
+          "expires_at": "2026-10-10T00:00:00+00:00"
+        },
+        "model": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "production_role": "ACCEPTED_PRODUCTION",
+          "champion": true
+        },
+        "head": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "cas_receipt": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "external_approval_id": "ISOLATED_APPROVAL",
+        "source": {
+          "input_mode": "AS_RECORDED",
+          "digest": "D",
+          "first_available_at": "2026-10-12T00:00:00+00:00"
+        },
+        "mature_count": 1,
+        "prediction_owner": "ISOLATED_OWNER",
+        "frozen_digest": "D",
+        "original_frozen_digest": "D"
+      },
+      "request": {
+        "scope_id": "S",
+        "target_id": "T",
+        "horizon": "T1",
+        "feature_contract_id": "F",
+        "model_set_id": "M",
+        "model_revision": 1,
+        "capability": "MODEL_DISPLAY"
+      },
+      "expected_error": "INPUT_ASOF_NOT_VERIFIED",
+      "actual": {
+        "status": "NOT_ELIGIBLE",
+        "evidence_trust": "UNTRUSTED_ISOLATED_FIXTURE",
+        "errors": [
+          "INPUT_ASOF_NOT_VERIFIED"
+        ],
+        "production_authorized": false,
+        "prediction_generated": false
+      },
+      "matched": true
+    },
+    {
+      "case": "no_mature",
+      "input": {
+        "grant": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "grant_id": "G",
+          "formal_approval": true,
+          "active": true,
+          "valid_from": "2026-10-09T00:00:00+00:00",
+          "expires_at": "2026-10-10T00:00:00+00:00"
+        },
+        "model": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "production_role": "ACCEPTED_PRODUCTION",
+          "champion": true
+        },
+        "head": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "cas_receipt": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "external_approval_id": "ISOLATED_APPROVAL",
+        "source": {
+          "input_mode": "AS_RECORDED",
+          "digest": "D",
+          "first_available_at": "2026-10-09T00:00:00+00:00"
+        },
+        "mature_count": 0,
+        "prediction_owner": "ISOLATED_OWNER",
+        "frozen_digest": "D",
+        "original_frozen_digest": "D"
+      },
+      "request": {
+        "scope_id": "S",
+        "target_id": "T",
+        "horizon": "T1",
+        "feature_contract_id": "F",
+        "model_set_id": "M",
+        "model_revision": 1,
+        "capability": "MODEL_DISPLAY"
+      },
+      "expected_error": "SAMPLE_NOT_MATURE",
+      "actual": {
+        "status": "NOT_ELIGIBLE",
+        "evidence_trust": "UNTRUSTED_ISOLATED_FIXTURE",
+        "errors": [
+          "SAMPLE_NOT_MATURE"
+        ],
+        "production_authorized": false,
+        "prediction_generated": false
+      },
+      "matched": true
+    },
+    {
+      "case": "missing_owner",
+      "input": {
+        "grant": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "grant_id": "G",
+          "formal_approval": true,
+          "active": true,
+          "valid_from": "2026-10-09T00:00:00+00:00",
+          "expires_at": "2026-10-10T00:00:00+00:00"
+        },
+        "model": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "production_role": "ACCEPTED_PRODUCTION",
+          "champion": true
+        },
+        "head": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "cas_receipt": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "external_approval_id": "ISOLATED_APPROVAL",
+        "source": {
+          "input_mode": "AS_RECORDED",
+          "digest": "D",
+          "first_available_at": "2026-10-09T00:00:00+00:00"
+        },
+        "mature_count": 1,
+        "prediction_owner": null,
+        "frozen_digest": "D",
+        "original_frozen_digest": "D"
+      },
+      "request": {
+        "scope_id": "S",
+        "target_id": "T",
+        "horizon": "T1",
+        "feature_contract_id": "F",
+        "model_set_id": "M",
+        "model_revision": 1,
+        "capability": "MODEL_DISPLAY"
+      },
+      "expected_error": "PREDICTION_OWNER_MISSING",
+      "actual": {
+        "status": "NOT_ELIGIBLE",
+        "evidence_trust": "UNTRUSTED_ISOLATED_FIXTURE",
+        "errors": [
+          "PREDICTION_OWNER_MISSING"
+        ],
+        "production_authorized": false,
+        "prediction_generated": false
+      },
+      "matched": true
+    },
+    {
+      "case": "shadow_escalation",
+      "input": {
+        "grant": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "SHADOW_INFERENCE",
+          "grant_id": "G",
+          "formal_approval": true,
+          "active": true,
+          "valid_from": "2026-10-09T00:00:00+00:00",
+          "expires_at": "2026-10-10T00:00:00+00:00"
+        },
+        "model": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "production_role": "ACCEPTED_PRODUCTION",
+          "champion": true
+        },
+        "head": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "cas_receipt": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "external_approval_id": "ISOLATED_APPROVAL",
+        "source": {
+          "input_mode": "AS_RECORDED",
+          "digest": "D",
+          "first_available_at": "2026-10-09T00:00:00+00:00"
+        },
+        "mature_count": 1,
+        "prediction_owner": "ISOLATED_OWNER",
+        "frozen_digest": "D",
+        "original_frozen_digest": "D"
+      },
+      "request": {
+        "scope_id": "S",
+        "target_id": "T",
+        "horizon": "T1",
+        "feature_contract_id": "F",
+        "model_set_id": "M",
+        "model_revision": 1,
+        "capability": "MODEL_DISPLAY"
+      },
+      "expected_error": "GRANT_BINDING_MISMATCH",
+      "actual": {
+        "status": "NOT_ELIGIBLE",
+        "evidence_trust": "UNTRUSTED_ISOLATED_FIXTURE",
+        "errors": [
+          "GRANT_BINDING_MISMATCH:capability"
+        ],
+        "production_authorized": false,
+        "prediction_generated": false
+      },
+      "matched": true
+    },
+    {
+      "case": "same_id_frozen_mutation",
+      "input": {
+        "grant": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "grant_id": "G",
+          "formal_approval": true,
+          "active": true,
+          "valid_from": "2026-10-09T00:00:00+00:00",
+          "expires_at": "2026-10-10T00:00:00+00:00"
+        },
+        "model": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "production_role": "ACCEPTED_PRODUCTION",
+          "champion": true
+        },
+        "head": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "cas_receipt": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "external_approval_id": "ISOLATED_APPROVAL",
+        "source": {
+          "input_mode": "AS_RECORDED",
+          "digest": "D",
+          "first_available_at": "2026-10-09T00:00:00+00:00"
+        },
+        "mature_count": 1,
+        "prediction_owner": "ISOLATED_OWNER",
+        "frozen_digest": "CHANGED",
+        "original_frozen_digest": "D"
+      },
+      "request": {
+        "scope_id": "S",
+        "target_id": "T",
+        "horizon": "T1",
+        "feature_contract_id": "F",
+        "model_set_id": "M",
+        "model_revision": 1,
+        "capability": "MODEL_DISPLAY"
+      },
+      "expected_error": "FEP_FROZEN_PREDICTION_MUTATION",
+      "actual": {
+        "status": "NOT_ELIGIBLE",
+        "evidence_trust": "UNTRUSTED_ISOLATED_FIXTURE",
+        "errors": [
+          "FEP_FROZEN_PREDICTION_MUTATION"
+        ],
+        "production_authorized": false,
+        "prediction_generated": false
+      },
+      "matched": true
+    },
+    {
+      "case": "no_external_approval",
+      "input": {
+        "grant": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "grant_id": "G",
+          "formal_approval": true,
+          "active": true,
+          "valid_from": "2026-10-09T00:00:00+00:00",
+          "expires_at": "2026-10-10T00:00:00+00:00"
+        },
+        "model": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "production_role": "ACCEPTED_PRODUCTION",
+          "champion": true
+        },
+        "head": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "cas_receipt": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "external_approval_id": null,
+        "source": {
+          "input_mode": "AS_RECORDED",
+          "digest": "D",
+          "first_available_at": "2026-10-09T00:00:00+00:00"
+        },
+        "mature_count": 1,
+        "prediction_owner": "ISOLATED_OWNER",
+        "frozen_digest": "D",
+        "original_frozen_digest": "D"
+      },
+      "request": {
+        "scope_id": "S",
+        "target_id": "T",
+        "horizon": "T1",
+        "feature_contract_id": "F",
+        "model_set_id": "M",
+        "model_revision": 1,
+        "capability": "MODEL_DISPLAY"
+      },
+      "expected_error": "EXTERNAL_APPROVAL_MISSING",
+      "actual": {
+        "status": "NOT_ELIGIBLE",
+        "evidence_trust": "UNTRUSTED_ISOLATED_FIXTURE",
+        "errors": [
+          "EXTERNAL_APPROVAL_MISSING"
+        ],
+        "production_authorized": false,
+        "prediction_generated": false
+      },
+      "matched": true
+    },
+    {
+      "case": "revoke_head",
+      "input": {
+        "grant": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "grant_id": "G",
+          "formal_approval": true,
+          "active": true,
+          "valid_from": "2026-10-09T00:00:00+00:00",
+          "expires_at": "2026-10-10T00:00:00+00:00"
+        },
+        "model": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "production_role": "ACCEPTED_PRODUCTION",
+          "champion": true
+        },
+        "head": {
+          "action": "REVOKE",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "cas_receipt": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "external_approval_id": "ISOLATED_APPROVAL",
+        "source": {
+          "input_mode": "AS_RECORDED",
+          "digest": "D",
+          "first_available_at": "2026-10-09T00:00:00+00:00"
+        },
+        "mature_count": 1,
+        "prediction_owner": "ISOLATED_OWNER",
+        "frozen_digest": "D",
+        "original_frozen_digest": "D"
+      },
+      "request": {
+        "scope_id": "S",
+        "target_id": "T",
+        "horizon": "T1",
+        "feature_contract_id": "F",
+        "model_set_id": "M",
+        "model_revision": 1,
+        "capability": "MODEL_DISPLAY"
+      },
+      "expected_error": "HEAD_NOT_ALLOWED",
+      "actual": {
+        "status": "NOT_ELIGIBLE",
+        "evidence_trust": "UNTRUSTED_ISOLATED_FIXTURE",
+        "errors": [
+          "HEAD_NOT_ALLOWED"
+        ],
+        "production_authorized": false,
+        "prediction_generated": false
+      },
+      "matched": true
+    },
+    {
+      "case": "complete_isolated_fixture",
+      "input": {
+        "grant": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "grant_id": "G",
+          "formal_approval": true,
+          "active": true,
+          "valid_from": "2026-10-09T00:00:00+00:00",
+          "expires_at": "2026-10-10T00:00:00+00:00"
+        },
+        "model": {
+          "scope_id": "S",
+          "target_id": "T",
+          "horizon": "T1",
+          "feature_contract_id": "F",
+          "model_set_id": "M",
+          "model_revision": 1,
+          "capability": "MODEL_DISPLAY",
+          "production_role": "ACCEPTED_PRODUCTION",
+          "champion": true
+        },
+        "head": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "cas_receipt": {
+          "action": "ALLOW",
+          "grant_id": "G",
+          "activation_id": "A",
+          "version": 1
+        },
+        "external_approval_id": "ISOLATED_APPROVAL",
+        "source": {
+          "input_mode": "AS_RECORDED",
+          "digest": "D",
+          "first_available_at": "2026-10-09T00:00:00+00:00"
+        },
+        "mature_count": 1,
+        "prediction_owner": "ISOLATED_OWNER",
+        "frozen_digest": "D",
+        "original_frozen_digest": "D"
+      },
+      "request": {
+        "scope_id": "S",
+        "target_id": "T",
+        "horizon": "T1",
+        "feature_contract_id": "F",
+        "model_set_id": "M",
+        "model_revision": 1,
+        "capability": "MODEL_DISPLAY"
+      },
+      "actual": {
+        "status": "GATE_ELIGIBLE_CANDIDATE",
+        "evidence_trust": "UNTRUSTED_ISOLATED_FIXTURE",
+        "errors": [],
+        "production_authorized": false,
+        "prediction_generated": false
+      }
+    },
+    {
+      "case": "current_actual_environment",
+      "actual": {
+        "gate_candidate_status": "NOT_ELIGIBLE",
+        "authority": {
+          "contract_id": "FEP_TRUSTED_AUTHORITY_R4_V1",
+          "status": "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "production_authorized": false,
+          "formal_owner": null,
+          "registry_verified": false,
+          "first_asof_verified": false,
+          "deployment_head_verified": false,
+          "cas_receipt_verified": false,
+          "independent_approval_verified": false
+        },
+        "contract_id": "FEP_CURRENT_ADMISSION_R4_V2",
+        "engineering_status": "FEP_ENGINEERING_GATE_READY",
+        "production_status": "BLOCKED",
+        "status": "FEP_CAPABILITY_NOT_READY",
+        "reasons": [
+          "MODEL_NOT_ACCEPTED",
+          "GRANT_MISSING",
+          "INPUT_ASOF_NOT_VERIFIED",
+          "SAMPLE_NOT_MATURE",
+          "NO_SCORING_AUTHORITY",
+          "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "PREDICTION_OWNER_MISSING"
+        ],
+        "reason_text": [
+          "已有历史工程模型，但尚未接受为当前生产模型。",
+          "缺少当前模型、范围和能力的正式授权。",
+          "训练或预测输入的当时首次可用时间尚未核验。",
+          "当前用途的真实前瞻样本尚未成熟。",
+          "尚无生产评分或排序权限。",
+          "尚无正式 registry、首次可用源、Head/DB CAS 及外审批准的可信生产解析器。",
+          "缺少已接纳的预测消费 Owner。"
+        ],
+        "fields": {
+          "return_expectancy": {
+            "value": null,
+            "status": "SOURCE_INCOMPLETE",
+            "reasons": [
+              "MODEL_NOT_ACCEPTED",
+              "GRANT_MISSING",
+              "INPUT_ASOF_NOT_VERIFIED",
+              "SAMPLE_NOT_MATURE",
+              "NO_SCORING_AUTHORITY",
+              "TRUSTED_AUTHORITY_UNAVAILABLE",
+              "PREDICTION_OWNER_MISSING"
+            ]
+          },
+          "downside_risk": {
+            "value": null,
+            "status": "SOURCE_INCOMPLETE",
+            "reasons": [
+              "MODEL_NOT_ACCEPTED",
+              "GRANT_MISSING",
+              "INPUT_ASOF_NOT_VERIFIED",
+              "SAMPLE_NOT_MATURE",
+              "NO_SCORING_AUTHORITY",
+              "TRUSTED_AUTHORITY_UNAVAILABLE",
+              "PREDICTION_OWNER_MISSING"
+            ]
+          },
+          "return_quantiles": {
+            "value": null,
+            "status": "SOURCE_INCOMPLETE",
+            "reasons": [
+              "MODEL_NOT_ACCEPTED",
+              "GRANT_MISSING",
+              "INPUT_ASOF_NOT_VERIFIED",
+              "SAMPLE_NOT_MATURE",
+              "NO_SCORING_AUTHORITY",
+              "TRUSTED_AUTHORITY_UNAVAILABLE",
+              "PREDICTION_OWNER_MISSING"
+            ]
+          },
+          "prediction_revision": {
+            "value": null,
+            "status": "SOURCE_INCOMPLETE",
+            "reasons": [
+              "MODEL_NOT_ACCEPTED",
+              "GRANT_MISSING",
+              "INPUT_ASOF_NOT_VERIFIED",
+              "SAMPLE_NOT_MATURE",
+              "NO_SCORING_AUTHORITY",
+              "TRUSTED_AUTHORITY_UNAVAILABLE",
+              "PREDICTION_OWNER_MISSING"
+            ]
+          },
+          "model_display": {
+            "value": null,
+            "status": "SOURCE_INCOMPLETE",
+            "reasons": [
+              "MODEL_NOT_ACCEPTED",
+              "GRANT_MISSING",
+              "INPUT_ASOF_NOT_VERIFIED",
+              "SAMPLE_NOT_MATURE",
+              "NO_SCORING_AUTHORITY",
+              "TRUSTED_AUTHORITY_UNAVAILABLE",
+              "PREDICTION_OWNER_MISSING"
+            ]
+          },
+          "priority_use": {
+            "value": null,
+            "status": "SOURCE_INCOMPLETE",
+            "reasons": [
+              "MODEL_NOT_ACCEPTED",
+              "GRANT_MISSING",
+              "INPUT_ASOF_NOT_VERIFIED",
+              "SAMPLE_NOT_MATURE",
+              "NO_SCORING_AUTHORITY",
+              "TRUSTED_AUTHORITY_UNAVAILABLE",
+              "PREDICTION_OWNER_MISSING"
+            ]
+          }
+        },
+        "production_authorized": false,
+        "prediction_generated": false,
+        "historical_engineering_model_count": 3,
+        "source_sha256": "2e844eb181961fe88a50c60ca8ec59fe7e53585c7e867429f09177987f288a04"
+      }
+    }
+  ],
+  "pytest": {
+    "command": "python -m pytest tests/fep_e5/test_r4_admission.py tests/fep_e5/test_post_audit_admission.py -q -p no:cacheprovider --basetemp=G:/codex_tmp/test_temp/d_fep_post_audit",
+    "exit_code": 0,
+    "passed": 32
+  },
+  "db_regression": {
+    "status": "DB_REGRESSION_BLOCKED",
+    "historical_22_not_passed": true,
+    "reason": "R4 setup failed; no admitted isolated database. Production DB not queried; no setup changes attempted."
+  }
+}

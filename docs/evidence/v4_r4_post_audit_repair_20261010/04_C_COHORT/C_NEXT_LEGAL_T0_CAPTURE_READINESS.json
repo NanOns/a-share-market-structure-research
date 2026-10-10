@@ -1,0 +1,111 @@
+{
+  "contract_id": "COHORT_FIRST_CAPTURE_READINESS_R1",
+  "code": {
+    "path": "src/workbench_analysis/cohort_capture_readiness_r1.py",
+    "bytes": 4954,
+    "sha256": "f7ba7f9599ee5e2038cc3b7e60be49c6ec14361471f3f48c0f5ca2306bba308d"
+  },
+  "base_code_sha": "5ad4bb8da48196d9e902d48ece510a15136c4210",
+  "T0": "2026-10-09",
+  "accepted_head": {
+    "path": "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json",
+    "bytes": 29799,
+    "sha256": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e"
+  },
+  "formal_owner": null,
+  "observed_count": null,
+  "matured_count": null,
+  "settled_count": null,
+  "legacy_events": 2290,
+  "legacy_by_day": [
+    {
+      "T0": "2026-09-28",
+      "count": 182,
+      "classification": {
+        "FIRST_AVAILABLE_AFTER_T0": 182
+      }
+    },
+    {
+      "T0": "2026-09-29",
+      "count": 393,
+      "classification": {
+        "FIRST_AVAILABLE_AFTER_T0": 393
+      }
+    },
+    {
+      "T0": "2026-09-30",
+      "count": 393,
+      "classification": {
+        "FIRST_AVAILABLE_AFTER_T0": 393
+      }
+    },
+    {
+      "T0": "2026-10-08",
+      "count": 409,
+      "classification": {
+        "FIRST_AVAILABLE_AFTER_T0": 409
+      }
+    },
+    {
+      "T0": "2026-10-09",
+      "count": 913,
+      "classification": {
+        "RECONSTRUCTED": 913
+      }
+    }
+  ],
+  "root_cause": "No complete T0 eligible/ineligible freeze receipt and no independent admitted Owner; corrected structure events cannot prove original enrollment",
+  "actual_source": "EXISTING_HEAD_BOUND_EVENT_INVENTORY; NO_NEW_REAL_CAPTURE",
+  "future_capture_preflight": "prepare_capture requires verified daily-job Head context, separate writer grant, complete full ledger, SHA-bound source, revision, frozen versions/parameters and AS_RECORDED membership version",
+  "daily_entry": "DD R2.2 actual-source preflight -> prepare_capture isolated validation -> independent Owner/grant admission -> existing DD publication/CAS; wiring/production activation remains gated",
+  "production_write_authorized": false,
+  "future_data_gate": "NO_2026_10_12_CAPTURE_CREATED",
+  "test": {
+    "command": "python -m pytest tests/test_cohort_capture_readiness_r1.py -q -p no:cacheprovider --basetemp G:/codex_tmp/test_temp/c_capture_r1_v2",
+    "exit_code": 0,
+    "passed": 24,
+    "output": "24 passed in 0.76s",
+    "scope": "SYNTHETIC_ISOLATED_ONLY"
+  },
+  "old_evidence_reused_unchanged": [
+    {
+      "path": "docs/evidence/v4_current_snapshot_r4_20261010/03_C_COHORT/C_LEGACY_EVENT_FIRST_AVAILABLE_INVENTORY.json",
+      "bytes": 2646783,
+      "sha256": "7965d54975f9c31bf15836d26415b19d31cac4f987c3639f7c854ec61a1159a5"
+    },
+    {
+      "path": "docs/evidence/v4_current_snapshot_r4_20261010/03_C_COHORT/C_ADMISSION_DENIAL_TESTS.json",
+      "bytes": 7882,
+      "sha256": "dade9ab89587c949ccfa797074794f1b10280bb5a338cb4d1b8690d10634c768"
+    },
+    {
+      "path": "docs/evidence/v4_current_snapshot_r4_20261010/03_C_COHORT/C_STAGE_RESULT.json",
+      "bytes": 1591,
+      "sha256": "2c658abb6a0cfbc7ccc544b61b1fc994c840b7ca9366f23bed2a06807ff75002"
+    },
+    {
+      "path": "docs/evidence/v4_current_snapshot_r4_20261010/03_C_COHORT/C_MANIFEST_SHA256.json",
+      "bytes": 1615,
+      "sha256": "6768112603ef273f096f6c8c85b1bcec40a08d2805d7ea925a47218f5eb13d5e"
+    }
+  ],
+  "unmodified_code": [
+    {
+      "path": "src/workbench_analysis/validation_cohort_read_contract_r3.py",
+      "bytes": 9830,
+      "sha256": "a557d0236195a2ab2704db92b3640a0e58731288eb7c68f72e2b66659f2b7267"
+    },
+    {
+      "path": "src/workbench_analysis/v4_15_radar_cohort.py",
+      "bytes": 15444,
+      "sha256": "1897b81d5618d3b077af6d65e77b0df9bc26175b44facfee5dac5021a92dd06e"
+    },
+    {
+      "path": "src/workbench_analysis/v4_15_forward_r2.py",
+      "bytes": 14544,
+      "sha256": "77e4fe4951d94b7e7a7a89cf5b9aeb417c81ef689960677bd65a63089de9792e"
+    }
+  ],
+  "status": "ENGINEERING_CAPTURE_PREFLIGHT_READY_SCOPED",
+  "next_stage": "EXTERNAL_RECHECK_REQUESTED; REAL_ENROLLMENT_NOT_GRANTED"
+}

@@ -1,0 +1,251 @@
+{
+  "before": {
+    "contract_id": "FEP_CURRENT_ADMISSION_R4_V1",
+    "engineering_status": "FEP_ENGINEERING_GATE_READY",
+    "production_status": "FEP_PRODUCTION_AUTHORIZED",
+    "status": "READY",
+    "reasons": [],
+    "reason_text": [],
+    "fields": {
+      "return_expectancy": {
+        "value": null,
+        "status": "FEP_CAPABILITY_NOT_READY",
+        "reasons": []
+      },
+      "downside_risk": {
+        "value": null,
+        "status": "FEP_CAPABILITY_NOT_READY",
+        "reasons": []
+      },
+      "return_quantiles": {
+        "value": null,
+        "status": "FEP_CAPABILITY_NOT_READY",
+        "reasons": []
+      },
+      "prediction_revision": {
+        "value": null,
+        "status": "FEP_CAPABILITY_NOT_READY",
+        "reasons": []
+      },
+      "model_display": {
+        "value": null,
+        "status": "FEP_CAPABILITY_NOT_READY",
+        "reasons": []
+      },
+      "priority_use": {
+        "value": null,
+        "status": "FEP_CAPABILITY_NOT_READY",
+        "reasons": []
+      }
+    },
+    "production_authorized": true,
+    "prediction_generated": false
+  },
+  "after": {
+    "gate_candidate_status": "GATE_ELIGIBLE_CANDIDATE",
+    "authority": {
+      "contract_id": "FEP_TRUSTED_AUTHORITY_R4_V1",
+      "status": "TRUSTED_AUTHORITY_UNAVAILABLE",
+      "production_authorized": false,
+      "formal_owner": null,
+      "registry_verified": false,
+      "first_asof_verified": false,
+      "deployment_head_verified": false,
+      "cas_receipt_verified": false,
+      "independent_approval_verified": false
+    },
+    "contract_id": "FEP_CURRENT_ADMISSION_R4_V2",
+    "engineering_status": "FEP_ENGINEERING_GATE_READY",
+    "production_status": "BLOCKED",
+    "status": "FEP_CAPABILITY_NOT_READY",
+    "reasons": [
+      "TRUSTED_AUTHORITY_UNAVAILABLE",
+      "PREDICTION_OWNER_MISSING"
+    ],
+    "reason_text": [
+      "尚无正式 registry、首次可用源、Head/DB CAS 及外审批准的可信生产解析器。",
+      "缺少已接纳的预测消费 Owner。"
+    ],
+    "fields": {
+      "return_expectancy": {
+        "value": null,
+        "status": "SOURCE_INCOMPLETE",
+        "reasons": [
+          "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "PREDICTION_OWNER_MISSING"
+        ]
+      },
+      "downside_risk": {
+        "value": null,
+        "status": "SOURCE_INCOMPLETE",
+        "reasons": [
+          "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "PREDICTION_OWNER_MISSING"
+        ]
+      },
+      "return_quantiles": {
+        "value": null,
+        "status": "SOURCE_INCOMPLETE",
+        "reasons": [
+          "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "PREDICTION_OWNER_MISSING"
+        ]
+      },
+      "prediction_revision": {
+        "value": null,
+        "status": "SOURCE_INCOMPLETE",
+        "reasons": [
+          "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "PREDICTION_OWNER_MISSING"
+        ]
+      },
+      "model_display": {
+        "value": null,
+        "status": "SOURCE_INCOMPLETE",
+        "reasons": [
+          "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "PREDICTION_OWNER_MISSING"
+        ]
+      },
+      "priority_use": {
+        "value": null,
+        "status": "SOURCE_INCOMPLETE",
+        "reasons": [
+          "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "PREDICTION_OWNER_MISSING"
+        ]
+      }
+    },
+    "production_authorized": false,
+    "prediction_generated": false
+  },
+  "current": {
+    "gate_candidate_status": "NOT_ELIGIBLE",
+    "authority": {
+      "contract_id": "FEP_TRUSTED_AUTHORITY_R4_V1",
+      "status": "TRUSTED_AUTHORITY_UNAVAILABLE",
+      "production_authorized": false,
+      "formal_owner": null,
+      "registry_verified": false,
+      "first_asof_verified": false,
+      "deployment_head_verified": false,
+      "cas_receipt_verified": false,
+      "independent_approval_verified": false
+    },
+    "contract_id": "FEP_CURRENT_ADMISSION_R4_V2",
+    "engineering_status": "FEP_ENGINEERING_GATE_READY",
+    "production_status": "BLOCKED",
+    "status": "FEP_CAPABILITY_NOT_READY",
+    "reasons": [
+      "MODEL_NOT_ACCEPTED",
+      "GRANT_MISSING",
+      "INPUT_ASOF_NOT_VERIFIED",
+      "SAMPLE_NOT_MATURE",
+      "NO_SCORING_AUTHORITY",
+      "TRUSTED_AUTHORITY_UNAVAILABLE",
+      "PREDICTION_OWNER_MISSING"
+    ],
+    "reason_text": [
+      "已有历史工程模型，但尚未接受为当前生产模型。",
+      "缺少当前模型、范围和能力的正式授权。",
+      "训练或预测输入的当时首次可用时间尚未核验。",
+      "当前用途的真实前瞻样本尚未成熟。",
+      "尚无生产评分或排序权限。",
+      "尚无正式 registry、首次可用源、Head/DB CAS 及外审批准的可信生产解析器。",
+      "缺少已接纳的预测消费 Owner。"
+    ],
+    "fields": {
+      "return_expectancy": {
+        "value": null,
+        "status": "SOURCE_INCOMPLETE",
+        "reasons": [
+          "MODEL_NOT_ACCEPTED",
+          "GRANT_MISSING",
+          "INPUT_ASOF_NOT_VERIFIED",
+          "SAMPLE_NOT_MATURE",
+          "NO_SCORING_AUTHORITY",
+          "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "PREDICTION_OWNER_MISSING"
+        ]
+      },
+      "downside_risk": {
+        "value": null,
+        "status": "SOURCE_INCOMPLETE",
+        "reasons": [
+          "MODEL_NOT_ACCEPTED",
+          "GRANT_MISSING",
+          "INPUT_ASOF_NOT_VERIFIED",
+          "SAMPLE_NOT_MATURE",
+          "NO_SCORING_AUTHORITY",
+          "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "PREDICTION_OWNER_MISSING"
+        ]
+      },
+      "return_quantiles": {
+        "value": null,
+        "status": "SOURCE_INCOMPLETE",
+        "reasons": [
+          "MODEL_NOT_ACCEPTED",
+          "GRANT_MISSING",
+          "INPUT_ASOF_NOT_VERIFIED",
+          "SAMPLE_NOT_MATURE",
+          "NO_SCORING_AUTHORITY",
+          "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "PREDICTION_OWNER_MISSING"
+        ]
+      },
+      "prediction_revision": {
+        "value": null,
+        "status": "SOURCE_INCOMPLETE",
+        "reasons": [
+          "MODEL_NOT_ACCEPTED",
+          "GRANT_MISSING",
+          "INPUT_ASOF_NOT_VERIFIED",
+          "SAMPLE_NOT_MATURE",
+          "NO_SCORING_AUTHORITY",
+          "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "PREDICTION_OWNER_MISSING"
+        ]
+      },
+      "model_display": {
+        "value": null,
+        "status": "SOURCE_INCOMPLETE",
+        "reasons": [
+          "MODEL_NOT_ACCEPTED",
+          "GRANT_MISSING",
+          "INPUT_ASOF_NOT_VERIFIED",
+          "SAMPLE_NOT_MATURE",
+          "NO_SCORING_AUTHORITY",
+          "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "PREDICTION_OWNER_MISSING"
+        ]
+      },
+      "priority_use": {
+        "value": null,
+        "status": "SOURCE_INCOMPLETE",
+        "reasons": [
+          "MODEL_NOT_ACCEPTED",
+          "GRANT_MISSING",
+          "INPUT_ASOF_NOT_VERIFIED",
+          "SAMPLE_NOT_MATURE",
+          "NO_SCORING_AUTHORITY",
+          "TRUSTED_AUTHORITY_UNAVAILABLE",
+          "PREDICTION_OWNER_MISSING"
+        ]
+      }
+    },
+    "production_authorized": false,
+    "prediction_generated": false,
+    "historical_engineering_model_count": 3,
+    "source_sha256": "2e844eb181961fe88a50c60ca8ec59fe7e53585c7e867429f09177987f288a04"
+  },
+  "assertions": {
+    "before_contradiction": true,
+    "after_closed": true,
+    "after_outer_not_ready": true,
+    "after_null_source_incomplete": true
+  },
+  "source_sha256": "7c47741a0a809223a2f51f7aebb5c3711399acea497c50f4289004fafded1079",
+  "formal_owner": null,
+  "independent_acceptance": "EXTERNAL_RECHECK_REQUESTED"
+}

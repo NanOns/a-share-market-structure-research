@@ -1,0 +1,30 @@
+{
+  "contract_id": "FEP_TRUSTED_AUTHORITY_R4_V1",
+  "implementation": "resolve_current_authority()",
+  "mode": "FORMAL_ADAPTER_UNAVAILABLE_FAIL_CLOSED",
+  "formal_owner": null,
+  "caller_booleans_and_dicts": "DISPLAY_CLAIMS_ONLY",
+  "requirements": [
+    "exact accepted champion model registry/revision",
+    "AS_RECORDED first-asof source owner digest/availability",
+    "exact seven request identity/capability dimensions",
+    "current ALLOW Head with immutable activation/CAS receipt",
+    "unexpired unrevoked grant",
+    "independent external approval",
+    "real mature sample Owner",
+    "accepted prediction Owner and ready field"
+  ],
+  "isolated_rehearsal": "UNTRUSTED_ISOLATED_FIXTURE; always production_authorized=false",
+  "authority": {
+    "contract_id": "FEP_TRUSTED_AUTHORITY_R4_V1",
+    "status": "TRUSTED_AUTHORITY_UNAVAILABLE",
+    "production_authorized": false,
+    "formal_owner": null,
+    "registry_verified": false,
+    "first_asof_verified": false,
+    "deployment_head_verified": false,
+    "cas_receipt_verified": false,
+    "independent_approval_verified": false
+  },
+  "external_state": "EXTERNAL_RECHECK_REQUESTED"
+}

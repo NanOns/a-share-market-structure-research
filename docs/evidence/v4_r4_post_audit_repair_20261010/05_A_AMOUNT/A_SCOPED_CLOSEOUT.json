@@ -1,0 +1,25 @@
+{
+  "contract_id": "FIX_A_POST_AUDIT_SCOPED_CLOSEOUT_R1",
+  "previous_search": {
+    "path": "docs/evidence/v4_current_snapshot_r4_20261010/01_A_AMOUNT/A_H21_SOURCE_SEARCH_MANIFEST.json",
+    "bytes": 5466,
+    "sha256": "30c8e457385b5ce7c5dd99380e02d0945a4fe5a32971c00dad12db93e6be2444"
+  },
+  "new_original_source_lead": null,
+  "new_search_executed": false,
+  "historical_status": "H21_STRICT_HISTORY_NOT_VERIFIABLE",
+  "engineering": "PASS_SCOPED_REUSED_UNCHANGED",
+  "formal_gate": "FORMAL_H21_BLOCKED",
+  "no_full_disk_exhaustion_claim": true,
+  "limitations": "Previous bounded local directory and direct-child Drive inventory did not prove original captures; large archives and all Drive history were not exhausted",
+  "missing_session_count": 20,
+  "future_daily_capture_interface": "Existing DD R2.2 actual-session source/owner QA/CAS, first_available and AS_RECORDED membership version frozen without backfill",
+  "future_samples_restore_old_history": false,
+  "amount_proxy_substitution": false,
+  "accepted_available_domains": [
+    "Native stock amount",
+    "Native market amount",
+    "sector participation without H21 dependency"
+  ],
+  "next_stage": "Reopen history only on a genuine original receipt lead; no full recomputation"
+}

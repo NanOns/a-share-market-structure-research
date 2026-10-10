@@ -1,0 +1,39 @@
+{
+  "contract_id": "COHORT_FIRST_CAPTURE_READINESS_R1",
+  "roles": [
+    {
+      "role": "READ_STATISTICS",
+      "entry": "read_authorized_statistics",
+      "authority": "Accepted Head + exact owner/source/read grant SHA",
+      "production_write": false
+    },
+    {
+      "role": "PREPARE_FIRST_CAPTURE",
+      "entry": "prepare_capture",
+      "authority": "Separate Head-bound writer grant + owner/revision/source receipt",
+      "production_write": false
+    },
+    {
+      "role": "ISOLATED_PUBLICATION",
+      "entry": "publish_isolated_candidate",
+      "authority": "Read grant + exact calendar",
+      "production_write": false
+    },
+    {
+      "role": "PRODUCTION_WRITE",
+      "entry": null,
+      "authority": "Independent accepted Owner + production grant + DD R2.2 transaction/CAS/outbox",
+      "status": "NOT_GRANTED"
+    }
+  ],
+  "maturity": {
+    "T1_T3_T5": "Official market sessions, due does not mean settled",
+    "right_censoring": "Insufficient horizon/source remains unknown; no negative-return substitution",
+    "benchmark": "Frozen benchmark identity checked on read; real prices and outcomes owned by Forward v1.2"
+  },
+  "no_owner": {
+    "observed_count": null,
+    "matured_count": null,
+    "settled_count": null
+  }
+}

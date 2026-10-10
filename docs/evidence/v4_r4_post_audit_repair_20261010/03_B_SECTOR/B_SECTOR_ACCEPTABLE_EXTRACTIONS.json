@@ -1,0 +1,572 @@
+{
+  "BASE_SHA": "5ad4bb8da48196d9e902d48ece510a15136c4210",
+  "code_binding": {
+    "path": "scripts/audit_post_r4_sector_sources.py",
+    "bytes": 8960,
+    "sha256": "0d17e9f9fa85dbea6b12c6a8d7087649810eb94672fa1efa737eda17955cd492"
+  },
+  "T0": "2026-10-09",
+  "accepted_head": {
+    "path": "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json",
+    "bytes": 29799,
+    "sha256": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e"
+  },
+  "formal_owner": "SECTOR_D2_OWNER_OPEN",
+  "external_acceptance": "EXTERNAL_RECHECK_REQUESTED",
+  "head_changed": false,
+  "status": "PASS_SCOPED_SOURCE_READBACK_ONLY",
+  "source_owner": {
+    "bytes": 1710140,
+    "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/native.jsonl.gz",
+    "sha256": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85"
+  },
+  "versioned_extraction": "Existing V4_08_SECTOR_NATIVE_V1 / V4_08_ALGORITHM_PARAMETER_SET_R5",
+  "source_bindings": {
+    "sector": {
+      "bytes": 1710140,
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/native.jsonl.gz",
+      "sha256": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85"
+    },
+    "core": {
+      "bytes": 19792536,
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+      "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+    },
+    "base_profile": {
+      "bytes": 43509662,
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/profiles.jsonl.gz",
+      "sha256": "a05e55312744aa79340d09165bc7c39ab70c57720a7c7ff133ee7a7529acd57e"
+    },
+    "seed": {
+      "bytes": 149819,
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/base_seed.jsonl.gz",
+      "sha256": "8c3b13742f1a1a615faaccfa511fa2b8adc4c7d16c2bab6c17af57fe912a0c17"
+    },
+    "sector_receipt": {
+      "bytes": 1301835,
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/SECTOR_REPLAY.json",
+      "sha256": "cf4322d06a1dd34fb576eb145c942d855a2fc84c0c565743ebf2230f84d4dd55"
+    },
+    "membership_snapshot": {
+      "bytes": 2281,
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json",
+      "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+    }
+  },
+  "prior": "Native dq5 prior membership_snapshot_id explicitly retained in sample",
+  "candidate": "Existing operational read-only UI domain; no new D2 candidate fabricated",
+  "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+  "first_available": "2026-10-09T11:56:56.437273+00:00",
+  "first_available_scope": "Operational owner publication only; does not prove historical field first availability",
+  "samples": [
+    {
+      "sector_id": "INDUSTRY:T010101",
+      "member_ids": [
+        "SEC-22587521220590A4C04C6C5EB5BE7133",
+        "SEC-2EB9DF2C64F81F698476FDB0A2FAA058",
+        "SEC-34F37F5E3A6E3093B21F3500D4AD7A16",
+        "SEC-3A74E1F26C8DB20A4B5A1DAD904A7E81",
+        "SEC-4366A67F5B8F066DE45C4BF3096186F0",
+        "SEC-4F4EAA10CBA13DD8119C27C4C858036E",
+        "SEC-5011A9165C078C701CC1E3FD72BF8BB1",
+        "SEC-5116CF37D95FE4511EC37A3CA8AA6F34",
+        "SEC-530333EE89D97AB87B70B1DDD6276149",
+        "SEC-589BCCAE5CC3F980C89F68887DCAF944",
+        "SEC-63C5376A44EE6E4AA73FAA5328191430",
+        "SEC-7009171C87A93C471396C96D24FCA3E8",
+        "SEC-735BEC3353FC0DAD908DB6959F726BB5",
+        "SEC-ADBF2E7664E52BBDA731B903A90ACB22",
+        "SEC-B0B14E19BE8B97E585DE2F3DF8323267",
+        "SEC-BB725F7872F49AF063952F57DBC0D98B",
+        "SEC-BF060687AB811120E5ED267E6B1155DC",
+        "SEC-C4C1678EB446E1B2A5DFA120C2957B68",
+        "SEC-D0B89E3753DA2BDAD3953C291004F786",
+        "SEC-D697181C1ECEA0DE1C77F60A837C4A2E",
+        "SEC-D88D0916ED08524523AAD81650F47136",
+        "SEC-EE0327A8699C5B06C8016CFE5612B46E",
+        "SEC-EE865E224B4F5AE38B47AA3E87C7F535",
+        "SEC-F3F14D29D9F4628D40D442ED93892D93",
+        "SEC-F546DE97026D819E7064CBBB6B87A4CA"
+      ],
+      "member_count": 25,
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "fields": {
+        "breadth_ret1": {
+          "AS_RECORDED": false,
+          "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+          "PIT_ELIGIBLE": false,
+          "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+          "known_count": 25,
+          "max_source_date": "2026-10-09",
+          "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+          "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+          "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+          "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+          "model_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+          "quality": "PROXY_RECONSTRUCTED",
+          "reason_code": null,
+          "source_publications": {
+            "core": {
+              "bytes": 19792536,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+              "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+            },
+            "membership_snapshot": {
+              "bytes": 2281,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json",
+              "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+            },
+            "profiles": {
+              "bytes": 43509662,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/profiles.jsonl.gz",
+              "sha256": "a05e55312744aa79340d09165bc7c39ab70c57720a7c7ff133ee7a7529acd57e"
+            },
+            "seed": {
+              "bytes": 149819,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/base_seed.jsonl.gz",
+              "sha256": "8c3b13742f1a1a615faaccfa511fa2b8adc4c7d16c2bab6c17af57fe912a0c17"
+            }
+          },
+          "survivorship_bias_risk": true,
+          "target_trade_date": "2026-10-09",
+          "taxonomy": "TDX_INDUSTRY_CONCEPT",
+          "time_role": "TARGET_CUTOFF",
+          "trade_date": "2026-10-09",
+          "value": 0.84
+        },
+        "dq5": {
+          "AS_RECORDED": false,
+          "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+          "PIT_ELIGIBLE": false,
+          "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+          "known_count": 25,
+          "max_source_date": "2026-10-09",
+          "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+          "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+          "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+          "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+          "model_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "prior_membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+          "quality": "PROXY_RECONSTRUCTED",
+          "rank_denominator": 105,
+          "rank_membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+          "reason_code": null,
+          "source_publications": {
+            "core": {
+              "bytes": 19792536,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+              "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+            },
+            "membership_snapshot": {
+              "bytes": 2281,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json",
+              "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+            },
+            "profiles": {
+              "bytes": 43509662,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/profiles.jsonl.gz",
+              "sha256": "a05e55312744aa79340d09165bc7c39ab70c57720a7c7ff133ee7a7529acd57e"
+            },
+            "seed": {
+              "bytes": 149819,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/base_seed.jsonl.gz",
+              "sha256": "8c3b13742f1a1a615faaccfa511fa2b8adc4c7d16c2bab6c17af57fe912a0c17"
+            }
+          },
+          "survivorship_bias_risk": true,
+          "target_trade_date": "2026-10-09",
+          "taxonomy": "TDX_INDUSTRY_CONCEPT",
+          "time_role": "TARGET_CUTOFF",
+          "trade_date": "2026-10-09",
+          "unknown_count": 0,
+          "value": 35.57692307692307
+        },
+        "ma20_width": {
+          "AS_RECORDED": false,
+          "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+          "PIT_ELIGIBLE": false,
+          "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+          "known_count": 25,
+          "max_source_date": "2026-10-09",
+          "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+          "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+          "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+          "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+          "model_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+          "quality": "PROXY_RECONSTRUCTED",
+          "reason_code": null,
+          "source_publications": {
+            "core": {
+              "bytes": 19792536,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+              "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+            },
+            "membership_snapshot": {
+              "bytes": 2281,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json",
+              "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+            },
+            "profiles": {
+              "bytes": 43509662,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/profiles.jsonl.gz",
+              "sha256": "a05e55312744aa79340d09165bc7c39ab70c57720a7c7ff133ee7a7529acd57e"
+            },
+            "seed": {
+              "bytes": 149819,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/base_seed.jsonl.gz",
+              "sha256": "8c3b13742f1a1a615faaccfa511fa2b8adc4c7d16c2bab6c17af57fe912a0c17"
+            }
+          },
+          "survivorship_bias_risk": true,
+          "target_trade_date": "2026-10-09",
+          "taxonomy": "TDX_INDUSTRY_CONCEPT",
+          "time_role": "TARGET_CUTOFF",
+          "trade_date": "2026-10-09",
+          "value": 0.68
+        }
+      }
+    },
+    {
+      "sector_id": "INDUSTRY:T010102",
+      "member_ids": [
+        "SEC-171653DB4F8FE3E156D422A44ECD1698",
+        "SEC-2E6E26D5A984C70E6BA440C807F86A5C",
+        "SEC-33A64B4BB1B741529247EFB668632626",
+        "SEC-811CE745469714F3BC0631824F931402",
+        "SEC-BB5FF6AF3C5FA391683AB6DC9A3CE56B",
+        "SEC-D5ADCB0BE7CFD2116CB0269EFDFE9BF0",
+        "SEC-E8DA89C1008E09107FBCA40BD7F96F9D"
+      ],
+      "member_count": 7,
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "fields": {
+        "breadth_ret1": {
+          "AS_RECORDED": false,
+          "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+          "PIT_ELIGIBLE": false,
+          "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+          "known_count": 7,
+          "max_source_date": "2026-10-09",
+          "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+          "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+          "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+          "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+          "model_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+          "quality": "PROXY_RECONSTRUCTED",
+          "reason_code": null,
+          "source_publications": {
+            "core": {
+              "bytes": 19792536,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+              "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+            },
+            "membership_snapshot": {
+              "bytes": 2281,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json",
+              "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+            },
+            "profiles": {
+              "bytes": 43509662,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/profiles.jsonl.gz",
+              "sha256": "a05e55312744aa79340d09165bc7c39ab70c57720a7c7ff133ee7a7529acd57e"
+            },
+            "seed": {
+              "bytes": 149819,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/base_seed.jsonl.gz",
+              "sha256": "8c3b13742f1a1a615faaccfa511fa2b8adc4c7d16c2bab6c17af57fe912a0c17"
+            }
+          },
+          "survivorship_bias_risk": true,
+          "target_trade_date": "2026-10-09",
+          "taxonomy": "TDX_INDUSTRY_CONCEPT",
+          "time_role": "TARGET_CUTOFF",
+          "trade_date": "2026-10-09",
+          "value": 0.8571428571428571
+        },
+        "dq5": {
+          "AS_RECORDED": false,
+          "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+          "PIT_ELIGIBLE": false,
+          "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+          "known_count": 7,
+          "max_source_date": "2026-10-09",
+          "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+          "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+          "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+          "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+          "model_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "prior_membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+          "quality": "PROXY_RECONSTRUCTED",
+          "rank_denominator": 105,
+          "rank_membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+          "reason_code": null,
+          "source_publications": {
+            "core": {
+              "bytes": 19792536,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+              "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+            },
+            "membership_snapshot": {
+              "bytes": 2281,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json",
+              "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+            },
+            "profiles": {
+              "bytes": 43509662,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/profiles.jsonl.gz",
+              "sha256": "a05e55312744aa79340d09165bc7c39ab70c57720a7c7ff133ee7a7529acd57e"
+            },
+            "seed": {
+              "bytes": 149819,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/base_seed.jsonl.gz",
+              "sha256": "8c3b13742f1a1a615faaccfa511fa2b8adc4c7d16c2bab6c17af57fe912a0c17"
+            }
+          },
+          "survivorship_bias_risk": true,
+          "target_trade_date": "2026-10-09",
+          "taxonomy": "TDX_INDUSTRY_CONCEPT",
+          "time_role": "TARGET_CUTOFF",
+          "trade_date": "2026-10-09",
+          "unknown_count": 0,
+          "value": 55.769230769230774
+        },
+        "ma20_width": {
+          "AS_RECORDED": false,
+          "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+          "PIT_ELIGIBLE": false,
+          "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+          "known_count": 7,
+          "max_source_date": "2026-10-09",
+          "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+          "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+          "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+          "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+          "model_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+          "quality": "PROXY_RECONSTRUCTED",
+          "reason_code": null,
+          "source_publications": {
+            "core": {
+              "bytes": 19792536,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+              "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+            },
+            "membership_snapshot": {
+              "bytes": 2281,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json",
+              "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+            },
+            "profiles": {
+              "bytes": 43509662,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/profiles.jsonl.gz",
+              "sha256": "a05e55312744aa79340d09165bc7c39ab70c57720a7c7ff133ee7a7529acd57e"
+            },
+            "seed": {
+              "bytes": 149819,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/base_seed.jsonl.gz",
+              "sha256": "8c3b13742f1a1a615faaccfa511fa2b8adc4c7d16c2bab6c17af57fe912a0c17"
+            }
+          },
+          "survivorship_bias_risk": true,
+          "target_trade_date": "2026-10-09",
+          "taxonomy": "TDX_INDUSTRY_CONCEPT",
+          "time_role": "TARGET_CUTOFF",
+          "trade_date": "2026-10-09",
+          "value": 0.5714285714285714
+        }
+      }
+    },
+    {
+      "sector_id": "INDUSTRY:T010201",
+      "member_ids": [
+        "SEC-1A4516CC9C284E967C498C865E172900",
+        "SEC-207B1CEA8C43E51B64CDC121BF7C4116",
+        "SEC-28AEF4439174A9D8450CA1020BB7575F",
+        "SEC-29D69EDE84FCC3ACFA984765C30E668A",
+        "SEC-413AF144BAF0DA2D11616E14806EEF42",
+        "SEC-5022E752587C3986A951E98A12325FF3",
+        "SEC-6D745D8263186D19398A43A434BFEFE7",
+        "SEC-817E438591BA7A9EABD02D85F2DF0A5B",
+        "SEC-842763264EBC02FB7EE4C7FB1E6A1A87",
+        "SEC-8DC171C60996612DF36F592482E82E07",
+        "SEC-905EAAA84F3376C8D6CBF5251341DFE8",
+        "SEC-9B0D8C85558C584E8634B3859DAB4828",
+        "SEC-9EAA7ED6E0F7FADA3B847D01C4151D17",
+        "SEC-AA65C93B0106529BDBFCC0747FD78F41",
+        "SEC-B369CA5F72A0B06C54D8C971B9075917",
+        "SEC-B5BC59E3F105FC7C5E893E9C3495BEEB",
+        "SEC-BD81B12A9EDCB78BEDF350CA13215C92",
+        "SEC-CDC3E6EBCAE53E7D0380B5CB5E1CFBAD",
+        "SEC-D09EB1AD9F75FA9E30B7F260419A970C",
+        "SEC-DFED8922E1F40DEE05100EC8C6672CB8",
+        "SEC-E0F19D1E55008265DA74829D81095C4E",
+        "SEC-EABBE7A95A9A6C5EF8DB400B6FC210AA"
+      ],
+      "member_count": 22,
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "fields": {
+        "breadth_ret1": {
+          "AS_RECORDED": false,
+          "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+          "PIT_ELIGIBLE": false,
+          "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+          "known_count": 22,
+          "max_source_date": "2026-10-09",
+          "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+          "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+          "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+          "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+          "model_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+          "quality": "PROXY_RECONSTRUCTED",
+          "reason_code": null,
+          "source_publications": {
+            "core": {
+              "bytes": 19792536,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+              "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+            },
+            "membership_snapshot": {
+              "bytes": 2281,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json",
+              "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+            },
+            "profiles": {
+              "bytes": 43509662,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/profiles.jsonl.gz",
+              "sha256": "a05e55312744aa79340d09165bc7c39ab70c57720a7c7ff133ee7a7529acd57e"
+            },
+            "seed": {
+              "bytes": 149819,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/base_seed.jsonl.gz",
+              "sha256": "8c3b13742f1a1a615faaccfa511fa2b8adc4c7d16c2bab6c17af57fe912a0c17"
+            }
+          },
+          "survivorship_bias_risk": true,
+          "target_trade_date": "2026-10-09",
+          "taxonomy": "TDX_INDUSTRY_CONCEPT",
+          "time_role": "TARGET_CUTOFF",
+          "trade_date": "2026-10-09",
+          "value": 0.45454545454545453
+        },
+        "dq5": {
+          "AS_RECORDED": false,
+          "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+          "PIT_ELIGIBLE": false,
+          "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+          "known_count": 22,
+          "max_source_date": "2026-10-09",
+          "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+          "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+          "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+          "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+          "model_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "prior_membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+          "quality": "PROXY_RECONSTRUCTED",
+          "rank_denominator": 105,
+          "rank_membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+          "reason_code": null,
+          "source_publications": {
+            "core": {
+              "bytes": 19792536,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+              "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+            },
+            "membership_snapshot": {
+              "bytes": 2281,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json",
+              "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+            },
+            "profiles": {
+              "bytes": 43509662,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/profiles.jsonl.gz",
+              "sha256": "a05e55312744aa79340d09165bc7c39ab70c57720a7c7ff133ee7a7529acd57e"
+            },
+            "seed": {
+              "bytes": 149819,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/base_seed.jsonl.gz",
+              "sha256": "8c3b13742f1a1a615faaccfa511fa2b8adc4c7d16c2bab6c17af57fe912a0c17"
+            }
+          },
+          "survivorship_bias_risk": true,
+          "target_trade_date": "2026-10-09",
+          "taxonomy": "TDX_INDUSTRY_CONCEPT",
+          "time_role": "TARGET_CUTOFF",
+          "trade_date": "2026-10-09",
+          "unknown_count": 0,
+          "value": 38.46153846153847
+        },
+        "ma20_width": {
+          "AS_RECORDED": false,
+          "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+          "PIT_ELIGIBLE": false,
+          "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+          "known_count": 22,
+          "max_source_date": "2026-10-09",
+          "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+          "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+          "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+          "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+          "model_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+          "quality": "PROXY_RECONSTRUCTED",
+          "reason_code": null,
+          "source_publications": {
+            "core": {
+              "bytes": 19792536,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+              "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+            },
+            "membership_snapshot": {
+              "bytes": 2281,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json",
+              "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+            },
+            "profiles": {
+              "bytes": 43509662,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/profiles.jsonl.gz",
+              "sha256": "a05e55312744aa79340d09165bc7c39ab70c57720a7c7ff133ee7a7529acd57e"
+            },
+            "seed": {
+              "bytes": 149819,
+              "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/base_seed.jsonl.gz",
+              "sha256": "8c3b13742f1a1a615faaccfa511fa2b8adc4c7d16c2bab6c17af57fe912a0c17"
+            }
+          },
+          "survivorship_bias_risk": true,
+          "target_trade_date": "2026-10-09",
+          "taxonomy": "TDX_INDUSTRY_CONCEPT",
+          "time_role": "TARGET_CUTOFF",
+          "trade_date": "2026-10-09",
+          "value": 0.4090909090909091
+        }
+      }
+    }
+  ],
+  "formal_lifecycle_enabled": false,
+  "strict_PIT": false
+}

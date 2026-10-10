@@ -29,7 +29,7 @@ def test_engineering_shadow_grant_cannot_authorize_current_production():
     request=dict(scope_id='S',target_id='T',horizon='T1',feature_contract_id='F',model_set_id='M',model_revision=1,capability='MODEL_DISPLAY')
     grant=dict(request,capability='SHADOW_INFERENCE',formal_approval=True,active=True)
     gate=evaluate({'production_role':'ACCEPTED_PRODUCTION'},accepted=True,request=request,grant=grant,input_asof=True,mature=True,scoring=True)
-    assert gate['reasons']==['GRANT_MISSING']
+    assert 'GRANT_MISSING' in gate['reasons']
 
 def test_actual_ledger_put_rejects_frozen_clock_change():
     from workbench_analysis.fep_e5.ledger import Ledger

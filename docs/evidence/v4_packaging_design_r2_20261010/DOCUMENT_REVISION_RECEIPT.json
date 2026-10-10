@@ -1,0 +1,37 @@
+{
+  "contract_id": "V4_WINDOWS_FULL_PACKAGE_DESIGN_R2_20261010",
+  "stage": "DESIGN_DOCUMENT_REVISION_ONLY",
+  "base_commit": "759573e4da4156dad77aae8aa317420a0a1cae2e",
+  "authorization": "User explicitly requested whole-program packaging, attribution to the user's initiative, a final design combining the review and original proposal, and direct modification of the original document.",
+  "source_document": "D:/Users/lps/Desktop/阶段任务/V4_WINDOWS_SERVICE_CONTROL_CENTER_DESIGN_PROPOSAL_R1_20261010.md",
+  "repository_document": "docs/design/V4_WINDOWS_FULL_PACKAGE_FINAL_R2_20261010.md",
+  "original_backup": "G:/codex_tmp/v4_packaging_design_20261010/V4_WINDOWS_SERVICE_CONTROL_CENTER_DESIGN_PROPOSAL_R1_20261010.original.md",
+  "original_sha256": "71eedc8e68c057a2ef8f7f9168813a10749f4ca042a5aa22d94f9e265f8e3eb0",
+  "final_sha256": "5d982e01f97a7e869a4b657da3d51168a5c0283dded9702c2a9cf15b5d63db74",
+  "acceptance": "DOCUMENT_FINALIZED_R2",
+  "evidence": {
+    "source_and_mirror_bytes": "IDENTICAL",
+    "required_contract_terms": "PASS",
+    "markdown_fences": "BALANCED",
+    "real_windows_runtime_test": "NOT_EXECUTED",
+    "package_build": "NOT_EXECUTED",
+    "production_cutover": "NOT_EXECUTED"
+  },
+  "consulted_documents": [
+    "AGENTS.md",
+    "docs/upgrade/DYNAMIC_DAILY_DD07_FINAL_RELEASE_20261009.md",
+    "docs/upgrade/FP14_PRODUCTION_RELEASE_EXECUTION_20261008.md",
+    "docs/evidence/v4_r4_post_audit_repair_20261010/13_NEXT_ACCEPTANCE/V4_R4_NEXT_ACCEPTANCE_GATES_TASK_R1_20261010.md",
+    "docs/operations/V4_DAILY_OPERATIONS_AND_ROLLBACK_R1_20261008.md"
+  ],
+  "independent_audit_items": {
+    "PKG-A01": "OPEN",
+    "PKG-A02": "OPEN",
+    "PKG-A03": "OPEN",
+    "PKG-A04": "OPEN"
+  },
+  "production_actions_performed": [],
+  "external_acceptance": "NOT_GRANTED",
+  "next_stage": "S0 only after separate implementation authorization",
+  "unrelated_worktree_changes": "Preserved; no repository-wide add or cleanup."
+}

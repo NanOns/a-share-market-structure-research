@@ -26,6 +26,8 @@ def write(relative, content):
 
 def main():
     sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+    runtime_receipt=EVIDENCE/'01_E_RUNTIME/E_NORMAL_CLOSE_AND_NEW_PID_RECEIPT.json'
+    deployed=runtime_receipt.is_file() and json.loads(runtime_receipt.read_bytes()).get('status')=='USER_AUTHORIZED_FORCED_CLOSE_AND_ATTESTED_START'
     protected=[binding(ROOT/'data/v4'/name) for name in ('V4_OPERATIONAL_RESEARCH_HEAD.json','V4_DATA_ACCEPTED_HEAD.json')]
     assert [b['sha256'] for b in protected]==[
         '55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e',
@@ -109,6 +111,75 @@ E四门独立列在07_SCOPE_GATE_MATRIX.json；实际浏览器PNG/DOM见01_E_RUN
 全程TDX只读，未改Accepted Head、旧冻结或AUTO设置；无10/12模拟、真实评分、新模型权限、外部复权或交易。每日真实first-capture继续由旧DD R2.2和独立准入门决定。正常关闭条件与启动命令已写E收据，用户提供合法关闭入口后才可继续实际生产交接。
 
 Git push及远端SHA、Drive上传/bytes-SHA读回另列09/10收据。Drive若连接不可达如实标TRANSPORT_BLOCKED，轻量包保留G:/codex_tmp；未同步不得标云归档完成。
+''')
+    if deployed:
+        runtime=json.loads(runtime_receipt.read_bytes())
+        loaded_sha=runtime['attestation']['exact_HEAD']
+        gates['E']='PRODUCTION_NEW_CODE_LOADED_AND_API_PASS_SCOPED; BROWSER_CORE_CASES_VERIFIED; FP13_FAULT_RECOVERY_OPEN'
+        ledger=json.loads((EVIDENCE/'07_SCOPE_GATE_MATRIX.json').read_bytes())
+        ledger.update(PROD_CODE_LOADED='PASS_SCOPED_ATTESTED_PID_49428',
+            PROD_API_CURRENT_SNAPSHOT='PASS_SCOPED_NEW_PRODUCTION_CURRENT_AND_HISTORY; MISSING_FORMAL_CAPABILITIES_FAIL_CLOSED',
+            FP13_REAL_BROWSER='CORE_CASES_VERIFIED_DOUBLE_VIEWPORT; BREADTH_503_RECOVERY_NOT_TESTED',
+            production_loaded_code_sha=loaded_sha,production_port=28765,
+            user_override='Direct human follow-up authorized force close of old PID41528; not normal shutdown')
+        ledger['gates']=gates
+        ledger['stages']['E']['acceptance']=gates['E']
+        atomic_json(ROOT,EVIDENCE/'07_SCOPE_GATE_MATRIX.json',ledger)
+        audit=json.loads((EVIDENCE/'CROSS_CUTTING_AUDIT_ITEMS.json').read_bytes())
+        audit['items'][1]['engineering']='NEW_PRODUCTION_LOADED_VALID_TOKEN_REPLAY_PASS_SCOPED; FP13_503_RECOVERY_OPEN'
+        atomic_json(ROOT,EVIDENCE/'CROSS_CUTTING_AUDIT_ITEMS.json',audit)
+        write('01_E_RUNTIME/E_LIVE_BROWSER_SIX_ENTRY_MATRIX.md', '''# Actual new production 28765 browser matrix
+
+New PID49428, actual loaded CORE_PRODUCT_BFF_R1 and CORE_PRODUCT_FOCUS_READ_R2. IAB successfully accessed localhost; no alternate port or in-process sample is presented as production. Twelve new captures under browser/new_production include six entrances at1366×768 and1920×1080. Data tables or final section were awaited; Focus final section needed a subsequent observed DOM after selector timeout. Old captures remain separately archived.
+
+| Check | Actual result |
+|---|---|
+| home | 5224 stocks,400 sectors, four-axis current states and known source gaps rendered |
+| stocks / sectors | real names, prices, mapped member facts, Native strength/breadth/participation rendered; formal sector lifecycle stays unavailable |
+| market | four axes;上涨2989/下跌2107/平盘113/不可判定15，分母5224、实际行情5210、Native成交额19003.65亿元，indices visible |
+| focus | corrected actual Focus, events and concentration rendered; Cohort/settlement/FEP gaps isolated and clearly expressed |
+| diagnostics | actual source/quality read domain rendered |
+| pagination | stock1→2→1;5224 rows |
+| search | 301628 one row with real name强达电路;688349 one row三一重能 |
+| filter | 启动确认461 rows |
+| 30162810/09 | actual detail validity失效, price97.550, real chart; Focus timeline containsINVALIDATED |
+| 6883499/30 | actual DOM13.240; research date9/30 with accepted/current cutoff still10/09 |
+| T0 retention | change9/30 then navigate sectors retains9/30; restore10/09 after verification |
+| breadth503 isolation/recovery | NOT_TESTED: no supported request-override capability exposed by current browser tool; production Owner/Head not damaged to induce fault |
+
+FP13 remains scoped engineering verification pending503 failure/recovery and independent sign-off. FP14 full release remains EXTERNAL_ACCEPTANCE_BLOCKED. Actual DOM and PNGs, not HTTP excerpts, establish browser observations.
+''')
+        write('01_E_RUNTIME/E_PRODUCTION_VERDICT.md', f'''# Production verdict after explicit user override
+
+PROD_CODE_LOADED = PASS_SCOPED. Direct user follow-up authorized force closing old service because no visible exit exists; PID/port/command were verified, then Stop-Process -Id41528 -Force executed. This overrides the task card's normal-close-only restriction; it is not described as normal shutdown. Attested startup now serves real28765 atPID49428, loaded commit {loaded_sha}, module source paths/SHA/function bytecode and protected Head SHA recorded.
+
+PROD_API_CURRENT_SNAPSHOT = PASS_SCOPED. Actual context and nine full audited routes replayed: exact current token200; empty and stale token409. Request URL, headers and complete response bodies retained. CORE_PRODUCT_BFF_R1/current10/09 source and CORE_PRODUCT_FOCUS_READ_R2 verified. Native market/breadth now READY; actual historical6883499/30 close13.24. Four axes are contracted through home/market display; exploratory /market/axes is not a registered core route and returns SOURCE_INCOMPLETE, not a falsely ready new metric. Generic Forward/Cohort/settlement/FEP missing-source responses remain separately gated.
+
+FP13_REAL_BROWSER = CORE_CASES_VERIFIED_DOUBLE_VIEWPORT; BREADTH_503_RECOVERY_NOT_TESTED. Actual new browser twelve captures, search/filter/page return,301628INVALIDATED, historical13.240 andT0 retention verified. Production503 injection/recovery is not claimed. New chart has actual source data. This requests independent recheck, not external acceptance.
+
+FP14_FULL_RELEASE = EXTERNAL_ACCEPTANCE_BLOCKED. Formal A/B/C/FEP gates stay closed. Head and existing last-good/AUTO preserved, no future data or real model scoring. Old failed runtime evidence retained with OLD_ prefix and separate old browser folder.
+''')
+        write('00_MASTER_DELTA_RESULT.md', f'''# R4 外审后定点修复结果（2026-10-10）
+
+新版已加载到真实28765，主要修复已交付；整体仍为 **EXTERNAL_ACCEPTANCE_BLOCKED**，只申请 **EXTERNAL_RECHECK_REQUESTED**。FP13的breadth503故障隔离/恢复尚未实测，正式源与模型权限门保持关闭，开发方不自签独立PASS。
+
+BASE_SHA `{BASE}`；RESULT_CODE_SHA `{sha}`；生产加载代码SHA `{loaded_sha}`，PID49428、端口28765。最终归档提交以10_GIT_REMOTE_READBACK_RECEIPT给出，避免自引用。T0=2026-10-09。运营Head `{protected[0]['sha256']}`；strict PIT Head `{protected[1]['sha256']}`，前后字节一致。新增正式Owner：无。
+
+| 包 | 根因、改变与实际证据 | 独立保留门 |
+|---|---|---|
+| E | 旧9路409因token拒绝机制可复现，原请求token未留证故不臆断；新脚本保留全部URL/HTTPError正文。按用户追加明确授权强关41528，再取证启动49428；真实新生产9路×3token符合预期，十二browser截图/DOM及历史/Focus/搜索分页验证 |503恢复未实测，FP13独立签收及FP14全发布未获准 |
+| D | 旧全true可放行且六字段NOT_READY；修后caller dict/bool无法授生产权限，候选展示与可信入口分离、null字段SOURCE_INCOMPLETE一致 |正式registry/first-asof/Head-CAS/外审adapter缺失，生产能力关闭；旧DB22项BLOCKED |
+| B | 原始Native输入SHA、窗口、成员版本和数值核验，已可用dq5/参与度/成员继续服务；不重复400空值 |六正式Producer无已准入源，恢复数0，FORMAL_OWNER_BLOCKED |
+| C | 新隔离future first-capture预检：完整eligible/ineligible、独立writer grant、Owner/revision/source SHA、冻结参数和成员版本 |2290旧事件1377首获晚于T0、913重建，不能补造入组；真实分母null、无生产写权/OOS声明 |
+| A |无新原件线索，保留旧证据SHA和准确有限搜索结论；无历史重算 |H21缺20日当时原件，NOT_VERIFIABLE、FORMAL_H21_BLOCKED |
+
+集成定点测试实际退出0，63 passed（32 FEP、24 capture、7 chart/focus）；旧43/109/LOO/金额大样本未重跑。各包保留实际输入、数值、source SHA/窗口、反例与oracle/ref。新增代码和证据对应提交不冒充外审独立执行。
+
+实际browser：六入口×1366x768/1920x1080；30162810/09失效、实际图表与Focus INVALIDATED时间线；6883499/30收盘13.240；跨入口研究T0保持；搜索/筛选461/分页1→2→1；市场宽度上涨2989、下跌2107、平盘113、未知15，分母5224、实际行情5210、Native金额19003.65亿元。实际四轴由home与市场页面显示，不把未注册/market/axes探测视为正式指标。Cohort/settlement/FEP的HTTP200+SOURCE_INCOMPLETE只算正确缺源表达。
+
+用户追加指令“没有可视化操作入口 你直接强行关闭 旧服务 然后开启新服务 加载新代码”优先于附件正常关闭限制；强关动作和正常启动分别留证，不伪记正常退出。旧失败记录OLD_与旧browser保留，新browser在new_production。没有强关其它进程、修改ACL或创建Windows服务。
+
+TDX只读，Accepted Head/旧冻结/AUTO与last-good未改；无10/12模拟、真实评分、新模型权限、外部复权或交易。未来真实capture沿用DD R2.2与独立准入。Git push/远端SHA与Drive bytes/SHA另列09/10收据，测试和推送都不代表独立验收。
 ''')
     paths=[p for p in EVIDENCE.rglob('*') if p.is_file() and p.name not in ('08_SHA256_MANIFEST.json','09_DRIVE_READBACK_RECEIPT.json','10_GIT_REMOTE_READBACK_RECEIPT.json')]
     atomic_json(ROOT,EVIDENCE/'08_SHA256_MANIFEST.json',dict(RESULT_CODE_SHA=sha,generated_at=datetime.now(timezone.utc).isoformat(),

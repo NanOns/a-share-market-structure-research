@@ -48,10 +48,10 @@ def main():
     atomic_json(ROOT, evidence / 'E_409_ROOT_CAUSE_AND_REPLAY.json', dict(
         contract_id='R4_POST_AUDIT_PRODUCTION_TOKEN_REPLAY_V1',
         captured_at=datetime.now(timezone.utc).isoformat(), context_first_response=context,
-        scope='ACTUAL_28765_OLD_PROCESS_READ_ONLY', records=records,
+        scope='ACTUAL_28765_READ_ONLY', runtime_bff_contract=body['context'].get('bff_contract_id'), records=records,
         root_cause='EXPLICIT_EMPTY_OR_STALE_TOKEN_REJECTED; exact current token replay recorded per route; previous request URLs were not retained, so original caller token cannot be proven'))
     atomic_json(ROOT, evidence / 'E_LIVE_28765_API_FIELD_SAMPLES.json', dict(
-        scope='ACTUAL_28765_OLD_PROCESS_NOT_NEW_CODE', context=body,
+        scope='ACTUAL_28765_READ_ONLY', runtime_bff_contract=body['context'].get('bff_contract_id'), context=body,
         records=[dict(route=r['route'], url=r['url'], http_status=r['http_status'],
                       payload=json.loads(r['response_body']))
                  for r in records if r['token_mode'] == 'exact_current']))

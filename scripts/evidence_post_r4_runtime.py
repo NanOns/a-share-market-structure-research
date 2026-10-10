@@ -33,12 +33,27 @@ def main():
     new.append(dict(route='stocks historical 688349', code=code, payload=old))
     atomic_json(ROOT, evidence / 'E_NEW_CODE_READBACK_SEPARATE_FROM_PROD.json', dict(
         scope='IN_PROCESS_NEW_CODE_READ_ONLY_NOT_28765_OR_DOM', records=new))
+    attestation_path=ROOT/'runtime/r4_product_loaded_modules.json'
+    attestation=json.loads(attestation_path.read_bytes()) if attestation_path.is_file() else None
+    active_pid=attestation['pid'] if attestation else 41528
     ps = ['powershell', '-NoProfile', '-Command',
-          "Get-CimInstance Win32_Process -Filter 'ProcessId = 41528' | Select-Object ProcessId,ParentProcessId,ExecutablePath,CommandLine | ConvertTo-Json -Compress"]
+          f"Get-CimInstance Win32_Process -Filter 'ProcessId = {active_pid}' | Select-Object ProcessId,ParentProcessId,ExecutablePath,CommandLine | ConvertTo-Json -Compress"]
     process = json.loads(subprocess.check_output(ps, text=True))
     protected = {name:hashlib.sha256((ROOT/'data/v4'/name).read_bytes()).hexdigest()
                  for name in ('V4_OPERATIONAL_RESEARCH_HEAD.json','V4_DATA_ACCEPTED_HEAD.json')}
-    atomic_json(ROOT, evidence / 'E_NORMAL_CLOSE_AND_NEW_PID_RECEIPT.json', dict(
+    if attestation and process:
+        atomic_json(ROOT, evidence / 'E_NORMAL_CLOSE_AND_NEW_PID_RECEIPT.json', dict(
+            captured_at=datetime.now(timezone.utc).isoformat(),old_pid=41528,new_pid=active_pid,
+            status='USER_AUTHORIZED_FORCED_CLOSE_AND_ATTESTED_START',
+            shutdown_method='Stop-Process -Id 41528 -Force after exact PID/port/command verification',
+            permission_source='Direct user follow-up: 没有可视化操作入口 你直接强行关闭 旧服务 然后开启新服务 加载新代码',
+            overrides_document_normal_close_only=True, normal_close=False,
+            initial_normal_start_refusal='PORT_OCCUPIED exit1; retained prior blocker receipt',
+            process=process,production_port=28765,attestation=attestation,
+            current_runtime_contract=context['context'].get('bff_contract_id'),
+            protected_heads=protected,loaded_module_bytes='STARTUP_IMPORTED_MODULE_PATH_SOURCE_SHA_AND_FUNCTION_BYTECODE_ATTESTED'))
+    else:
+        atomic_json(ROOT, evidence / 'E_NORMAL_CLOSE_AND_NEW_PID_RECEIPT.json', dict(
         captured_at=datetime.now(timezone.utc).isoformat(), old_process=process,
         old_process_main_window_handle=0, production_port=28765, new_pid=None,
         status='NORMAL_CLOSE_BLOCKER', startup_attempt_exit_code=1,

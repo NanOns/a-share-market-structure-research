@@ -1,0 +1,156 @@
+{
+  "contract_id": "SECTOR_D2_EXTRACTION_ENTRY_PROPOSAL_R3_V1",
+  "status": "PROPOSAL_NOT_ACCEPTED",
+  "existing_contracts": [
+    {
+      "path": "config/v4_08_b2_machine_ast_r5.json",
+      "sha256": "838f167f0eb7ec3797240cc7488e8121901b7bb4f8d926d3cb4e378adc4b1155",
+      "bytes": 28799
+    },
+    {
+      "path": "config/v4_08_sector_native_contract_r5.json",
+      "sha256": "235df806e1671ab00e234f4d93834570c797314244c42753e2e58e1c60a21386",
+      "bytes": 3246
+    },
+    {
+      "path": "config/v4_10_input_provenance_r1_2.json",
+      "sha256": "e7e6cf40ffc7159d4777a01e21f475af08884146291cdb124f277e19be29ce93",
+      "bytes": 7099
+    },
+    {
+      "path": "config/v4_10_research_state_contract_r1_2.json",
+      "sha256": "33d50256635161f425f4f34ac805ea2f511362be7d71d35b3a62478de5a59127",
+      "bytes": 4926
+    }
+  ],
+  "producer_bindings": [
+    {
+      "path": "src/sector/legacy_b2_r5.py",
+      "sha256": "4f744a6ad2c754b20ea870665031ab2182819781b09ad22680394c2904699cd8",
+      "bytes": 7670,
+      "symbol": "evaluate_b2",
+      "start_line": 55,
+      "end_line": 103
+    },
+    {
+      "path": "src/v4/research_state.py",
+      "sha256": "58fde91734f5d1192a43174052c3c10ce6a41a65facce2076b9bf0798d0e5bfb",
+      "bytes": 13989,
+      "symbol": "reduce_state",
+      "start_line": 40,
+      "end_line": 207
+    }
+  ],
+  "admission_gaps": {
+    "CONFIRMED": {
+      "accepted_entity_types": [
+        "STOCK",
+        "SECTOR"
+      ],
+      "domain": "TRI",
+      "implemented": false,
+      "not_applicable_entity_types": [],
+      "producer_contract_id": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+      "producer_parameter_set_id": null,
+      "required": true,
+      "time_role": "T"
+    },
+    "WARM": {
+      "accepted_entity_types": [
+        "STOCK",
+        "SECTOR"
+      ],
+      "domain": "TRI",
+      "implemented": false,
+      "not_applicable_entity_types": [
+        "STOCK"
+      ],
+      "producer_contract_id": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+      "producer_parameter_set_id": null,
+      "required": true,
+      "time_role": "T"
+    },
+    "episode_invalidation_contract_id": {
+      "accepted_entity_types": [
+        "STOCK",
+        "SECTOR"
+      ],
+      "domain": "CONTRACT_ID",
+      "implemented": false,
+      "not_applicable_entity_types": [],
+      "producer_contract_id": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+      "producer_parameter_set_id": null,
+      "required": false,
+      "time_role": "T-1"
+    },
+    "followup_complete": {
+      "accepted_entity_types": [
+        "STOCK",
+        "SECTOR"
+      ],
+      "domain": "TRI",
+      "implemented": false,
+      "not_applicable_entity_types": [],
+      "producer_contract_id": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+      "producer_parameter_set_id": null,
+      "required": false,
+      "time_role": "T"
+    },
+    "frozen_invalidation": {
+      "accepted_entity_types": [
+        "STOCK",
+        "SECTOR"
+      ],
+      "domain": "TRI",
+      "implemented": false,
+      "not_applicable_entity_types": [],
+      "producer_contract_id": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+      "producer_parameter_set_id": null,
+      "required": true,
+      "time_role": "T-1"
+    },
+    "scenario": {
+      "accepted_entity_types": [
+        "STOCK",
+        "SECTOR"
+      ],
+      "domain": "SCENARIO",
+      "implemented": false,
+      "not_applicable_entity_types": [],
+      "producer_contract_id": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+      "producer_parameter_set_id": null,
+      "required": false,
+      "time_role": "T"
+    }
+  },
+  "required_changes": [
+    {
+      "field": "CONFIRMED",
+      "need": "Accepted exact legacy valid-member/normal-rank provenance; accept extraction entry independent of diagnostic result",
+      "current": "legacy_b2_r5.evaluate_b2 explicitly returns UNKNOWN"
+    },
+    {
+      "field": "WARM",
+      "need": "Accepted legacy SETUP/RECOVERY member facts, q20/dq5_3 exact rank universe and Amount A consumer gate where branch uses A",
+      "current": "warm_raw UNKNOWN; Base Seed not SETUP alias"
+    },
+    {
+      "field": "frozen_invalidation",
+      "need": "Creation-frozen episode invalidation contract, exact T-1 sector episode payload and target-period observation",
+      "current": "No accepted sector episode owner"
+    },
+    {
+      "field": "maturity/health",
+      "need": "Inputs above plus admitted sector dq5 and exact monotone calendar; reuse versioned reducer, no invented score",
+      "current": "Generic SECTOR reducer exists; live candidate entry STOCK only"
+    }
+  ],
+  "isolated_candidate": {
+    "path": "docs/evidence/v4_immediate_r3_20261010/09_CONTINUATION/SECTOR_D2_DATED_READINESS_CANDIDATE.json",
+    "sha256": "812afb5c0fc55b328499d87a156e85e7c2b90c17ab0228c6374c73ac36e535df",
+    "bytes": 1404039
+  },
+  "policy": "No renaming B0/Rotation to maturity; no changes to accepted provenance contract, Head or algorithm thresholds",
+  "next_stage": "Accept versioned extraction/entry contract and actual missing upstream bytes before eligible sector candidate reduction",
+  "production_authorized": false
+}

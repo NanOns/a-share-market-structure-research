@@ -1,0 +1,24 @@
+{
+  "archive": {
+    "path": "G:\\codex_tmp\\V4_IMMEDIATE_R3_REVIEW_20261010.zip",
+    "sha256": "db427851d466da59dcf5471d38bd129e0c6d9a985cf688428cfc97bc1fc01f61",
+    "bytes": 5696370
+  },
+  "runs": [
+    {
+      "script": "P0_ALG_FULL_RECURSION_ORACLE.py",
+      "exit_code": 0,
+      "stdout": "{\"checks\": 22452, \"errors\": 0, \"counts\": {\"D0_CLASSIFIER\": 6913, \"D0_RAW\": 7805, \"D2_RECURSION\": 2676, \"FIXTURE_ONLY\": 5, \"LOO\": 4800, \"NATIVE\": 175, \"ROTATION_BASKET\": 20, \"ROTATION_PULSE\": 2, \"ROTATION_RECURSION\": 56}}"
+    },
+    {
+      "script": "P0_AMOUNT_INDEPENDENT_ORACLE.py",
+      "exit_code": 0,
+      "stdout": "{\"counts\": {\"SOURCE_NOT_PRESENT\": 349, \"UNIT_OR_PRECISION\": 14292, \"EXACT_EQUAL\": 995, \"INSUFFICIENT_EVIDENCE\": 345}, \"compared\": 15632, \"different\": 14637}"
+    }
+  ],
+  "report": {
+    "path": "docs/evidence/v4_immediate_r3_20261010/00_EXECUTION_RESULT_R3.md",
+    "sha256": "9ee044a2c481e37e9215110975671b11034f7c6ac066a7c030cda30f0961057e",
+    "bytes": 1831
+  }
+}

@@ -48,44 +48,46 @@
       "stage": "PRE-00",
       "contract": "V4-IMMEDIATE-R3-20261010 PRE-00",
       "evidence": "STAGE_LEDGER.json",
-      "acceptance": "IN_PROGRESS",
+      "acceptance": "PASS_SCOPED",
       "next_stage": "P0-ALG"
     },
     {
       "stage": "P0-ALG",
       "contract": "V4-IMMEDIATE-R3-20261010 P0-ALG",
       "evidence": "02_P0_ALG",
-      "acceptance": "IN_PROGRESS",
+      "acceptance": "PASS_SCOPED_PARTIAL_OPEN_ENGINEERING",
       "next_stage": "P0-OWNER"
     },
     {
       "stage": "P0-OWNER",
       "contract": "V4-IMMEDIATE-R3-20261010 P0-OWNER",
       "evidence": "03_P0_OWNER",
-      "acceptance": "IN_PROGRESS",
+      "acceptance": "PASS_SCOPED_SOURCE_GAPS",
       "next_stage": "P0-AMOUNT"
     },
     {
       "stage": "P0-AMOUNT",
       "contract": "V4-IMMEDIATE-R3-20261010 P0-AMOUNT",
       "evidence": "04_P0_AMOUNT",
-      "acceptance": "IN_PROGRESS",
+      "acceptance": "AMOUNT_A_OPEN_PRECISE_BLOCKER",
       "next_stage": "P1-COHORT"
     },
     {
       "stage": "P1-COHORT",
       "contract": "V4-IMMEDIATE-R3-20261010 P1-COHORT",
       "evidence": "05_P1_COHORT",
-      "acceptance": "IN_PROGRESS",
+      "acceptance": "COHORT_ENGINEERING_PASS_SCOPED_NO_ASOF_OWNER",
       "next_stage": "P1-PRODUCT-QA"
     },
     {
       "stage": "P1-PRODUCT-QA",
       "contract": "V4-IMMEDIATE-R3-20261010 P1-PRODUCT-QA",
       "evidence": "06_P1_PRODUCT_QA",
-      "acceptance": "IN_PROGRESS",
+      "acceptance": "UI_CURRENT_SNAPSHOT_PASS_SCOPED",
       "next_stage": "GIT/DRIVE"
     }
   ],
-  "external_acceptance": "NOT_GRANTED"
+  "external_acceptance": "NOT_GRANTED",
+  "finished_at": "2026-10-10T02:14:57.791764+00:00",
+  "current_engineering_complete": false
 }

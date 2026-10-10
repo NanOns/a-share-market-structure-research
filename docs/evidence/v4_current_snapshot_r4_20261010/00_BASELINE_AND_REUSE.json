@@ -1,0 +1,94 @@
+{
+  "contract": "V4-R4-CURRENT-SNAPSHOT-FORMAL-GATES-20261010",
+  "BASE_SHA": "6b6d5cbd2b115335918aeeafcec9ae5a46f9eb99",
+  "remote_SHA": "6b6d5cbd2b115335918aeeafcec9ae5a46f9eb99",
+  "initial_status": "?? docs/evidence/v4_current_snapshot_r4_20261010/\n",
+  "protected": [
+    {
+      "path": "G:\\codex work\\大A交易\\data\\v4\\V4_OPERATIONAL_RESEARCH_HEAD.json",
+      "sha256": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "bytes": 29799,
+      "accepted_trade_date": "2026-10-09",
+      "content_identity": null
+    },
+    {
+      "path": "G:\\codex work\\大A交易\\data\\v4\\V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "bytes": 16890,
+      "accepted_trade_date": "2026-09-30",
+      "content_identity": null
+    }
+  ],
+  "reuse": [
+    {
+      "path": "docs\\evidence\\v4_immediate_r3_20261010\\10_DRIVE_READBACK_RECEIPT.json",
+      "sha256": "d068c85394cb07ed625300513dd44c097e249aebac2015bf1fec8c32f12ba9cd",
+      "verdict": "PASS_KEEP_SCOPED_NOT_EXTERNAL_ACCEPTANCE"
+    },
+    {
+      "path": "docs\\evidence\\v4_immediate_r3_20261010\\DRIVE_DELIVERY_RECEIPT.json",
+      "sha256": "4e15b3d194039ebcb9928b9e535e0e68184c3fd660cb9fd5cc963c6909de606f",
+      "verdict": "PASS_KEEP_SCOPED_NOT_EXTERNAL_ACCEPTANCE"
+    },
+    {
+      "path": "docs\\evidence\\v4_immediate_r3_20261010\\OFFLINE_REVIEW_RECEIPT.json",
+      "sha256": "61f22315724addbbf0516e73c2a0a96d3643f19fb8116d58d4b124f490aa36ed",
+      "verdict": "PASS_KEEP_SCOPED_NOT_EXTERNAL_ACCEPTANCE"
+    },
+    {
+      "path": "docs\\evidence\\v4_immediate_r3_20261010\\09_CONTINUATION\\CONTINUATION_ACCEPTANCE.json",
+      "sha256": "5a9647e8f63d509d77ce9fde82eae6117d75da363b53e9eeccde7e37a43a7a7c",
+      "verdict": "PASS_KEEP_SCOPED_NOT_EXTERNAL_ACCEPTANCE"
+    },
+    {
+      "path": "docs\\evidence\\v4_immediate_r3_20261010\\09_CONTINUATION\\DRIVE_RECEIPT.json",
+      "sha256": "ed1a5c0ca4514b35888e744ffe750acff25e90ab19b9037ef7358bdf74531857",
+      "verdict": "PASS_KEEP_SCOPED_NOT_EXTERNAL_ACCEPTANCE"
+    },
+    {
+      "path": "docs\\evidence\\v4_immediate_r3_20261010\\11_DEEPENING\\STAGE_COMPLETION.json",
+      "sha256": "91de8de434c56e93dfcb43293fcf35f9338af13135ae6539757908cb44763f76",
+      "verdict": "PASS_KEEP_SCOPED_NOT_EXTERNAL_ACCEPTANCE"
+    }
+  ],
+  "parallel_domains": [
+    "A_AMOUNT",
+    "B_SECTOR",
+    "C_COHORT",
+    "D_FEP",
+    "E_RUNTIME"
+  ],
+  "release_prohibitions": [
+    "NO_HEAD_MUTATION",
+    "NO_CAPABILITY_ACTIVATION",
+    "NO_FEP_PREDICTION",
+    "NO_PIT_BACKFILL",
+    "NO_FORCE_KILL"
+  ],
+  "membership": {
+    "version": "TDX_LATEST_MEMBER_RETRO_V1",
+    "first_observed": "2026-10-09T09:44:00+08:00",
+    "AS_RECORDED": false,
+    "PIT_ELIGIBLE": false
+  },
+  "initial_status_capture_scope": "Captured after own evidence directory was created; earlier git status was clean",
+  "initial_user_status": "",
+  "actual_membership_first_observed": "2026-10-09T09:44:01.158745+08:00",
+  "contract_bindings": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "195118b4577015ac951d20be781dc14903e6d6dde054ea5b2f0f77d6c03706af",
+      "bytes": 1831
+    },
+    {
+      "path": "docs\\evidence\\A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV2_20260925.md",
+      "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+      "bytes": 181127
+    },
+    {
+      "path": "docs\\evidence\\A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205",
+      "bytes": 224998
+    }
+  ]
+}

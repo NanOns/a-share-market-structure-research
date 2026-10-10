@@ -1,0 +1,29 @@
+{
+  "contract": "V4-CORE-ALGO-UI-AUDIT-R1",
+  "BASE_SHA": "64a0e31390765027f96b6a537bbf7f044abf6c83",
+  "T0": "2026-10-09",
+  "head_sha": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+  "external_acceptance": "NOT_GRANTED",
+  "stages": [
+    {
+      "stage": "ALG-01/02 Round A",
+      "contract": "TASK_CONTRACT_R1.md sections 2/3; REV2 62A-69; FP14 contract; R43 R2 gap matrix",
+      "evidence": [
+        "oracle/INPUT.json",
+        "oracle/OUTPUT.json",
+        "CORE_ALGO_UI_NUMERIC_MINIPACK.zip"
+      ],
+      "acceptance": "ALGORITHM_SCOPED_PASS_807_CHECKS; COMPREHENSIVE_MATRIX_IN_PROGRESS",
+      "next_stage": "BFF-03/UI-04 Round B targeted real-owner repair"
+    },
+    {
+      "stage": "BFF-03/UI-04 Round B",
+      "contract": "TASK_CONTRACT_R1.md sections 4/5",
+      "evidence": [
+        "API_FIELD_CONTRACT_AUDIT.json"
+      ],
+      "acceptance": "IN_PROGRESS",
+      "next_stage": "P1 domain inventory then dual-viewport IAB QA"
+    }
+  ]
+}

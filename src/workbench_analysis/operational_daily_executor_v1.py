@@ -199,6 +199,8 @@ def verify_source_gate(root,day,artifact,result,now=None):
     bycode={r['source_security_key'].upper():r for r in native}
     codes=[r['code'].upper() for r in daily]
     reconciled=bool(codes) and len(codes)==len(set(codes)) and len(bycode)==len(native)
+    active_codes={r['code'].upper() for r in daily if r.get('tradestatus')=='1'}
+    if set(bycode)!=active_codes:reconciled=False
     for row in daily:
         bar=bycode.get(row['code'].upper())
         if row['date']!=day or row['tradestatus'] not in {'0','1'}:reconciled=False
@@ -242,7 +244,14 @@ def verify_source_gate(root,day,artifact,result,now=None):
         identity=json.loads(checked(root,life['identity']).read_bytes())['rows']
         expected_codes={r['source_security_key'].upper() for r in identity if r.get('board_scope') in {'SH_MAIN','SZ_MAIN','CHINEXT','STAR'} and date_valid_identity(r,day)}
         actual_codes={code for code in codes if code.startswith(('SH.','SZ.'))}
-        if actual_codes!=expected_codes:sources['baostock_daily']['status']='UNVERIFIED'
+        # Provider validation and the protected old identity gate are separate.
+        # A new roster never obtains authority merely by matching native bars.
+        scope_matches=actual_codes==expected_codes
+        sources['dated_identity_authority']=dict(
+            contract_id='DATED_IDENTITY_GATE_REASON_R2',target_session=day,
+            status='PREVIOUS_HEAD_IDENTITY_SCOPE_MATCH' if scope_matches else 'WAIT_DATED_IDENTITY_AUTHORITY',
+            scope_matches=scope_matches,expected_codes=sorted(expected_codes),actual_codes=sorted(actual_codes),
+            new_identity_admitted=False,provider_status='NATIVE_PROVIDERS_RECONCILED' if reconciled else 'NATIVE_PROVIDER_RECONCILIATION_FAILED')
         gbbq=Path('D:/new_tdx/T0002/hq_cache/gbbq')
         before=gbbq.stat();gbbq_sha=tdx.sha256_file(gbbq);after=gbbq.stat()
         if (before.st_size,before.st_mtime_ns)!=(after.st_size,after.st_mtime_ns):raise ValueError('GBBQ_CHANGED_DURING_READINESS')
@@ -265,6 +274,10 @@ def verify_source_gate(root,day,artifact,result,now=None):
         sources['baostock_daily']['dependency_bindings']=dependencies
     readiness=source_readiness(day,now or datetime.now(timezone.utc),sources)
     readiness.update(source_freeze=result['source_freeze'],dependency_bindings=dependencies,AS_RECORDED=False,PIT_ELIGIBLE=False)
+    readiness['native_provider_facts']=dict(
+        status='NATIVE_PROVIDERS_RECONCILED' if reconciled else 'NATIVE_PROVIDER_RECONCILIATION_FAILED',
+        original_baostock=artifact['native_baostock'],original_tdx=bars['artifact'],
+        target_session=day,native_codes=sorted(bycode),baostock_codes=sorted(set(codes)))
     if identity_preflight:readiness['old_head_identity_preflight']=identity_preflight
     revision=readiness.get('source_revision_id') or tdx.sha256_bytes(tdx._json_bytes(readiness))
     ready_path=snapshot/'source_readiness'/day/(revision+'.json')

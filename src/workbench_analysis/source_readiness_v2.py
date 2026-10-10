@@ -52,6 +52,13 @@ def source_readiness(trade_date, now, evidence=None, main_check='18:35',
             return dict(result, status=wait, reason='DAILY_COVERAGE_RECONCILIATION_REQUIRED')
         if source == 'baostock_factor' and proof.get('row_count', 0) == 0 and not proof.get('verified_no_change'):
             return dict(result, status=wait, reason='EMPTY_FACTOR_PROOF_REQUIRED')
+    authority=evidence.get('dated_identity_authority')
+    if authority is not None and (authority.get('target_session') != trade_date or
+            authority.get('status') != 'PREVIOUS_HEAD_IDENTITY_SCOPE_MATCH' or
+            authority.get('scope_matches') is not True):
+        return dict(result,status='WAIT_DATED_IDENTITY_AUTHORITY',
+            reason='NEW_DATED_IDENTITY_SOURCE_NOT_INDEPENDENTLY_ADMITTED',
+            source='dated_identity_authority',identity_reason_contract_id='DATED_IDENTITY_GATE_REASON_R2')
     identity={name:{k:v for k,v in proof.items() if k not in {'verified_at'}} for name,proof in evidence.items()}
     revision=hashlib.sha256(json.dumps(identity,sort_keys=True,separators=(',',':')).encode()).hexdigest()
     return dict(result, status='SOURCE_READY', source_ready=True,sources=evidence,source_revision_id=revision)

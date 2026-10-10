@@ -82,7 +82,8 @@ def observe(root, *, episode_binding=None, facts=None, trade_date, calendar_bind
     """Missing episode and missing due settlement remain explicit."""
     if episode_binding is None:
         return dict(status='NO_PRIOR_EPISODE', frozen_invalidation=None,
-                    followup_complete=None, formal_D2='NOT_GRANTED')
+                    followup_complete=None, followup_status='NO_PRIOR_EPISODE',
+                    next_due_date=None, unknown_due_reasons=[], formal_D2='NOT_GRANTED')
     episode = json.loads(exact(root, episode_binding))
     calendar = json.loads(exact(root, calendar_binding))
     if episode.get('contract_id') != CONTRACT or episode['sources']['calendar'] != calendar_binding:
@@ -102,5 +103,14 @@ def observe(root, *, episode_binding=None, facts=None, trade_date, calendar_bind
     invalid = evaluate_invalidation(root, episode_binding, facts or {}, trade_date=trade_date, sessions=sessions)
     outcomes = followup(episode, trade_date=trade_date, sessions=sessions, settlement=settlement, root=root)
     complete = 'TRUE' if all(item['status'] == 'COMPLETE' for item in outcomes.values()) else 'UNKNOWN'
+    reasons = [dict(horizon=key, due_date=item['due_date'],
+                    reason='CALENDAR_HORIZON_UNAVAILABLE' if item['due_date'] is None else 'DUE_SETTLEMENT_SOURCE_MISSING_OR_WRONG_EPISODE')
+               for key, item in outcomes.items()
+               if item['status'] == 'UNKNOWN' or item['due_date'] is None]
+    status = ('UNKNOWN' if reasons else 'COMPLETE' if complete == 'TRUE' else 'PENDING')
+    next_dates = [item['due_date'] for item in outcomes.values()
+                  if item['status'] == 'PENDING' and item['due_date'] is not None]
     return dict(status='EPISODE_CANDIDATE', evidence_class=episode['evidence_class'], frozen_invalidation=invalid,
-                followup=outcomes, followup_complete=complete, formal_D2='NOT_GRANTED', production=False)
+                followup=outcomes, followup_complete=complete, followup_status=status,
+                next_due_date=min(next_dates) if next_dates else None,
+                unknown_due_reasons=reasons, formal_D2='NOT_GRANTED', production=False)

@@ -400,3 +400,15 @@ tests/test_next_t0_old_identity_preflight.py -text whitespace=cr-at-eol
 tests/test_next_stage_c_episode_genesis.py -text whitespace=cr-at-eol
 tools/next_stage_c_oracle.py -text whitespace=cr-at-eol
 scripts/audit_state_bridge_a_v1.py -text whitespace=cr-at-eol
+docs/evidence/identity_admission_repair_r1_20261010/** -text -whitespace
+src/workbench_analysis/dated_identity_candidate_v1.py -text
+src/workbench_analysis/trusted_source_review_v1.py -text
+src/workbench_analysis/state_trusted_review_candidate_v1.py -text
+src/workbench_analysis/source_readiness_v2.py -text
+tests/test_dated_identity_candidate_v1.py -text
+tests/test_identity_gate_reason_r2.py -text
+tests/test_state_trusted_review_candidate_v1.py -text
+tests/test_followup_semantics_r2.py -text
+scripts/record_identity_admission_repair_contract_r1.py -text
+scripts/record_identity_admission_repair_evidence_r1.py -text
+scripts/finalize_identity_admission_repair_r1.py -text

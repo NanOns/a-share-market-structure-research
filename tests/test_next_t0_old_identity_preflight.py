@@ -43,7 +43,9 @@ def test_real_gate_preserves_bytes_and_explains_old_scope(chain, monkeypatch, ad
     assert report['added_observed_codes']==(['SZ.000002'] if added else [])
     assert ready['source_ready'] is (not added)
     if added:
-        assert ready['status']=='WAIT_BAOSTOCK_DAILY'
+        assert ready['status']=='WAIT_DATED_IDENTITY_AUTHORITY'
+        assert ready['sources']['baostock_daily']['status']=='VERIFIED'
+        assert ready['native_provider_facts']['status']=='NATIVE_PROVIDERS_RECONCILED'
         assert report['diagnosis']=='PREVIOUS_HEAD_IDENTITY_SCOPE_MISMATCH'
         assert report['provider_availability']=='NATIVE_BYTES_CAPTURED_RECONCILED'
     assert head_path.read_bytes()==before

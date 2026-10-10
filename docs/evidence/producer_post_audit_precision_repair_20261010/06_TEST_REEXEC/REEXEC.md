@@ -1,0 +1,1 @@
+最终运行114个非重复pytest节点，命令范围为七个test_producer/test_cross_day/test_candidate/test_full_state定点文件。final.xml为最终结果；早期junit/retry仅过程证据，不累计测试数。pytest -B -p no:cacheprovider --basetemp G:/codex_tmp/test_temp/precision_final。所有场景是工程反例，不是正式历史样本。

@@ -18,7 +18,8 @@ def instant(value):
 
 def capture(root, *, trade_date, sessions, calendar_binding, sources,
             security_ids, sector_ids, model_binding, config_binding,
-            namespace='data/v4/source_candidates', research_replay=False):
+            namespace='data/v4/source_candidates', research_replay=False,
+            preliminary_scope=None):
     """Read sources now, retaining their actual request/receive times.
 
     No injected production clock, no grant prerequisite, no accepted Head write.
@@ -95,6 +96,10 @@ def capture(root, *, trade_date, sessions, calendar_binding, sources,
     identity = dict(format_version=2,T0=trade_date, sources=observations, security_ids=sorted(security_ids),
                     sector_ids=sorted(sector_ids), calendar=calendar_binding,
                     model=model_binding, config=config_binding, research_replay=research_replay)
+    if preliminary_scope is not None:
+        identity.update(scope_class='PRELIMINARY_PREVIOUS_HEAD_SCOPE',
+                        scope_status='PROVISIONAL_SCOPE', preliminary_scope=preliminary_scope,
+                        capture_status='SOURCE_BYTES_CAPTURED')
     slot = digest(dict(identity, sources=[dict(name=r['name'],sha256=r['original_bytes']['sha256'],
         trade_date=r['trade_date'],observation_class=r['observation_class']) for r in observations]))
     path = f'{namespace}/{trade_date}/{slot}/capture.json'

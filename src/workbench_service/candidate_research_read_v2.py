@@ -2,8 +2,45 @@
 import json
 from pathlib import Path
 from workbench_analysis.r43_owner_replay import checked
+from workbench_analysis.r43_operational_publication import digest
 
 CONTRACT='OPERATIONAL_CANDIDATE_DISPLAY_READ_V2'
+
+
+def accepted_candidate_head(root, current, token, binding, day):
+    """Resolve only a hash-linked predecessor of the authenticated active reader.
+
+    An archive's existence is not acceptance. Its bytes must also be linked by
+    the current accepted release, whose token and fixed pointer still agree.
+    """
+    pointer=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+    if digest(current)!=token or not pointer.is_file() or json.loads(pointer.read_bytes())!=current:
+        raise ValueError('OLD_TOKEN')
+    cutoff=current.get('accepted_trade_date')
+    if not cutoff or day>cutoff:raise ValueError('FUTURE_DATE')
+    candidate=current;seen=set()
+    for _ in range(4096):
+        identity=digest(candidate)
+        if identity in seen:raise ValueError('UNACCEPTED_HEAD')
+        seen.add(identity)
+        if identity==binding['sha256']:
+            if json.loads(checked(root,binding).read_bytes())!=candidate:
+                raise ValueError('MUTATED_ARCHIVE')
+            if day not in candidate.get('published_sessions',candidate.get('dates',[])) or day not in candidate.get('owners',{}):
+                raise ValueError('WRONG_SESSION')
+            return candidate
+        predecessor=candidate.get('predecessor')
+        if not predecessor:break
+        # CAS preserves each predecessor at this fixed content-addressed path.
+        archive=root/'data/v4/predecessors'/(predecessor['sha256']+'.json')
+        try:
+            raw=checked(root,predecessor).read_bytes()
+            archived=checked(root,dict(path=archive.relative_to(root).as_posix(),sha256=predecessor['sha256'])).read_bytes()
+            if raw!=archived:raise ValueError('MUTATED_ARCHIVE')
+            candidate=json.loads(archived)
+        except (OSError,ValueError,KeyError,TypeError) as exc:
+            raise ValueError('MUTATED_ARCHIVE') from exc
+    raise ValueError('UNACCEPTED_HEAD')
 
 
 def read_candidates(root, *, head, token, day, sector_id=None):
@@ -12,14 +49,18 @@ def read_candidates(root, *, head, token, day, sector_id=None):
         formal_consumer_enabled=False,observed_count=None,matured_count=None,
         cohort_enrollment_enabled=False,trade_date=day)
     try:
+        pointer=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+        if digest(head)!=token or not pointer.is_file() or json.loads(pointer.read_bytes())!=head:
+            raise ValueError('OLD_TOKEN')
+        if not head.get('accepted_trade_date') or day>head['accepted_trade_date']:
+            raise ValueError('FUTURE_DATE')
         index_path=root/'data/v4/producer_candidate_index_v2.json'
         if not index_path.exists():return dict(result,reason='CANDIDATE_INDEX_NOT_CREATED')
         index=json.loads(index_path.read_bytes());entry=index.get('sessions',{}).get(day)
-        if not entry:return dict(result,reason='DATE_HAS_NO_CANDIDATE')
+        if not entry:return dict(result,reason='HISTORICAL_CANDIDATE_SOURCE_NOT_CAPTURED')
         if index.get('contract_id')!='PRODUCER_CANDIDATE_INDEX_V2' or entry.get('production') is not False:
             raise ValueError('CANDIDATE_INDEX_SCOPE_REQUIRED')
-        if entry['head']['sha256']!=token:raise ValueError('CANDIDATE_HEAD_MISMATCH')
-        checked(root,entry['head'])
+        head=accepted_candidate_head(root,head,token,entry['head'],day)
         if sector_id is not None:
             binding=entry['sector'];document=json.loads(checked(root,binding).read_bytes())
             if document['T0']!=day or document['production'] is not False:raise ValueError('RESEARCH_SCOPE_REQUIRED')

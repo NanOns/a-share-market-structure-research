@@ -1,0 +1,1 @@
+新增接口和freeze/extract/prepare_capture端到端结果见最终JUnit与test_full_state_first_observed_v1.py；权威真实源和独立Owner/Writer grant仍缺，正式BLOCKED。

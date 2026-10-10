@@ -1,0 +1,1 @@
+调用链及重试/新增/移除/更名/停牌/变更源/中断实际结果见06最终JUnit与test_cross_day_capture_repair_v1.py；synthetic不同Head，未当作未来实日。

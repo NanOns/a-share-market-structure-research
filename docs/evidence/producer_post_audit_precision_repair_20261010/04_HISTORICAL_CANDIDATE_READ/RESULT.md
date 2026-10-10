@@ -1,0 +1,1 @@
+两个合法不同SHA synthetic接受Head回放及五种负例见最终JUnit与test_candidate_historical_read_precision.py。实际跨日API/浏览器未验收，不能上线。

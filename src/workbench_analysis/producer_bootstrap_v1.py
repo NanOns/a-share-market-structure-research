@@ -36,7 +36,10 @@ def capture_daily_sources(root, day, freeze_binding, *, research_replay=False):
         calendar_binding=ref(root, calendar), sources=sources,
         security_ids=life['active_security_ids'], sector_ids=sorted({r['sector_id'] for r in members}),
         model_binding=ref(root, root/'src/workbench_analysis/r43_focus_replay.py'),
-        config_binding=ref(root, root/'config/research_attention_v3.yaml'), research_replay=research_replay)
+        config_binding=ref(root, root/'config/research_attention_v3.yaml'), research_replay=research_replay,
+        preliminary_scope=dict(head=ref(root,root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'),
+            accepted_trade_date=head['accepted_trade_date'], lifecycle=head['owners'][head['accepted_trade_date']]['lifecycle'],
+            membership_snapshot=head['membership_snapshot']))
 
 
 def produce_daily_state(root, day, candidate_binding):
@@ -63,7 +66,7 @@ def produce_daily_state(root, day, candidate_binding):
 
 def build_review_and_display_candidates(root,day,candidate_binding,capture_result,*,research_replay=False):
     """Finish the isolated chain, publish a display index without changing Head."""
-    from sector.operational_candidate_v2 import build as build_sector
+    from sector.operational_candidate_v3 import build as build_sector
     from .strict_source_candidate_v2 import freeze_for_review
     from .operational_daily_storage_v1 import atomic_json
     root=Path(root)

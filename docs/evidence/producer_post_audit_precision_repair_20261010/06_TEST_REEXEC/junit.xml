@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="12" failures="1" skipped="0" tests="114" time="10.172" timestamp="2026-10-10T16:50:48.476179+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_producer_precision_qualification" name="test_original_python_pandas_and_v3_pair[SH.688349-BAR-ACTUAL_TRADED-True-True]" time="0.011" /><testcase classname="tests.test_producer_precision_qualification" name="test_original_python_pandas_and_v3_pair[SZ.001235-SUSPENDED-SUSPENDED-True-True]" time="0.006" /><testcase classname="tests.test_producer_precision_qualification" name="test_original_python_pandas_and_v3_pair[BJ.920229-NOT_LISTED_YET-NOT_LISTED_YET-True-False]" time="0.007" /><testcase classname="tests.test_producer_precision_qualification" name="test_original_python_pandas_and_v3_pair[SH.600000-DELISTED_OR_INACTIVE-DELISTED_OR_INACTIVE-False-False]" time="0.005" /><testcase classname="tests.test_producer_precision_qualification" name="test_original_python_pandas_and_v3_pair[SH.600001-FILE_MISSING-ACTUAL_TRADED-False-True]" time="0.005" /><testcase classname="tests.test_producer_precision_qualification" name="test_original_python_pandas_and_v3_pair[SH.600002-None-ACTUAL_TRADED-False-True]" time="0.005" /><testcase classname="tests.test_producer_precision_qualification" name="test_original_python_pandas_and_v3_pair[SH.600003-RENAMED-ACTUAL_TRADED-True-True]" time="0.005" /><testcase classname="tests.test_producer_precision_qualification" name="test_original_python_pandas_and_v3_pair[SH.600004-BOUNDARY_UNKNOWN-BOUNDARY_UNKNOWN-True-None]" time="0.005" /><testcase classname="tests.test_producer_precision_qualification" name="test_original_python_pandas_and_v3_pair[688349-BAR-ACTUAL_TRADED-False-False]" time="0.005" /><testcase classname="tests.test_producer_precision_qualification" name="test_original_python_pandas_and_v3_pair[SH.68834-BAR-ACTUAL_TRADED-False-False]" time="0.005" /><testcase classname="tests.test_producer_precision_qualification" name="test_original_python_pandas_and_v3_pair[SH\\\\688349-BAR-ACTUAL_TRADED-False-False]" time="0.005" /><testcase classname="tests.test_producer_precision_qualification" name="test_four_current_source_patterns_match[SH.688349]" time="0.007" /><testcase classname="tests.test_producer_precision_qualification" name="test_four_current_source_patterns_match[SZ.001235]" time="0.007" /><testcase classname="tests.test_producer_precision_qualification" name="test_four_current_source_patterns_match[BJ.920229]" time="0.007" /><testcase classname="tests.test_producer_precision_qualification" name="test_absent_evidence_is_unknown[missing_state]" time="0.001" /><testcase classname="tests.test_producer_precision_qualification" name="test_absent_evidence_is_unknown[source_security_key]" time="0.001" /><testcase classname="tests.test_producer_precision_qualification" name="test_market_scope_sector_scope_and_date_are_separate" time="0.001" /><testcase classname="tests.test_cross_day_capture_repair_v1" name="test_real_capture_and_strict_calls_reconcile_changed_universe" time="0.011"><error message="failed on setup with &quot;ValueError: REPLAY_PATH_ESCAPE&quot;">tmp_path = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_real_capture_and_strict_c0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A20C5AF2A0&gt;
+
+    @pytest.fixture
+    def chain(tmp_path, monkeypatch):
+        day = datetime.now(timezone.utc).astimezone(timezone(timedelta(hours=8))).date().isoformat()
+        previous = (datetime.fromisoformat(day)-timedelta(days=1)).date().isoformat()
+        def doc(name, value): return publish(tmp_path, 'inputs/'+name+'.json', value)
+        def rows(name, value):
+            p=tmp_path/'inputs'/ (name+'.gz');p.parent.mkdir(parents=True,exist_ok=True)
+            p.write_bytes(gzip.compress('\n'.join(json.dumps(r) for r in value).encode()))
+            return ref(tmp_path,p)
+        now=datetime.now(timezone.utc).isoformat()
+        member=tmp_path/'inputs/current_members';member.parent.mkdir(parents=True,exist_ok=True)
+        member.write_bytes(b'new day actual member bytes')
+&gt;       mb=ref(tmp_path,member)
+           ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_cross_day_capture_repair_v1.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_14_replay_io.py:15: in ref
+    root,p=path_in(root,path)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_real_capture_and_strict_c0')
+path = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_real_capture_and_strict_c0/inputs/current_members')
+
+    def path_in(root,path):
+        root=Path(root).resolve();relative=Path(path)
+&gt;       if relative.is_absolute() or '..' in relative.parts:raise ValueError('REPLAY_PATH_ESCAPE')
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: REPLAY_PATH_ESCAPE
+
+src\workbench_analysis\v4_14_replay_io.py:6: ValueError</error></testcase><testcase classname="tests.test_cross_day_capture_repair_v1" name="test_changes_gaps_and_nonblocking[member_after_capture]" time="0.004"><error message="failed on setup with &quot;ValueError: REPLAY_PATH_ESCAPE&quot;">tmp_path = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_changes_gaps_and_nonblock0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A20C83EC80&gt;
+
+    @pytest.fixture
+    def chain(tmp_path, monkeypatch):
+        day = datetime.now(timezone.utc).astimezone(timezone(timedelta(hours=8))).date().isoformat()
+        previous = (datetime.fromisoformat(day)-timedelta(days=1)).date().isoformat()
+        def doc(name, value): return publish(tmp_path, 'inputs/'+name+'.json', value)
+        def rows(name, value):
+            p=tmp_path/'inputs'/ (name+'.gz');p.parent.mkdir(parents=True,exist_ok=True)
+            p.write_bytes(gzip.compress('\n'.join(json.dumps(r) for r in value).encode()))
+            return ref(tmp_path,p)
+        now=datetime.now(timezone.utc).isoformat()
+        member=tmp_path/'inputs/current_members';member.parent.mkdir(parents=True,exist_ok=True)
+        member.write_bytes(b'new day actual member bytes')
+&gt;       mb=ref(tmp_path,member)
+           ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_cross_day_capture_repair_v1.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_14_replay_io.py:15: in ref
+    root,p=path_in(root,path)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_changes_gaps_and_nonblock0')
+path = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_changes_gaps_and_nonblock0/inputs/current_members')
+
+    def path_in(root,path):
+        root=Path(root).resolve();relative=Path(path)
+&gt;       if relative.is_absolute() or '..' in relative.parts:raise ValueError('REPLAY_PATH_ESCAPE')
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: REPLAY_PATH_ESCAPE
+
+src\workbench_analysis\v4_14_replay_io.py:6: ValueError</error></testcase><testcase classname="tests.test_cross_day_capture_repair_v1" name="test_changes_gaps_and_nonblocking[missing_new_security]" time="0.003"><error message="failed on setup with &quot;ValueError: REPLAY_PATH_ESCAPE&quot;">tmp_path = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_changes_gaps_and_nonblock1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A20C83F700&gt;
+
+    @pytest.fixture
+    def chain(tmp_path, monkeypatch):
+        day = datetime.now(timezone.utc).astimezone(timezone(timedelta(hours=8))).date().isoformat()
+        previous = (datetime.fromisoformat(day)-timedelta(days=1)).date().isoformat()
+        def doc(name, value): return publish(tmp_path, 'inputs/'+name+'.json', value)
+        def rows(name, value):
+            p=tmp_path/'inputs'/ (name+'.gz');p.parent.mkdir(parents=True,exist_ok=True)
+            p.write_bytes(gzip.compress('\n'.join(json.dumps(r) for r in value).encode()))
+            return ref(tmp_path,p)
+        now=datetime.now(timezone.utc).isoformat()
+        member=tmp_path/'inputs/current_members';member.parent.mkdir(parents=True,exist_ok=True)
+        member.write_bytes(b'new day actual member bytes')
+&gt;       mb=ref(tmp_path,member)
+           ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_cross_day_capture_repair_v1.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_14_replay_io.py:15: in ref
+    root,p=path_in(root,path)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_changes_gaps_and_nonblock1')
+path = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_changes_gaps_and_nonblock1/inputs/current_members')
+
+    def path_in(root,path):
+        root=Path(root).resolve();relative=Path(path)
+&gt;       if relative.is_absolute() or '..' in relative.parts:raise ValueError('REPLAY_PATH_ESCAPE')
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: REPLAY_PATH_ESCAPE
+
+src\workbench_analysis\v4_14_replay_io.py:6: ValueError</error></testcase><testcase classname="tests.test_cross_day_capture_repair_v1" name="test_changes_gaps_and_nonblocking[wrong_date]" time="0.003"><error message="failed on setup with &quot;ValueError: REPLAY_PATH_ESCAPE&quot;">tmp_path = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_changes_gaps_and_nonblock2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A20C83FAF0&gt;
+
+    @pytest.fixture
+    def chain(tmp_path, monkeypatch):
+        day = datetime.now(timezone.utc).astimezone(timezone(timedelta(hours=8))).date().isoformat()
+        previous = (datetime.fromisoformat(day)-timedelta(days=1)).date().isoformat()
+        def doc(name, value): return publish(tmp_path, 'inputs/'+name+'.json', value)
+        def rows(name, value):
+            p=tmp_path/'inputs'/ (name+'.gz');p.parent.mkdir(parents=True,exist_ok=True)
+            p.write_bytes(gzip.compress('\n'.join(json.dumps(r) for r in value).encode()))
+            return ref(tmp_path,p)
+        now=datetime.now(timezone.utc).isoformat()
+        member=tmp_path/'inputs/current_members';member.parent.mkdir(parents=True,exist_ok=True)
+        member.write_bytes(b'new day actual member bytes')
+&gt;       mb=ref(tmp_path,member)
+           ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_cross_day_capture_repair_v1.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_14_replay_io.py:15: in ref
+    root,p=path_in(root,path)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_changes_gaps_and_nonblock2')
+path = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_changes_gaps_and_nonblock2/inputs/current_members')
+
+    def path_in(root,path):
+        root=Path(root).resolve();relative=Path(path)
+&gt;       if relative.is_absolute() or '..' in relative.parts:raise ValueError('REPLAY_PATH_ESCAPE')
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: REPLAY_PATH_ESCAPE
+
+src\workbench_analysis\v4_14_replay_io.py:6: ValueError</error></testcase><testcase classname="tests.test_cross_day_capture_repair_v1" name="test_changes_gaps_and_nonblocking[interruption]" time="0.003"><error message="failed on setup with &quot;ValueError: REPLAY_PATH_ESCAPE&quot;">tmp_path = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_changes_gaps_and_nonblock3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A20C83FE70&gt;
+
+    @pytest.fixture
+    def chain(tmp_path, monkeypatch):
+        day = datetime.now(timezone.utc).astimezone(timezone(timedelta(hours=8))).date().isoformat()
+        previous = (datetime.fromisoformat(day)-timedelta(days=1)).date().isoformat()
+        def doc(name, value): return publish(tmp_path, 'inputs/'+name+'.json', value)
+        def rows(name, value):
+            p=tmp_path/'inputs'/ (name+'.gz');p.parent.mkdir(parents=True,exist_ok=True)
+            p.write_bytes(gzip.compress('\n'.join(json.dumps(r) for r in value).encode()))
+            return ref(tmp_path,p)
+        now=datetime.now(timezone.utc).isoformat()
+        member=tmp_path/'inputs/current_members';member.parent.mkdir(parents=True,exist_ok=True)
+        member.write_bytes(b'new day actual member bytes')
+&gt;       mb=ref(tmp_path,member)
+           ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_cross_day_capture_repair_v1.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_14_replay_io.py:15: in ref
+    root,p=path_in(root,path)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_changes_gaps_and_nonblock3')
+path = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_changes_gaps_and_nonblock3/inputs/current_members')
+
+    def path_in(root,path):
+        root=Path(root).resolve();relative=Path(path)
+&gt;       if relative.is_absolute() or '..' in relative.parts:raise ValueError('REPLAY_PATH_ESCAPE')
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: REPLAY_PATH_ESCAPE
+
+src\workbench_analysis\v4_14_replay_io.py:6: ValueError</error></testcase><testcase classname="tests.test_candidate_historical_read_precision" name="test_cross_head_sector_and_cohort_use_original_frozen_sources" time="0.146"><error message="failed on setup with &quot;ValueError: REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN&quot;">root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_cross_head_sector_and_coh0')
+path = 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+value = {'owners': {'2026-10-09': {'lifecycle': {'path': 'inputs/source.json', 'sha256': 'ca3d163bab055381827226140568f3bef7ea...ab229ba7bbbcb2e6c74463', 'bytes': 18}, 'dates': ['2026-10-09', '2026-10-12'], 'accepted_trade_date': '2026-10-12', ...}
+
+    def publish(root,path,value):
+        root,p=path_in(root,path)
+        p.parent.mkdir(parents=True,exist_ok=True);raw=canonical(value)+b'\n'
+        fd,tmp=tempfile.mkstemp(dir=p.parent,prefix='.replay-')
+        try:
+            with os.fdopen(fd,'wb') as f:f.write(raw);f.flush();os.fsync(f.fileno())
+&gt;           try:os.link(tmp,p)
+                ^^^^^^^^^^^^^^
+E           FileExistsError: [WinError 183] 当文件已存在时，无法创建该文件。: 'G:\\codex_tmp\\test_temp\\precision_all\\test_cross_head_sector_and_coh0\\data\\v4\\.replay-pyj92gwl' -&gt; 'G:\\codex_tmp\\test_temp\\precision_all\\test_cross_head_sector_and_coh0\\data\\v4\\V4_OPERATIONAL_RESEARCH_HEAD.json'
+
+src\workbench_analysis\v4_14_replay_io.py:28: FileExistsError
+
+During handling of the above exception, another exception occurred:
+
+display_fixture = (WindowsPath('G:/codex_tmp/test_temp/precision_all/test_cross_head_sector_and_coh0'), '2026-10-09', {'owners': {'2026-..., 'sha256': '2384216b4446fc7b9da52cdd84be2b44c88465ead4173b595f873263ac11aaea', 'bytes': 1127}, 'production': False}}})
+
+    @pytest.fixture
+    def two_heads(display_fixture):
+        root,day,old,hb,doc,index=display_fixture
+        publish(root,f"data/v4/predecessors/{hb['sha256']}.json",old)
+        new=deepcopy(old)
+        new.update(accepted_trade_date='2026-10-12',dates=[day,'2026-10-12'],predecessor=hb)
+        new['membership_snapshot']=publish(root,'inputs/new_members.json',{'new':'members'})
+        new['owners']['2026-10-12']={'prewatch':new['membership_snapshot']}
+&gt;       nb=publish(root,'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json',new)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_candidate_historical_read_precision.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_cross_head_sector_and_coh0')
+path = 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+value = {'owners': {'2026-10-09': {'lifecycle': {'path': 'inputs/source.json', 'sha256': 'ca3d163bab055381827226140568f3bef7ea...ab229ba7bbbcb2e6c74463', 'bytes': 18}, 'dates': ['2026-10-09', '2026-10-12'], 'accepted_trade_date': '2026-10-12', ...}
+
+    def publish(root,path,value):
+        root,p=path_in(root,path)
+        p.parent.mkdir(parents=True,exist_ok=True);raw=canonical(value)+b'\n'
+        fd,tmp=tempfile.mkstemp(dir=p.parent,prefix='.replay-')
+        try:
+            with os.fdopen(fd,'wb') as f:f.write(raw);f.flush();os.fsync(f.fileno())
+            try:os.link(tmp,p)
+            except FileExistsError:
+&gt;               if p.read_bytes()!=raw:raise ValueError('REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN')
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               ValueError: REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN
+
+src\workbench_analysis\v4_14_replay_io.py:30: ValueError</error></testcase><testcase classname="tests.test_candidate_historical_read_precision" name="test_historical_identity_negative_cases[UNACCEPTED_HEAD]" time="0.128"><error message="failed on setup with &quot;ValueError: REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN&quot;">root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_historical_identity_negat0')
+path = 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+value = {'owners': {'2026-10-09': {'lifecycle': {'path': 'inputs/source.json', 'sha256': 'ca3d163bab055381827226140568f3bef7ea...ab229ba7bbbcb2e6c74463', 'bytes': 18}, 'dates': ['2026-10-09', '2026-10-12'], 'accepted_trade_date': '2026-10-12', ...}
+
+    def publish(root,path,value):
+        root,p=path_in(root,path)
+        p.parent.mkdir(parents=True,exist_ok=True);raw=canonical(value)+b'\n'
+        fd,tmp=tempfile.mkstemp(dir=p.parent,prefix='.replay-')
+        try:
+            with os.fdopen(fd,'wb') as f:f.write(raw);f.flush();os.fsync(f.fileno())
+&gt;           try:os.link(tmp,p)
+                ^^^^^^^^^^^^^^
+E           FileExistsError: [WinError 183] 当文件已存在时，无法创建该文件。: 'G:\\codex_tmp\\test_temp\\precision_all\\test_historical_identity_negat0\\data\\v4\\.replay-76jld_ea' -&gt; 'G:\\codex_tmp\\test_temp\\precision_all\\test_historical_identity_negat0\\data\\v4\\V4_OPERATIONAL_RESEARCH_HEAD.json'
+
+src\workbench_analysis\v4_14_replay_io.py:28: FileExistsError
+
+During handling of the above exception, another exception occurred:
+
+display_fixture = (WindowsPath('G:/codex_tmp/test_temp/precision_all/test_historical_identity_negat0'), '2026-10-09', {'owners': {'2026-..., 'sha256': '2384216b4446fc7b9da52cdd84be2b44c88465ead4173b595f873263ac11aaea', 'bytes': 1127}, 'production': False}}})
+
+    @pytest.fixture
+    def two_heads(display_fixture):
+        root,day,old,hb,doc,index=display_fixture
+        publish(root,f"data/v4/predecessors/{hb['sha256']}.json",old)
+        new=deepcopy(old)
+        new.update(accepted_trade_date='2026-10-12',dates=[day,'2026-10-12'],predecessor=hb)
+        new['membership_snapshot']=publish(root,'inputs/new_members.json',{'new':'members'})
+        new['owners']['2026-10-12']={'prewatch':new['membership_snapshot']}
+&gt;       nb=publish(root,'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json',new)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_candidate_historical_read_precision.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_historical_identity_negat0')
+path = 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+value = {'owners': {'2026-10-09': {'lifecycle': {'path': 'inputs/source.json', 'sha256': 'ca3d163bab055381827226140568f3bef7ea...ab229ba7bbbcb2e6c74463', 'bytes': 18}, 'dates': ['2026-10-09', '2026-10-12'], 'accepted_trade_date': '2026-10-12', ...}
+
+    def publish(root,path,value):
+        root,p=path_in(root,path)
+        p.parent.mkdir(parents=True,exist_ok=True);raw=canonical(value)+b'\n'
+        fd,tmp=tempfile.mkstemp(dir=p.parent,prefix='.replay-')
+        try:
+            with os.fdopen(fd,'wb') as f:f.write(raw);f.flush();os.fsync(f.fileno())
+            try:os.link(tmp,p)
+            except FileExistsError:
+&gt;               if p.read_bytes()!=raw:raise ValueError('REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN')
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               ValueError: REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN
+
+src\workbench_analysis\v4_14_replay_io.py:30: ValueError</error></testcase><testcase classname="tests.test_candidate_historical_read_precision" name="test_historical_identity_negative_cases[MUTATED_ARCHIVE]" time="0.154"><error message="failed on setup with &quot;ValueError: REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN&quot;">root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_historical_identity_negat1')
+path = 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+value = {'owners': {'2026-10-09': {'lifecycle': {'path': 'inputs/source.json', 'sha256': 'ca3d163bab055381827226140568f3bef7ea...ab229ba7bbbcb2e6c74463', 'bytes': 18}, 'dates': ['2026-10-09', '2026-10-12'], 'accepted_trade_date': '2026-10-12', ...}
+
+    def publish(root,path,value):
+        root,p=path_in(root,path)
+        p.parent.mkdir(parents=True,exist_ok=True);raw=canonical(value)+b'\n'
+        fd,tmp=tempfile.mkstemp(dir=p.parent,prefix='.replay-')
+        try:
+            with os.fdopen(fd,'wb') as f:f.write(raw);f.flush();os.fsync(f.fileno())
+&gt;           try:os.link(tmp,p)
+                ^^^^^^^^^^^^^^
+E           FileExistsError: [WinError 183] 当文件已存在时，无法创建该文件。: 'G:\\codex_tmp\\test_temp\\precision_all\\test_historical_identity_negat1\\data\\v4\\.replay-oa6ehn8o' -&gt; 'G:\\codex_tmp\\test_temp\\precision_all\\test_historical_identity_negat1\\data\\v4\\V4_OPERATIONAL_RESEARCH_HEAD.json'
+
+src\workbench_analysis\v4_14_replay_io.py:28: FileExistsError
+
+During handling of the above exception, another exception occurred:
+
+display_fixture = (WindowsPath('G:/codex_tmp/test_temp/precision_all/test_historical_identity_negat1'), '2026-10-09', {'owners': {'2026-..., 'sha256': '2384216b4446fc7b9da52cdd84be2b44c88465ead4173b595f873263ac11aaea', 'bytes': 1127}, 'production': False}}})
+
+    @pytest.fixture
+    def two_heads(display_fixture):
+        root,day,old,hb,doc,index=display_fixture
+        publish(root,f"data/v4/predecessors/{hb['sha256']}.json",old)
+        new=deepcopy(old)
+        new.update(accepted_trade_date='2026-10-12',dates=[day,'2026-10-12'],predecessor=hb)
+        new['membership_snapshot']=publish(root,'inputs/new_members.json',{'new':'members'})
+        new['owners']['2026-10-12']={'prewatch':new['membership_snapshot']}
+&gt;       nb=publish(root,'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json',new)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_candidate_historical_read_precision.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_historical_identity_negat1')
+path = 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+value = {'owners': {'2026-10-09': {'lifecycle': {'path': 'inputs/source.json', 'sha256': 'ca3d163bab055381827226140568f3bef7ea...ab229ba7bbbcb2e6c74463', 'bytes': 18}, 'dates': ['2026-10-09', '2026-10-12'], 'accepted_trade_date': '2026-10-12', ...}
+
+    def publish(root,path,value):
+        root,p=path_in(root,path)
+        p.parent.mkdir(parents=True,exist_ok=True);raw=canonical(value)+b'\n'
+        fd,tmp=tempfile.mkstemp(dir=p.parent,prefix='.replay-')
+        try:
+            with os.fdopen(fd,'wb') as f:f.write(raw);f.flush();os.fsync(f.fileno())
+            try:os.link(tmp,p)
+            except FileExistsError:
+&gt;               if p.read_bytes()!=raw:raise ValueError('REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN')
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               ValueError: REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN
+
+src\workbench_analysis\v4_14_replay_io.py:30: ValueError</error></testcase><testcase classname="tests.test_candidate_historical_read_precision" name="test_historical_identity_negative_cases[FUTURE_DATE]" time="0.146"><error message="failed on setup with &quot;ValueError: REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN&quot;">root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_historical_identity_negat2')
+path = 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+value = {'owners': {'2026-10-09': {'lifecycle': {'path': 'inputs/source.json', 'sha256': 'ca3d163bab055381827226140568f3bef7ea...ab229ba7bbbcb2e6c74463', 'bytes': 18}, 'dates': ['2026-10-09', '2026-10-12'], 'accepted_trade_date': '2026-10-12', ...}
+
+    def publish(root,path,value):
+        root,p=path_in(root,path)
+        p.parent.mkdir(parents=True,exist_ok=True);raw=canonical(value)+b'\n'
+        fd,tmp=tempfile.mkstemp(dir=p.parent,prefix='.replay-')
+        try:
+            with os.fdopen(fd,'wb') as f:f.write(raw);f.flush();os.fsync(f.fileno())
+&gt;           try:os.link(tmp,p)
+                ^^^^^^^^^^^^^^
+E           FileExistsError: [WinError 183] 当文件已存在时，无法创建该文件。: 'G:\\codex_tmp\\test_temp\\precision_all\\test_historical_identity_negat2\\data\\v4\\.replay-dgufceey' -&gt; 'G:\\codex_tmp\\test_temp\\precision_all\\test_historical_identity_negat2\\data\\v4\\V4_OPERATIONAL_RESEARCH_HEAD.json'
+
+src\workbench_analysis\v4_14_replay_io.py:28: FileExistsError
+
+During handling of the above exception, another exception occurred:
+
+display_fixture = (WindowsPath('G:/codex_tmp/test_temp/precision_all/test_historical_identity_negat2'), '2026-10-09', {'owners': {'2026-..., 'sha256': '2384216b4446fc7b9da52cdd84be2b44c88465ead4173b595f873263ac11aaea', 'bytes': 1127}, 'production': False}}})
+
+    @pytest.fixture
+    def two_heads(display_fixture):
+        root,day,old,hb,doc,index=display_fixture
+        publish(root,f"data/v4/predecessors/{hb['sha256']}.json",old)
+        new=deepcopy(old)
+        new.update(accepted_trade_date='2026-10-12',dates=[day,'2026-10-12'],predecessor=hb)
+        new['membership_snapshot']=publish(root,'inputs/new_members.json',{'new':'members'})
+        new['owners']['2026-10-12']={'prewatch':new['membership_snapshot']}
+&gt;       nb=publish(root,'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json',new)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_candidate_historical_read_precision.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_historical_identity_negat2')
+path = 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+value = {'owners': {'2026-10-09': {'lifecycle': {'path': 'inputs/source.json', 'sha256': 'ca3d163bab055381827226140568f3bef7ea...ab229ba7bbbcb2e6c74463', 'bytes': 18}, 'dates': ['2026-10-09', '2026-10-12'], 'accepted_trade_date': '2026-10-12', ...}
+
+    def publish(root,path,value):
+        root,p=path_in(root,path)
+        p.parent.mkdir(parents=True,exist_ok=True);raw=canonical(value)+b'\n'
+        fd,tmp=tempfile.mkstemp(dir=p.parent,prefix='.replay-')
+        try:
+            with os.fdopen(fd,'wb') as f:f.write(raw);f.flush();os.fsync(f.fileno())
+            try:os.link(tmp,p)
+            except FileExistsError:
+&gt;               if p.read_bytes()!=raw:raise ValueError('REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN')
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               ValueError: REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN
+
+src\workbench_analysis\v4_14_replay_io.py:30: ValueError</error></testcase><testcase classname="tests.test_candidate_historical_read_precision" name="test_historical_identity_negative_cases[OLD_TOKEN]" time="0.195"><error message="failed on setup with &quot;ValueError: REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN&quot;">root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_historical_identity_negat3')
+path = 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+value = {'owners': {'2026-10-09': {'lifecycle': {'path': 'inputs/source.json', 'sha256': 'ca3d163bab055381827226140568f3bef7ea...ab229ba7bbbcb2e6c74463', 'bytes': 18}, 'dates': ['2026-10-09', '2026-10-12'], 'accepted_trade_date': '2026-10-12', ...}
+
+    def publish(root,path,value):
+        root,p=path_in(root,path)
+        p.parent.mkdir(parents=True,exist_ok=True);raw=canonical(value)+b'\n'
+        fd,tmp=tempfile.mkstemp(dir=p.parent,prefix='.replay-')
+        try:
+            with os.fdopen(fd,'wb') as f:f.write(raw);f.flush();os.fsync(f.fileno())
+&gt;           try:os.link(tmp,p)
+                ^^^^^^^^^^^^^^
+E           FileExistsError: [WinError 183] 当文件已存在时，无法创建该文件。: 'G:\\codex_tmp\\test_temp\\precision_all\\test_historical_identity_negat3\\data\\v4\\.replay-5jhtc8_4' -&gt; 'G:\\codex_tmp\\test_temp\\precision_all\\test_historical_identity_negat3\\data\\v4\\V4_OPERATIONAL_RESEARCH_HEAD.json'
+
+src\workbench_analysis\v4_14_replay_io.py:28: FileExistsError
+
+During handling of the above exception, another exception occurred:
+
+display_fixture = (WindowsPath('G:/codex_tmp/test_temp/precision_all/test_historical_identity_negat3'), '2026-10-09', {'owners': {'2026-..., 'sha256': '2384216b4446fc7b9da52cdd84be2b44c88465ead4173b595f873263ac11aaea', 'bytes': 1127}, 'production': False}}})
+
+    @pytest.fixture
+    def two_heads(display_fixture):
+        root,day,old,hb,doc,index=display_fixture
+        publish(root,f"data/v4/predecessors/{hb['sha256']}.json",old)
+        new=deepcopy(old)
+        new.update(accepted_trade_date='2026-10-12',dates=[day,'2026-10-12'],predecessor=hb)
+        new['membership_snapshot']=publish(root,'inputs/new_members.json',{'new':'members'})
+        new['owners']['2026-10-12']={'prewatch':new['membership_snapshot']}
+&gt;       nb=publish(root,'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json',new)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_candidate_historical_read_precision.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_historical_identity_negat3')
+path = 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+value = {'owners': {'2026-10-09': {'lifecycle': {'path': 'inputs/source.json', 'sha256': 'ca3d163bab055381827226140568f3bef7ea...ab229ba7bbbcb2e6c74463', 'bytes': 18}, 'dates': ['2026-10-09', '2026-10-12'], 'accepted_trade_date': '2026-10-12', ...}
+
+    def publish(root,path,value):
+        root,p=path_in(root,path)
+        p.parent.mkdir(parents=True,exist_ok=True);raw=canonical(value)+b'\n'
+        fd,tmp=tempfile.mkstemp(dir=p.parent,prefix='.replay-')
+        try:
+            with os.fdopen(fd,'wb') as f:f.write(raw);f.flush();os.fsync(f.fileno())
+            try:os.link(tmp,p)
+            except FileExistsError:
+&gt;               if p.read_bytes()!=raw:raise ValueError('REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN')
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               ValueError: REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN
+
+src\workbench_analysis\v4_14_replay_io.py:30: ValueError</error></testcase><testcase classname="tests.test_candidate_historical_read_precision" name="test_historical_identity_negative_cases[WRONG_SESSION]" time="0.144"><error message="failed on setup with &quot;ValueError: REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN&quot;">root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_historical_identity_negat4')
+path = 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+value = {'owners': {'2026-10-09': {'lifecycle': {'path': 'inputs/source.json', 'sha256': 'ca3d163bab055381827226140568f3bef7ea...ab229ba7bbbcb2e6c74463', 'bytes': 18}, 'dates': ['2026-10-09', '2026-10-12'], 'accepted_trade_date': '2026-10-12', ...}
+
+    def publish(root,path,value):
+        root,p=path_in(root,path)
+        p.parent.mkdir(parents=True,exist_ok=True);raw=canonical(value)+b'\n'
+        fd,tmp=tempfile.mkstemp(dir=p.parent,prefix='.replay-')
+        try:
+            with os.fdopen(fd,'wb') as f:f.write(raw);f.flush();os.fsync(f.fileno())
+&gt;           try:os.link(tmp,p)
+                ^^^^^^^^^^^^^^
+E           FileExistsError: [WinError 183] 当文件已存在时，无法创建该文件。: 'G:\\codex_tmp\\test_temp\\precision_all\\test_historical_identity_negat4\\data\\v4\\.replay-sww_3mt3' -&gt; 'G:\\codex_tmp\\test_temp\\precision_all\\test_historical_identity_negat4\\data\\v4\\V4_OPERATIONAL_RESEARCH_HEAD.json'
+
+src\workbench_analysis\v4_14_replay_io.py:28: FileExistsError
+
+During handling of the above exception, another exception occurred:
+
+display_fixture = (WindowsPath('G:/codex_tmp/test_temp/precision_all/test_historical_identity_negat4'), '2026-10-09', {'owners': {'2026-..., 'sha256': '2384216b4446fc7b9da52cdd84be2b44c88465ead4173b595f873263ac11aaea', 'bytes': 1127}, 'production': False}}})
+
+    @pytest.fixture
+    def two_heads(display_fixture):
+        root,day,old,hb,doc,index=display_fixture
+        publish(root,f"data/v4/predecessors/{hb['sha256']}.json",old)
+        new=deepcopy(old)
+        new.update(accepted_trade_date='2026-10-12',dates=[day,'2026-10-12'],predecessor=hb)
+        new['membership_snapshot']=publish(root,'inputs/new_members.json',{'new':'members'})
+        new['owners']['2026-10-12']={'prewatch':new['membership_snapshot']}
+&gt;       nb=publish(root,'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json',new)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_candidate_historical_read_precision.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_historical_identity_negat4')
+path = 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+value = {'owners': {'2026-10-09': {'lifecycle': {'path': 'inputs/source.json', 'sha256': 'ca3d163bab055381827226140568f3bef7ea...ab229ba7bbbcb2e6c74463', 'bytes': 18}, 'dates': ['2026-10-09', '2026-10-12'], 'accepted_trade_date': '2026-10-12', ...}
+
+    def publish(root,path,value):
+        root,p=path_in(root,path)
+        p.parent.mkdir(parents=True,exist_ok=True);raw=canonical(value)+b'\n'
+        fd,tmp=tempfile.mkstemp(dir=p.parent,prefix='.replay-')
+        try:
+            with os.fdopen(fd,'wb') as f:f.write(raw);f.flush();os.fsync(f.fileno())
+            try:os.link(tmp,p)
+            except FileExistsError:
+&gt;               if p.read_bytes()!=raw:raise ValueError('REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN')
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               ValueError: REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN
+
+src\workbench_analysis\v4_14_replay_io.py:30: ValueError</error></testcase><testcase classname="tests.test_candidate_historical_read_precision" name="test_missing_historical_source_is_explicit" time="0.161"><error message="failed on setup with &quot;ValueError: REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN&quot;">root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_missing_historical_source0')
+path = 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+value = {'owners': {'2026-10-09': {'lifecycle': {'path': 'inputs/source.json', 'sha256': 'ca3d163bab055381827226140568f3bef7ea...ab229ba7bbbcb2e6c74463', 'bytes': 18}, 'dates': ['2026-10-09', '2026-10-12'], 'accepted_trade_date': '2026-10-12', ...}
+
+    def publish(root,path,value):
+        root,p=path_in(root,path)
+        p.parent.mkdir(parents=True,exist_ok=True);raw=canonical(value)+b'\n'
+        fd,tmp=tempfile.mkstemp(dir=p.parent,prefix='.replay-')
+        try:
+            with os.fdopen(fd,'wb') as f:f.write(raw);f.flush();os.fsync(f.fileno())
+&gt;           try:os.link(tmp,p)
+                ^^^^^^^^^^^^^^
+E           FileExistsError: [WinError 183] 当文件已存在时，无法创建该文件。: 'G:\\codex_tmp\\test_temp\\precision_all\\test_missing_historical_source0\\data\\v4\\.replay-b34wcclc' -&gt; 'G:\\codex_tmp\\test_temp\\precision_all\\test_missing_historical_source0\\data\\v4\\V4_OPERATIONAL_RESEARCH_HEAD.json'
+
+src\workbench_analysis\v4_14_replay_io.py:28: FileExistsError
+
+During handling of the above exception, another exception occurred:
+
+display_fixture = (WindowsPath('G:/codex_tmp/test_temp/precision_all/test_missing_historical_source0'), '2026-10-09', {'owners': {'2026-..., 'sha256': '2384216b4446fc7b9da52cdd84be2b44c88465ead4173b595f873263ac11aaea', 'bytes': 1127}, 'production': False}}})
+
+    @pytest.fixture
+    def two_heads(display_fixture):
+        root,day,old,hb,doc,index=display_fixture
+        publish(root,f"data/v4/predecessors/{hb['sha256']}.json",old)
+        new=deepcopy(old)
+        new.update(accepted_trade_date='2026-10-12',dates=[day,'2026-10-12'],predecessor=hb)
+        new['membership_snapshot']=publish(root,'inputs/new_members.json',{'new':'members'})
+        new['owners']['2026-10-12']={'prewatch':new['membership_snapshot']}
+&gt;       nb=publish(root,'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json',new)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_candidate_historical_read_precision.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_missing_historical_source0')
+path = 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+value = {'owners': {'2026-10-09': {'lifecycle': {'path': 'inputs/source.json', 'sha256': 'ca3d163bab055381827226140568f3bef7ea...ab229ba7bbbcb2e6c74463', 'bytes': 18}, 'dates': ['2026-10-09', '2026-10-12'], 'accepted_trade_date': '2026-10-12', ...}
+
+    def publish(root,path,value):
+        root,p=path_in(root,path)
+        p.parent.mkdir(parents=True,exist_ok=True);raw=canonical(value)+b'\n'
+        fd,tmp=tempfile.mkstemp(dir=p.parent,prefix='.replay-')
+        try:
+            with os.fdopen(fd,'wb') as f:f.write(raw);f.flush();os.fsync(f.fileno())
+            try:os.link(tmp,p)
+            except FileExistsError:
+&gt;               if p.read_bytes()!=raw:raise ValueError('REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN')
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               ValueError: REPLAY_CHANGED_BYTE_OVERWRITE_FORBIDDEN
+
+src\workbench_analysis\v4_14_replay_io.py:30: ValueError</error></testcase><testcase classname="tests.test_full_state_first_observed_v1" name="test_new_t0_generated_freeze_extract_separate_grant" time="0.321" /><testcase classname="tests.test_full_state_first_observed_v1" name="test_end_to_end_illegal_source_rejected[patch0-row_patch0]" time="0.057" /><testcase classname="tests.test_full_state_first_observed_v1" name="test_end_to_end_illegal_source_rejected[patch1-row_patch1]" time="0.067" /><testcase classname="tests.test_full_state_first_observed_v1" name="test_end_to_end_illegal_source_rejected[patch2-row_patch2]" time="0.078" /><testcase classname="tests.test_full_state_first_observed_v1" name="test_end_to_end_illegal_source_rejected[patch3-row_patch3]" time="0.065" /><testcase classname="tests.test_full_state_first_observed_v1" name="test_end_to_end_illegal_source_rejected[patch4-row_patch4]" time="0.057" /><testcase classname="tests.test_full_state_first_observed_v1" name="test_end_to_end_illegal_source_rejected[patch5-row_patch5]" time="0.059" /><testcase classname="tests.test_full_state_first_observed_v1" name="test_end_to_end_illegal_source_rejected[patch6-row_patch6]" time="0.073" /><testcase classname="tests.test_full_state_first_observed_v1" name="test_source_missing_and_original_missing_file" time="0.057" /><testcase classname="tests.test_full_state_first_observed_v1" name="test_same_revision_change_cannot_replace_original" time="0.374" /><testcase classname="tests.test_producer_continuation_r2" name="test_rank_uses_normal_median_not_rps_or_absolute_return" time="0.003" /><testcase classname="tests.test_producer_continuation_r2" name="test_rank_rejects_wrong_source_window[duplicate]" time="0.001" /><testcase classname="tests.test_producer_continuation_r2" name="test_rank_rejects_wrong_source_window[date]" time="0.001" /><testcase classname="tests.test_producer_continuation_r2" name="test_rank_rejects_wrong_source_window[future]" time="0.001" /><testcase classname="tests.test_producer_continuation_r2" name="test_nested_future_windows_fail_closed[max_source_date]" time="0.001" /><testcase classname="tests.test_producer_continuation_r2" name="test_nested_future_windows_fail_closed[window_end_trade_date]" time="0.001" /><testcase classname="tests.test_producer_continuation_r2" name="test_nested_future_windows_fail_closed[window_start_trade_date]" time="0.001" /><testcase classname="tests.test_producer_continuation_r2" name="test_nested_future_windows_fail_closed[window_end]" time="0.001" /><testcase classname="tests.test_producer_continuation_r2" name="test_live_capture_has_real_clock_without_grant_and_keeps_strict_gap" time="0.295"><failure message="ValueError: REPLAY_PATH_ESCAPE">source_fixture = (WindowsPath('G:/codex_tmp/test_temp/precision_all/test_live_capture_has_real_clo0'), '2026-10-10', {'path': 'inputs/h...e7de49c3f7/capture.json', 'sha256': '4f13496a5179fc5e3813c098ddfdd26be42a904e77f92fe39491f5442a576185', 'bytes': 1443})
+
+    def test_live_capture_has_real_clock_without_grant_and_keeps_strict_gap(source_fixture):
+        root,day,hb,cb=source_fixture
+        capture_doc=json.loads((root/cb['path']).read_bytes())
+        assert instant(capture_doc['captured_at'])&gt;=instant(capture_doc['sources'][0]['received_at'])
+        binding=freeze_for_review(root,capture_binding=cb,candidate_binding=hb,trade_date=day)
+        doc=json.loads((root/binding['path']).read_bytes())
+        assert doc['review_readiness']=='SOURCE_GAPS'
+        assert 'STRICT_STATE_WINDOWS_AND_MEMBERSHIP_NOT_ADMITTED' in doc['source_gaps']
+        assert not doc['formal_consumer_enabled'] and not doc['PIT_ELIGIBLE']
+        assert doc['observed_count'] is None and not any(r['eligible_at_T0'] for r in doc['signals'])
+&gt;       assert freeze_for_review(root,capture_binding=cb,candidate_binding=hb,trade_date=day)==binding
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_producer_continuation_r2.py:82: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\strict_source_candidate_v2.py:51: in freeze_for_review
+    reconciliation_binding=reconcile(root,capture_binding=capture_binding,candidate_binding=candidate_binding,trade_date=trade_date)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\source_scope_reconciliation_v1.py:61: in reconcile
+    return ref(root, root/path)
+           ^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_14_replay_io.py:15: in ref
+    root,p=path_in(root,path)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_live_capture_has_real_clo0')
+path = WindowsPath('G:/codex_tmp/test_temp/precision_all/test_live_capture_has_real_clo0/data/v4/source_scope_reconciliation_v1/2026-10-10/13603c15c117004fc6afba7fa3d45d11791bae4b6a4e6f8ce0fb8385f22cb907/receipt.json')
+
+    def path_in(root,path):
+        root=Path(root).resolve();relative=Path(path)
+&gt;       if relative.is_absolute() or '..' in relative.parts:raise ValueError('REPLAY_PATH_ESCAPE')
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: REPLAY_PATH_ESCAPE
+
+src\workbench_analysis\v4_14_replay_io.py:6: ValueError</failure></testcase><testcase classname="tests.test_producer_continuation_r2" name="test_historical_capture_cannot_be_promoted_by_clock_change" time="0.212" /><testcase classname="tests.test_producer_continuation_r2" name="test_candidate_is_head_bound_and_never_formal" time="0.078" /><testcase classname="tests.test_producer_continuation_r2" name="test_bad_candidate_is_local_unavailable[date]" time="0.096" /><testcase classname="tests.test_producer_continuation_r2" name="test_bad_candidate_is_local_unavailable[duplicate]" time="0.118" /><testcase classname="tests.test_producer_continuation_r2" name="test_bad_candidate_is_local_unavailable[member]" time="0.132" /><testcase classname="tests.test_producer_continuation_r2" name="test_bad_candidate_is_local_unavailable[owner]" time="0.106" /><testcase classname="tests.test_producer_continuation_r2" name="test_bad_candidate_is_local_unavailable[missing_owner]" time="0.149" /><testcase classname="tests.test_producer_continuation_r2" name="test_bad_candidate_is_local_unavailable[formal]" time="0.104" /><testcase classname="tests.test_producer_continuation_r2" name="test_bad_candidate_is_local_unavailable[tamper]" time="0.098" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_capture_idempotent_and_changed_bytes_append" time="0.158" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_capture_rejects[past-REAL_CURRENT_SESSION_REQUIRED]" time="0.022" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_capture_rejects[future-SOURCE_TIMESTAMP_ORDER_REQUIRED]" time="0.027" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_capture_rejects[naive-AWARE_TIMESTAMP_REQUIRED]" time="0.031" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_capture_rejects[sha-SOURCE_SHA_MISMATCH]" time="0.025" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_capture_rejects[scope-COMPLETE_SCOPE_REQUIRED]" time="0.022" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_capture_rejects[namespace-ISOLATED_NAMESPACE_REQUIRED]" time="0.016" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_capture_rejects[duplicate-DUPLICATE_SOURCE_NAME]" time="0.049" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_capture_rejects[availability-SOURCE_AVAILABILITY_ORDER_REQUIRED]" time="0.059" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_historical_replay_cannot_be_first_capture" time="0.076" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_local_read_retry_keeps_original_clock" time="0.107" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_full_universe_reconciliation_and_research_identity" time="0.001" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_signal_freeze_immutable" time="0.073" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_signal_bad_state" time="0.001" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_optional_failure_preserves_main_flow" time="0.001" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_episode_genesis_idempotence_and_pending" time="0.241" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_episode_due_unknown_and_source_identity" time="0.001" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_episode_rejects_historical_source" time="0.137" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_exact_legacy_rank_producer_and_future_rejection" time="0.313" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_followup_requires_checked_original_settlement" time="0.064" /><testcase classname="tests.test_producer_bootstrap_v1" name="test_frozen_invalidation_ast_and_future_fact" time="0.064" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_complete_immutable_extraction_and_idempotency" time="0.217" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_invalid_producer_creates_no_candidate[patch0]" time="0.087" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_invalid_producer_creates_no_candidate[patch1]" time="0.113" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_invalid_producer_creates_no_candidate[patch2]" time="0.084" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_invalid_producer_creates_no_candidate[patch3]" time="0.100" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_invalid_producer_creates_no_candidate[patch4]" time="0.091" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_invalid_producer_creates_no_candidate[patch5]" time="0.096" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_invalid_producer_creates_no_candidate[patch6]" time="0.095" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_invalid_producer_creates_no_candidate[patch7]" time="0.107" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_invalid_producer_creates_no_candidate[patch8]" time="0.099" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_every_ineligible_row_is_validated[patch0]" time="0.093" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_every_ineligible_row_is_validated[patch1]" time="0.110" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_every_ineligible_row_is_validated[patch2]" time="0.111" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_every_ineligible_row_is_validated[patch3]" time="0.102" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_every_ineligible_row_is_validated[patch4]" time="0.103" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_every_ineligible_row_is_validated[patch5]" time="0.108" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_every_ineligible_row_is_validated[patch6]" time="0.105" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_every_ineligible_row_is_validated[patch7]" time="0.089" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_subset_cannot_claim_full_capture" time="0.109" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_daily_hook_extracts_without_granting_read_or_write" time="0.179" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_changed_frozen_bytes_cannot_overwrite_same_slot" time="0.151" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_tampered_signal_digest_rejected" time="0.080" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_daily_missing_producer_file_is_nonblocking" time="0.104" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_receipt_collision_creates_no_owner_fragment" time="0.090" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_source_freeze_to_extraction_to_separate_writer_preflight" time="0.294" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_source_freeze_refuses_historical_capture_today" time="0.075" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_source_freeze_validates_complete_contract_before_writing[patch0]" time="0.125" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_source_freeze_validates_complete_contract_before_writing[patch1]" time="0.142" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_source_freeze_validates_complete_contract_before_writing[patch2]" time="0.142" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_source_freeze_validates_complete_contract_before_writing[patch3]" time="0.151" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_source_freeze_validates_complete_contract_before_writing[patch4]" time="0.162" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_source_freeze_validates_complete_contract_before_writing[patch5]" time="0.154" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_actual_daily_executor_continues_after_missing_cohort_source[producer]" time="0.176" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_actual_daily_executor_continues_after_missing_cohort_source[owner.json]" time="0.138" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_actual_daily_executor_continues_after_missing_cohort_source[receipt.json]" time="0.145" /><testcase classname="tests.test_cohort_first_capture_producer_r1" name="test_actual_daily_executor_continues_after_missing_cohort_source[grant.json]" time="0.143" /></testsuite></testsuites>

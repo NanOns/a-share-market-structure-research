@@ -47,9 +47,10 @@ def freeze_for_review(root, *, capture_binding, candidate_binding, trade_date, r
     raw=gzrows(checked(root,owner['raw']))
     core=gzrows(checked(root,owner['core']))
     gaps=list(capture['gaps'])
-    if sorted(life['active_security_ids'])!=capture['security_ids']:gaps.append('CURRENT_UNIVERSE_DIFFERS_FROM_PRELIMINARY_CAPTURE')
-    local_sha={r['original_bytes']['sha256'] for r in capture['sources'] if r['name'].startswith('local_members_')}
-    if not {r['sha256'] for r in snapshot['sources']}<=local_sha:gaps.append('STATE_MEMBER_BYTES_NOT_IN_SOURCE_CAPTURE')
+    from .source_scope_reconciliation_v1 import reconcile
+    reconciliation_binding=reconcile(root,capture_binding=capture_binding,candidate_binding=candidate_binding,trade_date=trade_date)
+    reconciliation=json.loads(checked(root,reconciliation_binding).read_bytes())
+    gaps.extend(reconciliation['source_gaps'])
     if set(r['security_id'] for r in core)!=set(life['active_security_ids']):gaps.append('FULL_CORE_SCOPE_INCOMPLETE')
     for group in (raw,core,rows):
         if len({r['security_id'] for r in group})!=len(group):raise ValueError('DUPLICATE_STATE_INPUT')
@@ -73,10 +74,12 @@ def freeze_for_review(root, *, capture_binding, candidate_binding, trade_date, r
     bindings={k:owner[k] for k in ('raw','core','prewatch','lifecycle')}
     document.update(contract_id=CONTRACT,source_capture=capture_binding,candidate_head=candidate_binding,
         frozen_scanner_inputs=inputs,input_bindings=bindings,calendar=capture['calendar'],
-        scope_reconciliation=dict(universe_count=len(life['active_security_ids']),core_count=len(core),raw_traded_count=len(raw)),
+        scope_reconciliation=dict(universe_count=len(life['active_security_ids']),core_count=len(core),raw_traded_count=len(raw),
+            receipt=reconciliation_binding,status=reconciliation['status']),
         evidence_class='RECONSTRUCTED_RESEARCH_ONLY' if research_replay else 'ASOF_OBSERVATION_SOURCE_CANDIDATE',
         review_readiness='HISTORICAL_RESEARCH_ONLY' if research_replay else 'SOURCE_GAPS' if gaps else 'READY_FOR_INDEPENDENT_SOURCE_REVIEW',
         source_gaps=sorted(set(gaps)),full_state_model_admission='NOT_GRANTED',
+        candidate_status='SOURCE_GAPS' if gaps else 'STRICT_SOURCE_CANDIDATE_READY_FOR_REVIEW',
         first_available=capture['captured_at'] if not research_replay else None,
         captured_at=now.isoformat(),formal_consumer_enabled=False,writer_grant_required_for_capture=False,
         state_window_basis='OPERATIONAL_FROZEN_T0_INPUTS; STRICT_WINDOW_AND_MEMBER_ADMISSION_PENDING')

@@ -94,8 +94,9 @@ def test_historical_capture_cannot_be_promoted_by_clock_change(source_fixture):
 def display_fixture(tmp_path):
     day='2026-10-09';b=publish(tmp_path,'inputs/source.json',{})
     owner={k:b for k in ('lifecycle','core','sector','prewatch')}
-    head=dict(owners={day:owner},membership_snapshot=b)
+    head=dict(owners={day:owner},membership_snapshot=b,dates=[day],accepted_trade_date=day)
     hb=publish(tmp_path,'inputs/head.json',head)
+    publish(tmp_path,'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json',head)
     doc=dict(T0=day,production=False,sources=deepcopy(owner),membership=b,model=b,dependencies=[b],
         evidence_class='RECONSTRUCTED_RESEARCH_ONLY',rows=[dict(sector_id='INDUSTRY:T0706',T0=day,
         production=False,formal_consumer_enabled=False,inputs={},CONFIRMED='TRUE')])
@@ -111,7 +112,7 @@ def test_candidate_is_head_bound_and_never_formal(display_fixture):
     assert r['candidate_status']=='AVAILABLE' and r['item']['CONFIRMED']=='TRUE'
     assert r['observed_count'] is None and not r['formal_consumer_enabled']
     r=read_candidates(root,head=head,token='different',day=day,sector_id='INDUSTRY:T0706')
-    assert r['candidate_status']=='UNAVAILABLE' and r['reason']=='CANDIDATE_HEAD_MISMATCH'
+    assert r['candidate_status']=='UNAVAILABLE' and r['reason']=='OLD_TOKEN'
 
 
 @pytest.mark.parametrize('change',['date','duplicate','member','owner','missing_owner','formal','tamper'])

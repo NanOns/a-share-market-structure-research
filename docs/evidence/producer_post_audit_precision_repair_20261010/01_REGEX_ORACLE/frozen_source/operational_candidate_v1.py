@@ -27,23 +27,22 @@ def compute(native_rows, core_rows, membership_rows, *, trade_date, root, branch
         current[row['security_id']] = dict(row, fields={k:dict(v,
             quality='ACCEPTED' if v.get('quality_state')=='OBSERVED' else 'UNKNOWN')
             for k,v in row['fields'].items()})
-        # The identifier predicate can independently be false. This is
+        # Exact frozen identifier predicate can independently be false. This is
         # a research calculation certificate, not accepted A05 provenance.
         from .legacy_valid_member_a05_v1 import exact_value
-        identifier_matches = re.fullmatch(r'(SH|SZ|BJ)\.\d{6}', row.get('source_security_key') or '')
+        identifier_matches = re.fullmatch(r'(SH|SZ|BJ)\\.\\d{6}', row['source_security_key'])
         if identifier_matches is None:
             current[row['security_id']]['legacy_valid_member'] = dict(
                 value=False, quality='ACCEPTED', producer_contract=VERSION,
                 computation_scope='ENGINEERING_EXACT_FALSE_IDENTIFIER_ONLY')
         supplied=(validity_candidates or {}).get(row['security_id'])
         if supplied is not None:
-            if (supplied.get('contract_id') not in ('LEGACY_VALID_MEMBER_DIAGNOSTIC_CORRECTION_V2','LEGACY_VALID_MEMBER_QUALIFICATION_AUDIT_V3')
-                    or supplied.get('T0')!=trade_date or (supplied.get('value') is not None and type(supplied.get('value')) is not bool)
+            if (supplied.get('contract_id')!='LEGACY_VALID_MEMBER_DIAGNOSTIC_CORRECTION_V2'
+                    or supplied.get('T0')!=trade_date or type(supplied.get('value')) is not bool
                     or supplied.get('production') is not False):
                 raise ValueError('VERSIONED_DIAGNOSTIC_VALIDITY_REQUIRED')
-            current[row['security_id']]['legacy_valid_member']=dict(value=supplied['value'],
-                quality='ACCEPTED' if supplied['value'] is not None else 'UNKNOWN',
-                producer_contract=VERSION,computation_scope='VERSIONED_RESEARCH_QUALIFICATION_ONLY')
+            current[row['security_id']]['legacy_valid_member']=dict(value=supplied['value'],quality='ACCEPTED',
+                producer_contract=VERSION,computation_scope='CORRECTED_IDENTIFIER_DIAGNOSTIC_ONLY')
     # Exact legacy prepare expression is frozen, including its current regex.
     # Inputs needed for missing_state are unavailable here: do not substitute
     # "has ret1" or the latest Native ranking flag for valid-member evidence.
@@ -91,7 +90,7 @@ def compute(native_rows, core_rows, membership_rows, *, trade_date, root, branch
             inputs=facts, native_observations={k:v for k,v in native['fields'].items()
                 if k in ('dq5','ret1_median','ret5_median','ret20_median','ma20_width','breadth_delta3')},
             predicates=result['predicates'], ast_digest=ast['ast_digest'],
-            valid_member_caveat='RESEARCH_QUALIFICATION_IS_NOT_A05_FORMAL_ADMISSION',
+            valid_member_caveat='EXACT_FROZEN_REGEX_FALSE_IS_NOT_A05_FORMAL_ADMISSION',
             evidence_class='RECONSTRUCTED_RESEARCH_ONLY', production=False,
             formal_consumer_enabled=False, frozen_invalidation='NO_PRIOR_EPISODE',
             episode_invalidation_contract_id=None, followup_complete='UNKNOWN', scenario='UNKNOWN'))

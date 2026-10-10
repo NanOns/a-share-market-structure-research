@@ -1,0 +1,93 @@
+{
+  "contract": "R3_DEEPENING_ACTUAL_CLOUD_DELIVERY_V1",
+  "observed_at": "2026-10-10T03:24:13.002439+00:00",
+  "BASE_SHA": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+  "RESULT_SHA": "8b65c288e4905ec81f3aab5eaa3306578b145400",
+  "RESULT_CODE_SHA": "95ef036547960d1e04710ea1f4fd507d2cc6fe2a",
+  "branch": "codex/v4-fp14-r2-repair",
+  "remote_result_sha": "8b65c288e4905ec81f3aab5eaa3306578b145400",
+  "report_matches_result_git_blob": true,
+  "files": [
+    {
+      "file_id": "1RDc0CDk7dBHZjN1M0_4A8GlB4hV0y8hE",
+      "url": "https://drive.google.com/file/d/1RDc0CDk7dBHZjN1M0_4A8GlB4hV0y8hE/view?usp=drivesdk",
+      "folder_id": "1ijwJxkUpl7Vr-PlucOMf59xhxUXKEbbD",
+      "local": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/DEEPENING_RESULT.md",
+        "sha256": "b70b87c98dd4a201b4a74bc9cdd3d094ab9d00076c35b0dc54cf03f7fda5186c",
+        "bytes": 3095
+      },
+      "cloud_readback": {
+        "path": "G:\\codex_tmp\\r3_deepening_cloud_readback_0.md",
+        "sha256": "b70b87c98dd4a201b4a74bc9cdd3d094ab9d00076c35b0dc54cf03f7fda5186c",
+        "bytes": 3095
+      },
+      "cloud_metadata_bytes": 3095,
+      "verification": "ACTUAL_FETCH_STREAM_DOWNLOAD_BYTES_AND_SHA256_MATCH",
+      "status": "PASS"
+    },
+    {
+      "file_id": "1Ged3ZLZBRdxYx5uJl-qQadbs1h0KmKBT",
+      "url": "https://drive.google.com/file/d/1Ged3ZLZBRdxYx5uJl-qQadbs1h0KmKBT/view?usp=drivesdk",
+      "folder_id": "1ijwJxkUpl7Vr-PlucOMf59xhxUXKEbbD",
+      "local": {
+        "path": "G:\\codex_tmp\\V4_R3_DEEPENING_REVIEW_20261010.zip",
+        "sha256": "fe115375deb5ea0e96c7da3a5244636d570f204afb39357f5695a67808b8ddf5",
+        "bytes": 1110409
+      },
+      "cloud_readback": {
+        "path": "G:\\codex_tmp\\r3_deepening_cloud_readback_1.zip",
+        "sha256": "fe115375deb5ea0e96c7da3a5244636d570f204afb39357f5695a67808b8ddf5",
+        "bytes": 1110409
+      },
+      "cloud_metadata_bytes": 1110409,
+      "verification": "ACTUAL_FETCH_STREAM_DOWNLOAD_BYTES_AND_SHA256_MATCH",
+      "status": "PASS"
+    }
+  ],
+  "protected_heads": [
+    {
+      "path": "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json",
+      "sha256": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "bytes": 29799
+    },
+    {
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "bytes": 16890
+    }
+  ],
+  "independent_offline_runs": [
+    {
+      "command": [
+        "E:\\python\\python.exe",
+        "G:\\codex_tmp\\test_temp\\r3_deepening_offline_1791602552553266300\\docs\\evidence\\v4_immediate_r3_20261010\\11_DEEPENING\\AMOUNT_A_BOUNDARY_ORACLE.py"
+      ],
+      "exit_code": 0,
+      "checks": 112,
+      "stdout": "{\"checks\": 112, \"errors\": 0}",
+      "oracle_sha256": "8783d0ee07f25048f5cc046d195926e6fcc8e8176241b16a80e1c125f29aeb6c",
+      "input_sha256": "9d936b0dea3baaa80adc9cf7bf9d569a32181312d41591521cbe225f4570732b"
+    },
+    {
+      "command": [
+        "E:\\python\\python.exe",
+        "G:\\codex_tmp\\test_temp\\r3_deepening_offline_1791602552553266300\\docs\\evidence\\v4_immediate_r3_20261010\\11_DEEPENING\\EXACT_QUALITY_ORACLE.py"
+      ],
+      "exit_code": 0,
+      "checks": 325,
+      "stdout": "{\"checks\": 325, \"errors\": []}",
+      "oracle_sha256": "808132c362c64dc2994a3b50a1f05a7a7dc71a84f1635e4906489dbe57bc83c1",
+      "input_sha256": "37298e7ee9fb36b054113dfec5204388441f97cbe10bd00f93c2532d0313265e"
+    }
+  ],
+  "acceptance": "ENGINEERING_PASS_SCOPED_EXACT_FORMAL_GAPS_OPEN",
+  "EXTERNAL_RECHECK_REQUESTED": true,
+  "EXTERNAL_ACCEPTANCE_PASS": false,
+  "user_exclusions": [
+    "BSE26",
+    "SZ.001235 user-reported delisted excluded this round"
+  ],
+  "production_loading": "PROD_RESTART_PENDING",
+  "receipt_commit_follows_result": true
+}

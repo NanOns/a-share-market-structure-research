@@ -1,0 +1,365 @@
+{
+  "families": [
+    {
+      "field": "stock.amount",
+      "formula": "TDX Native RAW amount CNY_YUAN",
+      "window": "T0",
+      "unit": "CNY_YUAN / dimensionless",
+      "adjustment": "RAW amount unchanged by QFQ",
+      "consumer": "core_product_bff_r1 stock profile; confirmation/raw producer",
+      "sources": [
+        {
+          "bytes": 242313,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/raw.jsonl.gz",
+          "sha256": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5"
+        },
+        {
+          "bytes": 19792536,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+          "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+        }
+      ],
+      "states": {
+        "FORMULA_LOGIC": "PASS_SCOPED",
+        "DATED_INPUT": "PASS_SCOPED",
+        "FORMAL_OWNER": "PASS_SCOPED",
+        "API_UI_BINDING": "NOT_TESTED",
+        "HISTORICAL_AS_RECORDED_PIT": "UNKNOWN",
+        "FUTURE_MATURED_OUTCOME": "NOT_TESTED"
+      },
+      "T0": "2026-10-09",
+      "first_available": null,
+      "member_version": "TDX_LATEST_MEMBER_RETRO_V1",
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "supplier_economic_equivalence": "ECONOMIC_EQUIVALENCE_UNPROVEN",
+      "next_action": "Independent source/runtime acceptance; strict H21 remains disabled"
+    },
+    {
+      "field": "stock.amount_ratio20",
+      "formula": "current native amount / fmean prior20 actual native amounts; 21-bar window",
+      "window": "EXACT_PRIOR20_ACTUAL",
+      "unit": "CNY_YUAN / dimensionless",
+      "adjustment": "RAW amount unchanged by QFQ",
+      "consumer": "core_product_bff_r1 stock profile; confirmation/raw producer",
+      "sources": [
+        {
+          "bytes": 242313,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/raw.jsonl.gz",
+          "sha256": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5"
+        },
+        {
+          "bytes": 19792536,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+          "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+        }
+      ],
+      "states": {
+        "FORMULA_LOGIC": "PASS_SCOPED",
+        "DATED_INPUT": "PASS_SCOPED",
+        "FORMAL_OWNER": "PASS_SCOPED",
+        "API_UI_BINDING": "NOT_TESTED",
+        "HISTORICAL_AS_RECORDED_PIT": "UNKNOWN",
+        "FUTURE_MATURED_OUTCOME": "NOT_TESTED"
+      },
+      "T0": "2026-10-09",
+      "first_available": null,
+      "member_version": "TDX_LATEST_MEMBER_RETRO_V1",
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "supplier_economic_equivalence": "ECONOMIC_EQUIVALENCE_UNPROVEN",
+      "next_action": "Independent source/runtime acceptance; strict H21 remains disabled"
+    },
+    {
+      "field": "stock.amr20_mean_prior",
+      "formula": "independent RAW producer current / prior20 RAW mean",
+      "window": "CURRENT / EXACT_PRIOR20",
+      "unit": "CNY_YUAN / dimensionless",
+      "adjustment": "RAW amount unchanged by QFQ",
+      "consumer": "core_product_bff_r1 stock profile; confirmation/raw producer",
+      "sources": [
+        {
+          "path": "src/v4/target_fact_producers_r4.py",
+          "sha256": "e37ea78452a50c368a2b39e2d2cfe78ba1be4dda9127fef232ac871326209258",
+          "bytes": 6426
+        },
+        {
+          "path": "src/workbench_analysis/today_research_factors_v3_3.py",
+          "sha256": "1f466ff5db7251d4e99221046602b9550fa60012e50acc7bac74efd41b35dbb5",
+          "bytes": 14709
+        }
+      ],
+      "states": {
+        "FORMULA_LOGIC": "PASS_SCOPED",
+        "DATED_INPUT": "SOURCE_NOT_PRESENT",
+        "FORMAL_OWNER": "NOT_AUTHORIZED",
+        "API_UI_BINDING": "NOT_TESTED",
+        "HISTORICAL_AS_RECORDED_PIT": "UNKNOWN",
+        "FUTURE_MATURED_OUTCOME": "NOT_TESTED"
+      },
+      "T0": "2026-10-09",
+      "first_available": null,
+      "member_version": "TDX_LATEST_MEMBER_RETRO_V1",
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "supplier_economic_equivalence": "ECONOMIC_EQUIVALENCE_UNPROVEN",
+      "next_action": "Independent source/runtime acceptance; strict H21 remains disabled",
+      "current_source_verification": "NOT_TESTED; no expansion from stock ratio spot to AMR owner"
+    },
+    {
+      "field": "sector.participation_proxy",
+      "formula": "median known member stock amount_ratio20; unique dated members",
+      "window": "stock prior20 ratios at T0",
+      "unit": "dimensionless",
+      "adjustment": "RAW amount ratios",
+      "consumer": "BFF sector table/detail",
+      "sources": [
+        {
+          "bytes": 1710140,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/native.jsonl.gz",
+          "sha256": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85"
+        },
+        {
+          "bytes": 19792536,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+          "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+        }
+      ],
+      "states": {
+        "FORMULA_LOGIC": "PASS_SCOPED",
+        "DATED_INPUT": "PASS_SCOPED",
+        "FORMAL_OWNER": "PASS_SCOPED",
+        "API_UI_BINDING": "NOT_TESTED",
+        "HISTORICAL_AS_RECORDED_PIT": "UNKNOWN",
+        "FUTURE_MATURED_OUTCOME": "NOT_TESTED"
+      },
+      "T0": "2026-10-09",
+      "first_available": null,
+      "member_version": "TDX_LATEST_MEMBER_RETRO_V1",
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "supplier_economic_equivalence": "ECONOMIC_EQUIVALENCE_UNPROVEN",
+      "next_action": "Independent source/runtime acceptance; strict H21 remains disabled"
+    },
+    {
+      "field": "sector.Amount A",
+      "formula": "H21 common valid members: sum RAW T / mean prior20 daily sums",
+      "window": [
+        "2026-09-01",
+        "2026-09-02",
+        "2026-09-03",
+        "2026-09-04",
+        "2026-09-07",
+        "2026-09-08",
+        "2026-09-09",
+        "2026-09-10",
+        "2026-09-11",
+        "2026-09-14",
+        "2026-09-15",
+        "2026-09-16",
+        "2026-09-17",
+        "2026-09-18",
+        "2026-09-21",
+        "2026-09-22",
+        "2026-09-23",
+        "2026-09-24",
+        "2026-09-28",
+        "2026-09-29",
+        "2026-09-30"
+      ],
+      "unit": "dimensionless; sums CNY_YUAN",
+      "adjustment": "RAW only; confirmed suspended zero else UNKNOWN",
+      "consumer": "formal disabled; never substitute stock ratio or proxy",
+      "sources": [
+        {
+          "path": "src/workbench_analysis/amount_a_go_forward_r3.py",
+          "sha256": "4e63721988fb6c363825a1f370f6f8da8b2932b2dd6d26f61118b3ef50f85a17",
+          "bytes": 13276
+        }
+      ],
+      "states": {
+        "FORMULA_LOGIC": "PASS_SCOPED",
+        "DATED_INPUT": "SOURCE_NOT_PRESENT",
+        "FORMAL_OWNER": "NOT_AUTHORIZED",
+        "API_UI_BINDING": "NOT_TESTED",
+        "HISTORICAL_AS_RECORDED_PIT": "UNKNOWN",
+        "FUTURE_MATURED_OUTCOME": "NOT_TESTED"
+      },
+      "T0": "2026-10-09",
+      "first_available": null,
+      "member_version": "TDX_LATEST_MEMBER_RETRO_V1",
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "supplier_economic_equivalence": "ECONOMIC_EQUIVALENCE_UNPROVEN",
+      "next_action": "Independent source/runtime acceptance; strict H21 remains disabled"
+    },
+    {
+      "field": "market.total_amount",
+      "formula": "sum unique actual T0 RAW amount; no flattened sectors",
+      "window": "T0",
+      "unit": "CNY_YUAN API; CNY_YI display /1e8",
+      "adjustment": "RAW only",
+      "consumer": "market breadth BFF/UI",
+      "sources": [
+        {
+          "bytes": 242313,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/raw.jsonl.gz",
+          "sha256": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5"
+        },
+        {
+          "bytes": 5925,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/market_owner_candidate_v2.json",
+          "sha256": "327c4d3dfbdf6a20219a14a86c507d413933da3ebaba39bc708f1bfcdb7a8146"
+        }
+      ],
+      "states": {
+        "FORMULA_LOGIC": "PASS_SCOPED",
+        "DATED_INPUT": "PASS_SCOPED",
+        "FORMAL_OWNER": "PASS_SCOPED",
+        "API_UI_BINDING": "NOT_TESTED",
+        "HISTORICAL_AS_RECORDED_PIT": "UNKNOWN",
+        "FUTURE_MATURED_OUTCOME": "NOT_TESTED"
+      },
+      "T0": "2026-10-09",
+      "first_available": null,
+      "member_version": "TDX_LATEST_MEMBER_RETRO_V1",
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "supplier_economic_equivalence": "ECONOMIC_EQUIVALENCE_UNPROVEN",
+      "next_action": "Independent source/runtime acceptance; strict H21 remains disabled"
+    }
+  ],
+  "prior_api_bindings": {
+    "stock": {
+      "raw": {
+        "amount": 385869024.0,
+        "close": 97.55,
+        "high": 106.28,
+        "low": 93.5,
+        "open": 106.27,
+        "security_id": "SEC-C08B6C24E4F39D8E85C03F8588661538",
+        "trade_date": "2026-10-09",
+        "volume": 3913328
+      },
+      "amount": {
+        "value": 385869024.0,
+        "quality": "KNOWN",
+        "reason": null,
+        "source_digest": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5",
+        "source_field": "amount",
+        "source_contract_id": null,
+        "parameter_set_id": null,
+        "source_as_of": "2026-10-09",
+        "unit": "CNY",
+        "denominator": null,
+        "window": null,
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION"
+      },
+      "ratio20": {
+        "value": 0.7523601562898413,
+        "quality": "OBSERVED",
+        "reason": null,
+        "source_digest": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270",
+        "source_field": "fields.amount_ratio20",
+        "source_contract_id": "CORE_FACTOR_V1",
+        "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+        "source_as_of": "2026-10-09",
+        "unit": "ratio",
+        "denominator": null,
+        "window": "cd6adee7c62112f8364e929e5f0c6ad59e6e0d71a3e660cfd6ba73c25f4ecc12",
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "window_start_trade_date": "2026-09-03",
+        "window_end_trade_date": "2026-10-09",
+        "actual_count": 21,
+        "calendar_span": 21,
+        "suspended_count": 0,
+        "contract_id": "CORE_FACTOR_V1",
+        "input_digest": "7394c141821ec708db716fb874d9193aceb99bf2c55be0d9917f0ffd25f55524",
+        "output_digest": "c89a6680b108d34287f7f4e0d4de90047ff0e5cc12550d1a678a87c413da5c94"
+      }
+    },
+    "sector": {
+      "sector_id": "INDUSTRY:T0706",
+      "participation_proxy": {
+        "value": 1.1089917998211334,
+        "quality": "PROXY_RECONSTRUCTED",
+        "reason": null,
+        "source_digest": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85",
+        "source_field": "fields.participation_proxy",
+        "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+        "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+        "source_as_of": "2026-10-09",
+        "unit": "ratio_or_percentile_points_as_field_contract",
+        "denominator": null,
+        "window": null,
+        "adjustment_basis": null,
+        "computation_domain": "V4_08_SECTOR_NATIVE_V1"
+      },
+      "source": {
+        "bytes": 1710140,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/native.jsonl.gz",
+        "sha256": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85"
+      },
+      "is_Amount_A": false
+    },
+    "market": {
+      "data": {
+        "actual_quote_count": 5210,
+        "amount_cny": 1900364743745.5,
+        "definition": "ret1 in native T0 QFQ coordinate; actual T0 bar required",
+        "denominator": 5224,
+        "down": 2107,
+        "flat": 113,
+        "unknown": 15,
+        "up": 2989
+      },
+      "source": {
+        "core": {
+          "bytes": 19792536,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+          "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+        },
+        "history": {
+          "bytes": 67380907,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/history.jsonl.gz",
+          "sha256": "1297fb01a999165f117afec1660cbb2549366f51030ecf09ba237b9e88607b24"
+        },
+        "limits_0": {
+          "bytes": 257002,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/daily_price_limits_v1.jsonl.gz",
+          "sha256": "446ff3b24cdb6e9ee80819c03938a43607049a69c61d036d885b2e3e407f32d5"
+        },
+        "limits_1": {
+          "bytes": 256491,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-08/daily_price_limits_v1.jsonl.gz",
+          "sha256": "faf73305462a7deee91a83e278be54b6d76f57a9f85330310dc66960ac3af317"
+        },
+        "market": {
+          "bytes": 5925,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/market_owner_candidate_v2.json",
+          "sha256": "327c4d3dfbdf6a20219a14a86c507d413933da3ebaba39bc708f1bfcdb7a8146"
+        },
+        "names": {
+          "bytes": 1355970,
+          "path": "data/v4/display_names/a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f/names.json",
+          "sha256": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+        },
+        "package": {
+          "bytes": 551726664,
+          "path": "data/v4/dynamic_daily_sources/tdx/20261009/sha256-635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6/hsjday.zip",
+          "sha256": "635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6"
+        },
+        "raw": {
+          "bytes": 242313,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/raw.jsonl.gz",
+          "sha256": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5"
+        }
+      },
+      "is_Amount_A": false
+    },
+    "formal_Amount_A": {
+      "read_domain": "data/v4/a04_go_forward_r3",
+      "status": "H21_OBSERVATION_GAP",
+      "production_consumer_enabled": false
+    }
+  },
+  "formal_consumer_enabled": false,
+  "source_authority": "TDX_NATIVE_RAW_AMOUNT",
+  "representation_reused": "14292 DIRECT_BINARY32 / 995 DECIMAL_EQUAL / 345 HALF_UP_BINARY32; NOT ECONOMIC EQUIVALENCE"
+}

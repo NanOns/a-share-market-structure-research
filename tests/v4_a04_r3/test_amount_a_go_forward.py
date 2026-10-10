@@ -60,6 +60,10 @@ def test_no_twenty_rows_backfill_for_missing_market_session():
     x=calculate_sector_amount(**args)
     assert removed in x["missing_accepted_membership_sessions"] and len(x["h21_sessions"])==21
     assert x["amount_a_value"] is None
+    assert x['comparable_member_count'] is None and x['coverage'] is None
+    assert x['window_coverage'] is None and x['members_quality']=='UNKNOWN'
+    assert x['comparable_members'] is None and x['current_only_members'] is None
+    assert x['observed_membership_session_count']==20
 
 
 def test_namespace_excludes_stock_amr_and_ordinary_amount():

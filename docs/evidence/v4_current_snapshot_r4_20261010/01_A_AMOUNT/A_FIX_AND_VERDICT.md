@@ -1,0 +1,5 @@
+# Amount 定点结论
+
+缺成员会话时旧代码把 comparable_member_count/coverage 显示为0；已修为null并记录 observed_session_count。原缺20会话是历史事实边界，并非继续测试即可恢复。当前RAW市场总额、400板块参与代理及股票源映射独立核对见diff；没有错误消费者替换证据，保留原TDX Native主权威。
+
+AMOUNT_ENGINEERING_AND_PROVENANCE_AUDIT_PASS_SCOPED；FORMAL_H21_BLOCKED_HISTORICAL_EVIDENCE。经济口径继续 ECONOMIC_EQUIVALENCE_UNPROVEN，跨模块 AUD_AMOUNT_A_06 独立保持OPEN。新增源原件或正式首获链出现前门保持关闭；远程原件未查范围如实列明。

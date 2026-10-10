@@ -7,7 +7,7 @@ from hashlib import sha256
 import json
 CONTRACT='VALIDATION_COHORT_READ_R3_V1'
 KEY=('model_contract_id','state_lineage_id','entity_type','entity_id','episode_id','event_type','T0')
-REQUIRED=KEY+('publication_id','frozen_signal_version','eligible_at_T0','asof_first_available','benchmark','no_lookahead','evidence_class','cohort_namespace')
+REQUIRED=KEY+('publication_id','frozen_signal_version','frozen_at_T0','eligible_at_T0','asof_first_available','benchmark','no_lookahead','evidence_class','cohort_namespace')
 def instant(s):
     d=datetime.fromisoformat(s.replace('Z','+00:00'))
     if d.tzinfo is None:raise ValueError('AWARE_FIRST_AVAILABLE_REQUIRED')
@@ -20,6 +20,9 @@ def validate_frozen(row,*,cutoff,trade_date):
     if row['T0']>trade_date:raise ValueError('FUTURE_T0_FORBIDDEN')
     if row['evidence_class']!='PIT_OBSERVED' or row['cohort_namespace'] not in ('SHADOW','PRODUCTION'):raise ValueError('NO_ASOF_ENROLLMENT')
     if row['no_lookahead'] is not True or row['eligible_at_T0'] is not True:raise ValueError('INELIGIBLE_OR_LOOKAHEAD')
+    frozen=instant(row['frozen_at_T0'])
+    if frozen.date().isoformat()!=row['T0'] or frozen>instant(cutoff):raise ValueError('INVALID_T0_FREEZE_CUTOFF')
+    if instant(row['asof_first_available'])>frozen:raise ValueError('FIRST_AVAILABLE_AFTER_T0_FREEZE')
     if instant(row['asof_first_available'])>instant(cutoff):raise ValueError('FUTURE_FIRST_AVAILABLE')
     if row.get('qualification_source') in ('Focus','UI Top-K','Forward outcome','FEP prediction') or row.get('future_outcome_in_prediction'):raise ValueError('FORBIDDEN_FEEDBACK')
     identity=enrollment_identity(row)
@@ -34,7 +37,7 @@ def maturity_schedule(t0,sessions,cutoff_date,horizons=(1,3,5)):
         result[n]=dict(due_date=due,status='CALENDAR_HORIZON_UNAVAILABLE' if due is None else 'PENDING' if due>cutoff_date else 'DUE_REQUIRES_SETTLEMENT_OWNER')
     return result
 def read_statistics(owner,*,cutoff,trade_date):
-    if owner is None:return dict(contract_id=CONTRACT,status='NO_AUTHORIZED_COHORT_OWNER',items=[],observed_count=0,matured_count=0,write_authorized=False)
+    if owner is None:return dict(contract_id=CONTRACT,status='NO_AUTHORIZED_COHORT_OWNER',items=[],observed_count=None,matured_count=None,write_authorized=False)
     if owner.get('authorized_read') is not True:raise ValueError('COHORT_READ_PERMISSION_MISSING')
     seen={};items=[]
     for row in owner['enrollments']:

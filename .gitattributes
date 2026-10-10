@@ -388,3 +388,15 @@ scripts/*r43*.py -text -whitespace
 config/v4_r43_corrected_owner_replay_v3.json -text
 config/v4_tdx_latest_member_retro_sector_r43_v1.json -text
 config/v4_dated_operational_reconstructed_publication_v1.json -text
+
+# This scope's receipts bind exact local bytes, including synthetic raw originals.
+docs/evidence/next_stage_after_audit_r1_20261010/** -text -whitespace
+src/workbench_analysis/state_publisher_bridge_v1.py -text whitespace=cr-at-eol
+src/workbench_analysis/next_t0_identity_preflight_v1.py -text whitespace=cr-at-eol
+src/workbench_analysis/operational_daily_executor_v1.py -text whitespace=cr-at-eol
+src/sector/episode_genesis_candidate_v2.py -text whitespace=cr-at-eol
+tests/test_state_publisher_bridge_v1.py -text whitespace=cr-at-eol
+tests/test_next_t0_old_identity_preflight.py -text whitespace=cr-at-eol
+tests/test_next_stage_c_episode_genesis.py -text whitespace=cr-at-eol
+tools/next_stage_c_oracle.py -text whitespace=cr-at-eol
+scripts/audit_state_bridge_a_v1.py -text whitespace=cr-at-eol

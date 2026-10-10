@@ -1,6 +1,6 @@
 {
   "contract_id": "CORE_ALGO_UI_INDEPENDENT_ORACLE_R1",
-  "checks": 807,
+  "checks": 840,
   "errors": [],
   "results": [
     {
@@ -7096,6 +7096,60 @@
       "passed": true
     },
     {
+      "domain": "FOCUS_PATH",
+      "identity": "5d17082f7ab99f6a3aab88919964e8c803dd75e8e80ab179fc8b821345788491",
+      "field": "return_close",
+      "expected": 0.011088709677419262,
+      "actual": 0.011088709677419355,
+      "delta": 9.367506770274758e-17,
+      "passed": true
+    },
+    {
+      "domain": "FOCUS_PATH",
+      "identity": "5d17082f7ab99f6a3aab88919964e8c803dd75e8e80ab179fc8b821345788491",
+      "field": "mfe",
+      "expected": 0.021169354838709742,
+      "actual": 0.021169354838709676,
+      "delta": -6.591949208711867e-17,
+      "passed": true
+    },
+    {
+      "domain": "FOCUS_PATH",
+      "identity": "5d17082f7ab99f6a3aab88919964e8c803dd75e8e80ab179fc8b821345788491",
+      "field": "mae",
+      "expected": -0.010080645161290258,
+      "actual": -0.010080645161290322,
+      "delta": -6.418476861114186e-17,
+      "passed": true
+    },
+    {
+      "domain": "FOCUS_PATH",
+      "identity": "5d17082f7ab99f6a3aab88919964e8c803dd75e8e80ab179fc8b821345788491",
+      "field": "return_close",
+      "expected": -0.0010080645161290036,
+      "actual": -0.0010080645161290322,
+      "delta": -2.862293735361732e-17,
+      "passed": true
+    },
+    {
+      "domain": "FOCUS_PATH",
+      "identity": "5d17082f7ab99f6a3aab88919964e8c803dd75e8e80ab179fc8b821345788491",
+      "field": "mfe",
+      "expected": 0.05040322580645151,
+      "actual": 0.05040322580645161,
+      "delta": 9.71445146547012e-17,
+      "passed": true
+    },
+    {
+      "domain": "FOCUS_PATH",
+      "identity": "5d17082f7ab99f6a3aab88919964e8c803dd75e8e80ab179fc8b821345788491",
+      "field": "mae",
+      "expected": -0.010080645161290258,
+      "actual": -0.010080645161290322,
+      "delta": -6.418476861114186e-17,
+      "passed": true
+    },
+    {
       "domain": "FOCUS",
       "identity": "e31cb747c4a9b938234a4a477fc00507ac9129d877ae17f078e0fdab27aecea8",
       "field": "observation_uniqueness",
@@ -7126,6 +7180,249 @@
       "domain": "FOCUS",
       "identity": "e31cb747c4a9b938234a4a477fc00507ac9129d877ae17f078e0fdab27aecea8",
       "field": "maturity",
+      "expected": true,
+      "actual": true,
+      "delta": 0,
+      "passed": true
+    },
+    {
+      "domain": "FOCUS_PATH",
+      "identity": "e31cb747c4a9b938234a4a477fc00507ac9129d877ae17f078e0fdab27aecea8",
+      "field": "return_close",
+      "expected": -0.006901840490797562,
+      "actual": -0.006901840490797546,
+      "delta": 1.5612511283791264e-17,
+      "passed": true
+    },
+    {
+      "domain": "FOCUS_PATH",
+      "identity": "e31cb747c4a9b938234a4a477fc00507ac9129d877ae17f078e0fdab27aecea8",
+      "field": "mfe",
+      "expected": 0.006134969325153339,
+      "actual": 0.006134969325153374,
+      "delta": 3.5561831257524545e-17,
+      "passed": true
+    },
+    {
+      "domain": "FOCUS_PATH",
+      "identity": "e31cb747c4a9b938234a4a477fc00507ac9129d877ae17f078e0fdab27aecea8",
+      "field": "mae",
+      "expected": -0.016871165644171682,
+      "actual": -0.01687116564417178,
+      "delta": -9.71445146547012e-17,
+      "passed": true
+    },
+    {
+      "domain": "FOCUS_PATH",
+      "identity": "e31cb747c4a9b938234a4a477fc00507ac9129d877ae17f078e0fdab27aecea8",
+      "field": "return_close",
+      "expected": 0.01917177914110435,
+      "actual": 0.019171779141104295,
+      "delta": -5.551115123125783e-17,
+      "passed": true
+    },
+    {
+      "domain": "FOCUS_PATH",
+      "identity": "e31cb747c4a9b938234a4a477fc00507ac9129d877ae17f078e0fdab27aecea8",
+      "field": "mfe",
+      "expected": 0.026073619631902023,
+      "actual": 0.02607361963190184,
+      "delta": -1.8388068845354155e-16,
+      "passed": true
+    },
+    {
+      "domain": "FOCUS_PATH",
+      "identity": "e31cb747c4a9b938234a4a477fc00507ac9129d877ae17f078e0fdab27aecea8",
+      "field": "mae",
+      "expected": -0.016871165644171682,
+      "actual": -0.01687116564417178,
+      "delta": -9.71445146547012e-17,
+      "passed": true
+    },
+    {
+      "domain": "MARKET",
+      "identity": "2026-10-09",
+      "field": "limit_coverage",
+      "expected": 0.9952143950995406,
+      "actual": 0.9952143950995406,
+      "delta": 0.0,
+      "passed": true
+    },
+    {
+      "domain": "MARKET",
+      "identity": "2026-10-09",
+      "field": "participation_axis",
+      "expected": "NORMAL",
+      "actual": "NORMAL",
+      "delta": null,
+      "passed": true
+    },
+    {
+      "domain": "MARKET",
+      "identity": "2026-10-09",
+      "field": "stress_level",
+      "expected": "LOW",
+      "actual": "LOW",
+      "delta": null,
+      "passed": true
+    },
+    {
+      "domain": "MARKET",
+      "identity": "2026-10-09",
+      "field": "stress_change",
+      "expected": "DECLINING",
+      "actual": "DECLINING",
+      "delta": null,
+      "passed": true
+    },
+    {
+      "domain": "SIGNAL",
+      "identity": "SEC-C08B6C24E4F39D8E85C03F8588661538",
+      "field": "invalidation",
+      "expected": "FALSE",
+      "actual": "FALSE",
+      "delta": null,
+      "passed": true
+    },
+    {
+      "domain": "SIGNAL",
+      "identity": "SEC-C08B6C24E4F39D8E85C03F8588661538",
+      "field": "no_future_available",
+      "expected": true,
+      "actual": true,
+      "delta": 0,
+      "passed": true
+    },
+    {
+      "domain": "SIGNAL",
+      "identity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "fresh_eligible",
+      "expected": "FRESH",
+      "actual": "FRESH",
+      "delta": null,
+      "passed": true
+    },
+    {
+      "domain": "SIGNAL",
+      "identity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "valid_eligible",
+      "expected": "VALID",
+      "actual": "VALID",
+      "delta": null,
+      "passed": true
+    },
+    {
+      "domain": "SIGNAL",
+      "identity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "no_future_available",
+      "expected": true,
+      "actual": true,
+      "delta": 0,
+      "passed": true
+    },
+    {
+      "domain": "SIGNAL",
+      "identity": "SEC-05AE635158186C8506EB3133A0E94B5C",
+      "field": "fresh_eligible",
+      "expected": "FRESH",
+      "actual": "FRESH",
+      "delta": null,
+      "passed": true
+    },
+    {
+      "domain": "SIGNAL",
+      "identity": "SEC-05AE635158186C8506EB3133A0E94B5C",
+      "field": "valid_eligible",
+      "expected": "VALID",
+      "actual": "VALID",
+      "delta": null,
+      "passed": true
+    },
+    {
+      "domain": "SIGNAL",
+      "identity": "SEC-05AE635158186C8506EB3133A0E94B5C",
+      "field": "no_future_available",
+      "expected": true,
+      "actual": true,
+      "delta": 0,
+      "passed": true
+    },
+    {
+      "domain": "SIGNAL",
+      "identity": "SEC-0642DBA1762D24401BFD88068AB919A9",
+      "field": "fresh_eligible",
+      "expected": "FRESH",
+      "actual": "FRESH",
+      "delta": null,
+      "passed": true
+    },
+    {
+      "domain": "SIGNAL",
+      "identity": "SEC-0642DBA1762D24401BFD88068AB919A9",
+      "field": "valid_eligible",
+      "expected": "VALID",
+      "actual": "VALID",
+      "delta": null,
+      "passed": true
+    },
+    {
+      "domain": "SIGNAL",
+      "identity": "SEC-0642DBA1762D24401BFD88068AB919A9",
+      "field": "no_future_available",
+      "expected": true,
+      "actual": true,
+      "delta": 0,
+      "passed": true
+    },
+    {
+      "domain": "SIGNAL",
+      "identity": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+      "field": "stale_fail_closed",
+      "expected": "UNKNOWN",
+      "actual": "UNKNOWN",
+      "delta": null,
+      "passed": true
+    },
+    {
+      "domain": "SIGNAL",
+      "identity": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+      "field": "no_future_available",
+      "expected": true,
+      "actual": true,
+      "delta": 0,
+      "passed": true
+    },
+    {
+      "domain": "SIGNAL",
+      "identity": "SEC-002610CF9EBB4227722834AADA8F757E",
+      "field": "stale_fail_closed",
+      "expected": "UNKNOWN",
+      "actual": "UNKNOWN",
+      "delta": null,
+      "passed": true
+    },
+    {
+      "domain": "SIGNAL",
+      "identity": "SEC-002610CF9EBB4227722834AADA8F757E",
+      "field": "no_future_available",
+      "expected": true,
+      "actual": true,
+      "delta": 0,
+      "passed": true
+    },
+    {
+      "domain": "SIGNAL",
+      "identity": "SEC-002E8949D07D2829AB967520C65C0845",
+      "field": "stale_fail_closed",
+      "expected": "UNKNOWN",
+      "actual": "UNKNOWN",
+      "delta": null,
+      "passed": true
+    },
+    {
+      "domain": "SIGNAL",
+      "identity": "SEC-002E8949D07D2829AB967520C65C0845",
+      "field": "no_future_available",
       "expected": true,
       "actual": true,
       "delta": 0,

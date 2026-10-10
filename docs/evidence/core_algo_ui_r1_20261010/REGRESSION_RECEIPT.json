@@ -1,0 +1,12 @@
+{
+  "command": "python -B -m pytest tests/test_core_product_read_r1.py tests/test_operational_gap_bff_v2.py tests/test_operational_runtime_acceptance_v2.py tests/test_fp07_stock.py tests/test_fp08_focus.py tests/test_fp05_home.py -q --basetemp G:/codex_tmp/test_temp/core_product_r1_final -o cache_dir=G:/codex_tmp/pytest_cache/core_product_r1",
+  "exit_code": 0,
+  "passed": 17,
+  "http_audit": {
+    "routes": 38,
+    "charts": 6,
+    "members": 322,
+    "errors": []
+  },
+  "fixture_scope": "unit contract negatives only, not production acceptance"
+}

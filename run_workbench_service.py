@@ -12,7 +12,7 @@ if __name__=='__main__':
   if not authority_path.is_file():raise SystemExit('V4_RUNTIME_AUTHORITY_MISSING: fail closed')
   authority=json.loads(authority_path.read_bytes())
   if authority.get('activation_status')!='ACTIVE' and not a.v4_default:raise SystemExit('V4_CUTOVER_GATE_NOT_ACTIVE: use explicit candidate entry')
-  from workbench_service.operational_daily_server_v1 import serve_v4
+  from workbench_service.core_product_server_r1 import serve_v4
   serve_v4(ROOT,a.host,a.port)
   raise SystemExit(0)
  from workbench_service.app import serve

@@ -13,7 +13,7 @@
         "oracle/OUTPUT.json",
         "CORE_ALGO_UI_NUMERIC_MINIPACK.zip"
       ],
-      "acceptance": "ALGORITHM_SCOPED_PASS_807_CHECKS; COMPREHENSIVE_MATRIX_IN_PROGRESS",
+      "acceptance": "ALGORITHM_SCOPED_PASS_840_CHECKS; FULL_REDUCERS_NOT_VERIFIABLE",
       "next_stage": "BFF-03/UI-04 Round B targeted real-owner repair"
     },
     {
@@ -22,8 +22,17 @@
       "evidence": [
         "API_FIELD_CONTRACT_AUDIT.json"
       ],
-      "acceptance": "IN_PROGRESS",
+      "acceptance": "SCOPED_REPAIR_PASS_38_ROUTES_6_CHARTS_17_TESTS; PRODUCT_FULL_CONTRACT_OPEN",
       "next_stage": "P1 domain inventory then dual-viewport IAB QA"
+    },
+    {
+      "stage": "Round C P1",
+      "contract": "TASK_CONTRACT_R1 sections 6-8; REV2 62F-69,81.2",
+      "evidence": [
+        "API_FIELD_CONTRACT_AUDIT.json"
+      ],
+      "acceptance": "CORRECTED_COMPARE_AND_DATED_DIAGNOSTICS_SCOPED; FORWARD_COHORT_FEP_STRICT_PIT_SOURCE_NOT_PRESENT",
+      "next_stage": "Round D browser QA and external audit"
     }
   ]
 }

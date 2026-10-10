@@ -3,7 +3,7 @@ from pathlib import Path
 from collections import Counter
 from statistics import median
 from datetime import date
-import gzip, hashlib, json, os, zipfile
+import gzip, hashlib, json, os, zipfile, sqlite3
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'docs/evidence/core_algo_ui_r1_20261010'
@@ -65,6 +65,30 @@ def verify(pack):
         for outcome in episode['outcomes']:
             if outcome['outcome_status'] == 'OBSERVED':
                 check('FOCUS', episode['episode_id'], 'maturity', True, bool(outcome['target_trade_date']) and outcome['target_trade_date'] <= pack['T0'])
+        for outcome in episode['outcomes']:
+            if outcome['outcome_status']!='OBSERVED':continue
+            anchor=next(a for a in episode['anchors'] if a['anchor_id']==outcome['anchor_id'])
+            bars=[b for b in episode.get('actual_bars',[]) if anchor['trade_date']<=b['trade_date']<=outcome['target_trade_date']]
+            if not bars or len({(b['qfq_mul'],b['qfq_add']) for b in bars})!=1:continue
+            ps=[b['qfq_ohlc'] for b in bars];base=ps[0][3]
+            expected={'return_close':ps[-1][3]/base-1,'mfe':max(p[1] for p in ps)/base-1,'mae':min(p[2] for p in ps)/base-1}
+            for k,v in expected.items():check('FOCUS_PATH',episode['episode_id'],k,v,float(outcome['metrics'][k]))
+    m=pack.get('market_arithmetic')
+    if m:
+        ratio=median(m['amount_ratios']);known=m['limits'];prior=m['prior_limits'];common=set(known)&set(prior)
+        coverage=len(known)/m['universe_count'];stress=sum(v=='LIMIT_DOWN' for v in known.values())/len(known)
+        check('MARKET',pack['T0'],'limit_coverage',coverage,m['actual']['daily_limit_coverage'])
+        check('MARKET',pack['T0'],'participation_axis','EXPANDING' if ratio>=1.2 else 'THIN' if ratio<.8 else 'NORMAL',m['actual']['axes']['participation_axis'])
+        check('MARKET',pack['T0'],'stress_level',None if coverage<.8 else 'HIGH' if stress>=.05 else 'ELEVATED' if stress>=.01 else 'LOW',m['actual']['axes']['stress_level'])
+        a=sum(known[s]=='LIMIT_DOWN' for s in common);b=sum(prior[s]=='LIMIT_DOWN' for s in common)
+        check('MARKET',pack['T0'],'stress_change','RISING' if a>b else 'DECLINING' if a<b else 'STABLE',m['actual']['axes']['stress_change'])
+    for s in pack.get('signal_invariants',[]):
+        if s['state_freshness']=='STALE':check('SIGNAL',s['entity_id'],'stale_fail_closed','UNKNOWN',s['final_eligibility'])
+        if s['validity']=='INVALIDATED':check('SIGNAL',s['entity_id'],'invalidation','FALSE',s['final_eligibility'])
+        if s['final_eligibility']=='TRUE':
+            check('SIGNAL',s['entity_id'],'fresh_eligible','FRESH',s['state_freshness'])
+            check('SIGNAL',s['entity_id'],'valid_eligible','VALID',s['validity'])
+        check('SIGNAL',s['entity_id'],'no_future_available',True,all(p.get('system_available_at') is None or p['system_available_at']<=s['cutoff'] for p in s['input_provenance'].values()))
     for row in pack['market_limits']:
         expected = 'SUSPENDED' if row['close'] is None and row['limit_state']=='SUSPENDED' else 'UNKNOWN' if not row['rule_verified'] else row['limit_state']
         if row['close'] is not None and row['rule_verified'] and row['limit_up_price'] and row['limit_down_price']:
@@ -104,11 +128,23 @@ def main():
         if s['sector_id'] not in ids:continue
         sector_samples.append(dict(sector_id=s['sector_id'],member_count=len(set(s['member_ids'])),member_values=[dict(security_id=sid,**{f'ret{n}':cores.get(sid,{}).get('fields',{}).get(f'ret{n}',{}).get('value') for n in (1,5,20)}) for sid in sorted(set(s['member_ids']))],actual={k:v['value'] for k,v in s['fields'].items()}))
     forward=load(ROOT/refs['forward']['path']); episodes=forward['episodes'][:2]+[e for e in forward['episodes'] if e.get('end_date')][:1]
+    for e in episodes:
+        series=e['observations'][0]['native_core_evidence']['source']['series'];bindings['focus_actual_bars']=series
+        assert sha(ROOT/series['path'])==series['sha256']
+        with sqlite3.connect((ROOT/series['path']).as_uri()+'?mode=ro',uri=True) as db:
+            e['actual_bars']=[json.loads(x[0]) for x in db.execute('SELECT payload FROM bars WHERE security=? ORDER BY day',(e['entity_id'],))]
     limits=load(folder/'owner_v3/owners'/day/'daily_price_limits_v1.jsonl.gz')
+    market=load(ROOT/refs['market']['path']);prior_limits=load(ROOT/market['input_bindings'][-1]['path'])
+    market_arithmetic=dict(universe_count=len(cores),amount_ratios=[r['fields']['amount_ratio20']['value'] for r in cores.values() if r['fields']['amount_ratio20']['value'] is not None],limits={r['security_id']:r['limit_state'] for r in limits if r['limit_state'] in ('LIMIT_UP','LIMIT_DOWN','NOT_LIMIT')},prior_limits={r['security_id']:r['limit_state'] for r in prior_limits if r['limit_state'] in ('LIMIT_UP','LIMIT_DOWN','NOT_LIMIT')},actual=market)
+    signals=load(ROOT/refs['focus']['path']);signals=signals if isinstance(signals,list) else signals['rows'];sample=[]
+    for key in sorted({(r['final_eligibility'],r['state_freshness'],r['validity']) for r in signals}):sample.extend([r for r in signals if (r['final_eligibility'],r['state_freshness'],r['validity'])==key][:3])
+    bindings.update(focus=refs['focus'],market_parameters=dict(path='config/v4_03_parameter_registry_v1.json',sha256=sha(ROOT/'config/v4_03_parameter_registry_v1.json')))
     selected=[]
     for state in sorted({x['limit_state'] for x in limits}):
         selected.extend(dict(x,close=raw.get(x['security_id'],{}).get('close')) for x in [r for r in limits if r['limit_state']==state][:3])
     pack=dict(T0=day,head_sha=sha(ROOT/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'),source_bindings=bindings,stocks=specimens,sectors=sector_samples,episodes=episodes,market_limits=selected,strict_PIT=False,unproven=['RAW_QFQ_EVENT_RECURRENCE_PASS_KEEP_R21','FORWARD_VALIDATION_COHORT_OWNER_SOURCE_NOT_PRESENT','NO_REAL_DELISTED_SAMPLE','ROTATION_FULL_REDUCER_NOT_VERIFIABLE'])
+    pack.update(market_arithmetic=market_arithmetic,signal_invariants=sample)
+    pack['unproven']+=['MARKET_BREADTH_AND_TREND_FULL_PATH_NOT_INDEPENDENTLY_REBUILT','SIGNAL_FULL_DETECTOR_THRESHOLDS_AND_REENTRY_NOT_REBUILT']
     write(OUT/'oracle/INPUT.json',pack); result=verify(pack);write(OUT/'oracle/OUTPUT.json',result)
     print(json.dumps(dict(stocks=len(specimens),sectors=len(sector_samples),episodes=len(episodes),checks=result['checks'],errors=len(result['errors']))))
     return bool(result['errors'])

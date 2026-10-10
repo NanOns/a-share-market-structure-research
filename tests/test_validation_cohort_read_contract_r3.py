@@ -27,3 +27,32 @@ def test_later_read_cannot_backfill_historical_first_availability():
 def test_missing_owner_counts_are_unknown():
     result=read_statistics(None,cutoff='unused',trade_date='2026-09-30')
     assert result['observed_count'] is None and result['matured_count'] is None
+
+@pytest.mark.parametrize('field,value', [('publication_id',''),('publication_id',' '),('frozen_signal_version',None),('benchmark',{}),('benchmark',{'id':''}),('entity_type','FOCUS')])
+def test_r4_empty_contract_identity_denied(field,value):
+    with pytest.raises(ValueError):read([dict(row(),**{field:value})])
+
+def test_r4_caller_boolean_cannot_authorize_owner(tmp_path):
+    import json,hashlib
+    def write(name,value):
+        p=tmp_path/name;p.write_text(json.dumps(value),encoding='utf8')
+        return dict(path=name,sha256=hashlib.sha256(p.read_bytes()).hexdigest())
+    owner=write('owner.json',dict(contract_id=CONTRACT,trade_date='2026-09-30',authorized_read=True,enrollments=[row()]))
+    head=write('head.json',dict(owners={'2026-09-30':{'validation_cohort':owner}}))
+    with pytest.raises(ValueError,match='GRANT_MISSING'):
+        read_authorized_statistics(tmp_path,accepted_head=head,owner_binding=owner,trade_date='2026-09-30')
+
+def test_r4_grant_binds_benchmark_and_version(tmp_path):
+    import json,hashlib
+    def write(name,value):
+        p=tmp_path/name;p.write_text(json.dumps(value),encoding='utf8')
+        return dict(path=name,sha256=hashlib.sha256(p.read_bytes()).hexdigest())
+    owner=write('owner.json',dict(contract_id=CONTRACT,trade_date='2026-09-30',enrollments=[row()]))
+    events=write('events.json',dict(events=[row()]))
+    source=write('source.json',dict(contract_id='COHORT_T0_SOURCE_RECEIPT_R4_V1',publication_id='P1',T0='2026-09-30',evidence_class='PIT_OBSERVED',first_available=row()['asof_first_available'],accepted_at='2026-09-30T15:30:00+08:00',published_at='2026-09-30T15:30:00+08:00',membership_asof='2026-09-30',membership_basis='AS_RECORDED',model_contract_id='M1',events=events))
+    def run(benchmark):
+        grant=write('grant.json',dict(contract_id='VALIDATION_COHORT_READ_GRANT_R4_V1',capability='READ_STATISTICS',authorized=True,owner=owner,trade_date='2026-09-30',read_cutoff='2026-09-30T16:00:00+08:00',benchmark_id=benchmark,frozen_signal_version='V1',source_manifest=source))
+        head=write('head.json',dict(owners={'2026-09-30':{'validation_cohort':owner}},cohort_read_grants={'2026-09-30':grant},cohort_source_manifests={'2026-09-30':source}))
+        return read_authorized_statistics(tmp_path,accepted_head=head,owner_binding=owner,trade_date='2026-09-30')
+    assert run('B1')['observed_count']==1
+    with pytest.raises(ValueError,match='CONTRACT_IDENTITY'):run('WRONG')

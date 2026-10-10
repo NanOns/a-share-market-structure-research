@@ -1,0 +1,233 @@
+{
+  "contract": "R4-C-C03",
+  "evidence_class": "ENGINEERING_SYNTHETIC",
+  "tests": 43,
+  "failures": 0,
+  "errors": 0,
+  "time": "1.625",
+  "testcases": [
+    {
+      "name": "test_idempotent_distinct_events_and_no_source",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_frozen_rewrite_rejected",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_negative_admission[patch0]",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_negative_admission[patch1]",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_negative_admission[patch2]",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_negative_admission[patch3]",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_negative_admission[patch4]",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_negative_admission[patch5]",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_negative_admission[patch6]",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_negative_admission[patch7]",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_negative_admission[patch8]",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_holiday_gap_is_one_session_not_eight_days",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_later_read_cannot_backfill_historical_first_availability",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_missing_owner_counts_are_unknown",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_r4_empty_contract_identity_denied[publication_id-]",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_r4_empty_contract_identity_denied[publication_id- ]",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_r4_empty_contract_identity_denied[frozen_signal_version-None]",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_r4_empty_contract_identity_denied[benchmark-value3]",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_r4_empty_contract_identity_denied[benchmark-value4]",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_r4_empty_contract_identity_denied[entity_type-FOCUS]",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_r4_caller_boolean_cannot_authorize_owner",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_r4_grant_binds_benchmark_and_version",
+      "class_name": "tests.test_validation_cohort_read_contract_r3",
+      "result": "PASS"
+    },
+    {
+      "name": "test_source_denial[patch0]",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_source_denial[patch1]",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_source_denial[patch2]",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_source_denial[patch3]",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_source_denial[patch4]",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_source_denial[patch5]",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_source_denial[patch6]",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_source_denial[patch7]",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_source_denial[patch8]",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_changed_sha_and_stale_token[events.json]",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_changed_sha_and_stale_token[owner.json]",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_changed_sha_and_stale_token[grant.json]",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_changed_sha_and_stale_token[head.json]",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_changed_sha_and_stale_token[source.json]",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_isolated_idempotent_publisher_and_no_head_change",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_production_directory_denied_before_write",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_caller_calendar_cannot_change_due_plan",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_timezone_same_instant_and_distinct_anchors",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_weekend_due_and_unknown_horizon",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_missing_suspension_delisting_keeps_unknown_return[CONFIRMED_SUSPENSION]",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    },
+    {
+      "name": "test_missing_suspension_delisting_keeps_unknown_return[DELISTED]",
+      "class_name": "tests.test_cohort_admission_r4",
+      "result": "PASS"
+    }
+  ],
+  "command": "python -m pytest tests/test_validation_cohort_read_contract_r3.py tests/test_cohort_admission_r4.py -q --basetemp=G:/codex_tmp/test_temp/cohort_r4_final -o cache_dir=G:/codex_tmp/pytest_cache/cohort_r4",
+  "production_enrollment": false,
+  "external_acceptance": false,
+  "existing_forward_settlement_regression": {
+    "command": "python -m pytest tests/test_validation_cohort_read_contract_r3.py tests/test_cohort_admission_r4.py tests/test_forward_r2.py tests/test_settlement_r1r1.py -q --basetemp=G:/codex_tmp/test_temp/cohort_r4_full -o cache_dir=G:/codex_tmp/pytest_cache/cohort_r4",
+    "result": "109 passed in 136.51s",
+    "scope": "Existing Forward/settlement regressions; final calendar patch separately covered by final 43-test receipt"
+  }
+}

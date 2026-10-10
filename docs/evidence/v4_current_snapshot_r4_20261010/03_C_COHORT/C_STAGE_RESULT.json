@@ -1,0 +1,46 @@
+{
+  "contract": "R4-C",
+  "status": "COHORT_ENGINEERING_READY_SCOPED",
+  "dimensions": {
+    "engineering_implemented": true,
+    "current_source_covered": "SCOPED_REAL_EVENT_INVENTORY; NO_LEGAL_ENROLLMENT",
+    "strict_pit_eligible": false,
+    "shadow_permitted": false,
+    "production_permitted": false,
+    "externally_accepted": false
+  },
+  "real_enrollment_gate": "REAL_COHORT_ENROLLMENT_NOT_GRANTED_OPEN",
+  "next_stage": "INDEPENDENT_SOURCE_OWNER_AND_GRANT_ACCEPTANCE",
+  "evidence_sources": [
+    {
+      "path": "src/workbench_analysis/validation_cohort_read_contract_r3.py",
+      "bytes": 9830,
+      "sha256": "a557d0236195a2ab2704db92b3640a0e58731288eb7c68f72e2b66659f2b7267"
+    },
+    {
+      "path": "src/workbench_analysis/v4_15_radar_cohort.py",
+      "bytes": 15444,
+      "sha256": "1897b81d5618d3b077af6d65e77b0df9bc26175b44facfee5dac5021a92dd06e"
+    },
+    {
+      "path": "src/workbench_analysis/v4_15_forward_r2.py",
+      "bytes": 14544,
+      "sha256": "77e4fe4951d94b7e7a7a89cf5b9aeb417c81ef689960677bd65a63089de9792e"
+    },
+    {
+      "path": "src/workbench_analysis/v4_15_settlement.py",
+      "bytes": 23641,
+      "sha256": "b24b31d4670160ca41e620e86ca9b6fa4d393a0112ea4251eda02edb38457697"
+    },
+    {
+      "path": "tests/test_cohort_admission_r4.py",
+      "bytes": 5626,
+      "sha256": "1878b7417f7146610699f14b95416b9bda46ce95321dd154fa532e98b3b4dc0d"
+    },
+    {
+      "path": "tests/test_validation_cohort_read_contract_r3.py",
+      "bytes": 4905,
+      "sha256": "d215dfc8ee02459814c2c5509b58c0989e427ca36058e7c82c981fda15704dd9"
+    }
+  ]
+}

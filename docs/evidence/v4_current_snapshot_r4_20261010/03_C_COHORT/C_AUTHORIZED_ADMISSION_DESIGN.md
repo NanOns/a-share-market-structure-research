@@ -1,0 +1,9 @@
+# R4-C authorized admission candidate
+
+Contract: COHORT_ISOLATED_PUBLISHER_R4_V1. Existing RadarCohortRuntime remains the event/enrollment producer; existing Forward V1.2 owns prices, controls and outcome formulas. The adapter in validation_cohort_read_contract_r3.py reuses v4_14_replay_io.publish for atomic no-clobber publication and v4_15_settlement.due_plan for session maturity.
+
+Production read entry is read_authorized_statistics. Accepted Head binding comes from the trusted API context. It checks the Head-bound owner, explicit exact read grant, source manifest, exact frozen event bytes and source SHA. Publication/model/benchmark/signal version and AS_RECORDED membership-asof must match. Source first_available, accepted_at and published_at cannot exceed T0 freeze. Caller authorized_read=True cannot supply these authorities. A changed Head/grant/source/owner fails digest checks.
+
+Future next legal T0: accepted reducer produces the full eligible/ineligible event ledger, freezes all required fields and first-capture receipt, then requests independent grant/Owner admission. The prepared adapter validates these artifacts, checks frozen-row equality and publishes a content-addressed isolated candidate. Retried identical input is idempotent; conflicting frozen bytes cannot overwrite. Future production activation still requires independent acceptance, publication transaction/outbox wiring and a production WRITE grant; READ_STATISTICS authorizes only isolated preparation here.
+
+Original freezes and event identities are preserved. Corrections belong to appended revision/corrected cohort, never replacement of original T0. Missing calendar horizons remain pending/unknown; due does not mean settled. Suspension/delisting requires existing Forward settlement provenance. This stage creates no Head, production enrollment or outcome.

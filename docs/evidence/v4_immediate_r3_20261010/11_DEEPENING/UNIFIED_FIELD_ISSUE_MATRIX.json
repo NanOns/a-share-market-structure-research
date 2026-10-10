@@ -1,0 +1,1499 @@
+{
+  "fields": [
+    {
+      "issue_id": "R3-DEEP-close",
+      "stage": "P0-ALG/P0-AMOUNT/P0-OWNER",
+      "producer_code": "src/workbench_analysis/r43_owner_replay.py",
+      "algorithm_version": "HASH_BOUND_OWNER_PROJECTION",
+      "exact_input_owner": {
+        "domain": "adjusted",
+        "bytes": 410628,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/adjusted.jsonl.gz",
+        "sha256": "47a22ea9e98f78e3ecfa0eec328c589851a62bc7ce15fa51124ccc967590df9c"
+      },
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_scope": "CORRECTED_LATEST_MEMBER_RETRO_NOT_AS_RECORDED",
+      "window_identity": null,
+      "adjustment": "TDX_NATIVE_AFFINE_QFQ_T0_COORDINATE",
+      "unit": "CNY",
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": {
+        "domain": "adjusted",
+        "bytes": 410628,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/adjusted.jsonl.gz",
+        "sha256": "47a22ea9e98f78e3ecfa0eec328c589851a62bc7ce15fa51124ccc967590df9c"
+      },
+      "expected_field": "close",
+      "actual_field": "close",
+      "BFF_route": "/api/v4/stocks/301628/profile",
+      "UI_component": "stock.js competitive hypotheses evidence",
+      "discrepancy": null,
+      "responsible_layer": "ADAPTER",
+      "current_verdict": "PASS_CURRENT_BINDING",
+      "evidence_path": "docs\\evidence\\v4_immediate_r3_20261010\\11_DEEPENING\\SIX_ENTRY_NUMERIC_SOURCE_BINDINGS.json",
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": "47a22ea9e98f78e3ecfa0eec328c589851a62bc7ce15fa51124ccc967590df9c",
+      "next_action": "Preserve frozen input lineage; future evidence remains separate",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "OWNER_PROJECTION_ONLY",
+        "CURRENT_DATA": "HASH_BOUND",
+        "API_BINDING": "ACTUAL_HTTP_CHECKED",
+        "UI_BEHAVIOR": "ACTUAL_DOM_EVIDENCE_SCOPED",
+        "HISTORICAL_PIT": "NOT_PROVEN",
+        "FUTURE_OUTCOME": "WAIT_REAL_DAY"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-ma20",
+      "stage": "P0-ALG/P0-AMOUNT/P0-OWNER",
+      "producer_code": "src/v4/factors/core.py",
+      "algorithm_version": "CORE_FACTOR_V1",
+      "exact_input_owner": {
+        "domain": "core",
+        "bytes": 19792536,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+        "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+      },
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_scope": "CORRECTED_LATEST_MEMBER_RETRO_NOT_AS_RECORDED",
+      "window_identity": "7cd892dfd3af688cf05080f26e52ac1d3ffbb62e032537b2b68e34c990080804",
+      "adjustment": "TDX_NATIVE_AFFINE_QFQ_T0_COORDINATE",
+      "unit": "adjusted_price",
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": {
+        "domain": "core",
+        "bytes": 19792536,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+        "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+      },
+      "expected_field": "fields.ma20",
+      "actual_field": "fields.ma20",
+      "BFF_route": "/api/v4/stocks/301628/profile",
+      "UI_component": "stock.js competitive hypotheses evidence",
+      "discrepancy": null,
+      "responsible_layer": "ADAPTER",
+      "current_verdict": "PASS_CURRENT_BINDING",
+      "evidence_path": "docs\\evidence\\v4_immediate_r3_20261010\\11_DEEPENING\\SIX_ENTRY_NUMERIC_SOURCE_BINDINGS.json",
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270",
+      "next_action": "Preserve frozen input lineage; future evidence remains separate",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "INDEPENDENT_ORACLE_SCOPED",
+        "CURRENT_DATA": "HASH_BOUND",
+        "API_BINDING": "ACTUAL_HTTP_CHECKED",
+        "UI_BEHAVIOR": "ACTUAL_DOM_EVIDENCE_SCOPED",
+        "HISTORICAL_PIT": "NOT_PROVEN",
+        "FUTURE_OUTCOME": "WAIT_REAL_DAY"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-ret5",
+      "stage": "P0-ALG/P0-AMOUNT/P0-OWNER",
+      "producer_code": "src/v4/factors/core.py",
+      "algorithm_version": "CORE_FACTOR_V1",
+      "exact_input_owner": {
+        "domain": "core",
+        "bytes": 19792536,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+        "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+      },
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_scope": "CORRECTED_LATEST_MEMBER_RETRO_NOT_AS_RECORDED",
+      "window_identity": "9492888e6b4e8556a7d0bcb2b18446c7cb03666287ee5240337563f3d3e55612",
+      "adjustment": "TDX_NATIVE_AFFINE_QFQ_T0_COORDINATE",
+      "unit": "return_fraction",
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": {
+        "domain": "core",
+        "bytes": 19792536,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+        "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+      },
+      "expected_field": "fields.ret5",
+      "actual_field": "fields.ret5",
+      "BFF_route": "/api/v4/stocks/301628/profile",
+      "UI_component": "stock.js competitive hypotheses evidence",
+      "discrepancy": null,
+      "responsible_layer": "ADAPTER",
+      "current_verdict": "PASS_CURRENT_BINDING",
+      "evidence_path": "docs\\evidence\\v4_immediate_r3_20261010\\11_DEEPENING\\SIX_ENTRY_NUMERIC_SOURCE_BINDINGS.json",
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270",
+      "next_action": "Preserve frozen input lineage; future evidence remains separate",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "INDEPENDENT_ORACLE_SCOPED",
+        "CURRENT_DATA": "HASH_BOUND",
+        "API_BINDING": "ACTUAL_HTTP_CHECKED",
+        "UI_BEHAVIOR": "ACTUAL_DOM_EVIDENCE_SCOPED",
+        "HISTORICAL_PIT": "NOT_PROVEN",
+        "FUTURE_OUTCOME": "WAIT_REAL_DAY"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-rps20",
+      "stage": "P0-ALG/P0-AMOUNT/P0-OWNER",
+      "producer_code": "src/v4/factors/core.py",
+      "algorithm_version": "RPS_MIDRANK_V1",
+      "exact_input_owner": {
+        "domain": "core",
+        "bytes": 19792536,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+        "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+      },
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_scope": "CORRECTED_LATEST_MEMBER_RETRO_NOT_AS_RECORDED",
+      "window_identity": null,
+      "adjustment": null,
+      "unit": "percentage_points",
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": {
+        "domain": "core",
+        "bytes": 19792536,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+        "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+      },
+      "expected_field": "fields.rps20",
+      "actual_field": "fields.rps20",
+      "BFF_route": "/api/v4/stocks/301628/profile",
+      "UI_component": "stock.js competitive hypotheses evidence",
+      "discrepancy": null,
+      "responsible_layer": "ADAPTER",
+      "current_verdict": "PASS_CURRENT_BINDING",
+      "evidence_path": "docs\\evidence\\v4_immediate_r3_20261010\\11_DEEPENING\\SIX_ENTRY_NUMERIC_SOURCE_BINDINGS.json",
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270",
+      "next_action": "Preserve frozen input lineage; future evidence remains separate",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "INDEPENDENT_ORACLE_SCOPED",
+        "CURRENT_DATA": "HASH_BOUND",
+        "API_BINDING": "ACTUAL_HTTP_CHECKED",
+        "UI_BEHAVIOR": "ACTUAL_DOM_EVIDENCE_SCOPED",
+        "HISTORICAL_PIT": "NOT_PROVEN",
+        "FUTURE_OUTCOME": "WAIT_REAL_DAY"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-stock.close",
+      "stage": "P0-ALG/P0-AMOUNT/P0-OWNER",
+      "producer_code": "src/workbench_analysis/r43_owner_replay.py",
+      "algorithm_version": "HASH_BOUND_OWNER_PROJECTION",
+      "exact_input_owner": {
+        "domain": "raw",
+        "bytes": 242313,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/raw.jsonl.gz",
+        "sha256": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5"
+      },
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_scope": "CORRECTED_LATEST_MEMBER_RETRO_NOT_AS_RECORDED",
+      "window_identity": null,
+      "adjustment": "RAW_UNADJUSTED",
+      "unit": "CNY",
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": {
+        "domain": "raw",
+        "bytes": 242313,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/raw.jsonl.gz",
+        "sha256": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5"
+      },
+      "expected_field": "close",
+      "actual_field": "close",
+      "BFF_route": "/api/v4/stocks/301628/profile",
+      "UI_component": "DataTable source drawer",
+      "discrepancy": null,
+      "responsible_layer": "ADAPTER",
+      "current_verdict": "PASS_CURRENT_BINDING",
+      "evidence_path": "docs\\evidence\\v4_immediate_r3_20261010\\11_DEEPENING\\SIX_ENTRY_NUMERIC_SOURCE_BINDINGS.json",
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5",
+      "next_action": "Preserve frozen input lineage; future evidence remains separate",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "OWNER_PROJECTION_ONLY",
+        "CURRENT_DATA": "HASH_BOUND",
+        "API_BINDING": "ACTUAL_HTTP_CHECKED",
+        "UI_BEHAVIOR": "ACTUAL_DOM_EVIDENCE_SCOPED",
+        "HISTORICAL_PIT": "NOT_PROVEN",
+        "FUTURE_OUTCOME": "WAIT_REAL_DAY"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-stock.amount",
+      "stage": "P0-ALG/P0-AMOUNT/P0-OWNER",
+      "producer_code": "src/workbench_analysis/r43_owner_replay.py",
+      "algorithm_version": "HASH_BOUND_OWNER_PROJECTION",
+      "exact_input_owner": {
+        "domain": "raw",
+        "bytes": 242313,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/raw.jsonl.gz",
+        "sha256": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5"
+      },
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_scope": "CORRECTED_LATEST_MEMBER_RETRO_NOT_AS_RECORDED",
+      "window_identity": null,
+      "adjustment": null,
+      "unit": "CNY",
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": {
+        "domain": "raw",
+        "bytes": 242313,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/raw.jsonl.gz",
+        "sha256": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5"
+      },
+      "expected_field": "amount",
+      "actual_field": "amount",
+      "BFF_route": "/api/v4/stocks/301628/profile",
+      "UI_component": "DataTable source drawer",
+      "discrepancy": null,
+      "responsible_layer": "ADAPTER",
+      "current_verdict": "PASS_CURRENT_BINDING",
+      "evidence_path": "docs\\evidence\\v4_immediate_r3_20261010\\11_DEEPENING\\SIX_ENTRY_NUMERIC_SOURCE_BINDINGS.json",
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5",
+      "next_action": "Preserve frozen input lineage; future evidence remains separate",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "OWNER_PROJECTION_ONLY",
+        "CURRENT_DATA": "HASH_BOUND",
+        "API_BINDING": "ACTUAL_HTTP_CHECKED",
+        "UI_BEHAVIOR": "ACTUAL_DOM_EVIDENCE_SCOPED",
+        "HISTORICAL_PIT": "NOT_PROVEN",
+        "FUTURE_OUTCOME": "WAIT_REAL_DAY"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-sector.participation_proxy",
+      "stage": "P0-ALG/P0-AMOUNT/P0-OWNER",
+      "producer_code": "src/sector/native_r5.py",
+      "algorithm_version": "V4_08_SECTOR_NATIVE_V1",
+      "exact_input_owner": {
+        "domain": "sector",
+        "bytes": 1710140,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/native.jsonl.gz",
+        "sha256": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85"
+      },
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_scope": "CORRECTED_LATEST_MEMBER_RETRO_NOT_AS_RECORDED",
+      "window_identity": null,
+      "adjustment": null,
+      "unit": "ratio_or_percentile_points_as_field_contract",
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": {
+        "domain": "sector",
+        "bytes": 1710140,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/native.jsonl.gz",
+        "sha256": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85"
+      },
+      "expected_field": "fields.participation_proxy",
+      "actual_field": "fields.participation_proxy",
+      "BFF_route": "/api/v4/sectors/INDUSTRY:T0706",
+      "UI_component": "DataTable source drawer",
+      "discrepancy": null,
+      "responsible_layer": "ADAPTER",
+      "current_verdict": "PASS_CURRENT_BINDING",
+      "evidence_path": "docs\\evidence\\v4_immediate_r3_20261010\\11_DEEPENING\\SIX_ENTRY_NUMERIC_SOURCE_BINDINGS.json",
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85",
+      "next_action": "Preserve frozen input lineage; future evidence remains separate",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "OWNER_PROJECTION_ONLY",
+        "CURRENT_DATA": "HASH_BOUND",
+        "API_BINDING": "ACTUAL_HTTP_CHECKED",
+        "UI_BEHAVIOR": "ACTUAL_DOM_EVIDENCE_SCOPED",
+        "HISTORICAL_PIT": "NOT_PROVEN",
+        "FUTURE_OUTCOME": "WAIT_REAL_DAY"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-CONFIRMED",
+      "stage": "P0-OWNER",
+      "producer_code": [
+        {
+          "path": "src/sector/legacy_b2_r5.py",
+          "sha256": "4f744a6ad2c754b20ea870665031ab2182819781b09ad22680394c2904699cd8",
+          "bytes": 7670,
+          "symbol": "evaluate_b2",
+          "start_line": 55,
+          "end_line": 103
+        },
+        {
+          "path": "src/v4/research_state.py",
+          "sha256": "58fde91734f5d1192a43174052c3c10ce6a41a65facce2076b9bf0798d0e5bfb",
+          "bytes": 13989,
+          "symbol": "reduce_state",
+          "start_line": 40,
+          "end_line": 207
+        }
+      ],
+      "algorithm_version": {
+        "accepted_entity_types": [
+          "STOCK",
+          "SECTOR"
+        ],
+        "domain": "TRI",
+        "implemented": false,
+        "not_applicable_entity_types": [],
+        "producer_contract_id": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+        "producer_parameter_set_id": null,
+        "required": true,
+        "time_role": "T"
+      },
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "CONFIRMED",
+      "actual_field": null,
+      "BFF_route": "/api/v4/sectors/INDUSTRY:T0706",
+      "UI_component": "板块画像 maturity/health，保留 SOURCE_INCOMPLETE",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "CONTRACT_GAP",
+      "current_verdict": "FORMAL_ACCEPTANCE_PENDING",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/SECTOR_FORMAL_EXTRACTION_PROPOSAL.json",
+        "sha256": "00ac8710dc77dacc6afe27a8cd0f72dc60f654585ff0399fbd0c0c510122e915",
+        "bytes": 5117
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Versioned accepted extraction/episode entry and exact upstream payload",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-WARM",
+      "stage": "P0-OWNER",
+      "producer_code": [
+        {
+          "path": "src/sector/legacy_b2_r5.py",
+          "sha256": "4f744a6ad2c754b20ea870665031ab2182819781b09ad22680394c2904699cd8",
+          "bytes": 7670,
+          "symbol": "evaluate_b2",
+          "start_line": 55,
+          "end_line": 103
+        },
+        {
+          "path": "src/v4/research_state.py",
+          "sha256": "58fde91734f5d1192a43174052c3c10ce6a41a65facce2076b9bf0798d0e5bfb",
+          "bytes": 13989,
+          "symbol": "reduce_state",
+          "start_line": 40,
+          "end_line": 207
+        }
+      ],
+      "algorithm_version": {
+        "accepted_entity_types": [
+          "STOCK",
+          "SECTOR"
+        ],
+        "domain": "TRI",
+        "implemented": false,
+        "not_applicable_entity_types": [
+          "STOCK"
+        ],
+        "producer_contract_id": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+        "producer_parameter_set_id": null,
+        "required": true,
+        "time_role": "T"
+      },
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "WARM",
+      "actual_field": null,
+      "BFF_route": "/api/v4/sectors/INDUSTRY:T0706",
+      "UI_component": "板块画像 maturity/health，保留 SOURCE_INCOMPLETE",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "CONTRACT_GAP",
+      "current_verdict": "FORMAL_ACCEPTANCE_PENDING",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/SECTOR_FORMAL_EXTRACTION_PROPOSAL.json",
+        "sha256": "00ac8710dc77dacc6afe27a8cd0f72dc60f654585ff0399fbd0c0c510122e915",
+        "bytes": 5117
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Versioned accepted extraction/episode entry and exact upstream payload",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-episode_invalidation_contract_id",
+      "stage": "P0-OWNER",
+      "producer_code": [
+        {
+          "path": "src/sector/legacy_b2_r5.py",
+          "sha256": "4f744a6ad2c754b20ea870665031ab2182819781b09ad22680394c2904699cd8",
+          "bytes": 7670,
+          "symbol": "evaluate_b2",
+          "start_line": 55,
+          "end_line": 103
+        },
+        {
+          "path": "src/v4/research_state.py",
+          "sha256": "58fde91734f5d1192a43174052c3c10ce6a41a65facce2076b9bf0798d0e5bfb",
+          "bytes": 13989,
+          "symbol": "reduce_state",
+          "start_line": 40,
+          "end_line": 207
+        }
+      ],
+      "algorithm_version": {
+        "accepted_entity_types": [
+          "STOCK",
+          "SECTOR"
+        ],
+        "domain": "CONTRACT_ID",
+        "implemented": false,
+        "not_applicable_entity_types": [],
+        "producer_contract_id": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+        "producer_parameter_set_id": null,
+        "required": false,
+        "time_role": "T-1"
+      },
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "episode_invalidation_contract_id",
+      "actual_field": null,
+      "BFF_route": "/api/v4/sectors/INDUSTRY:T0706",
+      "UI_component": "板块画像 maturity/health，保留 SOURCE_INCOMPLETE",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "CONTRACT_GAP",
+      "current_verdict": "FORMAL_ACCEPTANCE_PENDING",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/SECTOR_FORMAL_EXTRACTION_PROPOSAL.json",
+        "sha256": "00ac8710dc77dacc6afe27a8cd0f72dc60f654585ff0399fbd0c0c510122e915",
+        "bytes": 5117
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Versioned accepted extraction/episode entry and exact upstream payload",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-followup_complete",
+      "stage": "P0-OWNER",
+      "producer_code": [
+        {
+          "path": "src/sector/legacy_b2_r5.py",
+          "sha256": "4f744a6ad2c754b20ea870665031ab2182819781b09ad22680394c2904699cd8",
+          "bytes": 7670,
+          "symbol": "evaluate_b2",
+          "start_line": 55,
+          "end_line": 103
+        },
+        {
+          "path": "src/v4/research_state.py",
+          "sha256": "58fde91734f5d1192a43174052c3c10ce6a41a65facce2076b9bf0798d0e5bfb",
+          "bytes": 13989,
+          "symbol": "reduce_state",
+          "start_line": 40,
+          "end_line": 207
+        }
+      ],
+      "algorithm_version": {
+        "accepted_entity_types": [
+          "STOCK",
+          "SECTOR"
+        ],
+        "domain": "TRI",
+        "implemented": false,
+        "not_applicable_entity_types": [],
+        "producer_contract_id": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+        "producer_parameter_set_id": null,
+        "required": false,
+        "time_role": "T"
+      },
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "followup_complete",
+      "actual_field": null,
+      "BFF_route": "/api/v4/sectors/INDUSTRY:T0706",
+      "UI_component": "板块画像 maturity/health，保留 SOURCE_INCOMPLETE",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "CONTRACT_GAP",
+      "current_verdict": "FORMAL_ACCEPTANCE_PENDING",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/SECTOR_FORMAL_EXTRACTION_PROPOSAL.json",
+        "sha256": "00ac8710dc77dacc6afe27a8cd0f72dc60f654585ff0399fbd0c0c510122e915",
+        "bytes": 5117
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Versioned accepted extraction/episode entry and exact upstream payload",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-frozen_invalidation",
+      "stage": "P0-OWNER",
+      "producer_code": [
+        {
+          "path": "src/sector/legacy_b2_r5.py",
+          "sha256": "4f744a6ad2c754b20ea870665031ab2182819781b09ad22680394c2904699cd8",
+          "bytes": 7670,
+          "symbol": "evaluate_b2",
+          "start_line": 55,
+          "end_line": 103
+        },
+        {
+          "path": "src/v4/research_state.py",
+          "sha256": "58fde91734f5d1192a43174052c3c10ce6a41a65facce2076b9bf0798d0e5bfb",
+          "bytes": 13989,
+          "symbol": "reduce_state",
+          "start_line": 40,
+          "end_line": 207
+        }
+      ],
+      "algorithm_version": {
+        "accepted_entity_types": [
+          "STOCK",
+          "SECTOR"
+        ],
+        "domain": "TRI",
+        "implemented": false,
+        "not_applicable_entity_types": [],
+        "producer_contract_id": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+        "producer_parameter_set_id": null,
+        "required": true,
+        "time_role": "T-1"
+      },
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "frozen_invalidation",
+      "actual_field": null,
+      "BFF_route": "/api/v4/sectors/INDUSTRY:T0706",
+      "UI_component": "板块画像 maturity/health，保留 SOURCE_INCOMPLETE",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "CONTRACT_GAP",
+      "current_verdict": "FORMAL_ACCEPTANCE_PENDING",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/SECTOR_FORMAL_EXTRACTION_PROPOSAL.json",
+        "sha256": "00ac8710dc77dacc6afe27a8cd0f72dc60f654585ff0399fbd0c0c510122e915",
+        "bytes": 5117
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Versioned accepted extraction/episode entry and exact upstream payload",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-scenario",
+      "stage": "P0-OWNER",
+      "producer_code": [
+        {
+          "path": "src/sector/legacy_b2_r5.py",
+          "sha256": "4f744a6ad2c754b20ea870665031ab2182819781b09ad22680394c2904699cd8",
+          "bytes": 7670,
+          "symbol": "evaluate_b2",
+          "start_line": 55,
+          "end_line": 103
+        },
+        {
+          "path": "src/v4/research_state.py",
+          "sha256": "58fde91734f5d1192a43174052c3c10ce6a41a65facce2076b9bf0798d0e5bfb",
+          "bytes": 13989,
+          "symbol": "reduce_state",
+          "start_line": 40,
+          "end_line": 207
+        }
+      ],
+      "algorithm_version": {
+        "accepted_entity_types": [
+          "STOCK",
+          "SECTOR"
+        ],
+        "domain": "SCENARIO",
+        "implemented": false,
+        "not_applicable_entity_types": [],
+        "producer_contract_id": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+        "producer_parameter_set_id": null,
+        "required": false,
+        "time_role": "T"
+      },
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "scenario",
+      "actual_field": null,
+      "BFF_route": "/api/v4/sectors/INDUSTRY:T0706",
+      "UI_component": "板块画像 maturity/health，保留 SOURCE_INCOMPLETE",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "CONTRACT_GAP",
+      "current_verdict": "FORMAL_ACCEPTANCE_PENDING",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/SECTOR_FORMAL_EXTRACTION_PROPOSAL.json",
+        "sha256": "00ac8710dc77dacc6afe27a8cd0f72dc60f654585ff0399fbd0c0c510122e915",
+        "bytes": 5117
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Versioned accepted extraction/episode entry and exact upstream payload",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-signal_event_at_T0",
+      "stage": "P1-COHORT",
+      "producer_code": [
+        {
+          "path": "src/workbench_analysis/v4_15_radar_cohort.py",
+          "sha256": "1897b81d5618d3b077af6d65e77b0df9bc26175b44facfee5dac5021a92dd06e",
+          "bytes": 15444,
+          "symbol": "_project",
+          "start_line": 58,
+          "end_line": 155
+        }
+      ],
+      "algorithm_version": "EVENT_DIFF_NOT_FOCUS",
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "signal_event_at_T0",
+      "actual_field": null,
+      "BFF_route": "/api/v4/forward/statistics",
+      "UI_component": "focus.js Cohort/settlement/FEP separate blocks",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "INPUT_MISSING",
+      "current_verdict": "SOURCE_NOT_PRESENT",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/COHORT_FIELD_CAPABILITY_MATRIX.json",
+        "sha256": "ae6694273aa301221b036a2ad1d4ea1341e878000ec6a44e0f6cc73f5192b2b2",
+        "bytes": 11727
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Exact independently frozen enrollment and bound T0 snapshot",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-cohort_enrollment_id",
+      "stage": "P1-COHORT",
+      "producer_code": [
+        {
+          "path": "src/workbench_analysis/v4_15_radar_cohort.py",
+          "sha256": "1897b81d5618d3b077af6d65e77b0df9bc26175b44facfee5dac5021a92dd06e",
+          "bytes": 15444,
+          "symbol": "identity",
+          "start_line": 10,
+          "end_line": 13
+        }
+      ],
+      "algorithm_version": "LOGICAL_EVENT_AND_NAMESPACE_IDENTITY",
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "cohort_enrollment_id",
+      "actual_field": null,
+      "BFF_route": "/api/v4/forward/statistics",
+      "UI_component": "focus.js Cohort/settlement/FEP separate blocks",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "INPUT_MISSING",
+      "current_verdict": "SOURCE_NOT_PRESENT",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/COHORT_FIELD_CAPABILITY_MATRIX.json",
+        "sha256": "ae6694273aa301221b036a2ad1d4ea1341e878000ec6a44e0f6cc73f5192b2b2",
+        "bytes": 11727
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Exact independently frozen enrollment and bound T0 snapshot",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-frozen_signal_version",
+      "stage": "P1-COHORT",
+      "producer_code": [
+        {
+          "path": "src/workbench_analysis/validation_cohort_read_contract_r3.py",
+          "sha256": "e10753189c79e65d04ccde8d9f5820a41c65442d411549d650322cf434f49804",
+          "bytes": 3579,
+          "symbol": "validate_frozen",
+          "start_line": 18,
+          "end_line": 30
+        }
+      ],
+      "algorithm_version": "IMMUTABLE_T0_SIGNAL_VERSION",
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "frozen_signal_version",
+      "actual_field": null,
+      "BFF_route": "/api/v4/forward/statistics",
+      "UI_component": "focus.js Cohort/settlement/FEP separate blocks",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "INPUT_MISSING",
+      "current_verdict": "SOURCE_NOT_PRESENT",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/COHORT_FIELD_CAPABILITY_MATRIX.json",
+        "sha256": "ae6694273aa301221b036a2ad1d4ea1341e878000ec6a44e0f6cc73f5192b2b2",
+        "bytes": 11727
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Exact independently frozen enrollment and bound T0 snapshot",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-eligible_at_T0",
+      "stage": "P1-COHORT",
+      "producer_code": [
+        {
+          "path": "src/workbench_analysis/v4_15_radar_cohort.py",
+          "sha256": "1897b81d5618d3b077af6d65e77b0df9bc26175b44facfee5dac5021a92dd06e",
+          "bytes": 15444,
+          "symbol": "_project",
+          "start_line": 58,
+          "end_line": 155
+        }
+      ],
+      "algorithm_version": "FINAL_ELIGIBLE_ALL_ROWS_NOT_TOP_K",
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "eligible_at_T0",
+      "actual_field": null,
+      "BFF_route": "/api/v4/forward/statistics",
+      "UI_component": "focus.js Cohort/settlement/FEP separate blocks",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "INPUT_MISSING",
+      "current_verdict": "SOURCE_NOT_PRESENT",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/COHORT_FIELD_CAPABILITY_MATRIX.json",
+        "sha256": "ae6694273aa301221b036a2ad1d4ea1341e878000ec6a44e0f6cc73f5192b2b2",
+        "bytes": 11727
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Exact independently frozen enrollment and bound T0 snapshot",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-asof_first_available",
+      "stage": "P1-COHORT",
+      "producer_code": [
+        {
+          "path": "src/workbench_analysis/validation_cohort_read_contract_r3.py",
+          "sha256": "e10753189c79e65d04ccde8d9f5820a41c65442d411549d650322cf434f49804",
+          "bytes": 3579,
+          "symbol": "validate_frozen",
+          "start_line": 18,
+          "end_line": 30
+        }
+      ],
+      "algorithm_version": "AWARE_FIRST_AVAILABILITY_BEFORE_T0_FREEZE",
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "asof_first_available",
+      "actual_field": null,
+      "BFF_route": "/api/v4/forward/statistics",
+      "UI_component": "focus.js Cohort/settlement/FEP separate blocks",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "INPUT_MISSING",
+      "current_verdict": "SOURCE_NOT_PRESENT",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/COHORT_FIELD_CAPABILITY_MATRIX.json",
+        "sha256": "ae6694273aa301221b036a2ad1d4ea1341e878000ec6a44e0f6cc73f5192b2b2",
+        "bytes": 11727
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Exact independently frozen enrollment and bound T0 snapshot",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-benchmark",
+      "stage": "P1-COHORT",
+      "producer_code": [
+        {
+          "path": "src/workbench_analysis/v4_15_forward_r2.py",
+          "sha256": "77e4fe4951d94b7e7a7a89cf5b9aeb417c81ef689960677bd65a63089de9792e",
+          "bytes": 14544,
+          "symbol": "freeze_t0",
+          "start_line": 68,
+          "end_line": 98
+        }
+      ],
+      "algorithm_version": "FROZEN_FIXED_BASKET_AND_CONTROL_ASSIGNMENTS",
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "benchmark",
+      "actual_field": null,
+      "BFF_route": "/api/v4/forward/statistics",
+      "UI_component": "focus.js Cohort/settlement/FEP separate blocks",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "INPUT_MISSING",
+      "current_verdict": "SOURCE_NOT_PRESENT",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/COHORT_FIELD_CAPABILITY_MATRIX.json",
+        "sha256": "ae6694273aa301221b036a2ad1d4ea1341e878000ec6a44e0f6cc73f5192b2b2",
+        "bytes": 11727
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Exact independently frozen enrollment and bound T0 snapshot",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-no_lookahead",
+      "stage": "P1-COHORT",
+      "producer_code": [
+        {
+          "path": "src/workbench_analysis/validation_cohort_read_contract_r3.py",
+          "sha256": "e10753189c79e65d04ccde8d9f5820a41c65442d411549d650322cf434f49804",
+          "bytes": 3579,
+          "symbol": "validate_frozen",
+          "start_line": 18,
+          "end_line": 30
+        }
+      ],
+      "algorithm_version": "NO_FUTURE_FEEDBACK",
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "no_lookahead",
+      "actual_field": null,
+      "BFF_route": "/api/v4/forward/statistics",
+      "UI_component": "focus.js Cohort/settlement/FEP separate blocks",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "INPUT_MISSING",
+      "current_verdict": "SOURCE_NOT_PRESENT",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/COHORT_FIELD_CAPABILITY_MATRIX.json",
+        "sha256": "ae6694273aa301221b036a2ad1d4ea1341e878000ec6a44e0f6cc73f5192b2b2",
+        "bytes": 11727
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Exact independently frozen enrollment and bound T0 snapshot",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-path_observation",
+      "stage": "P1-COHORT",
+      "producer_code": [
+        {
+          "path": "src/workbench_analysis/v4_15_forward_r2.py",
+          "sha256": "77e4fe4951d94b7e7a7a89cf5b9aeb417c81ef689960677bd65a63089de9792e",
+          "bytes": 14544,
+          "symbol": "settle",
+          "start_line": 100,
+          "end_line": 153
+        }
+      ],
+      "algorithm_version": "BOUND_ACCEPTED_PRICE_SOURCE",
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "path_observation",
+      "actual_field": null,
+      "BFF_route": "/api/v4/forward/statistics",
+      "UI_component": "focus.js Cohort/settlement/FEP separate blocks",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "INPUT_MISSING",
+      "current_verdict": "SOURCE_NOT_PRESENT",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/COHORT_FIELD_CAPABILITY_MATRIX.json",
+        "sha256": "ae6694273aa301221b036a2ad1d4ea1341e878000ec6a44e0f6cc73f5192b2b2",
+        "bytes": 11727
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Exact independently frozen enrollment and bound T0 snapshot",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-maturity_schedule",
+      "stage": "P1-COHORT",
+      "producer_code": [
+        {
+          "path": "src/workbench_analysis/v4_15_settlement.py",
+          "sha256": "b24b31d4670160ca41e620e86ca9b6fa4d393a0112ea4251eda02edb38457697",
+          "bytes": 23641,
+          "symbol": "due_plan",
+          "start_line": 13,
+          "end_line": 16
+        }
+      ],
+      "algorithm_version": "EXACT_MASTER_SESSION_OFFSETS",
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "maturity_schedule",
+      "actual_field": null,
+      "BFF_route": "/api/v4/forward/statistics",
+      "UI_component": "focus.js Cohort/settlement/FEP separate blocks",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "INPUT_MISSING",
+      "current_verdict": "SOURCE_NOT_PRESENT",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/COHORT_FIELD_CAPABILITY_MATRIX.json",
+        "sha256": "ae6694273aa301221b036a2ad1d4ea1341e878000ec6a44e0f6cc73f5192b2b2",
+        "bytes": 11727
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Exact independently frozen enrollment and bound T0 snapshot",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-T1/T3/T5_result",
+      "stage": "P1-COHORT",
+      "producer_code": [
+        {
+          "path": "src/workbench_analysis/v4_15_forward_r2.py",
+          "sha256": "77e4fe4951d94b7e7a7a89cf5b9aeb417c81ef689960677bd65a63089de9792e",
+          "bytes": 14544,
+          "symbol": "price_path",
+          "start_line": 33,
+          "end_line": 49
+        }
+      ],
+      "algorithm_version": "AFFINE_ENDPOINT_AND_PATH_DOMAIN",
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "T1/T3/T5_result",
+      "actual_field": null,
+      "BFF_route": "/api/v4/forward/statistics",
+      "UI_component": "focus.js Cohort/settlement/FEP separate blocks",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "INPUT_MISSING",
+      "current_verdict": "SOURCE_NOT_PRESENT",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/COHORT_FIELD_CAPABILITY_MATRIX.json",
+        "sha256": "ae6694273aa301221b036a2ad1d4ea1341e878000ec6a44e0f6cc73f5192b2b2",
+        "bytes": 11727
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Exact independently frozen enrollment and bound T0 snapshot",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-right_censor_reason",
+      "stage": "P1-COHORT",
+      "producer_code": [
+        {
+          "path": "src/workbench_analysis/v4_15_settlement.py",
+          "sha256": "b24b31d4670160ca41e620e86ca9b6fa4d393a0112ea4251eda02edb38457697",
+          "bytes": 23641,
+          "symbol": "price_path",
+          "start_line": 51,
+          "end_line": 83
+        }
+      ],
+      "algorithm_version": "STATUS_SPECIFIC_PATH_AND_ENDPOINT_QUALITY",
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "right_censor_reason",
+      "actual_field": null,
+      "BFF_route": "/api/v4/forward/statistics",
+      "UI_component": "focus.js Cohort/settlement/FEP separate blocks",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "INPUT_MISSING",
+      "current_verdict": "SOURCE_NOT_PRESENT",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/COHORT_FIELD_CAPABILITY_MATRIX.json",
+        "sha256": "ae6694273aa301221b036a2ad1d4ea1341e878000ec6a44e0f6cc73f5192b2b2",
+        "bytes": 11727
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Exact independently frozen enrollment and bound T0 snapshot",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-settlement_owner",
+      "stage": "P1-COHORT",
+      "producer_code": [
+        {
+          "path": "src/workbench_analysis/v4_15_forward_r2.py",
+          "sha256": "77e4fe4951d94b7e7a7a89cf5b9aeb417c81ef689960677bd65a63089de9792e",
+          "bytes": 14544,
+          "symbol": "readback",
+          "start_line": 155,
+          "end_line": 171
+        }
+      ],
+      "algorithm_version": "FIRST_OBSERVED_LATEST_CORRECTED_SEPARATE",
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "settlement_owner",
+      "actual_field": null,
+      "BFF_route": "/api/v4/forward/statistics",
+      "UI_component": "focus.js Cohort/settlement/FEP separate blocks",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "INPUT_MISSING",
+      "current_verdict": "SOURCE_NOT_PRESENT",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/COHORT_FIELD_CAPABILITY_MATRIX.json",
+        "sha256": "ae6694273aa301221b036a2ad1d4ea1341e878000ec6a44e0f6cc73f5192b2b2",
+        "bytes": 11727
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Exact independently frozen enrollment and bound T0 snapshot",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-FEP_model_version",
+      "stage": "P1-COHORT",
+      "producer_code": [
+        {
+          "path": "src/workbench_analysis/fep_e5/ledger.py",
+          "sha256": "090ce4399281919bdcb431be9b94daf46a3da3fd19cb6dd980a56589a5d8920b",
+          "bytes": 7193,
+          "symbol": "register_model",
+          "start_line": 42,
+          "end_line": 44
+        }
+      ],
+      "algorithm_version": "MODEL_OR_PERMISSION_NOT_READY",
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "FEP_model_version",
+      "actual_field": null,
+      "BFF_route": "/api/v4/forward/fep",
+      "UI_component": "focus.js Cohort/settlement/FEP separate blocks",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "AUTHORITY",
+      "current_verdict": "FORMAL_ACCEPTANCE_PENDING",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/COHORT_FIELD_CAPABILITY_MATRIX.json",
+        "sha256": "ae6694273aa301221b036a2ad1d4ea1341e878000ec6a44e0f6cc73f5192b2b2",
+        "bytes": 11727
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Frozen accepted model set, prediction revision and grant key",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-permission_gate",
+      "stage": "P1-COHORT",
+      "producer_code": [
+        {
+          "path": "src/workbench_analysis/fep_e5/ledger.py",
+          "sha256": "090ce4399281919bdcb431be9b94daf46a3da3fd19cb6dd980a56589a5d8920b",
+          "bytes": 7193,
+          "symbol": "allowed",
+          "start_line": 82,
+          "end_line": 87
+        }
+      ],
+      "algorithm_version": "EXACT_CAPABILITY_GRANT_REQUIRED",
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "permission_gate",
+      "actual_field": null,
+      "BFF_route": "/api/v4/forward/fep",
+      "UI_component": "focus.js Cohort/settlement/FEP separate blocks",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "AUTHORITY",
+      "current_verdict": "FORMAL_ACCEPTANCE_PENDING",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/COHORT_FIELD_CAPABILITY_MATRIX.json",
+        "sha256": "ae6694273aa301221b036a2ad1d4ea1341e878000ec6a44e0f6cc73f5192b2b2",
+        "bytes": 11727
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Frozen accepted model set, prediction revision and grant key",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-BFF_route",
+      "stage": "P1-COHORT",
+      "producer_code": [
+        {
+          "path": "src/workbench_service/core_product_bff_r1.py",
+          "sha256": "fbd8be2261fa152334c3fe29c30407b65eeae63f61b66a59e5628e322de4da73",
+          "bytes": 34771,
+          "symbol": "_get_product",
+          "start_line": 210,
+          "end_line": 376
+        }
+      ],
+      "algorithm_version": "HASH_BOUND_DATED_READ_NO_WRITE",
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "BFF_route",
+      "actual_field": null,
+      "BFF_route": "/api/v4/forward/statistics",
+      "UI_component": "focus.js Cohort/settlement/FEP separate blocks",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "INPUT_MISSING",
+      "current_verdict": "SOURCE_NOT_PRESENT",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/COHORT_FIELD_CAPABILITY_MATRIX.json",
+        "sha256": "ae6694273aa301221b036a2ad1d4ea1341e878000ec6a44e0f6cc73f5192b2b2",
+        "bytes": 11727
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "Exact independently frozen enrollment and bound T0 snapshot",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    },
+    {
+      "issue_id": "R3-DEEP-MISSING-formal_Amount_A_h21",
+      "stage": "P0-AMOUNT",
+      "producer_code": [
+        {
+          "path": "src/workbench_analysis/amount_a_go_forward_r3.py",
+          "sha256": "15cf0c0a53a986ae97ac5cb79e828a06ae4298a30502989f9ea3f58bb97e17b6",
+          "bytes": 13092,
+          "symbol": "compute_ledger_candidate",
+          "start_line": 206,
+          "end_line": 221
+        }
+      ],
+      "algorithm_version": null,
+      "exact_input_owner": null,
+      "trade_date": "2026-10-09",
+      "first_available_at": null,
+      "member_asof": null,
+      "PIT_scope": "SOURCE_NOT_PRESENT_NO_AS_RECORDED_CLAIM",
+      "window_identity": "T0/H21/T-1 as explicitly specified in bound field contract",
+      "adjustment": null,
+      "unit": null,
+      "null_policy": "UNKNOWN_NOT_ZERO",
+      "output_owner": null,
+      "expected_field": "formal_Amount_A_h21",
+      "actual_field": null,
+      "BFF_route": null,
+      "UI_component": "Amount A production consumer disabled",
+      "discrepancy": "Exact accepted input/contract absent; producer code does not grant accepted owner",
+      "responsible_layer": "INPUT_MISSING",
+      "current_verdict": "SOURCE_NOT_PRESENT",
+      "evidence_path": {
+        "path": "docs/evidence/v4_immediate_r3_20261010/11_DEEPENING/PIT_ORIGINAL_INGEST_AND_MISSING_DAYS.json",
+        "sha256": "16426d311651aa2e85640ec5a8326974406239f49933cad7d438e1ad2c715dfd",
+        "bytes": 270280
+      },
+      "code_sha": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+      "owner_sha": null,
+      "next_action": "20 exact missing dated membership observations; accepted full source/consumer gate",
+      "six_dimensions": {
+        "FORMULA_OR_LOGIC": "IMPLEMENTED_SCOPED_OR_EXACT_PROPOSAL",
+        "CURRENT_DATA": "SOURCE_NOT_PRESENT",
+        "API_BINDING": "NOT_READY_CURRENT_DATA; FAIL_CLOSED_BOUNDARY_VERIFIED",
+        "UI_BEHAVIOR": "UNKNOWN_DISPLAY_VERIFIED",
+        "HISTORICAL_PIT": "NOT_VERIFIABLE",
+        "FUTURE_OUTCOME": "NOT_OBSERVED"
+      }
+    }
+  ],
+  "code_sha_role": "BASE with exact working source hashes in bindings; result commit follows",
+  "no_generic_SEE_placeholders": true
+}

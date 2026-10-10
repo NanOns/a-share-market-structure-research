@@ -1,0 +1,33 @@
+{
+  "contract": "V4_IMMEDIATE_R3_DEEPENING_V1",
+  "BASE_SHA": "e1d7f69e1f3605be4391e00b823f3537c757a24f",
+  "RESULT_CODE_SHA": "95ef036547960d1e04710ea1f4fd507d2cc6fe2a",
+  "acceptance": "ENGINEERING_PASS_SCOPED_FORMAL_DATA_GATES_OPEN",
+  "work_packages": [
+    "P0-ALG",
+    "P0-OWNER",
+    "P0-AMOUNT",
+    "P1-COHORT",
+    "P1-PRODUCT-QA"
+  ],
+  "new_source_quality_checks": 325,
+  "new_amount_fixture_checks": 112,
+  "tests": 135,
+  "actual_HTTP_routes": 23,
+  "protected_heads": [
+    {
+      "path": "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json",
+      "sha256": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "bytes": 29799
+    },
+    {
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "bytes": 16890
+    }
+  ],
+  "EXTERNAL_RECHECK_REQUESTED": true,
+  "EXTERNAL_ACCEPTANCE_PASS": false,
+  "production_loaded": false,
+  "next_stage": "Independent review; exact missing source/contract/permission acceptance; production loading separately; real next day DD R2.2"
+}

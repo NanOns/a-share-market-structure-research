@@ -8,7 +8,7 @@ import os
 import sys
 import threading
 from urllib.request import urlopen
-from .storage import WorkspaceLease, atomic, verify_resources
+from .storage import WorkspaceLease, atomic, verify_resources, frozen_module_evidence
 from .engine import EngineController
 from .jobs import ManagedDailyJobs
 
@@ -41,7 +41,13 @@ def run(root):
         jobs.settings(False)
         return ThreadingHTTPServer(('127.0.0.1',0), Handler), jobs
     controller = EngineController(root, factory=factory)
-    with WorkspaceLease(root):
+    class ManagedLease(WorkspaceLease):
+        def __exit__(self,*args):
+            try:
+                if controller.state!='STOPPED':controller.perform('stop')
+            finally:
+                super().__exit__(*args)
+    with ManagedLease(root):
         try:
             WorkspaceLease(root).acquire()
         except ValueError as exc:
@@ -55,6 +61,27 @@ def run(root):
         controller.perform('restart')
         checked('RESTART_FRESH_OBJECTS', controller.server is not original_server and controller.jobs is not original_jobs and not original_jobs.thread.is_alive())
         checked('PERSISTED_AUTO_PAUSE', not controller.settings()['auto_enabled'])
+        from . import source_adapter
+        execute = source_adapter.executor(root)
+        latest = execute.__globals__['capture_latest_tdx_package']
+        refresh = latest.__globals__['_refresh_existing_downloader']
+        original_capture=source_adapter.tdx_capture
+        dispatched=[]
+        try:
+            source_adapter.tdx_capture=lambda workspace:dispatched.append(str(workspace))
+            refresh()
+        finally:
+            source_adapter.tdx_capture=original_capture
+        checked('FROZEN_TDX_FIXED_MODULE_DISPATCH_NO_CHILD',dispatched==[str(root)])
+        from workbench_analysis.rotation_reconstructed_r43 import evaluator
+        import inspect
+        import baostock
+        kernel,kernel_sha=evaluator()
+        checked('ACCEPTED_ROTATION_SOURCE_INTROSPECTION_AND_ORIGINAL_EVALUATOR',
+                callable(kernel) and kernel_sha==manifest['source_introspection_bindings']['rotation_kernel_sha256'])
+        checked('BUNDLED_SDK_SOURCE_INTROSPECTION',
+                all(hashlib.sha256(inspect.getsource(getattr(baostock,name)).encode()).hexdigest()==expected
+                    for name,expected in manifest['source_introspection_bindings']['sdk_callable_source_sha256'].items()))
         # Existing supported transaction fault-injection contract, explicitly
         # replacing numeric admission in a private scope rather than claiming it.
         from workbench_analysis import operational_successor_release_v1 as release
@@ -103,7 +130,8 @@ def run(root):
         frozen=bool(getattr(sys,'frozen',False)), executable=sys.executable,
         executable_sha256=hashlib.sha256(Path(sys.executable).read_bytes()).hexdigest(),
         python=sys.version, external_python_used=False, PATH=os.environ.get('PATH'),
-        manifest=manifest, checks=checks, observed_at=datetime.now(timezone.utc).isoformat(), workspace=str(root),
+        manifest=manifest, checks=checks, loaded_local_modules=frozen_module_evidence() if getattr(sys,'frozen',False) else [],
+        observed_at=datetime.now(timezone.utc).isoformat(), workspace=str(root),
         FROZEN_EXE_END_TO_END_PASS=False,
         remaining=['Actual capture/readiness/numeric derive through original admission', 'Source transient and deterministic failure recovery',
                    'Interactive tray clicks/two screen sizes', 'Actual Windows reboot/login', 'Authorized production takeover'],

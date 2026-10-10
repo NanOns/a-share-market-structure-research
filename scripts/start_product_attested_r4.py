@@ -9,6 +9,12 @@ sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 def main():
     for key in ('TMP','TEMP','TMPDIR'):os.environ[key]='G:/codex_tmp'
     sys.dont_write_bytecode=True
+    from workbench_desktop.storage import WorkspaceLease
+    with WorkspaceLease(ROOT):return owned_main()
+
+def owned_main():
+    for key in ('TMP','TEMP','TMPDIR'):os.environ[key]='G:/codex_tmp'
+    sys.dont_write_bytecode=True
     authority=ROOT/'config/v4_production_runtime_authority_v1.json'
     if not authority.is_file():raise SystemExit('V4_RUNTIME_AUTHORITY_MISSING: fail closed')
     json.loads(authority.read_bytes())  # Same explicit --v4-default entry as the existing launcher.
@@ -39,7 +45,14 @@ def main():
                  active_port=28765,modules=modules,protected_heads=protected,scope='Normal startup only; existing AUTO configuration preserved')
     atomic_json(ROOT,ROOT/'runtime/r4_product_loaded_modules.json',receipt)
     print(json.dumps(receipt),flush=True)
-    try:sys.modules[names[0]].serve_v4(ROOT,'127.0.0.1',28765)
+    import time
+    from workbench_desktop.engine import EngineController
+    engine=EngineController(ROOT,28765)
+    try:
+        engine.perform('start')
+        while True:time.sleep(.5)
     except KeyboardInterrupt:pass
+    finally:
+        if engine.state!='STOPPED':engine.perform('stop')
 
 if __name__=='__main__':main()

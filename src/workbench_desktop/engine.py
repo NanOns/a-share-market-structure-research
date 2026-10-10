@@ -8,7 +8,7 @@ import socket
 import threading
 import time
 import uuid
-from .storage import atomic, resource_root, verify_resources, require_owned
+from .storage import atomic, resource_root, verify_resources, require_owned, owned_identity
 from .jobs import ManagedDailyJobs
 
 STATES = ('STOPPED','STARTING','RUNNING','QUIESCING','WAITING_SAFE_BOUNDARY','STOPPING','FAILED')
@@ -25,13 +25,27 @@ class EngineController:
         self.server = self.jobs = self.http_thread = None
         self.lock = threading.RLock()
         self.operation = threading.Lock()
-        self.instance_id = uuid.uuid4().hex
+        owner=owned_identity(self.root)
+        self.instance_id = owner['instance_id'] if owner else uuid.uuid4().hex
         self.manifest = verify_resources()
         self.last_snapshot = None
         self.cancel_stop = threading.Event()
         self.health_snapshot = dict(status='UNCONFIRMED', consecutive_failures=0, observed_at=None)
 
     def status(self):
+        # Read-only settings even when the worker is stopped; never construct
+        # a jobs object or resume a queue merely to show capture conditions.
+        import sqlite3
+        from contextlib import closing
+        auto=None
+        settings_path=self.root/'runtime/dynamic_daily/jobs.sqlite3'
+        if settings_path.is_file():
+            try:
+                with closing(sqlite3.connect(settings_path.as_uri()+'?mode=ro',uri=True,timeout=1)) as db:
+                    row=db.execute('SELECT enabled FROM scheduler_policy WHERE id=1').fetchone()
+                    if row:auto=bool(row[0])
+            except sqlite3.Error:
+                pass
         with self.lock:
             return dict(contract_id='V4_WINDOWS_PACKAGE_RUNTIME_V1', engine_state=self.state,
                         reason=self.reason, operation_id=self.operation_id, instance_id=self.instance_id,
@@ -42,6 +56,7 @@ class EngineController:
                         WORKSPACE_SCHEMA_VERSION=self.manifest['workspace_schema_version'],
                         observed_at=datetime.now(timezone.utc).isoformat(),
                         capture_requirement='CAPTURE_REQUIRES_APP_RUNNING',
+                        auto_daily_enabled=auto,
                         first_capture_state='UNCONFIRMED' if self.state != 'RUNNING' else 'CHECK_SOURCE_AND_SCHEDULER',
                         cached_snapshot=self.last_snapshot, engine_health=self.health_snapshot,
                         data_freshness='CHECK_ORIGINAL_V4_CONTEXT', external_acceptance='NOT_GRANTED')
@@ -89,6 +104,7 @@ class EngineController:
         server = ThreadingHTTPServer(('127.0.0.1', self.port), None, bind_and_activate=False)
         try:
             if hasattr(socket, 'SO_EXCLUSIVEADDRUSE'):
+                server.allow_reuse_address = False
                 server.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
             server.server_bind()
             server.server_activate()
@@ -104,6 +120,12 @@ class EngineController:
             raise
         controller = self
         class Handler(base):
+            def send(self,status,body,content_type='application/json; charset=utf-8'):
+                if status==200 and content_type.startswith('text/html') and urlparse(self.path).path.startswith('/v4'):
+                    raw=body if isinstance(body,bytes) else body.encode('utf-8')
+                    script=b'<script src="/v4/assets/desktop_status.js" defer></script>'
+                    body=raw.replace(b'</body>',script+b'</body>') if b'</body>' in raw else raw+script
+                return super().send(status,body,content_type)
             def do_GET(self):
                 path = urlparse(self.path).path
                 if path == '/api/v4/desktop/status':
@@ -112,7 +134,7 @@ class EngineController:
                 # UI/source artifacts still resolve and verify in the workspace.
                 if path.startswith('/v4/assets/'):
                     name = path.rsplit('/', 1)[-1]
-                    if name in ('app.js','api.js','components.js','stock.js','replay.js','labels.js'):
+                    if name in ('app.js','api.js','components.js','stock.js','replay.js','labels.js','desktop_status.js'):
                         raw = (resource_root()/'src/workbench_service/static/core-product-r1'/name).read_bytes()
                         return self.send(200, raw, 'application/javascript; charset=utf-8')
                 return super().do_GET()
@@ -120,6 +142,8 @@ class EngineController:
         return server, jobs
 
     def _start(self):
+        owner=owned_identity(self.root)
+        if owner:self.instance_id=owner['instance_id']
         with self.lock:
             if self.state == 'RUNNING':
                 return

@@ -1,5 +1,7 @@
 from pathlib import Path
-import argparse,json,os,re,sys
+import argparse,json,os,re,sys,time
+os.environ.update(TMP='G:/codex_tmp',TEMP='G:/codex_tmp',TMPDIR='G:/codex_tmp')
+sys.dont_write_bytecode=True
 ROOT=Path(__file__).resolve().parent; sys.path.insert(0,str(ROOT/'src'))
 if __name__=='__main__':
  p=argparse.ArgumentParser(); p.add_argument('--host',default='127.0.0.1'); p.add_argument('--port',type=int,default=28765); p.add_argument('--database'); modes=p.add_mutually_exclusive_group(); modes.add_argument('--v4-shadow-only',action='store_true',help='Serve the read-only V4 preview without legacy workbench dependencies'); modes.add_argument('--v4-default','--v4-production',dest='v4_default',action='store_true'); modes.add_argument('--legacy-v3',action='store_true'); a=p.parse_args()
@@ -12,10 +14,18 @@ if __name__=='__main__':
   if not authority_path.is_file():raise SystemExit('V4_RUNTIME_AUTHORITY_MISSING: fail closed')
   authority=json.loads(authority_path.read_bytes())
   if authority.get('activation_status')!='ACTIVE' and not a.v4_default:raise SystemExit('V4_CUTOVER_GATE_NOT_ACTIVE: use explicit candidate entry')
-  from workbench_service.core_product_server_r1 import serve_v4
+  if a.host not in ('127.0.0.1','localhost'):raise SystemExit('V4_LOOPBACK_HOST_REQUIRED')
   from workbench_desktop.storage import WorkspaceLease
+  from workbench_desktop.engine import EngineController
   with WorkspaceLease(ROOT):
-   serve_v4(ROOT,a.host,a.port)
+   controller=EngineController(ROOT,a.port)
+   try:
+    controller.perform('start')
+    while True:time.sleep(.5)
+   except KeyboardInterrupt:
+    pass
+   finally:
+    controller.perform('stop')
   raise SystemExit(0)
  from workbench_service.app import serve
  local_env=ROOT/'config/.env'

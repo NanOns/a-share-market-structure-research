@@ -12,13 +12,14 @@ if not getattr(sys, 'frozen', False):
 def main():
     os.environ.update(TMP='G:/codex_tmp', TEMP='G:/codex_tmp', TMPDIR='G:/codex_tmp')
     os.environ['PYTHONDONTWRITEBYTECODE'] = '1'
+    sys.dont_write_bytecode = True
     Path('G:/codex_tmp').mkdir(parents=True, exist_ok=True)
     multiprocessing.freeze_support()
     parser = argparse.ArgumentParser()
     parser.add_argument('--workspace', default='G:/codex work/大A交易')
     parser.add_argument('--port', type=int, default=28765)
     parser.add_argument('--no-browser', action='store_true')
-    parser.add_argument('--task', choices=('inspect-package','qa-e2e','qa-daily-replay'))
+    parser.add_argument('--task', choices=('inspect-package','qa-e2e','qa-daily-replay','qa-tray'))
     parser.add_argument('--report')
     args = parser.parse_args()
     from workbench_desktop.storage import atomic, verify_resources, WorkspaceLease, g_path
@@ -36,6 +37,9 @@ def main():
                 result = dict(status='PASS', frozen=bool(getattr(sys,'frozen',False)), manifest=verify_resources())
             elif args.task == 'qa-daily-replay':
                 from workbench_desktop.qa_daily import run
+                result = run(g_path(args.workspace))
+            elif args.task == 'qa-tray':
+                from workbench_desktop.qa_tray import run
                 result = run(g_path(args.workspace))
             else:
                 from workbench_desktop.qa import run
@@ -56,10 +60,11 @@ def main():
     except Exception as exc:
         import ctypes
         if str(exc) == 'WORKSPACE_ALREADY_OWNED':
-            from workbench_desktop.storage import verified_existing_owner
+            from workbench_desktop.storage import verified_existing_owner,focus_existing_owner
             try:
                 owner = verified_existing_owner(root)
-                status = __import__('json').loads((root/'runtime/desktop/status.json').read_bytes())
+                if focus_existing_owner(owner):return 0
+                status=owner['verified_status']
                 ctypes.windll.user32.MessageBoxW(None,
                     '已核验已有实例，请使用现有托盘。\n引擎：'+status['engine_state']+'\n版本：'+owner['build_release_id']+
                     '\n引擎已停止时需由现有托盘手动启动。', '大A交易 · 已有实例', 0x40)

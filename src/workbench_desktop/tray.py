@@ -8,7 +8,7 @@ import sys
 import threading
 import time
 import webbrowser
-from .storage import atomic
+from .storage import atomic, register_tray_window
 
 LABELS = {'STOPPED':'引擎已停止','STARTING':'启动中','RUNNING':'引擎运行中',
           'QUIESCING':'停止新任务','WAITING_SAFE_BOUNDARY':'等待安全边界',
@@ -43,6 +43,26 @@ class DesktopTray:
             pystray.Menu.SEPARATOR,
             item('退出大A应用（先安全停引擎）', lambda *_:self.action('exit'), enabled=lambda _:not controller.operation.locked()),
         ))
+        # Windows backend is pinned to pystray 0.19.5. No shutdown veto or
+        # infinite Windows wait; the existing recovery remains authoritative.
+        self.icon._message_handlers[0x0011] = self.session_query
+        self.icon._message_handlers[0x0016] = self.session_end
+        self.icon._message_handlers[0x8021] = lambda w,l:self.show_status()
+
+    def session_query(self, wparam, lparam):
+        atomic(self.controller.root/'runtime/desktop/session_end.json',
+               dict(self.controller.status(), event='SESSION_END_QUERIED', safe_exit_completed=False))
+        return 1
+
+    def session_end(self, wparam, lparam):
+        atomic(self.controller.root/'runtime/desktop/session_end.json',
+               dict(self.controller.status(), event='SESSION_END_CONFIRMED' if wparam else 'SESSION_END_CANCELLED',
+                    safe_exit_completed=False, next_start='VERIFY_ORIGINAL_TRANSACTION_AND_WAL_RECOVERY'))
+        if wparam:
+            if self.controller.jobs:
+                threading.Thread(target=self.controller.jobs.quiesce,name='session-quiesce',daemon=True).start()
+            self.action('exit',confirm=False)
+        return 0
 
     def notify(self, text):
         try:
@@ -67,6 +87,7 @@ class DesktopTray:
                 if action == 'exit' and result['engine_state'] == 'STOPPED':
                     self.exiting = True
                     self.monitor_stop.set()
+                    self.icon.visible = False
                     self.icon.stop()
             except Exception as exc:
                 self.notify('操作未完成：'+str(exc)[:120])
@@ -94,9 +115,11 @@ class DesktopTray:
 
     def show_status(self, *_):
         status = self.controller.status()
+        auto='开启' if status['auto_daily_enabled'] is True else '暂停' if status['auto_daily_enabled'] is False else '待确认'
         text = ('应用已启动；引擎：'+LABELS[status['engine_state']]+'\n'
                 '包版本：'+str(status['BUILD_RELEASE_ID'])+'\n'
                 '工作区：'+status['WORKSPACE_ROOT']+'\n'
+                '自动日更：'+auto+'\n'
                 '观测时间：'+status['observed_at']+'\n'
                 '最近错误：'+str(status['reason'] or '无')+'\n\n'
                 'CAPTURE_REQUIRES_APP_RUNNING\n真实首次观测需要电脑可用、用户登录、引擎运行及来源/调度条件满足。\n'
@@ -123,10 +146,13 @@ class DesktopTray:
                 except FileNotFoundError:
                     pass
         self.notify('登录后自启已开启；未登录、休眠或停引擎时不采集。' if enabled else '登录后自启已关闭。')
+        if enabled and self.controller.status()['auto_daily_enabled'] is False:
+            self.notify('当前自动日更已暂停；登录自启不会自动恢复日更设置。')
 
     def run(self, open_browser=True):
         def setup(icon):
             icon.visible = True
+            register_tray_window(self.controller.root,icon._hwnd)
             def start():
                 try:
                     self.controller.perform('start')

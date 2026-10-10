@@ -5,49 +5,66 @@
       "closed_by": null,
       "evidence": "S0_JUNIT.xml",
       "external_acceptance": "NOT_GRANTED",
+      "frozen_evidence": "S1_STAGE_RECEIPT.json",
       "id": "PKG-A01",
       "scope": "Whole workspace lock and startup before recover",
-      "status": "OPEN_FROZEN_AND_INDEPENDENT_ACCEPTANCE_PENDING"
+      "status": "ENGINEERING_FROZEN_PASS_INDEPENDENT_ACCEPTANCE_PENDING"
     },
     {
       "closed_by": null,
       "evidence": "S0_JUNIT.xml",
       "external_acceptance": "NOT_GRANTED",
+      "frozen_evidence": "S1_STAGE_RECEIPT.json",
       "id": "PKG-A02",
       "scope": "Maintenance safe boundary versus user cancellation",
-      "status": "OPEN_FROZEN_AND_INDEPENDENT_ACCEPTANCE_PENDING"
+      "status": "ENGINEERING_FROZEN_PASS_INDEPENDENT_ACCEPTANCE_PENDING"
     },
     {
       "closed_by": null,
       "evidence": "S0_JUNIT.xml",
       "external_acceptance": "NOT_GRANTED",
+      "frozen_evidence": "S1_STAGE_RECEIPT.json",
       "id": "PKG-A03",
       "scope": "CAS/readback and COMMITTED protection",
-      "status": "OPEN_FROZEN_AND_INDEPENDENT_ACCEPTANCE_PENDING"
+      "status": "ENGINEERING_FROZEN_PASS_INDEPENDENT_ACCEPTANCE_PENDING"
     },
     {
       "closed_by": null,
       "evidence": "S0_STAGE_RECEIPT.json",
       "external_acceptance": "NOT_GRANTED",
+      "frozen_evidence": "S1_STAGE_RECEIPT.json",
       "id": "PKG-A04",
       "scope": "G roots, frozen originals, WAL/schema and compatibility",
-      "status": "OPEN_FROZEN_AND_INDEPENDENT_ACCEPTANCE_PENDING"
+      "status": "ENGINEERING_FROZEN_PASS_INDEPENDENT_ACCEPTANCE_PENDING"
     },
     {
       "closed_by": null,
       "evidence": "S0_DEPENDENCY_INVENTORY.json",
       "external_acceptance": "NOT_GRANTED",
+      "frozen_evidence": "S1_STAGE_RECEIPT.json",
       "id": "PKG-A05",
       "scope": "Frozen task whitelist and runtime independence",
-      "status": "OPEN_FROZEN_AND_INDEPENDENT_ACCEPTANCE_PENDING"
+      "status": "ENGINEERING_FROZEN_PASS_INDEPENDENT_ACCEPTANCE_PENDING"
     },
     {
       "closed_by": null,
       "evidence": "S0_STAGE_RECEIPT.json",
       "external_acceptance": "NOT_GRANTED",
+      "frozen_evidence": "S1_STAGE_RECEIPT.json",
       "id": "PKG-A06",
       "scope": "Actual frozen numeric daily full chain and failures",
-      "status": "OPEN_FROZEN_AND_INDEPENDENT_ACCEPTANCE_PENDING"
+      "status": "ENGINEERING_FROZEN_PASS_INDEPENDENT_ACCEPTANCE_PENDING"
+    },
+    {
+      "acceptance": "Original gate passes exact 5210 supported native rows; original SHA/ZIP/rows preserved; in-scope price and missing-bar negatives rejected",
+      "closed_by": null,
+      "contract_id": "TDX_SH_SZ_NATIVE_SOURCE_VIEW_V1",
+      "evidence": "PKG_X01_SCOPE_VIEW_GATE.json",
+      "external_acceptance": "NOT_GRANTED",
+      "frozen_evidence": "S1_STAGE_RECEIPT.json",
+      "id": "PKG-X01",
+      "scope": "Native TDX includes 349 BJ records outside existing SH/SZ BaoStock/V4 board scope; original readiness requires exact supported active-code reconciliation",
+      "status": "ENGINEERING_FROZEN_PASS_INDEPENDENT_ACCEPTANCE_PENDING"
     }
   ]
 }

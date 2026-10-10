@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "entry": "run_desktop.py",
   "task_contract": "FROZEN_TASK_DISPATCH_V1",
-  "tasks": ["inspect-package", "qa-e2e", "qa-daily-replay"],
+  "tasks": ["inspect-package", "qa-e2e", "qa-daily-replay", "qa-tray"],
   "in_process_tasks": ["tdx-capture-original-r3"],
   "qa_workspace_prefix": "G:/codex_tmp/test_temp",
   "qa_marker": "ISOLATED_PACKAGE_QA.json",

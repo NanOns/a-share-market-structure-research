@@ -1,0 +1,77 @@
+{
+  "contract_id": "R4_ACTUAL_CLOUD_DELIVERY_V1",
+  "observed_at": "2026-10-10T04:37:19.431030+00:00",
+  "RESULT_SHA": "baad25ed716c9696e07c53ea9fdb44144edeb48d",
+  "RESULT_CODE_SHA": "26f7d7b3548142976384c4d265ebbc9f047dc735",
+  "files": [
+    {
+      "file_id": "1geAjTvKbwXmDV88NzFU-Y2dfpr1pmAQc",
+      "url": "https://drive.google.com/file/d/1geAjTvKbwXmDV88NzFU-Y2dfpr1pmAQc/view?usp=drivesdk",
+      "folder_id": "1ijwJxkUpl7Vr-PlucOMf59xhxUXKEbbD",
+      "local": {
+        "path": "G:\\codex work\\大A交易\\docs\\evidence\\v4_current_snapshot_r4_20261010\\00_MASTER_RESULT_R4.md",
+        "sha256": "c4dcfdce15e0327c2d1e3a39583f6e04b7710d1dbad7cedd011565aa96240e52",
+        "bytes": 3140
+      },
+      "cloud_readback": {
+        "path": "G:\\codex_tmp\\r4_cloud_readback_0.md",
+        "sha256": "c4dcfdce15e0327c2d1e3a39583f6e04b7710d1dbad7cedd011565aa96240e52",
+        "bytes": 3140
+      },
+      "verification": "ACTUAL_STREAM_DOWNLOAD_BYTES_AND_SHA256_MATCH",
+      "status": "PASS"
+    },
+    {
+      "file_id": "1zvJQVwpDMxF6OmCWd1epvCeplsaQSetF",
+      "url": "https://drive.google.com/file/d/1zvJQVwpDMxF6OmCWd1epvCeplsaQSetF/view?usp=drivesdk",
+      "folder_id": "1ijwJxkUpl7Vr-PlucOMf59xhxUXKEbbD",
+      "local": {
+        "path": "G:\\codex_tmp\\V4_R4_CURRENT_SNAPSHOT_REVIEW_20261010.zip",
+        "sha256": "da1c7d798513010e60ea9fc179146a9123cfe4bd5906ef77c670590457906df2",
+        "bytes": 5552948
+      },
+      "cloud_readback": {
+        "path": "G:\\codex_tmp\\r4_cloud_readback_1.zip",
+        "sha256": "da1c7d798513010e60ea9fc179146a9123cfe4bd5906ef77c670590457906df2",
+        "bytes": 5552948
+      },
+      "verification": "ACTUAL_STREAM_DOWNLOAD_BYTES_AND_SHA256_MATCH",
+      "status": "PASS",
+      "CRC_error": null,
+      "archive_members": 80
+    },
+    {
+      "file_id": "1PLbQvjbUs2dUX73pp5HEg7Vx5zJ3wLFD",
+      "url": "https://drive.google.com/file/d/1PLbQvjbUs2dUX73pp5HEg7Vx5zJ3wLFD/view?usp=drivesdk",
+      "folder_id": "1ijwJxkUpl7Vr-PlucOMf59xhxUXKEbbD",
+      "local": {
+        "path": "G:\\codex work\\大A交易\\docs\\evidence\\v4_current_snapshot_r4_20261010\\07_GATES_LEDGER.json",
+        "sha256": "1f53bdf3094f3d9a25e74d8a4b1e0d43bf8a98d4cc48b523701df8577115e76a",
+        "bytes": 7055
+      },
+      "cloud_readback": {
+        "path": "G:\\codex_tmp\\r4_cloud_readback_2.json",
+        "sha256": "1f53bdf3094f3d9a25e74d8a4b1e0d43bf8a98d4cc48b523701df8577115e76a",
+        "bytes": 7055
+      },
+      "verification": "ACTUAL_STREAM_DOWNLOAD_BYTES_AND_SHA256_MATCH",
+      "status": "PASS"
+    }
+  ],
+  "protected_heads": [
+    {
+      "path": "V4_OPERATIONAL_RESEARCH_HEAD.json",
+      "sha256": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e"
+    },
+    {
+      "path": "V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    }
+  ],
+  "offline_receipt": "06_EXTERNAL_RECHECK_MINIPACK/FINAL_PACKAGE_OFFLINE_RECEIPT.json",
+  "EXTERNAL_RECHECK_REQUESTED": true,
+  "EXTERNAL_ACCEPTANCE_PASS": false,
+  "production_loading": "PROD_RESTART_PENDING",
+  "browser_DOM": "NOT_TESTED",
+  "receipt_is_appended_after_frozen_report_and_archive": true
+}

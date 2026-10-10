@@ -1,0 +1,150 @@
+{
+  "contract_id": "V4-R4-CURRENT-SNAPSHOT-FORMAL-GATES-20261010",
+  "RESULT_CODE_SHA": "26f7d7b3548142976384c4d265ebbc9f047dc735",
+  "generated_at": "2026-10-10T04:35:04.680355+00:00",
+  "gates": [
+    {
+      "work": "A_AMOUNT",
+      "engineering": "AMOUNT_ENGINEERING_AND_PROVENANCE_AUDIT_PASS_SCOPED",
+      "formal_gate": "FORMAL_H21_BLOCKED_HISTORICAL_EVIDENCE",
+      "evidence": {
+        "path": "docs/evidence/v4_current_snapshot_r4_20261010/01_A_AMOUNT/A_FIX_AND_VERDICT.md",
+        "bytes": 664,
+        "sha256": "73a5ee97bc9c643dcffce62c0c94334a66a98c774b23a275acc4875b6fe3c48c"
+      },
+      "next_action": "Only actual original first-capture membership for the missing 20 September sessions can reopen this history; future sessions cannot prove old captures.",
+      "dimensions": {
+        "FORMULA_LOGIC": "PASS_SCOPED",
+        "DATED_INPUT": "SOURCE_NOT_PRESENT",
+        "FORMAL_OWNER": "NOT_AUTHORIZED",
+        "API_UI_BINDING": "SOURCE_NOT_PRESENT",
+        "HISTORICAL_AS_RECORDED_PIT": "UNKNOWN",
+        "FUTURE_MATURED_OUTCOME": "SOURCE_NOT_PRESENT"
+      },
+      "dimension_scope": "Formal missing capability only; available current Native fields have separate package field matrices",
+      "T0": "2026-10-09",
+      "first_available": null,
+      "membership_version": "TDX_LATEST_MEMBER_RETRO_V1",
+      "consumer": "sector Amount A strict consumer",
+      "window": "2026-09-01 through 2026-09-30 H21"
+    },
+    {
+      "work": "B_SECTOR",
+      "engineering": "ENGINEERING_CANDIDATE_PASS_SCOPED",
+      "formal_gate": "SECTOR_D2_OWNER_OPEN",
+      "evidence": {
+        "path": "docs/evidence/v4_current_snapshot_r4_20261010/02_B_SECTOR/B_SECTOR_ADMISSION_BLOCKERS.md",
+        "bytes": 361,
+        "sha256": "3fd6928c96777bd4b70945d725e1e2dd3b1476f75d38b1006c710766e60a14dd"
+      },
+      "next_action": "Independent acceptance of the exact sector extraction, frozen episode, due and scenario owners; no activation authorized.",
+      "dimensions": {
+        "FORMULA_LOGIC": "PASS_SCOPED",
+        "DATED_INPUT": "SOURCE_NOT_PRESENT",
+        "FORMAL_OWNER": "NOT_AUTHORIZED",
+        "API_UI_BINDING": "SOURCE_NOT_PRESENT",
+        "HISTORICAL_AS_RECORDED_PIT": "UNKNOWN",
+        "FUTURE_MATURED_OUTCOME": "SOURCE_NOT_PRESENT"
+      },
+      "dimension_scope": "Formal missing capability only; available current Native fields have separate package field matrices",
+      "T0": "2026-10-09",
+      "first_available": null,
+      "membership_version": "TDX_LATEST_MEMBER_RETRO_V1",
+      "consumer": "/api/v4/sectors maturity/health",
+      "window": "T0 and exact prior official session frozen episode"
+    },
+    {
+      "work": "C_COHORT",
+      "engineering": "COHORT_ENGINEERING_READY_SCOPED",
+      "formal_gate": "REAL_COHORT_ENROLLMENT_NOT_GRANTED",
+      "evidence": {
+        "path": "docs/evidence/v4_current_snapshot_r4_20261010/03_C_COHORT/C_LIVE_ENROLLMENT_BLOCKER.md",
+        "bytes": 826,
+        "sha256": "258e760359f05e4436c804c0ab8eb91508a348a8883549042b697f92ade2132d"
+      },
+      "next_action": "A genuine T0 frozen event, first-availability, immutable Owner and Head-bound grant must be independently admitted.",
+      "dimensions": {
+        "FORMULA_LOGIC": "PASS_SCOPED",
+        "DATED_INPUT": "SOURCE_NOT_PRESENT",
+        "FORMAL_OWNER": "NOT_AUTHORIZED",
+        "API_UI_BINDING": "SOURCE_NOT_PRESENT",
+        "HISTORICAL_AS_RECORDED_PIT": "UNKNOWN",
+        "FUTURE_MATURED_OUTCOME": "SOURCE_NOT_PRESENT"
+      },
+      "dimension_scope": "Formal missing capability only; available current Native fields have separate package field matrices",
+      "T0": "2026-10-09",
+      "first_available": null,
+      "membership_version": "TDX_LATEST_MEMBER_RETRO_V1",
+      "consumer": "/api/v4/forward/statistics",
+      "window": "T0 freeze then T+1/T+3/T+5 official sessions"
+    },
+    {
+      "work": "D_FEP",
+      "engineering": "FEP_ENGINEERING_GATE_READY",
+      "formal_gate": "FEP_CAPABILITY_NOT_READY",
+      "evidence": {
+        "path": "docs/evidence/v4_current_snapshot_r4_20261010/04_D_FEP/D_FEP_ACTIVATION_DECISION.md",
+        "bytes": 467,
+        "sha256": "7eeaf5b406634da9708831d0b6e663d558ad9171d0c9d64920beffa2a16ce3de"
+      },
+      "next_action": "Existing historical engineering models and Shadow grants do not authorize the current production model or input.",
+      "dimensions": {
+        "FORMULA_LOGIC": "PASS_SCOPED",
+        "DATED_INPUT": "SOURCE_NOT_PRESENT",
+        "FORMAL_OWNER": "NOT_AUTHORIZED",
+        "API_UI_BINDING": "SOURCE_NOT_PRESENT",
+        "HISTORICAL_AS_RECORDED_PIT": "UNKNOWN",
+        "FUTURE_MATURED_OUTCOME": "SOURCE_NOT_PRESENT"
+      },
+      "dimension_scope": "Formal missing capability only; available current Native fields have separate package field matrices",
+      "T0": "2026-10-09",
+      "first_available": null,
+      "membership_version": "TDX_LATEST_MEMBER_RETRO_V1",
+      "consumer": "/api/v4/forward/fep",
+      "window": "model selection cutoff and prediction deadline"
+    },
+    {
+      "work": "E_RUNTIME",
+      "engineering": "SCOPED_CODE_AND_HTTP_EVIDENCE_READY",
+      "formal_gate": "PROD_RESTART_PENDING",
+      "evidence": {
+        "path": "docs/evidence/v4_current_snapshot_r4_20261010/05_E_RUNTIME/E_RUNTIME_VERDICT.md",
+        "bytes": 1129,
+        "sha256": "e6874fe02964e6c5978c289c09544261150e124342807c24a8b7639211be9878"
+      },
+      "next_action": "User normal close of the old service, then normal attested product start and actual production DOM verification; no force kill.",
+      "dimensions": {
+        "FORMULA_LOGIC": "PASS_SCOPED",
+        "DATED_INPUT": "PASS_SCOPED",
+        "FORMAL_OWNER": "NOT_AUTHORIZED",
+        "API_UI_BINDING": "NOT_TESTED",
+        "HISTORICAL_AS_RECORDED_PIT": "UNKNOWN",
+        "FUTURE_MATURED_OUTCOME": "SOURCE_NOT_PRESENT"
+      },
+      "dimension_scope": "Formal missing capability only; available current Native fields have separate package field matrices",
+      "T0": "2026-10-09",
+      "first_available": null,
+      "membership_version": "TDX_LATEST_MEMBER_RETRO_V1",
+      "consumer": "28765 six product entrances",
+      "window": "accepted 2026-10-09 read domain"
+    }
+  ],
+  "historical_PIT": "STRICT_HISTORY_NOT_VERIFIABLE_WITH_AVAILABLE_ORIGINALS",
+  "next_day": "WAIT_REAL_SESSION",
+  "protected": [
+    {
+      "path": "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json",
+      "bytes": 29799,
+      "sha256": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e"
+    },
+    {
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "bytes": 16890,
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    }
+  ],
+  "external_acceptance": "EXTERNAL_ACCEPTANCE_BLOCKED",
+  "external_recheck": "EXTERNAL_RECHECK_REQUESTED",
+  "scope_completion": "ENGINEERING_SCOPE_COMPLETE_WITH_DECLARED_FORMAL_GATES",
+  "production_activation": false
+}

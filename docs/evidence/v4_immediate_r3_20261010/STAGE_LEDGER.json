@@ -1,0 +1,91 @@
+{
+  "contract": "V4-IMMEDIATE-R3-20261010",
+  "BASE_SHA": "d35a82707e332de1231f5a6369460d06abe056df",
+  "remote_SHA": "d35a82707e332de1231f5a6369460d06abe056df",
+  "T0": "2026-10-09",
+  "protected": [
+    {
+      "path": "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json",
+      "sha256": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "bytes": 29799
+    },
+    {
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "bytes": 16890
+    },
+    {
+      "bytes": 6906,
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/DAY_RECEIPT.json",
+      "sha256": "1b0da91a2dc953fbcaa408433977cd90cff1ab7ea222052a8b4fa68e1a9fc2d1"
+    }
+  ],
+  "contracts": [
+    {
+      "path": "D:\\Users\\lps\\Desktop\\阶段任务\\V4_IMMEDIATE_EXECUTION_MASTER_AND_TASK_CARDS_R3_20261010.md",
+      "sha256": "727af3d117751b70260d1ca5dd767e796dbedae7e49a07932e49b70065f0c3ea",
+      "bytes": 39155
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "195118b4577015ac951d20be781dc14903e6d6dde054ea5b2f0f77d6c03706af",
+      "bytes": 1831
+    },
+    {
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV2_20260925.md",
+      "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+      "bytes": 181127
+    },
+    {
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205",
+      "bytes": 224998
+    }
+  ],
+  "started_at": "2026-10-10T02:03:04.474030+00:00",
+  "stages": [
+    {
+      "stage": "PRE-00",
+      "contract": "V4-IMMEDIATE-R3-20261010 PRE-00",
+      "evidence": "STAGE_LEDGER.json",
+      "acceptance": "IN_PROGRESS",
+      "next_stage": "P0-ALG"
+    },
+    {
+      "stage": "P0-ALG",
+      "contract": "V4-IMMEDIATE-R3-20261010 P0-ALG",
+      "evidence": "02_P0_ALG",
+      "acceptance": "IN_PROGRESS",
+      "next_stage": "P0-OWNER"
+    },
+    {
+      "stage": "P0-OWNER",
+      "contract": "V4-IMMEDIATE-R3-20261010 P0-OWNER",
+      "evidence": "03_P0_OWNER",
+      "acceptance": "IN_PROGRESS",
+      "next_stage": "P0-AMOUNT"
+    },
+    {
+      "stage": "P0-AMOUNT",
+      "contract": "V4-IMMEDIATE-R3-20261010 P0-AMOUNT",
+      "evidence": "04_P0_AMOUNT",
+      "acceptance": "IN_PROGRESS",
+      "next_stage": "P1-COHORT"
+    },
+    {
+      "stage": "P1-COHORT",
+      "contract": "V4-IMMEDIATE-R3-20261010 P1-COHORT",
+      "evidence": "05_P1_COHORT",
+      "acceptance": "IN_PROGRESS",
+      "next_stage": "P1-PRODUCT-QA"
+    },
+    {
+      "stage": "P1-PRODUCT-QA",
+      "contract": "V4-IMMEDIATE-R3-20261010 P1-PRODUCT-QA",
+      "evidence": "06_P1_PRODUCT_QA",
+      "acceptance": "IN_PROGRESS",
+      "next_stage": "GIT/DRIVE"
+    }
+  ],
+  "external_acceptance": "NOT_GRANTED"
+}

@@ -107,6 +107,9 @@ def read_candidates(root, *, head, token, day, sector_id=None):
                         for source in receipt['sources']:checked(root,source)
             return dict(result,candidate_status='AVAILABLE' if rows else 'NOT_CAPTURED',item=rows[0] if rows else None,
                 source=binding,evidence_class=document['evidence_class'],
+                source_cutoff_date=day,historical_first_available=None,
+                candidate_frozen_at=document.get('frozen_at'),
+                clock_status='HISTORICAL_FIRST_AVAILABLE_NOT_VERIFIABLE',
                 reason='VERSIONED_IDENTIFIER_CORRECTION_FOR_RESEARCH; A05_FORMAL_ADMISSION_PENDING')
         bindings={k:entry.get(k) for k in ('source_capture','full_state','strict_source')}
         docs={k:json.loads(checked(root,b).read_bytes()) for k,b in bindings.items() if b}
@@ -135,6 +138,10 @@ def read_candidates(root, *, head, token, day, sector_id=None):
             research_eligible_count=state.get('research_eligible_count'),
             strict_source_status=strict.get('review_readiness','NOT_CAPTURED'),source_gaps=strict.get('source_gaps',[]),
             formal_admission='NOT_GRANTED',next_real_session=next_session,sources=bindings,
+            source_cutoff_date=day,historical_first_available=None,
+            source_observed_at=(capture or {}).get('captured_at'),
+            candidate_frozen_at=next((r.get('frozen_at_candidate') for r in state.get('signals',[]) if r.get('frozen_at_candidate')),None),
+            clock_status='HISTORICAL_FIRST_AVAILABLE_NOT_VERIFIABLE',
             evidence_class=state.get('evidence_class'),reason='Research candidate totals are not formal Cohort observations')
     except (OSError,ValueError,KeyError,TypeError) as exc:
         # Optional capability failures stay local; existing product domains read.

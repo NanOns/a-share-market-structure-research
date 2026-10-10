@@ -14,6 +14,35 @@ from .cohort_first_capture_producer_r1 import freeze_source_candidate, extract_c
 CONTRACT = 'FULL_STATE_SIGNAL_SOURCE_FIRST_OBSERVED_CANDIDATE'
 
 
+def quarantine_publisher(root, *, publisher_binding, candidate_directory):
+    """Read actual publisher output without laundering research into PIT.
+
+    Incomplete observed candidates also remain quarantined. Independent source
+    admission and complete event/benchmark facts precede freeze_first_observed.
+    """
+    import gzip
+    directory = Path(candidate_directory)
+    if directory.is_absolute() or '..' in directory.parts or directory.parts[:2] != ('docs', 'evidence'):
+        raise ValueError('ISOLATED_EVIDENCE_DIRECTORY_REQUIRED')
+    raw = checked(root, publisher_binding).read_bytes()
+    state = json.loads(gzip.decompress(raw))
+    if state['contract_id'] != 'FULL_MARKET_STATE_PRODUCER_OUTPUT_V1':
+        raise ValueError('FULL_MARKET_STATE_PUBLISHER_REQUIRED')
+    if state.get('production') is not False or state.get('production_write_authorized') is not False:
+        raise ValueError('QUARANTINE_PERMISSION_OVERCLAIM')
+    rows = state['scenario_outputs']
+    if any(r['state'] not in ('TRUE', 'FALSE', 'UNKNOWN') or r['eligible_at_T0'] is not False for r in rows):
+        raise ValueError('QUARANTINE_INVALID_QUALIFICATION')
+    document = dict(contract_id='STATE_PUBLISHER_QUARANTINE_V1', source=publisher_binding,
+        T0=state['T0'], evidence_class=state['evidence_class'], signal_count=len(rows),
+        state_counts={k: sum(r['state'] == k for r in rows) for k in ('TRUE', 'FALSE', 'UNKNOWN')},
+        status='RESEARCH_CANDIDATE_FROZEN', production=False, source_owner_admitted=False,
+        production_write_authorized=False, eligible_at_T0=False, observed_count=None,
+        first_available=state['first_available'], frozen_at=state['frozen_at'],
+        next_gate='INDEPENDENT_ADMISSION_REQUIRED', adapter_gap=state['adapter_gap'])
+    return publish(root, (directory / digest(publisher_binding) / 'quarantine.json').as_posix(), document)
+
+
 def freeze_first_observed(root, *, state_binding, membership_binding, model_binding,
                           candidate_directory, clock=lambda: datetime.now(timezone.utc)):
     """Generate complete signal rows from original State scenario output.

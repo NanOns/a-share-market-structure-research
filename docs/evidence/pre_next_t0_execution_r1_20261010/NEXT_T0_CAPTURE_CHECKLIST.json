@@ -1,0 +1,27 @@
+{
+  "contract_id": "NEXT_T0_REAL_CAPTURE_CHECKLIST_V1",
+  "timezone": "Asia/Shanghai",
+  "first_check": "18:35",
+  "retry_times": ["19:05", "19:35", "20:05", "20:35", "21:05", "22:05"],
+  "runtime": "operational_daily_jobs_v1.DailyJobs -> operational_daily_executor_v1.execute_sources",
+  "future_session_triggered": false,
+  "machine_clock_changed": false,
+  "production_restart": false,
+  "real_capture_status": "FUTURE_REAL_OBSERVATION_PENDING",
+  "checklist": [
+    {"step": "clock_and_calendar", "required": "Actual Shanghai current session; source_readiness 18:35 gate"},
+    {"step": "raw_capture", "required": "BaoStock/TDX/local membership original bytes and exact request/receive times"},
+    {"step": "availability", "required": "Independent first_available <= actual cutoff; never claim 15:00 for 18:35 receipt"},
+    {"step": "pre_gate_preservation", "required": "Source candidate persisted even when readiness fails"},
+    {"step": "preliminary_scope", "required": "Day0 old Head explicitly PRELIMINARY_PREVIOUS_HEAD_SCOPE"},
+    {"step": "new_owner", "required": "Date-bound new identity/Lifecycle/membership/build/seal"},
+    {"step": "reconcile", "required": "Added/removed securities, renamed identities, suspension/resumption and membership SHA"},
+    {"step": "candidate", "required": "All State scenarios and sector fields published in quarantine; missing sources UNKNOWN"},
+    {"step": "retry", "required": "Content conflict new slot; original frozen clock/bytes immutable"},
+    {"step": "main_flow", "required": "Optional candidate exception never blocks accepted daily main domains"},
+    {"step": "admission", "required": "Independent per-source approval; no implied Writer grant or full FP14"},
+    {"step": "readback", "required": "Historical Head chain, exact SHA, token/date rejection; real D1 requires actual date"}
+  ],
+  "isolated_e2e": "PASS_SCOPED_SYNTHETIC",
+  "real_T0": "PENDING"
+}

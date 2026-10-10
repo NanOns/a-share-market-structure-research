@@ -1,0 +1,11 @@
+{
+  "contract_id": "PRE_NEXT_T0_SEPARATE_CROSS_CUTTING_AUDITS_V1",
+  "items": [
+    {"id": "PRE-T0-AUDIT-STATE-AUTHORITY", "scope": "Source Owner and independently observed clocks, model/windows, Episode/event/benchmark", "evidence": "final/STATE_PUBLISHER_ISOLATED_RUN.json", "status": "OPEN_INDEPENDENT_ADMISSION_REQUIRED", "acceptance": "Actual new T0 original sources plus independent contract admission; scanner TRUE is insufficient"},
+    {"id": "PRE-T0-AUDIT-LEGACY-DATED-MISSING-STATE", "scope": "A05 original legacy missing_state validity versus Lifecycle and exact sector denominator", "evidence": "final/D2_LEGACY_GOLDEN_FIELD_READBACK.json", "status": "HISTORICAL_1009_NOT_VERIFIABLE_NEW_T0_PENDING", "acceptance": "Independent dated source comparison; 9/24 golden cannot grant 10/09"},
+    {"id": "PRE-T0-AUDIT-RESEARCH-CLOCK-DISPLAY", "scope": "Runtime exposes actual candidate freeze/recapture versus historical source cutoff", "evidence": "PRODUCTION_RESEARCH_SCOPE_QA.md", "status": "CODE_READY_RUNTIME_PYTHON_LOAD_PENDING", "acceptance": "Separate authorized production load and independent HTTP/DOM check; no restart in this round"},
+    {"id": "PRE-T0-AUDIT-FEP-TRUSTED-WIRING", "scope": "Production Registry/Head/CAS, independently admitted DB Owner, mature FIT labels and exact grants", "evidence": "final/FEP_CURRENT_SOURCE_READBACK.json", "status": "PREPARATION_ONLY", "acceptance": "Independent scoped production authority adapter and immutable prediction Owner; caller dicts never authorize"}
+  ],
+  "current_stage_independent_from_audit_acceptance": true,
+  "external_acceptance_issued": false
+}

@@ -1,0 +1,15 @@
+{
+  "contract_id": "FEP_CURRENT_GATE_TRUSTED_SOURCE_MIGRATION_PREPARATION_V1",
+  "production_enabled": false,
+  "stage": "PREPARATION_ONLY",
+  "existing_read_path": "current_gate -> evaluate -> resolve_current_sources",
+  "existing_canonical_candidate_reader": "trusted_authority.read_canonical_candidate",
+  "positive_candidate_validator": "admission.inspect_isolated_candidate",
+  "production_wiring_gap": "No independently admitted production DB Owner and approval adapter; canonical reader never authorizes production",
+  "identity_fields": ["scope_id", "target_id", "horizon", "feature_contract_id", "model_set_id", "model_revision", "capability"],
+  "source_requirements": ["Exact production Model Registry CHAMPION revision", "Read-only repeatable-read admitted DB Owner", "Matching deployment Head and CAS receipt", "Original prediction input first-asof source Owner", "Mature FIT labels at actual fit_started_at", "Immutable prediction Owner with six READY fields"],
+  "grant_requirements": ["Independent scoped approval", "Exact identity binding", "Active non-revoked grant", "Current validity window", "Matching activation_id and Head version"],
+  "migration_acceptance": ["Independent source admission", "Isolated positive and negative canonical SQL readback", "Separate release permission", "Rollback preserves production BLOCKED and historical bytes"],
+  "failure_classes": {"source": "SOURCE_PRODUCER_NOT_IMPLEMENTED", "real_future_sample": "FUTURE_REAL_OBSERVATION_PENDING", "grant": "INDEPENDENT_ADMISSION_REQUIRED", "unproven_history": "HISTORICAL_NOT_VERIFIABLE"},
+  "permissions": {"production_inference": false, "grant_issuance": false, "caller_dict_authority": false, "display_five_day_expectancy": false}
+}

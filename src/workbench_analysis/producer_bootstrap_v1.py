@@ -76,6 +76,13 @@ def build_review_and_display_candidates(root,day,candidate_binding,capture_resul
     root=Path(root)
     sector=optional_step(build_sector,root,candidate_binding=candidate_binding,trade_date=day)
     state=optional_step(produce_daily_state,root,day,candidate_binding)
+    from .full_market_state_publisher_v1 import build as publish_state
+    publisher=optional_step(publish_state,root,candidate_binding=candidate_binding,
+                           trade_date=day,revision='daily-r1')
+    from .full_state_first_observed_v1 import quarantine_publisher
+    quarantine=(optional_step(quarantine_publisher,root,publisher_binding=publisher['candidate'],
+                candidate_directory='docs/evidence/state_publisher_quarantine_v1')
+                if publisher.get('candidate') else dict(status='SOURCE_INCOMPLETE',production=False))
     first_observed=optional_step(produce_first_observed_state,root,day,candidate_binding)
     strict=(optional_step(freeze_for_review,root,capture_binding=capture_result['candidate'],candidate_binding=candidate_binding,
                 trade_date=day,research_replay=research_replay) if capture_result.get('candidate') else
@@ -89,7 +96,8 @@ def build_review_and_display_candidates(root,day,candidate_binding,capture_resul
         else:entry[key+'_failure']=result.get('reason')
     index['sessions'][day]=entry
     atomic_json(root,index_path,index)
-    return dict(sector=sector,full_state=state,first_observed_state=first_observed,strict_source=strict,index=ref(root,index_path))
+    return dict(sector=sector,full_state=state,state_publisher=publisher,state_publisher_quarantine=quarantine,
+                first_observed_state=first_observed,strict_source=strict,index=ref(root,index_path))
 
 
 def produce_first_observed_state(root, day, candidate_binding):

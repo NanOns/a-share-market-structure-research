@@ -43,11 +43,11 @@
   "appended_R3": [
     {
       "issue_id": "AUDIT-CORE-R2-01/R3-UPSTREAM",
-      "status": "OPEN_CURRENT_ENGINEERING",
-      "scope": "Remaining ATR/structural input proof, first pulse baseline, full LOO rank and recursive baskets",
-      "evidence": "02_P0_ALG/P0_ALG_FIX_REPORT.md",
+      "status": "PASS_SCOPED_CURRENT_PUBLISHED_NUMERIC_CHAIN",
+      "scope": "ATR/structural values and unavailable endpoints; all current operational LOO contexts; first-pulse baskets",
+      "evidence": "09_CONTINUATION/CONTINUATION_ACCEPTANCE.json",
       "wait_real_day": false,
-      "next_action": "Export remaining exact prior inputs and independently reproduce missing predicate families"
+      "next_action": "Future full LOO rank/recursive-episode production scope needs separately published owner; not present in this operational owner"
     },
     {
       "issue_id": "PRODUCT-R2-02/R3-SECTOR-D2",
@@ -59,19 +59,19 @@
     },
     {
       "issue_id": "PRODUCT-R2-02/R3-MEMBER27",
-      "status": "NOT_VERIFIABLE",
+      "status": "26_USER_DEFERRED_1_CURRENT_TWO_FEEDS_ABSENT",
       "scope": "27 unbound source IDs",
-      "evidence": "03_P0_OWNER/P0_OWNER_MEMBER_27_DISPOSITION.csv",
+      "evidence": "09_CONTINUATION/SZ001235_LOCAL_DATA_DISPOSITION.json",
       "wait_real_day": false,
-      "next_action": "Obtain official dated identity bytes for each ID"
+      "next_action": "Do not acquire public-network BSE evidence; preserve raw rows. Recheck SZ.001235 only when actual local/Bao feed provides data"
     },
     {
       "issue_id": "M10/DD-A05/R3",
-      "status": "OPEN_PRECISE_BLOCKER",
+      "status": "REPRESENTATION_PASS_SCOPED_AUTHORITY_SEPARATE",
       "scope": "Unexplained cross-source amount differences and sector authority",
-      "evidence": "04_P0_AMOUNT/P0_AMOUNT_AUDIT_STATUS.json",
+      "evidence": "09_CONTINUATION/AMOUNT_REPRESENTATION_RESULT.json",
       "wait_real_day": false,
-      "next_action": "Provider calculation/representation evidence for residuals; no primary switch"
+      "next_action": "Keep original Native authority; exact representation audit is closed for sampled actual captures. Economic-equivalence and formal sector Amount A remain separate"
     },
     {
       "issue_id": "FORWARD-R2-04/R3",
@@ -98,6 +98,30 @@
       "next_action": "Independent reviewer signs scoped verdict; Codex cannot sign"
     }
   ],
-  "overall": "ENGINEERING_SCOPE_OPEN_NOT_COMPLETE",
-  "external_acceptance": "NOT_GRANTED"
+  "overall": "CURRENT_LOCAL_DATA_AUDIT_PASS_SCOPED_FORMAL_CAPABILITIES_SEPARATE",
+  "external_acceptance": "NOT_GRANTED",
+  "continuation_R3": [
+    {
+      "observed_at": "2026-10-10T02:24:34.496636+00:00",
+      "evidence": "09_CONTINUATION/CONTINUATION_ACCEPTANCE.json",
+      "ATR_structure": "5696 observed independent checks passed",
+      "amount345": "All345 have exactly reproducible whole-yuan HALF_UP then binary32 path; empirical representation proof, not provider implementation sign-off",
+      "BSE": "USER_DEFERRED",
+      "sector": "Exact missing extraction/entry contracts identified, dated readiness candidate produced",
+      "cohort": "T0 first-availability leak corrected, 14 tests passed",
+      "remaining_local_work": "Full source-state quality proof and broader LOO/Rotation lineage audit; SZ.001235 accepted-pool exclusion investigation"
+    },
+    {
+      "observed_at": "2026-10-10T02:30:21.805717+00:00",
+      "evidence": "09_CONTINUATION/CONTINUATION_ACCEPTANCE.json",
+      "ATR_structure": "6021 independent checks incl325 unavailable windows/endpoints passed",
+      "full_current_LOO": "50214 pairs; 401544 checks; zero differences",
+      "first_pulse": "240 comparisons on2 actual pulse sources",
+      "amount345": "All345 exact whole-yuan HALF_UP then binary32; empirical representation proof, no provider implementation claim",
+      "BSE": "USER_DEFERRED",
+      "sector": "Exact missing extraction/entry contracts identified, dated readiness candidate produced",
+      "cohort": "T0 first-availability leak corrected, 14 tests passed",
+      "remaining": "Formal sector extraction/entry contracts and cohort/model/grant/as-recorded sources; no permission is manufactured"
+    }
+  ]
 }

@@ -1,0 +1,24 @@
+{
+  "raw_id": "SZ.001235",
+  "tdx_package": {
+    "bytes": 551726664,
+    "path": "data/v4/dynamic_daily_sources/tdx/20261009/sha256-635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6/hsjday.zip",
+    "sha256": "635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6"
+  },
+  "tdx_matching_day_entries": [],
+  "accepted_identity_source": {
+    "bytes": 3112040,
+    "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/artifact.json",
+    "sha256": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf"
+  },
+  "accepted_matching_rows": [],
+  "baostock": {
+    "path": "docs/evidence/v4_immediate_r3_20261010/09_CONTINUATION/SZ001235_BAOSTOCK_DIAGNOSTIC.json",
+    "sha256": "6b602e22915fb96a2f3e5be7058a494371c29667ea909decd0a92ae824d1fa0a",
+    "bytes": 574
+  },
+  "status": "SOURCE_NOT_PRESENT_IN_CURRENT_TWO_FEEDS",
+  "reason": "Frozen package has no day entry; accepted identity has no row; bounded baostock basic/daily requests succeed with empty rows",
+  "not_listed_claim": false,
+  "identity_created": false
+}

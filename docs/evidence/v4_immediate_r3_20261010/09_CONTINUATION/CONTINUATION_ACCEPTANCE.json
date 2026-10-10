@@ -1,0 +1,43 @@
+{
+  "algorithm": {
+    "checks": 6021,
+    "errors": 0,
+    "unknown_endpoint_window_checks": 325,
+    "scope": "Observed ATR/structure/base values plus independently unavailable windows/endpoints"
+  },
+  "full_current_LOO": {
+    "contract": "R3_FULL_CURRENT_OPERATIONAL_LOO_V1",
+    "trade_date": "2026-10-09",
+    "pairs": 50214,
+    "checks": 401544,
+    "errors": 0,
+    "differences": [],
+    "unknown_contexts": 445,
+    "scope": "Actual operational owner exposes exclusion medians and relative states; does not publish LOO cross-section rank or LOO recursive episode",
+    "acceptance": "PASS_FULL_CURRENT_OPERATIONAL_LOO_SCOPE"
+  },
+  "first_pulse": {
+    "checks": 240,
+    "errors": 0,
+    "real_rows": 2
+  },
+  "amount": {
+    "exact_representation_counts": {
+      "SOURCE_NOT_PRESENT": 349,
+      "DIRECT_BINARY32_EXACT": 14292,
+      "EXACT_DECIMAL_EQUAL": 995,
+      "WHOLE_YUAN_HALF_UP_THEN_BINARY32_EXACT": 345
+    },
+    "unexplained_representation": 0,
+    "provider_algorithm_proven": false,
+    "formal_authority_changed": false
+  },
+  "cohort": {
+    "regression_passed": 14,
+    "fix": "Bound first availability to immutable T0 freeze, independent of later read cutoff; absent-owner counts remain unknown",
+    "owner_permission": "NOT_GRANTED"
+  },
+  "sector_candidate_rows": 400,
+  "BSE": "USER_DEFERRED",
+  "protected_heads": "UNCHANGED"
+}

@@ -1,0 +1,100 @@
+{
+  "contract_binding": {
+    "path": "config/v4_10_input_provenance_r1_2.json",
+    "sha256": "e7e6cf40ffc7159d4777a01e21f475af08884146291cdb124f277e19be29ce93",
+    "bytes": 7099
+  },
+  "entity_scope": "Accepted stock producers cannot be relabelled as sector inputs. Sector dq5 is admitted from accepted native owner; other sector adapters require their own future extraction/entry contract.",
+  "missing_fields": {
+    "CONFIRMED": {
+      "accepted_entity_types": [
+        "STOCK",
+        "SECTOR"
+      ],
+      "domain": "TRI",
+      "implemented": false,
+      "not_applicable_entity_types": [],
+      "producer_contract_id": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+      "producer_parameter_set_id": null,
+      "required": true,
+      "time_role": "T"
+    },
+    "WARM": {
+      "accepted_entity_types": [
+        "STOCK",
+        "SECTOR"
+      ],
+      "domain": "TRI",
+      "implemented": false,
+      "not_applicable_entity_types": [
+        "STOCK"
+      ],
+      "producer_contract_id": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+      "producer_parameter_set_id": null,
+      "required": true,
+      "time_role": "T"
+    },
+    "episode_invalidation_contract_id": {
+      "accepted_entity_types": [
+        "STOCK",
+        "SECTOR"
+      ],
+      "domain": "CONTRACT_ID",
+      "implemented": false,
+      "not_applicable_entity_types": [],
+      "producer_contract_id": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+      "producer_parameter_set_id": null,
+      "required": false,
+      "time_role": "T-1"
+    },
+    "followup_complete": {
+      "accepted_entity_types": [
+        "STOCK",
+        "SECTOR"
+      ],
+      "domain": "TRI",
+      "implemented": false,
+      "not_applicable_entity_types": [],
+      "producer_contract_id": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+      "producer_parameter_set_id": null,
+      "required": false,
+      "time_role": "T"
+    },
+    "frozen_invalidation": {
+      "accepted_entity_types": [
+        "STOCK",
+        "SECTOR"
+      ],
+      "domain": "TRI",
+      "implemented": false,
+      "not_applicable_entity_types": [],
+      "producer_contract_id": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+      "producer_parameter_set_id": null,
+      "required": true,
+      "time_role": "T-1"
+    },
+    "scenario": {
+      "accepted_entity_types": [
+        "STOCK",
+        "SECTOR"
+      ],
+      "domain": "SCENARIO",
+      "implemented": false,
+      "not_applicable_entity_types": [],
+      "producer_contract_id": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+      "producer_parameter_set_id": null,
+      "required": false,
+      "time_role": "T"
+    }
+  },
+  "dated_candidate_adapter": {
+    "path": "src/v4/confirmation_d2_candidate_r5.py",
+    "sha256": "ae6288497effec913a622240c36c1b45937d0d0f95fee15d406c5d065fac87d7",
+    "bytes": 29206
+  },
+  "candidate_adapter_scope": "STOCK_ONLY",
+  "b0_prewatch_is_not_sector_maturity": true,
+  "blocker": "FORMAL_SECTOR_EXTRACTION_ENTRY_CONTRACT_REQUIRED",
+  "prohibited_shortcut": "Do not relabel stock producers, B0 prewatch or Rotation phase as sector D2 maturity/health",
+  "next_action": "Version sector WARM/CONFIRMED/frozen-invalidation extraction and entry semantics before a valid dated candidate can be built"
+}

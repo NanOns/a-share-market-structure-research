@@ -1,0 +1,38 @@
+{
+  "archive": {
+    "path": "G:\\codex_tmp\\V4_R3_CONTINUATION_REVIEW_20261010.zip",
+    "sha256": "4befe6e9634e4fe9111b55a1225033e4363b8aa2955338a81000643950a6afdf",
+    "bytes": 6324799
+  },
+  "runs": [
+    {
+      "script": "UPSTREAM_INDEPENDENT_ORACLE.py",
+      "input_sha256": "965a9ab67cd00db484327e1b9a4ded17647d07cfdb12b440a3e5603c458ff09d",
+      "exit_code": 0,
+      "stdout": "{\"checks\": 6021, \"errors\": 0, \"unknown\": 325}"
+    },
+    {
+      "script": "FULL_LOO_INDEPENDENT_ORACLE.py",
+      "input_sha256": "14d1301db4257b7f5c5b67c425e72d1c2a37b02099ac7de23bb0778e45ac896d",
+      "exit_code": 0,
+      "stdout": "{\"pairs\": 50214, \"checks\": 401544, \"errors\": 0, \"unknown_contexts\": 445}"
+    },
+    {
+      "script": "PULSE_SOURCE_INDEPENDENT_ORACLE.py",
+      "input_sha256": "6b7de3545040f811abf3f91e798d606b918b2b15cb3badcd278d041fc2a79ef7",
+      "exit_code": 0,
+      "stdout": "{\"checks\": 240, \"errors\": 0, \"observed_pulse_rows\": 2}"
+    },
+    {
+      "script": "AMOUNT_REPRESENTATION_ORACLE.py",
+      "input_sha256": "bfd9a224d84cfb193a0e5afd61d6f3bdb984ec0f5f655fd3ca9b504563b1d362",
+      "exit_code": 0,
+      "stdout": "{\"SOURCE_NOT_PRESENT\": 349, \"DIRECT_BINARY32_EXACT\": 14292, \"EXACT_DECIMAL_EQUAL\": 995, \"WHOLE_YUAN_HALF_UP_THEN_BINARY32_EXACT\": 345}"
+    }
+  ],
+  "report": {
+    "path": "docs/evidence/v4_immediate_r3_20261010/09_CONTINUATION/CONTINUATION_RESULT.md",
+    "sha256": "bc8278ea1f44eeeafb03a0cb61b2168d8c6e247bc13030c2749b1790ac04253c",
+    "bytes": 1977
+  }
+}

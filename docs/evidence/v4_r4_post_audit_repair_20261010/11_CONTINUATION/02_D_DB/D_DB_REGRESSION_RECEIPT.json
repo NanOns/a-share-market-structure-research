@@ -1,0 +1,137 @@
+{
+  "contract": "V4-R4-POST-AUDIT-TARGETED-REPAIR-R1-20261010 FIX-D.4; REV4 FEP.14 engineering only",
+  "status": "ISOLATED_DB_REGRESSION_PASS",
+  "prior_status": "DB_REGRESSION_BLOCKED",
+  "test_exit_code": 0,
+  "all_passed": 50,
+  "targeted_db_passed": 22,
+  "targeted_db_nodes": [
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_e5_07_e4_champion_rejected[TREE_CHALLENGER]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_e5_08_e2_champion_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_e5_16_no_model_slot_retained",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_e5_17_binding_not_replaced_by_better_result",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_e5_21_exact_permission_not_cross_target_horizon",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_e5_24_rollback_cannot_delete_history",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_e5_25_failed_transaction_no_partial_activation",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_e5_26_joint_unset_cannot_be_pass",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_e5_27_real_daily_api_inactive",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_actual_append_only_predictions_and_corrected_view",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_atomic_prediction_receipt_failure",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_prediction_persisted_then_priority_fails_independently",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_idempotence_semantic_clock_metadata",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_actual_http_bootstrap_context_and_api_permission",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_late_activation_and_deadline",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_future_feature_snapshot_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_cas_idempotent_and_conflict",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_all_fact_tables_have_db_guards",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_prediction_output_identity_cannot_override[model_id-INJECTED]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_prediction_output_identity_cannot_override[inference_model_id-OTHER]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_prediction_output_identity_cannot_override[inference_source_digest-OTHER]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests/fep_e5/test_e5_contract.py::test_prediction_output_identity_cannot_override[inference_snapshot_digest-OTHER]",
+      "status": "PASS"
+    }
+  ],
+  "identity": {
+    "version": "PostgreSQL 18.6 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit",
+    "data_directory": "G:/codex_tmp/test_temp/r4_d_db_20261010_55546/data",
+    "database": "fep_e5_legacy_fixture",
+    "port": 55546,
+    "role": "r4_isolated_admin"
+  },
+  "rollback_post_test_counts": {
+    "acceptance_receipts": 0,
+    "activations": 0,
+    "deployment_heads": 0,
+    "deployment_receipts": 0,
+    "models": 0,
+    "permission_keys": 0,
+    "prediction_runs": 0,
+    "prediction_slots": 0,
+    "predictions": 0,
+    "priority_projection": 0,
+    "projections": 0,
+    "protocols": 0,
+    "slot_model_bindings": 0,
+    "slot_receipts": 0
+  },
+  "test_binding": {
+    "path": "tests/fep_e5/test_e5_contract.py",
+    "sha256": "48a268d6d680ea0e957f4483cf446ab656129f34a9f0d830737a6c5ef36f5dc8"
+  },
+  "new_cluster": true,
+  "production_database_access": false,
+  "windows_service_created": false,
+  "tdx_mutated": false,
+  "head_mutated": false,
+  "model_scoring": false,
+  "formal_fep_authorization": false,
+  "external_recheck": "EXTERNAL_RECHECK_REQUESTED",
+  "next_stage": "Independent review; formal adapter admission remains separately gated",
+  "base_sha": "e4d418bc6d9066c921f3a3249ab40eddf1bd0685",
+  "cluster_shutdown": "NORMAL_PG_CTL_FAST_STOP_CONFIRMED",
+  "postmaster_pid_absent": true
+}

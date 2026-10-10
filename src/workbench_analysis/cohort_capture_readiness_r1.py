@@ -6,6 +6,44 @@ from .validation_cohort_read_contract_r3 import enrollment_identity, instant, va
 CONTRACT = 'COHORT_FIRST_CAPTURE_READINESS_R1'
 
 
+def inspect_daily_candidate(root, *, candidate_binding, trade_date, cutoff):
+    """Observe DD's sealed candidate without enrollment, grant issuance or CAS.
+
+    This boundary deliberately requires the real producer's Head-bound artifacts.
+    Ordinary derived events and a source-ready receipt cannot replace them.
+    A candidate is not yet an accepted Head and can only pass isolated preflight.
+    """
+    candidate = json.loads(checked(root, candidate_binding).read_bytes())
+    if candidate.get('accepted_trade_date') != trade_date:
+        raise ValueError('CAPTURE_DAILY_CANDIDATE_DATE_MISMATCH')
+    owner = candidate.get('owners', {}).get(trade_date, {}).get('validation_cohort')
+    receipt = candidate.get('cohort_capture_receipts', {}).get(trade_date)
+    grant = candidate.get('cohort_write_grants', {}).get(trade_date)
+    missing = [name for name, binding in (
+        ('INDEPENDENT_VALIDATION_COHORT_OWNER', owner),
+        ('COMPLETE_AS_RECORDED_SIGNAL_PRODUCER_RECEIPT', receipt),
+        ('SEPARATE_FIRST_CAPTURE_WRITE_GRANT', grant)) if not binding]
+    result = dict(contract_id='DD_R22_COHORT_CAPTURE_BOUNDARY_R1',
+                  candidate_binding=candidate_binding, trade_date=trade_date,
+                  production_write_authorized=False, observed_count=None,
+                  matured_count=None, settled_count=None,
+                  blocks_local_daily_publication=False)
+    if missing:
+        return dict(result, status='SOURCE_INCOMPLETE', missing_inputs=missing,
+                    preflight_invoked=False, reason='REAL_FULL_SIGNAL_PRODUCER_AND_ADMISSION_REQUIRED')
+    try:
+        owner_document = json.loads(checked(root, owner).read_bytes())
+        preflight = prepare_capture(root, accepted_head=candidate_binding,
+                                    owner_binding=owner, trade_date=trade_date,
+                                    revision=owner_document['revision'], cutoff=cutoff)
+    except (ValueError, KeyError, TypeError) as exc:
+        return dict(result, status='CAPTURE_PREFLIGHT_REJECTED',
+                    preflight_invoked=True, reason=str(exc))
+    return dict(result, status='ISOLATED_CAPTURE_CANDIDATE_READY',
+                preflight_invoked=True, preflight=preflight,
+                next_gate='INDEPENDENT_OWNER_ADMISSION_AND_DD_R22_CAS')
+
+
 def prepare_capture(root, *, accepted_head, owner_binding, trade_date, revision, cutoff):
     """Validate independently bound full signal ledger and a separate writer grant.
 

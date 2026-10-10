@@ -150,6 +150,12 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
     if period_qa['acceptance']!='PASS':raise ValueError('FULL_PERIOD_NUMERIC_ORACLE_FAILED')
     candidate['period_numeric_oracle']=ref(root,context['folder']/'PERIOD_NUMERIC_ORACLE.json')
     candidate_path=root/binding['path'];atomic_json(root,candidate_path,candidate);binding=ref(root,candidate_path)
+    # Observe the exact sealed daily candidate. This never grants authority,
+    # enrolls corrected events or blocks publication of otherwise usable domains.
+    from .cohort_capture_readiness_r1 import inspect_daily_candidate
+    capture_readiness=inspect_daily_candidate(root,candidate_binding=binding,
+        trade_date=day,cutoff=datetime.now(timezone.utc).isoformat())
+    result=dict(result,cohort_capture_readiness=capture_readiness)
     progress(day,'DERIVED_READY',dict(result,candidate=binding,derived_ready=True,source_ready=True))
     if cancelled():return dict(result,status='CANCELLED',reason='CANCELLED_BEFORE_CAS')
     if not readback_url:return dict(result,status='QA_BLOCKED',reason='LIVE_SERVICE_READBACK_ENDPOINT_REQUIRED',candidate=binding)

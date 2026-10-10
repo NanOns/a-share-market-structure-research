@@ -1,0 +1,307 @@
+{
+  "T0": "2026-10-09",
+  "fields": [
+    {
+      "field": "signal_event_at_T0",
+      "producer": {
+        "path": "src/workbench_analysis/v4_15_radar_cohort.py",
+        "sha256": "1897b81d5618d3b077af6d65e77b0df9bc26175b44facfee5dac5021a92dd06e",
+        "bytes": 15444,
+        "symbol": "_project",
+        "start_line": 58,
+        "end_line": 155
+      },
+      "rule": "EVENT_DIFF_NOT_FOCUS",
+      "output_domain": "logical_events",
+      "accepted_current_owner": null,
+      "status": "PRODUCER_EXISTS_OWNER_MISSING",
+      "engineering_implemented": true,
+      "route": "/api/v4/forward/statistics",
+      "input_owner_required": "Exact independently frozen enrollment and bound T0 snapshot",
+      "focus_substitution_allowed": false,
+      "actual_current_first_available": null
+    },
+    {
+      "field": "cohort_enrollment_id",
+      "producer": {
+        "path": "src/workbench_analysis/v4_15_radar_cohort.py",
+        "sha256": "1897b81d5618d3b077af6d65e77b0df9bc26175b44facfee5dac5021a92dd06e",
+        "bytes": 15444,
+        "symbol": "identity",
+        "start_line": 10,
+        "end_line": 13
+      },
+      "rule": "LOGICAL_EVENT_AND_NAMESPACE_IDENTITY",
+      "output_domain": "enrollments",
+      "accepted_current_owner": null,
+      "status": "PRODUCER_EXISTS_OWNER_MISSING",
+      "engineering_implemented": true,
+      "route": "/api/v4/forward/statistics",
+      "input_owner_required": "Exact independently frozen enrollment and bound T0 snapshot",
+      "focus_substitution_allowed": false,
+      "actual_current_first_available": null
+    },
+    {
+      "field": "frozen_signal_version",
+      "producer": {
+        "path": "src/workbench_analysis/validation_cohort_read_contract_r3.py",
+        "sha256": "e10753189c79e65d04ccde8d9f5820a41c65442d411549d650322cf434f49804",
+        "bytes": 3579,
+        "symbol": "validate_frozen",
+        "start_line": 18,
+        "end_line": 30
+      },
+      "rule": "IMMUTABLE_T0_SIGNAL_VERSION",
+      "output_domain": "validation_cohort",
+      "accepted_current_owner": null,
+      "status": "PRODUCER_EXISTS_OWNER_MISSING",
+      "engineering_implemented": true,
+      "route": "/api/v4/forward/statistics",
+      "input_owner_required": "Exact independently frozen enrollment and bound T0 snapshot",
+      "focus_substitution_allowed": false,
+      "actual_current_first_available": null
+    },
+    {
+      "field": "eligible_at_T0",
+      "producer": {
+        "path": "src/workbench_analysis/v4_15_radar_cohort.py",
+        "sha256": "1897b81d5618d3b077af6d65e77b0df9bc26175b44facfee5dac5021a92dd06e",
+        "bytes": 15444,
+        "symbol": "_project",
+        "start_line": 58,
+        "end_line": 155
+      },
+      "rule": "FINAL_ELIGIBLE_ALL_ROWS_NOT_TOP_K",
+      "output_domain": "daily_ledger",
+      "accepted_current_owner": null,
+      "status": "PRODUCER_EXISTS_OWNER_MISSING",
+      "engineering_implemented": true,
+      "route": "/api/v4/forward/statistics",
+      "input_owner_required": "Exact independently frozen enrollment and bound T0 snapshot",
+      "focus_substitution_allowed": false,
+      "actual_current_first_available": null
+    },
+    {
+      "field": "asof_first_available",
+      "producer": {
+        "path": "src/workbench_analysis/validation_cohort_read_contract_r3.py",
+        "sha256": "e10753189c79e65d04ccde8d9f5820a41c65442d411549d650322cf434f49804",
+        "bytes": 3579,
+        "symbol": "validate_frozen",
+        "start_line": 18,
+        "end_line": 30
+      },
+      "rule": "AWARE_FIRST_AVAILABILITY_BEFORE_T0_FREEZE",
+      "output_domain": "validation_cohort",
+      "accepted_current_owner": null,
+      "status": "NO_ASOF_ENROLLMENT",
+      "engineering_implemented": true,
+      "route": "/api/v4/forward/statistics",
+      "input_owner_required": "Exact independently frozen enrollment and bound T0 snapshot",
+      "focus_substitution_allowed": false,
+      "actual_current_first_available": null
+    },
+    {
+      "field": "benchmark",
+      "producer": {
+        "path": "src/workbench_analysis/v4_15_forward_r2.py",
+        "sha256": "77e4fe4951d94b7e7a7a89cf5b9aeb417c81ef689960677bd65a63089de9792e",
+        "bytes": 14544,
+        "symbol": "freeze_t0",
+        "start_line": 68,
+        "end_line": 98
+      },
+      "rule": "FROZEN_FIXED_BASKET_AND_CONTROL_ASSIGNMENTS",
+      "output_domain": "t0_freezes",
+      "accepted_current_owner": null,
+      "status": "PRODUCER_EXISTS_OWNER_MISSING",
+      "engineering_implemented": true,
+      "route": "/api/v4/forward/statistics",
+      "input_owner_required": "Exact independently frozen enrollment and bound T0 snapshot",
+      "focus_substitution_allowed": false,
+      "actual_current_first_available": null
+    },
+    {
+      "field": "no_lookahead",
+      "producer": {
+        "path": "src/workbench_analysis/validation_cohort_read_contract_r3.py",
+        "sha256": "e10753189c79e65d04ccde8d9f5820a41c65442d411549d650322cf434f49804",
+        "bytes": 3579,
+        "symbol": "validate_frozen",
+        "start_line": 18,
+        "end_line": 30
+      },
+      "rule": "NO_FUTURE_FEEDBACK",
+      "output_domain": "validation_cohort",
+      "accepted_current_owner": null,
+      "status": "PRODUCER_EXISTS_OWNER_MISSING",
+      "engineering_implemented": true,
+      "route": "/api/v4/forward/statistics",
+      "input_owner_required": "Exact independently frozen enrollment and bound T0 snapshot",
+      "focus_substitution_allowed": false,
+      "actual_current_first_available": null
+    },
+    {
+      "field": "path_observation",
+      "producer": {
+        "path": "src/workbench_analysis/v4_15_forward_r2.py",
+        "sha256": "77e4fe4951d94b7e7a7a89cf5b9aeb417c81ef689960677bd65a63089de9792e",
+        "bytes": 14544,
+        "symbol": "settle",
+        "start_line": 100,
+        "end_line": 153
+      },
+      "rule": "BOUND_ACCEPTED_PRICE_SOURCE",
+      "output_domain": "outcomes",
+      "accepted_current_owner": null,
+      "status": "PRODUCER_EXISTS_OWNER_MISSING",
+      "engineering_implemented": true,
+      "route": "/api/v4/forward/statistics",
+      "input_owner_required": "Exact independently frozen enrollment and bound T0 snapshot",
+      "focus_substitution_allowed": false,
+      "actual_current_first_available": null
+    },
+    {
+      "field": "maturity_schedule",
+      "producer": {
+        "path": "src/workbench_analysis/v4_15_settlement.py",
+        "sha256": "b24b31d4670160ca41e620e86ca9b6fa4d393a0112ea4251eda02edb38457697",
+        "bytes": 23641,
+        "symbol": "due_plan",
+        "start_line": 13,
+        "end_line": 16
+      },
+      "rule": "EXACT_MASTER_SESSION_OFFSETS",
+      "output_domain": "due_plans",
+      "accepted_current_owner": null,
+      "status": "PRODUCER_EXISTS_OWNER_MISSING",
+      "engineering_implemented": true,
+      "route": "/api/v4/forward/statistics",
+      "input_owner_required": "Exact independently frozen enrollment and bound T0 snapshot",
+      "focus_substitution_allowed": false,
+      "actual_current_first_available": null
+    },
+    {
+      "field": "T1/T3/T5_result",
+      "producer": {
+        "path": "src/workbench_analysis/v4_15_forward_r2.py",
+        "sha256": "77e4fe4951d94b7e7a7a89cf5b9aeb417c81ef689960677bd65a63089de9792e",
+        "bytes": 14544,
+        "symbol": "price_path",
+        "start_line": 33,
+        "end_line": 49
+      },
+      "rule": "AFFINE_ENDPOINT_AND_PATH_DOMAIN",
+      "output_domain": "outcomes",
+      "accepted_current_owner": null,
+      "status": "PRODUCER_EXISTS_OWNER_MISSING",
+      "engineering_implemented": true,
+      "route": "/api/v4/forward/statistics",
+      "input_owner_required": "Exact independently frozen enrollment and bound T0 snapshot",
+      "focus_substitution_allowed": false,
+      "actual_current_first_available": null
+    },
+    {
+      "field": "right_censor_reason",
+      "producer": {
+        "path": "src/workbench_analysis/v4_15_settlement.py",
+        "sha256": "b24b31d4670160ca41e620e86ca9b6fa4d393a0112ea4251eda02edb38457697",
+        "bytes": 23641,
+        "symbol": "price_path",
+        "start_line": 51,
+        "end_line": 83
+      },
+      "rule": "STATUS_SPECIFIC_PATH_AND_ENDPOINT_QUALITY",
+      "output_domain": "outcomes",
+      "accepted_current_owner": null,
+      "status": "PRODUCER_EXISTS_OWNER_MISSING",
+      "engineering_implemented": true,
+      "route": "/api/v4/forward/statistics",
+      "input_owner_required": "Exact independently frozen enrollment and bound T0 snapshot",
+      "focus_substitution_allowed": false,
+      "actual_current_first_available": null
+    },
+    {
+      "field": "settlement_owner",
+      "producer": {
+        "path": "src/workbench_analysis/v4_15_forward_r2.py",
+        "sha256": "77e4fe4951d94b7e7a7a89cf5b9aeb417c81ef689960677bd65a63089de9792e",
+        "bytes": 14544,
+        "symbol": "readback",
+        "start_line": 155,
+        "end_line": 171
+      },
+      "rule": "FIRST_OBSERVED_LATEST_CORRECTED_SEPARATE",
+      "output_domain": "outcomes",
+      "accepted_current_owner": null,
+      "status": "PRODUCER_EXISTS_OWNER_MISSING",
+      "engineering_implemented": true,
+      "route": "/api/v4/forward/statistics",
+      "input_owner_required": "Exact independently frozen enrollment and bound T0 snapshot",
+      "focus_substitution_allowed": false,
+      "actual_current_first_available": null
+    },
+    {
+      "field": "FEP_model_version",
+      "producer": {
+        "path": "src/workbench_analysis/fep_e5/ledger.py",
+        "sha256": "090ce4399281919bdcb431be9b94daf46a3da3fd19cb6dd980a56589a5d8920b",
+        "bytes": 7193,
+        "symbol": "register_model",
+        "start_line": 42,
+        "end_line": 44
+      },
+      "rule": "MODEL_OR_PERMISSION_NOT_READY",
+      "output_domain": "FEP",
+      "accepted_current_owner": null,
+      "status": "MODEL_OR_PERMISSION_NOT_READY",
+      "engineering_implemented": true,
+      "route": "/api/v4/forward/fep",
+      "input_owner_required": "Frozen accepted model set, prediction revision and grant key",
+      "focus_substitution_allowed": false,
+      "actual_current_first_available": null
+    },
+    {
+      "field": "permission_gate",
+      "producer": {
+        "path": "src/workbench_analysis/fep_e5/ledger.py",
+        "sha256": "090ce4399281919bdcb431be9b94daf46a3da3fd19cb6dd980a56589a5d8920b",
+        "bytes": 7193,
+        "symbol": "allowed",
+        "start_line": 82,
+        "end_line": 87
+      },
+      "rule": "EXACT_CAPABILITY_GRANT_REQUIRED",
+      "output_domain": "FEP",
+      "accepted_current_owner": null,
+      "status": "MODEL_OR_PERMISSION_NOT_READY",
+      "engineering_implemented": true,
+      "route": "/api/v4/forward/fep",
+      "input_owner_required": "Frozen accepted model set, prediction revision and grant key",
+      "focus_substitution_allowed": false,
+      "actual_current_first_available": null
+    },
+    {
+      "field": "BFF_route",
+      "producer": {
+        "path": "src/workbench_service/core_product_bff_r1.py",
+        "sha256": "fbd8be2261fa152334c3fe29c30407b65eeae63f61b66a59e5628e322de4da73",
+        "bytes": 34771,
+        "symbol": "_get_product",
+        "start_line": 210,
+        "end_line": 376
+      },
+      "rule": "HASH_BOUND_DATED_READ_NO_WRITE",
+      "output_domain": "validation_cohort",
+      "accepted_current_owner": null,
+      "status": "PRODUCER_EXISTS_OWNER_MISSING",
+      "engineering_implemented": true,
+      "route": "/api/v4/forward/statistics",
+      "input_owner_required": "Exact independently frozen enrollment and bound T0 snapshot",
+      "focus_substitution_allowed": false,
+      "actual_current_first_available": null
+    }
+  ],
+  "scope": "CODE_IMPLEMENTATION_IS_DISTINCT_FROM_CURRENT_ACCEPTED_OWNER",
+  "production_enabled": false
+}

@@ -1,0 +1,1866 @@
+{
+  "home": {
+    "net_information_count": 457,
+    "source": {
+      "stock_changes": {
+        "bytes": 5386974,
+        "path": "data/v4/core_product_focus_read_r2/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/FOCUS.json.gz",
+        "sha256": "7e51e6d8d1d60376431b1838564415d9dc30efde10f76ac5134c6a58006d9864"
+      },
+      "sector_changes": {
+        "bytes": 3477077,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/rotation.jsonl.gz",
+        "sha256": "f0860807edc9fe85d85c2259a375d99e8bc2c1cc3c6c03c63f2f47eecb9551f6"
+      }
+    },
+    "scope": "EXPLICIT_FOCUS_EVENTS_AND_ROTATION_OWNER_DELTAS; FULL_STRUCTURE_CHANGE_DEBT_OPEN"
+  },
+  "sectors": {
+    "member_count": 322,
+    "participation_proxy": {
+      "value": 1.1089917998211334,
+      "quality": "PROXY_RECONSTRUCTED",
+      "reason": null,
+      "source_digest": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85",
+      "source_field": "fields.participation_proxy",
+      "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+      "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+      "source_as_of": "2026-10-09",
+      "unit": "ratio_or_percentile_points_as_field_contract",
+      "denominator": null,
+      "window": null,
+      "adjustment_basis": null,
+      "computation_domain": "V4_08_SECTOR_NATIVE_V1"
+    }
+  },
+  "stocks": {
+    "close": {
+      "value": 97.55,
+      "quality": "KNOWN",
+      "reason": null,
+      "source_digest": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5",
+      "source_field": "close",
+      "source_contract_id": null,
+      "parameter_set_id": null,
+      "source_as_of": "2026-10-09",
+      "unit": "CNY",
+      "denominator": null,
+      "window": null,
+      "adjustment_basis": "RAW_UNADJUSTED",
+      "computation_domain": "OWNER_PROJECTION"
+    },
+    "amount": {
+      "value": 385869024.0,
+      "quality": "KNOWN",
+      "reason": null,
+      "source_digest": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5",
+      "source_field": "amount",
+      "source_contract_id": null,
+      "parameter_set_id": null,
+      "source_as_of": "2026-10-09",
+      "unit": "CNY",
+      "denominator": null,
+      "window": null,
+      "adjustment_basis": null,
+      "computation_domain": "OWNER_PROJECTION"
+    }
+  },
+  "focus": {
+    "total": 2805,
+    "exposure": {
+      "denominator": 2804,
+      "unknown_industry": 0,
+      "items": [
+        {
+          "sector_id": "INDUSTRY:T0706",
+          "count": 176,
+          "share": 0.06276747503566334
+        },
+        {
+          "sector_id": "INDUSTRY:T020401",
+          "count": 135,
+          "share": 0.04814550641940086
+        },
+        {
+          "sector_id": "INDUSTRY:T040202",
+          "count": 125,
+          "share": 0.04457917261055635
+        },
+        {
+          "sector_id": "INDUSTRY:T070506",
+          "count": 111,
+          "share": 0.039586305278174035
+        },
+        {
+          "sector_id": "INDUSTRY:T1205",
+          "count": 111,
+          "share": 0.039586305278174035
+        },
+        {
+          "sector_id": "INDUSTRY:T040501",
+          "count": 95,
+          "share": 0.033880171184022825
+        },
+        {
+          "sector_id": "INDUSTRY:T0403",
+          "count": 81,
+          "share": 0.028887303851640515
+        },
+        {
+          "sector_id": "INDUSTRY:T110101",
+          "count": 74,
+          "share": 0.026390870185449358
+        },
+        {
+          "sector_id": "INDUSTRY:T0805",
+          "count": 72,
+          "share": 0.025677603423680456
+        },
+        {
+          "sector_id": "INDUSTRY:T030403",
+          "count": 68,
+          "share": 0.024251069900142655
+        },
+        {
+          "sector_id": "INDUSTRY:T1204",
+          "count": 60,
+          "share": 0.021398002853067047
+        },
+        {
+          "sector_id": "INDUSTRY:T040503",
+          "count": 54,
+          "share": 0.01925820256776034
+        },
+        {
+          "sector_id": "INDUSTRY:T0401",
+          "count": 52,
+          "share": 0.018544935805991442
+        },
+        {
+          "sector_id": "INDUSTRY:T020402",
+          "count": 47,
+          "share": 0.016761768901569187
+        },
+        {
+          "sector_id": "INDUSTRY:T070402",
+          "count": 45,
+          "share": 0.016048502139800285
+        },
+        {
+          "sector_id": "INDUSTRY:T1206",
+          "count": 45,
+          "share": 0.016048502139800285
+        },
+        {
+          "sector_id": "INDUSTRY:T040502",
+          "count": 44,
+          "share": 0.015691868758915834
+        },
+        {
+          "sector_id": "INDUSTRY:T1001",
+          "count": 41,
+          "share": 0.014621968616262483
+        },
+        {
+          "sector_id": "INDUSTRY:T030302",
+          "count": 40,
+          "share": 0.014265335235378032
+        },
+        {
+          "sector_id": "INDUSTRY:T1202",
+          "count": 37,
+          "share": 0.013195435092724679
+        },
+        {
+          "sector_id": "INDUSTRY:T0804",
+          "count": 36,
+          "share": 0.012838801711840228
+        },
+        {
+          "sector_id": "INDUSTRY:T0902",
+          "count": 36,
+          "share": 0.012838801711840228
+        },
+        {
+          "sector_id": "INDUSTRY:T0602",
+          "count": 34,
+          "share": 0.012125534950071327
+        },
+        {
+          "sector_id": "INDUSTRY:T050101",
+          "count": 32,
+          "share": 0.011412268188302425
+        },
+        {
+          "sector_id": "INDUSTRY:T020404",
+          "count": 30,
+          "share": 0.010699001426533523
+        },
+        {
+          "sector_id": "INDUSTRY:T030206",
+          "count": 30,
+          "share": 0.010699001426533523
+        },
+        {
+          "sector_id": "INDUSTRY:T0404",
+          "count": 30,
+          "share": 0.010699001426533523
+        },
+        {
+          "sector_id": "INDUSTRY:T1201",
+          "count": 30,
+          "share": 0.010699001426533523
+        },
+        {
+          "sector_id": "INDUSTRY:T010202",
+          "count": 29,
+          "share": 0.010342368045649072
+        },
+        {
+          "sector_id": "INDUSTRY:T060102",
+          "count": 29,
+          "share": 0.010342368045649072
+        },
+        {
+          "sector_id": "INDUSTRY:T110202",
+          "count": 29,
+          "share": 0.010342368045649072
+        },
+        {
+          "sector_id": "INDUSTRY:T030301",
+          "count": 28,
+          "share": 0.009985734664764621
+        },
+        {
+          "sector_id": "INDUSTRY:T0207",
+          "count": 27,
+          "share": 0.00962910128388017
+        },
+        {
+          "sector_id": "INDUSTRY:T050104",
+          "count": 27,
+          "share": 0.00962910128388017
+        },
+        {
+          "sector_id": "INDUSTRY:T0703",
+          "count": 27,
+          "share": 0.00962910128388017
+        },
+        {
+          "sector_id": "INDUSTRY:T0708",
+          "count": 27,
+          "share": 0.00962910128388017
+        },
+        {
+          "sector_id": "INDUSTRY:T0701",
+          "count": 26,
+          "share": 0.009272467902995721
+        },
+        {
+          "sector_id": "INDUSTRY:T010203",
+          "count": 23,
+          "share": 0.008202567760342368
+        },
+        {
+          "sector_id": "INDUSTRY:T060101",
+          "count": 23,
+          "share": 0.008202567760342368
+        },
+        {
+          "sector_id": "INDUSTRY:T010101",
+          "count": 22,
+          "share": 0.007845934379457917
+        },
+        {
+          "sector_id": "INDUSTRY:T0603",
+          "count": 22,
+          "share": 0.007845934379457917
+        },
+        {
+          "sector_id": "INDUSTRY:T1002",
+          "count": 22,
+          "share": 0.007845934379457917
+        },
+        {
+          "sector_id": "INDUSTRY:T010201",
+          "count": 21,
+          "share": 0.007489300998573466
+        },
+        {
+          "sector_id": "INDUSTRY:T030204",
+          "count": 21,
+          "share": 0.007489300998573466
+        },
+        {
+          "sector_id": "INDUSTRY:T040201",
+          "count": 21,
+          "share": 0.007489300998573466
+        },
+        {
+          "sector_id": "INDUSTRY:T020205",
+          "count": 20,
+          "share": 0.007132667617689016
+        },
+        {
+          "sector_id": "INDUSTRY:T0203",
+          "count": 20,
+          "share": 0.007132667617689016
+        },
+        {
+          "sector_id": "INDUSTRY:T030401",
+          "count": 20,
+          "share": 0.007132667617689016
+        },
+        {
+          "sector_id": "INDUSTRY:T1004",
+          "count": 20,
+          "share": 0.007132667617689016
+        },
+        {
+          "sector_id": "INDUSTRY:T110201",
+          "count": 20,
+          "share": 0.007132667617689016
+        },
+        {
+          "sector_id": "INDUSTRY:T010301",
+          "count": 19,
+          "share": 0.006776034236804565
+        },
+        {
+          "sector_id": "INDUSTRY:T090301",
+          "count": 19,
+          "share": 0.006776034236804565
+        },
+        {
+          "sector_id": "INDUSTRY:T1203",
+          "count": 19,
+          "share": 0.006776034236804565
+        },
+        {
+          "sector_id": "INDUSTRY:T020202",
+          "count": 17,
+          "share": 0.006062767475035664
+        },
+        {
+          "sector_id": "INDUSTRY:T020406",
+          "count": 17,
+          "share": 0.006062767475035664
+        },
+        {
+          "sector_id": "INDUSTRY:T030201",
+          "count": 17,
+          "share": 0.006062767475035664
+        },
+        {
+          "sector_id": "INDUSTRY:T060502",
+          "count": 17,
+          "share": 0.006062767475035664
+        },
+        {
+          "sector_id": "INDUSTRY:T0707",
+          "count": 16,
+          "share": 0.005706134094151213
+        },
+        {
+          "sector_id": "INDUSTRY:T090303",
+          "count": 16,
+          "share": 0.005706134094151213
+        },
+        {
+          "sector_id": "INDUSTRY:T020602",
+          "count": 15,
+          "share": 0.005349500713266762
+        },
+        {
+          "sector_id": "INDUSTRY:T020604",
+          "count": 15,
+          "share": 0.005349500713266762
+        },
+        {
+          "sector_id": "INDUSTRY:T0301",
+          "count": 15,
+          "share": 0.005349500713266762
+        },
+        {
+          "sector_id": "INDUSTRY:T090102",
+          "count": 14,
+          "share": 0.004992867332382311
+        },
+        {
+          "sector_id": "INDUSTRY:T020103",
+          "count": 13,
+          "share": 0.0046362339514978606
+        },
+        {
+          "sector_id": "INDUSTRY:T1301",
+          "count": 13,
+          "share": 0.0046362339514978606
+        },
+        {
+          "sector_id": "INDUSTRY:T110102",
+          "count": 12,
+          "share": 0.0042796005706134095
+        },
+        {
+          "sector_id": "INDUSTRY:T020101",
+          "count": 11,
+          "share": 0.0039229671897289585
+        },
+        {
+          "sector_id": "INDUSTRY:T0803",
+          "count": 11,
+          "share": 0.0039229671897289585
+        },
+        {
+          "sector_id": "INDUSTRY:T010302",
+          "count": 10,
+          "share": 0.003566333808844508
+        },
+        {
+          "sector_id": "INDUSTRY:T0502",
+          "count": 10,
+          "share": 0.003566333808844508
+        },
+        {
+          "sector_id": "INDUSTRY:T0702",
+          "count": 10,
+          "share": 0.003566333808844508
+        },
+        {
+          "sector_id": "INDUSTRY:T020201",
+          "count": 9,
+          "share": 0.003209700427960057
+        },
+        {
+          "sector_id": "INDUSTRY:T030501",
+          "count": 9,
+          "share": 0.003209700427960057
+        },
+        {
+          "sector_id": "INDUSTRY:T110203",
+          "count": 9,
+          "share": 0.003209700427960057
+        },
+        {
+          "sector_id": "INDUSTRY:T020603",
+          "count": 8,
+          "share": 0.0028530670470756064
+        },
+        {
+          "sector_id": "INDUSTRY:T040204",
+          "count": 8,
+          "share": 0.0028530670470756064
+        },
+        {
+          "sector_id": "INDUSTRY:T050102",
+          "count": 8,
+          "share": 0.0028530670470756064
+        },
+        {
+          "sector_id": "INDUSTRY:T050105",
+          "count": 8,
+          "share": 0.0028530670470756064
+        },
+        {
+          "sector_id": "INDUSTRY:T0604",
+          "count": 8,
+          "share": 0.0028530670470756064
+        },
+        {
+          "sector_id": "INDUSTRY:T060501",
+          "count": 8,
+          "share": 0.0028530670470756064
+        },
+        {
+          "sector_id": "INDUSTRY:T070501",
+          "count": 8,
+          "share": 0.0028530670470756064
+        },
+        {
+          "sector_id": "INDUSTRY:T020405",
+          "count": 7,
+          "share": 0.0024964336661911554
+        },
+        {
+          "sector_id": "INDUSTRY:T030202",
+          "count": 7,
+          "share": 0.0024964336661911554
+        },
+        {
+          "sector_id": "INDUSTRY:T030502",
+          "count": 7,
+          "share": 0.0024964336661911554
+        },
+        {
+          "sector_id": "INDUSTRY:T070401",
+          "count": 7,
+          "share": 0.0024964336661911554
+        },
+        {
+          "sector_id": "INDUSTRY:T010102",
+          "count": 6,
+          "share": 0.0021398002853067048
+        },
+        {
+          "sector_id": "INDUSTRY:T020102",
+          "count": 6,
+          "share": 0.0021398002853067048
+        },
+        {
+          "sector_id": "INDUSTRY:T030402",
+          "count": 6,
+          "share": 0.0021398002853067048
+        },
+        {
+          "sector_id": "INDUSTRY:T040203",
+          "count": 6,
+          "share": 0.0021398002853067048
+        },
+        {
+          "sector_id": "INDUSTRY:T020203",
+          "count": 5,
+          "share": 0.001783166904422254
+        },
+        {
+          "sector_id": "INDUSTRY:T0208",
+          "count": 5,
+          "share": 0.001783166904422254
+        },
+        {
+          "sector_id": "INDUSTRY:T070505",
+          "count": 5,
+          "share": 0.001783166904422254
+        },
+        {
+          "sector_id": "INDUSTRY:T090101",
+          "count": 5,
+          "share": 0.001783166904422254
+        },
+        {
+          "sector_id": "INDUSTRY:T110204",
+          "count": 5,
+          "share": 0.001783166904422254
+        },
+        {
+          "sector_id": "INDUSTRY:T020601",
+          "count": 4,
+          "share": 0.0014265335235378032
+        },
+        {
+          "sector_id": "INDUSTRY:T030503",
+          "count": 4,
+          "share": 0.0014265335235378032
+        },
+        {
+          "sector_id": "INDUSTRY:T050107",
+          "count": 4,
+          "share": 0.0014265335235378032
+        },
+        {
+          "sector_id": "INDUSTRY:T0802",
+          "count": 4,
+          "share": 0.0014265335235378032
+        },
+        {
+          "sector_id": "INDUSTRY:T090302",
+          "count": 4,
+          "share": 0.0014265335235378032
+        },
+        {
+          "sector_id": "INDUSTRY:T010303",
+          "count": 3,
+          "share": 0.0010699001426533524
+        },
+        {
+          "sector_id": "INDUSTRY:T070502",
+          "count": 3,
+          "share": 0.0010699001426533524
+        },
+        {
+          "sector_id": "INDUSTRY:T0801",
+          "count": 3,
+          "share": 0.0010699001426533524
+        },
+        {
+          "sector_id": "INDUSTRY:T090103",
+          "count": 3,
+          "share": 0.0010699001426533524
+        },
+        {
+          "sector_id": "INDUSTRY:T1003",
+          "count": 3,
+          "share": 0.0010699001426533524
+        },
+        {
+          "sector_id": "INDUSTRY:T050103",
+          "count": 2,
+          "share": 0.0007132667617689016
+        },
+        {
+          "sector_id": "INDUSTRY:T050106",
+          "count": 2,
+          "share": 0.0007132667617689016
+        },
+        {
+          "sector_id": "INDUSTRY:T070504",
+          "count": 2,
+          "share": 0.0007132667617689016
+        },
+        {
+          "sector_id": "INDUSTRY:T020204",
+          "count": 1,
+          "share": 0.0003566333808844508
+        },
+        {
+          "sector_id": "INDUSTRY:T030203",
+          "count": 1,
+          "share": 0.0003566333808844508
+        }
+      ],
+      "source": {
+        "bytes": 1560226,
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/latest_member_S.jsonl.gz",
+        "sha256": "be1cb3b1e53bc5d104c0eda165428fae4fb03abcb7208ea8abe22ee68d3ee3be"
+      },
+      "scope": "Unique active research objects under latest reconstructed primary industry; not holdings, not a probability"
+    }
+  },
+  "market": {
+    "breadth": {
+      "actual_quote_count": 5210,
+      "amount_cny": 1900364743745.5,
+      "definition": "ret1 in native T0 QFQ coordinate; actual T0 bar required",
+      "denominator": 5224,
+      "down": 2107,
+      "flat": 113,
+      "unknown": 15,
+      "up": 2989
+    },
+    "source": {
+      "core": {
+        "bytes": 19792536,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+        "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+      },
+      "history": {
+        "bytes": 67380907,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/history.jsonl.gz",
+        "sha256": "1297fb01a999165f117afec1660cbb2549366f51030ecf09ba237b9e88607b24"
+      },
+      "limits_0": {
+        "bytes": 257002,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/daily_price_limits_v1.jsonl.gz",
+        "sha256": "446ff3b24cdb6e9ee80819c03938a43607049a69c61d036d885b2e3e407f32d5"
+      },
+      "limits_1": {
+        "bytes": 256491,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-08/daily_price_limits_v1.jsonl.gz",
+        "sha256": "faf73305462a7deee91a83e278be54b6d76f57a9f85330310dc66960ac3af317"
+      },
+      "market": {
+        "bytes": 5925,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/market_owner_candidate_v2.json",
+        "sha256": "327c4d3dfbdf6a20219a14a86c507d413933da3ebaba39bc708f1bfcdb7a8146"
+      },
+      "names": {
+        "bytes": 1355970,
+        "path": "data/v4/display_names/a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f/names.json",
+        "sha256": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+      },
+      "package": {
+        "bytes": 551726664,
+        "path": "data/v4/dynamic_daily_sources/tdx/20261009/sha256-635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6/hsjday.zip",
+        "sha256": "635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6"
+      },
+      "raw": {
+        "bytes": 242313,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/raw.jsonl.gz",
+        "sha256": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5"
+      }
+    }
+  },
+  "diagnostics": {
+    "items": [
+      {
+        "module": "stocks",
+        "record_count": 5224,
+        "as_of": "2026-10-09",
+        "unknown_fields": {
+          "amount": 14,
+          "amount_ratio20": 23,
+          "amount_ratio5": 16,
+          "amount_state": 23,
+          "atr20": 9,
+          "atr5": 2,
+          "atr_ratio": 9,
+          "bias20_atr": 23,
+          "close": 14,
+          "clv": 18,
+          "compression_state": 46,
+          "core_extension_risk": 28,
+          "core_participation_result": 27,
+          "core_price_damage": 24,
+          "dist_high20_atr": 23,
+          "drawdown20_state": 23,
+          "drawdown60_state": 38,
+          "final_eligibility": 5048,
+          "health": 5048,
+          "hh_progress": 3,
+          "hhv20": 9,
+          "hhv5": 2,
+          "hhv60": 24,
+          "high": 14,
+          "ll_progress": 3,
+          "llv20": 9,
+          "llv5": 2,
+          "llv60": 24,
+          "low": 14,
+          "ma10": 17,
+          "ma20": 9,
+          "ma5": 2,
+          "ma60": 24,
+          "ma_structure_state": 26,
+          "minimum_liquidity": 23,
+          "monthly_trend_state": 27,
+          "near_high20_state": 23,
+          "near_high60_state": 39,
+          "open": 14,
+          "pos250": 123,
+          "pos60": 38,
+          "position_state": 38,
+          "prior60_percentile": 39,
+          "prior_high20": 9,
+          "prior_high5": 2,
+          "prior_high60": 25,
+          "prior_low20": 9,
+          "prior_low5": 2,
+          "prior_low60": 25,
+          "range_ratio": 9,
+          "regime_ui": 5224,
+          "rel_market_1": 15,
+          "rel_market_3": 19,
+          "rel_market_5": 21,
+          "relative_market_state": 51,
+          "relative_sector_state": 93,
+          "ret1": 15,
+          "ret20": 28,
+          "ret3": 19,
+          "ret5": 21,
+          "rps20": 28,
+          "rps20_delta3": 36,
+          "rps5": 21,
+          "rps5_delta1": 23,
+          "rps5_delta3": 26,
+          "severe_extension": 28,
+          "slope20": 12,
+          "slope60": 26,
+          "tr": 14,
+          "trend_state": 41,
+          "validity": 5048,
+          "vol20": 46,
+          "vol5": 25,
+          "vol_ratio": 46,
+          "volume": 14,
+          "volume_ratio20": 23,
+          "volume_ratio5": 16,
+          "volume_state": 23,
+          "weekly_trend_state": 12
+        },
+        "field_quality_counts": {
+          "amount": {
+            "KNOWN": 5210,
+            "FIELD_MISSING": 14
+          },
+          "amount_ratio20": {
+            "OBSERVED": 5201,
+            "UNKNOWN": 23
+          },
+          "amount_ratio5": {
+            "OBSERVED": 5208,
+            "UNKNOWN": 16
+          },
+          "amount_state": {
+            "KNOWN": 5201,
+            "UNKNOWN": 23
+          },
+          "atr20": {
+            "OBSERVED": 5215,
+            "UNKNOWN": 9
+          },
+          "atr5": {
+            "OBSERVED": 5222,
+            "UNKNOWN": 2
+          },
+          "atr_ratio": {
+            "OBSERVED": 5215,
+            "UNKNOWN": 9
+          },
+          "bias20_atr": {
+            "OBSERVED": 5201,
+            "UNKNOWN": 23
+          },
+          "close": {
+            "KNOWN": 5210,
+            "FIELD_MISSING": 14
+          },
+          "clv": {
+            "OBSERVED": 5206,
+            "UNKNOWN": 18
+          },
+          "compression_state": {
+            "KNOWN": 5178,
+            "UNKNOWN": 46
+          },
+          "core_extension_risk": {
+            "KNOWN": 5196,
+            "UNKNOWN": 28
+          },
+          "core_participation_result": {
+            "KNOWN": 5197,
+            "UNKNOWN": 27
+          },
+          "core_price_damage": {
+            "OBSERVED": 5200,
+            "UNKNOWN": 24
+          },
+          "detector_statuses": {
+            "KNOWN": 5224
+          },
+          "dist_high20_atr": {
+            "OBSERVED": 5201,
+            "UNKNOWN": 23
+          },
+          "drawdown20_state": {
+            "KNOWN": 5201,
+            "UNKNOWN": 23
+          },
+          "drawdown60_state": {
+            "KNOWN": 5186,
+            "UNKNOWN": 38
+          },
+          "final_eligibility": {
+            "KNOWN": 176,
+            "UNKNOWN": 5048
+          },
+          "health": {
+            "KNOWN": 176,
+            "UNKNOWN": 5048
+          },
+          "hh_progress": {
+            "OBSERVED": 5221,
+            "UNKNOWN": 3
+          },
+          "hhv20": {
+            "OBSERVED": 5215,
+            "UNKNOWN": 9
+          },
+          "hhv5": {
+            "OBSERVED": 5222,
+            "UNKNOWN": 2
+          },
+          "hhv60": {
+            "OBSERVED": 5200,
+            "UNKNOWN": 24
+          },
+          "high": {
+            "KNOWN": 5210,
+            "FIELD_MISSING": 14
+          },
+          "ll_progress": {
+            "OBSERVED": 5221,
+            "UNKNOWN": 3
+          },
+          "llv20": {
+            "OBSERVED": 5215,
+            "UNKNOWN": 9
+          },
+          "llv5": {
+            "OBSERVED": 5222,
+            "UNKNOWN": 2
+          },
+          "llv60": {
+            "OBSERVED": 5200,
+            "UNKNOWN": 24
+          },
+          "low": {
+            "KNOWN": 5210,
+            "FIELD_MISSING": 14
+          },
+          "ma10": {
+            "OBSERVED": 5207,
+            "UNKNOWN": 17
+          },
+          "ma20": {
+            "OBSERVED": 5215,
+            "UNKNOWN": 9
+          },
+          "ma5": {
+            "OBSERVED": 5222,
+            "UNKNOWN": 2
+          },
+          "ma60": {
+            "OBSERVED": 5200,
+            "UNKNOWN": 24
+          },
+          "ma_structure_state": {
+            "KNOWN": 5198,
+            "UNKNOWN": 26
+          },
+          "maturity": {
+            "KNOWN": 5224
+          },
+          "minimum_liquidity": {
+            "OBSERVED": 5201,
+            "UNKNOWN": 23
+          },
+          "monthly_trend_state": {
+            "KNOWN": 5197,
+            "UNKNOWN": 27
+          },
+          "near_high20_state": {
+            "KNOWN": 5201,
+            "UNKNOWN": 23
+          },
+          "near_high60_state": {
+            "KNOWN": 5185,
+            "UNKNOWN": 39
+          },
+          "open": {
+            "KNOWN": 5210,
+            "FIELD_MISSING": 14
+          },
+          "pos250": {
+            "OBSERVED": 5101,
+            "UNKNOWN": 123
+          },
+          "pos60": {
+            "OBSERVED": 5186,
+            "UNKNOWN": 38
+          },
+          "position_state": {
+            "KNOWN": 5186,
+            "UNKNOWN": 38
+          },
+          "primary_industry": {
+            "KNOWN": 5224
+          },
+          "prior60_percentile": {
+            "OBSERVED": 5185,
+            "UNKNOWN": 39
+          },
+          "prior_high20": {
+            "OBSERVED": 5215,
+            "UNKNOWN": 9
+          },
+          "prior_high5": {
+            "OBSERVED": 5222,
+            "UNKNOWN": 2
+          },
+          "prior_high60": {
+            "OBSERVED": 5199,
+            "UNKNOWN": 25
+          },
+          "prior_low20": {
+            "OBSERVED": 5215,
+            "UNKNOWN": 9
+          },
+          "prior_low5": {
+            "OBSERVED": 5222,
+            "UNKNOWN": 2
+          },
+          "prior_low60": {
+            "OBSERVED": 5199,
+            "UNKNOWN": 25
+          },
+          "range_ratio": {
+            "OBSERVED": 5215,
+            "UNKNOWN": 9
+          },
+          "regime_ui": {
+            "UNKNOWN": 5224
+          },
+          "rel_market_1": {
+            "OBSERVED": 5209,
+            "UNKNOWN": 15
+          },
+          "rel_market_3": {
+            "OBSERVED": 5205,
+            "UNKNOWN": 19
+          },
+          "rel_market_5": {
+            "OBSERVED": 5203,
+            "UNKNOWN": 21
+          },
+          "relative_market_state": {
+            "KNOWN": 5173,
+            "UNKNOWN": 51
+          },
+          "relative_sector_state": {
+            "KNOWN": 5131,
+            "UNKNOWN": 93
+          },
+          "ret1": {
+            "OBSERVED": 5209,
+            "UNKNOWN": 15
+          },
+          "ret20": {
+            "OBSERVED": 5196,
+            "UNKNOWN": 28
+          },
+          "ret3": {
+            "OBSERVED": 5205,
+            "UNKNOWN": 19
+          },
+          "ret5": {
+            "OBSERVED": 5203,
+            "UNKNOWN": 21
+          },
+          "rps20": {
+            "OBSERVED": 5196,
+            "UNKNOWN": 28
+          },
+          "rps20_delta3": {
+            "OBSERVED": 5188,
+            "UNKNOWN": 36
+          },
+          "rps5": {
+            "OBSERVED": 5203,
+            "UNKNOWN": 21
+          },
+          "rps5_delta1": {
+            "OBSERVED": 5201,
+            "UNKNOWN": 23
+          },
+          "rps5_delta3": {
+            "OBSERVED": 5198,
+            "UNKNOWN": 26
+          },
+          "scenario": {
+            "KNOWN": 5224
+          },
+          "severe_extension": {
+            "KNOWN": 5196,
+            "UNKNOWN": 28
+          },
+          "slope20": {
+            "OBSERVED": 5212,
+            "UNKNOWN": 12
+          },
+          "slope60": {
+            "OBSERVED": 5198,
+            "UNKNOWN": 26
+          },
+          "tr": {
+            "OBSERVED": 5210,
+            "UNKNOWN": 14
+          },
+          "tracking": {
+            "KNOWN": 5224
+          },
+          "transition_reasons": {
+            "KNOWN": 5224
+          },
+          "trend_state": {
+            "KNOWN": 5183,
+            "UNKNOWN": 41
+          },
+          "unknown_predicates": {
+            "KNOWN": 5224
+          },
+          "validity": {
+            "KNOWN": 176,
+            "UNKNOWN": 5048
+          },
+          "vol20": {
+            "OBSERVED": 5178,
+            "UNKNOWN": 46
+          },
+          "vol5": {
+            "OBSERVED": 5199,
+            "UNKNOWN": 25
+          },
+          "vol_ratio": {
+            "OBSERVED": 5178,
+            "UNKNOWN": 46
+          },
+          "volume": {
+            "KNOWN": 5210,
+            "FIELD_MISSING": 14
+          },
+          "volume_ratio20": {
+            "OBSERVED": 5201,
+            "UNKNOWN": 23
+          },
+          "volume_ratio5": {
+            "OBSERVED": 5208,
+            "UNKNOWN": 16
+          },
+          "volume_state": {
+            "KNOWN": 5201,
+            "UNKNOWN": 23
+          },
+          "weekly_trend_state": {
+            "KNOWN": 5212,
+            "UNKNOWN": 12
+          }
+        },
+        "quality_rule": "Null, UNKNOWN literal, explicit unavailable quality; reconstructed known values remain separately identified"
+      },
+      {
+        "module": "sectors",
+        "record_count": 400,
+        "as_of": "2026-10-09",
+        "unknown_fields": {
+          "breadth_delta1": 106,
+          "breadth_delta3": 137,
+          "dq5": 5,
+          "entered_count": 150,
+          "health": 400,
+          "ma20_delta1": 128,
+          "ma20_delta3": 129,
+          "maturity": 400,
+          "mdd20": 400,
+          "net_entered_count": 150,
+          "output_state": 74,
+          "prior_rotation_state": 130,
+          "rank_velocity3": 5,
+          "sector_rs20": 5,
+          "sector_rs20_pct": 5,
+          "sector_rs5": 5,
+          "sector_rs5_pct": 5,
+          "sector_rs60": 400,
+          "sector_rs60_pct": 400,
+          "seed_retention": 80,
+          "strong_member": 135,
+          "strong_member_retention": 168
+        },
+        "field_quality_counts": {
+          "base_seed_width_adjusted": {
+            "PROXY_RECONSTRUCTED": 400
+          },
+          "breadth_delta1": {
+            "PROXY_RECONSTRUCTED": 294,
+            "UNKNOWN": 106
+          },
+          "breadth_delta3": {
+            "PROXY_RECONSTRUCTED": 263,
+            "UNKNOWN": 137
+          },
+          "breadth_ret1": {
+            "PROXY_RECONSTRUCTED": 400
+          },
+          "breadth_ret20": {
+            "PROXY_RECONSTRUCTED": 400
+          },
+          "breadth_ret5": {
+            "PROXY_RECONSTRUCTED": 400
+          },
+          "dq5": {
+            "PROXY_RECONSTRUCTED": 395,
+            "UNKNOWN": 5
+          },
+          "entered_count": {
+            "PROXY_RECONSTRUCTED": 250,
+            "UNKNOWN": 150
+          },
+          "health": {
+            "SOURCE_INCOMPLETE": 400
+          },
+          "ma20_delta1": {
+            "PROXY_RECONSTRUCTED": 272,
+            "UNKNOWN": 128
+          },
+          "ma20_delta3": {
+            "PROXY_RECONSTRUCTED": 271,
+            "UNKNOWN": 129
+          },
+          "ma20_width": {
+            "PROXY_RECONSTRUCTED": 400
+          },
+          "maturity": {
+            "SOURCE_INCOMPLETE": 400
+          },
+          "mdd20": {
+            "UNKNOWN": 400
+          },
+          "member_count": {
+            "KNOWN": 400
+          },
+          "membership_ready": {
+            "PROXY_RECONSTRUCTED": 400
+          },
+          "net_entered_count": {
+            "PROXY_RECONSTRUCTED": 250,
+            "UNKNOWN": 150
+          },
+          "output_state": {
+            "VALIDATION_ONGOING": 400
+          },
+          "participation_proxy": {
+            "PROXY_RECONSTRUCTED": 400
+          },
+          "pos60": {
+            "PROXY_RECONSTRUCTED": 400
+          },
+          "prior_rotation_state": {
+            "VALIDATION_ONGOING": 400
+          },
+          "quoted_count": {
+            "KNOWN": 400
+          },
+          "rank_velocity3": {
+            "PROXY_RECONSTRUCTED": 395,
+            "UNKNOWN": 5
+          },
+          "sector_member_count": {
+            "PROXY_RECONSTRUCTED": 400
+          },
+          "sector_quote_coverage": {
+            "PROXY_RECONSTRUCTED": 400
+          },
+          "sector_rs1": {
+            "PROXY_RECONSTRUCTED": 400
+          },
+          "sector_rs20": {
+            "PROXY_RECONSTRUCTED": 395,
+            "UNKNOWN": 5
+          },
+          "sector_rs20_pct": {
+            "PROXY_RECONSTRUCTED": 395,
+            "UNKNOWN": 5
+          },
+          "sector_rs5": {
+            "PROXY_RECONSTRUCTED": 395,
+            "UNKNOWN": 5
+          },
+          "sector_rs5_pct": {
+            "PROXY_RECONSTRUCTED": 395,
+            "UNKNOWN": 5
+          },
+          "sector_rs60": {
+            "UNKNOWN": 400
+          },
+          "sector_rs60_pct": {
+            "UNKNOWN": 400
+          },
+          "sector_type": {
+            "KNOWN": 400
+          },
+          "seed_retention": {
+            "PROXY_RECONSTRUCTED": 320,
+            "UNKNOWN": 80
+          },
+          "seed_width": {
+            "PROXY_RECONSTRUCTED": 400
+          },
+          "source_member_count": {
+            "KNOWN": 400
+          },
+          "strong_member": {
+            "PROXY_RECONSTRUCTED": 265,
+            "UNKNOWN": 135
+          },
+          "strong_member_retention": {
+            "PROXY_RECONSTRUCTED": 232,
+            "UNKNOWN": 168
+          },
+          "top1_concentration": {
+            "PROXY_RECONSTRUCTED": 400
+          },
+          "top3_concentration": {
+            "PROXY_RECONSTRUCTED": 400
+          },
+          "unmapped_count": {
+            "KNOWN": 400
+          }
+        },
+        "quality_rule": "Null, UNKNOWN literal, explicit unavailable quality; reconstructed known values remain separately identified"
+      },
+      {
+        "module": "focus",
+        "record_count": 2805,
+        "as_of": "2026-10-09",
+        "unknown_fields": {
+          "best_confirmed_state": 1693,
+          "end_date": 2804,
+          "validity": 2629
+        },
+        "field_quality_counts": {
+          "T0": {
+            "KNOWN": 2805
+          },
+          "best_confirmed_state": {
+            "UNKNOWN": 1693,
+            "KNOWN": 1112
+          },
+          "end_date": {
+            "KNOWN": 2805
+          },
+          "event": {
+            "KNOWN": 2805
+          },
+          "membership": {
+            "KNOWN": 2805
+          },
+          "path_resolution": {
+            "KNOWN": 2805
+          },
+          "validity": {
+            "UNKNOWN": 2629,
+            "KNOWN": 176
+          }
+        },
+        "quality_rule": "Null, UNKNOWN literal, explicit unavailable quality; reconstructed known values remain separately identified"
+      }
+    ]
+  },
+  "cohort": {
+    "context": {
+      "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+      "taxonomy": "TDX_INDUSTRY_CONCEPT",
+      "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+      "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+      "AS_RECORDED": false,
+      "PIT_ELIGIBLE": false,
+      "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+      "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+      "survivorship_bias_risk": true,
+      "trade_date": "2026-10-09",
+      "contract_id": "V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "publication_id": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "accepted_trade_date": "2026-10-09",
+      "data_cutoff_date": "2026-10-09",
+      "available_trade_dates": [
+        "2026-09-28",
+        "2026-09-29",
+        "2026-09-30",
+        "2026-10-08",
+        "2026-10-09"
+      ],
+      "membership_snapshot": {
+        "bytes": 2281,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json",
+        "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+      },
+      "historical_PIT_permission": false,
+      "read_scope": "USER_AUTHORIZED_OPERATIONAL_DAILY",
+      "production_accepted": true,
+      "independent_external_acceptance": false,
+      "external_domain_disposition": {
+        "rotation": "VALIDATION_ONGOING",
+        "forward": "VALIDATION_ONGOING"
+      },
+      "rotation_validation_state": "VALIDATION_ONGOING",
+      "release_id": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "model_namespace": "TDX_INDUSTRY_CONCEPT",
+      "data_updated_at": "2026-10-09T11:56:56.437273+00:00",
+      "scoped_release": true,
+      "operational_release_scope": [
+        "stocks_daily",
+        "sectors_current_facts",
+        "market_current",
+        "focus_read_corrected",
+        "diagnostics"
+      ],
+      "domain_readiness": {
+        "focus": {
+          "earliest_valid_date": "2026-09-28"
+        }
+      },
+      "read_source_label": "通达信最新成员回算；非历史当日成员",
+      "bff_contract_id": "CORE_PRODUCT_BFF_R1",
+      "product_engineering_acceptance": "EXTERNAL_PENDING",
+      "focus_write": false,
+      "focus_read_projection_contract": "CORE_PRODUCT_FOCUS_READ_R2",
+      "focus_read_projection_external_acceptance": "NOT_GRANTED"
+    },
+    "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+    "production_accepted": true,
+    "status": "SOURCE_INCOMPLETE",
+    "data": {
+      "contract_id": "VALIDATION_COHORT_READ_R3_V2",
+      "status": "NO_AUTHORIZED_COHORT_OWNER",
+      "items": [],
+      "observed_count": null,
+      "matured_count": null,
+      "write_authorized": false
+    },
+    "source": null,
+    "contract_id": "VALIDATION_COHORT_STATISTICS_BFF_R3_V1",
+    "reason": "NO_AUTHORIZED_COHORT_OWNER",
+    "focus_is_validation_cohort": false,
+    "write_authorized": false,
+    "PIT_ELIGIBLE": false
+  },
+  "hypotheses": {
+    "contract_id": "OBSERVED_FR_COMPETING_EXPLANATIONS_R3_V1",
+    "scope": "CONDITIONAL_RESEARCH_HYPOTHESES",
+    "evidence": {
+      "close": {
+        "value": 97.55,
+        "quality": "KNOWN",
+        "reason": null,
+        "source_digest": "47a22ea9e98f78e3ecfa0eec328c589851a62bc7ce15fa51124ccc967590df9c",
+        "source_field": "close",
+        "source_contract_id": null,
+        "parameter_set_id": null,
+        "source_as_of": "2026-10-09",
+        "unit": "CNY",
+        "denominator": null,
+        "window": null,
+        "adjustment_basis": "TDX_NATIVE_AFFINE_QFQ_T0_COORDINATE",
+        "computation_domain": "OWNER_PROJECTION"
+      },
+      "ma20": {
+        "value": 116.428,
+        "quality": "OBSERVED",
+        "reason": null,
+        "source_digest": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270",
+        "source_field": "fields.ma20",
+        "source_contract_id": "CORE_FACTOR_V1",
+        "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+        "source_as_of": "2026-10-09",
+        "unit": "adjusted_price",
+        "denominator": null,
+        "window": "7cd892dfd3af688cf05080f26e52ac1d3ffbb62e032537b2b68e34c990080804",
+        "adjustment_basis": "TDX_NATIVE_AFFINE_QFQ_T0_COORDINATE",
+        "computation_domain": "OWNER_PROJECTION",
+        "window_start_trade_date": "2026-09-04",
+        "window_end_trade_date": "2026-10-09",
+        "actual_count": 20,
+        "calendar_span": 20,
+        "suspended_count": 0,
+        "contract_id": "CORE_FACTOR_V1",
+        "input_digest": "588cf91eba6fc87ef6f65cf0f6b38e79fea56a7ebaff2e00a8749438e1fb1131",
+        "output_digest": "8acceac750cb19c7225273806ec1a3a2f251efe0add0d3b3b002ce6044a0fabb"
+      },
+      "ret5": {
+        "value": -0.14052863436123353,
+        "quality": "OBSERVED",
+        "reason": null,
+        "source_digest": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270",
+        "source_field": "fields.ret5",
+        "source_contract_id": "CORE_FACTOR_V1",
+        "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+        "source_as_of": "2026-10-09",
+        "unit": "return_fraction",
+        "denominator": null,
+        "window": "9492888e6b4e8556a7d0bcb2b18446c7cb03666287ee5240337563f3d3e55612",
+        "adjustment_basis": "TDX_NATIVE_AFFINE_QFQ_T0_COORDINATE",
+        "computation_domain": "OWNER_PROJECTION",
+        "window_start_trade_date": "2026-09-24",
+        "window_end_trade_date": "2026-10-09",
+        "actual_count": 6,
+        "calendar_span": 6,
+        "suspended_count": 0,
+        "contract_id": "CORE_FACTOR_V1",
+        "input_digest": "1ee297e34ccbaa5b50a00a1c91a2a71c32949b6d26aa1feb44eec2e143764128",
+        "output_digest": "a4ecf3a2f9ce7cfaa260737ee665f63ced1ba24039f8dc5dd3ada6564e8644c7"
+      },
+      "rps20": {
+        "value": 12.762271414821944,
+        "quality": "OBSERVED",
+        "reason": null,
+        "source_digest": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270",
+        "source_field": "fields.rps20",
+        "source_contract_id": "RPS_MIDRANK_V1",
+        "parameter_set_id": null,
+        "source_as_of": "2026-10-09",
+        "unit": "percentage_points",
+        "denominator": 5196,
+        "window": null,
+        "adjustment_basis": null,
+        "computation_domain": "OWNER_PROJECTION",
+        "contract_id": "RPS_MIDRANK_V1"
+      }
+    },
+    "missing_fields": [],
+    "account_behavior_observed": false,
+    "probability": null,
+    "items": [
+      {
+        "id": "STRUCTURAL_CONTINUATION",
+        "title": "结构性趋势延续的解释",
+        "support": {
+          "close_above_ma20": false,
+          "positive_ret5": false
+        },
+        "counterevidence": "收盘不高于 MA20 或五日收益非正时，当前截面不支持这两个趋势条件。",
+        "current_support": false,
+        "next_discriminator": "在后续真实可评估会话检查收盘与当日 MA20、五日收益及正式结构状态；维持条件支持延续，结构失效否定该解释。"
+      },
+      {
+        "id": "TRANSIENT_MOVE",
+        "title": "短暂反弹或波动、尚未形成持续趋势的解释",
+        "support": {
+          "trend_conditions_incomplete": true,
+          "single_snapshot_cannot_prove_persistence": true
+        },
+        "counterevidence": "后续多个真实会话持续满足趋势条件且正式结构保持有效，会削弱短暂波动解释。",
+        "current_support": true,
+        "next_discriminator": "检查后续真实会话是否重新跌回 MA20、五日收益转为非正或正式结构失效；不可把尚未发生的结果写回当前判断。"
+      }
+    ],
+    "status": "READY"
+  },
+  "fep": {
+    "context": {
+      "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+      "taxonomy": "TDX_INDUSTRY_CONCEPT",
+      "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+      "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+      "AS_RECORDED": false,
+      "PIT_ELIGIBLE": false,
+      "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+      "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+      "survivorship_bias_risk": true,
+      "trade_date": "2026-10-09",
+      "contract_id": "V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "publication_id": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "accepted_trade_date": "2026-10-09",
+      "data_cutoff_date": "2026-10-09",
+      "available_trade_dates": [
+        "2026-09-28",
+        "2026-09-29",
+        "2026-09-30",
+        "2026-10-08",
+        "2026-10-09"
+      ],
+      "membership_snapshot": {
+        "bytes": 2281,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json",
+        "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+      },
+      "historical_PIT_permission": false,
+      "read_scope": "USER_AUTHORIZED_OPERATIONAL_DAILY",
+      "production_accepted": true,
+      "independent_external_acceptance": false,
+      "external_domain_disposition": {
+        "rotation": "VALIDATION_ONGOING",
+        "forward": "VALIDATION_ONGOING"
+      },
+      "rotation_validation_state": "VALIDATION_ONGOING",
+      "release_id": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "model_namespace": "TDX_INDUSTRY_CONCEPT",
+      "data_updated_at": "2026-10-09T11:56:56.437273+00:00",
+      "scoped_release": true,
+      "operational_release_scope": [
+        "stocks_daily",
+        "sectors_current_facts",
+        "market_current",
+        "focus_read_corrected",
+        "diagnostics"
+      ],
+      "domain_readiness": {
+        "focus": {
+          "earliest_valid_date": "2026-09-28"
+        }
+      },
+      "read_source_label": "通达信最新成员回算；非历史当日成员",
+      "bff_contract_id": "CORE_PRODUCT_BFF_R1",
+      "product_engineering_acceptance": "EXTERNAL_PENDING",
+      "focus_write": false,
+      "focus_read_projection_contract": "CORE_PRODUCT_FOCUS_READ_R2",
+      "focus_read_projection_external_acceptance": "NOT_GRANTED"
+    },
+    "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+    "production_accepted": true,
+    "status": "SOURCE_INCOMPLETE",
+    "reason": "MODEL_OR_PERMISSION_NOT_READY",
+    "contract_id": "FEP_NOT_READY_READ_R3_V1",
+    "source": null,
+    "data": {
+      "model_version": null,
+      "prediction_revision": null,
+      "permission_gate": "MODEL_OR_PERMISSION_NOT_READY",
+      "required_grant_key": [
+        "scope_id",
+        "target_id",
+        "horizon",
+        "feature_contract_id",
+        "model_set_id",
+        "capability"
+      ],
+      "capabilities": {
+        "SHADOW_INFERENCE": "NOT_GRANTED",
+        "DESCRIPTIVE_DISPLAY": "NOT_GRANTED",
+        "MODEL_DISPLAY": "NOT_GRANTED",
+        "PRIORITY_USE": "NOT_GRANTED"
+      },
+      "prediction": null,
+      "training_authorized": false,
+      "focus_write_authorized": false,
+      "priority_v1_unchanged": true
+    }
+  },
+  "settlement": {
+    "context": {
+      "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+      "taxonomy": "TDX_INDUSTRY_CONCEPT",
+      "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+      "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+      "AS_RECORDED": false,
+      "PIT_ELIGIBLE": false,
+      "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+      "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+      "survivorship_bias_risk": true,
+      "trade_date": "2026-10-09",
+      "contract_id": "V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "publication_id": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "accepted_trade_date": "2026-10-09",
+      "data_cutoff_date": "2026-10-09",
+      "available_trade_dates": [
+        "2026-09-28",
+        "2026-09-29",
+        "2026-09-30",
+        "2026-10-08",
+        "2026-10-09"
+      ],
+      "membership_snapshot": {
+        "bytes": 2281,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json",
+        "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+      },
+      "historical_PIT_permission": false,
+      "read_scope": "USER_AUTHORIZED_OPERATIONAL_DAILY",
+      "production_accepted": true,
+      "independent_external_acceptance": false,
+      "external_domain_disposition": {
+        "rotation": "VALIDATION_ONGOING",
+        "forward": "VALIDATION_ONGOING"
+      },
+      "rotation_validation_state": "VALIDATION_ONGOING",
+      "release_id": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "model_namespace": "TDX_INDUSTRY_CONCEPT",
+      "data_updated_at": "2026-10-09T11:56:56.437273+00:00",
+      "scoped_release": true,
+      "operational_release_scope": [
+        "stocks_daily",
+        "sectors_current_facts",
+        "market_current",
+        "focus_read_corrected",
+        "diagnostics"
+      ],
+      "domain_readiness": {
+        "focus": {
+          "earliest_valid_date": "2026-09-28"
+        }
+      },
+      "read_source_label": "通达信最新成员回算；非历史当日成员",
+      "bff_contract_id": "CORE_PRODUCT_BFF_R1",
+      "product_engineering_acceptance": "EXTERNAL_PENDING",
+      "focus_write": false,
+      "focus_read_projection_contract": "CORE_PRODUCT_FOCUS_READ_R2",
+      "focus_read_projection_external_acceptance": "NOT_GRANTED"
+    },
+    "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+    "production_accepted": true,
+    "status": "SOURCE_INCOMPLETE",
+    "reason": "NO_AUTHORIZED_COHORT_SETTLEMENT_OWNER",
+    "contract_id": "COHORT_SETTLEMENT_NOT_READY_READ_R3_V1",
+    "source": null,
+    "data": {
+      "observed_count": null,
+      "matured_count": null,
+      "outcomes": null,
+      "write_authorized": false
+    },
+    "items": [],
+    "total": null,
+    "offset": 0,
+    "limit": 30,
+    "has_next": false,
+    "focus_is_validation_cohort": false
+  },
+  "historical_stock": {
+    "context": {
+      "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+      "taxonomy": "TDX_INDUSTRY_CONCEPT",
+      "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+      "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+      "AS_RECORDED": false,
+      "PIT_ELIGIBLE": false,
+      "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+      "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+      "survivorship_bias_risk": true,
+      "trade_date": "2026-09-30",
+      "contract_id": "V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "publication_id": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "accepted_trade_date": "2026-10-09",
+      "data_cutoff_date": "2026-10-09",
+      "available_trade_dates": [
+        "2026-09-28",
+        "2026-09-29",
+        "2026-09-30",
+        "2026-10-08",
+        "2026-10-09"
+      ],
+      "membership_snapshot": {
+        "bytes": 2281,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json",
+        "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+      },
+      "historical_PIT_permission": false,
+      "read_scope": "USER_AUTHORIZED_OPERATIONAL_DAILY",
+      "production_accepted": true,
+      "independent_external_acceptance": false,
+      "external_domain_disposition": {
+        "rotation": "VALIDATION_ONGOING",
+        "forward": "VALIDATION_ONGOING"
+      },
+      "rotation_validation_state": "VALIDATION_ONGOING",
+      "release_id": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "model_namespace": "TDX_INDUSTRY_CONCEPT",
+      "data_updated_at": "2026-10-09T11:56:56.437273+00:00",
+      "scoped_release": true,
+      "operational_release_scope": [
+        "stocks_daily",
+        "sectors_current_facts",
+        "market_current",
+        "focus_read_corrected",
+        "diagnostics"
+      ],
+      "domain_readiness": {
+        "focus": {
+          "earliest_valid_date": "2026-09-28"
+        }
+      },
+      "read_source_label": "通达信最新成员回算；非历史当日成员",
+      "bff_contract_id": "CORE_PRODUCT_BFF_R1",
+      "product_engineering_acceptance": "EXTERNAL_PENDING",
+      "focus_write": false
+    },
+    "close": {
+      "value": 13.24,
+      "quality": "KNOWN",
+      "reason": null,
+      "source_digest": "87f6876854dcae42f4dfaed7c2258a91b2c563846caa92076f0dd30ca199991b",
+      "source_field": "close",
+      "source_contract_id": null,
+      "parameter_set_id": null,
+      "source_as_of": "2026-09-30",
+      "unit": "CNY",
+      "denominator": null,
+      "window": null,
+      "adjustment_basis": "RAW_UNADJUSTED",
+      "computation_domain": "OWNER_PROJECTION"
+    },
+    "hypotheses": {
+      "contract_id": "OBSERVED_FR_COMPETING_EXPLANATIONS_R3_V1",
+      "scope": "CONDITIONAL_RESEARCH_HYPOTHESES",
+      "evidence": {
+        "close": {
+          "value": 13.24,
+          "quality": "KNOWN",
+          "reason": null,
+          "source_digest": "87f6876854dcae42f4dfaed7c2258a91b2c563846caa92076f0dd30ca199991b",
+          "source_field": "close",
+          "source_contract_id": null,
+          "parameter_set_id": null,
+          "source_as_of": "2026-09-30",
+          "unit": "CNY",
+          "denominator": null,
+          "window": null,
+          "adjustment_basis": "RAW_UNADJUSTED",
+          "computation_domain": "OWNER_PROJECTION"
+        },
+        "ma20": {
+          "value": 13.038999999999998,
+          "quality": "OBSERVED",
+          "reason": null,
+          "source_digest": "a6d4bd42de00003095e1a65fae29cdbbfad5ab8e04f0983c5df4d99a8822bc7d",
+          "source_field": "fields.ma20",
+          "source_contract_id": "CORE_FACTOR_V1",
+          "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "source_as_of": "2026-09-30",
+          "unit": "adjusted_price",
+          "denominator": null,
+          "window": "ba2a8ffc16de3aafcca045d529ca53ebb3af5284fe13d01e834a5c263cef64d1",
+          "adjustment_basis": "TDX_NATIVE_AFFINE_QFQ_T0_COORDINATE",
+          "computation_domain": "OWNER_PROJECTION",
+          "window_start_trade_date": "2026-09-02",
+          "window_end_trade_date": "2026-09-30",
+          "actual_count": 20,
+          "calendar_span": 20,
+          "suspended_count": 0,
+          "contract_id": "CORE_FACTOR_V1",
+          "input_digest": "b76c0cc2ac0bcc52c918dabe36527793f3ea1f5fc310cdfc21cf5f95c4ac1d92",
+          "output_digest": "c6fcfc748ae5d358b86812bd788ab3bf5a48474d490614f8f2ac7c70e103d5c8"
+        },
+        "ret5": {
+          "value": 0.009916094584286883,
+          "quality": "OBSERVED",
+          "reason": null,
+          "source_digest": "a6d4bd42de00003095e1a65fae29cdbbfad5ab8e04f0983c5df4d99a8822bc7d",
+          "source_field": "fields.ret5",
+          "source_contract_id": "CORE_FACTOR_V1",
+          "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "source_as_of": "2026-09-30",
+          "unit": "return_fraction",
+          "denominator": null,
+          "window": "76d809cd1bc311fac522fe691432ea16323dfe366bf303118d7fbeb94a1d0ac1",
+          "adjustment_basis": "TDX_NATIVE_AFFINE_QFQ_T0_COORDINATE",
+          "computation_domain": "OWNER_PROJECTION",
+          "window_start_trade_date": "2026-09-22",
+          "window_end_trade_date": "2026-09-30",
+          "actual_count": 6,
+          "calendar_span": 6,
+          "suspended_count": 0,
+          "contract_id": "CORE_FACTOR_V1",
+          "input_digest": "381b8735b7958f5ff13d45527e68afb99dfc5d025c94a0856a78554b92c6acb2",
+          "output_digest": "18d3037777ed6f67753316bc13bccbe222006cfbaff0acbeb21e7e0b4ccd1f90"
+        },
+        "rps20": {
+          "value": 70.3810623556582,
+          "quality": "OBSERVED",
+          "reason": null,
+          "source_digest": "a6d4bd42de00003095e1a65fae29cdbbfad5ab8e04f0983c5df4d99a8822bc7d",
+          "source_field": "fields.rps20",
+          "source_contract_id": "RPS_MIDRANK_V1",
+          "parameter_set_id": null,
+          "source_as_of": "2026-09-30",
+          "unit": "percentage_points",
+          "denominator": 5197,
+          "window": null,
+          "adjustment_basis": null,
+          "computation_domain": "OWNER_PROJECTION",
+          "contract_id": "RPS_MIDRANK_V1"
+        }
+      },
+      "missing_fields": [
+        "CONSISTENT_PRICE_BASIS"
+      ],
+      "account_behavior_observed": false,
+      "probability": null,
+      "items": [],
+      "status": "SOURCE_INCOMPLETE"
+    }
+  },
+  "current688349": {
+    "value": 13.59,
+    "quality": "KNOWN",
+    "reason": null,
+    "source_digest": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5",
+    "source_field": "close",
+    "source_contract_id": null,
+    "parameter_set_id": null,
+    "source_as_of": "2026-10-09",
+    "unit": "CNY",
+    "denominator": null,
+    "window": null,
+    "adjustment_basis": "RAW_UNADJUSTED",
+    "computation_domain": "OWNER_PROJECTION"
+  }
+}

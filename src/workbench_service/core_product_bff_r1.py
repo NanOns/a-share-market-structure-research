@@ -9,6 +9,8 @@ from .r43_operational_bff import owner_cell
 from .stock_views import aggregate
 from .domain_views import CHANGE_EVENTS, RISK_EVENTS, ROTATIONS
 from workbench_analysis.r43_owner_replay import checked
+from workbench_analysis.validation_cohort_read_contract_r3 import read_statistics
+from .research_hypotheses_r3 import competing_explanations
 
 CONTRACT='CORE_PRODUCT_BFF_R1'
 
@@ -226,6 +228,13 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 if field in fields:data['owner_explanations'][key]=dict(value=fields[field]['value'],source=fields[field],basis='OWNER_TRANSITION_REASONS' if key=='why_now' else 'MISSING_PREDICATE_EVIDENCE_ONLY')
             data['key_prices']={k:fields[k] for k in ('ma20','prior_high20','prior_low20','atr20') if k in fields}
             data['hypothesis_scope']='情景解释不证明洗盘、吸筹、出货或账户资金行为'
+            hypothesis_fields=deepcopy(fields)
+            adjusted_ref=self.api.candidate['owners'][day].get('adjusted')
+            adjusted=next((r for r in (self.source('adjusted',day) or []) if r['security_id']==p[1]),None) if adjusted_ref else None
+            if adjusted:
+                hypothesis_fields['close']=owner_cell(dict(value=adjusted.get('close'),quality='KNOWN' if adjusted.get('adjustment_readiness')=='READY' else 'UNKNOWN'),adjusted_ref,'close',day)
+                hypothesis_fields['close']['adjustment_basis']='TDX_NATIVE_AFFINE_QFQ_T0_COORDINATE'
+            data['competitive_hypotheses']=competing_explanations(hypothesis_fields)
             return code,data
         if p[0]=='stocks' and len(p)==3 and p[2]=='timeline':
             history=[]
@@ -339,5 +348,29 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             b=next((r for r in self.project(domain,asof) if match(r,right)),None) if mode.endswith(('stock','sector')) else self.source('market',asof)
             if not a or not b:return self.missing(day,'compare','COMPARE_OBJECT_NOT_PRESENT')
             return 200,self.envelope(day,status='READY',left=a,right=b,mode=mode,as_of=asof,PIT_ELIGIBLE=False,comparison_scope='CORRECTED_RECONSTRUCTED; NOT_STRICT_PIT',items=[],total=0)
-        if path=='/api/v4/forward':return self.missing(day,'forward','VALIDATION_COHORT_OWNER_NOT_PRESENT; FOCUS_OUTCOMES_HAVE_SEPARATE_READ_ROUTE')
+        if path in ('/api/v4/forward','/api/v4/forward/statistics'):
+            ref=self.api.candidate['owners'][day].get('validation_cohort')
+            owner=None
+            if ref:
+                owner=json.loads(checked(self.api.root,ref).read_bytes())
+                if owner.get('contract_id')!='VALIDATION_COHORT_READ_R3_V2' or owner.get('trade_date')!=day:
+                    raise ValueError('COHORT_OWNER_CONTRACT_OR_DATE_MISMATCH')
+            cutoff=owner.get('read_cutoff') if owner else None
+            statistics=read_statistics(owner,cutoff=cutoff,trade_date=day)
+            return 200,self.envelope(day,status='READY' if owner else 'SOURCE_INCOMPLETE',data=statistics,
+                source=ref,contract_id='VALIDATION_COHORT_STATISTICS_BFF_R3_V1',
+                reason=None if owner else 'NO_AUTHORIZED_COHORT_OWNER',
+                focus_is_validation_cohort=False,write_authorized=False,PIT_ELIGIBLE=False)
+        if path=='/api/v4/forward/fep':
+            return 200,self.envelope(day,status='SOURCE_INCOMPLETE',reason='MODEL_OR_PERMISSION_NOT_READY',
+                contract_id='FEP_NOT_READY_READ_R3_V1',source=None,
+                data=dict(model_version=None,prediction_revision=None,permission_gate='MODEL_OR_PERMISSION_NOT_READY',
+                    required_grant_key=['scope_id','target_id','horizon','feature_contract_id','model_set_id','capability'],
+                    capabilities={k:'NOT_GRANTED' for k in ('SHADOW_INFERENCE','DESCRIPTIVE_DISPLAY','MODEL_DISPLAY','PRIORITY_USE')},
+                    prediction=None,training_authorized=False,focus_write_authorized=False,priority_v1_unchanged=True))
+        if path=='/api/v4/forward/settlement':
+            return 200,self.envelope(day,status='SOURCE_INCOMPLETE',reason='NO_AUTHORIZED_COHORT_SETTLEMENT_OWNER',
+                contract_id='COHORT_SETTLEMENT_NOT_READY_READ_R3_V1',source=None,
+                data=dict(observed_count=None,matured_count=None,outcomes=None,write_authorized=False),items=[],
+                total=None,offset=0,limit=30,has_next=False,focus_is_validation_cohort=False)
         return super().get(path,q)

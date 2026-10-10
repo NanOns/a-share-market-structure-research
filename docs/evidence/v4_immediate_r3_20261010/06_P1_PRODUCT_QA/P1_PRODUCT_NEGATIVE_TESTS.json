@@ -1,0 +1,41 @@
+{
+  "actual_http": [
+    {
+      "name": "stale",
+      "status": 409,
+      "expected": 409,
+      "data": {
+        "code": "PRODUCT_READ_FAILED",
+        "reason": "CONTEXT_TOKEN_MISMATCH"
+      }
+    },
+    {
+      "name": "future",
+      "status": 400,
+      "expected": 400,
+      "data": {
+        "code": "PRODUCT_READ_FAILED",
+        "reason": "TARGET_DATE_NOT_GRANTED"
+      }
+    },
+    {
+      "name": "sort_injection",
+      "status": 400,
+      "expected": 400,
+      "data": {
+        "code": "PRODUCT_READ_FAILED",
+        "reason": "INVALID_SORT_FIELD"
+      }
+    },
+    {
+      "name": "bad_offset",
+      "status": 400,
+      "expected": 400,
+      "data": {
+        "code": "PRODUCT_READ_FAILED",
+        "reason": "INVALID_QUERY_BOUND"
+      }
+    }
+  ],
+  "fixture_transport_separate": true
+}

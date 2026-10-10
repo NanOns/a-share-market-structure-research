@@ -1,0 +1,22 @@
+{
+  "production": {
+    "production_port": 28765,
+    "competitive_hypotheses_loaded": false,
+    "status": "PROD_RESTART_PENDING",
+    "no_service_mutation": true
+  },
+  "QA_port": 28767,
+  "protected": [
+    {
+      "path": "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json",
+      "sha256": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "bytes": 29799
+    },
+    {
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "bytes": 16890
+    }
+  ],
+  "accepted_head_changed": false
+}

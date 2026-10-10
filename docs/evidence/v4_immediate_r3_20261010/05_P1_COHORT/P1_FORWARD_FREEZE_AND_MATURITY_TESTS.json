@@ -1,0 +1,92 @@
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_research_hypotheses_r3.py",
+    "tests/test_validation_cohort_read_contract_r3.py",
+    "tests/test_core_product_read_r1.py",
+    "tests/test_forward_r2.py",
+    "tests/test_forward_final_path_boundary.py",
+    "tests/test_forward_p1_stock.py",
+    "tests/test_forward_p1_sector.py",
+    "tests/test_forward_p1_isolation.py",
+    "tests/v4_a04_r3/test_amount_a_go_forward.py",
+    "-q",
+    "--basetemp",
+    "G:/codex_tmp/test_temp/r3_deepening_1791602391801407400",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 14.997178499994334,
+  "stdout": "........................................................................ [ 53%]\n...............................................................          [100%]\n135 passed in 13.85s\n",
+  "stderr": "",
+  "tests": [
+    {
+      "path": "tests/test_research_hypotheses_r3.py",
+      "sha256": "686e1daed955369e93ccb5fd60c491f6542520afca193f3f77743bd4f351bdd0",
+      "bytes": 1354
+    },
+    {
+      "path": "tests/test_validation_cohort_read_contract_r3.py",
+      "sha256": "fce7d5ac4dfa195df3de6532a40d0adb7e8b12ef31154cd18045f7d2bcb1f05f",
+      "bytes": 2453
+    },
+    {
+      "path": "tests/test_core_product_read_r1.py",
+      "sha256": "75f47008a3ba0261c053d977f77c5cb279e88d0d9f27f05d11fc911d4fff2116",
+      "bytes": 2405
+    },
+    {
+      "path": "tests/test_forward_r2.py",
+      "sha256": "ceef77320d86fefc87f11446ab174a40cae11d8ca4973394f16a52d102740a9c",
+      "bytes": 7903
+    },
+    {
+      "path": "tests/test_forward_final_path_boundary.py",
+      "sha256": "d2e341d5004c9cc4e43498d7f81135fde1e126f1ffdaa4eb008b8963e1ac7f11",
+      "bytes": 3174
+    },
+    {
+      "path": "tests/test_forward_p1_stock.py",
+      "sha256": "b846407822c682419db8e45718c1207a5e50d45ba8dac16f046248598cbf28d7",
+      "bytes": 178
+    },
+    {
+      "path": "tests/test_forward_p1_sector.py",
+      "sha256": "ae3155e01bcb79511cfef22f05ddb45206c8138c0f82dc30d8282eaf0b0b1d43",
+      "bytes": 181
+    },
+    {
+      "path": "tests/test_forward_p1_isolation.py",
+      "sha256": "a10eb573a464376db3ef9f5276883f1c4b32d23c9386f41e0f27791738aaaa88",
+      "bytes": 4055
+    },
+    {
+      "path": "tests/v4_a04_r3/test_amount_a_go_forward.py",
+      "sha256": "17d8b028f94c37416ff18a004e4401f527011a00ec4ca7a7ae8a57808cb639e2",
+      "bytes": 5113
+    }
+  ],
+  "implementation": [
+    {
+      "path": "src/workbench_service/core_product_bff_r1.py",
+      "sha256": "fbd8be2261fa152334c3fe29c30407b65eeae63f61b66a59e5628e322de4da73",
+      "bytes": 34771
+    },
+    {
+      "path": "src/workbench_service/research_hypotheses_r3.py",
+      "sha256": "e4f39e4563008c9f97f746e224729e82478742329293120ef350f1cdeac1040c",
+      "bytes": 2380
+    },
+    {
+      "path": "src/workbench_analysis/validation_cohort_read_contract_r3.py",
+      "sha256": "e10753189c79e65d04ccde8d9f5820a41c65442d411549d650322cf434f49804",
+      "bytes": 3579
+    }
+  ],
+  "evidence_class": "FIXTURE_ENGINEERING_AND_REAL_LEDGER_GUARD_TESTS",
+  "historical_as_recorded_acceptance": false,
+  "FEP_production_permission": false
+}

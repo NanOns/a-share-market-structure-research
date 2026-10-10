@@ -1,0 +1,93 @@
+{
+  "classification": "ACTUAL_CUA_DOM_EXCERPTS_MANUALLY_TRANSCRIBED_NOT_FULL_SNAPSHOTS",
+  "QA_port": 28767,
+  "proxy_port": 28768,
+  "six_entries": [
+    {
+      "entry": "今日总览",
+      "viewports": [
+        "1920x1080",
+        "1366x768"
+      ],
+      "excerpt": "符合 366 / 展示 30；去重净变化 457 · 无变化持续记录 645"
+    },
+    {
+      "entry": "板块研究",
+      "viewports": [
+        "1920x1080",
+        "1366x768"
+      ],
+      "excerpt": "板块研究；行业/概念列表；来源能力不足；400-sector API pagination independently bound"
+    },
+    {
+      "entry": "个股研究",
+      "viewports": [
+        "1920x1080",
+        "1366x768"
+      ],
+      "excerpt": "三一重能 SH.688349 13.590 启动确认 符合"
+    },
+    {
+      "entry": "关注跟踪",
+      "viewports": [
+        "1920x1080",
+        "1366x768"
+      ],
+      "excerpt": "Focus 独立关注清单；共 2805 条 · 第 1 页"
+    },
+    {
+      "entry": "市场与事件",
+      "viewports": [
+        "1920x1080",
+        "1366x768"
+      ],
+      "excerpt": "分母 5224 · 实际行情 5210 · 通达信成交额 19003.65 亿元；涨停72 跌停11 停牌14 不可判定11"
+    },
+    {
+      "entry": "数据与诊断",
+      "viewports": [
+        "1920x1080",
+        "1366x768"
+      ],
+      "excerpt": "R43:2026-10-09 5210 重建研究；共1条 第1页"
+    }
+  ],
+  "actual_scenarios": [
+    {
+      "case": "parent_filter_roundtrip_after_member_page_and_reload",
+      "url": "/v4/research/sectors?trade_date=2026-10-09&type=INDUSTRY&offset=0&q=%E7%94%B5%E6%B0%94%E8%AE%BE%E5%A4%87&sort=-sector_rs20",
+      "excerpt": "电气设备 INDUSTRY:T0706；共 1 条 · 第 1 页；返回链接保留完整 query"
+    },
+    {
+      "case": "member_pagination",
+      "url": "/v4/research/sectors/INDUSTRY%3AT0706?trade_date=2026-10-09&offset=30",
+      "excerpt": "共 322 条 · 第 2 页"
+    },
+    {
+      "case": "unknown_filters",
+      "url": "maturity=UNKNOWN&health=UNKNOWN",
+      "excerpt": "电气设备 行业 322 349 27；成熟度/健康度 来源能力不足；共1条"
+    },
+    {
+      "case": "historical_688349_after_fix",
+      "url": "/v4/research/stocks/SEC-00096141BD5420F5CB3120E687CDA5B9?trade_date=2026-09-30&offset=0",
+      "excerpt": "研究日期2026-09-30 selected；收盘价13.240；图表DATED_HISTORY_INDEX_NOT_BOUND；竞争解释CONSISTENT_PRICE_BASIS 来源不足"
+    },
+    {
+      "case": "conditional_competing_explanations",
+      "url": "/v4/research/stocks/301628",
+      "excerpt": "结构性趋势延续的解释；短暂反弹或波动、尚未形成持续趋势的解释；分别列反证与下一判别条件；未把后继结果写回"
+    },
+    {
+      "case": "breadth503_only",
+      "url": "/v4/research/market",
+      "excerpt": "市场宽度与成交额：读取失败，请重试；真实市场指数/合规涨跌停仍可读；清除故障并点重试后恢复5224/5210/19003.65"
+    },
+    {
+      "case": "forward_final",
+      "url": "/v4/research/focus?trade_date=2026-10-09",
+      "excerpt": "Focus共2805条；NO_AUTHORIZED_COHORT_OWNER；NO_AUTHORIZED_COHORT_SETTLEMENT_OWNER；MODEL_OR_PERMISSION_NOT_READY"
+    }
+  ],
+  "semantic_assertions": "Checks above actual DOM observations; numerical full-owner comparisons separately in HTTP matrix; unavailable data is not API_BINDING_PASS"
+}

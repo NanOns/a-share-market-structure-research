@@ -92,7 +92,7 @@ def capture(root, *, trade_date, sessions, calendar_binding, sources,
         available=instant(observations[-1]['first_available'])
         if available > received or (requested is not None and requested > available):
             raise ValueError('SOURCE_AVAILABILITY_ORDER_REQUIRED')
-    identity = dict(T0=trade_date, sources=observations, security_ids=sorted(security_ids),
+    identity = dict(format_version=2,T0=trade_date, sources=observations, security_ids=sorted(security_ids),
                     sector_ids=sorted(sector_ids), calendar=calendar_binding,
                     model=model_binding, config=config_binding, research_replay=research_replay)
     slot = digest(dict(identity, sources=[dict(name=r['name'],sha256=r['original_bytes']['sha256'],
@@ -101,7 +101,7 @@ def capture(root, *, trade_date, sessions, calendar_binding, sources,
     _, existing = path_in(root, path)
     if existing.exists():
         return ref(root, path)
-    return publish(root, path, dict(identity, contract_id=CONTRACT, captured_at=now.isoformat(),
+    return publish(root, path, dict(identity, contract_id=CONTRACT, captured_at=datetime.now(timezone.utc).isoformat(),
         production=False, formal_consumer_enabled=False, PIT_ELIGIBLE=False,
         evidence_class='RECONSTRUCTED_RESEARCH_ONLY' if research_replay else 'CURRENT_OBSERVATION_CANDIDATE',
         gaps=([r['name']+':RECONSTRUCTED' for r in observations if r['observation_class']=='RECONSTRUCTED']

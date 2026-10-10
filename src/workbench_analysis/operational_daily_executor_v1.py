@@ -115,6 +115,8 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
         effective_package=package,
         normalized=normalized,canonical_qfq_authority='TDX_GBBQ_UNCHANGED',
         factor_role='AUDIT_FACT_NOT_CANONICAL_QFQ_AUTHORITY')
+    if raw.get('source_transport_v2'):
+        artifact['source_transport_v2']=raw['source_transport_v2']
     if local_receipt:artifact.update(local_fallback=local_receipt,effective_package=package)
     digest=tdx.sha256_bytes(tdx._json_bytes(artifact));p=snapshot/'daily_freezes'/day/(digest+'.json')
     if not p.is_file():atomic_json(root,p,artifact)
@@ -156,6 +158,9 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
     from .producer_bootstrap_v1 import produce_daily_state, produce_daily_sector, optional_step
     result=dict(result,full_state_signal_candidate=optional_step(produce_daily_state,root,day,binding),
                 sector_operational_candidate=optional_step(produce_daily_sector,root,day,binding))
+    from .producer_bootstrap_v1 import build_review_and_display_candidates
+    result=dict(result,producer_review_candidates=optional_step(build_review_and_display_candidates,root,day,binding,
+            result.get('first_capture_source_candidate',{})))
     # Observe the exact sealed daily candidate. This never grants authority,
     # enrolls corrected events or blocks publication of otherwise usable domains.
     from .cohort_capture_readiness_r1 import inspect_daily_candidate

@@ -34,13 +34,21 @@ def accept_runtime(target, root=ROOT):
     try:
         with BaoStockClient(RequestBudget(root/'reports/v4_baostock/request_ledger.json'),
                 auth_mode='PUBLIC_ANONYMOUS',allow_unaccepted_runtime_smoke=True) as client:
+            daily_requested=datetime.now(SHANGHAI).isoformat()
             daily,dm=client.query_rows('dynamic_daily_smoke_daily',DAILY_METHOD,date=target,max_rows=20000,max_pages=1)
+            daily_received=datetime.now(SHANGHAI).isoformat()
+            factor_requested=datetime.now(SHANGHAI).isoformat()
             factor,fm=client.query_rows('dynamic_daily_smoke_factor',FACTOR_METHOD,date=target,max_rows=20000,max_pages=1)
+            factor_received=datetime.now(SHANGHAI).isoformat()
+            receipt['observed_at']=factor_received
+            transport=dict(contract_id='SOURCE_REQUEST_RESPONSE_CLOCK_V2',daily=dict(requested_at=daily_requested,received_at=daily_received),
+                           adjustment_factor=dict(requested_at=factor_requested,received_at=factor_received))
+            receipt['source_transport_v2']=transport
             receipt['response_metadata']=dict(daily=dm,adjustment_factor=fm)
             receipt['response_row_counts']=dict(daily=len(daily),adjustment_factor=len(factor))
             raw_path=folder/(stamp+'_raw_responses.json')
             raw_sha=write_json_atomic(raw_path,
-                dict(target_date=target,observed_at=now.isoformat(),daily_rows=daily,daily_metadata=dm,
+                dict(target_date=target,observed_at=factor_received,requested_at=daily_requested,source_transport_v2=transport,daily_rows=daily,daily_metadata=dm,
                      adjustment_factor_rows=factor,adjustment_factor_metadata=fm),tdx_root=Path('D:/new_tdx'))
             receipt['native_response']=dict(path=raw_path.relative_to(root).as_posix(),sha256=raw_sha)
             daily,dm=normalize_response(daily,dm,target=target,sdk=runtime,contract=schema_contract,method=DAILY_METHOD)

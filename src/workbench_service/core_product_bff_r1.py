@@ -213,6 +213,12 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         super().get('/api/v4/context',q)
         if path!='/api/v4/context' and q.get('context_token')!=self.api.token:raise ValueError('CONTEXT_TOKEN_MISMATCH')
         p=[unquote(x) for x in path.removeprefix('/api/v4/').split('/')]
+        if p[0]=='candidates' and (p[1:]==['cohort'] or len(p)==3 and p[1]=='sectors'):
+            from .candidate_research_read_v2 import read_candidates
+            data=read_candidates(self.api.root,head=self.api.candidate,token=self.api.token,day=day,
+                                 sector_id=p[2] if len(p)==3 else None)
+            return 200,self.envelope(day,status='READY',candidate_research=data,
+                contract_id='OPERATIONAL_CANDIDATE_DISPLAY_READ_V2',production=False,formal_consumer_enabled=False)
         if p[0] in ('stocks','focus') and len(p)>1 and p[1] not in ('events',):
             matches=sorted({r['entity_id'] for r in self.project('stocks',day) if p[1] in (r['entity_id'],r['symbol'],r['symbol'].split('.')[-1],*r.get('search_aliases',[]))})
             if len(matches)==1:

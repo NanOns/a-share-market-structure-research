@@ -372,12 +372,17 @@ def capture_tdx_official_daily_package(
     }
     if update_date == target_date:
         temporary_archive = capture_dir / "download.part"
+        download_requested=datetime.now(timezone.utc).isoformat()
         final_url, byte_count, download_headers = _stream_download(
             package_url, temporary_archive, max_bytes=max_package_bytes, timeout=timeout, tdx_root=tdx_root
         )
+        download_received=datetime.now(timezone.utc).isoformat()
+        transport=dict(contract_id='SOURCE_REQUEST_RESPONSE_CLOCK_V2',requested_at=download_requested,received_at=download_received,
+                       capture_method='DIRECT_VERIFIED_OFFICIAL_PACKAGE')
         try:
             validation = _zip_validate(temporary_archive)
         except Exception as exc:
+            transport=None  # A challenge response's clock cannot date fallback package bytes.
             # Keep rejected response bytes outside TDX for diagnosis; an HTML
             # edge challenge is not evidence that the provider has no BARs.
             rejected = capture_dir / 'rejected_package_response.bin'
@@ -446,6 +451,8 @@ def capture_tdx_official_daily_package(
             "snapshot_id": snapshot_id,
             "source_revision_number": revision_number,
         })
+        if transport is not None:
+            receipt['source_transport_v2']=transport
         if not (package_dir / "capture_receipt.json").exists():
             _atomic_write(package_dir / "capture_receipt.json", _json_bytes(receipt), tdx_root=tdx_root)
         _atomic_write(capture_dir / "capture_receipt.json", _json_bytes(receipt), tdx_root=tdx_root)

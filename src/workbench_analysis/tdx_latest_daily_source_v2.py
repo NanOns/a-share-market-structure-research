@@ -130,10 +130,12 @@ def extract_target_session_bars(latest_package_ref, trade_date, *, snapshot_root
         package_content_max_trade_date=str(maximum)[:4]+'-'+str(maximum)[4:6]+'-'+str(maximum)[6:] if maximum else None,
         bars_date_coverage=sorted(coverage),source_sha256=source['sha256'],
         reconstruction_from_later_snapshot=latest_package_ref['provider_package_date']>trade_date,
-        source_available_at=latest_package_ref['observed_at'],
+        source_available_at=latest_package_ref.get('source_transport_v2',{}).get('received_at',latest_package_ref['observed_at']),
         AS_RECORDED=False,PIT_ELIGIBLE=False,status='TARGET_BARS_EXTRACTED' if bars else 'WAIT_TDX_TARGET_BARS',
         target_bars=bars,row_count=len(bars),tdx_root_write_count=0,
         excluded_non_stock_entries=excluded,scope='TYPED_A_STOCK_BARS_ONLY')
+    if latest_package_ref.get('source_transport_v2'):
+        content['source_transport_v2']=latest_package_ref['source_transport_v2']
     # Stable target artifact identity; runtime timestamps belong to its receipt.
     data=old._json_bytes(content); key=old.sha256_bytes(data)
     output=Path(snapshot_root)/'tdx_targets'/trade_date/key/'bars.json'

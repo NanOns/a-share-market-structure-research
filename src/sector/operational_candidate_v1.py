@@ -10,7 +10,7 @@ from workbench_analysis.v4_14_replay_io import digest
 CONTRACT = 'SECTOR_D2_OPERATIONAL_CANDIDATE_V1'
 
 
-def compute(native_rows, core_rows, membership_rows, *, trade_date, root, branch_sources=None, state_rows=None):
+def compute(native_rows, core_rows, membership_rows, *, trade_date, root, branch_sources=None, state_rows=None, validity_candidates=None):
     root = Path(root)
     ast = json.loads((root/'config/v4_08_b2_machine_ast_r5.json').read_bytes())
     cfg = json.loads((root/ast['source_parameter_path']).read_bytes())
@@ -35,6 +35,14 @@ def compute(native_rows, core_rows, membership_rows, *, trade_date, root, branch
             current[row['security_id']]['legacy_valid_member'] = dict(
                 value=False, quality='ACCEPTED', producer_contract=VERSION,
                 computation_scope='ENGINEERING_EXACT_FALSE_IDENTIFIER_ONLY')
+        supplied=(validity_candidates or {}).get(row['security_id'])
+        if supplied is not None:
+            if (supplied.get('contract_id')!='LEGACY_VALID_MEMBER_DIAGNOSTIC_CORRECTION_V2'
+                    or supplied.get('T0')!=trade_date or type(supplied.get('value')) is not bool
+                    or supplied.get('production') is not False):
+                raise ValueError('VERSIONED_DIAGNOSTIC_VALIDITY_REQUIRED')
+            current[row['security_id']]['legacy_valid_member']=dict(value=supplied['value'],quality='ACCEPTED',
+                producer_contract=VERSION,computation_scope='CORRECTED_IDENTIFIER_DIAGNOSTIC_ONLY')
     # Exact legacy prepare expression is frozen, including its current regex.
     # Inputs needed for missing_state are unavailable here: do not substitute
     # "has ret1" or the latest Native ranking flag for valid-member evidence.

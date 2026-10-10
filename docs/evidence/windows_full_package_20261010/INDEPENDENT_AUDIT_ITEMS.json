@@ -1,0 +1,53 @@
+{
+  "contract_id": "V4_WINDOWS_PACKAGE_INDEPENDENT_AUDIT_LEDGER_V1",
+  "items": [
+    {
+      "closed_by": null,
+      "evidence": "S0_JUNIT.xml",
+      "external_acceptance": "NOT_GRANTED",
+      "id": "PKG-A01",
+      "scope": "Whole workspace lock and startup before recover",
+      "status": "OPEN_FROZEN_AND_INDEPENDENT_ACCEPTANCE_PENDING"
+    },
+    {
+      "closed_by": null,
+      "evidence": "S0_JUNIT.xml",
+      "external_acceptance": "NOT_GRANTED",
+      "id": "PKG-A02",
+      "scope": "Maintenance safe boundary versus user cancellation",
+      "status": "OPEN_FROZEN_AND_INDEPENDENT_ACCEPTANCE_PENDING"
+    },
+    {
+      "closed_by": null,
+      "evidence": "S0_JUNIT.xml",
+      "external_acceptance": "NOT_GRANTED",
+      "id": "PKG-A03",
+      "scope": "CAS/readback and COMMITTED protection",
+      "status": "OPEN_FROZEN_AND_INDEPENDENT_ACCEPTANCE_PENDING"
+    },
+    {
+      "closed_by": null,
+      "evidence": "S0_STAGE_RECEIPT.json",
+      "external_acceptance": "NOT_GRANTED",
+      "id": "PKG-A04",
+      "scope": "G roots, frozen originals, WAL/schema and compatibility",
+      "status": "OPEN_FROZEN_AND_INDEPENDENT_ACCEPTANCE_PENDING"
+    },
+    {
+      "closed_by": null,
+      "evidence": "S0_DEPENDENCY_INVENTORY.json",
+      "external_acceptance": "NOT_GRANTED",
+      "id": "PKG-A05",
+      "scope": "Frozen task whitelist and runtime independence",
+      "status": "OPEN_FROZEN_AND_INDEPENDENT_ACCEPTANCE_PENDING"
+    },
+    {
+      "closed_by": null,
+      "evidence": "S0_STAGE_RECEIPT.json",
+      "external_acceptance": "NOT_GRANTED",
+      "id": "PKG-A06",
+      "scope": "Actual frozen numeric daily full chain and failures",
+      "status": "OPEN_FROZEN_AND_INDEPENDENT_ACCEPTANCE_PENDING"
+    }
+  ]
+}

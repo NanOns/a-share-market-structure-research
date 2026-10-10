@@ -13,7 +13,9 @@ if __name__=='__main__':
   authority=json.loads(authority_path.read_bytes())
   if authority.get('activation_status')!='ACTIVE' and not a.v4_default:raise SystemExit('V4_CUTOVER_GATE_NOT_ACTIVE: use explicit candidate entry')
   from workbench_service.core_product_server_r1 import serve_v4
-  serve_v4(ROOT,a.host,a.port)
+  from workbench_desktop.storage import WorkspaceLease
+  with WorkspaceLease(ROOT):
+   serve_v4(ROOT,a.host,a.port)
   raise SystemExit(0)
  from workbench_service.app import serve
  local_env=ROOT/'config/.env'

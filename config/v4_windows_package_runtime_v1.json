@@ -1,0 +1,22 @@
+{
+  "contract_id": "V4_WINDOWS_PACKAGE_RUNTIME_V1",
+  "design_contract": "V4_WINDOWS_FULL_PACKAGE_DESIGN_R2_1_20261010",
+  "version": "1.0.0",
+  "entry": "run_desktop.py",
+  "task_contract": "FROZEN_TASK_DISPATCH_V1",
+  "tasks": ["inspect-package", "qa-e2e", "qa-daily-replay"],
+  "in_process_tasks": ["tdx-capture-original-r3"],
+  "qa_workspace_prefix": "G:/codex_tmp/test_temp",
+  "qa_marker": "ISOLATED_PACKAGE_QA.json",
+  "host": "127.0.0.1",
+  "default_port": 28765,
+  "engine_states": ["STOPPED", "STARTING", "RUNNING", "QUIESCING", "WAITING_SAFE_BOUNDARY", "STOPPING", "FAILED"],
+  "maintenance_recovery": "INTERRUPTED_WITH_MAINTENANCE_INTERRUPTED_REASON",
+  "user_cancel_recovery": "NEVER_AUTOMATIC",
+  "timeout_policy": "120_SECONDS_NOTIFY_ONLY; NEVER_AUTOMATIC_KILL",
+  "workspace_schema_version": 1,
+  "historical_PIT_permission": false,
+  "automated_trading_permission": false,
+  "algorithm_upgrade_permission": false,
+  "external_acceptance": "NOT_GRANTED"
+}

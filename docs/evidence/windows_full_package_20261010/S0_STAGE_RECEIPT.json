@@ -1,0 +1,267 @@
+{
+  "acceptance": "S0_PASS_ENGINEERING_CONTRACT_AND_ISOLATED_BOUNDARIES",
+  "baseline_commit": "88390238c97cb142b05f4caadc95ba2e7e48fb6a",
+  "consulted": [
+    {
+      "bytes": 2207,
+      "path": "docs/upgrade/DYNAMIC_DAILY_DD07_FINAL_RELEASE_20261009.md",
+      "sha256": "ef1fabf8fd5b4969bab846520d58b739c0f75b67e738e829bff3ee50466f297a"
+    },
+    {
+      "bytes": 1641,
+      "path": "docs/upgrade/FP14_PRODUCTION_RELEASE_EXECUTION_20261008.md",
+      "sha256": "d1cb7e9e0e7ed83c64c93e0482105349c08a4e98735d1cd79b45e8d2f8fbb76a"
+    }
+  ],
+  "contract_id": "V4_WINDOWS_PACKAGE_S0_STAGE_V1",
+  "dependency_inventory": {
+    "bytes": 164390,
+    "path": "docs/evidence/windows_full_package_20261010/S0_DEPENDENCY_INVENTORY.json",
+    "sha256": "86c26bbb9e1c3244025cfcbe300b78e4eb2a6247c7253d3392919358c5adc02b"
+  },
+  "design": {
+    "bytes": 34931,
+    "path": "docs/design/V4_WINDOWS_FULL_PACKAGE_FINAL_R2_1_20261010.md",
+    "sha256": "e1069b6a949f6c102f1ef9c78aadef1be67128d1d48dc6a1fe0e7cd0f6f897be"
+  },
+  "design_contract": "V4_WINDOWS_FULL_PACKAGE_DESIGN_R2_1_20261010",
+  "external_acceptance": "NOT_GRANTED",
+  "inherited_phase0": {
+    "binding": {
+      "bytes": 11209,
+      "path": "reports/v4_phase0/V4_PHASE0_STAGE_RECEIPTS_R5_20260928.json",
+      "sha256": "fb15e8131405921375c93f277ebdcc1d39ea518399e03f6e55d18bba0003e583"
+    },
+    "status": "FULL_PASS"
+  },
+  "next_stage": "S1_ACTUAL_FROZEN_RUNTIME_AND_FULL_DAILY_E2E",
+  "observed_at": "2026-10-10T12:49:38.468609+00:00",
+  "production_takeover": "NOT_EXECUTED_REQUIRES_SEPARATE_SCOPE",
+  "protected_algorithm_bytes": [
+    {
+      "binding": {
+        "bytes": 7484,
+        "path": "src/workbench_analysis/r43_operational_sources.py",
+        "sha256": "d58049b5f2b6ba62a4455e063e5fb75b2739cd82e273a9741e371202379527ce"
+      },
+      "exact_current_sha256": "d58049b5f2b6ba62a4455e063e5fb75b2739cd82e273a9741e371202379527ce"
+    },
+    {
+      "binding": {
+        "bytes": 15226,
+        "path": "src/workbench_analysis/r43_operational_publication.py",
+        "sha256": "1f8daf0d698da02cd9af96f17cf2242ae43bc033d99a13e21523c902faf983fc"
+      },
+      "exact_current_sha256": "1f8daf0d698da02cd9af96f17cf2242ae43bc033d99a13e21523c902faf983fc"
+    },
+    {
+      "binding": {
+        "bytes": 2884,
+        "path": "src/workbench_analysis/r43_breakout_observations.py",
+        "sha256": "5d590ae79c92b5a878f7d7ab6b65e186e0eba86279f28a8bded4c4511dbbcaca"
+      },
+      "exact_current_sha256": "5d590ae79c92b5a878f7d7ab6b65e186e0eba86279f28a8bded4c4511dbbcaca"
+    },
+    {
+      "binding": {
+        "bytes": 6122,
+        "path": "src/workbench_analysis/r43_daily_price_limits.py",
+        "sha256": "0861cc7d8f11037ad6c4369975a11537ee11faabab8b27631734daebc46a32d6"
+      },
+      "exact_current_sha256": "0861cc7d8f11037ad6c4369975a11537ee11faabab8b27631734daebc46a32d6"
+    },
+    {
+      "binding": {
+        "bytes": 16623,
+        "path": "src/workbench_analysis/r43_focus_replay.py",
+        "sha256": "a3fafd06409aede28cc5364be4f83c1114f1353fc08312854549ed218d07d439"
+      },
+      "exact_current_sha256": "a3fafd06409aede28cc5364be4f83c1114f1353fc08312854549ed218d07d439"
+    },
+    {
+      "binding": {
+        "bytes": 3106,
+        "path": "src/workbench_analysis/r43_health_projection.py",
+        "sha256": "b3e576c7d31ce44ed1e153f900e02b416919e8586de1546898877e0d02ada9e7"
+      },
+      "exact_current_sha256": "b3e576c7d31ce44ed1e153f900e02b416919e8586de1546898877e0d02ada9e7"
+    },
+    {
+      "binding": {
+        "bytes": 8550,
+        "path": "src/workbench_analysis/r43_market_replay.py",
+        "sha256": "1609652397b4fc1ae5cbd885dbc88447e3a30814462b1010e1ede2008a543554"
+      },
+      "exact_current_sha256": "1609652397b4fc1ae5cbd885dbc88447e3a30814462b1010e1ede2008a543554"
+    },
+    {
+      "binding": {
+        "bytes": 17647,
+        "path": "src/workbench_analysis/r43_owner_replay.py",
+        "sha256": "d98307908784e760f8f6a747b795bffc42ab85756364bd325013ff4f3c617018"
+      },
+      "exact_current_sha256": "d98307908784e760f8f6a747b795bffc42ab85756364bd325013ff4f3c617018"
+    },
+    {
+      "binding": {
+        "bytes": 15783,
+        "path": "src/workbench_analysis/r43_structure_replay.py",
+        "sha256": "4bd82d65c49af30a6ab12abfad1dc6130d17c5559c3f78135061146660a30c8f"
+      },
+      "exact_current_sha256": "4bd82d65c49af30a6ab12abfad1dc6130d17c5559c3f78135061146660a30c8f"
+    },
+    {
+      "binding": {
+        "bytes": 2982,
+        "path": "src/workbench_analysis/rotation_reconstructed_r43.py",
+        "sha256": "37a83fedf4d2e35ad44e9efbc9c6ca5965e2f3a06266e89eea47019ec9289d2b"
+      },
+      "exact_current_sha256": "37a83fedf4d2e35ad44e9efbc9c6ca5965e2f3a06266e89eea47019ec9289d2b"
+    },
+    {
+      "binding": {
+        "bytes": 12721,
+        "path": "src/workbench_analysis/tdx_member_retro_r43.py",
+        "sha256": "75ead326d0a016fb10a16de0ef250696833e48cfb5d40144d319402de5a14b92"
+      },
+      "exact_current_sha256": "75ead326d0a016fb10a16de0ef250696833e48cfb5d40144d319402de5a14b92"
+    },
+    {
+      "binding": {
+        "bytes": 19318,
+        "path": "src/workbench_analysis/tdx_sector_retro_r43.py",
+        "sha256": "0d4aee71c61375fa1d1f02821d164aa5f598e75174b9d950ec2ed3b55b0037e9"
+      },
+      "exact_current_sha256": "0d4aee71c61375fa1d1f02821d164aa5f598e75174b9d950ec2ed3b55b0037e9"
+    },
+    {
+      "binding": {
+        "bytes": 12869,
+        "path": "src/tdx/gbbq_reader.py",
+        "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+      },
+      "exact_current_sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+    },
+    {
+      "binding": {
+        "bytes": 5366,
+        "path": "src/adjustment/tdx_adjustment.py",
+        "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+      },
+      "exact_current_sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+    },
+    {
+      "binding": {
+        "bytes": 16643,
+        "path": "src/v4/factors/core.py",
+        "sha256": "8986358268a5ae706c6cc46c95937ed381b65b55d3293667f840ff50008217f1"
+      },
+      "exact_current_sha256": "8986358268a5ae706c6cc46c95937ed381b65b55d3293667f840ff50008217f1"
+    },
+    {
+      "binding": {
+        "bytes": 13283,
+        "path": "src/sector/native_r5.py",
+        "sha256": "c9240c8658902601c7e018de667796c4e6bce3bfec247c99cb21a24eaba7cc06"
+      },
+      "exact_current_sha256": "c9240c8658902601c7e018de667796c4e6bce3bfec247c99cb21a24eaba7cc06"
+    },
+    {
+      "binding": {
+        "bytes": 11206,
+        "path": "src/sector/rotation_r5.py",
+        "sha256": "921c7c2b6253a00695a9ee709aabd9c087c37c4f9b7a2d6c37bea09a31905276"
+      },
+      "exact_current_sha256": "921c7c2b6253a00695a9ee709aabd9c087c37c4f9b7a2d6c37bea09a31905276"
+    },
+    {
+      "binding": {
+        "bytes": 8152,
+        "path": "src/workbench_analysis/v4_13_loo_runtime.py",
+        "sha256": "8b619f07760bab2e32d443d36a42fbcfd51a6e02d2f9dbcb251262139d79b4a6"
+      },
+      "exact_current_sha256": "8b619f07760bab2e32d443d36a42fbcfd51a6e02d2f9dbcb251262139d79b4a6"
+    },
+    {
+      "binding": {
+        "bytes": 4262,
+        "path": "src/workbench_analysis/r43_release_control.py",
+        "sha256": "f73196e74aa63dcdc1e5ddf08a62b3c193e515755030930819de3c3c8a566c28"
+      },
+      "exact_current_sha256": "f73196e74aa63dcdc1e5ddf08a62b3c193e515755030930819de3c3c8a566c28"
+    },
+    {
+      "binding": {
+        "bytes": 34138,
+        "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+        "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+      },
+      "exact_current_sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+    },
+    {
+      "binding": {
+        "bytes": 2058,
+        "path": "config/v4_02_formal_period_contract_v1.json",
+        "sha256": "f332c4013c96bd2ea02b169009d3fdb25b2a65e558ba0b0f2aa94c9911f41727"
+      },
+      "exact_current_sha256": "f332c4013c96bd2ea02b169009d3fdb25b2a65e558ba0b0f2aa94c9911f41727"
+    },
+    {
+      "binding": {
+        "bytes": 5626,
+        "path": "src/workbench_analysis/operational_owner_adapter_v1.py",
+        "sha256": "c6605961c83951d110ebdcfaada5a055f28497a6576a9b008523e0bca4a83418"
+      },
+      "exact_current_sha256": "c6605961c83951d110ebdcfaada5a055f28497a6576a9b008523e0bca4a83418"
+    },
+    {
+      "binding": {
+        "bytes": 24623,
+        "path": "src/workbench_analysis/operational_daily_owner_v1.py",
+        "sha256": "2c8680d4eebb723d1c56195babb55895ddc579e39ce0e16fba005fe72cffdec2"
+      },
+      "exact_current_sha256": "2c8680d4eebb723d1c56195babb55895ddc579e39ce0e16fba005fe72cffdec2"
+    }
+  ],
+  "protected_heads_before": [
+    {
+      "bytes": 29799,
+      "path": "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json",
+      "sha256": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e"
+    },
+    {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    }
+  ],
+  "stage_scope": "Desktop lifecycle, G paths, lock, maintenance versus user cancel, fixed task adapter and dependency inventory",
+  "subprocess_decisions": {
+    "dynamic_imports": "Reviewed explicit adapter aliases and json/zoneinfo/getpass/os; no arbitrary plugin loading",
+    "git": "Bundle local Git reader/DLLs; inherited historical object verification remains intact; no PATH Git requirement",
+    "historical_daily_script": "No AST import reachability from packaged entry",
+    "tdx_download": "Original byte-identical modules in private IO scope, fixed in-process original R3 module task, owner required; no EXE recursion"
+  },
+  "tests": {
+    "evidence": {
+      "bytes": 4510,
+      "path": "docs/evidence/windows_full_package_20261010/S0_JUNIT.xml",
+      "sha256": "c99ba6b204701a2c1dbfe0e92c744e4d86d82696533dd474b6cfda6d5df3b8e4"
+    },
+    "failed": 0,
+    "limitations": "Executor simulations do not prove numeric daily frozen E2E",
+    "passed": 33
+  },
+  "tools": {
+    "Pillow": "12.3.0",
+    "PyInstaller": "6.22.0",
+    "baostock": "0.9.3",
+    "numpy": "2.2.6",
+    "pandas": "3.0.3",
+    "psutil": "7.2.2",
+    "pystray": "0.19.5",
+    "scikit-learn": "1.7.2",
+    "scipy": "1.16.2"
+  },
+  "user_authorization": "现在开始按照最新设计文档实现 争取一次pass"
+}

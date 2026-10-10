@@ -1,0 +1,5129 @@
+{
+  "caveat": "Conservative AST includes conditional/historical branches; dynamic adapter aliases separately reviewed.",
+  "contract_id": "V4_PACKAGE_REACHABILITY_V1",
+  "dynamic_imports": [
+    {
+      "expression": "__import__('json').loads((root / 'runtime/desktop/status.json').read_bytes())",
+      "line": 62,
+      "module": "run_desktop"
+    },
+    {
+      "expression": "__import__('json')",
+      "line": 62,
+      "module": "run_desktop"
+    },
+    {
+      "expression": "__import__('time').monotonic()",
+      "line": 573,
+      "module": "workbench_analysis.baostock_supplemental"
+    },
+    {
+      "expression": "__import__('time')",
+      "line": 573,
+      "module": "workbench_analysis.baostock_supplemental"
+    },
+    {
+      "expression": "__import__('time').monotonic()",
+      "line": 577,
+      "module": "workbench_analysis.baostock_supplemental"
+    },
+    {
+      "expression": "__import__('time')",
+      "line": 577,
+      "module": "workbench_analysis.baostock_supplemental"
+    },
+    {
+      "expression": "__import__('json').dumps(dict(stage='PROFILE_STRUCTURE', day=day, anchors=result['anchors'], counts=counts))",
+      "line": 193,
+      "module": "workbench_analysis.r43_structure_replay"
+    },
+    {
+      "expression": "__import__('json')",
+      "line": 193,
+      "module": "workbench_analysis.r43_structure_replay"
+    },
+    {
+      "expression": "__import__('os').getpid()",
+      "line": 38,
+      "module": "workbench_desktop.engine"
+    },
+    {
+      "expression": "__import__('getpass').getuser()",
+      "line": 75,
+      "module": "workbench_desktop.engine"
+    },
+    {
+      "expression": "__import__('os')",
+      "line": 38,
+      "module": "workbench_desktop.engine"
+    },
+    {
+      "expression": "__import__('getpass')",
+      "line": 75,
+      "module": "workbench_desktop.engine"
+    },
+    {
+      "expression": "datetime.now(timezone.utc).astimezone(__import__('zoneinfo').ZoneInfo('Asia/Shanghai')).isoformat()",
+      "line": 94,
+      "module": "workbench_analysis.operational_daily_owner_v1"
+    },
+    {
+      "expression": "__import__('zoneinfo').ZoneInfo('Asia/Shanghai')",
+      "line": 94,
+      "module": "workbench_analysis.operational_daily_owner_v1"
+    },
+    {
+      "expression": "__import__('zoneinfo')",
+      "line": 94,
+      "module": "workbench_analysis.operational_daily_owner_v1"
+    },
+    {
+      "expression": "Path(__import__('sys').executable).resolve()",
+      "line": 54,
+      "module": "workbench_desktop.storage"
+    },
+    {
+      "expression": "__import__('sys')",
+      "line": 54,
+      "module": "workbench_desktop.storage"
+    }
+  ],
+  "edges": [
+    {
+      "callee": "workbench_desktop.storage",
+      "caller": "run_desktop",
+      "line": 24
+    },
+    {
+      "callee": "workbench_desktop.storage",
+      "caller": "run_desktop",
+      "line": 26
+    },
+    {
+      "callee": "workbench_desktop.engine",
+      "caller": "run_desktop",
+      "line": 52
+    },
+    {
+      "callee": "workbench_desktop.tray",
+      "caller": "run_desktop",
+      "line": 53
+    },
+    {
+      "callee": "workbench_desktop.storage",
+      "caller": "run_desktop",
+      "line": 59
+    },
+    {
+      "callee": "workbench_desktop.qa_daily",
+      "caller": "run_desktop",
+      "line": 38
+    },
+    {
+      "callee": "workbench_desktop.qa",
+      "caller": "run_desktop",
+      "line": 41
+    },
+    {
+      "callee": "workbench_desktop.storage",
+      "caller": "workbench_desktop.qa",
+      "line": 11
+    },
+    {
+      "callee": "workbench_desktop.engine",
+      "caller": "workbench_desktop.qa",
+      "line": 12
+    },
+    {
+      "callee": "workbench_desktop.jobs",
+      "caller": "workbench_desktop.qa",
+      "line": 13
+    },
+    {
+      "callee": "workbench_analysis",
+      "caller": "workbench_desktop.qa",
+      "line": 60
+    },
+    {
+      "callee": "workbench_analysis.operational_successor_release_v1",
+      "caller": "workbench_desktop.qa",
+      "line": 60
+    },
+    {
+      "callee": "workbench_analysis.operational_owner_adapter_v1",
+      "caller": "workbench_desktop.qa",
+      "line": 61
+    },
+    {
+      "callee": "workbench_analysis.operational_successor_v1",
+      "caller": "workbench_desktop.qa",
+      "line": 62
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_desktop.qa",
+      "line": 63
+    },
+    {
+      "callee": "workbench_analysis.tdx_official_daily_source",
+      "caller": "workbench_desktop.qa",
+      "line": 64
+    },
+    {
+      "callee": "workbench_analysis.daily_source_freeze",
+      "caller": "workbench_analysis.tdx_official_daily_source",
+      "line": 23
+    },
+    {
+      "callee": "adjustment.tdx_adjustment",
+      "caller": "workbench_analysis.r43_owner_replay",
+      "line": 15
+    },
+    {
+      "callee": "tdx.gbbq_reader",
+      "caller": "workbench_analysis.r43_owner_replay",
+      "line": 16
+    },
+    {
+      "callee": "v4.factors.core",
+      "caller": "workbench_analysis.r43_owner_replay",
+      "line": 17
+    },
+    {
+      "callee": "workbench_analysis.market_source_acquisition",
+      "caller": "workbench_analysis.r43_owner_replay",
+      "line": 18
+    },
+    {
+      "callee": "workbench_analysis.tdx_official_daily_source",
+      "caller": "workbench_analysis.r43_owner_replay",
+      "line": 19
+    },
+    {
+      "callee": "workbench_analysis.baostock_supplemental",
+      "caller": "workbench_analysis.market_source_acquisition",
+      "line": 12
+    },
+    {
+      "callee": "workbench_analysis.daily_source_freeze",
+      "caller": "workbench_analysis.market_source_acquisition",
+      "line": 13
+    },
+    {
+      "callee": "workbench_analysis.tdx_official_daily_source",
+      "caller": "workbench_analysis.market_source_acquisition",
+      "line": 14
+    },
+    {
+      "callee": "workbench_analysis.dm01_runtime_r4",
+      "caller": "workbench_analysis.market_source_acquisition",
+      "line": 45
+    },
+    {
+      "callee": "workbench_analysis",
+      "caller": "workbench_analysis.dm01_runtime_r4",
+      "line": 17
+    },
+    {
+      "callee": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "caller": "workbench_analysis.dm01_runtime_r4",
+      "line": 17
+    },
+    {
+      "callee": "workbench_analysis.dm01_independent_postcheck_r3_3",
+      "caller": "workbench_analysis.dm01_runtime_r4",
+      "line": 18
+    },
+    {
+      "callee": "workbench_analysis.daily_data_head",
+      "caller": "workbench_analysis.dm01_runtime_r4",
+      "line": 19
+    },
+    {
+      "callee": "workbench_analysis.daily_source_freeze",
+      "caller": "workbench_analysis.dm01_runtime_r4",
+      "line": 20
+    },
+    {
+      "callee": "workbench_analysis.dm01_lineage_r4r1",
+      "caller": "workbench_analysis.dm01_runtime_r4",
+      "line": 226
+    },
+    {
+      "callee": "workbench_analysis.dm01_lineage_r4r1",
+      "caller": "workbench_analysis.dm01_runtime_r4",
+      "line": 302
+    },
+    {
+      "callee": "workbench_analysis.dm01_lineage_r4r1",
+      "caller": "workbench_analysis.dm01_runtime_r4",
+      "line": 333
+    },
+    {
+      "callee": "workbench_analysis.dm01_accepted_chain_v1",
+      "caller": "workbench_analysis.dm01_runtime_r4",
+      "line": 115
+    },
+    {
+      "callee": "workbench_analysis.dm01_lineage_r4r1",
+      "caller": "workbench_analysis.dm01_runtime_r4",
+      "line": 134
+    },
+    {
+      "callee": "workbench_analysis.source_authority_producers_r4",
+      "caller": "workbench_analysis.dm01_runtime_r4",
+      "line": 201
+    },
+    {
+      "callee": "workbench_analysis.source_authority_accepted_owners_v1",
+      "caller": "workbench_analysis.source_authority_producers_r4",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis.source_authority_governance_r1",
+      "caller": "workbench_analysis.source_authority_producers_r4",
+      "line": 47
+    },
+    {
+      "callee": "workbench_analysis.source_authority_accepted_owners_v1",
+      "caller": "workbench_analysis.source_authority_governance_r1",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.source_authority_producers_r3",
+      "caller": "workbench_analysis.source_authority_governance_r1",
+      "line": 120
+    },
+    {
+      "callee": "workbench_analysis.source_authority_accepted_owners_v1",
+      "caller": "workbench_analysis.source_authority_producers_r3",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis.source_authority_governance_r1",
+      "caller": "workbench_analysis.source_authority_producers_r3",
+      "line": 30
+    },
+    {
+      "callee": "workbench_analysis.source_authority_governance_r1",
+      "caller": "workbench_analysis.source_authority_accepted_owners_v1",
+      "line": 108
+    },
+    {
+      "callee": "workbench_analysis",
+      "caller": "workbench_analysis.dm01_lineage_r4r1",
+      "line": 19
+    },
+    {
+      "callee": "workbench_analysis.dm01_runtime_r4",
+      "caller": "workbench_analysis.dm01_lineage_r4r1",
+      "line": 19
+    },
+    {
+      "callee": "workbench_analysis.daily_data_head",
+      "caller": "workbench_analysis.dm01_accepted_chain_v1",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.daily_source_freeze",
+      "caller": "workbench_analysis.dm01_accepted_chain_v1",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.dm01_accepted_builder_registry",
+      "caller": "workbench_analysis.dm01_accepted_chain_v1",
+      "line": 65
+    },
+    {
+      "callee": "workbench_analysis.historical_stage_governance_r17",
+      "caller": "workbench_analysis.dm01_accepted_chain_v1",
+      "line": 149
+    },
+    {
+      "callee": "workbench_analysis.historical_stage_governance_r17",
+      "caller": "workbench_analysis.dm01_accepted_chain_v1",
+      "line": 163
+    },
+    {
+      "callee": "workbench_analysis.source_authority_producers_r4",
+      "caller": "workbench_analysis.dm01_accepted_chain_v1",
+      "line": 130
+    },
+    {
+      "callee": "workbench_analysis.dm01_independent_postcheck_r3_3",
+      "caller": "workbench_analysis.dm01_accepted_chain_v1",
+      "line": 137
+    },
+    {
+      "callee": "workbench_analysis.daily_data_head",
+      "caller": "workbench_analysis.dm01_independent_postcheck_r3_3",
+      "line": 142
+    },
+    {
+      "callee": "tdx.gbbq_reader",
+      "caller": "workbench_analysis.dm01_independent_postcheck_r3_3",
+      "line": 179
+    },
+    {
+      "callee": "tdx._gbbq_key",
+      "caller": "tdx.gbbq_reader",
+      "line": 13
+    },
+    {
+      "callee": "workbench_analysis.daily_source_freeze",
+      "caller": "workbench_analysis.daily_data_head",
+      "line": 12
+    },
+    {
+      "callee": "workbench_analysis.daily_data_head",
+      "caller": "workbench_analysis.dm01_accepted_builder_registry",
+      "line": 12
+    },
+    {
+      "callee": "workbench_analysis.dm01_incremental_component_builders",
+      "caller": "workbench_analysis.dm01_accepted_builder_registry",
+      "line": 39
+    },
+    {
+      "callee": "scripts.v4_02_build_raw_selected_v2",
+      "caller": "workbench_analysis.dm01_incremental_component_builders",
+      "line": 18
+    },
+    {
+      "callee": "scripts.build_v4_02_formal_periods",
+      "caller": "workbench_analysis.dm01_incremental_component_builders",
+      "line": 19
+    },
+    {
+      "callee": "scripts.build_v4_02_price_limits_generic",
+      "caller": "workbench_analysis.dm01_incremental_component_builders",
+      "line": 20
+    },
+    {
+      "callee": "adjustment.tdx_adjustment",
+      "caller": "workbench_analysis.dm01_incremental_component_builders",
+      "line": 21
+    },
+    {
+      "callee": "tdx.gbbq_reader",
+      "caller": "workbench_analysis.dm01_incremental_component_builders",
+      "line": 22
+    },
+    {
+      "callee": "workbench_analysis.daily_data_head",
+      "caller": "workbench_analysis.dm01_incremental_component_builders",
+      "line": 23
+    },
+    {
+      "callee": "workbench_analysis.daily_increment_builder",
+      "caller": "workbench_analysis.dm01_incremental_component_builders",
+      "line": 24
+    },
+    {
+      "callee": "workbench_analysis.daily_source_freeze",
+      "caller": "workbench_analysis.dm01_incremental_component_builders",
+      "line": 25
+    },
+    {
+      "callee": "workbench_analysis.daily_source_manifests",
+      "caller": "workbench_analysis.dm01_incremental_component_builders",
+      "line": 26
+    },
+    {
+      "callee": "workbench_analysis.dm01_extracted_domain_r1",
+      "caller": "workbench_analysis.dm01_incremental_component_builders",
+      "line": 27
+    },
+    {
+      "callee": "workbench_analysis.limit_rules",
+      "caller": "workbench_analysis.dm01_incremental_component_builders",
+      "line": 29
+    },
+    {
+      "callee": "workbench_analysis.price_reference_state",
+      "caller": "workbench_analysis.dm01_incremental_component_builders",
+      "line": 30
+    },
+    {
+      "callee": "workbench_analysis.v4_02_closure",
+      "caller": "workbench_analysis.dm01_incremental_component_builders",
+      "line": 31
+    },
+    {
+      "callee": "workbench_analysis.special_price_phases",
+      "caller": "workbench_analysis.dm01_incremental_component_builders",
+      "line": 32
+    },
+    {
+      "callee": "workbench_analysis.dm01_independent_postcheck_r1",
+      "caller": "workbench_analysis.dm01_incremental_component_builders",
+      "line": 207
+    },
+    {
+      "callee": "workbench_analysis.daily_data_head",
+      "caller": "workbench_analysis.dm01_independent_postcheck_r1",
+      "line": 141
+    },
+    {
+      "callee": "tdx.gbbq_reader",
+      "caller": "workbench_analysis.dm01_independent_postcheck_r1",
+      "line": 178
+    },
+    {
+      "callee": "scripts.build_v4_02_price_limits",
+      "caller": "workbench_analysis.dm01_extracted_domain_r1",
+      "line": 6
+    },
+    {
+      "callee": "adjustment.tdx_adjustment",
+      "caller": "scripts.build_v4_02_price_limits",
+      "line": 21
+    },
+    {
+      "callee": "tdx.gbbq_reader",
+      "caller": "scripts.build_v4_02_price_limits",
+      "line": 22
+    },
+    {
+      "callee": "workbench_analysis.limit_rules",
+      "caller": "scripts.build_v4_02_price_limits",
+      "line": 23
+    },
+    {
+      "callee": "workbench_analysis.v4_02_closure",
+      "caller": "scripts.build_v4_02_price_limits",
+      "line": 24
+    },
+    {
+      "callee": "workbench_analysis.price_reference_state",
+      "caller": "scripts.build_v4_02_price_limits",
+      "line": 25
+    },
+    {
+      "callee": "tdx.gbbq_reader",
+      "caller": "adjustment.tdx_adjustment",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.daily_source_freeze",
+      "caller": "workbench_analysis.daily_source_manifests",
+      "line": 13
+    },
+    {
+      "callee": "workbench_analysis.security_identity_event_discovery",
+      "caller": "workbench_analysis.daily_source_manifests",
+      "line": 14
+    },
+    {
+      "callee": "workbench_analysis.special_price_phases",
+      "caller": "workbench_analysis.daily_source_manifests",
+      "line": 15
+    },
+    {
+      "callee": "workbench_analysis.v4_01_alias_completeness",
+      "caller": "workbench_analysis.security_identity_event_discovery",
+      "line": 16
+    },
+    {
+      "callee": "workbench_analysis.dated_security_alias",
+      "caller": "workbench_analysis.v4_01_alias_completeness",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis.daily_data_head",
+      "caller": "workbench_analysis.daily_increment_builder",
+      "line": 13
+    },
+    {
+      "callee": "workbench_analysis.daily_source_freeze",
+      "caller": "workbench_analysis.daily_increment_builder",
+      "line": 14
+    },
+    {
+      "callee": "workbench_analysis",
+      "caller": "scripts.build_v4_02_price_limits_generic",
+      "line": 19
+    },
+    {
+      "callee": "workbench_analysis.special_price_phases",
+      "caller": "scripts.build_v4_02_price_limits_generic",
+      "line": 19
+    },
+    {
+      "callee": "workbench_analysis.dated_security_alias",
+      "caller": "scripts.build_v4_02_price_limits_generic",
+      "line": 20
+    },
+    {
+      "callee": "workbench_analysis.special_price_phases",
+      "caller": "scripts.build_v4_02_price_limits_generic",
+      "line": 21
+    },
+    {
+      "callee": "adjustment.tdx_adjustment",
+      "caller": "scripts.build_v4_02_formal_periods",
+      "line": 25
+    },
+    {
+      "callee": "tdx.gbbq_reader",
+      "caller": "scripts.build_v4_02_formal_periods",
+      "line": 26
+    },
+    {
+      "callee": "workbench_analysis.canonical_source_selection",
+      "caller": "scripts.v4_02_build_raw_selected_v2",
+      "line": 27
+    },
+    {
+      "callee": "workbench_analysis.tdx_local_snapshot",
+      "caller": "scripts.v4_02_build_raw_selected_v2",
+      "line": 34
+    },
+    {
+      "callee": "workbench_analysis.tdx_snapshot",
+      "caller": "scripts.v4_02_build_raw_selected_v2",
+      "line": 35
+    },
+    {
+      "callee": "tdx.day_reader",
+      "caller": "workbench_analysis.canonical_source_selection",
+      "line": 7
+    },
+    {
+      "callee": "scripts.v4_02_build_raw_selected_v2",
+      "caller": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "line": 18
+    },
+    {
+      "callee": "scripts.build_v4_02_formal_periods",
+      "caller": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "line": 19
+    },
+    {
+      "callee": "scripts.build_v4_02_price_limits_generic",
+      "caller": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "line": 20
+    },
+    {
+      "callee": "adjustment.tdx_adjustment",
+      "caller": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "line": 21
+    },
+    {
+      "callee": "tdx.gbbq_reader",
+      "caller": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "line": 22
+    },
+    {
+      "callee": "workbench_analysis.daily_data_head",
+      "caller": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "line": 23
+    },
+    {
+      "callee": "workbench_analysis.daily_increment_builder",
+      "caller": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "line": 24
+    },
+    {
+      "callee": "workbench_analysis.daily_source_freeze",
+      "caller": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "line": 25
+    },
+    {
+      "callee": "workbench_analysis.daily_source_manifests",
+      "caller": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "line": 26
+    },
+    {
+      "callee": "workbench_analysis.dm01_extracted_domain_r1",
+      "caller": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "line": 27
+    },
+    {
+      "callee": "workbench_analysis.limit_rules",
+      "caller": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "line": 29
+    },
+    {
+      "callee": "workbench_analysis.price_reference_state",
+      "caller": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "line": 30
+    },
+    {
+      "callee": "workbench_analysis.v4_02_closure",
+      "caller": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "line": 31
+    },
+    {
+      "callee": "workbench_analysis.special_price_phases",
+      "caller": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "line": 32
+    },
+    {
+      "callee": "workbench_analysis.dm01_chain_contract_r3_3",
+      "caller": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "line": 91
+    },
+    {
+      "callee": "workbench_analysis.dm01_independent_postcheck_r3_3",
+      "caller": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "line": 154
+    },
+    {
+      "callee": "workbench_analysis.daily_data_head",
+      "caller": "workbench_analysis.dm01_chain_contract_r3_3",
+      "line": 3
+    },
+    {
+      "callee": "workbench_analysis.source_authority_producers_r4",
+      "caller": "workbench_analysis.dm01_chain_contract_r3_3",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "caller": "workbench_analysis.dm01_chain_contract_r3_3",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "caller": "workbench_analysis.dm01_chain_contract_r3_3",
+      "line": 54
+    },
+    {
+      "callee": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "caller": "workbench_analysis.dm01_chain_contract_r3_3",
+      "line": 58
+    },
+    {
+      "callee": "workbench_analysis.daily_source_freeze",
+      "caller": "workbench_analysis.dm01_chain_contract_r3_3",
+      "line": 59
+    },
+    {
+      "callee": "workbench_analysis.baostock_runtime_acceptance",
+      "caller": "workbench_analysis.baostock_supplemental",
+      "line": 331
+    },
+    {
+      "callee": "workbench_analysis.daily_source_freeze",
+      "caller": "workbench_analysis.baostock_runtime_acceptance",
+      "line": 10
+    },
+    {
+      "callee": "v4.factors.parameters",
+      "caller": "v4.factors.core",
+      "line": 16
+    },
+    {
+      "callee": "workbench_analysis.r43_operational_publication",
+      "caller": "workbench_analysis.operational_successor_v1",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.operational_successor_v1",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.market_source_acquisition",
+      "caller": "workbench_analysis.operational_successor_v1",
+      "line": 8
+    },
+    {
+      "callee": "workbench_analysis.operational_successor_release_v1",
+      "caller": "workbench_analysis.operational_successor_v1",
+      "line": 117
+    },
+    {
+      "callee": "workbench_analysis.tdx_member_retro_r43",
+      "caller": "workbench_analysis.operational_successor_v1",
+      "line": 89
+    },
+    {
+      "callee": "sector.membership_snapshot",
+      "caller": "workbench_analysis.tdx_member_retro_r43",
+      "line": 8
+    },
+    {
+      "callee": "workbench_analysis.corrected_owner_replay",
+      "caller": "workbench_analysis.tdx_member_retro_r43",
+      "line": 9
+    },
+    {
+      "callee": "workbench_analysis.market_source_acquisition",
+      "caller": "workbench_analysis.tdx_member_retro_r43",
+      "line": 10
+    },
+    {
+      "callee": "workbench_analysis.tdx_official_daily_source",
+      "caller": "workbench_analysis.tdx_member_retro_r43",
+      "line": 11
+    },
+    {
+      "callee": "adjustment.tdx_adjustment",
+      "caller": "workbench_analysis.corrected_owner_replay",
+      "line": 15
+    },
+    {
+      "callee": "tdx.gbbq_reader",
+      "caller": "workbench_analysis.corrected_owner_replay",
+      "line": 16
+    },
+    {
+      "callee": "v4.factors.core",
+      "caller": "workbench_analysis.corrected_owner_replay",
+      "line": 17
+    },
+    {
+      "callee": "workbench_analysis.market_source_acquisition",
+      "caller": "workbench_analysis.corrected_owner_replay",
+      "line": 18
+    },
+    {
+      "callee": "workbench_analysis.tdx_official_daily_source",
+      "caller": "workbench_analysis.corrected_owner_replay",
+      "line": 19
+    },
+    {
+      "callee": "tdx.gbbq_reader",
+      "caller": "sector.membership_snapshot",
+      "line": 4
+    },
+    {
+      "callee": "tdx.security_master",
+      "caller": "sector.membership_snapshot",
+      "line": 5
+    },
+    {
+      "callee": "tdx.block_reader",
+      "caller": "sector.membership_snapshot",
+      "line": 6
+    },
+    {
+      "callee": "sector.roles",
+      "caller": "sector.membership_snapshot",
+      "line": 7
+    },
+    {
+      "callee": "tdx.security_master",
+      "caller": "tdx.block_reader",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_storage_v1",
+      "caller": "workbench_analysis.operational_successor_release_v1",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.operational_successor_release_v1",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.tdx_official_daily_source",
+      "caller": "workbench_analysis.operational_successor_release_v1",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.operational_successor_v1",
+      "caller": "workbench_analysis.operational_successor_release_v1",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.daily_source_freeze",
+      "caller": "workbench_analysis.operational_daily_storage_v1",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.scoped_successor_r421",
+      "caller": "workbench_analysis.r43_operational_publication",
+      "line": 8
+    },
+    {
+      "callee": "workbench_analysis.r43_operational_sources",
+      "caller": "workbench_analysis.r43_operational_publication",
+      "line": 9
+    },
+    {
+      "callee": "workbench_analysis.tdx_member_retro_r43",
+      "caller": "workbench_analysis.r43_operational_publication",
+      "line": 10
+    },
+    {
+      "callee": "workbench_analysis.r43_release_control",
+      "caller": "workbench_analysis.r43_operational_publication",
+      "line": 75
+    },
+    {
+      "callee": "workbench_analysis.r43_release_control",
+      "caller": "workbench_analysis.r43_operational_publication",
+      "line": 173
+    },
+    {
+      "callee": "workbench_analysis.r43_release_control",
+      "caller": "workbench_analysis.r43_operational_publication",
+      "line": 51
+    },
+    {
+      "callee": "workbench_analysis.r43_release_control",
+      "caller": "workbench_analysis.r43_operational_publication",
+      "line": 177
+    },
+    {
+      "callee": "workbench_analysis.r43_operational_sources",
+      "caller": "workbench_analysis.r43_release_control",
+      "line": 9
+    },
+    {
+      "callee": "workbench_analysis.r43_operational_publication",
+      "caller": "workbench_analysis.r43_release_control",
+      "line": 15
+    },
+    {
+      "callee": "workbench_analysis.r43_operational_publication",
+      "caller": "workbench_analysis.r43_release_control",
+      "line": 23
+    },
+    {
+      "callee": "workbench_analysis.scoped_successor_r421",
+      "caller": "workbench_analysis.r43_operational_sources",
+      "line": 8
+    },
+    {
+      "callee": "workbench_analysis.daily_source_manifests",
+      "caller": "workbench_analysis.r43_operational_sources",
+      "line": 9
+    },
+    {
+      "callee": "tdx.gbbq_reader",
+      "caller": "workbench_analysis.r43_operational_sources",
+      "line": 10
+    },
+    {
+      "callee": "workbench_analysis",
+      "caller": "workbench_analysis.operational_owner_adapter_v1",
+      "line": 10
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.operational_owner_adapter_v1",
+      "line": 10
+    },
+    {
+      "callee": "workbench_analysis",
+      "caller": "workbench_analysis.operational_owner_adapter_v1",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis.r43_structure_replay",
+      "caller": "workbench_analysis.operational_owner_adapter_v1",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis",
+      "caller": "workbench_analysis.operational_owner_adapter_v1",
+      "line": 12
+    },
+    {
+      "callee": "workbench_analysis.r43_daily_price_limits",
+      "caller": "workbench_analysis.operational_owner_adapter_v1",
+      "line": 12
+    },
+    {
+      "callee": "workbench_analysis",
+      "caller": "workbench_analysis.operational_owner_adapter_v1",
+      "line": 13
+    },
+    {
+      "callee": "workbench_analysis.r43_market_replay",
+      "caller": "workbench_analysis.operational_owner_adapter_v1",
+      "line": 13
+    },
+    {
+      "callee": "workbench_analysis",
+      "caller": "workbench_analysis.operational_owner_adapter_v1",
+      "line": 14
+    },
+    {
+      "callee": "workbench_analysis.r43_focus_replay",
+      "caller": "workbench_analysis.operational_owner_adapter_v1",
+      "line": 14
+    },
+    {
+      "callee": "workbench_analysis",
+      "caller": "workbench_analysis.operational_owner_adapter_v1",
+      "line": 15
+    },
+    {
+      "callee": "workbench_analysis.tdx_sector_retro_r43",
+      "caller": "workbench_analysis.operational_owner_adapter_v1",
+      "line": 15
+    },
+    {
+      "callee": "scripts.run_v4_04_full_market_candidate_r4",
+      "caller": "workbench_analysis.operational_owner_adapter_v1",
+      "line": 57
+    },
+    {
+      "callee": "sector.native_r5",
+      "caller": "workbench_analysis.tdx_sector_retro_r43",
+      "line": 6
+    },
+    {
+      "callee": "sector.rotation_r5",
+      "caller": "workbench_analysis.tdx_sector_retro_r43",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.v4_13_descendant_contracts",
+      "caller": "workbench_analysis.tdx_sector_retro_r43",
+      "line": 8
+    },
+    {
+      "callee": "workbench_analysis.v4_13_loo_runtime",
+      "caller": "workbench_analysis.tdx_sector_retro_r43",
+      "line": 9
+    },
+    {
+      "callee": "workbench_analysis.corrected_owner_replay",
+      "caller": "workbench_analysis.tdx_sector_retro_r43",
+      "line": 10
+    },
+    {
+      "callee": "workbench_analysis.market_source_acquisition",
+      "caller": "workbench_analysis.tdx_sector_retro_r43",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis.tdx_member_retro_r43",
+      "caller": "workbench_analysis.tdx_sector_retro_r43",
+      "line": 12
+    },
+    {
+      "callee": "workbench_analysis.rotation_reconstructed_r43",
+      "caller": "workbench_analysis.tdx_sector_retro_r43",
+      "line": 13
+    },
+    {
+      "callee": "v4.base_seed",
+      "caller": "workbench_analysis.tdx_sector_retro_r43",
+      "line": 14
+    },
+    {
+      "callee": "sector",
+      "caller": "workbench_analysis.rotation_reconstructed_r43",
+      "line": 6
+    },
+    {
+      "callee": "sector.rotation_r5",
+      "caller": "workbench_analysis.rotation_reconstructed_r43",
+      "line": 6
+    },
+    {
+      "callee": "sector.machine_ast_r3",
+      "caller": "sector.rotation_r5",
+      "line": 6
+    },
+    {
+      "callee": "sector.native_r5",
+      "caller": "sector.rotation_r5",
+      "line": 7
+    },
+    {
+      "callee": "sector.native_r5",
+      "caller": "workbench_analysis.v4_13_loo_runtime",
+      "line": 3
+    },
+    {
+      "callee": "sector.rotation_r5",
+      "caller": "workbench_analysis.v4_13_loo_runtime",
+      "line": 4
+    },
+    {
+      "callee": "sector.legacy_b2_r5",
+      "caller": "workbench_analysis.v4_13_loo_runtime",
+      "line": 5
+    },
+    {
+      "callee": "v4.profile_core",
+      "caller": "workbench_analysis.v4_13_loo_runtime",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.v4_13_io",
+      "caller": "workbench_analysis.v4_13_loo_runtime",
+      "line": 7
+    },
+    {
+      "callee": "sector.native_r5",
+      "caller": "sector.legacy_b2_r5",
+      "line": 4
+    },
+    {
+      "callee": "sector.machine_ast_r3",
+      "caller": "sector.legacy_b2_r5",
+      "line": 5
+    },
+    {
+      "callee": "sector.semantic_input_r5_1",
+      "caller": "sector.legacy_b2_r5",
+      "line": 6
+    },
+    {
+      "callee": "sector.phase2",
+      "caller": "sector.semantic_input_r5_1",
+      "line": 7
+    },
+    {
+      "callee": "sector.roles",
+      "caller": "sector.semantic_input_r5_1",
+      "line": 8
+    },
+    {
+      "callee": "workbench_service.semantic",
+      "caller": "sector.semantic_input_r5_1",
+      "line": 9
+    },
+    {
+      "callee": "sector.roles",
+      "caller": "workbench_service.semantic",
+      "line": 8
+    },
+    {
+      "callee": "workbench_service.strength_association",
+      "caller": "workbench_service.semantic",
+      "line": 9
+    },
+    {
+      "callee": "sector.roles",
+      "caller": "sector.phase2",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.v4_13_io",
+      "caller": "workbench_analysis.v4_13_descendant_contracts",
+      "line": 9
+    },
+    {
+      "callee": "workbench_analysis.historical_stage_governance_r17",
+      "caller": "workbench_analysis.v4_13_descendant_contracts",
+      "line": 10
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.r43_focus_replay",
+      "line": 14
+    },
+    {
+      "callee": "workbench_analysis.market_source_acquisition",
+      "caller": "workbench_analysis.r43_focus_replay",
+      "line": 15
+    },
+    {
+      "callee": "workbench_analysis.tdx_official_daily_source",
+      "caller": "workbench_analysis.r43_focus_replay",
+      "line": 16
+    },
+    {
+      "callee": "workbench_analysis.research_features",
+      "caller": "workbench_analysis.r43_focus_replay",
+      "line": 17
+    },
+    {
+      "callee": "v4.target_fact_producers_r4",
+      "caller": "workbench_analysis.r43_focus_replay",
+      "line": 18
+    },
+    {
+      "callee": "v4.confirmation",
+      "caller": "workbench_analysis.r43_focus_replay",
+      "line": 19
+    },
+    {
+      "callee": "v4.confirmation_d2_candidate_r5",
+      "caller": "workbench_analysis.r43_focus_replay",
+      "line": 20
+    },
+    {
+      "callee": "v4.stock_prewatch",
+      "caller": "workbench_analysis.r43_focus_replay",
+      "line": 21
+    },
+    {
+      "callee": "v4.state_identity",
+      "caller": "workbench_analysis.r43_focus_replay",
+      "line": 22
+    },
+    {
+      "callee": "market_calendar.trading_calendar",
+      "caller": "workbench_analysis.r43_focus_replay",
+      "line": 23
+    },
+    {
+      "callee": "normalize.universe_recent",
+      "caller": "workbench_analysis.r43_focus_replay",
+      "line": 24
+    },
+    {
+      "callee": "focus_tracker.v4_native_core_adapter",
+      "caller": "workbench_analysis.r43_focus_replay",
+      "line": 173
+    },
+    {
+      "callee": "focus_tracker.v4_path_adapter",
+      "caller": "focus_tracker.v4_native_core_adapter",
+      "line": 3
+    },
+    {
+      "callee": "focus_tracker.path_state_v2",
+      "caller": "focus_tracker.v4_native_core_adapter",
+      "line": 4
+    },
+    {
+      "callee": "focus_tracker.predicates",
+      "caller": "focus_tracker.v4_native_core_adapter",
+      "line": 5
+    },
+    {
+      "callee": "workbench_service.current_v4_context",
+      "caller": "focus_tracker.v4_native_core_adapter",
+      "line": 6
+    },
+    {
+      "callee": "focus_tracker.contracts",
+      "caller": "focus_tracker.predicates",
+      "line": 10
+    },
+    {
+      "callee": "focus_tracker.session_gap_semantics",
+      "caller": "focus_tracker.predicates",
+      "line": 11
+    },
+    {
+      "callee": "focus_tracker.predicates",
+      "caller": "focus_tracker.path_state_v2",
+      "line": 7
+    },
+    {
+      "callee": "focus_tracker.states",
+      "caller": "focus_tracker.path_state_v2",
+      "line": 8
+    },
+    {
+      "callee": "focus_tracker.predicates",
+      "caller": "focus_tracker.states",
+      "line": 8
+    },
+    {
+      "callee": "adjustment.tdx_adjustment",
+      "caller": "focus_tracker.v4_path_adapter",
+      "line": 10
+    },
+    {
+      "callee": "tdx.gbbq_reader",
+      "caller": "focus_tracker.v4_path_adapter",
+      "line": 11
+    },
+    {
+      "callee": "workbench_service.current_v4_context",
+      "caller": "focus_tracker.v4_path_adapter",
+      "line": 12
+    },
+    {
+      "callee": "focus_tracker.outcomes",
+      "caller": "focus_tracker.v4_path_adapter",
+      "line": 13
+    },
+    {
+      "callee": "focus_tracker.path_state_v2",
+      "caller": "focus_tracker.v4_path_adapter",
+      "line": 14
+    },
+    {
+      "callee": "focus_tracker.predicates",
+      "caller": "focus_tracker.v4_path_adapter",
+      "line": 15
+    },
+    {
+      "callee": "focus_tracker.price_path",
+      "caller": "focus_tracker.v4_path_adapter",
+      "line": 16
+    },
+    {
+      "callee": "focus_tracker.v4_successor",
+      "caller": "focus_tracker.v4_path_adapter",
+      "line": 17
+    },
+    {
+      "callee": "workbench_service.current_v4_context",
+      "caller": "focus_tracker.v4_successor",
+      "line": 2
+    },
+    {
+      "callee": "focus_tracker.session_gap_semantics",
+      "caller": "focus_tracker.price_path",
+      "line": 9
+    },
+    {
+      "callee": "focus_tracker.price_path",
+      "caller": "focus_tracker.outcomes",
+      "line": 9
+    },
+    {
+      "callee": "market_calendar.trading_calendar",
+      "caller": "normalize.universe_recent",
+      "line": 3
+    },
+    {
+      "callee": "tdx.day_reader",
+      "caller": "market_calendar.trading_calendar",
+      "line": 9
+    },
+    {
+      "callee": "v4.base_seed",
+      "caller": "v4.stock_prewatch",
+      "line": 15
+    },
+    {
+      "callee": "v4.research_state",
+      "caller": "v4.confirmation_d2_candidate_r5",
+      "line": 20
+    },
+    {
+      "callee": "v4.state_provenance",
+      "caller": "v4.confirmation_d2_candidate_r5",
+      "line": 20
+    },
+    {
+      "callee": "v4.state_identity",
+      "caller": "v4.confirmation_d2_candidate_r5",
+      "line": 21
+    },
+    {
+      "callee": "v4.sealed_owner_authority_r5",
+      "caller": "v4.confirmation_d2_candidate_r5",
+      "line": 159
+    },
+    {
+      "callee": "v4.confirmation",
+      "caller": "v4.sealed_owner_authority_r5",
+      "line": 2
+    },
+    {
+      "callee": "v4.state_identity",
+      "caller": "v4.confirmation",
+      "line": 14
+    },
+    {
+      "callee": "workbench_analysis.today_research_scanner_v3_3",
+      "caller": "v4.confirmation",
+      "line": 29
+    },
+    {
+      "callee": "v4.state_identity",
+      "caller": "v4.state_provenance",
+      "line": 12
+    },
+    {
+      "callee": "v4.state_identity",
+      "caller": "v4.research_state",
+      "line": 8
+    },
+    {
+      "callee": "v4.state_provenance",
+      "caller": "v4.research_state",
+      "line": 9
+    },
+    {
+      "callee": "v4.confirmation",
+      "caller": "v4.target_fact_producers_r4",
+      "line": 10
+    },
+    {
+      "callee": "workbench_analysis.today_research_factors_v3_3",
+      "caller": "v4.target_fact_producers_r4",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis.stock_attention",
+      "caller": "v4.target_fact_producers_r4",
+      "line": 12
+    },
+    {
+      "callee": "scripts.next_round_bundle_r1",
+      "caller": "v4.target_fact_producers_r4",
+      "line": 62
+    },
+    {
+      "callee": "workbench_analysis.dm01_accepted_chain_v1",
+      "caller": "scripts.next_round_bundle_r1",
+      "line": 56
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.r43_market_replay",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.market_source_acquisition",
+      "caller": "workbench_analysis.r43_market_replay",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.v4_13_descendant_contracts",
+      "caller": "workbench_analysis.r43_market_replay",
+      "line": 8
+    },
+    {
+      "callee": "sector.rotation_r5",
+      "caller": "workbench_analysis.r43_market_replay",
+      "line": 9
+    },
+    {
+      "callee": "v4.factors.native",
+      "caller": "workbench_analysis.r43_market_replay",
+      "line": 10
+    },
+    {
+      "callee": "v4.market_regime_ui",
+      "caller": "workbench_analysis.r43_market_replay",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis.r43_daily_price_limits",
+      "caller": "workbench_analysis.r43_market_replay",
+      "line": 23
+    },
+    {
+      "callee": "tdx.gbbq_reader",
+      "caller": "workbench_analysis.r43_daily_price_limits",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.limit_rules",
+      "caller": "workbench_analysis.r43_daily_price_limits",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.special_price_phases",
+      "caller": "workbench_analysis.r43_daily_price_limits",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.r43_daily_price_limits",
+      "line": 8
+    },
+    {
+      "callee": "workbench_analysis.market_source_acquisition",
+      "caller": "workbench_analysis.r43_daily_price_limits",
+      "line": 9
+    },
+    {
+      "callee": "v4.profile_core",
+      "caller": "v4.market_regime_ui",
+      "line": 8
+    },
+    {
+      "callee": "v4.factors.parameters",
+      "caller": "v4.factors.native",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.r43_structure_replay",
+      "line": 8
+    },
+    {
+      "callee": "workbench_analysis.market_source_acquisition",
+      "caller": "workbench_analysis.r43_structure_replay",
+      "line": 9
+    },
+    {
+      "callee": "workbench_analysis.v4_12_structure_io",
+      "caller": "workbench_analysis.r43_structure_replay",
+      "line": 10
+    },
+    {
+      "callee": "workbench_analysis.v4_12_breakout_snapshot",
+      "caller": "workbench_analysis.r43_structure_replay",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis.v4_12_breakout_episode",
+      "caller": "workbench_analysis.r43_structure_replay",
+      "line": 12
+    },
+    {
+      "callee": "workbench_analysis.v4_12_frozen_snapshot_v2",
+      "caller": "workbench_analysis.r43_structure_replay",
+      "line": 13
+    },
+    {
+      "callee": "workbench_analysis.v4_12_input_binder",
+      "caller": "workbench_analysis.r43_structure_replay",
+      "line": 14
+    },
+    {
+      "callee": "scripts.run_v4_04_full_market_candidate_r4",
+      "caller": "workbench_analysis.r43_structure_replay",
+      "line": 117
+    },
+    {
+      "callee": "scripts.run_v4_04_full_market_candidate_r4",
+      "caller": "workbench_analysis.r43_structure_replay",
+      "line": 118
+    },
+    {
+      "callee": "scripts.build_fp06_sector",
+      "caller": "workbench_analysis.r43_structure_replay",
+      "line": 119
+    },
+    {
+      "callee": "v4.market_regime_ui",
+      "caller": "workbench_analysis.r43_structure_replay",
+      "line": 120
+    },
+    {
+      "callee": "workbench_analysis.v4_13_descendant_contracts",
+      "caller": "workbench_analysis.r43_structure_replay",
+      "line": 121
+    },
+    {
+      "callee": "workbench_analysis.v4_13_profile_runtime",
+      "caller": "workbench_analysis.r43_structure_replay",
+      "line": 122
+    },
+    {
+      "callee": "workbench_analysis.v4_13_io",
+      "caller": "workbench_analysis.v4_13_profile_runtime",
+      "line": 3
+    },
+    {
+      "callee": "scripts.fp01_evidence",
+      "caller": "scripts.build_fp06_sector",
+      "line": 12
+    },
+    {
+      "callee": "scripts.fp_domain_evidence",
+      "caller": "scripts.build_fp06_sector",
+      "line": 13
+    },
+    {
+      "callee": "scripts.build_fp05_market",
+      "caller": "scripts.build_fp06_sector",
+      "line": 14
+    },
+    {
+      "callee": "workbench_service.production_v4",
+      "caller": "scripts.build_fp06_sector",
+      "line": 15
+    },
+    {
+      "callee": "workbench_service.current_v4_context",
+      "caller": "scripts.build_fp06_sector",
+      "line": 16
+    },
+    {
+      "callee": "v4.factors.core",
+      "caller": "scripts.build_fp06_sector",
+      "line": 17
+    },
+    {
+      "callee": "v4.market_regime_ui",
+      "caller": "scripts.build_fp06_sector",
+      "line": 18
+    },
+    {
+      "callee": "sector.native_r5",
+      "caller": "scripts.build_fp06_sector",
+      "line": 19
+    },
+    {
+      "callee": "workbench_service.current_v4_context",
+      "caller": "workbench_service.production_v4",
+      "line": 12
+    },
+    {
+      "callee": "workbench_service.v4_daily_refresh",
+      "caller": "workbench_service.production_v4",
+      "line": 13
+    },
+    {
+      "callee": "workbench_service.joint_release",
+      "caller": "workbench_service.production_v4",
+      "line": 78
+    },
+    {
+      "callee": "workbench_service.joint_release",
+      "caller": "workbench_service.production_v4",
+      "line": 384
+    },
+    {
+      "callee": "workbench_service.joint_release",
+      "caller": "workbench_service.production_v4",
+      "line": 406
+    },
+    {
+      "callee": "workbench_service.stock_unit_projection",
+      "caller": "workbench_service.production_v4",
+      "line": 234
+    },
+    {
+      "callee": "workbench_service.raw_turnover",
+      "caller": "workbench_service.production_v4",
+      "line": 258
+    },
+    {
+      "callee": "workbench_service.current_v4_context",
+      "caller": "workbench_service.raw_turnover",
+      "line": 3
+    },
+    {
+      "callee": "workbench_service.current_v4_context",
+      "caller": "workbench_service.stock_unit_projection",
+      "line": 2
+    },
+    {
+      "callee": "workbench_service.current_v4_context",
+      "caller": "workbench_service.joint_release",
+      "line": 4
+    },
+    {
+      "callee": "workbench_service.v4_daily_refresh",
+      "caller": "workbench_service.joint_release",
+      "line": 5
+    },
+    {
+      "callee": "workbench_service.current_v4_context",
+      "caller": "workbench_service.v4_daily_refresh",
+      "line": 9
+    },
+    {
+      "callee": "workbench_analysis.dm01_runtime_r4",
+      "caller": "workbench_service.v4_daily_refresh",
+      "line": 80
+    },
+    {
+      "callee": "scripts.fp01_evidence",
+      "caller": "scripts.build_fp05_market",
+      "line": 15
+    },
+    {
+      "callee": "scripts.fp_domain_evidence",
+      "caller": "scripts.build_fp05_market",
+      "line": 16
+    },
+    {
+      "callee": "workbench_service.production_v4",
+      "caller": "scripts.build_fp05_market",
+      "line": 17
+    },
+    {
+      "callee": "workbench_service.current_v4_context",
+      "caller": "scripts.build_fp05_market",
+      "line": 18
+    },
+    {
+      "callee": "adjustment.tdx_adjustment",
+      "caller": "scripts.build_fp05_market",
+      "line": 19
+    },
+    {
+      "callee": "tdx.gbbq_reader",
+      "caller": "scripts.build_fp05_market",
+      "line": 20
+    },
+    {
+      "callee": "v4.factors.native",
+      "caller": "scripts.build_fp05_market",
+      "line": 21
+    },
+    {
+      "callee": "v4.market_regime_ui",
+      "caller": "scripts.build_fp05_market",
+      "line": 22
+    },
+    {
+      "callee": "scripts.fp01_evidence",
+      "caller": "scripts.fp_domain_evidence",
+      "line": 5
+    },
+    {
+      "callee": "scripts.forward_final_bootstrap",
+      "caller": "scripts.fp01_evidence",
+      "line": 66
+    },
+    {
+      "callee": "scripts.full_chain_repair_io",
+      "caller": "scripts.forward_final_bootstrap",
+      "line": 9
+    },
+    {
+      "callee": "workbench_analysis.v4_12_structure_io",
+      "caller": "workbench_analysis.v4_12_input_binder",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.v4_12_frozen_snapshot",
+      "caller": "workbench_analysis.v4_12_input_binder",
+      "line": 52
+    },
+    {
+      "callee": "workbench_analysis.v4_12_anchor_runtime",
+      "caller": "workbench_analysis.v4_12_input_binder",
+      "line": 113
+    },
+    {
+      "callee": "workbench_analysis.v4_12_structure_io",
+      "caller": "workbench_analysis.v4_12_anchor_runtime",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.v4_12_structure_io",
+      "caller": "workbench_analysis.v4_12_frozen_snapshot",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.v4_12_input_binder",
+      "caller": "workbench_analysis.v4_12_frozen_snapshot",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.v4_12_structure_io",
+      "caller": "workbench_analysis.v4_12_frozen_snapshot",
+      "line": 24
+    },
+    {
+      "callee": "workbench_analysis.v4_12_structure_io",
+      "caller": "workbench_analysis.v4_12_frozen_snapshot",
+      "line": 105
+    },
+    {
+      "callee": "workbench_analysis.v4_12_structure_io",
+      "caller": "workbench_analysis.v4_12_frozen_snapshot_v2",
+      "line": 3
+    },
+    {
+      "callee": "workbench_analysis.v4_12_frozen_snapshot",
+      "caller": "workbench_analysis.v4_12_frozen_snapshot_v2",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.v4_12_input_binder",
+      "caller": "workbench_analysis.v4_12_frozen_snapshot_v2",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.v4_12_multi_anchor_state",
+      "caller": "workbench_analysis.v4_12_frozen_snapshot_v2",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.v4_12_ast_runtime",
+      "caller": "workbench_analysis.v4_12_multi_anchor_state",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.v4_12_anchor_runtime",
+      "caller": "workbench_analysis.v4_12_multi_anchor_state",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.v4_12_structure_io",
+      "caller": "workbench_analysis.v4_12_multi_anchor_state",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.v4_12_multi_anchor_engine",
+      "caller": "workbench_analysis.v4_12_breakout_episode",
+      "line": 3
+    },
+    {
+      "callee": "workbench_analysis.v4_12_structure_io",
+      "caller": "workbench_analysis.v4_12_breakout_episode",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.v4_12_ast_runtime",
+      "caller": "workbench_analysis.v4_12_breakout_episode",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.v4_12_breakout_snapshot",
+      "caller": "workbench_analysis.v4_12_breakout_episode",
+      "line": 31
+    },
+    {
+      "callee": "workbench_analysis.v4_12_structure_io",
+      "caller": "workbench_analysis.v4_12_breakout_snapshot",
+      "line": 3
+    },
+    {
+      "callee": "workbench_analysis.v4_12_frozen_snapshot",
+      "caller": "workbench_analysis.v4_12_breakout_snapshot",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.v4_12_input_binder",
+      "caller": "workbench_analysis.v4_12_breakout_snapshot",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.v4_12_multi_anchor_state",
+      "caller": "workbench_analysis.v4_12_breakout_snapshot",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.v4_12_breakout_episode",
+      "caller": "workbench_analysis.v4_12_breakout_snapshot",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.v4_12_structure_engine",
+      "caller": "workbench_analysis.v4_12_multi_anchor_engine",
+      "line": 3
+    },
+    {
+      "callee": "workbench_analysis.v4_12_structure_io",
+      "caller": "workbench_analysis.v4_12_multi_anchor_engine",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.v4_12_ast_runtime",
+      "caller": "workbench_analysis.v4_12_multi_anchor_engine",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.v4_12_multi_anchor_state",
+      "caller": "workbench_analysis.v4_12_multi_anchor_engine",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.v4_12_frozen_snapshot_v2",
+      "caller": "workbench_analysis.v4_12_multi_anchor_engine",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.v4_12_ast_runtime",
+      "caller": "workbench_analysis.v4_12_structure_engine",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.v4_12_structure_io",
+      "caller": "workbench_analysis.v4_12_structure_engine",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.v4_12_input_binder",
+      "caller": "workbench_analysis.v4_12_structure_engine",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.v4_12_anchor_runtime",
+      "caller": "workbench_analysis.v4_12_structure_engine",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_jobs_v1",
+      "caller": "workbench_desktop.jobs",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_calendar_v2",
+      "caller": "workbench_analysis.operational_daily_jobs_v1",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_storage_v1",
+      "caller": "workbench_analysis.operational_daily_jobs_v1",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.source_readiness_v2",
+      "caller": "workbench_analysis.operational_daily_jobs_v1",
+      "line": 60
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_storage_v1",
+      "caller": "workbench_analysis.operational_daily_jobs_v1",
+      "line": 76
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_calendar_v2",
+      "caller": "workbench_analysis.source_readiness_v2",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.dm01_runtime_r4",
+      "caller": "workbench_analysis.operational_daily_calendar_v2",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.scoped_successor_r421",
+      "caller": "workbench_analysis.operational_daily_calendar_v2",
+      "line": 58
+    },
+    {
+      "callee": "workbench_desktop.storage",
+      "caller": "workbench_desktop.engine",
+      "line": 11
+    },
+    {
+      "callee": "workbench_desktop.jobs",
+      "caller": "workbench_desktop.engine",
+      "line": 12
+    },
+    {
+      "callee": "workbench_service.core_product_server_r1",
+      "caller": "workbench_desktop.engine",
+      "line": 79
+    },
+    {
+      "callee": "workbench_analysis.operational_successor_release_v1",
+      "caller": "workbench_desktop.engine",
+      "line": 80
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_executor_v1",
+      "caller": "workbench_desktop.engine",
+      "line": 81
+    },
+    {
+      "callee": "workbench_desktop.source_adapter",
+      "caller": "workbench_desktop.engine",
+      "line": 82
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_jobs_v1",
+      "caller": "workbench_desktop.engine",
+      "line": 220
+    },
+    {
+      "callee": "workbench_desktop.storage",
+      "caller": "workbench_desktop.source_adapter",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.operational_owner_adapter_v1",
+      "caller": "workbench_desktop.source_adapter",
+      "line": 11
+    },
+    {
+      "callee": "scripts.capture_dm01_a01_r3_tdx_package",
+      "caller": "workbench_desktop.source_adapter",
+      "line": 12
+    },
+    {
+      "callee": "scripts.enter_source_authority_remediation_r2",
+      "caller": "workbench_desktop.source_adapter",
+      "line": 13
+    },
+    {
+      "callee": "workbench_analysis.operational_owner_adapter_v1",
+      "caller": "workbench_desktop.source_adapter",
+      "line": 22
+    },
+    {
+      "callee": "workbench_analysis",
+      "caller": "workbench_desktop.source_adapter",
+      "line": 23
+    },
+    {
+      "callee": "workbench_analysis.tdx_official_daily_source",
+      "caller": "workbench_desktop.source_adapter",
+      "line": 23
+    },
+    {
+      "callee": "workbench_analysis",
+      "caller": "workbench_desktop.source_adapter",
+      "line": 24
+    },
+    {
+      "callee": "workbench_analysis.tdx_latest_daily_source_v2",
+      "caller": "workbench_desktop.source_adapter",
+      "line": 24
+    },
+    {
+      "callee": "workbench_analysis",
+      "caller": "workbench_desktop.source_adapter",
+      "line": 25
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_executor_v1",
+      "caller": "workbench_desktop.source_adapter",
+      "line": 25
+    },
+    {
+      "callee": "workbench_analysis",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.tdx_official_daily_source",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.tdx_latest_daily_source_v2",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_storage_v1",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.operational_runtime_acceptance_v2",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 8
+    },
+    {
+      "callee": "workbench_analysis.baostock_supplemental",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 9
+    },
+    {
+      "callee": "workbench_analysis.baostock_dm01_sdk_schema_v2",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 10
+    },
+    {
+      "callee": "workbench_analysis.baostock_daily_update_source",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis.source_readiness_v2",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 12
+    },
+    {
+      "callee": "workbench_analysis.tdx_latest_daily_source_v2",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 17
+    },
+    {
+      "callee": "workbench_analysis.tdx_local_daily_fallback_v1",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 106
+    },
+    {
+      "callee": "workbench_analysis.producer_bootstrap_v1",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 130
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 142
+    },
+    {
+      "callee": "workbench_analysis.producer_bootstrap_v1",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 145
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_ready_owner_v2",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 153
+    },
+    {
+      "callee": "scripts.audit_dynamic_daily_period_numbers_v1",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 158
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 159
+    },
+    {
+      "callee": "workbench_analysis.producer_bootstrap_v1",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 164
+    },
+    {
+      "callee": "workbench_analysis.producer_bootstrap_v1",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 167
+    },
+    {
+      "callee": "workbench_analysis.cohort_capture_readiness_r1",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 172
+    },
+    {
+      "callee": "workbench_analysis.operational_successor_release_v1",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 179
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_http_readback_v1",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 180
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 239
+    },
+    {
+      "callee": "workbench_analysis.r43_operational_sources",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 240
+    },
+    {
+      "callee": "workbench_analysis.next_t0_identity_preflight_v1",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 262
+    },
+    {
+      "callee": "scripts.accept_dynamic_daily_baostock_v2",
+      "caller": "workbench_analysis.operational_daily_executor_v1",
+      "line": 80
+    },
+    {
+      "callee": "scripts.accept_v4_dm01_baostock_runtime",
+      "caller": "scripts.accept_dynamic_daily_baostock_v2",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.baostock_supplemental",
+      "caller": "scripts.accept_dynamic_daily_baostock_v2",
+      "line": 8
+    },
+    {
+      "callee": "workbench_analysis.operational_baostock_client_v1",
+      "caller": "scripts.accept_dynamic_daily_baostock_v2",
+      "line": 9
+    },
+    {
+      "callee": "workbench_analysis.baostock_daily_update_source",
+      "caller": "scripts.accept_dynamic_daily_baostock_v2",
+      "line": 10
+    },
+    {
+      "callee": "workbench_analysis.baostock_runtime_acceptance",
+      "caller": "scripts.accept_dynamic_daily_baostock_v2",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis.daily_data_head",
+      "caller": "scripts.accept_dynamic_daily_baostock_v2",
+      "line": 12
+    },
+    {
+      "callee": "workbench_analysis.dm01_runtime_r4",
+      "caller": "scripts.accept_dynamic_daily_baostock_v2",
+      "line": 13
+    },
+    {
+      "callee": "workbench_analysis.source_readiness_v2",
+      "caller": "scripts.accept_dynamic_daily_baostock_v2",
+      "line": 14
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_calendar_v2",
+      "caller": "scripts.accept_dynamic_daily_baostock_v2",
+      "line": 15
+    },
+    {
+      "callee": "workbench_analysis.baostock_dm01_sdk_schema_v2",
+      "caller": "scripts.accept_dynamic_daily_baostock_v2",
+      "line": 16
+    },
+    {
+      "callee": "workbench_analysis.operational_runtime_acceptance_v2",
+      "caller": "scripts.accept_dynamic_daily_baostock_v2",
+      "line": 79
+    },
+    {
+      "callee": "workbench_analysis.operational_runtime_acceptance_v2",
+      "caller": "scripts.accept_dynamic_daily_baostock_v2",
+      "line": 62
+    },
+    {
+      "callee": "workbench_analysis.baostock_daily_update_source",
+      "caller": "scripts.accept_dynamic_daily_baostock_v2",
+      "line": 63
+    },
+    {
+      "callee": "workbench_analysis.baostock_supplemental",
+      "caller": "workbench_analysis.baostock_daily_update_source",
+      "line": 15
+    },
+    {
+      "callee": "workbench_analysis.daily_source_freeze",
+      "caller": "workbench_analysis.baostock_daily_update_source",
+      "line": 20
+    },
+    {
+      "callee": "workbench_analysis.baostock_runtime_acceptance",
+      "caller": "workbench_analysis.baostock_daily_update_source",
+      "line": 21
+    },
+    {
+      "callee": "workbench_analysis.baostock_runtime_acceptance",
+      "caller": "workbench_analysis.operational_runtime_acceptance_v2",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.operational_runtime_acceptance_v2",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_storage_v1",
+      "caller": "workbench_analysis.operational_runtime_acceptance_v2",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.tdx_official_daily_source",
+      "caller": "workbench_analysis.operational_runtime_acceptance_v2",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.baostock_daily_update_source",
+      "caller": "workbench_analysis.operational_runtime_acceptance_v2",
+      "line": 21
+    },
+    {
+      "callee": "workbench_analysis.baostock_daily_update_source",
+      "caller": "workbench_analysis.baostock_dm01_sdk_schema_v2",
+      "line": 2
+    },
+    {
+      "callee": "workbench_analysis.baostock_supplemental",
+      "caller": "workbench_analysis.operational_baostock_client_v1",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_storage_v1",
+      "caller": "workbench_analysis.operational_baostock_client_v1",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.operational_runtime_acceptance_v2",
+      "caller": "workbench_analysis.operational_baostock_client_v1",
+      "line": 51
+    },
+    {
+      "callee": "workbench_analysis.baostock_daily_update_source",
+      "caller": "scripts.accept_v4_dm01_baostock_runtime",
+      "line": 13
+    },
+    {
+      "callee": "workbench_analysis.baostock_runtime_acceptance",
+      "caller": "scripts.accept_v4_dm01_baostock_runtime",
+      "line": 20
+    },
+    {
+      "callee": "workbench_analysis.baostock_supplemental",
+      "caller": "scripts.accept_v4_dm01_baostock_runtime",
+      "line": 23
+    },
+    {
+      "callee": "workbench_analysis.daily_data_head",
+      "caller": "scripts.accept_v4_dm01_baostock_runtime",
+      "line": 29
+    },
+    {
+      "callee": "workbench_analysis.operational_successor_v1",
+      "caller": "workbench_analysis.operational_daily_http_readback_v1",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.cohort_capture_readiness_r1",
+      "line": 3
+    },
+    {
+      "callee": "workbench_analysis.validation_cohort_read_contract_r3",
+      "caller": "workbench_analysis.cohort_capture_readiness_r1",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.cohort_first_capture_producer_r1",
+      "caller": "workbench_analysis.cohort_capture_readiness_r1",
+      "line": 34
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.cohort_first_capture_producer_r1",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis.v4_14_replay_io",
+      "caller": "workbench_analysis.cohort_first_capture_producer_r1",
+      "line": 12
+    },
+    {
+      "callee": "workbench_analysis.validation_cohort_read_contract_r3",
+      "caller": "workbench_analysis.cohort_first_capture_producer_r1",
+      "line": 13
+    },
+    {
+      "callee": "workbench_analysis.v4_14_replay_io",
+      "caller": "workbench_analysis.cohort_first_capture_producer_r1",
+      "line": 85
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.validation_cohort_read_contract_r3",
+      "line": 47
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.validation_cohort_read_contract_r3",
+      "line": 70
+    },
+    {
+      "callee": "workbench_analysis.v4_14_replay_io",
+      "caller": "workbench_analysis.validation_cohort_read_contract_r3",
+      "line": 104
+    },
+    {
+      "callee": "workbench_analysis.v4_15_settlement",
+      "caller": "workbench_analysis.validation_cohort_read_contract_r3",
+      "line": 105
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.validation_cohort_read_contract_r3",
+      "line": 106
+    },
+    {
+      "callee": "workbench_analysis.v4_current_stage_authority",
+      "caller": "workbench_analysis.v4_15_settlement",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.v4_14_replay_io",
+      "caller": "workbench_analysis.v4_current_stage_authority",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.v4_portable_exact",
+      "caller": "workbench_analysis.v4_current_stage_authority",
+      "line": 10
+    },
+    {
+      "callee": "workbench_analysis.v4_14_replay_io",
+      "caller": "workbench_analysis.v4_portable_exact",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.producer_bootstrap_v1",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.market_source_acquisition",
+      "caller": "workbench_analysis.producer_bootstrap_v1",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.source_capture_candidate_v1",
+      "caller": "workbench_analysis.producer_bootstrap_v1",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.full_state_signal_candidate_v1",
+      "caller": "workbench_analysis.producer_bootstrap_v1",
+      "line": 8
+    },
+    {
+      "callee": "workbench_analysis.v4_14_replay_io",
+      "caller": "workbench_analysis.producer_bootstrap_v1",
+      "line": 55
+    },
+    {
+      "callee": "workbench_analysis.producer_dependency_archive_v1",
+      "caller": "workbench_analysis.producer_bootstrap_v1",
+      "line": 65
+    },
+    {
+      "callee": "sector.operational_candidate_v3",
+      "caller": "workbench_analysis.producer_bootstrap_v1",
+      "line": 73
+    },
+    {
+      "callee": "workbench_analysis.strict_source_candidate_v2",
+      "caller": "workbench_analysis.producer_bootstrap_v1",
+      "line": 74
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_storage_v1",
+      "caller": "workbench_analysis.producer_bootstrap_v1",
+      "line": 75
+    },
+    {
+      "callee": "workbench_analysis.full_market_state_publisher_v1",
+      "caller": "workbench_analysis.producer_bootstrap_v1",
+      "line": 79
+    },
+    {
+      "callee": "workbench_analysis.full_state_first_observed_v1",
+      "caller": "workbench_analysis.producer_bootstrap_v1",
+      "line": 82
+    },
+    {
+      "callee": "workbench_analysis.full_state_first_observed_v1",
+      "caller": "workbench_analysis.producer_bootstrap_v1",
+      "line": 120
+    },
+    {
+      "callee": "sector.operational_candidate_v1",
+      "caller": "workbench_analysis.producer_bootstrap_v1",
+      "line": 126
+    },
+    {
+      "callee": "workbench_analysis.v4_14_replay_io",
+      "caller": "workbench_analysis.producer_bootstrap_v1",
+      "line": 127
+    },
+    {
+      "callee": "sector.legacy_b2_r5",
+      "caller": "sector.operational_candidate_v1",
+      "line": 5
+    },
+    {
+      "callee": "sector.phase2",
+      "caller": "sector.operational_candidate_v1",
+      "line": 6
+    },
+    {
+      "callee": "sector.semantic_input_r5_1",
+      "caller": "sector.operational_candidate_v1",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.v4_14_replay_io",
+      "caller": "sector.operational_candidate_v1",
+      "line": 8
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "sector.operational_candidate_v1",
+      "line": 109
+    },
+    {
+      "callee": "workbench_analysis.v4_14_replay_io",
+      "caller": "sector.operational_candidate_v1",
+      "line": 110
+    },
+    {
+      "callee": "workbench_analysis.sector_cycle",
+      "caller": "sector.operational_candidate_v1",
+      "line": 111
+    },
+    {
+      "callee": "workbench_service.research_builder",
+      "caller": "sector.operational_candidate_v1",
+      "line": 112
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "sector.operational_candidate_v1",
+      "line": 144
+    },
+    {
+      "callee": "workbench_analysis.v4_14_replay_io",
+      "caller": "sector.operational_candidate_v1",
+      "line": 145
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "sector.operational_candidate_v1",
+      "line": 198
+    },
+    {
+      "callee": "sector.machine_ast_r3",
+      "caller": "sector.operational_candidate_v1",
+      "line": 199
+    },
+    {
+      "callee": "sector.legacy_valid_member_a05_v1",
+      "caller": "sector.operational_candidate_v1",
+      "line": 32
+    },
+    {
+      "callee": "workbench_analysis.sector_attention",
+      "caller": "sector.operational_candidate_v1",
+      "line": 60
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "sector.operational_candidate_v1",
+      "line": 83
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "sector.operational_candidate_v1",
+      "line": 185
+    },
+    {
+      "callee": "workbench_analysis.sector_amount",
+      "caller": "workbench_analysis.sector_attention",
+      "line": 14
+    },
+    {
+      "callee": "workbench_service.semantic",
+      "caller": "workbench_analysis.sector_attention",
+      "line": 15
+    },
+    {
+      "callee": "workbench_db",
+      "caller": "workbench_service.research_builder",
+      "line": 13
+    },
+    {
+      "callee": "workbench_analysis.research_features",
+      "caller": "workbench_service.research_builder",
+      "line": 14
+    },
+    {
+      "callee": "workbench_analysis.sector_attention",
+      "caller": "workbench_service.research_builder",
+      "line": 15
+    },
+    {
+      "callee": "workbench_analysis.stock_attention",
+      "caller": "workbench_service.research_builder",
+      "line": 19
+    },
+    {
+      "callee": "workbench_analysis.technical",
+      "caller": "workbench_service.research_builder",
+      "line": 20
+    },
+    {
+      "callee": "workbench_analysis.strength",
+      "caller": "workbench_service.research_builder",
+      "line": 21
+    },
+    {
+      "callee": "workbench_analysis.sector_cycle",
+      "caller": "workbench_service.research_builder",
+      "line": 22
+    },
+    {
+      "callee": "workbench_service.research_association",
+      "caller": "workbench_service.research_builder",
+      "line": 23
+    },
+    {
+      "callee": "workbench_service.research_runs",
+      "caller": "workbench_service.research_builder",
+      "line": 24
+    },
+    {
+      "callee": "workbench_service.research_v3_contracts",
+      "caller": "workbench_service.research_builder",
+      "line": 25
+    },
+    {
+      "callee": "workbench_service.research_signal_evaluation",
+      "caller": "workbench_service.research_builder",
+      "line": 26
+    },
+    {
+      "callee": "workbench_service.universe",
+      "caller": "workbench_service.research_builder",
+      "line": 27
+    },
+    {
+      "callee": "tdx.security_master",
+      "caller": "workbench_service.research_builder",
+      "line": 28
+    },
+    {
+      "callee": "workbench_analysis.immutable",
+      "caller": "workbench_analysis.sector_cycle",
+      "line": 17
+    },
+    {
+      "callee": "workbench_analysis.technical",
+      "caller": "workbench_analysis.strength",
+      "line": 12
+    },
+    {
+      "callee": "workbench_analysis.immutable",
+      "caller": "workbench_analysis.strength",
+      "line": 13
+    },
+    {
+      "callee": "workbench_service.result_objects",
+      "caller": "workbench_analysis.strength",
+      "line": 14
+    },
+    {
+      "callee": "workbench_db.digest",
+      "caller": "workbench_service.result_objects",
+      "line": 21
+    },
+    {
+      "callee": "workbench_db.result_object_repository",
+      "caller": "workbench_service.result_objects",
+      "line": 22
+    },
+    {
+      "callee": "workbench_db.postgres_repository",
+      "caller": "workbench_db.result_object_repository",
+      "line": 18
+    },
+    {
+      "callee": "workbench_db.read_repository",
+      "caller": "workbench_db.postgres_repository",
+      "line": 17
+    },
+    {
+      "callee": "workbench_analysis.immutable",
+      "caller": "workbench_analysis.technical",
+      "line": 13
+    },
+    {
+      "callee": "workbench_service.result_objects",
+      "caller": "workbench_analysis.technical",
+      "line": 14
+    },
+    {
+      "callee": "workbench_db.owner",
+      "caller": "workbench_db",
+      "line": 3
+    },
+    {
+      "callee": "workbench_db.repository",
+      "caller": "workbench_db",
+      "line": 4
+    },
+    {
+      "callee": "workbench_db.read_repository",
+      "caller": "workbench_db",
+      "line": 5
+    },
+    {
+      "callee": "workbench_db.postgres_write_repository",
+      "caller": "workbench_db",
+      "line": 6
+    },
+    {
+      "callee": "workbench_db.config_store",
+      "caller": "workbench_db",
+      "line": 7
+    },
+    {
+      "callee": "workbench_db.postgres_online_repository",
+      "caller": "workbench_db",
+      "line": 8
+    },
+    {
+      "callee": "workbench_db.postgres_research_repository",
+      "caller": "workbench_db",
+      "line": 9
+    },
+    {
+      "callee": "workbench_db.result_object_repository",
+      "caller": "workbench_db",
+      "line": 10
+    },
+    {
+      "callee": "workbench_db.slice_repository",
+      "caller": "workbench_db",
+      "line": 11
+    },
+    {
+      "callee": "workbench_db.operations_metadata",
+      "caller": "workbench_db",
+      "line": 12
+    },
+    {
+      "callee": "workbench_db.operations_metadata",
+      "caller": "workbench_db",
+      "line": 13
+    },
+    {
+      "callee": "workbench_db.publication_repository",
+      "caller": "workbench_db",
+      "line": 14
+    },
+    {
+      "callee": "workbench_db.analysis_activation_repository",
+      "caller": "workbench_db",
+      "line": 23
+    },
+    {
+      "callee": "workbench_db.history_job_repository",
+      "caller": "workbench_db",
+      "line": 24
+    },
+    {
+      "callee": "workbench_db.postgres_history_job_repository",
+      "caller": "workbench_db",
+      "line": 25
+    },
+    {
+      "callee": "workbench_db.postgres_publication_writer",
+      "caller": "workbench_db",
+      "line": 26
+    },
+    {
+      "callee": "workbench_db.incremental_writer_repository",
+      "caller": "workbench_db",
+      "line": 27
+    },
+    {
+      "callee": "workbench_db.research_builder_repository",
+      "caller": "workbench_db",
+      "line": 28
+    },
+    {
+      "callee": "workbench_db.backup_repository",
+      "caller": "workbench_db",
+      "line": 29
+    },
+    {
+      "callee": "workbench_db.backup_catalog_repository",
+      "caller": "workbench_db",
+      "line": 30
+    },
+    {
+      "callee": "workbench_db.storage_connection",
+      "caller": "workbench_db",
+      "line": 31
+    },
+    {
+      "callee": "workbench_db.api_connection",
+      "caller": "workbench_db",
+      "line": 32
+    },
+    {
+      "callee": "workbench_db.postgres_artifact_catalog",
+      "caller": "workbench_db",
+      "line": 33
+    },
+    {
+      "callee": "workbench_db.backend_provider",
+      "caller": "workbench_db",
+      "line": 34
+    },
+    {
+      "callee": "workbench_db.migrations",
+      "caller": "workbench_db",
+      "line": 35
+    },
+    {
+      "callee": "workbench_db.postgres_repository",
+      "caller": "workbench_db.backend_provider",
+      "line": 10
+    },
+    {
+      "callee": "workbench_db.read_repository",
+      "caller": "workbench_db.backend_provider",
+      "line": 11
+    },
+    {
+      "callee": "workbench_db.postgres_repository",
+      "caller": "workbench_db.postgres_artifact_catalog",
+      "line": 10
+    },
+    {
+      "callee": "workbench_db.config_store",
+      "caller": "workbench_db.storage_connection",
+      "line": 10
+    },
+    {
+      "callee": "workbench_db.postgres_repository",
+      "caller": "workbench_db.config_store",
+      "line": 11
+    },
+    {
+      "callee": "workbench_db.postgres_repository",
+      "caller": "workbench_db.backup_catalog_repository",
+      "line": 12
+    },
+    {
+      "callee": "workbench_db.api_connection",
+      "caller": "workbench_db.research_builder_repository",
+      "line": 13
+    },
+    {
+      "callee": "workbench_db.postgres_repository",
+      "caller": "workbench_db.postgres_publication_writer",
+      "line": 11
+    },
+    {
+      "callee": "workbench_db.postgres_repository",
+      "caller": "workbench_db.postgres_history_job_repository",
+      "line": 17
+    },
+    {
+      "callee": "workbench_db.config_store",
+      "caller": "workbench_db.history_job_repository",
+      "line": 13
+    },
+    {
+      "callee": "workbench_db.config_store",
+      "caller": "workbench_db.analysis_activation_repository",
+      "line": 16
+    },
+    {
+      "callee": "workbench_db.postgres_repository",
+      "caller": "workbench_db.analysis_activation_repository",
+      "line": 17
+    },
+    {
+      "callee": "workbench_db.config_store",
+      "caller": "workbench_db.publication_repository",
+      "line": 20
+    },
+    {
+      "callee": "workbench_db.repository",
+      "caller": "workbench_db.publication_repository",
+      "line": 21
+    },
+    {
+      "callee": "workbench_db.postgres_repository",
+      "caller": "workbench_db.publication_repository",
+      "line": 22
+    },
+    {
+      "callee": "workbench_db.postgres_publication_writer",
+      "caller": "workbench_db.publication_repository",
+      "line": 23
+    },
+    {
+      "callee": "workbench_db.postgres_history_job_repository",
+      "caller": "workbench_db.publication_repository",
+      "line": 24
+    },
+    {
+      "callee": "workbench_service.relation_repository",
+      "caller": "workbench_db.publication_repository",
+      "line": 25
+    },
+    {
+      "callee": "workbench_db.postgres_repository",
+      "caller": "workbench_service.relation_repository",
+      "line": 24
+    },
+    {
+      "callee": "workbench_db.digest",
+      "caller": "workbench_db.repository",
+      "line": 16
+    },
+    {
+      "callee": "workbench_db.owner",
+      "caller": "workbench_db.repository",
+      "line": 17
+    },
+    {
+      "callee": "workbench_db.migrations",
+      "caller": "workbench_db.repository",
+      "line": 18
+    },
+    {
+      "callee": "workbench_service.legacy_relation_import",
+      "caller": "workbench_db.repository",
+      "line": 19
+    },
+    {
+      "callee": "workbench_service.relation_repository",
+      "caller": "workbench_db.repository",
+      "line": 20
+    },
+    {
+      "callee": "workbench_service.relation_repository",
+      "caller": "workbench_service.legacy_relation_import",
+      "line": 20
+    },
+    {
+      "callee": "workbench_db.postgres_repository",
+      "caller": "workbench_db.operations_metadata",
+      "line": 9
+    },
+    {
+      "callee": "workbench_db.postgres_repository",
+      "caller": "workbench_db.slice_repository",
+      "line": 13
+    },
+    {
+      "callee": "workbench_db.postgres_repository",
+      "caller": "workbench_db.postgres_research_repository",
+      "line": 18
+    },
+    {
+      "callee": "workbench_service.research_runs",
+      "caller": "workbench_db.postgres_research_repository",
+      "line": 19
+    },
+    {
+      "callee": "workbench_db.postgres_repository",
+      "caller": "workbench_db.postgres_online_repository",
+      "line": 10
+    },
+    {
+      "callee": "workbench_db.postgres_repository",
+      "caller": "workbench_db.postgres_write_repository",
+      "line": 16
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.full_state_first_observed_v1",
+      "line": 9
+    },
+    {
+      "callee": "workbench_analysis.v4_14_replay_io",
+      "caller": "workbench_analysis.full_state_first_observed_v1",
+      "line": 10
+    },
+    {
+      "callee": "workbench_analysis.validation_cohort_read_contract_r3",
+      "caller": "workbench_analysis.full_state_first_observed_v1",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis.cohort_first_capture_producer_r1",
+      "caller": "workbench_analysis.full_state_first_observed_v1",
+      "line": 12
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.full_market_state_publisher_v1",
+      "line": 13
+    },
+    {
+      "callee": "workbench_analysis.v4_14_replay_io",
+      "caller": "workbench_analysis.full_market_state_publisher_v1",
+      "line": 14
+    },
+    {
+      "callee": "workbench_analysis.r43_focus_replay",
+      "caller": "workbench_analysis.full_market_state_publisher_v1",
+      "line": 15
+    },
+    {
+      "callee": "workbench_analysis.validation_cohort_read_contract_r3",
+      "caller": "workbench_analysis.full_market_state_publisher_v1",
+      "line": 16
+    },
+    {
+      "callee": "v4.confirmation",
+      "caller": "workbench_analysis.full_market_state_publisher_v1",
+      "line": 23
+    },
+    {
+      "callee": "workbench_analysis.producer_dependency_archive_v1",
+      "caller": "workbench_analysis.full_market_state_publisher_v1",
+      "line": 48
+    },
+    {
+      "callee": "workbench_analysis.v4_14_replay_io",
+      "caller": "workbench_analysis.full_market_state_publisher_v1",
+      "line": 121
+    },
+    {
+      "callee": "workbench_analysis.strict_source_candidate_v2",
+      "caller": "workbench_analysis.full_market_state_publisher_v1",
+      "line": 81
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.strict_source_candidate_v2",
+      "line": 9
+    },
+    {
+      "callee": "workbench_analysis.v4_14_replay_io",
+      "caller": "workbench_analysis.strict_source_candidate_v2",
+      "line": 10
+    },
+    {
+      "callee": "workbench_analysis.full_state_signal_candidate_v1",
+      "caller": "workbench_analysis.strict_source_candidate_v2",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis.source_capture_candidate_v1",
+      "caller": "workbench_analysis.strict_source_candidate_v2",
+      "line": 12
+    },
+    {
+      "callee": "workbench_analysis.source_scope_reconciliation_v1",
+      "caller": "workbench_analysis.strict_source_candidate_v2",
+      "line": 50
+    },
+    {
+      "callee": "workbench_analysis.producer_dependency_archive_v1",
+      "caller": "workbench_analysis.strict_source_candidate_v2",
+      "line": 87
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.producer_dependency_archive_v1",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.tdx_official_daily_source",
+      "caller": "workbench_analysis.producer_dependency_archive_v1",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.source_scope_reconciliation_v1",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.v4_14_replay_io",
+      "caller": "workbench_analysis.source_scope_reconciliation_v1",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.v4_14_replay_io",
+      "caller": "workbench_analysis.source_capture_candidate_v1",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.source_capture_candidate_v1",
+      "line": 43
+    },
+    {
+      "callee": "workbench_analysis.v4_14_replay_io",
+      "caller": "workbench_analysis.full_state_signal_candidate_v1",
+      "line": 6
+    },
+    {
+      "callee": "sector.operational_candidate_v1",
+      "caller": "sector.operational_candidate_v3",
+      "line": 4
+    },
+    {
+      "callee": "sector.valid_member_qualification_v3",
+      "caller": "sector.operational_candidate_v3",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "sector.operational_candidate_v3",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.v4_14_replay_io",
+      "caller": "sector.operational_candidate_v3",
+      "line": 7
+    },
+    {
+      "callee": "sector.research_rank_source_v2",
+      "caller": "sector.operational_candidate_v3",
+      "line": 26
+    },
+    {
+      "callee": "workbench_analysis.producer_dependency_archive_v1",
+      "caller": "sector.operational_candidate_v3",
+      "line": 45
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "sector.research_rank_source_v2",
+      "line": 9
+    },
+    {
+      "callee": "workbench_analysis.v4_14_replay_io",
+      "caller": "sector.research_rank_source_v2",
+      "line": 10
+    },
+    {
+      "callee": "sector.operational_candidate_v1",
+      "caller": "sector.research_rank_source_v2",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis.strict_source_candidate_v2",
+      "caller": "sector.research_rank_source_v2",
+      "line": 15
+    },
+    {
+      "callee": "sector.legacy_valid_member_a05_v1",
+      "caller": "sector.valid_member_qualification_v3",
+      "line": 3
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "scripts.audit_dynamic_daily_period_numbers_v1",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_storage_v1",
+      "caller": "scripts.audit_dynamic_daily_period_numbers_v1",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis",
+      "caller": "workbench_analysis.operational_daily_ready_owner_v2",
+      "line": 3
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_owner_v1",
+      "caller": "workbench_analysis.operational_daily_ready_owner_v2",
+      "line": 3
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.operational_daily_ready_owner_v2",
+      "line": 4
+    },
+    {
+      "callee": "workbench_analysis.tdx_official_daily_source",
+      "caller": "workbench_analysis.operational_daily_ready_owner_v2",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_storage_v1",
+      "caller": "workbench_analysis.operational_daily_ready_owner_v2",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_storage_v1",
+      "caller": "workbench_analysis.operational_daily_owner_v1",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_analysis.operational_daily_owner_v1",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.market_source_acquisition",
+      "caller": "workbench_analysis.operational_daily_owner_v1",
+      "line": 8
+    },
+    {
+      "callee": "workbench_analysis.r43_operational_sources",
+      "caller": "workbench_analysis.operational_daily_owner_v1",
+      "line": 9
+    },
+    {
+      "callee": "workbench_analysis.operational_owner_adapter_v1",
+      "caller": "workbench_analysis.operational_daily_owner_v1",
+      "line": 10
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_periods_v1",
+      "caller": "workbench_analysis.operational_daily_owner_v1",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis.operational_successor_v1",
+      "caller": "workbench_analysis.operational_daily_owner_v1",
+      "line": 12
+    },
+    {
+      "callee": "workbench_analysis.tdx_official_daily_source",
+      "caller": "workbench_analysis.operational_daily_owner_v1",
+      "line": 13
+    },
+    {
+      "callee": "tdx.gbbq_reader",
+      "caller": "workbench_analysis.operational_daily_owner_v1",
+      "line": 79
+    },
+    {
+      "callee": "workbench_analysis.daily_source_manifests",
+      "caller": "workbench_analysis.operational_daily_owner_v1",
+      "line": 160
+    },
+    {
+      "callee": "workbench_analysis.tdx_member_retro_r43",
+      "caller": "workbench_analysis.operational_daily_owner_v1",
+      "line": 92
+    },
+    {
+      "callee": "sector.membership_snapshot",
+      "caller": "workbench_analysis.operational_daily_owner_v1",
+      "line": 93
+    },
+    {
+      "callee": "workbench_analysis.baostock_supplemental",
+      "caller": "workbench_analysis.operational_daily_owner_v1",
+      "line": 129
+    },
+    {
+      "callee": "workbench_analysis.operational_baostock_client_v1",
+      "caller": "workbench_analysis.operational_daily_owner_v1",
+      "line": 130
+    },
+    {
+      "callee": "workbench_analysis.operational_runtime_acceptance_v2",
+      "caller": "workbench_analysis.operational_daily_owner_v1",
+      "line": 131
+    },
+    {
+      "callee": "workbench_analysis",
+      "caller": "workbench_analysis.operational_daily_periods_v1",
+      "line": 9
+    },
+    {
+      "callee": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "caller": "workbench_analysis.operational_daily_periods_v1",
+      "line": 9
+    },
+    {
+      "callee": "workbench_analysis.v4_12_structure_io",
+      "caller": "workbench_analysis.operational_daily_periods_v1",
+      "line": 10
+    },
+    {
+      "callee": "workbench_analysis.tdx_official_daily_source",
+      "caller": "workbench_analysis.tdx_local_daily_fallback_v1",
+      "line": 10
+    },
+    {
+      "callee": "workbench_analysis.tdx_latest_daily_source_v2",
+      "caller": "workbench_analysis.tdx_local_daily_fallback_v1",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis",
+      "caller": "workbench_analysis.tdx_latest_daily_source_v2",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.tdx_official_daily_source",
+      "caller": "workbench_analysis.tdx_latest_daily_source_v2",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.market_source_acquisition",
+      "caller": "workbench_analysis.tdx_latest_daily_source_v2",
+      "line": 6
+    },
+    {
+      "callee": "scripts.build_v4_08_r2_membership_evidence",
+      "caller": "scripts.enter_source_authority_remediation_r2",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.source_authority_governance_r1",
+      "caller": "scripts.enter_source_authority_remediation_r2",
+      "line": 8
+    },
+    {
+      "callee": "sector.membership_baseline",
+      "caller": "scripts.build_v4_08_r2_membership_evidence",
+      "line": 15
+    },
+    {
+      "callee": "workbench_analysis.tdx_official_daily_source",
+      "caller": "scripts.capture_dm01_a01_r3_tdx_package",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.daily_source_freeze",
+      "caller": "scripts.capture_dm01_a01_r3_tdx_package",
+      "line": 8
+    },
+    {
+      "callee": "scripts.build_v4_08_r2_membership_evidence",
+      "caller": "scripts.capture_dm01_a01_r3_tdx_package",
+      "line": 9
+    },
+    {
+      "callee": "scripts.enter_source_authority_remediation_r2",
+      "caller": "scripts.capture_dm01_a01_r3_tdx_package",
+      "line": 10
+    },
+    {
+      "callee": "workbench_analysis.daily_source_freeze",
+      "caller": "workbench_desktop.storage",
+      "line": 22
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_storage_v1",
+      "caller": "workbench_desktop.storage",
+      "line": 58
+    },
+    {
+      "callee": "workbench_service.operational_daily_server_v1",
+      "caller": "workbench_service.core_product_server_r1",
+      "line": 6
+    },
+    {
+      "callee": "workbench_service.core_product_bff_r1",
+      "caller": "workbench_service.core_product_server_r1",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.operational_successor_v1",
+      "caller": "workbench_service.core_product_server_r1",
+      "line": 8
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_jobs_v1",
+      "caller": "workbench_service.core_product_server_r1",
+      "line": 56
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_executor_v1",
+      "caller": "workbench_service.core_product_server_r1",
+      "line": 57
+    },
+    {
+      "callee": "workbench_analysis.operational_successor_release_v1",
+      "caller": "workbench_service.core_product_server_r1",
+      "line": 58
+    },
+    {
+      "callee": "workbench_service.operational_successor_bff_v1",
+      "caller": "workbench_service.core_product_bff_r1",
+      "line": 7
+    },
+    {
+      "callee": "workbench_service.r43_operational_bff",
+      "caller": "workbench_service.core_product_bff_r1",
+      "line": 8
+    },
+    {
+      "callee": "workbench_service.stock_views",
+      "caller": "workbench_service.core_product_bff_r1",
+      "line": 9
+    },
+    {
+      "callee": "workbench_service.domain_views",
+      "caller": "workbench_service.core_product_bff_r1",
+      "line": 10
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_service.core_product_bff_r1",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis.validation_cohort_read_contract_r3",
+      "caller": "workbench_service.core_product_bff_r1",
+      "line": 12
+    },
+    {
+      "callee": "workbench_service.research_hypotheses_r3",
+      "caller": "workbench_service.core_product_bff_r1",
+      "line": 13
+    },
+    {
+      "callee": "workbench_service.candidate_research_read_v2",
+      "caller": "workbench_service.core_product_bff_r1",
+      "line": 217
+    },
+    {
+      "callee": "workbench_analysis.fep_e5.admission",
+      "caller": "workbench_service.core_product_bff_r1",
+      "line": 375
+    },
+    {
+      "callee": "workbench_analysis.fep_e5.trusted_authority",
+      "caller": "workbench_analysis.fep_e5.admission",
+      "line": 60
+    },
+    {
+      "callee": "workbench_analysis.fep_e5.trusted_authority",
+      "caller": "workbench_analysis.fep_e5.admission",
+      "line": 123
+    },
+    {
+      "callee": "workbench_analysis.fep_e5",
+      "caller": "workbench_analysis.fep_e5.trusted_authority",
+      "line": 9
+    },
+    {
+      "callee": "workbench_analysis.fep_e5.contracts",
+      "caller": "workbench_analysis.fep_e5.trusted_authority",
+      "line": 9
+    },
+    {
+      "callee": "workbench_analysis.fep_e1.contracts",
+      "caller": "workbench_analysis.fep_e5.trusted_authority",
+      "line": 17
+    },
+    {
+      "callee": "workbench_analysis.fep_e1.contracts",
+      "caller": "workbench_analysis.fep_e5.contracts",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_service.candidate_research_read_v2",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.r43_operational_publication",
+      "caller": "workbench_service.candidate_research_read_v2",
+      "line": 6
+    },
+    {
+      "callee": "workbench_service.domain_views",
+      "caller": "workbench_service.stock_views",
+      "line": 5
+    },
+    {
+      "callee": "workbench_service.current_v4_context",
+      "caller": "workbench_service.stock_views",
+      "line": 6
+    },
+    {
+      "callee": "workbench_analysis.r43_operational_publication",
+      "caller": "workbench_service.r43_operational_bff",
+      "line": 5
+    },
+    {
+      "callee": "workbench_analysis.tdx_member_retro_r43",
+      "caller": "workbench_service.r43_operational_bff",
+      "line": 6
+    },
+    {
+      "callee": "workbench_service.production_v4",
+      "caller": "workbench_service.r43_operational_bff",
+      "line": 7
+    },
+    {
+      "callee": "workbench_service.operational_gap_bff_v2",
+      "caller": "workbench_service.operational_successor_bff_v1",
+      "line": 2
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_service.operational_successor_bff_v1",
+      "line": 23
+    },
+    {
+      "callee": "workbench_service.r43_operational_bff",
+      "caller": "workbench_service.operational_gap_bff_v2",
+      "line": 2
+    },
+    {
+      "callee": "workbench_service.v4_control_server_v2",
+      "caller": "workbench_service.operational_daily_server_v1",
+      "line": 7
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_jobs_v1",
+      "caller": "workbench_service.operational_daily_server_v1",
+      "line": 8
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_executor_v1",
+      "caller": "workbench_service.operational_daily_server_v1",
+      "line": 9
+    },
+    {
+      "callee": "workbench_service.operational_control_status",
+      "caller": "workbench_service.operational_daily_server_v1",
+      "line": 15
+    },
+    {
+      "callee": "workbench_service.current_v4_context",
+      "caller": "workbench_service.operational_daily_server_v1",
+      "line": 24
+    },
+    {
+      "callee": "workbench_analysis.operational_successor_release_v1",
+      "caller": "workbench_service.operational_daily_server_v1",
+      "line": 152
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_executor_v1",
+      "caller": "workbench_service.operational_daily_server_v1",
+      "line": 154
+    },
+    {
+      "callee": "workbench_analysis.operational_successor_v1",
+      "caller": "workbench_service.operational_daily_server_v1",
+      "line": 29
+    },
+    {
+      "callee": "workbench_analysis.operational_successor_v1",
+      "caller": "workbench_service.operational_daily_server_v1",
+      "line": 52
+    },
+    {
+      "callee": "workbench_analysis.r43_operational_sources",
+      "caller": "workbench_service.operational_daily_server_v1",
+      "line": 79
+    },
+    {
+      "callee": "workbench_analysis.operational_successor_v1",
+      "caller": "workbench_service.operational_daily_server_v1",
+      "line": 85
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_service.operational_daily_server_v1",
+      "line": 86
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_service.operational_daily_server_v1",
+      "line": 94
+    },
+    {
+      "callee": "workbench_service.operational_successor_bff_v1",
+      "caller": "workbench_service.operational_daily_server_v1",
+      "line": 68
+    },
+    {
+      "callee": "workbench_service.research_bff",
+      "caller": "workbench_service.operational_daily_server_v1",
+      "line": 69
+    },
+    {
+      "callee": "workbench_service.operational_control_status",
+      "caller": "workbench_service.operational_daily_server_v1",
+      "line": 64
+    },
+    {
+      "callee": "workbench_service.production_v4",
+      "caller": "workbench_service.research_bff",
+      "line": 7
+    },
+    {
+      "callee": "workbench_service.current_v4_context",
+      "caller": "workbench_service.research_bff",
+      "line": 8
+    },
+    {
+      "callee": "workbench_service.v4_daily_refresh",
+      "caller": "workbench_service.research_bff",
+      "line": 9
+    },
+    {
+      "callee": "workbench_service.domain_views",
+      "caller": "workbench_service.research_bff",
+      "line": 10
+    },
+    {
+      "callee": "workbench_service.stock_views",
+      "caller": "workbench_service.research_bff",
+      "line": 11
+    },
+    {
+      "callee": "workbench_service.diagnostic_views",
+      "caller": "workbench_service.research_bff",
+      "line": 12
+    },
+    {
+      "callee": "workbench_service.replay_views",
+      "caller": "workbench_service.research_bff",
+      "line": 13
+    },
+    {
+      "callee": "workbench_service.focus_views",
+      "caller": "workbench_service.research_bff",
+      "line": 14
+    },
+    {
+      "callee": "workbench_service.stock_views",
+      "caller": "workbench_service.research_bff",
+      "line": 15
+    },
+    {
+      "callee": "workbench_service.joint_release",
+      "caller": "workbench_service.research_bff",
+      "line": 24
+    },
+    {
+      "callee": "workbench_service.current_v4_context",
+      "caller": "workbench_service.replay_views",
+      "line": 4
+    },
+    {
+      "callee": "workbench_service.stock_views",
+      "caller": "workbench_service.replay_views",
+      "line": 5
+    },
+    {
+      "callee": "workbench_service.domain_views",
+      "caller": "workbench_service.replay_views",
+      "line": 6
+    },
+    {
+      "callee": "workbench_service.current_v4_context",
+      "caller": "workbench_service.replay_views",
+      "line": 44
+    },
+    {
+      "callee": "workbench_service.domain_views",
+      "caller": "workbench_service.diagnostic_views",
+      "line": 3
+    },
+    {
+      "callee": "workbench_service.current_v4_context",
+      "caller": "workbench_service.v4_control_server_v2",
+      "line": 9
+    },
+    {
+      "callee": "workbench_service.shadow_server",
+      "caller": "workbench_service.v4_control_server_v2",
+      "line": 10
+    },
+    {
+      "callee": "workbench_service.research_bff",
+      "caller": "workbench_service.v4_control_server_v2",
+      "line": 11
+    },
+    {
+      "callee": "workbench_service.joint_release",
+      "caller": "workbench_service.v4_control_server_v2",
+      "line": 12
+    },
+    {
+      "callee": "workbench_analysis.r43_operational_sources",
+      "caller": "workbench_service.v4_control_server_v2",
+      "line": 17
+    },
+    {
+      "callee": "workbench_analysis.r43_operational_publication",
+      "caller": "workbench_service.v4_control_server_v2",
+      "line": 29
+    },
+    {
+      "callee": "workbench_analysis.r43_operational_publication",
+      "caller": "workbench_service.v4_control_server_v2",
+      "line": 66
+    },
+    {
+      "callee": "workbench_service.operational_control_status",
+      "caller": "workbench_service.v4_control_server_v2",
+      "line": 129
+    },
+    {
+      "callee": "workbench_service.operational_gap_bff_v2",
+      "caller": "workbench_service.v4_control_server_v2",
+      "line": 72
+    },
+    {
+      "callee": "workbench_analysis.r43_operational_sources",
+      "caller": "workbench_service.v4_control_server_v2",
+      "line": 95
+    },
+    {
+      "callee": "workbench_service.csv_export",
+      "caller": "workbench_service.v4_control_server_v2",
+      "line": 151
+    },
+    {
+      "callee": "workbench_service.current_v4_context",
+      "caller": "workbench_service.v4_control_server_v2",
+      "line": 152
+    },
+    {
+      "callee": "workbench_analysis.r43_operational_sources",
+      "caller": "workbench_service.v4_control_server_v2",
+      "line": 109
+    },
+    {
+      "callee": "workbench_service.shadow_context",
+      "caller": "workbench_service.shadow_server",
+      "line": 7
+    },
+    {
+      "callee": "workbench_service.research_context",
+      "caller": "workbench_service.shadow_context",
+      "line": 14
+    },
+    {
+      "callee": "workbench_desktop.storage",
+      "caller": "workbench_desktop.qa_daily",
+      "line": 10
+    },
+    {
+      "callee": "workbench_desktop.engine",
+      "caller": "workbench_desktop.qa_daily",
+      "line": 11
+    },
+    {
+      "callee": "workbench_analysis.r43_owner_replay",
+      "caller": "workbench_desktop.qa_daily",
+      "line": 22
+    },
+    {
+      "callee": "workbench_analysis.tdx_official_daily_source",
+      "caller": "workbench_desktop.qa_daily",
+      "line": 23
+    },
+    {
+      "callee": "workbench_analysis",
+      "caller": "workbench_desktop.qa_daily",
+      "line": 24
+    },
+    {
+      "callee": "workbench_analysis.operational_daily_executor_v1",
+      "caller": "workbench_desktop.qa_daily",
+      "line": 24
+    },
+    {
+      "callee": "workbench_analysis.operational_owner_adapter_v1",
+      "caller": "workbench_desktop.qa_daily",
+      "line": 25
+    },
+    {
+      "callee": "workbench_analysis.operational_successor_release_v1",
+      "caller": "workbench_desktop.qa_daily",
+      "line": 74
+    },
+    {
+      "callee": "workbench_desktop.storage",
+      "caller": "workbench_desktop.tray",
+      "line": 11
+    }
+  ],
+  "entry": "run_desktop",
+  "historical_daily_launcher_reachable": false,
+  "modules": [
+    {
+      "module": "adjustment.tdx_adjustment",
+      "path": "src/adjustment/tdx_adjustment.py",
+      "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+    },
+    {
+      "module": "focus_tracker.contracts",
+      "path": "src/focus_tracker/contracts.py",
+      "sha256": "b5918de8caadc618c6a32945bfbe4e01a1ab4a620fcc90fee40534a4c99d355b"
+    },
+    {
+      "module": "focus_tracker.outcomes",
+      "path": "src/focus_tracker/outcomes.py",
+      "sha256": "c8ba08609f5c232c720717c000fa5adcf93acb3fe2a6fbd0483e579759d78646"
+    },
+    {
+      "module": "focus_tracker.path_state_v2",
+      "path": "src/focus_tracker/path_state_v2.py",
+      "sha256": "b959933d202484561515a0a31b251bdc1da93a77ad4e6ac4a50768dd48fba4db"
+    },
+    {
+      "module": "focus_tracker.predicates",
+      "path": "src/focus_tracker/predicates.py",
+      "sha256": "433de5142ba9d0615e7ad9c7e91e3de445e62b2a7700996769ce0535bb59bd57"
+    },
+    {
+      "module": "focus_tracker.price_path",
+      "path": "src/focus_tracker/price_path.py",
+      "sha256": "a262e64c3866f0976dc76f27d1a66a471d27c2e2a4ce3ac27a5f182c682b1824"
+    },
+    {
+      "module": "focus_tracker.session_gap_semantics",
+      "path": "src/focus_tracker/session_gap_semantics.py",
+      "sha256": "5216005ae647ae162b475ad7010adc3907601198b0c4ad45cdfd24ea8c47ce34"
+    },
+    {
+      "module": "focus_tracker.states",
+      "path": "src/focus_tracker/states.py",
+      "sha256": "f12ad0b9955904ac608f2f99a9e2304451a4f6d71c4326fc6619adca6910f96c"
+    },
+    {
+      "module": "focus_tracker.v4_native_core_adapter",
+      "path": "src/focus_tracker/v4_native_core_adapter.py",
+      "sha256": "dda0e8df82f6967d065ebb93377265a9fcaff306f13cf061ecf0a5d6465933d5"
+    },
+    {
+      "module": "focus_tracker.v4_path_adapter",
+      "path": "src/focus_tracker/v4_path_adapter.py",
+      "sha256": "03d7cfd8fd08ba32532edf6da495ce17f8ac4fbc426da5aea0178b041f240fa4"
+    },
+    {
+      "module": "focus_tracker.v4_successor",
+      "path": "src/focus_tracker/v4_successor.py",
+      "sha256": "c71de45c15dd648484d3f90a8d7526ec96612a34a9c3f26556fc6b7f5dc797e9"
+    },
+    {
+      "module": "market_calendar.trading_calendar",
+      "path": "src/market_calendar/trading_calendar.py",
+      "sha256": "d9e3b6e59b7cfaa5b52af9e8647c3daa21bfcd1bf88b4b1294cfbb4b7fadbf81"
+    },
+    {
+      "module": "normalize.universe_recent",
+      "path": "src/normalize/universe_recent.py",
+      "sha256": "cb476ea8711496dab31407377090e0b67e8cefb9401cfcd6042f5dfa91e1f6cc"
+    },
+    {
+      "module": "run_desktop",
+      "path": "run_desktop.py",
+      "sha256": "36e9affc1579e43aa619d3c6852bcdbc7e8c383b6dd75ca01621ecab9f9dc615"
+    },
+    {
+      "module": "scripts.accept_dynamic_daily_baostock_v2",
+      "path": "scripts/accept_dynamic_daily_baostock_v2.py",
+      "sha256": "706bf40d8b7e28db67fc092f1169062edc7324b5b8379a5bdf0e495687d4d5ea"
+    },
+    {
+      "module": "scripts.accept_v4_dm01_baostock_runtime",
+      "path": "scripts/accept_v4_dm01_baostock_runtime.py",
+      "sha256": "a715d1f1697ebc2c957a5ca4e65c4a5b4493071450c07433dd0c2c3e00b7eec8"
+    },
+    {
+      "module": "scripts.audit_dynamic_daily_period_numbers_v1",
+      "path": "scripts/audit_dynamic_daily_period_numbers_v1.py",
+      "sha256": "b3161d3833a30a1207c18c4844cee7e467e202cacab25d9f1c2fae4e82b8e6b1"
+    },
+    {
+      "module": "scripts.build_fp05_market",
+      "path": "scripts/build_fp05_market.py",
+      "sha256": "ed5edbc787374f0b604758cc9d70fcfc82416a9247894d113030eeba7e57208a"
+    },
+    {
+      "module": "scripts.build_fp06_sector",
+      "path": "scripts/build_fp06_sector.py",
+      "sha256": "00b726e1ce7a635c0653bd6c187d56a4bd7e30e91c9f2d0662545033fba4b4f6"
+    },
+    {
+      "module": "scripts.build_v4_02_formal_periods",
+      "path": "scripts/build_v4_02_formal_periods.py",
+      "sha256": "afa3a28729ebd27c050fb65e3a1f453599fdb2f111dff63478e2dab57c28b26e"
+    },
+    {
+      "module": "scripts.build_v4_02_price_limits",
+      "path": "scripts/build_v4_02_price_limits.py",
+      "sha256": "5425106e729a3f6ecc7d103512fed7e296482c52a56168b27a98b766a534302d"
+    },
+    {
+      "module": "scripts.build_v4_02_price_limits_generic",
+      "path": "scripts/build_v4_02_price_limits_generic.py",
+      "sha256": "e39405d604299a610b11ac8b0672a2bb63c943d49c6dc267555bf3138230ba28"
+    },
+    {
+      "module": "scripts.build_v4_08_r2_membership_evidence",
+      "path": "scripts/build_v4_08_r2_membership_evidence.py",
+      "sha256": "4e3da471342d7e6f6ac5fd4123bb4dbe9f8b44889650c18409dee161142d5095"
+    },
+    {
+      "module": "scripts.capture_dm01_a01_r3_tdx_package",
+      "path": "scripts/capture_dm01_a01_r3_tdx_package.py",
+      "sha256": "859dff3e77d36986eec385d6035da5f86e85043f9e31bc3d2d1e405f744190c6"
+    },
+    {
+      "module": "scripts.enter_source_authority_remediation_r2",
+      "path": "scripts/enter_source_authority_remediation_r2.py",
+      "sha256": "cdf3f37467c1e1af0f5cd13a9e88360667651758df349f3ffd0a1382baa40ce4"
+    },
+    {
+      "module": "scripts.forward_final_bootstrap",
+      "path": "scripts/forward_final_bootstrap.py",
+      "sha256": "806a7bdf41bfa5849ea821d968f1280f2d8c4bdd9cc84bf8e2ecb5f9f4e142cd"
+    },
+    {
+      "module": "scripts.fp01_evidence",
+      "path": "scripts/fp01_evidence.py",
+      "sha256": "831a8267ef326090e0cefa16e1e653ab2c6223af5a035c9b7b7dc9aeab1c3b80"
+    },
+    {
+      "module": "scripts.fp_domain_evidence",
+      "path": "scripts/fp_domain_evidence.py",
+      "sha256": "7278f59715bd3a2e3b287da76a9e76496e8eb6e95801729f4ee6d68294a998e2"
+    },
+    {
+      "module": "scripts.full_chain_repair_io",
+      "path": "scripts/full_chain_repair_io.py",
+      "sha256": "2db9f9edfbbb48cc899a324f38d9ff2294a029fb08c52aa690ac2fd262a0f206"
+    },
+    {
+      "module": "scripts.next_round_bundle_r1",
+      "path": "scripts/next_round_bundle_r1.py",
+      "sha256": "893de15c38cabae9143e80ac1bb80f78d9ad95e7aaf57a64b39ad29f75e98ff2"
+    },
+    {
+      "module": "scripts.run_v4_04_full_market_candidate_r4",
+      "path": "scripts/run_v4_04_full_market_candidate_r4.py",
+      "sha256": "263e1c54aed59026cef97061ef3f74bb184634d3589d2438a84a11baa71ab816"
+    },
+    {
+      "module": "scripts.v4_02_build_raw_selected_v2",
+      "path": "scripts/v4_02_build_raw_selected_v2.py",
+      "sha256": "128325a48c818378d78116f9785f50bedba348f401ce164802a81e0e7ab88cf6"
+    },
+    {
+      "module": "sector",
+      "path": "src/sector/__init__.py",
+      "sha256": "c09fc9a9bae2bb7a9965014a1033465fdbe142da8e2ec2a1420c6e2ee29f8fae"
+    },
+    {
+      "module": "sector.legacy_b2_r5",
+      "path": "src/sector/legacy_b2_r5.py",
+      "sha256": "4f744a6ad2c754b20ea870665031ab2182819781b09ad22680394c2904699cd8"
+    },
+    {
+      "module": "sector.legacy_valid_member_a05_v1",
+      "path": "src/sector/legacy_valid_member_a05_v1.py",
+      "sha256": "09712dda807800477245d546b340a6034a2673d0ad395917c1876cf5bdf31505"
+    },
+    {
+      "module": "sector.machine_ast_r3",
+      "path": "src/sector/machine_ast_r3.py",
+      "sha256": "a0966730bcd580a249be212474e4da61d55950398fff873f21df4c0dbcda0a87"
+    },
+    {
+      "module": "sector.membership_baseline",
+      "path": "src/sector/membership_baseline.py",
+      "sha256": "7405ed18d8912a5006e18cc05093456f334ec7ef00c38294a2b3d12760f8dd10"
+    },
+    {
+      "module": "sector.membership_snapshot",
+      "path": "src/sector/membership_snapshot.py",
+      "sha256": "89f819ce4c383425eea8f7845510ce17d6125fd6778513e8b6269edc3e5704b2"
+    },
+    {
+      "module": "sector.native_r5",
+      "path": "src/sector/native_r5.py",
+      "sha256": "c9240c8658902601c7e018de667796c4e6bce3bfec247c99cb21a24eaba7cc06"
+    },
+    {
+      "module": "sector.operational_candidate_v1",
+      "path": "src/sector/operational_candidate_v1.py",
+      "sha256": "4689cad947e80ac42470c87d44e974764636049f9db80214a0a282801bb8c576"
+    },
+    {
+      "module": "sector.operational_candidate_v3",
+      "path": "src/sector/operational_candidate_v3.py",
+      "sha256": "c90cfeb3d5fb4107db63e14159ee1ff65819468480f3be6da515cc0c057299bc"
+    },
+    {
+      "module": "sector.phase2",
+      "path": "src/sector/phase2.py",
+      "sha256": "9455bae1578c4a785e034eb0ff852dcd98d7218a66027e0ea3f11489fd3727a1"
+    },
+    {
+      "module": "sector.research_rank_source_v2",
+      "path": "src/sector/research_rank_source_v2.py",
+      "sha256": "3f05a5e66f896e8ad608501e239031b020a4b5391dff81feef4eb6e24433f3b2"
+    },
+    {
+      "module": "sector.roles",
+      "path": "src/sector/roles.py",
+      "sha256": "fd361e8b2410871505a5e48db250e9c0c31343b7c14ca34667d246d4d874b17a"
+    },
+    {
+      "module": "sector.rotation_r5",
+      "path": "src/sector/rotation_r5.py",
+      "sha256": "921c7c2b6253a00695a9ee709aabd9c087c37c4f9b7a2d6c37bea09a31905276"
+    },
+    {
+      "module": "sector.semantic_input_r5_1",
+      "path": "src/sector/semantic_input_r5_1.py",
+      "sha256": "f8760dd0420e803ff28915afd43a9ff54635dde6a16f1fa515a05c7b0193cde4"
+    },
+    {
+      "module": "sector.valid_member_qualification_v3",
+      "path": "src/sector/valid_member_qualification_v3.py",
+      "sha256": "669f67ad803cbe4cdddb65156fbf41082bc0af93cc4a4540b2960f241ea6b692"
+    },
+    {
+      "module": "tdx._gbbq_key",
+      "path": "src/tdx/_gbbq_key.py",
+      "sha256": "10ea1ce6d1e87b6249fdb5ab936c8835c02cc802656b32db2b6cb26c962a3d89"
+    },
+    {
+      "module": "tdx.block_reader",
+      "path": "src/tdx/block_reader.py",
+      "sha256": "2ae8758870826b1a6b41cfdc9fc3c5e88de617e3e70a0bf9c42aa8cd77033edf"
+    },
+    {
+      "module": "tdx.day_reader",
+      "path": "src/tdx/day_reader.py",
+      "sha256": "d5cf757a5e28d32eead0eeb901c2d36e2c32028810f53bb05fcb7e71d98816fc"
+    },
+    {
+      "module": "tdx.gbbq_reader",
+      "path": "src/tdx/gbbq_reader.py",
+      "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+    },
+    {
+      "module": "tdx.security_master",
+      "path": "src/tdx/security_master.py",
+      "sha256": "67efec06529b297ac8079ae2c6232ac88d8507e16ef019821fa2fb9ef6217013"
+    },
+    {
+      "module": "v4.base_seed",
+      "path": "src/v4/base_seed.py",
+      "sha256": "0fa1b11f0d342731cf3658379f6ae14982b3861509daf2e949e197a722aac1d7"
+    },
+    {
+      "module": "v4.confirmation",
+      "path": "src/v4/confirmation.py",
+      "sha256": "b9babb481dec8f372cf32c4c31410d6a8da387ac70fd84ccad2e0467c9c1344b"
+    },
+    {
+      "module": "v4.confirmation_d2_candidate_r5",
+      "path": "src/v4/confirmation_d2_candidate_r5.py",
+      "sha256": "ae6288497effec913a622240c36c1b45937d0d0f95fee15d406c5d065fac87d7"
+    },
+    {
+      "module": "v4.factors.core",
+      "path": "src/v4/factors/core.py",
+      "sha256": "8986358268a5ae706c6cc46c95937ed381b65b55d3293667f840ff50008217f1"
+    },
+    {
+      "module": "v4.factors.native",
+      "path": "src/v4/factors/native.py",
+      "sha256": "c72d097892a46da2d64ec873794e4d387813a3e5fca5a06c3868beeea1f50ea5"
+    },
+    {
+      "module": "v4.factors.parameters",
+      "path": "src/v4/factors/parameters.py",
+      "sha256": "30b0a0e55c6e7571189bb0b30d3915911ef619e9fd0cbf42d8ebaa5da352692b"
+    },
+    {
+      "module": "v4.market_regime_ui",
+      "path": "src/v4/market_regime_ui.py",
+      "sha256": "725df2eb8eac6e681ecd162f80fb98b833d25aa56ba8b93c0056d8194054113c"
+    },
+    {
+      "module": "v4.profile_core",
+      "path": "src/v4/profile_core.py",
+      "sha256": "75333ae3accf09edf9a8530984f86e93c7e36c9dcd3f9afbf0a6f9bfa1072116"
+    },
+    {
+      "module": "v4.research_state",
+      "path": "src/v4/research_state.py",
+      "sha256": "58fde91734f5d1192a43174052c3c10ce6a41a65facce2076b9bf0798d0e5bfb"
+    },
+    {
+      "module": "v4.sealed_owner_authority_r5",
+      "path": "src/v4/sealed_owner_authority_r5.py",
+      "sha256": "fcc5c86f62d7cd77d3bc4e9e1baae8568674e89c7f61fc72773749598cab5010"
+    },
+    {
+      "module": "v4.state_identity",
+      "path": "src/v4/state_identity.py",
+      "sha256": "5089d6a31c0163cd620ee87de983452ffbea65a685ea1d77cd6a6987605a9c1a"
+    },
+    {
+      "module": "v4.state_provenance",
+      "path": "src/v4/state_provenance.py",
+      "sha256": "f4a5f0683a2735488d285f74f91d1c0dc3ff25112060c485debf22615f811a77"
+    },
+    {
+      "module": "v4.stock_prewatch",
+      "path": "src/v4/stock_prewatch.py",
+      "sha256": "a57a4413b56cd81f43a06611f4dec328ef6ac35486f4a4b56e5b5938e2db60ce"
+    },
+    {
+      "module": "v4.target_fact_producers_r4",
+      "path": "src/v4/target_fact_producers_r4.py",
+      "sha256": "e37ea78452a50c368a2b39e2d2cfe78ba1be4dda9127fef232ac871326209258"
+    },
+    {
+      "module": "workbench_analysis",
+      "path": "src/workbench_analysis/__init__.py",
+      "sha256": "ab713930a676aafa103072d882b5fa4b1582dc8b5ca3309f49afff0c5f013444"
+    },
+    {
+      "module": "workbench_analysis.baostock_daily_update_source",
+      "path": "src/workbench_analysis/baostock_daily_update_source.py",
+      "sha256": "1656a319679d052af4e4c5efb1ae41b1b02404343ffbaed12a734397e94ae4e0"
+    },
+    {
+      "module": "workbench_analysis.baostock_dm01_sdk_schema_v2",
+      "path": "src/workbench_analysis/baostock_dm01_sdk_schema_v2.py",
+      "sha256": "394d4d0e5cd4275215a69bb0cf24e6069c0916adb6288e00c4f44549183b101f"
+    },
+    {
+      "module": "workbench_analysis.baostock_runtime_acceptance",
+      "path": "src/workbench_analysis/baostock_runtime_acceptance.py",
+      "sha256": "f52c33fab8052758542c75ff1f8392b68163840bd547df9aeb382893e86bb80d"
+    },
+    {
+      "module": "workbench_analysis.baostock_supplemental",
+      "path": "src/workbench_analysis/baostock_supplemental.py",
+      "sha256": "ee4eb0395dac80ef3b3453ea2ab1c42cf26a391070982c22e10d51ded5f97c64"
+    },
+    {
+      "module": "workbench_analysis.canonical_source_selection",
+      "path": "src/workbench_analysis/canonical_source_selection.py",
+      "sha256": "122ccb6d309f1637c390eaeeea98d4711f4a8f12588d5a6fd2c7539e91450d83"
+    },
+    {
+      "module": "workbench_analysis.cohort_capture_readiness_r1",
+      "path": "src/workbench_analysis/cohort_capture_readiness_r1.py",
+      "sha256": "db9236ab38577123d002b81c3f404f5ee667d1c1b490abf2e83b78befdf53104"
+    },
+    {
+      "module": "workbench_analysis.cohort_first_capture_producer_r1",
+      "path": "src/workbench_analysis/cohort_first_capture_producer_r1.py",
+      "sha256": "e4cfdaeda13b2346e369109dc4f1b5e503f8c4191cb5aabc445e10519830ea1a"
+    },
+    {
+      "module": "workbench_analysis.corrected_owner_replay",
+      "path": "src/workbench_analysis/corrected_owner_replay.py",
+      "sha256": "dbb1dfbc53b2493cdb30787c7c810b279b997d5ccdca728c3cccf6d69cd665b4"
+    },
+    {
+      "module": "workbench_analysis.daily_data_head",
+      "path": "src/workbench_analysis/daily_data_head.py",
+      "sha256": "25c195396f36e54951b885ac2e663256f0c9570cc52247cf0a2171f0a41e735e"
+    },
+    {
+      "module": "workbench_analysis.daily_increment_builder",
+      "path": "src/workbench_analysis/daily_increment_builder.py",
+      "sha256": "4c68ef9e09e51995a9bab2cb89651f068d6199cacfe88d828543f6500efb2a93"
+    },
+    {
+      "module": "workbench_analysis.daily_source_freeze",
+      "path": "src/workbench_analysis/daily_source_freeze.py",
+      "sha256": "ce44d2be3d7e9a7b3e3553b09d99d384ee0771f53333ede3b3430fbcf6a51996"
+    },
+    {
+      "module": "workbench_analysis.daily_source_manifests",
+      "path": "src/workbench_analysis/daily_source_manifests.py",
+      "sha256": "652ad628cfa7e65df3c941e46333d066be9eee7440442787c988bd9c93d613c0"
+    },
+    {
+      "module": "workbench_analysis.dated_security_alias",
+      "path": "src/workbench_analysis/dated_security_alias.py",
+      "sha256": "5f713026d59d63b0818de74e0c59731da350b67c64f909fc704e1a47bf19c6b3"
+    },
+    {
+      "module": "workbench_analysis.dm01_accepted_builder_registry",
+      "path": "src/workbench_analysis/dm01_accepted_builder_registry.py",
+      "sha256": "5e3b461544ff1a6bd2fe0e169b63a3d7fb57f264f4d71971a79ad23ac9832166"
+    },
+    {
+      "module": "workbench_analysis.dm01_accepted_chain_v1",
+      "path": "src/workbench_analysis/dm01_accepted_chain_v1.py",
+      "sha256": "81215af9c6cd05c912e12d4f8df07dd58803f2b467a11cbf570e406aede7df16"
+    },
+    {
+      "module": "workbench_analysis.dm01_chain_contract_r3_3",
+      "path": "src/workbench_analysis/dm01_chain_contract_r3_3.py",
+      "sha256": "35c551ff3fd0087a89a0573924a5f30130df792be46dd9b03992575630505bd3"
+    },
+    {
+      "module": "workbench_analysis.dm01_extracted_domain_r1",
+      "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+      "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+    },
+    {
+      "module": "workbench_analysis.dm01_incremental_component_builders",
+      "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+      "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+    },
+    {
+      "module": "workbench_analysis.dm01_incremental_component_builders_r3_3",
+      "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+      "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+    },
+    {
+      "module": "workbench_analysis.dm01_independent_postcheck_r1",
+      "path": "src/workbench_analysis/dm01_independent_postcheck_r1.py",
+      "sha256": "8a0178012c18b6318be934336390499d8329ca1cdbb4d27780c36bcfdea49b5b"
+    },
+    {
+      "module": "workbench_analysis.dm01_independent_postcheck_r3_3",
+      "path": "src/workbench_analysis/dm01_independent_postcheck_r3_3.py",
+      "sha256": "79c71f3f72b09cf30a5745d5ba3bae52ad0b22e0422cf333c058d1b9c99d2163"
+    },
+    {
+      "module": "workbench_analysis.dm01_lineage_r4r1",
+      "path": "src/workbench_analysis/dm01_lineage_r4r1.py",
+      "sha256": "3ae4c8130547deebeab6914c5ecbf6800e9c6e8b67dd68e0c55c90c7e9ddb952"
+    },
+    {
+      "module": "workbench_analysis.dm01_runtime_r4",
+      "path": "src/workbench_analysis/dm01_runtime_r4.py",
+      "sha256": "c624125e82ec5ce55b55472d90c44170dfed034ea2101a1f19016a8070df6748"
+    },
+    {
+      "module": "workbench_analysis.fep_e1.contracts",
+      "path": "src/workbench_analysis/fep_e1/contracts.py",
+      "sha256": "51b2db3f84e151b926f9d85fdc5ef4daea1cf656fe52b296ac846ff13f206abc"
+    },
+    {
+      "module": "workbench_analysis.fep_e5",
+      "path": "src/workbench_analysis/fep_e5/__init__.py",
+      "sha256": "35b537731d89e5d638680d38f957782cbdd1ab28249d7e957e4e4706a4342c54"
+    },
+    {
+      "module": "workbench_analysis.fep_e5.admission",
+      "path": "src/workbench_analysis/fep_e5/admission.py",
+      "sha256": "35c95f6dba9bdf4361dd1d8ff9ba1bc53acb0e13a66e77e6bbdc160819cb3028"
+    },
+    {
+      "module": "workbench_analysis.fep_e5.contracts",
+      "path": "src/workbench_analysis/fep_e5/contracts.py",
+      "sha256": "b127519125b8233465cdb85e972e0130ec1d5f050a74d045dc6ff9759864f317"
+    },
+    {
+      "module": "workbench_analysis.fep_e5.trusted_authority",
+      "path": "src/workbench_analysis/fep_e5/trusted_authority.py",
+      "sha256": "9b0711a5e837fc38f023fd1be2c3ca0682bfa45c0a54004edddd3e017577a2a6"
+    },
+    {
+      "module": "workbench_analysis.full_market_state_publisher_v1",
+      "path": "src/workbench_analysis/full_market_state_publisher_v1.py",
+      "sha256": "b0ba6c6c5a920760990a506b076c90a05def6a14988d656c49540b1b8fc248c8"
+    },
+    {
+      "module": "workbench_analysis.full_state_first_observed_v1",
+      "path": "src/workbench_analysis/full_state_first_observed_v1.py",
+      "sha256": "6ce7ab34853877ff086c55e0da9a5d196300b4b8d11fef1749d17fc7eb9a3886"
+    },
+    {
+      "module": "workbench_analysis.full_state_signal_candidate_v1",
+      "path": "src/workbench_analysis/full_state_signal_candidate_v1.py",
+      "sha256": "c632163dba25af40b9444b279ade9e66eadc24e7ac2f0416e2cac24d2381de28"
+    },
+    {
+      "module": "workbench_analysis.historical_stage_governance_r17",
+      "path": "src/workbench_analysis/historical_stage_governance_r17.py",
+      "sha256": "5afdbb70b08735933f1eeead3cf9fc5e5884ed2408e8300ff85382dd0dd40d99"
+    },
+    {
+      "module": "workbench_analysis.immutable",
+      "path": "src/workbench_analysis/immutable.py",
+      "sha256": "87c8c5d25d8ed3be8e66700cb7fde777a5d07985eb11f6f8914644fb625ebc82"
+    },
+    {
+      "module": "workbench_analysis.limit_rules",
+      "path": "src/workbench_analysis/limit_rules.py",
+      "sha256": "c39b23628fc9258c42b8c7a529fe7d5f6fd58576dbbbc6699f0767371dc6fbcd"
+    },
+    {
+      "module": "workbench_analysis.market_source_acquisition",
+      "path": "src/workbench_analysis/market_source_acquisition.py",
+      "sha256": "e8b8334132012af15e0fc877414b0f5e2d21df8a26f575ab573a9eb768c1fc15"
+    },
+    {
+      "module": "workbench_analysis.next_t0_identity_preflight_v1",
+      "path": "src/workbench_analysis/next_t0_identity_preflight_v1.py",
+      "sha256": "439600835e2a2164241858dc2b72f67ea974db656669d1beab1c557e58430f3c"
+    },
+    {
+      "module": "workbench_analysis.operational_baostock_client_v1",
+      "path": "src/workbench_analysis/operational_baostock_client_v1.py",
+      "sha256": "147c3bc2201bbb11e2deeb6dc6465cd77e240df50c4ab4c6d108b45e3ca2de90"
+    },
+    {
+      "module": "workbench_analysis.operational_daily_calendar_v2",
+      "path": "src/workbench_analysis/operational_daily_calendar_v2.py",
+      "sha256": "6c6b447a182dbbe516951949014e738233fd68b9721771ba307a05ceba87f0bc"
+    },
+    {
+      "module": "workbench_analysis.operational_daily_executor_v1",
+      "path": "src/workbench_analysis/operational_daily_executor_v1.py",
+      "sha256": "62199b365dee5c8a0a7c722abfc5f2697fa29c4671b288fd53b35af799dee45c"
+    },
+    {
+      "module": "workbench_analysis.operational_daily_http_readback_v1",
+      "path": "src/workbench_analysis/operational_daily_http_readback_v1.py",
+      "sha256": "b63b4654618f080ef13b0bd64c5b2a3c5e83fb425fa4a7afc7cc2fa43074ea83"
+    },
+    {
+      "module": "workbench_analysis.operational_daily_jobs_v1",
+      "path": "src/workbench_analysis/operational_daily_jobs_v1.py",
+      "sha256": "58f8015af351c0ee69ab11329a3178dd987e1f58cf18798c68e3b00a89f2173d"
+    },
+    {
+      "module": "workbench_analysis.operational_daily_owner_v1",
+      "path": "src/workbench_analysis/operational_daily_owner_v1.py",
+      "sha256": "2c8680d4eebb723d1c56195babb55895ddc579e39ce0e16fba005fe72cffdec2"
+    },
+    {
+      "module": "workbench_analysis.operational_daily_periods_v1",
+      "path": "src/workbench_analysis/operational_daily_periods_v1.py",
+      "sha256": "a40ad2cec659e65c7ff793fb6610f0ab402ea9a846ed3e44c9e3f7d3d06f1c87"
+    },
+    {
+      "module": "workbench_analysis.operational_daily_ready_owner_v2",
+      "path": "src/workbench_analysis/operational_daily_ready_owner_v2.py",
+      "sha256": "0aa0a87724ee5f8304c925a77235d06741644f1a11bf6760ed8135a57fa8f8ae"
+    },
+    {
+      "module": "workbench_analysis.operational_daily_storage_v1",
+      "path": "src/workbench_analysis/operational_daily_storage_v1.py",
+      "sha256": "cfe27d4aa1e1a57ad39003ce1ced6fa4b98b28b75051416c7c021d687b5bbc70"
+    },
+    {
+      "module": "workbench_analysis.operational_owner_adapter_v1",
+      "path": "src/workbench_analysis/operational_owner_adapter_v1.py",
+      "sha256": "c6605961c83951d110ebdcfaada5a055f28497a6576a9b008523e0bca4a83418"
+    },
+    {
+      "module": "workbench_analysis.operational_runtime_acceptance_v2",
+      "path": "src/workbench_analysis/operational_runtime_acceptance_v2.py",
+      "sha256": "628292b13528068bc1bcacb6fde1dffa8997f0bbbbc9a9aab9dc8789dc502911"
+    },
+    {
+      "module": "workbench_analysis.operational_successor_release_v1",
+      "path": "src/workbench_analysis/operational_successor_release_v1.py",
+      "sha256": "87ccfc75ee2e6c1f62778cd4e9f1ed8421a5c2f2381fcee3e97ec7f387a30c2d"
+    },
+    {
+      "module": "workbench_analysis.operational_successor_v1",
+      "path": "src/workbench_analysis/operational_successor_v1.py",
+      "sha256": "957c1227c1a52a83bc0fbe7967e57a671731bc9dd5aba4c9aa80007c670281a6"
+    },
+    {
+      "module": "workbench_analysis.price_reference_state",
+      "path": "src/workbench_analysis/price_reference_state.py",
+      "sha256": "9c969dab4996ab319e3c8b896e5fde53c4d528ced86ca0d63f9dfcfa4e4dd0f8"
+    },
+    {
+      "module": "workbench_analysis.producer_bootstrap_v1",
+      "path": "src/workbench_analysis/producer_bootstrap_v1.py",
+      "sha256": "b5beba9b28cd363615be14220bdb658c7373e08d74050c09385942128e32a47e"
+    },
+    {
+      "module": "workbench_analysis.producer_dependency_archive_v1",
+      "path": "src/workbench_analysis/producer_dependency_archive_v1.py",
+      "sha256": "e930b869489235c4ce514bcd24fa1d72f0d01695f67428154f0ab50ba3371cf0"
+    },
+    {
+      "module": "workbench_analysis.r43_daily_price_limits",
+      "path": "src/workbench_analysis/r43_daily_price_limits.py",
+      "sha256": "0861cc7d8f11037ad6c4369975a11537ee11faabab8b27631734daebc46a32d6"
+    },
+    {
+      "module": "workbench_analysis.r43_focus_replay",
+      "path": "src/workbench_analysis/r43_focus_replay.py",
+      "sha256": "a3fafd06409aede28cc5364be4f83c1114f1353fc08312854549ed218d07d439"
+    },
+    {
+      "module": "workbench_analysis.r43_market_replay",
+      "path": "src/workbench_analysis/r43_market_replay.py",
+      "sha256": "1609652397b4fc1ae5cbd885dbc88447e3a30814462b1010e1ede2008a543554"
+    },
+    {
+      "module": "workbench_analysis.r43_operational_publication",
+      "path": "src/workbench_analysis/r43_operational_publication.py",
+      "sha256": "1f8daf0d698da02cd9af96f17cf2242ae43bc033d99a13e21523c902faf983fc"
+    },
+    {
+      "module": "workbench_analysis.r43_operational_sources",
+      "path": "src/workbench_analysis/r43_operational_sources.py",
+      "sha256": "d58049b5f2b6ba62a4455e063e5fb75b2739cd82e273a9741e371202379527ce"
+    },
+    {
+      "module": "workbench_analysis.r43_owner_replay",
+      "path": "src/workbench_analysis/r43_owner_replay.py",
+      "sha256": "d98307908784e760f8f6a747b795bffc42ab85756364bd325013ff4f3c617018"
+    },
+    {
+      "module": "workbench_analysis.r43_release_control",
+      "path": "src/workbench_analysis/r43_release_control.py",
+      "sha256": "f73196e74aa63dcdc1e5ddf08a62b3c193e515755030930819de3c3c8a566c28"
+    },
+    {
+      "module": "workbench_analysis.r43_structure_replay",
+      "path": "src/workbench_analysis/r43_structure_replay.py",
+      "sha256": "4bd82d65c49af30a6ab12abfad1dc6130d17c5559c3f78135061146660a30c8f"
+    },
+    {
+      "module": "workbench_analysis.research_features",
+      "path": "src/workbench_analysis/research_features.py",
+      "sha256": "1393f4d33f8b6aecb2e666d57e9cd528859a21b8a7712e3749e8f7f2c59a5b20"
+    },
+    {
+      "module": "workbench_analysis.rotation_reconstructed_r43",
+      "path": "src/workbench_analysis/rotation_reconstructed_r43.py",
+      "sha256": "37a83fedf4d2e35ad44e9efbc9c6ca5965e2f3a06266e89eea47019ec9289d2b"
+    },
+    {
+      "module": "workbench_analysis.scoped_successor_r421",
+      "path": "src/workbench_analysis/scoped_successor_r421.py",
+      "sha256": "1c402e314dff296a62f1ca1043ca8f3a1d45a46fb1c374c3e3301c8e40e3af7c"
+    },
+    {
+      "module": "workbench_analysis.sector_amount",
+      "path": "src/workbench_analysis/sector_amount.py",
+      "sha256": "be9fdd4bfa6708421f8b7057ae60f010f211d93003cca1210d1ec3e931de193f"
+    },
+    {
+      "module": "workbench_analysis.sector_attention",
+      "path": "src/workbench_analysis/sector_attention.py",
+      "sha256": "e4e39f51abb64d4e3359451e794842c1da06f641d1598d2aac5a6477fc89916a"
+    },
+    {
+      "module": "workbench_analysis.sector_cycle",
+      "path": "src/workbench_analysis/sector_cycle.py",
+      "sha256": "cdd67e213c0ecc5d6e3db89b49cf5b4126de6299d40ebf0420a92e66b67a65bd"
+    },
+    {
+      "module": "workbench_analysis.security_identity_event_discovery",
+      "path": "src/workbench_analysis/security_identity_event_discovery.py",
+      "sha256": "a647c85cdb8e2fe1051a7242f6e56e974b501f7186bff2666da265905d38a6fb"
+    },
+    {
+      "module": "workbench_analysis.source_authority_accepted_owners_v1",
+      "path": "src/workbench_analysis/source_authority_accepted_owners_v1.py",
+      "sha256": "aa775e70a35506349952bb94ccb1ddf56a3b0ff694580218a3639c0ab9dbd457"
+    },
+    {
+      "module": "workbench_analysis.source_authority_governance_r1",
+      "path": "src/workbench_analysis/source_authority_governance_r1.py",
+      "sha256": "fd378386f1e28aef580c3558a24591125a8e9c368bed1b05f8880349ba5bc194"
+    },
+    {
+      "module": "workbench_analysis.source_authority_producers_r3",
+      "path": "src/workbench_analysis/source_authority_producers_r3.py",
+      "sha256": "83444b236e49469e4108c110c4f60cf4cba5b8f547ec43124467a85b8ad4feab"
+    },
+    {
+      "module": "workbench_analysis.source_authority_producers_r4",
+      "path": "src/workbench_analysis/source_authority_producers_r4.py",
+      "sha256": "0d14a65ecd8c473a4a5471df2e064e7ae13f061b68e9ff7b34d6527527b28f6d"
+    },
+    {
+      "module": "workbench_analysis.source_capture_candidate_v1",
+      "path": "src/workbench_analysis/source_capture_candidate_v1.py",
+      "sha256": "aabf9a425c9c10513cd4244c92327e46aa8fa2dff79abde2913fc3121efa226d"
+    },
+    {
+      "module": "workbench_analysis.source_readiness_v2",
+      "path": "src/workbench_analysis/source_readiness_v2.py",
+      "sha256": "7b9829b60097081f16867ac79173025ad0384b704b0054c562cbb339562a09ce"
+    },
+    {
+      "module": "workbench_analysis.source_scope_reconciliation_v1",
+      "path": "src/workbench_analysis/source_scope_reconciliation_v1.py",
+      "sha256": "7c065f02ceba267ee72ca387f05e4a456d50d19defcb4bc6d97a95b4100ff604"
+    },
+    {
+      "module": "workbench_analysis.special_price_phases",
+      "path": "src/workbench_analysis/special_price_phases.py",
+      "sha256": "7e64ca1acd9d1d7c9138915cf3f82ffedb40ea6b3b99349c0857458a09f0db93"
+    },
+    {
+      "module": "workbench_analysis.stock_attention",
+      "path": "src/workbench_analysis/stock_attention.py",
+      "sha256": "9bccf4fa7c7fdcba5a9d0c7b8bf81f045e9698f9193c1811f1022ae4f76b30b8"
+    },
+    {
+      "module": "workbench_analysis.strength",
+      "path": "src/workbench_analysis/strength.py",
+      "sha256": "00ff1068ab26ca676defb19eef2886d2016802dec6a8867aa511dd508c5c530b"
+    },
+    {
+      "module": "workbench_analysis.strict_source_candidate_v2",
+      "path": "src/workbench_analysis/strict_source_candidate_v2.py",
+      "sha256": "11dc125a1a4ea0ebe9f50a6d4484660ee5aa43c71d7025633241782f62027f7f"
+    },
+    {
+      "module": "workbench_analysis.tdx_latest_daily_source_v2",
+      "path": "src/workbench_analysis/tdx_latest_daily_source_v2.py",
+      "sha256": "fe260ace3a4b011d71bd71251b79167360c7f4ae492b420740eb0def43690c54"
+    },
+    {
+      "module": "workbench_analysis.tdx_local_daily_fallback_v1",
+      "path": "src/workbench_analysis/tdx_local_daily_fallback_v1.py",
+      "sha256": "3152e8d1ac06a56b3ea067c89658297f665e7295dc64d109c789e653f8cac145"
+    },
+    {
+      "module": "workbench_analysis.tdx_local_snapshot",
+      "path": "src/workbench_analysis/tdx_local_snapshot.py",
+      "sha256": "1fe342b7ad393c3103ddb04df6beb868a636453f5ddc1a6cce4ff81625b5fcef"
+    },
+    {
+      "module": "workbench_analysis.tdx_member_retro_r43",
+      "path": "src/workbench_analysis/tdx_member_retro_r43.py",
+      "sha256": "75ead326d0a016fb10a16de0ef250696833e48cfb5d40144d319402de5a14b92"
+    },
+    {
+      "module": "workbench_analysis.tdx_official_daily_source",
+      "path": "src/workbench_analysis/tdx_official_daily_source.py",
+      "sha256": "64a4b7a1eb84a08644f679d5e2bcb638eec935f532a837682820f49d8b7df6fa"
+    },
+    {
+      "module": "workbench_analysis.tdx_sector_retro_r43",
+      "path": "src/workbench_analysis/tdx_sector_retro_r43.py",
+      "sha256": "0d4aee71c61375fa1d1f02821d164aa5f598e75174b9d950ec2ed3b55b0037e9"
+    },
+    {
+      "module": "workbench_analysis.tdx_snapshot",
+      "path": "src/workbench_analysis/tdx_snapshot.py",
+      "sha256": "94c98eab3fd5a2e2ab6c3bd06672b312803f084835a3129efcc7ca68b2b43547"
+    },
+    {
+      "module": "workbench_analysis.technical",
+      "path": "src/workbench_analysis/technical.py",
+      "sha256": "df660e3f399f611eecb8123c64585a2055494bf15b9cb4d44a8085f00a809910"
+    },
+    {
+      "module": "workbench_analysis.today_research_factors_v3_3",
+      "path": "src/workbench_analysis/today_research_factors_v3_3.py",
+      "sha256": "1f466ff5db7251d4e99221046602b9550fa60012e50acc7bac74efd41b35dbb5"
+    },
+    {
+      "module": "workbench_analysis.today_research_scanner_v3_3",
+      "path": "src/workbench_analysis/today_research_scanner_v3_3.py",
+      "sha256": "0cf65de4f926f43cce5fcac60f16e2e047b4c5f0f4cc497e1f832f6e3bdc3379"
+    },
+    {
+      "module": "workbench_analysis.v4_01_alias_completeness",
+      "path": "src/workbench_analysis/v4_01_alias_completeness.py",
+      "sha256": "cf7c5cdf62e87521b448ea1b539ecc20bb4982826bd6914d17d37cd457c07074"
+    },
+    {
+      "module": "workbench_analysis.v4_02_closure",
+      "path": "src/workbench_analysis/v4_02_closure.py",
+      "sha256": "d747ba919765cc3b046715f1b72fff68ec80ea6685fe415403f16bff7d126cd6"
+    },
+    {
+      "module": "workbench_analysis.v4_12_anchor_runtime",
+      "path": "src/workbench_analysis/v4_12_anchor_runtime.py",
+      "sha256": "7136a080ad1337e2f85cb1c26484f502105205f19d1d03ccb0dd556d1ad6b261"
+    },
+    {
+      "module": "workbench_analysis.v4_12_ast_runtime",
+      "path": "src/workbench_analysis/v4_12_ast_runtime.py",
+      "sha256": "cbcf9b5602fb58976f59f89fd91949c2c0ca55e42852a427935fa8762c748c60"
+    },
+    {
+      "module": "workbench_analysis.v4_12_breakout_episode",
+      "path": "src/workbench_analysis/v4_12_breakout_episode.py",
+      "sha256": "49d024ec70542f318f8a66e3156374766c0a23c78be9b3460294b302183b83ea"
+    },
+    {
+      "module": "workbench_analysis.v4_12_breakout_snapshot",
+      "path": "src/workbench_analysis/v4_12_breakout_snapshot.py",
+      "sha256": "5ec1d34f8f102e2d49ec2b5a396a9cd038f3a1fecd54af62629b29df9f735824"
+    },
+    {
+      "module": "workbench_analysis.v4_12_frozen_snapshot",
+      "path": "src/workbench_analysis/v4_12_frozen_snapshot.py",
+      "sha256": "d24da9300a7a3cbc692151a15c06d05abd9ed64c249d3c655ebcc3d811245060"
+    },
+    {
+      "module": "workbench_analysis.v4_12_frozen_snapshot_v2",
+      "path": "src/workbench_analysis/v4_12_frozen_snapshot_v2.py",
+      "sha256": "13a0c7f40a3599ba0ffbdf3512b43914d4d0ade2694d1db59f4e4190cc680773"
+    },
+    {
+      "module": "workbench_analysis.v4_12_input_binder",
+      "path": "src/workbench_analysis/v4_12_input_binder.py",
+      "sha256": "11a8f45b00c79240ea6569d003fbbf88685e399704c82a8126de6e1e16e83d9b"
+    },
+    {
+      "module": "workbench_analysis.v4_12_multi_anchor_engine",
+      "path": "src/workbench_analysis/v4_12_multi_anchor_engine.py",
+      "sha256": "6843e871c902a6f90e308a9d77b12d1e964e8df1fb3d078e46624e220cbc62f8"
+    },
+    {
+      "module": "workbench_analysis.v4_12_multi_anchor_state",
+      "path": "src/workbench_analysis/v4_12_multi_anchor_state.py",
+      "sha256": "b22b39ff14fd046a29ffc7d9aaa7af396a0869c29ab3c462fa1a6a8ef75686af"
+    },
+    {
+      "module": "workbench_analysis.v4_12_structure_engine",
+      "path": "src/workbench_analysis/v4_12_structure_engine.py",
+      "sha256": "6623c8cdcf0eb8123daa88581a6e0ab1d391f1cb670d8855c728b22cc529854b"
+    },
+    {
+      "module": "workbench_analysis.v4_12_structure_io",
+      "path": "src/workbench_analysis/v4_12_structure_io.py",
+      "sha256": "f19e019a0cbde2bf34863d6700a0bb353159176f85982cc909cdec906b4401b3"
+    },
+    {
+      "module": "workbench_analysis.v4_13_descendant_contracts",
+      "path": "src/workbench_analysis/v4_13_descendant_contracts.py",
+      "sha256": "97497975d1d1966924b0e2252351b25142766f165f6bff73e6b8e1c320bb57da"
+    },
+    {
+      "module": "workbench_analysis.v4_13_io",
+      "path": "src/workbench_analysis/v4_13_io.py",
+      "sha256": "f646e6d111fb8ee3809e7e06ace0401c56e0e6e4a40cfd3df86f8013607ee747"
+    },
+    {
+      "module": "workbench_analysis.v4_13_loo_runtime",
+      "path": "src/workbench_analysis/v4_13_loo_runtime.py",
+      "sha256": "8b619f07760bab2e32d443d36a42fbcfd51a6e02d2f9dbcb251262139d79b4a6"
+    },
+    {
+      "module": "workbench_analysis.v4_13_profile_runtime",
+      "path": "src/workbench_analysis/v4_13_profile_runtime.py",
+      "sha256": "c3d401811c4b065d3a00272d7f17ebb91f94154d6365342411dd681709471a38"
+    },
+    {
+      "module": "workbench_analysis.v4_14_replay_io",
+      "path": "src/workbench_analysis/v4_14_replay_io.py",
+      "sha256": "cb0cab549f0390f71cda8b6abe651fd6f759c6f2de15280eff4fdd1ab0d6199b"
+    },
+    {
+      "module": "workbench_analysis.v4_15_settlement",
+      "path": "src/workbench_analysis/v4_15_settlement.py",
+      "sha256": "b24b31d4670160ca41e620e86ca9b6fa4d393a0112ea4251eda02edb38457697"
+    },
+    {
+      "module": "workbench_analysis.v4_current_stage_authority",
+      "path": "src/workbench_analysis/v4_current_stage_authority.py",
+      "sha256": "f53ce7b44dd579e79f6b382bffd383871d4a20b3d5a0bf3b6e7a38dc6e0c4995"
+    },
+    {
+      "module": "workbench_analysis.v4_portable_exact",
+      "path": "src/workbench_analysis/v4_portable_exact.py",
+      "sha256": "55d7331825133486a3cf7f0ca4527ee9af69ce8291777a15e56fc09b8376568a"
+    },
+    {
+      "module": "workbench_analysis.validation_cohort_read_contract_r3",
+      "path": "src/workbench_analysis/validation_cohort_read_contract_r3.py",
+      "sha256": "a557d0236195a2ab2704db92b3640a0e58731288eb7c68f72e2b66659f2b7267"
+    },
+    {
+      "module": "workbench_db",
+      "path": "src/workbench_db/__init__.py",
+      "sha256": "61c1b313c1bc3643edf0a4096dfc6fb2e8c240e031181c61a0e5e9687137c841"
+    },
+    {
+      "module": "workbench_db.analysis_activation_repository",
+      "path": "src/workbench_db/analysis_activation_repository.py",
+      "sha256": "4845de4e3603d3db9a618802bc8a95deafcfaa27851840febde1859d4e40ebeb"
+    },
+    {
+      "module": "workbench_db.api_connection",
+      "path": "src/workbench_db/api_connection.py",
+      "sha256": "a8b6da3434f5fb408791b50c61e6b66cd0ed30c6c09b6915de0e533f3e935e6b"
+    },
+    {
+      "module": "workbench_db.backend_provider",
+      "path": "src/workbench_db/backend_provider.py",
+      "sha256": "8ffc4a5ebf06fb6386f629bd962b198b443f2f8d60ad34285ac84672fc48bc95"
+    },
+    {
+      "module": "workbench_db.backup_catalog_repository",
+      "path": "src/workbench_db/backup_catalog_repository.py",
+      "sha256": "9ed333c5b87f51c47f3a4a6a9e47ff062e9e15f2f3fae500c85b2b58b35330b6"
+    },
+    {
+      "module": "workbench_db.backup_repository",
+      "path": "src/workbench_db/backup_repository.py",
+      "sha256": "a2fd52f4087c271cbd85642521e053573fb6e955f957b4f6bcb18453c4e7dc62"
+    },
+    {
+      "module": "workbench_db.config_store",
+      "path": "src/workbench_db/config_store.py",
+      "sha256": "e4f819aa771db4e633b9403a2017137713294e7dd78a268006020a861e0e9c38"
+    },
+    {
+      "module": "workbench_db.digest",
+      "path": "src/workbench_db/digest.py",
+      "sha256": "fdab65ea5f5f9c5d7884d1ed1d5b015e5a63f6ee488bde5dc8689cb6ea0b1d4f"
+    },
+    {
+      "module": "workbench_db.history_job_repository",
+      "path": "src/workbench_db/history_job_repository.py",
+      "sha256": "dba2ad08ace06a723304a07a56f816be9a0becbb0af26c5b1a489e7e95ecd131"
+    },
+    {
+      "module": "workbench_db.incremental_writer_repository",
+      "path": "src/workbench_db/incremental_writer_repository.py",
+      "sha256": "f4f1250388a0d16f329ffe08593b71d677c57461ca56a383a687b2d286674595"
+    },
+    {
+      "module": "workbench_db.migrations",
+      "path": "src/workbench_db/migrations.py",
+      "sha256": "6e9085f3a0a4ed09b28a3e2d2e09729f5753d31164d65793b83baa1838c196cf"
+    },
+    {
+      "module": "workbench_db.operations_metadata",
+      "path": "src/workbench_db/operations_metadata.py",
+      "sha256": "1b650885c55c0a3603444f8e818e77addb9918586aaefe529f20cf028d59aa89"
+    },
+    {
+      "module": "workbench_db.owner",
+      "path": "src/workbench_db/owner.py",
+      "sha256": "a49451c19068f7d41b169ee95e8df068454fee090ab51b596aa2ca9386d5c723"
+    },
+    {
+      "module": "workbench_db.postgres_artifact_catalog",
+      "path": "src/workbench_db/postgres_artifact_catalog.py",
+      "sha256": "afb979018027ffc8e16b049849942151a6d70ab31cbb51d8fb626e6aa0ad4028"
+    },
+    {
+      "module": "workbench_db.postgres_history_job_repository",
+      "path": "src/workbench_db/postgres_history_job_repository.py",
+      "sha256": "fb8db748fea4bceade09b5323d652c16316589295c375db28cee4ed9c6969754"
+    },
+    {
+      "module": "workbench_db.postgres_online_repository",
+      "path": "src/workbench_db/postgres_online_repository.py",
+      "sha256": "2dca92cf0ebe43eb12cfb12243ff736976fe1a0a13d35bbaf91189ebf0f91830"
+    },
+    {
+      "module": "workbench_db.postgres_publication_writer",
+      "path": "src/workbench_db/postgres_publication_writer.py",
+      "sha256": "bfa86c0b64ceec1cc1ad5fe3a8140c2aef516c87ddca1618a5b07798ab8d5ceb"
+    },
+    {
+      "module": "workbench_db.postgres_repository",
+      "path": "src/workbench_db/postgres_repository.py",
+      "sha256": "0935dac393c1cd663fee7062078681418ea9c2abe0bdf5165be9ed023a2b95d8"
+    },
+    {
+      "module": "workbench_db.postgres_research_repository",
+      "path": "src/workbench_db/postgres_research_repository.py",
+      "sha256": "ecf10d915778b46eb8533e8b8d4156f28422bfd655088872fcb5908d9a0eb6b3"
+    },
+    {
+      "module": "workbench_db.postgres_write_repository",
+      "path": "src/workbench_db/postgres_write_repository.py",
+      "sha256": "a2a2aa82240444e15e87e88b5275c06952a76671ac25d0f8f22dde7d3ad5b570"
+    },
+    {
+      "module": "workbench_db.publication_repository",
+      "path": "src/workbench_db/publication_repository.py",
+      "sha256": "629e599a37a7a473c251a85ad2d3d0532611fa5a4dcd11455d1f1627f5e4881f"
+    },
+    {
+      "module": "workbench_db.read_repository",
+      "path": "src/workbench_db/read_repository.py",
+      "sha256": "7aef3757cc3d0b1ede4240d2ec02eb2fe367221a732488ba14477bfa16e90a69"
+    },
+    {
+      "module": "workbench_db.repository",
+      "path": "src/workbench_db/repository.py",
+      "sha256": "342f1356d67dfccc079c1e012a5676aa35d7977f4bd5d039a1a0e7323dcf0d00"
+    },
+    {
+      "module": "workbench_db.research_builder_repository",
+      "path": "src/workbench_db/research_builder_repository.py",
+      "sha256": "a557378b5ad6bdd473255b6afdfa009fa644d265d355bda441f0ee85dfd6446d"
+    },
+    {
+      "module": "workbench_db.result_object_repository",
+      "path": "src/workbench_db/result_object_repository.py",
+      "sha256": "03a43d4ffe02f40c9bbd6b727f9cd1511676fdc69669a75eb358603ba0b05acc"
+    },
+    {
+      "module": "workbench_db.slice_repository",
+      "path": "src/workbench_db/slice_repository.py",
+      "sha256": "d674531904e99bcf97745807843f2264ebaf33763a35b4bf23d5fc702a4c31bc"
+    },
+    {
+      "module": "workbench_db.storage_connection",
+      "path": "src/workbench_db/storage_connection.py",
+      "sha256": "9a1edb82857b91f6c9860b9e9e28ffe3a7cdf8456e9fa4b1bd364f061e063d5d"
+    },
+    {
+      "module": "workbench_desktop.engine",
+      "path": "src/workbench_desktop/engine.py",
+      "sha256": "ce67f466657571fffe7a16c67c24f56cb0f7e5e2bbe304bba45347f76b6a1302"
+    },
+    {
+      "module": "workbench_desktop.jobs",
+      "path": "src/workbench_desktop/jobs.py",
+      "sha256": "dbee46d1de502bbbd23933ec82b0564e9b5caac3343c596466d6932a87af3041"
+    },
+    {
+      "module": "workbench_desktop.qa",
+      "path": "src/workbench_desktop/qa.py",
+      "sha256": "f9f152b7977204534fc1b0c7cd9c9888cb61febd645e85bb9e04eaf7cb598b4c"
+    },
+    {
+      "module": "workbench_desktop.qa_daily",
+      "path": "src/workbench_desktop/qa_daily.py",
+      "sha256": "b6a47972fae28170bd503fc774c75b8338aac422d0966b0e74d54b4109f7f0a1"
+    },
+    {
+      "module": "workbench_desktop.source_adapter",
+      "path": "src/workbench_desktop/source_adapter.py",
+      "sha256": "d3ececdb78e7138d51a2fdacb371ad2cfdd3182559063daaba852bda9d20a322"
+    },
+    {
+      "module": "workbench_desktop.storage",
+      "path": "src/workbench_desktop/storage.py",
+      "sha256": "9c50e260097fd18a66466fe34506a540cf211c75d6b178bd9f16d882a03d873b"
+    },
+    {
+      "module": "workbench_desktop.tray",
+      "path": "src/workbench_desktop/tray.py",
+      "sha256": "2a64da4e8b1c3bba3ce86cf33616478fc5585af0967d38d6777abe4f333e0667"
+    },
+    {
+      "module": "workbench_service.candidate_research_read_v2",
+      "path": "src/workbench_service/candidate_research_read_v2.py",
+      "sha256": "b32ff88a3201f8df4c8e669b1d16098d610ecf1a437a2ae40f264a972689dcb7"
+    },
+    {
+      "module": "workbench_service.core_product_bff_r1",
+      "path": "src/workbench_service/core_product_bff_r1.py",
+      "sha256": "cb559dcfa7856aa62f8c4c765efe13977c7b7aa33e432724a5165a779056906c"
+    },
+    {
+      "module": "workbench_service.core_product_server_r1",
+      "path": "src/workbench_service/core_product_server_r1.py",
+      "sha256": "aa3f294c1a764e9bc76c8df751525f001ae617e97a5aa96b0e0d67cfe8c897c7"
+    },
+    {
+      "module": "workbench_service.csv_export",
+      "path": "src/workbench_service/csv_export.py",
+      "sha256": "49df531440ec17f74291e5125585e5a8d4c16be88321f15ff52dfdf596a99e62"
+    },
+    {
+      "module": "workbench_service.current_v4_context",
+      "path": "src/workbench_service/current_v4_context.py",
+      "sha256": "4cd9303eedd04076358daf7458c27352f02292c5cb5cb6489de10e2b05c625cc"
+    },
+    {
+      "module": "workbench_service.diagnostic_views",
+      "path": "src/workbench_service/diagnostic_views.py",
+      "sha256": "22f8f3374171fe8b4169349518768cbd2ecce47bedade38417f2d02c0673f143"
+    },
+    {
+      "module": "workbench_service.domain_views",
+      "path": "src/workbench_service/domain_views.py",
+      "sha256": "cba2390a47db84a8ed73d38365d6a0e67106174a59ca8c5ad41545ab1435fdb3"
+    },
+    {
+      "module": "workbench_service.focus_views",
+      "path": "src/workbench_service/focus_views.py",
+      "sha256": "f232d1601300582602ac49f06b45793abfae978703a1de8b67d3a4bf707a79af"
+    },
+    {
+      "module": "workbench_service.joint_release",
+      "path": "src/workbench_service/joint_release.py",
+      "sha256": "05d11dcd296ba45ef22ef08d6d05291d123908c5b8c6c1530aaf429f175467d0"
+    },
+    {
+      "module": "workbench_service.legacy_relation_import",
+      "path": "src/workbench_service/legacy_relation_import.py",
+      "sha256": "f01852e0d0bba2439b94000b8f4f1fb8d3143d9c931d679fb94127f3accd2204"
+    },
+    {
+      "module": "workbench_service.operational_control_status",
+      "path": "src/workbench_service/operational_control_status.py",
+      "sha256": "7662509d8767b72996e53089f638167e38d3459b86cf1d808e11203033e73b25"
+    },
+    {
+      "module": "workbench_service.operational_daily_server_v1",
+      "path": "src/workbench_service/operational_daily_server_v1.py",
+      "sha256": "3e4d69dc57d10ad52788b43a6055d38ddf421324658d90c3384f0d0201253720"
+    },
+    {
+      "module": "workbench_service.operational_gap_bff_v2",
+      "path": "src/workbench_service/operational_gap_bff_v2.py",
+      "sha256": "13a2ba70040f08473c8cb9345dc64adb64beca6addfb9dcf23755759866abf0b"
+    },
+    {
+      "module": "workbench_service.operational_successor_bff_v1",
+      "path": "src/workbench_service/operational_successor_bff_v1.py",
+      "sha256": "96cb09b8bc4ed0b357af643f55fab2170523691a97c7fcd34625781e49ebaa53"
+    },
+    {
+      "module": "workbench_service.production_v4",
+      "path": "src/workbench_service/production_v4.py",
+      "sha256": "fa0ba4c5070820bdab5a6868b3fb2baf301f3d91459210fe0011c585cae75199"
+    },
+    {
+      "module": "workbench_service.r43_operational_bff",
+      "path": "src/workbench_service/r43_operational_bff.py",
+      "sha256": "f83e090adf8839161be54817e17a3ff39e7f2ccde5751dc436ca61d298d89a25"
+    },
+    {
+      "module": "workbench_service.raw_turnover",
+      "path": "src/workbench_service/raw_turnover.py",
+      "sha256": "8e3c62a43fb897a0a3dabb1693aa4dc3b4722cd271866a7f5da42bd1d9d89307"
+    },
+    {
+      "module": "workbench_service.relation_repository",
+      "path": "src/workbench_service/relation_repository.py",
+      "sha256": "7fe3dbff37cbdb0d3bfb44800cca8bb9babf9a7c0e1ae818c2f3e3484a35ad32"
+    },
+    {
+      "module": "workbench_service.replay_views",
+      "path": "src/workbench_service/replay_views.py",
+      "sha256": "6a580341351636fcf7fc8346b10a64d65a2edd0cffc8418f09a2f13f2a852db6"
+    },
+    {
+      "module": "workbench_service.research_association",
+      "path": "src/workbench_service/research_association.py",
+      "sha256": "e007c4679d557f51645f10252a6ac6d0a646aacd41906cfc3a5043f40504e663"
+    },
+    {
+      "module": "workbench_service.research_bff",
+      "path": "src/workbench_service/research_bff.py",
+      "sha256": "2b1ef29b8f9b4e5e272e86f30ccfcbdb8d1b3d2b243c13ad5b28aef37c50f578"
+    },
+    {
+      "module": "workbench_service.research_builder",
+      "path": "src/workbench_service/research_builder.py",
+      "sha256": "19b570a65e4809a2fcbb370ba8342e3e995ce17fc6b8af414f99fe93649264e6"
+    },
+    {
+      "module": "workbench_service.research_context",
+      "path": "src/workbench_service/research_context.py",
+      "sha256": "6886a4c0a5ad52d18fca01d499b6ec3a1ecc00182f53a45ee7a7c674bda1d2ee"
+    },
+    {
+      "module": "workbench_service.research_hypotheses_r3",
+      "path": "src/workbench_service/research_hypotheses_r3.py",
+      "sha256": "e4f39e4563008c9f97f746e224729e82478742329293120ef350f1cdeac1040c"
+    },
+    {
+      "module": "workbench_service.research_runs",
+      "path": "src/workbench_service/research_runs.py",
+      "sha256": "4dbcbee7cb25ac36bc0f8b020038216e358ffab3345f18470ee10ba7c424a555"
+    },
+    {
+      "module": "workbench_service.research_signal_evaluation",
+      "path": "src/workbench_service/research_signal_evaluation.py",
+      "sha256": "b4666cbddc8d338836410588e31b13b8001d3f2a375953abb5ccb2a287828e78"
+    },
+    {
+      "module": "workbench_service.research_v3_contracts",
+      "path": "src/workbench_service/research_v3_contracts.py",
+      "sha256": "7c65bb35c34783f94bbd7c8233903b05d682d159bb22e9b517158f18c4ce6382"
+    },
+    {
+      "module": "workbench_service.result_objects",
+      "path": "src/workbench_service/result_objects.py",
+      "sha256": "3ad15ac3e03574b293d123205737d69e24b1fb868aeb16280d05d6846fa6492b"
+    },
+    {
+      "module": "workbench_service.semantic",
+      "path": "src/workbench_service/semantic.py",
+      "sha256": "116e91557d403c37512d153506d40b6b0aedb9dca594769720345f7a87821cb0"
+    },
+    {
+      "module": "workbench_service.shadow_context",
+      "path": "src/workbench_service/shadow_context.py",
+      "sha256": "d56c6ef7394752c0dc2a50ec2de15da78498823424d02701347f690be651f039"
+    },
+    {
+      "module": "workbench_service.shadow_server",
+      "path": "src/workbench_service/shadow_server.py",
+      "sha256": "6cb631d456652e0d265e6af546dac6ce40c9441044e7743d9d13de0bb418fe99"
+    },
+    {
+      "module": "workbench_service.stock_unit_projection",
+      "path": "src/workbench_service/stock_unit_projection.py",
+      "sha256": "cee1e458148155eabe3bb258deffe05fae874d7db1d5bad4b55ea09eee619438"
+    },
+    {
+      "module": "workbench_service.stock_views",
+      "path": "src/workbench_service/stock_views.py",
+      "sha256": "80d65b27872f5c2a39c7da6f120ee7a93d46abded765668d79aacffdc744cae7"
+    },
+    {
+      "module": "workbench_service.strength_association",
+      "path": "src/workbench_service/strength_association.py",
+      "sha256": "f9a39a9bc100e932fa04f32c46bf3aa62287b6a358382d4f6b01e4b02084be29"
+    },
+    {
+      "module": "workbench_service.universe",
+      "path": "src/workbench_service/universe.py",
+      "sha256": "a860da78c9c1c666a40b16d157f82293143949d2a1c3bb8099d3863b7654479a"
+    },
+    {
+      "module": "workbench_service.v4_control_server_v2",
+      "path": "src/workbench_service/v4_control_server_v2.py",
+      "sha256": "b95756d140d4e4a966b389c788e9e1ab2235abe111ab5080bd77798d947a99a2"
+    },
+    {
+      "module": "workbench_service.v4_daily_refresh",
+      "path": "src/workbench_service/v4_daily_refresh.py",
+      "sha256": "c492eaccf4ca7b1abc85dcd8bc9ca9fedb8827c13cd48bc6e7f490ac59abce7c"
+    }
+  ],
+  "subprocess_and_executable": [
+    {
+      "expression": "sys.executable",
+      "line": 46,
+      "module": "run_desktop"
+    },
+    {
+      "expression": "sys.executable",
+      "line": 103,
+      "module": "workbench_desktop.qa"
+    },
+    {
+      "expression": "sys.executable",
+      "line": 104,
+      "module": "workbench_desktop.qa"
+    },
+    {
+      "expression": "subprocess.run([sys.executable, '-X', 'utf8', '-B', str(root / 'scripts/capture_dm01_a01_r3_tdx_package.py')], cwd=root, capture_output=True, timeout=480)",
+      "line": 296,
+      "module": "workbench_analysis.tdx_official_daily_source"
+    },
+    {
+      "expression": "sys.executable",
+      "line": 296,
+      "module": "workbench_analysis.tdx_official_daily_source"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'show', row['source_commit'] + ':' + original['path']], cwd=Path(root), stderr=subprocess.DEVNULL)",
+      "line": 25,
+      "module": "workbench_analysis.historical_stage_governance_r17"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'show', row['source_commit'] + ':' + ref['path']], cwd=root)",
+      "line": 44,
+      "module": "workbench_analysis.historical_stage_governance_r17"
+    },
+    {
+      "expression": "subprocess.run(['git', 'cat-file', '-e', row['source_commit'] + ':' + path], cwd=root, capture_output=True)",
+      "line": 35,
+      "module": "workbench_analysis.historical_stage_governance_r17"
+    },
+    {
+      "expression": "subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()",
+      "line": 271,
+      "module": "scripts.build_v4_02_price_limits_generic"
+    },
+    {
+      "expression": "subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=ROOT, capture_output=True, text=True, check=True)",
+      "line": 271,
+      "module": "scripts.build_v4_02_price_limits_generic"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()",
+      "line": 474,
+      "module": "scripts.v4_02_build_raw_selected_v2"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True)",
+      "line": 474,
+      "module": "scripts.v4_02_build_raw_selected_v2"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'show', row['source_commit'] + ':' + binding['path']], cwd=self.root)",
+      "line": 56,
+      "module": "workbench_analysis.v4_13_descendant_contracts"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'ls-files'], cwd=ROOT, text=True, encoding='utf8').splitlines()",
+      "line": 62,
+      "module": "scripts.next_round_bundle_r1"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()",
+      "line": 51,
+      "module": "scripts.next_round_bundle_r1"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'ls-files'], cwd=ROOT, text=True, encoding='utf8')",
+      "line": 62,
+      "module": "scripts.next_round_bundle_r1"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True)",
+      "line": 51,
+      "module": "scripts.next_round_bundle_r1"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()",
+      "line": 32,
+      "module": "scripts.fp_domain_evidence"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True)",
+      "line": 32,
+      "module": "scripts.fp_domain_evidence"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()",
+      "line": 57,
+      "module": "scripts.fp01_evidence"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True)",
+      "line": 57,
+      "module": "scripts.fp01_evidence"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'ls-files'], cwd=ROOT, text=True, encoding='utf8').splitlines()",
+      "line": 28,
+      "module": "scripts.full_chain_repair_io"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'ls-files'], cwd=ROOT, text=True, encoding='utf8')",
+      "line": 28,
+      "module": "scripts.full_chain_repair_io"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()",
+      "line": 30,
+      "module": "scripts.full_chain_repair_io"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'status', '--short'], cwd=ROOT, text=True, encoding='utf8').splitlines()",
+      "line": 32,
+      "module": "scripts.full_chain_repair_io"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True)",
+      "line": 30,
+      "module": "scripts.full_chain_repair_io"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'status', '--short'], cwd=ROOT, text=True, encoding='utf8')",
+      "line": 32,
+      "module": "scripts.full_chain_repair_io"
+    },
+    {
+      "expression": "subprocess.CompletedProcess(command, 0, b'', b'')",
+      "line": 31,
+      "module": "workbench_desktop.source_adapter"
+    },
+    {
+      "expression": "sys.executable",
+      "line": 28,
+      "module": "workbench_desktop.source_adapter"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'rev-parse', source + '^{commit}'], cwd=root).decode().strip()",
+      "line": 63,
+      "module": "workbench_analysis.v4_portable_exact"
+    },
+    {
+      "expression": "subprocess.run(['git', 'merge-base', '--is-ancestor', source, remote_ref], cwd=root, capture_output=True)",
+      "line": 65,
+      "module": "workbench_analysis.v4_portable_exact"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'rev-parse', source + '^{commit}'], cwd=root).decode()",
+      "line": 63,
+      "module": "workbench_analysis.v4_portable_exact"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'cat-file', 'blob', e['git_blob_oid']], cwd=self.root)",
+      "line": 36,
+      "module": "workbench_analysis.v4_portable_exact"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'rev-parse', source + '^{commit}'], cwd=root)",
+      "line": 63,
+      "module": "workbench_analysis.v4_portable_exact"
+    },
+    {
+      "expression": "subprocess.run([sys.executable, '-X', 'utf8', '-B', str(root / 'scripts/capture_dm01_a01_r3_tdx_package.py')], cwd=root, capture_output=True, timeout=480)",
+      "line": 31,
+      "module": "workbench_analysis.tdx_latest_daily_source_v2"
+    },
+    {
+      "expression": "sys.executable",
+      "line": 31,
+      "module": "workbench_analysis.tdx_latest_daily_source_v2"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()",
+      "line": 33,
+      "module": "scripts.enter_source_authority_remediation_r2"
+    },
+    {
+      "expression": "subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True)",
+      "line": 33,
+      "module": "scripts.enter_source_authority_remediation_r2"
+    },
+    {
+      "expression": "sys.executable",
+      "line": 81,
+      "module": "workbench_desktop.qa_daily"
+    },
+    {
+      "expression": "sys.executable",
+      "line": 81,
+      "module": "workbench_desktop.qa_daily"
+    },
+    {
+      "expression": "sys.executable",
+      "line": 115,
+      "module": "workbench_desktop.tray"
+    }
+  ]
+}

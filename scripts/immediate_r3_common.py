@@ -21,7 +21,7 @@ def load(ref):
         return [json.loads(s) for s in f if s.strip()] if '.jsonl' in p.name else json.load(f)
 def write(p,value):
     p=path(p);p.parent.mkdir(parents=True,exist_ok=True)
-    tmp=p.with_suffix(p.suffix+'.tmp');tmp.write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n',encoding='utf8');os.replace(tmp,p)
+    tmp=p.with_suffix(p.suffix+'.tmp');tmp.write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n',encoding='utf8',newline='\n');os.replace(tmp,p)
 def markdown(p,value):
-    p=path(p);p.parent.mkdir(parents=True,exist_ok=True);tmp=p.with_suffix('.tmp');tmp.write_text(value,encoding='utf8');os.replace(tmp,p)
+    p=path(p);p.parent.mkdir(parents=True,exist_ok=True);tmp=p.with_suffix('.tmp');tmp.write_text(value,encoding='utf8',newline='\n');os.replace(tmp,p)
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True,encoding='utf8').strip()

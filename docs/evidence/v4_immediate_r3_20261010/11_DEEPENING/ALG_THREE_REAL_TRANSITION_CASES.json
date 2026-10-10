@@ -1,0 +1,1568 @@
+{
+  "source_result": {
+    "path": "docs/evidence/v4_immediate_r3_20261010/02_P0_ALG/P0_ALG_ORACLE_RESULT.json",
+    "sha256": "28884735a76c4be4f52cc5cad9ec96dd72a785eed11fbc7d37252edfff174a03",
+    "bytes": 6145588
+  },
+  "source_input": {
+    "path": "docs/evidence/v4_immediate_r3_20261010/02_P0_ALG/P0_ALG_ORACLE_INPUT.json",
+    "sha256": "2d0f66e1ce8840e6f53de34582006af3803ad77d03c44bad902ac9910b486642",
+    "bytes": 18799361
+  },
+  "cases": [
+    {
+      "entity_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "trade_date": "2026-09-28",
+      "prior_state": null,
+      "new_facts": {
+        "CONFIRMED": "UNKNOWN",
+        "PREWATCH": "FALSE",
+        "SEED": "FALSE",
+        "WARM": "UNKNOWN",
+        "core_price_damage": "FALSE",
+        "delta3": 34.841426526820655,
+        "dq5": "UNKNOWN",
+        "episode_invalidation_contract_id": "UNKNOWN",
+        "followup_complete": "UNKNOWN",
+        "frozen_invalidation": "UNKNOWN",
+        "risk": "LOW",
+        "scenario": "UNKNOWN",
+        "suspended": "FALSE"
+      },
+      "expected": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 0,
+        "exit_session_index": null
+      },
+      "actual": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 0,
+        "exit_session_index": null,
+        "episode_id": null,
+        "transition_reasons": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      },
+      "first_available_scope": "RECONSTRUCTED_NOT_AS_RECORDED",
+      "identity": {
+        "AS_RECORDED": false,
+        "absence_is_delisting_evidence": false,
+        "bao_daily_row_is_identity_authority": false,
+        "board_scope": "STAR",
+        "delist_date": null,
+        "first_available_at_target_proven": false,
+        "identity_status": "IDENTITY_BOUND",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "knowledge_time": "2026-10-01T10:15:06.061971+00:00",
+        "list_date": "2022-06-22",
+        "parent_universe_publication": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f",
+        "reason": null,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "security_type": "A_STOCK",
+        "source_security_key": "SH.688349",
+        "trade_date": "2026-09-30"
+      },
+      "competing_explanations": [
+        "新增正式确认事实支持当前升级；更早会话缺必需判定输入，不能解释为当时已确认。",
+        "技术反弹也可能形成同日正向条件；需要后续真实结构保持与失效条件区分，当前不保证持续。"
+      ],
+      "counter_changes": {
+        "downgrade_count": {
+          "prior": null,
+          "next": 0
+        },
+        "expiry_count": {
+          "prior": null,
+          "next": 0
+        },
+        "market_age": {
+          "prior": null,
+          "next": 0
+        },
+        "exit_session_index": {
+          "prior": null,
+          "next": null
+        }
+      }
+    },
+    {
+      "entity_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "trade_date": "2026-09-29",
+      "prior_state": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 0,
+        "exit_session_index": null
+      },
+      "new_facts": {
+        "CONFIRMED": "UNKNOWN",
+        "PREWATCH": "TRUE",
+        "SEED": "TRUE",
+        "WARM": "UNKNOWN",
+        "core_price_damage": "FALSE",
+        "delta3": 24.058497869766292,
+        "dq5": "UNKNOWN",
+        "episode_invalidation_contract_id": "UNKNOWN",
+        "followup_complete": "UNKNOWN",
+        "frozen_invalidation": "UNKNOWN",
+        "risk": "LOW",
+        "scenario": "UNKNOWN",
+        "suspended": "FALSE"
+      },
+      "expected": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 1,
+        "exit_session_index": null
+      },
+      "actual": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 1,
+        "exit_session_index": null,
+        "episode_id": null,
+        "transition_reasons": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      },
+      "first_available_scope": "RECONSTRUCTED_NOT_AS_RECORDED",
+      "identity": {
+        "AS_RECORDED": false,
+        "absence_is_delisting_evidence": false,
+        "bao_daily_row_is_identity_authority": false,
+        "board_scope": "STAR",
+        "delist_date": null,
+        "first_available_at_target_proven": false,
+        "identity_status": "IDENTITY_BOUND",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "knowledge_time": "2026-10-01T10:15:06.061971+00:00",
+        "list_date": "2022-06-22",
+        "parent_universe_publication": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f",
+        "reason": null,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "security_type": "A_STOCK",
+        "source_security_key": "SH.688349",
+        "trade_date": "2026-09-30"
+      },
+      "competing_explanations": [
+        "新增正式确认事实支持当前升级；更早会话缺必需判定输入，不能解释为当时已确认。",
+        "技术反弹也可能形成同日正向条件；需要后续真实结构保持与失效条件区分，当前不保证持续。"
+      ],
+      "counter_changes": {
+        "downgrade_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "expiry_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "market_age": {
+          "prior": 0,
+          "next": 1
+        },
+        "exit_session_index": {
+          "prior": null,
+          "next": null
+        }
+      }
+    },
+    {
+      "entity_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "trade_date": "2026-09-30",
+      "prior_state": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 1,
+        "exit_session_index": null
+      },
+      "new_facts": {
+        "CONFIRMED": "UNKNOWN",
+        "PREWATCH": "FALSE",
+        "SEED": "FALSE",
+        "WARM": "UNKNOWN",
+        "core_price_damage": "FALSE",
+        "delta3": 34.194903646865896,
+        "dq5": "UNKNOWN",
+        "episode_invalidation_contract_id": "UNKNOWN",
+        "followup_complete": "UNKNOWN",
+        "frozen_invalidation": "UNKNOWN",
+        "risk": "LOW",
+        "scenario": "UNKNOWN",
+        "suspended": "FALSE"
+      },
+      "expected": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 2,
+        "exit_session_index": null
+      },
+      "actual": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 2,
+        "exit_session_index": null,
+        "episode_id": null,
+        "transition_reasons": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      },
+      "first_available_scope": "RECONSTRUCTED_NOT_AS_RECORDED",
+      "identity": {
+        "AS_RECORDED": false,
+        "absence_is_delisting_evidence": false,
+        "bao_daily_row_is_identity_authority": false,
+        "board_scope": "STAR",
+        "delist_date": null,
+        "first_available_at_target_proven": false,
+        "identity_status": "IDENTITY_BOUND",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "knowledge_time": "2026-10-01T10:15:06.061971+00:00",
+        "list_date": "2022-06-22",
+        "parent_universe_publication": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f",
+        "reason": null,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "security_type": "A_STOCK",
+        "source_security_key": "SH.688349",
+        "trade_date": "2026-09-30"
+      },
+      "competing_explanations": [
+        "新增正式确认事实支持当前升级；更早会话缺必需判定输入，不能解释为当时已确认。",
+        "技术反弹也可能形成同日正向条件；需要后续真实结构保持与失效条件区分，当前不保证持续。"
+      ],
+      "counter_changes": {
+        "downgrade_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "expiry_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "market_age": {
+          "prior": 1,
+          "next": 2
+        },
+        "exit_session_index": {
+          "prior": null,
+          "next": null
+        }
+      }
+    },
+    {
+      "entity_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "trade_date": "2026-10-08",
+      "prior_state": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 2,
+        "exit_session_index": null
+      },
+      "new_facts": {
+        "CONFIRMED": "UNKNOWN",
+        "PREWATCH": "FALSE",
+        "SEED": "FALSE",
+        "WARM": "UNKNOWN",
+        "core_price_damage": "FALSE",
+        "delta3": 31.953420617959196,
+        "dq5": "UNKNOWN",
+        "episode_invalidation_contract_id": "UNKNOWN",
+        "followup_complete": "UNKNOWN",
+        "frozen_invalidation": "UNKNOWN",
+        "risk": "LOW",
+        "scenario": "UNKNOWN",
+        "suspended": "FALSE"
+      },
+      "expected": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 3,
+        "exit_session_index": null
+      },
+      "actual": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 3,
+        "exit_session_index": null,
+        "episode_id": null,
+        "transition_reasons": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      },
+      "first_available_scope": "RECONSTRUCTED_NOT_AS_RECORDED",
+      "identity": {
+        "AS_RECORDED": false,
+        "absence_is_delisting_evidence": false,
+        "bao_daily_row_is_identity_authority": false,
+        "board_scope": "STAR",
+        "delist_date": null,
+        "first_available_at_target_proven": false,
+        "identity_status": "IDENTITY_BOUND",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "knowledge_time": "2026-10-01T10:15:06.061971+00:00",
+        "list_date": "2022-06-22",
+        "parent_universe_publication": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f",
+        "reason": null,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "security_type": "A_STOCK",
+        "source_security_key": "SH.688349",
+        "trade_date": "2026-09-30"
+      },
+      "competing_explanations": [
+        "新增正式确认事实支持当前升级；更早会话缺必需判定输入，不能解释为当时已确认。",
+        "技术反弹也可能形成同日正向条件；需要后续真实结构保持与失效条件区分，当前不保证持续。"
+      ],
+      "counter_changes": {
+        "downgrade_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "expiry_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "market_age": {
+          "prior": 2,
+          "next": 3
+        },
+        "exit_session_index": {
+          "prior": null,
+          "next": null
+        }
+      }
+    },
+    {
+      "entity_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "trade_date": "2026-10-09",
+      "prior_state": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 3,
+        "exit_session_index": null
+      },
+      "new_facts": {
+        "CONFIRMED": "TRUE",
+        "PREWATCH": "FALSE",
+        "SEED": "FALSE",
+        "WARM": "UNKNOWN",
+        "core_price_damage": "FALSE",
+        "delta3": 17.175642845343276,
+        "dq5": "UNKNOWN",
+        "episode_invalidation_contract_id": "UNKNOWN",
+        "followup_complete": "UNKNOWN",
+        "frozen_invalidation": "UNKNOWN",
+        "risk": "LOW",
+        "scenario": "LAUNCH_CONFIRM",
+        "suspended": "FALSE"
+      },
+      "expected": {
+        "maturity": "CONFIRMED",
+        "health": "IMPROVING",
+        "validity": "VALID",
+        "tracking": "ACTIVE",
+        "final_eligibility": "TRUE",
+        "state_freshness": "FRESH",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 0,
+        "exit_session_index": null
+      },
+      "actual": {
+        "maturity": "CONFIRMED",
+        "health": "IMPROVING",
+        "validity": "VALID",
+        "tracking": "ACTIVE",
+        "final_eligibility": "TRUE",
+        "state_freshness": "FRESH",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 0,
+        "exit_session_index": null,
+        "episode_id": "V4_11_R5B_EP:ede3900e3ac1c75a56013535d9193a0a3f624940c12b816f5f901076441eff0d",
+        "transition_reasons": [
+          "UPGRADE_IMMEDIATE",
+          "ENROLLED"
+        ]
+      },
+      "first_available_scope": "RECONSTRUCTED_NOT_AS_RECORDED",
+      "identity": {
+        "AS_RECORDED": false,
+        "absence_is_delisting_evidence": false,
+        "bao_daily_row_is_identity_authority": false,
+        "board_scope": "STAR",
+        "delist_date": null,
+        "first_available_at_target_proven": false,
+        "identity_status": "IDENTITY_BOUND",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "knowledge_time": "2026-10-01T10:15:06.061971+00:00",
+        "list_date": "2022-06-22",
+        "parent_universe_publication": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f",
+        "reason": null,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "security_type": "A_STOCK",
+        "source_security_key": "SH.688349",
+        "trade_date": "2026-09-30"
+      },
+      "competing_explanations": [
+        "新增正式确认事实支持当前升级；更早会话缺必需判定输入，不能解释为当时已确认。",
+        "技术反弹也可能形成同日正向条件；需要后续真实结构保持与失效条件区分，当前不保证持续。"
+      ],
+      "counter_changes": {
+        "downgrade_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "expiry_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "market_age": {
+          "prior": 3,
+          "next": 0
+        },
+        "exit_session_index": {
+          "prior": null,
+          "next": null
+        }
+      }
+    },
+    {
+      "entity_id": "SEC-C08B6C24E4F39D8E85C03F8588661538",
+      "trade_date": "2026-09-28",
+      "prior_state": null,
+      "new_facts": {
+        "CONFIRMED": "UNKNOWN",
+        "PREWATCH": "TRUE",
+        "SEED": "TRUE",
+        "WARM": "UNKNOWN",
+        "core_price_damage": "FALSE",
+        "delta3": 4.8753278622063565,
+        "dq5": "UNKNOWN",
+        "episode_invalidation_contract_id": "UNKNOWN",
+        "followup_complete": "UNKNOWN",
+        "frozen_invalidation": "UNKNOWN",
+        "risk": "LOW",
+        "scenario": "UNKNOWN",
+        "suspended": "FALSE"
+      },
+      "expected": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 0,
+        "exit_session_index": null
+      },
+      "actual": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 0,
+        "exit_session_index": null,
+        "episode_id": null,
+        "transition_reasons": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      },
+      "first_available_scope": "RECONSTRUCTED_NOT_AS_RECORDED",
+      "identity": {
+        "AS_RECORDED": false,
+        "absence_is_delisting_evidence": false,
+        "bao_daily_row_is_identity_authority": false,
+        "board_scope": "CHINEXT",
+        "delist_date": null,
+        "first_available_at_target_proven": false,
+        "identity_status": "IDENTITY_BOUND",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "knowledge_time": "2026-10-01T10:15:06.061971+00:00",
+        "list_date": "2024-10-31",
+        "parent_universe_publication": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f",
+        "reason": null,
+        "security_id": "SEC-C08B6C24E4F39D8E85C03F8588661538",
+        "security_type": "A_STOCK",
+        "source_security_key": "SZ.301628",
+        "trade_date": "2026-09-30"
+      },
+      "competing_explanations": [
+        "既有 episode 的硬失效证据优先，退出不被当天正向标签覆盖。",
+        "日线反弹可能改善短期场景，但不证明旧 episode 恢复；新入组必须满足后续合法状态条件。"
+      ],
+      "counter_changes": {
+        "downgrade_count": {
+          "prior": null,
+          "next": 0
+        },
+        "expiry_count": {
+          "prior": null,
+          "next": 0
+        },
+        "market_age": {
+          "prior": null,
+          "next": 0
+        },
+        "exit_session_index": {
+          "prior": null,
+          "next": null
+        }
+      }
+    },
+    {
+      "entity_id": "SEC-C08B6C24E4F39D8E85C03F8588661538",
+      "trade_date": "2026-09-29",
+      "prior_state": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 0,
+        "exit_session_index": null
+      },
+      "new_facts": {
+        "CONFIRMED": "TRUE",
+        "PREWATCH": "FALSE",
+        "SEED": "FALSE",
+        "WARM": "UNKNOWN",
+        "core_price_damage": "FALSE",
+        "delta3": 81.05038386170281,
+        "dq5": "UNKNOWN",
+        "episode_invalidation_contract_id": "UNKNOWN",
+        "followup_complete": "UNKNOWN",
+        "frozen_invalidation": "UNKNOWN",
+        "risk": "LOW",
+        "scenario": "RECOVERY_TURN",
+        "suspended": "FALSE"
+      },
+      "expected": {
+        "maturity": "CONFIRMED",
+        "health": "IMPROVING",
+        "validity": "VALID",
+        "tracking": "ACTIVE",
+        "final_eligibility": "TRUE",
+        "state_freshness": "FRESH",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 0,
+        "exit_session_index": null
+      },
+      "actual": {
+        "maturity": "CONFIRMED",
+        "health": "IMPROVING",
+        "validity": "VALID",
+        "tracking": "ACTIVE",
+        "final_eligibility": "TRUE",
+        "state_freshness": "FRESH",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 0,
+        "exit_session_index": null,
+        "episode_id": "V4_11_R5B_EP:8fdae0dee7aec09f5f7222decb537bcedbc2ee983e086ddf3fdb04bf1456bd15",
+        "transition_reasons": [
+          "UPGRADE_IMMEDIATE",
+          "ENROLLED"
+        ]
+      },
+      "first_available_scope": "RECONSTRUCTED_NOT_AS_RECORDED",
+      "identity": {
+        "AS_RECORDED": false,
+        "absence_is_delisting_evidence": false,
+        "bao_daily_row_is_identity_authority": false,
+        "board_scope": "CHINEXT",
+        "delist_date": null,
+        "first_available_at_target_proven": false,
+        "identity_status": "IDENTITY_BOUND",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "knowledge_time": "2026-10-01T10:15:06.061971+00:00",
+        "list_date": "2024-10-31",
+        "parent_universe_publication": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f",
+        "reason": null,
+        "security_id": "SEC-C08B6C24E4F39D8E85C03F8588661538",
+        "security_type": "A_STOCK",
+        "source_security_key": "SZ.301628",
+        "trade_date": "2026-09-30"
+      },
+      "competing_explanations": [
+        "既有 episode 的硬失效证据优先，退出不被当天正向标签覆盖。",
+        "日线反弹可能改善短期场景，但不证明旧 episode 恢复；新入组必须满足后续合法状态条件。"
+      ],
+      "counter_changes": {
+        "downgrade_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "expiry_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "market_age": {
+          "prior": 0,
+          "next": 0
+        },
+        "exit_session_index": {
+          "prior": null,
+          "next": null
+        }
+      }
+    },
+    {
+      "entity_id": "SEC-C08B6C24E4F39D8E85C03F8588661538",
+      "trade_date": "2026-09-30",
+      "prior_state": {
+        "maturity": "CONFIRMED",
+        "health": "IMPROVING",
+        "validity": "VALID",
+        "tracking": "ACTIVE",
+        "final_eligibility": "TRUE",
+        "state_freshness": "FRESH",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 0,
+        "exit_session_index": null
+      },
+      "new_facts": {
+        "CONFIRMED": "UNKNOWN",
+        "PREWATCH": "FALSE",
+        "SEED": "FALSE",
+        "WARM": "UNKNOWN",
+        "core_price_damage": "FALSE",
+        "delta3": 13.31739569281296,
+        "dq5": "UNKNOWN",
+        "episode_invalidation_contract_id": "UNKNOWN",
+        "followup_complete": "UNKNOWN",
+        "frozen_invalidation": "UNKNOWN",
+        "risk": "LOW",
+        "scenario": "UNKNOWN",
+        "suspended": "FALSE"
+      },
+      "expected": {
+        "maturity": "CONFIRMED",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "ACTIVE",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 1,
+        "exit_session_index": null
+      },
+      "actual": {
+        "maturity": "CONFIRMED",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "ACTIVE",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 1,
+        "exit_session_index": null,
+        "episode_id": "V4_11_R5B_EP:8fdae0dee7aec09f5f7222decb537bcedbc2ee983e086ddf3fdb04bf1456bd15",
+        "transition_reasons": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      },
+      "first_available_scope": "RECONSTRUCTED_NOT_AS_RECORDED",
+      "identity": {
+        "AS_RECORDED": false,
+        "absence_is_delisting_evidence": false,
+        "bao_daily_row_is_identity_authority": false,
+        "board_scope": "CHINEXT",
+        "delist_date": null,
+        "first_available_at_target_proven": false,
+        "identity_status": "IDENTITY_BOUND",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "knowledge_time": "2026-10-01T10:15:06.061971+00:00",
+        "list_date": "2024-10-31",
+        "parent_universe_publication": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f",
+        "reason": null,
+        "security_id": "SEC-C08B6C24E4F39D8E85C03F8588661538",
+        "security_type": "A_STOCK",
+        "source_security_key": "SZ.301628",
+        "trade_date": "2026-09-30"
+      },
+      "competing_explanations": [
+        "既有 episode 的硬失效证据优先，退出不被当天正向标签覆盖。",
+        "日线反弹可能改善短期场景，但不证明旧 episode 恢复；新入组必须满足后续合法状态条件。"
+      ],
+      "counter_changes": {
+        "downgrade_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "expiry_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "market_age": {
+          "prior": 0,
+          "next": 1
+        },
+        "exit_session_index": {
+          "prior": null,
+          "next": null
+        }
+      }
+    },
+    {
+      "entity_id": "SEC-C08B6C24E4F39D8E85C03F8588661538",
+      "trade_date": "2026-10-08",
+      "prior_state": {
+        "maturity": "CONFIRMED",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "ACTIVE",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 1,
+        "exit_session_index": null
+      },
+      "new_facts": {
+        "CONFIRMED": "UNKNOWN",
+        "PREWATCH": "FALSE",
+        "SEED": "FALSE",
+        "WARM": "UNKNOWN",
+        "core_price_damage": "FALSE",
+        "delta3": 2.0079638124715906,
+        "dq5": "UNKNOWN",
+        "episode_invalidation_contract_id": "UNKNOWN",
+        "followup_complete": "UNKNOWN",
+        "frozen_invalidation": "UNKNOWN",
+        "risk": "LOW",
+        "scenario": "UNKNOWN",
+        "suspended": "FALSE"
+      },
+      "expected": {
+        "maturity": "CONFIRMED",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "ACTIVE",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 2,
+        "exit_session_index": null
+      },
+      "actual": {
+        "maturity": "CONFIRMED",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "ACTIVE",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 2,
+        "exit_session_index": null,
+        "episode_id": "V4_11_R5B_EP:8fdae0dee7aec09f5f7222decb537bcedbc2ee983e086ddf3fdb04bf1456bd15",
+        "transition_reasons": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      },
+      "first_available_scope": "RECONSTRUCTED_NOT_AS_RECORDED",
+      "identity": {
+        "AS_RECORDED": false,
+        "absence_is_delisting_evidence": false,
+        "bao_daily_row_is_identity_authority": false,
+        "board_scope": "CHINEXT",
+        "delist_date": null,
+        "first_available_at_target_proven": false,
+        "identity_status": "IDENTITY_BOUND",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "knowledge_time": "2026-10-01T10:15:06.061971+00:00",
+        "list_date": "2024-10-31",
+        "parent_universe_publication": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f",
+        "reason": null,
+        "security_id": "SEC-C08B6C24E4F39D8E85C03F8588661538",
+        "security_type": "A_STOCK",
+        "source_security_key": "SZ.301628",
+        "trade_date": "2026-09-30"
+      },
+      "competing_explanations": [
+        "既有 episode 的硬失效证据优先，退出不被当天正向标签覆盖。",
+        "日线反弹可能改善短期场景，但不证明旧 episode 恢复；新入组必须满足后续合法状态条件。"
+      ],
+      "counter_changes": {
+        "downgrade_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "expiry_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "market_age": {
+          "prior": 1,
+          "next": 2
+        },
+        "exit_session_index": {
+          "prior": null,
+          "next": null
+        }
+      }
+    },
+    {
+      "entity_id": "SEC-C08B6C24E4F39D8E85C03F8588661538",
+      "trade_date": "2026-10-09",
+      "prior_state": {
+        "maturity": "CONFIRMED",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "ACTIVE",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 2,
+        "exit_session_index": null
+      },
+      "new_facts": {
+        "CONFIRMED": "UNKNOWN",
+        "PREWATCH": "FALSE",
+        "SEED": "FALSE",
+        "WARM": "UNKNOWN",
+        "core_price_damage": "TRUE",
+        "delta3": -80.37756571483622,
+        "dq5": "UNKNOWN",
+        "episode_invalidation_contract_id": "UNKNOWN",
+        "followup_complete": "UNKNOWN",
+        "frozen_invalidation": "UNKNOWN",
+        "risk": "LOW",
+        "scenario": "UNKNOWN",
+        "suspended": "FALSE"
+      },
+      "expected": {
+        "maturity": "NONE",
+        "health": "DAMAGED",
+        "validity": "INVALIDATED",
+        "tracking": "FOLLOWUP",
+        "final_eligibility": "FALSE",
+        "state_freshness": "FRESH",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 3,
+        "exit_session_index": 790
+      },
+      "actual": {
+        "maturity": "NONE",
+        "health": "DAMAGED",
+        "validity": "INVALIDATED",
+        "tracking": "FOLLOWUP",
+        "final_eligibility": "FALSE",
+        "state_freshness": "FRESH",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 3,
+        "exit_session_index": 790,
+        "episode_id": "V4_11_R5B_EP:e63ddd5f3dd0374e04aebf8193d1e6888d29ce9a154cc464f16d752205dddfd6",
+        "transition_reasons": [
+          "HARD_INVALIDATION"
+        ]
+      },
+      "first_available_scope": "RECONSTRUCTED_NOT_AS_RECORDED",
+      "identity": {
+        "AS_RECORDED": false,
+        "absence_is_delisting_evidence": false,
+        "bao_daily_row_is_identity_authority": false,
+        "board_scope": "CHINEXT",
+        "delist_date": null,
+        "first_available_at_target_proven": false,
+        "identity_status": "IDENTITY_BOUND",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "knowledge_time": "2026-10-01T10:15:06.061971+00:00",
+        "list_date": "2024-10-31",
+        "parent_universe_publication": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f",
+        "reason": null,
+        "security_id": "SEC-C08B6C24E4F39D8E85C03F8588661538",
+        "security_type": "A_STOCK",
+        "source_security_key": "SZ.301628",
+        "trade_date": "2026-09-30"
+      },
+      "competing_explanations": [
+        "既有 episode 的硬失效证据优先，退出不被当天正向标签覆盖。",
+        "日线反弹可能改善短期场景，但不证明旧 episode 恢复；新入组必须满足后续合法状态条件。"
+      ],
+      "counter_changes": {
+        "downgrade_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "expiry_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "market_age": {
+          "prior": 2,
+          "next": 3
+        },
+        "exit_session_index": {
+          "prior": null,
+          "next": 790
+        }
+      }
+    },
+    {
+      "entity_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+      "trade_date": "2026-09-28",
+      "prior_state": null,
+      "new_facts": {
+        "CONFIRMED": "UNKNOWN",
+        "PREWATCH": "FALSE",
+        "SEED": "FALSE",
+        "WARM": "UNKNOWN",
+        "core_price_damage": "TRUE",
+        "delta3": -37.49757722273537,
+        "dq5": "UNKNOWN",
+        "episode_invalidation_contract_id": "UNKNOWN",
+        "followup_complete": "UNKNOWN",
+        "frozen_invalidation": "UNKNOWN",
+        "risk": "LOW",
+        "scenario": "UNKNOWN",
+        "suspended": "FALSE"
+      },
+      "expected": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 0,
+        "exit_session_index": null
+      },
+      "actual": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 0,
+        "exit_session_index": null,
+        "episode_id": null,
+        "transition_reasons": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      },
+      "first_available_scope": "RECONSTRUCTED_NOT_AS_RECORDED",
+      "identity": {
+        "AS_RECORDED": false,
+        "absence_is_delisting_evidence": false,
+        "bao_daily_row_is_identity_authority": false,
+        "board_scope": "SH_MAIN",
+        "delist_date": null,
+        "first_available_at_target_proven": false,
+        "identity_status": "IDENTITY_BOUND",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "knowledge_time": "2026-10-01T10:15:06.061971+00:00",
+        "list_date": "1996-05-28",
+        "parent_universe_publication": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f",
+        "reason": null,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "security_type": "A_STOCK",
+        "source_security_key": "SH.600703",
+        "trade_date": "2026-09-30"
+      },
+      "competing_explanations": [
+        "现有已见事实可能偏弱，但必需输入未知，尚不足以作正式否定。",
+        "部分条件也可能支持后续改善；缺源期间无法裁决，先补真实输入，不以 UNKNOWN=FALSE 排除。"
+      ],
+      "counter_changes": {
+        "downgrade_count": {
+          "prior": null,
+          "next": 0
+        },
+        "expiry_count": {
+          "prior": null,
+          "next": 0
+        },
+        "market_age": {
+          "prior": null,
+          "next": 0
+        },
+        "exit_session_index": {
+          "prior": null,
+          "next": null
+        }
+      }
+    },
+    {
+      "entity_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+      "trade_date": "2026-09-29",
+      "prior_state": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 0,
+        "exit_session_index": null
+      },
+      "new_facts": {
+        "CONFIRMED": "UNKNOWN",
+        "PREWATCH": "FALSE",
+        "SEED": "FALSE",
+        "WARM": "UNKNOWN",
+        "core_price_damage": "FALSE",
+        "delta3": -26.760586376492693,
+        "dq5": "UNKNOWN",
+        "episode_invalidation_contract_id": "UNKNOWN",
+        "followup_complete": "UNKNOWN",
+        "frozen_invalidation": "UNKNOWN",
+        "risk": "LOW",
+        "scenario": "UNKNOWN",
+        "suspended": "FALSE"
+      },
+      "expected": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 1,
+        "exit_session_index": null
+      },
+      "actual": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 1,
+        "exit_session_index": null,
+        "episode_id": null,
+        "transition_reasons": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      },
+      "first_available_scope": "RECONSTRUCTED_NOT_AS_RECORDED",
+      "identity": {
+        "AS_RECORDED": false,
+        "absence_is_delisting_evidence": false,
+        "bao_daily_row_is_identity_authority": false,
+        "board_scope": "SH_MAIN",
+        "delist_date": null,
+        "first_available_at_target_proven": false,
+        "identity_status": "IDENTITY_BOUND",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "knowledge_time": "2026-10-01T10:15:06.061971+00:00",
+        "list_date": "1996-05-28",
+        "parent_universe_publication": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f",
+        "reason": null,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "security_type": "A_STOCK",
+        "source_security_key": "SH.600703",
+        "trade_date": "2026-09-30"
+      },
+      "competing_explanations": [
+        "现有已见事实可能偏弱，但必需输入未知，尚不足以作正式否定。",
+        "部分条件也可能支持后续改善；缺源期间无法裁决，先补真实输入，不以 UNKNOWN=FALSE 排除。"
+      ],
+      "counter_changes": {
+        "downgrade_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "expiry_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "market_age": {
+          "prior": 0,
+          "next": 1
+        },
+        "exit_session_index": {
+          "prior": null,
+          "next": null
+        }
+      }
+    },
+    {
+      "entity_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+      "trade_date": "2026-09-30",
+      "prior_state": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 1,
+        "exit_session_index": null
+      },
+      "new_facts": {
+        "CONFIRMED": "UNKNOWN",
+        "PREWATCH": "FALSE",
+        "SEED": "FALSE",
+        "WARM": "UNKNOWN",
+        "core_price_damage": "FALSE",
+        "delta3": -2.784140035633566,
+        "dq5": "UNKNOWN",
+        "episode_invalidation_contract_id": "UNKNOWN",
+        "followup_complete": "UNKNOWN",
+        "frozen_invalidation": "UNKNOWN",
+        "risk": "LOW",
+        "scenario": "UNKNOWN",
+        "suspended": "FALSE"
+      },
+      "expected": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 2,
+        "exit_session_index": null
+      },
+      "actual": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 2,
+        "exit_session_index": null,
+        "episode_id": null,
+        "transition_reasons": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      },
+      "first_available_scope": "RECONSTRUCTED_NOT_AS_RECORDED",
+      "identity": {
+        "AS_RECORDED": false,
+        "absence_is_delisting_evidence": false,
+        "bao_daily_row_is_identity_authority": false,
+        "board_scope": "SH_MAIN",
+        "delist_date": null,
+        "first_available_at_target_proven": false,
+        "identity_status": "IDENTITY_BOUND",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "knowledge_time": "2026-10-01T10:15:06.061971+00:00",
+        "list_date": "1996-05-28",
+        "parent_universe_publication": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f",
+        "reason": null,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "security_type": "A_STOCK",
+        "source_security_key": "SH.600703",
+        "trade_date": "2026-09-30"
+      },
+      "competing_explanations": [
+        "现有已见事实可能偏弱，但必需输入未知，尚不足以作正式否定。",
+        "部分条件也可能支持后续改善；缺源期间无法裁决，先补真实输入，不以 UNKNOWN=FALSE 排除。"
+      ],
+      "counter_changes": {
+        "downgrade_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "expiry_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "market_age": {
+          "prior": 1,
+          "next": 2
+        },
+        "exit_session_index": {
+          "prior": null,
+          "next": null
+        }
+      }
+    },
+    {
+      "entity_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+      "trade_date": "2026-10-08",
+      "prior_state": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 2,
+        "exit_session_index": null
+      },
+      "new_facts": {
+        "CONFIRMED": "UNKNOWN",
+        "PREWATCH": "FALSE",
+        "SEED": "FALSE",
+        "WARM": "UNKNOWN",
+        "core_price_damage": "FALSE",
+        "delta3": 19.03958837443697,
+        "dq5": "UNKNOWN",
+        "episode_invalidation_contract_id": "UNKNOWN",
+        "followup_complete": "UNKNOWN",
+        "frozen_invalidation": "UNKNOWN",
+        "risk": "LOW",
+        "scenario": "UNKNOWN",
+        "suspended": "FALSE"
+      },
+      "expected": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 3,
+        "exit_session_index": null
+      },
+      "actual": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 3,
+        "exit_session_index": null,
+        "episode_id": null,
+        "transition_reasons": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      },
+      "first_available_scope": "RECONSTRUCTED_NOT_AS_RECORDED",
+      "identity": {
+        "AS_RECORDED": false,
+        "absence_is_delisting_evidence": false,
+        "bao_daily_row_is_identity_authority": false,
+        "board_scope": "SH_MAIN",
+        "delist_date": null,
+        "first_available_at_target_proven": false,
+        "identity_status": "IDENTITY_BOUND",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "knowledge_time": "2026-10-01T10:15:06.061971+00:00",
+        "list_date": "1996-05-28",
+        "parent_universe_publication": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f",
+        "reason": null,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "security_type": "A_STOCK",
+        "source_security_key": "SH.600703",
+        "trade_date": "2026-09-30"
+      },
+      "competing_explanations": [
+        "现有已见事实可能偏弱，但必需输入未知，尚不足以作正式否定。",
+        "部分条件也可能支持后续改善；缺源期间无法裁决，先补真实输入，不以 UNKNOWN=FALSE 排除。"
+      ],
+      "counter_changes": {
+        "downgrade_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "expiry_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "market_age": {
+          "prior": 2,
+          "next": 3
+        },
+        "exit_session_index": {
+          "prior": null,
+          "next": null
+        }
+      }
+    },
+    {
+      "entity_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+      "trade_date": "2026-10-09",
+      "prior_state": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 3,
+        "exit_session_index": null
+      },
+      "new_facts": {
+        "CONFIRMED": "UNKNOWN",
+        "PREWATCH": "FALSE",
+        "SEED": "FALSE",
+        "WARM": "UNKNOWN",
+        "core_price_damage": "FALSE",
+        "delta3": 21.70483858718089,
+        "dq5": "UNKNOWN",
+        "episode_invalidation_contract_id": "UNKNOWN",
+        "followup_complete": "UNKNOWN",
+        "frozen_invalidation": "UNKNOWN",
+        "risk": "LOW",
+        "scenario": "UNKNOWN",
+        "suspended": "FALSE"
+      },
+      "expected": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 4,
+        "exit_session_index": null
+      },
+      "actual": {
+        "maturity": "NONE",
+        "health": "UNKNOWN",
+        "validity": "UNKNOWN",
+        "tracking": "CLOSED",
+        "final_eligibility": "UNKNOWN",
+        "state_freshness": "STALE",
+        "downgrade_candidate": null,
+        "downgrade_count": 0,
+        "expiry_count": 0,
+        "improvement_baseline": null,
+        "market_age": 4,
+        "exit_session_index": null,
+        "episode_id": null,
+        "transition_reasons": [
+          "REQUIRED_FACTS_UNKNOWN_PRESERVE"
+        ]
+      },
+      "first_available_scope": "RECONSTRUCTED_NOT_AS_RECORDED",
+      "identity": {
+        "AS_RECORDED": false,
+        "absence_is_delisting_evidence": false,
+        "bao_daily_row_is_identity_authority": false,
+        "board_scope": "SH_MAIN",
+        "delist_date": null,
+        "first_available_at_target_proven": false,
+        "identity_status": "IDENTITY_BOUND",
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+        "knowledge_time": "2026-10-01T10:15:06.061971+00:00",
+        "list_date": "1996-05-28",
+        "parent_universe_publication": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f",
+        "reason": null,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "security_type": "A_STOCK",
+        "source_security_key": "SH.600703",
+        "trade_date": "2026-09-30"
+      },
+      "competing_explanations": [
+        "现有已见事实可能偏弱，但必需输入未知，尚不足以作正式否定。",
+        "部分条件也可能支持后续改善；缺源期间无法裁决，先补真实输入，不以 UNKNOWN=FALSE 排除。"
+      ],
+      "counter_changes": {
+        "downgrade_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "expiry_count": {
+          "prior": 0,
+          "next": 0
+        },
+        "market_age": {
+          "prior": 3,
+          "next": 4
+        },
+        "exit_session_index": {
+          "prior": null,
+          "next": null
+        }
+      }
+    }
+  ],
+  "real_reentry": "NOT_OBSERVED"
+}

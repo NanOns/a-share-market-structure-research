@@ -1,0 +1,42 @@
+{
+  "contract": "CORE_ALGO_UI_CONTINUATION_R2",
+  "BASE_SHA": "0c912c3554667e78ff80df657f43d23453d65768",
+  "T0": "2026-10-09",
+  "prior_evidence": "docs/evidence/core_algo_ui_r1_20261010",
+  "immutable_head_sha": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+  "stages": [
+    {
+      "stage": "A",
+      "contract": [
+        "TASK_CONTRACT_R1 ALG01/02",
+        "REV2 sections62A-69/81.2",
+        "FP01_FP14_LATEST_CONTRACT_INGRESS_AND_GAP_MATRIX"
+      ],
+      "scope": "Stratified stock arithmetic, market full T0 path, recursive rule audit and normalized lineage",
+      "acceptance": "SCOPED_REAL_NUMERIC_PASS; 20276 comparisons, zero differences; full kernels not inferred",
+      "next": "BFF/UI targeted fixes and actual IAB verification"
+    },
+    {
+      "stage": "B",
+      "contract": [
+        "TASK BFF03/UI04",
+        "REV2 sections62A-69",
+        "FP03/06/07/08/11"
+      ],
+      "scope": "Focus INVALIDATED vocabulary repair, full dataset identity/filter/sort, quality diagnostics and old-tool catalog",
+      "acceptance": "SCOPED_BFF_UI_PASS; 42 routes, targeted regression, recorded real IAB paths; gaps tracked",
+      "next": "IAB full current-code UI and transport-negative verification"
+    },
+    {
+      "stage": "C/D",
+      "contract": [
+        "TASK QA05/DELIVERY",
+        "FP11/12/13/14 scoped gates"
+      ],
+      "scope": "Historical date selection, diagnostic scopes, two viewports, transport faults and review artifacts",
+      "acceptance": "ENGINEERING_EVIDENCE_READY; external acceptance not granted",
+      "next": "Byte-verified delivery; remaining five items independently gated"
+    }
+  ],
+  "external_acceptance": "NOT_GRANTED"
+}

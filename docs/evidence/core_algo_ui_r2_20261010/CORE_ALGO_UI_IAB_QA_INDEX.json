@@ -1,0 +1,76 @@
+{
+  "contract": "IAB_QA_R2",
+  "T0": "2026-10-09",
+  "records": 22,
+  "modules": [
+    "diagnostics",
+    "focus",
+    "home",
+    "market",
+    "sectors",
+    "stocks"
+  ],
+  "viewports": [
+    {
+      "width": 1366,
+      "height": 768
+    },
+    {
+      "width": 1920,
+      "height": 1080
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "iab/diagnostics_1366.jpg",
+      "bytes": 40105,
+      "sha256": "e8e805b25b92d6bbc83602ab4cd826f2a0f6827d38c98ebd4b3bc458dfb685df"
+    },
+    {
+      "path": "iab/focus_invalidated_1366.jpg",
+      "bytes": 63448,
+      "sha256": "cd2ca280c0ef87a65552794be5ff1730f48f4ebb65914aa1b742c08c3df3ac96"
+    },
+    {
+      "path": "iab/home_1366.jpg",
+      "bytes": 67609,
+      "sha256": "0b5dd51364fcfb27cd1232c01ae3d3c3e165b9e0d7b60ff3ae2483226f11b014"
+    },
+    {
+      "path": "iab/market_1366.jpg",
+      "bytes": 56117,
+      "sha256": "0976adc56812bb146d122c642fd32a268baa74c349e626b856177cd1add3fdcf"
+    },
+    {
+      "path": "iab/outside_universe_1366.jpg",
+      "bytes": 50583,
+      "sha256": "ec8efc39d703c708495815d2f34b73b9a8575f4dbc43d29c47ebd6a74fc6d3a9"
+    },
+    {
+      "path": "iab/sector_filter_1366.jpg",
+      "bytes": 69879,
+      "sha256": "e44a144f19f94c5cabcb8b528a25635baaa91d7f458801969b69fb2f57a24c00"
+    },
+    {
+      "path": "iab/sector_why_now_1366.jpg",
+      "bytes": 55359,
+      "sha256": "934e960057e8bfe8b4862c417e9ce77b1ed03b0f44a387778128670d44c8bf8d"
+    },
+    {
+      "path": "iab/stock_month_1366.jpg",
+      "bytes": 53547,
+      "sha256": "5410c1f1cad79cf16a7ab279f62b945f4d0c3afbe52a2c75ab5f7fa08738fa46"
+    }
+  ],
+  "evidence": "iab/BROWSER_DOM_RECORDS.json",
+  "transport_scenarios": [
+    "single_route_503_isolation",
+    "single_route_recovery",
+    "context_409",
+    "context_409_recovery",
+    "disconnect_isolation",
+    "disconnect_recovery_with_2s_delay"
+  ],
+  "acceptance": "RECORDED_PATHS_ONLY",
+  "external_acceptance": "NOT_GRANTED"
+}

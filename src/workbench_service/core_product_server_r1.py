@@ -24,7 +24,8 @@ def make_product_handler(root,jobs):
                     with lock:
                         head=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
                         authority=root/'config/core_product_read_authority_r1.json'
-                        signature=hashlib.sha256(head.read_bytes()+(authority.read_bytes() if authority.exists() else b'')).hexdigest()
+                        focus_authority=root/'config/core_product_focus_read_authority_r2.json'
+                        signature=hashlib.sha256(head.read_bytes()+(authority.read_bytes() if authority.exists() else b'')+(focus_authority.read_bytes() if focus_authority.exists() else b'')).hexdigest()
                         changed=any(not p.exists() or (p.stat().st_size,p.stat().st_mtime_ns)!=stat for p,stat in cache.get('sources',{}).items())
                         if signature!=cache.get('signature') or changed:
                             api=accepted_api(root);paths=set()
@@ -35,10 +36,14 @@ def make_product_handler(root,jobs):
                                 elif isinstance(x,list):
                                     for v in x:collect(v)
                             collect(api.candidate);collect(api.snapshot)
+                            identity_head=root/'data/v4/V4_DATA_ACCEPTED_HEAD.json'
+                            paths.add(identity_head);collect(json.loads(identity_head.read_bytes())['identity'])
                             collect(json.loads((root/api.candidate['registry']['path']).read_bytes()))
                             if authority.exists():
                                 a=json.loads(authority.read_bytes());collect(a);collect(json.loads((root/a['manifest']['path']).read_bytes()))
-                            cache.clear();cache.update(signature=signature,bff=CoreProductBFFR1(api,None),sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
+                            if focus_authority.exists():
+                                a=json.loads(focus_authority.read_bytes());collect(a);collect(json.loads((root/a['manifest']['path']).read_bytes()))
+                            cache.clear();cache.update(signature=signature,bff=CoreProductBFFR1(api,jobs),sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
                         code,data=cache['bff'].get(path,{k:v[0] for k,v in params.items()})
                     return self.send(code,data)
                 except (ValueError,KeyError,OSError) as exc:

@@ -22,7 +22,7 @@ export async function stockDetail(main,id,signal){
  const structure=C.el('button','结构锚点与事件');structure.onclick=async()=>C.EvidenceDrawer(await read('stocks/'+id+'/timeline',{limit:200},signal));main.append(focus,structure);
 }
 export function stockExport(signal){
- const box=C.el('div'),button=C.el('button','导出当前筛选全量画像 CSV'),cancel=C.el('button','取消导出'),status=C.el('span');cancel.hidden=true;const exportParams=new URLSearchParams(location.search);exportParams.set('context_token',getContext().context_token);const direct=C.link('浏览器原生下载 CSV','/api/v4/stocks.csv?'+exportParams);direct.download='V4_stocks.csv';box.append(button,cancel,status,direct);
+ const box=C.el('div'),button=C.el('button','导出当前筛选全量画像 CSV'),cancel=C.el('button','取消导出'),status=C.el('span');cancel.hidden=true;box.append(button,cancel,status);
  button.onclick=async()=>{button.disabled=true;cancel.hidden=false;const controller=new AbortController();const abort=()=>controller.abort();signal?.addEventListener('abort',abort,{once:true});cancel.onclick=abort;
  try{const params=Object.fromEntries(new URLSearchParams(location.search));delete params.offset;const rows=[],seen=new Set();let offset=0,total,token;
  do{const d=await read('stocks',{...params,limit:200,offset},controller.signal);if(token&&token!==d.context_token)throw Error('导出期间版本变化，请重试');token=d.context_token;if(total!==undefined&&total!==d.total)throw Error('导出分母变化');total=d.total;

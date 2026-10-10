@@ -39,3 +39,6 @@ Object.assign(states,{EXPANDED:'放大',VERY_EXPANDED:'显著放大',CONTRACTED:
 Object.assign(states,{ROTATION_PULSE:'轮动脉冲',ROTATION_IN:'轮动进入',ROTATION_ACCEPTED:'轮动已接受',ROTATION_EXPANDING:'轮动扩散',ROTATION_REACCELERATING:'轮动再加速',ROTATION_OUT:'轮动退出',ROTATION_FAILED:'轮动失败',RECONSTRUCTED:'重建研究',CLOSED_ONLY_READY:'已结束周期',AS_OF_PARTIAL_READY:'截至当日形成中'});
 
 Object.assign(labels,{quoted_count:'有行情成员数'});
+
+Object.assign(states,{BULLISH_IMPULSE:'上涨结构脉冲'});
+Object.assign(labels,{anchor_ordinal:'同股同日独立锚点序号'});

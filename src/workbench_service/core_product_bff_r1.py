@@ -3,7 +3,7 @@ from pathlib import Path
 from urllib.parse import unquote
 from collections import Counter
 from copy import deepcopy
-import json, sqlite3
+import json, sqlite3, gzip
 from .operational_successor_bff_v1 import OperationalSuccessorBFFV1
 from .r43_operational_bff import owner_cell
 from .stock_views import aggregate
@@ -13,6 +13,56 @@ from workbench_analysis.r43_owner_replay import checked
 CONTRACT='CORE_PRODUCT_BFF_R1'
 
 class CoreProductBFFR1(OperationalSuccessorBFFV1):
+    def focus_projection(self,day):
+        authority=self.api.root/'config/core_product_focus_read_authority_r2.json'
+        if not authority.exists() or day!=self.api.candidate['accepted_trade_date']:return None
+        key=('focus-read-r2',day)
+        if key not in self.api.cache:
+            manifest=json.loads(checked(self.api.root,json.loads(authority.read_bytes())['manifest']).read_bytes())
+            if manifest['T0']!=day or manifest['head']['sha256']!=self.api.token:return None
+            checked(self.api.root,manifest['head']);checked(self.api.root,manifest['implementation'])
+            for ref in manifest['source_bindings'].values():checked(self.api.root,ref)
+            projection=json.loads(gzip.decompress(checked(self.api.root,manifest['projection']).read_bytes()))
+            self.api.cache[key]=(manifest,projection)
+        return self.api.cache[key]
+
+    def source(self,domain,day):
+        pack=self.focus_projection(day) if domain=='forward' else None
+        if not pack:return super().source(domain,day)
+        projection=deepcopy(pack[1]);projection['events']=[e for e in projection['events'] if e['trade_date']==day]
+        return projection
+
+    def get(self,path,query):
+        code,data=self._get_product(path,query)
+        day=query.get('trade_date',self.api.candidate['accepted_trade_date']);pack=self.focus_projection(day)
+        if path=='/api/v4/focus' and code==200:
+            episodes=self.source('forward',day)['episodes'];active={e['entity_id'] for e in episodes if e.get('end_date') is None}
+            stocks={r['entity_id']:r for r in self.project('stocks',day)};groups=Counter();unknown=0
+            for sid in active:
+                sector=stocks.get(sid,{}).get('fields',{}).get('primary_industry',{}).get('value')
+                if sector is None:unknown+=1
+                else:groups[sector]+=1
+            data['sector_exposure']=dict(denominator=len(active),unknown_industry=unknown,items=[dict(sector_id=sid,count=count,share=count/len(active)) for sid,count in sorted(groups.items(),key=lambda x:(-x[1],x[0]))],source=self.api.snapshot['memberships'],scope='Unique active research objects under latest reconstructed primary industry; not holdings, not a probability')
+        if pack:
+            old=self.api.candidate['owners'][day]['forward'];new=pack[0]['projection']
+            def rebind(value):
+                if isinstance(value,dict):
+                    if value.get('path')==old['path'] and value.get('sha256')==old['sha256']:return deepcopy(new)
+                    return {k:(new['sha256'] if k=='source_digest' and v==old['sha256'] else rebind(v)) for k,v in value.items()}
+                if isinstance(value,list):return [rebind(v) for v in value]
+                return value
+            data=rebind(data);data['context']['focus_read_projection_contract']='CORE_PRODUCT_FOCUS_READ_R2'
+            data['context']['focus_read_projection_external_acceptance']='NOT_GRANTED'
+            data['context']['focus_write']=False
+        return code,data
+    def identity_records(self):
+        key=('product-identity',)
+        if key not in self.api.cache:
+            head=json.loads((self.api.root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+            ref=head['identity'];data=json.loads(checked(self.api.root,ref).read_bytes())
+            self.api.cache[key]=(data['records'],ref)
+        return self.api.cache[key]
+
     def pack(self, day):
         key=('product-pack',day)
         if key not in self.api.cache:
@@ -43,12 +93,18 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         d2={r['entity_id']:r for r in self.source('focus',day)} if domain=='stocks' else {}
         profiles={r['security_id']:r for r in self.source('profile',day)} if domain=='stocks' else {}
         sector_native={r['sector_id']:r for r in self.source('sector',day)} if domain=='sectors' else {}
+        identities,identity_ref=self.identity_records() if domain=='stocks' else ([],None)
+        aliases={}
+        for record in identities:
+            aliases.setdefault(record['security_id'],set()).update(str(record.get(k,'')) for k in ('symbol','source_security_key','security_name'))
         registries={r['field_id']:r for filename in ('v4_03_field_registry_v1.json','v4_04_field_registry_v2.json','v4_08_sector_field_registry_r5.json') for r in json.loads((self.api.root/'config'/filename).read_bytes())['fields']}
         for row in data:
             if domain in ('stocks','focus','events'):
                 code=row['symbol'].upper();name=names['stocks'].get(code)
                 if name:row.update(display_name=name,display_name_scope='OBSERVED_DISPLAY_ONLY_NOT_PIT',display_name_source=name_source,display_name_observed_at=names['observed_at'])
             if domain=='stocks':
+                row['search_aliases']=sorted(aliases.get(row['entity_id'],set()))
+                row['alias_source']=identity_ref
                 for k,v in cores.get(row['entity_id'],{}).get('fields',{}).items():
                     row['fields'].setdefault(k,owner_cell(v,self.api.candidate['owners'][day]['core'],'fields.'+k,day))
                 state=d2.get(row['entity_id'],{})
@@ -59,6 +115,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 native=sector_native[row['entity_id']];ref=self.api.candidate['owners'][day]['sector']
                 for key,value,field in [('member_count',len(set(native['member_ids'])),'member_ids (unique)'),('source_member_count',native['current_member_count'],'current_member_count'),('unmapped_count',native['unmapped_count'],'unmapped_count'),('quoted_count',native['quoted_count'],'quoted_count')]:
                     row['fields'][key]=owner_cell(dict(value=value,quality='KNOWN',unit='members'),ref,field,day)
+                for key in ('maturity','health'):
+                    row['fields'].setdefault(key,dict(value='UNKNOWN',quality='SOURCE_INCOMPLETE',reason='DATED_SECTOR_D2_'+key.upper()+'_OWNER_NOT_PRESENT',as_of=day,unit='state',source=None,field=None))
             original={}
             if domain=='stocks':
                 original.update(cores.get(row['entity_id'],{}).get('fields',{}))
@@ -73,8 +131,45 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 for k in ('window_start_trade_date','window_end_trade_date','actual_count','calendar_span','suspended_count','contract_id','parameter_set_id','input_digest','output_digest','evidence','n','k'):
                     if k in rawcell:cell[k]=rawcell[k]
                 if domain=='stocks' and field in original:cell['adjustment_basis']='TDX_NATIVE_AFFINE_QFQ_T0_COORDINATE' if unit in ('adjusted_price','return_ratio') or field.startswith(('ret','ma','atr','prior_high','prior_low')) else cell.get('adjustment_basis')
+        if domain=='events':
+            groups={}
+            for row in data:
+                identity=(row['entity_id'],row['fields'].get('event_type',{}).get('value'),row['fields'].get('created_trade_date',{}).get('value'))
+                groups.setdefault(identity,[]).append(row)
+            for group in groups.values():
+                group.sort(key=lambda r:str(r['fields'].get('anchor_id',{}).get('value')))
+                for index,row in enumerate(group,1):
+                    row['fields']['anchor_ordinal']=owner_cell(dict(value=index,quality='KNOWN',unit='count'),self.api.candidate['owners'][day]['events'],'same-stock same-date same-type anchors sorted by anchor_id',day)
+                    row['anchor_group_count']=len(group)
         self.api.cache[key]=data
         return data
+
+    def page(self,domain,day,q,entity=None,sector=None):
+        """Filter the full dated collection; missing sort values always remain last."""
+        data=self.project(domain,day)
+        if entity:data=[r for r in data if entity in (r['entity_id'],r['symbol']) or entity in r.get('search_aliases',[])]
+        if sector:
+            native=next((r for r in self.source('sector',day) if r['sector_id']==sector),None)
+            members=set(native.get('member_ids',[])) if native else set();data=[r for r in data if r['entity_id'] in members]
+        needle=q.get('q','').strip().casefold()
+        if len(needle)>80:raise ValueError('INVALID_QUERY_BOUND')
+        if needle:data=[r for r in data if any(needle in str(v).casefold() for v in [r['entity_id'],r['display_name'],r['symbol'],*r.get('search_aliases',[])])]
+        for key,field in [('state','scenario' if domain=='stocks' else 'output_state'),('type','sector_type'),('maturity','maturity'),('health','health'),('rotation','output_state'),('quality','quality'),('eligibility','final_eligibility')]:
+            if q.get(key):data=[r for r in data if str(r['fields'].get(field,{}).get('value'))==q[key]]
+        keys=q.get('sort','id').split(',');allowed={'id','name','symbol','state','output_state','sector_rs20_pct','sector_rs5_pct','sector_rs20','sector_rs5','breadth_ret1','breadth_ret5','breadth_ret20','ma20_width','participation_proxy','member_count','close','rps5','rps20'}
+        if len(keys)>4 or any(k.lstrip('-') not in allowed for k in keys):raise ValueError('INVALID_SORT_FIELD')
+        data=sorted(data,key=lambda r:r['entity_id'])
+        for spec in reversed(keys):
+            k=spec.lstrip('-');top={'id':'entity_id','name':'display_name','symbol':'symbol'}.get(k)
+            field=('scenario' if domain=='stocks' else 'output_state') if k=='state' else k
+            value=lambda r:r.get(top) if top else r['fields'].get(field,{}).get('value')
+            known=[r for r in data if value(r) is not None];unknown=[r for r in data if value(r) is None]
+            data=sorted(known,key=value,reverse=spec.startswith('-'))+unknown
+        code,response=self.paged(day,data,q,domain=domain,gap=None)
+        if needle and not data and domain=='stocks':
+            records,ref=self.identity_records();matches=[r for r in records if any(needle==str(r.get(k,'')).casefold() or needle==str(r.get(k,'')).split('.')[-1].casefold() for k in ('symbol','source_security_key','security_name','security_id'))]
+            response['query_explanation']=dict(status='OUT_OF_UNIVERSE' if matches else 'IDENTITY_NOT_FOUND',reason='身份源存在，但不在当前已接受研究证券池；当前池不覆盖北交所等排除范围。' if matches else '当前证券池与已冻结身份源未找到该代码或名称。',source=ref,identities=matches)
+        return response
 
     def paged(self,day,items,q,**payload):
         offset=int(q.get('offset',0));limit=int(q.get('limit',30))
@@ -110,14 +205,14 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         end=max(0,len(data)-offset);start=max(0,end-limit)
         return 200,self.envelope(day,status='READY' if data else 'EMPTY_VALID',items=data[start:end],total=len(data),offset=offset,limit=limit,has_next=start>0,period=period,price_basis=basis,as_of=day,volume_unit='SHARES',amount_unit='CNY',source=manifest['source_bindings']['history'],series_index=manifest['history_index'],adjustment='TDX_NATIVE_AFFINE_T0_COORDINATE' if basis=='QFQ' else 'NONE',historical_membership='RECONSTRUCTED_NOT_STRICT_PIT',earliest_valid_date=bars[0]['trade_date'] if bars else None)
 
-    def get(self,path,query):
+    def _get_product(self,path,query):
         q=dict(query);q.setdefault('trade_date',self.api.candidate['accepted_trade_date']);day=q['trade_date']
         # Base route validation applies before any product-specific read.
         super().get('/api/v4/context',q)
         if path!='/api/v4/context' and q.get('context_token')!=self.api.token:raise ValueError('CONTEXT_TOKEN_MISMATCH')
         p=[unquote(x) for x in path.removeprefix('/api/v4/').split('/')]
         if p[0] in ('stocks','focus') and len(p)>1 and p[1] not in ('events',):
-            matches=[r['entity_id'] for r in self.project('stocks',day) if p[1] in (r['entity_id'],r['symbol'],r['symbol'].split('.')[-1])]
+            matches=sorted({r['entity_id'] for r in self.project('stocks',day) if p[1] in (r['entity_id'],r['symbol'],r['symbol'].split('.')[-1],*r.get('search_aliases',[]))})
             if len(matches)==1:
                 p[1]=matches[0];path='/api/v4/'+'/'.join(p)
         if p[0]=='stocks' and len(p)==3 and p[2]=='chart':return self.chart(day,p[1],q)
@@ -138,7 +233,20 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 if d>day:continue
                 for r in self.source('events',d):
                     if r.get('security_id')==p[1] and r.get('created_trade_date','9999')<=day:history.append(dict(r,source=self.api.candidate['owners'][d]['events']))
-            return self.paged(day,history,q,contract_id='STRUCTURE_OWNER_TIMELINE_READ_R1',PIT_ELIGIBLE=False)
+            unique={}
+            for row in history:unique[(row.get('event_id'),row.get('observation_revision'))]=row
+            history=sorted(unique.values(),key=lambda r:(r['created_trade_date'],r.get('event_id',''),r.get('observation_revision','')))
+            return self.paged(day,history,q,contract_id='STRUCTURE_OWNER_TIMELINE_READ_R2',dedup_key=['event_id','observation_revision'],PIT_ELIGIBLE=False)
+        if p[0]=='sectors' and len(p)==2:
+            code,data=super().get(path,q)
+            if code!=200:return code,data
+            row=next((r for r in self.source('rotation',day) if r['sector_id']==p[1]),None)
+            rotation=row.get('rotation',{}) if row else {}
+            data['why_now']=dict(prior_state=rotation.get('prior_rotation_state'),current_state=rotation.get('output_state'),
+                reason_codes=rotation.get('reason_codes',[]),predicates=rotation.get('predicates',{}),
+                fields={k:rotation.get('fields',{}).get(k) for k in ('dq5','breadth_delta1','breadth_delta3','ma20_delta3','base_seed_width_adjusted')},
+                source=self.api.candidate['owners'][day]['rotation'],scope='Observed reconstructed rule facts; not strict PIT or independently accepted full episode reduction')
+            return code,data
         if p[0]=='sectors' and len(p)==3 and p[2] in ('timeline','rotation-timeline'):
             data=[]
             for d in self.api.candidate['published_sessions']:
@@ -202,7 +310,25 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             return code,data
         if p[0]=='diagnostics' and len(p)==2 and p[1] in ('sources','health','contracts','fep'):
             if p[1]=='fep':return self.missing(day,'/'.join(p),'DATED_FEP_MODEL_RESULT_NOT_PRESENT')
-            return 200,self.envelope(day,status='READY',items=[dict(module=domain,record_count=len(self.project(domain,day)),as_of=day,unknown_fields={k:sum(r['fields'].get(k,{}).get('value') is None for r in self.project(domain,day)) for k in sorted({k for r in self.project(domain,day) for k in r['fields']})}) for domain in ('stocks','sectors','focus')] if p[1]=='health' else [],sources=self.api.candidate['owners'][day],contracts={k:refs for k,refs in self.api.candidate.get('accepted_algorithm_bindings',{}).items()} if isinstance(self.api.candidate.get('accepted_algorithm_bindings'),dict) else self.api.candidate.get('accepted_algorithm_bindings'),amount_authority='NATIVE_TDX_CNY; BAOSTOCK_DIFFERENCE_AUDIT_OPEN',PIT_ELIGIBLE=False)
+            health=[]
+            if p[1]=='health':
+                for domain in ('stocks','sectors','focus'):
+                    rows=self.project(domain,day);keys=sorted({k for r in rows for k in r['fields']});unknown={};qualities={}
+                    for key in keys:
+                        cells=[r['fields'].get(key,{}) for r in rows];qualities[key]=dict(Counter(c.get('quality','FIELD_MISSING') for c in cells))
+                        count=sum(c.get('value') in (None,'UNKNOWN') or c.get('quality') in ('UNKNOWN','NOT_IMPLEMENTED','SOURCE_INCOMPLETE','PENDING') for c in cells)
+                        if count:unknown[key]=count
+                    health.append(dict(module=domain,record_count=len(rows),as_of=day,unknown_fields=unknown,field_quality_counts=qualities,quality_rule='Null, UNKNOWN literal, explicit unavailable quality; reconstructed known values remain separately identified'))
+            return 200,self.envelope(day,status='READY',items=health,sources=self.api.candidate['owners'][day],contracts=self.api.candidate.get('accepted_algorithm_bindings'),amount_authority='NATIVE_TDX_CNY; BAOSTOCK_DIFFERENCE_AUDIT_OPEN',PIT_ELIGIBLE=False)
+        if p==['diagnostics','jobs']:
+            if self.legacy is None or not hasattr(self.legacy,'status'):return self.missing(day,'/'.join(p),'RUNTIME_OPERATIONS_STATUS_PROVIDER_NOT_BOUND')
+            return 200,self.envelope(day,status='READY',operations=self.legacy.status(),source='/api/operations/status',scope='REQUEST_TIME_RUNTIME_STATUS; NOT_DATED_FACTOR_OWNER',items=[])
+        if p==['diagnostics','legacy']:
+            policy=json.loads((self.api.root/'config/v4_legacy_release_scope_v1.json').read_bytes())
+            return 200,self.envelope(day,status='READY',items=[dict(legacy='旧版研究摘要',current='独立历史入口，保留原日期',href='/v4/legacy-summary'),dict(legacy='旧版 V4 历史读域',current='2026-09-30 独立上下文',href='/api/v4/original-0930/context')],scope='NAVIGATION_CATALOG_ONLY; NOT_CURRENT_FACTS',policy=policy,source='config/v4_legacy_release_scope_v1.json')
+        if p==['diagnostics','shadow']:
+            policy=json.loads((self.api.root/'config/v4_17_shadow_ui_source_v1.json').read_bytes())
+            return 200,self.envelope(day,status='READY',capability_status=policy['status'],items=[],policy=policy,source='config/v4_17_shadow_ui_source_v1.json',href='/v4/shadow',scope='CAPABILITY_DIAGNOSTIC_ONLY; NO_REAL_SHADOW_DATA')
         if p[0] in ('replay','compare'):
             if p[0]=='replay':return self.missing(day,'replay','STRICT_PIT_FIRST_AVAILABLE_EVIDENCE_NOT_PRESENT')
             mode=q.get('mode','');left=q.get('left');right=q.get('right');asof=q.get('as_of',day)

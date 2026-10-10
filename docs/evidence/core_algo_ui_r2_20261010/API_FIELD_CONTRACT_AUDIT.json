@@ -1,0 +1,6842 @@
+{
+  "contract_id": "CORE_PRODUCT_API_FIELD_AUDIT_R2",
+  "observed_at": "2026-10-10T01:28:39.245233+00:00",
+  "context": {
+    "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+    "taxonomy": "TDX_INDUSTRY_CONCEPT",
+    "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+    "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+    "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+    "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+    "AS_RECORDED": false,
+    "PIT_ELIGIBLE": false,
+    "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+    "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+    "survivorship_bias_risk": true,
+    "trade_date": "2026-10-09",
+    "contract_id": "V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1",
+    "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+    "publication_id": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+    "accepted_trade_date": "2026-10-09",
+    "data_cutoff_date": "2026-10-09",
+    "available_trade_dates": [
+      "2026-09-28",
+      "2026-09-29",
+      "2026-09-30",
+      "2026-10-08",
+      "2026-10-09"
+    ],
+    "membership_snapshot": {
+      "bytes": 2281,
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json",
+      "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+    },
+    "historical_PIT_permission": false,
+    "read_scope": "USER_AUTHORIZED_OPERATIONAL_DAILY",
+    "production_accepted": true,
+    "independent_external_acceptance": false,
+    "external_domain_disposition": {
+      "rotation": "VALIDATION_ONGOING",
+      "forward": "VALIDATION_ONGOING"
+    },
+    "rotation_validation_state": "VALIDATION_ONGOING",
+    "release_id": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+    "model_namespace": "TDX_INDUSTRY_CONCEPT",
+    "data_updated_at": "2026-10-09T11:56:56.437273+00:00",
+    "scoped_release": true,
+    "operational_release_scope": [
+      "stocks_daily",
+      "sectors_current_facts",
+      "market_current",
+      "focus_read_corrected",
+      "diagnostics"
+    ],
+    "domain_readiness": {
+      "focus": {
+        "earliest_valid_date": "2026-09-28"
+      }
+    },
+    "read_source_label": "通达信最新成员回算；非历史当日成员",
+    "bff_contract_id": "CORE_PRODUCT_BFF_R1",
+    "product_engineering_acceptance": "EXTERNAL_PENDING",
+    "focus_write": false,
+    "focus_read_projection_contract": "CORE_PRODUCT_FOCUS_READ_R2",
+    "focus_read_projection_external_acceptance": "NOT_GRANTED"
+  },
+  "routes": [
+    {
+      "route": "/api/operations/status",
+      "http_status": 200,
+      "business_status": "ENVELOPE_READ",
+      "role_in_page": "日更和处理状态诊断",
+      "field_schema": {
+        "membership_mode": "str",
+        "taxonomy": "str",
+        "membership_snapshot_id": "str",
+        "membership_observed_at": "str",
+        "member_set_asof": "str",
+        "knowledge_lineage": "str",
+        "AS_RECORDED": "bool",
+        "PIT_ELIGIBLE": "bool",
+        "HISTORICAL_FIRST_AVAILABLE_PROVEN": "bool",
+        "production_eligible_scope": "str",
+        "survivorship_bias_risk": "bool",
+        "trade_date": "str",
+        "contract_id": "str",
+        "context_token": "str",
+        "publication_id": "str",
+        "accepted_trade_date": "str",
+        "data_cutoff_date": "str",
+        "available_trade_dates": "list",
+        "membership_snapshot": "dict",
+        "historical_PIT_permission": "bool",
+        "read_scope": "str",
+        "production_accepted": "bool",
+        "independent_external_acceptance": "bool",
+        "external_domain_disposition": "dict",
+        "rotation_validation_state": "str",
+        "authorization_mode": "str",
+        "last_accepted_trade_date": "str",
+        "data_head_digest": "str",
+        "source_revision": "str",
+        "data_updated_at": "str",
+        "stage": "str",
+        "namespace": "str",
+        "as_of": "str",
+        "capability_permissions": "dict",
+        "strict_pit_legacy_trade_date": "str",
+        "legacy_strict_pit_date": "str",
+        "strict_pit_context_token": "str",
+        "current_operational_trade_date": "str",
+        "operational_accepted_trade_date": "str",
+        "control_date_source": "str",
+        "operational_context": "dict",
+        "legacy_strict_pit_context": "dict",
+        "production_permission": "dict",
+        "production_permission_scope": "str",
+        "field_migration": "dict",
+        "context": "dict",
+        "service_state": "str",
+        "service_mode": "str",
+        "service_control_contract": "str",
+        "product_version": "str",
+        "default_ui": "str",
+        "daily_update": "dict",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": [],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 6.5,
+      "before": {
+        "http_status": 200,
+        "business_status": null,
+        "reason": null,
+        "coverage_count": null
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/context",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 context 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "counts": "dict",
+        "gaps": "list",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": [],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 180.0,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": null
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/home",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 home 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "counts": "dict",
+        "market": "dict",
+        "gaps": "list",
+        "rotations": "list",
+        "sector_changes": "list",
+        "events": "list",
+        "changes": "list",
+        "change_total": "int",
+        "risks": "list",
+        "net_information_count": "int",
+        "persistent_count": "int",
+        "change_scope": "str",
+        "sector_change_total": "int",
+        "rotation_total": "int",
+        "source_bindings": "dict",
+        "rotation_validation": "str",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": {
+        "stock_changes": {
+          "bytes": 5386974,
+          "path": "data/v4/core_product_focus_read_r2/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/FOCUS.json.gz",
+          "sha256": "7e51e6d8d1d60376431b1838564415d9dc30efde10f76ac5134c6a58006d9864"
+        },
+        "sector_changes": {
+          "bytes": 3477077,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/rotation.jsonl.gz",
+          "sha256": "f0860807edc9fe85d85c2259a375d99e8bc2c1cc3c6c03c63f2f47eecb9551f6"
+        }
+      },
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 2204.6,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": null
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/stocks",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 stocks 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "domain": "str",
+        "gap": "NoneType",
+        "item_fields": {
+          "amount": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "CNY"
+            ]
+          },
+          "amount_ratio20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "amount_ratio5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "amount_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "atr20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "atr5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "atr_ratio": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "bias20_atr": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ATR_multiple"
+            ]
+          },
+          "close": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "CNY"
+            ]
+          },
+          "clv": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "compression_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "core_extension_risk": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "core_participation_result": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "core_price_damage": {
+            "value_types": [
+              "bool"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "boolean"
+            ]
+          },
+          "detector_statuses": {
+            "value_types": [
+              "dict"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "dist_high20_atr": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ATR_multiple"
+            ]
+          },
+          "drawdown20_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "drawdown60_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "final_eligibility": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN",
+              "UNKNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "health": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN",
+              "UNKNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "hh_progress": {
+            "value_types": [
+              "bool"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "boolean"
+            ]
+          },
+          "hhv20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "hhv5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "hhv60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "high": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "CNY"
+            ]
+          },
+          "ll_progress": {
+            "value_types": [
+              "bool"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "boolean"
+            ]
+          },
+          "llv20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "llv5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "llv60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "low": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "CNY"
+            ]
+          },
+          "ma10": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "ma20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "ma5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "ma60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "ma_structure_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "maturity": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "minimum_liquidity": {
+            "value_types": [
+              "bool"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "flag"
+            ]
+          },
+          "monthly_trend_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "near_high20_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "near_high60_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "open": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "CNY"
+            ]
+          },
+          "pos250": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "pos60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "position_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "primary_industry": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "prior60_percentile": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "percentile_points"
+            ]
+          },
+          "prior_high20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "prior_high5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "prior_high60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "prior_low20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "prior_low5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "prior_low60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "range_ratio": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "regime_ui": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "UNKNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "rel_market_1": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "rel_market_3": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "rel_market_5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "relative_market_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "relative_sector_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "ret1": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "ret20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "ret3": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "ret5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "rps20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "percentage_points"
+            ]
+          },
+          "rps20_delta3": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "percentage_points"
+            ]
+          },
+          "rps5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "percentage_points"
+            ]
+          },
+          "rps5_delta1": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "percentage_points"
+            ]
+          },
+          "rps5_delta3": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "percentage_points"
+            ]
+          },
+          "scenario": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "severe_extension": {
+            "value_types": [
+              "bool"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "flag"
+            ]
+          },
+          "slope20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "dimensionless"
+            ]
+          },
+          "slope60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "dimensionless"
+            ]
+          },
+          "tr": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "tracking": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "transition_reasons": {
+            "value_types": [
+              "list"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "trend_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "unknown_predicates": {
+            "value_types": [
+              "list"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "validity": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN",
+              "UNKNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "vol20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "log_return_std"
+            ]
+          },
+          "vol5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "log_return_std"
+            ]
+          },
+          "vol_ratio": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "volume": {
+            "value_types": [
+              "int"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "SHARES"
+            ]
+          },
+          "volume_ratio20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "volume_ratio5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "volume_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "weekly_trend_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          }
+        }
+      },
+      "coverage_count": 5224,
+      "source_binding": [
+        {
+          "bytes": 48046983,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "f5de1f924d222ac591f2f95059f2bec78c84541c72b18c1a328973311d1d2c00"
+        },
+        {
+          "bytes": 48046983,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "f5de1f924d222ac591f2f95059f2bec78c84541c72b18c1a328973311d1d2c00"
+        },
+        {
+          "bytes": 48046983,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "f5de1f924d222ac591f2f95059f2bec78c84541c72b18c1a328973311d1d2c00"
+        }
+      ],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 143.2,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": 5224
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/sectors",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 sectors 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "domain": "str",
+        "gap": "NoneType",
+        "item_fields": {
+          "base_seed_width_adjusted": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "breadth_delta1": {
+            "value_types": [
+              "NoneType",
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "breadth_delta3": {
+            "value_types": [
+              "NoneType",
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "breadth_ret1": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "breadth_ret20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "breadth_ret5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "dq5": {
+            "value_types": [
+              "NoneType",
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "percentile points"
+            ]
+          },
+          "entered_count": {
+            "value_types": [
+              "NoneType",
+              "int"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "members"
+            ]
+          },
+          "health": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "SOURCE_INCOMPLETE"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "ma20_delta1": {
+            "value_types": [
+              "NoneType",
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "ma20_delta3": {
+            "value_types": [
+              "NoneType",
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "ma20_width": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "maturity": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "SOURCE_INCOMPLETE"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "mdd20": {
+            "value_types": [
+              "NoneType"
+            ],
+            "qualities": [
+              "UNKNOWN"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "member_count": {
+            "value_types": [
+              "int"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "members"
+            ]
+          },
+          "membership_ready": {
+            "value_types": [
+              "bool"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "bool"
+            ]
+          },
+          "net_entered_count": {
+            "value_types": [
+              "NoneType",
+              "int"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "members"
+            ]
+          },
+          "output_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "VALIDATION_ONGOING"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "participation_proxy": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "pos60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "prior_rotation_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "VALIDATION_ONGOING"
+            ],
+            "units": [
+              "enum"
+            ]
+          },
+          "quoted_count": {
+            "value_types": [
+              "int"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "members"
+            ]
+          },
+          "rank_velocity3": {
+            "value_types": [
+              "NoneType",
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "percentile points"
+            ]
+          },
+          "sector_member_count": {
+            "value_types": [
+              "int"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "members"
+            ]
+          },
+          "sector_quote_coverage": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "sector_rs1": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "sector_rs20": {
+            "value_types": [
+              "NoneType",
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "sector_rs20_pct": {
+            "value_types": [
+              "NoneType",
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "sector_rs5": {
+            "value_types": [
+              "NoneType",
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "percentile points"
+            ]
+          },
+          "sector_rs5_pct": {
+            "value_types": [
+              "NoneType",
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "percentile points"
+            ]
+          },
+          "sector_rs60": {
+            "value_types": [
+              "NoneType"
+            ],
+            "qualities": [
+              "UNKNOWN"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "sector_rs60_pct": {
+            "value_types": [
+              "NoneType"
+            ],
+            "qualities": [
+              "UNKNOWN"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "sector_type": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "seed_retention": {
+            "value_types": [
+              "NoneType",
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "seed_width": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "source_member_count": {
+            "value_types": [
+              "int"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "members"
+            ]
+          },
+          "strong_member": {
+            "value_types": [
+              "NoneType",
+              "list"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "member_set"
+            ]
+          },
+          "strong_member_retention": {
+            "value_types": [
+              "NoneType",
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "top1_concentration": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "top3_concentration": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "unmapped_count": {
+            "value_types": [
+              "int"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "members"
+            ]
+          }
+        }
+      },
+      "coverage_count": 400,
+      "source_binding": [
+        {
+          "bytes": 1710140,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/native.jsonl.gz",
+          "sha256": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85"
+        },
+        {
+          "bytes": 1710140,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/native.jsonl.gz",
+          "sha256": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85"
+        },
+        {
+          "bytes": 1710140,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/native.jsonl.gz",
+          "sha256": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85"
+        }
+      ],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 192.8,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": 400
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/focus",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 focus 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "domain": "str",
+        "gap": "NoneType",
+        "sector_exposure": "dict",
+        "item_fields": {
+          "T0": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "best_confirmed_state": {
+            "value_types": [
+              "NoneType",
+              "str"
+            ],
+            "qualities": [
+              "KNOWN",
+              "UNKNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "end_date": {
+            "value_types": [
+              "NoneType"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "event": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "membership": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "path_resolution": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "validity": {
+            "value_types": [
+              "NoneType",
+              "str"
+            ],
+            "qualities": [
+              "KNOWN",
+              "UNKNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          }
+        }
+      },
+      "coverage_count": 2805,
+      "source_binding": [
+        {
+          "bytes": 5386974,
+          "path": "data/v4/core_product_focus_read_r2/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/FOCUS.json.gz",
+          "sha256": "7e51e6d8d1d60376431b1838564415d9dc30efde10f76ac5134c6a58006d9864"
+        },
+        {
+          "bytes": 5386974,
+          "path": "data/v4/core_product_focus_read_r2/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/FOCUS.json.gz",
+          "sha256": "7e51e6d8d1d60376431b1838564415d9dc30efde10f76ac5134c6a58006d9864"
+        },
+        {
+          "bytes": 5386974,
+          "path": "data/v4/core_product_focus_read_r2/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/FOCUS.json.gz",
+          "sha256": "7e51e6d8d1d60376431b1838564415d9dc30efde10f76ac5134c6a58006d9864"
+        }
+      ],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 805.5,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": 2805
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/focus/events",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 focus 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "source": "dict",
+        "contract_id": "str",
+        "legacy_history": "str",
+        "item_fields": {}
+      },
+      "coverage_count": 2805,
+      "source_binding": {
+        "bytes": 5386974,
+        "path": "data/v4/core_product_focus_read_r2/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/FOCUS.json.gz",
+        "sha256": "7e51e6d8d1d60376431b1838564415d9dc30efde10f76ac5134c6a58006d9864"
+      },
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 791.7,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": 2805
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/market",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 market 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "membership_mode": "str",
+        "taxonomy": "str",
+        "membership_snapshot_id": "str",
+        "membership_observed_at": "str",
+        "member_set_asof": "str",
+        "knowledge_lineage": "str",
+        "AS_RECORDED": "bool",
+        "PIT_ELIGIBLE": "bool",
+        "HISTORICAL_FIRST_AVAILABLE_PROVEN": "bool",
+        "production_eligible_scope": "str",
+        "survivorship_bias_risk": "bool",
+        "trade_date": "str",
+        "publication_id": "str",
+        "domain": "str",
+        "status": "str",
+        "validation_state": "str",
+        "independent_external_acceptance": "bool",
+        "lineage": "str",
+        "membership_snapshot": "dict",
+        "rows": "dict",
+        "total_by_collection": "dict",
+        "offset": "int",
+        "limit": "int",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": [],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 94.8,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": null
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/market/breadth",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 market 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "data": "dict",
+        "source": "dict",
+        "contract_id": "str",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": {
+        "core": {
+          "bytes": 19792536,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+          "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+        },
+        "history": {
+          "bytes": 67380907,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/history.jsonl.gz",
+          "sha256": "1297fb01a999165f117afec1660cbb2549366f51030ecf09ba237b9e88607b24"
+        },
+        "limits_0": {
+          "bytes": 257002,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/daily_price_limits_v1.jsonl.gz",
+          "sha256": "446ff3b24cdb6e9ee80819c03938a43607049a69c61d036d885b2e3e407f32d5"
+        },
+        "limits_1": {
+          "bytes": 256491,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-08/daily_price_limits_v1.jsonl.gz",
+          "sha256": "faf73305462a7deee91a83e278be54b6d76f57a9f85330310dc66960ac3af317"
+        },
+        "market": {
+          "bytes": 5925,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/market_owner_candidate_v2.json",
+          "sha256": "327c4d3dfbdf6a20219a14a86c507d413933da3ebaba39bc708f1bfcdb7a8146"
+        },
+        "names": {
+          "bytes": 1355970,
+          "path": "data/v4/display_names/a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f/names.json",
+          "sha256": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+        },
+        "package": {
+          "bytes": 551726664,
+          "path": "data/v4/dynamic_daily_sources/tdx/20261009/sha256-635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6/hsjday.zip",
+          "sha256": "635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6"
+        },
+        "raw": {
+          "bytes": 242313,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/raw.jsonl.gz",
+          "sha256": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5"
+        }
+      },
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 92.0,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE | DATED_OPERATIONAL_MARKET_BREADTH_OWNER | FP09",
+        "coverage_count": 0
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/market/indices",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 market 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "source": "dict",
+        "item_fields": {}
+      },
+      "coverage_count": 5,
+      "source_binding": {
+        "bytes": 551726664,
+        "path": "data/v4/dynamic_daily_sources/tdx/20261009/sha256-635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6/hsjday.zip",
+        "sha256": "635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6"
+      },
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 94.0,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE | DATED_OPERATIONAL_MARKET_INDICES_OWNER | FP09",
+        "coverage_count": 0
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/market/limits",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 market 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "counts": "dict",
+        "source": "dict",
+        "item_fields": {}
+      },
+      "coverage_count": 5224,
+      "source_binding": {
+        "bytes": 257002,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/daily_price_limits_v1.jsonl.gz",
+        "sha256": "446ff3b24cdb6e9ee80819c03938a43607049a69c61d036d885b2e3e407f32d5"
+      },
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 93.2,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE | DATED_OPERATIONAL_MARKET_LIMITS_OWNER | FP09",
+        "coverage_count": 0
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/market/ladders",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 market 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "source": "dict",
+        "intraday_touch": "str",
+        "item_fields": {}
+      },
+      "coverage_count": 72,
+      "source_binding": {
+        "limits_0": {
+          "bytes": 257002,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/daily_price_limits_v1.jsonl.gz",
+          "sha256": "446ff3b24cdb6e9ee80819c03938a43607049a69c61d036d885b2e3e407f32d5"
+        },
+        "limits_1": {
+          "bytes": 256491,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-08/daily_price_limits_v1.jsonl.gz",
+          "sha256": "faf73305462a7deee91a83e278be54b6d76f57a9f85330310dc66960ac3af317"
+        }
+      },
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 113.0,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE | DATED_OPERATIONAL_MARKET_LADDERS_OWNER | FP09",
+        "coverage_count": 0
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/events",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 events 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "domain": "str",
+        "gap": "NoneType",
+        "item_fields": {
+          "anchor_id": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "anchor_ordinal": {
+            "value_types": [
+              "int"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "count"
+            ]
+          },
+          "available_at": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "candidate_only": {
+            "value_types": [
+              "bool"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "OWNER_UNIT_NOT_DECLARED"
+            ]
+          },
+          "contract_id": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "created_trade_date": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "event_id": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "event_type": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "frozen_invalidation_ast": {
+            "value_types": [
+              "dict"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "observation_revision": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "parameter_set_digest": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "prior_session_event_id": {
+            "value_types": [
+              "NoneType"
+            ],
+            "qualities": [
+              "UNKNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "quality": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "source_fact_digest": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          }
+        }
+      },
+      "coverage_count": 913,
+      "source_binding": [
+        {
+          "bytes": 781507,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/structure/events.jsonl",
+          "sha256": "ccd2b8f561cb9d5158f162f28520ed21b50ceee3c008da20ca480ac637f70bb5"
+        },
+        {
+          "bytes": 781507,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/structure/events.jsonl",
+          "sha256": "ccd2b8f561cb9d5158f162f28520ed21b50ceee3c008da20ca480ac637f70bb5"
+        },
+        {
+          "bytes": 781507,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/structure/events.jsonl",
+          "sha256": "ccd2b8f561cb9d5158f162f28520ed21b50ceee3c008da20ca480ac637f70bb5"
+        }
+      ],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 122.1,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": 913
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/sources",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 sources 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "sources": "dict",
+        "gaps": "list",
+        "publication_scope": "str",
+        "code_contract": "str",
+        "item_fields": {
+          "quality": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "row_count": {
+            "value_types": [
+              "int"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "count"
+            ]
+          }
+        }
+      },
+      "coverage_count": 1,
+      "source_binding": {
+        "adjusted": {
+          "bytes": 410628,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/adjusted.jsonl.gz",
+          "sha256": "47a22ea9e98f78e3ecfa0eec328c589851a62bc7ce15fa51124ccc967590df9c"
+        },
+        "base_profile": {
+          "bytes": 43509662,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/profiles.jsonl.gz",
+          "sha256": "a05e55312744aa79340d09165bc7c39ab70c57720a7c7ff133ee7a7529acd57e"
+        },
+        "core": {
+          "bytes": 19792536,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+          "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+        },
+        "diagnostic": {
+          "bytes": 7666,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/PROFILE_STRUCTURE_OWNER.json",
+          "sha256": "778fd4bfbeabc2c322152c8576e1dfbda809b2a0b68947d5408c1143bb6fe4f2"
+        },
+        "events": {
+          "bytes": 781507,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/structure/events.jsonl",
+          "sha256": "ccd2b8f561cb9d5158f162f28520ed21b50ceee3c008da20ca480ac637f70bb5"
+        },
+        "focus": {
+          "bytes": 2063437,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/corrected_d2.json.gz",
+          "sha256": "46bac7b6c641dd00125988d1f59d5b04f321c7dde57eb9c3e90f9f6616911fc5"
+        },
+        "forward": {
+          "bytes": 5386974,
+          "path": "data/v4/core_product_focus_read_r2/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/FOCUS.json.gz",
+          "sha256": "7e51e6d8d1d60376431b1838564415d9dc30efde10f76ac5134c6a58006d9864"
+        },
+        "lifecycle": {
+          "bytes": 1666820,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sources/2026-10-09/lifecycle.json",
+          "sha256": "3df8cb50dce3771db1b8605cb8aeabadb0076eebcd05d6eb7454ae260155e9cd"
+        },
+        "market": {
+          "bytes": 5925,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/market_owner_candidate_v2.json",
+          "sha256": "327c4d3dfbdf6a20219a14a86c507d413933da3ebaba39bc708f1bfcdb7a8146"
+        },
+        "period_adjusted": {
+          "bytes": 1030765,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/PERIOD_ADJUSTED.jsonl.gz",
+          "sha256": "280769e2627098cdd2a2f24079bf95b88c7b6905024151fca0bd8d93cfc3df03"
+        },
+        "period_raw": {
+          "bytes": 1029920,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/PERIOD_RAW.jsonl.gz",
+          "sha256": "dcec79aa9ccae8124750194eb75e3104b54d016d6a5cd1d7a073a6e8e6edc4af"
+        },
+        "prewatch": {
+          "bytes": 3314452,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/corrected_d0_prewatch.jsonl.gz",
+          "sha256": "3db666950577c1ad6adc112b2a196d8a89c49a85eaad580083a16a1b618b32ef"
+        },
+        "profile": {
+          "bytes": 48046983,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "f5de1f924d222ac591f2f95059f2bec78c84541c72b18c1a328973311d1d2c00"
+        },
+        "raw": {
+          "bytes": 242313,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/raw.jsonl.gz",
+          "sha256": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5"
+        },
+        "relative_sector": {
+          "bytes": 2196363,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/relative_sector_loo.jsonl.gz",
+          "sha256": "2aa20444dcf82aed5bd61c55a76a0950722cf76168f838f4ccb62ceb974cbb2b"
+        },
+        "rotation": {
+          "bytes": 3477077,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/rotation.jsonl.gz",
+          "sha256": "f0860807edc9fe85d85c2259a375d99e8bc2c1cc3c6c03c63f2f47eecb9551f6"
+        },
+        "sector": {
+          "bytes": 1710140,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/native.jsonl.gz",
+          "sha256": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85"
+        },
+        "sector_receipt": {
+          "bytes": 1301835,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/SECTOR_REPLAY.json",
+          "sha256": "cf4322d06a1dd34fb576eb145c942d855a2fc84c0c565743ebf2230f84d4dd55"
+        },
+        "seed": {
+          "bytes": 149819,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/base_seed.jsonl.gz",
+          "sha256": "8c3b13742f1a1a615faaccfa511fa2b8adc4c7d16c2bab6c17af57fe912a0c17"
+        },
+        "special_phase": {
+          "bytes": 1580,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sources/2026-10-09/special_phase.json",
+          "sha256": "3d27119e64c6ca8653ba593a743eb5da61736200612b2a21abcf2e96c05c8517"
+        }
+      },
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 94.1,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": 1
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/diagnostics/sources",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 diagnostics 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "sources": "dict",
+        "contracts": "list",
+        "amount_authority": "str",
+        "PIT_ELIGIBLE": "bool",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": {
+        "adjusted": {
+          "bytes": 410628,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/adjusted.jsonl.gz",
+          "sha256": "47a22ea9e98f78e3ecfa0eec328c589851a62bc7ce15fa51124ccc967590df9c"
+        },
+        "base_profile": {
+          "bytes": 43509662,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/profiles.jsonl.gz",
+          "sha256": "a05e55312744aa79340d09165bc7c39ab70c57720a7c7ff133ee7a7529acd57e"
+        },
+        "core": {
+          "bytes": 19792536,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+          "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+        },
+        "diagnostic": {
+          "bytes": 7666,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/PROFILE_STRUCTURE_OWNER.json",
+          "sha256": "778fd4bfbeabc2c322152c8576e1dfbda809b2a0b68947d5408c1143bb6fe4f2"
+        },
+        "events": {
+          "bytes": 781507,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/structure/events.jsonl",
+          "sha256": "ccd2b8f561cb9d5158f162f28520ed21b50ceee3c008da20ca480ac637f70bb5"
+        },
+        "focus": {
+          "bytes": 2063437,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/corrected_d2.json.gz",
+          "sha256": "46bac7b6c641dd00125988d1f59d5b04f321c7dde57eb9c3e90f9f6616911fc5"
+        },
+        "forward": {
+          "bytes": 5386974,
+          "path": "data/v4/core_product_focus_read_r2/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/FOCUS.json.gz",
+          "sha256": "7e51e6d8d1d60376431b1838564415d9dc30efde10f76ac5134c6a58006d9864"
+        },
+        "lifecycle": {
+          "bytes": 1666820,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sources/2026-10-09/lifecycle.json",
+          "sha256": "3df8cb50dce3771db1b8605cb8aeabadb0076eebcd05d6eb7454ae260155e9cd"
+        },
+        "market": {
+          "bytes": 5925,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/market_owner_candidate_v2.json",
+          "sha256": "327c4d3dfbdf6a20219a14a86c507d413933da3ebaba39bc708f1bfcdb7a8146"
+        },
+        "period_adjusted": {
+          "bytes": 1030765,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/PERIOD_ADJUSTED.jsonl.gz",
+          "sha256": "280769e2627098cdd2a2f24079bf95b88c7b6905024151fca0bd8d93cfc3df03"
+        },
+        "period_raw": {
+          "bytes": 1029920,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/PERIOD_RAW.jsonl.gz",
+          "sha256": "dcec79aa9ccae8124750194eb75e3104b54d016d6a5cd1d7a073a6e8e6edc4af"
+        },
+        "prewatch": {
+          "bytes": 3314452,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/corrected_d0_prewatch.jsonl.gz",
+          "sha256": "3db666950577c1ad6adc112b2a196d8a89c49a85eaad580083a16a1b618b32ef"
+        },
+        "profile": {
+          "bytes": 48046983,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "f5de1f924d222ac591f2f95059f2bec78c84541c72b18c1a328973311d1d2c00"
+        },
+        "raw": {
+          "bytes": 242313,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/raw.jsonl.gz",
+          "sha256": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5"
+        },
+        "relative_sector": {
+          "bytes": 2196363,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/relative_sector_loo.jsonl.gz",
+          "sha256": "2aa20444dcf82aed5bd61c55a76a0950722cf76168f838f4ccb62ceb974cbb2b"
+        },
+        "rotation": {
+          "bytes": 3477077,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/rotation.jsonl.gz",
+          "sha256": "f0860807edc9fe85d85c2259a375d99e8bc2c1cc3c6c03c63f2f47eecb9551f6"
+        },
+        "sector": {
+          "bytes": 1710140,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/native.jsonl.gz",
+          "sha256": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85"
+        },
+        "sector_receipt": {
+          "bytes": 1301835,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/SECTOR_REPLAY.json",
+          "sha256": "cf4322d06a1dd34fb576eb145c942d855a2fc84c0c565743ebf2230f84d4dd55"
+        },
+        "seed": {
+          "bytes": 149819,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/base_seed.jsonl.gz",
+          "sha256": "8c3b13742f1a1a615faaccfa511fa2b8adc4c7d16c2bab6c17af57fe912a0c17"
+        },
+        "special_phase": {
+          "bytes": 1580,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sources/2026-10-09/special_phase.json",
+          "sha256": "3d27119e64c6ca8653ba593a743eb5da61736200612b2a21abcf2e96c05c8517"
+        }
+      },
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 92.9,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_DIAGNOSTIC_SUBPAGE_OWNER | DATED_OPERATIONAL_DIAGNOSTICS_SOURCES_OWNER | FP11",
+        "coverage_count": 0
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/diagnostics/health",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 diagnostics 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "sources": "dict",
+        "contracts": "list",
+        "amount_authority": "str",
+        "PIT_ELIGIBLE": "bool",
+        "item_fields": {}
+      },
+      "coverage_count": 3,
+      "source_binding": {
+        "adjusted": {
+          "bytes": 410628,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/adjusted.jsonl.gz",
+          "sha256": "47a22ea9e98f78e3ecfa0eec328c589851a62bc7ce15fa51124ccc967590df9c"
+        },
+        "base_profile": {
+          "bytes": 43509662,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/profiles.jsonl.gz",
+          "sha256": "a05e55312744aa79340d09165bc7c39ab70c57720a7c7ff133ee7a7529acd57e"
+        },
+        "core": {
+          "bytes": 19792536,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+          "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+        },
+        "diagnostic": {
+          "bytes": 7666,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/PROFILE_STRUCTURE_OWNER.json",
+          "sha256": "778fd4bfbeabc2c322152c8576e1dfbda809b2a0b68947d5408c1143bb6fe4f2"
+        },
+        "events": {
+          "bytes": 781507,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/structure/events.jsonl",
+          "sha256": "ccd2b8f561cb9d5158f162f28520ed21b50ceee3c008da20ca480ac637f70bb5"
+        },
+        "focus": {
+          "bytes": 2063437,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/corrected_d2.json.gz",
+          "sha256": "46bac7b6c641dd00125988d1f59d5b04f321c7dde57eb9c3e90f9f6616911fc5"
+        },
+        "forward": {
+          "bytes": 5386974,
+          "path": "data/v4/core_product_focus_read_r2/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/FOCUS.json.gz",
+          "sha256": "7e51e6d8d1d60376431b1838564415d9dc30efde10f76ac5134c6a58006d9864"
+        },
+        "lifecycle": {
+          "bytes": 1666820,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sources/2026-10-09/lifecycle.json",
+          "sha256": "3df8cb50dce3771db1b8605cb8aeabadb0076eebcd05d6eb7454ae260155e9cd"
+        },
+        "market": {
+          "bytes": 5925,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/market_owner_candidate_v2.json",
+          "sha256": "327c4d3dfbdf6a20219a14a86c507d413933da3ebaba39bc708f1bfcdb7a8146"
+        },
+        "period_adjusted": {
+          "bytes": 1030765,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/PERIOD_ADJUSTED.jsonl.gz",
+          "sha256": "280769e2627098cdd2a2f24079bf95b88c7b6905024151fca0bd8d93cfc3df03"
+        },
+        "period_raw": {
+          "bytes": 1029920,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/PERIOD_RAW.jsonl.gz",
+          "sha256": "dcec79aa9ccae8124750194eb75e3104b54d016d6a5cd1d7a073a6e8e6edc4af"
+        },
+        "prewatch": {
+          "bytes": 3314452,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/corrected_d0_prewatch.jsonl.gz",
+          "sha256": "3db666950577c1ad6adc112b2a196d8a89c49a85eaad580083a16a1b618b32ef"
+        },
+        "profile": {
+          "bytes": 48046983,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "f5de1f924d222ac591f2f95059f2bec78c84541c72b18c1a328973311d1d2c00"
+        },
+        "raw": {
+          "bytes": 242313,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/raw.jsonl.gz",
+          "sha256": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5"
+        },
+        "relative_sector": {
+          "bytes": 2196363,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/relative_sector_loo.jsonl.gz",
+          "sha256": "2aa20444dcf82aed5bd61c55a76a0950722cf76168f838f4ccb62ceb974cbb2b"
+        },
+        "rotation": {
+          "bytes": 3477077,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/rotation.jsonl.gz",
+          "sha256": "f0860807edc9fe85d85c2259a375d99e8bc2c1cc3c6c03c63f2f47eecb9551f6"
+        },
+        "sector": {
+          "bytes": 1710140,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/native.jsonl.gz",
+          "sha256": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85"
+        },
+        "sector_receipt": {
+          "bytes": 1301835,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/SECTOR_REPLAY.json",
+          "sha256": "cf4322d06a1dd34fb576eb145c942d855a2fc84c0c565743ebf2230f84d4dd55"
+        },
+        "seed": {
+          "bytes": 149819,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/base_seed.jsonl.gz",
+          "sha256": "8c3b13742f1a1a615faaccfa511fa2b8adc4c7d16c2bab6c17af57fe912a0c17"
+        },
+        "special_phase": {
+          "bytes": 1580,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sources/2026-10-09/special_phase.json",
+          "sha256": "3d27119e64c6ca8653ba593a743eb5da61736200612b2a21abcf2e96c05c8517"
+        }
+      },
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 484.6,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_DIAGNOSTIC_SUBPAGE_OWNER | DATED_OPERATIONAL_DIAGNOSTICS_HEALTH_OWNER | FP11",
+        "coverage_count": 0
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/diagnostics/contracts",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 diagnostics 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "sources": "dict",
+        "contracts": "list",
+        "amount_authority": "str",
+        "PIT_ELIGIBLE": "bool",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": {
+        "adjusted": {
+          "bytes": 410628,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/adjusted.jsonl.gz",
+          "sha256": "47a22ea9e98f78e3ecfa0eec328c589851a62bc7ce15fa51124ccc967590df9c"
+        },
+        "base_profile": {
+          "bytes": 43509662,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/profiles.jsonl.gz",
+          "sha256": "a05e55312744aa79340d09165bc7c39ab70c57720a7c7ff133ee7a7529acd57e"
+        },
+        "core": {
+          "bytes": 19792536,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+          "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+        },
+        "diagnostic": {
+          "bytes": 7666,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/PROFILE_STRUCTURE_OWNER.json",
+          "sha256": "778fd4bfbeabc2c322152c8576e1dfbda809b2a0b68947d5408c1143bb6fe4f2"
+        },
+        "events": {
+          "bytes": 781507,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/structure/events.jsonl",
+          "sha256": "ccd2b8f561cb9d5158f162f28520ed21b50ceee3c008da20ca480ac637f70bb5"
+        },
+        "focus": {
+          "bytes": 2063437,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/corrected_d2.json.gz",
+          "sha256": "46bac7b6c641dd00125988d1f59d5b04f321c7dde57eb9c3e90f9f6616911fc5"
+        },
+        "forward": {
+          "bytes": 5386974,
+          "path": "data/v4/core_product_focus_read_r2/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/FOCUS.json.gz",
+          "sha256": "7e51e6d8d1d60376431b1838564415d9dc30efde10f76ac5134c6a58006d9864"
+        },
+        "lifecycle": {
+          "bytes": 1666820,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sources/2026-10-09/lifecycle.json",
+          "sha256": "3df8cb50dce3771db1b8605cb8aeabadb0076eebcd05d6eb7454ae260155e9cd"
+        },
+        "market": {
+          "bytes": 5925,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/market_owner_candidate_v2.json",
+          "sha256": "327c4d3dfbdf6a20219a14a86c507d413933da3ebaba39bc708f1bfcdb7a8146"
+        },
+        "period_adjusted": {
+          "bytes": 1030765,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/PERIOD_ADJUSTED.jsonl.gz",
+          "sha256": "280769e2627098cdd2a2f24079bf95b88c7b6905024151fca0bd8d93cfc3df03"
+        },
+        "period_raw": {
+          "bytes": 1029920,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/PERIOD_RAW.jsonl.gz",
+          "sha256": "dcec79aa9ccae8124750194eb75e3104b54d016d6a5cd1d7a073a6e8e6edc4af"
+        },
+        "prewatch": {
+          "bytes": 3314452,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/corrected_d0_prewatch.jsonl.gz",
+          "sha256": "3db666950577c1ad6adc112b2a196d8a89c49a85eaad580083a16a1b618b32ef"
+        },
+        "profile": {
+          "bytes": 48046983,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "f5de1f924d222ac591f2f95059f2bec78c84541c72b18c1a328973311d1d2c00"
+        },
+        "raw": {
+          "bytes": 242313,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/raw.jsonl.gz",
+          "sha256": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5"
+        },
+        "relative_sector": {
+          "bytes": 2196363,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/relative_sector_loo.jsonl.gz",
+          "sha256": "2aa20444dcf82aed5bd61c55a76a0950722cf76168f838f4ccb62ceb974cbb2b"
+        },
+        "rotation": {
+          "bytes": 3477077,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/rotation.jsonl.gz",
+          "sha256": "f0860807edc9fe85d85c2259a375d99e8bc2c1cc3c6c03c63f2f47eecb9551f6"
+        },
+        "sector": {
+          "bytes": 1710140,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/native.jsonl.gz",
+          "sha256": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85"
+        },
+        "sector_receipt": {
+          "bytes": 1301835,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/SECTOR_REPLAY.json",
+          "sha256": "cf4322d06a1dd34fb576eb145c942d855a2fc84c0c565743ebf2230f84d4dd55"
+        },
+        "seed": {
+          "bytes": 149819,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/base_seed.jsonl.gz",
+          "sha256": "8c3b13742f1a1a615faaccfa511fa2b8adc4c7d16c2bab6c17af57fe912a0c17"
+        },
+        "special_phase": {
+          "bytes": 1580,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sources/2026-10-09/special_phase.json",
+          "sha256": "3d27119e64c6ca8653ba593a743eb5da61736200612b2a21abcf2e96c05c8517"
+        }
+      },
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 93.9,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_DIAGNOSTIC_SUBPAGE_OWNER | DATED_OPERATIONAL_DIAGNOSTICS_CONTRACTS_OWNER | FP11",
+        "coverage_count": 0
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/diagnostics/jobs",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 diagnostics 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "operations": "dict",
+        "source": "str",
+        "scope": "str",
+        "items": "list",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": "/api/operations/status",
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 91.6,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_DIAGNOSTIC_SUBPAGE_OWNER | DATED_OPERATIONAL_DIAGNOSTICS_JOBS_OWNER | FP11",
+        "coverage_count": 0
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/diagnostics/legacy",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 diagnostics 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "scope": "str",
+        "policy": "dict",
+        "source": "str",
+        "item_fields": {}
+      },
+      "coverage_count": 2,
+      "source_binding": "config/v4_legacy_release_scope_v1.json",
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 92.6,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_DIAGNOSTIC_SUBPAGE_OWNER | DATED_OPERATIONAL_DIAGNOSTICS_LEGACY_OWNER | FP11",
+        "coverage_count": 0
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/diagnostics/shadow",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 diagnostics 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "capability_status": "str",
+        "items": "list",
+        "policy": "dict",
+        "source": "str",
+        "href": "str",
+        "scope": "str",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": "config/v4_17_shadow_ui_source_v1.json",
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 92.5,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_DIAGNOSTIC_SUBPAGE_OWNER | DATED_OPERATIONAL_DIAGNOSTICS_SHADOW_OWNER | FP11",
+        "coverage_count": 0
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/diagnostics/fep",
+      "http_status": 200,
+      "business_status": "SOURCE_INCOMPLETE",
+      "role_in_page": "六入口 diagnostics 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "reason": "str",
+        "code": "str",
+        "domain": "str",
+        "gap": "dict",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "legacy_diagnostic": "str",
+        "legacy_trade_date": "str",
+        "mixed_date_fallback": "bool",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": [],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 91.0,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_DIAGNOSTIC_SUBPAGE_OWNER | DATED_OPERATIONAL_DIAGNOSTICS_FEP_OWNER | FP11",
+        "coverage_count": 0
+      },
+      "verdict": "SOURCE_NOT_PRESENT"
+    },
+    {
+      "route": "/api/v4/forward",
+      "http_status": 200,
+      "business_status": "SOURCE_INCOMPLETE",
+      "role_in_page": "六入口 forward 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "reason": "str",
+        "code": "str",
+        "domain": "str",
+        "gap": "dict",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "legacy_diagnostic": "str",
+        "legacy_trade_date": "str",
+        "mixed_date_fallback": "bool",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": [],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 95.0,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": null
+      },
+      "verdict": "SOURCE_NOT_PRESENT"
+    },
+    {
+      "route": "/api/v4/forward/statistics",
+      "http_status": 200,
+      "business_status": "SOURCE_INCOMPLETE",
+      "role_in_page": "六入口 forward 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "reason": "str",
+        "code": "str",
+        "domain": "str",
+        "gap": "dict",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "legacy_diagnostic": "str",
+        "legacy_trade_date": "str",
+        "mixed_date_fallback": "bool",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": [],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 92.6,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE | DATED_OPERATIONAL_FORWARD_STATISTICS_OWNER | FP10",
+        "coverage_count": 0
+      },
+      "verdict": "SOURCE_NOT_PRESENT"
+    },
+    {
+      "route": "/api/v4/forward/plans",
+      "http_status": 200,
+      "business_status": "SOURCE_INCOMPLETE",
+      "role_in_page": "六入口 forward 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "reason": "str",
+        "code": "str",
+        "domain": "str",
+        "gap": "dict",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "legacy_diagnostic": "str",
+        "legacy_trade_date": "str",
+        "mixed_date_fallback": "bool",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": [],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 92.4,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE | DATED_OPERATIONAL_FORWARD_PLANS_OWNER | FP10",
+        "coverage_count": 0
+      },
+      "verdict": "SOURCE_NOT_PRESENT"
+    },
+    {
+      "route": "/api/v4/forward/fep",
+      "http_status": 200,
+      "business_status": "SOURCE_INCOMPLETE",
+      "role_in_page": "六入口 forward 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "reason": "str",
+        "code": "str",
+        "domain": "str",
+        "gap": "dict",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "legacy_diagnostic": "str",
+        "legacy_trade_date": "str",
+        "mixed_date_fallback": "bool",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": [],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 91.9,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE | DATED_OPERATIONAL_FORWARD_FEP_OWNER | FP10",
+        "coverage_count": 0
+      },
+      "verdict": "SOURCE_NOT_PRESENT"
+    },
+    {
+      "route": "/api/v4/forward/settlement",
+      "http_status": 200,
+      "business_status": "SOURCE_INCOMPLETE",
+      "role_in_page": "六入口 forward 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "reason": "str",
+        "code": "str",
+        "domain": "str",
+        "gap": "dict",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "legacy_diagnostic": "str",
+        "legacy_trade_date": "str",
+        "mixed_date_fallback": "bool",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": [],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 118.4,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE | DATED_OPERATIONAL_FORWARD_SETTLEMENT_OWNER | FP10",
+        "coverage_count": 0
+      },
+      "verdict": "SOURCE_NOT_PRESENT"
+    },
+    {
+      "route": "/api/v4/replay",
+      "http_status": 200,
+      "business_status": "SOURCE_INCOMPLETE",
+      "role_in_page": "六入口 replay 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "reason": "str",
+        "code": "str",
+        "domain": "str",
+        "gap": "dict",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "legacy_diagnostic": "str",
+        "legacy_trade_date": "str",
+        "mixed_date_fallback": "bool",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": [],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 92.6,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE | DATED_OPERATIONAL_REPLAY_OWNER | FP12",
+        "coverage_count": 0
+      },
+      "verdict": "SOURCE_NOT_PRESENT"
+    },
+    {
+      "route": "/api/v4/compare",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 compare 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "left": "dict",
+        "right": "dict",
+        "mode": "str",
+        "as_of": "str",
+        "PIT_ELIGIBLE": "bool",
+        "comparison_scope": "str",
+        "items": "list",
+        "total": "int",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": [],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 92.4,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE | DATED_OPERATIONAL_COMPARE_OWNER | FP12",
+        "coverage_count": 0
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/stocks/SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 stocks 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "domain": "str",
+        "gap": "NoneType",
+        "item": "dict",
+        "item_fields": {
+          "amount": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "CNY"
+            ]
+          },
+          "amount_ratio20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "amount_ratio5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "amount_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "atr20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "atr5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "atr_ratio": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "bias20_atr": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ATR_multiple"
+            ]
+          },
+          "close": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "CNY"
+            ]
+          },
+          "clv": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "compression_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "core_extension_risk": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "core_participation_result": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "core_price_damage": {
+            "value_types": [
+              "bool"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "boolean"
+            ]
+          },
+          "detector_statuses": {
+            "value_types": [
+              "dict"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "dist_high20_atr": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ATR_multiple"
+            ]
+          },
+          "drawdown20_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "drawdown60_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "final_eligibility": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "health": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "hh_progress": {
+            "value_types": [
+              "bool"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "boolean"
+            ]
+          },
+          "hhv20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "hhv5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "hhv60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "high": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "CNY"
+            ]
+          },
+          "ll_progress": {
+            "value_types": [
+              "bool"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "boolean"
+            ]
+          },
+          "llv20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "llv5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "llv60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "low": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "CNY"
+            ]
+          },
+          "ma10": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "ma20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "ma5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "ma60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "ma_structure_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "maturity": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "minimum_liquidity": {
+            "value_types": [
+              "bool"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "flag"
+            ]
+          },
+          "monthly_trend_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "near_high20_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "near_high60_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "open": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "CNY"
+            ]
+          },
+          "pos250": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "pos60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "position_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "primary_industry": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "prior60_percentile": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "percentile_points"
+            ]
+          },
+          "prior_high20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "prior_high5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "prior_high60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "prior_low20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "prior_low5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "prior_low60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "range_ratio": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "regime_ui": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "UNKNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "rel_market_1": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "rel_market_3": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "rel_market_5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "relative_market_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "relative_sector_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "ret1": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "ret20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "ret3": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "ret5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "rps20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "percentage_points"
+            ]
+          },
+          "rps20_delta3": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "percentage_points"
+            ]
+          },
+          "rps5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "percentage_points"
+            ]
+          },
+          "rps5_delta1": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "percentage_points"
+            ]
+          },
+          "rps5_delta3": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "percentage_points"
+            ]
+          },
+          "scenario": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "severe_extension": {
+            "value_types": [
+              "bool"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "flag"
+            ]
+          },
+          "slope20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "dimensionless"
+            ]
+          },
+          "slope60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "dimensionless"
+            ]
+          },
+          "tr": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "tracking": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "transition_reasons": {
+            "value_types": [
+              "list"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "trend_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "unknown_predicates": {
+            "value_types": [
+              "list"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "validity": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "vol20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "log_return_std"
+            ]
+          },
+          "vol5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "log_return_std"
+            ]
+          },
+          "vol_ratio": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "volume": {
+            "value_types": [
+              "int"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "SHARES"
+            ]
+          },
+          "volume_ratio20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "volume_ratio5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "volume_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "weekly_trend_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          }
+        }
+      },
+      "coverage_count": 1,
+      "source_binding": [
+        {
+          "bytes": 48046983,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "f5de1f924d222ac591f2f95059f2bec78c84541c72b18c1a328973311d1d2c00"
+        }
+      ],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 100.5,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": 1
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/profile",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 stocks 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "item": "dict",
+        "F": "dict",
+        "R": "dict",
+        "membership_relations": "dict",
+        "owner_explanations": "dict",
+        "owner_specific_debt": "list",
+        "selection_explanation": "dict",
+        "key_prices": "dict",
+        "hypothesis_scope": "str",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": [],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 333.0,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": null
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/chart",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 stocks 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "period": "str",
+        "price_basis": "str",
+        "as_of": "str",
+        "volume_unit": "str",
+        "amount_unit": "str",
+        "source": "dict",
+        "series_index": "dict",
+        "adjustment": "str",
+        "historical_membership": "str",
+        "earliest_valid_date": "str",
+        "item_fields": {}
+      },
+      "coverage_count": 420,
+      "source_binding": {
+        "bytes": 67380907,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/history.jsonl.gz",
+        "sha256": "1297fb01a999165f117afec1660cbb2549366f51030ecf09ba237b9e88607b24"
+      },
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 102.2,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE | DATED_OPERATIONAL_STOCKS_SEC-00096141BD5420F5CB3120E687CDA5B9_CHART_OWNER | FP07",
+        "coverage_count": 0
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/timeline",
+      "http_status": 200,
+      "business_status": "EMPTY_VALID",
+      "role_in_page": "六入口 stocks 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "contract_id": "str",
+        "dedup_key": "list",
+        "PIT_ELIGIBLE": "bool",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": [],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 100.8,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE | DATED_OPERATIONAL_STOCKS_SEC-00096141BD5420F5CB3120E687CDA5B9_TIMELINE_OWNER | FP07",
+        "coverage_count": 0
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/why-not",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 stocks 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "item": "dict",
+        "F": "dict",
+        "R": "dict",
+        "membership_relations": "dict",
+        "owner_explanations": "dict",
+        "owner_specific_debt": "list",
+        "selection_explanation": "dict",
+        "key_prices": "dict",
+        "hypothesis_scope": "str",
+        "item_fields": {}
+      },
+      "coverage_count": 0,
+      "source_binding": [],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 321.2,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": null
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/sectors/INDUSTRY:T0706",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 sectors 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "domain": "str",
+        "gap": "NoneType",
+        "item": "dict",
+        "why_now": "dict",
+        "item_fields": {
+          "base_seed_width_adjusted": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "breadth_delta1": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "breadth_delta3": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "breadth_ret1": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "breadth_ret20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "breadth_ret5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "dq5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "percentile points"
+            ]
+          },
+          "entered_count": {
+            "value_types": [
+              "NoneType"
+            ],
+            "qualities": [
+              "UNKNOWN"
+            ],
+            "units": [
+              "members"
+            ]
+          },
+          "health": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "SOURCE_INCOMPLETE"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "ma20_delta1": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "ma20_delta3": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "ma20_width": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "maturity": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "SOURCE_INCOMPLETE"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "mdd20": {
+            "value_types": [
+              "NoneType"
+            ],
+            "qualities": [
+              "UNKNOWN"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "member_count": {
+            "value_types": [
+              "int"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "members"
+            ]
+          },
+          "membership_ready": {
+            "value_types": [
+              "bool"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "bool"
+            ]
+          },
+          "net_entered_count": {
+            "value_types": [
+              "NoneType"
+            ],
+            "qualities": [
+              "UNKNOWN"
+            ],
+            "units": [
+              "members"
+            ]
+          },
+          "output_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "VALIDATION_ONGOING"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "participation_proxy": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "pos60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "prior_rotation_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "VALIDATION_ONGOING"
+            ],
+            "units": [
+              "enum"
+            ]
+          },
+          "quoted_count": {
+            "value_types": [
+              "int"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "members"
+            ]
+          },
+          "rank_velocity3": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "percentile points"
+            ]
+          },
+          "sector_member_count": {
+            "value_types": [
+              "int"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "members"
+            ]
+          },
+          "sector_quote_coverage": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "sector_rs1": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "sector_rs20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "sector_rs20_pct": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "sector_rs5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "percentile points"
+            ]
+          },
+          "sector_rs5_pct": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "percentile points"
+            ]
+          },
+          "sector_rs60": {
+            "value_types": [
+              "NoneType"
+            ],
+            "qualities": [
+              "UNKNOWN"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "sector_rs60_pct": {
+            "value_types": [
+              "NoneType"
+            ],
+            "qualities": [
+              "UNKNOWN"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "sector_type": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "seed_retention": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "seed_width": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "source_member_count": {
+            "value_types": [
+              "int"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "members"
+            ]
+          },
+          "strong_member": {
+            "value_types": [
+              "NoneType"
+            ],
+            "qualities": [
+              "UNKNOWN"
+            ],
+            "units": [
+              "member_set"
+            ]
+          },
+          "strong_member_retention": {
+            "value_types": [
+              "NoneType"
+            ],
+            "qualities": [
+              "UNKNOWN"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "top1_concentration": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "top3_concentration": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "unmapped_count": {
+            "value_types": [
+              "int"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "members"
+            ]
+          }
+        }
+      },
+      "coverage_count": 1,
+      "source_binding": [
+        {
+          "bytes": 1710140,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/native.jsonl.gz",
+          "sha256": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85"
+        }
+      ],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 183.4,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": 1
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/sectors/INDUSTRY:T0706/members",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 sectors 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "domain": "str",
+        "gap": "NoneType",
+        "membership_coverage": "dict",
+        "item_fields": {
+          "amount": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "CNY"
+            ]
+          },
+          "amount_ratio20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "amount_ratio5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "amount_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "atr20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "atr5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "atr_ratio": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "bias20_atr": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ATR_multiple"
+            ]
+          },
+          "close": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "CNY"
+            ]
+          },
+          "clv": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "compression_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "core_extension_risk": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "core_participation_result": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "core_price_damage": {
+            "value_types": [
+              "bool"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "boolean"
+            ]
+          },
+          "detector_statuses": {
+            "value_types": [
+              "dict"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "dist_high20_atr": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ATR_multiple"
+            ]
+          },
+          "drawdown20_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "drawdown60_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "final_eligibility": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN",
+              "UNKNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "health": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN",
+              "UNKNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "hh_progress": {
+            "value_types": [
+              "bool"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "boolean"
+            ]
+          },
+          "hhv20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "hhv5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "hhv60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "high": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "CNY"
+            ]
+          },
+          "ll_progress": {
+            "value_types": [
+              "bool"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "boolean"
+            ]
+          },
+          "llv20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "llv5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "llv60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "low": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "CNY"
+            ]
+          },
+          "ma10": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "ma20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "ma5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "ma60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "ma_structure_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "maturity": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "minimum_liquidity": {
+            "value_types": [
+              "bool"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "flag"
+            ]
+          },
+          "monthly_trend_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "near_high20_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "near_high60_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "open": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "CNY"
+            ]
+          },
+          "pos250": {
+            "value_types": [
+              "NoneType",
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "pos60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio_or_percentile_points_as_field_contract"
+            ]
+          },
+          "position_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "primary_industry": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "prior60_percentile": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "percentile_points"
+            ]
+          },
+          "prior_high20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "prior_high5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "prior_high60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "prior_low20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "prior_low5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "prior_low60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "range_ratio": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "regime_ui": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "UNKNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "rel_market_1": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "rel_market_3": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "rel_market_5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "relative_market_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "relative_sector_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "ret1": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "ret20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "ret3": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "ret5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "return_fraction"
+            ]
+          },
+          "rps20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "percentage_points"
+            ]
+          },
+          "rps20_delta3": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "percentage_points"
+            ]
+          },
+          "rps5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "percentage_points"
+            ]
+          },
+          "rps5_delta1": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "percentage_points"
+            ]
+          },
+          "rps5_delta3": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "percentage_points"
+            ]
+          },
+          "scenario": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "severe_extension": {
+            "value_types": [
+              "bool"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "flag"
+            ]
+          },
+          "slope20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "dimensionless"
+            ]
+          },
+          "slope60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "dimensionless"
+            ]
+          },
+          "tr": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "adjusted_price"
+            ]
+          },
+          "tracking": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "transition_reasons": {
+            "value_types": [
+              "list"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "trend_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "unknown_predicates": {
+            "value_types": [
+              "list"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "validity": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN",
+              "UNKNOWN"
+            ],
+            "units": [
+              "NOT_APPLICABLE_TYPED_VALUE"
+            ]
+          },
+          "vol20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "log_return_std"
+            ]
+          },
+          "vol5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "log_return_std"
+            ]
+          },
+          "vol_ratio": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "volume": {
+            "value_types": [
+              "int"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "SHARES"
+            ]
+          },
+          "volume_ratio20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "volume_ratio5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "OBSERVED"
+            ],
+            "units": [
+              "ratio"
+            ]
+          },
+          "volume_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          },
+          "weekly_trend_state": {
+            "value_types": [
+              "str"
+            ],
+            "qualities": [
+              "KNOWN"
+            ],
+            "units": [
+              "state"
+            ]
+          }
+        }
+      },
+      "coverage_count": 322,
+      "source_binding": [
+        {
+          "bytes": 48046983,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "f5de1f924d222ac591f2f95059f2bec78c84541c72b18c1a328973311d1d2c00"
+        },
+        {
+          "bytes": 48046983,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "f5de1f924d222ac591f2f95059f2bec78c84541c72b18c1a328973311d1d2c00"
+        },
+        {
+          "bytes": 48046983,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "f5de1f924d222ac591f2f95059f2bec78c84541c72b18c1a328973311d1d2c00"
+        }
+      ],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 124.1,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": 322
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/sectors/INDUSTRY:T0706/timeline",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 sectors 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "contract_id": "str",
+        "historical_membership": "str",
+        "earliest_valid_date": "str",
+        "full_rotation_validation": "str",
+        "item_fields": {
+          "base_seed_width_adjusted": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "breadth_delta1": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "breadth_delta3": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "breadth_ret1": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "breadth_ret20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "breadth_ret5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "dq5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "entered_count": {
+            "value_types": [
+              "NoneType"
+            ],
+            "qualities": [
+              "UNKNOWN"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "ma20_delta1": {
+            "value_types": [
+              "NoneType",
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "ma20_delta3": {
+            "value_types": [
+              "NoneType",
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "ma20_width": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "mdd20": {
+            "value_types": [
+              "NoneType"
+            ],
+            "qualities": [
+              "UNKNOWN"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "membership_ready": {
+            "value_types": [
+              "bool"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "net_entered_count": {
+            "value_types": [
+              "NoneType"
+            ],
+            "qualities": [
+              "UNKNOWN"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "participation_proxy": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "pos60": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "rank_velocity3": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "sector_member_count": {
+            "value_types": [
+              "int"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "sector_quote_coverage": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "sector_rs1": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "sector_rs20": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "sector_rs20_pct": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "sector_rs5": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "sector_rs5_pct": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "sector_rs60": {
+            "value_types": [
+              "NoneType"
+            ],
+            "qualities": [
+              "UNKNOWN"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "sector_rs60_pct": {
+            "value_types": [
+              "NoneType"
+            ],
+            "qualities": [
+              "UNKNOWN"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "seed_retention": {
+            "value_types": [
+              "NoneType",
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "seed_width": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "strong_member": {
+            "value_types": [
+              "NoneType",
+              "list"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "strong_member_retention": {
+            "value_types": [
+              "NoneType",
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED",
+              "UNKNOWN"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "top1_concentration": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          },
+          "top3_concentration": {
+            "value_types": [
+              "float"
+            ],
+            "qualities": [
+              "PROXY_RECONSTRUCTED"
+            ],
+            "units": [
+              "None"
+            ]
+          }
+        }
+      },
+      "coverage_count": 5,
+      "source_binding": [
+        {
+          "bytes": 1674056,
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-28/native.jsonl.gz",
+          "sha256": "4f636f2f0774f921e48fe260f00611aaf556204e96f59c0f06ad346393f0d8a1"
+        },
+        {
+          "bytes": 1679056,
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-29/native.jsonl.gz",
+          "sha256": "125ff505e372d355e9c7b0185a153b8c9b8b2b395d6f92ab48c9e0047c6b9479"
+        },
+        {
+          "bytes": 1677860,
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-30/native.jsonl.gz",
+          "sha256": "8065e6d5fb45c7c6927645bd49ce8e33c4cf3d52e35ec3815a9df78c5dd55596"
+        }
+      ],
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 109.5,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE | DATED_OPERATIONAL_SECTORS_INDUSTRY:T0706_TIMELINE_OWNER | FP06",
+        "coverage_count": 0
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/sectors/INDUSTRY:T0706/overlap",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 sectors 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "unique_share": "float",
+        "member_count": "int",
+        "source": "dict",
+        "contract_id": "str",
+        "PIT_ELIGIBLE": "bool",
+        "item_fields": {}
+      },
+      "coverage_count": 201,
+      "source_binding": {
+        "bytes": 1710140,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/native.jsonl.gz",
+        "sha256": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85"
+      },
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 185.8,
+      "before": {
+        "http_status": 200,
+        "business_status": "SOURCE_INCOMPLETE",
+        "reason": "NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE | DATED_OPERATIONAL_SECTORS_INDUSTRY:T0706_OVERLAP_OWNER | FP06",
+        "coverage_count": 0
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/focus/SEC-00096141BD5420F5CB3120E687CDA5B9/episodes",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 focus 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "source": "dict",
+        "contract_id": "str",
+        "focus_scope": "str",
+        "write_authorized": "bool",
+        "PIT_ELIGIBLE": "bool",
+        "item_fields": {}
+      },
+      "coverage_count": 1,
+      "source_binding": {
+        "bytes": 5386974,
+        "path": "data/v4/core_product_focus_read_r2/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/FOCUS.json.gz",
+        "sha256": "7e51e6d8d1d60376431b1838564415d9dc30efde10f76ac5134c6a58006d9864"
+      },
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 806.4,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": 1
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/focus/SEC-00096141BD5420F5CB3120E687CDA5B9/timeline",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 focus 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "source": "dict",
+        "contract_id": "str",
+        "focus_scope": "str",
+        "write_authorized": "bool",
+        "PIT_ELIGIBLE": "bool",
+        "item_fields": {}
+      },
+      "coverage_count": 4,
+      "source_binding": {
+        "bytes": 5386974,
+        "path": "data/v4/core_product_focus_read_r2/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/FOCUS.json.gz",
+        "sha256": "7e51e6d8d1d60376431b1838564415d9dc30efde10f76ac5134c6a58006d9864"
+      },
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 1614.4,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": 1
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/focus/SEC-00096141BD5420F5CB3120E687CDA5B9/anchors",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 focus 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "source": "dict",
+        "contract_id": "str",
+        "focus_scope": "str",
+        "write_authorized": "bool",
+        "PIT_ELIGIBLE": "bool",
+        "item_fields": {}
+      },
+      "coverage_count": 2,
+      "source_binding": {
+        "bytes": 5386974,
+        "path": "data/v4/core_product_focus_read_r2/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/FOCUS.json.gz",
+        "sha256": "7e51e6d8d1d60376431b1838564415d9dc30efde10f76ac5134c6a58006d9864"
+      },
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 819.5,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": 2
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/focus/SEC-00096141BD5420F5CB3120E687CDA5B9/observations",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 focus 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "source": "dict",
+        "contract_id": "str",
+        "focus_scope": "str",
+        "write_authorized": "bool",
+        "PIT_ELIGIBLE": "bool",
+        "item_fields": {}
+      },
+      "coverage_count": 4,
+      "source_binding": {
+        "bytes": 5386974,
+        "path": "data/v4/core_product_focus_read_r2/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/FOCUS.json.gz",
+        "sha256": "7e51e6d8d1d60376431b1838564415d9dc30efde10f76ac5134c6a58006d9864"
+      },
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 797.1,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": 4
+      },
+      "verdict": "PASS_SCOPED"
+    },
+    {
+      "route": "/api/v4/focus/SEC-00096141BD5420F5CB3120E687CDA5B9/outcomes",
+      "http_status": 200,
+      "business_status": "READY",
+      "role_in_page": "六入口 focus 独立读区块",
+      "field_schema": {
+        "context": "dict",
+        "context_token": "str",
+        "production_accepted": "bool",
+        "status": "str",
+        "items": "list",
+        "total": "int",
+        "offset": "int",
+        "limit": "int",
+        "has_next": "bool",
+        "source": "dict",
+        "contract_id": "str",
+        "focus_scope": "str",
+        "write_authorized": "bool",
+        "PIT_ELIGIBLE": "bool",
+        "item_fields": {}
+      },
+      "coverage_count": 10,
+      "source_binding": {
+        "bytes": 5386974,
+        "path": "data/v4/core_product_focus_read_r2/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/FOCUS.json.gz",
+        "sha256": "7e51e6d8d1d60376431b1838564415d9dc30efde10f76ac5134c6a58006d9864"
+      },
+      "data_cutoff": "2026-10-09",
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "elapsed_ms": 1656.0,
+      "before": {
+        "http_status": 200,
+        "business_status": "READY",
+        "reason": null,
+        "coverage_count": 10
+      },
+      "verdict": "PASS_SCOPED"
+    }
+  ],
+  "charts": [
+    {
+      "period": "D",
+      "basis": "RAW",
+      "passed": true,
+      "bars": 120,
+      "last": {
+        "trade_date": "2026-10-09",
+        "open": 13.3,
+        "high": 13.72,
+        "low": 13.23,
+        "close": 13.59,
+        "volume": 14515035,
+        "amount": 196384256.0,
+        "quality": "KNOWN",
+        "reason": null,
+        "ma5": 13.222,
+        "ma20": 13.0765,
+        "ma60": 13.910666666666666
+      },
+      "source": {
+        "bytes": 67380907,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/history.jsonl.gz",
+        "sha256": "1297fb01a999165f117afec1660cbb2549366f51030ecf09ba237b9e88607b24"
+      }
+    },
+    {
+      "period": "D",
+      "basis": "QFQ",
+      "passed": true,
+      "bars": 120,
+      "last": {
+        "trade_date": "2026-10-09",
+        "open": 13.3,
+        "high": 13.72,
+        "low": 13.23,
+        "close": 13.59,
+        "volume": 14515035,
+        "amount": 196384256.0,
+        "quality": "KNOWN",
+        "reason": null,
+        "ma5": 13.222,
+        "ma20": 13.0765,
+        "ma60": 13.910666666666666
+      },
+      "source": {
+        "bytes": 67380907,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/history.jsonl.gz",
+        "sha256": "1297fb01a999165f117afec1660cbb2549366f51030ecf09ba237b9e88607b24"
+      }
+    },
+    {
+      "period": "W",
+      "basis": "RAW",
+      "passed": true,
+      "bars": 91,
+      "last": {
+        "trade_date": "2026-10-09",
+        "first_trade_date": "2026-10-08",
+        "open": 13.24,
+        "high": 13.72,
+        "low": 13.16,
+        "close": 13.59,
+        "volume": 22696203,
+        "amount": 305320320.0,
+        "quality": "KNOWN",
+        "actual_count": 2,
+        "period_status": "CLOSED_ONLY_READY",
+        "calendar_count": 2,
+        "suspended_count": 0,
+        "formal_period_source": {
+          "bytes": 1029920,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/PERIOD_RAW.jsonl.gz",
+          "sha256": "dcec79aa9ccae8124750194eb75e3104b54d016d6a5cd1d7a073a6e8e6edc4af"
+        },
+        "ma5": 13.181999999999999,
+        "ma20": 14.791999999999998,
+        "ma60": 22.851
+      },
+      "source": {
+        "bytes": 67380907,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/history.jsonl.gz",
+        "sha256": "1297fb01a999165f117afec1660cbb2549366f51030ecf09ba237b9e88607b24"
+      }
+    },
+    {
+      "period": "W",
+      "basis": "QFQ",
+      "passed": true,
+      "bars": 91,
+      "last": {
+        "trade_date": "2026-10-09",
+        "first_trade_date": "2026-10-08",
+        "open": 13.24,
+        "high": 13.72,
+        "low": 13.16,
+        "close": 13.59,
+        "volume": 22696203,
+        "amount": 305320320.0,
+        "quality": "KNOWN",
+        "actual_count": 2,
+        "period_status": "CLOSED_ONLY_READY",
+        "calendar_count": 2,
+        "suspended_count": 0,
+        "formal_period_source": {
+          "bytes": 1030765,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/PERIOD_ADJUSTED.jsonl.gz",
+          "sha256": "280769e2627098cdd2a2f24079bf95b88c7b6905024151fca0bd8d93cfc3df03"
+        },
+        "ma5": 13.181999999999999,
+        "ma20": 14.069999999999999,
+        "ma60": 18.285166666666665
+      },
+      "source": {
+        "bytes": 67380907,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/history.jsonl.gz",
+        "sha256": "1297fb01a999165f117afec1660cbb2549366f51030ecf09ba237b9e88607b24"
+      }
+    },
+    {
+      "period": "M",
+      "basis": "RAW",
+      "passed": true,
+      "bars": 22,
+      "last": {
+        "trade_date": "2026-10-09",
+        "first_trade_date": "2026-10-08",
+        "open": 13.24,
+        "high": 13.72,
+        "low": 13.16,
+        "close": 13.59,
+        "volume": 22696203,
+        "amount": 305320320.0,
+        "quality": "KNOWN",
+        "actual_count": 2,
+        "period_status": "AS_OF_PARTIAL_READY",
+        "calendar_count": 2,
+        "suspended_count": 0,
+        "formal_period_source": {
+          "bytes": 1029920,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/PERIOD_RAW.jsonl.gz",
+          "sha256": "dcec79aa9ccae8124750194eb75e3104b54d016d6a5cd1d7a073a6e8e6edc4af"
+        },
+        "ma5": 14.113999999999999,
+        "ma20": 22.758000000000003,
+        "ma60": null
+      },
+      "source": {
+        "bytes": 67380907,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/history.jsonl.gz",
+        "sha256": "1297fb01a999165f117afec1660cbb2549366f51030ecf09ba237b9e88607b24"
+      }
+    },
+    {
+      "period": "M",
+      "basis": "QFQ",
+      "passed": true,
+      "bars": 22,
+      "last": {
+        "trade_date": "2026-10-09",
+        "first_trade_date": "2026-10-08",
+        "open": 13.24,
+        "high": 13.72,
+        "low": 13.16,
+        "close": 13.59,
+        "volume": 22696203,
+        "amount": 305320320.0,
+        "quality": "KNOWN",
+        "actual_count": 2,
+        "period_status": "AS_OF_PARTIAL_READY",
+        "calendar_count": 2,
+        "suspended_count": 0,
+        "formal_period_source": {
+          "bytes": 1030765,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/PERIOD_ADJUSTED.jsonl.gz",
+          "sha256": "280769e2627098cdd2a2f24079bf95b88c7b6905024151fca0bd8d93cfc3df03"
+        },
+        "ma5": 14.113999999999999,
+        "ma20": 18.0375,
+        "ma60": null
+      },
+      "source": {
+        "bytes": 67380907,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/history.jsonl.gz",
+        "sha256": "1297fb01a999165f117afec1660cbb2549366f51030ecf09ba237b9e88607b24"
+      }
+    }
+  ],
+  "negatives": [
+    {
+      "path": "stocks",
+      "query": {
+        "context_token": "OLD_TOKEN"
+      },
+      "expected": 409,
+      "actual": 409,
+      "passed": true
+    },
+    {
+      "path": "stocks",
+      "query": {
+        "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+        "trade_date": "2026-10-12"
+      },
+      "expected": 400,
+      "actual": 400,
+      "passed": true
+    },
+    {
+      "path": "stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/chart",
+      "query": {
+        "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+        "period": "X"
+      },
+      "expected": 400,
+      "actual": 400,
+      "passed": true
+    },
+    {
+      "path": "stocks",
+      "query": {
+        "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+        "limit": 201
+      },
+      "expected": 400,
+      "actual": 400,
+      "passed": true
+    }
+  ],
+  "extra": [
+    {
+      "route": "sectors",
+      "query": {
+        "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+        "type": "INDUSTRY",
+        "maturity": "UNKNOWN",
+        "health": "UNKNOWN",
+        "sort": "-sector_rs20",
+        "limit": 200
+      },
+      "total": 132,
+      "query_explanation": null,
+      "passed": true
+    },
+    {
+      "route": "stocks",
+      "query": {
+        "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+        "q": "430017",
+        "limit": 30
+      },
+      "total": 0,
+      "query_explanation": {
+        "status": "OUT_OF_UNIVERSE",
+        "reason": "身份源存在，但不在当前已接受研究证券池；当前池不覆盖北交所等排除范围。",
+        "source": {
+          "bytes": 4008726,
+          "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/identity_projection_dc4b72168585944ca0925e806ebaff0a7785d180a85802e320c4973c1cc898f8.json",
+          "sha256": "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea"
+        },
+        "identities": [
+          {
+            "alias_role": "PREDECESSOR",
+            "board": "BEIJING",
+            "board_scope": "BEIJING",
+            "delist_date": null,
+            "exchange": "BJ",
+            "identity_quality": "BSE_OFFICIAL_ALIAS_CAPTURE_CANDIDATE",
+            "lifecycle_entity_id": "SEC-B91C6E948C5A22BE586D4F9D0C5C0DBA",
+            "list_date": "2023-05-30",
+            "security_id": "SEC-B91C6E948C5A22BE586D4F9D0C5C0DBA",
+            "security_name": "星昊医药",
+            "security_type": "A_STOCK",
+            "source_contract_id": "BSE_SECURITY_LIFECYCLE_SOURCE_V1",
+            "source_revision_id": "sha256:ff32532b1b45840b1b6b8b608f0aeb4a061ff9c6537bbfc30dfdaab40d37dc4e",
+            "source_security_key": "BJ.430017",
+            "symbol": "BJ.430017",
+            "symbol_effective_from": "2023-05-30",
+            "symbol_effective_to": "2025-10-08",
+            "system_available_at": "2026-10-01T10:15:06.061971+00:00"
+          }
+        ]
+      },
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "acceptance": "API_BINDING_SCOPED_PASS",
+  "production_reload": "NOT_PERFORMED",
+  "scope": "ISOLATED_REAL_ACCEPTED_HEAD; before=running old service"
+}

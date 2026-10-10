@@ -1,0 +1,64 @@
+{
+  "contract_id": "D2_FOCUS_VALIDITY_BRIDGE_R2",
+  "T0": "2026-10-09",
+  "source_bindings": {
+    "2026-09-28": {
+      "bytes": 1563194,
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/corrected_d2.json.gz",
+      "sha256": "bcda8942d5ef3e4cda1487b9a77543fbea51e988a6fdd1600af0e63695f6cd2b"
+    },
+    "2026-09-29": {
+      "bytes": 2031899,
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/corrected_d2.json.gz",
+      "sha256": "851b427b690dbd0e1b769a2d38d868739488234bd937adf13484f75e3b280393"
+    },
+    "2026-09-30": {
+      "bytes": 2037718,
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/corrected_d2.json.gz",
+      "sha256": "604bc3ee6c9e2e6ab88778ffd96579d0131e7a493696cdbb3f73801d394ff5ee"
+    },
+    "2026-10-08": {
+      "bytes": 2040443,
+      "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/corrected_d2.json.gz",
+      "sha256": "4bd79354f3c8e450141ce47aebc63ce70e2f87e069f02fec55790675f64729dc"
+    },
+    "2026-10-09": {
+      "bytes": 2063437,
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/corrected_d2.json.gz",
+      "sha256": "46bac7b6c641dd00125988d1f59d5b04f321c7dde57eb9c3e90f9f6616911fc5"
+    }
+  },
+  "manifest": {
+    "path": "data/v4/core_product_focus_read_r2/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/MANIFEST.json",
+    "sha256": "483e95e6968b9aaaf81c8cb0a36b1df21de8d2eb6b3d6bbdeb5a0bdcff28f329",
+    "bytes": 2100
+  },
+  "head_unchanged": true,
+  "old_episode_count": 2805,
+  "new_episode_count": 2805,
+  "old_end_count": 0,
+  "new_end_count": 1,
+  "source_invalidated_by_day": {
+    "2026-09-28": 0,
+    "2026-09-29": 0,
+    "2026-09-30": 0,
+    "2026-10-08": 0,
+    "2026-10-09": 1
+  },
+  "removed_events": [
+    {
+      "entity_id": "SEC-C08B6C24E4F39D8E85C03F8588661538",
+      "trade_date": "2026-10-09",
+      "event": "DATA_UNAVAILABLE"
+    }
+  ],
+  "added_events": [
+    {
+      "entity_id": "SEC-C08B6C24E4F39D8E85C03F8588661538",
+      "trade_date": "2026-10-09",
+      "event": "INVALIDATED"
+    }
+  ],
+  "external_acceptance": "NOT_GRANTED",
+  "scope": "Affected Focus lifecycle/path read projection only; immutable source unchanged"
+}

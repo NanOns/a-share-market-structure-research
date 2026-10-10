@@ -231,6 +231,7 @@ def verify_source_gate(root,day,artifact,result,now=None):
     sources['tdx']['provider_observed_at']=package.get('observed_at',bars['source_available_at'])
     if any(r.get('trade_date')!=day for r in native):sources['tdx']['status']='UNVERIFIED'
     dependencies={}
+    identity_preflight=None
     head_path=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
     if head_path.is_file():
         from .r43_owner_replay import checked,ref
@@ -249,11 +250,22 @@ def verify_source_gate(root,day,artifact,result,now=None):
             accepted_pool_sha256=tdx.sha256_bytes(tdx._json_bytes(sorted(expected_codes))),
             accepted_pool_count=len(expected_codes),missing_codes=sorted(expected_codes-actual_codes),unknown_codes=sorted(actual_codes-expected_codes),
             gbbq=dict(path=str(gbbq),sha256=gbbq_sha,bytes=before.st_size),membership_snapshot=head['membership_snapshot'])
+        from .next_t0_identity_preflight_v1 import diagnose
+        transport=raw.get('source_transport_v2',{})
+        identity_preflight=diagnose(trade_date=day,previous_date=head['accepted_trade_date'],
+            expected_codes=expected_codes,actual_codes=actual_codes,
+            source_binding=artifact['native_baostock'],parent_head=dependencies['parent_head'],
+            identity_binding=life['identity'],membership_binding=head['membership_snapshot'],
+            native_reconciled=reconciled,
+            requested_at=raw.get('requested_at') or transport.get('requested_at') or transport.get('daily',{}).get('requested_at'),
+            received_at=raw.get('received_at') or transport.get('daily',{}).get('received_at') or observed,
+            first_available_at=observed)
         # Dependency revisions belong to the source gate identity, so a changed
         # pool or action source cannot borrow a previously ready revision.
         sources['baostock_daily']['dependency_bindings']=dependencies
     readiness=source_readiness(day,now or datetime.now(timezone.utc),sources)
     readiness.update(source_freeze=result['source_freeze'],dependency_bindings=dependencies,AS_RECORDED=False,PIT_ELIGIBLE=False)
+    if identity_preflight:readiness['old_head_identity_preflight']=identity_preflight
     revision=readiness.get('source_revision_id') or tdx.sha256_bytes(tdx._json_bytes(readiness))
     ready_path=snapshot/'source_readiness'/day/(revision+'.json')
     if not ready_path.is_file():atomic_json(root,ready_path,readiness)

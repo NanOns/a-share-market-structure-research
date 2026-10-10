@@ -1,0 +1,186 @@
+{
+  "contract_id": "NEXT_T0_OLD_HEAD_IDENTITY_PREFLIGHT_V1",
+  "exact_BASE": "c0b9903fe596c1884c04f5529d6699034548850e",
+  "acceptance": "ENG_PREFLIGHT_PASS_SCOPED",
+  "external_acceptance": "NOT_GRANTED",
+  "real_next_T0": "PENDING",
+  "tests": {
+    "total": 12,
+    "failures": 0,
+    "synthetic_only": true,
+    "junit": {
+      "path": "G:\\codex work\\大A交易\\docs\\evidence\\next_stage_after_audit_r1_20261010\\B_TEST_JUNIT.xml",
+      "sha256": "abf4baf16df5ee6654acd2d8f91344356979d9a8b9b2e3419fdd14c059c669f6",
+      "bytes": 1923
+    }
+  },
+  "receipts": [
+    {
+      "synthetic_only": true,
+      "readiness_status": "SOURCE_READY",
+      "source_ready": true,
+      "diagnostic": {
+        "PIT_ELIGIBLE": false,
+        "added_observed_codes": [],
+        "contract_id": "NEXT_T0_OLD_HEAD_IDENTITY_PREFLIGHT_V1",
+        "diagnosis": "PREVIOUS_HEAD_IDENTITY_SCOPE_MATCH",
+        "external_acceptance": "NOT_GRANTED",
+        "first_available_at": "2026-10-10T10:26:52.276890+00:00",
+        "formal_consumer_enabled": false,
+        "identity_authority_candidate": {
+          "eligible_as_authority": false,
+          "observed_source_codes": [
+            "SH.600001"
+          ],
+          "original_source": {
+            "bytes": 335,
+            "path": "inputs/raw_gate.json",
+            "sha256": "e416a663f6777f7ab6731b37801728cafd382b9cdf9e200aee2d6c17eb90e8cb"
+          },
+          "source_gaps": [
+            "SAME_DAY_IDENTITY_OWNER_NOT_ISSUED",
+            "SAME_DAY_MEMBERSHIP_AUTHORITY_NOT_PROVEN"
+          ],
+          "status": "REQUIRES_SAME_DAY_IDENTITY_OWNER_REVIEW",
+          "target_session": "2026-10-10"
+        },
+        "main_dd_gate_policy": "UNCHANGED_PREVIOUS_ACCEPTED_IDENTITY_REQUIRED",
+        "missing_previous_codes": [],
+        "native_tdx_baostock_reconciliation_passed": true,
+        "old_identity_scope_matches": true,
+        "original_source": {
+          "bytes": 335,
+          "path": "inputs/raw_gate.json",
+          "sha256": "e416a663f6777f7ab6731b37801728cafd382b9cdf9e200aee2d6c17eb90e8cb"
+        },
+        "parent_head": {
+          "bytes": 348,
+          "path": "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json",
+          "sha256": "d721edebe3efd6c25b1a57088a71108fe7cb16204e1f884771496160c0774c16"
+        },
+        "prior_identity": {
+          "bytes": 135,
+          "path": "inputs/prior_identity.json",
+          "sha256": "00cb9d9f93797d2d9f0d4d372ae13b51f2be5f519c9bcd97d98d2752cd9e84bf"
+        },
+        "prior_identity_date": "2026-10-09",
+        "prior_membership": {
+          "bytes": 338,
+          "path": "inputs/old_snapshot.json",
+          "sha256": "e858a3d049d871d8fd1b076633b44f08991df483688138213aacc51733796cec"
+        },
+        "production": false,
+        "provider_availability": "NATIVE_BYTES_CAPTURED_RECONCILED",
+        "received_at": "2026-10-10T10:26:52.276890+00:00",
+        "requested_at": "2026-10-10T10:26:52.276890+00:00",
+        "source_bytes_preserved": true,
+        "target_session": "2026-10-10"
+      }
+    },
+    {
+      "synthetic_only": true,
+      "readiness_status": "WAIT_BAOSTOCK_DAILY",
+      "source_ready": false,
+      "diagnostic": {
+        "PIT_ELIGIBLE": false,
+        "added_observed_codes": [
+          "SZ.000002"
+        ],
+        "contract_id": "NEXT_T0_OLD_HEAD_IDENTITY_PREFLIGHT_V1",
+        "diagnosis": "PREVIOUS_HEAD_IDENTITY_SCOPE_MISMATCH",
+        "external_acceptance": "NOT_GRANTED",
+        "first_available_at": "2026-10-10T10:26:52.583386+00:00",
+        "formal_consumer_enabled": false,
+        "identity_authority_candidate": {
+          "eligible_as_authority": false,
+          "observed_source_codes": [
+            "SH.600001",
+            "SZ.000002"
+          ],
+          "original_source": {
+            "bytes": 451,
+            "path": "inputs/raw_gate.json",
+            "sha256": "d338eefdad0e58f6893eb8b74b3a1b4ec112bcee7bdf253c8a3c8aa7966c4b02"
+          },
+          "source_gaps": [
+            "SAME_DAY_IDENTITY_OWNER_NOT_ISSUED",
+            "SAME_DAY_MEMBERSHIP_AUTHORITY_NOT_PROVEN"
+          ],
+          "status": "REQUIRES_SAME_DAY_IDENTITY_OWNER_REVIEW",
+          "target_session": "2026-10-10"
+        },
+        "main_dd_gate_policy": "UNCHANGED_PREVIOUS_ACCEPTED_IDENTITY_REQUIRED",
+        "missing_previous_codes": [],
+        "native_tdx_baostock_reconciliation_passed": true,
+        "old_identity_scope_matches": false,
+        "original_source": {
+          "bytes": 451,
+          "path": "inputs/raw_gate.json",
+          "sha256": "d338eefdad0e58f6893eb8b74b3a1b4ec112bcee7bdf253c8a3c8aa7966c4b02"
+        },
+        "parent_head": {
+          "bytes": 348,
+          "path": "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json",
+          "sha256": "02f36a18d3f506716a46e5c25b9ac7f99528fc88190ec8ecf7de84dd10ac6bd3"
+        },
+        "prior_identity": {
+          "bytes": 135,
+          "path": "inputs/prior_identity.json",
+          "sha256": "00cb9d9f93797d2d9f0d4d372ae13b51f2be5f519c9bcd97d98d2752cd9e84bf"
+        },
+        "prior_identity_date": "2026-10-09",
+        "prior_membership": {
+          "bytes": 338,
+          "path": "inputs/old_snapshot.json",
+          "sha256": "b01b9aca48a63074a2b891dd4ec818b95006e55a4defc990b117c66d6bda8b71"
+        },
+        "production": false,
+        "provider_availability": "NATIVE_BYTES_CAPTURED_RECONCILED",
+        "received_at": "2026-10-10T10:26:52.583386+00:00",
+        "requested_at": "2026-10-10T10:26:52.583386+00:00",
+        "source_bytes_preserved": true,
+        "target_session": "2026-10-10"
+      }
+    }
+  ],
+  "protected_heads": [
+    {
+      "path": "G:\\codex work\\大A交易\\data\\v4\\V4_OPERATIONAL_RESEARCH_HEAD.json",
+      "sha256": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "bytes": 29799
+    },
+    {
+      "path": "G:\\codex work\\大A交易\\data\\v4\\V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "bytes": 16890
+    }
+  ],
+  "production_restart": false,
+  "TDX_written": false,
+  "code": [
+    {
+      "path": "G:\\codex work\\大A交易\\src\\workbench_analysis\\operational_daily_executor_v1.py",
+      "sha256": "89bd64f8420b2707a417991c22b58d46a8a787260e8775a581a97f6ca3b39b49",
+      "bytes": 20121
+    },
+    {
+      "path": "G:\\codex work\\大A交易\\src\\workbench_analysis\\next_t0_identity_preflight_v1.py",
+      "sha256": "439600835e2a2164241858dc2b72f67ea974db656669d1beab1c557e58430f3c",
+      "bytes": 1965
+    },
+    {
+      "path": "G:\\codex work\\大A交易\\tests\\test_next_t0_old_identity_preflight.py",
+      "sha256": "a058b0180120058299ceddb7d18fec1236847bc4d35e140989199801a6997b88",
+      "bytes": 4818
+    }
+  ],
+  "negative_coverage": [
+    "NEW_CODE_OLD_IDENTITY_FAIL_CLOSED",
+    "PARTIAL_TDX_PRESERVED_WHEN_BAOSTOCK_WAIT",
+    "GATE_FAIL_CAPTURE_RETAINED",
+    "MEMBER_BYTES_CHANGED_AFTER_CAPTURE",
+    "MISSING_NEW_SECURITY",
+    "WRONG_SOURCE_DATE",
+    "INTERRUPTION_RETRY_IDEMPOTENT"
+  ]
+}

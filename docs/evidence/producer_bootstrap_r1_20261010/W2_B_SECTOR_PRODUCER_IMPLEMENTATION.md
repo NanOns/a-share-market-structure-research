@@ -1,0 +1,9 @@
+# W2 板块候选实际计算与限制
+
+operational_candidate_v1.compute读取真实Native/Core/成员，从build_b2_inputs与evaluate_b2复用冻结R5 AST、原sector_attention source、原research_attention_v3参数，计算m1、b1、rel1、quote coverage、ma20/breadth endpoint等事实。逐字段receipt接口支持独立exact rank/window/SETUP/RECOVERY与Amount分支；未提供的q20/dq5_3等保留UNKNOWN。未自行编造算法。
+
+10/09全400板块：CONFIRMED/WARM候选均FALSE。原因是冻结legacy有效成员identifier正则的可证独立FALSE；不是把未知正式D2填FALSE，也不是因缺H21强制全部清零。exact负谓词只在本地研究求值作用域使用，不能成为A05已接纳观测。业务门标PARTIAL_NOT_BUSINESS_ACCEPTED；正向资格、真实rank窗口来源仍未闭环；produce_rank_window_sources已复用原cycle与_exact_cycle_delta接口并通过synthetic正/反例，未伪造10/09 exact RS输入。
+
+新增create_episode：仅真实同日合法candidate且无source gaps，冻结成员、绑定price source、invalidation合同版本/条件及scenario priority，不覆盖。evaluate_invalidation使用冻结AST与截止日期，无旧Episode则NO_PRIOR_EPISODE。followup按真实日历计算T+1/3/5，未到期PENDING，到期无SHA检查settlement UNKNOWN。
+
+原算法正则问题单独开审计，不在当前阶段偷偷修冻结源。没有将9/24 A05权限扩到10/09。真实未来Episode尚未发生，测试为synthetic engineering。

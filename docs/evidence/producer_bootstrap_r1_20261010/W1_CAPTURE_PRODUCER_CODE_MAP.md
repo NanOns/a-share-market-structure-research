@@ -1,0 +1,9 @@
+# W1 来源采集位置
+
+operational_daily_executor_v1.execute_sources在verify_source_gate后、capture_only返回前调用capture_daily_sources。新增候选失败由optional_step记录原因，原DD来源门/RAW/股票/市场继续自身路径。
+
+source_capture_candidate_v1.capture真实时钟读取原字节，稳定读前后stat，校验SHA，内容地址去重，临时写入/硬链接实现atomic no-clobber。原始TDX只读，输出G盘data/v4/source_candidates。当前包含freeze、BaoStock原响应、TDX target bytes与本地成员原字节。完整大ZIP不再复制。
+
+旧Owner prepare/seal的AS_RECORDED=false保留；运营ready adapter保持原语义。新旁路不写已接受Head。原网络请求时间没有原件时记null与REQUEST_TIME_UNKNOWN，绝不用observed_at冒充requested_at。当前scope沿用前驱active universe，新身份依赖原DD身份准入，不宣称所有可能新证券均已首获。
+
+阶段入口依据：附件任务R1、配套外审、DD执行V1.1、DD03、Phase0 R5现有状态。测试和回放只证明工程行为，现运行28765未重启，未来实际时刻自动加载未经证明。

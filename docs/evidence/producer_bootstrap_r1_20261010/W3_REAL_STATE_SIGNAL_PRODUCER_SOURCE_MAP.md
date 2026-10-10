@@ -1,0 +1,7 @@
+# W3 全量State源映射
+
+唯一研究算法入口为现有r43_focus_replay.confirmation以及冻结scanner/scenario priority；其materialize过程对完整Core证券循环，尚未经过Focus Top-K的prewatch全集为输入。新full_state_signal_candidate_v1.produce遍历生命周期active_security_ids，逐证券逐scenario输出TRUE/FALSE/UNKNOWN、原checks、eligible研究状态及排除理由；缺State输出也显式保留UNKNOWN。拒绝日期、证券、场景重复及非法三值。
+
+10/09实际5224证券、20896场景身份、300研究eligible、20596研究ineligible；每项正式eligible_at_T0=false，formal observed/matured为null。未读取旧2290后选事件或Focus文件。
+
+每份输出绑定原prewatch完整SHA、成员、源码/配置身份。当前原窗口只能RECONSTRUCTED_RESEARCH_ONLY，first_available=null，candidate freeze引用实际工程冻结语义，不声称10/09当时冻结。DD在Owner sealed后旁路调用，不写运营Owner或Head。

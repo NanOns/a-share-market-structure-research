@@ -1,0 +1,7 @@
+# 下一真实交易日执行边界
+
+10/12仅为现已绑定日历的下一个session，未请求其数据也未模拟发布。实际来源到达后按DD R2.2原18:35及有界重试运行，候选旁路连接在源码中；当前服务未重启，磁盘改动不等于已加载。
+
+先独立批准正常服务加载/相关范围，保持28765稳定；确认实际加载SHA与AUTO，禁止重复实例。真实新日来源齐备后检查Job first_capture_source_candidate/full_state_signal_candidate/sector_operational_candidate，失败原因是具体异常而非空缺源报表；主流域继续原门。
+
+核对source原始SHA、请求/接收时间gap、完整日期/身份/成员scope、窗口截止和候选身份。只能称candidate；正式freeze_source_candidate/extract_candidate/prepare_capture需独立source准入与严格State合同，当前研究全集不能替代。任何源/窗口缺口仅关闭相应新能力。保留旧Head与T+1/3/5实际Forward结算路径。

@@ -136,6 +136,9 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
     root=Path(root)
     artifact=json.loads(checked(root,result['source_freeze']).read_bytes())
     result,readiness=verify_source_gate(root,day,artifact,result)
+    from .producer_bootstrap_v1 import capture_daily_sources, optional_step
+    result=dict(result,first_capture_source_candidate=optional_step(
+        capture_daily_sources,root,day,result['source_freeze']))
     if not readiness['source_ready']:
         return dict(result,status=readiness['status'],reason=readiness['reason'])
     progress(day,'DERIVING',result)
@@ -150,6 +153,9 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
     if period_qa['acceptance']!='PASS':raise ValueError('FULL_PERIOD_NUMERIC_ORACLE_FAILED')
     candidate['period_numeric_oracle']=ref(root,context['folder']/'PERIOD_NUMERIC_ORACLE.json')
     candidate_path=root/binding['path'];atomic_json(root,candidate_path,candidate);binding=ref(root,candidate_path)
+    from .producer_bootstrap_v1 import produce_daily_state, produce_daily_sector, optional_step
+    result=dict(result,full_state_signal_candidate=optional_step(produce_daily_state,root,day,binding),
+                sector_operational_candidate=optional_step(produce_daily_sector,root,day,binding))
     # Observe the exact sealed daily candidate. This never grants authority,
     # enrolls corrected events or blocks publication of otherwise usable domains.
     from .cohort_capture_readiness_r1 import inspect_daily_candidate

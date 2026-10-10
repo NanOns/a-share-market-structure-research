@@ -1,0 +1,9 @@
+# FIRST_CAPTURE_SOURCE_CANDIDATE_V1
+
+范围：隔离候选，可无Cohort grant采集。正式PIT_ELIGIBLE、AS_RECORDED与production始终false；候选本身不授予消费者权限。
+
+实时路径要求交易日在SHA绑定日历中、上海真实时钟同日。来源时间有时区、顺序合法、不来自未来；未知request时间保持null并列出gap。LOCAL_READ时钟在实际读前/后取值。日历、model、config字节必须checked。源字节stat稳定、指定SHA吻合、证券范围非空不重复、板块不重复。scope和source SHA组成不可覆盖内容槽；同内容重试保留最初capture时刻，内容变化追加新槽。
+
+逐来源分类CURRENT_SOURCE_OBSERVED/RECONSTRUCTED，不全局改旧AS_RECORDED。历史回放始终RECONSTRUCTED_RESEARCH_ONLY。首次观察候选与历史有效成员、模型window strict PIT是不同事实；独立接纳前不能互转。
+
+现有DD网络收据缺精确requested_at，候选明确降级；补充未来真实网络请求收据是后续来源能力事项，不填旧值。生产模型历史窗口也不因新原料观察被提升。

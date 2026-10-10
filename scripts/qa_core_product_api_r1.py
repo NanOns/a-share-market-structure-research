@@ -9,6 +9,22 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from scripts.audit_core_algo_ui_r1 import write,OUT
 
+def compact_samples(samples):
+    """Persist numeric readback, not repeated full Owner provenance payloads."""
+    def row(r):
+        keys=('entity_id','security_id','symbol','display_name','trade_date','event','effective_event','href')
+        result={k:r[k] for k in keys if k in r}
+        selected=('close','scenario','final_eligibility','output_state','prior_rotation_state','sector_rs5','member_count','source_member_count','unmapped_count','effective_event','trade_date','ma20','atr20','ret1','ret5','ret20')
+        result['fields']={k:{f:v for f,v in c.items() if f in ('value','unit','quality','source','field','as_of','contract_id','parameter_set_id','window_start_trade_date','window_end_trade_date','actual_count')} for k,c in r.get('fields',{}).items() if k in selected}
+        return result
+    home=samples['home']
+    home['rotations']=[row(r) for r in home['rotations']]
+    home['sector_changes']=[dict(item=row(c['item']),member_previews=[{k:r[k] for k in ('entity_id','symbol','display_name') if k in r} for r in c['member_previews']]) for c in home['sector_changes']]
+    for k in ('changes','risks'):home[k]=[row(r) for r in home[k]]
+    samples['stock']=row(samples['stock'])
+    samples['sampling_scope']='Selected visible numeric fields; complete HTTP schema/source audit is separate; full raw Owners stay on G.'
+    return samples
+
 def request(base,path,query=None):
     start=time.perf_counter();url=base+'/api/v4/'+path+'?'+urlencode(query or {})
     try:
@@ -66,7 +82,7 @@ def main():
     if focuslayers['episodes']==focuslayers['timeline'] or not all('episode_id' in r for r in focuslayers['observations']):errors.append(dict(reason='FOCUS_LAYER_COLLISION'))
     samples.update(stock=target,charts=charts,sector_id=sector,member_count=len(members),focus_id=fid,focus_layer_counts={k:len(v) for k,v in focuslayers.items()})
     write(OUT/'API_FIELD_CONTRACT_AUDIT.json',dict(contract_id='CORE_PRODUCT_API_FIELD_AUDIT_R1',observed_at=datetime.now(timezone.utc).isoformat(),context=context['context'],routes=audit,charts=charts,negatives=negatives,errors=errors,acceptance='API_BINDING_SCOPED_PASS' if not errors else 'FAIL',production_reload='NOT_PERFORMED',scope='ISOLATED_REAL_ACCEPTED_HEAD; before=running old service'))
-    write(OUT/'API_UI_NUMERIC_SAMPLES.json',samples)
+    write(OUT/'API_UI_NUMERIC_SAMPLES.json',compact_samples(samples))
     print(json.dumps(dict(routes=len(routes),charts=len(charts),member_count=len(members),errors=errors)))
     return bool(errors)
 

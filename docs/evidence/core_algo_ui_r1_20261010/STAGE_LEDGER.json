@@ -33,6 +33,18 @@
       ],
       "acceptance": "CORRECTED_COMPARE_AND_DATED_DIAGNOSTICS_SCOPED; FORWARD_COHORT_FEP_STRICT_PIT_SOURCE_NOT_PRESENT",
       "next_stage": "Round D browser QA and external audit"
+    },
+    {
+      "stage": "QA-05 Round D",
+      "contract": "TASK_CONTRACT_R1 section6; REV2 62A-69/81.2; FP13/14 original gates",
+      "evidence": [
+        "CORE_ALGO_UI_IAB_QA_INDEX.json",
+        "CORE_ALGO_UI_LINEAGE_MATRIX.json",
+        "iab/BROWSER_DOM_RECORDS.json",
+        "SAFETY_RECEIPT.json"
+      ],
+      "acceptance": "DUAL_VIEWPORT_REAL_OWNER_READ_QA_SCOPED_PASS; EIGHT_IMAGES; FULL_EXTERNAL_PENDING",
+      "next_stage": "External replay/spot audit; user normal production restart; precise independent OPEN items"
     }
   ]
 }

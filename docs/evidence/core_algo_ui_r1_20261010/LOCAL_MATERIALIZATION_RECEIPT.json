@@ -1,0 +1,73 @@
+{
+  "authority": {
+    "path": "config/core_product_read_authority_r1.json",
+    "bytes": 268,
+    "sha256": "46c1d74ff13e703c366eb3861fa56e967f88ab472f3e40e4a81485c7eca2ad76"
+  },
+  "manifest": {
+    "AS_RECORDED": false,
+    "PIT_ELIGIBLE": false,
+    "T0": "2026-10-09",
+    "contract_id": "CORE_PRODUCT_DATED_READ_PACK_R1",
+    "external_acceptance": "NOT_GRANTED",
+    "head": {
+      "bytes": 29799,
+      "path": "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json",
+      "sha256": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e"
+    },
+    "history_index": {
+      "bytes": 426196992,
+      "path": "data/v4/core_product_read_r1/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/history.sqlite",
+      "sha256": "4be1a1442e7d312483d32de1563e90ba09779752ddba06b80ba06937f118220c"
+    },
+    "market_facts": {
+      "bytes": 10970359,
+      "path": "data/v4/core_product_read_r1/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/market.json",
+      "sha256": "c92ea603fa7668f2610bf13062e1460f340823d464ca538cb8f5c987ed7d143a"
+    },
+    "read_only": true,
+    "source_bindings": {
+      "core": {
+        "bytes": 19792536,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+        "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+      },
+      "history": {
+        "bytes": 67380907,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/history.jsonl.gz",
+        "sha256": "1297fb01a999165f117afec1660cbb2549366f51030ecf09ba237b9e88607b24"
+      },
+      "limits_0": {
+        "bytes": 257002,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/daily_price_limits_v1.jsonl.gz",
+        "sha256": "446ff3b24cdb6e9ee80819c03938a43607049a69c61d036d885b2e3e407f32d5"
+      },
+      "limits_1": {
+        "bytes": 256491,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-08/daily_price_limits_v1.jsonl.gz",
+        "sha256": "faf73305462a7deee91a83e278be54b6d76f57a9f85330310dc66960ac3af317"
+      },
+      "market": {
+        "bytes": 5925,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/market_owner_candidate_v2.json",
+        "sha256": "327c4d3dfbdf6a20219a14a86c507d413933da3ebaba39bc708f1bfcdb7a8146"
+      },
+      "names": {
+        "bytes": 1355970,
+        "path": "data/v4/display_names/a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f/names.json",
+        "sha256": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+      },
+      "package": {
+        "bytes": 551726664,
+        "path": "data/v4/dynamic_daily_sources/tdx/20261009/sha256-635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6/hsjday.zip",
+        "sha256": "635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6"
+      },
+      "raw": {
+        "bytes": 242313,
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/raw.jsonl.gz",
+        "sha256": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5"
+      }
+    }
+  },
+  "note": "history sqlite stays ignored on G; reproduce with build_core_product_read_pack_r1.py from accepted local sources; not a new factor owner"
+}

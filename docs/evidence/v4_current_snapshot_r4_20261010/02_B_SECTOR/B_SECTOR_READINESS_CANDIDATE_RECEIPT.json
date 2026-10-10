@@ -1,0 +1,29 @@
+{
+  "status": "ENGINEERING_CANDIDATE_PASS_SCOPED",
+  "input_sha": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85",
+  "code": {
+    "path": "src/sector/d2_admission_candidate_r4.py",
+    "sha256": "b0fe598cae3e002e96d7c415b75a65cb092f9f3944316f9c782bae13a64e86a1",
+    "bytes": 7369
+  },
+  "input_count": 400,
+  "output_count": 400,
+  "unique_count": 400,
+  "type_counts": {
+    "INDUSTRY": 132,
+    "THEME": 268
+  },
+  "dq5_known_count": 395,
+  "missing_field_counts": {
+    "CONFIRMED": 400,
+    "WARM": 400,
+    "frozen_invalidation": 400,
+    "episode_invalidation_contract_id": 400,
+    "followup_complete": 400,
+    "scenario": 400
+  },
+  "formal_owner": "SECTOR_D2_OWNER_OPEN",
+  "accepted": false,
+  "reducer_invoked": false,
+  "reason": "REQUIRED_PRODUCER_INPUTS_ABSENT; DO_NOT_INVOKE_FORMAL_REDUCER_WITH_INVENTED_FACTS"
+}

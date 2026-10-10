@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SECTOR isolated entry R4 R1",
+  "type": "object",
+  "required": [
+    "contract_id",
+    "entity_type",
+    "entity_id",
+    "trade_date",
+    "member_ids",
+    "member_set_asof",
+    "source_binding",
+    "upstream",
+    "formal_consumer_enabled",
+    "accepted"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SECTOR_D2_EXTRACTION_CANDIDATE_R4_R1"
+    },
+    "entity_type": {
+      "const": "SECTOR"
+    },
+    "entity_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trade_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "member_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "member_set_asof": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_binding": {
+      "type": "object",
+      "required": [
+        "path",
+        "sha256"
+      ]
+    },
+    "upstream": {
+      "type": "object",
+      "required": [
+        "CONFIRMED",
+        "WARM",
+        "frozen_invalidation",
+        "episode_invalidation_contract_id",
+        "followup_complete",
+        "scenario"
+      ]
+    },
+    "formal_consumer_enabled": {
+      "const": false
+    },
+    "accepted": {
+      "const": false
+    }
+  }
+}

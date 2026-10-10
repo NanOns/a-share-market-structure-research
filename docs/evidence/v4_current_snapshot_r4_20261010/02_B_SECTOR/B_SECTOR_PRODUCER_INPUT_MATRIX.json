@@ -1,0 +1,214 @@
+{
+  "fields": [
+    {
+      "field": "CONFIRMED",
+      "current_contract": {
+        "accepted_entity_types": [
+          "STOCK",
+          "SECTOR"
+        ],
+        "domain": "TRI",
+        "implemented": false,
+        "not_applicable_entity_types": [],
+        "producer_contract_id": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+        "producer_parameter_set_id": null,
+        "required": true,
+        "time_role": "T"
+      },
+      "exact_input_owner": null,
+      "extraction": "SOURCE_BOUND_TRI_RECEIPT_AT_T",
+      "candidate_owner": "ISOLATED_ONLY",
+      "states": {
+        "FORMULA_LOGIC": "PASS_SCOPED",
+        "DATED_INPUT": "SOURCE_NOT_PRESENT",
+        "FORMAL_OWNER": "NOT_AUTHORIZED",
+        "API_UI_BINDING": "NOT_TESTED",
+        "HISTORICAL_AS_RECORDED_PIT": "UNKNOWN",
+        "FUTURE_MATURED_OUTCOME": "NOT_TESTED"
+      },
+      "T0": "2026-10-09",
+      "first_available": null,
+      "window_identity": "T/T-1/H21 explicit per receipt",
+      "member_version": "TDX_LATEST_MEMBER_RETRO_V1",
+      "real_consumer": "sector detail/table UNKNOWN presentation",
+      "next_action": "Independent contract/owner admission"
+    },
+    {
+      "field": "WARM",
+      "current_contract": {
+        "accepted_entity_types": [
+          "STOCK",
+          "SECTOR"
+        ],
+        "domain": "TRI",
+        "implemented": false,
+        "not_applicable_entity_types": [
+          "STOCK"
+        ],
+        "producer_contract_id": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+        "producer_parameter_set_id": null,
+        "required": true,
+        "time_role": "T"
+      },
+      "exact_input_owner": null,
+      "extraction": "SOURCE_BOUND_TRI_RECEIPT_AT_T",
+      "candidate_owner": "ISOLATED_ONLY",
+      "states": {
+        "FORMULA_LOGIC": "PASS_SCOPED",
+        "DATED_INPUT": "SOURCE_NOT_PRESENT",
+        "FORMAL_OWNER": "NOT_AUTHORIZED",
+        "API_UI_BINDING": "NOT_TESTED",
+        "HISTORICAL_AS_RECORDED_PIT": "UNKNOWN",
+        "FUTURE_MATURED_OUTCOME": "NOT_TESTED"
+      },
+      "T0": "2026-10-09",
+      "first_available": null,
+      "window_identity": "T/T-1/H21 explicit per receipt",
+      "member_version": "TDX_LATEST_MEMBER_RETRO_V1",
+      "real_consumer": "sector detail/table UNKNOWN presentation",
+      "next_action": "Independent contract/owner admission"
+    },
+    {
+      "field": "frozen_invalidation",
+      "current_contract": {
+        "accepted_entity_types": [
+          "STOCK",
+          "SECTOR"
+        ],
+        "domain": "TRI",
+        "implemented": false,
+        "not_applicable_entity_types": [],
+        "producer_contract_id": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+        "producer_parameter_set_id": null,
+        "required": true,
+        "time_role": "T-1"
+      },
+      "exact_input_owner": null,
+      "extraction": "CREATION_FROZEN_CONTRACT_PLUS_EXACT_T_MINUS_1_EPISODE",
+      "candidate_owner": "ISOLATED_ONLY",
+      "states": {
+        "FORMULA_LOGIC": "PASS_SCOPED",
+        "DATED_INPUT": "SOURCE_NOT_PRESENT",
+        "FORMAL_OWNER": "NOT_AUTHORIZED",
+        "API_UI_BINDING": "NOT_TESTED",
+        "HISTORICAL_AS_RECORDED_PIT": "UNKNOWN",
+        "FUTURE_MATURED_OUTCOME": "NOT_TESTED"
+      },
+      "T0": "2026-10-09",
+      "first_available": null,
+      "window_identity": "T/T-1/H21 explicit per receipt",
+      "member_version": "TDX_LATEST_MEMBER_RETRO_V1",
+      "real_consumer": "sector detail/table UNKNOWN presentation",
+      "next_action": "Independent contract/owner admission"
+    },
+    {
+      "field": "episode_invalidation_contract_id",
+      "current_contract": {
+        "accepted_entity_types": [
+          "STOCK",
+          "SECTOR"
+        ],
+        "domain": "CONTRACT_ID",
+        "implemented": false,
+        "not_applicable_entity_types": [],
+        "producer_contract_id": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+        "producer_parameter_set_id": null,
+        "required": false,
+        "time_role": "T-1"
+      },
+      "exact_input_owner": null,
+      "extraction": "CREATION_FROZEN_CONTRACT_PLUS_EXACT_T_MINUS_1_EPISODE",
+      "candidate_owner": "ISOLATED_ONLY",
+      "states": {
+        "FORMULA_LOGIC": "PASS_SCOPED",
+        "DATED_INPUT": "SOURCE_NOT_PRESENT",
+        "FORMAL_OWNER": "NOT_AUTHORIZED",
+        "API_UI_BINDING": "NOT_TESTED",
+        "HISTORICAL_AS_RECORDED_PIT": "UNKNOWN",
+        "FUTURE_MATURED_OUTCOME": "NOT_TESTED"
+      },
+      "T0": "2026-10-09",
+      "first_available": null,
+      "window_identity": "T/T-1/H21 explicit per receipt",
+      "member_version": "TDX_LATEST_MEMBER_RETRO_V1",
+      "real_consumer": "sector detail/table UNKNOWN presentation",
+      "next_action": "Independent contract/owner admission"
+    },
+    {
+      "field": "followup_complete",
+      "current_contract": {
+        "accepted_entity_types": [
+          "STOCK",
+          "SECTOR"
+        ],
+        "domain": "TRI",
+        "implemented": false,
+        "not_applicable_entity_types": [],
+        "producer_contract_id": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+        "producer_parameter_set_id": null,
+        "required": false,
+        "time_role": "T"
+      },
+      "exact_input_owner": null,
+      "extraction": "SOURCE_BOUND_TRI_RECEIPT_AT_T",
+      "candidate_owner": "ISOLATED_ONLY",
+      "states": {
+        "FORMULA_LOGIC": "PASS_SCOPED",
+        "DATED_INPUT": "SOURCE_NOT_PRESENT",
+        "FORMAL_OWNER": "NOT_AUTHORIZED",
+        "API_UI_BINDING": "NOT_TESTED",
+        "HISTORICAL_AS_RECORDED_PIT": "UNKNOWN",
+        "FUTURE_MATURED_OUTCOME": "NOT_TESTED"
+      },
+      "T0": "2026-10-09",
+      "first_available": null,
+      "window_identity": "T/T-1/H21 explicit per receipt",
+      "member_version": "TDX_LATEST_MEMBER_RETRO_V1",
+      "real_consumer": "sector detail/table UNKNOWN presentation",
+      "next_action": "Independent contract/owner admission"
+    },
+    {
+      "field": "scenario",
+      "current_contract": {
+        "accepted_entity_types": [
+          "STOCK",
+          "SECTOR"
+        ],
+        "domain": "SCENARIO",
+        "implemented": false,
+        "not_applicable_entity_types": [],
+        "producer_contract_id": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+        "producer_parameter_set_id": null,
+        "required": false,
+        "time_role": "T"
+      },
+      "exact_input_owner": null,
+      "extraction": "SOURCE_BOUND_TRI_RECEIPT_AT_T",
+      "candidate_owner": "ISOLATED_ONLY",
+      "states": {
+        "FORMULA_LOGIC": "PASS_SCOPED",
+        "DATED_INPUT": "SOURCE_NOT_PRESENT",
+        "FORMAL_OWNER": "NOT_AUTHORIZED",
+        "API_UI_BINDING": "NOT_TESTED",
+        "HISTORICAL_AS_RECORDED_PIT": "UNKNOWN",
+        "FUTURE_MATURED_OUTCOME": "NOT_TESTED"
+      },
+      "T0": "2026-10-09",
+      "first_available": null,
+      "window_identity": "T/T-1/H21 explicit per receipt",
+      "member_version": "TDX_LATEST_MEMBER_RETRO_V1",
+      "real_consumer": "sector detail/table UNKNOWN presentation",
+      "next_action": "Independent contract/owner admission"
+    }
+  ],
+  "dq5_source": {
+    "bytes": 1710140,
+    "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/native.jsonl.gz",
+    "sha256": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85"
+  },
+  "existing_reducer": {
+    "path": "src/v4/research_state.py",
+    "sha256": "58fde91734f5d1192a43174052c3c10ce6a41a65facce2076b9bf0798d0e5bfb",
+    "bytes": 13989
+  }
+}

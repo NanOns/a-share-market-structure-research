@@ -1,0 +1,620 @@
+{
+  "input": {
+    "path": "docs/evidence/v4_current_snapshot_r4_20261010/02_B_SECTOR/B_SECTOR_READINESS_CANDIDATE_INPUT.json",
+    "sha256": "2f3d29222c8c49f261d2062761e01c68af35b3a9480d459e15a962b695c6bec2",
+    "bytes": 2748096
+  },
+  "output": {
+    "path": "docs/evidence/v4_current_snapshot_r4_20261010/02_B_SECTOR/B_SECTOR_READINESS_CANDIDATE_OUTPUT.json",
+    "sha256": "f038fcf72f8f004a2682e8daf9224ccc159189b85085796d71c7b526b14c7019",
+    "bytes": 3510269
+  },
+  "oracle": {
+    "path": "docs/evidence/v4_current_snapshot_r4_20261010/02_B_SECTOR/B_SECTOR_ORACLE.py",
+    "sha256": "b8f6bb0d621ba907152e355645568820111a5daaf33a11cc1b6bced85fd317ef",
+    "bytes": 1009
+  },
+  "code": {
+    "path": "src/sector/d2_admission_candidate_r4.py",
+    "sha256": "b0fe598cae3e002e96d7c415b75a65cb092f9f3944316f9c782bae13a64e86a1",
+    "bytes": 7369
+  },
+  "current_real_comparison_count": 3600,
+  "current_real_differences": [],
+  "synthetic_original_reducer_vectors": 30,
+  "negative_and_boundary_results": [
+    {
+      "case": "wrong_entity",
+      "actual": "SECTOR_ENTITY_REQUIRED",
+      "expected": "SECTOR_ENTITY_REQUIRED",
+      "pass_result": true
+    },
+    {
+      "case": "duplicate_members",
+      "actual": "UNIQUE_MEMBER_DENOMINATOR_REQUIRED",
+      "expected": "UNIQUE_MEMBER_DENOMINATOR_REQUIRED",
+      "pass_result": true
+    },
+    {
+      "case": "naive_cutoff",
+      "actual": "AWARE_FIRST_AVAILABLE_REQUIRED",
+      "expected": "AWARE_FIRST_AVAILABLE_REQUIRED",
+      "pass_result": true
+    },
+    {
+      "case": "nonconsecutive_prior_holiday",
+      "actual": "EXACT_PRIOR_SESSION_REQUIRED",
+      "expected": "EXACT_PRIOR_SESSION_REQUIRED",
+      "pass_result": true
+    },
+    {
+      "case": "candidate_positive_no_activation",
+      "actual": "TRUE",
+      "expected": "TRUE",
+      "pass_result": true
+    },
+    {
+      "case": "late_capture",
+      "actual": "FIRST_AVAILABLE_AFTER_CUTOFF",
+      "expected": "FIRST_AVAILABLE_AFTER_CUTOFF",
+      "pass_result": true
+    },
+    {
+      "case": "wrong_date",
+      "actual": "WRONG_TIME_ROLE",
+      "expected": "WRONG_TIME_ROLE",
+      "pass_result": true
+    },
+    {
+      "case": "quality_unknown",
+      "actual": "REQUIRED_QUALITY_UNAVAILABLE",
+      "expected": "REQUIRED_QUALITY_UNAVAILABLE",
+      "pass_result": true
+    },
+    {
+      "case": "unknown_not_false",
+      "actual": "REQUIRED_VALUE_UNKNOWN",
+      "expected": "REQUIRED_VALUE_UNKNOWN",
+      "pass_result": true
+    },
+    {
+      "case": "bool_not_tri",
+      "actual": "INVALID_TRI_VALUE",
+      "expected": "INVALID_TRI_VALUE",
+      "pass_result": true
+    },
+    {
+      "case": "wrong_sha",
+      "actual": "INVALID_PRODUCER_IDENTITY",
+      "expected": "INVALID_PRODUCER_IDENTITY",
+      "pass_result": true
+    },
+    {
+      "case": "warm_amount_missing",
+      "actual": "STRICT_AMOUNT_A_HISTORY_UNVERIFIABLE",
+      "expected": "STRICT_AMOUNT_A_HISTORY_UNVERIFIABLE",
+      "pass_result": true
+    },
+    {
+      "case": "followup_right_censor",
+      "actual": "DUE_OR_SETTLEMENT_OWNER_NOT_PRESENT",
+      "expected": "DUE_OR_SETTLEMENT_OWNER_NOT_PRESENT",
+      "pass_result": true
+    },
+    {
+      "case": "invalidated_no_same_day_reentry",
+      "actual": false,
+      "expected": false,
+      "pass_result": true
+    },
+    {
+      "case": "same_day_idempotence",
+      "actual": {
+        "episode_id": "SECTOR_EP_CANDIDATE:9cf66e342d366bdbe2537198c3a9b23b23b793ec84cc6f6ecc9bde83e59a14cc",
+        "trade_date": "2026-10-09",
+        "session_index": 21,
+        "invalidated": true,
+        "reentry_allowed": false,
+        "frozen_contract": {
+          "contract_id": "TEST_INVALIDATION",
+          "version": "R1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      },
+      "expected": {
+        "episode_id": "SECTOR_EP_CANDIDATE:9cf66e342d366bdbe2537198c3a9b23b23b793ec84cc6f6ecc9bde83e59a14cc",
+        "trade_date": "2026-10-09",
+        "session_index": 21,
+        "invalidated": true,
+        "reentry_allowed": false,
+        "frozen_contract": {
+          "contract_id": "TEST_INVALIDATION",
+          "version": "R1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      },
+      "pass_result": true
+    },
+    {
+      "case": "same_day_conflict",
+      "actual": "SAME_SESSION_CONFLICT",
+      "expected": "SAME_SESSION_CONFLICT",
+      "pass_result": true
+    },
+    {
+      "case": "member_change_does_not_mutate_frozen_identity",
+      "actual": true,
+      "expected": true,
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_sector_hard_invalidation",
+      "actual": [
+        "NONE",
+        "INVALIDATED",
+        "DAMAGED"
+      ],
+      "expected": [
+        "NONE",
+        "INVALIDATED",
+        "DAMAGED"
+      ],
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_sector_same_day_reentry",
+      "actual": [
+        "NONE",
+        true
+      ],
+      "expected": [
+        "NONE",
+        true
+      ],
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_sector_next_session_reentry",
+      "actual": [
+        "CONFIRMED",
+        true
+      ],
+      "expected": [
+        "CONFIRMED",
+        true
+      ],
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_NONE",
+      "actual": {
+        "final_eligibility": "FALSE",
+        "health": "STABLE",
+        "maturity": "NONE",
+        "state_freshness": "FRESH",
+        "tracking": "CLOSED",
+        "validity": "VALID"
+      },
+      "expected": {
+        "final_eligibility": "FALSE",
+        "health": "STABLE",
+        "maturity": "NONE",
+        "state_freshness": "FRESH",
+        "tracking": "CLOSED",
+        "validity": "VALID"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_SEED",
+      "actual": {
+        "final_eligibility": "TRUE",
+        "health": "STABLE",
+        "maturity": "SEED",
+        "state_freshness": "FRESH",
+        "tracking": "ACTIVE",
+        "validity": "VALID"
+      },
+      "expected": {
+        "final_eligibility": "TRUE",
+        "health": "STABLE",
+        "maturity": "SEED",
+        "state_freshness": "FRESH",
+        "tracking": "ACTIVE",
+        "validity": "VALID"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_PREWATCH",
+      "actual": {
+        "final_eligibility": "TRUE",
+        "health": "STABLE",
+        "maturity": "PREWATCH",
+        "state_freshness": "FRESH",
+        "tracking": "ACTIVE",
+        "validity": "VALID"
+      },
+      "expected": {
+        "final_eligibility": "TRUE",
+        "health": "STABLE",
+        "maturity": "PREWATCH",
+        "state_freshness": "FRESH",
+        "tracking": "ACTIVE",
+        "validity": "VALID"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_CONFIRMED",
+      "actual": {
+        "final_eligibility": "TRUE",
+        "health": "STABLE",
+        "maturity": "CONFIRMED",
+        "state_freshness": "FRESH",
+        "tracking": "ACTIVE",
+        "validity": "VALID"
+      },
+      "expected": {
+        "final_eligibility": "TRUE",
+        "health": "STABLE",
+        "maturity": "CONFIRMED",
+        "state_freshness": "FRESH",
+        "tracking": "ACTIVE",
+        "validity": "VALID"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_WARM",
+      "actual": {
+        "final_eligibility": "TRUE",
+        "health": "STABLE",
+        "maturity": "WARM",
+        "state_freshness": "FRESH",
+        "tracking": "ACTIVE",
+        "validity": "VALID"
+      },
+      "expected": {
+        "final_eligibility": "TRUE",
+        "health": "STABLE",
+        "maturity": "WARM",
+        "state_freshness": "FRESH",
+        "tracking": "ACTIVE",
+        "validity": "VALID"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_health_-3.01",
+      "actual": {
+        "final_eligibility": "TRUE",
+        "health": "WEAKENING",
+        "validity": "VALID"
+      },
+      "expected": {
+        "final_eligibility": "TRUE",
+        "health": "WEAKENING",
+        "validity": "VALID"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_health_-3",
+      "actual": {
+        "final_eligibility": "TRUE",
+        "health": "STABLE",
+        "validity": "VALID"
+      },
+      "expected": {
+        "final_eligibility": "TRUE",
+        "health": "STABLE",
+        "validity": "VALID"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_health_-2.99",
+      "actual": {
+        "final_eligibility": "TRUE",
+        "health": "STABLE",
+        "validity": "VALID"
+      },
+      "expected": {
+        "final_eligibility": "TRUE",
+        "health": "STABLE",
+        "validity": "VALID"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_health_0",
+      "actual": {
+        "final_eligibility": "TRUE",
+        "health": "STABLE",
+        "validity": "VALID"
+      },
+      "expected": {
+        "final_eligibility": "TRUE",
+        "health": "STABLE",
+        "validity": "VALID"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_health_2.99",
+      "actual": {
+        "final_eligibility": "TRUE",
+        "health": "STABLE",
+        "validity": "VALID"
+      },
+      "expected": {
+        "final_eligibility": "TRUE",
+        "health": "STABLE",
+        "validity": "VALID"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_health_3",
+      "actual": {
+        "final_eligibility": "TRUE",
+        "health": "STABLE",
+        "validity": "VALID"
+      },
+      "expected": {
+        "final_eligibility": "TRUE",
+        "health": "STABLE",
+        "validity": "VALID"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_health_3.01",
+      "actual": {
+        "final_eligibility": "TRUE",
+        "health": "IMPROVING",
+        "validity": "VALID"
+      },
+      "expected": {
+        "final_eligibility": "TRUE",
+        "health": "IMPROVING",
+        "validity": "VALID"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_health_None",
+      "actual": {
+        "final_eligibility": "TRUE",
+        "health": "UNKNOWN",
+        "validity": "VALID"
+      },
+      "expected": {
+        "final_eligibility": "TRUE",
+        "health": "UNKNOWN",
+        "validity": "VALID"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_extreme",
+      "actual": {
+        "health": "EXHAUSTED"
+      },
+      "expected": {
+        "health": "EXHAUSTED"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_expiry_na_SECTORCONFIRMED",
+      "actual": {
+        "expiry_count": 0,
+        "maturity": "CONFIRMED"
+      },
+      "expected": {
+        "expiry_count": 0,
+        "maturity": "CONFIRMED"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_expiry_na_SECTORWARM",
+      "actual": {
+        "expiry_count": 0,
+        "maturity": "WARM"
+      },
+      "expected": {
+        "expiry_count": 0,
+        "maturity": "WARM"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_scenario_BASE_BUILD",
+      "actual": {
+        "scenario": "BASE_BUILD",
+        "scenario_status": "KNOWN"
+      },
+      "expected": {
+        "scenario": "BASE_BUILD",
+        "scenario_status": "KNOWN"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_scenario_BREADTH_BUILD",
+      "actual": {
+        "scenario": "BREADTH_BUILD",
+        "scenario_status": "KNOWN"
+      },
+      "expected": {
+        "scenario": "BREADTH_BUILD",
+        "scenario_status": "KNOWN"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_scenario_RECOVERY_BUILD",
+      "actual": {
+        "scenario": "RECOVERY_BUILD",
+        "scenario_status": "KNOWN"
+      },
+      "expected": {
+        "scenario": "RECOVERY_BUILD",
+        "scenario_status": "KNOWN"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_scenario_BROADENING",
+      "actual": {
+        "scenario": "BROADENING",
+        "scenario_status": "KNOWN"
+      },
+      "expected": {
+        "scenario": "BROADENING",
+        "scenario_status": "KNOWN"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_scenario_REACCELERATING",
+      "actual": {
+        "scenario": "REACCELERATING",
+        "scenario_status": "KNOWN"
+      },
+      "expected": {
+        "scenario": "REACCELERATING",
+        "scenario_status": "KNOWN"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_scenario_SUSTAINED",
+      "actual": {
+        "scenario": "SUSTAINED",
+        "scenario_status": "KNOWN"
+      },
+      "expected": {
+        "scenario": "SUSTAINED",
+        "scenario_status": "KNOWN"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_SECTOR_scenario_NONE",
+      "actual": {
+        "scenario": "NONE",
+        "scenario_status": "KNOWN"
+      },
+      "expected": {
+        "scenario": "NONE",
+        "scenario_status": "KNOWN"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_last_known_NONE",
+      "actual": {
+        "maturity": "NONE",
+        "tracking": "ACTIVE",
+        "validity": "UNKNOWN"
+      },
+      "expected": {
+        "maturity": "NONE",
+        "tracking": "ACTIVE",
+        "validity": "UNKNOWN"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_last_known_SEED",
+      "actual": {
+        "maturity": "SEED",
+        "tracking": "ACTIVE",
+        "validity": "UNKNOWN"
+      },
+      "expected": {
+        "maturity": "SEED",
+        "tracking": "ACTIVE",
+        "validity": "UNKNOWN"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_last_known_PREWATCH",
+      "actual": {
+        "maturity": "PREWATCH",
+        "tracking": "ACTIVE",
+        "validity": "UNKNOWN"
+      },
+      "expected": {
+        "maturity": "PREWATCH",
+        "tracking": "ACTIVE",
+        "validity": "UNKNOWN"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_last_known_WARM",
+      "actual": {
+        "maturity": "WARM",
+        "tracking": "ACTIVE",
+        "validity": "UNKNOWN"
+      },
+      "expected": {
+        "maturity": "WARM",
+        "tracking": "ACTIVE",
+        "validity": "UNKNOWN"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_last_known_CONFIRMED",
+      "actual": {
+        "maturity": "CONFIRMED",
+        "tracking": "ACTIVE",
+        "validity": "UNKNOWN"
+      },
+      "expected": {
+        "maturity": "CONFIRMED",
+        "tracking": "ACTIVE",
+        "validity": "UNKNOWN"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_missing_CONFIRMED",
+      "actual": {
+        "final_eligibility": "UNKNOWN",
+        "maturity": "NONE",
+        "tracking": "CLOSED"
+      },
+      "expected": {
+        "final_eligibility": "UNKNOWN",
+        "maturity": "NONE",
+        "tracking": "CLOSED"
+      },
+      "pass_result": true
+    },
+    {
+      "case": "original_D2_missing_WARM",
+      "actual": {
+        "final_eligibility": "UNKNOWN",
+        "maturity": "NONE",
+        "tracking": "CLOSED"
+      },
+      "expected": {
+        "final_eligibility": "UNKNOWN",
+        "maturity": "NONE",
+        "tracking": "CLOSED"
+      },
+      "pass_result": true
+    }
+  ],
+  "failure_count": 0,
+  "evidence_class": "INDEPENDENT_CURRENT_FIELD_EXTRACTION_PLUS_SYNTHETIC_ORIGINAL_REDUCER_BOUNDARIES",
+  "formal_acceptance": false
+}

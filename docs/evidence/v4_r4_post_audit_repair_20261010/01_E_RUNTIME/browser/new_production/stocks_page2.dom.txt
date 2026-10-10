@@ -1,0 +1,550 @@
+- link "跳到主要内容":
+  - /url: "#content"
+- complementary:
+  - link "大 A V4 研究工作台":
+    - /url: /v4/research/home
+    - text: 大 A
+    - generic: V4 研究工作台
+  - navigation "主导航":
+    - link "今日总览":
+      - /url: /v4/research/home
+    - link "板块研究":
+      - /url: /v4/research/sectors
+    - link "个股研究":
+      - /url: /v4/research/stocks
+    - link "关注跟踪":
+      - /url: /v4/research/focus
+    - link "市场与事件":
+      - /url: /v4/research/market
+    - link "数据与诊断":
+      - /url: /v4/research/diagnostics
+  - paragraph:
+    - text: 真实生产快照
+    - text: 研究与持续验证
+- banner:
+  - strong: 当前已处理截至 2026-10-09
+  - generic: 数据更新时间：2026/10/9 19:56:56（北京时间） · 持续验证中
+  - generic: 已发布分域：个股当期、板块当期、市场盘后、关注读域、诊断
+  - generic: 通达信最新成员回算；非历史当日成员 · 成员采集 2026-10-09T09:44:01.158745+08:00 · 存续偏差风险
+  - generic: 当前研究日期 2026-10-09 · 当前成员重建，非严格 PIT
+  - combobox "研究日期":
+    - option "2026-09-28"
+    - option "2026-09-29"
+    - option "2026-09-30"
+    - option "2026-10-08"
+    - option "2026-10-09" [selected]
+- main:
+  - generic: 研究工作台 / 个股研究
+  - heading "个股研究" [level=1]
+  - paragraph: 真实结果、输入质量与持续验证进度分别呈现。
+  - button "导出当前筛选全量画像 CSV"
+  - searchbox "搜索代码或名称"
+  - combobox "排序":
+    - option "默认顺序" [selected]
+    - option "名称升序"
+    - option "名称降序"
+    - option "代码升序"
+  - combobox "研究状态筛选":
+    - option "全部情景" [selected]
+    - option "来源能力不足"
+    - option "无研究情景"
+    - option "启动确认"
+    - option "恢复转向"
+  - button "搜索"
+  - table:
+    - rowgroup:
+      - row "研究对象 收盘价 研究情景 资格判断 主行业 证据":
+        - columnheader "研究对象"
+        - columnheader "收盘价"
+        - columnheader "研究情景"
+        - columnheader "资格判断"
+        - columnheader "主行业"
+        - columnheader "证据"
+    - rowgroup:
+      - row "海博思创 SH.688411 159.470 无 来源能力不足 查看所属板块 来源":
+        - cell "海博思创 SH.688411":
+          - link "海博思创":
+            - /url: /v4/research/stocks/SEC-01A43DE232AC7DE094EC000A597C049A
+          - text: SH.688411
+        - cell "159.470":
+          - button "159.470"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0706
+        - cell "来源":
+          - button "来源"
+      - row "ST合纵 SZ.300477 2.780 恢复转向 来源能力不足 查看所属板块 来源":
+        - cell "ST合纵 SZ.300477":
+          - link "ST合纵":
+            - /url: /v4/research/stocks/SEC-01AE565AAB38D6DBE68548A166DA9001
+          - text: SZ.300477
+        - cell "2.780":
+          - button "2.780"
+        - cell "恢复转向":
+          - button "恢复转向"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0706
+        - cell "来源":
+          - button "来源"
+      - row "ST新元 SZ.300472 7.080 无 来源能力不足 查看所属板块 来源":
+        - cell "ST新元 SZ.300472":
+          - link "ST新元":
+            - /url: /v4/research/stocks/SEC-01AEABA52190D2FADA47F333541450C9
+          - text: SZ.300472
+        - cell "7.080":
+          - button "7.080"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT070506
+        - cell "来源":
+          - button "来源"
+      - row "同花顺 SZ.300033 200.430 无 来源能力不足 查看所属板块 来源":
+        - cell "同花顺 SZ.300033":
+          - link "同花顺":
+            - /url: /v4/research/stocks/SEC-01B23170BD2BAB91112C46FC904EB613
+          - text: SZ.300033
+        - cell "200.430":
+          - button "200.430"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1205
+        - cell "来源":
+          - button "来源"
+      - row "华鹏飞 SZ.300350 4.890 启动确认 来源能力不足 查看所属板块 来源":
+        - cell "华鹏飞 SZ.300350":
+          - link "华鹏飞":
+            - /url: /v4/research/stocks/SEC-01B755B34CE3712C3B8559DA825A14EF
+          - text: SZ.300350
+        - cell "4.890":
+          - button "4.890"
+        - cell "启动确认":
+          - button "启动确认"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0902
+        - cell "来源":
+          - button "来源"
+      - row "佰维存储 SH.688525 181.010 无 来源能力不足 查看所属板块 来源":
+        - cell "佰维存储 SH.688525":
+          - link "佰维存储":
+            - /url: /v4/research/stocks/SEC-01BD8B3110028195B2FF8E69DA90DE33
+          - text: SH.688525
+        - cell "181.010":
+          - button "181.010"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1203
+        - cell "来源":
+          - button "来源"
+      - row "震裕科技 SZ.300953 87.390 无 来源能力不足 查看所属板块 来源":
+        - cell "震裕科技 SZ.300953":
+          - link "震裕科技":
+            - /url: /v4/research/stocks/SEC-01C3F7FE4A8F68A54FF3191D9F2E2BC9
+          - text: SZ.300953
+        - cell "87.390":
+          - button "87.390"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0706
+        - cell "来源":
+          - button "来源"
+      - row "湖南天雁 SH.600698 6.630 无 来源能力不足 查看所属板块 来源":
+        - cell "湖南天雁 SH.600698":
+          - link "湖南天雁":
+            - /url: /v4/research/stocks/SEC-01C85C8E5695D64550AAD9C8210F3614
+          - text: SH.600698
+        - cell "6.630":
+          - button "6.630"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT040202
+        - cell "来源":
+          - button "来源"
+      - row "罗 牛 山 SZ.000735 5.770 无 来源能力不足 查看所属板块 来源":
+        - cell "罗 牛 山 SZ.000735":
+          - link "罗 牛 山":
+            - /url: /v4/research/stocks/SEC-01CA1B1B92F68D1C3E383F8E3E6C5203
+          - text: SZ.000735
+        - cell "5.770":
+          - button "5.770"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT030206
+        - cell "来源":
+          - button "来源"
+      - row "太极股份 SZ.002368 12.420 无 来源能力不足 查看所属板块 来源":
+        - cell "太极股份 SZ.002368":
+          - link "太极股份":
+            - /url: /v4/research/stocks/SEC-01D04123834F9A8FE1E071507108E37A
+          - text: SZ.002368
+        - cell "12.420":
+          - button "12.420"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1205
+        - cell "来源":
+          - button "来源"
+      - row "通达动力 SZ.002576 14.610 无 来源能力不足 查看所属板块 来源":
+        - cell "通达动力 SZ.002576":
+          - link "通达动力":
+            - /url: /v4/research/stocks/SEC-01EBCDF66D7972914DC16BEEFD189612
+          - text: SZ.002576
+        - cell "14.610":
+          - button "14.610"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0706
+        - cell "来源":
+          - button "来源"
+      - row "中华企业 SH.600675 2.430 启动确认 来源能力不足 查看所属板块 来源":
+        - cell "中华企业 SH.600675":
+          - link "中华企业":
+            - /url: /v4/research/stocks/SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319
+          - text: SH.600675
+        - cell "2.430":
+          - button "2.430"
+        - cell "启动确认":
+          - button "启动确认"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT110202
+        - cell "来源":
+          - button "来源"
+      - row "美迪凯 SH.688079 14.040 无 来源能力不足 查看所属板块 来源":
+        - cell "美迪凯 SH.688079":
+          - link "美迪凯":
+            - /url: /v4/research/stocks/SEC-01F2D1E8B23687640561F7CA4D2DC2FF
+          - text: SH.688079
+        - cell "14.040":
+          - button "14.040"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1204
+        - cell "来源":
+          - button "来源"
+      - row "迅捷兴 SH.688655 66.100 无 来源能力不足 查看所属板块 来源":
+        - cell "迅捷兴 SH.688655":
+          - link "迅捷兴":
+            - /url: /v4/research/stocks/SEC-01F4EBB7DD4BA8C14775F1E02DD95461
+          - text: SH.688655
+        - cell "66.100":
+          - button "66.100"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1204
+        - cell "来源":
+          - button "来源"
+      - row "碧兴物联 SH.688671 24.200 无 来源能力不足 查看所属板块 来源":
+        - cell "碧兴物联 SH.688671":
+          - link "碧兴物联":
+            - /url: /v4/research/stocks/SEC-01F7A5B2131C95B8A893F567774BF761
+          - text: SH.688671
+        - cell "24.200":
+          - button "24.200"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0805
+        - cell "来源":
+          - button "来源"
+      - row "沪农商行 SH.601825 8.550 无 来源能力不足 查看所属板块 来源":
+        - cell "沪农商行 SH.601825":
+          - link "沪农商行":
+            - /url: /v4/research/stocks/SEC-020789B1F4101B76691771251CDFC9B9
+          - text: SH.601825
+        - cell "8.550":
+          - button "8.550"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1001
+        - cell "来源":
+          - button "来源"
+      - row "港迪技术 SZ.301633 59.440 无 来源能力不足 查看所属板块 来源":
+        - cell "港迪技术 SZ.301633":
+          - link "港迪技术":
+            - /url: /v4/research/stocks/SEC-021EFEB8B38D5494021EC1CF872EE944
+          - text: SZ.301633
+        - cell "59.440":
+          - button "59.440"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT070506
+        - cell "来源":
+          - button "来源"
+      - row "嘉元科技 SH.688388 25.080 无 来源能力不足 查看所属板块 来源":
+        - cell "嘉元科技 SH.688388":
+          - link "嘉元科技":
+            - /url: /v4/research/stocks/SEC-0230DF2BD24637BAD789DB1FDE3D4634
+          - text: SH.688388
+        - cell "25.080":
+          - button "25.080"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0706
+        - cell "来源":
+          - button "来源"
+      - row "山东黄金 SH.600547 27.170 无 来源能力不足 查看所属板块 来源":
+        - cell "山东黄金 SH.600547":
+          - link "山东黄金":
+            - /url: /v4/research/stocks/SEC-025B71A288DA1070DC2299964C634BC4
+          - text: SH.600547
+        - cell "27.170":
+          - button "27.170"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT020204
+        - cell "来源":
+          - button "来源"
+      - row "日辰股份 SH.603755 26.530 启动确认 来源能力不足 查看所属板块 来源":
+        - cell "日辰股份 SH.603755":
+          - link "日辰股份":
+            - /url: /v4/research/stocks/SEC-026449994149D1BA02ADE629A0E5FC92
+          - text: SH.603755
+        - cell "26.530":
+          - button "26.530"
+        - cell "启动确认":
+          - button "启动确认"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT030403
+        - cell "来源":
+          - button "来源"
+      - row "银邦股份 SZ.300337 8.890 无 来源能力不足 查看所属板块 来源":
+        - cell "银邦股份 SZ.300337":
+          - link "银邦股份":
+            - /url: /v4/research/stocks/SEC-027F187397DDC698040EC220A4C49E21
+          - text: SZ.300337
+        - cell "8.890":
+          - button "8.890"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT020202
+        - cell "来源":
+          - button "来源"
+      - row "豪恩汽电 SZ.301488 86.750 无 来源能力不足 查看所属板块 来源":
+        - cell "豪恩汽电 SZ.301488":
+          - link "豪恩汽电":
+            - /url: /v4/research/stocks/SEC-0291987912DA0B5BAE4A78C50FE43C35
+          - text: SZ.301488
+        - cell "86.750":
+          - button "86.750"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT040202
+        - cell "来源":
+          - button "来源"
+      - row "金字火腿 SZ.002515 6.730 无 来源能力不足 查看所属板块 来源":
+        - cell "金字火腿 SZ.002515":
+          - link "金字火腿":
+            - /url: /v4/research/stocks/SEC-02921871166318E7142C41CD5CB1DF97
+          - text: SZ.002515
+        - cell "6.730":
+          - button "6.730"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT030403
+        - cell "来源":
+          - button "来源"
+      - row "隆扬电子 SZ.301389 46.360 无 来源能力不足 查看所属板块 来源":
+        - cell "隆扬电子 SZ.301389":
+          - link "隆扬电子":
+            - /url: /v4/research/stocks/SEC-029C4F5F4622F65F349ADEA631DAEC6C
+          - text: SZ.301389
+        - cell "46.360":
+          - button "46.360"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1204
+        - cell "来源":
+          - button "来源"
+      - row "和辉光电 SH.688538 2.100 无 来源能力不足 查看所属板块 来源":
+        - cell "和辉光电 SH.688538":
+          - link "和辉光电":
+            - /url: /v4/research/stocks/SEC-02A4AECDB465951AE88A224E5C09DE4F
+          - text: SH.688538
+        - cell "2.100":
+          - button "2.100"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1203
+        - cell "来源":
+          - button "来源"
+      - row "常山药业 SZ.300255 22.150 无 来源能力不足 查看所属板块 来源":
+        - cell "常山药业 SZ.300255":
+          - link "常山药业":
+            - /url: /v4/research/stocks/SEC-02B266DA31FCF8678E2FCD0FE214C8E2
+          - text: SZ.300255
+        - cell "22.150":
+          - button "22.150"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT040502
+        - cell "来源":
+          - button "来源"
+      - row "振华科技 SZ.000733 38.390 无 来源能力不足 查看所属板块 来源":
+        - cell "振华科技 SZ.000733":
+          - link "振华科技":
+            - /url: /v4/research/stocks/SEC-02BCD7EB5E4853D88C92AB29C86F3EBD
+          - text: SZ.000733
+        - cell "38.390":
+          - button "38.390"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1204
+        - cell "来源":
+          - button "来源"
+      - row "前沿生物 SH.688221 15.850 无 来源能力不足 查看所属板块 来源":
+        - cell "前沿生物 SH.688221":
+          - link "前沿生物":
+            - /url: /v4/research/stocks/SEC-02BFA56B08CB0447CDA0DA404AAFC42E
+          - text: SH.688221
+        - cell "15.850":
+          - button "15.850"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT040502
+        - cell "来源":
+          - button "来源"
+      - row "光大证券 SH.601788 13.680 无 来源能力不足 查看所属板块 来源":
+        - cell "光大证券 SH.601788":
+          - link "光大证券":
+            - /url: /v4/research/stocks/SEC-02CB94685C15997F2C96A83C735CEB32
+          - text: SH.601788
+        - cell "13.680":
+          - button "13.680"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT1002
+        - cell "来源":
+          - button "来源"
+      - row "新泉股份 SH.603179 37.100 无 来源能力不足 查看所属板块 来源":
+        - cell "新泉股份 SH.603179":
+          - link "新泉股份":
+            - /url: /v4/research/stocks/SEC-02D2D2880F6281C8C238F01A09FCF182
+          - text: SH.603179
+        - cell "37.100":
+          - button "37.100"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT040202
+        - cell "来源":
+          - button "来源"
+  - generic: 共 5224 条 · 第 2 页
+  - button "上一页"
+  - button "下一页"
+- contentinfo:
+  - text: V4 六入口框架 · 数据、证据与研究状态分别展示
+  - link "历史摘要":
+    - /url: /v4/legacy-summary

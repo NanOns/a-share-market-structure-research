@@ -1,0 +1,86 @@
+- link "跳到主要内容":
+  - /url: "#content"
+- complementary:
+  - link "大 A V4 研究工作台":
+    - /url: /v4/research/home
+    - text: 大 A
+    - generic: V4 研究工作台
+  - navigation "主导航":
+    - link "今日总览":
+      - /url: /v4/research/home
+    - link "板块研究":
+      - /url: /v4/research/sectors
+    - link "个股研究":
+      - /url: /v4/research/stocks
+    - link "关注跟踪":
+      - /url: /v4/research/focus
+    - link "市场与事件":
+      - /url: /v4/research/market
+    - link "数据与诊断":
+      - /url: /v4/research/diagnostics
+  - paragraph:
+    - text: 真实生产快照
+    - text: 研究与持续验证
+- banner:
+  - strong: 当前已处理截至 2026-10-09
+  - generic: 数据更新时间：2026/10/9 19:56:56（北京时间） · 持续验证中
+  - generic: 已发布分域：个股当期、板块当期、市场盘后、关注读域、诊断
+  - generic: 通达信最新成员回算；非历史当日成员 · 成员采集 2026-10-09T09:44:01.158745+08:00 · 存续偏差风险
+  - generic: 当前研究日期 2026-09-30 · 当前成员重建，非严格 PIT
+  - combobox "研究日期":
+    - option "2026-09-28"
+    - option "2026-09-29"
+    - option "2026-09-30" [selected]
+    - option "2026-10-08"
+    - option "2026-10-09"
+- main:
+  - generic: 研究工作台 / 个股研究
+  - heading "个股研究" [level=1]
+  - paragraph: 真实结果、输入质量与持续验证进度分别呈现。
+  - button "导出当前筛选全量画像 CSV"
+  - searchbox "搜索代码或名称": "688349"
+  - combobox "排序":
+    - option "默认顺序" [selected]
+    - option "名称升序"
+    - option "名称降序"
+    - option "代码升序"
+  - combobox "研究状态筛选":
+    - option "全部情景" [selected]
+    - option "来源能力不足"
+    - option "无研究情景"
+    - option "启动确认"
+    - option "恢复转向"
+  - button "搜索"
+  - table:
+    - rowgroup:
+      - row "研究对象 收盘价 研究情景 资格判断 主行业 证据":
+        - columnheader "研究对象"
+        - columnheader "收盘价"
+        - columnheader "研究情景"
+        - columnheader "资格判断"
+        - columnheader "主行业"
+        - columnheader "证据"
+    - rowgroup:
+      - row "三一重能 SH.688349 13.240 无 来源能力不足 查看所属板块 来源":
+        - cell "三一重能 SH.688349":
+          - link "三一重能":
+            - /url: /v4/research/stocks/SEC-00096141BD5420F5CB3120E687CDA5B9
+          - text: SH.688349
+        - cell "13.240":
+          - button "13.240"
+        - cell "无":
+          - button "无"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "查看所属板块":
+          - link "查看所属板块":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0706
+        - cell "来源":
+          - button "来源"
+  - generic: 共 1 条 · 第 1 页
+  - button "上一页" [disabled]
+  - button "下一页" [disabled]
+- contentinfo:
+  - text: V4 六入口框架 · 数据、证据与研究状态分别展示
+  - link "历史摘要":
+    - /url: /v4/legacy-summary

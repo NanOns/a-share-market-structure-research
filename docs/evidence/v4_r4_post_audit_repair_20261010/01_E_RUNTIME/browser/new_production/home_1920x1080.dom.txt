@@ -1,0 +1,872 @@
+- link "跳到主要内容":
+  - /url: "#content"
+- complementary:
+  - link "大 A V4 研究工作台":
+    - /url: /v4/research/home
+    - text: 大 A
+    - generic: V4 研究工作台
+  - navigation "主导航":
+    - link "今日总览" [active]:
+      - /url: /v4/research/home
+    - link "板块研究":
+      - /url: /v4/research/sectors
+    - link "个股研究":
+      - /url: /v4/research/stocks
+    - link "关注跟踪":
+      - /url: /v4/research/focus
+    - link "市场与事件":
+      - /url: /v4/research/market
+    - link "数据与诊断":
+      - /url: /v4/research/diagnostics
+  - paragraph:
+    - text: 真实生产快照
+    - text: 研究与持续验证
+- banner:
+  - strong: 当前已处理截至 2026-10-09
+  - generic: 数据更新时间：2026/10/9 19:56:56（北京时间） · 持续验证中
+  - generic: 已发布分域：个股当期、板块当期、市场盘后、关注读域、诊断
+  - generic: 通达信最新成员回算；非历史当日成员 · 成员采集 2026-10-09T09:44:01.158745+08:00 · 存续偏差风险
+  - generic: 当前研究日期 2026-10-09 · 当前成员重建，非严格 PIT
+  - combobox "研究日期":
+    - option "2026-09-28"
+    - option "2026-09-29"
+    - option "2026-09-30"
+    - option "2026-10-08"
+    - option "2026-10-09" [selected]
+- main:
+  - generic: 研究工作台 / 今日总览
+  - heading "今日总览" [level=1]
+  - paragraph: 真实结果、输入质量与持续验证进度分别呈现。
+  - link "历史回放 · 严格 PIT 能力受限":
+    - /url: /v4/research/replay
+  - text: ·
+  - link "跨对象与跨日比较":
+    - /url: /v4/research/compare
+  - text: 全市场股票
+  - strong: "5224"
+  - link "进入研究 →":
+    - /url: /v4/research/stocks
+  - text: 行业与概念
+  - strong: "400"
+  - link "进入研究 →":
+    - /url: /v4/research/sectors
+  - text: 研究雷达
+  - strong: 来源未接入
+  - link "进入研究 →":
+    - /url: /v4/research/stocks
+  - text: Forward 样本
+  - strong: 来源未接入
+  - link "进入研究 →":
+    - /url: /v4/research/focus
+  - heading "市场四轴与环境" [level=2]
+  - text: 趋势
+  - strong: 偏弱
+  - button "数值与来源"
+  - text: 宽度变化
+  - strong: 恶化
+  - button "数值与来源"
+  - text: 参与度
+  - strong: 正常
+  - button "数值与来源"
+  - text: 压力
+  - strong: 低
+  - button "数值与来源"
+  - paragraph: 合成环境：风险环境 · 当前候选：风险环境 · 压力方向：回落
+  - paragraph: 来源尚未接入 · DATED_OPERATIONAL_FORWARD_OWNER · FP10
+  - heading "轮动变化 · 重建研究，持续验证中" [level=2]
+  - table:
+    - rowgroup:
+      - row "研究对象 轮动状态 前序轮动状态 证据":
+        - columnheader "研究对象"
+        - columnheader "轮动状态"
+        - columnheader "前序轮动状态"
+        - columnheader "证据"
+    - rowgroup:
+      - row "船舶 INDUSTRY:T0702 轮动失败 轮动脉冲 来源":
+        - cell "船舶 INDUSTRY:T0702":
+          - link "船舶":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0702
+          - text: INDUSTRY:T0702
+        - cell "轮动失败":
+          - button "轮动失败"
+        - cell "轮动脉冲":
+          - button "轮动脉冲"
+        - cell "来源":
+          - button "来源"
+      - row "种业 THEME:880710 轮动脉冲 无 来源":
+        - cell "种业 THEME:880710":
+          - link "种业":
+            - /url: /v4/research/sectors/THEME%3A880710
+          - text: THEME:880710
+        - cell "轮动脉冲":
+          - button "轮动脉冲"
+        - cell "无":
+          - button "无"
+        - cell "来源":
+          - button "来源"
+      - row "粮食概念 THEME:880626 轮动进入 轮动脉冲 来源":
+        - cell "粮食概念 THEME:880626":
+          - link "粮食概念":
+            - /url: /v4/research/sectors/THEME%3A880626
+          - text: THEME:880626
+        - cell "轮动进入":
+          - button "轮动进入"
+        - cell "轮动脉冲":
+          - button "轮动脉冲"
+        - cell "来源":
+          - button "来源"
+      - row "维生素 THEME:880929 轮动已接受 轮动进入 来源":
+        - cell "维生素 THEME:880929":
+          - link "维生素":
+            - /url: /v4/research/sectors/THEME%3A880929
+          - text: THEME:880929
+        - cell "轮动已接受":
+          - button "轮动已接受"
+        - cell "轮动进入":
+          - button "轮动进入"
+        - cell "来源":
+          - button "来源"
+      - row "影视音像 INDUSTRY:T060102 轮动脉冲 来源能力不足 来源":
+        - cell "影视音像 INDUSTRY:T060102":
+          - link "影视音像":
+            - /url: /v4/research/sectors/INDUSTRY%3AT060102
+          - text: INDUSTRY:T060102
+        - cell "轮动脉冲":
+          - button "轮动脉冲"
+        - cell "来源能力不足":
+          - button "来源能力不足"
+        - cell "来源":
+          - button "来源"
+      - row "生物疫苗 THEME:880557 轮动已接受 轮动进入 来源":
+        - cell "生物疫苗 THEME:880557":
+          - link "生物疫苗":
+            - /url: /v4/research/sectors/THEME%3A880557
+          - text: THEME:880557
+        - cell "轮动已接受":
+          - button "轮动已接受"
+        - cell "轮动进入":
+          - button "轮动进入"
+        - cell "来源":
+          - button "来源"
+      - row "分散染料 THEME:880706 轮动已接受 轮动进入 来源":
+        - cell "分散染料 THEME:880706":
+          - link "分散染料":
+            - /url: /v4/research/sectors/THEME%3A880706
+          - text: THEME:880706
+        - cell "轮动已接受":
+          - button "轮动已接受"
+        - cell "轮动进入":
+          - button "轮动进入"
+        - cell "来源":
+          - button "来源"
+      - row "仿制药 THEME:880960 轮动已接受 轮动进入 来源":
+        - cell "仿制药 THEME:880960":
+          - link "仿制药":
+            - /url: /v4/research/sectors/THEME%3A880960
+          - text: THEME:880960
+        - cell "轮动已接受":
+          - button "轮动已接受"
+        - cell "轮动进入":
+          - button "轮动进入"
+        - cell "来源":
+          - button "来源"
+      - row "超市连锁 INDUSTRY:T050102 轮动脉冲 无 来源":
+        - cell "超市连锁 INDUSTRY:T050102":
+          - link "超市连锁":
+            - /url: /v4/research/sectors/INDUSTRY%3AT050102
+          - text: INDUSTRY:T050102
+        - cell "轮动脉冲":
+          - button "轮动脉冲"
+        - cell "无":
+          - button "无"
+        - cell "来源":
+          - button "来源"
+      - row "肝炎概念 THEME:880623 轮动脉冲 无 来源":
+        - cell "肝炎概念 THEME:880623":
+          - link "肝炎概念":
+            - /url: /v4/research/sectors/THEME%3A880623
+          - text: THEME:880623
+        - cell "轮动脉冲":
+          - button "轮动脉冲"
+        - cell "无":
+          - button "无"
+        - cell "来源":
+          - button "来源"
+  - heading "板块变化" [level=2]
+  - table:
+    - rowgroup:
+      - row "研究对象 轮动状态 五会话相对强度 已映射成员数 证据":
+        - columnheader "研究对象"
+        - columnheader "轮动状态"
+        - columnheader "五会话相对强度"
+        - columnheader "已映射成员数"
+        - columnheader "证据"
+    - rowgroup:
+      - row "船舶 INDUSTRY:T0702 轮动失败 11.538 11 来源":
+        - cell "船舶 INDUSTRY:T0702":
+          - link "船舶":
+            - /url: /v4/research/sectors/INDUSTRY%3AT0702
+          - text: INDUSTRY:T0702
+        - cell "轮动失败":
+          - button "轮动失败"
+        - cell "11.538":
+          - button "11.538"
+        - cell "11":
+          - button "11"
+        - cell "来源":
+          - button "来源"
+      - row "种业 THEME:880710 轮动脉冲 100 10 来源":
+        - cell "种业 THEME:880710":
+          - link "种业":
+            - /url: /v4/research/sectors/THEME%3A880710
+          - text: THEME:880710
+        - cell "轮动脉冲":
+          - button "轮动脉冲"
+        - cell "100":
+          - button "100"
+        - cell "10":
+          - button "10"
+        - cell "来源":
+          - button "来源"
+      - row "粮食概念 THEME:880626 轮动进入 99.625 45 来源":
+        - cell "粮食概念 THEME:880626":
+          - link "粮食概念":
+            - /url: /v4/research/sectors/THEME%3A880626
+          - text: THEME:880626
+        - cell "轮动进入":
+          - button "轮动进入"
+        - cell "99.625":
+          - button "99.625"
+        - cell "45":
+          - button "45"
+        - cell "来源":
+          - button "来源"
+      - row "维生素 THEME:880929 轮动已接受 99.251 75 来源":
+        - cell "维生素 THEME:880929":
+          - link "维生素":
+            - /url: /v4/research/sectors/THEME%3A880929
+          - text: THEME:880929
+        - cell "轮动已接受":
+          - button "轮动已接受"
+        - cell "99.251":
+          - button "99.251"
+        - cell "75":
+          - button "75"
+        - cell "来源":
+          - button "来源"
+      - row "影视音像 INDUSTRY:T060102 轮动脉冲 99.038 34 来源":
+        - cell "影视音像 INDUSTRY:T060102":
+          - link "影视音像":
+            - /url: /v4/research/sectors/INDUSTRY%3AT060102
+          - text: INDUSTRY:T060102
+        - cell "轮动脉冲":
+          - button "轮动脉冲"
+        - cell "99.038":
+          - button "99.038"
+        - cell "34":
+          - button "34"
+        - cell "来源":
+          - button "来源"
+      - row "生物疫苗 THEME:880557 轮动已接受 98.876 68 来源":
+        - cell "生物疫苗 THEME:880557":
+          - link "生物疫苗":
+            - /url: /v4/research/sectors/THEME%3A880557
+          - text: THEME:880557
+        - cell "轮动已接受":
+          - button "轮动已接受"
+        - cell "98.876":
+          - button "98.876"
+        - cell "68":
+          - button "68"
+        - cell "来源":
+          - button "来源"
+      - row "分散染料 THEME:880706 轮动已接受 97.753 19 来源":
+        - cell "分散染料 THEME:880706":
+          - link "分散染料":
+            - /url: /v4/research/sectors/THEME%3A880706
+          - text: THEME:880706
+        - cell "轮动已接受":
+          - button "轮动已接受"
+        - cell "97.753":
+          - button "97.753"
+        - cell "19":
+          - button "19"
+        - cell "来源":
+          - button "来源"
+      - row "仿制药 THEME:880960 轮动已接受 97.378 73 来源":
+        - cell "仿制药 THEME:880960":
+          - link "仿制药":
+            - /url: /v4/research/sectors/THEME%3A880960
+          - text: THEME:880960
+        - cell "轮动已接受":
+          - button "轮动已接受"
+        - cell "97.378":
+          - button "97.378"
+        - cell "73":
+          - button "73"
+        - cell "来源":
+          - button "来源"
+      - row "超市连锁 INDUSTRY:T050102 轮动脉冲 97.115 8 来源":
+        - cell "超市连锁 INDUSTRY:T050102":
+          - link "超市连锁":
+            - /url: /v4/research/sectors/INDUSTRY%3AT050102
+          - text: INDUSTRY:T050102
+        - cell "轮动脉冲":
+          - button "轮动脉冲"
+        - cell "97.115":
+          - button "97.115"
+        - cell "8":
+          - button "8"
+        - cell "来源":
+          - button "来源"
+      - row "肝炎概念 THEME:880623 轮动脉冲 95.506 136 来源":
+        - cell "肝炎概念 THEME:880623":
+          - link "肝炎概念":
+            - /url: /v4/research/sectors/THEME%3A880623
+          - text: THEME:880623
+        - cell "轮动脉冲":
+          - button "轮动脉冲"
+        - cell "95.506":
+          - button "95.506"
+        - cell "136":
+          - button "136"
+        - cell "来源":
+          - button "来源"
+  - heading "关注对象变化 · 符合 366 / 展示 30" [level=2]
+  - table:
+    - rowgroup:
+      - row "研究对象 有效事件 交易日期 证据":
+        - columnheader "研究对象"
+        - columnheader "有效事件"
+        - columnheader "交易日期"
+        - columnheader "证据"
+    - rowgroup:
+      - row "强达电路 SZ.301628 失效 2026-10-09 来源":
+        - cell "强达电路 SZ.301628":
+          - link "强达电路":
+            - /url: /v4/research/stocks/SEC-C08B6C24E4F39D8E85C03F8588661538
+          - text: SZ.301628
+        - cell "失效":
+          - button "失效"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "闽东电力 SZ.000993 转弱 2026-10-09 来源":
+        - cell "闽东电力 SZ.000993":
+          - link "闽东电力":
+            - /url: /v4/research/stocks/SEC-29D69EDE84FCC3ACFA984765C30E668A
+          - text: SZ.000993
+        - cell "转弱":
+          - button "转弱"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "飞科电器 SH.603868 转弱 2026-10-09 来源":
+        - cell "飞科电器 SH.603868":
+          - link "飞科电器":
+            - /url: /v4/research/stocks/SEC-2AE5842A2387FCDAE6A8C043CB031250
+          - text: SH.603868
+        - cell "转弱":
+          - button "转弱"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "新奥股份 SH.600803 转弱 2026-10-09 来源":
+        - cell "新奥股份 SH.600803":
+          - link "新奥股份":
+            - /url: /v4/research/stocks/SEC-33E56E89A3BADCCB70B709F13D51DE4A
+          - text: SH.600803
+        - cell "转弱":
+          - button "转弱"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "方直科技 SZ.300235 转弱 2026-10-09 来源":
+        - cell "方直科技 SZ.300235":
+          - link "方直科技":
+            - /url: /v4/research/stocks/SEC-3E0EE785F5E52D03FFBD7054C6BF38CA
+          - text: SZ.300235
+        - cell "转弱":
+          - button "转弱"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "九州通 SH.600998 转弱 2026-10-09 来源":
+        - cell "九州通 SH.600998":
+          - link "九州通":
+            - /url: /v4/research/stocks/SEC-4CD276876B7C6847D355D9CB5E10CA43
+          - text: SH.600998
+        - cell "转弱":
+          - button "转弱"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "国新能源 SH.600617 转弱 2026-10-09 来源":
+        - cell "国新能源 SH.600617":
+          - link "国新能源":
+            - /url: /v4/research/stocks/SEC-6582213919034C236AB8B6053E83BC45
+          - text: SH.600617
+        - cell "转弱":
+          - button "转弱"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "顺灏股份 SZ.002565 转弱 2026-10-09 来源":
+        - cell "顺灏股份 SZ.002565":
+          - link "顺灏股份":
+            - /url: /v4/research/stocks/SEC-695CFDF6D2BF76FA35ADBBAEFF841703
+          - text: SZ.002565
+        - cell "转弱":
+          - button "转弱"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "招商轮船 SH.601872 转弱 2026-10-09 来源":
+        - cell "招商轮船 SH.601872":
+          - link "招商轮船":
+            - /url: /v4/research/stocks/SEC-71F4719351AAC1DBDA5855A75DBE35BB
+          - text: SH.601872
+        - cell "转弱":
+          - button "转弱"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "广西能源 SH.600310 转弱 2026-10-09 来源":
+        - cell "广西能源 SH.600310":
+          - link "广西能源":
+            - /url: /v4/research/stocks/SEC-842763264EBC02FB7EE4C7FB1E6A1A87
+          - text: SH.600310
+        - cell "转弱":
+          - button "转弱"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "世名科技 SZ.300522 转弱 2026-10-09 来源":
+        - cell "世名科技 SZ.300522":
+          - link "世名科技":
+            - /url: /v4/research/stocks/SEC-85957B4ED24E014AA06D4B162915087E
+          - text: SZ.300522
+        - cell "转弱":
+          - button "转弱"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "湖南发展 SZ.000722 转弱 2026-10-09 来源":
+        - cell "湖南发展 SZ.000722":
+          - link "湖南发展":
+            - /url: /v4/research/stocks/SEC-905EAAA84F3376C8D6CBF5251341DFE8
+          - text: SZ.000722
+        - cell "转弱":
+          - button "转弱"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "凯莱英 SZ.002821 转弱 2026-10-09 来源":
+        - cell "凯莱英 SZ.002821":
+          - link "凯莱英":
+            - /url: /v4/research/stocks/SEC-C4DFC60B811C91726DB42748A4C9BC37
+          - text: SZ.002821
+        - cell "转弱":
+          - button "转弱"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "华联股份 SZ.000882 转弱 2026-10-09 来源":
+        - cell "华联股份 SZ.000882":
+          - link "华联股份":
+            - /url: /v4/research/stocks/SEC-C9D8E8E729308CAB8450F695505072A1
+          - text: SZ.000882
+        - cell "转弱":
+          - button "转弱"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "申通快递 SZ.002468 转弱 2026-10-09 来源":
+        - cell "申通快递 SZ.002468":
+          - link "申通快递":
+            - /url: /v4/research/stocks/SEC-E64CAB0A1849372434C326BC71FD0C1C
+          - text: SZ.002468
+        - cell "转弱":
+          - button "转弱"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "福龙马 SH.603686 转弱 2026-10-09 来源":
+        - cell "福龙马 SH.603686":
+          - link "福龙马":
+            - /url: /v4/research/stocks/SEC-F26E90AAD159130DD85B144A21CF35E0
+          - text: SH.603686
+        - cell "转弱":
+          - button "转弱"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "康龙化成 SZ.300759 转弱 2026-10-09 来源":
+        - cell "康龙化成 SZ.300759":
+          - link "康龙化成":
+            - /url: /v4/research/stocks/SEC-F3860FD63DA366FFA8063F9E82AD8814
+          - text: SZ.300759
+        - cell "转弱":
+          - button "转弱"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "三一重能 SH.688349 关注升级 2026-10-09 来源":
+        - cell "三一重能 SH.688349":
+          - link "三一重能":
+            - /url: /v4/research/stocks/SEC-00096141BD5420F5CB3120E687CDA5B9
+          - text: SH.688349
+        - cell "关注升级":
+          - button "关注升级"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "五矿新能 SH.688779 关注升级 2026-10-09 来源":
+        - cell "五矿新能 SH.688779":
+          - link "五矿新能":
+            - /url: /v4/research/stocks/SEC-0642DBA1762D24401BFD88068AB919A9
+          - text: SH.688779
+        - cell "关注升级":
+          - button "关注升级"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "南方路机 SH.603280 关注升级 2026-10-09 来源":
+        - cell "南方路机 SH.603280":
+          - link "南方路机":
+            - /url: /v4/research/stocks/SEC-096B14E278D0666D936F8A83BC4643C6
+          - text: SH.603280
+        - cell "关注升级":
+          - button "关注升级"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "莱茵生物 SZ.002166 关注升级 2026-10-09 来源":
+        - cell "莱茵生物 SZ.002166":
+          - link "莱茵生物":
+            - /url: /v4/research/stocks/SEC-125B0057C9BA247E0417145C0C57D97C
+          - text: SZ.002166
+        - cell "关注升级":
+          - button "关注升级"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "昂立教育 SH.600661 关注升级 2026-10-09 来源":
+        - cell "昂立教育 SH.600661":
+          - link "昂立教育":
+            - /url: /v4/research/stocks/SEC-136918D82E3F96DEEAAA30978AE00749
+          - text: SH.600661
+        - cell "关注升级":
+          - button "关注升级"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "伊利股份 SH.600887 关注升级 2026-10-09 来源":
+        - cell "伊利股份 SH.600887":
+          - link "伊利股份":
+            - /url: /v4/research/stocks/SEC-1687B2C7769920CD46EE65B844E0C20C
+          - text: SH.600887
+        - cell "关注升级":
+          - button "关注升级"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "外服控股 SH.600662 关注升级 2026-10-09 来源":
+        - cell "外服控股 SH.600662":
+          - link "外服控股":
+            - /url: /v4/research/stocks/SEC-1C4E29638ABF43973D70167E07BDFA10
+          - text: SH.600662
+        - cell "关注升级":
+          - button "关注升级"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "道氏技术 SZ.300409 关注升级 2026-10-09 来源":
+        - cell "道氏技术 SZ.300409":
+          - link "道氏技术":
+            - /url: /v4/research/stocks/SEC-202524EC1520210B408DACBEEB15E0E9
+          - text: SZ.300409
+        - cell "关注升级":
+          - button "关注升级"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "大东南 SZ.002263 关注升级 2026-10-09 来源":
+        - cell "大东南 SZ.002263":
+          - link "大东南":
+            - /url: /v4/research/stocks/SEC-214420EF5804721409D6E97408D3407D
+          - text: SZ.002263
+        - cell "关注升级":
+          - button "关注升级"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "新经典 SH.603096 关注升级 2026-10-09 来源":
+        - cell "新经典 SH.603096":
+          - link "新经典":
+            - /url: /v4/research/stocks/SEC-22A7DDBB034627E489F266EF1EC3C1A1
+          - text: SH.603096
+        - cell "关注升级":
+          - button "关注升级"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "科锐国际 SZ.300662 关注升级 2026-10-09 来源":
+        - cell "科锐国际 SZ.300662":
+          - link "科锐国际":
+            - /url: /v4/research/stocks/SEC-24A3DCBB46BEBB8820744902C3EF0B9C
+          - text: SZ.300662
+        - cell "关注升级":
+          - button "关注升级"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "辰欣药业 SH.603367 关注升级 2026-10-09 来源":
+        - cell "辰欣药业 SH.603367":
+          - link "辰欣药业":
+            - /url: /v4/research/stocks/SEC-28405447D47801DFE32AD44679370498
+          - text: SH.603367
+        - cell "关注升级":
+          - button "关注升级"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+      - row "中材节能 SH.603126 关注升级 2026-10-09 来源":
+        - cell "中材节能 SH.603126":
+          - link "中材节能":
+            - /url: /v4/research/stocks/SEC-2995860C46FDC1358248DC6FEBBAD6AD
+          - text: SH.603126
+        - cell "关注升级":
+          - button "关注升级"
+        - cell "2026-10-09":
+          - button "2026-10-09"
+        - cell "来源":
+          - button "来源"
+  - heading "风险变化" [level=2]
+  - table:
+    - rowgroup:
+      - row "研究对象 有效事件 证据":
+        - columnheader "研究对象"
+        - columnheader "有效事件"
+        - columnheader "证据"
+    - rowgroup:
+      - row "强达电路 SZ.301628 失效 来源":
+        - cell "强达电路 SZ.301628":
+          - link "强达电路":
+            - /url: /v4/research/stocks/SEC-C08B6C24E4F39D8E85C03F8588661538
+          - text: SZ.301628
+        - cell "失效":
+          - button "失效"
+        - cell "来源":
+          - button "来源"
+      - row "闽东电力 SZ.000993 转弱 来源":
+        - cell "闽东电力 SZ.000993":
+          - link "闽东电力":
+            - /url: /v4/research/stocks/SEC-29D69EDE84FCC3ACFA984765C30E668A
+          - text: SZ.000993
+        - cell "转弱":
+          - button "转弱"
+        - cell "来源":
+          - button "来源"
+      - row "飞科电器 SH.603868 转弱 来源":
+        - cell "飞科电器 SH.603868":
+          - link "飞科电器":
+            - /url: /v4/research/stocks/SEC-2AE5842A2387FCDAE6A8C043CB031250
+          - text: SH.603868
+        - cell "转弱":
+          - button "转弱"
+        - cell "来源":
+          - button "来源"
+      - row "新奥股份 SH.600803 转弱 来源":
+        - cell "新奥股份 SH.600803":
+          - link "新奥股份":
+            - /url: /v4/research/stocks/SEC-33E56E89A3BADCCB70B709F13D51DE4A
+          - text: SH.600803
+        - cell "转弱":
+          - button "转弱"
+        - cell "来源":
+          - button "来源"
+      - row "方直科技 SZ.300235 转弱 来源":
+        - cell "方直科技 SZ.300235":
+          - link "方直科技":
+            - /url: /v4/research/stocks/SEC-3E0EE785F5E52D03FFBD7054C6BF38CA
+          - text: SZ.300235
+        - cell "转弱":
+          - button "转弱"
+        - cell "来源":
+          - button "来源"
+      - row "九州通 SH.600998 转弱 来源":
+        - cell "九州通 SH.600998":
+          - link "九州通":
+            - /url: /v4/research/stocks/SEC-4CD276876B7C6847D355D9CB5E10CA43
+          - text: SH.600998
+        - cell "转弱":
+          - button "转弱"
+        - cell "来源":
+          - button "来源"
+      - row "国新能源 SH.600617 转弱 来源":
+        - cell "国新能源 SH.600617":
+          - link "国新能源":
+            - /url: /v4/research/stocks/SEC-6582213919034C236AB8B6053E83BC45
+          - text: SH.600617
+        - cell "转弱":
+          - button "转弱"
+        - cell "来源":
+          - button "来源"
+      - row "顺灏股份 SZ.002565 转弱 来源":
+        - cell "顺灏股份 SZ.002565":
+          - link "顺灏股份":
+            - /url: /v4/research/stocks/SEC-695CFDF6D2BF76FA35ADBBAEFF841703
+          - text: SZ.002565
+        - cell "转弱":
+          - button "转弱"
+        - cell "来源":
+          - button "来源"
+      - row "石药创新 SZ.300765 转弱 来源":
+        - cell "石药创新 SZ.300765":
+          - link "石药创新":
+            - /url: /v4/research/stocks/SEC-702EEEA6F759D0F6A87A3CFF60682667
+          - text: SZ.300765
+        - cell "转弱":
+          - button "转弱"
+        - cell "来源":
+          - button "来源"
+      - row "招商轮船 SH.601872 转弱 来源":
+        - cell "招商轮船 SH.601872":
+          - link "招商轮船":
+            - /url: /v4/research/stocks/SEC-71F4719351AAC1DBDA5855A75DBE35BB
+          - text: SH.601872
+        - cell "转弱":
+          - button "转弱"
+        - cell "来源":
+          - button "来源"
+      - row "恒瑞医药 SH.600276 转弱 来源":
+        - cell "恒瑞医药 SH.600276":
+          - link "恒瑞医药":
+            - /url: /v4/research/stocks/SEC-7929EFF7985E1E03129C5CB3832CFAEA
+          - text: SH.600276
+        - cell "转弱":
+          - button "转弱"
+        - cell "来源":
+          - button "来源"
+      - row "广西能源 SH.600310 转弱 来源":
+        - cell "广西能源 SH.600310":
+          - link "广西能源":
+            - /url: /v4/research/stocks/SEC-842763264EBC02FB7EE4C7FB1E6A1A87
+          - text: SH.600310
+        - cell "转弱":
+          - button "转弱"
+        - cell "来源":
+          - button "来源"
+      - row "世名科技 SZ.300522 转弱 来源":
+        - cell "世名科技 SZ.300522":
+          - link "世名科技":
+            - /url: /v4/research/stocks/SEC-85957B4ED24E014AA06D4B162915087E
+          - text: SZ.300522
+        - cell "转弱":
+          - button "转弱"
+        - cell "来源":
+          - button "来源"
+      - row "湖南发展 SZ.000722 转弱 来源":
+        - cell "湖南发展 SZ.000722":
+          - link "湖南发展":
+            - /url: /v4/research/stocks/SEC-905EAAA84F3376C8D6CBF5251341DFE8
+          - text: SZ.000722
+        - cell "转弱":
+          - button "转弱"
+        - cell "来源":
+          - button "来源"
+      - row "双成药业 SZ.002693 转弱 来源":
+        - cell "双成药业 SZ.002693":
+          - link "双成药业":
+            - /url: /v4/research/stocks/SEC-B0DE72E4D557CAB8C1EF1EC0D2DD8258
+          - text: SZ.002693
+        - cell "转弱":
+          - button "转弱"
+        - cell "来源":
+          - button "来源"
+      - row "凯莱英 SZ.002821 转弱 来源":
+        - cell "凯莱英 SZ.002821":
+          - link "凯莱英":
+            - /url: /v4/research/stocks/SEC-C4DFC60B811C91726DB42748A4C9BC37
+          - text: SZ.002821
+        - cell "转弱":
+          - button "转弱"
+        - cell "来源":
+          - button "来源"
+      - row "华联股份 SZ.000882 转弱 来源":
+        - cell "华联股份 SZ.000882":
+          - link "华联股份":
+            - /url: /v4/research/stocks/SEC-C9D8E8E729308CAB8450F695505072A1
+          - text: SZ.000882
+        - cell "转弱":
+          - button "转弱"
+        - cell "来源":
+          - button "来源"
+      - row "申通快递 SZ.002468 转弱 来源":
+        - cell "申通快递 SZ.002468":
+          - link "申通快递":
+            - /url: /v4/research/stocks/SEC-E64CAB0A1849372434C326BC71FD0C1C
+          - text: SZ.002468
+        - cell "转弱":
+          - button "转弱"
+        - cell "来源":
+          - button "来源"
+      - row "福龙马 SH.603686 转弱 来源":
+        - cell "福龙马 SH.603686":
+          - link "福龙马":
+            - /url: /v4/research/stocks/SEC-F26E90AAD159130DD85B144A21CF35E0
+          - text: SH.603686
+        - cell "转弱":
+          - button "转弱"
+        - cell "来源":
+          - button "来源"
+      - row "康龙化成 SZ.300759 转弱 来源":
+        - cell "康龙化成 SZ.300759":
+          - link "康龙化成":
+            - /url: /v4/research/stocks/SEC-F3860FD63DA366FFA8063F9E82AD8814
+          - text: SZ.300759
+        - cell "转弱":
+          - button "转弱"
+        - cell "来源":
+          - button "来源"
+  - paragraph: 去重净变化 457 · 无变化持续记录 645
+  - link "板块雷达 →":
+    - /url: /v4/research/sectors
+  - link "个股观察 →":
+    - /url: /v4/research/stocks?state=LAUNCH_CONFIRM
+  - link "查看市场与事件 →":
+    - /url: /v4/research/market
+- contentinfo:
+  - text: V4 六入口框架 · 数据、证据与研究状态分别展示
+  - link "历史摘要":
+    - /url: /v4/legacy-summary

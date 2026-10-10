@@ -1,0 +1,86 @@
+- link "跳到主要内容":
+  - /url: "#content"
+- complementary:
+  - link "大 A V4 研究工作台":
+    - /url: /v4/research/home
+    - text: 大 A
+    - generic: V4 研究工作台
+  - navigation "主导航":
+    - link "今日总览":
+      - /url: /v4/research/home
+    - link "板块研究":
+      - /url: /v4/research/sectors
+    - link "个股研究":
+      - /url: /v4/research/stocks
+    - link "关注跟踪":
+      - /url: /v4/research/focus
+    - link "市场与事件":
+      - /url: /v4/research/market
+    - link "数据与诊断" [active]:
+      - /url: /v4/research/diagnostics
+  - paragraph:
+    - text: 真实生产快照
+    - text: 研究与持续验证
+- banner:
+  - strong: 当前已处理截至 2026-10-09
+  - generic: 数据更新时间：2026/10/9 19:56:56（北京时间） · 持续验证中
+  - generic: 已发布分域：个股当期、板块当期、市场盘后、关注读域、诊断
+  - generic: 通达信最新成员回算；非历史当日成员 · 成员采集 2026-10-09T09:44:01.158745+08:00 · 存续偏差风险
+  - generic: 当前研究日期 2026-10-09 · 当前成员重建，非严格 PIT
+  - combobox "研究日期":
+    - option "2026-09-28"
+    - option "2026-09-29"
+    - option "2026-09-30"
+    - option "2026-10-08"
+    - option "2026-10-09" [selected]
+- main:
+  - generic: 研究工作台 / 数据与诊断
+  - heading "数据与诊断" [level=1]
+  - paragraph: 真实结果、输入质量与持续验证进度分别呈现。
+  - link "数据质量":
+    - /url: /v4/research/diagnostics/health
+  - link "来源与版本":
+    - /url: /v4/research/diagnostics/sources
+  - link "算法合同":
+    - /url: /v4/research/diagnostics/contracts
+  - link "日更与失败状态":
+    - /url: /v4/research/diagnostics/jobs
+  - link "旧模块映射":
+    - /url: /v4/research/diagnostics/legacy
+  - link "独立 Shadow":
+    - /url: /v4/research/diagnostics/shadow
+  - heading "生产源健康" [level=2]
+  - searchbox "搜索代码或名称"
+  - combobox "排序":
+    - option "默认顺序" [selected]
+    - option "名称升序"
+    - option "名称降序"
+    - option "代码升序"
+  - button "搜索"
+  - table:
+    - rowgroup:
+      - row "研究对象 记录数 质量 证据":
+        - columnheader "研究对象"
+        - columnheader "记录数"
+        - columnheader "质量"
+        - columnheader "证据"
+    - rowgroup:
+      - row "R43:2026-10-09 5210 重建研究 来源":
+        - cell "R43:2026-10-09"
+        - cell "5210":
+          - button "5210"
+        - cell "重建研究":
+          - button "重建研究"
+        - cell "来源":
+          - button "来源"
+  - generic: 共 1 条 · 第 1 页
+  - button "上一页" [disabled]
+  - button "下一页" [disabled]
+  - button "查看发布、来源与缺口"
+  - paragraph: 数据日期与质量按当前接受快照读取。
+  - link "历史 Shadow 诊断":
+    - /url: /v4/shadow
+- contentinfo:
+  - text: V4 六入口框架 · 数据、证据与研究状态分别展示
+  - link "历史摘要":
+    - /url: /v4/legacy-summary

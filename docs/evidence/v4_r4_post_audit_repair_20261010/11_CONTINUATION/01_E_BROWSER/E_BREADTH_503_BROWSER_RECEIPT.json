@@ -1,0 +1,35 @@
+{
+  "contract": "R4_BREADTH_FAULT_REPLAY_R1",
+  "results": [
+    {
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "origin": "http://127.0.0.1:28765",
+      "fault": "browser_intercepted_503_one_response",
+      "server_fault": false,
+      "retry_requests": [
+        "http://127.0.0.1:28765/api/v4/market/breadth?context_token=55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e&trade_date=2026-10-09"
+      ],
+      "unaffected_sections_identical": true,
+      "date_retained": true,
+      "status": "PASS"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "origin": "http://127.0.0.1:28765",
+      "fault": "browser_intercepted_503_one_response",
+      "server_fault": false,
+      "retry_requests": [
+        "http://127.0.0.1:28765/api/v4/market/breadth?context_token=55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e&trade_date=2026-10-09"
+      ],
+      "unaffected_sections_identical": true,
+      "date_retained": true,
+      "status": "PASS"
+    }
+  ]
+}

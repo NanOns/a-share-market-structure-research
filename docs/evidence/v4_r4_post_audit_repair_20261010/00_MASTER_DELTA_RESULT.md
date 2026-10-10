@@ -19,3 +19,8 @@ BASE_SHA `5ad4bb8da48196d9e902d48ece510a15136c4210`；RESULT_CODE_SHA `35177acc7
 用户追加指令“没有可视化操作入口 你直接强行关闭 旧服务 然后开启新服务 加载新代码”优先于附件正常关闭限制；强关动作和正常启动分别留证，不伪记正常退出。旧失败记录OLD_与旧browser保留，新browser在new_production。没有强关其它进程、修改ACL或创建Windows服务。
 
 TDX只读，Accepted Head/旧冻结/AUTO与last-good未改；无10/12模拟、真实评分、新模型权限、外部复权或交易。未来真实capture沿用DD R2.2与独立准入。Git push/远端SHA与Drive bytes/SHA另列09/10收据，测试和推送都不代表独立验收。
+
+
+## 续轮更新
+
+详见11_CONTINUATION/CONTINUATION_RESULT.md：E的双尺寸受控503验证通过；D隔离DB50项通过；C已接实际DD预检。正式来源及FP14外部验收仍阻塞。

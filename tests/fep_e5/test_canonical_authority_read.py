@@ -14,7 +14,7 @@ AT='2026-10-09T12:00:00+00:00'
 def rows():
     identity={k:v for k,v in REQUEST.items() if k!='model_revision'}
     return dict(deployment_heads=[dict(identity,grant_id='G',activation_id='A',head_version=1)],
-        permission_keys=[dict(identity,grant_id='G',model_role='CHAMPION')],
+        permission_keys=[dict(identity,grant_id='G',model_role='CHAMPION',valid_from='2026-10-09T00:00:00+00:00',expires_at='2026-10-10T00:00:00+00:00')],
         activations=[dict(activation_id='A',grant_id='G',action='ALLOW',effective_at='2026-10-09T00:00:00+00:00',expected_head_version=0,prior_activation_id=None)],
         deployment_change_receipts=[dict(activation_id='A',grant_id='G',new_head_version=1,expected_head_version=0,expected_prior_activation_id=None,checks={'engineering_only':True})],
         model_set_members=[dict({k:v for k,v in identity.items() if k!='capability'},model_id='MODEL',role='CHAMPION')],
@@ -47,7 +47,9 @@ def seed(pg,data):
 
 def test_actual_db_positive_candidate_is_never_real_grant(connection):
     seed(connection,rows());r=read_canonical_candidate(connection,REQUEST,at=AT)
-    assert r['status']=='CANONICAL_AUTHORITY_CANDIDATE_VERIFIED'
+    assert r['status']=='CANDIDATE_INCOMPLETE'
+    assert r['db_facts_status']=='DB_FACTS_READ_VERIFIED'
+    assert r['candidate_complete'] is False
     assert r['registry_verified'] and r['cas_receipt_verified'] and r['deployment_head_verified']
     assert not r['production_authorized'] and r['formal_owner'] is None
     assert r['read_snapshot']['read_only']=='on' and r['read_snapshot']['isolation']=='repeatable read'
@@ -120,6 +122,8 @@ def test_actual_db_complete_prediction_candidate_still_not_authorized(connection
     assert r['candidate_output_status']=='READY_ENGINEERING_EVIDENCE_ONLY'
     assert r['first_asof_verified'] and r['mature_observed_count']==1
     assert r['errors']==['CURRENT_INDEPENDENT_CAPABILITY_APPROVAL_SOURCE_MISSING']
+    assert r['status']=='FORMAL_APPROVAL_MISSING' and not r['candidate_complete']
+    assert r['db_facts_status']=='DB_FACTS_READ_VERIFIED'
     assert not r['production_authorized']
 
 @pytest.mark.parametrize('table,key,value,error',[
@@ -133,6 +137,29 @@ def test_actual_prediction_negative_matrix(connection,table,key,value,error):
     r=read_canonical_candidate(connection,dict(REQUEST,prediction_id='P'),at=AT)
     assert not r['production_authorized'] and 'candidate_output_status' not in r
     assert any(error in e for e in r['errors'])
+
+
+@pytest.mark.parametrize('scenario,error', [
+    ('missing_prediction','EXACT_PREDICTION_OWNER_ID_REQUIRED'),
+    ('engineering_cas','ENGINEERING_CAS_NOT_PRODUCTION_APPROVAL'),
+    ('missing_maturity','REAL_MATURE_FIT_SAMPLE_NOT_VERIFIED'),
+    ('expired_grant','GRANT_TIME_INVALID'),
+    ('missing_window','GRANT_VALIDITY_WINDOW_SOURCE_MISSING'),
+    ('no_independent_approval','CURRENT_INDEPENDENT_CAPABILITY_APPROVAL_SOURCE_MISSING'),
+])
+def test_r2_candidate_status_never_verified_with_errors(connection,scenario,error):
+    data=complete_rows();request=dict(REQUEST,prediction_id='P')
+    if scenario=='missing_prediction':request.pop('prediction_id')
+    elif scenario=='engineering_cas':data['deployment_change_receipts'][0]['checks']={'engineering_only':True}
+    elif scenario=='missing_maturity':data['label_revisions'][0]['training_allowed']=False
+    elif scenario=='expired_grant':data['permission_keys'][0]['expires_at']=AT
+    elif scenario=='missing_window':data['permission_keys'][0].pop('expires_at')
+    seed(connection,data)
+    r=read_canonical_candidate(connection,request,at=AT)
+    assert error in r['errors']
+    assert r['status'] in ('CANDIDATE_INCOMPLETE','FORMAL_APPROVAL_MISSING')
+    assert not r['candidate_complete'] and not r['production_authorized']
+    assert connection.execute('select head_version from fep.deployment_heads').fetchone()==(1,)
 
 def test_wrong_model_revision_cannot_display_ready_candidate(connection):
     seed(connection,complete_rows())

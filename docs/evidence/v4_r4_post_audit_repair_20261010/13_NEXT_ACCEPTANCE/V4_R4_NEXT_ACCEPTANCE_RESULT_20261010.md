@@ -1,0 +1,11 @@
+# R4 本轮修复结果
+
+ENGINEERING_SCOPE_COMPLETE_WITH_DECLARED_FORMAL_GATES。全V4仍 EXTERNAL_ACCEPTANCE_BLOCKED。申请 FP13_SCOPED_BROWSER_EXTERNAL_RECHECK；未签EXTERNAL_ACCEPTANCE_PASS。
+
+FEP候选错误状态已修，R2区分DB事实与候选/正式批准缺口，production_authorized恒false；实际隔离SQL31项通过。C实际Head负例与接口回归81项通过。两个尺寸受控browser503局部失败/重试恢复通过；六入口差异抽查见独立矩阵与收据。
+
+板块六正式Producer、Cohort真实首获/独立write grant、FEP正式model/approval/as-recorded成熟预测原件仍SOURCE_NOT_PRESENT，给出了逐字段与逐消费者精确前置。没有造源、授权或回填旧2290事件。Amount历史20日缺口保留原终局，未重复扫描与比例计算。
+
+07_SCOPE_GATE_MATRIX_R2_APPEND.json以版本化覆盖关系消除旧E账本冲突，并把12_BCD_DEVELOPMENT/STAGE_CONTRACT的IN_PROGRESS解释为开工冻结；保留历史原始文件和判定。八个能力门分开列示。
+
+T0=2026-10-09；两个受保护Head原字节未改变。28765未重启，仍R1启动身份；D修复为磁盘及隔离SQL验证，尚未加载到该进程。Git/Drive交付最终回读见DELIVERY_READBACK.json，不把推送当外部验收或下一阶段授权。

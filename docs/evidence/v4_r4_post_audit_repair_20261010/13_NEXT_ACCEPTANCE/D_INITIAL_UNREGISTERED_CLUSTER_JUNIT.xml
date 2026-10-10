@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="30" failures="0" skipped="0" tests="31" time="0.526" timestamp="2026-10-10T14:53:47.314713+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_actual_db_positive_candidate_is_never_real_grant" time="0.005"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_actual_db_negative_binding_matrix[permission_keys-model_set_id-OTHER-EXACT_GRANT_HEAD_BINDING_MISMATCH]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_actual_db_negative_binding_matrix[permission_keys-grant_id-FORGED-CANONICAL_OWNER_NOT_UNIQUE]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_actual_db_negative_binding_matrix[activations-action-REVOKE-CURRENT_HEAD_REVOKED_OR_FUTURE]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_actual_db_negative_binding_matrix[activations-effective_at-2026-10-12T00:00:00+00:00-CURRENT_HEAD_REVOKED_OR_FUTURE]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_actual_db_negative_binding_matrix[deployment_change_receipts-new_head_version-2-CURRENT_HEAD_CAS_RECEIPT_MISMATCH]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_actual_db_negative_binding_matrix[deployment_change_receipts-grant_id-FORGED-CURRENT_HEAD_CAS_RECEIPT_MISMATCH]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_actual_db_negative_binding_matrix[deployment_change_receipts-expected_prior_activation_id-OTHER-CURRENT_HEAD_CAS_RECEIPT_MISMATCH]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_actual_db_negative_binding_matrix[model_set_members-role-BASELINE-CANONICAL_OWNER_NOT_UNIQUE]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_model_revision_is_not_prediction_revision" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_model_revision_mismatch" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_missing_registry_and_shadow_fail_closed" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_existing_write_transaction_is_rejected" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_current_source_discovery_no_default_dsn" time="0.002" /><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_actual_db_complete_prediction_candidate_still_not_authorized" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_actual_prediction_negative_matrix[predictions-output_digest-MUTATED-PREDICTION_RUN_SNAPSHOT_ACCEPTANCE_LINEAGE_MISMATCH]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_actual_prediction_negative_matrix[observation_revisions-evidence_origin-RECONSTRUCTED_CORRECTED-PREDICTION_OR_INPUT_NOT_AS_RECORDED]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_actual_prediction_negative_matrix[label_source_bindings-label_training_mature_at-2026-10-12T00:00:00+00:00-REAL_MATURE_FIT_SAMPLE_NOT_VERIFIED]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_actual_prediction_negative_matrix[snapshots-feature_contract_id-OTHER-PREDICTION_RUN_SNAPSHOT_ACCEPTANCE_LINEAGE_MISMATCH]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_r2_candidate_status_never_verified_with_errors[missing_prediction-EXACT_PREDICTION_OWNER_ID_REQUIRED]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_r2_candidate_status_never_verified_with_errors[engineering_cas-ENGINEERING_CAS_NOT_PRODUCTION_APPROVAL]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_r2_candidate_status_never_verified_with_errors[missing_maturity-REAL_MATURE_FIT_SAMPLE_NOT_VERIFIED]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_r2_candidate_status_never_verified_with_errors[expired_grant-GRANT_TIME_INVALID]" time="0.002"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_r2_candidate_status_never_verified_with_errors[missing_window-GRANT_VALIDITY_WINDOW_SOURCE_MISSING]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_r2_candidate_status_never_verified_with_errors[no_independent_approval-CURRENT_INDEPENDENT_CAPABILITY_APPROVAL_SOURCE_MISSING]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_wrong_model_revision_cannot_display_ready_candidate" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_actual_db_output_and_first_availability_matrix[frozen_mutation-FROZEN_PREDICTION_OUTPUT_MUTATION]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_actual_db_output_and_first_availability_matrix[missing_ready_field-PREDICTION_FIELDS_NOT_READY]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_actual_db_output_and_first_availability_matrix[invalid_field_type-PREDICTION_FIELD_VALUE_SCHEMA_INVALID]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_actual_db_output_and_first_availability_matrix[future_first_available-FIRST_AVAILABLE_SOURCE_OWNER_NOT_VERIFIED]" time="0.001"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase><testcase classname="tests.fep_e5.test_canonical_authority_read" name="test_actual_db_output_and_first_availability_matrix[bool_model_revision-EXACT_REQUEST_AND_MODEL_REVISION_REQUIRED]" time="0.002"><error message="failed on setup with &quot;ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED&quot;">@pytest.fixture
+    def connection():
+        dsn=os.environ.get('FEP_AUTHORITY_TEST_DSN')
+        if not dsn:pytest.skip('FEP_AUTHORITY_TEST_DSN not configured; no production DSN fallback')
+&gt;       pg=psycopg.connect(dsn,autocommit=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep_e5\test_canonical_authority_read.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+conninfo = 'host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated'
+args = (), kw = {'autocommit': True}
+
+    def isolated(conninfo='',*args,**kw):
+        params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
+        if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
+            EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
+&gt;           raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')
+E           ValueError: DISPOSABLE_PG_CLUSTER_REQUIRED
+
+tests\remainder_isolation_plugin.py:65: ValueError</error></testcase></testsuite></testsuites>

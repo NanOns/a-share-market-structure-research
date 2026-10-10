@@ -8,7 +8,7 @@ import math
 from pathlib import Path
 from . import contracts
 
-VERSION='FEP_CANONICAL_AUTHORITY_READ_R1'
+VERSION='FEP_CANONICAL_AUTHORITY_READ_R2'
 IDENTITY=('scope_id','target_id','horizon','feature_contract_id','model_set_id','capability')
 HEAD_KEY=('scope_id','target_id','horizon','feature_contract_id','capability')
 
@@ -73,6 +73,7 @@ def _read_prediction_sources(pg,one,request,model,result,at):
 
 def _empty():
     return dict(contract_id=VERSION,status='TRUSTED_AUTHORITY_UNAVAILABLE',production_authorized=False,
+        db_facts_status='NOT_VERIFIED',candidate_complete=False,
         formal_owner=None,registry_verified=False,first_asof_verified=False,deployment_head_verified=False,
         cas_receipt_verified=False,independent_approval_verified=False,errors=[],sources={})
 
@@ -132,6 +133,10 @@ def read_canonical_candidate(pg,request,*,at):
                 raise ValueError('EXACT_GRANT_HEAD_BINDING_MISMATCH')
             if grant.get('model_role')!='CHAMPION' or member.get('role')!='CHAMPION':
                 raise ValueError('ACCEPTED_CHAMPION_REQUIRED')
+            if not grant.get('valid_from') or not grant.get('expires_at'):
+                result['errors'].append('GRANT_VALIDITY_WINDOW_SOURCE_MISSING')
+            elif not contracts.utc(grant['valid_from']) <= contracts.utc(at) < contracts.utc(grant['expires_at']):
+                raise ValueError('GRANT_TIME_INVALID')
             if activation['action']!='ALLOW' or contracts.utc(activation['effective_at'])>contracts.utc(at):
                 raise ValueError('CURRENT_HEAD_REVOKED_OR_FUTURE')
             if activation['grant_id']!=head['grant_id'] or receipt['grant_id']!=head['grant_id'] or receipt['new_head_version']!=head['head_version'] or receipt['expected_head_version']+1!=head['head_version'] or activation['expected_head_version']!=receipt['expected_head_version'] or receipt.get('expected_prior_activation_id')!=activation.get('prior_activation_id'):
@@ -144,9 +149,15 @@ def read_canonical_candidate(pg,request,*,at):
                 result['errors'].append('ENGINEERING_CAS_NOT_PRODUCTION_APPROVAL')
             _read_prediction_sources(pg,one,request,model,result,at)
             result['errors'].append('CURRENT_INDEPENDENT_CAPABILITY_APPROVAL_SOURCE_MISSING')
-            result['status']='CANONICAL_AUTHORITY_CANDIDATE_VERIFIED'
+        result['db_facts_status']='DB_FACTS_READ_VERIFIED'
     except (ValueError,KeyError,TypeError,AttributeError) as exc:
         result['errors'].append(str(exc))
     except Error as exc:
         result['errors'].append('CANONICAL_DB_READ_FAILED:'+type(exc).__name__)
+    approval_errors={'ENGINEERING_CAS_NOT_PRODUCTION_APPROVAL',
+                     'CURRENT_INDEPENDENT_CAPABILITY_APPROVAL_SOURCE_MISSING'}
+    result['status']=('FORMAL_APPROVAL_MISSING' if result['errors'] and
+                      set(result['errors']) <= approval_errors else 'CANDIDATE_INCOMPLETE')
+    # DB facts and engineering outputs never imply a complete admitted candidate.
+    result['candidate_complete']=False
     return result

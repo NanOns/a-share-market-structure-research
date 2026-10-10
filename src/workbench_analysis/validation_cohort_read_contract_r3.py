@@ -5,7 +5,7 @@ R3 engineering boundary for future legal Owners. Focus is never substituted.
 from datetime import datetime
 from hashlib import sha256
 import json
-CONTRACT='VALIDATION_COHORT_READ_R3_V1'
+CONTRACT='VALIDATION_COHORT_READ_R3_V2'
 KEY=('model_contract_id','state_lineage_id','entity_type','entity_id','episode_id','event_type','T0')
 REQUIRED=KEY+('publication_id','frozen_signal_version','frozen_at_T0','eligible_at_T0','asof_first_available','benchmark','no_lookahead','evidence_class','cohort_namespace')
 def instant(s):

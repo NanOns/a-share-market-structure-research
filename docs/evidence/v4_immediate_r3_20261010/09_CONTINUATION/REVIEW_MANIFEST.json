@@ -66,6 +66,11 @@
       "bytes": 65258
     },
     {
+      "path": "docs/evidence/v4_immediate_r3_20261010/09_CONTINUATION/README_OFFLINE.md",
+      "sha256": "05517b8c0dcb3108209b918e045753c39ce45d41bf4069930849bb13be08f2df",
+      "bytes": 806
+    },
+    {
       "path": "docs/evidence/v4_immediate_r3_20261010/09_CONTINUATION/SECTOR_D2_DATED_READINESS_CANDIDATE.json",
       "sha256": "812afb5c0fc55b328499d87a156e85e7c2b90c17ab0228c6374c73ac36e535df",
       "bytes": 1404039
@@ -111,5 +116,17 @@
     "sha256": "bfd9a224d84cfb193a0e5afd61d6f3bdb984ec0f5f655fd3ca9b504563b1d362",
     "bytes": 6814453
   },
-  "result_sha_before_receipt": "36fea3cd1bc265f13cdc560b3a928f92db60ad39"
+  "cohort_sources": [
+    {
+      "path": "src/workbench_analysis/validation_cohort_read_contract_r3.py",
+      "sha256": "e10753189c79e65d04ccde8d9f5820a41c65442d411549d650322cf434f49804",
+      "bytes": 3579
+    },
+    {
+      "path": "tests/test_validation_cohort_read_contract_r3.py",
+      "sha256": "fce7d5ac4dfa195df3de6532a40d0adb7e8b12ef31154cd18045f7d2bcb1f05f",
+      "bytes": 2453
+    }
+  ],
+  "result_sha_before_receipt": "8366a6e47a89e4d2bc9f8b0211e0a20e7e7c937b"
 }

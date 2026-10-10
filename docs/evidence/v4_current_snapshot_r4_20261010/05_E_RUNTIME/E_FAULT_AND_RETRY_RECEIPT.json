@@ -1,0 +1,15 @@
+{
+  "production_fault_injection": false,
+  "production_recovery_DOM": "NOT_TESTED",
+  "reason": "No production code reload and browser unavailable; isolated HTTP tests are separately scoped",
+  "browser_attempts": [
+    {
+      "surface": "IAB",
+      "error": "net::ERR_BLOCKED_BY_CLIENT"
+    },
+    {
+      "surface": "Chrome",
+      "error": "Browser is not available: chrome"
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+[
+  {
+    "route": "context",
+    "http_status": 200,
+    "status": "READY",
+    "reason": null,
+    "sha256": "4361f5ae1682a36e6f2ec8ddc43652f681c71871b97944cd1a4b4a778d54f50d",
+    "payload": {
+      "context": {
+        "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+        "taxonomy": "TDX_INDUSTRY_CONCEPT",
+        "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+        "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+        "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+        "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+        "AS_RECORDED": false,
+        "PIT_ELIGIBLE": false,
+        "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+        "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+        "survivorship_bias_risk": true,
+        "trade_date": "2026-10-09",
+        "contract_id": "V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1",
+        "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+        "publication_id": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+        "accepted_trade_date": "2026-10-09",
+        "data_cutoff_date": "2026-10-09",
+        "available_trade_dates": [
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30",
+          "2026-10-08",
+          "2026-10-09"
+        ],
+        "membership_snapshot": {
+          "bytes": 2281,
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/MEMBER_SNAPSHOT_S.json",
+          "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+        },
+        "historical_PIT_permission": false,
+        "read_scope": "USER_AUTHORIZED_OPERATIONAL_DAILY",
+        "production_accepted": true,
+        "independent_external_acceptance": false,
+        "external_domain_disposition": {
+          "rotation": "VALIDATION_ONGOING",
+          "forward": "VALIDATION_ONGOING"
+        },
+        "rotation_validation_state": "VALIDATION_ONGOING",
+        "release_id": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+        "model_namespace": "TDX_INDUSTRY_CONCEPT",
+        "data_updated_at": "2026-10-09T11:56:56.437273+00:00",
+        "scoped_release": true,
+        "operational_release_scope": [
+          "stocks_daily",
+          "sectors_current_facts",
+          "market_current",
+          "focus_read_corrected",
+          "diagnostics"
+        ],
+        "domain_readiness": {
+          "focus": {
+            "earliest_valid_date": "2026-09-28"
+          }
+        },
+        "read_source_label": "通达信最新成员回算；非历史当日成员",
+        "bff_contract_id": "OPERATIONAL_SUCCESSOR_BFF_V1"
+      },
+      "context_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "production_accepted": true,
+      "status": "READY",
+      "counts": {
+        "stocks": 5224,
+        "sectors": 400,
+        "focus": 2805
+      },
+      "gaps": [
+        {
+          "domain": "rotation",
+          "state": "SOURCE_INCOMPLETE",
+          "validation_state": "VALIDATION_ONGOING",
+          "contract_id": "V4_OPERATIONAL_ROUTE_GAP_V2",
+          "task_stage": "FP03",
+          "missing_owner": "DATED_OPERATIONAL_ROTATION_OWNER",
+          "owner_scope": "2026-10-09 operational research",
+          "ui_presentation": "来源尚未接入；显示缺失 Owner 与修复阶段，保留当前已接受日期",
+          "next_task": "Bind real dated producer, verify source QA and token, then browser acceptance under FP03"
+        },
+        {
+          "domain": "forward",
+          "state": "SOURCE_INCOMPLETE",
+          "validation_state": "VALIDATION_ONGOING",
+          "contract_id": "V4_OPERATIONAL_ROUTE_GAP_V2",
+          "task_stage": "FP10",
+          "missing_owner": "DATED_OPERATIONAL_FORWARD_OWNER",
+          "owner_scope": "2026-10-09 operational research",
+          "ui_presentation": "来源尚未接入；显示缺失 Owner 与修复阶段，保留当前已接受日期",
+          "next_task": "Bind real dated producer, verify source QA and token, then browser acceptance under FP10"
+        },
+        {
+          "domain": "forward/statistics",
+          "state": "SOURCE_INCOMPLETE",
+          "reason": "NO_FORWARD_ENROLLMENT_STATISTICS_OWNER",
+          "contract_id": "V4_OPERATIONAL_ROUTE_GAP_V2",
+          "task_stage": "FP10",
+          "missing_owner": "DATED_OPERATIONAL_FORWARD_STATISTICS_OWNER",
+          "owner_scope": "2026-10-09 operational research",
+          "ui_presentation": "来源尚未接入；显示缺失 Owner 与修复阶段，保留当前已接受日期",
+          "next_task": "Bind real dated producer, verify source QA and token, then browser acceptance under FP10"
+        }
+      ]
+    }
+  },
+  {
+    "route": "home",
+    "error": "HTTP Error 409: Conflict"
+  },
+  {
+    "route": "stocks",
+    "error": "HTTP Error 409: Conflict"
+  },
+  {
+    "route": "sectors",
+    "error": "HTTP Error 409: Conflict"
+  },
+  {
+    "route": "focus",
+    "error": "HTTP Error 409: Conflict"
+  },
+  {
+    "route": "market",
+    "error": "HTTP Error 409: Conflict"
+  },
+  {
+    "route": "diagnostics/sources",
+    "error": "HTTP Error 409: Conflict"
+  },
+  {
+    "route": "forward/statistics",
+    "error": "HTTP Error 409: Conflict"
+  },
+  {
+    "route": "forward/settlement",
+    "error": "HTTP Error 409: Conflict"
+  },
+  {
+    "route": "forward/fep",
+    "error": "HTTP Error 409: Conflict"
+  }
+]

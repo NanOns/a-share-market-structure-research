@@ -9,7 +9,7 @@ from .r43_operational_bff import owner_cell
 from .stock_views import aggregate
 from .domain_views import CHANGE_EVENTS, RISK_EVENTS, ROTATIONS
 from workbench_analysis.r43_owner_replay import checked
-from workbench_analysis.validation_cohort_read_contract_r3 import read_statistics
+from workbench_analysis.validation_cohort_read_contract_r3 import read_statistics, read_authorized_statistics
 from .research_hypotheses_r3 import competing_explanations
 
 CONTRACT='CORE_PRODUCT_BFF_R1'
@@ -355,19 +355,26 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 owner=json.loads(checked(self.api.root,ref).read_bytes())
                 if owner.get('contract_id')!='VALIDATION_COHORT_READ_R3_V2' or owner.get('trade_date')!=day:
                     raise ValueError('COHORT_OWNER_CONTRACT_OR_DATE_MISMATCH')
-            cutoff=owner.get('read_cutoff') if owner else None
-            statistics=read_statistics(owner,cutoff=cutoff,trade_date=day)
+            if owner:
+                statistics=read_authorized_statistics(self.api.root,
+                    accepted_head={'path':'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json','sha256':self.api.token},
+                    owner_binding=ref,trade_date=day)
+            else:
+                statistics=read_statistics(None,cutoff=None,trade_date=day)
             return 200,self.envelope(day,status='READY' if owner else 'SOURCE_INCOMPLETE',data=statistics,
                 source=ref,contract_id='VALIDATION_COHORT_STATISTICS_BFF_R3_V1',
                 reason=None if owner else 'NO_AUTHORIZED_COHORT_OWNER',
                 focus_is_validation_cohort=False,write_authorized=False,PIT_ELIGIBLE=False)
         if path=='/api/v4/forward/fep':
+            from workbench_analysis.fep_e5.admission import current_gate
+            gate=current_gate(self.api.root)
             return 200,self.envelope(day,status='SOURCE_INCOMPLETE',reason='MODEL_OR_PERMISSION_NOT_READY',
-                contract_id='FEP_NOT_READY_READ_R3_V1',source=None,
+                contract_id=gate['contract_id'],source=None,reason_text='；'.join(gate['reason_text']),
                 data=dict(model_version=None,prediction_revision=None,permission_gate='MODEL_OR_PERMISSION_NOT_READY',
                     required_grant_key=['scope_id','target_id','horizon','feature_contract_id','model_set_id','capability'],
                     capabilities={k:'NOT_GRANTED' for k in ('SHADOW_INFERENCE','DESCRIPTIVE_DISPLAY','MODEL_DISPLAY','PRIORITY_USE')},
-                    prediction=None,training_authorized=False,focus_write_authorized=False,priority_v1_unchanged=True))
+                    prediction=None,training_authorized=False,focus_write_authorized=False,priority_v1_unchanged=True,
+                    admission_gate=gate))
         if path=='/api/v4/forward/settlement':
             return 200,self.envelope(day,status='SOURCE_INCOMPLETE',reason='NO_AUTHORIZED_COHORT_SETTLEMENT_OWNER',
                 contract_id='COHORT_SETTLEMENT_NOT_READY_READ_R3_V1',source=None,

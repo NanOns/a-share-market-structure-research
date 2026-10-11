@@ -39,7 +39,8 @@
       "batch": "B/C",
       "status": "OPEN",
       "acceptance_independent_of_current_stage": true,
-      "effective_location": "src/v4/sector;src/workbench_analysis/sector_rotation_legacy_reproducer.py"
+      "effective_location": "src/v4/sector;src/workbench_analysis/sector_rotation_legacy_reproducer.py",
+      "continuation_evidence": "B2_FIRST_ANY_STATE_AUDIT.json"
     },
     {
       "audit_item_id": "FA-003",
@@ -57,7 +58,8 @@
       "batch": "B/D",
       "status": "OPEN",
       "acceptance_independent_of_current_stage": true,
-      "effective_location": "src/workbench_service/core_product_bff_r1.py"
+      "effective_location": "src/workbench_service/core_product_bff_r1.py",
+      "continuation_evidence": "B2_FIRST_ANY_STATE_AUDIT.json"
     },
     {
       "audit_item_id": "FA-004",
@@ -70,12 +72,13 @@
       "evidence": "HTTP latency/bytes receipts",
       "reproduction": "单审计客户端；未做并发负载，不能外推容量",
       "expected_vs_actual": "主页响应6.31MB；首次历史个股读约8秒，handler全局锁可能排队",
-      "current_block": "OPEN",
+      "current_block": "CAPACITY_THRESHOLD_AND_OPTIMIZATION_OPEN",
       "repair_recommendation": "后续测并发/缓存/分页，保持同token一致性并测慢读不阻塞其它域",
       "batch": "A/B",
-      "status": "OPEN",
+      "status": "OPEN_CAPACITY_AND_PAYLOAD_GATE",
       "acceptance_independent_of_current_stage": true,
-      "effective_location": "src/workbench_service/core_product_server_r1.py;core_product_bff_r1.py"
+      "effective_location": "src/workbench_service/core_product_server_r1.py;core_product_bff_r1.py",
+      "repair_evidence": "A6_REPAIR_RESULT.json"
     },
     {
       "audit_item_id": "FA-005",
@@ -94,7 +97,7 @@
       "status": "ENGINEERING_FIXED_EXTERNAL_PENDING",
       "acceptance_independent_of_current_stage": true,
       "effective_location": "src/workbench_analysis/fep_e2/registry.py:11-12;src/workbench_analysis/fep_e3/protocol.py:147",
-      "repair_evidence": "A2_REPAIR_RESULT.json"
+      "repair_evidence": "A2_PATH_KIND_ADDENDUM.json"
     },
     {
       "audit_item_id": "FA-006",
@@ -166,7 +169,8 @@
       "batch": "B",
       "status": "OPEN",
       "acceptance_independent_of_current_stage": true,
-      "effective_location": "three inventories"
+      "effective_location": "three inventories",
+      "continuation_evidence": "B1_AUDIT_RESULT.json"
     },
     {
       "audit_item_id": "FA-010",
@@ -202,7 +206,8 @@
       "batch": "D",
       "status": "OPEN",
       "acceptance_independent_of_current_stage": true,
-      "effective_location": "FEP admission/authority ledger"
+      "effective_location": "FEP admission/authority ledger",
+      "continuation_evidence": "B2_FIRST_ANY_STATE_AUDIT.json"
     },
     {
       "audit_item_id": "FA-012",

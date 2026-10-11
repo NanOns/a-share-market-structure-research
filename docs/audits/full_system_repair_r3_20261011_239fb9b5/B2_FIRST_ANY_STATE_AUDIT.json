@@ -1,0 +1,280 @@
+{
+  "contract_id": "B2_EVENT_GENERATION_AND_FORMAL_POPULATION_R3",
+  "source_bindings": [
+    {
+      "path": "src/workbench_analysis/v4_15_settlement.py",
+      "sha256": "b24b31d4670160ca41e620e86ca9b6fa4d393a0112ea4251eda02edb38457697"
+    },
+    {
+      "path": "src/workbench_analysis/fep_e2/conditional.py",
+      "sha256": "4aa2fdf3373e8cc8749358dac1d40b904974848c678260e3a79cc8206eb925b3"
+    },
+    {
+      "path": "src/workbench_analysis/fep_e1/labels.py",
+      "sha256": "375e1ce3971f7e324b93e508e0dde23c7fe2036e025f492b7fa5e8b013966cb0"
+    },
+    {
+      "path": "src/workbench_analysis/fep_e2/historical_labels.py",
+      "sha256": "9f213e95ecd775c663fe6590c40df480333dbe0374243eaba8d9ec65ea710713"
+    },
+    {
+      "path": "config/fep_target_registry_v1.json",
+      "sha256": "1ac08f5c30e2c6748346fcc5bdbc48c1a148f67cd656fad3357710925a48eeec"
+    },
+    {
+      "path": "tests/test_audit_first_any_generation_r3.py",
+      "sha256": "162b17944d02727462105b9fdb03052cb82283246e60aedcf58227796418d06b"
+    }
+  ],
+  "first_generation": {
+    "producer": "SettlementRuntime.competing_outcome",
+    "date_window": "T0 <= event.trade_date <= report_cutoff; equal T0 is current contract",
+    "selection": "Earliest date; INVALIDATED before CONFIRMED before EXPIRED on same date",
+    "counterexample_permutations": 120,
+    "pre_T0_and_after_cutoff": "Excluded",
+    "no_eligible_event": "RIGHT_CENSORED, retained as NONE in scoped categorical input",
+    "price_settlement_continues": true
+  },
+  "date_equal_denominator": {
+    "rows": 3,
+    "dates": 2,
+    "formula": "weight=1/(distinct dates * observations on that date)",
+    "expected_FIRST": {
+      "NONE": 0.25,
+      "CONFIRMED": 0.25,
+      "INVALIDATED": 0.5,
+      "EXPIRED": 0
+    },
+    "ANY_joint_input": "synthetic CONFIRMED=true and INVALIDATED=true; both frequencies=1, sum=2; no joint normalization"
+  },
+  "actual_label_gate": {
+    "registered_targets": [
+      {
+        "target_id": "FIRST_EXIT_PREWATCH_N:T1",
+        "family": "FIRST_EXIT_PREWATCH_N",
+        "horizon": 1,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/FIRST_EXIT_PREWATCH_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      },
+      {
+        "target_id": "FIRST_EXIT_PREWATCH_N:T3",
+        "family": "FIRST_EXIT_PREWATCH_N",
+        "horizon": 3,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/FIRST_EXIT_PREWATCH_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      },
+      {
+        "target_id": "FIRST_EXIT_PREWATCH_N:T5",
+        "family": "FIRST_EXIT_PREWATCH_N",
+        "horizon": 5,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/FIRST_EXIT_PREWATCH_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      },
+      {
+        "target_id": "FIRST_EXIT_PREWATCH_N:T10",
+        "family": "FIRST_EXIT_PREWATCH_N",
+        "horizon": 10,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/FIRST_EXIT_PREWATCH_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      },
+      {
+        "target_id": "FIRST_EXIT_PREWATCH_N:T20",
+        "family": "FIRST_EXIT_PREWATCH_N",
+        "horizon": 20,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/FIRST_EXIT_PREWATCH_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      },
+      {
+        "target_id": "ANY_CONFIRM_N:T1",
+        "family": "ANY_CONFIRM_N",
+        "horizon": 1,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/ANY_CONFIRM_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      },
+      {
+        "target_id": "ANY_CONFIRM_N:T3",
+        "family": "ANY_CONFIRM_N",
+        "horizon": 3,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/ANY_CONFIRM_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      },
+      {
+        "target_id": "ANY_CONFIRM_N:T5",
+        "family": "ANY_CONFIRM_N",
+        "horizon": 5,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/ANY_CONFIRM_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      },
+      {
+        "target_id": "ANY_CONFIRM_N:T10",
+        "family": "ANY_CONFIRM_N",
+        "horizon": 10,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/ANY_CONFIRM_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      },
+      {
+        "target_id": "ANY_CONFIRM_N:T20",
+        "family": "ANY_CONFIRM_N",
+        "horizon": 20,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/ANY_CONFIRM_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      },
+      {
+        "target_id": "ANY_INVALIDATE_N:T1",
+        "family": "ANY_INVALIDATE_N",
+        "horizon": 1,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/ANY_INVALIDATE_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      },
+      {
+        "target_id": "ANY_INVALIDATE_N:T3",
+        "family": "ANY_INVALIDATE_N",
+        "horizon": 3,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/ANY_INVALIDATE_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      },
+      {
+        "target_id": "ANY_INVALIDATE_N:T5",
+        "family": "ANY_INVALIDATE_N",
+        "horizon": 5,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/ANY_INVALIDATE_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      },
+      {
+        "target_id": "ANY_INVALIDATE_N:T10",
+        "family": "ANY_INVALIDATE_N",
+        "horizon": 10,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/ANY_INVALIDATE_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      },
+      {
+        "target_id": "ANY_INVALIDATE_N:T20",
+        "family": "ANY_INVALIDATE_N",
+        "horizon": 20,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/ANY_INVALIDATE_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      },
+      {
+        "target_id": "ANY_EXPIRE_N:T1",
+        "family": "ANY_EXPIRE_N",
+        "horizon": 1,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/ANY_EXPIRE_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      },
+      {
+        "target_id": "ANY_EXPIRE_N:T3",
+        "family": "ANY_EXPIRE_N",
+        "horizon": 3,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/ANY_EXPIRE_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      },
+      {
+        "target_id": "ANY_EXPIRE_N:T5",
+        "family": "ANY_EXPIRE_N",
+        "horizon": 5,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/ANY_EXPIRE_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      },
+      {
+        "target_id": "ANY_EXPIRE_N:T10",
+        "family": "ANY_EXPIRE_N",
+        "horizon": 10,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/ANY_EXPIRE_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      },
+      {
+        "target_id": "ANY_EXPIRE_N:T20",
+        "family": "ANY_EXPIRE_N",
+        "horizon": 20,
+        "scope_id": "FEP_STOCK_ENTRY_CORE",
+        "definition_reference": "FEP.5/ANY_EXPIRE_N",
+        "status": "REGISTERED_NOT_ENABLED",
+        "training_allowed": false,
+        "engineering_adapter": false
+      }
+    ],
+    "E1_adapter_families": [
+      "ABS_RETURN_N",
+      "MFE_N",
+      "MAE_N",
+      "PATH_MDD_CLOSE_N"
+    ],
+    "FIRST_ANY_real_adapter": "NOT_ENABLED",
+    "E2_historical_labels": "ABS_RETURN_N:T1 engineering only; real_training_allowed=false; reconstruction timestamps are not historical first-available"
+  },
+  "evidence": [
+    "a4_b2_final_junit.xml",
+    "A4_B2_CORE_SENSITIVITY.json",
+    "A4_B2_RPS_SENSITIVITY.json"
+  ],
+  "acceptance": "SCOPED_EVENT_GENERATION_AND_WEIGHT_CHECK_PASS_FORMAL_LABEL_POPULATION_OPEN",
+  "limitations": [
+    "Test calls actual generation method with an in-memory store; does not establish live immutable source publication lineage",
+    "ANY inputs are synthetic; no actual admitted ANY-label producer is claimed",
+    "Formal old-day prior/D0/D1/D2/PIT/LOO and full validation cohort remain unproven",
+    "A4 sensitivity uses reconstructed current members, not legal historical PIT rank denominator"
+  ],
+  "independent_open_items": [
+    "FA-002",
+    "FA-003",
+    "FA-011",
+    "FA-016"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "contract_id": "FULL_SYSTEM_A2_REPAIR_R3_PATH_KIND_ADDENDUM_V1",
+  "base_head": "239fb9b545ac25305af02a645a77d82246cbb71a",
+  "issues": [
+    "FA-005"
+  ],
+  "source_bindings": [
+    {
+      "path": "src/workbench_analysis/fep_e2/registry.py",
+      "sha256": "309c889e1b4696b7b18101c1608e414259c012ab79c1602e152a0e8a7976ad01"
+    },
+    {
+      "path": "src/workbench_analysis/fep_e3/protocol.py",
+      "sha256": "1e8a521126fe1840f5240c3e64fc191a22f4a6100ab04c65fa72d3575a1ee2d8"
+    },
+    {
+      "path": "src/workbench_analysis/fep_engineering_storage.py",
+      "sha256": "d625531cf22009e3eaefd9fe2b026db8cc23f8a875cf3d44bbb98530b4f2fa8f"
+    },
+    {
+      "path": "config/fep_engineering_storage_contract_v2.json",
+      "sha256": "c2f1417f2dea0ca46014ea003425fdffbc52a6e6360ed38ba6644ae8f2e5b598"
+    },
+    {
+      "path": "tests/test_audit_repair_storage_r3.py",
+      "sha256": "e53b388eced286fb9dd83be4375f4e63fa5d5c82a1a0ddc7f1d227c5187b4437"
+    }
+  ],
+  "evidence": [
+    "a2_junit.xml",
+    "a2_path_followup_junit.xml"
+  ],
+  "limitations": "Windows symlink creation denied (1314); real junction containment/escape tested. Identity and exclusive atomic publication retained. G root as a whole is forbidden.",
+  "acceptance": "ENGINEERING_PASS_EXTERNAL_PENDING",
+  "production_loaded": false,
+  "next": "Other independent A/B packages; external recheck before promotion",
+  "supersedes_current_disposition": "A2_REPAIR_RESULT.json; historical initial receipt retained",
+  "followup": "Artifact kind is a single alphanumeric/underscore/hyphen token; seven traversal/absolute/separator cases reject before creating directories",
+  "final_test_count": 18
+}

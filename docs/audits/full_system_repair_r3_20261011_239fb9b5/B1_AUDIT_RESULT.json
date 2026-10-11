@@ -1,0 +1,91 @@
+{
+  "contract_id": "B1_VERSIONED_REQUIREMENT_AUDIT_R3",
+  "scope": {
+    "versions": 84,
+    "registry_rows": 674,
+    "distinct_field_names": 298,
+    "schema_atoms": 37264,
+    "selection": "Explicit finite 84 configuration versions, exclusions and per-version SHA in index"
+  },
+  "evidence": [
+    {
+      "path": "B1_VERSIONED_ATOM_INDEX_R3.json",
+      "sha256": "484157424d151b9814a3d3c71686cbdbec5566b3a2708a4f56bffec2fe2ba5f7"
+    },
+    {
+      "path": "B1_SCHEMA_ATOMS_R3.jsonl.gz",
+      "sha256": "1b83df0b4d5aa441d3c2dc74a167d31a72d9af56d75cbbb6b19ecf41975b09e8"
+    }
+  ],
+  "semantic_reviews": [
+    {
+      "fields": [
+        "control_entity_ids",
+        "assignment_digest",
+        "ITT_RETAINED"
+      ],
+      "producer": "src/workbench_analysis/v4_15_settlement.py:freeze_controls/SettlementRuntime.control_crossing",
+      "formula": "Freeze at T0, deterministic matched assignment; later crossing retains original controls under ITT",
+      "source_quality": "Explicit frozen T0/control refs; source changes cannot regenerate old assignments",
+      "consumer": "SettlementRuntime.readback benchmark_control_bindings and FEP selection",
+      "counterexample": "tests/test_r20d_settlement.py::test_controls / tests/test_r20d_settlement.py::test_persisted_revision_readback",
+      "acceptance": "SCOPED_SOURCE_REVIEW; full live frozen cohort missing"
+    },
+    {
+      "fields": [
+        "effective_event",
+        "risks",
+        "net_information_count"
+      ],
+      "producer": "src/workbench_service/core_product_bff_r1.py:prioritize_home_changes",
+      "formula": "Minimum explicit risk priority per entity; risks and unique information count derived from same set",
+      "source_quality": "Dated forward owner checked SHA; no inferred events",
+      "consumer": "Home product API and UI",
+      "counterexample": "A1_REAL_FIVE_DAY_READBACK.json / test_audit_repair_home_r3.py",
+      "acceptance": "SCOPED_ENGINEERING_PASS_EXTERNAL_PENDING"
+    },
+    {
+      "fields": [
+        "rps5",
+        "rps20",
+        "sector_rs5",
+        "sector_rs20"
+      ],
+      "producer": "src/workbench_service/core_product_bff_r1.py:project/resolve_dated_object",
+      "formula": "Value-preserving dated Owner projection; distinct stock/sector rank fields",
+      "source_quality": "Owner evidence/units retained; unknown and ambiguous identity fail closed",
+      "consumer": "static/core-product-r1/replay.js four modes",
+      "counterexample": "A3_HTTP_DOM_READBACK.json",
+      "acceptance": "SCOPED_ENGINEERING_PASS_EXTERNAL_PENDING"
+    },
+    {
+      "fields": [
+        "source_fact_available_at",
+        "label_training_mature_at",
+        "label_revision_available_at"
+      ],
+      "producer": "src/workbench_analysis/fep_e1/labels.py:project_with_owner_time/project",
+      "formula": "Exact outcome copied; no label price recompute in adapter; absent three-time owner rejected; real adapter remains disabled",
+      "source_quality": "Row digest and admitted time owner; real historical reconstruction not first available",
+      "consumer": "FEP E1 datasets/fold cutoff selection",
+      "counterexample": "Actual formal missing interface produces FEP_E1_REAL_ADAPTER_NOT_ENABLED; historical labels engineering-only",
+      "acceptance": "SCOPED_SOURCE_GATE_REVIEW; real label population blocked"
+    },
+    {
+      "fields": [
+        "training_allowed_engineering_only",
+        "real_training_allowed",
+        "outcome"
+      ],
+      "producer": "src/workbench_analysis/fep_e2/historical_labels.py:label_worker",
+      "formula": "V4-15 settle owns arithmetic; ABS_RETURN_N:T1 only, eligible=OBSERVED and non-null",
+      "source_quality": "Historical RecordStore ref/digest, immutable reconstructed available_at; all real_training_allowed=false",
+      "consumer": "E2 input bind and conditional date-equal weights",
+      "counterexample": "tests/fep_e2/test_r1r2_event_strata.py / historical_dataset.verify_label",
+      "acceptance": "SCOPED_SOURCE_REVIEW; no formal OOS claim"
+    }
+  ],
+  "acceptance": "DECLARED_FINITE_INDEX_PASS_FULL_SEMANTIC_DENOMINATOR_OPEN",
+  "global_legal_requirement_denominator": null,
+  "next": "Enumerate normative prose, time/permission versions, then verify each field actual producer-to-API/UI flow; current anchors alone do not pass FA-009"
+}

@@ -38,3 +38,10 @@ def test_symlink_inside_engineering_root_and_atomic_identity(tmp_path):
     assert a['artifact_id']==b['artifact_id'] and path==same and path.read_bytes()==original
     c,other=immutable(link,'model',dict(value=2))
     assert c['artifact_id']!=a['artifact_id'] and other!=path
+
+@pytest.mark.parametrize('kind',['../escape','..\\escape','G:/elsewhere','/absolute','a/b','a\\b',''])
+def test_artifact_kind_cannot_escape_admitted_directory(tmp_path,kind):
+    before=list(tmp_path.iterdir())
+    with pytest.raises(ValueError,match='E3_ARTIFACT_KIND_PATH_REQUIRED'):
+        immutable(tmp_path,kind,dict(value=1))
+    assert list(tmp_path.iterdir())==before

@@ -1,7 +1,7 @@
 """Frozen scope, dual-clock chronological purge, and append-only experiment guards."""
 from collections import Counter
 from copy import deepcopy
-import json,math,os
+import json,math,os,re
 from pathlib import Path
 from workbench_analysis.fep_e1.contracts import digest,instant
 from workbench_analysis.fep_engineering_storage import engineering_directory
@@ -145,6 +145,8 @@ def same_population(model_ids,baseline_ids):
 
 def immutable(directory,kind,payload):
     directory=engineering_directory(directory,error='E3_ENGINEERING_STORAGE_REQUIRED')
+    if not isinstance(kind,str) or not re.fullmatch(r'[A-Za-z0-9_-]+',kind):
+        raise ValueError('E3_ARTIFACT_KIND_PATH_REQUIRED')
     clean={k:v for k,v in payload.items() if k not in ('logical_digest','artifact_id','artifact_type','kind')}
     semantic=dict(artifact_type=kind,**{k:v for k,v in clean.items() if k not in ('created_at','run_id')});sha=digest(semantic)
     artifact=dict(clean,artifact_type=kind,logical_digest=sha,artifact_id='FEP_E3:'+sha,kind=kind)

@@ -1,0 +1,895 @@
+{
+  "contract_id": "SAME_HEAD_PRODUCT_CAPACITY_MEASUREMENT_R3",
+  "head_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+  "port": 8700,
+  "hardware": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "logical_cpu": 20,
+    "physical_ram_bytes": 34138685440
+  },
+  "memory": {
+    "peak_sampled_rss_bytes": 4551766016,
+    "sampling_seconds": 0.05
+  },
+  "cold_and_warm_records": [
+    {
+      "route": "home",
+      "day": "2026-10-09",
+      "seconds": 12.727080700045917,
+      "bytes": 6313877,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "cb1932a33c3e52f6bb36a348ebdf5951ffc9b62de0aa4f313e9ae5fc2e27e37e",
+      "kind": "cold_or_first_route"
+    },
+    {
+      "route": "market",
+      "day": "2026-10-09",
+      "seconds": 0.0914844999788329,
+      "bytes": 8758,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "a193ce1bf6888d518b6cfd6aa17b1cafacb86da577fe50b0fba4887c26abf8c0",
+      "kind": "cold_or_first_route"
+    },
+    {
+      "route": "stocks",
+      "day": "2026-10-09",
+      "seconds": 0.11685639998177066,
+      "bytes": 2051989,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "1aee17c78ae78ca27f5370e9dc5ff635555862071ea50520111aa7af70422916",
+      "kind": "cold_or_first_route"
+    },
+    {
+      "route": "sectors",
+      "day": "2026-10-09",
+      "seconds": 0.18788059998769313,
+      "bytes": 624003,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "ce57d87f1be78a11b611a9c8ad510ddb7ec3d70b9bfe6be642692cd5fb28ffae",
+      "kind": "cold_or_first_route"
+    },
+    {
+      "route": "focus",
+      "day": "2026-10-09",
+      "seconds": 1.2419270999962464,
+      "bytes": 166996,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "97c046010e36d9f8e19838520f106c6cbcc75584030c161847204bfce514da64",
+      "kind": "cold_or_first_route"
+    },
+    {
+      "route": "forward",
+      "day": "2026-10-09",
+      "seconds": 0.0999110999982804,
+      "bytes": 2835,
+      "status": 200,
+      "capability": "SOURCE_INCOMPLETE",
+      "sha256": "214408a8f040417ae95d6fa0a62422defd319f32a4e169d2bf9013a63050a409",
+      "kind": "cold_or_first_route"
+    },
+    {
+      "route": "home",
+      "day": "2026-09-28",
+      "seconds": 9.797976800007746,
+      "bytes": 5764135,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "9ed7366079c5dfa3e5926ba369228ab02a2abafe6c6bee7e9733c01588a68032",
+      "kind": "cold_or_first_route"
+    },
+    {
+      "route": "market",
+      "day": "2026-09-28",
+      "seconds": 0.10449930001050234,
+      "bytes": 7605,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "cbe244838caab95e6a292e427a84f8397edbbad7cc07eb450b9f33fb9ea27e72",
+      "kind": "cold_or_first_route"
+    },
+    {
+      "route": "stocks",
+      "day": "2026-09-28",
+      "seconds": 0.11330339999403805,
+      "bytes": 2029021,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "8edf067fd120940d2915a03de9b42ce6c393742eb7ff812b30980aa0bab9211a",
+      "kind": "cold_or_first_route"
+    },
+    {
+      "route": "sectors",
+      "day": "2026-09-28",
+      "seconds": 0.2042294999700971,
+      "bytes": 620492,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "95a10e3118595861881585d5097155999e62b3b06a5036e75a64152dd7471a70",
+      "kind": "cold_or_first_route"
+    },
+    {
+      "route": "focus",
+      "day": "2026-09-28",
+      "seconds": 0.10828069999115542,
+      "bytes": 165023,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "02cc467df1f77341b6207ef64fff32b8a48b9ab56dd10db82787db73c3fe85b4",
+      "kind": "cold_or_first_route"
+    },
+    {
+      "route": "forward",
+      "day": "2026-09-28",
+      "seconds": 0.09195420000469312,
+      "bytes": 2711,
+      "status": 200,
+      "capability": "SOURCE_INCOMPLETE",
+      "sha256": "119f0e83cd75d342e665fd176915ba70446b42899d20cd5d3f4c1b664684c158",
+      "kind": "cold_or_first_route"
+    },
+    {
+      "route": "home",
+      "day": "2026-10-09",
+      "seconds": 1.3125806999742053,
+      "bytes": 6313877,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "cb1932a33c3e52f6bb36a348ebdf5951ffc9b62de0aa4f313e9ae5fc2e27e37e",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "market",
+      "day": "2026-10-09",
+      "seconds": 0.10306559997843578,
+      "bytes": 8758,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "a193ce1bf6888d518b6cfd6aa17b1cafacb86da577fe50b0fba4887c26abf8c0",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "stocks",
+      "day": "2026-10-09",
+      "seconds": 0.11972159997094423,
+      "bytes": 2051989,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "1aee17c78ae78ca27f5370e9dc5ff635555862071ea50520111aa7af70422916",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "sectors",
+      "day": "2026-10-09",
+      "seconds": 0.1904647999908775,
+      "bytes": 624003,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "ce57d87f1be78a11b611a9c8ad510ddb7ec3d70b9bfe6be642692cd5fb28ffae",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "focus",
+      "day": "2026-10-09",
+      "seconds": 0.8312223000102676,
+      "bytes": 166996,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "97c046010e36d9f8e19838520f106c6cbcc75584030c161847204bfce514da64",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "forward",
+      "day": "2026-10-09",
+      "seconds": 0.10468200000468642,
+      "bytes": 2835,
+      "status": 200,
+      "capability": "SOURCE_INCOMPLETE",
+      "sha256": "214408a8f040417ae95d6fa0a62422defd319f32a4e169d2bf9013a63050a409",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "home",
+      "day": "2026-09-28",
+      "seconds": 0.963648600038141,
+      "bytes": 5764135,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "9ed7366079c5dfa3e5926ba369228ab02a2abafe6c6bee7e9733c01588a68032",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "market",
+      "day": "2026-09-28",
+      "seconds": 0.09440399997401983,
+      "bytes": 7605,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "cbe244838caab95e6a292e427a84f8397edbbad7cc07eb450b9f33fb9ea27e72",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "stocks",
+      "day": "2026-09-28",
+      "seconds": 0.12709999998332933,
+      "bytes": 2029021,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "8edf067fd120940d2915a03de9b42ce6c393742eb7ff812b30980aa0bab9211a",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "sectors",
+      "day": "2026-09-28",
+      "seconds": 0.1879326999769546,
+      "bytes": 620492,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "95a10e3118595861881585d5097155999e62b3b06a5036e75a64152dd7471a70",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "focus",
+      "day": "2026-09-28",
+      "seconds": 0.10637029999634251,
+      "bytes": 165023,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "02cc467df1f77341b6207ef64fff32b8a48b9ab56dd10db82787db73c3fe85b4",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "forward",
+      "day": "2026-09-28",
+      "seconds": 0.8280225000344217,
+      "bytes": 2711,
+      "status": 200,
+      "capability": "SOURCE_INCOMPLETE",
+      "sha256": "119f0e83cd75d342e665fd176915ba70446b42899d20cd5d3f4c1b664684c158",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "home",
+      "day": "2026-10-09",
+      "seconds": 1.32958520000102,
+      "bytes": 6313877,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "cb1932a33c3e52f6bb36a348ebdf5951ffc9b62de0aa4f313e9ae5fc2e27e37e",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "market",
+      "day": "2026-10-09",
+      "seconds": 0.09350860002450645,
+      "bytes": 8758,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "a193ce1bf6888d518b6cfd6aa17b1cafacb86da577fe50b0fba4887c26abf8c0",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "stocks",
+      "day": "2026-10-09",
+      "seconds": 0.11735290003707632,
+      "bytes": 2051989,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "1aee17c78ae78ca27f5370e9dc5ff635555862071ea50520111aa7af70422916",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "sectors",
+      "day": "2026-10-09",
+      "seconds": 0.1974276999826543,
+      "bytes": 624003,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "ce57d87f1be78a11b611a9c8ad510ddb7ec3d70b9bfe6be642692cd5fb28ffae",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "focus",
+      "day": "2026-10-09",
+      "seconds": 0.8867780999862589,
+      "bytes": 166996,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "97c046010e36d9f8e19838520f106c6cbcc75584030c161847204bfce514da64",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "forward",
+      "day": "2026-10-09",
+      "seconds": 0.11277190002147108,
+      "bytes": 2835,
+      "status": 200,
+      "capability": "SOURCE_INCOMPLETE",
+      "sha256": "214408a8f040417ae95d6fa0a62422defd319f32a4e169d2bf9013a63050a409",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "home",
+      "day": "2026-09-28",
+      "seconds": 1.0108194000204094,
+      "bytes": 5764135,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "9ed7366079c5dfa3e5926ba369228ab02a2abafe6c6bee7e9733c01588a68032",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "market",
+      "day": "2026-09-28",
+      "seconds": 0.10153949999948964,
+      "bytes": 7605,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "cbe244838caab95e6a292e427a84f8397edbbad7cc07eb450b9f33fb9ea27e72",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "stocks",
+      "day": "2026-09-28",
+      "seconds": 0.10995060001732782,
+      "bytes": 2029021,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "8edf067fd120940d2915a03de9b42ce6c393742eb7ff812b30980aa0bab9211a",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "sectors",
+      "day": "2026-09-28",
+      "seconds": 0.19478189997607842,
+      "bytes": 620492,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "95a10e3118595861881585d5097155999e62b3b06a5036e75a64152dd7471a70",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "focus",
+      "day": "2026-09-28",
+      "seconds": 0.10928079998120666,
+      "bytes": 165023,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "02cc467df1f77341b6207ef64fff32b8a48b9ab56dd10db82787db73c3fe85b4",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "forward",
+      "day": "2026-09-28",
+      "seconds": 0.10060920001706108,
+      "bytes": 2711,
+      "status": 200,
+      "capability": "SOURCE_INCOMPLETE",
+      "sha256": "119f0e83cd75d342e665fd176915ba70446b42899d20cd5d3f4c1b664684c158",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "home",
+      "day": "2026-10-09",
+      "seconds": 2.443785500014201,
+      "bytes": 6313877,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "cb1932a33c3e52f6bb36a348ebdf5951ffc9b62de0aa4f313e9ae5fc2e27e37e",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "market",
+      "day": "2026-10-09",
+      "seconds": 0.09432750003179535,
+      "bytes": 8758,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "a193ce1bf6888d518b6cfd6aa17b1cafacb86da577fe50b0fba4887c26abf8c0",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "stocks",
+      "day": "2026-10-09",
+      "seconds": 0.45952089998172596,
+      "bytes": 2051989,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "1aee17c78ae78ca27f5370e9dc5ff635555862071ea50520111aa7af70422916",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "sectors",
+      "day": "2026-10-09",
+      "seconds": 0.2825052000116557,
+      "bytes": 624003,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "ce57d87f1be78a11b611a9c8ad510ddb7ec3d70b9bfe6be642692cd5fb28ffae",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "focus",
+      "day": "2026-10-09",
+      "seconds": 3.0827557999873534,
+      "bytes": 166996,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "97c046010e36d9f8e19838520f106c6cbcc75584030c161847204bfce514da64",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "forward",
+      "day": "2026-10-09",
+      "seconds": 2.9839199000271037,
+      "bytes": 2835,
+      "status": 200,
+      "capability": "SOURCE_INCOMPLETE",
+      "sha256": "214408a8f040417ae95d6fa0a62422defd319f32a4e169d2bf9013a63050a409",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "home",
+      "day": "2026-09-28",
+      "seconds": 3.8808722000103444,
+      "bytes": 5764135,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "9ed7366079c5dfa3e5926ba369228ab02a2abafe6c6bee7e9733c01588a68032",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "market",
+      "day": "2026-09-28",
+      "seconds": 1.9185467999777757,
+      "bytes": 7605,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "cbe244838caab95e6a292e427a84f8397edbbad7cc07eb450b9f33fb9ea27e72",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "stocks",
+      "day": "2026-09-28",
+      "seconds": 1.4081453999970108,
+      "bytes": 2029021,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "8edf067fd120940d2915a03de9b42ce6c393742eb7ff812b30980aa0bab9211a",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "sectors",
+      "day": "2026-09-28",
+      "seconds": 1.449342500010971,
+      "bytes": 620492,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "95a10e3118595861881585d5097155999e62b3b06a5036e75a64152dd7471a70",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "focus",
+      "day": "2026-09-28",
+      "seconds": 0.5348921000258997,
+      "bytes": 165023,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "02cc467df1f77341b6207ef64fff32b8a48b9ab56dd10db82787db73c3fe85b4",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "forward",
+      "day": "2026-09-28",
+      "seconds": 0.42640979995485395,
+      "bytes": 2711,
+      "status": 200,
+      "capability": "SOURCE_INCOMPLETE",
+      "sha256": "119f0e83cd75d342e665fd176915ba70446b42899d20cd5d3f4c1b664684c158",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "home",
+      "day": "2026-10-09",
+      "seconds": 2.4827199999708682,
+      "bytes": 6313877,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "cb1932a33c3e52f6bb36a348ebdf5951ffc9b62de0aa4f313e9ae5fc2e27e37e",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "market",
+      "day": "2026-10-09",
+      "seconds": 2.386612900008913,
+      "bytes": 8758,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "a193ce1bf6888d518b6cfd6aa17b1cafacb86da577fe50b0fba4887c26abf8c0",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "stocks",
+      "day": "2026-10-09",
+      "seconds": 2.471310099994298,
+      "bytes": 2051989,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "1aee17c78ae78ca27f5370e9dc5ff635555862071ea50520111aa7af70422916",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "sectors",
+      "day": "2026-10-09",
+      "seconds": 2.4949927999987267,
+      "bytes": 624003,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "ce57d87f1be78a11b611a9c8ad510ddb7ec3d70b9bfe6be642692cd5fb28ffae",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "focus",
+      "day": "2026-10-09",
+      "seconds": 1.1566294000367634,
+      "bytes": 166996,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "97c046010e36d9f8e19838520f106c6cbcc75584030c161847204bfce514da64",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "forward",
+      "day": "2026-10-09",
+      "seconds": 1.2501644000294618,
+      "bytes": 2835,
+      "status": 200,
+      "capability": "SOURCE_INCOMPLETE",
+      "sha256": "214408a8f040417ae95d6fa0a62422defd319f32a4e169d2bf9013a63050a409",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "home",
+      "day": "2026-09-28",
+      "seconds": 2.0935494999866933,
+      "bytes": 5764135,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "9ed7366079c5dfa3e5926ba369228ab02a2abafe6c6bee7e9733c01588a68032",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "market",
+      "day": "2026-09-28",
+      "seconds": 1.997729700000491,
+      "bytes": 7605,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "cbe244838caab95e6a292e427a84f8397edbbad7cc07eb450b9f33fb9ea27e72",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "stocks",
+      "day": "2026-09-28",
+      "seconds": 1.3239569999859668,
+      "bytes": 2029021,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "8edf067fd120940d2915a03de9b42ce6c393742eb7ff812b30980aa0bab9211a",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "sectors",
+      "day": "2026-09-28",
+      "seconds": 1.3653951999731362,
+      "bytes": 620492,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "95a10e3118595861881585d5097155999e62b3b06a5036e75a64152dd7471a70",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "focus",
+      "day": "2026-09-28",
+      "seconds": 0.41812409996055067,
+      "bytes": 165023,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "02cc467df1f77341b6207ef64fff32b8a48b9ab56dd10db82787db73c3fe85b4",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "forward",
+      "day": "2026-09-28",
+      "seconds": 0.5224277999950573,
+      "bytes": 2711,
+      "status": 200,
+      "capability": "SOURCE_INCOMPLETE",
+      "sha256": "119f0e83cd75d342e665fd176915ba70446b42899d20cd5d3f4c1b664684c158",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "home",
+      "day": "2026-10-09",
+      "seconds": 2.1146575000020675,
+      "bytes": 6313877,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "cb1932a33c3e52f6bb36a348ebdf5951ffc9b62de0aa4f313e9ae5fc2e27e37e",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "market",
+      "day": "2026-10-09",
+      "seconds": 2.1432587999734096,
+      "bytes": 8758,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "a193ce1bf6888d518b6cfd6aa17b1cafacb86da577fe50b0fba4887c26abf8c0",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "stocks",
+      "day": "2026-10-09",
+      "seconds": 2.3280284000211395,
+      "bytes": 2051989,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "1aee17c78ae78ca27f5370e9dc5ff635555862071ea50520111aa7af70422916",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "sectors",
+      "day": "2026-10-09",
+      "seconds": 2.4602859999868087,
+      "bytes": 624003,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "ce57d87f1be78a11b611a9c8ad510ddb7ec3d70b9bfe6be642692cd5fb28ffae",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "focus",
+      "day": "2026-10-09",
+      "seconds": 3.2787218000157736,
+      "bytes": 166996,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "97c046010e36d9f8e19838520f106c6cbcc75584030c161847204bfce514da64",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "forward",
+      "day": "2026-10-09",
+      "seconds": 3.3798645000206307,
+      "bytes": 2835,
+      "status": 200,
+      "capability": "SOURCE_INCOMPLETE",
+      "sha256": "214408a8f040417ae95d6fa0a62422defd319f32a4e169d2bf9013a63050a409",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "home",
+      "day": "2026-09-28",
+      "seconds": 4.414693999977317,
+      "bytes": 5764135,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "9ed7366079c5dfa3e5926ba369228ab02a2abafe6c6bee7e9733c01588a68032",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "market",
+      "day": "2026-09-28",
+      "seconds": 4.441804100002628,
+      "bytes": 7605,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "cbe244838caab95e6a292e427a84f8397edbbad7cc07eb450b9f33fb9ea27e72",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "stocks",
+      "day": "2026-09-28",
+      "seconds": 2.475536199985072,
+      "bytes": 2029021,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "8edf067fd120940d2915a03de9b42ce6c393742eb7ff812b30980aa0bab9211a",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "sectors",
+      "day": "2026-09-28",
+      "seconds": 2.6063146999804303,
+      "bytes": 620492,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "95a10e3118595861881585d5097155999e62b3b06a5036e75a64152dd7471a70",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "focus",
+      "day": "2026-09-28",
+      "seconds": 2.5941319999983534,
+      "bytes": 165023,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "02cc467df1f77341b6207ef64fff32b8a48b9ab56dd10db82787db73c3fe85b4",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "forward",
+      "day": "2026-09-28",
+      "seconds": 2.4980527999578044,
+      "bytes": 2711,
+      "status": 200,
+      "capability": "SOURCE_INCOMPLETE",
+      "sha256": "119f0e83cd75d342e665fd176915ba70446b42899d20cd5d3f4c1b664684c158",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "home",
+      "day": "2026-10-09",
+      "seconds": 3.067141300009098,
+      "bytes": 6313877,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "cb1932a33c3e52f6bb36a348ebdf5951ffc9b62de0aa4f313e9ae5fc2e27e37e",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "market",
+      "day": "2026-10-09",
+      "seconds": 2.9991949999821372,
+      "bytes": 8758,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "a193ce1bf6888d518b6cfd6aa17b1cafacb86da577fe50b0fba4887c26abf8c0",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "stocks",
+      "day": "2026-10-09",
+      "seconds": 2.3023683999781497,
+      "bytes": 2051989,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "1aee17c78ae78ca27f5370e9dc5ff635555862071ea50520111aa7af70422916",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "sectors",
+      "day": "2026-10-09",
+      "seconds": 2.1378736999467947,
+      "bytes": 624003,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "ce57d87f1be78a11b611a9c8ad510ddb7ec3d70b9bfe6be642692cd5fb28ffae",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "focus",
+      "day": "2026-10-09",
+      "seconds": 3.633027200005017,
+      "bytes": 166996,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "97c046010e36d9f8e19838520f106c6cbcc75584030c161847204bfce514da64",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "forward",
+      "day": "2026-10-09",
+      "seconds": 3.6033881999901496,
+      "bytes": 2835,
+      "status": 200,
+      "capability": "SOURCE_INCOMPLETE",
+      "sha256": "214408a8f040417ae95d6fa0a62422defd319f32a4e169d2bf9013a63050a409",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "home",
+      "day": "2026-09-28",
+      "seconds": 4.4449726000311784,
+      "bytes": 5764135,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "9ed7366079c5dfa3e5926ba369228ab02a2abafe6c6bee7e9733c01588a68032",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "market",
+      "day": "2026-09-28",
+      "seconds": 4.441875999968033,
+      "bytes": 7605,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "cbe244838caab95e6a292e427a84f8397edbbad7cc07eb450b9f33fb9ea27e72",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "stocks",
+      "day": "2026-09-28",
+      "seconds": 3.1974454000010155,
+      "bytes": 2029021,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "8edf067fd120940d2915a03de9b42ce6c393742eb7ff812b30980aa0bab9211a",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "sectors",
+      "day": "2026-09-28",
+      "seconds": 3.325025500031188,
+      "bytes": 620492,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "95a10e3118595861881585d5097155999e62b3b06a5036e75a64152dd7471a70",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "focus",
+      "day": "2026-09-28",
+      "seconds": 3.2245701999636367,
+      "bytes": 165023,
+      "status": 200,
+      "capability": "READY",
+      "sha256": "02cc467df1f77341b6207ef64fff32b8a48b9ab56dd10db82787db73c3fe85b4",
+      "kind": "warm_concurrent"
+    },
+    {
+      "route": "forward",
+      "day": "2026-09-28",
+      "seconds": 3.138103500008583,
+      "bytes": 2711,
+      "status": 200,
+      "capability": "SOURCE_INCOMPLETE",
+      "sha256": "119f0e83cd75d342e665fd176915ba70446b42899d20cd5d3f4c1b664684c158",
+      "kind": "warm_concurrent"
+    }
+  ],
+  "waves": [
+    {
+      "workers": 1,
+      "requests": 24,
+      "wall_seconds": 9.501185199944302,
+      "throughput_rps": 2.526000650965176,
+      "p50_seconds": 0.11972159997094423,
+      "p95_seconds": 1.0108194000204094,
+      "maximum_seconds": 1.32958520000102
+    },
+    {
+      "workers": 4,
+      "requests": 24,
+      "wall_seconds": 9.94305629999144,
+      "throughput_rps": 2.413744755726734,
+      "p50_seconds": 1.4081453999970108,
+      "p95_seconds": 2.9839199000271037,
+      "maximum_seconds": 3.8808722000103444
+    },
+    {
+      "workers": 8,
+      "requests": 24,
+      "wall_seconds": 9.901437800028361,
+      "throughput_rps": 2.423890397001863,
+      "p50_seconds": 3.067141300009098,
+      "p95_seconds": 4.441804100002628,
+      "maximum_seconds": 4.4449726000311784
+    }
+  ],
+  "read_write_isolation": "GET-only audit server; POST405; all protected Heads unchanged; current global lock retained",
+  "numerical_same_route_date_byte_parity": true,
+  "governing_contract": {
+    "path": "config/v4_performance_measurement_contract_v1.json",
+    "sha256": "6ca3438ed241c17af307be0158bdc50ace93654e3c6553c578d4cff0fd8be958"
+  },
+  "threshold_status": "NUMERIC_CAPACITY_THRESHOLD_NOT_REGISTERED_IN_APPLICABLE_CONTRACTS",
+  "acceptance": "MEASURED_WITH_BYTE_PARITY; FA-004_OPEN_CAPACITY_AND_PAYLOAD_GATE",
+  "production_restart": false,
+  "next": "Register justified workload/latency/payload thresholds, then consider snapshot-safe concurrency or payload changes without cross-date mutation"
+}

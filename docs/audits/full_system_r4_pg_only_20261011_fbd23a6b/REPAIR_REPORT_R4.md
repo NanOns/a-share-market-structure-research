@@ -66,3 +66,5 @@ R4-00_SCOPE_GATE.json 明确 NOT_VERIFIABLE；当前静态和有限动态证据�
 ## 提交后稳定源码 QA
 
 R4_SCOPED_f64e1318_RESULT.json：103 PASS /0 FAIL /0 ERROR /0 SKIP，执行源码 source_SHA=8df65de3e0ff622e398296d768996b2a226c2177（COMMITTED），另绑逐文件原始字节树。新增pure rank/source-write护栏和原有V4排名业务节点均保留。原4568、合法分母null与各stage OPEN不变。后续证据提交不会补造历史执行源码SHA。
+
+最新归档：R4_DRIVE_ARCHIVE_LATEST.json，141ddee5包含218 payload文件 + PACKAGE_MANIFEST（ZIP219项），CRC/逐文件SHA读回通过，Drive名称/5442338bytes/父目录匹配。草稿PR#1已核对为OPEN/DRAFT，base codex/v4-fp14-r2-repair，未合并。最终归档回执为后继证据提交，不回改执行源码SHA。

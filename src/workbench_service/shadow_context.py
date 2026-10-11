@@ -87,9 +87,11 @@ class ShadowContextReader:
         require(receipt['context_token'] == token, 'ACCEPTANCE_CONTEXT_MISMATCH')
         path = (self.root / manifest['database_path']).resolve()
         require(not Path(manifest['database_path']).is_absolute() and path.is_relative_to(self.root), 'DATABASE_OUTSIDE_REPOSITORY')
-        from workbench_db.v4_snapshot_pg_r1 import read
+        from workbench_db.v4_shadow_pg_r1 import read
         require(path.suffix=='.json','PG_SHADOW_BINDING_REQUIRED_NO_FALLBACK')
-        with read(json.loads(path.read_bytes())) as connection:
+        require('database_binding' in manifest and manifest['database_binding']['path'] == manifest['database_path'],
+                'EXACT_PG_SHADOW_BINDING_REQUIRED')
+        with read(self._exact(manifest['database_binding'])) as connection:
             require(connection.execute('SELECT environment,evidence_origin FROM storage_identity WHERE singleton=1').fetchall()
                     == [('REAL', 'PIT_OBSERVED')], 'STORAGE_ORIGIN_MISMATCH')
             facts = {}

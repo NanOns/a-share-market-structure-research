@@ -86,6 +86,11 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         if self.isolated_history is not None:
             data['production_accepted']=False
             data['context'].update(production_accepted=False,read_scope='ISOLATED_ENGINEERING_HISTORY',isolated_authority_sha256=self.isolated_history[2])
+        default_pack=self.api.cache.get(('product-pack',day))
+        if default_pack and default_pack[0].get('authority_scope')=='ISOLATED_ENGINEERING_ONLY':
+            data['production_accepted']=False
+            data['context'].update(production_accepted=False,read_scope='DEFAULT_AUTHORITY_ISOLATED_ENGINEERING',
+                                   pg_history_acceptance='NOT_GRANTED')
         return code,data
     def identity_records(self):
         key=('product-identity',)

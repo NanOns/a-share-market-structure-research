@@ -1,5 +1,7 @@
 # 全系统代码审计当前入口
 
+最新隔离工程：[R4 外审修复第二批](r4_external_repair_batch2_20261011/REPAIR_REPORT.md) / [有效阶段处置](r4_external_repair_batch2_20261011/BATCH2_DISPOSITION.json)。60项能力回归通过；正常authority产品HTTP、全字段差异溯源和旧出版物四表PG无损迁移已补证。正式外部验收/生产切换及全V4分母仍OPEN。
+
 当前外审修复首批：[修复回执](r4_external_repair_20261011/REPAIR_REPORT.md) / [独立问题台账](r4_external_repair_20261011/AUDIT_ITEMS.json)。定向10/10通过；完整验收仍阻断。
 
 当前 R4：EXTERNAL_ACCEPTANCE_BLOCKED / AUDIT_INCOMPLETE。隔离工程基线 fbd23a6ba08d0948fe7ad421d1765fe363648522；尚未完成总任务或集成在役目标分支。

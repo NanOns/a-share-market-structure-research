@@ -166,7 +166,7 @@ def test_readback_config_has_no_real_acceptance():
 
 def native_vector(tmp_path):
     """Synthetic read-only storage proof, never repository real evidence."""
-    import sqlite3
+    from workbench_db.v4_shadow_pg_r1 import build_readback
     from workbench_service.shadow_context import canonical,digest
     root=tmp_path/'native-vector';(root/'config').mkdir(parents=True)
     (root/'config/v4_17_shadow_ui_contract_v1.json').write_bytes((ROOT/'config/v4_17_shadow_ui_contract_v1.json').read_bytes())
@@ -177,18 +177,16 @@ def native_vector(tmp_path):
              'state':dict(common,model_contract_id=context['model_contract_id'],state_lineage_id=context['state_lineage_id']),
              'daily_input':dict(daily_input_digest=context['daily_input_digest'],target_trade_date=context['trade_date']),
              'health':dict(publication_id=context['publication_id'],PIT_OBSERVED_REAL_SAMPLES=0)}
-    db=root/'synthetic.sqlite';facts={}
-    with sqlite3.connect(db) as con:
-        con.executescript((ROOT/'migrations/v4_16_r24_real_shadow_v1.sql').read_text())
-        con.execute("INSERT INTO storage_identity VALUES(1,'REAL','PIT_OBSERVED')")
-        for kind,value in records.items():
-            value.update(namespace='SHADOW_V4',execution_mode='SHADOW',evidence_origin='PIT_OBSERVED')
-            sha=digest(value);con.execute('INSERT INTO facts VALUES(?,?,?,?,?,?,?)',(kind,kind,'SHADOW_V4','SHADOW','PIT_OBSERVED',canonical(value).decode(),sha))
-            facts[kind]=dict(kind=kind,id=kind,sha256=sha)
-    manifest=dict(context=context,database_path='synthetic.sqlite',facts=facts,components={k:[{}] for k in COMPONENTS},source_quality='UNKNOWN')
+    facts={}
+    for kind,value in records.items():
+        value.update(namespace='SHADOW_V4',execution_mode='SHADOW',evidence_origin='PIT_OBSERVED')
+        facts[kind]=dict(kind=kind,id=kind,sha256=digest(value))
+    descriptor=build_readback(root,[dict(kind=k,id=k,payload=v) for k,v in records.items()],environment='REAL',evidence_origin='PIT_OBSERVED')
+    manifest=dict(context=context,database_path='synthetic.pg.json',facts=facts,components={k:[{}] for k in COMPONENTS},source_quality='UNKNOWN')
     manifest['components']['health']=[{'slot_status':dict(fact='slot',path='slot_status',quality='KNOWN')}]
     def save(name,value):
         raw=canonical(value);(root/name).write_bytes(raw);return dict(path=name,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw))
+    manifest['database_binding']=save('synthetic.pg.json',descriptor)
     binding=save('manifest.json',manifest)
     receipt=save('receipt.json',dict(decision='PASS_REAL_SHADOW_UI_READBACK',readback_sha256=binding['sha256'],context_token=context_token(dict(context,readback_manifest_digest=binding['sha256']))))
     config=dict(contract_id='V4_17_EXACT_READBACK_SOURCE_V1',accepted_readback=binding,external_acceptance=receipt)
@@ -202,22 +200,22 @@ def real_token(manifest,config):
 
 def test_native_exact_readonly_storage_projection(tmp_path,monkeypatch):
     root,manifest,config,save=native_vector(tmp_path)
-    import sqlite3
-    original=sqlite3.connect;connections=[]
+    import psycopg
+    original=psycopg.connect;connections=[]
     def tracked(*args,**kwargs):
         connection=original(*args,**kwargs);connections.append(connection);return connection
-    monkeypatch.setattr(sqlite3,'connect',tracked)
-    db=root/'synthetic.sqlite';before=db.read_bytes();r=ShadowContextReader(root)
+    monkeypatch.setattr(psycopg,'connect',tracked)
+    db=root/'synthetic.pg.json';before=db.read_bytes();r=ShadowContextReader(root)
     for name in ('context',*COMPONENTS):
         status,data=r.handle(PREFIX+name,{} if name=='context' else {'context_token':real_token(manifest,config)})
         assert status==200 and data['status']=='READY' and data['real_sample_count']==0
     assert db.read_bytes()==before
-    assert not (root/'synthetic.sqlite-journal').exists()
+    assert not list(root.glob('*.sqlite*'))
     health=r.handle(PREFIX+'health',{'context_token':real_token(manifest,config)})[1]['items'][0]['fields']
     assert health['slot_status']['value']=='ACCEPTED_ON_TIME' and health['source_receipts']['quality']=='UNKNOWN'
     assert len(connections)==8
     for connection in connections:
-        with pytest.raises(sqlite3.ProgrammingError,match='closed'):connection.execute('SELECT 1')
+        with pytest.raises(psycopg.OperationalError,match='closed'):connection.execute('SELECT 1')
 
 
 @pytest.mark.parametrize('change',['receipt','fact_digest','slot_model','storage_origin','path_escape','absent_db','field_path','field_kind'])
@@ -228,13 +226,14 @@ def test_native_readback_fail_closed(tmp_path,change):
     elif change=='slot_model':manifest['context']['model_contract_id']='different'
     elif change=='storage_origin':
         # different explicitly pinned database; origin mismatch cannot fall back.
-        import sqlite3
-        path=root/'other.sqlite'
-        with sqlite3.connect(path) as con:
-            con.execute('CREATE TABLE storage_identity(singleton,environment,evidence_origin)');con.execute("INSERT INTO storage_identity VALUES(1,'ACTIVATION_SIMULATION','ACTIVATION_SIMULATION')")
-        manifest['database_path']='other.sqlite'
+        from workbench_db.v4_shadow_pg_r1 import build_readback
+        descriptor=build_readback(root,[],environment='ACTIVATION_SIMULATION',evidence_origin='ACTIVATION_SIMULATION')
+        manifest['database_path']='other.pg.json'
+        manifest['database_binding']=save('other.pg.json',descriptor)
     elif change=='path_escape':manifest['database_path']='../outside.sqlite'
-    elif change=='absent_db':manifest['database_path']='missing.sqlite'
+    elif change=='absent_db':
+        manifest['database_path']='missing.pg.json'
+        manifest['database_binding']=dict(path='missing.pg.json',sha256='0'*64,bytes=0)
     elif change=='field_path':manifest['components']['health'][0]['slot_status']['path']='not_registered'
     elif change=='field_kind':manifest['components']['health'][0]['slot_status']['fact']='health'
     if change!='receipt':
@@ -247,7 +246,7 @@ def test_native_readback_fail_closed(tmp_path,change):
         status,data=ShadowContextReader(root).handle(PREFIX+'health',{'context_token':real_token(manifest,config)})
         assert ShadowContextReader(root).handle(PREFIX+'entity',{'context_token':real_token(manifest,config)})[0]==200
     assert status==409 and data['items']==[]
-    if change=='absent_db':assert not (root/'missing.sqlite').exists()
+    if change=='absent_db':assert not (root/'missing.pg.json').exists()
 
 
 def test_same_publication_new_readback_manifest_cannot_reuse_old_token(tmp_path):

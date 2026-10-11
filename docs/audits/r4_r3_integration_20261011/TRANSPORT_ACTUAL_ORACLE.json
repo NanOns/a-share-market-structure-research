@@ -1,0 +1,175 @@
+{
+  "contract_id": "V4_R3_DEFAULT_HTTP_TRANSPORT_ORACLE_R1",
+  "source_bindings": {
+    "src/workbench_service/core_product_server_r1.py": "8d464abe6e039603b4353bc1bdd26a86c8ae887c5cf4609b77aa5322e207c6d6",
+    "src/workbench_service/product_http_transport_r2.py": "75b420dd4eff9fd75c6e9bb6d97a2c3af31db61a382bf75f0950416e588c624f"
+  },
+  "rows": [
+    {
+      "route": "home",
+      "identity": {
+        "code": 200,
+        "codec": null,
+        "bytes": 6313877,
+        "decoded_sha256": "cb1932a33c3e52f6bb36a348ebdf5951ffc9b62de0aa4f313e9ae5fc2e27e37e",
+        "decoded_bytes": 6313877,
+        "seconds": 2.7820712000248022,
+        "vary": "Accept-Encoding"
+      },
+      "gzip": {
+        "code": 200,
+        "codec": "gzip",
+        "bytes": 1129951,
+        "decoded_sha256": "cb1932a33c3e52f6bb36a348ebdf5951ffc9b62de0aa4f313e9ae5fc2e27e37e",
+        "decoded_bytes": 6313877,
+        "seconds": 2.7874412999954075,
+        "vary": "Accept-Encoding"
+      },
+      "equal": true
+    },
+    {
+      "route": "stocks",
+      "identity": {
+        "code": 200,
+        "codec": null,
+        "bytes": 1368760,
+        "decoded_sha256": "565bbb34845cab471fa8fa2165450e72cca780d6d100c0b57f55d140d8c8c062",
+        "decoded_bytes": 1368760,
+        "seconds": 0.19366879999870434,
+        "vary": "Accept-Encoding"
+      },
+      "gzip": {
+        "code": 200,
+        "codec": "gzip",
+        "bytes": 254453,
+        "decoded_sha256": "565bbb34845cab471fa8fa2165450e72cca780d6d100c0b57f55d140d8c8c062",
+        "decoded_bytes": 1368760,
+        "seconds": 0.18048750003799796,
+        "vary": "Accept-Encoding"
+      },
+      "equal": true
+    },
+    {
+      "route": "sectors",
+      "identity": {
+        "code": 200,
+        "codec": null,
+        "bytes": 416607,
+        "decoded_sha256": "48fc3d3b7def25257e57bfe7c89941b2900ef8e7612127619158f0eec6ceb454",
+        "decoded_bytes": 416607,
+        "seconds": 0.30928709998261184,
+        "vary": "Accept-Encoding"
+      },
+      "gzip": {
+        "code": 200,
+        "codec": "gzip",
+        "bytes": 24445,
+        "decoded_sha256": "48fc3d3b7def25257e57bfe7c89941b2900ef8e7612127619158f0eec6ceb454",
+        "decoded_bytes": 416607,
+        "seconds": 0.33419229998253286,
+        "vary": "Accept-Encoding"
+      },
+      "equal": true
+    },
+    {
+      "route": "focus",
+      "identity": {
+        "code": 200,
+        "codec": null,
+        "bytes": 115122,
+        "decoded_sha256": "70f4a7b631ac6ed1ece741e6026466ba5e268dc8329498552231f4c8c15d1164",
+        "decoded_bytes": 115122,
+        "seconds": 1.8835765999974683,
+        "vary": "Accept-Encoding"
+      },
+      "gzip": {
+        "code": 200,
+        "codec": "gzip",
+        "bytes": 9218,
+        "decoded_sha256": "70f4a7b631ac6ed1ece741e6026466ba5e268dc8329498552231f4c8c15d1164",
+        "decoded_bytes": 115122,
+        "seconds": 1.5310508999973536,
+        "vary": "Accept-Encoding"
+      },
+      "equal": true
+    },
+    {
+      "route": "events",
+      "identity": {
+        "code": 200,
+        "codec": null,
+        "bytes": 150985,
+        "decoded_sha256": "49bb28d083fe92db1ad53c4c9f3fb4e032999162b0047b7fd16dbca81c265fcd",
+        "decoded_bytes": 150985,
+        "seconds": 0.32932300004176795,
+        "vary": "Accept-Encoding"
+      },
+      "gzip": {
+        "code": 200,
+        "codec": "gzip",
+        "bytes": 9664,
+        "decoded_sha256": "49bb28d083fe92db1ad53c4c9f3fb4e032999162b0047b7fd16dbca81c265fcd",
+        "decoded_bytes": 150985,
+        "seconds": 0.1577275000163354,
+        "vary": "Accept-Encoding"
+      },
+      "equal": true
+    },
+    {
+      "route": "forward",
+      "identity": {
+        "code": 200,
+        "codec": null,
+        "bytes": 2835,
+        "decoded_sha256": "214408a8f040417ae95d6fa0a62422defd319f32a4e169d2bf9013a63050a409",
+        "decoded_bytes": 2835,
+        "seconds": 0.16686360002495348,
+        "vary": "Accept-Encoding"
+      },
+      "gzip": {
+        "code": 200,
+        "codec": null,
+        "bytes": 2835,
+        "decoded_sha256": "214408a8f040417ae95d6fa0a62422defd319f32a4e169d2bf9013a63050a409",
+        "decoded_bytes": 2835,
+        "seconds": 0.15608179999981076,
+        "vary": "Accept-Encoding"
+      },
+      "equal": true
+    }
+  ],
+  "concurrency": [
+    {
+      "workers": 1,
+      "requests": 2,
+      "p95_seconds": 2.7950584000209346,
+      "throughput": 0.3562081796019079,
+      "hashes": [
+        "cb1932a33c3e52f6bb36a348ebdf5951ffc9b62de0aa4f313e9ae5fc2e27e37e"
+      ]
+    },
+    {
+      "workers": 4,
+      "requests": 8,
+      "p95_seconds": 10.79232199996477,
+      "throughput": 0.38201404163240665,
+      "hashes": [
+        "cb1932a33c3e52f6bb36a348ebdf5951ffc9b62de0aa4f313e9ae5fc2e27e37e"
+      ]
+    },
+    {
+      "workers": 8,
+      "requests": 16,
+      "p95_seconds": 22.07026040001074,
+      "throughput": 0.3698508155881337,
+      "hashes": [
+        "cb1932a33c3e52f6bb36a348ebdf5951ffc9b62de0aa4f313e9ae5fc2e27e37e"
+      ]
+    }
+  ],
+  "status": "SCOPED_LOSSLESS_PASS",
+  "capacity_acceptance": "OPEN_NO_APPROVED_THRESHOLD",
+  "limits": [
+    "Single frozen T0 workload; retained snapshot lock and all safety checks; compression does not fix cold computation cost"
+  ]
+}

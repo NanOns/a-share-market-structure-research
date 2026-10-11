@@ -10,8 +10,13 @@ from .shadow_context import PREFIX, ShadowContextReader
 def make_shadow_handler(root):
     root = Path(root)
     static = root / 'src/workbench_service/static'
-    # Invalid contracts prevent startup; never inject simulated data.
-    reader = ShadowContextReader(root)
+    # A broken Shadow contract blocks that domain while the shared V4
+    # service can still serve its other authorized read domains.
+    reader = None
+    try:
+        reader = ShadowContextReader(root)
+    except (OSError, ValueError, KeyError, TypeError):
+        pass
 
     class Handler(BaseHTTPRequestHandler):
         def send(self, status, body, content_type='application/json; charset=utf-8'):
@@ -34,6 +39,8 @@ def make_shadow_handler(root):
                     'service_control_contract': 'V4_SHADOW_PREVIEW_SERVICE_V1', 'read_only': True,
                     'legacy_workbench_available': False})
             if parsed.path.startswith(PREFIX):
+                if reader is None:
+                    return self.send(409, {'status': 'BLOCKED', 'code': 'SHADOW_CONTRACT_INVALID', 'items': []})
                 values = parse_qs(parsed.query, keep_blank_values=True)
                 if any(len(value) != 1 for value in values.values()):
                     return self.send(409, {'status': 'BLOCKED', 'code': 'DUPLICATE_CONTEXT_PARAMETER', 'items': []})

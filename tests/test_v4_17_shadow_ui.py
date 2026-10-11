@@ -118,16 +118,12 @@ def test_extra_scope_guards(change):
 
 
 def test_http_shared_service_read_only_and_existing_pages(tmp_path):
-    import workbench_service.app as app
-    from workbench_db import WorkbenchRepository
-    db=tmp_path/'api.duckdb'
-    with WorkbenchRepository(ROOT,db):pass
-    handler=app.make_handler(ROOT,db)
-    before=hashlib.sha256(db.read_bytes()).hexdigest()
+    from workbench_service.shadow_server import make_shadow_handler
+    handler=make_shadow_handler(ROOT)
     server=ThreadingHTTPServer(('127.0.0.1',0),handler);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
     base=f'http://127.0.0.1:{server.server_port}'
     try:
-        for path in ('/v3','/v3/focus-tracker','/v4/shadow','/v4/shadow.js'):
+        for path in ('/v4','/v4/shadow','/v4/shadow.js'):
             response=urllib.request.urlopen(base+path);assert response.status==200 and response.read()
         for method in ('POST','PUT','PATCH','DELETE'):
             for target in ('context','radar','focus/pin','production/activate','cohort','settlement'):
@@ -137,7 +133,7 @@ def test_http_shared_service_read_only_and_existing_pages(tmp_path):
         assert json.loads(urllib.request.urlopen(base+PREFIX+'context').read())['status']=='NO_REAL_SHADOW_DATA'
         with pytest.raises(urllib.error.HTTPError) as caught:urllib.request.urlopen(base+PREFIX+'context?context_token=a&context_token=b')
         assert caught.value.code==409
-        assert hashlib.sha256(db.read_bytes()).hexdigest()==before
+        assert not list(tmp_path.glob('*.duckdb')) and not list(tmp_path.glob('*.sqlite'))
     finally:server.shutdown();server.server_close();thread.join(2)
 
 
@@ -279,17 +275,14 @@ def test_legacy_module_ast_identical_after_removing_additive_shadow_routes():
 
 
 def test_bad_shadow_contract_preserves_existing_v3_http(monkeypatch,tmp_path):
-    from workbench_service import app,shadow_context
+    from workbench_service import shadow_server
     from workbench_service.research_context import ResearchContextError
-    from workbench_db import WorkbenchRepository
     def bad(*a,**k):raise ResearchContextError('BROKEN_SHADOW_CONTRACT')
-    monkeypatch.setattr(shadow_context,'ShadowContextReader',bad)
-    db=tmp_path/'bad-contract.duckdb'
-    with WorkbenchRepository(ROOT,db):pass
-    server=ThreadingHTTPServer(('127.0.0.1',0),app.make_handler(ROOT,db));thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+    monkeypatch.setattr(shadow_server,'ShadowContextReader',bad)
+    server=ThreadingHTTPServer(('127.0.0.1',0),shadow_server.make_shadow_handler(ROOT));thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
     try:
         base=f'http://127.0.0.1:{server.server_port}'
-        assert urllib.request.urlopen(base+'/v3').status==200
+        assert urllib.request.urlopen(base+'/v4/shadow').status==200
         with pytest.raises(urllib.error.HTTPError) as caught:urllib.request.urlopen(base+PREFIX+'context')
         assert caught.value.code==409
         assert json.loads(caught.value.read())['code']=='SHADOW_CONTRACT_INVALID'

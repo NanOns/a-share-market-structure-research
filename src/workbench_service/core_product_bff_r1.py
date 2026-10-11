@@ -390,11 +390,14 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         if path=='/api/v4/home':
             code,data=super().get(path,q);fw=self.source('forward',day);events=fw['events'];stocks={r['entity_id']:r for r in self.project('stocks',day)}
             # Explicit owner events only. NEW maps to Focus NEW, not PREWATCH/confirmation.
+            # Select before copying the large stock field projection. This is the
+            # same stable priority/entity order as prioritize_home_changes.
+            selected_events={}
+            for e in sorted((e for e in events if e.get('event') in HOME_EVENT_PRIORITY and e['entity_id'] in stocks),key=lambda e:(HOME_EVENT_PRIORITY[e['event']],e['entity_id'])):
+                selected_events.setdefault(e['entity_id'],e)
             changes=[]
-            for e in events:
-                if e.get('event') in ('NEW','UPGRADED','WEAKENED','INVALIDATED','EXITED','REENTERED') and e['entity_id'] in stocks:
-                    row=deepcopy(stocks[e['entity_id']]);row['fields'].update(effective_event=owner_cell(e['event'],self.api.candidate['owners'][day]['forward'],'events.event',day),trade_date=owner_cell(day,self.api.candidate['owners'][day]['forward'],'events.trade_date',day));changes.append(row)
-            changes=prioritize_home_changes(changes)
+            for e in selected_events.values():
+                row=deepcopy(stocks[e['entity_id']]);row['fields'].update(effective_event=owner_cell(e['event'],self.api.candidate['owners'][day]['forward'],'events.event',day),trade_date=owner_cell(day,self.api.candidate['owners'][day]['forward'],'events.trade_date',day));changes.append(row)
             sectors=self.project('sectors',day);native={r['sector_id']:r for r in self.source('sector',day)}
             rotations=[r for r in sectors if r['fields']['output_state']['value'] in ROTATIONS and r['fields']['output_state']['value']!=r['fields']['prior_rotation_state']['value']]
             rotations.sort(key=lambda r:(0 if r['fields']['output_state']['value'] in ('ROTATION_OUT','ROTATION_FAILED') else 1,-(r['fields'].get('sector_rs5',{}).get('value') or 0),r['entity_id']))

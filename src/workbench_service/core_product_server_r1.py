@@ -11,6 +11,16 @@ from workbench_analysis.operational_successor_v1 import accepted_api
 def make_product_handler(root,jobs,*,isolated_history_authority=None):
     root=Path(root);base=make_daily_handler(root,jobs);lock=threading.RLock();cache={}
     class Handler(base):
+        def send(self,status,body,content_type='application/json; charset=utf-8'):
+            from .product_http_transport_r2 import encode
+            raw,encoding=encode(body,content_type,self.headers.get('Accept-Encoding',''))
+            self.send_response(status)
+            self.send_header('Content-Type',content_type)
+            self.send_header('Content-Length',str(len(raw)))
+            self.send_header('Cache-Control','no-store')
+            self.send_header('Vary','Accept-Encoding')
+            if encoding:self.send_header('Content-Encoding',encoding)
+            self.end_headers();self.wfile.write(raw)
         def do_GET(self):
             parsed=urlparse(self.path);path=parsed.path
             if path.startswith('/v4/assets/'):

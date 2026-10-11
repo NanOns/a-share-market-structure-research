@@ -4,12 +4,11 @@ import os
 import tempfile
 from pathlib import Path
 from workbench_analysis.fep_e1.contracts import digest
+from workbench_analysis.fep_engineering_storage import engineering_directory
 
 
 def register(directory, artifact):
-    directory = Path(directory).resolve()
-    if not str(directory).lower().startswith(('e:\\', 'f:\\')):
-        raise ValueError('E2_ENGINEERING_STORAGE_REQUIRED')
+    directory = engineering_directory(directory,error='E2_ENGINEERING_STORAGE_REQUIRED')
     payload = {k:v for k,v in artifact.items() if k not in ('logical_digest','artifact_id','created_at')}
     if digest(payload) != artifact['logical_digest'] or artifact['artifact_id'] != 'FEP_E2:'+digest(payload):
         raise ValueError('E2_ARTIFACT_DIGEST')

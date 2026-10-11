@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="12" time="0.431" timestamp="2026-10-11T10:30:51.601048+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_audit_repair_storage_r3" name="test_forbidden_roots_rejected_before_any_write[D:/new_tdx/out]" time="0.005" /><testcase classname="tests.test_audit_repair_storage_r3" name="test_forbidden_roots_rejected_before_any_write[G:/elsewhere]" time="0.002" /><testcase classname="tests.test_audit_repair_storage_r3" name="test_forbidden_roots_rejected_before_any_write[G:/codex_tmp_other/out]" time="0.001" /><testcase classname="tests.test_audit_repair_storage_r3" name="test_forbidden_roots_rejected_before_any_write[G:/codex work/\u5927A\u4ea4\u6613/data/v4/out]" time="0.001" /><testcase classname="tests.test_audit_repair_storage_r3" name="test_forbidden_roots_rejected_before_any_write[G:/codex work/\u5927A\u4ea4\u6613/artifacts/out]" time="0.001" /><testcase classname="tests.test_audit_repair_storage_r3" name="test_forbidden_roots_rejected_before_any_write[E:/engineering/out]" time="0.001" /><testcase classname="tests.test_audit_repair_storage_r3" name="test_forbidden_roots_rejected_before_any_write[G:/codex_tmp/../elsewhere]" time="0.001" /><testcase classname="tests.test_audit_repair_storage_r3" name="test_resolved_symlink_escape_rejected" time="0.009"><failure message="OSError: [WinError 1314] 客户端没有所需的特权。: 'G:\\codex work\\大A交易' -&gt; 'G:\\codex_tmp\\test_temp\\audit_repair_r3_a2\\test_resolved_symlink_escape_r0\\escape'">tmp_path = WindowsPath('G:/codex_tmp/test_temp/audit_repair_r3_a2/test_resolved_symlink_escape_r0')
+
+    def test_resolved_symlink_escape_rejected(tmp_path):
+        link=tmp_path/'escape'
+        # Creating the link writes only inside the authorized G test directory.
+&gt;       link.symlink_to(Path('G:/codex work/大A交易'),target_is_directory=True)
+
+tests\test_audit_repair_storage_r3.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/audit_repair_r3_a2/test_resolved_symlink_escape_r0/escape')
+target = WindowsPath('G:/codex work/大A交易'), target_is_directory = True
+
+    def symlink_to(self, target, target_is_directory=False):
+        """
+        Make this path a symlink pointing to the target path.
+        Note the order of arguments (link, target) is the reverse of os.symlink.
+        """
+&gt;       os.symlink(target, self, target_is_directory)
+E       OSError: [WinError 1314] 客户端没有所需的特权。: 'G:\\codex work\\大A交易' -&gt; 'G:\\codex_tmp\\test_temp\\audit_repair_r3_a2\\test_resolved_symlink_escape_r0\\escape'
+
+E:\python\Lib\pathlib\_local.py:789: OSError</failure></testcase><testcase classname="tests.test_audit_repair_storage_r3" name="test_symlink_inside_engineering_root_and_atomic_identity" time="0.004"><failure message="OSError: [WinError 1314] 客户端没有所需的特权。: 'G:\\codex_tmp\\test_temp\\audit_repair_r3_a2\\test_symlink_inside_engineerin0\\actual' -&gt; 'G:\\codex_tmp\\test_temp\\audit_repair_r3_a2\\test_symlink_inside_engineerin0\\inside'">tmp_path = WindowsPath('G:/codex_tmp/test_temp/audit_repair_r3_a2/test_symlink_inside_engineerin0')
+
+    def test_symlink_inside_engineering_root_and_atomic_identity(tmp_path):
+        actual=tmp_path/'actual';actual.mkdir()
+&gt;       link=tmp_path/'inside';link.symlink_to(actual,target_is_directory=True)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_audit_repair_storage_r3.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/audit_repair_r3_a2/test_symlink_inside_engineerin0/inside')
+target = WindowsPath('G:/codex_tmp/test_temp/audit_repair_r3_a2/test_symlink_inside_engineerin0/actual')
+target_is_directory = True
+
+    def symlink_to(self, target, target_is_directory=False):
+        """
+        Make this path a symlink pointing to the target path.
+        Note the order of arguments (link, target) is the reverse of os.symlink.
+        """
+&gt;       os.symlink(target, self, target_is_directory)
+E       OSError: [WinError 1314] 客户端没有所需的特权。: 'G:\\codex_tmp\\test_temp\\audit_repair_r3_a2\\test_symlink_inside_engineerin0\\actual' -&gt; 'G:\\codex_tmp\\test_temp\\audit_repair_r3_a2\\test_symlink_inside_engineerin0\\inside'
+
+E:\python\Lib\pathlib\_local.py:789: OSError</failure></testcase><testcase classname="tests.fep_e2.test_conditional" name="test_e2_19_20_isolation_and_registry" time="0.069" /><testcase classname="tests.fep_e3.test_e3_contract" name="test_e3_22_created_time_identity_stable_semantic_change_new_id" time="0.090" /><testcase classname="tests.fep_e4.test_e4_contract" name="test_e4_immutable_id_excludes_timestamp" time="0.064" /></testsuite></testsuites>

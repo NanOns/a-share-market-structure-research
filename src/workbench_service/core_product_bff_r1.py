@@ -14,7 +14,27 @@ from .research_hypotheses_r3 import competing_explanations
 
 CONTRACT='CORE_PRODUCT_BFF_R1'
 
+HOME_EVENT_PRIORITY={'INVALIDATED':0,'EXITED':1,'WEAKENED':2,'UPGRADED':3,'REENTERED':4,'NEW':5}
+
+def prioritize_home_changes(changes):
+    """HOME_EVENT_SELECTION_R2: one object, highest priority explicit event."""
+    selected={}
+    for row in sorted(changes,key=lambda r:(HOME_EVENT_PRIORITY[r['fields']['effective_event']['value']],r['entity_id'])):
+        selected.setdefault(row['entity_id'],row)
+    return list(selected.values())
+
 class CoreProductBFFR1(OperationalSuccessorBFFV1):
+    def resolve_dated_object(self,domain,day,key):
+        """Same dated identity aliases for detail and compare; ambiguity fails closed."""
+        if not key:return None
+        needle=str(key).strip().upper()
+        def aliases(row):
+            values=(row['entity_id'],row['symbol'],*row.get('search_aliases',[]))
+            return {str(v).upper() for v in values if v} | {str(v).upper().split('.')[-1] for v in values if v}
+        matches=[r for r in self.project(domain,day) if needle in aliases(r)]
+        identities={r['entity_id'] for r in matches}
+        return matches[0] if len(identities)==1 else None
+
     def focus_projection(self,day):
         authority=self.api.root/'config/core_product_focus_read_authority_r2.json'
         if not authority.exists() or day!=self.api.candidate['accepted_trade_date']:return None
@@ -220,9 +240,9 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             return 200,self.envelope(day,status='READY',candidate_research=data,
                 contract_id='OPERATIONAL_CANDIDATE_DISPLAY_READ_V2',production=False,formal_consumer_enabled=False)
         if p[0] in ('stocks','focus') and len(p)>1 and p[1] not in ('events',):
-            matches=sorted({r['entity_id'] for r in self.project('stocks',day) if p[1] in (r['entity_id'],r['symbol'],r['symbol'].split('.')[-1],*r.get('search_aliases',[]))})
-            if len(matches)==1:
-                p[1]=matches[0];path='/api/v4/'+'/'.join(p)
+            match=self.resolve_dated_object('stocks',day,p[1])
+            if match is not None:
+                p[1]=match['entity_id'];path='/api/v4/'+'/'.join(p)
         if p[0]=='stocks' and len(p)==3 and p[2]=='chart':return self.chart(day,p[1],q)
         if p[0]=='stocks' and len(p)==3 and p[2] in ('profile','why-not','why-not-prewatch','evidence'):
             code,data=super().get(path,q)
@@ -308,9 +328,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             for e in events:
                 if e.get('event') in ('NEW','UPGRADED','WEAKENED','INVALIDATED','EXITED','REENTERED') and e['entity_id'] in stocks:
                     row=deepcopy(stocks[e['entity_id']]);row['fields'].update(effective_event=owner_cell(e['event'],self.api.candidate['owners'][day]['forward'],'events.event',day),trade_date=owner_cell(day,self.api.candidate['owners'][day]['forward'],'events.trade_date',day));changes.append(row)
-            priority={'INVALIDATED':0,'EXITED':1,'WEAKENED':2,'UPGRADED':3,'REENTERED':4,'NEW':5}
-            changes.sort(key=lambda r:(priority[r['fields']['effective_event']['value']],r['entity_id']))
-            changes=list({r['entity_id']:r for r in changes}.values())
+            changes=prioritize_home_changes(changes)
             sectors=self.project('sectors',day);native={r['sector_id']:r for r in self.source('sector',day)}
             rotations=[r for r in sectors if r['fields']['output_state']['value'] in ROTATIONS and r['fields']['output_state']['value']!=r['fields']['prior_rotation_state']['value']]
             rotations.sort(key=lambda r:(0 if r['fields']['output_state']['value'] in ('ROTATION_OUT','ROTATION_FAILED') else 1,-(r['fields'].get('sector_rs5',{}).get('value') or 0),r['entity_id']))
@@ -349,9 +367,9 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             mode=q.get('mode','');left=q.get('left');right=q.get('right');asof=q.get('as_of',day)
             if asof not in self.api.candidate['published_sessions']:raise ValueError('TARGET_DATE_NOT_GRANTED')
             if mode not in ('stock-stock','sector-sector','stock-market','sector-market'):raise ValueError('COMPARE_MODE_NOT_IMPLEMENTED')
-            domain='stocks' if mode.startswith('stock') else 'sectors';match=lambda r,key:key in (r['entity_id'],r['symbol'],r['symbol'].split('.')[-1])
-            a=next((r for r in self.project(domain,asof) if match(r,left)),None)
-            b=next((r for r in self.project(domain,asof) if match(r,right)),None) if mode.endswith(('stock','sector')) else self.source('market',asof)
+            domain='stocks' if mode.startswith('stock') else 'sectors'
+            a=self.resolve_dated_object(domain,asof,left)
+            b=self.resolve_dated_object(domain,asof,right) if mode.endswith(('stock','sector')) else self.source('market',asof)
             if not a or not b:return self.missing(day,'compare','COMPARE_OBJECT_NOT_PRESENT')
             return 200,self.envelope(day,status='READY',left=a,right=b,mode=mode,as_of=asof,PIT_ELIGIBLE=False,comparison_scope='CORRECTED_RECONSTRUCTED; NOT_STRICT_PIT',items=[],total=0)
         if path in ('/api/v4/forward','/api/v4/forward/statistics'):

@@ -4,6 +4,7 @@ from copy import deepcopy
 import json,math,os
 from pathlib import Path
 from workbench_analysis.fep_e1.contracts import digest,instant
+from workbench_analysis.fep_engineering_storage import engineering_directory
 
 PARTITIONS=('TRAIN','INTERNAL_TUNE','CALIBRATION','OUTER_TEST')
 FEATURES=('amount_ratio20','amount_ratio5','atr_ratio','clv','pos60','prior60_percentile',
@@ -143,8 +144,7 @@ def same_population(model_ids,baseline_ids):
     if list(model_ids)!=list(baseline_ids):raise ValueError('E3_OUTER_POPULATION_MISMATCH')
 
 def immutable(directory,kind,payload):
-    directory=Path(directory).resolve()
-    if not str(directory).lower().startswith(('e:\\','f:\\')):raise ValueError('E3_ENGINEERING_STORAGE_REQUIRED')
+    directory=engineering_directory(directory,error='E3_ENGINEERING_STORAGE_REQUIRED')
     clean={k:v for k,v in payload.items() if k not in ('logical_digest','artifact_id','artifact_type','kind')}
     semantic=dict(artifact_type=kind,**{k:v for k,v in clean.items() if k not in ('created_at','run_id')});sha=digest(semantic)
     artifact=dict(clean,artifact_type=kind,logical_digest=sha,artifact_id='FEP_E3:'+sha,kind=kind)

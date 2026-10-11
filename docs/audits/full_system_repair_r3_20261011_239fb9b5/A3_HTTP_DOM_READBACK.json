@@ -1,0 +1,304 @@
+{
+  "contract_id": "DATED_COMPARE_ALIAS_AND_DOMAIN_FIELDS_R2",
+  "token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+  "source_root_read_only": true,
+  "isolated_http_port": 13350,
+  "production_restart": false,
+  "alias_dates": [
+    {
+      "day": "2026-09-28",
+      "identity": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+      "alias": {
+        "status": 200,
+        "bytes": 137829,
+        "seconds": 16.322135500027798,
+        "response_sha256": "0a9d62224ee7b2a9719b7265b328abd883fcd50f7fb377d20305c843a15e6910"
+      },
+      "unknown": {
+        "status": 200,
+        "bytes": 3263,
+        "seconds": 0.1084324000403285,
+        "response_sha256": "929723933fcd4ca2b0054d3f42f9a22561009b9848c617d960c3dbcde16be9f1"
+      },
+      "different": {
+        "status": 200,
+        "bytes": 137768,
+        "seconds": 0.10699850000673905,
+        "response_sha256": "d1c98f4897e79bd08d300e22c21673f448562fc875a815a933de931953b7cf3c"
+      }
+    },
+    {
+      "day": "2026-09-29",
+      "identity": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+      "alias": {
+        "status": 200,
+        "bytes": 137839,
+        "seconds": 6.721168600022793,
+        "response_sha256": "2272850401cb90615aebe2ba1bb57e84dd82381db90d7d530a58e72347ee80cb"
+      },
+      "unknown": {
+        "status": 200,
+        "bytes": 3263,
+        "seconds": 0.10374770005000755,
+        "response_sha256": "929723933fcd4ca2b0054d3f42f9a22561009b9848c617d960c3dbcde16be9f1"
+      },
+      "different": {
+        "status": 200,
+        "bytes": 137752,
+        "seconds": 0.11295310000423342,
+        "response_sha256": "6c1621801e0081525bd5d80ebce89e666f8d7bf133cff0ec400b06f486e51e10"
+      }
+    },
+    {
+      "day": "2026-09-30",
+      "identity": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+      "alias": {
+        "status": 200,
+        "bytes": 137915,
+        "seconds": 5.728773400012869,
+        "response_sha256": "256fdfcedbbbec2c685711ca18589231060531ebaaaf516c3e321cbc8e96d196"
+      },
+      "unknown": {
+        "status": 200,
+        "bytes": 3263,
+        "seconds": 0.12383409996982664,
+        "response_sha256": "929723933fcd4ca2b0054d3f42f9a22561009b9848c617d960c3dbcde16be9f1"
+      },
+      "different": {
+        "status": 200,
+        "bytes": 137836,
+        "seconds": 0.10762770002475008,
+        "response_sha256": "bac8e3bdac22c0c01b80fee11cb6c36f57adb8efefbf0b81ca54446261aabd06"
+      }
+    },
+    {
+      "day": "2026-10-08",
+      "identity": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+      "alias": {
+        "status": 200,
+        "bytes": 137821,
+        "seconds": 7.791649700026028,
+        "response_sha256": "e353c7309c706fe3099caddb1ef9adaeb4bc71e6fb560f5ad5df3fd6ef0f3811"
+      },
+      "unknown": {
+        "status": 200,
+        "bytes": 3263,
+        "seconds": 0.12144349998561665,
+        "response_sha256": "929723933fcd4ca2b0054d3f42f9a22561009b9848c617d960c3dbcde16be9f1"
+      },
+      "different": {
+        "status": 200,
+        "bytes": 137727,
+        "seconds": 0.11396970000350848,
+        "response_sha256": "300d0f850bdddf983b1663e6d38f7dcb84e7c517b072f32bddaa646d13142acb"
+      }
+    },
+    {
+      "day": "2026-10-09",
+      "identity": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+      "alias": {
+        "status": 200,
+        "bytes": 139367,
+        "seconds": 0.12477759999455884,
+        "response_sha256": "b1b3d5aa8df543bff022cdc21dc66576404d540e6faa0b7a22829f47e1853cb1"
+      },
+      "unknown": {
+        "status": 200,
+        "bytes": 3263,
+        "seconds": 0.1191796999773942,
+        "response_sha256": "929723933fcd4ca2b0054d3f42f9a22561009b9848c617d960c3dbcde16be9f1"
+      },
+      "different": {
+        "status": 200,
+        "bytes": 139232,
+        "seconds": 0.11841989995446056,
+        "response_sha256": "4e1e9ef87c50bd5c3b5dc11de6d5c03b5187657729b6e2b6fed2bf3fd765e3d5"
+      }
+    }
+  ],
+  "dom": [
+    {
+      "mode": "stock-stock",
+      "headers": [
+        "研究对象单会话收益五会话收益二十会话收益五会话相对强度分位二十会话相对强度分位证据",
+        "研究对象单会话收益五会话收益二十会话收益五会话相对强度分位二十会话相对强度分位证据"
+      ],
+      "values": [
+        "中航成飞 SZ.302132-0.019-0.005-0.09352.63419.865来源",
+        "中航成飞 SZ.302132-0.019-0.005-0.09352.63419.865来源"
+      ],
+      "fields": {
+        "rps5": {
+          "value": 52.63360246059208,
+          "quality": "OBSERVED",
+          "reason": null,
+          "source_digest": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270",
+          "source_field": "fields.rps5",
+          "source_contract_id": "RPS_MIDRANK_V1",
+          "parameter_set_id": null,
+          "source_as_of": "2026-10-09",
+          "unit": "percentage_points",
+          "denominator": 5203,
+          "window": null,
+          "adjustment_basis": null,
+          "computation_domain": "OWNER_PROJECTION",
+          "contract_id": "RPS_MIDRANK_V1"
+        },
+        "rps20": {
+          "value": 19.865255052935513,
+          "quality": "OBSERVED",
+          "reason": null,
+          "source_digest": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270",
+          "source_field": "fields.rps20",
+          "source_contract_id": "RPS_MIDRANK_V1",
+          "parameter_set_id": null,
+          "source_as_of": "2026-10-09",
+          "unit": "percentage_points",
+          "denominator": 5196,
+          "window": null,
+          "adjustment_basis": null,
+          "computation_domain": "OWNER_PROJECTION",
+          "contract_id": "RPS_MIDRANK_V1"
+        }
+      },
+      "screenshot": "A3_stock-stock.png",
+      "status": "PASS"
+    },
+    {
+      "mode": "sector-sector",
+      "headers": [
+        "研究对象单会话收益五会话收益二十会话收益五会话相对强度二十会话相对强度证据",
+        "研究对象单会话收益五会话收益二十会话收益五会话相对强度二十会话相对强度证据"
+      ],
+      "values": [
+        "煤炭开采 INDUSTRY:T010101字段未接入字段未接入字段未接入78.84653.846来源",
+        "煤炭开采 INDUSTRY:T010101字段未接入字段未接入字段未接入78.84653.846来源"
+      ],
+      "fields": {
+        "sector_rs5": {
+          "value": 78.84615384615384,
+          "quality": "PROXY_RECONSTRUCTED",
+          "reason": null,
+          "source_digest": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85",
+          "source_field": "fields.sector_rs5_pct",
+          "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "source_as_of": "2026-10-09",
+          "unit": "percentile points",
+          "denominator": 25,
+          "window": null,
+          "adjustment_basis": null,
+          "computation_domain": "V4_08_SECTOR_NATIVE_V1"
+        },
+        "sector_rs20": {
+          "value": 53.84615384615385,
+          "quality": "PROXY_RECONSTRUCTED",
+          "reason": null,
+          "source_digest": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85",
+          "source_field": "fields.sector_rs20_pct",
+          "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "source_as_of": "2026-10-09",
+          "unit": "ratio_or_percentile_points_as_field_contract",
+          "denominator": 25,
+          "window": null,
+          "adjustment_basis": null,
+          "computation_domain": "V4_08_SECTOR_NATIVE_V1"
+        }
+      },
+      "screenshot": "A3_sector-sector.png",
+      "status": "PASS"
+    },
+    {
+      "mode": "stock-market",
+      "headers": [
+        "研究对象单会话收益五会话收益二十会话收益五会话相对强度分位二十会话相对强度分位证据"
+      ],
+      "values": [
+        "中航成飞 SZ.302132-0.019-0.005-0.09352.63419.865来源"
+      ],
+      "fields": {
+        "rps5": {
+          "value": 52.63360246059208,
+          "quality": "OBSERVED",
+          "reason": null,
+          "source_digest": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270",
+          "source_field": "fields.rps5",
+          "source_contract_id": "RPS_MIDRANK_V1",
+          "parameter_set_id": null,
+          "source_as_of": "2026-10-09",
+          "unit": "percentage_points",
+          "denominator": 5203,
+          "window": null,
+          "adjustment_basis": null,
+          "computation_domain": "OWNER_PROJECTION",
+          "contract_id": "RPS_MIDRANK_V1"
+        },
+        "rps20": {
+          "value": 19.865255052935513,
+          "quality": "OBSERVED",
+          "reason": null,
+          "source_digest": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270",
+          "source_field": "fields.rps20",
+          "source_contract_id": "RPS_MIDRANK_V1",
+          "parameter_set_id": null,
+          "source_as_of": "2026-10-09",
+          "unit": "percentage_points",
+          "denominator": 5196,
+          "window": null,
+          "adjustment_basis": null,
+          "computation_domain": "OWNER_PROJECTION",
+          "contract_id": "RPS_MIDRANK_V1"
+        }
+      },
+      "screenshot": "A3_stock-market.png",
+      "status": "PASS"
+    },
+    {
+      "mode": "sector-market",
+      "headers": [
+        "研究对象单会话收益五会话收益二十会话收益五会话相对强度二十会话相对强度证据"
+      ],
+      "values": [
+        "煤炭开采 INDUSTRY:T010101字段未接入字段未接入字段未接入78.84653.846来源"
+      ],
+      "fields": {
+        "sector_rs5": {
+          "value": 78.84615384615384,
+          "quality": "PROXY_RECONSTRUCTED",
+          "reason": null,
+          "source_digest": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85",
+          "source_field": "fields.sector_rs5_pct",
+          "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "source_as_of": "2026-10-09",
+          "unit": "percentile points",
+          "denominator": 25,
+          "window": null,
+          "adjustment_basis": null,
+          "computation_domain": "V4_08_SECTOR_NATIVE_V1"
+        },
+        "sector_rs20": {
+          "value": 53.84615384615385,
+          "quality": "PROXY_RECONSTRUCTED",
+          "reason": null,
+          "source_digest": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85",
+          "source_field": "fields.sector_rs20_pct",
+          "source_contract_id": "V4_08_SECTOR_NATIVE_V1",
+          "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "source_as_of": "2026-10-09",
+          "unit": "ratio_or_percentile_points_as_field_contract",
+          "denominator": 25,
+          "window": null,
+          "adjustment_basis": null,
+          "computation_domain": "V4_08_SECTOR_NATIVE_V1"
+        }
+      },
+      "screenshot": "A3_sector-market.png",
+      "status": "PASS"
+    }
+  ],
+  "page_errors": [],
+  "protected_heads_unchanged": true,
+  "acceptance": "ENGINEERING_PASS_EXTERNAL_PENDING"
+}

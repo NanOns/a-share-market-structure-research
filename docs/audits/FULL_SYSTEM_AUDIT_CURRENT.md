@@ -1,5 +1,9 @@
 # 全系统代码审计当前入口
 
+最新完整原始运行为 4,789 节点：4,487 PASS / 201 FAIL / 98 ERROR / 3 SKIP；原 4,568 节点保留，精确一个 V3-only AST 节点仍为已记录排除，原始交集为 4,567，禁止把后续局部修复回填为本次全量已通过。运行与独立重计已无损封存于 [原始节点修复包](r4_r3_scope_20261011/NATIVE_FIXTURE_REPAIR_PACKAGE_R1/SEAL.json)，提交 `a0dae754de7f27dc49b1ffc1cbd14d0c0c616ad3`。[Drive 完整字节读回](r4_r3_scope_20261011/DRIVE_NATIVE_FIXTURE_BYTE_READBACK_R1.json)一致。后续修复中 V4_13 原有三个模块 77 节点、FEP 原有 20 节点均全部通过，节点身份集合无减少、无新增；FEP fresh 与 upgrade 分别来自真实对应的隔离 canonical 来源，旧同来源副本和早期失败全部保留。伪造生产准入的能力清单被实际拒绝，未进入采集。
+
+历史保护元数据矩阵仍有 6 FAIL / 156 PASS，未关闭；五日精确链正在继续运行，09-28 实际 Core 已输出 5,222 个证券行，尚未完成全历史窗口 oracle 或全部真实消费者验收。总体保持 EXTERNAL_ACCEPTANCE_BLOCKED / AUDIT_INCOMPLETE，工程缺口不得归入未来交易日、成熟样本或部署授权等待门。
+
 FEP 全字段结构补证已推送 `55637e73`：[315 SQL 字段／35 表及 47 注册特征完整清单封存](r4_r3_semantics_focus_20261011/FEP_CATALOG_FIELD_PACKAGE_R2/SEAL.json) / [Drive 字节读回](r4_r3_semantics_focus_20261011/DRIVE_FEP_FIELDS_BYTE_READBACK_R2.json)。独立 `pg_attribute` 字段身份集合与全清单相等，遗漏和伪增字段负例可检出；首次错误的零字段前缀筛选原始输出保留并判为未接受。该清单只证明结构枚举，逐字段生产者、cutoff、quality、实际消费者和数值语义门仍 OPEN，不替代整体 V4 合法分母。
 
 2026-10-12 新增真实输入复权回归包，代码提交 `83e68911e6f4603809376684086d7471b5f00d22`：[限定范围封存](r4_r3_consumers_20261011/EXACT_CORE_REGRESSION_PACKAGE_R1/SEAL.json) / [Drive 完整字节读回](r4_r3_consumers_20261011/DRIVE_EXACT_CORE_BYTE_READBACK_R1.json)。旧五日完整历史 oracle 覆盖 10,762,706 根 bar、42,974,144 个可比较复权价格，发现 80 处一分舍入差异；原始失败保留。精确有理数候选逐项重现全部 80 处，四个 OHLC 均与独立原生输入计算一致，字面数值及负例 11 PASS。该结果仅关闭限定舍入回归；R13 五日实际消费者链及新完整历史对照仍在执行，56 类消费者、全语义、全部 PostgreSQL 入口及正式验收仍 OPEN，生产未切换。

@@ -1,0 +1,65 @@
+{
+  "contract": "R4_R3_FULL_FEP_STRUCTURAL_FIELD_PACKAGE_R2",
+  "sql_fields": 315,
+  "tables": 35,
+  "registered_features": 47,
+  "acceptance": "SCOPED_STRUCTURAL_ENUMERATION_PASS",
+  "independent": "PG_ATTRIBUTE_EXACT_IDENTITY_SET_EQUAL",
+  "negatives": [
+    "one missing field detected",
+    "one extra field detected"
+  ],
+  "retained_failed_attempt": "R1 prefix-selected zero fields; not accepted",
+  "full_semantics": "OPEN",
+  "all_consumers": "OPEN",
+  "full_legal_denominator": "OPEN",
+  "production_changed": false,
+  "evidence": [
+    {
+      "source": "FEP_FULL_CATALOG_FIELD_EXPANSION_R1.json",
+      "raw_sha256": "74a61873987e8799d98589ec2cb7129066710f7dc94c0777ff9823a18a2f137c",
+      "archive": "FEP_FULL_CATALOG_FIELD_EXPANSION_R1.json.gz",
+      "archive_sha256": "f95be4be532161c6f7e4cf0e233ad8f0960bc8412a804606d5becf79d5e71599"
+    },
+    {
+      "source": "FEP_FULL_CATALOG_FIELD_EXPANSION_R1_RAW.log",
+      "raw_sha256": "f15994852aadecec4342adfbe603c72a89a82843c3bab0af13cb3f30e71bdb6b",
+      "archive": "FEP_FULL_CATALOG_FIELD_EXPANSION_R1_RAW.log.gz",
+      "archive_sha256": "3f66cfa453829d60312c1b47150d21e6d5bb4e908e4edb07ab80058159eec9be"
+    },
+    {
+      "source": "FEP_FULL_CATALOG_FIELD_EXPANSION_R2.json",
+      "raw_sha256": "f012fb0aa3ed5b4f68b0b4987b5f1f87387657d17396b36fcb0298dcca59908e",
+      "archive": "FEP_FULL_CATALOG_FIELD_EXPANSION_R2.json.gz",
+      "archive_sha256": "88dc64bef0b0aa0ef8a8c8b285db47ede4905452e91f073458db4dd520f3da3f"
+    },
+    {
+      "source": "FEP_FULL_CATALOG_FIELD_EXPANSION_R2_RAW.log",
+      "raw_sha256": "031b911264c48893d0a639b01ab9bbfeb6dc3a0efe4ba18ae0a8411a8fd2e047",
+      "archive": "FEP_FULL_CATALOG_FIELD_EXPANSION_R2_RAW.log.gz",
+      "archive_sha256": "47ed71aa820fb094adae161a36cbbc22fd406e3d343dcc3217538e7a04b851e7"
+    },
+    {
+      "source": "FEP_FULL_CATALOG_FIELD_INDEPENDENT_R2.json",
+      "raw_sha256": "ca2ff7b652ffc4c7a9b5864f6998883aa4b2854b232db454eb240b69daf97f98",
+      "archive": "FEP_FULL_CATALOG_FIELD_INDEPENDENT_R2.json.gz",
+      "archive_sha256": "fb7c34d2d4732927d25fd20e6e1bcbcdec8e39fe4e482a89c807faa2c654d78a"
+    },
+    {
+      "source": "FEP_FULL_CATALOG_FIELD_INDEPENDENT_R2_RAW.log",
+      "raw_sha256": "4e5ce8d9766d0ee963f563257a21c05ccb58d28a357312ce7868f716f00ef274",
+      "archive": "FEP_FULL_CATALOG_FIELD_INDEPENDENT_R2_RAW.log.gz",
+      "archive_sha256": "b2b7490dc5c3c4631afc960283c98b6365c52734e4f93c98a94b45fa2802b477"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "scripts/expand_r4_r3_fep_catalog_fields.py",
+      "sha256": "d7b53219cbc8d8b1962c1da630c0759a6371423f63a03ae1626d3224b60e0090"
+    },
+    {
+      "path": "scripts/check_r4_r3_fep_field_denominator.py",
+      "sha256": "c871e7db92b0dc520eec296aa9a40914fb109d4e4b829620dc36ee550bd33c9b"
+    }
+  ]
+}

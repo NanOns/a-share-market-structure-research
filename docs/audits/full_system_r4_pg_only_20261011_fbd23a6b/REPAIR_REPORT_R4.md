@@ -62,3 +62,7 @@ R4_SOURCE_WRITE_GUARD_RESULT.json：独立G fixture下四种实际源写操作�
 最终再次读取10171保护绑定仍10169一致/2已解释源码基线差异，R4_PROTECTED_AFTER.json与R4_SOURCE_BASELINE_QUALIFICATION.json必须联读。远端目标分支重新fetch仍fbd23a6ba08d0948fe7ad421d1765fe363648522，生产28765仍PID22956。
 
 R4-00_SCOPE_GATE.json 明确 NOT_VERIFIABLE；当前静态和有限动态证据不足以闭合整个入口/权限/UI/worker图和合法分母，未自签scope冻结完成或系统全PASS。各开放工程项仍在独立台账，下一优先级为真实source executor/candidate闭环、jointCAS/rollback与逐合同合法回归。
+
+## 提交后稳定源码 QA
+
+R4_SCOPED_f64e1318_RESULT.json：103 PASS /0 FAIL /0 ERROR /0 SKIP，执行源码 source_SHA=8df65de3e0ff622e398296d768996b2a226c2177（COMMITTED），另绑逐文件原始字节树。新增pure rank/source-write护栏和原有V4排名业务节点均保留。原4568、合法分母null与各stage OPEN不变。后续证据提交不会补造历史执行源码SHA。

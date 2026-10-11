@@ -1,6 +1,6 @@
 """Index accepted history and expose existing dated facts; no factor re-compute."""
 from pathlib import Path
-import json, gzip, hashlib, os, sys, zipfile, struct
+import json, gzip, hashlib, os, sys, zipfile, struct, argparse
 from collections import Counter
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'src'))
@@ -12,6 +12,9 @@ def load(p):
         return [json.loads(x) for x in f if x.strip()] if '.jsonl' in p.name else json.load(f)
 
 def main():
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--publish-authority',action='store_true',help='Requires separately authorized authority publication')
+    args=parser.parse_args()
     headpath=ROOT/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json';head=load(headpath);day=head['accepted_trade_date']
     folder=checked(ROOT,head['day_receipt']).parent
     replay=load(folder/'owner_v3/CORE_REPLAY.json');owner=next(o for o in replay['owners'] if o['trade_date']==day)
@@ -58,7 +61,8 @@ def main():
     atomic_json(ROOT,out/'market.json',facts)
     manifest=dict(contract_id='CORE_PRODUCT_DATED_READ_PACK_PG_R1',T0=day,head=ref(ROOT,headpath),history_index=history_index,market_facts=ref(ROOT,out/'market.json'),source_bindings=bindings,AS_RECORDED=False,PIT_ELIGIBLE=False,read_only=True,external_acceptance='NOT_GRANTED')
     atomic_json(ROOT,out/'MANIFEST.json',manifest)
-    atomic_json(ROOT,ROOT/'config/core_product_read_authority_r1.json',dict(contract_id='CORE_PRODUCT_READ_AUTHORITY_R1',manifest=ref(ROOT,out/'MANIFEST.json')))
+    if args.publish_authority:
+        atomic_json(ROOT,ROOT/'config/core_product_read_authority_r1.json',dict(contract_id='CORE_PRODUCT_READ_AUTHORITY_R1',manifest=ref(ROOT,out/'MANIFEST.json')))
     print(json.dumps(dict(T0=day,manifest=ref(ROOT,out/'MANIFEST.json'),indices=len(indices),breadth=facts['breadth'],limits=facts['limits']['counts'])))
 
 if __name__=='__main__':main()

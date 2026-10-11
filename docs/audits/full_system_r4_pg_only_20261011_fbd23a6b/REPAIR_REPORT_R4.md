@@ -18,13 +18,14 @@
 
 R4-00/01 IN_PROGRESS：动态入口、完整权限条件与生产加载哈希不足，双清单及 DB 能力矩阵待正式确认。
 R4-02 ENGINEERING_PARTIAL：checkpoint/crash、多worker、accepted-T0 no-redispatch 等真实闭环待补。
-R4-03 ENGINEERING_PARTIAL：最新 T0 全历史对照通过；五日各自源坐标、HTTP/browser、性能门待补。
+R4-03 ENGINEERING_PARTIAL：五个 T0 各自冻结源完整 PG 对照通过；HTTP/browser、性能门待补。
 R4-04 ENGINEERING_PARTIAL：同源完整 PG 快照对照通过；联合 CAS、失败回滚、正式候选发布待补。
-R4-05/06 ENGINEERING_PARTIAL：PG series/journal 与 exact transport 已实现；实际全消费者、56类调用者、rank/Core/PIT影响待补。
-R4-07 NOT_STARTED：完整页面容量与并发验收待执行。
-R4-08 IN_PROGRESS：设计/字段全分母、producer/source/time/quality/API/UI与独立反例待逐项闭合。
+R4-05 ENGINEERING_PARTIAL：PG series/journal 已实现；实际全消费者仍待证明。
+R4-06 IN_PROGRESS：局部 PG/FEP 原始日志与连接意图可审计；合法全量 clean-slate 与全部节点处置未完成。
+R4-07 IN_PROGRESS：R3 已修事项定位更新已登记；独立 HTTP/DOM、五日语义、生产加载分别待复审。
+R4-08 ENGINEERING_PARTIAL：exact transport 已实现；56类调用者、rank/Core/PIT影响待补。
 R4-09 ENGINEERING_PARTIAL：扫描语义对照通过；完整治理扫描及预算待补。
-R4-10 IN_PROGRESS：局部 PG/FEP 原始日志与连接意图可审计；合法全量 clean-slate 与所有失败/错误/跳过处置未完成。
+R4-10 IN_PROGRESS：设计/字段全分母、producer/source/time/quality/API/UI、正式研究主链与独立反例待逐项闭合。
 
 后继真实交易日、H21/PIT/OOS、Formal Grant、Windows 实体安装与外部签收各自保留门禁，不影响其它工程继续。
 

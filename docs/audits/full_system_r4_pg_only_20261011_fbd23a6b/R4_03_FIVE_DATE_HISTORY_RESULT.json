@@ -1,0 +1,197 @@
+{
+  "contract_id": "R4_FIVE_DATE_HISTORY_SOURCE_ORACLE_R1",
+  "base_head": "fbd23a6ba08d0948fe7ad421d1765fe363648522",
+  "source_SHA": null,
+  "source_git_head": "f62ee5ba0852ceb6da8f48f2ae6d4609b2d0b642",
+  "source_revision_state": "UNCOMMITTED_BYTES_BOUND",
+  "execution_source_binding": {
+    "path": "R4_SOURCE_TREE_826cb1407766d39a3c7776e72043bdaeaa95326411b657644a03835e3375bcb3.json",
+    "sha256": "8c529c5de49ef2c474d7f2c2f43cc6a8bd6d7c7d6a1e16418e97a6553e307f21",
+    "tree_sha256": "826cb1407766d39a3c7776e72043bdaeaa95326411b657644a03835e3375bcb3"
+  },
+  "run_utc": "2026-10-11T06:56:37.258869+00:00",
+  "scope": "V4_ONLY_POSTGRESQL_ONLY",
+  "denominator": 5,
+  "negative_vectors": [
+    "Cross-date binding rejected for each date"
+  ],
+  "previous_status": "AUDIT_INCOMPLETE",
+  "current_status": "SCOPED_FIVE_DATE_FULL_PAYLOAD_PASS",
+  "evidence_links": [
+    "R4_03_FIVE_HISTORY_CONNECTIONS.jsonl"
+  ],
+  "owner": "Codex / root",
+  "limitations": [
+    "No HTTP/browser or production authority loading claim",
+    "Per-date frozen source equivalence does not grant precise v0.3 owner/PIT admission"
+  ],
+  "next_conditions": [
+    "Actual HTTP/browser native read authority and capacity gate"
+  ],
+  "results": [
+    {
+      "T0": "2026-09-28",
+      "source_binding": {
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-09-28/history.jsonl.gz",
+        "sha256": "918c2e689c230869fe5dad66f1e40743fb11e531c4c0013d4bda7a9f1b262f3d",
+        "bytes": 66747343
+      },
+      "pg_binding": {
+        "contract_id": "V4_PG_DATED_HISTORY_INDEX_R1",
+        "engine": "postgresql",
+        "schema": "v4_history_e22ec1bcb114054b",
+        "version": "f52f5fefc9bd75f81407a28f487acf99f3e34dbbf5c5e0343635821076375b78",
+        "head_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+        "T0": "2026-09-28",
+        "source_digest": "918c2e689c230869fe5dad66f1e40743fb11e531c4c0013d4bda7a9f1b262f3d",
+        "logical_digest": "d3af3554d2c08fb57b5f7419cf9a3f43c15b39d12e04b8cc814e13839264dc4c",
+        "symbol_count": 5222,
+        "bar_count": 2142119,
+        "price_basis": "ACCEPTED_RAW_AND_QFQ_UNCHANGED"
+      },
+      "symbols": 5222,
+      "bars": 2142119,
+      "latest_bar": "2026-09-28",
+      "differences": [],
+      "actual_reader_symbols": [
+        "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "SEC-002610CF9EBB4227722834AADA8F757E"
+      ],
+      "cross_date": "REJECTED",
+      "seconds": 54.38822280004388
+    },
+    {
+      "T0": "2026-09-29",
+      "source_binding": {
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-09-29/history.jsonl.gz",
+        "sha256": "28ae440aa7639a6b94fd10aab2c4b11640ecd6af0f6c0bed2eda8fcde3d9f8d4",
+        "bytes": 66905732
+      },
+      "pg_binding": {
+        "contract_id": "V4_PG_DATED_HISTORY_INDEX_R1",
+        "engine": "postgresql",
+        "schema": "v4_history_e22ec1bcb114054b",
+        "version": "a43a3a7967e4d6bdc5cd801f1ecb87c7168f52288b6d4736100886518b1d8824",
+        "head_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+        "T0": "2026-09-29",
+        "source_digest": "28ae440aa7639a6b94fd10aab2c4b11640ecd6af0f6c0bed2eda8fcde3d9f8d4",
+        "logical_digest": "4dbb1e4bdd7e6c6ad2794b0cac62949e78d073d929a712c5a9dd8de870bc9aef",
+        "symbol_count": 5223,
+        "bar_count": 2147330,
+        "price_basis": "ACCEPTED_RAW_AND_QFQ_UNCHANGED"
+      },
+      "symbols": 5223,
+      "bars": 2147330,
+      "latest_bar": "2026-09-29",
+      "differences": [],
+      "actual_reader_symbols": [
+        "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "SEC-002610CF9EBB4227722834AADA8F757E"
+      ],
+      "cross_date": "REJECTED",
+      "seconds": 54.30900950002251
+    },
+    {
+      "T0": "2026-09-30",
+      "source_binding": {
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-09-30/history.jsonl.gz",
+        "sha256": "1a4e34ace538c49bb5f54c49a1986706c5518cb88cbca2afc28a4a9d53c8609a",
+        "bytes": 67076523
+      },
+      "pg_binding": {
+        "contract_id": "V4_PG_DATED_HISTORY_INDEX_R1",
+        "engine": "postgresql",
+        "schema": "v4_history_e22ec1bcb114054b",
+        "version": "56814768c9d7e89cde54b8dd8aba223d735887ff6f973578d007d60e8810d3e7",
+        "head_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+        "T0": "2026-09-30",
+        "source_digest": "1a4e34ace538c49bb5f54c49a1986706c5518cb88cbca2afc28a4a9d53c8609a",
+        "logical_digest": "11625ec6f5142c28a2a3e33718b9a1d0dc715cd32ecdedfe226dba62234605a8",
+        "symbol_count": 5224,
+        "bar_count": 2152543,
+        "price_basis": "ACCEPTED_RAW_AND_QFQ_UNCHANGED"
+      },
+      "symbols": 5224,
+      "bars": 2152543,
+      "latest_bar": "2026-09-30",
+      "differences": [],
+      "actual_reader_symbols": [
+        "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "SEC-002610CF9EBB4227722834AADA8F757E"
+      ],
+      "cross_date": "REJECTED",
+      "seconds": 55.63078339997446
+    },
+    {
+      "T0": "2026-10-08",
+      "source_binding": {
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-08/history.jsonl.gz",
+        "sha256": "5af05c9aea4057d852105be5aff28b3db2a9c661cf9728a94fadc785499b1428",
+        "bytes": 67231482
+      },
+      "pg_binding": {
+        "contract_id": "V4_PG_DATED_HISTORY_INDEX_R1",
+        "engine": "postgresql",
+        "schema": "v4_history_e22ec1bcb114054b",
+        "version": "df97b2f192168d7a4c301a5256f365f0048e19eaa35a37b881ac5bfc0a27643a",
+        "head_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+        "T0": "2026-10-08",
+        "source_digest": "5af05c9aea4057d852105be5aff28b3db2a9c661cf9728a94fadc785499b1428",
+        "logical_digest": "72e1b7c9ced0d141d3c03d27f5ed377408b289ea603b1a55beafc163f738a2a5",
+        "symbol_count": 5224,
+        "bar_count": 2157752,
+        "price_basis": "ACCEPTED_RAW_AND_QFQ_UNCHANGED"
+      },
+      "symbols": 5224,
+      "bars": 2157752,
+      "latest_bar": "2026-10-08",
+      "differences": [],
+      "actual_reader_symbols": [
+        "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "SEC-002610CF9EBB4227722834AADA8F757E"
+      ],
+      "cross_date": "REJECTED",
+      "seconds": 56.51991639996413
+    },
+    {
+      "T0": "2026-10-09",
+      "source_binding": {
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/history.jsonl.gz",
+        "sha256": "1297fb01a999165f117afec1660cbb2549366f51030ecf09ba237b9e88607b24",
+        "bytes": 67380907
+      },
+      "pg_binding": {
+        "contract_id": "V4_PG_DATED_HISTORY_INDEX_R1",
+        "engine": "postgresql",
+        "schema": "v4_history_e22ec1bcb114054b",
+        "version": "5c23c27225288aa562b700e8b3b23e7706cc7973a8f0bf309950cabb1f949841",
+        "head_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+        "T0": "2026-10-09",
+        "source_digest": "1297fb01a999165f117afec1660cbb2549366f51030ecf09ba237b9e88607b24",
+        "logical_digest": "f249933cab59cc90ef74f582e4465e691f54a02d813d0f6e7b8cac206c1adb55",
+        "symbol_count": 5224,
+        "bar_count": 2162962,
+        "price_basis": "ACCEPTED_RAW_AND_QFQ_UNCHANGED"
+      },
+      "symbols": 5224,
+      "bars": 2162962,
+      "latest_bar": "2026-10-09",
+      "differences": [],
+      "actual_reader_symbols": [
+        "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "SEC-002610CF9EBB4227722834AADA8F757E"
+      ],
+      "cross_date": "REJECTED",
+      "seconds": 56.856569800002035
+    }
+  ],
+  "source_replay": {
+    "path": "G:\\codex work\\大A交易\\data\\v4\\dynamic_daily_owners\\2026-10-09\\6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917\\owner_v3\\CORE_REPLAY.json",
+    "sha256": "8781ecd5b57f913995970cc5e93f292bfb396d1f575903d71dd0e0e5417cc151"
+  }
+}

@@ -95,6 +95,10 @@ class RealShadowController:
         return RealShadowDatabase(self,path)
 
 class RealShadowDatabase:
+    def __new__(cls,controller,path):
+        from workbench_db.v4_shadow_live_pg_r3 import native_mode,NativeShadowDatabase
+        if native_mode():return NativeShadowDatabase(controller,path)
+        return super().__new__(cls)
     def __init__(self,controller,path):
         self.controller=controller
         self.path=Path(path).resolve()
@@ -184,10 +188,11 @@ class RealArtifactStore:
         key=digest([kind,identity])
         self.db.append('artifact',key,dict(kind=kind,value=payload))
         raw=canonical(payload).encode()
-        return dict(path='sqlite:'+key,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw))
+        return dict(path=getattr(self.db,'artifact_prefix','sqlite:')+key,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw))
     def read(self,binding):
-        if binding['path'].startswith('sqlite:'):
-            value=self.db.get('artifact',binding['path'][7:])['value']
+        prefix=getattr(self.db,'artifact_prefix','sqlite:')
+        if binding['path'].startswith(prefix):
+            value=self.db.get('artifact',binding['path'][len(prefix):])['value']
             raw=canonical(value).encode()
             check(hashlib.sha256(raw).hexdigest()==binding['sha256'] and len(raw)==binding['bytes'],'ARTIFACT_DIGEST')
             return value
@@ -199,7 +204,7 @@ class RealArtifactStore:
             if p['kind']==kind:
                 raw=canonical(p['value']).encode()
                 key=self.db.conn.execute("SELECT id FROM facts WHERE kind='artifact' AND payload=?",(canonical(p),)).fetchone()[0]
-                out.append(dict(path='sqlite:'+key,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw)))
+                out.append(dict(path=getattr(self.db,'artifact_prefix','sqlite:')+key,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw)))
         return out
 
 class SettlementObligationController:
@@ -213,6 +218,11 @@ class SettlementObligationController:
         self.simulation=simulation
         self.origin='ACTIVATION_SIMULATION' if simulation else 'PIT_OBSERVED'
         self.dependency_path='config/v4_16_runtime_dependencies_v3.json'
+        from workbench_db.v4_shadow_live_pg_r3 import native_mode
+        if simulation and native_mode():
+            fixture=(Path(path).resolve().parent/'dependencies.json')
+            check(fixture.is_relative_to(self.root/'reports') and fixture.exists(),'ISOLATED_SETTLEMENT_FIXTURE_REQUIRED')
+            self.dependency_path=fixture.relative_to(self.root).as_posix()
         self.dependency_bytes=(self.root/self.dependency_path).read_bytes()
         self.deps=json.loads(self.dependency_bytes)
         self.guard()
@@ -220,7 +230,11 @@ class SettlementObligationController:
         path=Path(path).resolve()
         allowed=(self.root/self.storage['simulation_root' if simulation else 'real_root']).resolve()
         check(allowed.is_relative_to(self.root) and path.is_relative_to(allowed) and path.exists(),'EXISTING_ACCEPTED_OBLIGATION_DATABASE_REQUIRED')
-        conn=sqlite3.connect('file:'+path.as_posix()+'?mode=ro',uri=True)
+        from workbench_db.v4_shadow_live_pg_r3 import native_mode
+        if native_mode():
+            from scripts.r4_shadow_pg_readonly import open_existing
+            conn=open_existing(path,self.root)
+        else:conn=sqlite3.connect('file:'+path.as_posix()+'?mode=ro',uri=True)
         try:
             check(conn.execute('SELECT environment,evidence_origin FROM storage_identity').fetchall()==[
                 ('ACTIVATION_SIMULATION' if simulation else 'REAL',self.origin)],'OBLIGATION_STORAGE_IDENTITY')
@@ -230,6 +244,8 @@ class SettlementObligationController:
             binding=json.loads(rows[-1][0])['authority_binding']
             check(conn.execute("SELECT count(*) FROM facts WHERE kind='enrollment'").fetchone()[0]>0,'NO_ACCEPTED_SETTLEMENT_OBLIGATIONS')
         finally:conn.close()
+        self.accepted_activation_binding=binding
+        self.settlement_only=True
         self.activation=json.loads(exact(self.root,binding))
         acceptance=json.loads(exact(self.root,self.activation['external_acceptance']))
         check(acceptance['authority_digest']==grant_digest(self.activation) and
@@ -448,6 +464,9 @@ class OneSessionLaunchController:
             accepted=c.sources.get('future_binding')
             check(source.binding==accepted and json.loads(exact(c.root,accepted))['rows']==source.rows,'UNACCEPTED_SIMULATED_FUTURE_ENDPOINT')
         def commit():
+            if getattr(self.db,'engine',None)=='postgresql':
+                # Register only the endpoint verified above, inside the outcome transaction.
+                self.db.register_evaluation_source(source.binding,source.rows)
             store=CandidateArtifactStore(self.db)
             settlement=SettlementRuntime(c.authority,store)
             refs=settlement.settle(due['frozen_t0'],source,cutoff,horizons=(horizon,))

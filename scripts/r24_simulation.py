@@ -6,6 +6,10 @@ from scripts.v4_16_real_shadow_runtime import dependency_digest, grant_digest
 def prepare(name=None, changes=None):
     base='reports/r24/activation_simulation/'+(name or uuid.uuid4().hex)
     deps=read('config/v4_16_runtime_dependencies_v2.json')
+    from workbench_db.v4_shadow_live_pg_r3 import native_mode,qualify_simulation_dependencies
+    native=native_mode()
+    if native:qualify_simulation_dependencies(ROOT,deps,ref)
+    database=base+('/successor.pg.json' if native else '/successor.sqlite')
     authority=read('config/v4_16_runtime_activation_authority_v2.json')
     lineage='R24_SIMULATION_LINEAGE'
     sources={}
@@ -41,7 +45,7 @@ def prepare(name=None, changes=None):
         dependency_set_digest=dependency_digest(deps),source_authority=source_binding,
         rollback_identity='R24_APPEND_ONLY_STOP_V1',expected_prior_activation_head=None,
         predecessor=predecessor,first_trade_date='2026-09-28',
-        storage_identity=dict(database_path=base+'/successor.sqlite',namespace='SHADOW_V4',execution_mode='SHADOW',
+        storage_identity=dict(database_path=database,namespace='SHADOW_V4',execution_mode='SHADOW',
             evidence_origin='ACTIVATION_SIMULATION',migration=deps['migration']),
         **{k:deps[k] for k in ('clock','slot','storage','source_adapters','initialization_boundary')})
     authority['external_acceptance']=atomic(base+'/acceptance.json',dict(
@@ -55,7 +59,7 @@ def prepare(name=None, changes=None):
     request=dict(trade_date='2026-09-28',model_contract_id='RESEARCH_STATE_V1',
         parameter_set_id='V4_10_STATE_REDUCER_PARAMETER_SET_V1',state_lineage_id=lineage,
         capabilities=['PURE_CORE_STOCK'],accepted_at='2026-09-28T14:00:00Z',revision=1,expected_head=None)
-    return dict(base=base,manifest=manifest,request=request,database=base+'/successor.sqlite')
+    return dict(base=base,manifest=manifest,request=request,database=database)
 
 def controller(context):
     from scripts.v4_16_shadow_runtime import ShadowRuntimeController

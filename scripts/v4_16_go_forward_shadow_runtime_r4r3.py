@@ -101,7 +101,11 @@ class SettlementObligationControllerR4R2:
         path=Path(path).resolve()
         allowed=(self.root/self.storage['simulation_root' if simulation else 'real_root']).resolve()
         check(allowed.is_relative_to(self.root) and path.is_relative_to(allowed) and path.exists(),'EXISTING_ACCEPTED_OBLIGATION_DATABASE_REQUIRED')
-        conn=sqlite3.connect('file:'+path.as_posix()+'?mode=ro',uri=True)
+        from workbench_db.v4_shadow_live_pg_r3 import native_mode
+        if native_mode():
+            from scripts.r4_shadow_pg_readonly import open_existing
+            conn=open_existing(path,self.root)
+        else:conn=sqlite3.connect('file:'+path.as_posix()+'?mode=ro',uri=True)
         try:
             check(conn.execute('SELECT environment,evidence_origin FROM storage_identity').fetchall()==[
                 ('ACTIVATION_SIMULATION' if simulation else 'REAL',self.origin)],'OBLIGATION_STORAGE_IDENTITY')
@@ -151,6 +155,10 @@ class SettlementObligationControllerR4R2:
         return SuccessorDatabase(self,path)
 
 class SuccessorDatabase:
+    def __new__(cls,controller,path):
+        from workbench_db.v4_shadow_live_pg_r3 import native_mode,NativeShadowDatabase
+        if native_mode():return NativeShadowDatabase(controller,path)
+        return super().__new__(cls)
     def __init__(self,controller,path):
         self.controller=controller
         self.path=Path(path).resolve()

@@ -1,6 +1,8 @@
 """Real entry gate and isolated successor activation E2E/negative matrix."""
 import copy, json, os, sqlite3
+from tests.r4_shadow_pg_corruption_fixtures import clone_for_corruption,restore_mutation_guard
 import pytest
+import psycopg
 from scripts.r24_io import ROOT, read, atomic, ref
 from scripts.r24_simulation import prepare, controller, SimulationClock, regrant
 from scripts.v4_16_shadow_runtime import ShadowRuntimeController
@@ -127,7 +129,7 @@ def positive(name=None):
         launch.settle(original[0]['enrollment_id'],1,VectorPriceSource(rows,binding),'2026-09-29')
         assert db.rows('enrollment')==original and len(db.rows('due'))==5
         for sql in ("DELETE FROM facts WHERE kind='observation'","UPDATE facts SET digest='fake' WHERE kind='slot'"):
-            with pytest.raises(sqlite3.IntegrityError,match='APPEND_ONLY'):db.conn.execute(sql)
+            with pytest.raises(psycopg.IntegrityError if getattr(db,'engine',None)=='postgresql' else sqlite3.IntegrityError,match='APPEND_ONLY'):db.conn.execute(sql)
     finally:db.close()
     assert protected()==before
     oracle=inspect(ROOT/x['database'],x['manifest'])
@@ -159,11 +161,13 @@ def test_authority_rejects_before_source_or_storage(monkeypatch):
 def test_independent_oracle_corruption(tmp_path,mutation):
     import shutil
     result=positive()
-    target=tmp_path/'corrupt.sqlite';shutil.copyfile(ROOT/result['context']['database'],target)
-    conn=sqlite3.connect(target)
-    conn.execute('DROP TRIGGER no_fact_update')
+    native=os.environ.get('R4_NATIVE_ISOLATION')=='1'
+    if native:target,conn=clone_for_corruption(ROOT/result['context']['database'],tmp_path/'corrupt.pg.json',ROOT)
+    else:
+        target=tmp_path/'corrupt.sqlite';shutil.copyfile(ROOT/result['context']['database'],target)
+        conn=sqlite3.connect(target);conn.execute('DROP TRIGGER no_fact_update')
     kind='observation' if mutation=='supersedes' else 'slot'
-    key,raw=conn.execute('SELECT id,payload FROM facts WHERE kind=? ORDER BY rowid DESC',(kind,)).fetchone()
+    key,raw=conn.execute('SELECT id,payload FROM facts WHERE kind=? ORDER BY ordinal DESC' if native else 'SELECT id,payload FROM facts WHERE kind=? ORDER BY rowid DESC',(kind,)).fetchone()
     p=json.loads(raw)
     if mutation=='aggregate':p['system_available_at']='2026-09-28T12:58:00Z'
     if mutation=='manifest':p['source_manifest_digest']='0'*64
@@ -174,18 +178,27 @@ def test_independent_oracle_corruption(tmp_path,mutation):
     from scripts.v4_16_real_shadow_runtime import canonical,digest
     conn.execute('UPDATE facts SET payload=?,digest=? WHERE kind=? AND id=?',(canonical(p),digest(p),kind,key))
     # Restore schema name to force semantic checks past schema presence.
-    conn.execute("CREATE TRIGGER no_fact_update BEFORE UPDATE ON facts BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END")
-    conn.commit();conn.close()
+    if native:restore_mutation_guard(conn)
+    else:
+        conn.execute("CREATE TRIGGER no_fact_update BEFORE UPDATE ON facts BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END")
+        conn.commit()
+    conn.close()
     with pytest.raises(ValueError):inspect(target,result['context']['manifest'],test_only_storage_copy=True)
 
 def test_oracle_rejects_schema_with_same_trigger_name(tmp_path):
     import shutil
     result=positive()
-    target=tmp_path/'corrupt.sqlite';shutil.copyfile(ROOT/result['context']['database'],target)
-    conn=sqlite3.connect(target)
-    conn.execute('DROP TRIGGER no_fact_delete')
-    conn.execute('CREATE TRIGGER no_fact_delete BEFORE DELETE ON facts BEGIN SELECT 1; END')
-    conn.commit();conn.close()
+    if os.environ.get('R4_NATIVE_ISOLATION')=='1':
+        target,conn=clone_for_corruption(ROOT/result['context']['database'],tmp_path/'corrupt.pg.json',ROOT)
+        restore_mutation_guard(conn)
+        conn.execute("CREATE OR REPLACE FUNCTION reject_shadow_mutation() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RETURN NULL; END $$")
+        conn.close()
+    else:
+        target=tmp_path/'corrupt.sqlite';shutil.copyfile(ROOT/result['context']['database'],target)
+        conn=sqlite3.connect(target)
+        conn.execute('DROP TRIGGER no_fact_delete')
+        conn.execute('CREATE TRIGGER no_fact_delete BEFORE DELETE ON facts BEGIN SELECT 1; END')
+        conn.commit();conn.close()
     with pytest.raises(ValueError,match='STORAGE_SCHEMA_SEMANTICS'):
         inspect(target,result['context']['manifest'],test_only_storage_copy=True)
 

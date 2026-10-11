@@ -86,9 +86,13 @@ class DurableSettlementWorker:
                 row=self.row(key,source_digest)
                 check(row['status']=='CLAIMED' and row['claim_owner']==self.owner and row['claim_version']==claim['claim_version'] and row['lease_until']>time.time(),'QUEUE_CLAIM_LOST')
                 store=CandidateArtifactStore(self.db)
-                if 'integrity_evaluation_source_v2' in {r[0] for r in self.db.conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}:
+                native=getattr(self.db,'engine',None)=='postgresql'
+                catalog="SELECT tablename FROM pg_tables WHERE schemaname=current_schema()" if native else "SELECT name FROM sqlite_master WHERE type='table'"
+                if 'integrity_evaluation_source_v2' in {r[0] for r in self.db.conn.execute(catalog)}:
                     from scripts.v4_16_shadow_runtime import canonical
-                    self.db.conn.execute('INSERT OR IGNORE INTO integrity_evaluation_source_v2 VALUES(?,?)',(source_digest,canonical(source.binding)))
+                    query='INSERT INTO integrity_evaluation_source_v2 VALUES(%s,%s::jsonb) ON CONFLICT DO NOTHING' if native else 'INSERT OR IGNORE INTO integrity_evaluation_source_v2 VALUES(?,?)'
+                    if native:self.db.register_evaluation_source(source.binding,source.rows)
+                    else:self.db.conn.execute(query,(source_digest,canonical(source.binding)))
                 refs=SettlementRuntime(authority,store).settle(due['frozen_t0'],source,cutoff,horizons=(due['horizon'],))
                 check(len(refs)==1,'EXACT_SINGLE_OUTCOME_REQUIRED')
                 result=store.read(refs[0]);check(result['outcome_status']!='PENDING','DUE_OUTCOME_STILL_PENDING')

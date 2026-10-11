@@ -2,6 +2,7 @@
 import copy
 import json
 import sqlite3
+import psycopg
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import MagicMock
@@ -134,7 +135,7 @@ def test_direct_db_reject(shadow,case):
     if kind=='due':payload['enrollment_id']='NEGATIVE' if case=='horizon' else payload['enrollment_id']
     if kind=='realtime_admission':payload['enrollment_id']='NEGATIVE'
     if kind=='publication':payload['revision']=99
-    with pytest.raises(sqlite3.IntegrityError):db.transaction(lambda:db.append(kind,'NEGATIVE_'+case,payload))
+    with pytest.raises(psycopg.IntegrityError if getattr(db,"engine",None)=="postgresql" else sqlite3.IntegrityError):db.transaction(lambda:db.append(kind,'NEGATIVE_'+case,payload))
 
 def future(db):
     from workbench_analysis.v4_15_settlement import VectorPriceSource
@@ -153,7 +154,7 @@ def test_settlement_queue(shadow,case):
     key=worker.enqueue(due_id,sha,'2026-10-09')
     if case=='enqueue':assert worker.row(key,sha)['status']=='READY';return
     if case=='restart':
-        second=sqlite3.connect(db.path,isolation_level=None);assert second.execute('select count(*) from settlement_queue_v2').fetchone()[0]==1;second.close()
+        second=db.independent_connection() if getattr(db,"engine",None)=="postgresql" else sqlite3.connect(db.path,isolation_level=None);assert second.execute('select count(*) from settlement_queue_v2').fetchone()[0]==1;second.close()
     if case=='CAS':
         token=worker.claim(key,sha);other=DurableSettlementWorker(db,'W2')
         assert token and other.claim(key,sha) is None;return
@@ -172,11 +173,18 @@ def test_settlement_queue(shadow,case):
     assert worker.deliver(key,sha,authority,lambda:source,'2026-10-09')==result
     assert len([o for o in db.rows('outcome') if o['enrollment_id']==due['enrollment_id']])==1
     if case=='corrected':
-        source.binding=dict(source.binding,sha256=digest('CORRECTED_VECTOR_ONLY'))
+        from scripts.r24r1_io import atomic
+        payload=copy.deepcopy(load(source.binding['path']))
+        payload['evaluation_source_revision']='R2'
+        payload['rows']['S']['2026-10-09']['close']+=1
+        payload['rows']['S']['2026-10-09']['high']+=1
+        source.binding=atomic(x['base']+'/corrected_vector_r2.json',payload)
+        source.rows=copy.deepcopy(payload['rows'])
         authority.data['component_artifacts']['ADJUSTED_DAILY']=source.binding
         sha2=source.binding['sha256'];key2=worker.enqueue(due_id,sha2,'2026-10-09')
         corrected=worker.deliver(key2,sha2,authority,lambda:source,'2026-10-09')
         assert corrected['evaluation_revision']==2 and corrected['first_observed_id']==result['outcome_revision_id']
+        assert corrected['R_N']!=result['R_N']
 
 def test_legacy_fixture_gate():
     from workbench_analysis.fep_e5.ledger import Ledger
@@ -202,8 +210,9 @@ def test_two_actual_worker_connections_one_CAS_winner(shadow):
     key=worker.enqueue(digest([due['enrollment_id'],1]),sha,'2026-10-09')
     barrier=Barrier(2)
     def claim(owner):
-        local=copy.copy(db);local.conn=sqlite3.connect(db.path,isolation_level=None)
+        local=copy.copy(db);local.conn=db.independent_connection() if getattr(db,"engine",None)=="postgresql" else sqlite3.connect(db.path,isolation_level=None)
         try:
+            if getattr(db,"engine",None)=="postgresql":local.pg=local.conn.pg
             barrier.wait();return DurableSettlementWorker(local,owner).claim(key,sha)
         finally:local.conn.close()
     with ThreadPoolExecutor(max_workers=2) as pool:
@@ -270,3 +279,19 @@ def test_unknown_due_session_appends_delivery_revision(shadow):
     result=worker.deliver(queue,source.binding['sha256'],authority,lambda:source,due_date)
     assert result['due_date']==due_date and result['horizon']==10
     assert db.get('due',digest([enrollment['enrollment_id'],10]))==original
+
+
+@pytest.mark.parametrize('mutation',['sha','size','rows'])
+def test_native_queue_rejects_forged_evaluation_source(shadow,mutation):
+    db,x=shadow;authority,source=future(db)
+    if mutation=='sha':source.binding=dict(source.binding,sha256=digest('FORGED_VECTOR'))
+    elif mutation=='size':source.binding=dict(source.binding,bytes=source.binding['bytes']+1)
+    else:source.rows['S']['2026-10-09']['close']+=7
+    authority.data['component_artifacts']['ADJUSTED_DAILY']=source.binding
+    due=next(d for d in db.rows('due') if d['horizon']==1)
+    worker=DurableSettlementWorker(db,'FORGED_SOURCE_NEGATIVE');sha=source.binding['sha256']
+    key=worker.enqueue(digest([due['enrollment_id'],1]),sha,'2026-10-09')
+    with pytest.raises(ValueError,match='EVALUATION_SOURCE_EXACT_BYTES_REQUIRED|EVALUATION_SOURCE_ROWS_DIFFER'):
+        worker.deliver(key,sha,authority,lambda:source,'2026-10-09')
+    assert not db.rows('outcome') and worker.row(key,sha)['status']=='READY'
+    assert db.conn.execute('SELECT count(*) FROM integrity_evaluation_source_v2').fetchone()[0]==0

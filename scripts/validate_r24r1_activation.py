@@ -45,22 +45,31 @@ def inspect(path,manifest,root=ROOT, test_only_storage_copy=False):
     daily=inspect_daily(root,deps,grant,sources)
     cohort=exact(root,exact(root,deps['realtime_admission'])['cohort_contract'])
     check(test_only_storage_copy or Path(path).resolve()==(root/authority['grant']['storage_identity']['database_path']).resolve(),'ORACLE_STORAGE_IDENTITY')
-    conn=sqlite3.connect('file:'+Path(path).resolve().as_posix()+'?mode=ro',uri=True)
+    native=deps.get('storage',{}).get('path')=='config/v4_shadow_live_pg_storage_r3.json'
+    if native:
+        from scripts.r4_shadow_pg_readonly import open_existing,validate_schema
+        conn=open_existing(path,root)
+    else:conn=sqlite3.connect('file:'+Path(path).resolve().as_posix()+'?mode=ro',uri=True)
     try:
-        check(conn.execute('PRAGMA integrity_check').fetchone()[0]=='ok','SQLITE_INTEGRITY')
-        check(conn.execute('SELECT * FROM storage_identity').fetchall()==[(1,'ACTIVATION_SIMULATION','ACTIVATION_SIMULATION')],'STORAGE_IDENTITY')
-        schema=[r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type IN ('index','trigger')")]
-        check(set(['no_fact_update','no_fact_delete','origin_guard','unique_original_event','unique_slot_revision','unique_publication_revision','unique_due'])<=set(schema),'STORAGE_CONSTRAINTS_MISSING')
-        expected=sqlite3.connect(':memory:')
-        try:
-            expected.executescript((root/deps['migration']['path']).read_text(encoding='utf-8'))
-            def schema_signature(database):
-                return sorted((typ,name,table,re.sub(r'\s+','',sql or '').replace('IFNOTEXISTS',''))
-                    for typ,name,table,sql in database.execute('SELECT type,name,tbl_name,sql FROM sqlite_master'))
-            check(schema_signature(conn)==schema_signature(expected),'STORAGE_SCHEMA_SEMANTICS')
-        finally:expected.close()
+        if native:
+            conn.execute('BEGIN READ ONLY')
+            validate_schema(conn,root,deps)
+            check(conn.execute('SELECT * FROM storage_identity').fetchall()==[(1,'ACTIVATION_SIMULATION','ACTIVATION_SIMULATION')],'STORAGE_IDENTITY')
+        else:
+            check(conn.execute('PRAGMA integrity_check').fetchone()[0]=='ok','SQLITE_INTEGRITY')
+            check(conn.execute('SELECT * FROM storage_identity').fetchall()==[(1,'ACTIVATION_SIMULATION','ACTIVATION_SIMULATION')],'STORAGE_IDENTITY')
+            schema=[r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type IN ('index','trigger')")]
+            check(set(['no_fact_update','no_fact_delete','origin_guard','unique_original_event','unique_slot_revision','unique_publication_revision','unique_due'])<=set(schema),'STORAGE_CONSTRAINTS_MISSING')
+            expected=sqlite3.connect(':memory:')
+            try:
+                expected.executescript((root/deps['migration']['path']).read_text(encoding='utf-8'))
+                def schema_signature(database):
+                    return sorted((typ,name,table,re.sub(r'\s+','',sql or '').replace('IFNOTEXISTS',''))
+                        for typ,name,table,sql in database.execute('SELECT type,name,tbl_name,sql FROM sqlite_master'))
+                check(schema_signature(conn)==schema_signature(expected),'STORAGE_SCHEMA_SEMANTICS')
+            finally:expected.close()
         rows={}
-        for kind,key,namespace,mode,origin,raw,sha in conn.execute('SELECT * FROM facts ORDER BY rowid'):
+        for kind,key,namespace,mode,origin,raw,sha in conn.execute('SELECT kind,id,namespace,execution_mode,evidence_origin,payload,digest FROM facts ORDER BY ordinal' if native else 'SELECT * FROM facts ORDER BY rowid'):
             p=json.loads(raw)
             check(hashlib.sha256(raw.encode()).hexdigest()==sha,'ROW_DIGEST')
             check((namespace,mode,origin)==('SHADOW_V4','SHADOW','ACTIVATION_SIMULATION'),'ROW_ORIGIN')
@@ -115,9 +124,10 @@ def inspect(path,manifest,root=ROOT, test_only_storage_copy=False):
             else:check(observation['revision']==1,'CORRECTION_MISSING_PREDECESSOR')
         enrollments=rows.get('enrollment',[])
         artifacts={r[0]:json.loads(r[1])['value'] for r in conn.execute("SELECT id,payload FROM facts WHERE kind='artifact'")}
+        prefix='pg-shadow:' if native else 'sqlite:'
         def artifact(binding):
-            check(binding['path'].startswith('sqlite:') and binding['path'][7:] in artifacts,'ARTIFACT_MISSING')
-            value=artifacts[binding['path'][7:]]
+            check(binding['path'].startswith(prefix) and binding['path'][len(prefix):] in artifacts,'ARTIFACT_MISSING')
+            value=artifacts[binding['path'][len(prefix):]]
             raw=canonical(value).encode()
             check(hashlib.sha256(raw).hexdigest()==binding['sha256'] and len(raw)==binding['bytes'],'ARTIFACT_BINDING')
             return value

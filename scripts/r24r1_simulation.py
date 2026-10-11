@@ -9,6 +9,10 @@ PRIOR='2026-09-30'
 def prepare(name=None, mutate=None, changes=None):
     base='reports/r24r1/activation_simulation/'+(name or uuid.uuid4().hex)
     deps=read('config/v4_16_runtime_dependencies_v3.json')
+    from workbench_db.v4_shadow_live_pg_r3 import native_mode,qualify_simulation_dependencies
+    native=native_mode()
+    if native:qualify_simulation_dependencies(ROOT,deps,ref)
+    database=base+('/successor.pg.json' if native else '/successor.sqlite')
     authority=read(deps['activation']['path'])
     contract=read(deps['go_forward_input']['path'])
     lineage='R24R1_SIMULATION_LINEAGE'
@@ -60,13 +64,13 @@ def prepare(name=None, mutate=None, changes=None):
         capability_scope=['PURE_CORE_STOCK'],runtime_dependency_contract_id=deps['contract_id'],dependency_set_digest=dependency_digest(deps),
         source_authority=source_binding,rollback_identity='R24_APPEND_ONLY_STOP_V1',expected_prior_activation_head=None,
         predecessor=predecessor,first_trade_date=TARGET,daily_input_authority=daily_binding,daily_input_digest=daily['daily_input_digest'],
-        storage_identity=dict(database_path=base+'/successor.sqlite',namespace='SHADOW_V4',execution_mode='SHADOW',evidence_origin='ACTIVATION_SIMULATION',migration=deps['migration']),
+        storage_identity=dict(database_path=database,namespace='SHADOW_V4',execution_mode='SHADOW',evidence_origin='ACTIVATION_SIMULATION',migration=deps['migration']),
         **grant_extra,**{k:deps[k] for k in ('clock','slot','storage','source_adapters','initialization_boundary')})
     authority['external_acceptance']=atomic(base+'/acceptance.json',dict(authority_id=authority['authority_id'],authority_digest=grant_digest(authority),decision='SIMULATION_ONLY_NOT_REAL_ACCEPTANCE'))
     old=deps['activation']; deps['activation']=atomic(base+'/authority.json',authority)
     deps['bindings']=[deps['activation'] if b==old else b for b in deps['bindings']]
     manifest=base+'/dependencies.json'; atomic(manifest,deps)
-    return dict(base=base,manifest=manifest,database=base+'/successor.sqlite',request=dict(trade_date=TARGET,model_contract_id='RESEARCH_STATE_V1',
+    return dict(base=base,manifest=manifest,database=database,request=dict(trade_date=TARGET,model_contract_id='RESEARCH_STATE_V1',
         parameter_set_id='V4_10_STATE_REDUCER_PARAMETER_SET_V1',state_lineage_id=lineage,capabilities=['PURE_CORE_STOCK'],accepted_at=TARGET+'T14:00:00Z',revision=1,expected_head=None))
 
 def controller(context):

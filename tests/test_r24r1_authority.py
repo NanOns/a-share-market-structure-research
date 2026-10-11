@@ -1,6 +1,8 @@
 """Forward-authority, persisted cohort identity and independent admission negatives."""
-import ast, copy, json, shutil, sqlite3
+import ast, copy, json, shutil, sqlite3, os
+from tests.r4_shadow_pg_corruption_fixtures import clone_for_corruption,restore_mutation_guard
 import pytest
+import psycopg
 from scripts.r24r1_io import ROOT, read, atomic, ref
 from scripts.r24r1_simulation import prepare, controller, SimulationClock, regrant, TARGET
 from scripts.v4_16_go_forward_shadow_runtime import OneSessionLaunchController, canonical, digest
@@ -61,7 +63,7 @@ def positive(name=None):
         finally:other.close()
         with pytest.raises(ValueError,match='SHADOW_STOPPED'):launch.run(revision,clock=SimulationClock())
         for sql in ["DELETE FROM facts WHERE kind='enrollment'","UPDATE facts SET digest='bad' WHERE kind='slot'"]:
-            with pytest.raises(sqlite3.IntegrityError):db.conn.execute(sql)
+            with pytest.raises(psycopg.IntegrityError if getattr(db,"engine",None)=="postgresql" else sqlite3.IntegrityError):db.conn.execute(sql)
     finally:db.close()
     assert protected()==before
     return dict(context=x,oracle=inspect(ROOT/x['database'],x['manifest']),old_calendar_rejects_target=True,
@@ -70,9 +72,11 @@ def positive(name=None):
 def test_future_reachability():positive()
 
 def corruption(case,tmp_path):
-    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
-    conn=sqlite3.connect(target)
-    conn.execute('DROP TRIGGER no_fact_update')
+    x=positive()['context'];native=os.environ.get('R4_NATIVE_ISOLATION')=='1'
+    if native:target,conn=clone_for_corruption(ROOT/x['database'],tmp_path/(case+'.pg.json'),ROOT)
+    else:
+        target=tmp_path/(case+'.sqlite');shutil.copyfile(ROOT/x['database'],target)
+        conn=sqlite3.connect(target);conn.execute('DROP TRIGGER no_fact_update')
     kind='enrollment' if case.startswith('C') else 'realtime_admission'
     key,raw=conn.execute('SELECT id,payload FROM facts WHERE kind=? LIMIT 1',(kind,)).fetchone(); p=json.loads(raw)
     if case=='C01':p['enrollment_id']=digest([p['logical_event_id'],'SHADOW_V4_FIRST_OBSERVED'])
@@ -85,8 +89,11 @@ def corruption(case,tmp_path):
     if case=='S04':p['source_manifest_digest']='0'*64
     physical_key=p['enrollment_id'] if case=='C01' else key
     conn.execute('UPDATE facts SET id=?,payload=?,digest=? WHERE kind=? AND id=?',(physical_key,canonical(p),digest(p),kind,key))
-    conn.execute("CREATE TRIGGER no_fact_update BEFORE UPDATE ON facts BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END")
-    conn.commit();conn.close()
+    if native:restore_mutation_guard(conn)
+    else:
+        conn.execute("CREATE TRIGGER no_fact_update BEFORE UPDATE ON facts BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END")
+        conn.commit()
+    conn.close()
     with pytest.raises(ValueError) as error:inspect(target,x['manifest'],test_only_storage_copy=True)
     return dict(case=case,status='PASS_LOCAL',rejection=str(error.value))
 
@@ -112,7 +119,7 @@ def test_duplicate_logical_event_is_rejected_by_storage():
     try:
         OneSessionLaunchController(db).run(x['request'],clock=SimulationClock())
         e=db.rows('enrollment')[0]
-        with pytest.raises(sqlite3.IntegrityError):db.append('enrollment','alternate',dict(e,enrollment_id='alternate'))
+        with pytest.raises(psycopg.IntegrityError if getattr(db,"engine",None)=="postgresql" else sqlite3.IntegrityError):db.append('enrollment','alternate',dict(e,enrollment_id='alternate'))
         assert len(db.rows('enrollment'))==1
     finally:db.close()
 

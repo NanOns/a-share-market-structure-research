@@ -90,6 +90,10 @@ class RealShadowController:
         return RealShadowDatabase(self,path)
 
 class RealShadowDatabase:
+    def __new__(cls,controller,path):
+        from workbench_db.v4_shadow_live_pg_r3 import native_mode,NativeShadowDatabase
+        if native_mode():return NativeShadowDatabase(controller,path)
+        return super().__new__(cls)
     def __init__(self,controller,path):
         self.controller=controller
         self.path=Path(path).resolve()
@@ -179,10 +183,11 @@ class RealArtifactStore:
         key=digest([kind,identity])
         self.db.append('artifact',key,dict(kind=kind,value=payload))
         raw=canonical(payload).encode()
-        return dict(path='sqlite:'+key,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw))
+        return dict(path=getattr(self.db,'artifact_prefix','sqlite:')+key,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw))
     def read(self,binding):
-        if binding['path'].startswith('sqlite:'):
-            value=self.db.get('artifact',binding['path'][7:])['value']
+        prefix=getattr(self.db,'artifact_prefix','sqlite:')
+        if binding['path'].startswith(prefix):
+            value=self.db.get('artifact',binding['path'][len(prefix):])['value']
             raw=canonical(value).encode()
             check(hashlib.sha256(raw).hexdigest()==binding['sha256'] and len(raw)==binding['bytes'],'ARTIFACT_DIGEST')
             return value
@@ -194,7 +199,7 @@ class RealArtifactStore:
             if p['kind']==kind:
                 raw=canonical(p['value']).encode()
                 key=self.db.conn.execute("SELECT id FROM facts WHERE kind='artifact' AND payload=?",(canonical(p),)).fetchone()[0]
-                out.append(dict(path='sqlite:'+key,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw)))
+                out.append(dict(path=getattr(self.db,'artifact_prefix','sqlite:')+key,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw)))
         return out
 
 class SettlementObligationController:
@@ -208,6 +213,11 @@ class SettlementObligationController:
         self.simulation=simulation
         self.origin='ACTIVATION_SIMULATION' if simulation else 'PIT_OBSERVED'
         self.dependency_path='config/v4_16_runtime_dependencies_v2.json'
+        from workbench_db.v4_shadow_live_pg_r3 import native_mode
+        if simulation and native_mode():
+            fixture=(Path(path).resolve().parent/'dependencies.json')
+            check(fixture.is_relative_to(self.root/'reports') and fixture.exists(),'ISOLATED_SETTLEMENT_FIXTURE_REQUIRED')
+            self.dependency_path=fixture.relative_to(self.root).as_posix()
         self.dependency_bytes=(self.root/self.dependency_path).read_bytes()
         self.deps=json.loads(self.dependency_bytes)
         self.guard()
@@ -215,7 +225,11 @@ class SettlementObligationController:
         path=Path(path).resolve()
         allowed=(self.root/self.storage['simulation_root' if simulation else 'real_root']).resolve()
         check(allowed.is_relative_to(self.root) and path.is_relative_to(allowed) and path.exists(),'EXISTING_ACCEPTED_OBLIGATION_DATABASE_REQUIRED')
-        conn=sqlite3.connect('file:'+path.as_posix()+'?mode=ro',uri=True)
+        from workbench_db.v4_shadow_live_pg_r3 import native_mode
+        if native_mode():
+            from scripts.r4_shadow_pg_readonly import open_existing
+            conn=open_existing(path,self.root)
+        else:conn=sqlite3.connect('file:'+path.as_posix()+'?mode=ro',uri=True)
         try:
             check(conn.execute('SELECT environment,evidence_origin FROM storage_identity').fetchall()==[
                 ('ACTIVATION_SIMULATION' if simulation else 'REAL',self.origin)],'OBLIGATION_STORAGE_IDENTITY')
@@ -225,6 +239,8 @@ class SettlementObligationController:
             binding=json.loads(rows[-1][0])['authority_binding']
             check(conn.execute("SELECT count(*) FROM facts WHERE kind='enrollment'").fetchone()[0]>0,'NO_ACCEPTED_SETTLEMENT_OBLIGATIONS')
         finally:conn.close()
+        self.accepted_activation_binding=binding
+        self.settlement_only=True
         self.activation=json.loads(exact(self.root,binding))
         acceptance=json.loads(exact(self.root,self.activation['external_acceptance']))
         check(acceptance['authority_digest']==grant_digest(self.activation) and
@@ -369,6 +385,14 @@ class OneSessionLaunchController:
                     slot_status='ACCEPTED_ON_TIME',T0=r['trade_date'],FIRST_OBSERVED=eid,observation_deadline=times['observation_deadline'])
                 enrollment.update(benchmark_ids={k:digest([eid,k.upper()]) for k in ('market','sector')},
                     control_assignment_ids={k:digest([eid,k]) for k in ('A','B','C')})
+                if getattr(self.db,'engine',None)=='postgresql':
+                    events={store.read(b)['logical_event_id']:store.read(b) for b in projected['logical_events']}
+                    check(enrollment['logical_event_id'] in events,'ADMISSION_REQUIRES_EXACT_OWNER_EVENT')
+                    event=events[enrollment['logical_event_id']]
+                    check(event['event_trade_date']==r['trade_date'],'RECONSTRUCTED_EVENT_CANNOT_UPGRADE')
+                    enrollment.update(owner_logical_event=enrollment['logical_event_id'],
+                        cohort_acceptance='ACCEPTED_REALTIME_WITH_SLOT',source_manifest_digest=mid,
+                        observation_slot=dict(slot_id=slot_id,revision=revision))
                 eref=store.append('enrollment_real',eid,enrollment)
                 frozen=settlement.freeze_t0(eref,c.sources['sources']['T0_SNAPSHOT']['binding'])
                 enrolled.append(self.db.append('enrollment',eid,dict(enrollment,frozen_t0=frozen)))
@@ -399,6 +423,14 @@ class OneSessionLaunchController:
             slot.update(quality_contract=json.loads(exact(c.root,c.deps['slot_runtime_policy']))['contract_id'],
                 field_quality={k:'KNOWN' for k in c.slot_fields})
             self.db.append('slot',digest([slot_id,revision]),slot)
+            if getattr(self.db,'engine',None)=='postgresql':
+                for e in enrolled:
+                    if e['T0']!=r['trade_date'] or any(a['enrollment_id']==e['enrollment_id'] for a in self.db.rows('realtime_admission')):continue
+                    events={store.read(b)['logical_event_id']:store.read(b) for b in projected['logical_events']}
+                    self.db.append('realtime_admission',e['enrollment_id'],dict(enrollment_id=e['enrollment_id'],
+                        logical_event_id=e['logical_event_id'],observation_slot=e['observation_slot'],
+                        source_manifest_digest=mid,owner_event=events[e['logical_event_id']],
+                        accepted_at=accepted,admission_role='REALTIME_COHORT_ACCEPTANCE'))
             self.db.append('health',pid,dict(publication_id=pid,clock_compliance=True,legacy_mutated=False,
                REAL_SHADOW_OBSERVATIONS=0 if c.simulation else len(self.db.rows('publication'))+1,
                PIT_OBSERVED_REAL_SAMPLES=0 if c.simulation else len(self.db.rows('enrollment'))))
@@ -431,6 +463,9 @@ class OneSessionLaunchController:
             accepted=c.sources.get('future_binding')
             check(source.binding==accepted and json.loads(exact(c.root,accepted))['rows']==source.rows,'UNACCEPTED_SIMULATED_FUTURE_ENDPOINT')
         def commit():
+            if getattr(self.db,'engine',None)=='postgresql':
+                # Register only the endpoint verified above, inside the outcome transaction.
+                self.db.register_evaluation_source(source.binding,source.rows)
             store=RealArtifactStore(self.db)
             settlement=SettlementRuntime(c.authority,store)
             refs=settlement.settle(due['frozen_t0'],source,cutoff,horizons=(horizon,))

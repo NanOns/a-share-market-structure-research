@@ -1,10 +1,9 @@
 """Durable daily jobs with default-on backend scheduling and explicit gates."""
 from datetime import datetime,timedelta
 from pathlib import Path
-import json,sqlite3,threading,uuid
+import json,threading,uuid
 import hashlib
 from .operational_daily_calendar_v2 import gap_plan,SHANGHAI
-from .operational_daily_storage_v1 import output_path,exclusive_lock
 
 CONTRACT='V4_OPERATIONAL_DAILY_JOBS_V1'
 RETRY_TIMES=['19:05','19:35','20:05','20:35','21:05','22:05']
@@ -12,41 +11,18 @@ TERMINAL={'PUBLISHED_FULL','PROBE_COMPLETE','NOOP_ALREADY_CURRENT','FAILED_TERMI
 
 
 class DailyJobs:
+    def __new__(cls, *args, **kwargs):
+        # The historical public import remains supported, but its storage
+        # authority is now the native PG repository. Subclasses reuse only
+        # the state-machine methods and supply their own storage boundary.
+        if cls is DailyJobs:
+            from .operational_daily_jobs_pg_r1 import DailyJobs as NativeDailyJobs
+            return object.__new__(NativeDailyJobs)
+        return object.__new__(cls)
+
     def __init__(self,root,executor=None,clock=None,source_probe=None):
-        self.root=Path(root).resolve();self.clock=clock or (lambda:datetime.now(SHANGHAI))
-        self.executor=executor;self.stop=threading.Event();self.thread=None;self.worker_error=None
-        self.active_job_id=None
-        self.source_probe=source_probe
-        self.policy_binding=None
-        if (self.root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').is_file():
-            policy_path=self.root/'config/read_only_operational_daily_release_policy_v1_1.json'
-            policy=json.loads(policy_path.read_bytes())
-            if policy.get('contract_id')!='READ_ONLY_OPERATIONAL_DAILY_RELEASE_POLICY_V1_1' or any(
-                policy.get(key) is not False for key in ['historical_PIT_permission','automated_trading_permission','algorithm_upgrade_permission']):
-                raise ValueError('DAILY_POLICY_SCOPE_INVALID')
-            task=(self.root/policy['task_contract']['path']).resolve()
-            if not task.is_relative_to(self.root) or hashlib.sha256(task.read_bytes()).hexdigest()!=policy['task_contract']['sha256']:
-                raise ValueError('DAILY_POLICY_TASK_BINDING_INVALID')
-            self.policy_binding=dict(path=policy_path.relative_to(self.root).as_posix(),sha256=hashlib.sha256(policy_path.read_bytes()).hexdigest())
-        self.path=output_path(self.root,self.root/'runtime/dynamic_daily/jobs.sqlite3')
-        self.path.parent.mkdir(parents=True,exist_ok=True)
-        with self.connect() as db:
-            db.executescript('''
-                CREATE TABLE IF NOT EXISTS scheduler_policy(id INTEGER PRIMARY KEY, enabled INTEGER, revision INTEGER, updated_at TEXT);
-                INSERT OR IGNORE INTO scheduler_policy VALUES(1,1,1,'DEFAULT_AUTO_ON');
-                CREATE TABLE IF NOT EXISTS scheduler_dispatch(target TEXT PRIMARY KEY,job_id TEXT);
-                CREATE TABLE IF NOT EXISTS scheduler_attempts(target TEXT, attempt_ordinal INTEGER,
-                  job_id TEXT UNIQUE,old_job_id TEXT,source_revision TEXT,reason TEXT,created_at TEXT,
-                  PRIMARY KEY(target,attempt_ordinal));
-                CREATE TABLE IF NOT EXISTS scheduler_rearm(target TEXT PRIMARY KEY,revision TEXT,reason TEXT);
-                CREATE TABLE IF NOT EXISTS update_jobs(job_id TEXT PRIMARY KEY, trigger TEXT, mode TEXT,
-                  through_date TEXT,status TEXT,created_at TEXT,finished_at TEXT,idempotency_key TEXT UNIQUE,error TEXT);
-                CREATE TABLE IF NOT EXISTS update_job_days(job_id TEXT,trade_date TEXT,state TEXT,
-                  attempt_count INTEGER DEFAULT 0,next_retry_at TEXT,source_checks TEXT DEFAULT '{}',
-                  PRIMARY KEY(job_id,trade_date));
-                CREATE TABLE IF NOT EXISTS update_events(event_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                  job_id TEXT,timestamp TEXT,stage TEXT,event_code TEXT,safe_detail TEXT);
-            ''')
+        from .operational_daily_jobs_pg_r1 import DailyJobs as NativeDailyJobs
+        NativeDailyJobs.__init__(self,root,executor,clock,source_probe)
 
     def rearm(self,target,revision,reason='OPERATOR_REARM'):
         """Explicit authorized recovery; never inferred from a user cancellation."""
@@ -150,9 +126,8 @@ class DailyJobs:
             db.execute('DELETE FROM scheduler_rearm WHERE target=?',(target,))
 
     def connect(self):
-        db=sqlite3.connect(self.path,timeout=5);db.row_factory=sqlite3.Row
-        db.execute('PRAGMA journal_mode=WAL');db.execute('PRAGMA synchronous=FULL')
-        return db
+        from .operational_daily_jobs_pg_r1 import DailyJobs as NativeDailyJobs
+        return NativeDailyJobs.connect(self)
 
     def settings(self,enabled=None):
         with self.connect() as db:
@@ -278,7 +253,8 @@ class DailyJobs:
         return next((d.isoformat() for d in dates if d>now),None) if attempt<=7 else None
 
     def worker_lock(self):
-        return exclusive_lock(self.root,self.root/'runtime/dynamic_daily/worker.lock')
+        from .operational_daily_jobs_pg_r1 import DailyJobs as NativeDailyJobs
+        return NativeDailyJobs.worker_lock(self)
 
     def tick(self):
         # The kernel lock is released even when the process crashes. WAL records
@@ -348,6 +324,9 @@ class DailyJobs:
                     ('PROBE_COMPLETE' if job['mode']=='PROBE' else 'PUBLISHED_FULL',self.clock().isoformat(),job['job_id']))
 
     def start(self):
+        if self.thread and self.thread.is_alive():
+            raise ValueError('WORKER_ALREADY_RUNNING')
+        self.stop.clear()
         def work():
             while not self.stop.is_set():
                 try:self.tick();self.worker_error=None
@@ -355,6 +334,9 @@ class DailyJobs:
                 self.stop.wait(15)
         self.thread=threading.Thread(target=work,name='operational-daily-worker',daemon=True);self.thread.start()
 
-    def close(self):
+    def close(self, timeout=2):
         self.stop.set()
-        if self.thread:self.thread.join(timeout=2)
+        if self.thread:
+            self.thread.join(timeout=timeout)
+            if self.thread.is_alive():
+                raise TimeoutError('WAITING_SAFE_BOUNDARY')

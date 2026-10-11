@@ -109,7 +109,7 @@ def produce_rank_window_sources(root, *, technical_binding, memberships_binding,
     from workbench_analysis.r43_owner_replay import checked
     from workbench_analysis.v4_14_replay_io import publish
     from workbench_analysis.sector_cycle import build_sector_cycle_daily
-    from workbench_service.research_builder import _exact_cycle_delta
+    from .rank_comparison_r1 import _exact_cycle_delta
     import pandas as pd
     technical=json.loads(checked(root,technical_binding).read_bytes())['rows']
     memberships=json.loads(checked(root,memberships_binding).read_bytes())['rows']

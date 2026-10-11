@@ -1,0 +1,41 @@
+{
+  "contract_id": "R4_SCOPE_GATE_R1",
+  "base_head": "fbd23a6ba08d0948fe7ad421d1765fe363648522",
+  "source_SHA": null,
+  "source_git_head": "c0d186283dad45b09706253d8bdf67147be25ec8",
+  "source_revision_state": "UNCOMMITTED_BYTES_BOUND",
+  "execution_source_binding": {
+    "path": "R4_SOURCE_TREE_5b4276cd841407df3312c4348a120728c3bb2976484cdf2918265d499c7e1d8b.json",
+    "sha256": "242919e6c951b83a7346e93a2de0bc3e045d3e504f0796629cf4fd9b744af5e6",
+    "tree_sha256": "5b4276cd841407df3312c4348a120728c3bb2976484cdf2918265d499c7e1d8b"
+  },
+  "run_utc": "2026-10-11T07:11:22.720062+00:00",
+  "scope": "V4_ONLY_POSTGRESQL_ONLY",
+  "denominator": {
+    "original_included": 245,
+    "original_excluded": 620,
+    "original_nodes": 4568
+  },
+  "negative_vectors": [],
+  "previous_status": "AUDIT_INCOMPLETE",
+  "current_status": "NOT_VERIFIABLE",
+  "evidence_links": [
+    "R4_DYNAMIC_DB_EVIDENCE_R1.json",
+    "R4_TEST_MODULE_SOURCE_REVIEW.json",
+    "R4_00_PG_IDENTITY_SQL.json",
+    "R4_SOURCE_BASELINE_QUALIFICATION.json"
+  ],
+  "owner": "Codex / root",
+  "limitations": [
+    "Bounded HTTP/FEP/native dynamic evidence, not all default entry/desktop/worker/subprocess/UI/permissions",
+    "Complete protected TDX inventory and production PG identity not established",
+    "Module source reviews do not decide final contractual admission",
+    "Two initial source baseline hashes require independent qualification"
+  ],
+  "next_conditions": [
+    "Complete capability reachability/permissions and legal denominator decisions before full clean-slate admission"
+  ],
+  "system_status": "EXTERNAL_ACCEPTANCE_BLOCKED/AUDIT_INCOMPLETE",
+  "target_origin_recheck": "fbd23a6ba08d0948fe7ad421d1765fe363648522",
+  "legal_denominator": null
+}

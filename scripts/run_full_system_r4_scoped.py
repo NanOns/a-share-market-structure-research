@@ -16,6 +16,7 @@ OUT=ROOT/'docs/audits/full_system_r4_pg_only_20261011_fbd23a6b'
 FILES=['tests/test_v4_pg_jobs_r4.py','tests/test_v4_pg_storage_r4.py','tests/test_v4_pg_journal_r4.py','tests/test_v4_exact_transport_r4.py','tests/test_operational_daily_jobs_v1.py','tests/test_audit_repair_adjustment_r3.py']
 FILES+=['tests/test_r2_journal.py','tests/test_audit_repair_home_r3.py','tests/test_audit_repair_storage_r3.py','tests/test_audit_repair_compare_r3.py','tests/test_audit_repair_loo_r3.py']
 FILES+=['tests/test_dynamic_daily_r21_repair.py']
+FILES+=['tests/test_v4_pure_rank_r4.py','tests/test_v4_readonly_source_guard_r4.py','tests/test_next_stage_c_episode_genesis.py::test_independent_average_rank_oracle_with_ties_and_unstable_delta']
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--profile',choices=['native','fep_e1'],default='native');args=parser.parse_args()
     files=FILES if args.profile=='native' else ['tests/fep/'+name for name in ('test_database.py','test_cas_roles.py','test_feature_owner.py','test_namespace.py','test_pipeline.py','test_r1_label_time.py','test_v4_18_namespace_successor.py')]

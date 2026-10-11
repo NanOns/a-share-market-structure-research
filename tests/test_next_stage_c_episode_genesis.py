@@ -105,7 +105,7 @@ def test_settlement_exact_bytes_and_episode_identity(genesis):
 def test_independent_average_rank_oracle_with_ties_and_unstable_delta():
     import pandas as pd
     from workbench_analysis.sector_cycle import _percentile, CONTRACT_VERSION
-    from workbench_service.research_builder import _exact_cycle_delta
+    from sector.rank_comparison_r1 import _exact_cycle_delta
     values=[1,3,3,7,None]
     actual=_percentile(pd.Series(values)).tolist()
     known=[x for x in values if x is not None]

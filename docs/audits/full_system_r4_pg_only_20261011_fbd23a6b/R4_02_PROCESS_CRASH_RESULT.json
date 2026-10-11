@@ -1,0 +1,152 @@
+{
+  "contract_id": "R4_PG_PROCESS_CRASH_CHECKPOINT_R1",
+  "base_head": "fbd23a6ba08d0948fe7ad421d1765fe363648522",
+  "source_SHA": null,
+  "source_git_head": "c0d186283dad45b09706253d8bdf67147be25ec8",
+  "source_revision_state": "UNCOMMITTED_BYTES_BOUND",
+  "execution_source_binding": {
+    "path": "R4_SOURCE_TREE_e0286bde2242432e7fb81dffec6f9b056c987ed9f74346fb3fafcc15363c9fef.json",
+    "sha256": "5cdb84d62944337424fdbd9cabdef76f917f6e885d4a260b83a7596f6fee9a33",
+    "tree_sha256": "e0286bde2242432e7fb81dffec6f9b056c987ed9f74346fb3fafcc15363c9fef"
+  },
+  "run_utc": "2026-10-11T07:22:54.988938+00:00",
+  "scope": "V4_ONLY_POSTGRESQL_ONLY",
+  "denominator": {
+    "workers": 3,
+    "job_days": 2
+  },
+  "negative_vectors": [
+    "Concurrent second worker rejected with no executor call",
+    "Prior PUBLISHED fixture day never redispatched"
+  ],
+  "previous_status": "AUDIT_INCOMPLETE",
+  "current_status": "SCOPED_PROCESS_CRASH_LOCK_RECOVERY_PASS",
+  "evidence_links": [
+    {
+      "path": "R4_WORKER_worker_crash_a2bc1740_crash_CONNECTIONS.jsonl",
+      "sha256": "a569c3838a10e63bedb3101381530918b08ccdc87385e4394bceb325cdf12517"
+    },
+    {
+      "path": "R4_WORKER_worker_crash_a2bc1740_contender_CONNECTIONS.jsonl",
+      "sha256": "a1eac94c43702f3cec0040ea884503bedb3f9ff172d88c73f4f90ebaec88420b"
+    },
+    {
+      "path": "R4_WORKER_worker_crash_a2bc1740_restart_CONNECTIONS.jsonl",
+      "sha256": "ae251b083d18120e101c4923df079fa557a2c41b7e5b7aeb448ef3932e7f7aa7"
+    }
+  ],
+  "owner": "Codex / root",
+  "limitations": [
+    "Engineering executor fixture, not actual source pipeline crash, accepted Head publication or CAS checkpoint reuse",
+    "Previously PUBLISHED date is a fixture state; no real accepted-T0 no-republish claim"
+  ],
+  "next_conditions": [
+    "Actual source executor immutable-stage resume, accepted-T0 no-redispatch and publication recovery"
+  ],
+  "fixture_root": "G:\\codex_tmp\\full_system_r4_fbd23a6b\\worker_crash_a2bc1740",
+  "fixture_job": "R4_ENGINEERING_ecc3aefce43f46ffb43439544d160b00",
+  "before": {
+    "job_id": "R4_ENGINEERING_ecc3aefce43f46ffb43439544d160b00",
+    "trigger": "ENGINEERING_FIXTURE",
+    "mode": "PROBE",
+    "through_date": "2026-10-09",
+    "status": "RUNNING",
+    "created_at": "2026-10-11T08:00:00+08:00",
+    "finished_at": null,
+    "idempotency_key": "R4_ENGINEERING_ecc3aefce43f46ffb43439544d160b00",
+    "error": null,
+    "days": [
+      {
+        "job_id": "R4_ENGINEERING_ecc3aefce43f46ffb43439544d160b00",
+        "trade_date": "2026-09-30",
+        "state": "PUBLISHED",
+        "attempt_count": 0,
+        "next_retry_at": null,
+        "source_checks": {}
+      },
+      {
+        "job_id": "R4_ENGINEERING_ecc3aefce43f46ffb43439544d160b00",
+        "trade_date": "2026-10-09",
+        "state": "R4_ENGINEERING_CRASH_CHECKPOINT",
+        "attempt_count": 1,
+        "next_retry_at": null,
+        "source_checks": {
+          "evidence_class": "ENGINEERING_FIXTURE",
+          "source_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        }
+      }
+    ]
+  },
+  "after_kill": {
+    "job_id": "R4_ENGINEERING_ecc3aefce43f46ffb43439544d160b00",
+    "trigger": "ENGINEERING_FIXTURE",
+    "mode": "PROBE",
+    "through_date": "2026-10-09",
+    "status": "RUNNING",
+    "created_at": "2026-10-11T08:00:00+08:00",
+    "finished_at": null,
+    "idempotency_key": "R4_ENGINEERING_ecc3aefce43f46ffb43439544d160b00",
+    "error": null,
+    "days": [
+      {
+        "job_id": "R4_ENGINEERING_ecc3aefce43f46ffb43439544d160b00",
+        "trade_date": "2026-09-30",
+        "state": "PUBLISHED",
+        "attempt_count": 0,
+        "next_retry_at": null,
+        "source_checks": {}
+      },
+      {
+        "job_id": "R4_ENGINEERING_ecc3aefce43f46ffb43439544d160b00",
+        "trade_date": "2026-10-09",
+        "state": "R4_ENGINEERING_CRASH_CHECKPOINT",
+        "attempt_count": 1,
+        "next_retry_at": null,
+        "source_checks": {
+          "evidence_class": "ENGINEERING_FIXTURE",
+          "source_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        }
+      }
+    ]
+  },
+  "restarted": {
+    "calls": [
+      "2026-10-09"
+    ],
+    "job": {
+      "job_id": "R4_ENGINEERING_ecc3aefce43f46ffb43439544d160b00",
+      "trigger": "ENGINEERING_FIXTURE",
+      "mode": "PROBE",
+      "through_date": "2026-10-09",
+      "status": "PROBE_COMPLETE",
+      "created_at": "2026-10-11T08:00:00+08:00",
+      "finished_at": "2026-10-11T15:22:38.291695+08:00",
+      "idempotency_key": "R4_ENGINEERING_ecc3aefce43f46ffb43439544d160b00",
+      "error": null,
+      "days": [
+        {
+          "job_id": "R4_ENGINEERING_ecc3aefce43f46ffb43439544d160b00",
+          "trade_date": "2026-09-30",
+          "state": "PUBLISHED",
+          "attempt_count": 0,
+          "next_retry_at": null,
+          "source_checks": {}
+        },
+        {
+          "job_id": "R4_ENGINEERING_ecc3aefce43f46ffb43439544d160b00",
+          "trade_date": "2026-10-09",
+          "state": "PROBED",
+          "attempt_count": 2,
+          "next_retry_at": null,
+          "source_checks": {
+            "status": "PROBED",
+            "evidence_class": "ENGINEERING_FIXTURE",
+            "formal_consumer_enabled": false
+          }
+        }
+      ]
+    }
+  },
+  "owned_killed_pid": 34092,
+  "owned_exit_code": 1
+}

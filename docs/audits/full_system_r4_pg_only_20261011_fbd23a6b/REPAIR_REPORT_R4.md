@@ -42,3 +42,23 @@ R4_03_CHART_HTTP_RESULT_01.json：实际产品 handler/BFF/PG reader 的30请求
 99个命名native测试零FAIL/ERROR/SKIP：R4_SCOPED_01d4c10b_RESULT.json。此分母包含后续journal反例，不能覆盖原4568或合法全量分母。HTTP工程运行中的额外class默认属性修改单列为运行时源绑定限制；结果的源树是证据发射时清单，下一次执行使用提交后稳定代码验证。
 
 工程包（398399fa）已Drive归档，文件ID 1rAuHeDGY3jWrL6xOACf45hrYmX9sRk7z；metadata名称/3241285bytes/父目录匹配。仅局部工程包，不等于全系统验收。
+
+## 稳定代码复验与纯计算依赖增量
+
+提交 c0d186283dad45b09706253d8bdf67147be25ec8 后，实际 HTTP 再次30请求符合预期、最新6组合零差异、409/400负例通过，结果 R4_03_CHART_HTTP_RESULT.json。被执行的 handler/BFF/helper 文件没有再修改；新增审计脚本使整体工作树不洁，因此回执未虚填 source_SHA。
+
+R4_DYNAMIC_DB_EVIDENCE_R1.json 绑定命名范围/FEP/真实HTTP连接栈与 SQL intent；原4568中仅163个节点在所选两份JUnit有精确对应，不改变合法分母，也不称163个节点完成全部合同。连接栈深度有限，仍非完整入口/权限/UI动态图。
+
+DB-06：V4 rank producer 现在引用独立纯排名模块，函数 AST 与冻结 helper 完全相同；独立子进程禁止 legacy builder 和 workbench_db 导入仍执行正确。原相同比较/并列/不稳定业务节点保留，3 PASS，见 R4_DB06_PURE_RANK_RESULT.json。仅该函数依赖闭合，未排除整个旧研究仓库。
+
+## 浏览器、进程故障与最终保护读回增量
+
+R4_03_BROWSER_RESULT.json：浦发银行 SH.600000 的五日 DOM 截止日期正确，最新日 RAW/周/月切换分别呈现正确末根与 CLOSED_ONLY_READY / AS_OF_PARTIAL_READY；Sep30 缺失 period owner 明确报错。第一轮中断未持久连接日志，只作为 DOM 证据。第二轮 latest/Sep30 有逐请求落盘 PG intents；显式隔离工程标识、production_accepted=false、只读预览禁止所有写方法，源写护栏无拒绝事件（即未发生源写尝试）。临时页面与55891预览进程均已关闭。
+
+R4_02_PROCESS_CRASH_RESULT.json：只强制终止 owned worker PID34092；PG checkpoint字节化读回保持一致，竞争worker执行器零调用且拒绝锁占用，重启执行唯一未完成fixture日期，旧PUBLISHED fixture保持。仅工程executor fixture，不宣称真实源流水线/CAS checkpoint复用、正式accepted T0重发验证完成。
+
+R4_SOURCE_WRITE_GUARD_RESULT.json：独立G fixture下四种实际源写操作在改动前拒绝、源文件字节不变；异常为非业务BaseException。过程内保护原工作区与D:/new_tdx，不代替完整配置根清单或外部子进程保护。
+
+最终再次读取10171保护绑定仍10169一致/2已解释源码基线差异，R4_PROTECTED_AFTER.json与R4_SOURCE_BASELINE_QUALIFICATION.json必须联读。远端目标分支重新fetch仍fbd23a6ba08d0948fe7ad421d1765fe363648522，生产28765仍PID22956。
+
+R4-00_SCOPE_GATE.json 明确 NOT_VERIFIABLE；当前静态和有限动态证据不足以闭合整个入口/权限/UI/worker图和合法分母，未自签scope冻结完成或系统全PASS。各开放工程项仍在独立台账，下一优先级为真实source executor/candidate闭环、jointCAS/rollback与逐合同合法回归。

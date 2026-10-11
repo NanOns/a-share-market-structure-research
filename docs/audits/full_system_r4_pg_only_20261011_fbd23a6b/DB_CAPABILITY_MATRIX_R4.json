@@ -2,23 +2,23 @@
   "contract_id": "R4-MASTER-R1",
   "base_head": "fbd23a6ba08d0948fe7ad421d1765fe363648522",
   "source_SHA": null,
-  "source_git_head": "fbd23a6ba08d0948fe7ad421d1765fe363648522",
+  "source_git_head": "c0d186283dad45b09706253d8bdf67147be25ec8",
   "source_revision_state": "UNCOMMITTED_BYTES_BOUND",
   "execution_source_binding": {
-    "path": "R4_SOURCE_TREE_d3b8e78f620ba83fa65720218b1c31d617e1bcccc8ac6037cc1310c94ddbf4e5.json",
-    "sha256": "7f5fb139d5999f1b1140a483c2815ca9904a036edabaa1307ead1e4095103b19",
-    "tree_sha256": "d3b8e78f620ba83fa65720218b1c31d617e1bcccc8ac6037cc1310c94ddbf4e5"
+    "path": "R4_SOURCE_TREE_5b4276cd841407df3312c4348a120728c3bb2976484cdf2918265d499c7e1d8b.json",
+    "sha256": "242919e6c951b83a7346e93a2de0bc3e045d3e504f0796629cf4fd9b744af5e6",
+    "tree_sha256": "5b4276cd841407df3312c4348a120728c3bb2976484cdf2918265d499c7e1d8b"
   },
-  "run_utc": "2026-10-11T06:15:48.986526+00:00",
+  "run_utc": "2026-10-11T07:11:17.771843+00:00",
   "scope": "V4_ONLY_POSTGRESQL_ONLY",
-  "denominator": 12,
+  "denominator": null,
   "negative_vectors": [],
   "previous_status": "AUDIT_INCOMPLETE",
-  "current_status": "CAPABILITY_REVIEW_DYNAMIC_AND_MIGRATION_GATES_OPEN",
+  "current_status": "AUDIT_INCOMPLETE",
   "evidence_links": [],
   "owner": "Codex / root",
   "limitations": [
-    "DB-09 explicitly remains non-exhaustive; 12 capability rows do not imply zero hidden engines"
+    "Static import closure is a candidate superset, not runtime reachability proof"
   ],
   "next_conditions": [
     "Dynamic entry validation and per-test contract review"
@@ -74,9 +74,12 @@
       "scope": "V4_PG_ONLY_CAPABILITY",
       "engineering_owner": "Codex / root",
       "owner": "OWNER_UNKNOWN_UNTIL_BUSINESS_ADMISSION",
-      "status": "SCOPED_PASS_FIVE_DATE_HTTP_BROWSER_OPEN",
+      "status": "SCOPED_FIVE_DATE_STORAGE_AND_HTTP_PASS_BROWSER_CAPACITY_OPEN",
       "V4_REACHABLE": "YES",
-      "evidence": "5224 symbols /2162962 bars zero payload delta",
+      "evidence": [
+        "R4_03_FIVE_DATE_HISTORY_RESULT.json",
+        "R4_03_CHART_HTTP_RESULT.json"
+      ],
       "source_locators": [
         {
           "path": "src/workbench_db/v4_history_pg_r1.py",
@@ -95,7 +98,10 @@
       ],
       "source_sha256": "96ef6e610de1d1878ab512899b2dfbd74dbabb04e5f542d818d554770d70c369",
       "current_PID_loaded": "NOT_VERIFIABLE_FOR_CANDIDATE_NOT_SWITCHED",
-      "acceptance_independent_of_current_stage": true
+      "acceptance_independent_of_current_stage": true,
+      "limitations": [
+        "14 READY requests and16 SOURCE_INCOMPLETE due to missing historical period owners; production authority untouched"
+      ]
     },
     {
       "audit_item_id": "DB-04",
@@ -112,17 +118,17 @@
           "symbol": "build_snapshot",
           "start": 87,
           "end": 393,
-          "sha256": "a2f038a650854305c800acc52c546c29b0739cd12d400e7204e0ff7294399d19"
+          "sha256": "ee2736d8fcf5158bd0d6dcaf8ff64e7bdfbd8acbfcb3112d3530ebe80671e6f8"
         },
         {
           "path": "src/workbench_service/production_v4.py",
           "symbol": "ProductionV4ResearchReader",
           "start": 417,
           "end": 519,
-          "sha256": "a2f038a650854305c800acc52c546c29b0739cd12d400e7204e0ff7294399d19"
+          "sha256": "ee2736d8fcf5158bd0d6dcaf8ff64e7bdfbd8acbfcb3112d3530ebe80671e6f8"
         }
       ],
-      "source_sha256": "a2f038a650854305c800acc52c546c29b0739cd12d400e7204e0ff7294399d19",
+      "source_sha256": "ee2736d8fcf5158bd0d6dcaf8ff64e7bdfbd8acbfcb3112d3530ebe80671e6f8",
       "current_PID_loaded": "NOT_VERIFIABLE_FOR_CANDIDATE_NOT_SWITCHED",
       "acceptance_independent_of_current_stage": true
     },
@@ -154,9 +160,11 @@
       "scope": "V4_PG_ONLY_CAPABILITY",
       "engineering_owner": "Codex / root",
       "owner": "OWNER_UNKNOWN_UNTIL_BUSINESS_ADMISSION",
-      "status": "SOURCE_CONFIRMED_REACHABILITY_OPEN",
+      "status": "PURE_RANK_CAPABILITY_EXTRACTED_SCOPED_PASS_OTHER_PATHS_OPEN",
       "V4_REACHABLE": "CONDITIONAL",
-      "evidence": "Legacy app creates provider; V4 operational_candidate imports pure research_builder._exact_cycle_delta; capability-level proof pending",
+      "evidence": [
+        "R4_DB06_PURE_RANK_RESULT.json"
+      ],
       "source_locators": [
         {
           "path": "src/workbench_db/api_connection.py",
@@ -168,7 +176,10 @@
       ],
       "source_sha256": "a8b6da3434f5fb408791b50c61e6b66cd0ed30c6c09b6915de0e533f3e935e6b",
       "current_PID_loaded": "NOT_VERIFIABLE_FOR_CANDIDATE_NOT_SWITCHED",
-      "acceptance_independent_of_current_stage": true
+      "acceptance_independent_of_current_stage": true,
+      "limitations": [
+        "No whole legacy builder/provider exclusion; actual rank producer full replay remains open"
+      ]
     },
     {
       "audit_item_id": "DB-07",
@@ -255,18 +266,18 @@
           "path": "src/workbench_db/v4_journal_pg_r1.py",
           "symbol": "JournalConnection",
           "start": 11,
-          "end": 58,
-          "sha256": "303566148fa9f4be9936bc13be457cb21acf0b587743a6f2cb8c8aa362d1e8b4"
+          "end": 63,
+          "sha256": "fddde9acd385ba05098c8ced13212d870c78d78ed048cee5e250f0341a1c0564"
         },
         {
           "path": "src/workbench_db/v4_journal_pg_r1.py",
           "symbol": "open_read",
-          "start": 60,
-          "end": 67,
-          "sha256": "303566148fa9f4be9936bc13be457cb21acf0b587743a6f2cb8c8aa362d1e8b4"
+          "start": 65,
+          "end": 74,
+          "sha256": "fddde9acd385ba05098c8ced13212d870c78d78ed048cee5e250f0341a1c0564"
         }
       ],
-      "source_sha256": "303566148fa9f4be9936bc13be457cb21acf0b587743a6f2cb8c8aa362d1e8b4",
+      "source_sha256": "fddde9acd385ba05098c8ced13212d870c78d78ed048cee5e250f0341a1c0564",
       "current_PID_loaded": "NOT_VERIFIABLE_FOR_CANDIDATE_NOT_SWITCHED",
       "acceptance_independent_of_current_stage": true
     },

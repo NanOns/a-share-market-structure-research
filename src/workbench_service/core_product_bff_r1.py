@@ -83,6 +83,9 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             data=rebind(data);data['context']['focus_read_projection_contract']='CORE_PRODUCT_FOCUS_READ_R2'
             data['context']['focus_read_projection_external_acceptance']='NOT_GRANTED'
             data['context']['focus_write']=False
+        if self.isolated_history is not None:
+            data['production_accepted']=False
+            data['context'].update(production_accepted=False,read_scope='ISOLATED_ENGINEERING_HISTORY',isolated_authority_sha256=self.isolated_history[2])
         return code,data
     def identity_records(self):
         key=('product-identity',)

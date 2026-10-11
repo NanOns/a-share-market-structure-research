@@ -95,7 +95,9 @@ def midrank(returns, members):
                  .5*(bisect.bisect_right(values,returns[s])-bisect.bisect_left(values,returns[s])-1))/(n-1) for s in members}
 
 
-def materialize_core(root, dates=None):
+def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE'):
+    if basis_namespace not in ('TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE','TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE'):
+        raise ValueError('UNSUPPORTED_CORE_BASIS_NAMESPACE')
     root = Path(root).resolve(); policy = load(root/CONTRACT)
     dates = dates or policy['target_sessions']; out = root/OUT; out.mkdir(parents=True, exist_ok=True)
     protected = {p: sha256_file(root/p) for p in ('config/v4_joint_release_authority_v1.json','data/v4/V4_DATA_ACCEPTED_HEAD.json')}
@@ -179,7 +181,7 @@ def materialize_core(root, dates=None):
             revision=hashlib.sha256(json.dumps(dict(code=code,gbbq=sources['gbbq']['sha256'],
                 events=[(e.event_date,e.category,e.c1,e.c2,e.c3,e.c4) for e in events[code]
                         if e.event_date<=int(target.replace('-','')) and e.category==1]),sort_keys=True).encode()).hexdigest()
-            basis='TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE:'+revision
+            basis=basis_namespace+':'+revision
             by={b['trade_date']:b for b in bs};obs=[]
             for day in sessions:
                 if not bs[0]['trade_date']<=day<=target:continue
@@ -196,7 +198,7 @@ def materialize_core(root, dates=None):
             b=by.get(target)
             if b:
                 raw_rows.append(dict(security_id=sid,trade_date=target,**dict(zip(('open','high','low','close'),b['raw_ohlc'])),amount=b['amount'],volume=b['volume']))
-                adjusted_rows.append(dict(security_id=sid,trade_date=target,**dict(zip(('open','high','low','close'),b['qfq_ohlc'] or [None]*4)),qfq_mul=b['qfq_mul'],qfq_add=b['qfq_add'],price_basis='TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE',adjustment_source_revision=revision,adjustment_readiness='READY' if b['qfq_ohlc'] else 'UNKNOWN'))
+                adjusted_rows.append(dict(security_id=sid,trade_date=target,**dict(zip(('open','high','low','close'),b['qfq_ohlc'] or [None]*4)),qfq_mul=b['qfq_mul'],qfq_add=b['qfq_add'],price_basis=basis_namespace,adjustment_source_revision=revision,adjustment_readiness='READY' if b['qfq_ohlc'] else 'UNKNOWN'))
             for n in ('ma20','atr20'):
                 cell=values[n]
                 if cell['value'] is None:continue

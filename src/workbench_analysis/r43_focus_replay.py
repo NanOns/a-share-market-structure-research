@@ -162,8 +162,8 @@ def materialize_focus(root):
         receipts.append(receipt);print(json.dumps(dict(stage='D0_D2',**{k:v for k,v in receipt.items() if k in ('trade_date','rows','D0','PREWATCH','D2_freshness')})),flush=True)
     series=out/'focus_actual_bars.pg.json'
     from workbench_db.v4_series_pg_r1 import build
-    from workbench_service.current_v4_context import canonical,digest
-    build(root,series,((sid,day,b) for (sid,day),b in allbars.items()),t0=max(days),source_digest=digest(canonical(sources)))
+    from workbench_service.current_v4_context import canonical,digest as content_digest
+    build(root,series,((sid,day,b) for (sid,day),b in allbars.items()),t0=max(days),source_digest=content_digest(canonical(sources)))
     for owner in native.values():owner['series']=ref(root,series)
     bindings=dict(series=ref(root,series),calendar=ref(root,out/'FOCUS_CALENDAR.json'),gbbq=sources['gbbq'],
           classification=ref(root,root/'config/v4_02_gbbq_price_impact_classification_v1.json'),status=pathstatus,native_core=native)

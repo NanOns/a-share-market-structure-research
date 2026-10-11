@@ -11,6 +11,11 @@ from .baostock_dm01_sdk_schema_v2 import normalize_response
 from .baostock_daily_update_source import DAILY_METHOD,FACTOR_METHOD,_canonical_rows_digest
 from .source_readiness_v2 import source_readiness
 
+def readiness_binding_revision(source_revision_id,source_freeze,dependencies):
+    return tdx.sha256_bytes(tdx._json_bytes(dict(
+        contract_id='DYNAMIC_DAILY_READY_BINDING_IDENTITY_R3',
+        source_revision_id=source_revision_id,source_freeze=source_freeze,
+        dependency_bindings=dependencies)))
 
 def probe_source_revision(day):
     """Three bounded metadata requests; never download ZIP or query full market."""
@@ -137,10 +142,14 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     return derive_ready_sources(root,day,result,cancelled=cancelled,readback_url=readback_url,progress=progress)
 
 
-def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=None,progress=lambda *args:None):
+def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=None,progress=lambda *args:None,engineering_replay_current=False):
     """Revalidate frozen bytes at the final boundary before any Owner work."""
     from .r43_owner_replay import checked
     root=Path(root)
+    if engineering_replay_current:
+        import os
+        if readback_url is not None or os.environ.get('R4_NATIVE_ISOLATION')!='1' or not root.resolve().is_relative_to(Path('G:/codex_tmp').resolve()):
+            raise ValueError('ENGINEERING_REPLAY_CANNOT_PROMOTE')
     artifact=json.loads(checked(root,result['source_freeze']).read_bytes())
     from .producer_bootstrap_v1 import capture_daily_sources, optional_step
     if not result.get('first_capture_source_candidate',{}).get('candidate'):
@@ -151,7 +160,7 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
         return dict(result,status=readiness['status'],reason=readiness['reason'])
     progress(day,'DERIVING',result)
     from .operational_daily_ready_owner_v2 import build,seal
-    produced,context=build(root,result['source_freeze'],source_readiness=result['source_readiness'])
+    produced,context=build(root,result['source_freeze'],source_readiness=result['source_readiness'],engineering_replay_current=engineering_replay_current)
     context['source_readiness']=result['source_readiness']
     if cancelled():return dict(result,status='CANCELLED',reason='CANCELLED_BEFORE_CAS')
     candidate,binding=seal(root,context)
@@ -198,6 +207,7 @@ def verify_source_gate(root,day,artifact,result,now=None):
     native_document=json.loads(native_path.read_bytes());native=native_document['target_bars']
     bycode={r['source_security_key'].upper():r for r in native}
     codes=[r['code'].upper() for r in daily]
+    scoped_reconciliation=None
     reconciled=bool(codes) and len(codes)==len(set(codes)) and len(bycode)==len(native)
     active_codes={r['code'].upper() for r in daily if r.get('tradestatus')=='1'}
     if set(bycode)!=active_codes:reconciled=False
@@ -244,6 +254,15 @@ def verify_source_gate(root,day,artifact,result,now=None):
         identity=json.loads(checked(root,life['identity']).read_bytes())['rows']
         expected_codes={r['source_security_key'].upper() for r in identity if r.get('board_scope') in {'SH_MAIN','SZ_MAIN','CHINEXT','STAR'} and date_valid_identity(r,day)}
         actual_codes={code for code in codes if code.startswith(('SH.','SZ.'))}
+        from .native_source_reconciliation_r3 import reconcile
+        policy_path=root/'config/tdx_a_stock_delta_scope_policy_v2.json'
+        scoped_reconciliation=reconcile(native,daily,expected_codes,json.loads(policy_path.read_bytes()),day)
+        scoped_reconciliation['scope_policy']=ref(root,policy_path)
+        scoped_reconciliation['dated_identity']=life['identity']
+        reconciled=scoped_reconciliation['status']=='SCOPED_REQUIRED_PROVIDER_FACTS_RECONCILED'
+        for family in ('baostock_daily','baostock_factor'):
+            sources[family]['identity_reconciliation_passed']=reconciled
+            sources[family]['scope_reconciliation']=scoped_reconciliation
         # Provider validation and the protected old identity gate are separate.
         # A new roster never obtains authority merely by matching native bars.
         scope_matches=actual_codes==expected_codes
@@ -278,8 +297,15 @@ def verify_source_gate(root,day,artifact,result,now=None):
         status='NATIVE_PROVIDERS_RECONCILED' if reconciled else 'NATIVE_PROVIDER_RECONCILIATION_FAILED',
         original_baostock=artifact['native_baostock'],original_tdx=bars['artifact'],
         target_session=day,native_codes=sorted(bycode),baostock_codes=sorted(set(codes)))
+    if scoped_reconciliation is not None:
+        readiness['native_provider_facts'].update(
+            reconciliation_scope=scoped_reconciliation,
+            full_market_coverage_pass=False,
+            current_contract_scope_pass=reconciled)
     if identity_preflight:readiness['old_head_identity_preflight']=identity_preflight
-    revision=readiness.get('source_revision_id') or tdx.sha256_bytes(tdx._json_bytes(readiness))
+    # Equal payloads at distinct immutable locations must not borrow a gate
+    # whose exact source binding names another artifact.
+    revision=readiness_binding_revision(readiness.get('source_revision_id'),result['source_freeze'],dependencies)
     ready_path=snapshot/'source_readiness'/day/(revision+'.json')
     if not ready_path.is_file():atomic_json(root,ready_path,readiness)
     result.update(source_readiness=dict(path=ready_path.relative_to(root).as_posix(),sha256=tdx.sha256_file(ready_path)),

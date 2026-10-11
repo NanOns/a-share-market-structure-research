@@ -34,15 +34,41 @@ def private_scope(module, replacements):
     return scope
 
 
-def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,observed_at):
+def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,observed_at,exact_adjustment=False):
     root=Path(root).resolve();folder=Path(folder).resolve()
+    if exact_adjustment:
+        import os
+        if os.environ.get('R4_NATIVE_ISOLATION')!='1' or not root.is_relative_to(Path('G:/codex_tmp').resolve()):
+            raise ValueError('ISOLATED_EXACT_CORE_CANDIDATE_REQUIRED')
+    def immutable_source_write(path,blob,**kwargs):
+        path=Path(path)
+        if path.exists():
+            if path.read_bytes()!=blob:raise ValueError('FROZEN_OWNER_SOURCE_CONTENT_CONFLICT')
+            return
+        return core._atomic_write(path,blob,**kwargs)
     if not folder.is_relative_to(root) or folder==root:
         raise ValueError('SUCCESSOR_OUTPUT_ROOT_REQUIRED')
     def mapped(path):
         path=Path(path).resolve()
         return Path(read_mappings.get(str(path),path))
     def load(path):return core.load(mapped(path))
-    def ref(base,path):return core.ref(base,mapped(path))
+    def ref(base,path):
+        target=mapped(path)
+        if exact_adjustment and target==root/'src/adjustment/tdx_adjustment.py':
+            target=Path(__file__).resolve().parents[2]/'src/adjustment/tdx_adjustment_v0_3.py'
+        if not target.is_relative_to(root):
+            # Record the bytes of the code actually executed, separately from
+            # the accepted source copies inside the isolated workspace.
+            repository=Path(__file__).resolve().parents[2]
+            if not target.is_relative_to(repository/'src') or target.suffix!='.py':
+                raise ValueError('EXTERNAL_OWNER_BINDING_OUTSIDE_EXECUTED_SOURCE')
+            blob=target.read_bytes()
+            import hashlib
+            destination=folder/'executed_sources'/hashlib.sha256(blob).hexdigest()/target.relative_to(repository)
+            destination.parent.mkdir(parents=True,exist_ok=True)
+            immutable_source_write(destination,blob,tdx_root=Path('D:/new_tdx'))
+            return core.ref(base,destination)
+        return core.ref(base,target)
     output=(folder/'owner_v3').relative_to(root).as_posix()
     from datetime import datetime as real_datetime
     class FrozenDatetime(real_datetime):
@@ -50,10 +76,20 @@ def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,o
         def now(cls,tz=None):
             value=real_datetime.fromisoformat(observed_at)
             return value.astimezone(tz) if tz else value.replace(tzinfo=None)
-    common=dict(OUT=output,load=load,ref=ref,now=lambda:observed_at,datetime=FrozenDatetime)
+    common=dict(OUT=output,load=load,ref=ref,now=lambda:observed_at,datetime=FrozenDatetime,
+                _atomic_write=immutable_source_write)
     c=private_scope(core,common)
+    if exact_adjustment:
+        from . import exact_operational_core_candidate_r3 as exact
+        c.update(transform_window=exact.transform_window,independent_affine=exact.independent_affine)
     core_path=folder/'owner_v3/CORE_REPLAY.json'
-    owners=load(core_path)['owners'] if core_path.exists() else c['materialize_core'](root,dates)
+    if exact_adjustment and core_path.exists():
+        source=load(folder/'owner_v3/SOURCE_BINDINGS.json')['sources']['adjustment_kernel']
+        expected=Path(__file__).resolve().parents[2]/'src/adjustment/tdx_adjustment_v0_3.py'
+        from .tdx_official_daily_source import sha256_file
+        if source['sha256']!=sha256_file(expected):raise ValueError('EXACT_CORE_CACHED_SOURCE_MISMATCH')
+    owners=load(core_path)['owners'] if core_path.exists() else c['materialize_core'](root,dates,
+        basis_namespace='TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE' if exact_adjustment else 'TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE')
     from scripts import run_v4_04_full_market_candidate_r4 as original_builder
     builder=ModuleType(original_builder.__name__)
     vars(builder).update(vars(original_builder))

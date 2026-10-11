@@ -12,9 +12,21 @@ def resolve_recorded_reader_source(root,binding):
     """Verify the recorded historical reader source; never execute or accept it."""
     from . import historical_stage_governance_r17 as historical
     name='src/workbench_analysis/dm01_publication_history_reader_v1.py'
-    if binding.get('path')!=name or binding.get('sha256')!='51729be1ad211080a73f9c071a9142370e3ba281eadc3c1eb4d7969a7cd7572d' or binding.get('bytes')!=2138:
+    v2='src/workbench_analysis/dm01_publication_history_reader_v2.py'
+    is_v2=binding.get('path')==v2 and binding.get('sha256')=='8c4c74c3fa61d1f6c4664fc143afcae07a803345ae5be3536af39b8188ac828c' and binding.get('bytes')==4693
+    if not is_v2 and (binding.get('path')!=name or binding.get('sha256')!='51729be1ad211080a73f9c071a9142370e3ba281eadc3c1eb4d7969a7cd7572d' or binding.get('bytes')!=2138):
         raise ValueError('RECORDED_READER_SOURCE_IDENTITY_REQUIRED')
     root=Path(root).resolve()
+    if is_v2:
+        archive=historical.exact(root,dict(binding,path='data/v4/stage_head_archive/r4_r3_readers/reader_v2_original.py'))
+        git_root=root
+        if not (root/'.git').exists():
+            provenance=json.loads((root/'R4_READ_ONLY_METADATA_GIT_SOURCE.json').read_bytes())
+            git_root=Path(provenance['source_root']).resolve()
+            if os.environ.get('R4_NATIVE_ISOLATION')!='1' or not root.is_relative_to(Path('G:/codex_tmp').resolve()) or git_root!=Path(__file__).resolve().parents[2] or provenance.get('grants_current_permission') is not False or provenance.get('contract')!='R4_R3_READ_ONLY_METADATA_GIT_SOURCE_V1':raise ValueError('RECORDED_SOURCE_EXPLICIT_GIT_PROVENANCE_REQUIRED')
+        raw=subprocess.check_output(['git','show','42def150100f579159a82f9c32de30719e0ea809:'+v2],cwd=git_root)
+        if raw!=archive.read_bytes():raise ValueError('RECORDED_READER_V2_EXACT_GIT_BYTES_REQUIRED')
+        return archive
     if (root/'.git').exists():return historical.resolve(root,binding,source=True)
     marker=root/'R4_READ_ONLY_METADATA_GIT_SOURCE.json'
     provenance=json.loads(marker.read_bytes())

@@ -94,15 +94,15 @@ def _scope(result, resolver):
 
 
 def validate_v4_09_history(*, project_root):
-    resolver, v9, _ = injected_validators(project_root)
-    return _scope(v9.validate(), resolver)
+    from .dm01_publication_history_reader_v3 import validate_v4_09_history as upgraded
+    return upgraded(project_root=project_root)
 
 
 def validate_v4_10_history(candidate=None, *, project_root):
-    resolver, _, v10 = injected_validators(project_root)
-    return _scope(v10.validate(candidate), resolver)
+    from .dm01_publication_history_reader_v3 import validate_v4_10_history as upgraded
+    return upgraded(candidate,project_root=project_root)
 
 
 def validate_v4_09_history_head(candidate, global_head, receipt, *, project_root):
-    resolver, v9, _ = injected_validators(project_root)
-    return _scope(v9.validate_head(candidate, global_head, receipt), resolver)
+    from .dm01_publication_history_reader_v3 import validate_v4_09_history_head as upgraded
+    return upgraded(candidate,global_head,receipt,project_root=project_root)

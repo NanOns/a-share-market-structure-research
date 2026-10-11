@@ -10,7 +10,8 @@ def hydrate(root):
     root=Path(root).resolve()
     if not root.is_relative_to(Path('G:/codex_tmp').resolve()):raise ValueError('G_ONLY_METADATA_TEST_ROOT_REQUIRED')
     paths={REGISTRY,'data/v4/V4_EXACT_BYTE_PORTABILITY_REGISTRY_R1.json','data/v4/V4_STAGE_ACCEPTED_HEAD.json',
-        'data/v4/V4_15_ACCEPTED_HEAD.json','config/v4_current_stage_authority_v2.json','config/v4_15_accepted_entry_contract_v1.json'}
+        'data/v4/V4_15_ACCEPTED_HEAD.json','config/v4_current_stage_authority_v2.json','config/v4_15_accepted_entry_contract_v1.json',
+        'data/v4/stage_head_archive/r4_r3_readers/reader_v2_original.py'}
     class Recording(PortableExact):
         def read(self,binding):
             paths.add(binding['path']);return super().read(binding)

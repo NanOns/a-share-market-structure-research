@@ -48,13 +48,13 @@ def _scope(result,root,current):
         business_reacceptance_performed=False,production_authorization=False)
 
 def validate_v4_10_history(candidate=None):
-    with _frozen_readers() as (root,v9,v10,current):
-        return _scope(v10.validate(candidate),root,current)
+    from .dm01_publication_history_reader_v3 import validate_v4_10_history as upgraded
+    return upgraded(candidate,project_root=Path(__file__).resolve().parents[2])
 
 def validate_v4_09_history():
-    with _frozen_readers() as (root,v9,v10,current):
-        return _scope(v9.validate(),root,current)
+    from .dm01_publication_history_reader_v3 import validate_v4_09_history as upgraded
+    return upgraded(project_root=Path(__file__).resolve().parents[2])
 
 def validate_v4_09_history_head(candidate,global_head,receipt):
-    with _frozen_readers() as (root,v9,v10,current):
-        return _scope(v9.validate_head(candidate,global_head,receipt),root,current)
+    from .dm01_publication_history_reader_v3 import validate_v4_09_history_head as upgraded
+    return upgraded(candidate,global_head,receipt,project_root=Path(__file__).resolve().parents[2])

@@ -71,7 +71,7 @@ def validate_record(root,record,package):
     if not record.get('evidence_bindings') or not record.get('runtime_bindings'):raise ValueError('SCOPED_PROOF_REQUIRED')
     for ref in record['evidence_bindings']:bound_path(root,ref)
     for ref in record['runtime_bindings']:
-        if package=='READER' and ref.get('path')=='src/workbench_analysis/dm01_publication_history_reader_v1.py':
+        if package=='READER' and ref.get('path') in ('src/workbench_analysis/dm01_publication_history_reader_v1.py','src/workbench_analysis/dm01_publication_history_reader_v2.py'):
             from .protected_stage_metadata_r3 import resolve_recorded_reader_source
             resolve_recorded_reader_source(root,ref)
         else:bound_path(root,ref)
@@ -125,7 +125,7 @@ def validate_reader_manifest(root,manifest):
     if not isinstance(refs,list) or [ref.get('path') for ref in refs]!=paths:raise ValueError('HISTORY_READER_RUNTIME_BINDING_INVALID')
     from .protected_stage_metadata_r3 import resolve_recorded_reader_source
     for ref in refs:
-        if ref['path']==paths[1]:resolve_recorded_reader_source(root,ref)
+        if ref['path'] in paths[:2]:resolve_recorded_reader_source(root,ref)
         elif ref!=binding(root,ref['path']):raise ValueError('HISTORY_READER_RUNTIME_BINDING_INVALID')
     return dict(status='PASS_ACCEPTED_V2_HISTORY_ONLY',business_reacceptance=False,production_authorization=False)
 

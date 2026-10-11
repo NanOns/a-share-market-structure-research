@@ -28,5 +28,9 @@ def test_independent_acceptance_exact_evidence():
         for b in [record['external_authority']['document'],*record['evidence_bindings']]:
             assert hashlib.sha256((ROOT/b['path']).read_bytes()).hexdigest()==b['sha256']
     for b in read('reports/audits/R4_STAGE_ENTRY_R1.json')['protected_bindings']:
-        p=resolve_frozen_binding(ROOT,b) if b['path']==HEAD_PATH else ROOT/b['path']
+        if b['path']=='data/v4/V4_STAGE_ACCEPTED_HEAD.json':
+            from workbench_analysis.protected_stage_metadata_r3 import resolve
+            p,receipt=resolve(ROOT,b)
+            assert receipt['grants_current_permission'] is False
+        else:p=resolve_frozen_binding(ROOT,b) if b['path']==HEAD_PATH else ROOT/b['path']
         assert hashlib.sha256(p.read_bytes()).hexdigest() in (b['sha256'],b.get('git_sha256'))

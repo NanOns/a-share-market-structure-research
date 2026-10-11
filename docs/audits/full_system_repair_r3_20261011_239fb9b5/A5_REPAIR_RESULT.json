@@ -1,0 +1,35 @@
+{
+  "contract_id": "TODAY_RESEARCH_FULL_CURRENT_LOO_V3_3_CANDIDATE_02",
+  "base_head": "640b9344620e85a011b4dcb13fce98e81692fd76",
+  "issue": "FA-017",
+  "source_bindings": [
+    {
+      "path": "src/workbench_analysis/full_loo_v3_3.py",
+      "sha256": "fc0d3f2247ca5be53785652723e28597eb06fbf22fd1d2753d3bdaf7d258a6c9"
+    },
+    {
+      "path": "config/full_current_loo_candidate_02.json",
+      "sha256": "c92546d42b32ba6915d989768ded5644d84f12de94458c52bdb290986a865c31"
+    },
+    {
+      "path": "tests/test_audit_repair_loo_r3.py",
+      "sha256": "44287284fedb887f028152d8689a2e7378aa8d31c0530ad62f5b99b5ef5eb11c"
+    }
+  ],
+  "test_count": 10,
+  "cases": [
+    "n1 empty UNKNOWN",
+    "no-related FALSE",
+    "no-members FALSE",
+    "n2/n6 independent market/sector medians",
+    "overlap global removal",
+    "unrelated surviving sector",
+    "market initial empty/target-only controlled reject",
+    "mixed-date reject before shortcut"
+  ],
+  "evidence": "a5_junit.xml",
+  "acceptance": "CANDIDATE_ENGINEERING_PASS_EXTERNAL_PENDING",
+  "formal_consumer_enabled": false,
+  "current_production_incident_proven": false,
+  "next": "Independent candidate recheck; formal operational LOO authority unchanged"
+}

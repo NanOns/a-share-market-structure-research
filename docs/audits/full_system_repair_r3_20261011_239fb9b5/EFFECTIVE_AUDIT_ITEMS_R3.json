@@ -300,7 +300,7 @@
       "id": "FA-017",
       "priority": "P2",
       "category": "LOO_CANDIDATE_EMPTY_POPULATION_BOUNDARY",
-      "status": "OPEN_CANDIDATE_SYNTHETIC_COUNTEREXAMPLE",
+      "status": "CANDIDATE_ENGINEERING_FIXED_EXTERNAL_PENDING",
       "scope": "V3.3 candidate; singleton target sector and no remaining sector rows after exclusion, nonempty market reference; not a demonstrated current production failure",
       "producer": "src/workbench_analysis/full_loo_v3_3.py:77",
       "evidence": [
@@ -309,7 +309,8 @@
       ],
       "trigger": "build_sector_current rejects the empty remaining member frame before outer per-relation SECTOR_EMPTY_AFTER_EXCLUSION handling",
       "acceptance": "Explicit empty-population result/rejection contract and handled response; singleton plus unrelated sector, n=2/multi/overlap tests retain semantics; no formal LOO grant inferred",
-      "effective_location": null
+      "effective_location": null,
+      "repair_evidence": "A5_REPAIR_RESULT.json"
     }
   ],
   "additional_items": [

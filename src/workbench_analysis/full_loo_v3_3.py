@@ -17,7 +17,7 @@ import pandas as pd
 from workbench_analysis.sector_attention import build_sector_current
 
 
-CONTRACT_ID = "TODAY_RESEARCH_FULL_CURRENT_LOO_V3_3_CANDIDATE_01"
+CONTRACT_ID = "TODAY_RESEARCH_FULL_CURRENT_LOO_V3_3_CANDIDATE_02"
 
 
 class FullLooV33Error(RuntimeError):
@@ -52,7 +52,7 @@ def _truth(value: Any) -> bool | None:
 def recompute_full_current_loo(
     targets: Iterable[str], members: pd.DataFrame, market_quotes: pd.DataFrame, config: dict[str, Any]
 ) -> dict[str, dict[str, Any]]:
-    required_members = {"sector_id", "security_id", "trade_date", "ret1"}
+    required_members = {"sector_id", "sector_type", "security_id", "trade_date", "ret1"}
     required_market = {"security_id", "trade_date", "ret1"}
     if missing := sorted(required_members.difference(members.columns)):
         raise FullLooV33Error("FULL_LOO_MEMBER_COLUMNS_MISSING:" + ",".join(missing))
@@ -67,6 +67,10 @@ def recompute_full_current_loo(
         raise FullLooV33Error("FULL_LOO_DUPLICATE_MEMBER")
     if market.duplicated(["security_id", "trade_date"]).any():
         raise FullLooV33Error("FULL_LOO_DUPLICATE_MARKET_SECURITY")
+    if market.empty:
+        raise FullLooV33Error("FULL_LOO_MARKET_EMPTY_AFTER_EXCLUSION")
+    if len(set(source['trade_date']) | set(market['trade_date'])) != 1:
+        raise FullLooV33Error("FULL_LOO_REQUIRES_ONE_TRADE_DATE")
     outputs: dict[str, dict[str, Any]] = {}
     for target in sorted(set(map(str, targets))):
         related = source.loc[source["security_id"].eq(target), ["sector_id", "sector_type"]].drop_duplicates()
@@ -74,7 +78,8 @@ def recompute_full_current_loo(
         market_without_target = market.loc[~market["security_id"].eq(target)].copy()
         if market_without_target.empty:
             raise FullLooV33Error("FULL_LOO_MARKET_EMPTY_AFTER_EXCLUSION")
-        recomputed = build_sector_current(without_target, market_without_target, config).set_index("sector_id")
+        recomputed = (build_sector_current(without_target, market_without_target, config).set_index("sector_id")
+                      if not without_target.empty else pd.DataFrame())
         details = []
         for relation in related.sort_values(["sector_type", "sector_id"]).itertuples(index=False):
             if relation.sector_id not in recomputed.index:

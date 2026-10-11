@@ -19,3 +19,7 @@ A2/A3/A4/A5/A6及 B 类继续独立执行。B4 不重复既有通过数值；H21
 E2/E3 仅放行解析后位于 G:/codex_tmp 或 G:/codex work/fep_engineering 的工程路径。目录穿越、非工程、生产、TDX及旧E/F路径拒绝；Windows symlink创建因权限1314失败原件保留，采用真实junction验证重解析点内外路径，12项最终通过，未改变权限设置。
 
 比较与详情共用按日期可用对象的唯一别名解析，支持旧/新六位代码及完整代码，歧义/未知不选任意实体。四mode按股票rps5/20、板块sector_rs5/20取值，显示收益与分位单位。五日真实HTTP及四mode Edge DOM通过。浏览器与HTTP服务仅审计GET，未接管28765。
+
+## A5
+
+候选 LOO 升级 CANDIDATE_02：市场非空而剔除后成员全空，相关关系明确 UNKNOWN / SECTOR_EMPTY_AFTER_EXCLUSION；无相关关系 FALSE；市场全空使用唯一受控异常。空分支前校验共同单日，防止绕过输入校验。10项边界与既有重叠测试通过。仅候选域，不覆盖正式运营 LOO 或声称线上事故已确认。

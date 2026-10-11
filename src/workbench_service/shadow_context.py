@@ -7,6 +7,7 @@ configured, no database is opened. Engineering injection is constructor-only.
 import copy
 import hashlib
 import json
+import psycopg
 from pathlib import Path
 
 from .research_context import ResearchContextError
@@ -169,7 +170,9 @@ class ShadowContextReader:
             return bundle
         except ResearchContextError:
             raise
-        except (KeyError, TypeError, ValueError, OSError, sqlite3.Error) as exc:
+        except psycopg.Error as exc:
+            raise ResearchContextError('SHADOW_PG_UNAVAILABLE') from exc
+        except (KeyError, TypeError, ValueError, OSError) as exc:
             raise ResearchContextError('SHADOW_SOURCE_INVALID') from exc
 
     def _component(self, name, bundle):

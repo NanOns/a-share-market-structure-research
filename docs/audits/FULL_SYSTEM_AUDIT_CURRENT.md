@@ -1,5 +1,7 @@
 # 全系统代码审计当前入口
 
+当前外审修复首批：[修复回执](r4_external_repair_20261011/REPAIR_REPORT.md) / [独立问题台账](r4_external_repair_20261011/AUDIT_ITEMS.json)。定向10/10通过；完整验收仍阻断。
+
 当前 R4：EXTERNAL_ACCEPTANCE_BLOCKED / AUDIT_INCOMPLETE。隔离工程基线 fbd23a6ba08d0948fe7ad421d1765fe363648522；尚未完成总任务或集成在役目标分支。
 
 - [R4 工程报告](full_system_r4_pg_only_20261011_fbd23a6b/REPAIR_REPORT_R4.md)

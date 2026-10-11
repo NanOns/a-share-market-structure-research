@@ -1,5 +1,9 @@
 # 全系统代码审计当前入口
 
+2026-10-12 主任务续行已推送 `3e1168f5af302d97ba20c4b88f31cedcbd49a033`：[当前 V4_13 消费者与无复制大小上限的局部封存](r4_r3_scope_20261011/CURRENT_OWNER_AND_UNLIMITED_RECOVERY_SEAL_R3.json)。原 45 项数值／溯源负例和新增 4 项当前权限负例共 49 PASS；实际 101 MiB 文件恢复、冲突文件保留测试 1 PASS。无上限输入恢复新增约 2.69 GB，所有逐文件原始校验回执封存，旧达到上限的回执保留。[Drive 新副本完整字节读回](r4_r3_scope_20261011/DRIVE_CURRENT_OWNER_BYTE_READBACK_R1.json)一致。
+
+新扩展采集为 4,778／4,779 节点（仅精确一个 V3-only 排除）；采集不是执行或分母终审，完整合法 V4 分母仍 OPEN。真实源派生已完成五个日期的 Core 数值／OHLC 局部对照并进入 Profile/Structure；仍存在历史空 Episode 证据不足导致 UNKNOWN，该状态不得虚报已通过，也不能据此阻塞可执行算法及工程修复。真实 10-12 捕获按实际时钟及源状态判定，生产权限未变。
+
 R3 主任务接管续行：完整诊断运行保留 4,740 个原始节点（3,866 PASS／414 FAIL／209 ERROR／251 SKIP，另有一个精确 V3-only 排除）；该运行期间存在代码更新，不是最终冻结版本认证。缺失输入恢复后的 29 模块诊断为 456 PASS／94 FAIL／10 ERROR，全部 560 节点及旧失败原件保留，不能替换完整分母。当前三个总目标仍未实现。
 
 最新已推送局部实现 `d4a1c00bc364a153558a4fbc2cb479a55a27fd47`：[31 项完整 PG 内容校验与两交易日实际性能封存](r4_r3_integration_20261011/CAPACITY_VERIFIER_SEAL_R3.json)；首次／热访问及 1、4、8 并发完整响应 SHA 一致，独立发布的 09-30 R2 快照完整内容验证成功，峰值 RSS 2,533,408,768 字节。容量阈值未获批准，容量验收仍 OPEN。[Drive 新副本字节读回](r4_r3_integration_20261011/DRIVE_CAPACITY_BYTE_READBACK_R1.json)一致。该结果不声明全部真实消费者或 56 类通过。

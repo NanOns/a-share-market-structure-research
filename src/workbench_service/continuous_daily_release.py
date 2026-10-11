@@ -17,7 +17,7 @@ def promote(root,staged,health=None):
     for binding in admission['evidence']+list(admission['implementations'].values()):checked_path(root,binding)
     if previous['ui_build_id']!=admission['ui_build_id']:raise SourceInvalid('DAILY_UI_ADMISSION_VERSION_CONFLICT')
     if previous.get('full_product_release') or previous.get('trading') is not False:raise SourceInvalid('DAILY_SCOPE_NOT_ADMITTED')
-    candidate=copy.deepcopy(previous);candidate.update(snapshot=staged['snapshot']['pointer'],trade_date=staged['trade_date'],
+    candidate=copy.deepcopy(previous);candidate.update(contract_id='V4_JOINT_RELEASE_V2_PG_CONTENT',snapshot=staged['snapshot']['pointer'],trade_date=staged['trade_date'],
         daily_owner_authorities=staged['owner_authorities'],daily_pipeline_admission=dict(path=ADMISSION,sha256=digest((root/ADMISSION).read_bytes())),
         continuous_daily_candidate_write=True,full_product_release=False,focus_automatic_write=False)
     manifest=validate(root,candidate);reader=ProductionV4ResearchReader(root,snapshot_authority=candidate['snapshot'])

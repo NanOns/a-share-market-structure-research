@@ -45,6 +45,11 @@ class ReadTransaction:
 
 @contextmanager
 def read(descriptor):
+    if descriptor.get('contract_id') == 'V4_PG_RESEARCH_SNAPSHOT_R2':
+        from .v4_snapshot_pg_r2 import read as read_r2
+        with read_r2(descriptor) as reader:
+            yield reader
+        return
     if descriptor.get('contract_id')!=CONTRACT or descriptor.get('engine')!='postgresql': raise ValueError('PG_SNAPSHOT_BINDING_REQUIRED_NO_FALLBACK')
     with connection(descriptor['schema'],read_only=True) as pg:
         identity=pg.execute('SELECT digest,contract_id FROM snapshot_identity').fetchall()

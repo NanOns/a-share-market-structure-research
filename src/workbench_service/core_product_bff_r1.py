@@ -16,6 +16,29 @@ CONTRACT='CORE_PRODUCT_BFF_R1'
 
 HOME_EVENT_PRIORITY={'INVALIDATED':0,'EXITED':1,'WEAKENED':2,'UPGRADED':3,'REENTERED':4,'NEW':5}
 
+def product_manifest_bindings(authority):
+    """Versioned authority: R1 singleton or R2 exact date catalogue."""
+    if authority.get('contract_id') == 'CORE_PRODUCT_READ_AUTHORITY_R1':
+        return [authority['manifest']]
+    if authority.get('contract_id') == 'CORE_PRODUCT_READ_AUTHORITY_R2':
+        if set(authority) != {'contract_id', 'dates'} or not isinstance(authority['dates'], dict):
+            raise ValueError('PRODUCT_AUTHORITY_CATALOG_INVALID')
+        return list(authority['dates'].values())
+    raise ValueError('PRODUCT_AUTHORITY_CONTRACT_REQUIRED')
+
+
+def dated_product_manifest(root, authority, day):
+    product_manifest_bindings(authority)
+    binding = authority.get('dates', {}).get(day) if authority['contract_id'] == 'CORE_PRODUCT_READ_AUTHORITY_R2' else authority['manifest']
+    if binding is None:
+        return None
+    manifest = json.loads(checked(root, binding).read_bytes())
+    if manifest['T0'] != day:
+        if authority['contract_id'] == 'CORE_PRODUCT_READ_AUTHORITY_R2':
+            raise ValueError('PRODUCT_AUTHORITY_DATE_MISMATCH')
+        return None
+    return manifest
+
 def prioritize_home_changes(changes):
     """HOME_EVENT_SELECTION_R2: one object, highest priority explicit event."""
     selected={}
@@ -113,12 +136,20 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         if key not in self.api.cache:
             authority=self.api.root/'config/core_product_read_authority_r1.json'
             if not authority.exists():return None
-            manifest=json.loads(checked(self.api.root,json.loads(authority.read_bytes())['manifest']).read_bytes())
+            manifest=dated_product_manifest(self.api.root,json.loads(authority.read_bytes()),day)
+            if manifest is None:return None
             head=self.api.root/manifest['head']['path']
             if manifest['T0']!=day or head.read_bytes()!=checked(self.api.root,manifest['head']).read_bytes():return None
             if manifest['history_index'].get('engine')!='postgresql':
                 raise ValueError('PG_HISTORY_BINDING_REQUIRED_NO_FALLBACK')
-            facts=json.loads(checked(self.api.root,manifest['market_facts']).read_bytes())
+            if (manifest['history_index'].get('T0'),manifest['history_index'].get('head_token'))!=(day,manifest['head']['sha256']):
+                raise ValueError('PG_HISTORY_MANIFEST_CONTEXT_MISMATCH')
+            if manifest.get('contract_id')=='CORE_PRODUCT_DATED_HISTORY_ONLY_PACK_R1':
+                if manifest.get('capabilities')!=['CHART_HISTORY'] or manifest.get('market_facts') is not None:
+                    raise ValueError('PRODUCT_HISTORY_ONLY_SCOPE_MISMATCH')
+                facts=None
+            else:
+                facts=json.loads(checked(self.api.root,manifest['market_facts']).read_bytes())
             self.api.cache[key]=(manifest,facts)
         return self.api.cache[key]
 
@@ -351,6 +382,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             pack=self.pack(day)
             if not pack:return self.missing(day,'/'.join(p),'DATED_MARKET_FACT_PACK_NOT_BOUND')
             manifest,facts=pack;kind=p[1]
+            if facts is None:return self.missing(day,'/'.join(p),'DATED_MARKET_FACT_PACK_NOT_BOUND')
             if kind=='breadth':return 200,self.envelope(day,status='READY',data=facts['breadth'],source=facts['sources'],contract_id=facts['contract_id'])
             if kind=='indices':return self.paged(day,facts['indices'],q,source=facts['sources']['package'])
             if kind=='limits':return self.paged(day,facts['limits']['rows'],q,counts=facts['limits']['counts'],source=facts['sources']['limits_0'])

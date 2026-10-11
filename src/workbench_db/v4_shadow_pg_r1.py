@@ -17,7 +17,7 @@ def canonical(value):
     return json.dumps(value, sort_keys=True, separators=(',', ':'), ensure_ascii=False, allow_nan=False).encode()
 
 
-def build_readback(root, records, *, environment, evidence_origin):
+def build_readback_r1(root, records, *, environment, evidence_origin):
     """Explicit isolated export builder; never confers external acceptance."""
     if (environment, evidence_origin) not in [('REAL', 'PIT_OBSERVED'),
                                                ('ACTIVATION_SIMULATION', 'ACTIVATION_SIMULATION')]:
@@ -68,8 +68,18 @@ class ReadTransaction:
         return self.pg.execute(query.replace('?', '%s'), params)
 
 
+def build_readback(root, records, *, environment, evidence_origin):
+    from .v4_shadow_pg_r2 import build_readback as build_r2
+    return build_r2(root, records, environment=environment, evidence_origin=evidence_origin)
+
+
 @contextmanager
 def read(descriptor):
+    if descriptor.get('contract_id') == 'V4_PG_SHADOW_READBACK_R2':
+        from .v4_shadow_pg_r2 import read as read_r2
+        with read_r2(descriptor) as reader:
+            yield reader
+        return
     if set(descriptor) != FIELDS or descriptor.get('contract_id') != CONTRACT or descriptor.get('engine') != 'postgresql':
         raise ValueError('PG_SHADOW_BINDING_REQUIRED_NO_FALLBACK')
     if not re.fullmatch(r'[0-9a-f]{64}', descriptor['logical_digest']):

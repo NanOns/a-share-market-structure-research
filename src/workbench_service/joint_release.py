@@ -5,12 +5,13 @@ from .current_v4_context import canonical,digest,SourceInvalid
 from .v4_daily_refresh import atomic_bytes
 
 AUTHORITY='config/v4_joint_release_authority_v1.json'
+CONTRACTS=('V4_JOINT_RELEASE_V1','V4_JOINT_RELEASE_V2_PG_CONTENT')
 
 def load(root):
     path=Path(root)/AUTHORITY
     if not path.exists():return None
     value=json.loads(path.read_bytes())
-    if value.get('contract_id')!='V4_JOINT_RELEASE_V1':raise SourceInvalid('JOINT_CONTRACT_INVALID')
+    if value.get('contract_id') not in CONTRACTS:raise SourceInvalid('JOINT_CONTRACT_INVALID')
     return value
 
 def checked_path(root,binding):
@@ -20,7 +21,7 @@ def checked_path(root,binding):
     return path
 
 def validate(root,candidate):
-    if candidate.get('contract_id')!='V4_JOINT_RELEASE_V1':raise SourceInvalid('JOINT_CONTRACT_INVALID')
+    if candidate.get('contract_id') not in CONTRACTS:raise SourceInvalid('JOINT_CONTRACT_INVALID')
     manifest=json.loads(checked_path(root,candidate['snapshot']['manifest']).read_bytes())
     checked_path(root,manifest['database'])
     for binding in manifest['sources'].values():checked_path(root,binding)
@@ -52,6 +53,16 @@ def validate(root,candidate):
             if not binding or json.loads(checked_path(root,binding).read_bytes())!=features.get(name):
                 raise SourceInvalid('JOINT_OWNER_SNAPSHOT_BINDING_MISMATCH:'+name+':'+key)
     if not candidate['operational_release_scope'] or candidate.get('trading') is not False:raise SourceInvalid('JOINT_SCOPE_INVALID')
+    if candidate['contract_id']=='V4_JOINT_RELEASE_V2_PG_CONTENT':
+        from workbench_db.v4_snapshot_pg_r2 import read
+        bindings=[manifest['database']]
+        series=manifest.get('domain_features',{}).get('stocks',{}).get('series')
+        if series:bindings.append(series)
+        journal=manifest.get('sources',{}).get('focus_journal')
+        if journal:bindings.append(journal)
+        for binding in bindings:
+            descriptor=json.loads(checked_path(root,binding).read_bytes())
+            with read(descriptor):pass
     return manifest
 
 def activate(root,candidate,expected,health):
@@ -76,6 +87,7 @@ def activate(root,candidate,expected,health):
         atomic_bytes(path,raw)
         try:
             readback=health(candidate)
+            if candidate['contract_id']=='V4_JOINT_RELEASE_V2_PG_CONTENT':validate(root,candidate)
             if path.read_bytes()!=raw:raise SourceInvalid('JOINT_READBACK_CONFLICT')
             if not readback.get('pass'):raise SourceInvalid('JOINT_HEALTH_FAILED')
         except BaseException:

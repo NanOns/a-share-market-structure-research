@@ -3,7 +3,8 @@ import json
 from pathlib import Path
 import uuid
 from psycopg import sql
-from .v4_snapshot_pg_r1 import Builder,read
+from .v4_snapshot_pg_r1 import read
+from .v4_snapshot_pg_r2 import Builder
 from .v4_native import workspace_schema,create_schema,connection
 from workbench_service.v4_daily_refresh import atomic_bytes
 from workbench_service.current_v4_context import canonical
@@ -13,7 +14,7 @@ class JournalConnection(Builder):
         self.path=Path(path);self.contract=contract
         self.release_id=uuid.uuid4().hex
         if self.path.suffix!='.json':raise ValueError('PG_JOURNAL_DESCRIPTOR_REQUIRED_NO_FALLBACK')
-        super().__init__(root,self.release_id)
+        super().__init__(root,self.release_id,storage_kind='journal')
         try:self._initialize(root)
         except BaseException:
             self.pg.rollback();self.pg.close();raise
@@ -39,7 +40,7 @@ class JournalConnection(Builder):
             with read(previous) as old:
                 tables={table:old.execute('SELECT * FROM '+table).fetchall() for table in ('days','metadata','day_inputs')}
         else:tables=None
-        self.executescript('CREATE TABLE objects(domain text,id text,payload text);CREATE TABLE aliases(alias text,id text);CREATE TABLE members(sector text,security text);CREATE TABLE days(day text PRIMARY KEY,source_digest text NOT NULL,payload text NOT NULL);CREATE TABLE metadata(key text PRIMARY KEY,value text);CREATE TABLE day_inputs(day text PRIMARY KEY,payload text NOT NULL);')
+        self.executescript('CREATE TABLE objects(domain text,id text,name text,symbol text,state text,payload text,PRIMARY KEY(domain,id));CREATE TABLE aliases(alias text,id text,PRIMARY KEY(alias,id));CREATE TABLE members(sector text,security text,PRIMARY KEY(sector,security));CREATE TABLE days(day text PRIMARY KEY,source_digest text NOT NULL,payload text NOT NULL);CREATE TABLE metadata(key text PRIMARY KEY,value text);CREATE TABLE day_inputs(day text PRIMARY KEY,payload text NOT NULL);')
         if tables:
             for name,rows in tables.items():
                 cols=3 if name=='days' else 2
@@ -53,10 +54,7 @@ class JournalConnection(Builder):
     def commit(self):
         head=self.execute("SELECT value FROM metadata WHERE key='head'").fetchone()[0]
         day=self.execute('SELECT max(day) FROM days').fetchone()[0]
-        descriptor=self.seal(dict(release_id=self.release_id,context=dict(accepted_trade_date=day),head=head,journal_contract=self.contract))
-        for table in ('days','day_inputs'):
-            self.pg.execute(sql.SQL('CREATE TRIGGER immutable_snapshot BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE ON {} FOR EACH STATEMENT EXECUTE FUNCTION reject_snapshot_mutation()').format(sql.Identifier(table)))
-        descriptor.update(journal_contract=self.contract,head=head,registry_schema=self.registry_schema,registry_key=self.registry_key)
+        descriptor=self.seal(dict(release_id=self.release_id,context=dict(accepted_trade_date=day),head=head,journal_contract=self.contract),consumer_binding=dict(journal_contract=self.contract,head=head,registry_schema=self.registry_schema,registry_key=self.registry_key))
         from psycopg.types.json import Jsonb
         self.pg.execute(sql.SQL('INSERT INTO {}.journal_heads VALUES(%s,%s,%s) ON CONFLICT(key) DO UPDATE SET descriptor=EXCLUDED.descriptor').format(sql.Identifier(self.registry_schema)),(self.registry_key,self.contract,Jsonb(descriptor)))
         super().commit()

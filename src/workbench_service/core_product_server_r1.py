@@ -5,7 +5,7 @@ from http.server import ThreadingHTTPServer
 import hashlib,json,threading
 import psycopg
 from .operational_daily_server_v1 import make_daily_handler, PREFIX
-from .core_product_bff_r1 import CoreProductBFFR1
+from .core_product_bff_r1 import CoreProductBFFR1, product_manifest_bindings
 from workbench_analysis.operational_successor_v1 import accepted_api
 
 def make_product_handler(root,jobs,*,isolated_history_authority=None):
@@ -42,7 +42,9 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None):
                             paths.add(identity_head);collect(json.loads(identity_head.read_bytes())['identity'])
                             collect(json.loads((root/api.candidate['registry']['path']).read_bytes()))
                             if authority.exists():
-                                a=json.loads(authority.read_bytes());collect(a);collect(json.loads((root/a['manifest']['path']).read_bytes()))
+                                a=json.loads(authority.read_bytes());collect(a)
+                                for binding in product_manifest_bindings(a):
+                                    collect(json.loads((root/binding['path']).read_bytes()))
                             if focus_authority.exists():
                                 a=json.loads(focus_authority.read_bytes());collect(a);collect(json.loads((root/a['manifest']['path']).read_bytes()))
                             cache.clear();cache.update(signature=signature,bff=CoreProductBFFR1(api,jobs,isolated_history_authority=isolated_history_authority),sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})

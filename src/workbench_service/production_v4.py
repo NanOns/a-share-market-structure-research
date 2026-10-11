@@ -127,7 +127,7 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
             names[sid] = row
     directory = root / 'data/v4/research_snapshots' / uuid.uuid4().hex
     directory.mkdir(parents=True); dbpath = directory / 'research.pg.json'
-    from workbench_db.v4_snapshot_pg_r1 import Builder
+    from workbench_db.v4_snapshot_pg_r2 import Builder
     db = Builder(root,directory.name)
     db.executescript('''CREATE TABLE objects(domain TEXT,id TEXT,name TEXT,symbol TEXT,state TEXT,payload TEXT,PRIMARY KEY(domain,id));
         CREATE INDEX object_name ON objects(domain,name,id);

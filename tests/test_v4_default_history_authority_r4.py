@@ -22,7 +22,7 @@ def vector(root, index):
     facts = save(root, 'data/market.json', {'market': 'engineering'})
     manifest = save(root, 'data/manifest.json', dict(T0='2026-10-09', head=head,
                     history_index=index, market_facts=facts))
-    save(root, 'config/core_product_read_authority_r1.json', {'manifest': manifest})
+    save(root, 'config/core_product_read_authority_r1.json', {'contract_id': 'CORE_PRODUCT_READ_AUTHORITY_R1', 'manifest': manifest})
     bff = object.__new__(CoreProductBFFR1)
     bff.api = SimpleNamespace(root=root, cache={})
     bff.isolated_history = None
@@ -39,8 +39,9 @@ def test_default_old_sqlite_binding_is_rejected(tmp_path):
 def test_default_pg_binding_reads_exact_history(tmp_path):
     bars = [{'trade_date': '2026-10-09', 'raw_ohlc': [1, 2, 1, 2],
              'qfq_ohlc': [2, 4, 2, 4], 'volume': 100, 'amount': 150}]
+    head = save(tmp_path, 'data/v4/head.json', {'T0': '2026-10-09'})
     index = build(tmp_path, [{'security_id': 'ENGINEERING', 'bars': bars}],
-                  head_token='a' * 64, t0='2026-10-09', source_digest='b' * 64)
+                  head_token=head['sha256'], t0='2026-10-09', source_digest='b' * 64)
     bff = vector(tmp_path, index)
     manifest, facts = bff.history_pack('2026-10-09')
     assert bff.isolated_history is None

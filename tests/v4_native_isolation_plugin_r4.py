@@ -68,20 +68,35 @@ def pytest_configure(config):
         if not path.is_relative_to(root/'docs/audits/r4_r3_scope_20261011'):
             raise V4DatabaseGuardViolation('R3_EXTRA_FIXTURE_MANIFEST_ESCAPE')
         manifest=json.loads(path.read_bytes())
-        if manifest.get('contract_id')!='R4_R3_EXPLICIT_ENGINEERING_PG_FIXTURES_R1':
+        if manifest.get('contract_id') not in ('R4_R3_EXPLICIT_ENGINEERING_PG_FIXTURES_R1','R4_R3_EXPLICIT_ENGINEERING_PG_FIXTURES_R2'):
             raise V4DatabaseGuardViolation('R3_EXPLICIT_FIXTURE_CONTRACT_REQUIRED')
         admitted={'fep_e5b_fresh','fep_e5b_upgrade','fep_e1_upgrade','fep_authority_isolated'}
+        signal_databases={'fep_signal_baseline32_fresh','fep_signal_baseline32_upgrade','fep_signal_baseline32_actual_fresh'}
+        if manifest['contract_id']=='R4_R3_EXPLICIT_ENGINEERING_PG_FIXTURES_R2':
+            predecessor=root/'docs/audits/r4_r3_scope_20261011/R3_EXTRA_PG_FIXTURES.json'
+            if manifest.get('predecessor_sha256')!=hashlib.sha256(predecessor.read_bytes()).hexdigest() or manifest.get('production_authorized') is not False or manifest.get('source_or_maturity_admission') is not False:
+                raise V4DatabaseGuardViolation('R3_EXACT_ENGINEERING_FIXTURE_PREDECESSOR_REQUIRED')
+            admitted.update(signal_databases)
         for row in manifest['databases']:
             if row['database'] not in admitted or row['port'] not in ('55792','55793','55794'):
                 raise V4DatabaseGuardViolation('R3_FIXTURE_DATABASE_OR_PORT_SCOPE_ESCAPE')
-            if row['port']=='55794' and (row['database']!='fep_e5b_fresh' or Path(row['data_directory']).resolve()!=Path('G:/codex_tmp/r4_r3_fep_fixtures/fresh_data').resolve()):
+            if row['port']=='55794' and (row['database'] not in ('fep_e5b_fresh','fep_signal_baseline32_actual_fresh') or Path(row['data_directory']).resolve()!=Path('G:/codex_tmp/r4_r3_fep_fixtures/fresh_data').resolve()):
                 raise V4DatabaseGuardViolation('R3_FRESH_FIXTURE_IDENTITY_SCOPE_ESCAPE')
+            if row['database'] in signal_databases and row['database']!='fep_signal_baseline32_actual_fresh' and (row['port']!='55793' or Path(row['data_directory']).resolve()!=Path('G:/codex_tmp/r4_r3_fep_fixtures/upgrade_data').resolve()):
+                raise V4DatabaseGuardViolation('R3_SIGNAL_BASELINE_FIXTURE_IDENTITY_ESCAPE')
+            if row['database']=='fep_signal_baseline32_actual_fresh' and row['port']!='55794':raise V4DatabaseGuardViolation('R3_ACTUAL_FRESH_SIGNAL_FIXTURE_PORT_REQUIRED')
             params=dict(expected,dbname=row['database'],port=row['port'])
             with original(**params) as witness:
                 actual=Path(witness.execute('show data_directory').fetchone()[0]).resolve()
                 if actual!=Path(row['data_directory']).resolve() or not actual.is_relative_to(Path('G:/codex_tmp').resolve()):
                     raise V4DatabaseGuardViolation('R3_FIXTURE_CLUSTER_IDENTITY_MISMATCH')
-                if row['database']=='fep_authority_isolated':
+                if row['database'] in signal_databases:
+                    marker=witness.execute('SELECT contract,source_receipt_sha256,admission FROM r4_evidence.signal_baseline_fixture').fetchall()
+                    receipt=root/'docs/audits/r4_r3_scope_20261011/FEP_SIGNAL_BASELINE32_FIXTURE_RECEIPT_R1.json'
+                    if row['database']=='fep_signal_baseline32_actual_fresh':receipt=root/'docs/audits/r4_r3_scope_20261011/FEP_SIGNAL_ACTUAL_FRESH_BASELINE32_RECEIPT_R1.json'
+                    if marker!=[('R4_R3_FEP_SIGNAL_BASELINE32_ENGINEERING_R1',hashlib.sha256(receipt.read_bytes()).hexdigest(),'NOT_REAL_MATURITY_OR_PRODUCTION_ACCEPTANCE')]:
+                        raise V4DatabaseGuardViolation('R3_EXACT_SIGNAL_BASELINE_FIXTURE_MARKER_REQUIRED')
+                elif row['database']=='fep_authority_isolated':
                     if witness.execute("select contract from r4_evidence.fixture_identity").fetchall()!=[('FEP_AUTHORITY_SYNTHETIC_ENGINEERING_R1',)]:
                         raise V4DatabaseGuardViolation('R3_AUTHORITY_SYNTHETIC_FIXTURE_MARKER_REQUIRED')
                 elif witness.execute('select count(*) from r4_evidence.migrations').fetchone()[0]!=33:

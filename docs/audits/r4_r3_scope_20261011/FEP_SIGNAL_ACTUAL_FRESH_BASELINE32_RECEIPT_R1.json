@@ -1,0 +1,363 @@
+{
+  "contract": "R4_R3_FEP_SIGNAL_ACTUAL_FRESH_BASELINE32_R1",
+  "source_database": "fep_e5b_fresh",
+  "new_database": "fep_signal_baseline32_actual_fresh",
+  "source_all_table_contents_before": [
+    {
+      "table": "acceptance_receipts",
+      "count": 615,
+      "content_sha256": "b709f131d11ed51d02307709de944219102a7d8e3fb59cd3ece53a59a6724005"
+    },
+    {
+      "table": "activations",
+      "count": 10,
+      "content_sha256": "ea691d1cc4927daeb02c88132259ce8d4a0a3fe63d64cf3f91ea35dfdf19aa8a"
+    },
+    {
+      "table": "contracts",
+      "count": 11,
+      "content_sha256": "aa5f3ab40570c72a4dce235c903de31d188b4cdea5a8b17c7c957d5d981aecd8"
+    },
+    {
+      "table": "dataset_eligibility_ledger",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "table": "dataset_fold_cutoffs",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "table": "dataset_fold_label_selection",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "table": "dataset_rows",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "table": "datasets",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "table": "deployment_change_receipts",
+      "count": 10,
+      "content_sha256": "b9c1c2910b484178608bf1a4fe930bb7548acac61732df061ee4322446cfad64"
+    },
+    {
+      "table": "deployment_heads",
+      "count": 1,
+      "content_sha256": "7cc2a0d8c101bd667391a6025521c04fb7dfd205e04787689a9397e666f58748"
+    },
+    {
+      "table": "feature_values",
+      "count": 4100,
+      "content_sha256": "2eb35c1351a65469626086f1b44e76685410589cb65936b97c1393ff9889d0ef"
+    },
+    {
+      "table": "field_registry",
+      "count": 20,
+      "content_sha256": "4396ca2eb5c31f7b5b110383a154e29e6532ddaa3d961620378b1012078832ae"
+    },
+    {
+      "table": "field_scope",
+      "count": 20,
+      "content_sha256": "ba620176fefd37ff5ca189cb94f8886a81c76c15f1950ea5139c87ed40626806"
+    },
+    {
+      "table": "label_revisions",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "table": "label_source_bindings",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "table": "model_set_members",
+      "count": 3,
+      "content_sha256": "20153db01325146635b95f68b228df29703159266cdd806207078c85d3c25c46"
+    },
+    {
+      "table": "model_sets",
+      "count": 3,
+      "content_sha256": "9614ceb7fad56841d0b913ea03b64d4edddf21eed8b8e56a5f9f611013ad7442"
+    },
+    {
+      "table": "models",
+      "count": 3,
+      "content_sha256": "47de3674dac664326c13b0062bdb436b68db82914ba2b7b34949a014a85dc60f"
+    },
+    {
+      "table": "observation_revisions",
+      "count": 205,
+      "content_sha256": "0983a8231f9faf9e06beef5ef9d759a53c5c71cd12348e92f44f3350cb14b629"
+    },
+    {
+      "table": "observations",
+      "count": 205,
+      "content_sha256": "542cf9d27ceb38708641bb674ea544c1b7bf24c6d727966a6f2bdab810091fb7"
+    },
+    {
+      "table": "permission_keys",
+      "count": 3,
+      "content_sha256": "6f94a943fb027e283b822ff86400e333ec22fd5595f1eb090d3463fa683ae985"
+    },
+    {
+      "table": "prediction_runs",
+      "count": 615,
+      "content_sha256": "690605f81158ae3f412402de403748180dd84569ae9e1c3ad3d8780a16c7ebbb"
+    },
+    {
+      "table": "prediction_slots",
+      "count": 616,
+      "content_sha256": "816ba2c06bdb87f36dfb4671c4ab7ea02d08d811e37d2418c02c22d00a1c5074"
+    },
+    {
+      "table": "predictions",
+      "count": 615,
+      "content_sha256": "56cc716c02c001504ecc3dc2617c0f7d03018d759919ba318bf9d0fc9e3abb9e"
+    },
+    {
+      "table": "priority_projection",
+      "count": 1,
+      "content_sha256": "8d41935d4e30a6618957323e5ecb9636ea60a58be22826ff1158ce99362e234f"
+    },
+    {
+      "table": "priority_projection_grants",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "table": "reconstruction_authorities",
+      "count": 205,
+      "content_sha256": "e6a0924fc6012a68eefde8d6a1d7c01b504d049264303095ef16809d3dbce293"
+    },
+    {
+      "table": "reports",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "table": "scopes",
+      "count": 1,
+      "content_sha256": "ccce726155e282520b51a8b1dfbcfbc85c658031a4851d3459dc7ac8b9b3668e"
+    },
+    {
+      "table": "signal_contract_registry",
+      "count": 3,
+      "content_sha256": "c6a0f66b2ef748cf72e645ff9811cea1fc1961d4bd6fb02d6f8032cb42fd60b5"
+    },
+    {
+      "table": "slot_model_bindings",
+      "count": 615,
+      "content_sha256": "70ad7bcbdabe546342bcb7ddd9a8dbedbfee3dabba4e098db96cf90d2a3dbb5b"
+    },
+    {
+      "table": "slot_receipts",
+      "count": 616,
+      "content_sha256": "d0be37a891cfa78b451ba0260eccf029e26938ebebb72dda26564815251d255d"
+    },
+    {
+      "table": "snapshots",
+      "count": 205,
+      "content_sha256": "ab6beb8218b2364d628a3a28402e86aa4d19fa7ba2fc726e69a7421c04c35e64"
+    },
+    {
+      "table": "targets",
+      "count": 1,
+      "content_sha256": "f02789f2f64ba3b32e89fee223dfc3aa39157d629c90157b9b7002c90b840756"
+    },
+    {
+      "table": "training_runs",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "source_all_table_contents_after": [
+    {
+      "table": "acceptance_receipts",
+      "count": 615,
+      "content_sha256": "b709f131d11ed51d02307709de944219102a7d8e3fb59cd3ece53a59a6724005"
+    },
+    {
+      "table": "activations",
+      "count": 10,
+      "content_sha256": "ea691d1cc4927daeb02c88132259ce8d4a0a3fe63d64cf3f91ea35dfdf19aa8a"
+    },
+    {
+      "table": "contracts",
+      "count": 11,
+      "content_sha256": "aa5f3ab40570c72a4dce235c903de31d188b4cdea5a8b17c7c957d5d981aecd8"
+    },
+    {
+      "table": "dataset_eligibility_ledger",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "table": "dataset_fold_cutoffs",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "table": "dataset_fold_label_selection",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "table": "dataset_rows",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "table": "datasets",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "table": "deployment_change_receipts",
+      "count": 10,
+      "content_sha256": "b9c1c2910b484178608bf1a4fe930bb7548acac61732df061ee4322446cfad64"
+    },
+    {
+      "table": "deployment_heads",
+      "count": 1,
+      "content_sha256": "7cc2a0d8c101bd667391a6025521c04fb7dfd205e04787689a9397e666f58748"
+    },
+    {
+      "table": "feature_values",
+      "count": 4100,
+      "content_sha256": "2eb35c1351a65469626086f1b44e76685410589cb65936b97c1393ff9889d0ef"
+    },
+    {
+      "table": "field_registry",
+      "count": 20,
+      "content_sha256": "4396ca2eb5c31f7b5b110383a154e29e6532ddaa3d961620378b1012078832ae"
+    },
+    {
+      "table": "field_scope",
+      "count": 20,
+      "content_sha256": "ba620176fefd37ff5ca189cb94f8886a81c76c15f1950ea5139c87ed40626806"
+    },
+    {
+      "table": "label_revisions",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "table": "label_source_bindings",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "table": "model_set_members",
+      "count": 3,
+      "content_sha256": "20153db01325146635b95f68b228df29703159266cdd806207078c85d3c25c46"
+    },
+    {
+      "table": "model_sets",
+      "count": 3,
+      "content_sha256": "9614ceb7fad56841d0b913ea03b64d4edddf21eed8b8e56a5f9f611013ad7442"
+    },
+    {
+      "table": "models",
+      "count": 3,
+      "content_sha256": "47de3674dac664326c13b0062bdb436b68db82914ba2b7b34949a014a85dc60f"
+    },
+    {
+      "table": "observation_revisions",
+      "count": 205,
+      "content_sha256": "0983a8231f9faf9e06beef5ef9d759a53c5c71cd12348e92f44f3350cb14b629"
+    },
+    {
+      "table": "observations",
+      "count": 205,
+      "content_sha256": "542cf9d27ceb38708641bb674ea544c1b7bf24c6d727966a6f2bdab810091fb7"
+    },
+    {
+      "table": "permission_keys",
+      "count": 3,
+      "content_sha256": "6f94a943fb027e283b822ff86400e333ec22fd5595f1eb090d3463fa683ae985"
+    },
+    {
+      "table": "prediction_runs",
+      "count": 615,
+      "content_sha256": "690605f81158ae3f412402de403748180dd84569ae9e1c3ad3d8780a16c7ebbb"
+    },
+    {
+      "table": "prediction_slots",
+      "count": 616,
+      "content_sha256": "816ba2c06bdb87f36dfb4671c4ab7ea02d08d811e37d2418c02c22d00a1c5074"
+    },
+    {
+      "table": "predictions",
+      "count": 615,
+      "content_sha256": "56cc716c02c001504ecc3dc2617c0f7d03018d759919ba318bf9d0fc9e3abb9e"
+    },
+    {
+      "table": "priority_projection",
+      "count": 1,
+      "content_sha256": "8d41935d4e30a6618957323e5ecb9636ea60a58be22826ff1158ce99362e234f"
+    },
+    {
+      "table": "priority_projection_grants",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "table": "reconstruction_authorities",
+      "count": 205,
+      "content_sha256": "e6a0924fc6012a68eefde8d6a1d7c01b504d049264303095ef16809d3dbce293"
+    },
+    {
+      "table": "reports",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "table": "scopes",
+      "count": 1,
+      "content_sha256": "ccce726155e282520b51a8b1dfbcfbc85c658031a4851d3459dc7ac8b9b3668e"
+    },
+    {
+      "table": "signal_contract_registry",
+      "count": 3,
+      "content_sha256": "c6a0f66b2ef748cf72e645ff9811cea1fc1961d4bd6fb02d6f8032cb42fd60b5"
+    },
+    {
+      "table": "slot_model_bindings",
+      "count": 615,
+      "content_sha256": "70ad7bcbdabe546342bcb7ddd9a8dbedbfee3dabba4e098db96cf90d2a3dbb5b"
+    },
+    {
+      "table": "slot_receipts",
+      "count": 616,
+      "content_sha256": "d0be37a891cfa78b451ba0260eccf029e26938ebebb72dda26564815251d255d"
+    },
+    {
+      "table": "snapshots",
+      "count": 205,
+      "content_sha256": "ab6beb8218b2364d628a3a28402e86aa4d19fa7ba2fc726e69a7421c04c35e64"
+    },
+    {
+      "table": "targets",
+      "count": 1,
+      "content_sha256": "f02789f2f64ba3b32e89fee223dfc3aa39157d629c90157b9b7002c90b840756"
+    },
+    {
+      "table": "training_runs",
+      "count": 0,
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "source_unchanged": true,
+  "scope": "Clone of the actually fresh-bootstrapped canonical fixture; 033 reverted only in new disposable database",
+  "previous_upgrade_source_replicas_preserved": true,
+  "production_changed": false
+}

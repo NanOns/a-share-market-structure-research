@@ -1,5 +1,5 @@
 """Versioned canonical resume. Explicit isolated databases; frozen outputs only."""
-import json, os, subprocess, sys
+import hashlib,json, os, subprocess, sys
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
 from collections import Counter
@@ -20,8 +20,12 @@ REPORT=ROOT/'reports/fep_e5_r1r1b'
 DSNS={k:f'host=127.0.0.1 port={port} user=fep_e5_admin dbname=fep_e5b_{k}' for k,port in [('fresh',55490),('upgrade',55491)]}
 if os.environ.get('R4_R3_EXTRA_PG_FIXTURES'):
     fixture_manifest=json.loads(Path(os.environ['R4_R3_EXTRA_PG_FIXTURES']).read_bytes())
-    if fixture_manifest.get('contract_id')!='R4_R3_EXPLICIT_ENGINEERING_PG_FIXTURES_R1' or fixture_manifest.get('production_authorized') is not False:
+    if fixture_manifest.get('contract_id') not in ('R4_R3_EXPLICIT_ENGINEERING_PG_FIXTURES_R1','R4_R3_EXPLICIT_ENGINEERING_PG_FIXTURES_R2') or fixture_manifest.get('production_authorized') is not False:
         raise ValueError('EXPLICIT_ENGINEERING_FIXTURE_CONTRACT_REQUIRED')
+    if fixture_manifest['contract_id']=='R4_R3_EXPLICIT_ENGINEERING_PG_FIXTURES_R2':
+        predecessor=Path(__file__).resolve().parents[1]/'docs/audits/r4_r3_scope_20261011/R3_EXTRA_PG_FIXTURES.json'
+        if fixture_manifest.get('predecessor_sha256')!=hashlib.sha256(predecessor.read_bytes()).hexdigest() or fixture_manifest.get('source_or_maturity_admission') is not False:
+            raise ValueError('EXACT_ENGINEERING_FIXTURE_PREDECESSOR_REQUIRED')
     for kind,port in [('fresh',55794),('upgrade',55793)]:
         expected=dict(database='fep_e5b_'+kind,port=str(port),data_directory=str(Path('G:/codex_tmp/r4_r3_fep_fixtures')/(kind+'_data')))
         if not any(row.get('database')==expected['database'] and str(row.get('port'))==expected['port'] and Path(row.get('data_directory','')).resolve()==Path(expected['data_directory']).resolve() for row in fixture_manifest['databases']):

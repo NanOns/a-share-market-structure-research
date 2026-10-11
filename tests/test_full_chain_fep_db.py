@@ -1,15 +1,18 @@
 """Real PostgreSQL negative inserts on frozen isolated canonical fixtures only."""
 import copy
 import json
+import os
 import psycopg
 from psycopg.types.json import Jsonb
 import pytest
 from scripts.full_chain_repair_io import ROOT
 
-@pytest.fixture(params=[('fresh',55492),('upgrade',55493)])
+@pytest.fixture(params=['fresh','upgrade'],ids=['pg0','pg1'])
 def pg(request):
-    kind,port=request.param
-    pg=psycopg.connect(f'host=127.0.0.1 port={port} user=fep_e5_admin dbname=fep_e5b_{kind} connect_timeout=3')
+    kind=request.param
+    dsn=os.environ.get('FEP_SIGNAL_BASELINE32_'+kind.upper()+'_TEST_DSN')
+    if not dsn:raise RuntimeError('EXPLICIT_NATIVE_SIGNAL_BASELINE32_FIXTURE_REQUIRED_NO_FALLBACK')
+    pg=psycopg.connect(dsn,connect_timeout=3)
     try:yield pg
     finally:pg.rollback();pg.close()
 

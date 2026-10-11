@@ -38,6 +38,11 @@ class ResearchBFF:
             queue.append(now);return True
 
     def get(self,path,query):
+        from .production_v4 import snapshot_request_scope
+        with snapshot_request_scope():
+            return self._get(path,query)
+
+    def _get(self,path,query):
         try:
             r=self.current()
             # Validate context and parameter contracts even for singleton/diagnostic routes.

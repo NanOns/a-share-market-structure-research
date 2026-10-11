@@ -5,6 +5,8 @@ import json
 import os
 import time
 import uuid
+from contextlib import ExitStack,contextmanager,nullcontext
+from contextvars import ContextVar
 from datetime import datetime,timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -14,6 +16,18 @@ from .v4_daily_refresh import atomic_bytes, refresh_status
 POINTER = 'config/v4_research_snapshot_authority_v1.json'
 DOMAINS = ('stocks', 'sectors', 'events', 'radar', 'forward', 'settlement', 'sources', 'market', 'focus')
 REQUIRED_METADATA=('owner','release_id','source_snapshot','contract_version','source_as_of','trading_date','input_digest','published_at','evidence_origin','evidence_state','data_quality_state','knowledge_lineage')
+_request_reads=ContextVar('v4_request_verified_pg_reads',default=None)
+
+@contextmanager
+def snapshot_request_scope():
+    """One fully verified repeatable-read transaction per snapshot per request."""
+    if _request_reads.get() is not None:
+        yield
+        return
+    with ExitStack() as stack:
+        token=_request_reads.set((stack,{}))
+        try:yield
+        finally:_request_reads.reset(token)
 
 def numeric_sort_expressions(field,descending):
     # Preserve the accepted SQLite JSON value ordering: NULL, numeric, text.
@@ -471,6 +485,13 @@ class ProductionV4ResearchReader:
     def connect(self):
         if (self.path.stat().st_size,self.path.stat().st_mtime_ns)!=self.file_signature:raise SourceInvalid('IMMUTABLE_DATABASE_CHANGED')
         from workbench_db.v4_snapshot_pg_r1 import read
+        scope=_request_reads.get()
+        if scope is not None:
+            stack,transactions=scope
+            key=(self.pg_descriptor['schema'],self.pg_descriptor['logical_digest'])
+            if key not in transactions:
+                transactions[key]=stack.enter_context(read(self.pg_descriptor))
+            return nullcontext(transactions[key])
         return read(self.pg_descriptor)
 
     def query(self, domain, query=None, *, entity=None, sector=None, summary=False):

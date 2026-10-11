@@ -1,0 +1,172 @@
+{
+  "contract_id": "R4_EXTERNAL_REPAIR_BATCH2_RESULT_R1",
+  "base_head": "1521f9cca72c3a5a4ff127105be56cc90ec0d2b3",
+  "source_SHA": {
+    "src/workbench_db/v4_shadow_pg_r1.py": "94bc69e011be1216aaeda6d8e104fa660d7ef4bcd20a51f8423cae55b2239f68",
+    "src/workbench_service/shadow_context.py": "6fbeec66f02e7fcd6f9489b0567dc6470ae4a3c1ee185eddaee329efa98aa29a",
+    "src/workbench_service/shadow_server.py": "6cb631d456652e0d265e6af546dac6ce40c9441044e7743d9d13de0bb418fe99",
+    "src/workbench_service/core_product_bff_r1.py": "8bfe6bb6c7356ae49d57556b56f524e3ce8985b85eeeedf6b794f3d674403a40",
+    "src/workbench_service/core_product_server_r1.py": "187c6783a0737f9af4ae170c525f4a7e57034b4a190b8b60e1638875b759ef0b",
+    "tests/test_v4_17_shadow_ui.py": "1c1cf19f01165f1a778838f08a6fddb7984ec3b465981c486c23f280612d2faf",
+    "tests/test_v4_shadow_pg_r4.py": "2f00d6be35e9ec065e968ff71c521cf171b347772afba538b602b4f8faae2560",
+    "tests/test_v4_shadow_error_r4.py": "e8e428981d57c595f4f02065ce165882a94664d124c8932f51dabcd59a691cfc",
+    "tests/test_v4_default_history_authority_r4.py": "a519a67f9cc7e70b1979bbefb892c07e08f3cbdf1001a9f9b00f0f30ce71ca67",
+    "scripts/audit_r4_default_product_http.py": "9d42e02bfd04f7a82541cce338a216bf39548f606e7f253dbf6988da6de4c90b",
+    "scripts/audit_r4_focus_identity_delta.py": "bc922e3bfbe9054aa32ea5fdf19f7711a5abe96acf2f4fe437a2722902420e3e",
+    "scripts/audit_r4_snapshot_delta_provenance.py": "a563aa08c91ef4c77d0a5f00fd72373623904cf0c758d9a73457b46cbd1d3518",
+    "scripts/migrate_r4_old_snapshot_exact.py": "2f0d4537db9b5b240876de42dea9aa4d96aa8623c7605e208271c71b3fca8be0",
+    "scripts/r4_frozen_chart_oracle.py": "2c55624712efb1f467c999e2f4fc7e9df9e47c2c142664417de2370e06e12d59"
+  },
+  "run_utc": "2026-10-11T08:48:28.490500+00:00",
+  "scope": [
+    "DB12 PG Shadow native reader and V4 fixtures",
+    "E02 default product handler isolated root",
+    "E03 field and Focus ID provenance"
+  ],
+  "owner": "Codex / root",
+  "previous_status": "PARTIAL_ENGINEERING_REPAIR",
+  "current_status": "SCOPED_ENGINEERING_PROGRESS",
+  "denominator": {
+    "bounded_capability_tests": 60,
+    "full_v4": null
+  },
+  "negative_vectors": [
+    {
+      "code": 409,
+      "body": {
+        "code": "PRODUCT_READ_FAILED",
+        "reason": "CONTEXT_TOKEN_MISMATCH"
+      }
+    },
+    {
+      "code": 400,
+      "body": {
+        "code": "PRODUCT_READ_FAILED",
+        "reason": "PG_HISTORY_BINDING_REQUIRED_NO_FALLBACK"
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "R4-E01/DB12",
+      "current_status": "SCOPED_NATIVE_SHADOW_READBACK_PASS",
+      "denominator": 60,
+      "evidence_links": [
+        "r4_batch2_capability.xml",
+        "SHADOW_CAPABILITY_SCOPE.json"
+      ],
+      "limitations": [
+        "60 is this bounded capability suite, not full V4",
+        "Synthetic PIT-shaped vectors have zero real samples; no Shadow grant"
+      ],
+      "owner": "Codex / root"
+    },
+    {
+      "id": "R4-E02",
+      "current_status": "SCOPED_DEFAULT_PRODUCT_HTTP_PASS_FORMAL_AUTHORITY_OPEN",
+      "denominator": {
+        "charts": 6,
+        "context": 1,
+        "product_routes": 6
+      },
+      "evidence_links": [
+        "DEFAULT_PRODUCT_HTTP_RESULT.json",
+        "DEFAULT_PRODUCT_CONNECTIONS.jsonl"
+      ],
+      "limitations": [
+        "One frozen T0 and one security; no accepted PG authority or production restart",
+        "Period Owner gaps preserved; broad samples, capacity, browser and five-default-date gates open"
+      ],
+      "owner": "Codex / root"
+    },
+    {
+      "id": "R4-E03-PROJECTION",
+      "current_status": "FIELD_RULE_EXPLANATION_COMPLETE_ACCEPTANCE_OPEN",
+      "denominator": 740703,
+      "evidence_links": [
+        "FIELD_PROVENANCE_SUMMARY.json",
+        "FIELD_PROVENANCE_OBJECT_LEDGER.json.gz"
+      ],
+      "limitations": [
+        "Explains candidate projection changes; does not prove byte-equivalent old publication migration",
+        "Approval of quality/unit/new fields, Amount A audit, Focus identity, CAS and rollback remain independent"
+      ],
+      "owner": "Codex / root"
+    },
+    {
+      "id": "R4-E03-FOCUS-ID",
+      "current_status": "ALL_ID_DELTAS_RECONSTRUCTED_IDENTITY_ADMISSION_OPEN",
+      "denominator": 469,
+      "evidence_links": [
+        "FOCUS_IDENTITY_SUMMARY.json",
+        "FOCUS_IDENTITY_PAIRS.json.gz"
+      ],
+      "limitations": [
+        "Entity correspondence does not make old/new snapshot IDs equivalent",
+        "No joint CAS/rollback acceptance; observed T0 equality does not prove historical PIT"
+      ],
+      "owner": "Codex / root"
+    },
+    {
+      "id": "R4-E03-OLD-PUBLICATION",
+      "current_status": "SCOPED_FOUR_TABLE_EXACT_MIGRATION_PASS",
+      "denominator": {
+        "objects": 6337,
+        "aliases": 12106,
+        "members": 50162,
+        "metadata": 1
+      },
+      "evidence_links": [
+        "EXACT_OLD_SNAPSHOT_RESULT.json",
+        "EXACT_OLD_SNAPSHOT_CONNECTIONS.jsonl.gz"
+      ],
+      "limitations": [
+        "PG storage equivalence of old publication only; no current producer or series migration claim",
+        "No consumer authority, joint release, CAS, rollback or production switch"
+      ],
+      "owner": "Codex / root"
+    },
+    {
+      "id": "R4-E04",
+      "current_status": "GLOBAL_V4_DENOMINATOR_OPEN",
+      "denominator": null,
+      "evidence_links": [
+        "TEST_NODE_RUN_LEDGER.csv",
+        "SHADOW_CAPABILITY_SCOPE.json"
+      ],
+      "limitations": [
+        "Original 4568 ledger preserved; only explicit three legacy nodes classified here"
+      ],
+      "owner": "Codex / root"
+    },
+    {
+      "id": "R4-E05",
+      "current_status": "ORIGINAL_BASELINE_QUALIFICATION_OPEN",
+      "denominator": null,
+      "evidence_links": [
+        "PROTECTED_READBACK.json"
+      ],
+      "limitations": [
+        "No retroactive pristine-protection claim"
+      ],
+      "owner": "Codex / root"
+    }
+  ],
+  "external_acceptance": "EXTERNAL_ACCEPTANCE_BLOCKED / AUDIT_INCOMPLETE",
+  "production_loaded": "NOT_SWITCHED",
+  "evidence_links": [
+    "DEFAULT_PRODUCT_HTTP_RESULT.json",
+    "EXACT_OLD_SNAPSHOT_RESULT.json",
+    "r4_batch2_capability.xml"
+  ],
+  "limitations": [
+    "No formal PG authority acceptance, production installation or all-consumer closure",
+    "Joint CAS/rollback, broad five-date default HTTP/browser, capacity, DB06/08/09, full V4 denominator remain open"
+  ],
+  "next_conditions": [
+    "Joint release/rollback and all snapshot/series consumers",
+    "Complete dynamic scope graph and legal V4 denominator",
+    "Broad default-path dates/securities and capacity"
+  ],
+  "implementation_commit": "83f6632cea62d7434cda38a34fec6aef7d7e7926"
+}

@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "G:\codex work\r4-pg-only-20261011\scripts\audit_r4_default_product_http.py", line 157, in <module>
+    if __name__ == '__main__': main()
+                               ~~~~^^
+  File "G:\codex work\r4-pg-only-20261011\scripts\audit_r4_default_product_http.py", line 100, in main
+    freeze()
+    ~~~~~~^^
+  File "G:\codex work\r4-pg-only-20261011\scripts\audit_r4_default_product_http.py", line 81, in freeze
+    if not path.is_relative_to(SOURCE): raise ValueError('FROZEN_SOURCE_PATH_ESCAPE')
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: FROZEN_SOURCE_PATH_ESCAPE

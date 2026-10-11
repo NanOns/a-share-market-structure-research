@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "G:\codex work\r4-pg-only-20261011\scripts\audit_r4_default_product_http.py", line 163, in <module>
+    if __name__ == '__main__': main()
+                               ~~~~^^
+  File "G:\codex work\r4-pg-only-20261011\scripts\audit_r4_default_product_http.py", line 106, in main
+    freeze()
+    ~~~~~~^^
+  File "G:\codex work\r4-pg-only-20261011\scripts\audit_r4_default_product_http.py", line 87, in freeze
+    if total > 8 * 1024 ** 3: raise ValueError('FROZEN_INPUT_SIZE_BOUND_EXCEEDED')
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: FROZEN_INPUT_SIZE_BOUND_EXCEEDED

@@ -1,0 +1,26 @@
+{"frozen_files": 6141, "bytes": 9734492222}
+Traceback (most recent call last):
+  File "G:\codex work\r4-pg-only-20261011\scripts\audit_r4_default_product_http.py", line 183, in <module>
+  File "G:\codex work\r4-pg-only-20261011\scripts\audit_r4_default_product_http.py", line 140, in main
+    code = 1
+    
+  File "G:\codex work\r4-pg-only-20261011\src\workbench_analysis\operational_successor_v1.py", line 119, in accepted_api
+    return OperationalSuccessorReaderV1(root,candidate)
+  File "G:\codex work\r4-pg-only-20261011\src\workbench_analysis\operational_successor_v1.py", line 82, in __init__
+    self.root=Path(root);self.candidate=candidate;validate(root,candidate)
+                                                  ~~~~~~~~^^^^^^^^^^^^^^^^
+  File "G:\codex work\r4-pg-only-20261011\src\workbench_analysis\operational_successor_v1.py", line 22, in validate
+    sessions=official_sessions(root)
+  File "G:\codex work\r4-pg-only-20261011\src\workbench_analysis\market_source_acquisition.py", line 48, in official_sessions
+    return sorted(set(historical['session_dates']) | set(calendar(root)['session_dates']))
+                                                         ~~~~~~~~^^^^^^
+  File "G:\codex work\r4-pg-only-20261011\src\workbench_analysis\dm01_runtime_r4.py", line 88, in calendar
+    head = json.loads((Path(root) / CALENDAR).read_bytes())
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\python\Lib\pathlib\_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "E:\python\Lib\pathlib\_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\r4_batch2_default_product\\data\\v4\\DM01_R4_CALENDAR_HEAD_V1.json'

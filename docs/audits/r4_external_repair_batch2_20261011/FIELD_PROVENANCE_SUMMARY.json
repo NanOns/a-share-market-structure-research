@@ -1,0 +1,85 @@
+{
+  "contract_id": "R4_E03_FIELD_PROVENANCE_R1",
+  "owner": "Codex / root",
+  "current_status": "FIELD_RULE_EXPLANATION_COMPLETE_ACCEPTANCE_OPEN",
+  "denominator": 740703,
+  "classifications": {
+    "EXACT_ACCEPTED_NATIVE_DENOMINATOR_PROJECTION": 5670,
+    "EXACT_ACCEPTED_RAW_TURNOVER_NEW_PROJECTION": 10426,
+    "HASH_BOUND_UNIT_REGISTRY_PROJECTION": 688116,
+    "EXACT_ACCEPTED_STOCK_DENOMINATOR_PROJECTION": 26065,
+    "LITERAL_UNKNOWN_QUALITY_CORRECTION": 10426
+  },
+  "unexplained": [],
+  "bound_inputs": [
+    {
+      "bytes": 4710499,
+      "contract_id": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+      "owner_stage": "V4-02",
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/RAW_DAILY/artifact.json",
+      "sha256": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1"
+    },
+    {
+      "bytes": 1548923,
+      "path": "data/v4/fp06_sector/fc1c4411b3bdf36ed148223e02ca58c50e771364cef71fe72e6d8e527444df3f/native.jsonl.gz",
+      "sha256": "16d8990b32244f3984d7308baed307875833cddaf11ce2aef1e7643c2440e376"
+    },
+    {
+      "bytes": 19460170,
+      "path": "data/v4/fp06_sector/fc1c4411b3bdf36ed148223e02ca58c50e771364cef71fe72e6d8e527444df3f/factors.jsonl.gz",
+      "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    {
+      "bytes": 40715,
+      "path": "config/v4_03_field_registry_v1.json",
+      "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+    },
+    {
+      "bytes": 20506,
+      "path": "config/v4_04_field_registry_v2.json",
+      "sha256": "aceed3d159cf3c7beb3306fb2b90eb22af935bb7f27ebeb29a9e8abc5653f9c1"
+    }
+  ],
+  "unit_contract_sha256": "7c648a1b9381e5d220a030440a67e4e09d0809807a865c0c0227d56e705bc2d3",
+  "old_database_binding": {
+    "bytes": 440029184,
+    "path": "data/v4/research_snapshots/8b4bbcc6a81e48a6b158e3bdf3bb84c8/research.sqlite",
+    "sha256": "fa09d1b1835330281ab6859ce827da3d218305eaaff3d610e6eb4a5e7e0177b2"
+  },
+  "source_unchanged": true,
+  "producer_sha256": "ee2736d8fcf5158bd0d6dcaf8ff64e7bdfbd8acbfcb3112d3530ebe80671e6f8",
+  "limitations": [
+    "Explains candidate projection changes; does not prove byte-equivalent old publication migration",
+    "Approval of quality/unit/new fields, Amount A audit, Focus identity, CAS and rollback remain independent"
+  ],
+  "base_head": "1521f9cca72c3a5a4ff127105be56cc90ec0d2b3",
+  "source_SHA": {
+    "src/workbench_db/v4_shadow_pg_r1.py": "94bc69e011be1216aaeda6d8e104fa660d7ef4bcd20a51f8423cae55b2239f68",
+    "src/workbench_service/shadow_context.py": "6fbeec66f02e7fcd6f9489b0567dc6470ae4a3c1ee185eddaee329efa98aa29a",
+    "src/workbench_service/shadow_server.py": "6cb631d456652e0d265e6af546dac6ce40c9441044e7743d9d13de0bb418fe99",
+    "src/workbench_service/core_product_bff_r1.py": "8bfe6bb6c7356ae49d57556b56f524e3ce8985b85eeeedf6b794f3d674403a40",
+    "src/workbench_service/core_product_server_r1.py": "187c6783a0737f9af4ae170c525f4a7e57034b4a190b8b60e1638875b759ef0b",
+    "tests/test_v4_17_shadow_ui.py": "1c1cf19f01165f1a778838f08a6fddb7984ec3b465981c486c23f280612d2faf",
+    "tests/test_v4_shadow_pg_r4.py": "2f00d6be35e9ec065e968ff71c521cf171b347772afba538b602b4f8faae2560",
+    "tests/test_v4_shadow_error_r4.py": "e8e428981d57c595f4f02065ce165882a94664d124c8932f51dabcd59a691cfc",
+    "tests/test_v4_default_history_authority_r4.py": "a519a67f9cc7e70b1979bbefb892c07e08f3cbdf1001a9f9b00f0f30ce71ca67",
+    "scripts/audit_r4_default_product_http.py": "9d42e02bfd04f7a82541cce338a216bf39548f606e7f253dbf6988da6de4c90b",
+    "scripts/audit_r4_focus_identity_delta.py": "bc922e3bfbe9054aa32ea5fdf19f7711a5abe96acf2f4fe437a2722902420e3e",
+    "scripts/audit_r4_snapshot_delta_provenance.py": "a563aa08c91ef4c77d0a5f00fd72373623904cf0c758d9a73457b46cbd1d3518",
+    "scripts/migrate_r4_old_snapshot_exact.py": "2f0d4537db9b5b240876de42dea9aa4d96aa8623c7605e208271c71b3fca8be0",
+    "scripts/r4_frozen_chart_oracle.py": "2c55624712efb1f467c999e2f4fc7e9df9e47c2c142664417de2370e06e12d59"
+  },
+  "run_utc": "2026-10-11T08:52:23.384456+00:00",
+  "scope": [
+    "DB12 PG Shadow native reader and V4 fixtures",
+    "E02 default product handler isolated root",
+    "E03 field and Focus ID provenance"
+  ],
+  "negative_vectors": [],
+  "previous_status": "PARTIAL_ENGINEERING_REPAIR",
+  "evidence_links": [],
+  "next_conditions": [
+    "Remaining gates in BATCH2_DISPOSITION.json"
+  ],
+  "implementation_commit": "83f6632cea62d7434cda38a34fec6aef7d7e7926"
+}

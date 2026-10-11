@@ -1,0 +1,8 @@
+{"reused_frozen_root": true, "added_calendar_files": 14}
+Traceback (most recent call last):
+  File "G:\codex work\r4-pg-only-20261011\scripts\audit_r4_default_product_http.py", line 219, in <module>
+    if __name__ == '__main__': main()
+                               ~~~~^^
+  File "G:\codex work\r4-pg-only-20261011\scripts\audit_r4_default_product_http.py", line 196, in main
+    raise ValueError('DEFAULT_CHART_FAILED:' + str((status, data)))
+ValueError: DEFAULT_CHART_FAILED:(400, {'code': 'PRODUCT_READ_FAILED', 'reason': 'PG_HISTORY_CONTEXT_MISMATCH'})

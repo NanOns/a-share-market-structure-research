@@ -1,0 +1,77 @@
+{
+  "contract_id": "R4_FOCUS_IDENTITY_DELTA_R1",
+  "denominator": 469,
+  "candidate_count": 469,
+  "source_unchanged": true,
+  "source_binding": {
+    "bytes": 440029184,
+    "path": "data/v4/research_snapshots/8b4bbcc6a81e48a6b158e3bdf3bb84c8/research.sqlite",
+    "sha256": "fa09d1b1835330281ab6859ce827da3d218305eaaff3d610e6eb4a5e7e0177b2"
+  },
+  "pg_binding": {
+    "T0": "2026-09-30",
+    "contract_id": "V4_PG_RESEARCH_SNAPSHOT_R1",
+    "engine": "postgresql",
+    "logical_digest": "e32323fe9fdd0a537484d2910bb7e0f97f21fa3121b32cbf717c34495211bda3",
+    "release_id": "800d16bdfbec4275a7edc0ad51f3f914",
+    "schema": "v4_research_1680109cbd8e62cca396a1b4"
+  },
+  "changed_ids": 328,
+  "entity_added": [],
+  "entity_removed": [],
+  "changed_fields": {
+    "/fields/health/quality": 328,
+    "/fields/health/reason": 328,
+    "/fields/membership/quality": 129,
+    "/fields/membership/reason": 129,
+    "/fields/validity/quality": 327,
+    "/fields/validity/reason": 327
+  },
+  "sensitive_identity_differences": [],
+  "quality_rule_reconstruction_mismatches": [],
+  "producer_hash_reconstruction_mismatches": [],
+  "producer_binding": {
+    "path": "src/workbench_service/production_v4.py",
+    "sha256": "ee2736d8fcf5158bd0d6dcaf8ff64e7bdfbd8acbfcb3112d3530ebe80671e6f8",
+    "symbols": [
+      "compact_cell",
+      "build_snapshot.put"
+    ]
+  },
+  "current_status": "FIELD_PROVENANCE_REVIEW_OPEN",
+  "owner": "Codex / root",
+  "limitations": [
+    "Entity correspondence does not make old/new snapshot IDs equivalent",
+    "No joint CAS/rollback acceptance; observed T0 equality does not prove historical PIT"
+  ],
+  "base_head": "1521f9cca72c3a5a4ff127105be56cc90ec0d2b3",
+  "source_SHA": {
+    "src/workbench_db/v4_shadow_pg_r1.py": "94bc69e011be1216aaeda6d8e104fa660d7ef4bcd20a51f8423cae55b2239f68",
+    "src/workbench_service/shadow_context.py": "6fbeec66f02e7fcd6f9489b0567dc6470ae4a3c1ee185eddaee329efa98aa29a",
+    "src/workbench_service/shadow_server.py": "6cb631d456652e0d265e6af546dac6ce40c9441044e7743d9d13de0bb418fe99",
+    "src/workbench_service/core_product_bff_r1.py": "8bfe6bb6c7356ae49d57556b56f524e3ce8985b85eeeedf6b794f3d674403a40",
+    "src/workbench_service/core_product_server_r1.py": "187c6783a0737f9af4ae170c525f4a7e57034b4a190b8b60e1638875b759ef0b",
+    "tests/test_v4_17_shadow_ui.py": "1c1cf19f01165f1a778838f08a6fddb7984ec3b465981c486c23f280612d2faf",
+    "tests/test_v4_shadow_pg_r4.py": "2f00d6be35e9ec065e968ff71c521cf171b347772afba538b602b4f8faae2560",
+    "tests/test_v4_shadow_error_r4.py": "e8e428981d57c595f4f02065ce165882a94664d124c8932f51dabcd59a691cfc",
+    "tests/test_v4_default_history_authority_r4.py": "a519a67f9cc7e70b1979bbefb892c07e08f3cbdf1001a9f9b00f0f30ce71ca67",
+    "scripts/audit_r4_default_product_http.py": "9d42e02bfd04f7a82541cce338a216bf39548f606e7f253dbf6988da6de4c90b",
+    "scripts/audit_r4_focus_identity_delta.py": "bc922e3bfbe9054aa32ea5fdf19f7711a5abe96acf2f4fe437a2722902420e3e",
+    "scripts/audit_r4_snapshot_delta_provenance.py": "a563aa08c91ef4c77d0a5f00fd72373623904cf0c758d9a73457b46cbd1d3518",
+    "scripts/migrate_r4_old_snapshot_exact.py": "2f0d4537db9b5b240876de42dea9aa4d96aa8623c7605e208271c71b3fca8be0",
+    "scripts/r4_frozen_chart_oracle.py": "2c55624712efb1f467c999e2f4fc7e9df9e47c2c142664417de2370e06e12d59"
+  },
+  "run_utc": "2026-10-11T08:52:23.385196+00:00",
+  "scope": [
+    "DB12 PG Shadow native reader and V4 fixtures",
+    "E02 default product handler isolated root",
+    "E03 field and Focus ID provenance"
+  ],
+  "negative_vectors": [],
+  "previous_status": "PARTIAL_ENGINEERING_REPAIR",
+  "evidence_links": [],
+  "next_conditions": [
+    "Remaining gates in BATCH2_DISPOSITION.json"
+  ],
+  "implementation_commit": "83f6632cea62d7434cda38a34fec6aef7d7e7926"
+}

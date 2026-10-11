@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="13" skipped="0" tests="51" time="5.232" timestamp="2026-10-11T15:55:48.147682+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_v4_shadow_error_r4" name="test_malformed_source_preserves_underlying_error[bundle0]" time="0.001" /><testcase classname="tests.test_v4_shadow_error_r4" name="test_malformed_source_preserves_underlying_error[bundle1]" time="0.001" /><testcase classname="tests.test_v4_shadow_error_r4" name="test_malformed_source_preserves_underlying_error[bundle2]" time="0.001" /><testcase classname="tests.test_v4_shadow_error_r4" name="test_pg_error_is_fail_closed[OperationalError]" time="0.001" /><testcase classname="tests.test_v4_shadow_error_r4" name="test_pg_error_is_fail_closed[ProgrammingError]" time="0.001" /><testcase classname="tests.test_v4_shadow_error_r4" name="test_contract_failure_is_preserved" time="0.001" /><testcase classname="tests.test_v4_shadow_error_r4" name="test_no_authorization_opens_no_database" time="0.002" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_current_no_real_data_never_opens_database" time="0.037" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_all_components_same_token_refresh_deeplink_filter_pagination_unknown" time="0.007" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_corrected_observed_outcome_is_exact_revision" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_negative_matrix[U01]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_negative_matrix[U02]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_negative_matrix[U03]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_negative_matrix[U04]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_negative_matrix[U05]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_negative_matrix[U06]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_negative_matrix[U07]" time="0.002" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_negative_matrix[U08]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_negative_matrix[U09]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_negative_matrix[U10]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_negative_matrix[U11]" time="0.002" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_negative_matrix[U12]" time="0.002" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_negative_matrix[U13]" time="0.002" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_negative_matrix[U14]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_negative_matrix[U15]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_negative_matrix[U16]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_negative_matrix[U17]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_negative_matrix[U18]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_extra_scope_guards[lineage]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_extra_scope_guards[namespace]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_extra_scope_guards[origin]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_extra_scope_guards[missing_quality]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_extra_scope_guards[unknown_known]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_extra_scope_guards[pending_known]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_extra_scope_guards[unregistered_field]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_extra_scope_guards[pagination]" time="0.001" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_http_shared_service_read_only_and_existing_pages" time="0.529"><failure message="tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:duckdb">tmp_path = WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_http_shared_service_read_0')
+
+    def test_http_shared_service_read_only_and_existing_pages(tmp_path):
+        import workbench_service.app as app
+        from workbench_db import WorkbenchRepository
+        db=tmp_path/'api.duckdb'
+&gt;       with WorkbenchRepository(ROOT,db):pass
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_17_shadow_ui.py:124: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_db\repository.py:91: in __enter__
+    return self.open()
+           ^^^^^^^^^^^
+src\workbench_db\repository.py:75: in open
+    self.connection = duckdb.connect(str(self.database_path))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = ('G:\\codex_tmp\\test_temp\\r4_external_e01_native\\test_http_shared_service_read_0\\api.duckdb',)
+kwargs = {}
+
+    def call(*args,**kwargs):
+        EVENTS.append(dict(nodeid=ACTIVE,engine=engine,decision='REJECT',stack=traceback.format_stack(limit=8)))
+&gt;       raise V4DatabaseGuardViolation('R4_NON_POSTGRES_FORBIDDEN:'+engine)
+E       tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:duckdb
+
+tests\v4_native_isolation_plugin_r4.py:76: V4DatabaseGuardViolation</failure></testcase><testcase classname="tests.test_v4_17_shadow_ui" name="test_browser_code_contract_and_unknown_guard" time="0.191" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_readback_config_has_no_real_acceptance" time="0.000" /><testcase classname="tests.test_v4_17_shadow_ui" name="test_native_exact_readonly_storage_projection" time="0.002"><failure message="tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3">tmp_path = WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_native_exact_readonly_sto0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002068F790D50&gt;
+
+    def test_native_exact_readonly_storage_projection(tmp_path,monkeypatch):
+&gt;       root,manifest,config,save=native_vector(tmp_path)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_17_shadow_ui.py:204: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_v4_17_shadow_ui.py:181: in native_vector
+    with sqlite3.connect(db) as con:
+         ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_native_exact_readonly_sto0/native-vector/synthetic.sqlite'),)
+kwargs = {}
+
+    def call(*args,**kwargs):
+        EVENTS.append(dict(nodeid=ACTIVE,engine=engine,decision='REJECT',stack=traceback.format_stack(limit=8)))
+&gt;       raise V4DatabaseGuardViolation('R4_NON_POSTGRES_FORBIDDEN:'+engine)
+E       tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3
+
+tests\v4_native_isolation_plugin_r4.py:76: V4DatabaseGuardViolation</failure></testcase><testcase classname="tests.test_v4_17_shadow_ui" name="test_native_readback_fail_closed[receipt]" time="0.002"><failure message="tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3">tmp_path = WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_native_readback_fail_clos0')
+change = 'receipt'
+
+    @pytest.mark.parametrize('change',['receipt','fact_digest','slot_model','storage_origin','path_escape','absent_db','field_path','field_kind'])
+    def test_native_readback_fail_closed(tmp_path,change):
+&gt;       root,manifest,config,save=native_vector(tmp_path)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_17_shadow_ui.py:225: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_v4_17_shadow_ui.py:181: in native_vector
+    with sqlite3.connect(db) as con:
+         ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_native_readback_fail_clos0/native-vector/synthetic.sqlite'),)
+kwargs = {}
+
+    def call(*args,**kwargs):
+        EVENTS.append(dict(nodeid=ACTIVE,engine=engine,decision='REJECT',stack=traceback.format_stack(limit=8)))
+&gt;       raise V4DatabaseGuardViolation('R4_NON_POSTGRES_FORBIDDEN:'+engine)
+E       tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3
+
+tests\v4_native_isolation_plugin_r4.py:76: V4DatabaseGuardViolation</failure></testcase><testcase classname="tests.test_v4_17_shadow_ui" name="test_native_readback_fail_closed[fact_digest]" time="0.002"><failure message="tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3">tmp_path = WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_native_readback_fail_clos1')
+change = 'fact_digest'
+
+    @pytest.mark.parametrize('change',['receipt','fact_digest','slot_model','storage_origin','path_escape','absent_db','field_path','field_kind'])
+    def test_native_readback_fail_closed(tmp_path,change):
+&gt;       root,manifest,config,save=native_vector(tmp_path)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_17_shadow_ui.py:225: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_v4_17_shadow_ui.py:181: in native_vector
+    with sqlite3.connect(db) as con:
+         ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_native_readback_fail_clos1/native-vector/synthetic.sqlite'),)
+kwargs = {}
+
+    def call(*args,**kwargs):
+        EVENTS.append(dict(nodeid=ACTIVE,engine=engine,decision='REJECT',stack=traceback.format_stack(limit=8)))
+&gt;       raise V4DatabaseGuardViolation('R4_NON_POSTGRES_FORBIDDEN:'+engine)
+E       tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3
+
+tests\v4_native_isolation_plugin_r4.py:76: V4DatabaseGuardViolation</failure></testcase><testcase classname="tests.test_v4_17_shadow_ui" name="test_native_readback_fail_closed[slot_model]" time="0.002"><failure message="tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3">tmp_path = WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_native_readback_fail_clos2')
+change = 'slot_model'
+
+    @pytest.mark.parametrize('change',['receipt','fact_digest','slot_model','storage_origin','path_escape','absent_db','field_path','field_kind'])
+    def test_native_readback_fail_closed(tmp_path,change):
+&gt;       root,manifest,config,save=native_vector(tmp_path)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_17_shadow_ui.py:225: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_v4_17_shadow_ui.py:181: in native_vector
+    with sqlite3.connect(db) as con:
+         ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_native_readback_fail_clos2/native-vector/synthetic.sqlite'),)
+kwargs = {}
+
+    def call(*args,**kwargs):
+        EVENTS.append(dict(nodeid=ACTIVE,engine=engine,decision='REJECT',stack=traceback.format_stack(limit=8)))
+&gt;       raise V4DatabaseGuardViolation('R4_NON_POSTGRES_FORBIDDEN:'+engine)
+E       tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3
+
+tests\v4_native_isolation_plugin_r4.py:76: V4DatabaseGuardViolation</failure></testcase><testcase classname="tests.test_v4_17_shadow_ui" name="test_native_readback_fail_closed[storage_origin]" time="0.002"><failure message="tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3">tmp_path = WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_native_readback_fail_clos3')
+change = 'storage_origin'
+
+    @pytest.mark.parametrize('change',['receipt','fact_digest','slot_model','storage_origin','path_escape','absent_db','field_path','field_kind'])
+    def test_native_readback_fail_closed(tmp_path,change):
+&gt;       root,manifest,config,save=native_vector(tmp_path)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_17_shadow_ui.py:225: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_v4_17_shadow_ui.py:181: in native_vector
+    with sqlite3.connect(db) as con:
+         ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_native_readback_fail_clos3/native-vector/synthetic.sqlite'),)
+kwargs = {}
+
+    def call(*args,**kwargs):
+        EVENTS.append(dict(nodeid=ACTIVE,engine=engine,decision='REJECT',stack=traceback.format_stack(limit=8)))
+&gt;       raise V4DatabaseGuardViolation('R4_NON_POSTGRES_FORBIDDEN:'+engine)
+E       tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3
+
+tests\v4_native_isolation_plugin_r4.py:76: V4DatabaseGuardViolation</failure></testcase><testcase classname="tests.test_v4_17_shadow_ui" name="test_native_readback_fail_closed[path_escape]" time="0.001"><failure message="tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3">tmp_path = WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_native_readback_fail_clos4')
+change = 'path_escape'
+
+    @pytest.mark.parametrize('change',['receipt','fact_digest','slot_model','storage_origin','path_escape','absent_db','field_path','field_kind'])
+    def test_native_readback_fail_closed(tmp_path,change):
+&gt;       root,manifest,config,save=native_vector(tmp_path)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_17_shadow_ui.py:225: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_v4_17_shadow_ui.py:181: in native_vector
+    with sqlite3.connect(db) as con:
+         ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_native_readback_fail_clos4/native-vector/synthetic.sqlite'),)
+kwargs = {}
+
+    def call(*args,**kwargs):
+        EVENTS.append(dict(nodeid=ACTIVE,engine=engine,decision='REJECT',stack=traceback.format_stack(limit=8)))
+&gt;       raise V4DatabaseGuardViolation('R4_NON_POSTGRES_FORBIDDEN:'+engine)
+E       tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3
+
+tests\v4_native_isolation_plugin_r4.py:76: V4DatabaseGuardViolation</failure></testcase><testcase classname="tests.test_v4_17_shadow_ui" name="test_native_readback_fail_closed[absent_db]" time="0.002"><failure message="tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3">tmp_path = WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_native_readback_fail_clos5')
+change = 'absent_db'
+
+    @pytest.mark.parametrize('change',['receipt','fact_digest','slot_model','storage_origin','path_escape','absent_db','field_path','field_kind'])
+    def test_native_readback_fail_closed(tmp_path,change):
+&gt;       root,manifest,config,save=native_vector(tmp_path)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_17_shadow_ui.py:225: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_v4_17_shadow_ui.py:181: in native_vector
+    with sqlite3.connect(db) as con:
+         ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_native_readback_fail_clos5/native-vector/synthetic.sqlite'),)
+kwargs = {}
+
+    def call(*args,**kwargs):
+        EVENTS.append(dict(nodeid=ACTIVE,engine=engine,decision='REJECT',stack=traceback.format_stack(limit=8)))
+&gt;       raise V4DatabaseGuardViolation('R4_NON_POSTGRES_FORBIDDEN:'+engine)
+E       tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3
+
+tests\v4_native_isolation_plugin_r4.py:76: V4DatabaseGuardViolation</failure></testcase><testcase classname="tests.test_v4_17_shadow_ui" name="test_native_readback_fail_closed[field_path]" time="0.002"><failure message="tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3">tmp_path = WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_native_readback_fail_clos6')
+change = 'field_path'
+
+    @pytest.mark.parametrize('change',['receipt','fact_digest','slot_model','storage_origin','path_escape','absent_db','field_path','field_kind'])
+    def test_native_readback_fail_closed(tmp_path,change):
+&gt;       root,manifest,config,save=native_vector(tmp_path)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_17_shadow_ui.py:225: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_v4_17_shadow_ui.py:181: in native_vector
+    with sqlite3.connect(db) as con:
+         ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_native_readback_fail_clos6/native-vector/synthetic.sqlite'),)
+kwargs = {}
+
+    def call(*args,**kwargs):
+        EVENTS.append(dict(nodeid=ACTIVE,engine=engine,decision='REJECT',stack=traceback.format_stack(limit=8)))
+&gt;       raise V4DatabaseGuardViolation('R4_NON_POSTGRES_FORBIDDEN:'+engine)
+E       tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3
+
+tests\v4_native_isolation_plugin_r4.py:76: V4DatabaseGuardViolation</failure></testcase><testcase classname="tests.test_v4_17_shadow_ui" name="test_native_readback_fail_closed[field_kind]" time="0.002"><failure message="tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3">tmp_path = WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_native_readback_fail_clos7')
+change = 'field_kind'
+
+    @pytest.mark.parametrize('change',['receipt','fact_digest','slot_model','storage_origin','path_escape','absent_db','field_path','field_kind'])
+    def test_native_readback_fail_closed(tmp_path,change):
+&gt;       root,manifest,config,save=native_vector(tmp_path)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_17_shadow_ui.py:225: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_v4_17_shadow_ui.py:181: in native_vector
+    with sqlite3.connect(db) as con:
+         ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_native_readback_fail_clos7/native-vector/synthetic.sqlite'),)
+kwargs = {}
+
+    def call(*args,**kwargs):
+        EVENTS.append(dict(nodeid=ACTIVE,engine=engine,decision='REJECT',stack=traceback.format_stack(limit=8)))
+&gt;       raise V4DatabaseGuardViolation('R4_NON_POSTGRES_FORBIDDEN:'+engine)
+E       tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3
+
+tests\v4_native_isolation_plugin_r4.py:76: V4DatabaseGuardViolation</failure></testcase><testcase classname="tests.test_v4_17_shadow_ui" name="test_same_publication_new_readback_manifest_cannot_reuse_old_token" time="0.002"><failure message="tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3">tmp_path = WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_same_publication_new_read0')
+
+    def test_same_publication_new_readback_manifest_cannot_reuse_old_token(tmp_path):
+&gt;       root,manifest,config,save=native_vector(tmp_path);r=ShadowContextReader(root)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_17_shadow_ui.py:254: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_v4_17_shadow_ui.py:181: in native_vector
+    with sqlite3.connect(db) as con:
+         ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_same_publication_new_read0/native-vector/synthetic.sqlite'),)
+kwargs = {}
+
+    def call(*args,**kwargs):
+        EVENTS.append(dict(nodeid=ACTIVE,engine=engine,decision='REJECT',stack=traceback.format_stack(limit=8)))
+&gt;       raise V4DatabaseGuardViolation('R4_NON_POSTGRES_FORBIDDEN:'+engine)
+E       tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3
+
+tests\v4_native_isolation_plugin_r4.py:76: V4DatabaseGuardViolation</failure></testcase><testcase classname="tests.test_v4_17_shadow_ui" name="test_legacy_module_ast_identical_after_removing_additive_shadow_routes" time="4.096"><failure message="AssertionError: assert 'Module(body=...Load())))])])' == 'Module(body=...Load())))])])'&#10;  &#10;  Skipping 727945 identical leading characters in diff, use -v to show&#10;  - ())]))]), Assign(targets=[Name(id='independent_reader', ctx=Store())], value=BoolOp(op=Or(), values=[Compare(left=Name(id='path', ctx=Load()), ops=[In()], comparators=[Tuple(elts=[Constant(value='/api/v3/research/today'), Constant(value='/api/v3/research/today-turnover')], ctx=Load())]), Call(func=Attribute(value=Name(id='path', ctx=Load()), attr='startswith', ctx=Load()), args=[Constant(value='/api/v3/research/today/')])])), If(test=Name(id='independent_reader', ctx=Load()), body=[With(items=[withite...&#10;  &#10;  ...Full output truncated (4 lines hidden), use '-vv' to show">def test_legacy_module_ast_identical_after_removing_additive_shadow_routes():
+        import ast
+        baseline=subprocess.check_output(['git','show','60b17524596918b66456fdd48dbc1beb068ab28a:src/workbench_service/app.py'],cwd=ROOT).decode()
+        before=ast.parse(baseline);after=ast.parse((ROOT/'src/workbench_service/app.py').read_text(encoding='utf8'))
+        function=next(n for n in after.body if isinstance(n,ast.FunctionDef) and n.name=='make_handler')
+        function.args.kwonlyargs=[];function.args.kw_defaults=[];function.body=function.body[3:]
+        handler=next(n for n in function.body if isinstance(n,ast.ClassDef) and n.name=='Handler')
+        handler.body=[n for n in handler.body if not (isinstance(n,ast.FunctionDef) and n.name=='_shadow_write_rejected') and not (isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id in ('do_PUT','do_PATCH','do_DELETE') for t in n.targets))]
+        for name,count in [('do_GET',3),('do_POST',1)]:
+            method=next(n for n in handler.body if isinstance(n,ast.FunctionDef) and n.name==name)
+            method.body=method.body[:1]+method.body[1+count:] if name=='do_GET' else method.body[count:]
+&gt;       assert ast.dump(before)==ast.dump(after)
+E       AssertionError: assert 'Module(body=...Load())))])])' == 'Module(body=...Load())))])])'
+E         
+E         Skipping 727945 identical leading characters in diff, use -v to show
+E         - ())]))]), Assign(targets=[Name(id='independent_reader', ctx=Store())], value=BoolOp(op=Or(), values=[Compare(left=Name(id='path', ctx=Load()), ops=[In()], comparators=[Tuple(elts=[Constant(value='/api/v3/research/today'), Constant(value='/api/v3/research/today-turnover')], ctx=Load())]), Call(func=Attribute(value=Name(id='path', ctx=Load()), attr='startswith', ctx=Load()), args=[Constant(value='/api/v3/research/today/')])])), If(test=Name(id='independent_reader', ctx=Load()), body=[With(items=[withite...
+E         
+E         ...Full output truncated (4 lines hidden), use '-vv' to show
+
+tests\test_v4_17_shadow_ui.py:279: AssertionError</failure></testcase><testcase classname="tests.test_v4_17_shadow_ui" name="test_bad_shadow_contract_preserves_existing_v3_http" time="0.001"><failure message="tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:duckdb">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002068F726E40&gt;
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/r4_external_e01_native/test_bad_shadow_contract_prese0')
+
+    def test_bad_shadow_contract_preserves_existing_v3_http(monkeypatch,tmp_path):
+        from workbench_service import app,shadow_context
+        from workbench_service.research_context import ResearchContextError
+        from workbench_db import WorkbenchRepository
+        def bad(*a,**k):raise ResearchContextError('BROKEN_SHADOW_CONTRACT')
+        monkeypatch.setattr(shadow_context,'ShadowContextReader',bad)
+        db=tmp_path/'bad-contract.duckdb'
+&gt;       with WorkbenchRepository(ROOT,db):pass
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_17_shadow_ui.py:289: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_db\repository.py:91: in __enter__
+    return self.open()
+           ^^^^^^^^^^^
+src\workbench_db\repository.py:75: in open
+    self.connection = duckdb.connect(str(self.database_path))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = ('G:\\codex_tmp\\test_temp\\r4_external_e01_native\\test_bad_shadow_contract_prese0\\bad-contract.duckdb',)
+kwargs = {}
+
+    def call(*args,**kwargs):
+        EVENTS.append(dict(nodeid=ACTIVE,engine=engine,decision='REJECT',stack=traceback.format_stack(limit=8)))
+&gt;       raise V4DatabaseGuardViolation('R4_NON_POSTGRES_FORBIDDEN:'+engine)
+E       tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:duckdb
+
+tests\v4_native_isolation_plugin_r4.py:76: V4DatabaseGuardViolation</failure></testcase></testsuite></testsuites>

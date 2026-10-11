@@ -1,0 +1,19 @@
+{
+  "contract_id": "R4_EXTERNAL_AUDIT_REPAIR_R1",
+  "base_head": "5f67ce474d0b1ed474a8b8bb02b8e794df10629e",
+  "run_utc": "2026-10-11T07:59:58.236950+00:00",
+  "owner": "Codex / root",
+  "scope": "V4_ONLY_ISOLATED_PG_ENGINEERING",
+  "external_acceptance": "BLOCKED",
+  "production_loaded": "NOT_CHANGED",
+  "legal_denominator": null,
+  "source_SHA": {
+    "src/workbench_service/shadow_context.py": "c79bcb26ca7903d951c8dd2adedb332aadd0be91dd829307f6c2bb528f171831",
+    "tests/test_v4_shadow_error_r4.py": "e8e428981d57c595f4f02065ce165882a94664d124c8932f51dabcd59a691cfc",
+    "tests/test_v4_default_history_authority_r4.py": "a519a67f9cc7e70b1979bbefb892c07e08f3cbdf1001a9f9b00f0f30ce71ca67",
+    "scripts/audit_r4_external_snapshot_delta.py": "356b065c91015edbabe664867dce9e86c4444c8adb0ce448a1eb81cdfbef8c41"
+  },
+  "limitations": [
+    "Exact file hashes bind dirty execution source; base_head alone does not identify implementation"
+  ]
+}

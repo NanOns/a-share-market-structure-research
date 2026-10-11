@@ -1,0 +1,176 @@
+{
+  "contract_id": "TDX_AFFINE_QFQ_V0_3_EXACT_RATIONAL",
+  "scope": "Every stock and every bar of latest frozen Owner history; not all decades in the native archive",
+  "inputs": [
+    {
+      "bytes": 6906,
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/DAY_RECEIPT.json",
+      "sha256": "1b0da91a2dc953fbcaa408433977cd90cff1ab7ea222052a8b4fa68e1a9fc2d1",
+      "verified_sha256": "1b0da91a2dc953fbcaa408433977cd90cff1ab7ea222052a8b4fa68e1a9fc2d1"
+    },
+    {
+      "bytes": 1856437,
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/CORE_REPLAY.json",
+      "sha256": "8781ecd5b57f913995970cc5e93f292bfb396d1f575903d71dd0e0e5417cc151",
+      "verified_sha256": "8781ecd5b57f913995970cc5e93f292bfb396d1f575903d71dd0e0e5417cc151"
+    },
+    {
+      "bytes": 551726664,
+      "path": "data/v4/dynamic_daily_sources/tdx/20261009/sha256-635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6/hsjday.zip",
+      "sha256": "635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6",
+      "verified_sha256": "635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6"
+    },
+    {
+      "path": "data/v4/corrected_owner_sources/c2f07f4aa8a9e8893e5dc24c1a83ac63f2ab27198ecde444154fd591c73e2739/gbbq",
+      "sha256": "c2f07f4aa8a9e8893e5dc24c1a83ac63f2ab27198ecde444154fd591c73e2739",
+      "bytes": 5614317,
+      "verified_sha256": "c2f07f4aa8a9e8893e5dc24c1a83ac63f2ab27198ecde444154fd591c73e2739"
+    },
+    {
+      "path": "config\\v4_02_gbbq_price_impact_classification_v1.json",
+      "sha256": "c39ff7e14209d250139352dcf78b326c7579721681fd467bac68d21d2515681c",
+      "bytes": 4334
+    },
+    {
+      "path": "src\\tdx\\_gbbq_key.py",
+      "sha256": "10ea1ce6d1e87b6249fdb5ab936c8835c02cc802656b32db2b6cb26c962a3d89",
+      "bytes": 9238
+    }
+  ],
+  "source_engine": {
+    "path": "src/adjustment/tdx_adjustment_v0_3.py",
+    "sha256": "1ce8c544c7a3dad21bc6faffa92ae6736d6a2d0e196089bc0349cfe559a75601"
+  },
+  "candidate": {
+    "path": "G:\\codex_tmp\\full_system_repair_r3_239fb9b5\\candidate_v0_3_history.jsonl.gz",
+    "sha256": "c2ea161a8376c23ec6ae819911e798158b4dc7f247772209dd46a2f5902a7f53",
+    "bytes": 70684709
+  },
+  "stocks": 5224,
+  "bars": 2162962,
+  "qfq_cells": 8636512,
+  "independent_chronological_oracle_mismatches": 0,
+  "changed_cells": 16,
+  "changed_stocks": 7,
+  "deltas": [
+    {
+      "security_id": "SEC-3A5B40C6141461B88CA555E0BB852BDF",
+      "trade_date": "2025-04-14",
+      "column": "open",
+      "old": 9.77,
+      "candidate": 9.78
+    },
+    {
+      "security_id": "SEC-55A8B56C7FF6A3DE33B3CB91748FAB9D",
+      "trade_date": "2025-04-09",
+      "column": "low",
+      "old": 9.78,
+      "candidate": 9.79
+    },
+    {
+      "security_id": "SEC-732042B85CB8C459760B3EA97BDA8CEC",
+      "trade_date": "2025-02-12",
+      "column": "open",
+      "old": 9.96,
+      "candidate": 9.97
+    },
+    {
+      "security_id": "SEC-732042B85CB8C459760B3EA97BDA8CEC",
+      "trade_date": "2025-06-20",
+      "column": "high",
+      "old": 9.96,
+      "candidate": 9.97
+    },
+    {
+      "security_id": "SEC-73F4BF10249943885A3D10B9F607ABF3",
+      "trade_date": "2025-04-11",
+      "column": "low",
+      "old": 9.82,
+      "candidate": 9.83
+    },
+    {
+      "security_id": "SEC-BFE774CD5B8008286EBF69F29DEFA452",
+      "trade_date": "2025-04-28",
+      "column": "low",
+      "old": 9.82,
+      "candidate": 9.83
+    },
+    {
+      "security_id": "SEC-BFE774CD5B8008286EBF69F29DEFA452",
+      "trade_date": "2025-04-30",
+      "column": "low",
+      "old": 9.97,
+      "candidate": 9.98
+    },
+    {
+      "security_id": "SEC-E895A31CFD109869E86AEA01D6A1A389",
+      "trade_date": "2025-04-24",
+      "column": "low",
+      "old": 9.92,
+      "candidate": 9.93
+    },
+    {
+      "security_id": "SEC-ED3E719608C869F99FAE03AF724AC348",
+      "trade_date": "2025-04-24",
+      "column": "high",
+      "old": 9.97,
+      "candidate": 9.98
+    },
+    {
+      "security_id": "SEC-ED3E719608C869F99FAE03AF724AC348",
+      "trade_date": "2025-04-24",
+      "column": "close",
+      "old": 9.87,
+      "candidate": 9.88
+    },
+    {
+      "security_id": "SEC-ED3E719608C869F99FAE03AF724AC348",
+      "trade_date": "2025-04-25",
+      "column": "high",
+      "old": 9.92,
+      "candidate": 9.93
+    },
+    {
+      "security_id": "SEC-ED3E719608C869F99FAE03AF724AC348",
+      "trade_date": "2025-05-06",
+      "column": "high",
+      "old": 9.92,
+      "candidate": 9.93
+    },
+    {
+      "security_id": "SEC-ED3E719608C869F99FAE03AF724AC348",
+      "trade_date": "2025-05-07",
+      "column": "open",
+      "old": 9.92,
+      "candidate": 9.93
+    },
+    {
+      "security_id": "SEC-ED3E719608C869F99FAE03AF724AC348",
+      "trade_date": "2025-05-08",
+      "column": "close",
+      "old": 9.92,
+      "candidate": 9.93
+    },
+    {
+      "security_id": "SEC-ED3E719608C869F99FAE03AF724AC348",
+      "trade_date": "2025-05-20",
+      "column": "open",
+      "old": 9.92,
+      "candidate": 9.93
+    },
+    {
+      "security_id": "SEC-ED3E719608C869F99FAE03AF724AC348",
+      "trade_date": "2025-05-20",
+      "column": "low",
+      "old": 9.92,
+      "candidate": 9.93
+    }
+  ],
+  "all_r2_counterexamples_corrected": true,
+  "accepted_owner_overwrite": false,
+  "acceptance": "NUMERIC_CANDIDATE_PASS; CONSUMER_PROMOTION_PENDING",
+  "oracle_validation": "Preceding completed full run passed both assertions before consumer-report encoding failure; recovery verifies saved candidate counts, deltas and raw/availability invariants",
+  "preceding_full_log_sha256": "0e8c39517b9dd9083c378f7475001ffad631f0121e86960f83321df63695749d",
+  "report_recovery_seconds": 0.20426430000225082,
+  "full_run_seconds": "NOT_RECORDED_WRAPPER_FAILURE"
+}

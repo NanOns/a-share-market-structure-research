@@ -1,0 +1,50 @@
+{
+  "contract_id": "TDX_AFFINE_QFQ_V0_3_EXACT_RATIONAL",
+  "base_head": "1fe8663f5f8f2e5babb8d70f8d236a82b7e67677",
+  "issue": "FA-016",
+  "source_bindings": [
+    {
+      "path": "src/adjustment/tdx_adjustment_v0_3.py",
+      "sha256": "1ce8c544c7a3dad21bc6faffa92ae6736d6a2d0e196089bc0349cfe559a75601"
+    },
+    {
+      "path": "config/tdx_affine_qfq_v0_3_exact_rational.json",
+      "sha256": "46839161b7ee7353ee07cdd68b43fc5a9e39c1937db7c81a00d43e9355996306"
+    },
+    {
+      "path": "tests/test_audit_repair_adjustment_r3.py",
+      "sha256": "02916297debe6522f9a500a3731a6c8c7ddd56033aef03671162bbc3fbb00a81"
+    }
+  ],
+  "legacy_engine": {
+    "path": "src/adjustment/tdx_adjustment.py",
+    "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0",
+    "byte_preserved": true,
+    "reason": "Accepted policy binds legacy SHA; algorithm upgrades not granted in that lane"
+  },
+  "evidence": [
+    "A4_CANDIDATE_RECOMPUTE.json",
+    "A4_CONSUMER_IMPACT.json",
+    "A4_B2_CORE_SENSITIVITY.json",
+    "A4_B2_RPS_SENSITIVITY.json",
+    "a4_final_junit.xml",
+    "a4_b2_final_junit.xml"
+  ],
+  "candidate_price_acceptance": "PASS: 5224 stocks / 2162962 bars / 8636512 QFQ cells / zero independent rational-oracle mismatches / all 7 stocks 16 counterexamples corrected",
+  "core_sensitivity": {
+    "compared_fields": 99333,
+    "security_dates": 2547,
+    "changed_cells": 1081,
+    "current_five_dates_changed": false
+  },
+  "rank_sensitivity": {
+    "cases": 16,
+    "changed_rows": 845,
+    "population": "Endpoint-valid current-member reconstruction; not legal historical PIT"
+  },
+  "consumer_modules": 56,
+  "full_consumer_acceptance": "OPEN: exact transport and full dated Profile/Structure/D0D1D2/Focus/Forward consumer delta/admission; no grant inferred",
+  "acceptance": "EXACT_NUMERIC_CANDIDATE_PASS_WITH_CONSUMER_GATES_OPEN",
+  "production_loaded": false,
+  "next": "Register v0.3 exact coefficient transport and producer identity; independently review all consumer deltas under legal prior/date population; never overwrite accepted Owner"
+}

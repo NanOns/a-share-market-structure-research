@@ -283,7 +283,7 @@
       "id": "FA-016",
       "priority": "P2",
       "category": "CROSS_CUTTING_PRICE_ADJUSTMENT_ROUNDING",
-      "status": "OPEN_CONFIRMED_NATIVE_HISTORY_COUNTEREXAMPLES",
+      "status": "EXACT_NUMERIC_CANDIDATE_PASS_CONSUMER_GATES_OPEN",
       "scope": "7 securities, 16 OHLC cells dated 2025-02-12 through 2025-06-20 in the 2026-10-09 reconstructed owner",
       "producer": "src/adjustment/tdx_adjustment.py:96",
       "evidence": [
@@ -294,7 +294,11 @@
       "trigger": "Exact rational half-cent; finite affine coefficients plus ambient Decimal arithmetic fall below HALF_UP boundary",
       "impact": "Recorded QFQ prices are 0.01 CNY below exact contract recurrence at these cells; selected five-day return/RPS endpoints still match",
       "acceptance": "Deterministic exact rounding contract; all listed ties plus non-ties, multi-event ordering, unsupported events and consumer replay independently pass; isolated new candidate only; no accepted Owner overwrite",
-      "effective_location": null
+      "effective_location": [
+        "src/adjustment/tdx_adjustment.py",
+        "src/adjustment/tdx_adjustment_v0_3.py"
+      ],
+      "repair_evidence": "A4_REPAIR_RESULT.json"
     },
     {
       "id": "FA-017",

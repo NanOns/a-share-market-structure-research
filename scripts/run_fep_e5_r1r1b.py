@@ -18,6 +18,17 @@ from workbench_service.canonical_expectancy_service import CanonicalExpectancyRe
 BASE='9a6ecd205c690b62063cc80810272dda8001cfe9'
 REPORT=ROOT/'reports/fep_e5_r1r1b'
 DSNS={k:f'host=127.0.0.1 port={port} user=fep_e5_admin dbname=fep_e5b_{k}' for k,port in [('fresh',55490),('upgrade',55491)]}
+if os.environ.get('R4_R3_EXTRA_PG_FIXTURES'):
+    fixture_manifest=json.loads(Path(os.environ['R4_R3_EXTRA_PG_FIXTURES']).read_bytes())
+    if fixture_manifest.get('contract_id')!='R4_R3_EXPLICIT_ENGINEERING_PG_FIXTURES_R1' or fixture_manifest.get('production_authorized') is not False:
+        raise ValueError('EXPLICIT_ENGINEERING_FIXTURE_CONTRACT_REQUIRED')
+    for kind,port in [('fresh',55794),('upgrade',55793)]:
+        expected=dict(database='fep_e5b_'+kind,port=str(port),data_directory=str(Path('G:/codex_tmp/r4_r3_fep_fixtures')/(kind+'_data')))
+        if not any(row.get('database')==expected['database'] and str(row.get('port'))==expected['port'] and Path(row.get('data_directory','')).resolve()==Path(expected['data_directory']).resolve() for row in fixture_manifest['databases']):
+            raise ValueError('EXPLICIT_ENGINEERING_FIXTURE_IDENTITY_REQUIRED:'+kind)
+        DSNS[kind]=f'host=127.0.0.1 port={port} user=r4_isolated_admin dbname=fep_e5b_{kind}'
+    REPORT=Path('G:/codex_tmp/r4_r3_fep_fixtures/canonical_projection')
+    old.REPORT=Path('G:/codex work/大A交易/reports/fep_e5_r1')
 CODE=['src/workbench_analysis/fep_e5/canonical_ledger.py','src/workbench_service/canonical_expectancy_service.py',
  'src/workbench_db/migrations/v4_postgres/032_fep_reconstruction_authority_shadow_v1.sql','scripts/run_fep_e5_r1r1b.py',
  'tests/fep_e5/test_e5_reconstruction.py']

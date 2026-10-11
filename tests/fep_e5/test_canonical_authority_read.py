@@ -28,8 +28,14 @@ def connection():
     pg=psycopg.connect(dsn,autocommit=True)
     meta=pg.execute("select current_database(),current_setting('data_directory'),inet_server_port()").fetchone()
     assert meta[0]=='fep_authority_isolated'
-    assert Path(meta[1]).resolve().is_relative_to(Path('G:/codex_tmp/test_temp').resolve())
-    assert meta[2]==55547
+    if os.environ.get('R4_R3_EXTRA_PG_FIXTURES'):
+        # The native guard has independently attested this exact cluster and
+        # synthetic-only identity marker before any fixture SQL executes.
+        assert Path(meta[1]).resolve()==Path('G:/codex_tmp/r4_r3_fep_fixtures/upgrade_data').resolve()
+        assert meta[2]==55793
+    else:
+        assert Path(meta[1]).resolve().is_relative_to(Path('G:/codex_tmp/test_temp').resolve())
+        assert meta[2]==55547
     pg.execute('drop schema if exists fep cascade');pg.execute('create schema fep')
     yield pg
     pg.close()

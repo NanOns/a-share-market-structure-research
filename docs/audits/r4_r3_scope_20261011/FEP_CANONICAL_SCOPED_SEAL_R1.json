@@ -1,0 +1,122 @@
+{
+  "contract_id": "R4_R3_CANONICAL_SCOPED_EXECUTION_SEAL_R1",
+  "base_head": "2c243342bb93e22622606dfd85014989a235c911",
+  "actual_source_sha256": {
+    "scripts/run_fep_e5_r1r1b.py": "9f3487775a213d2e0069ce15c74c67e595498edd6b51928ed6ffbb05e20eca4b",
+    "scripts/prepare_r4_r3_fep_fixtures.py": "c8e9c012caeb8ab856ca14c98320479084ecadd1afcb94a13888cdbee74369b9",
+    "scripts/run_r4_r3_canonical_drills.py": "2f6009b04eba0f0612b7a90acbdb6831f192d40f9b22a5ef9479a755707cff39",
+    "tests/v4_native_isolation_plugin_r4.py": "5da505ade397f61e531880cb868595b278741f9103f6aeb58f37c5ab8e61a71f",
+    "tests/fep_e5/test_e5_reconstruction.py": "a0601a9c646b7dbfec4512a9414b87c32c95efc4a66a41f989f9316fdc661283",
+    "tests/fep_e5/test_e5_metadata_binding.py": "f5efdd577c14542e65169b50cf8d32201ae34a6acdf66ded59ff173109cee93e",
+    "tests/fep_e5/test_canonical_authority_read.py": "d33549ed261451c91211b7881b25be1208381ebee4fe0008fad761852946ff39"
+  },
+  "independent_junit_counts": {
+    "PASS": 263
+  },
+  "raw_case_records": 263,
+  "evidence": [
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R1.xml",
+      "bytes": 1387931,
+      "sha256": "dacf33e66de429370c18e01dc173a551652f3b099260002056cbafae858f7b58",
+      "lossless_gzip": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R1.xml.gz",
+      "gzip_sha256": "82ebdbd3708043b5aa34abca141650bf43578dfa4ebb1cc08dc418b7a273aaed"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R1_CONNECTIONS.jsonl",
+      "bytes": 1334637,
+      "sha256": "2cf57efbe7ffa441182dfabfc31162cc2cfe7b8f8830d3cd198bb0719012b9d5",
+      "lossless_gzip": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R1_CONNECTIONS.jsonl.gz",
+      "gzip_sha256": "803218342560563da3f12b43c896640863f30423577d665fbf83ac122cf05dd3"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R1_CONNECTIONS_COLLECTED_NODES.json",
+      "bytes": 29715,
+      "sha256": "d7737dbd99ef32bd912a4e1e1f9a4f825603ec497f3434f9eb1ed7c5e3f8d06d",
+      "lossless_gzip": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R1_CONNECTIONS_COLLECTED_NODES.json.gz",
+      "gzip_sha256": "fd7df899e54340eaf4f2f87b7d794624cf934f3c390b8f560e0466e31d47f22a"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R1_RAW.log",
+      "bytes": 1359699,
+      "sha256": "b5412909af71cbc9a368ce94fde64eac51c60f6d4704887a458b164e3a1d4644",
+      "lossless_gzip": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R1_RAW.log.gz",
+      "gzip_sha256": "3efbd20060222ceb12db6cd77079e6ec9e7cd229e11e979cf41b533dd8ea3c70"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R2.xml",
+      "bytes": 47006,
+      "sha256": "f7f9f7cec84caca008663ee32cd3f8ffbbb92fb5df207ff4b635fc2c8e1a247b",
+      "lossless_gzip": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R2.xml.gz",
+      "gzip_sha256": "05f55821e1c4afbfecc2d2337cc550568a984230abe8f1a95445380eea82c5b5"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R2_CONNECTIONS.jsonl",
+      "bytes": 3335094,
+      "sha256": "ec7219c2babce21b06b9e8b14d8be93de3612c88b00645330379294da2c9f3f3",
+      "lossless_gzip": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R2_CONNECTIONS.jsonl.gz",
+      "gzip_sha256": "efa05d9a250039fcfe3ef9f629d20e339778c1bc2fcfa1e38f94c57b8f9e3765"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R2_CONNECTIONS_COLLECTED_NODES.json",
+      "bytes": 29715,
+      "sha256": "d7737dbd99ef32bd912a4e1e1f9a4f825603ec497f3434f9eb1ed7c5e3f8d06d",
+      "lossless_gzip": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R2_CONNECTIONS_COLLECTED_NODES.json.gz",
+      "gzip_sha256": "fd7df899e54340eaf4f2f87b7d794624cf934f3c390b8f560e0466e31d47f22a"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R2_RAW.log",
+      "bytes": 10112,
+      "sha256": "cf8604dce4b341443b0e4256fbc627fe444c55f9259ee9839843d9916de4dd84",
+      "lossless_gzip": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R2_RAW.log.gz",
+      "gzip_sha256": "7227a6f9a4caa1bd029b376f10479d4ab4b21118e460fe34e3be5b220697a257"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R3.xml",
+      "bytes": 37754,
+      "sha256": "e1614618a98518c5ecc61ebf01d93f63f7c93f246d3042ad0d54c23a4202a9bd",
+      "lossless_gzip": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R3.xml.gz",
+      "gzip_sha256": "a0acf278aeb4f80fc891ada910b387b6abd6382d140843b7e2ba22dffc59f738"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R3_CONNECTIONS.jsonl",
+      "bytes": 3687842,
+      "sha256": "cd5d03d447f7b08a9287adebeee8c2265d9a037fa80580381e1ec68633fa42f8",
+      "lossless_gzip": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R3_CONNECTIONS.jsonl.gz",
+      "gzip_sha256": "c8333a2bf3bb72aad1e211a981d85d8826956c38035fbee6abd26c870a49c898"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R3_CONNECTIONS_COLLECTED_NODES.json",
+      "bytes": 29715,
+      "sha256": "d7737dbd99ef32bd912a4e1e1f9a4f825603ec497f3434f9eb1ed7c5e3f8d06d",
+      "lossless_gzip": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R3_CONNECTIONS_COLLECTED_NODES.json.gz",
+      "gzip_sha256": "fd7df899e54340eaf4f2f87b7d794624cf934f3c390b8f560e0466e31d47f22a"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R3_RAW.log",
+      "bytes": 346,
+      "sha256": "a7f474ac12f9d1d33276eb1e5e444940c8631d3274d42a359d47d0102c1b30f0",
+      "lossless_gzip": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_EXECUTION_R3_RAW.log.gz",
+      "gzip_sha256": "1ca2d35e87dde7eac1b0219a5bf9628dcbb3b9fec2f9031fec8588c5e0185243"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_DRILLS_R1_RAW.log",
+      "bytes": 1034,
+      "sha256": "610a352233bd0e7707eea485a31e19b0700790f9466faf14038b118ab0525962",
+      "lossless_gzip": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_DRILLS_R1_RAW.log.gz",
+      "gzip_sha256": "4a86741da05b108bd56e83b11ef9ca1247b1cdca351ccfcbcdc9027133e67f74"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_DRILLS_R2_RAW.log",
+      "bytes": 78,
+      "sha256": "2e678d475910f458960737a47367b4b60cd6b23bbbb3cea801882ce2e5d6bee9",
+      "lossless_gzip": "docs/audits/r4_r3_scope_20261011/FEP_CANONICAL_DRILLS_R2_RAW.log.gz",
+      "gzip_sha256": "f20a674ec85ee6a92c00773cd046886f4ab1164d8201776a957986b1f32b87d7"
+    }
+  ],
+  "production_changed": false,
+  "REAL_OOS": false,
+  "FIRST_OBSERVED": false,
+  "global_engineering_state": "OPEN",
+  "closure": "Only canonical reconstruction/metadata/authority scope; full legal baseline and other consumers remain OPEN"
+}

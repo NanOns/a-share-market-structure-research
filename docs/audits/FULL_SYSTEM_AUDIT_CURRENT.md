@@ -1,5 +1,7 @@
 # 全系统代码审计当前入口
 
+当前阶段历史读者适配已推送 `7d60a357cffe6db40a4465b07784f2cbe043de42`：[合并 194 PASS、源字节稳定、原 22 与 166 节点完整保留](r4_r3_scope_20261011/HISTORY_CURRENT_AUTHORITY_PACKAGE_R1/SEAL.json) / [Drive 实际下载字节一致](r4_r3_scope_20261011/DRIVE_HISTORY_AUTHORITY_BYTE_READBACK_R1.json)。旧 19 FAIL／3 PASS 原件保留；当前完整 V4-15 authority 与历史阶段归档分离，三线程历史／当前读回、错误 SHA、越界、权限过称负例通过，原接受 validator 的依赖函数 AST 未变，模块 ROOT 未改。新 V3 适配源仍为 PENDING_EXTERNAL_ACCEPTANCE，不授予业务重接受或生产切换；整个系统、全部真实消费者与全合法分母仍 OPEN。
+
 最新完整原始运行为 4,789 节点：4,487 PASS / 201 FAIL / 98 ERROR / 3 SKIP；原 4,568 节点保留，精确一个 V3-only AST 节点仍为已记录排除，原始交集为 4,567，禁止把后续局部修复回填为本次全量已通过。运行与独立重计已无损封存于 [原始节点修复包](r4_r3_scope_20261011/NATIVE_FIXTURE_REPAIR_PACKAGE_R1/SEAL.json)，提交 `a0dae754de7f27dc49b1ffc1cbd14d0c0c616ad3`。[Drive 完整字节读回](r4_r3_scope_20261011/DRIVE_NATIVE_FIXTURE_BYTE_READBACK_R1.json)一致。后续修复中 V4_13 原有三个模块 77 节点、FEP 原有 20 节点均全部通过，节点身份集合无减少、无新增；FEP fresh 与 upgrade 分别来自真实对应的隔离 canonical 来源，旧同来源副本和早期失败全部保留。伪造生产准入的能力清单被实际拒绝，未进入采集。
 
 历史保护元数据局部工作包已推送 `1c644a721cc706b51c4145647bf849a22d851ce1`：[166 PASS、原 162 节点完整保留、旧失败无损封存](r4_r3_scope_20261011/PROTECTED_METADATA_REPAIR_PACKAGE_R1/SEAL.json) / [Drive 实际下载字节一致](r4_r3_scope_20261011/DRIVE_PROTECTED_METADATA_BYTE_READBACK_R1.json)。该运行源字节稳定；历史阶段与读者源仅解析精确登记归档，当前权限由当前完整 authority 独立核对，不授予旧源当前业务接受。其他可达历史读者四模块实际仍有 19 FAIL / 3 PASS，当前阶段升级适配仍 OPEN，原始输出保留于 `HISTORY_REACHABLE_ORIGINAL_MATRIX_R1`。五日精确链已完成 09-28、09-29、09-30 Core，分别 5,222／5,223／5,224 个证券行、阶段 errors 为 0；尚未完成全部日期、全历史窗口 oracle 或全部真实消费者验收。总体保持 EXTERNAL_ACCEPTANCE_BLOCKED / AUDIT_INCOMPLETE，工程缺口不得归入未来交易日、成熟样本或部署授权等待门。

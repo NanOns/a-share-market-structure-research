@@ -1,5 +1,7 @@
 # 全系统代码审计当前入口
 
+R13 五日 Core 全历史独立对照已推送 `583cbcd9ac65e5f0361e18dc2b58bc222e557c85`：[完整数值与源绑定封存](r4_r3_consumers_20261011/FULL_HISTORY_EXACT_ORACLE_PACKAGE_R1/SEAL.json) / [Drive 实际下载字节一致](r4_r3_consumers_20261011/DRIVE_FULL_HISTORY_BYTE_READBACK_R1.json)。覆盖 16,696,926 条原生二进制记录、26,117 个证券日期行、10,762,706 根 bar、42,974,144 个可比较复权 OHLC 值，差异为 0；19,170 根 UNKNOWN bar 独立核对一致。旧代 80 处舍入失败原件保留，四个执行数学源 SHA 未变。本项仅关闭 R13 五日 Core 全历史价格对照；56 类消费者、后续链、全语义及完整合法分母继续 OPEN。Shadow 原生 PG 首轮 152 节点为 115 PASS / 37 FAIL / 0 ERROR，失败原件保留，仍在工程修复，生产未切换。
+
 DB06 动态桥入口负例补证已推送 `6373cfcbaf288d0c8cb7cc5baa73974775f70c3e`：[已配置／空配置／缺失配置下 12 PASS，原 4 节点保留](r4_r3_scope_20261011/DB06_FAIL_CLOSED_PACKAGE_R3/SEAL.json) / [Drive 实际下载一致](r4_r3_scope_20261011/DRIVE_DB06_BOUNDARY_BYTE_READBACK_R1.json)。独立无 pytest、无驱动替换的实际调用同样拒绝 12 次，socket 连接及新增数据库文件均为 0；该包仅关闭 native 隔离模式的动态桥拒绝边界，不声明所有业务入口已迁移。
 
 当前阶段历史读者适配已推送 `7d60a357cffe6db40a4465b07784f2cbe043de42`：[合并 194 PASS、源字节稳定、原 22 与 166 节点完整保留](r4_r3_scope_20261011/HISTORY_CURRENT_AUTHORITY_PACKAGE_R1/SEAL.json) / [Drive 实际下载字节一致](r4_r3_scope_20261011/DRIVE_HISTORY_AUTHORITY_BYTE_READBACK_R1.json)。旧 19 FAIL／3 PASS 原件保留；当前完整 V4-15 authority 与历史阶段归档分离，三线程历史／当前读回、错误 SHA、越界、权限过称负例通过，原接受 validator 的依赖函数 AST 未变，模块 ROOT 未改。新 V3 适配源仍为 PENDING_EXTERNAL_ACCEPTANCE，不授予业务重接受或生产切换；整个系统、全部真实消费者与全合法分母仍 OPEN。

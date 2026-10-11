@@ -47,9 +47,48 @@ class AcceptedContracts(FrozenContracts):
         self.config['membership_consumer_route']['stage_binding']=archive
         self.binding_resolution_receipt=dict(original_namespace=original,archive=archive,registry_path=REGISTRY,scope='EXACT_HISTORICAL_PROMOTION_BINDING_ONLY',current_authority=self.authority_ref)
 
+class CurrentOwnerContracts(FrozenContracts):
+    """Read immutable V4-13 contracts through the accepted successor authority."""
+    def __init__(self,root):
+        from .v4_current_stage_authority import CurrentStageAuthority
+        from scripts.validate_r17r1_active_closure import walk
+        from .historical_stage_governance_r17 import resolve,REGISTRY
+        authority=CurrentStageAuthority(root)
+        self.root=authority.root;head=authority.predecessor
+        if authority.predecessor_ref['path']!=HEAD or head['candidate']['sha256']!=MANIFEST_SHA:
+            raise ValueError('EXACT_ACCEPTED_V4_13_PREDECESSOR_REQUIRED')
+        entry=json.loads(authority.read(head['formal_entry_contract']))
+        if entry['authority_namespace']!=HEAD or entry['contract_refs']!=head['contract_refs']:
+            raise ValueError('ACCEPTED_PACKAGE_BINDING_MISMATCH')
+        closure=json.loads(authority.read(head['active_family_closure']))
+        self.refs=head['contract_refs'];self.digest=digest(self.refs)
+        if self.digest!=head['contract_digest'] or self.digest!=entry['contract_digest']:
+            raise ValueError('ACCEPTED_PACKAGE_DIGEST_MISMATCH')
+        self.config={Path(r['path']).stem.removeprefix('v4_13_').rsplit('_v',1)[0]:json.loads(authority.read(r)) for r in self.refs}
+        for value in self.config.values():walk(value,closure['families'],self.root)
+        self.owner_refs=self.config['loo_context']['accepted_owner_bindings']
+        self.owners={k:json.loads(authority.read(r)) for k,r in self.owner_refs.items()}
+        self.dependencies={k:json.loads(authority.read(r)) for k,r in self.config['loo_context']['accepted_sector_dependencies'].items()}
+        from .v4_13_descendant_contracts import DescendantContracts
+        historical=DescendantContracts(root)
+        if historical.refs!=self.refs or historical.digest!=self.digest:
+            raise ValueError('CURRENT_AND_DESCENDANT_CONTRACT_IDENTITY_MISMATCH')
+        for key in ('native_producer','rotation_producer','b2_producer'):historical._historical_exact(self.owners['V4_08'][key])
+        self.historical_source_resolutions=historical.resolutions
+        authority.read(self.config['loo_context']['relative_state']['owner'])
+        self.authority=head;self.authority_ref=authority.predecessor_ref
+        self.frozen_config=deepcopy(self.config)
+        original=self.config['membership_consumer_route']['stage_binding']
+        archive=dict(original,path=resolve(self.root,original).relative_to(self.root).as_posix())
+        exact(self.root,archive)
+        self.config['membership_consumer_route']['stage_binding']=archive
+        self.binding_resolution_receipt=dict(original_namespace=original,archive=archive,registry_path=REGISTRY,
+            scope='EXACT_HISTORICAL_PROMOTION_BINDING_ONLY',current_authority=authority.stage_ref)
+
 def current_contracts(root):
     """Stage-aware regression/entry selection; no informal post-promotion fallback."""
     stage=json.loads((Path(root)/'data/v4/V4_STAGE_ACCEPTED_HEAD.json').read_bytes())
     if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
     if stage['accepted_stage_range']=='V4_00_TO_V4_12_ACCEPTED':return FrozenContracts(root)
+    if stage['accepted_stage_range'] in ('V4_00_TO_V4_14_ACCEPTED','V4_00_TO_V4_15_ACCEPTED'):return CurrentOwnerContracts(root)
     raise ValueError('UNAUTHORIZED_V4_13_STAGE')

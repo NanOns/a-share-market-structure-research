@@ -1,0 +1,168 @@
+{
+  "contract_id": "R4_R3_CURRENT_OWNER_AND_UNLIMITED_RECOVERY_SCOPED_SEAL_R3",
+  "base_head": "7d9d4290e5e9a632a9161f24cdf335a12344be73",
+  "sources": {
+    "src/workbench_analysis/v4_13_accepted_contract_package.py": "738b7fbe998ff3b0b8e9578398e03b50624e01fd98c205ea26ffa41d71a62650",
+    "src/workbench_analysis/v4_13_descendant_contracts.py": "542e14e27c8ff9374929ff52a28f406c2d860cfb30bf7255304168639ed9c96c",
+    "scripts/hydrate_r4_r3_scope_fixtures.py": "a2d2a174cf4fc37fd51a121ebede0112307ec0c85347e7fd831843f0d8ddc544",
+    "tests/test_v4_current_owner_contracts_r3.py": "9f117964802f8201d4d652eaaf9263d6acc40ff6182ee2ee0621fc6aa65ef87f",
+    "tests/test_r4_r3_input_recovery.py": "c90f80fc1e6d936ea96608c541d4a6d9835edef201619bb0ade9a380003a0565"
+  },
+  "independent_raw_counts": {
+    "V413_CURRENT_OWNER_R3": {
+      "PASS": 49
+    },
+    "UNLIMITED_RECOVERY_R1": {
+      "PASS": 1
+    }
+  },
+  "evidence": [
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/FROZEN_FIXTURE_COPY_RECEIPT_20261011T133620.json",
+      "sha256": "9754f2d8a6194a19655f51ebc267ccf2381279955de082fbf182d60e3b27e66d",
+      "bytes": 4351602,
+      "lossless": "docs/audits/r4_r3_scope_20261011/FROZEN_FIXTURE_COPY_RECEIPT_20261011T133620.json.gz",
+      "lossless_sha256": "d845d1dd4db370c4aba9c8e8202745ad2d9d383a382c9ef27af35bfa1e2b9258"
+    },
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/FROZEN_FIXTURE_COPY_RECEIPT_20261011T135139.json",
+      "sha256": "2cafc961243c95d06a0b817032bd6532679e0f1fa79b279af95f2d3f45b981f2",
+      "bytes": 4437557,
+      "lossless": "docs/audits/r4_r3_scope_20261011/FROZEN_FIXTURE_COPY_RECEIPT_20261011T135139.json.gz",
+      "lossless_sha256": "aa5c7e1e5ca1551c9d23ee5b185c8c269af4bd9a0dc9d6d45a508694bb3557f2"
+    },
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/UNLIMITED_OWNER_INPUT_RECOVERY_R1_RAW.log",
+      "sha256": "3cb6a5396a73487da434f8ae79c29afb3f05b371a25c9597e01bc888c252de1f",
+      "bytes": 47,
+      "lossless": "docs/audits/r4_r3_scope_20261011/UNLIMITED_OWNER_INPUT_RECOVERY_R1_RAW.log.gz",
+      "lossless_sha256": "f05ee4412925c850b63c7f3cbbece46ee6bbf7e163c0f328e0d014bf2a8e3adc"
+    },
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/UNLIMITED_RECOVERY_R1.xml",
+      "sha256": "fac88764bd19a549673c0debe5ceb0e130f03c3a090a80387ff5b3bd92a01ca6",
+      "bytes": 400,
+      "lossless": "docs/audits/r4_r3_scope_20261011/UNLIMITED_RECOVERY_R1.xml.gz",
+      "lossless_sha256": "4ddb40c587db67e3c832384c5a8e59db03b3bfafae74aaa3f9cd7ffcd41f884f"
+    },
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/UNLIMITED_RECOVERY_R1_INTENTS.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "lossless": "docs/audits/r4_r3_scope_20261011/UNLIMITED_RECOVERY_R1_INTENTS.jsonl.gz",
+      "lossless_sha256": "2dac7518895b200adc8e431cca12e339120b9f502f9e405d73e7ef31db712a89"
+    },
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/UNLIMITED_RECOVERY_R1_INTENTS_COLLECTED_NODES.json",
+      "sha256": "b526f988c8f131247b335c1eda90943395838266b847f44a162c5e67deea1a11",
+      "bytes": 398,
+      "lossless": "docs/audits/r4_r3_scope_20261011/UNLIMITED_RECOVERY_R1_INTENTS_COLLECTED_NODES.json.gz",
+      "lossless_sha256": "cd573a3c600d7963ece079a0b359ee6b5e891da3f76bdb17a3c785680cb39f59"
+    },
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/UNLIMITED_RECOVERY_R1_RAW.log",
+      "sha256": "f13502c364c7c5981599f49b51ae86b9bcde2070ec75fb61ff1b7aa15833cd9f",
+      "bytes": 100,
+      "lossless": "docs/audits/r4_r3_scope_20261011/UNLIMITED_RECOVERY_R1_RAW.log.gz",
+      "lossless_sha256": "c3243bb30d78d6bd0c7dba17f35b9f3d102565225c8d01ff8a373defd8cd0e47"
+    },
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R1.xml",
+      "sha256": "e5d28142ed280110c6771954d0d2bc9f9863e0a555a41dbd84f59c3594510fe9",
+      "bytes": 25565,
+      "lossless": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R1.xml.gz",
+      "lossless_sha256": "686fd91adad0d3d139842c7005025f8d12a95de6855ee3e5303b12a2740b482d"
+    },
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R1_RAW.log",
+      "sha256": "cd1746b17d5ed1ef3ad8cab3e93b1a46e16529fff946b4c108ec179f1208261e",
+      "bytes": 19776,
+      "lossless": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R1_RAW.log.gz",
+      "lossless_sha256": "82c906b729d48f20e4e20c5b6262edae787b2ca8adf67997f178876604188098"
+    },
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R2.xml",
+      "sha256": "bcdaf37e524d61ab56366b0f15835f25d986c20678c7fa60bb11d97ace2de17f",
+      "bytes": 5963,
+      "lossless": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R2.xml.gz",
+      "lossless_sha256": "f2ef46d2a7d1423c7c9cdb6cefea5426b7de58e4174318aa5e85a73bba84581b"
+    },
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R2_INTENTS.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "lossless": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R2_INTENTS.jsonl.gz",
+      "lossless_sha256": "6ae447f2a44be5e66d8a7da9ad1f55852d582ae7899d237417d377b1d1462f23"
+    },
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R2_INTENTS_COLLECTED_NODES.json",
+      "sha256": "5987f5ee8443a6c29497e19bff598e63438fa3f9e65bf2d84b18247b25e03bf3",
+      "bytes": 4549,
+      "lossless": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R2_INTENTS_COLLECTED_NODES.json.gz",
+      "lossless_sha256": "c5e1381df8d7bfed7814045466e14a45d10e5274af8360e8337068ace450e0c2"
+    },
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R2_RAW.log",
+      "sha256": "ea5d7f5f8d5834b30d09977db57117257bb7d08ad996cb7c0b4f793a0f0a303f",
+      "bytes": 101,
+      "lossless": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R2_RAW.log.gz",
+      "lossless_sha256": "109e846ef546f6d5bfd2d386275650a84b564bd43ac88caaffae53fc499f3727"
+    },
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R3.xml",
+      "sha256": "03101c5460596f18d4d6c1c5069a0568613bc0258f7bc59fbbd14882ef18685b",
+      "bytes": 6596,
+      "lossless": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R3.xml.gz",
+      "lossless_sha256": "9dd3b3cae29568d1bc9a33f310664b7d4373a87b8912af377d062cc0cd502497"
+    },
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R3_INDEPENDENT_4568.csv",
+      "sha256": "73939b5971aa9e3e5f24757a152bdfea9a54c722369a1fdc34a803d0c05ca0b4",
+      "bytes": 2536905,
+      "lossless": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R3_INDEPENDENT_4568.csv.gz",
+      "lossless_sha256": "4912587e641dd999f9e918843a97b9f212919cd0f5798d7b43f266e7dbfb07b9"
+    },
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R3_INDEPENDENT_NODES.csv",
+      "sha256": "d54cfe4135ca3852a74c22b8bfcd755a0fe85caf3ce961d6661f9bf299cf9d63",
+      "bytes": 9361,
+      "lossless": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R3_INDEPENDENT_NODES.csv.gz",
+      "lossless_sha256": "df12660bb057eb66b370580c1e4893d1fd86fba881d165e315cd862631dbf599"
+    },
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R3_INDEPENDENT_RESULT.json",
+      "sha256": "ec632eec3aa1c73a5ecbe8cf2a7c5c23bc9acff423b02ff9b8d142c5db5b18dc",
+      "bytes": 972,
+      "lossless": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R3_INDEPENDENT_RESULT.json.gz",
+      "lossless_sha256": "bb17764df20e5349e7c69c4a1ce5246d808e1a00d1f26988bf39b36e848c3d23"
+    },
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R3_INTENTS.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "lossless": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R3_INTENTS.jsonl.gz",
+      "lossless_sha256": "cb1d641e52ac88dbe914cc0a63cab9f687b6e6acbcedc480d259fda1027f0a36"
+    },
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R3_INTENTS_COLLECTED_NODES.json",
+      "sha256": "e17b7580640e4ce8088a70c3074cbd1aa16a06fb1e87a11c91063806d07eec9a",
+      "bytes": 5226,
+      "lossless": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R3_INTENTS_COLLECTED_NODES.json.gz",
+      "lossless_sha256": "d3c0214078e55a1f498423a9736dfd37f2afbe10decf9c5557cc17757584ee2a"
+    },
+    {
+      "raw": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R3_RAW.log",
+      "sha256": "e21e7184fa27a78adafbfacd573fa94821d2704302991d577e5b9732d2ce157c",
+      "bytes": 101,
+      "lossless": "docs/audits/r4_r3_scope_20261011/V413_CURRENT_OWNER_R3_RAW.log.gz",
+      "lossless_sha256": "b444b20d936e9e852973ccbf640d32a8d475fece8a8e5b7b3a161c5d9c29e438"
+    }
+  ],
+  "numerical_reference": "Original 45 literal projection/provenance/independent-category tests retained; four current-authority negatives added",
+  "input_reference": "Actual 101 MiB source copy compared by complete independent SHA, existing conflicting accepted file unchanged",
+  "closure": "Current V4-13 owner entry beneath verified V4-14/15 authority and removal of imposed copy-size caps only",
+  "full_legal_denominator": "OPEN",
+  "full_source_derivation": "RUNNING_NOT_ACCEPTED",
+  "full_56_consumers": "OPEN",
+  "production_changed": false
+}

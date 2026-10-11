@@ -5,6 +5,7 @@ production admission; registered archives may relocate bytes, never replace them
 """
 import json
 import re
+import os
 from pathlib import Path
 from .v4_13_io import exact, digest
 from .historical_stage_governance_r17 import resolve, accepted_static_binding
@@ -18,6 +19,18 @@ class DescendantContracts:
 
     def __init__(self, root):
         self.root=Path(root).resolve(); stage=json.loads((self.root/'data/v4/V4_STAGE_ACCEPTED_HEAD.json').read_bytes())
+        self.historical_git_repository=self.root
+        repository=os.environ.get('R4_ENGINEERING_HISTORICAL_GIT_ROOT')
+        if repository:
+            import subprocess
+            if os.environ.get('R4_NATIVE_ISOLATION')!='1' or not self.root.is_relative_to(Path('G:/codex_tmp').resolve()):
+                raise ValueError('HISTORICAL_GIT_ROOT_REQUIRES_ISOLATED_ENGINEERING')
+            repository=Path(repository).resolve()
+            if not repository.is_relative_to(Path('G:/codex work').resolve()):
+                raise ValueError('HISTORICAL_GIT_ROOT_OUTSIDE_G_WORKSPACE')
+            actual=Path(subprocess.check_output(['git','rev-parse','--show-toplevel'],cwd=repository,text=True).strip()).resolve()
+            if actual!=repository:raise ValueError('EXACT_HISTORICAL_GIT_REPOSITORY_REQUIRED')
+            self.historical_git_repository=repository
         match=re.fullmatch(r'V4_00_TO_V4_(\d+)_ACCEPTED',stage['accepted_stage_range'])
         if not match or not 13<=int(match[1])<=15:
             raise ValueError('UNAUTHORIZED_V4_13_DESCENDANT_STAGE')
@@ -53,7 +66,7 @@ class DescendantContracts:
                     row=next((r for r in book['entries'] if r['original']==binding),None)
                     if row is None:raise ValueError('UNREGISTERED_CORRECTED_HISTORICAL_IDENTITY')
                     raw=exact(self.root,row['archive'])
-                    original=subprocess.check_output(['git','show',row['source_commit']+':'+binding['path']],cwd=self.root)
+                    original=subprocess.check_output(['git','show',row['source_commit']+':'+binding['path']],cwd=self.historical_git_repository)
                     if raw!=original:raise ValueError('CORRECTED_ARCHIVE_NOT_EXACT_HISTORICAL_GIT_BYTES')
                     p=self.root/row['archive']['path']
             raw=p.read_bytes()

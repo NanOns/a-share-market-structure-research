@@ -1,0 +1,1920 @@
+{
+  "contract_id": "R4_R3_NORMATIVE_REVIEW_R1",
+  "source": "docs\\evidence\\A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+  "source_sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205",
+  "approved_normative_requirement_atoms": null,
+  "candidate_modal_line_count": 238,
+  "extraction_rule": "Current body until first historical appendix; modal-line candidates; whitespace-normalized section+text dedup only",
+  "limitations": [
+    "Modal clauses may contain multiple atoms",
+    "Non-modal formulas, code, tables and implicit constraints need manual semantic review",
+    "Candidate count is not a legal requirement denominator; §87A registry entries are not semantic acceptance"
+  ],
+  "candidates": [
+    {
+      "candidate_id": "CANDIDATE_00001",
+      "section": "# 大A市场结构研究系统 V4.2.2 codex修改版",
+      "line": 14,
+      "text": "本版统一当前规范，保留原产品目标及无冲突章节，不把文档修改等同代码验收、真实数据验证或长期统计支持。§78 是唯一阶段表；§87A 是字段登记；§72 是参数治理。历史附录只解释沿革，不发出实施指令。遇到未预期冲突，登记 CONTRACT_CONFLICT 并只暂停受影响能力。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00002",
+      "section": "# 大A市场结构研究系统 V4.2.2 codex修改版",
+      "line": 16,
+      "text": "允许先做基线盘点、源能力验证和算法合同设计；对应模块实现前须具有其 Rule AST、参数实例、独立测试向量及数据合同。新增阈值均是 ENGINEERING_CANDIDATE，不是市场规律。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00003",
+      "section": "# 大A市场结构研究系统 V4.2.2 codex修改版",
+      "line": 18,
+      "text": "所有 TDX 根目录只读；下载、staging、归档、备份和临时文件均在项目管理目录，原子写入。原项目 Phase 0 必须有 FULL_PASS / DEGRADED_PASS / BLOCKED 回执，BLOCKED 范围不得进入 scanner。各阶段记录合同、证据、接受结果和下一阶段。M14 仅按已批准 dataset source contracts、能力门、有界请求运行，hot-rank direct mode 禁止持久化原始/行/批次/历史快照。跨域审计独立跟踪。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00004",
+      "section": "# 0. 升级背景与产品问题",
+      "line": 66,
+      "text": "11. 20 个交易日只能证明工程稳定，不能证明算法得到真实 Forward 支持。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00005",
+      "section": "# 0B. 现实数据源约束：TDX 量化接口正式出局",
+      "line": 148,
+      "text": "**禁止把任何需要 TQ/量化平台权限的能力写进 V4.2 的 Required Dependency。**",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00006",
+      "section": "# 0C. 本版合同状态",
+      "line": 153,
+      "text": "产品目标保留；数据/算法按本文统一。实现、外部源覆盖、历史公司行为与真实 Forward 仍需阶段证据。所有页面字段必须进入 §87A 字段族及逐字段机器注册表。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00007",
+      "section": "## 1.1 直接吸收为 P0 的意见",
+      "line": 177,
+      "text": "| Stock ↔ Sector PREWATCH 存在同日软反馈风险 | **直接吸收** | 必须固定 DAG，禁止同日回馈 |",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00008",
+      "section": "## 1.1 直接吸收为 P0 的意见",
+      "line": 181,
+      "text": "| Forward Cohort 必须独立于 Focus Top-K | **直接吸收** | 避免展示/人工 pin 造成样本选择偏差 |",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00009",
+      "section": "## 1.1 直接吸收为 P0 的意见",
+      "line": 182,
+      "text": "| Forward 不能只看 PREWATCH→CONFIRMED | **直接吸收** | 必须加入外部价格结果 |",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00010",
+      "section": "### A. “至少 3 个 Evidence Family”",
+      "line": 217,
+      "text": "不再把 `domain_count` 作为第一排序键，也不把它作为唯一资格逻辑。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00011",
+      "section": "### C. “行业、市值、波动率全面中性化”",
+      "line": 276,
+      "text": "- 市值数据口径必须先有可靠 source contract；",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00012",
+      "section": "### D. “概念板块成员按 1/N 衰减”",
+      "line": 299,
+      "text": "- Stock Context：多个支持板块只能形成 **1 个 CONTEXT Domain**。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00013",
+      "section": "### E. “板块 RS 必须增加自由流通市值加权”",
+      "line": 303,
+      "text": "### E. “板块 RS 必须增加自由流通市值加权”",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00014",
+      "section": "### G. “NEW > PERSISTENT 必须成为 PREWATCH 第一排序”",
+      "line": 358,
+      "text": "### G. “NEW > PERSISTENT 必须成为 PREWATCH 第一排序”",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00015",
+      "section": "### H. “H 层必须机械生成至少两个解释”",
+      "line": 392,
+      "text": "### H. “H 层必须机械生成至少两个解释”",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00016",
+      "section": "### H. “H 层必须机械生成至少两个解释”",
+      "line": 400,
+      "text": "但系统只能从**有证据支撑的假设模板**中生成。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00017",
+      "section": "### H. “H 层必须机械生成至少两个解释”",
+      "line": 402,
+      "text": "每个 Hypothesis 必须带：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00018",
+      "section": "### H. “H 层必须机械生成至少两个解释”",
+      "line": 418,
+      "text": "并禁止把不完整 H 层升级成强结论。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00019",
+      "section": "## A. “PREWATCH 在 T0 准入时必须保证比 WARM/CONFIRMED 早 N 天”",
+      "line": 426,
+      "text": "## A. “PREWATCH 在 T0 准入时必须保证比 WARM/CONFIRMED 早 N 天”",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00020",
+      "section": "## C. “stock_fact_daily / sector_fact_daily 主键不含 trade_date 就意味着一只股票只能存一行”",
+      "line": 487,
+      "text": "## C. “stock_fact_daily / sector_fact_daily 主键不含 trade_date 就意味着一只股票只能存一行”",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00021",
+      "section": "## C. “stock_fact_daily / sector_fact_daily 主键不含 trade_date 就意味着一只股票只能存一行”",
+      "line": 497,
+      "text": "本身每天不同，并且每个 publication 唯一绑定一个 trade_date，那么：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00022",
+      "section": "## D. “publication_id 必须等于 trade_date + contracts 的 hash”",
+      "line": 529,
+      "text": "## D. “publication_id 必须等于 trade_date + contracts 的 hash”",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00023",
+      "section": "## E. “弱市 PREWATCH 非空率必须达到某阈值”",
+      "line": 562,
+      "text": "## E. “弱市 PREWATCH 非空率必须达到某阈值”",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00024",
+      "section": "## E. “弱市 PREWATCH 非空率必须达到某阈值”",
+      "line": 564,
+      "text": "**明确禁止。**",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00025",
+      "section": "## H. “事实表现在就必须 range partition”",
+      "line": 635,
+      "text": "## H. “事实表现在就必须 range partition”",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00026",
+      "section": "# 3. V4.2 唯一主链",
+      "line": 689,
+      "text": "# 3. V4.2 唯一主链",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00027",
+      "section": "## 3A.1 核心原则",
+      "line": 716,
+      "text": "不同数据源可以共存，但**每个字段必须只有一个正式 authority**。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00028",
+      "section": "## 3A.1 核心原则",
+      "line": 718,
+      "text": "| 数据/能力 | 正式 Authority | Supplemental / Validation | 禁止行为 |",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00029",
+      "section": "## 3A.1 核心原则",
+      "line": 724,
+      "text": "| 周K/月K | Canonical TDX 日线重采样 | 不读取 BaoStock 周/月价格 | 禁止多价格源周期混用 |",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00030",
+      "section": "## 3A.1 核心原则",
+      "line": 728,
+      "text": "| 股票代码/证券类型 | 本地 TDX 元数据 | BaoStock basic | 证券 identity 必须统一 |",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00031",
+      "section": "## 3A.2 Source Family",
+      "line": 748,
+      "text": "但必须保存独立 source identity，便于判断某条历史记录来自完整包还是本地日常更新。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00032",
+      "section": "## 3A.3 不允许的数据融合",
+      "line": 754,
+      "text": "禁止：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00033",
+      "section": "## 3A.3 不允许的数据融合",
+      "line": 763,
+      "text": "也禁止：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00034",
+      "section": "## 3A.3 不允许的数据融合",
+      "line": 773,
+      "text": "正式链只能是：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00035",
+      "section": "## 3B.2 Bootstrap 输入",
+      "line": 848,
+      "text": "研究 Universe 必须是日期函数：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00036",
+      "section": "## 3B.6 历史复权与公司行为合同",
+      "line": 947,
+      "text": "本版 **禁止把“日线完整包可读取”直接等同于“历史 QFQ 可重建”。**",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00037",
+      "section": "### 必须冻结 `TDX_HISTORICAL_ADJUSTMENT_CONTRACT_V1`",
+      "line": 960,
+      "text": "### 必须冻结 `TDX_HISTORICAL_ADJUSTMENT_CONTRACT_V1`",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00038",
+      "section": "### 调整数学与历史截断",
+      "line": 1006,
+      "text": "已验证同一artifact的affine系数A[j],B[j]满足Q[j]=A[j]*raw[j]+B[j]。以观察日t为坐标时P[j|t]=(A[j]*raw[j]+B[j]-B[t])/A[t]，A[t]>0；多artifact系数不可混算。差值/ATR只乘正尺度，不加beta；价格水平变换才加beta，收益必须在统一坐标重新算而非直接“转换百分比”。Anchor先确定其原始基准，再用对应线性坐标映射，不把系数用于不匹配的raw基准。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00039",
+      "section": "### 调整数学与历史截断",
+      "line": 1007,
+      "text": "公司行为仅使用effective<=t且在所选消费manifest内可见的事件；即使full-series系数能消去未来行动，也必须单独证明重锚等价、来源可见性及没有后来更正泄漏。现金分红的加法项使简单“价格比总会消因子”不成立。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00040",
+      "section": "### 复权失败降级",
+      "line": 1028,
+      "text": "以下因子不得静默退回 raw 继续算：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00041",
+      "section": "### 复权失败降级",
+      "line": 1046,
+      "text": "禁止：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00042",
+      "section": "## 3C.1 周K算法",
+      "line": 1081,
+      "text": "禁止：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00043",
+      "section": "## 3C.3 周/月 AS-OF",
+      "line": 1109,
+      "text": "同一因子必须声明固定period_view，不能按结果好坏挑选。趋势V1只用CLOSED_ONLY，图表可以并列partial。历史删掉T0之后日线/公司行为与知识时间晚到行，T0输出应不变。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00044",
+      "section": "## 3C.4 周/月因子的 PIT 测试",
+      "line": 1115,
+      "text": "必须至少测试：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00045",
+      "section": "## 3D.1 BaoStock 的角色",
+      "line": 1169,
+      "text": "用于 fingerprint 的 BaoStock K 线必须优先请求：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00046",
+      "section": "## 3D.1 BaoStock 的角色",
+      "line": 1175,
+      "text": "再与 TDX raw daily 比较；禁止拿 BaoStock 前复权价格与 TDX raw 做身份绑定。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00047",
+      "section": "## 3D.2 不冻结未经验证的请求额度",
+      "line": 1183,
+      "text": "Adapter 第一次 smoke test 必须测量：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00048",
+      "section": "## 3D.3 历史初始化策略",
+      "line": 1219,
+      "text": "下载器必须：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00049",
+      "section": "### 当日 Enrichment 优先队列",
+      "line": 1293,
+      "text": "成功后写入同一 supplement cache；不得只在页面内临时返回而不落库。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00050",
+      "section": "# 3E. TDX VIPDATA 免费数据适配器合同",
+      "line": 1338,
+      "text": "唯一公开入口：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00051",
+      "section": "## 3E.1 页面发现",
+      "line": 1354,
+      "text": "Adapter 必须解析或可靠取得：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00052",
+      "section": "## 3E.2 下载安全",
+      "line": 1374,
+      "text": "必须：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00053",
+      "section": "## 3E.2 下载安全",
+      "line": 1387,
+      "text": "禁止：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00054",
+      "section": "# 3F. Source 接受与交易制度边界",
+      "line": 1470,
+      "text": "source package、local snapshot、parser版本共同确定输入身份；相同zip hash但parser版本变化必须新parse artifact，不能因hash相同直接跳过重算。source manifest要绑定目标trade_date和冻结来源cutoff，较新包可用于重建历史但不能伪称过去实际观察。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00055",
+      "section": "# 3F. Source 接受与交易制度边界",
+      "line": 1472,
+      "text": "ZIP处理拒绝绝对路径、..逃逸、符号链接/reparse point逃逸、异常压缩比/总解压大小；临时和最终路径必须都在项目目录，fsync/close后原子promote。URL只能来自获准public source contract及允许重定向host，不把官网“覆盖vipdoc”的客户端说明当本项目写权限。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00056",
+      "section": "# 3F. Source 接受与交易制度边界",
+      "line": 1475,
+      "text": "PRICE_LIMIT_RULE_V1必须基于目标日期官方制度版本表及本地可验证身份，保存board/security_type/ST/listing_phase、规则生效区间、参考价来源、tick、rounding、无涨跌幅限制例外。previous_close字段区分上次成交收盘与交易所当日涨跌幅参考价，除权等日期不能直接把昨日raw close代入。无权威参考价/规则则limit_status UNKNOWN；不是用BaoStock补作Core authority。制度表的当前或历史事实不能由本方案臆造，V4-02提交官方来源与独立样本后才启用对应规则，其他Pure-Core能力依赖scope运行。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00057",
+      "section": "## 4.2 同日修订",
+      "line": 1522,
+      "text": "唯一 current head 指向：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00058",
+      "section": "## 4.3 UI Request Context",
+      "line": 1541,
+      "text": "必须携带同一 publication_id",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00059",
+      "section": "## 4.4 Data Cutoff / As-Of Contract",
+      "line": 1557,
+      "text": "每个正式 publication 必须冻结：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00060",
+      "section": "## 4.4 Data Cutoff / As-Of Contract",
+      "line": 1584,
+      "text": "任何同日来源修订必须产生：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00061",
+      "section": "### Core Research Publication",
+      "line": 1628,
+      "text": "BaoStock 后置补充**不得**反向修改上述正式状态。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00062",
+      "section": "## 4.6 Historical Reconstruction Identity",
+      "line": 1671,
+      "text": "唯一枚举：evidence_origin=PIT_OBSERVED / RECONSTRUCTED_ASOF / RECONSTRUCTED_CORRECTED / DIAGNOSTIC_NON_PIT；execution_mode=PRODUCTION / SHADOW / REPLAY。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00063",
+      "section": "## 4.6 Historical Reconstruction Identity",
+      "line": 1675,
+      "text": "分别保存 universe_basis、membership_basis、price_basis、quality；不要把 CURRENT_MEMBERSHIP/PRICE_ONLY 混进 origin。每个输出按实际依赖的最弱证据降级。正式观察 cohort 只接受 PIT_OBSERVED，按 Shadow/Production 分层；历史重建只能作工程 replay、案例、参数初检，不合并真实 Forward。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00064",
+      "section": "## 4.8 Model / Execution Namespace",
+      "line": 1709,
+      "text": "Shadow 必须读取 Shadow 自己的 prior-session state，不能把 Legacy 前态当 V4 前态。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00065",
+      "section": "## 4.8 Model / Execution Namespace",
+      "line": 1711,
+      "text": "model_contract_id 绑定代码/AST/参数/源语义摘要；参数变更必须新模型身份。state_lineage_id 与执行 namespace 分开：同模型 Shadow→Production 经 migration manifest 显式继承最后 Shadow 前态与 episode mapping，不制造 FIRST/REENTRY。不同模型产生 MODEL_BOUNDARY 和新 cohort。旧 episode follow-up、pending outcome 独立保留结算。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00066",
+      "section": "## 4.9 UI Context Token",
+      "line": 1733,
+      "text": "Supplemental revision 只能刷新允许的 supplemental 区域，不重新定义 Core event。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00067",
+      "section": "### Research Universe",
+      "line": 1758,
+      "text": "V4-00 必须审计当前：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00068",
+      "section": "### 历史横截面必须绑定 Universe",
+      "line": 1817,
+      "text": "### 历史横截面必须绑定 Universe",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00069",
+      "section": "### 无法重建历史证券生命周期时",
+      "line": 1840,
+      "text": "必须降级：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00070",
+      "section": "### 无法重建历史证券生命周期时",
+      "line": 1854,
+      "text": "只能：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00071",
+      "section": "## 6.3 历史重构标记",
+      "line": 1932,
+      "text": "不得写：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00072",
+      "section": "# 6A. 双时间 PIT 与实际消费版本",
+      "line": 1951,
+      "text": "AS_RECORDED 读取 publication_consumed_sources 冻结的 key/revision/digest，不扫描最新事实。构建要求 effective_from<=T0<effective_to（空结束为无穷）、system_available_at<=cutoff；同 key 选 cutoff 内更正链唯一末端。分叉、内容冲突或无确定顺序为 SOURCE_REVISION_CONFLICT，不随意取最大时间。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00073",
+      "section": "## 7.10 `security_lifecycle_history`",
+      "line": 2226,
+      "text": "EMBEDS REVISIONABLE_FACT_META_V1（§6A）；主键为稳定fact_key加source_revision_id，fact_key必须区分实体、事实属性及有效区间，修订不得覆盖旧行。system_available_at=max(observed_at,ingested_at)，source_identity与publication_consumed_sources逐revision关联。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00074",
+      "section": "## 7.11 `stock_profile_enrichments`",
+      "line": 2250,
+      "text": "不得通过此表直接改写 Core maturity / eligibility。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00075",
+      "section": "## 7.11 `stock_profile_enrichments`",
+      "line": 2252,
+      "text": "Core、sector aggregates、structure observations、state transitions、Radar/enrollment 均绑定 publication_id 与模型。Anchor 原值不可变，validity 存 observation。enrichment_revision 为每个 publication 全局 manifest revision，包含各证券/provider 的具体 revision；唯一键(publication_id,enrichment_revision,security_id,provider)。周期 bar 唯一键(publication_id,security_id,period_start_date,period_view,price_basis)，保存 adjustment identity，不覆盖旧周期版本。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00076",
+      "section": "# 8. Data Quality & Degradation Contract",
+      "line": 2290,
+      "text": "保留，但必须增加原因。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00077",
+      "section": "## 8.2 Quality Propagation",
+      "line": 2322,
+      "text": "required_inputs",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00078",
+      "section": "## 8.2 Quality Propagation",
+      "line": 2330,
+      "text": "= required",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00079",
+      "section": "## 8.2 Quality Propagation",
+      "line": 2349,
+      "text": "禁止：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00080",
+      "section": "# 9A. Pure-Core 与 Supplemental Variant 合同",
+      "line": 2516,
+      "text": "V4.2.2 禁止 supplemental turnover 通过风险、Impulse 或 Rotation 间接进入 Core。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00081",
+      "section": "## 9A.1 Core Extension Risk",
+      "line": 2526,
+      "text": "只能使用：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00082",
+      "section": "## 9A.1 Core Extension Risk",
+      "line": 2536,
+      "text": "不得使用：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00083",
+      "section": "## 9A.2 Core Bullish Impulse",
+      "line": 2570,
+      "text": "turnover 只能形成：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00084",
+      "section": "## 9A.3 Core Rotation",
+      "line": 2586,
+      "text": "不得使用：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00085",
+      "section": "## 9A.3 Core Rotation",
+      "line": 2594,
+      "text": "这些只能形成：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00086",
+      "section": "## 9A.5 一致性验收",
+      "line": 2641,
+      "text": "必须证明：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00087",
+      "section": "## 10.1 Position",
+      "line": 2689,
+      "text": "但必须带：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00088",
+      "section": "# 10A0. 原子因子、三值逻辑与冻结门",
+      "line": 2749,
+      "text": "每个算法 contract id + §72 parameter_set_id 必须可序列化为 input/producer/time/quality、AST、窗口、舍入、互斥、输出身份和测试向量。V4-00G 建框架，对应阶段先生成机器合同再实现；不要求未来模块完成才准基线盘点。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00089",
+      "section": "# 10A0. 原子因子、三值逻辑与冻结门",
+      "line": 2751,
+      "text": "Kleene 三值逻辑：FALSE AND UNKNOWN=FALSE；TRUE AND UNKNOWN=UNKNOWN；TRUE OR UNKNOWN=TRUE；FALSE OR UNKNOWN=UNKNOWN；NOT UNKNOWN=UNKNOWN。Hard Safety 先归约：已知FALSE拒绝，否则含UNKNOWN则UNKNOWN；禁止 None!=True 通过。分类按 first-true；高优先级未知分支可能改变结果则UNKNOWN，optional diagnostics不污染资格。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00090",
+      "section": "## CORE_FACTOR_V1",
+      "line": 2757,
+      "text": "- MA_N及MA/ATR/HHV/LLV/技术结构类窗口的口径为WINDOW_SEMANTICS_OPEN_DECISION，按下述三窗口合同在V4-00G裁决；不得继续把严格连续actual bar当已冻结规则。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00091",
+      "section": "## CORE_FACTOR_V1",
+      "line": 2758,
+      "text": "- retN=C[t]/C[t-N]-1，起止固定市场会话，不跳日替换；停牌/区间完整性按待冻结CROSS_SECTION_SESSION_WINDOW_V1。volN=std(log(C[j]/C[j-1]),ddof=0)，未年化；N个相邻收益需要N+1个价格点，但j的索引及停牌处理须随field→window裁决冻结，不能提前把全部指标定为连续市场actual bar。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00092",
+      "section": "## CORE_FACTOR_V1",
+      "line": 2772,
+      "text": "技术窗口比较Option A（最近N市场会话且实际bar完整）与Option B（最近N根已验证交易bar，仅跳过确认停牌）；Option B记录每字段start/end、calendar_span、actual_count、suspended_count，未知数据缺口不能假装停牌跳过。ATR的previous close、slope偏移、量额/波动窗口、prior high与周/月技术指标都必须逐字段声明索引与窗口类型，不能把t会话索引和k实际bar索引混用。上述技术公式中的切片在裁决前仅表示候选逻辑。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00093",
+      "section": "## CORE_FACTOR_V1",
+      "line": 2776,
+      "text": "必测单日停牌、连续5日停牌、复牌、涨停低/无成交、非停牌数据缺失、新股不足窗口；对比Profile completeness、Trend continuity、RPS comparability、PREWATCH eligibility后记录选择、参数digest及反例。窗口未冻结仅允许对照诊断，不得验收依赖该窗口的正式因子/画像/Seed；基线盘点可继续。300市场日warm-up仍只是规划目标，各字段首个可用日独立报告。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00094",
+      "section": "## 10A.2 Daily Profile 与筛选器彻底分离",
+      "line": 2812,
+      "text": "禁止：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00095",
+      "section": "## 10A.3 Daily Profile 分层交付合同",
+      "line": 2820,
+      "text": "V4.2.2 的 **Core Profile V1** 必须在没有 Sector、Rotation、Anchor、Support、BaoStock 的情况下独立完成。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00096",
+      "section": "### Core Profile V1",
+      "line": 2834,
+      "text": "必须完成：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00097",
+      "section": "# 10B. Trend State 算法",
+      "line": 2962,
+      "text": "contract_id=TREND_STATE_V1。required：MA20/60、slope20/60、HH/LL_PROGRESS、core_price_damage、C、ATR20。UP20=slope20>0.1，DOWN20=slope20<−0.1；UP60/DOWN60同理。依次first-true：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00098",
+      "section": "# 10C. Position State",
+      "line": 2978,
+      "text": "contract_id=POSITION_STATE_V1。bias20_atr=(C-MA20)/ATR20，dist_high20_atr=(prior_high20-C)/ATR20。依次EXTENDED（bias>=3）、HIGH_ZONE（pos60>=0.8）、MID_HIGH（>=0.6）、MID_ZONE（>=0.4）、MID_LOW（>=0.2）、LOW_ZONE。required未知则UNKNOWN；pos250仅诊断。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00099",
+      "section": "# 10C. Position State",
+      "line": 2979,
+      "text": "near_highN_state(N=20/60)：d=(prior_highN-C)/ATR20；d<0 ABOVE_PRIOR_HIGH，0<=d<=0.5 NEAR，其余BELOW。drawdownN=C/HHV_N-1；>=−0.05 SHALLOW，>=−0.15 MODERATE，其余DEEP。这些是描述，不是接受突破或统一风险。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00100",
+      "section": "# 10D. MA Structure State",
+      "line": 2983,
+      "text": "contract_id=MA_STRUCTURE_V1。依次BULL_ALIGNED（MA5>MA10>MA20 AND slope20>0）、BEAR_ALIGNED（反向）、BULL_TRANSITION（MA5>MA20 AND slope20>=0）、BEAR_TRANSITION（反向）、MIXED。required未知为UNKNOWN。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00101",
+      "section": "# 10E. Relative Market State",
+      "line": 2987,
+      "text": "contract_id=RELATIVE_STATE_V1。required：rps5/20、delta3、rel_market_1/5、compression_state、ma_structure_state；不读trend_state或sector。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00102",
+      "section": "# 10E. Relative Market State",
+      "line": 2989,
+      "text": "依次ACTIVE_EMERGENCE（active）；PASSIVE_RESILIENCE（rel_market_1>0 AND NOT active AND delta3<=0）；LEADING_ACCELERATING（rps20>=80 AND delta3>0）；LEADING_STABLE（rps20>=80 AND delta3>=−3）；IMPROVING（delta3>3）；WEAKENING（delta3<−3）；LAGGING（rps20<20）；NEUTRAL。required未知为UNKNOWN。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00103",
+      "section": "# 10F. Compression State",
+      "line": 2994,
+      "text": "contract_id=COMPRESSION_STATE_V1。required：range_ratio/atr_ratio/vol_ratio/amount_ratio20/minimum_liquidity。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00104",
+      "section": "# 10G. 成交额/量及价格结果",
+      "line": 3000,
+      "text": "core_participation_result依次：HIGH_PARTICIPATION_REVERSAL（amount_ratio20>=1.2 AND ret1<0）；HIGH_PARTICIPATION_EFFECTIVE_ADVANCE（ratio>=1.2 AND ret1>0 AND CLV>=0.7）；HIGH_PARTICIPATION_LOW_EFFICIENCY（ratio>=1.2）；LOW_PARTICIPATION_ADVANCE（ratio<0.8 AND ret1>0）；LOW_PARTICIPATION_DECLINE（ratio<0.8 AND ret1<0）；NORMAL_PARTICIPATION。依赖CLV的更高分支未知时不得直接落入低效分类。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00105",
+      "section": "# 10I. Core Extension Risk",
+      "line": 3009,
+      "text": "contract_id=EXTENSION_RISK_V1。依次EXTREME（bias20_atr>=4）；HIGH（bias>=3 OR (ret5>=3*ATR20/C AND amount_ratio20>=2 AND ret1<=0)）；MEDIUM（bias>=2）；LOW。只检查分支required输入，未知依三值逻辑；severe_extension=(risk=EXTREME)。turnover只进supplemental_extension_note。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00106",
+      "section": "# 10M. 页面解释",
+      "line": 3026,
+      "text": "Core先回答趋势、位置、压缩、量额、相对市场与风险；高级组件交付后回答突破/回踩/支撑/恢复。NOT_IMPLEMENTED/UNKNOWN/NOT_APPLICABLE不得写成资格FALSE。全产品目标保留，V4-04不承担后置验收。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00107",
+      "section": "## 10N.2 Rule Contract",
+      "line": 3060,
+      "text": "规则必须按：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00108",
+      "section": "## 10N.5 数据不足",
+      "line": 3119,
+      "text": "必须：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00109",
+      "section": "## 10N.5 数据不足",
+      "line": 3125,
+      "text": "禁止猜测。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00110",
+      "section": "## 10N.6 因子影响",
+      "line": 3129,
+      "text": "涨跌停价格仍是 OF，可参与事实记录；但下游必须知道：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00111",
+      "section": "# 11. Passive Resilience 与 Active Emergence",
+      "line": 3143,
+      "text": "ACTIVE_EMERGENCE、PASSIVE_RESILIENCE唯一算法为§10E；本节解释其含义，不另设第二套资格规则。相对市场上涨不等于个股上涨；低Beta防御和主动改善不能仅凭单日跌得少区分。系统同时列ret1/relative_market/delta3/结构事实，不能用模板推断资金意图。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00112",
+      "section": "# 11. Passive Resilience 与 Active Emergence",
+      "line": 3144,
+      "text": "rel_market_vol_adj=rel_market_1/vol20，vol20<=0/未知为UNKNOWN，作为诊断而非单独硬资格。Beta residual与全面中性化不进入V1。价格衍生证据相关性必须披露，不重复算独立支持。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00113",
+      "section": "# 13A. 当日拓扑 DAG_V1",
+      "line": 3257,
+      "text": "同日禁止D→A/B/C、C→B、Focus/UI/Supplemental→资格。D1新建Anchor只能作为今日新事件，最早次日参加路径测试，不能同日自证支撑。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00114",
+      "section": "# 13A. 当日拓扑 DAG_V1",
+      "line": 3259,
+      "text": "原始C资格是算法证据；D2可因该研究episode旧Anchor硬失效禁止最终PREWATCH/Confirmation，不能把D2结果回灌今日B的Seed宽度。保存raw_qualification与final_eligibility解释差异。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00115",
+      "section": "# 13A. 当日拓扑 DAG_V1",
+      "line": 3261,
+      "text": "每条边登记producer、contract/version、字段、t或t-1、namespace、required/optional。验收扰动C[t]不得改变B；扰动Supplemental不得改变A–D；同日确认与旧Anchor硬失效冲突时，D2正确失效，无隐式重跑。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00116",
+      "section": "## 14.1 输入限制",
+      "line": 3269,
+      "text": "只能使用：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00117",
+      "section": "## 14.1 输入限制",
+      "line": 3277,
+      "text": "禁止：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00118",
+      "section": "# 18. Sector 三轴",
+      "line": 3347,
+      "text": "exhaustion：HIGH（rs20_pct>=80 AND dq5<=−5 AND breadth_delta3<=−0.05）；MEDIUM（rs20_pct>=80 AND dq5<0）；LOW。extension share作为并列事实，不重复计价。required未知则对应轴UNKNOWN，不用其他轴掩盖。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00119",
+      "section": "## 20.3 ALGORITHMIC_SUPPORT_SECTOR",
+      "line": 3406,
+      "text": "contract_id=LOO_CONTEXT_V1。在真实membership内，对目标股排除后重算sector native、seed aggregates、B0/B2原始资格以及其所需的历史比较。不得只减计数而保留原rank/median/状态。历史状态若用于context也从排除目标的独立lineage重算；无法重算时不使用该项。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00120",
+      "section": "## 20.4 Historical Sector Context Quality",
+      "line": 3413,
+      "text": "投产前历史若只能：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00121",
+      "section": "## 20.4 Historical Sector Context Quality",
+      "line": 3427,
+      "text": "必须同步写：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00122",
+      "section": "## 20.4 Historical Sector Context Quality",
+      "line": 3437,
+      "text": "可显示，但必须标“当前成员回放，仅供诊断”",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00123",
+      "section": "## 21A.2 研究对象类型",
+      "line": 3526,
+      "text": "不得进入正式首页，直到完成类型映射。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00124",
+      "section": "## 21A.4 Rotation Core Rules",
+      "line": 3548,
+      "text": "contract_id=ROTATION_CORE_V1。使用§15/16/18的纯Core事实与冻结历史。历史PREWATCH仅作t-1成员参考；当日PREWATCH、Final Confirmation、Support/turnover均禁止输入。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00125",
+      "section": "## 21A.4 Rotation Core Rules",
+      "line": 3562,
+      "text": "1. 当前候选分支的必要输入未知→UNKNOWN，暂停该episode计数不伪造退出；mature专用输入不全局传播到early分支，NOT_APPLICABLE成熟分支跳过，已知强留存不达标禁止成熟升级。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00126",
+      "section": "# 23. PREWATCH Priority Axes",
+      "line": 3619,
+      "text": "禁止一个神秘：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00127",
+      "section": "# 33. Reentry",
+      "line": 3860,
+      "text": "正式退出后次一市场会话及以后重新满足资格才new episode，parent_episode_id指旧episode。退出当天不新建，stage间升级/下降不新建；MODEL_BOUNDARY不是REENTERED。旧episode继续独立follow-up和outcome，实体投影显示活动episode优先。唯一键包含episode_id，不以实体合并旧工作。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00128",
+      "section": "## 34A.3 Security-Level Dedup",
+      "line": 3969,
+      "text": "每个 (publication_id,security_id) 只能有一个 canonical result row；同日不同revision分别保留。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00129",
+      "section": "## 34A.5 Event Classification",
+      "line": 4004,
+      "text": "scenario变化非升级时单独SCENARIO_CHANGED，不伪称更强。成熟度与health不得互相比较枚举。多事件分别保留，primary_event按上述序，仅用于展示，不能删除其他轴的反证。每(publication_id,entity_type,entity_id,event_type)唯一。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00130",
+      "section": "## 34A.8 Display Cap",
+      "line": 4067,
+      "text": "页面必须显示：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00131",
+      "section": "## 34A.9 板块内股票",
+      "line": 4079,
+      "text": "不设置“每板块必须固定 3 只”这种算法规则。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00132",
+      "section": "## 34A.10 Priority",
+      "line": 4103,
+      "text": "确认对象复用唯一PRIORITY_V1的确认分桶和稳定排序。不得在此重新维护另一套优先级或参数。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00133",
+      "section": "## 34A.2A Confirmation Event 的状态前驱",
+      "line": 4127,
+      "text": "Revision diff 可以记录证据变化，但不得把当天事件从 NEW 变成 PERSISTENT。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00134",
+      "section": "## 36.1 必须同时保存",
+      "line": 4182,
+      "text": "## 36.1 必须同时保存",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00135",
+      "section": "# 39. “Why Now” 成为核心字段",
+      "line": 4232,
+      "text": "每个 Radar 对象必须有：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00136",
+      "section": "# 40. Conflict Panel",
+      "line": 4276,
+      "text": "禁止页面只解释：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00137",
+      "section": "# 41. Hypothesis Contract",
+      "line": 4323,
+      "text": "必须由 facts 支撑。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00138",
+      "section": "# 41A0. Anchor Price Coordinate / Re-Anchor Contract",
+      "line": 4335,
+      "text": "Anchor 必须保存：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00139",
+      "section": "# 41A0. Anchor Price Coordinate / Re-Anchor Contract",
+      "line": 4376,
+      "text": "以下必须同一 price basis：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00140",
+      "section": "# 41A0. Anchor Price Coordinate / Re-Anchor Contract",
+      "line": 4387,
+      "text": "禁止：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00141",
+      "section": "# 41A0. Anchor Price Coordinate / Re-Anchor Contract",
+      "line": 4404,
+      "text": "验收必须覆盖：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00142",
+      "section": "# 41A0. Anchor Price Coordinate / Re-Anchor Contract",
+      "line": 4416,
+      "text": "现有 Focus `price_path` / re-anchor 只能作为可复用参考，不能自动视为 V4 Structure Engine 已继承完成。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00143",
+      "section": "## 41A.1 为什么 Daily Profile 还不够",
+      "line": 4434,
+      "text": "必须保存跨日事件与 Anchor。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00144",
+      "section": "## 41A.2 Anchor Type 与选择",
+      "line": 4448,
+      "text": "contract_id=STRUCTURE_EVENT_V1。V1支持PRIOR_HIGH/BREAKOUT_LEVEL、RANGE_UPPER、BULLISH_IMPULSE_BODY/LOW、MA20_DYNAMIC/MA60_DYNAMIC、PIVOT_LOW、GAP_ZONE；每类须有明确来源事件，不能看图事后随意画线。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00145",
+      "section": "## 41A.3 Anchor 冻结",
+      "line": 4454,
+      "text": "固定Anchor原坐标及事件不回写；每日换基视图按§41A0。动态MA不得伪称固定支撑价。每个Anchor分别跟踪；active_anchor按是否未失效、与C距离/ATR升序、anchor_date降序、anchor_id升序选择供页面展示；研究episode invalid_if使用创建时绑定的Anchor，不能随active_anchor切换。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00146",
+      "section": "# 41B. Bullish Impulse",
+      "line": 4462,
+      "text": "core_bullish_impulse=(body_atr>=1 AND range_atr>=1 AND CLV>=0.7 AND amount_ratio20>=1.2 AND rel_market_1>0)。数据不足UNKNOWN，一字板CLV未知不能靠该分支确认。turnover只能生成独立补充说明。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00147",
+      "section": "# 41C. Support / Acceptance 状态机",
+      "line": 4474,
+      "text": "1. 已终止INVALIDATED/BROKEN不复活，恢复须新事件。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00148",
+      "section": "# 41C. Support / Acceptance 状态机",
+      "line": 4476,
+      "text": "3. close_breach首次→BREACHED_SHALLOW（描述待确认，名称不保证盘中浅穿）。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00149",
+      "section": "# 41C. Support / Acceptance 状态机",
+      "line": 4478,
+      "text": "5. eod_reclaim且此前TESTING/BREACHED_SHALLOW→RECLAIMED；首次touch并eod_reclaim→RECLAIMED（仅EOD事实，test_count=1）。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00150",
+      "section": "# 41D. Acceptance / Retention",
+      "line": 4487,
+      "text": "contract_id=RETENTION_V1。impulse_retention_k=(C[t0+k]-base)/(C[t0]-base)，k=1/3，全部换到同一观察基准；分母<=0或未知则NOT_APPLICABLE/UNKNOWN，禁止epsilon伪造。仅在目标市场日到来且证据可用时新增observation，不能更新t0事实。数值可>1或<0，展示原值不伪装概率。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00151",
+      "section": "# 41E. Structure Event 与 Rotation 的联动",
+      "line": 4518,
+      "text": "页面必须同时显示个股结构与不利 Context，而不是隐藏冲突。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00152",
+      "section": "# 41F. Profile 分阶段",
+      "line": 4524,
+      "text": "Core字段在V4-04，Turnover在V4-06，Structure/Anchor/Support在V4-12，Context/Structure投影在V4-13，Why Now在V4-15。API在Core阶段允许组件NOT_IMPLEMENTED；完整产品验收才要求已承诺的后置组件就绪。字段登记只用§87A，禁止另列“第一阶段必须全部高级状态”。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00153",
+      "section": "# 41G. 解释、展示和独立证据",
+      "line": 4530,
+      "text": "HYPOTHESIS_V1：模板必须绑定可验证predicate_id、支持/反对/UNKNOWN证据及下一判别/过期AST。证据不足不强造第二个解释，标HYPOTHESIS_SET_INCOMPLETE。价格衍生的多个Domain不是统计独立观测；不能按Domain数或解释数量累加“把握”。Supplemental解释包含自身revision，不混入Core why_now。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00154",
+      "section": "# 42. Focus Tracker：不重写成熟底座",
+      "line": 4540,
+      "text": "必须保留：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00155",
+      "section": "# 45. 独立 Validation Cohort",
+      "line": 4612,
+      "text": "FEP observation/dataset是独立训练人群：ENTRY可引用原cohort事件，DAILY/MARKET_WIDE须单独登记并请求同一settlement权威；禁止往原Validation Cohort补造入选事件或按UI Top-K删样本。身份与排除分母见§90 FEP.4。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00156",
+      "section": "# 45A. 日账本、统计事件和修订",
+      "line": 4616,
+      "text": "daily ledger唯一键(model_contract_id,state_lineage_id,publication_id,entity_type,entity_id,signal_type)。统计逻辑事件键(model_contract_id,state_lineage_id,entity_type,entity_id,episode_id,event_type,event_trade_date)，只对FIRST_PREWATCH、REENTRY_PREWATCH、UPGRADE_TO_WARM、NEW_CONFIRMED、REACCELERATION_EVENT、INVALIDATION产生事件；Persistent不新建。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00157",
+      "section": "# 45A. 日账本、统计事件和修订",
+      "line": 4617,
+      "text": "事件observation唯一键(logical_event_id,publication_id)，含ASSERTED/RETRACTED/CORRECTED。enrollment_id第一次实时ASSERTED冻结T0、reference、source、parameters、benchmark、controls和publication。后续修订只追加并标source_correction，不能重抽原对照、删原样本或重置T0；重算样本独立CORRECTED cohort。原始观察和当前修订投影分别展示。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00158",
+      "section": "# 45A. 日账本、统计事件和修订",
+      "line": 4618,
+      "text": "报告分列daily rows、logical events、episodes、unique entities、unique dates，股票和板块分开，重叠episode/日期相关性不得当独立样本。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00159",
+      "section": "# 46. Forward Outcomes",
+      "line": 4622,
+      "text": "V4-15必须交付enrollment、日历due planner、价格path、benchmarks、control settlement、outcome revisions与readback。V4-16开始每日结算；V4-21只是继续累计。任何Focus/UI筛选不限制结算。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00160",
+      "section": "# 46. Forward Outcomes",
+      "line": 4623,
+      "text": "唯一键(enrollment_id,horizon,outcome_contract_id,evaluation_source_digest)。同源重复执行幂等；更正源追加evaluation revision，first_observed和latest_corrected分开，不写回信号。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00161",
+      "section": "# 46A. Horizon 与公式",
+      "line": 4642,
+      "text": "反例验收：[100,110,120] MDD=0；[100,80,90] MDD=−0.2；[100,120,90] MDD=−0.25；N=1、平盘、除权、缺口都必须有独立预期。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00162",
+      "section": "# 47. 到期与截尾",
+      "line": 4646,
+      "text": "未到期存PENDING；报告截止日未完成的time-to-event观察标RIGHT_CENSORED。已到期按OBSERVED/SUSPENDED_AT_HORIZON/MATURED_DATA_MISSING/DELISTED_BEFORE_HORIZON分开，禁止全当右截尾或失败。退市无可验证终值不填−100%或0；披露不可观察比例，不从完整案例结果推出全样本效果。confirmed suspension的中间缺口与未知缺口分列。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00163",
+      "section": "## 49A.1 MARKET_RELATIVE_REFERENCE_V1",
+      "line": 4662,
+      "text": "identity包含contract_id、parameter_set_id、historical Universe、会话窗口及实际消费source digest。不得用Forward的T0固定篮子替换本字段，也不把N日endpoint均值误称为日再平衡路径的N日累计收益。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00164",
+      "section": "## 49A.2 FORWARD_MARKET_BENCHMARK_V1",
+      "line": 4668,
+      "text": "identity包含独立contract_id、T0成员/初始权重、adjustment identity、benchmark_constituent_policy及参数digest；禁止与MARKET_RELATIVE_REFERENCE_V1共用identity。Core消费者不得读取未来evaluation source。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00165",
+      "section": "## 49A.2 FORWARD_MARKET_BENCHMARK_V1",
+      "line": 4672,
+      "text": "字段必须包含benchmark_endpoint_coverage（实际或已核验终值的原始权重和）、benchmark_missing_weight（其补集）、benchmark_suspended_weight、benchmark_delisted_weight、benchmark_unknown_weight、benchmark_quality、benchmark_valuation_coverage、benchmark_marked_weight。主状态权重互斥；missing_weight包含全部无实际终值成员，不能再与其子项相加。unknown_weight为DATA_MISSING/IDENTITY_UNKNOWN/ADJUSTMENT_UNKNOWN权重和。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00166",
+      "section": "## 49A.2 FORWARD_MARKET_BENCHMARK_V1",
+      "line": 4676,
+      "text": "全篮子实际终值齐全时benchmark_quality=OBSERVED；只有已核验的停牌估值补齐且满足事前覆盖门时为MARKED_ESTIMATE，单独输出relative_market_return_marked，禁止混入OBSERVED主统计。剩余不可估值时保留observed_contribution=sum_known(w_i*P_i,j/P_i,0)、各缺失权重和PARTIAL_UNVALUED；该贡献不是完整收益，完整relative_market_return不可用，但不阻断absolute_return、controls绝对路径及已具备证据的其他capability。各日path质量独立，endpoint通过不代表MDD全路径通过。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00167",
+      "section": "# 49B. Matched Controls 与分析",
+      "line": 4690,
+      "text": "contract_id=CONTROL_ASSIGNMENT_V1。T0符合相同Hard Safety、非当日PREWATCH final eligible且非本事件实体为池；优先同primary industry（必须T0可知），缺行业允许全市场并标MATCH_SCOPE_MARKET。距离为prior20 mean amount的log值、vol20、RPS20各自同日百分位差绝对值之和，固定顺序tie-break security_id。每signal最多3个最近对照，允许不同signal复用；不足保存实际数量，不用未来补选。冻结features/assignment digest。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00168",
+      "section": "# 49B. Matched Controls 与分析",
+      "line": 4691,
+      "text": "后来对照入选只追加crossed_signal_at，ITT主分析保留。CLEAN_CONTROL只作为明确标识的事后敏感性子集，禁止用于主要增量结论或切换门；不得因“剔除了未来入选者”宣称因果优势。按security、signal_date、sector重叠分层披露；无预注册相关性处理时只提供描述统计，不给概率/显著性保证。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00169",
+      "section": "# 50. Forward 不是“收益优化器”",
+      "line": 4717,
+      "text": "必须冻结 cohort",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00170",
+      "section": "# 50. Forward 不是“收益优化器”",
+      "line": 4718,
+      "text": "不得 cherry-pick 最好看的那个",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00171",
+      "section": "## 51A.1 观察起点与防事后重跑选样",
+      "line": 4859,
+      "text": "source/provider_available、system_available、computed_at、accepted_at、observation_deadline分别记录；“同一trade_date”不等于“当时已知”。切换门使用完整slot日志、P0日志和model identity，禁止只挑通过的20天。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00172",
+      "section": "# 52A. 切换政策 CUTOVER_V2",
+      "line": 4865,
+      "text": "STOCK_PROVISIONAL_FORWARD_GATE：至少5个不同signal_date、30个不同股票正向入选逻辑事件（FIRST_PREWATCH/REENTRY_PREWATCH/NEW_CONFIRMED）的T5 OBSERVED，同模型、settlement无P0；同一逻辑事件的revision不重复计，INVALIDATION不凑数。controls/benchmark覆盖和质量分层回执必须披露，估值结果不能充当OBSERVED样本。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00173",
+      "section": "# 52A. 切换政策 CUTOVER_V2",
+      "line": 4867,
+      "text": "SECTOR_PROVISIONAL_FORWARD_GATE按子能力分别冻结：SECTOR_STAGE记录SECTOR_FIRST_PREWATCH、SECTOR_NEW_WARM、SECTOR_NEW_CONFIRMED；ROTATION记录ROTATION_PULSE、ROTATION_ACCEPTED、ROTATION_FAILED。逐事件类型保存unique_episode_count、unique_signal_dates、matured_events、T5价格路径质量及状态结果；同episode不同事件可以分别展示，不可相加冒充不同episode样本。FAILED必须完整纳入失败观察但不能补足正向接受样本门，PULSE不能代替ACCEPTED覆盖。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00174",
+      "section": "# 52A. 切换政策 CUTOVER_V2",
+      "line": 4869,
+      "text": "sector_min_unique_signal_dates、sector_min_unique_episodes、sector_min_matured_events_by_type、rotation_min_accepted_episodes及required_forward_quality在§72登记ENGINEERING_CANDIDATE，V4-00G定义、V4-00H冻结接受政策；REV2不临时拍定最低数值。没有冻结门或样本不足则该scope=SHADOW_ONLY。SECTOR_RISK_CHANGE单独验证事件完整性/风险提示正确性及相关sector路径样本，不能借股票30例自动取得生产资格。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00175",
+      "section": "# 52A. 切换政策 CUTOVER_V2",
+      "line": 4871,
+      "text": "production_permission[capability]=SHADOW_STABLE_PASS[capability] AND 对应FORWARD_GATE[capability] AND MIGRATION_REPLAY_PASS[capability] AND required_dependency_permissions。capability至少区分STOCK_CORE、STOCK_SECTOR_DEPENDENT、SECTOR_STAGE、ROTATION、SECTOR_RISK_CHANGE；共享源可读但未经接受的算法输出不能作为已生产能力的硬依赖。STOCK_CORE通过而Sector不足时，独立Stock路径可production，Sector/Rotation保持Shadow；依赖未通过Sector的Stock路径仍Shadow，不放宽原资格。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00176",
+      "section": "# 52A. 切换政策 CUTOVER_V2",
+      "line": 4873,
+      "text": "Cutover Receipt必含capability、status、shadow_sessions、unique_signal_dates、matured_events（按类型）、forward_quality、migration_gate、production_permission、dependency_scope、parameter_digest。UI按模块标production/shadow，Focus仅接受其source capability已许可的accepted publication，混合页面共享context身份但不混淆权限；禁止用GLOBAL V4 PASS整体切换。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00177",
+      "section": "# 52B. Gate Capability Matrix",
+      "line": 4883,
+      "text": "| 条件 | 允许能力 | 禁止能力 |",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00178",
+      "section": "## Replay Gate C — Migration",
+      "line": 4998,
+      "text": "历史效果 replay 只有在 price/universe/membership/source identity 均能证明 PIT 时才可提高证据等级；否则只能 diagnostic。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00179",
+      "section": "# 54. Temporal Leakage Test",
+      "line": 5004,
+      "text": "必须自动证明：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00180",
+      "section": "# 54. Temporal Leakage Test",
+      "line": 5043,
+      "text": "target-date membership basis must be explicit",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00181",
+      "section": "# 54. Temporal Leakage Test",
+      "line": 5063,
+      "text": "额外必须覆盖：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00182",
+      "section": "# 54. Temporal Leakage Test",
+      "line": 5080,
+      "text": "provider_asof > Core cutoff 不得改变 accepted Core state",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00183",
+      "section": "# 54. Temporal Leakage Test",
+      "line": 5083,
+      "text": "r2/r3 不得把同日 NEW event 变成 PERSISTENT",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00184",
+      "section": "# 55. Deterministic Replay",
+      "line": 5110,
+      "text": "重复运行必须得到：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00185",
+      "section": "# 57. Multi-Sector Test",
+      "line": 5164,
+      "text": "必须验证：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00186",
+      "section": "# 58. Cohort Completeness Test",
+      "line": 5182,
+      "text": "必须证明：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00187",
+      "section": "# 60. Research Radar 排名",
+      "line": 5248,
+      "text": "本节PRIORITY_V1及完整资格集合保持不变。FEP默认Shadow独立轴，ENTRY仅事件日注释；今日全Radar必须DAILY_LANDMARK/candidate-day scope和同日覆盖门，只有§90的PRIORITY_USE门通过后才启用明确版本PRIORITY_V2投影；不得隐式覆盖本节排序，不隐去风险失效事件。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00188",
+      "section": "# 62. 用户负荷",
+      "line": 5277,
+      "text": "本版 不追求固定“每天必须多少只”。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00189",
+      "section": "## 62B.1 Market Card",
+      "line": 5366,
+      "text": "页面必须显示四轴，不只显示综合标签。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00190",
+      "section": "# 62D. 个股研究页",
+      "line": 5511,
+      "text": "Research Universe中即使不在候选池也必须有Daily Profile；搜索池外证券仍显示身份/排除理由和可用Raw事实，不伪称全套研究算法已评估。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00191",
+      "section": "# 62G. 市场与事件",
+      "line": 5626,
+      "text": "但必须明确：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00192",
+      "section": "# 65. 个股研究页",
+      "line": 5796,
+      "text": "第一入口必须是：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00193",
+      "section": "## 65.4 R 层",
+      "line": 5854,
+      "text": "只能使用观察结果语言：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00194",
+      "section": "# 66. PIT Replay 功能",
+      "line": 5900,
+      "text": "禁止泄露：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00195",
+      "section": "# 69. API 重构",
+      "line": 6033,
+      "text": "FEP API为拟新增只读路由/api/v4/expectancy/{context,stock,sector,market,model,evaluation}，bootstrap和一致性按§90 FEP.11；无accepted批次返回结构化NOT_READY，禁止读取时训练/下载。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00196",
+      "section": "# 70A. Inherited Audit Register",
+      "line": 6104,
+      "text": "| AUD-AMOUNT-A-06 | OPEN/EVIDENCE_REQUIRED | amount_a_value/quality/contract_id分开；OPEN时只diagnostic，不进正式资格/排序/Focus。独立单位/共同成员/20日分母/覆盖/集中度实算及跨域引用验收后新合同启用 |",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00197",
+      "section": "# 70A. Inherited Audit Register",
+      "line": 6105,
+      "text": "| Focus真实Forward缺口 | OPEN/FORWARD_REQUIRED | 保留原专项的精确范围和证据；旧新episode并存等真实样本继续跟踪，文档/合成通过不自动关闭 |",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00198",
+      "section": "# 70A. Inherited Audit Register",
+      "line": 6109,
+      "text": "sector_participation_proxy=median(member amount_ratio20)可依SECTOR_FACTORS_V1使用，必须另名，不称Amount A。若legacy M10路径需要Amount A而未通过，则该路径diagnostic，不暗换代理以维持正式资格。其他独立Core路径仍可运行。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00199",
+      "section": "## `research_builder.build_latest_research_run`",
+      "line": 6119,
+      "text": "> 历史 lifecycle 接线必须真正读取 accepted previous history。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00200",
+      "section": "## `research_builder.build_latest_research_run`",
+      "line": 6121,
+      "text": "V4-00A盘点，V4-14集成时必须证明：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00201",
+      "section": "# 72. 参数注册表",
+      "line": 6218,
+      "text": "contract_id=PARAMETER_REGISTRY_V1，初始parameter_set_id=V422_CODEX_ENGINEERING_02（REV1实例保留，不覆盖）。本文新增规则中的数值均为候选默认值，包含窗口、阈值、计数、coverage、分桶边界、显示cap及排序scale；实现时提取到对应algorithm contract的命名参数，不散落代码。符号阈值没有赋值的模块不得静默选值。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00202",
+      "section": "# 72. 参数注册表",
+      "line": 6224,
+      "text": "状态ENGINEERING_CANDIDATE→SHADOW_FROZEN→PROVISIONAL→SUPPORTED或RETIRED。值变更必须新parameter_set_id和model_contract_id，重新冻结cohort；旧值与旧outcome不改。候选默认值不因本文件存在而成为最佳或有效算法。现有Legacy阈值从基线源码提取保留，不用新增默认值覆盖Legacy。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00203",
+      "section": "# 72. 参数注册表",
+      "line": 6226,
+      "text": "Legacy contract提取、source units/历史制度表与性能预算属于测量型参数，须有真实回执再冻结；不是让实施者发明事实。未就绪只限制其模块，基础盘点和纯Core合同工作可继续。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00204",
+      "section": "# 72. 参数注册表",
+      "line": 6228,
+      "text": "REV2待冻结注册项：minimum_endpoint_weight_coverage、maximum_suspension_quote_age、benchmark quality→consumer permissions；early_seed_retention_min、early_breadth_retention_min、early_breadth_delta_min、early_top1_concentration_max、mature_strong_retention_min；三类窗口field映射；sector_min_unique_signal_dates、sector_min_unique_episodes、sector_min_matured_events_by_type、rotation_min_accepted_episodes、required_forward_quality。均有contract_scope、单位、状态和owner stage；未赋值不能取得正式消费者权限，按§49A/52A降级。窗口裁决结果亦进入parameter/model digest。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00205",
+      "section": "# 73. 禁止实现硬编码与参数偷换",
+      "line": 6232,
+      "text": "# 73. 禁止实现硬编码与参数偷换",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00206",
+      "section": "# 73. 禁止实现硬编码与参数偷换",
+      "line": 6234,
+      "text": "代码从参数实例读取；正文数值是可审阅候选参数说明。构建验收生成参数使用清单，每个AST literal必须有parameter_id或明确数学常数/枚举说明。所有尺度scale>0，整型窗口/计数必须正整数，coverage在[0,1]，排序边界有序。无该实例或digest不匹配拒绝affected计算，不回退到某个全局默认。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00207",
+      "section": "# 75. 运维",
+      "line": 6268,
+      "text": "必须新增：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00208",
+      "section": "# 77B. 每日增量、接受与副作用",
+      "line": 6343,
+      "text": "结算器只能用accepted且对应日期可见的来源，结果追加revision；交易日终点未可得保持due backlog并显示具体原因。原始price、Anchor、episode观察和accepted历史不回写。失败回滚不是删除所有V4数据，而是切换读取namespace/配置并保留审计线。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00209",
+      "section": "# 77C. Sector Membership 从现在开始建立真正 PIT",
+      "line": 6374,
+      "text": "只能 diagnostic。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00210",
+      "section": "# 78. 唯一实施阶段表",
+      "line": 6385,
+      "text": "# 78. 唯一实施阶段表",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00211",
+      "section": "# 78. 唯一实施阶段表",
+      "line": 6387,
+      "text": "阶段按下面顺序交付，V4-06可选分支不是V4-07前置。算法实现前先完成该模块AST/参数/向量；纯基础盘点不受全局算法冻结阻断。V4-10可实现reducer接口和独立向量，但完整运行必须等V4-11/12，再于V4-14验收，不能把接口测试当完整DAG通过。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00212",
+      "section": "# 78. 唯一实施阶段表",
+      "line": 6389,
+      "text": "| 阶段 | 唯一名称 | 交付与准入 |",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00213",
+      "section": "# 78. 唯一实施阶段表",
+      "line": 6408,
+      "text": "| V4-10 | State Reducer | RESEARCH_STATE_V1接口与独立向量；最终集成须等D0/D1交付 |",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00214",
+      "section": "# 78. 唯一实施阶段表",
+      "line": 6421,
+      "text": "| V4-17G | Shadow Stable / Provisional Forward Gate | §52A按capability的稳定门/Forward门，样本不足仅该scope延长观察；禁止historical replay凑天数 |",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00215",
+      "section": "# 78. 唯一实施阶段表",
+      "line": 6432,
+      "text": "上述E1–E5是可选支线而非V4-16至22的顺序前置条件，详细输入/产物/验收见§90 FEP.14。V4-16可在FEP NOT_READY下照常Core Shadow；不得等待未来真实样本才开展其它独立工程。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00216",
+      "section": "# 79. Phase 与 Priority",
+      "line": 6436,
+      "text": "P0表示受影响正式能力不可越过，不表示全项目一次实现。以§78的稳定阶段ID引用，不再保留另一套阶段名称；V4-05 Replay A在Core之后，V4-14在完整算法集成之后，V4-18在真实Shadow门之后。所有DEGRADED必须携带scope，BLOCKED scope不可进入其scanner/consumer。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00217",
+      "section": "## 81.1 Engineering Complete",
+      "line": 6507,
+      "text": "必须：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00218",
+      "section": "## 81.3 Algorithm Evidence",
+      "line": 6544,
+      "text": "必须：",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00219",
+      "section": "## 81.4 Contract Completeness DoD",
+      "line": 6559,
+      "text": "允许先拆基线与合同设计卡；对应实现卡开工前必须有该模块字段注册、AST/参数实例、producer/time semantics、source能力/UNKNOWN及独立向量。没有则该模块CONTRACT_INCOMPLETE，不能由实现者悄悄补语义。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00220",
+      "section": "## 81.4 Contract Completeness DoD",
+      "line": 6560,
+      "text": "整体上线前所有承诺组件与用户可见字段须覆盖§87A机器注册表，且通过完整DAG、发布一致性、source degradation、真实Shadow/Forward与迁移门。文档检查不替代代码测试、实测性能或统计证据。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00221",
+      "section": "# 82. V4.2 不使用的验收指标",
+      "line": 6571,
+      "text": "每天必须非空",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00222",
+      "section": "# 82. V4.2 不使用的验收指标",
+      "line": 6572,
+      "text": "每天必须 N 只",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00223",
+      "section": "# 82. V4.2 不使用的验收指标",
+      "line": 6573,
+      "text": "上涨率必须 > X%",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00224",
+      "section": "# 83. 风险与失败回滚",
+      "line": 6582,
+      "text": "§52A是唯一切换政策。“样本不足/尚未证明增量”不能当作已失败或改候选阈值的理由。Shadow P0、无法解释的系统异常、超事前冻结运行预算则NO_CUTOVER并登记独立审计；修订算法/参数要新模型和cohort。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00225",
+      "section": "# 83. 风险与失败回滚",
+      "line": 6587,
+      "text": "FEP回滚撤销其activation/capability并恢复PRIORITY_V1；保留原预测、模型、labels及失效试验，不回滚Core或删除Focus人工工作。没有active model也必须保留计划slot与漏跑回执。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00226",
+      "section": "## PIT",
+      "line": 6625,
+      "text": "只能使用当时能够知道的事实。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00227",
+      "section": "# 85. 关键治理原则最终版",
+      "line": 6642,
+      "text": "10. 任何历史 replay 都必须标 membership basis。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00228",
+      "section": "# 85. 关键治理原则最终版",
+      "line": 6644,
+      "text": "12. Validation Cohort 必须包含所有 eligible 对象。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00229",
+      "section": "# 85. 关键治理原则最终版",
+      "line": 6646,
+      "text": "14. Forward 结果只能追加，不能改写 T0。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00230",
+      "section": "# 87. Feature → Data → Algorithm → UI 全链路追踪矩阵",
+      "line": 6700,
+      "text": "这是 V4.2 的强制可追踪合同：**页面存在的功能必须在本文找到算法来源；算法输出必须知道落在哪张表和哪个页面。**",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00231",
+      "section": "# 87. Feature → Data → Algorithm → UI 全链路追踪矩阵",
+      "line": 6737,
+      "text": "不得直接开发。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00232",
+      "section": "# 87A. Field → Algorithm Contract Registry",
+      "line": 6746,
+      "text": "以下字段族是规范登记；实现前展开为逐字段schema，包含data type、unit、producer、required/optional、time、output digest和显示标签。不得由页面发明未注册资格字段。算法contract+参数实例唯一；表中多个contract代表派生链，不代表任选。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00233",
+      "section": "# 87A. Field → Algorithm Contract Registry",
+      "line": 6750,
+      "text": "| trend_state; weekly_trend_state; monthly_trend_state | TDX adjusted/closed periods | TREND_STATE_V1 | V4-04 | required缺失UNKNOWN |",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00234",
+      "section": "# 87A. Field → Algorithm Contract Registry",
+      "line": 6757,
+      "text": "| trading_status; limit_status; resumed_event; lifecycle_status | local identity/calendar/制度表 | TRADING_STATUS_V1 / PRICE_LIMIT_RULE_V1 | V4-02 | UNKNOWN；补充不得覆盖 |",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00235",
+      "section": "# 87A. Field → Algorithm Contract Registry",
+      "line": 6761,
+      "text": "| amount_a_value; amount_a_quality; amount_a_contract_id | 独立Amount A审计 | AUD-AMOUNT-A-06 | V4-08 | OPEN只diagnostic，禁止正式consumer |",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00236",
+      "section": "# 87A. Field → Algorithm Contract Registry",
+      "line": 6776,
+      "text": "只读投影允许同义UI标签，但API枚举/字段不得另起一套；旧relative_market_state→relative_market_state、core_extension_risk→core_extension_risk、rotation_core_state→rotation_core_state为显式schema迁移映射，旧publication原样保留。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00237",
+      "section": "# 87A. Field → Algorithm Contract Registry",
+      "line": 6784,
+      "text": "| technical_window_identity; field_window_mapping; calendar_span; actual_count; suspended_count | TECHNICAL_BAR_WINDOW_V1 / CROSS_SECTION_SESSION_WINDOW_V1 / FORWARD_SESSION_WINDOW_V1 | V4-00G定义；V4-03及V4-15分别消费 | OPEN决策不得冒充冻结 |",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    },
+    {
+      "candidate_id": "CANDIDATE_00238",
+      "section": "# 87A. Field → Algorithm Contract Registry",
+      "line": 6789,
+      "text": "FEP新增registry由§90 FEP.7/12及R2配套设计DDL定义：feature snapshot/value、observation revision、target/source binding、dataset完整分母ledger、fold/partition选择、dataset rows、model/set/细粒度grant/activation/deployment head/CAS receipt、planned slot/model binding、prediction run/row、quality/evaluation、priority projection。缺少机器field-to-producer映射或cross-table validator时E1不得PASS；本文列族不冒充已存在实现。",
+      "duplicate_lines": [],
+      "status": "OPEN_NORMATIVE_ATOMICITY_REVIEW"
+    }
+  ],
+  "status": "OPEN_INDEPENDENT_SEMANTIC_REVIEW"
+}

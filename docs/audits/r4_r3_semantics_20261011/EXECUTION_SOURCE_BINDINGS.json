@@ -1,0 +1,55 @@
+{
+  "contract_id": "R4_R3_SEMANTICS_EXECUTION_R1",
+  "run_utc": "2026-10-11T10:30:45.948494+00:00",
+  "source_git_head": "595f49f1b16e52907419da8a164f1de42e817353",
+  "source_revision_state": "UNCOMMITTED_BYTES_BOUND",
+  "sources": [
+    {
+      "path": "src/adjustment/exact_factor_transport_r1.py",
+      "sha256": "9065d736a48a9802e4390aad3dbf91cbcc6b4386427d7eb666ef20b4eac6c69c"
+    },
+    {
+      "path": "src/adjustment/exact_ohlc_consumer_r1.py",
+      "sha256": "dcfcd2876f63cf883a1f0d51b13d87b3d1fdfda9f9e1f68384d5711dbbe726fd"
+    },
+    {
+      "path": "src/adjustment/tdx_adjustment_v0_3.py",
+      "sha256": "fd13b88915a42120fb1d338c72b7849802c10cdbb1b018ff6b7daf3695a0068d"
+    },
+    {
+      "path": "src/adjustment/tdx_adjustment.py",
+      "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+    },
+    {
+      "path": "tests/test_v4_exact_ohlc_consumer_r3.py",
+      "sha256": "2d035bc40f4b76a3c31c98325ff971f550ea06efda9deab6046fabbfe34833c9"
+    },
+    {
+      "path": "tests/test_v4_exact_transport_r4.py",
+      "sha256": "9c6f96945fb1d77ee07fc0db4cdf2e1877d7d135fc3d5e5cef6a8b01e49fc252"
+    },
+    {
+      "path": "tests/test_audit_repair_adjustment_r3.py",
+      "sha256": "02916297debe6522f9a500a3731a6c8c7ddd56033aef03671162bbc3fbb00a81"
+    },
+    {
+      "path": "scripts/audit_r4_r3_semantics.py",
+      "sha256": "139cb2da3e79eb8c0a2321e1f0928c2d3897a14a458a1c002f9049917d338ee0"
+    }
+  ],
+  "raw_evidence": [
+    {
+      "path": "EXACT_CONSUMER_JUNIT.xml",
+      "sha256": "8762e574c8ba340f284292c21f2d589a2d4875364afdf40273bf8a92ca6c6e5e"
+    },
+    {
+      "path": "EXACT_CONSUMER_RAW.log",
+      "sha256": "6eb176756b3560d7d20d302cbb37abc05a77894ad427a49d869a491e0c066f8e"
+    }
+  ],
+  "candidate_consumer_count": 1,
+  "full_56_consumer_acceptance": "OPEN",
+  "normative_semantics": "OPEN",
+  "production_loaded": false,
+  "command": "python -m pytest -q tests/test_v4_exact_transport_r4.py tests/test_v4_exact_ohlc_consumer_r3.py tests/test_audit_repair_adjustment_r3.py --basetemp G:/codex_tmp/test_temp/semantics_r3_final --junitxml docs/audits/r4_r3_semantics_20261011/EXACT_CONSUMER_JUNIT.xml"
+}

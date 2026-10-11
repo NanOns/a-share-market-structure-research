@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="14" failures="0" skipped="0" tests="14" time="6.362" timestamp="2026-10-11T18:28:15.476722+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="" name="tests.test_v4_12_multi_anchor_r12" time="0.000"><error message="collection failure">tests\test_v4_12_multi_anchor_r12.py:15: in &lt;module&gt;
+    C=FrozenContracts(ROOT);CONTRACT,_=load_contract(C)
+      ^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_12_structure_io.py:27: in __init__
+    self.root=Path(root).resolve();self.entry=json.loads((self.root/entry_path).read_bytes());self.entry_ref=file_ref(self.root,entry_path)
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\v4_12\\V4_12_RUNTIME_ENGINEERING_ENTRY_R1.json'</error></testcase><testcase classname="" name="tests.test_v4_12_persisted_r11" time="0.000"><error message="collection failure">tests\test_v4_12_persisted_r11.py:10: in &lt;module&gt;
+    C=FrozenContracts(ROOT)
+      ^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_12_structure_io.py:27: in __init__
+    self.root=Path(root).resolve();self.entry=json.loads((self.root/entry_path).read_bytes());self.entry_ref=file_ref(self.root,entry_path)
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\v4_12\\V4_12_RUNTIME_ENGINEERING_ENTRY_R1.json'</error></testcase><testcase classname="" name="tests.test_v4_12_runtime_r1" time="0.000"><error message="collection failure">tests\test_v4_12_runtime_r1.py:17: in &lt;module&gt;
+    CONTRACTS=FrozenContracts(ROOT)
+              ^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_12_structure_io.py:27: in __init__
+    self.root=Path(root).resolve();self.entry=json.loads((self.root/entry_path).read_bytes());self.entry_ref=file_ref(self.root,entry_path)
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\v4_12\\V4_12_RUNTIME_ENGINEERING_ENTRY_R1.json'</error></testcase><testcase classname="" name="tests.test_v4_19_focus_cutover_contract" time="0.000"><error message="collection failure">ImportError while importing test module 'G:\codex work\r4-pg-only-20261011\tests\test_v4_19_focus_cutover_contract.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+E:\python\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_v4_19_focus_cutover_contract.py:6: in &lt;module&gt;
+    from reports.r28.design_oracle import CAPS,DEPS,fixture,permissions,proposal,rollback_scope,scenario,vector_result
+E   ModuleNotFoundError: No module named 'reports.r28'</error></testcase><testcase classname="" name="tests.test_v4_20_default_ui_contract" time="0.000"><error message="collection failure">ImportError while importing test module 'G:\codex work\r4-pg-only-20261011\tests\test_v4_20_default_ui_contract.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+E:\python\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_v4_20_default_ui_contract.py:5: in &lt;module&gt;
+    from reports.r29.design_resolver import CAPS,DEPS,MODULES,affected,digest,fixture,focus_write,open_deep_link,page_context,resolve,stale,vector_result
+E   ModuleNotFoundError: No module named 'reports.r29'</error></testcase><testcase classname="" name="tests.test_v4_21_forward_observation_contract" time="0.000"><error message="collection failure">ImportError while importing test module 'G:\codex work\r4-pg-only-20261011\tests\test_v4_21_forward_observation_contract.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+E:\python\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_v4_21_forward_observation_contract.py:5: in &lt;module&gt;
+    from reports.r30.design_ledger import CAPS,LANES,PARTITION,fixture,readback,scenario,validate,vector_result
+E   ModuleNotFoundError: No module named 'reports.r30'</error></testcase><testcase classname="" name="tests.test_v4_21_native_session_repair" time="0.000"><error message="collection failure">ImportError while importing test module 'G:\codex work\r4-pg-only-20261011\tests\test_v4_21_native_session_repair.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+E:\python\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_v4_21_native_session_repair.py:6: in &lt;module&gt;
+    from reports.r30.design_ledger import fixture,readback,scenario
+E   ModuleNotFoundError: No module named 'reports.r30'</error></testcase><testcase classname="" name="tests.test_v4_22_independent_audit_contract" time="0.000"><error message="collection failure">ImportError while importing test module 'G:\codex work\r4-pg-only-20261011\tests\test_v4_22_independent_audit_contract.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+E:\python\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_v4_22_independent_audit_contract.py:8: in &lt;module&gt;
+    from reports.r31.audit_oracle import closure_allowed, digest, final_verdict, governance, read_binding, referential_integrity, validate_contract
+E   ModuleNotFoundError: No module named 'reports.r31'</error></testcase><testcase classname="" name="tests.test_v4_22_r31r1_repair" time="0.000"><error message="collection failure">ImportError while importing test module 'G:\codex work\r4-pg-only-20261011\tests\test_v4_22_r31r1_repair.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+E:\python\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_v4_22_r31r1_repair.py:4: in &lt;module&gt;
+    from tests.test_v4_22_independent_audit_contract import C, ROOT, ledger, evaluate, future_simulation
+tests\test_v4_22_independent_audit_contract.py:8: in &lt;module&gt;
+    from reports.r31.audit_oracle import closure_allowed, digest, final_verdict, governance, read_binding, referential_integrity, validate_contract
+E   ModuleNotFoundError: No module named 'reports.r31'</error></testcase><testcase classname="" name="tests.test_v4_22_r31r2_repair" time="0.000"><error message="collection failure">ImportError while importing test module 'G:\codex work\r4-pg-only-20261011\tests\test_v4_22_r31r2_repair.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+E:\python\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_v4_22_r31r2_repair.py:6: in &lt;module&gt;
+    from tests.test_v4_22_independent_audit_contract import C,ROOT,ledger,evaluate,future_simulation
+tests\test_v4_22_independent_audit_contract.py:8: in &lt;module&gt;
+    from reports.r31.audit_oracle import closure_allowed, digest, final_verdict, governance, read_binding, referential_integrity, validate_contract
+E   ModuleNotFoundError: No module named 'reports.r31'</error></testcase><testcase classname="" name="tests.v4_09.test_r1_1_lineage_immutability" time="0.000"><error message="collection failure">tests\v4_09\test_r1_1_lineage_immutability.py:9: in &lt;module&gt;
+    from tests.v4_09.test_stock_prewatch import PACKAGE,ROOT,fixture_context
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1331: in _find_and_load_unlocked
+    ???
+&lt;frozen importlib._bootstrap&gt;:935: in _load_unlocked
+    ???
+E:\python\Lib\site-packages\_pytest\assertion\rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+tests\v4_09\test_stock_prewatch.py:7: in &lt;module&gt;
+    PACKAGE=load_package(ROOT)
+            ^^^^^^^^^^^^^^^^^^
+src\v4\stock_prewatch.py:67: in load_package
+    freeze = json.loads((root/'reports/v4_09/V4_09_CONTRACT_FREEZE.json').read_text(encoding='utf8'))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\v4_09\\V4_09_CONTRACT_FREEZE.json'</error></testcase><testcase classname="" name="tests.v4_09.test_stock_prewatch" time="0.000"><error message="collection failure">tests\v4_09\test_stock_prewatch.py:7: in &lt;module&gt;
+    PACKAGE=load_package(ROOT)
+            ^^^^^^^^^^^^^^^^^^
+src\v4\stock_prewatch.py:67: in load_package
+    freeze = json.loads((root/'reports/v4_09/V4_09_CONTRACT_FREEZE.json').read_text(encoding='utf8'))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\v4_09\\V4_09_CONTRACT_FREEZE.json'</error></testcase><testcase classname="" name="tests.v4_a09.test_consumer_identity_sql" time="0.000"><error message="collection failure">tests\v4_a09\test_consumer_identity_sql.py:5: in &lt;module&gt;
+    from tests.v4_09.test_stock_prewatch import fixture_context,PACKAGE
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1331: in _find_and_load_unlocked
+    ???
+&lt;frozen importlib._bootstrap&gt;:935: in _load_unlocked
+    ???
+E:\python\Lib\site-packages\_pytest\assertion\rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+tests\v4_09\test_stock_prewatch.py:7: in &lt;module&gt;
+    PACKAGE=load_package(ROOT)
+            ^^^^^^^^^^^^^^^^^^
+src\v4\stock_prewatch.py:67: in load_package
+    freeze = json.loads((root/'reports/v4_09/V4_09_CONTRACT_FREEZE.json').read_text(encoding='utf8'))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\v4_09\\V4_09_CONTRACT_FREEZE.json'</error></testcase><testcase classname="" name="tests.v4_dm01_r2.test_runtime_capture_and_supplemental_gate" time="0.000"><error message="collection failure">tests\v4_dm01_r2\test_runtime_capture_and_supplemental_gate.py:11: in &lt;module&gt;
+    CAP=read(BASE/'runtime_capability_v2.json');CAPTURE=read(BASE/'TARGET_DATE_CAPTURE_normalized_receipt.json')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\v4_dm01_r2\test_runtime_capture_and_supplemental_gate.py:10: in read
+    def read(path):return json.loads(path.read_text(encoding='utf8'))
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_local.py:537: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\dm01\\a01_r2\\20261001T033251758661Z\\normalized_schema_v2_1\\runtime_capability_v2.json'</error></testcase></testsuite></testsuites>

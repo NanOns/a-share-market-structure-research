@@ -1,0 +1,27 @@
+{
+  "contract_id": "R4_R3_RUNTIME_CONSUMERS_SCOPED_R1",
+  "results": {
+    "PASS": 13,
+    "FAIL": 0,
+    "ERROR": 0,
+    "SKIP": 0
+  },
+  "scope": "Historical public import and default/desktop workers with actual executor accepted-T0 recovery NOOP and default HTTP settings",
+  "business_non_pg_attempts": 0,
+  "injected_negative_non_pg_attempts": 1,
+  "pg_sql_intents": 1236,
+  "independent_oracle": "Original accepted-trade-date bytes determine expected NOOP receipt; PG final status independently read through state query and HTTP paused boolean; Head bytes identical",
+  "status": "SCOPED_PASS",
+  "full_runtime_closure": "OPEN",
+  "limitations": [
+    "Real acquisition/Owner ingestion/Joint Head publication not exercised by accepted-T0 no-op",
+    "Desktop engine production_factory Windows packaging not exercised",
+    "DB06/08/09/12 dynamic supported-branch proof remains OPEN",
+    "No source field numeric computation is performed by accepted-T0 no-op; numeric oracle belongs to separate algorithm work package"
+  ],
+  "closing_conditions": [
+    "Complete actual source publication/PG consumers integration",
+    "Supported dynamic entry probes and replay/exception paths",
+    "Independent frozen-commit external review"
+  ]
+}

@@ -1,5 +1,5 @@
 """R2 single atomic authority binds UI bytes, snapshot and operational scope."""
-import json,os,uuid
+import hashlib,json,os,uuid
 from pathlib import Path
 from .current_v4_context import canonical,digest,SourceInvalid
 from .v4_daily_refresh import atomic_bytes
@@ -17,7 +17,10 @@ def load(root):
 def checked_path(root,binding):
     root=Path(root).resolve();path=(root/binding['path']).resolve()
     if not path.is_relative_to(root):raise SourceInvalid('JOINT_PATH_OUTSIDE_PROJECT')
-    if digest(path.read_bytes())!=binding['sha256']:raise SourceInvalid('JOINT_SOURCE_DIGEST_MISMATCH:'+binding['path'])
+    content_hash=hashlib.sha256()
+    with path.open('rb') as stream:
+        while chunk:=stream.read(1024*1024):content_hash.update(chunk)
+    if content_hash.hexdigest()!=binding['sha256']:raise SourceInvalid('JOINT_SOURCE_DIGEST_MISMATCH:'+binding['path'])
     return path
 
 def validate(root,candidate):

@@ -1,0 +1,43 @@
+{
+  "contract_id": "R4_R3_FULL_BYTE_STREAMING_VALIDATION",
+  "stage": "B1/P0-3 and B2/P0-5 memory",
+  "results": {
+    "PASS": 15,
+    "FAIL": 0,
+    "ERROR": 0,
+    "SKIP": 0
+  },
+  "source_sha256": {
+    "src/workbench_service/joint_release.py": "88bcc0d057c01b01353e65cf8c1e2ef5649e7d574f43b5b9d737c33f1e374ea7",
+    "tests/test_v4_joint_streaming_source_r3.py": "f0d971352a124f3b806ecacb6b85d5138ba46fe04af7e0c4fb6c6d53e3f7e438"
+  },
+  "evidence": [
+    {
+      "path": "JOINT_STREAMING_R3.xml",
+      "sha256": "43a09a13bd7d356c55f757dd7cc0fe4afc83708226b286d79983fcbbfd0750fe",
+      "bytes": 2186,
+      "gzip_path": "JOINT_STREAMING_R3.xml.gz",
+      "gzip_sha256": "d449cdfb5e5c556be6fee01c1443c1800d40874ae7c7be5c0f5261196af7560a",
+      "roundtrip_equal": true
+    },
+    {
+      "path": "JOINT_STREAMING_R3_RAW.log",
+      "sha256": "61665eef3ec5ea3edf1eabf4174b7e5df5ff253b0fecaad7b0208a00c49c7eed",
+      "bytes": 703,
+      "gzip_path": "JOINT_STREAMING_R3_RAW.log.gz",
+      "gzip_sha256": "cf3a755863cafde5736d9c1b11e957b9c874b48dc19ee14cbb79161a67d8e18b",
+      "roundtrip_equal": true
+    },
+    {
+      "path": "JOINT_STREAMING_R3_INTENTS.jsonl",
+      "sha256": "9d1770d5298e19afbca101e21606ddf96f7e65b4995f14a07758d279d1b56a51",
+      "bytes": 683557,
+      "gzip_path": "JOINT_STREAMING_R3_INTENTS.jsonl.gz",
+      "gzip_sha256": "1ddb94b0d3e6cb85cba60eab41db62999e18cfccea3992911ccbe65d71520dc5",
+      "roundtrip_equal": true
+    }
+  ],
+  "closure": "Full-byte SHA parity and distant tamper/path escape, existing CAS/rollback and native PG content negatives all pass",
+  "global_acceptance": "OPEN",
+  "next": "Integrated publisher same-source rerun required; no production switch"
+}

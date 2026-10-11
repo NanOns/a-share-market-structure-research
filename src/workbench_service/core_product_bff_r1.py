@@ -24,6 +24,13 @@ def prioritize_home_changes(changes):
     return list(selected.values())
 
 class CoreProductBFFR1(OperationalSuccessorBFFV1):
+    isolated_history=None
+    def __init__(self,api,legacy,*,isolated_history_authority=None):
+        super().__init__(api,legacy)
+        self.isolated_history=None
+        if isolated_history_authority is not None:
+            from .isolated_history_read_r4 import load
+            self.isolated_history=load(api,isolated_history_authority)
     def resolve_dated_object(self,domain,day,key):
         """Same dated identity aliases for detail and compare; ambiguity fails closed."""
         if not key:return None
@@ -85,6 +92,14 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             self.api.cache[key]=(data['records'],ref)
         return self.api.cache[key]
 
+    def history_pack(self, day):
+        if self.isolated_history is not None:
+            authority,index_root,digest=self.isolated_history
+            entry=authority['dates'].get(day)
+            if entry is None:return None
+            return dict(T0=day,history_index=entry['history_index'],source_bindings={'history':entry['source_binding']},isolated_authority_sha256=digest),{}
+        return self.pack(day)
+
     def pack(self, day):
         key=('product-pack',day)
         if key not in self.api.cache:
@@ -104,6 +119,9 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         response['context']['bff_contract_id']=CONTRACT
         response['context']['product_engineering_acceptance']='EXTERNAL_PENDING'
         response['context']['focus_write']=False
+        if self.isolated_history is not None:
+            response['production_accepted']=False
+            response['context'].update(production_accepted=False,read_scope='ISOLATED_ENGINEERING_HISTORY',isolated_authority_sha256=self.isolated_history[2])
         return response
 
     def project(self,domain,day):
@@ -202,11 +220,12 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
     def chart(self,day,sid,q):
         period=q.get('period','D');basis=q.get('price_basis','QFQ')
         if period not in ('D','W','M') or basis not in ('RAW','QFQ'):raise ValueError('INVALID_CHART_QUERY')
-        pack=self.pack(day)
+        pack=self.history_pack(day)
         if not pack:return self.missing(day,'stocks/'+sid+'/chart','DATED_HISTORY_INDEX_NOT_BOUND')
         manifest,_=pack
         from workbench_db.v4_history_pg_r1 import read
-        value=read(self.api.root,manifest['history_index'],day,sid)
+        index_root=self.isolated_history[1] if self.isolated_history is not None else self.api.root
+        value=read(index_root,manifest['history_index'],day,sid)
         if value is None:return 404,self.envelope(day,status='NOT_FOUND',code='ENTITY_NOT_FOUND')
         bars=[]
         for b in value:
@@ -216,7 +235,10 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         data=aggregate(bars,period)
         if period!='D' and data:
             owner_domain='period_raw' if basis=='RAW' else 'period_adjusted'
-            formal=next((r for r in self.source(owner_domain,day) if r['security_id']==sid and r['period_type']==('WEEKLY' if period=='W' else 'MONTHLY')),None)
+            period_rows=self.source(owner_domain,day)
+            if period_rows is None:
+                return self.missing(day,'stocks/'+sid+'/chart','DATED_'+owner_domain.upper()+'_OWNER_NOT_BOUND')
+            formal=next((r for r in period_rows if r['security_id']==sid and r['period_type']==('WEEKLY' if period=='W' else 'MONTHLY')),None)
             if formal:
                 data[-1].update(period_status=formal['period_status'],calendar_count=formal['calendar_count'],suspended_count=formal['suspended_count'],formal_period_source=self.api.candidate['owners'][day][owner_domain])
         for i,b in enumerate(data):
@@ -225,7 +247,11 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         offset=int(q.get('offset',0));limit=int(q.get('limit',120))
         if not 0<=offset<=1000000 or not 1<=limit<=200:raise ValueError('INVALID_QUERY_BOUND')
         end=max(0,len(data)-offset);start=max(0,end-limit)
-        return 200,self.envelope(day,status='READY' if data else 'EMPTY_VALID',items=data[start:end],total=len(data),offset=offset,limit=limit,has_next=start>0,period=period,price_basis=basis,as_of=day,volume_unit='SHARES',amount_unit='CNY',source=manifest['source_bindings']['history'],series_index=manifest['history_index'],adjustment='TDX_NATIVE_AFFINE_T0_COORDINATE' if basis=='QFQ' else 'NONE',historical_membership='RECONSTRUCTED_NOT_STRICT_PIT',earliest_valid_date=bars[0]['trade_date'] if bars else None)
+        response=self.envelope(day,status='READY' if data else 'EMPTY_VALID',items=data[start:end],total=len(data),offset=offset,limit=limit,has_next=start>0,period=period,price_basis=basis,as_of=day,volume_unit='SHARES',amount_unit='CNY',source=manifest['source_bindings']['history'],series_index=manifest['history_index'],adjustment='TDX_NATIVE_AFFINE_T0_COORDINATE' if basis=='QFQ' else 'NONE',historical_membership='RECONSTRUCTED_NOT_STRICT_PIT',earliest_valid_date=bars[0]['trade_date'] if bars else None)
+        if self.isolated_history is not None:
+            response['production_accepted']=False
+            response['context'].update(production_accepted=False,read_scope='ISOLATED_ENGINEERING_HISTORY',isolated_authority_sha256=self.isolated_history[2])
+        return 200,response
 
     def _get_product(self,path,query):
         q=dict(query);q.setdefault('trade_date',self.api.candidate['accepted_trade_date']);day=q['trade_date']

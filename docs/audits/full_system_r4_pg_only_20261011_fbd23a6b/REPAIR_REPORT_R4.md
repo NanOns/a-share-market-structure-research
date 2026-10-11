@@ -34,3 +34,11 @@ R4-10 IN_PROGRESS：设计/字段全分母、producer/source/time/quality/API/UI
 新 scoped 结果绑定实际脏树逐文件字节清单 R4_SOURCE_TREE_*.json。早期 source_SHA=fbd 只表示 Git 基线；没有实际执行树绑定的历史回执不补造证据。所有失败 JUnit/log 原件保留。SQL intent 只记操作/关系标记/查询摘要，不存参数或 raw payload。
 
 Git 提交/push 仅归档此工程批次，不授权生产变更或自动进入未通过的后续阶段。未声明 R4 总任务完成。
+
+## 五日期 HTTP 增量
+
+R4_03_CHART_HTTP_RESULT_01.json：实际产品 handler/BFF/PG reader 的30请求中，14 READY、16按冻结Owner缺口明确 SOURCE_INCOMPLETE；不是30个完整周期Owner通过。最新日期6种 RAW/QFQ × D/W/M 与独立冻结SQLite mode=ro图表数值零差异。错误token409、篡改非PG authority400，所有隔离响应 production_accepted=false。缺失周期Owner的原迭代空值崩溃修复，原失败日志保留。
+
+99个命名native测试零FAIL/ERROR/SKIP：R4_SCOPED_01d4c10b_RESULT.json。此分母包含后续journal反例，不能覆盖原4568或合法全量分母。HTTP工程运行中的额外class默认属性修改单列为运行时源绑定限制；结果的源树是证据发射时清单，下一次执行使用提交后稳定代码验证。
+
+工程包（398399fa）已Drive归档，文件ID 1rAuHeDGY3jWrL6xOACf45hrYmX9sRk7z；metadata名称/3241285bytes/父目录匹配。仅局部工程包，不等于全系统验收。

@@ -895,6 +895,22 @@
       "status": "SOURCE_BASELINE_QUALIFICATION_OPEN_EXTERNAL",
       "evidence": "R4_SOURCE_BASELINE_QUALIFICATION.json",
       "acceptance_independent_of_current_stage": true
+    },
+    {
+      "audit_item_id": "AR4-E02",
+      "severity": "P1",
+      "scope": "Historical chart period-owner availability and isolation labeling",
+      "engineering_owner": "Codex / root",
+      "owner": "OWNER_UNKNOWN_EXTERNAL_REVIEW_REQUIRED",
+      "status": "SCOPED_HTTP_FIXED_EXTERNAL_REVIEW_PENDING",
+      "evidence": [
+        "R4_CHART_HTTP_FAILED_02.log",
+        "R4_03_CHART_HTTP_RESULT_01.json"
+      ],
+      "acceptance_independent_of_current_stage": true,
+      "limitations": [
+        "16 historical period requests remain SOURCE_INCOMPLETE by frozen owner absence; no owner invented"
+      ]
     }
   ],
   "system_status": "EXTERNAL_ACCEPTANCE_BLOCKED",

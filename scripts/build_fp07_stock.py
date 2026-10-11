@@ -1,5 +1,5 @@
 """Publish a read-only actual OHLC index and dated Core/Profile bindings."""
-import gzip,json,sqlite3,sys
+import gzip,json,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 from scripts.fp01_evidence import write,ref
@@ -11,15 +11,17 @@ def main():
     out=enter(7);market=json.loads((operational_path('v4_market_operational_authority_v1.json')).read_bytes());sector=json.loads((operational_path('v4_sector_operational_authority_v1.json')).read_bytes());assert market['input_data_head']==sector['input_data_head']
     assert market['trade_date']==sector['trade_date'],'STOCK_OWNER_DATE_MIX'
     sources=dict(history=market['history'],factors=sector['factors'],profiles=sector['profiles'],unit_contract=ref('src/tdx/tdx_audit.py'),projection_adapter=ref('scripts/build_fp07_stock.py'))
-    folder=ROOT/'data/v4/fp07_stocks'/digest(canonical(sources));folder.mkdir(parents=True,exist_ok=True);path=folder/'series.sqlite';tmp=path.with_suffix('.tmp');assert not tmp.exists()
-    db=sqlite3.connect(tmp);db.execute('CREATE TABLE bars(security TEXT,day TEXT,payload TEXT,PRIMARY KEY(security,day)) WITHOUT ROWID');count=0;entities=0
-    with gzip.open(verified(market['history']),'rt',encoding='utf8') as f:
-        for line in f:
-            row=json.loads(line);entities+=1
-            for b in row['bars']:
-                assert b['trade_date']<=market['trade_date'];assert b['volume']>=0 and b['amount']>=0
-            db.executemany('INSERT INTO bars VALUES(?,?,?)',[(row['security_id'],b['trade_date'],canonical(b).decode()) for b in row['bars']]);count+=len(row['bars'])
-    db.commit();db.close();tmp.replace(path)
+    folder=ROOT/'data/v4/fp07_stocks_pg_r1'/digest(canonical(sources));folder.mkdir(parents=True,exist_ok=True);path=folder/'series.pg.json'
+    from workbench_db.v4_series_pg_r1 import build
+    def rows():
+        with gzip.open(verified(market['history']),'rt',encoding='utf8') as f:
+            for line in f:
+                row=json.loads(line)
+                for b in row['bars']:
+                    if b['volume']<0 or b['amount']<0:raise ValueError('STOCK_NEGATIVE_TURNOVER')
+                    yield row['security_id'],b['trade_date'],b
+    index=build(ROOT,path,rows(),t0=market['trade_date'],source_digest=market['history']['sha256'])
+    count=index['bar_count'];entities=index['symbol_count']
     authority=dict(contract_id='FP07_STOCK_OPERATIONAL_AUTHORITY_V1',trade_date=market['trade_date'],input_data_head=market['input_data_head'],factors=sector['factors'],profiles=sector['profiles'],series=ref(path),sources=sources,price_basis='TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE',knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,volume_unit='SHARES',amount_unit='CNY',intraday='NOT_AVAILABLE_NO_FAKE_MINUTE_BARS')
     write(operational_path('v4_stock_operational_authority_v1.json',for_write=True),authority);write(out/'REAL_MATERIALIZATION.json',dict(authority=authority,bars=count,entities=entities,status='READY_REAL_SOURCE_INDEX'))
     print(json.dumps(dict(status='READY',bars=count,entities=entities)))

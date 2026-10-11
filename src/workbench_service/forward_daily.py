@@ -1,5 +1,5 @@
 """Corrected, accepted-input Forward adapter; immutable T0 and bounded evaluation."""
-import copy,json,math,sqlite3
+import copy,json,math
 from decimal import Decimal
 from pathlib import Path
 from adjustment.tdx_adjustment import build_affine_factors,xrxd_from_gbbq
@@ -64,9 +64,8 @@ class LocalForwardPriceSource(VectorPriceSource):
         key=(sid,basis)
         if key in self.cache:return self.cache[key]
         if basis>self.cutoff or self.t0>basis:raise SourceInvalid('FORWARD_FUTURE_BASIS')
-        with sqlite3.connect(self.paths.series.as_uri()+'?mode=ro',uri=True) as db:
-            bars={day:json.loads(payload) for day,payload in db.execute(
-                'SELECT day,payload FROM bars WHERE security=? AND day>=? AND day<=?',(sid,self.t0,basis))}
+        from workbench_db.v4_series_pg_r1 import range_rows
+        bars=dict(range_rows(self.paths.series,sid,self.t0,basis))
         if self.t0 not in bars:self.cache[key]={};return {}
         symbol=bars[self.t0]['symbol'];events=[e for e in self.paths.events[symbol]
             if int(self.t0.replace('-',''))<e.event_date<=int(basis.replace('-',''))]

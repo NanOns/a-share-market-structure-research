@@ -4,8 +4,9 @@ from pathlib import Path
 from urllib.parse import urlparse,parse_qs
 from collections import deque
 import json,threading,time
+import psycopg
 from .v4_control_server_v2 import make_v4_handler
-from workbench_analysis.operational_daily_jobs_v1 import DailyJobs
+from workbench_analysis.operational_daily_jobs_pg_r1 import DailyJobs
 from workbench_analysis.operational_daily_executor_v1 import execute_sources
 
 PREFIX='/api/v4/operations/daily-update'
@@ -104,6 +105,7 @@ def make_daily_handler(root,jobs):
                     if len(tail)==3 and tail[0]=='jobs' and tail[2]=='events':
                         return self.send(200,dict(events=jobs.events(tail[1],int(parse_qs(parsed.query).get('after',['0'])[0]))))
                     return self.send(404,dict(code='DAILY_ROUTE_NOT_FOUND'))
+                except (psycopg.Error,RuntimeError):return self.send(503,dict(code='V4_PG_UNAVAILABLE',fallback=False))
                 except ValueError as exc:return self.send(400,dict(code=str(exc)))
             return super().do_GET()
 
@@ -140,6 +142,7 @@ def make_daily_handler(root,jobs):
                 if self.command=='POST' and len(tail)==3 and tail[0]=='jobs' and tail[2]=='cancel':
                     return self.send(202,dict(job_id=jobs.cancel(tail[1])))
                 return self.send(404,dict(code='DAILY_ROUTE_NOT_FOUND'))
+            except (psycopg.Error,RuntimeError):return self.send(503,dict(code='V4_PG_UNAVAILABLE',fallback=False))
             except (ValueError,TypeError,KeyError) as exc:
                 return self.send(400,dict(code='INVALID_DAILY_REQUEST',reason=str(exc)[:100]))
         def do_POST(self):return self.operation()

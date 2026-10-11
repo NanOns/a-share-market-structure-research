@@ -7,6 +7,9 @@ import hashlib
 import json
 from pathlib import Path
 import re
+from bisect import bisect_left
+
+LINE_INDEX_CONTRACT = 'V4_GOVERNANCE_NEWLINE_INDEX_R1'
 
 POLICY_ID = "NO_SYMBOL_SPECIFIC_RUNTIME_LOGIC"
 POLICY_VERSION = "1.2.1"
@@ -111,13 +114,15 @@ def scan_file(path: Path, *, root: Path, category: str):
         hits.extend({"line": line, "value": value, "kind": kind} for value, line, kind in _numeric_code_literals(tree))
     else:
         text = raw.decode("utf-8", errors="replace")
+        newlines = [match.start() for match in re.finditer('\n', text)]
+        line_at = lambda offset: bisect_left(newlines, offset) + 1
         patterns = [(SYMBOL, "EXPLICIT_SECURITY_OR_SYMBOL_DATA"), (CANONICAL, "CANONICAL_SECURITY_ID_DATA")]
         if suffix == ".sql":
             patterns = [(SYMBOL, "EXPLICIT_SECURITY_OR_SYMBOL_LITERAL"), (CANONICAL, "CANONICAL_SECURITY_ID_LITERAL")]
         if suffix in {".md"}:
             patterns = [(SYMBOL, "EXPLICIT_SECURITY_OR_SYMBOL_EVIDENCE"), (CANONICAL, "CANONICAL_SECURITY_ID_EVIDENCE")]
         for pattern, kind in patterns:
-            hits.extend({"line": text.count("\n", 0, match.start()) + 1, "value": match.group(0), "kind": kind} for match in pattern.finditer(text))
+            hits.extend({"line": line_at(match.start()), "value": match.group(0), "kind": kind} for match in pattern.finditer(text))
         if suffix == ".json":
             try:
                 document = json.loads(text)
@@ -150,14 +155,14 @@ def scan_file(path: Path, *, root: Path, category: str):
                 r"\s*(?:=|IN\s*\()\s*['\"]?(\d{6})",
                 re.I,
             )
-            hits.extend({"line": text.count("\n", 0, match.start()) + 1, "value": match.group(1), "kind": "SQL_SECURITY_FILTER_LITERAL"}
+            hits.extend({"line": line_at(match.start()), "value": match.group(1), "kind": "SQL_SECURITY_FILTER_LITERAL"}
                         for match in sql_symbol.finditer(text))
             sql_case = re.compile(
                 r"\bCASE\s+(?:[\w.\"`]*?(?:security|symbol|ticker|instrument|stock)[\w.\"`]*(?:code|id))"
                 r"\s+WHEN\s+['\"]?(\d{6})",
                 re.I,
             )
-            hits.extend({"line": text.count("\n", 0, match.start()) + 1, "value": match.group(1), "kind": "SQL_SECURITY_FILTER_LITERAL"}
+            hits.extend({"line": line_at(match.start()), "value": match.group(1), "kind": "SQL_SECURITY_FILTER_LITERAL"}
                         for match in sql_case.finditer(text))
     result = {"path": rel, "category": category, "hits": hits, "byte_count": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
     if suffix in {".json", ".yaml", ".yml"}:

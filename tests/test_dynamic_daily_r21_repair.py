@@ -4,7 +4,7 @@ import json
 import subprocess,types
 from pathlib import Path
 import pytest
-from workbench_analysis.operational_daily_jobs_v1 import DailyJobs
+from workbench_analysis.operational_daily_jobs_pg_r1 import DailyJobs
 from workbench_analysis.source_readiness_v2 import source_readiness
 import workbench_analysis.operational_daily_jobs_v1 as jobs_module
 import workbench_analysis.operational_daily_executor_v1 as executor
@@ -36,13 +36,14 @@ def test_terminal_changed_source_creates_successor_preserves_history(queue):
 
 def test_frozen_baseline_and_repair_use_identical_failure_source_restore_fixture(tmp_path,monkeypatch):
     baseline='851770b1932d95836ce76bb44fd292117958bf04'
-    source=subprocess.check_output(['git','show',baseline+':src/workbench_analysis/operational_daily_jobs_v1.py'],cwd=Path(__file__).resolve().parents[1])
-    old=types.ModuleType('workbench_analysis.r21_frozen_jobs')
-    old.__package__='workbench_analysis';exec(compile(source,'frozen_baseline_jobs.py','exec'),old.__dict__)
+    import sys
+    root=Path(__file__).resolve().parents[1]
+    frozen=json.loads(subprocess.check_output([sys.executable,'-B',str(root/'scripts/r4_frozen_jobs_fixture.py'),'--root',str(tmp_path/'FROZEN_BASELINE'),'--scenario','restore'],cwd=root,text=True))
+    assert frozen['source_SHA']==baseline and frozen['calls']==['2026-10-08']
     plan=lambda *a,**k:dict(status='TIME_ELIGIBLE',requested_through_date='2026-10-09',missing_sessions=['2026-10-08','2026-10-09'],eligible_sessions=['2026-10-08','2026-10-09'],last_good_trade_date='2026-09-30')
-    monkeypatch.setattr(old,'gap_plan',plan);monkeypatch.setattr(jobs_module,'gap_plan',plan)
-    results=[]
-    for label,klass in [('FROZEN_BASELINE',old.DailyJobs),('REPAIRED',DailyJobs)]:
+    monkeypatch.setattr(jobs_module,'gap_plan',plan)
+    results=[dict(version='FROZEN_BASELINE',calls=frozen['calls'])]
+    for label,klass in [('REPAIRED',DailyJobs)]:
         state={'source':'unavailable'};calls=[]
         def execute(day,mode):
             calls.append(day)
@@ -57,26 +58,29 @@ def test_frozen_baseline_and_repair_use_identical_failure_source_restore_fixture
 
 
 def test_actual_frozen_schema_upgrade_and_old_reader_preserve_history(tmp_path,monkeypatch):
-    source=subprocess.check_output(['git','show','851770b1932d95836ce76bb44fd292117958bf04:src/workbench_analysis/operational_daily_jobs_v1.py'],cwd=Path(__file__).resolve().parents[1])
-    old=types.ModuleType('workbench_analysis.r21_legacy_schema');old.__package__='workbench_analysis'
-    exec(compile(source,'frozen_legacy_schema.py','exec'),old.__dict__)
+    import sys,hashlib
+    from workbench_db.v4_job_migration_r1 import import_oracle
+    root=Path(__file__).resolve().parents[1]
+    frozen=json.loads(subprocess.check_output([sys.executable,'-B',str(root/'scripts/r4_frozen_jobs_fixture.py'),'--root',str(tmp_path/'frozen_source'),'--scenario','schema'],cwd=root,text=True))
+    oracle=json.loads(Path(frozen['oracle']).read_bytes());before=frozen['before']
+    source=Path(oracle['source']);source_before=hashlib.sha256(source.read_bytes()).hexdigest()
+    assert frozen['journal_mode']=='wal' and frozen['old_job']['status']=='FAILED_TERMINAL'
     plan=lambda *a,**k:dict(status='TIME_ELIGIBLE',requested_through_date='2026-10-09',missing_sessions=['2026-10-09'],eligible_sessions=['2026-10-09'],last_good_trade_date='2026-10-08')
-    monkeypatch.setattr(old,'gap_plan',plan);monkeypatch.setattr(jobs_module,'gap_plan',plan)
+    monkeypatch.setattr(jobs_module,'gap_plan',plan)
     clock=lambda:datetime.fromisoformat('2026-10-09T22:10:00+08:00')
-    legacy=old.DailyJobs(tmp_path,lambda *a:dict(status='FAILED_TERMINAL'),clock);legacy.tick()
-    with legacy.connect() as db:
-        before={table:[tuple(r) for r in db.execute('SELECT * FROM '+table)] for table in ('update_jobs','update_job_days','update_events')}
-        assert db.execute('PRAGMA journal_mode').fetchone()[0]=='wal'
-    legacy.close();q=DailyJobs(tmp_path,lambda *a:dict(status='PUBLISHED'),clock)
+    q=DailyJobs(tmp_path/'pg_candidate',lambda *a:dict(status='PUBLISHED'),clock)
+    assert import_oracle(q,oracle)['status']=='IMPORTED_FULL_ROW_EQUIVALENT'
     revision=['a'];monkeypatch.setattr(q,'source_revision',lambda _:revision[0]);q.tick();revision[0]='b';q.tick();q.close()
-    downgrade=old.DailyJobs(tmp_path,clock=clock)
+    downgrade=DailyJobs(tmp_path/'pg_candidate',clock=clock)
     with downgrade.connect() as db:
         for table,original in before.items():
-            current=[tuple(r) for r in db.execute('SELECT * FROM '+table)]
-            assert all(row in current for row in original)
+            current=[tuple(r.values()) for r in db.execute('SELECT * FROM '+table)]
+            # Native timestamps retain the same Shanghai instant representation.
+            assert all(tuple(row) in current for row in original)
         assert db.execute('SELECT COUNT(*) FROM scheduler_attempts').fetchone()[0]==2
     assert downgrade.job(before['update_jobs'][0][0])['status']=='FAILED_TERMINAL'
     downgrade.close()
+    assert hashlib.sha256(source.read_bytes()).hexdigest()==source_before
     print(json.dumps(dict(case='ACTUAL_FROZEN_SCHEMA_UPGRADE_OLD_READER_ROLLBACK',evidence_kind='ISOLATED_INJECTION',original_history_preserved=True,scheduler_attempts_preserved=2)))
 
 
@@ -138,7 +142,7 @@ def test_failed_probe_health_clears_after_verified_recovery(tmp_path):
     q.source_revision('2026-10-09')
     now[0]=datetime.fromisoformat('2026-10-09T22:45:00+08:00')
     assert q.source_revision('2026-10-09')
-    receipt=json.loads((tmp_path/'runtime/dynamic_daily/recovery_probes/2026-10-09.json').read_bytes())
+    receipt=q.read_probe('2026-10-09')
     assert receipt['probe_state']=='VERIFIED'
 
 

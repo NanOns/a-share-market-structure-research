@@ -1,5 +1,5 @@
 """Admitted local daily release: immutable candidates, bounded QA, joint CAS."""
-import copy,json,sqlite3,urllib.request
+import copy,json,urllib.request
 from pathlib import Path
 from .current_v4_context import SourceInvalid,canonical,digest
 from .joint_release import AUTHORITY,activate,checked_path,load,validate
@@ -31,7 +31,7 @@ def promote(root,staged,health=None):
     raw=json.loads(checked_path(root,manifest['sources']['RAW_DAILY']).read_bytes())['rows']
     if any(row['trade_date']!=day for row in raw):raise SourceInvalid('DAILY_RAW_DATE_CONFLICT')
     expected={r['security_id']:r for r in raw};comparisons=0
-    with sqlite3.connect(reader.path.as_uri()+'?mode=ro',uri=True) as db:
+    with reader.connect() as db:
         for domain,payload in db.execute('SELECT domain,payload FROM objects'):
             row=json.loads(payload)
             for cell in row.get('fields',{}).values():

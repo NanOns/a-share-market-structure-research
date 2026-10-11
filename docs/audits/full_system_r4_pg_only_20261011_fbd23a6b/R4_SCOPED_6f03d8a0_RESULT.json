@@ -1,0 +1,55 @@
+{
+  "contract_id": "R4_SCOPED_ENGINEERING_EXECUTION_R1",
+  "base_head": "fbd23a6ba08d0948fe7ad421d1765fe363648522",
+  "source_SHA": "fbd23a6ba08d0948fe7ad421d1765fe363648522",
+  "run_utc": "2026-10-11T05:50:57.407014+00:00",
+  "scope": "V4_ONLY_POSTGRESQL_ONLY",
+  "denominator": 48,
+  "negative_vectors": [],
+  "previous_status": "AUDIT_INCOMPLETE",
+  "current_status": "SCOPED_TEST_PASS",
+  "evidence_links": [
+    "R4_SCOPED_6f03d8a0_JUNIT.xml",
+    "R4_SCOPED_6f03d8a0.log",
+    "R4_SCOPED_6f03d8a0_CONNECTIONS.jsonl"
+  ],
+  "owner": "Codex / root",
+  "limitations": [
+    "Named engineering modules; this is not the full V4 legal regression denominator"
+  ],
+  "next_conditions": [
+    "Complete per-module scope review and full clean-slate run"
+  ],
+  "results": {
+    "PASS": 48,
+    "FAIL": 0,
+    "ERROR": 0,
+    "SKIP": 0
+  },
+  "seconds": 32.34725022315979,
+  "command": [
+    "E:\\python\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_v4_pg_jobs_r4.py",
+    "tests/test_v4_pg_storage_r4.py",
+    "tests/test_v4_pg_journal_r4.py",
+    "tests/test_v4_exact_transport_r4.py",
+    "tests/test_operational_daily_jobs_v1.py",
+    "tests/test_audit_repair_adjustment_r3.py",
+    "--basetemp=G:/codex_tmp/test_temp/R4_SCOPED_6f03d8a0",
+    "-o",
+    "cache_dir=G:/codex_tmp/pytest_cache_r4",
+    "--junitxml=G:\\codex work\\大A交易\\docs\\audits\\full_system_r4_pg_only_20261011_fbd23a6b\\R4_SCOPED_6f03d8a0_JUNIT.xml"
+  ],
+  "source_bindings": {
+    "tests/test_v4_pg_jobs_r4.py": "3b01534a01cae6c181ac966b61177a7914ea842e7a83439e763ae942ebaf0c7a",
+    "tests/test_v4_pg_storage_r4.py": "32d44eeb30d2af216093d97f5f3d06b38963e8dbd901aaebb40d54c418b0dbde",
+    "tests/test_v4_pg_journal_r4.py": "68e7379fb9ab73e3cf44c254d412e01cf7eee82a6dd9b345631f9c7acf20ffeb",
+    "tests/test_v4_exact_transport_r4.py": "9c6f96945fb1d77ee07fc0db4cdf2e1877d7d135fc3d5e5cef6a8b01e49fc252",
+    "tests/test_operational_daily_jobs_v1.py": "1a9e40e05d2eb823a7ecb95bcab14bc77facf2bfbe6daea6e4b676d7b1073e87",
+    "tests/test_audit_repair_adjustment_r3.py": "02916297debe6522f9a500a3731a6c8c7ddd56033aef03671162bbc3fbb00a81"
+  }
+}

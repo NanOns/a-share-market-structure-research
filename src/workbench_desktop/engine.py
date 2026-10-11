@@ -35,17 +35,16 @@ class EngineController:
     def status(self):
         # Read-only settings even when the worker is stopped; never construct
         # a jobs object or resume a queue merely to show capture conditions.
-        import sqlite3
-        from contextlib import closing
+        import psycopg
+        from workbench_db.v4_native import connection, workspace_schema
         auto=None
-        settings_path=self.root/'runtime/dynamic_daily/jobs.sqlite3'
-        if settings_path.is_file():
-            try:
-                with closing(sqlite3.connect(settings_path.as_uri()+'?mode=ro',uri=True,timeout=1)) as db:
-                    row=db.execute('SELECT enabled FROM scheduler_policy WHERE id=1').fetchone()
-                    if row:auto=bool(row[0])
-            except sqlite3.Error:
-                pass
+        pg_settings_state='UNKNOWN'
+        try:
+            with connection(workspace_schema(self.root,'jobs'),read_only=True) as db:
+                row=db.execute('SELECT enabled FROM scheduler_policy WHERE id=1').fetchone()
+                if row:auto=bool(row[0]);pg_settings_state='KNOWN'
+        except (psycopg.Error,RuntimeError):
+            pg_settings_state='PG_UNAVAILABLE_OR_NOT_INITIALIZED'
         with self.lock:
             return dict(contract_id='V4_WINDOWS_PACKAGE_RUNTIME_V1', engine_state=self.state,
                         reason=self.reason, operation_id=self.operation_id, instance_id=self.instance_id,
@@ -57,6 +56,7 @@ class EngineController:
                         observed_at=datetime.now(timezone.utc).isoformat(),
                         capture_requirement='CAPTURE_REQUIRES_APP_RUNNING',
                         auto_daily_enabled=auto,
+                        scheduler_backend='POSTGRESQL',scheduler_settings_state=pg_settings_state,
                         first_capture_state='UNCONFIRMED' if self.state != 'RUNNING' else 'CHECK_SOURCE_AND_SCHEDULER',
                         cached_snapshot=self.last_snapshot, engine_health=self.health_snapshot,
                         data_freshness='CHECK_ORIGINAL_V4_CONTEXT', external_acceptance='NOT_GRANTED')
@@ -241,7 +241,7 @@ class EngineController:
             # Persist settings without resuming maintenance-interrupted queues.
             class SettingsJobs(ManagedDailyJobs):
                 def __init__(self, root):
-                    from workbench_analysis.operational_daily_jobs_v1 import DailyJobs
+                    from workbench_analysis.operational_daily_jobs_pg_r1 import DailyJobs
                     DailyJobs.__init__(self, root)
             jobs = SettingsJobs(self.root)
             return jobs.settings(enabled)

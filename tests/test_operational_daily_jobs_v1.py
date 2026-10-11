@@ -3,7 +3,7 @@ from concurrent.futures import ThreadPoolExecutor
 import json,threading,urllib.request,urllib.error
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 import pytest
-from workbench_analysis.operational_daily_jobs_v1 import DailyJobs
+from workbench_analysis.operational_daily_jobs_pg_r1 import DailyJobs
 import workbench_analysis.operational_daily_jobs_v1 as module
 import workbench_service.operational_daily_server_v1 as http
 

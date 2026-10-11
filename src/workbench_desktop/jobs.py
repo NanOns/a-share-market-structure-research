@@ -1,15 +1,6 @@
 """Lifecycle extension around the unchanged accepted daily-job contract."""
-import sqlite3
 import threading
-from workbench_analysis.operational_daily_jobs_v1 import DailyJobs
-
-
-class ClosingConnection(sqlite3.Connection):
-    def __exit__(self, *args):
-        try:
-            return super().__exit__(*args)
-        finally:
-            self.close()
+from workbench_analysis.operational_daily_jobs_pg_r1 import DailyJobs
 
 
 class ManagedDailyJobs(DailyJobs):
@@ -26,13 +17,6 @@ class ManagedDailyJobs(DailyJobs):
                 db.execute("UPDATE update_jobs SET status='QUEUED',error=NULL,finished_at=NULL WHERE job_id=?", (job,))
                 db.execute("UPDATE update_job_days SET state='QUEUED',next_retry_at=NULL WHERE job_id=? AND state='INTERRUPTED'", (job,))
                 self.event(db, job, 'RECOVERY', 'MAINTENANCE_RESUMED', {})
-
-    def connect(self):
-        db = sqlite3.connect(self.path, timeout=5, factory=ClosingConnection)
-        db.row_factory = sqlite3.Row
-        db.execute('PRAGMA journal_mode=WAL')
-        db.execute('PRAGMA synchronous=FULL')
-        return db
 
     def quiesce(self):
         with self.admission:

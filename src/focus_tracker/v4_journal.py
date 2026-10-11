@@ -3,12 +3,12 @@
 Corrected history remains corrected. This never claims migration of the legacy PG
 ledger or fabricates path predicates/outcomes absent from an owner.
 """
-import gzip,json,sqlite3
+import gzip,json
 from pathlib import Path
 from workbench_service.current_v4_context import canonical,digest,SourceInvalid
 from .v4_successor import project
 
-CONTRACT='R2_V4_FOCUS_JOURNAL_V1'
+CONTRACT='R4_V4_FOCUS_JOURNAL_PG_R1'
 
 def append(path,root,binding,expected,*,fail_after_append=False,path_inputs=None):
     root=Path(root).resolve();source=(root/binding['path']).resolve()
@@ -18,7 +18,8 @@ def append(path,root,binding,expected,*,fail_after_append=False,path_inputs=None
     payload=json.loads(gzip.decompress(raw) if source.suffix=='.gz' else raw);rows=payload['rows']
     if not rows or len({r['trade_date'] for r in rows})!=1:raise SourceInvalid('JOURNAL_SOURCE_DATE_MIX')
     day=rows[0]['trade_date'];path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
-    db=sqlite3.connect(path)
+    from workbench_db.v4_journal_pg_r1 import JournalConnection
+    db=JournalConnection(path,root,CONTRACT)
     try:
         db.executescript('CREATE TABLE IF NOT EXISTS days(day TEXT PRIMARY KEY,source_digest TEXT,payload TEXT);CREATE TABLE IF NOT EXISTS metadata(key TEXT PRIMARY KEY,value TEXT);CREATE TABLE IF NOT EXISTS day_inputs(day TEXT PRIMARY KEY,payload TEXT);')
         db.execute('BEGIN IMMEDIATE')

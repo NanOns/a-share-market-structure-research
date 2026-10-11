@@ -1,0 +1,35 @@
+................................................................F....... [ 76%]
+......................                                                   [100%]
+================================== FAILURES ===================================
+___ test_engineering_snapshot_same_capture_replay_is_stable_and_rejects_pit ___
+
+    def test_engineering_snapshot_same_capture_replay_is_stable_and_rejects_pit():
+>       obs=json.loads((OUT/'ENGINEERING_OBSERVATION.json').read_bytes())
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep\test_feature_owner.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/r4-pg-only-20261011/reports/fep_e1_r2_final/ENGINEERING_OBSERVATION.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\fep_e1_r2_final\\ENGINEERING_OBSERVATION.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/fep/test_feature_owner.py::test_engineering_snapshot_same_capture_replay_is_stable_and_rejects_pit
+1 failed, 93 passed in 7.15s

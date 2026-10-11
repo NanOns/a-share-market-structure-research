@@ -1,7 +1,7 @@
 """Continuous immutable journal candidates from accepted V4 owner snapshots."""
 import json
 import shutil
-import sqlite3
+from workbench_db.v4_journal_pg_r1 import open_read
 import uuid
 from pathlib import Path
 
@@ -32,19 +32,19 @@ def path_inputs(root,manifest):
 
 
 def advance(root,manifest,*,previous_journal=None,previous_publication=None,expected_head=None,
-            work_root='E:/codex_tmp/r2_continuous_focus',fail_after_append=False):
+            work_root='G:/codex_tmp/r4_continuous_focus',fail_after_append=False):
     """Stage a closed immutable journal; production is changed only by joint CAS.
 
     Every old observation reads its frozen owner binding. New price/market
     artifacts may advance, but algorithm changes require a new namespace.
     """
     root=Path(root).resolve();work_root=Path(work_root).resolve()
-    if work_root.drive.upper() not in ('E:','F:'):raise SourceInvalid('DAILY_TEMP_REQUIRES_E_OR_F')
+    if not work_root.is_relative_to(Path('G:/codex_tmp').resolve()):raise SourceInvalid('DAILY_TEMP_REQUIRES_G_CODEX_TMP')
     day=manifest['context']['accepted_trade_date'];states=manifest['sources']['states']
     inputs=path_inputs(root,manifest)
     if previous_journal:
         source=checked(root,previous_journal)
-        with sqlite3.connect(source.as_uri()+'?mode=ro',uri=True) as db:
+        with open_read(source) as db:
             head=db.execute("SELECT value FROM metadata WHERE key='head'").fetchone()[0]
             prior_day=db.execute('SELECT max(day) FROM days').fetchone()[0]
             prior_source=db.execute('SELECT source_digest FROM days WHERE day=?',(day,)).fetchone()
@@ -56,7 +56,7 @@ def advance(root,manifest,*,previous_journal=None,previous_publication=None,expe
                 raise SourceInvalid('DAILY_SAME_DAY_REVISION_REQUIRES_NEW_NAMESPACE')
             return dict(contract_id=CONTRACT,status='NOOP',trade_date=day,head=head,journal=previous_journal,
                         publication=previous_publication,production_changed=False,source_requests=0)
-    work_root.mkdir(parents=True,exist_ok=True);path=work_root/(uuid.uuid4().hex+'.sqlite')
+    work_root.mkdir(parents=True,exist_ok=True);path=work_root/(uuid.uuid4().hex+'.pg.json')
     if previous_journal:
         shutil.copyfile(source,path)
     elif expected_head is not None:raise SourceInvalid('DAILY_INITIAL_HEAD_MUST_BE_EMPTY')
@@ -65,7 +65,7 @@ def advance(root,manifest,*,previous_journal=None,previous_publication=None,expe
     if result['status']=='NOOP':
         return dict(contract_id=CONTRACT,status='NOOP',trade_date=day,head=expected_head,
                     journal=previous_journal,publication=previous_publication,production_changed=False,source_requests=0)
-    with sqlite3.connect(path) as db:
+    with open_read(path) as db:
         projection=json.loads(db.execute("SELECT value FROM metadata WHERE key='projection'").fetchone()[0])
         start=db.execute('SELECT min(day) FROM days').fetchone()[0]
     publication=dict(projection,contract_id=PATH_CONTRACT,trade_date=day,earliest_valid_date=start,
@@ -75,9 +75,9 @@ def advance(root,manifest,*,previous_journal=None,previous_publication=None,expe
         legacy_history=dict(status='UNRECONCILED_PG_UNAVAILABLE',preserved=True),
         write_block_reason='DAILY_CANDIDATE_REQUIRES_OWNER_SNAPSHOT_UI_JOINT_GATE')
     folder=root/'data/v4/r2_continuous_focus'/result['head'];folder.mkdir(parents=True,exist_ok=True)
-    frozen=folder/'journal.sqlite';published=folder/('focus_'+digest(canonical(publication))+'.json')
+    frozen=folder/'journal.pg.json';published=folder/('focus_'+digest(canonical(publication))+'.json')
     if frozen.exists():
-        with sqlite3.connect(frozen.as_uri()+'?mode=ro',uri=True) as db:
+        with open_read(frozen) as db:
             if db.execute("SELECT value FROM metadata WHERE key='head'").fetchone()[0]!=result['head']:
                 raise SourceInvalid('DAILY_FROZEN_JOURNAL_CONFLICT')
     else:atomic_bytes(frozen,path.read_bytes())

@@ -1,7 +1,6 @@
 """Verified V4 price paths and sealed-date outcomes, independent of legacy PG."""
 import gzip
 import json
-import sqlite3
 from collections import defaultdict
 from datetime import date
 from decimal import Decimal
@@ -53,10 +52,8 @@ class AcceptedPaths:
         sessions = [day for day in self.calendar if start <= day <= end]
         if not sessions or sessions[0] != start or sessions[-1] != end:
             raise SourceInvalid('FOCUS_PATH_CALENDAR_BOUNDS')
-        with sqlite3.connect(self.series.as_uri() + '?mode=ro', uri=True) as db:
-            bars = {day: json.loads(payload) for day, payload in db.execute(
-                'SELECT day,payload FROM bars WHERE security=? AND day>=? AND day<=?',
-                (sid, start, end))}
+        from workbench_db.v4_series_pg_r1 import range_rows
+        bars=dict(range_rows(self.series,sid,start,end))
         suspended, missing = [], []
         for day in sessions:
             status = self.status.get(day, {}).get(sid, {})

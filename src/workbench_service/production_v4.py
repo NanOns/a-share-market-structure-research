@@ -3,7 +3,6 @@ import gzip
 import hashlib
 import json
 import os
-import sqlite3
 import time
 import uuid
 from datetime import datetime,timezone
@@ -15,6 +14,18 @@ from .v4_daily_refresh import atomic_bytes, refresh_status
 POINTER = 'config/v4_research_snapshot_authority_v1.json'
 DOMAINS = ('stocks', 'sectors', 'events', 'radar', 'forward', 'settlement', 'sources', 'market', 'focus')
 REQUIRED_METADATA=('owner','release_id','source_snapshot','contract_version','source_as_of','trading_date','input_digest','published_at','evidence_origin','evidence_state','data_quality_state','knowledge_lineage')
+
+def numeric_sort_expressions(field,descending):
+    # Preserve the accepted SQLite JSON value ordering: NULL, numeric, text.
+    # Unknown literal values remain text and never enter a numeric cast.
+    if field not in {'sector_rs20_pct','sector_rs5_pct','sector_rs20','sector_rs5','breadth_ret1','ma20_width','participation_proxy','member_count','close','rps5','rps20'}:raise ValueError('INVALID_SORT_FIELD')
+    value="(payload::jsonb #> '{fields,"+field+",value}')"
+    text="(payload::jsonb #>> '{fields,"+field+",value}')"
+    order=' DESC NULLS LAST' if descending else ' ASC NULLS FIRST'
+    rank="CASE WHEN "+value+" IS NULL OR "+value+"='null'::jsonb THEN 0 WHEN jsonb_typeof("+value+") IN ('number','boolean') THEN 1 ELSE 2 END"
+    number="CASE WHEN jsonb_typeof("+value+")='number' THEN "+text+"::numeric WHEN "+value+"='true'::jsonb THEN 1 WHEN "+value+"='false'::jsonb THEN 0 END"
+    lexical="CASE WHEN jsonb_typeof("+value+") NOT IN ('number','boolean','null') THEN "+text+" END"
+    return [rank+order,number+order,lexical+order]
 
 def validate_release_metadata(manifest):
     metadata=manifest.get('metadata',{})
@@ -115,8 +126,9 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
         if row.get('symbol_effective_from', '') <= date and (not row.get('symbol_effective_to') or row['symbol_effective_to'] >= date):
             names[sid] = row
     directory = root / 'data/v4/research_snapshots' / uuid.uuid4().hex
-    directory.mkdir(parents=True); dbpath = directory / ('research.sqlite' if publish else 'daily_research.sqlite')
-    db = sqlite3.connect(dbpath)
+    directory.mkdir(parents=True); dbpath = directory / 'research.pg.json'
+    from workbench_db.v4_snapshot_pg_r1 import Builder
+    db = Builder(root,directory.name)
     db.executescript('''CREATE TABLE objects(domain TEXT,id TEXT,name TEXT,symbol TEXT,state TEXT,payload TEXT,PRIMARY KEY(domain,id));
         CREATE INDEX object_name ON objects(domain,name,id);
         CREATE INDEX object_symbol ON objects(domain,symbol,id);
@@ -336,7 +348,7 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
                 gaps[-1].update(reason='UNRESOLVED_PATH_PREDICATE_OWNERS_AND_UNRECONCILED_LEGACY_PG',next='CONTINUOUS_DAILY_DRIVER_ADMISSION')
         meta=dict(contract_id='V4_RESEARCH_SNAPSHOT_V1', domain_features=domain_features,context=context['context'],legacy_context_token=context['context_token'],
             source_contract_digest=contract_digest, sources=sources, owners=owners, counts=counts, gaps=gaps,
-            field_registry=field_registry, operational_state='OPERATIONAL_PRODUCTION_ACTIVE',
+            field_registry=field_registry, operational_state='OPERATIONAL_PRODUCTION_ACTIVE' if publish else 'STAGED_ENGINEERING_CANDIDATE',
             evidence_state='VALIDATION_ONGOING', quality='QUALITY_DEGRADED', publication_scope='FP02_INDEXED_EXISTING_REAL_OUTPUTS',
             release_id=directory.name, built_at=time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()))
         def instant(value):
@@ -350,7 +362,9 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
             trading_date=date,input_digest=digest(canonical(dict(sources=sources,owners=owners))),published_at=published_at.isoformat(),
             evidence_origin='REAL_ACCEPTED_SOURCE',evidence_state='VALIDATION_ONGOING',data_quality_state='QUALITY_DEGRADED',
             knowledge_lineage=context['context']['knowledge_lineage'])
-        db.execute('INSERT INTO metadata VALUES(?,?)',('snapshot',canonical(meta).decode()));db.commit();db.close()
+        db.execute('INSERT INTO metadata VALUES(?,?)',('snapshot',canonical(meta).decode()))
+        descriptor=db.seal(meta);db.commit();db.close()
+        atomic_bytes(dbpath,canonical(descriptor)+b'\n')
         ref=reference(root,dbpath); manifest_path=directory/'manifest.json'
         atomic_bytes(manifest_path,canonical(dict(**meta,database=ref))+b'\n')
         new=dict(contract_id='V4_RESEARCH_SNAPSHOT_AUTHORITY_V1',manifest=reference(root,manifest_path),previous=json.loads(before) if before else None)
@@ -409,6 +423,9 @@ class ProductionV4ResearchReader:
         self.manifest=verifier._read(self.authority['manifest']);verifier._verify(self.manifest['database'])
         metadata=validate_release_metadata(self.manifest)
         self.path=verifier._path(self.manifest['database']['path'])
+        self.pg_descriptor=json.loads(self.path.read_bytes()) if self.path.suffix=='.json' else {}
+        if self.pg_descriptor.get('engine')!='postgresql':raise SourceInvalid('PG_SNAPSHOT_BINDING_REQUIRED_NO_FALLBACK')
+        if self.pg_descriptor.get('T0')!=self.manifest['context']['accepted_trade_date'] or self.pg_descriptor.get('release_id')!=self.manifest['release_id']:raise SourceInvalid('PG_SNAPSHOT_CONTEXT_MISMATCH')
         stat=self.path.stat();self.file_signature=(stat.st_size,stat.st_mtime_ns)
         stocks=self.manifest.get('domain_features',{}).get('stocks')
         self.series_signature=None
@@ -448,8 +465,13 @@ class ProductionV4ResearchReader:
         return dict(context=self.context,context_token=self.token,**payload)
 
     def known_identity(self,entity):
-        with sqlite3.connect(self.path.as_uri()+'?mode=ro',uri=True) as db:
+        with self.connect() as db:
             return db.execute('SELECT 1 FROM aliases WHERE id=? OR alias=? LIMIT 1',(entity,entity.casefold())).fetchone() is not None
+
+    def connect(self):
+        if (self.path.stat().st_size,self.path.stat().st_mtime_ns)!=self.file_signature:raise SourceInvalid('IMMUTABLE_DATABASE_CHANGED')
+        from workbench_db.v4_snapshot_pg_r1 import read
+        return read(self.pg_descriptor)
 
     def query(self, domain, query=None, *, entity=None, sector=None, summary=False):
         stat=self.path.stat()
@@ -467,9 +489,9 @@ class ProductionV4ResearchReader:
             column=entry.lstrip('-')
             numeric={'sector_rs20_pct','sector_rs5_pct','sector_rs20','sector_rs5','breadth_ret1','ma20_width','participation_proxy','member_count','close','rps5','rps20'}
             if column not in {'id','name','symbol','state'}|numeric:raise ValueError('INVALID_SORT_FIELD')
-            expression=column if column in ('id','name','symbol','state') else "json_extract(payload,'$.fields."+column+".value')"
-            sort.append(expression+(' DESC' if entry.startswith('-') else ' ASC'))
-        if len(sort)>4:raise ValueError('SORT_BOUND')
+            if column in numeric:sort.extend(numeric_sort_expressions(column,entry.startswith('-')))
+            else:sort.append(column+(' DESC NULLS LAST' if entry.startswith('-') else ' ASC NULLS FIRST'))
+        if len(q.get('sort','id').split(','))>4:raise ValueError('SORT_BOUND')
         sort.append('id ASC');where=['domain=?'];args=[domain]
         if needle:
             # Prefix range uses the name/symbol indexes; exact historic alias uses alias_lookup.
@@ -485,7 +507,7 @@ class ProductionV4ResearchReader:
             where.append('id IN (SELECT ? UNION SELECT id FROM aliases WHERE alias=?)');args.extend((entity,entity.casefold()))
         if sector:where.append('id IN (SELECT security FROM members WHERE sector=?)');args.append(sector)
         clause=' AND '.join(where)
-        with sqlite3.connect(self.path.as_uri()+'?mode=ro',uri=True) as db:
+        with self.connect() as db:
             total=db.execute('SELECT count(*) FROM objects WHERE '+clause,args).fetchone()[0]
             rows=db.execute('SELECT payload FROM objects WHERE '+clause+' ORDER BY '+','.join(sort)+' LIMIT ? OFFSET ?',args+[limit,offset]).fetchall()
         gap=next((g for g in self.manifest['gaps'] if g['domain']==domain),None)

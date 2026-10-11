@@ -1,5 +1,5 @@
 """New Focus namespace for observation-dated, hash-bound native Core facts."""
-import gzip,json,math,sqlite3
+import gzip,json,math
 from .v4_path_adapter import AcceptedPaths as PricePaths,enriched_project as price_project,checked
 from .path_state_v2 import STOCK_PRIORITY,classify_stock_v2
 from .predicates import Tri
@@ -36,7 +36,9 @@ class AcceptedPaths(PricePaths):
                             elif value is not None and (type(value) not in (int,float) or not math.isfinite(value)):
                                 raise SourceInvalid('FOCUS_NATIVE_CORE_NUMBER')
                             values[key]=value
-            with sqlite3.connect(checked(root,owner['series']).as_uri()+'?mode=ro',uri=True) as db:
+            from workbench_db.v4_snapshot_pg_r1 import read
+            descriptor=json.loads(checked(root,owner['series']).read_bytes())
+            with read(descriptor) as db:
                 for sid,payload in db.execute('SELECT security,payload FROM bars WHERE day=?',(day,)):
                     bar=json.loads(payload);raw=bar.get('raw_ohlc');qfq=bar.get('qfq_ohlc')
                     if sid in result and raw and qfq:

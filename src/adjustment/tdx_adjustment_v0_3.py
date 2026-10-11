@@ -49,8 +49,8 @@ class XrxdEvent:
         )
         if any(not value.is_finite() for value in values):
             raise ValueError("XRXD parameters must be finite")
-        if TEN + self.bonus_transfer_per_10 + self.rights_ratio_per_10 == 0:
-            raise ValueError("XRXD share denominator must not be zero")
+        if TEN + self.bonus_transfer_per_10 + self.rights_ratio_per_10 <= 0:
+            raise ValueError("XRXD share denominator must be positive")
 
     def mc(self) -> tuple[Decimal, Decimal]:
         """Return m and c where the theoretical ex-price is (P-c)/m."""
@@ -106,17 +106,21 @@ class AdjustmentFactor:
     exact_hfq_add: Fraction | None = None
 
     def exact_coefficients(self) -> dict[str,str]:
-        return {name:str(getattr(self,'exact_'+name) if getattr(self,'exact_'+name) is not None else Fraction(getattr(self,name)))
-                for name in ('qfq_mul','qfq_add','hfq_mul','hfq_add')}
+        names=('qfq_mul','qfq_add','hfq_mul','hfq_add')
+        if any(not isinstance(getattr(self,'exact_'+name),Fraction) for name in names):
+            raise ValueError('EXACT_COEFFICIENT_MISSING')
+        return {name:str(getattr(self,'exact_'+name)) for name in names}
 
     def qfq_price(self, raw_price: Decimal | float | int | str) -> Decimal:
-        a=self.exact_qfq_mul if self.exact_qfq_mul is not None else Fraction(self.qfq_mul)
-        b=self.exact_qfq_add if self.exact_qfq_add is not None else Fraction(self.qfq_add)
+        if not isinstance(self.exact_qfq_mul,Fraction) or not isinstance(self.exact_qfq_add,Fraction):
+            raise ValueError('EXACT_COEFFICIENT_MISSING')
+        a=self.exact_qfq_mul;b=self.exact_qfq_add
         return _round_exact_price(a*Fraction(_decimal(raw_price))+b)
 
     def hfq_price(self, raw_price: Decimal | float | int | str) -> Decimal:
-        a=self.exact_hfq_mul if self.exact_hfq_mul is not None else Fraction(self.hfq_mul)
-        b=self.exact_hfq_add if self.exact_hfq_add is not None else Fraction(self.hfq_add)
+        if not isinstance(self.exact_hfq_mul,Fraction) or not isinstance(self.exact_hfq_add,Fraction):
+            raise ValueError('EXACT_COEFFICIENT_MISSING')
+        a=self.exact_hfq_mul;b=self.exact_hfq_add
         return _round_exact_price(a*Fraction(_decimal(raw_price))+b)
 
 

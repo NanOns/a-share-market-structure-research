@@ -3,6 +3,7 @@ from pathlib import Path
 from urllib.parse import urlparse,parse_qs
 from http.server import ThreadingHTTPServer
 import hashlib,json,threading
+import psycopg
 from .operational_daily_server_v1 import make_daily_handler, PREFIX
 from .core_product_bff_r1 import CoreProductBFFR1
 from workbench_analysis.operational_successor_v1 import accepted_api
@@ -46,6 +47,8 @@ def make_product_handler(root,jobs):
                             cache.clear();cache.update(signature=signature,bff=CoreProductBFFR1(api,jobs),sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
                         code,data=cache['bff'].get(path,{k:v[0] for k,v in params.items()})
                     return self.send(code,data)
+                except (psycopg.Error,RuntimeError):
+                    return self.send(503,dict(code='V4_PG_UNAVAILABLE',reason='PG_REQUIRED_NO_FALLBACK'))
                 except (ValueError,KeyError,OSError) as exc:
                     return self.send(409 if str(exc)=='CONTEXT_TOKEN_MISMATCH' else 503 if 'SHA' in str(exc) or 'HASH' in str(exc) else 400,dict(code='PRODUCT_READ_FAILED',reason=str(exc)))
             return super().do_GET()
@@ -53,7 +56,7 @@ def make_product_handler(root,jobs):
 
 def serve_v4(root,host='127.0.0.1',port=28765):
     if host not in ('127.0.0.1','localhost'):raise ValueError('LOCAL_ONLY_PRODUCT_READER')
-    from workbench_analysis.operational_daily_jobs_v1 import DailyJobs
+    from workbench_analysis.operational_daily_jobs_pg_r1 import DailyJobs
     from workbench_analysis.operational_daily_executor_v1 import execute_sources,probe_source_revision
     from workbench_analysis.operational_successor_release_v1 import recover
     recover(root)

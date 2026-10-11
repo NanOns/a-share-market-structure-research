@@ -3,7 +3,7 @@ from pathlib import Path
 from urllib.parse import unquote
 from collections import Counter
 from copy import deepcopy
-import json, sqlite3, gzip
+import json, gzip
 from .operational_successor_bff_v1 import OperationalSuccessorBFFV1
 from .r43_operational_bff import owner_cell
 from .stock_views import aggregate
@@ -93,7 +93,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             manifest=json.loads(checked(self.api.root,json.loads(authority.read_bytes())['manifest']).read_bytes())
             head=self.api.root/manifest['head']['path']
             if manifest['T0']!=day or head.read_bytes()!=checked(self.api.root,manifest['head']).read_bytes():return None
-            checked(self.api.root,manifest['history_index'])
+            if manifest['history_index'].get('engine')!='postgresql':
+                raise ValueError('PG_HISTORY_BINDING_REQUIRED_NO_FALLBACK')
             facts=json.loads(checked(self.api.root,manifest['market_facts']).read_bytes())
             self.api.cache[key]=(manifest,facts)
         return self.api.cache[key]
@@ -204,12 +205,11 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         pack=self.pack(day)
         if not pack:return self.missing(day,'stocks/'+sid+'/chart','DATED_HISTORY_INDEX_NOT_BOUND')
         manifest,_=pack
-        path=self.api.root/manifest['history_index']['path']
-        with sqlite3.connect(path.as_uri()+'?mode=ro',uri=True) as db:
-            value=db.execute('SELECT payload FROM history WHERE security=?',(sid,)).fetchone()
-        if not value:return 404,self.envelope(day,status='NOT_FOUND',code='ENTITY_NOT_FOUND')
+        from workbench_db.v4_history_pg_r1 import read
+        value=read(self.api.root,manifest['history_index'],day,sid)
+        if value is None:return 404,self.envelope(day,status='NOT_FOUND',code='ENTITY_NOT_FOUND')
         bars=[]
-        for b in json.loads(value[0]):
+        for b in value:
             if b['trade_date']>day:raise ValueError('FUTURE_CHART_BAR')
             prices=b['raw_ohlc' if basis=='RAW' else 'qfq_ohlc']
             bars.append(dict(trade_date=b['trade_date'],**dict(zip(('open','high','low','close'),prices or [None]*4)),volume=b['volume'],amount=b['amount'],quality='KNOWN' if prices else 'UNKNOWN',reason='BLOCKED_ADJUSTMENT_EVENT' if not prices else None))

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="25" time="19.098" timestamp="2026-10-11T14:03:35.130245+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_terminal_changed_source_creates_successor_preserves_history" time="1.677" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_frozen_baseline_and_repair_use_identical_failure_source_restore_fixture" time="2.157" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_actual_frozen_schema_upgrade_and_old_reader_preserve_history" time="1.838" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_user_cancel_pause_rearm" time="1.147" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_system_interruption_recovers" time="1.263" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_attempt_budget_stops_until_explicit_rearm" time="4.936" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_migration_preserves_legacy_dispatch" time="1.136" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_manual_retry_scheduler_collision_one_executor" time="1.276" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_bounded_recovery_probe_has_persistent_cooldown" time="0.983" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_failed_probe_health_clears_after_verified_recovery" time="0.357" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_missing_source_fails_closed[tdx]" time="0.000" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_missing_source_fails_closed[baostock_daily]" time="0.000" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_missing_source_fails_closed[baostock_factor]" time="0.000" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_zero_factor_requires_readable_digest_and_revision_changes" time="0.000" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_executor_1834_blocks_before_any_capture" time="0.001" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_real_gate_reads_frozen_bytes_before_deriving[good-SOURCE_READY]" time="0.152" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_real_gate_reads_frozen_bytes_before_deriving[wrong_daily_date-WAIT_BAOSTOCK_DAILY]" time="0.092" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_real_gate_reads_frozen_bytes_before_deriving[suspended_with_bar-WAIT_BAOSTOCK_DAILY]" time="0.082" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_real_gate_reads_frozen_bytes_before_deriving[no_daily-WAIT_BAOSTOCK_DAILY]" time="0.078" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_real_gate_reads_frozen_bytes_before_deriving[wrong_factor_date-WAIT_BAOSTOCK_FACTOR]" time="0.109" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_real_gate_reads_frozen_bytes_before_deriving[missing_zero_query_proof-WAIT_BAOSTOCK_FACTOR]" time="0.112" /><testcase classname="tests.test_dynamic_daily_r21_repair" name="test_real_gate_reads_frozen_bytes_before_deriving[wrong_native_bar_date-WAIT_TDX]" time="0.106" /><testcase classname="tests.test_v4_pg_journal_r4" name="test_native_journal_copy_on_write_failure_and_immutable_snapshot" time="0.384"><failure message="NameError: name 'contract' is not defined">tmp_path = WindowsPath('G:/codex_tmp/test_temp/R4_RECOVERY_01/test_native_journal_copy_on_wr0')
+
+    def test_native_journal_copy_on_write_failure_and_immutable_snapshot(tmp_path):
+        path=tmp_path/'journal.pg.json'
+        db=JournalConnection(path,tmp_path,'R4_TEST_JOURNAL')
+        db.execute('BEGIN IMMEDIATE')
+        db.execute('INSERT INTO days VALUES(?,?,?)',('2026-10-08','a'*64,'[]'))
+        db.execute("INSERT OR REPLACE INTO metadata VALUES('head',?)",('HEAD_ONE',))
+        db.commit();db.close();before=path.read_bytes()
+        with open_read(path) as old:assert old.execute('SELECT count(*) FROM days').fetchone()[0]==1
+&gt;       failed=JournalConnection(path,tmp_path,'R4_TEST_JOURNAL')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_pg_journal_r4.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_db\v4_journal_pg_r1.py:17: in __init__
+    try:self._initialize(root)
+        ^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;workbench_db.v4_journal_pg_r1.JournalConnection object at 0x000001D74386DE50&gt;
+root = WindowsPath('G:/codex_tmp/test_temp/R4_RECOVERY_01/test_native_journal_copy_on_wr0')
+
+    def _initialize(self,root):
+        self.registry_schema=workspace_schema(root,'journal_registry')
+        self.registry_key=str(self.path.resolve()).casefold()
+        # Lock the journal identity, not the new version identity. Hold this lock
+        # through the CAS and PG commit; competing constructors see the new head.
+        self.pg.execute('SELECT pg_advisory_xact_lock(hashtextextended(%s,0))',(self.registry_key,))
+        create_schema(self.pg,self.registry_schema)
+        self.pg.execute(sql.SQL('CREATE TABLE IF NOT EXISTS {}.journal_heads(key text PRIMARY KEY,contract text NOT NULL,descriptor jsonb NOT NULL)').format(sql.Identifier(self.registry_schema)))
+        current=self.pg.execute(sql.SQL('SELECT contract,descriptor FROM {}.journal_heads WHERE key=%s').format(sql.Identifier(self.registry_schema)),(self.registry_key,)).fetchone()
+&gt;       if current and current[0]!=contract:raise ValueError('PG_JOURNAL_CONTRACT_CONFLICT')
+                                   ^^^^^^^^
+E       NameError: name 'contract' is not defined
+
+src\workbench_db\v4_journal_pg_r1.py:30: NameError</failure></testcase><testcase classname="tests.test_v4_pg_journal_r4" name="test_migration_idempotency_and_full_row_reconciliation" time="0.568" /><testcase classname="tests.test_v4_pg_journal_r4" name="test_journal_shared_lock_serializes_stale_head_and_export_failure" time="0.104"><failure message="NameError: name 'contract' is not defined">tmp_path = WindowsPath('G:/codex_tmp/test_temp/R4_RECOVERY_01/test_journal_shared_lock_seria0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D743967C70&gt;
+
+    def test_journal_shared_lock_serializes_stale_head_and_export_failure(tmp_path,monkeypatch):
+        path=tmp_path/'concurrent.pg.json'
+        first=JournalConnection(path,tmp_path,'R4_TEST_JOURNAL')
+        first.execute('INSERT INTO days VALUES(?,?,?)',('2026-10-08','a'*64,'[]'))
+        first.execute("INSERT OR REPLACE INTO metadata VALUES('head',?)",('HEAD_ONE',))
+        first.commit();first.close();original=path.read_bytes()
+&gt;       winner=JournalConnection(path,tmp_path,'R4_TEST_JOURNAL')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_pg_journal_r4.py:59: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_db\v4_journal_pg_r1.py:17: in __init__
+    try:self._initialize(root)
+        ^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;workbench_db.v4_journal_pg_r1.JournalConnection object at 0x000001D7439443E0&gt;
+root = WindowsPath('G:/codex_tmp/test_temp/R4_RECOVERY_01/test_journal_shared_lock_seria0')
+
+    def _initialize(self,root):
+        self.registry_schema=workspace_schema(root,'journal_registry')
+        self.registry_key=str(self.path.resolve()).casefold()
+        # Lock the journal identity, not the new version identity. Hold this lock
+        # through the CAS and PG commit; competing constructors see the new head.
+        self.pg.execute('SELECT pg_advisory_xact_lock(hashtextextended(%s,0))',(self.registry_key,))
+        create_schema(self.pg,self.registry_schema)
+        self.pg.execute(sql.SQL('CREATE TABLE IF NOT EXISTS {}.journal_heads(key text PRIMARY KEY,contract text NOT NULL,descriptor jsonb NOT NULL)').format(sql.Identifier(self.registry_schema)))
+        current=self.pg.execute(sql.SQL('SELECT contract,descriptor FROM {}.journal_heads WHERE key=%s').format(sql.Identifier(self.registry_schema)),(self.registry_key,)).fetchone()
+&gt;       if current and current[0]!=contract:raise ValueError('PG_JOURNAL_CONTRACT_CONFLICT')
+                                   ^^^^^^^^
+E       NameError: name 'contract' is not defined
+
+src\workbench_db\v4_journal_pg_r1.py:30: NameError</failure></testcase></testsuite></testsuites>

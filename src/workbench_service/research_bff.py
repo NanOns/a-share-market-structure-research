@@ -2,6 +2,7 @@
 import json
 import threading
 import time
+import psycopg
 from collections import defaultdict, deque
 from urllib.parse import unquote
 from .production_v4 import ProductionV4ResearchReader, POINTER
@@ -122,6 +123,7 @@ class ResearchBFF:
             if parts[2] in ('timeline','rotation-timeline','chart'):
                 return 501,r.envelope(status='ENGINEERING_NOT_READY',code='HISTORICAL_INDEX_REQUIRES_FP06_FP07',items=[],total=0,has_next=False)
             return 404,r.envelope(status='NOT_FOUND',code='ROUTE_NOT_FOUND')
+        except (psycopg.Error,RuntimeError):return 503,dict(status='SOURCE_INCOMPLETE',code='V4_PG_UNAVAILABLE',fallback=False,items=[])
         except SourceInvalid as e:return 409,dict(status='CONTEXT_CONFLICT',code=str(e),items=[])
         except (ValueError,TypeError) as e:return 400,dict(status='INVALID_REQUEST',code=str(e),items=[])
         except (OSError,KeyError,json.JSONDecodeError) as e:return 503,dict(status='SOURCE_INCOMPLETE',code=type(e).__name__,items=[])

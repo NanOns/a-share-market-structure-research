@@ -6,7 +6,6 @@ local to this explicit corrected namespace; no accepted authority is rewritten.
 import gzip
 import json
 import math
-import sqlite3
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -161,12 +160,10 @@ def materialize_focus(root):
              PREWATCH=dict(Counter(r['prewatch']['raw_qualification'] for r in calculations)),
              D2_freshness=dict(Counter(r['state_freshness'] for r in rows)),D2=ref(root,path),facts=fact,calculations=calc)
         receipts.append(receipt);print(json.dumps(dict(stage='D0_D2',**{k:v for k,v in receipt.items() if k in ('trade_date','rows','D0','PREWATCH','D2_freshness')})),flush=True)
-    series=out/'focus_actual_bars.sqlite';temporary=Path('E:/codex_tmp/r43_focus_actual_bars.sqlite');temporary.parent.mkdir(parents=True,exist_ok=True)
-    if temporary.exists():temporary.unlink()
-    with sqlite3.connect(temporary) as db:
-        db.execute('CREATE TABLE bars(security TEXT,day TEXT,payload TEXT,PRIMARY KEY(security,day))')
-        db.executemany('INSERT INTO bars VALUES(?,?,?)',[(sid,day,json.dumps(b)) for (sid,day),b in allbars.items()])
-    _atomic_write(series,temporary.read_bytes(),tdx_root=Path('D:/new_tdx'))
+    series=out/'focus_actual_bars.pg.json'
+    from workbench_db.v4_series_pg_r1 import build
+    from workbench_service.current_v4_context import canonical,digest
+    build(root,series,((sid,day,b) for (sid,day),b in allbars.items()),t0=max(days),source_digest=digest(canonical(sources)))
     for owner in native.values():owner['series']=ref(root,series)
     bindings=dict(series=ref(root,series),calendar=ref(root,out/'FOCUS_CALENDAR.json'),gbbq=sources['gbbq'],
           classification=ref(root,root/'config/v4_02_gbbq_price_impact_classification_v1.json'),status=pathstatus,native_core=native)

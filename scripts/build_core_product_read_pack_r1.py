@@ -1,6 +1,6 @@
 """Index accepted history and expose existing dated facts; no factor re-compute."""
 from pathlib import Path
-import json, gzip, sqlite3, hashlib, os, sys, zipfile, struct
+import json, gzip, hashlib, os, sys, zipfile, struct
 from collections import Counter
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'src'))
@@ -20,16 +20,13 @@ def main():
     market=load(checked(ROOT,bindings['market']))
     limitrefs=[b for b in market['input_bindings'] if 'daily_price_limits' in b['path']]
     bindings.update({'limits_'+str(i):b for i,b in enumerate(limitrefs)})
-    out=ROOT/'data/v4/core_product_read_r1'/hashlib.sha256(headpath.read_bytes()).hexdigest();out.mkdir(parents=True,exist_ok=True)
-    dbpath=out/'history.sqlite'
-    if not dbpath.exists():
-        tmp=dbpath.with_suffix('.tmp');db=sqlite3.connect(tmp);db.execute('CREATE TABLE history(security TEXT PRIMARY KEY,payload TEXT) WITHOUT ROWID')
-        count=0
+    out=ROOT/'data/v4/core_product_read_pg_r1'/hashlib.sha256(headpath.read_bytes()).hexdigest();out.mkdir(parents=True,exist_ok=True)
+    from workbench_db.v4_history_pg_r1 import build
+    def history_rows():
         with gzip.open(checked(ROOT,bindings['history']),'rt',encoding='utf8') as stream:
             for line in stream:
-                row=json.loads(line);assert all(b['trade_date']<=day for b in row['bars'])
-                db.execute('INSERT INTO history VALUES (?,?)',(row['security_id'],json.dumps(row['bars'],separators=(',',':'))));count+=1
-        db.commit();db.close();os.replace(tmp,dbpath)
+                yield json.loads(line)
+    history_index=build(ROOT,history_rows(),head_token=hashlib.sha256(headpath.read_bytes()).hexdigest(),t0=day,source_digest=bindings['history']['sha256'])
     raw={r['security_id']:r for r in load(checked(ROOT,bindings['raw']))}
     core=load(checked(ROOT,bindings['core']));breadth=Counter(up=0,down=0,flat=0,unknown=0)
     for row in core:
@@ -59,7 +56,7 @@ def main():
             if bars and bars[-1]['trade_date']==day:indices.append(dict(symbol=symbol,display_name=name,bars=bars[-120:],price_basis='RAW_INDEX_POINTS',volume_unit='SOURCE_NATIVE_UNVERIFIED',source_member=member))
     facts=dict(contract_id='CORE_PRODUCT_MARKET_FACT_READ_R1',trade_date=day,breadth=dict(breadth,denominator=len(core),actual_quote_count=len(raw),amount_cny=sum(r['amount'] for r in raw.values()),definition='ret1 in native T0 QFQ coordinate; actual T0 bar required'),indices=indices,limits=dict(counts=dict(Counter(r['limit_state'] for r in limits)),rows=limits),ladders=ladders,sources=bindings,AS_RECORDED=False,PIT_ELIGIBLE=False)
     atomic_json(ROOT,out/'market.json',facts)
-    manifest=dict(contract_id='CORE_PRODUCT_DATED_READ_PACK_R1',T0=day,head=ref(ROOT,headpath),history_index=ref(ROOT,dbpath),market_facts=ref(ROOT,out/'market.json'),source_bindings=bindings,AS_RECORDED=False,PIT_ELIGIBLE=False,read_only=True,external_acceptance='NOT_GRANTED')
+    manifest=dict(contract_id='CORE_PRODUCT_DATED_READ_PACK_PG_R1',T0=day,head=ref(ROOT,headpath),history_index=history_index,market_facts=ref(ROOT,out/'market.json'),source_bindings=bindings,AS_RECORDED=False,PIT_ELIGIBLE=False,read_only=True,external_acceptance='NOT_GRANTED')
     atomic_json(ROOT,out/'MANIFEST.json',manifest)
     atomic_json(ROOT,ROOT/'config/core_product_read_authority_r1.json',dict(contract_id='CORE_PRODUCT_READ_AUTHORITY_R1',manifest=ref(ROOT,out/'MANIFEST.json')))
     print(json.dumps(dict(T0=day,manifest=ref(ROOT,out/'MANIFEST.json'),indices=len(indices),breadth=facts['breadth'],limits=facts['limits']['counts'])))

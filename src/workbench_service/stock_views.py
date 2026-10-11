@@ -1,5 +1,5 @@
 """Actual bar charts and owner-derived explanations; no invented hypotheses."""
-import json,sqlite3
+import json
 from collections import defaultdict
 from datetime import date
 from .domain_views import value
@@ -24,7 +24,8 @@ def chart(reader,item,query):
     if period not in ('D','W','M') or basis not in ('RAW','QFQ') or not 1<=limit<=200 or offset<0:raise ValueError('CHART_QUERY_INVALID')
     path=reader.root/authority['series']['path'];stat=path.stat()
     if reader.series_signature!=(stat.st_size,stat.st_mtime_ns):raise SourceInvalid('IMMUTABLE_CHART_INDEX_CHANGED')
-    with sqlite3.connect(path.as_uri()+'?mode=ro',uri=True) as db:rows=[json.loads(r[0]) for r in db.execute('SELECT payload FROM bars WHERE security=? AND day<=? ORDER BY day',(item['entity_id'],reader.context['trade_date']))]
+    from workbench_db.v4_series_pg_r1 import range_rows
+    rows=[bar for _,bar in range_rows(path,item['entity_id'],'1900-01-01',reader.context['trade_date'])]
     bars=[]
     for r in rows:
         prices=r['raw_ohlc'] if basis=='RAW' else r['qfq_ohlc'];values=list(map(float,prices)) if prices else [None]*4
@@ -43,7 +44,7 @@ def membership_relations(reader,item):
         raise SourceInvalid('STOCK_MEMBERSHIP_RELATION_SHAPE')
     requested=([('primary_industry',primary)] if primary else [])+[('supporting_concepts',x) for x in concepts or []]
     rows=[]
-    with sqlite3.connect(reader.path.as_uri()+'?mode=ro',uri=True) as db:
+    with reader.connect() as db:
         for kind,sid in requested:
             source=db.execute("SELECT payload FROM objects WHERE domain='sectors' AND id=?",(sid,)).fetchone()
             member=db.execute('SELECT 1 FROM members WHERE sector=? AND security=?',(sid,item['entity_id'])).fetchone()

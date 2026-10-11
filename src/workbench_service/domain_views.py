@@ -1,6 +1,5 @@
 """Bounded domain projections over a single immutable publication."""
 import json
-import sqlite3
 from collections import Counter,defaultdict
 
 CHANGE_EVENTS={'NEW_PREWATCH','UPGRADED','NEW_CONFIRMED','SCENARIO_UPGRADE','RECONFIRMED','WEAKENED','IMPORTANT_WEAKENED','INVALIDATED'}
@@ -8,7 +7,7 @@ RISK_EVENTS={'WEAKENED','IMPORTANT_WEAKENED','INVALIDATED','EXITED'}
 ROTATIONS={'ROTATION_PULSE','ROTATION_IN','ROTATION_ACCEPTED','ROTATION_EXPANDING','ROTATION_REACCELERATING','ROTATION_OUT','ROTATION_FAILED'}
 
 def objects(reader,domain):
-    with sqlite3.connect(reader.path.as_uri()+'?mode=ro',uri=True) as db:
+    with reader.connect() as db:
         return [json.loads(r[0]) for r in db.execute('SELECT payload FROM objects WHERE domain=? ORDER BY id',(domain,))]
 
 def value(row,key):return row.get('fields',{}).get(key,{}).get('value')
@@ -17,7 +16,7 @@ def sector_view(reader,item,kind,query):
     sid=item['entity_id'];authority=reader.manifest.get('domain_features',{}).get('sector')
     if kind in ('timeline','rotation-timeline'):
         return reader.envelope(status='SOURCE_INCOMPLETE',items=[item],total=1,has_next=False,earliest_valid_date=reader.context['trade_date'],requested_windows=[5,10,20],historical_membership='NOT_BACKFILLED',reason='FIRST_ACCEPTED_PIT_MEMBERSHIP_NO_PRIOR_DATED_NATIVE_HISTORY',source=authority)
-    with sqlite3.connect(reader.path.as_uri()+'?mode=ro',uri=True) as db:
+    with reader.connect() as db:
         groups=defaultdict(set)
         for s,e in db.execute('SELECT sector,security FROM members'):groups[s].add(e)
     members=groups[sid];allsectors={r['entity_id']:r for r in objects(reader,'sectors')};overlaps=[];shared=set()
@@ -36,7 +35,7 @@ def home(reader):
     # A sector is a change only when an owner supplies a real stage or rotation delta.
     sector_changes=[r for r in sectors if not r['entity_id'].startswith('STYLE:') and (value(r,'output_state') in ROTATIONS or value(r,'effective_event') in CHANGE_EVENTS)]
     members=defaultdict(set)
-    with sqlite3.connect(reader.path.as_uri()+'?mode=ro',uri=True) as db:
+    with reader.connect() as db:
         for s,e in db.execute('SELECT sector,security FROM members'):members[s].add(e)
     # Rank before clipping; only displayed sectors may suppress independent changes.
     priority={'INVALIDATED':0,'IMPORTANT_WEAKENED':1,'WEAKENED':2,'NEW_CONFIRMED':3,'UPGRADED':4}

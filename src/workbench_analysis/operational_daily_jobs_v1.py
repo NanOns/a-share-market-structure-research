@@ -74,8 +74,7 @@ class DailyJobs:
         if manifest.is_file():revisions.append(hashlib.sha256(manifest.read_bytes()).hexdigest())
         if self.source_probe:
             from .operational_daily_storage_v1 import atomic_json
-            probe_path=self.root/'runtime/dynamic_daily/recovery_probes'/ (target+'.json')
-            cached=json.loads(probe_path.read_bytes()) if probe_path.is_file() else {}
+            cached=self.read_probe(target)
             if not cached or self.clock()>=datetime.fromisoformat(cached['next_probe_at']):
                 try:
                     probe=self.source_probe(target)
@@ -85,9 +84,17 @@ class DailyJobs:
                     cached.update(observed_at=self.clock().isoformat(),next_probe_at=(self.clock()+timedelta(minutes=30)).isoformat())
                 except (OSError,ValueError,KeyError):
                     cached.update(next_probe_at=(self.clock()+timedelta(minutes=30)).isoformat(),probe_state='WAIT_PROVIDER')
-                atomic_json(self.root,probe_path,cached)
+                self.write_probe(target,cached)
             if cached.get('verified'):revisions.append(cached['revision'])
         return hashlib.sha256(json.dumps(sorted(revisions)).encode()).hexdigest() if revisions else None
+
+    def read_probe(self,target):
+        path=self.root/'runtime/dynamic_daily/recovery_probes'/(target+'.json')
+        return json.loads(path.read_bytes()) if path.is_file() else {}
+
+    def write_probe(self,target,cached):
+        from .operational_daily_storage_v1 import atomic_json
+        atomic_json(self.root,self.root/'runtime/dynamic_daily/recovery_probes'/(target+'.json'),cached)
 
     def dispatch(self,plan):
         target=plan['requested_through_date'];revision=self.source_revision(target)
@@ -113,8 +120,7 @@ class DailyJobs:
                 healthy=False
                 if transient and self.source_probe:
                     import shutil
-                    probe_path=self.root/'runtime/dynamic_daily/recovery_probes'/(target+'.json')
-                    probe=json.loads(probe_path.read_bytes()) if probe_path.is_file() else {}
+                    probe=self.read_probe(target)
                     attempted=db.execute("SELECT timestamp FROM update_events WHERE job_id=? AND event_code='ATTEMPT_STARTED' ORDER BY event_id DESC LIMIT 1",(previous['job_id'],)).fetchone()
                     healthy=bool(attempted and self.clock()>=datetime.fromisoformat(attempted[0])+timedelta(minutes=30)
                         and probe.get('verified') and probe.get('probe_state')!='WAIT_PROVIDER'
@@ -271,10 +277,13 @@ class DailyJobs:
         dates.append(datetime.fromisoformat(attempt_date+'T07:35:00+08:00')+timedelta(days=1))
         return next((d.isoformat() for d in dates if d>now),None) if attempt<=7 else None
 
+    def worker_lock(self):
+        return exclusive_lock(self.root,self.root/'runtime/dynamic_daily/worker.lock')
+
     def tick(self):
         # The kernel lock is released even when the process crashes. WAL records
         # the durable checkpoint; only unaccepted days can be replayed.
-        with exclusive_lock(self.root,self.root/'runtime/dynamic_daily/worker.lock'):
+        with self.worker_lock():
             if self.settings()['auto_enabled']:
                 plan=gap_plan(self.root,self.clock())
                 if plan['missing_sessions'] and plan['eligible_sessions']:

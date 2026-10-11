@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="7" time="1.548" timestamp="2026-10-11T13:35:39.804315+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_v4_pg_jobs_r4" name="test_pg_persistence_pause_idempotency_restart" time="0.089"><failure message="TypeError: 'NoneType' object is not iterable">tmp_path = WindowsPath('G:/codex_tmp/test_temp/r4_jobs_01/test_pg_persistence_pause_idem0')
+plan = None
+
+    def test_pg_persistence_pause_idempotency_restart(tmp_path,plan):
+&gt;       jobs=make(tmp_path);jobs.settings(False)
+                            ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_pg_jobs_r4.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\operational_daily_jobs_v1.py:152: in settings
+    with self.connect() as db:
+         ^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\operational_daily_jobs_pg_r1.py:69: in connect
+    with connection(self.schema,dsn=self.dsn,row_factory=row_factory) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_db\v4_native.py:25: in connection
+    pg.execute("SET LOCAL statement_timeout='30s'")
+E:\python\Lib\site-packages\psycopg\connection.py:302: in execute
+    return cur.execute(query, params, prepare=prepare)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\psycopg\cursor.py:113: in execute
+    self._conn.wait(
+E:\python\Lib\site-packages\psycopg\connection.py:495: in wait
+    return waiting.wait(
+E:\python\Lib\site-packages\psycopg\waiting.py:363: in wait_select
+    s = gen.send(ready)
+        ^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\psycopg\_cursor_base.py:206: in _execute_gen
+    yield from self._maybe_prepare_gen(pgq, prepare=prepare, binary=binary)
+E:\python\Lib\site-packages\psycopg\_cursor_base.py:318: in _maybe_prepare_gen
+    self._set_results(results)
+E:\python\Lib\site-packages\psycopg\_cursor_base.py:535: in _set_results
+    self._select_current_result(0)
+E:\python\Lib\site-packages\psycopg\_cursor_base.py:529: in _select_current_result
+    self._make_row = self._make_row_maker()
+                     ^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\psycopg\cursor.py:79: in _make_row_maker
+    return self._row_factory(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cursor = &lt;psycopg.Cursor [COMMAND_OK] [BAD] at 0x23588a9a2d0&gt;
+
+    def row_factory(cursor):
+&gt;       names=[c.name for c in cursor.description]
+                               ^^^^^^^^^^^^^^^^^^
+E       TypeError: 'NoneType' object is not iterable
+
+src\workbench_analysis\operational_daily_jobs_pg_r1.py:32: TypeError</failure></testcase><testcase classname="tests.test_v4_pg_jobs_r4" name="test_pg_cancel_preserves_published_and_restart" time="0.068"><failure message="TypeError: 'NoneType' object is not iterable">tmp_path = WindowsPath('G:/codex_tmp/test_temp/r4_jobs_01/test_pg_cancel_preserves_publi0')
+plan = None
+
+    def test_pg_cancel_preserves_published_and_restart(tmp_path,plan):
+        calls=[]
+        def execute(day,mode): calls.append(day);jobs.cancel(job);return dict(status='PUBLISHED')
+&gt;       jobs=make(tmp_path,execute);jobs.settings(False);job=jobs.enqueue()
+                                    ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_pg_jobs_r4.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\operational_daily_jobs_v1.py:152: in settings
+    with self.connect() as db:
+         ^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\operational_daily_jobs_pg_r1.py:69: in connect
+    with connection(self.schema,dsn=self.dsn,row_factory=row_factory) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_db\v4_native.py:25: in connection
+    pg.execute("SET LOCAL statement_timeout='30s'")
+E:\python\Lib\site-packages\psycopg\connection.py:302: in execute
+    return cur.execute(query, params, prepare=prepare)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\psycopg\cursor.py:113: in execute
+    self._conn.wait(
+E:\python\Lib\site-packages\psycopg\connection.py:495: in wait
+    return waiting.wait(
+E:\python\Lib\site-packages\psycopg\waiting.py:363: in wait_select
+    s = gen.send(ready)
+        ^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\psycopg\_cursor_base.py:206: in _execute_gen
+    yield from self._maybe_prepare_gen(pgq, prepare=prepare, binary=binary)
+E:\python\Lib\site-packages\psycopg\_cursor_base.py:318: in _maybe_prepare_gen
+    self._set_results(results)
+E:\python\Lib\site-packages\psycopg\_cursor_base.py:535: in _set_results
+    self._select_current_result(0)
+E:\python\Lib\site-packages\psycopg\_cursor_base.py:529: in _select_current_result
+    self._make_row = self._make_row_maker()
+                     ^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\psycopg\cursor.py:79: in _make_row_maker
+    return self._row_factory(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cursor = &lt;psycopg.Cursor [COMMAND_OK] [BAD] at 0x235b2b67410&gt;
+
+    def row_factory(cursor):
+&gt;       names=[c.name for c in cursor.description]
+                               ^^^^^^^^^^^^^^^^^^
+E       TypeError: 'NoneType' object is not iterable
+
+src\workbench_analysis\operational_daily_jobs_pg_r1.py:32: TypeError</failure></testcase><testcase classname="tests.test_v4_pg_jobs_r4" name="test_pg_worker_competition_and_recovery" time="0.167" /><testcase classname="tests.test_v4_pg_jobs_r4" name="test_pg_retry_does_not_republish_completed_day" time="0.090"><failure message="TypeError: 'NoneType' object is not iterable">tmp_path = WindowsPath('G:/codex_tmp/test_temp/r4_jobs_01/test_pg_retry_does_not_republi0')
+plan = None
+
+    def test_pg_retry_does_not_republish_completed_day(tmp_path,plan):
+        calls=[];fail=[True]
+        def execute(day,mode):
+            calls.append(day)
+            return dict(status='QA_BLOCKED' if day=='2026-10-09' and fail[0] else 'PUBLISHED')
+&gt;       jobs=make(tmp_path,execute);jobs.settings(False);job=jobs.enqueue();jobs.tick()
+                                    ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_pg_jobs_r4.py:48: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\operational_daily_jobs_v1.py:152: in settings
+    with self.connect() as db:
+         ^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\operational_daily_jobs_pg_r1.py:69: in connect
+    with connection(self.schema,dsn=self.dsn,row_factory=row_factory) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_db\v4_native.py:25: in connection
+    pg.execute("SET LOCAL statement_timeout='30s'")
+E:\python\Lib\site-packages\psycopg\connection.py:302: in execute
+    return cur.execute(query, params, prepare=prepare)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\psycopg\cursor.py:113: in execute
+    self._conn.wait(
+E:\python\Lib\site-packages\psycopg\connection.py:495: in wait
+    return waiting.wait(
+E:\python\Lib\site-packages\psycopg\waiting.py:363: in wait_select
+    s = gen.send(ready)
+        ^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\psycopg\_cursor_base.py:206: in _execute_gen
+    yield from self._maybe_prepare_gen(pgq, prepare=prepare, binary=binary)
+E:\python\Lib\site-packages\psycopg\_cursor_base.py:318: in _maybe_prepare_gen
+    self._set_results(results)
+E:\python\Lib\site-packages\psycopg\_cursor_base.py:535: in _set_results
+    self._select_current_result(0)
+E:\python\Lib\site-packages\psycopg\_cursor_base.py:529: in _select_current_result
+    self._make_row = self._make_row_maker()
+                     ^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\psycopg\cursor.py:79: in _make_row_maker
+    return self._row_factory(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cursor = &lt;psycopg.Cursor [COMMAND_OK] [BAD] at 0x23588a9a390&gt;
+
+    def row_factory(cursor):
+&gt;       names=[c.name for c in cursor.description]
+                               ^^^^^^^^^^^^^^^^^^
+E       TypeError: 'NoneType' object is not iterable
+
+src\workbench_analysis\operational_daily_jobs_pg_r1.py:32: TypeError</failure></testcase><testcase classname="tests.test_v4_pg_jobs_r4" name="test_pg_disconnect_fails_closed_without_file" time="0.002" /><testcase classname="tests.test_v4_pg_jobs_r4" name="test_guard_cannot_satisfy_business_exception" time="0.001" /><testcase classname="tests.test_v4_pg_jobs_r4" name="test_desktop_uses_pg_store" time="0.099"><failure message="TypeError: 'NoneType' object is not iterable">tmp_path = WindowsPath('G:/codex_tmp/test_temp/r4_jobs_01/test_desktop_uses_pg_store0')
+plan = None
+
+    def test_desktop_uses_pg_store(tmp_path,plan):
+        from workbench_desktop.jobs import ManagedDailyJobs
+&gt;       jobs=ManagedDailyJobs(tmp_path,clock=lambda:datetime.fromisoformat('2026-10-09T22:10+08:00'))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_pg_jobs_r4.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_desktop\jobs.py:14: in __init__
+    with self.connect() as db:
+         ^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\operational_daily_jobs_pg_r1.py:69: in connect
+    with connection(self.schema,dsn=self.dsn,row_factory=row_factory) as pg:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_db\v4_native.py:25: in connection
+    pg.execute("SET LOCAL statement_timeout='30s'")
+E:\python\Lib\site-packages\psycopg\connection.py:302: in execute
+    return cur.execute(query, params, prepare=prepare)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\psycopg\cursor.py:113: in execute
+    self._conn.wait(
+E:\python\Lib\site-packages\psycopg\connection.py:495: in wait
+    return waiting.wait(
+E:\python\Lib\site-packages\psycopg\waiting.py:363: in wait_select
+    s = gen.send(ready)
+        ^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\psycopg\_cursor_base.py:206: in _execute_gen
+    yield from self._maybe_prepare_gen(pgq, prepare=prepare, binary=binary)
+E:\python\Lib\site-packages\psycopg\_cursor_base.py:318: in _maybe_prepare_gen
+    self._set_results(results)
+E:\python\Lib\site-packages\psycopg\_cursor_base.py:535: in _set_results
+    self._select_current_result(0)
+E:\python\Lib\site-packages\psycopg\_cursor_base.py:529: in _select_current_result
+    self._make_row = self._make_row_maker()
+                     ^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\site-packages\psycopg\cursor.py:79: in _make_row_maker
+    return self._row_factory(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cursor = &lt;psycopg.Cursor [COMMAND_OK] [BAD] at 0x235b2d0e390&gt;
+
+    def row_factory(cursor):
+&gt;       names=[c.name for c in cursor.description]
+                               ^^^^^^^^^^^^^^^^^^
+E       TypeError: 'NoneType' object is not iterable
+
+src\workbench_analysis\operational_daily_jobs_pg_r1.py:32: TypeError</failure></testcase></testsuite></testsuites>

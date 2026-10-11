@@ -1,0 +1,130 @@
+{
+  "contract_id": "R4-MASTER-R1",
+  "base_head": "fbd23a6ba08d0948fe7ad421d1765fe363648522",
+  "source_SHA": null,
+  "source_git_head": "fbd23a6ba08d0948fe7ad421d1765fe363648522",
+  "source_revision_state": "UNCOMMITTED_BYTES_BOUND",
+  "execution_source_binding": {
+    "path": "R4_SOURCE_TREE_7488de27c500b533bbc5361957fb297ca4062927616540f1d6c55436f46f0fb5.json",
+    "sha256": "b7925264c044f41d371e0677ad7be76a6964464541ed20147b458296f940f270",
+    "tree_sha256": "7488de27c500b533bbc5361957fb297ca4062927616540f1d6c55436f46f0fb5"
+  },
+  "run_utc": "2026-10-11T06:18:41.100914+00:00",
+  "scope": "V4_ONLY_POSTGRESQL_ONLY",
+  "denominator": null,
+  "negative_vectors": [
+    "Real PG shutdown -> HTTP503 with fallback=false",
+    "Desktop reports unknown auto state while PG is unavailable"
+  ],
+  "previous_status": "AUDIT_INCOMPLETE",
+  "current_status": "SCOPED_PHYSICAL_RESTART_HTTP_FAIL_CLOSED_PASS",
+  "evidence_links": [],
+  "owner": "Codex / root",
+  "limitations": [
+    "Only isolated G PG was restarted; production PG/PID and Windows package untouched",
+    "Real executor crash/lease/checkpoint and accepted-T0 no-repeat gates remain separate"
+  ],
+  "next_conditions": [
+    "Executor process death/recovery and immutable checkpoint tests"
+  ],
+  "before_http": {
+    "code": 200,
+    "payload": {
+      "contract_id": "READ_ONLY_OPERATIONAL_DAILY_RELEASE_POLICY_V1_1",
+      "auto_enabled": false,
+      "revision": 3,
+      "updated_at": "2026-10-11T14:18:24.048009+08:00",
+      "first_check": "18:35",
+      "timezone": "Asia/Shanghai",
+      "retry_times": [
+        "19:05",
+        "19:35",
+        "20:05",
+        "20:35",
+        "21:05",
+        "22:05"
+      ],
+      "service_alive": false,
+      "operational_mode": "AUTO_PAUSED_BY_USER",
+      "permission_scope": "READ_ONLY_OPERATIONAL_RESEARCH",
+      "publication_ready": false,
+      "policy_binding": null
+    }
+  },
+  "offline_http": {
+    "code": 503,
+    "payload": {
+      "code": "V4_PG_UNAVAILABLE",
+      "fallback": false
+    }
+  },
+  "offline_desktop": {
+    "contract_id": "V4_WINDOWS_PACKAGE_RUNTIME_V1",
+    "engine_state": "STOPPED",
+    "reason": null,
+    "operation_id": null,
+    "instance_id": "77f3ee56264746b785ebc3a567a4bc32",
+    "pid": 40848,
+    "port": 0,
+    "APP_RESOURCE_ROOT": "G:\\codex work\\r4-pg-only-20261011",
+    "WORKSPACE_ROOT": "G:\\codex_tmp\\full_system_r4_fbd23a6b\\restart_candidate",
+    "BUILD_RELEASE_ID": "DEVELOPMENT",
+    "SOURCE_SHA": "DEVELOPMENT",
+    "RESOURCE_MANIFEST_SHA": null,
+    "WORKSPACE_SCHEMA_VERSION": 1,
+    "observed_at": "2026-10-11T06:18:34.848315+00:00",
+    "capture_requirement": "CAPTURE_REQUIRES_APP_RUNNING",
+    "auto_daily_enabled": null,
+    "scheduler_backend": "POSTGRESQL",
+    "scheduler_settings_state": "PG_UNAVAILABLE_OR_NOT_INITIALIZED",
+    "first_capture_state": "UNCONFIRMED",
+    "cached_snapshot": null,
+    "engine_health": {
+      "status": "UNCONFIRMED",
+      "consecutive_failures": 0,
+      "observed_at": null
+    },
+    "data_freshness": "CHECK_ORIGINAL_V4_CONTEXT",
+    "external_acceptance": "NOT_GRANTED"
+  },
+  "after_http": {
+    "code": 200,
+    "payload": {
+      "contract_id": "READ_ONLY_OPERATIONAL_DAILY_RELEASE_POLICY_V1_1",
+      "auto_enabled": false,
+      "revision": 3,
+      "updated_at": "2026-10-11T14:18:24.048009+08:00",
+      "first_check": "18:35",
+      "timezone": "Asia/Shanghai",
+      "retry_times": [
+        "19:05",
+        "19:35",
+        "20:05",
+        "20:35",
+        "21:05",
+        "22:05"
+      ],
+      "service_alive": false,
+      "operational_mode": "AUTO_PAUSED_BY_USER",
+      "permission_scope": "READ_ONLY_OPERATIONAL_RESEARCH",
+      "publication_ready": false,
+      "policy_binding": null
+    }
+  },
+  "system_identifier": "7695278778933357404",
+  "data_directory": "G:\\codex_tmp\\full_system_r4_fbd23a6b\\pg_data",
+  "port": 55791,
+  "persistent_job": {
+    "job_id": "R4_RESTART_SENTINEL",
+    "trigger": "ENGINEERING_FIXTURE",
+    "mode": "PROBE",
+    "through_date": "2026-10-09",
+    "status": "QUEUED",
+    "created_at": "2026-10-11T08:00:00+08:00",
+    "finished_at": null,
+    "idempotency_key": "R4_RESTART_SENTINEL",
+    "error": null,
+    "days": []
+  },
+  "sqlite_files": []
+}

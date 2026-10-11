@@ -1,0 +1,21 @@
+{
+  "contract_id": "R4_ISOLATED_PG_TEST_CAPABILITIES_R1",
+  "databases": [
+    {
+      "database": "fep_e1_fresh",
+      "port": "55792",
+      "purpose": "FEP_ENGINEERING_FIXTURE_R1",
+      "data_directory": "G:/codex_tmp/full_system_r4_fbd23a6b/fep_e1_data",
+      "migration_receipt": {
+        "path": "R4_10_FEP_E1_SQL_IDENTITY.json",
+        "sha256": "17d6dac6125a8011ccc78466b39b7f239be8bd165e15d7a6e459ddc32ddea337"
+      }
+    }
+  ],
+  "dynamic_database_exception": {
+    "node": "tests/fep/test_cas_roles.py::test_E1_24_concurrent_cas_and_same_request",
+    "pattern": "fep_e1_fresh_concurrency_[0-9a-f]{8}",
+    "template": "fep_e1_template",
+    "required_sql_migrations": 33
+  }
+}

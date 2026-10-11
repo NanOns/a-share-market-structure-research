@@ -1,0 +1,74 @@
+{
+  "contract_id": "R4_SCOPED_ENGINEERING_EXECUTION_R1",
+  "base_head": "fbd23a6ba08d0948fe7ad421d1765fe363648522",
+  "source_SHA": null,
+  "source_git_head": "fbd23a6ba08d0948fe7ad421d1765fe363648522",
+  "source_revision_state": "UNCOMMITTED_BYTES_BOUND",
+  "execution_source_binding": {
+    "path": "R4_SOURCE_TREE_38781e518a779add4bf5c6dec12faf06a12de61ec0cacff3babef3924185fddd.json",
+    "sha256": "21d07b2ca978648f410a905b42f5cab17c0d1d968231ef1fed20b3d37dff97d9",
+    "tree_sha256": "38781e518a779add4bf5c6dec12faf06a12de61ec0cacff3babef3924185fddd"
+  },
+  "run_utc": "2026-10-11T06:05:05.312208+00:00",
+  "scope": "V4_ONLY_POSTGRESQL_ONLY",
+  "denominator": 98,
+  "negative_vectors": [],
+  "previous_status": "AUDIT_INCOMPLETE",
+  "current_status": "SCOPED_TEST_PASS",
+  "evidence_links": [
+    "R4_SCOPED_0efa774e_JUNIT.xml",
+    "R4_SCOPED_0efa774e.log",
+    "R4_SCOPED_0efa774e_CONNECTIONS.jsonl"
+  ],
+  "owner": "Codex / root",
+  "limitations": [
+    "Named engineering modules; this is not the full V4 legal regression denominator"
+  ],
+  "next_conditions": [
+    "Complete per-module scope review and full clean-slate run"
+  ],
+  "results": {
+    "PASS": 98,
+    "FAIL": 0,
+    "ERROR": 0,
+    "SKIP": 0
+  },
+  "seconds": 46.944260597229004,
+  "command": [
+    "E:\\python\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_v4_pg_jobs_r4.py",
+    "tests/test_v4_pg_storage_r4.py",
+    "tests/test_v4_pg_journal_r4.py",
+    "tests/test_v4_exact_transport_r4.py",
+    "tests/test_operational_daily_jobs_v1.py",
+    "tests/test_audit_repair_adjustment_r3.py",
+    "tests/test_r2_journal.py",
+    "tests/test_audit_repair_home_r3.py",
+    "tests/test_audit_repair_storage_r3.py",
+    "tests/test_audit_repair_compare_r3.py",
+    "tests/test_audit_repair_loo_r3.py",
+    "tests/test_dynamic_daily_r21_repair.py",
+    "--basetemp=G:/codex_tmp/test_temp/R4_SCOPED_0efa774e",
+    "-o",
+    "cache_dir=G:/codex_tmp/pytest_cache_r4",
+    "--junitxml=G:\\codex work\\大A交易\\docs\\audits\\full_system_r4_pg_only_20261011_fbd23a6b\\R4_SCOPED_0efa774e_JUNIT.xml"
+  ],
+  "source_bindings": {
+    "tests/test_v4_pg_jobs_r4.py": "3b01534a01cae6c181ac966b61177a7914ea842e7a83439e763ae942ebaf0c7a",
+    "tests/test_v4_pg_storage_r4.py": "32d44eeb30d2af216093d97f5f3d06b38963e8dbd901aaebb40d54c418b0dbde",
+    "tests/test_v4_pg_journal_r4.py": "b19c1fc8d42446b6cc422c13c3084f95268cae792d14737c41aebbcc0f12f451",
+    "tests/test_v4_exact_transport_r4.py": "9c6f96945fb1d77ee07fc0db4cdf2e1877d7d135fc3d5e5cef6a8b01e49fc252",
+    "tests/test_operational_daily_jobs_v1.py": "1a9e40e05d2eb823a7ecb95bcab14bc77facf2bfbe6daea6e4b676d7b1073e87",
+    "tests/test_audit_repair_adjustment_r3.py": "02916297debe6522f9a500a3731a6c8c7ddd56033aef03671162bbc3fbb00a81",
+    "tests/test_r2_journal.py": "d06410cf9066730f3ab7b8362796186022d1ae07331da42f0d2ea4c0ea8592ac",
+    "tests/test_audit_repair_home_r3.py": "149c42342f4e0fae92ce654404fb55dda2db3a8c9f180d80c983f57cc674f50c",
+    "tests/test_audit_repair_storage_r3.py": "e53b388eced286fb9dd83be4375f4e63fa5d5c82a1a0ddc7f1d227c5187b4437",
+    "tests/test_audit_repair_compare_r3.py": "77af3eaf9aeae2a24bcb81900109acf2526c0d6849870e4fce24d9572a7d9044",
+    "tests/test_audit_repair_loo_r3.py": "44287284fedb887f028152d8689a2e7378aa8d31c0530ad62f5b99b5ef5eb11c",
+    "tests/test_dynamic_daily_r21_repair.py": "088fa8d59cd15e2fa235e69c0c9dbc0b2c781f8e584324569981d7402fb7a5d4"
+  }
+}

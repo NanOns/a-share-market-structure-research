@@ -1,0 +1,609 @@
+...................................................FFFFFFFFFFFFFF....... [ 76%]
+FF..................F.                                                   [100%]
+================================== FAILURES ===================================
+__ test_all_47_accepted_historical_fields_and_seven_relative_rps_are_copied ___
+
+    def test_all_47_accepted_historical_fields_and_seven_relative_rps_are_copied():
+>       contract,row=load()
+                     ^^^^^^
+
+tests\fep\test_feature_owner.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\fep\test_feature_owner.py:16: in load
+    row=json.loads((OUT/'OWNER_ROW_PROJECTION.json').read_bytes())['source_row']
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/r4-pg-only-20261011/reports/fep_e1_r2_final/OWNER_ROW_PROJECTION.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\fep_e1_r2_final\\OWNER_ROW_PROJECTION.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________ test_owner_envelope_counterfactuals[missing_field] ______________
+
+case = 'missing_field'
+
+    @pytest.mark.parametrize('case',['missing_field','wrong_date','nonfinite','wrong_type','unknown_without_reason','missing_window'])
+    def test_owner_envelope_counterfactuals(case):
+>       contract,row=load();row=copy.deepcopy(row);name=contract['fields'][0]['field_name'];f=row['fields'][name]
+                     ^^^^^^
+
+tests\fep\test_feature_owner.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\fep\test_feature_owner.py:16: in load
+    row=json.loads((OUT/'OWNER_ROW_PROJECTION.json').read_bytes())['source_row']
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/r4-pg-only-20261011/reports/fep_e1_r2_final/OWNER_ROW_PROJECTION.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\fep_e1_r2_final\\OWNER_ROW_PROJECTION.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_______________ test_owner_envelope_counterfactuals[wrong_date] _______________
+
+case = 'wrong_date'
+
+    @pytest.mark.parametrize('case',['missing_field','wrong_date','nonfinite','wrong_type','unknown_without_reason','missing_window'])
+    def test_owner_envelope_counterfactuals(case):
+>       contract,row=load();row=copy.deepcopy(row);name=contract['fields'][0]['field_name'];f=row['fields'][name]
+                     ^^^^^^
+
+tests\fep\test_feature_owner.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\fep\test_feature_owner.py:16: in load
+    row=json.loads((OUT/'OWNER_ROW_PROJECTION.json').read_bytes())['source_row']
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/r4-pg-only-20261011/reports/fep_e1_r2_final/OWNER_ROW_PROJECTION.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\fep_e1_r2_final\\OWNER_ROW_PROJECTION.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_______________ test_owner_envelope_counterfactuals[nonfinite] ________________
+
+case = 'nonfinite'
+
+    @pytest.mark.parametrize('case',['missing_field','wrong_date','nonfinite','wrong_type','unknown_without_reason','missing_window'])
+    def test_owner_envelope_counterfactuals(case):
+>       contract,row=load();row=copy.deepcopy(row);name=contract['fields'][0]['field_name'];f=row['fields'][name]
+                     ^^^^^^
+
+tests\fep\test_feature_owner.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\fep\test_feature_owner.py:16: in load
+    row=json.loads((OUT/'OWNER_ROW_PROJECTION.json').read_bytes())['source_row']
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/r4-pg-only-20261011/reports/fep_e1_r2_final/OWNER_ROW_PROJECTION.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\fep_e1_r2_final\\OWNER_ROW_PROJECTION.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_______________ test_owner_envelope_counterfactuals[wrong_type] _______________
+
+case = 'wrong_type'
+
+    @pytest.mark.parametrize('case',['missing_field','wrong_date','nonfinite','wrong_type','unknown_without_reason','missing_window'])
+    def test_owner_envelope_counterfactuals(case):
+>       contract,row=load();row=copy.deepcopy(row);name=contract['fields'][0]['field_name'];f=row['fields'][name]
+                     ^^^^^^
+
+tests\fep\test_feature_owner.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\fep\test_feature_owner.py:16: in load
+    row=json.loads((OUT/'OWNER_ROW_PROJECTION.json').read_bytes())['source_row']
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/r4-pg-only-20261011/reports/fep_e1_r2_final/OWNER_ROW_PROJECTION.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\fep_e1_r2_final\\OWNER_ROW_PROJECTION.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_________ test_owner_envelope_counterfactuals[unknown_without_reason] _________
+
+case = 'unknown_without_reason'
+
+    @pytest.mark.parametrize('case',['missing_field','wrong_date','nonfinite','wrong_type','unknown_without_reason','missing_window'])
+    def test_owner_envelope_counterfactuals(case):
+>       contract,row=load();row=copy.deepcopy(row);name=contract['fields'][0]['field_name'];f=row['fields'][name]
+                     ^^^^^^
+
+tests\fep\test_feature_owner.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\fep\test_feature_owner.py:16: in load
+    row=json.loads((OUT/'OWNER_ROW_PROJECTION.json').read_bytes())['source_row']
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/r4-pg-only-20261011/reports/fep_e1_r2_final/OWNER_ROW_PROJECTION.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\fep_e1_r2_final\\OWNER_ROW_PROJECTION.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________ test_owner_envelope_counterfactuals[missing_window] _____________
+
+case = 'missing_window'
+
+    @pytest.mark.parametrize('case',['missing_field','wrong_date','nonfinite','wrong_type','unknown_without_reason','missing_window'])
+    def test_owner_envelope_counterfactuals(case):
+>       contract,row=load();row=copy.deepcopy(row);name=contract['fields'][0]['field_name'];f=row['fields'][name]
+                     ^^^^^^
+
+tests\fep\test_feature_owner.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\fep\test_feature_owner.py:16: in load
+    row=json.loads((OUT/'OWNER_ROW_PROJECTION.json').read_bytes())['source_row']
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/r4-pg-only-20261011/reports/fep_e1_r2_final/OWNER_ROW_PROJECTION.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\fep_e1_r2_final\\OWNER_ROW_PROJECTION.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+___________________ test_unknown_is_present_and_not_imputed ___________________
+
+    def test_unknown_is_present_and_not_imputed():
+>       contract,row=load();row=copy.deepcopy(row);name=contract['fields'][0]['field_name']
+                     ^^^^^^
+
+tests\fep\test_feature_owner.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\fep\test_feature_owner.py:16: in load
+    row=json.loads((OUT/'OWNER_ROW_PROJECTION.json').read_bytes())['source_row']
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/r4-pg-only-20261011/reports/fep_e1_r2_final/OWNER_ROW_PROJECTION.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\fep_e1_r2_final\\OWNER_ROW_PROJECTION.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________ test_owner_contract_counterfactuals[guessed_alias] ______________
+
+case = 'guessed_alias'
+
+    @pytest.mark.parametrize('case',['guessed_alias','wrong_owner_digest','reduced_fields','pit_overclaim','wrong_calendar_digest'])
+    def test_owner_contract_counterfactuals(case):
+>       contract,_=load();c=copy.deepcopy(contract)
+                   ^^^^^^
+
+tests\fep\test_feature_owner.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\fep\test_feature_owner.py:16: in load
+    row=json.loads((OUT/'OWNER_ROW_PROJECTION.json').read_bytes())['source_row']
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/r4-pg-only-20261011/reports/fep_e1_r2_final/OWNER_ROW_PROJECTION.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\fep_e1_r2_final\\OWNER_ROW_PROJECTION.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+___________ test_owner_contract_counterfactuals[wrong_owner_digest] ___________
+
+case = 'wrong_owner_digest'
+
+    @pytest.mark.parametrize('case',['guessed_alias','wrong_owner_digest','reduced_fields','pit_overclaim','wrong_calendar_digest'])
+    def test_owner_contract_counterfactuals(case):
+>       contract,_=load();c=copy.deepcopy(contract)
+                   ^^^^^^
+
+tests\fep\test_feature_owner.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\fep\test_feature_owner.py:16: in load
+    row=json.loads((OUT/'OWNER_ROW_PROJECTION.json').read_bytes())['source_row']
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/r4-pg-only-20261011/reports/fep_e1_r2_final/OWNER_ROW_PROJECTION.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\fep_e1_r2_final\\OWNER_ROW_PROJECTION.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________ test_owner_contract_counterfactuals[reduced_fields] _____________
+
+case = 'reduced_fields'
+
+    @pytest.mark.parametrize('case',['guessed_alias','wrong_owner_digest','reduced_fields','pit_overclaim','wrong_calendar_digest'])
+    def test_owner_contract_counterfactuals(case):
+>       contract,_=load();c=copy.deepcopy(contract)
+                   ^^^^^^
+
+tests\fep\test_feature_owner.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\fep\test_feature_owner.py:16: in load
+    row=json.loads((OUT/'OWNER_ROW_PROJECTION.json').read_bytes())['source_row']
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/r4-pg-only-20261011/reports/fep_e1_r2_final/OWNER_ROW_PROJECTION.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\fep_e1_r2_final\\OWNER_ROW_PROJECTION.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________ test_owner_contract_counterfactuals[pit_overclaim] ______________
+
+case = 'pit_overclaim'
+
+    @pytest.mark.parametrize('case',['guessed_alias','wrong_owner_digest','reduced_fields','pit_overclaim','wrong_calendar_digest'])
+    def test_owner_contract_counterfactuals(case):
+>       contract,_=load();c=copy.deepcopy(contract)
+                   ^^^^^^
+
+tests\fep\test_feature_owner.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\fep\test_feature_owner.py:16: in load
+    row=json.loads((OUT/'OWNER_ROW_PROJECTION.json').read_bytes())['source_row']
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/r4-pg-only-20261011/reports/fep_e1_r2_final/OWNER_ROW_PROJECTION.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\fep_e1_r2_final\\OWNER_ROW_PROJECTION.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_________ test_owner_contract_counterfactuals[wrong_calendar_digest] __________
+
+case = 'wrong_calendar_digest'
+
+    @pytest.mark.parametrize('case',['guessed_alias','wrong_owner_digest','reduced_fields','pit_overclaim','wrong_calendar_digest'])
+    def test_owner_contract_counterfactuals(case):
+>       contract,_=load();c=copy.deepcopy(contract)
+                   ^^^^^^
+
+tests\fep\test_feature_owner.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\fep\test_feature_owner.py:16: in load
+    row=json.loads((OUT/'OWNER_ROW_PROJECTION.json').read_bytes())['source_row']
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/r4-pg-only-20261011/reports/fep_e1_r2_final/OWNER_ROW_PROJECTION.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\fep_e1_r2_final\\OWNER_ROW_PROJECTION.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+___ test_engineering_snapshot_same_capture_replay_is_stable_and_rejects_pit ___
+
+    def test_engineering_snapshot_same_capture_replay_is_stable_and_rejects_pit():
+>       obs=json.loads((OUT/'ENGINEERING_OBSERVATION.json').read_bytes())
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep\test_feature_owner.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/r4-pg-only-20261011/reports/fep_e1_r2_final/ENGINEERING_OBSERVATION.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\fep_e1_r2_final\\ENGINEERING_OBSERVATION.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_________________ test_E1_39_failure_priority_core_isolation __________________
+
+pg = <psycopg.Connection [INTRANS] (host=127.0.0.1 port=55792 user=r4_isolated_admin database=fep_e1_fresh) at 0x25ee329b3e0>
+
+    def test_E1_39_failure_priority_core_isolation(pg):
+>       before=protected()
+               ^^^^^^^^^^^
+
+tests\fep\test_pipeline.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\fep\test_pipeline.py:108: in protected
+    entry=json.loads((ROOT/'reports/fep_e1/ENTRY_BASELINE.json').read_bytes())
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/r4-pg-only-20261011/reports/fep_e1/ENTRY_BASELINE.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\fep_e1\\ENTRY_BASELINE.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+___________________ test_E1_40_accepted_bytes_no_new_heads ____________________
+
+pg = <psycopg.Connection [INTRANS] (host=127.0.0.1 port=55792 user=r4_isolated_admin database=fep_e1_fresh) at 0x25ee32986e0>
+
+    def test_E1_40_accepted_bytes_no_new_heads(pg):
+>       protected()
+
+tests\fep\test_pipeline.py:130: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\fep\test_pipeline.py:108: in protected
+    entry=json.loads((ROOT/'reports/fep_e1/ENTRY_BASELINE.json').read_bytes())
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/r4-pg-only-20261011/reports/fep_e1/ENTRY_BASELINE.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\reports\\fep_e1\\ENTRY_BASELINE.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____ test_all_current_sql_declarations_are_explicit_successor_inventory ______
+
+    def test_all_current_sql_declarations_are_explicit_successor_inventory():
+        c=json.loads((ROOT/'config/v4_18_migration_replay_contract_v1_3.json').read_bytes())
+        ref=c['supersedes'];raw=(ROOT/ref['path']).read_bytes()
+        assert c['contract_id']=='V4_18_MIGRATION_REPLAY_CONTRACT_V1_3'
+        assert len(raw)==ref['bytes'] and hashlib.sha256(raw).hexdigest()==ref['sha256']
+        assert raw==subprocess.check_output(['git','show',c['baseline']+':'+ref['path']],cwd=ROOT)
+        original=json.loads(raw)
+        assert c['permissions']==original['permissions']
+        assert c['namespace_matrix'][:len(original['namespace_matrix'])]==original['namespace_matrix']
+        paths=list((ROOT/'src/workbench_db').rglob('*.sql'))+[ROOT/p for p in ('migrations/v4_16_r24_real_shadow_v1.sql','migrations/v4_16_settlement_queue_v2.sql','migrations/v4_16_real_shadow_integrity_v2.sql')]
+        actual={(p.relative_to(ROOT).as_posix(),name) for p in paths for name in
+>               re.findall(r'CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?([\w.]+)',p.read_text(encoding='utf8'),re.I)}
+                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep\test_v4_18_namespace_successor.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/r4-pg-only-20261011/migrations/v4_16_r24_real_shadow_v1.sql')
+mode = 'r', buffering = -1, encoding = 'utf8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\r4-pg-only-20261011\\migrations\\v4_16_r24_real_shadow_v1.sql'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/fep/test_feature_owner.py::test_all_47_accepted_historical_fields_and_seven_relative_rps_are_copied
+FAILED tests/fep/test_feature_owner.py::test_owner_envelope_counterfactuals[missing_field]
+FAILED tests/fep/test_feature_owner.py::test_owner_envelope_counterfactuals[wrong_date]
+FAILED tests/fep/test_feature_owner.py::test_owner_envelope_counterfactuals[nonfinite]
+FAILED tests/fep/test_feature_owner.py::test_owner_envelope_counterfactuals[wrong_type]
+FAILED tests/fep/test_feature_owner.py::test_owner_envelope_counterfactuals[unknown_without_reason]
+FAILED tests/fep/test_feature_owner.py::test_owner_envelope_counterfactuals[missing_window]
+FAILED tests/fep/test_feature_owner.py::test_unknown_is_present_and_not_imputed
+FAILED tests/fep/test_feature_owner.py::test_owner_contract_counterfactuals[guessed_alias]
+FAILED tests/fep/test_feature_owner.py::test_owner_contract_counterfactuals[wrong_owner_digest]
+FAILED tests/fep/test_feature_owner.py::test_owner_contract_counterfactuals[reduced_fields]
+FAILED tests/fep/test_feature_owner.py::test_owner_contract_counterfactuals[pit_overclaim]
+FAILED tests/fep/test_feature_owner.py::test_owner_contract_counterfactuals[wrong_calendar_digest]
+FAILED tests/fep/test_feature_owner.py::test_engineering_snapshot_same_capture_replay_is_stable_and_rejects_pit
+FAILED tests/fep/test_pipeline.py::test_E1_39_failure_priority_core_isolation
+FAILED tests/fep/test_pipeline.py::test_E1_40_accepted_bytes_no_new_heads - F...
+FAILED tests/fep/test_v4_18_namespace_successor.py::test_all_current_sql_declarations_are_explicit_successor_inventory
+17 failed, 77 passed in 5.97s

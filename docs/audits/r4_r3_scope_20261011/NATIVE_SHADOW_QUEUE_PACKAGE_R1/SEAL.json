@@ -1,0 +1,433 @@
+{
+  "contract": "R4_R3_NATIVE_SHADOW_QUEUE_SCOPE_SEAL_V1",
+  "code_commit": "e05d3268a74776e259e1117d304fad0612988a94",
+  "source_bindings": [
+    {
+      "path": "config/v4_shadow_live_pg_storage_r3.json",
+      "executed_sha256": "9b06110a79153e2d8d543d684ddc3f3f97fb5382039a2af330fb9ef7d713ed81",
+      "executed_bytes": 615,
+      "git_blob_sha256": "9b06110a79153e2d8d543d684ddc3f3f97fb5382039a2af330fb9ef7d713ed81",
+      "archive": "executed_sources/config/v4_shadow_live_pg_storage_r3.json.gz"
+    },
+    {
+      "path": "migrations/v4_shadow_live_pg_r3.sql",
+      "executed_sha256": "1d70060a0b22370ff1a5295d1217a29708fbf4d32e6c5356452db7355f1067b1",
+      "executed_bytes": 15726,
+      "git_blob_sha256": "2ce4e3427ad129a7da9052c3df4bb248e60d3f87a511f279d242e7ffc32ab566",
+      "archive": "executed_sources/migrations/v4_shadow_live_pg_r3.sql.gz"
+    },
+    {
+      "path": "scripts/audit_r4_r3_native_shadow_numbers.py",
+      "executed_sha256": "9c7c3342e4d71c967d357e012ce8b33fbcd587542a46b9c01b5ecf93803eb663",
+      "executed_bytes": 6997,
+      "git_blob_sha256": "9c7c3342e4d71c967d357e012ce8b33fbcd587542a46b9c01b5ecf93803eb663",
+      "archive": "executed_sources/scripts/audit_r4_r3_native_shadow_numbers.py.gz"
+    },
+    {
+      "path": "scripts/audit_r4_r3_native_shadow_numbers_v2.py",
+      "executed_sha256": "d43b189421e345ff8e3d7f5ec6e5fb2aed38ed80ee22424ffafcefe38a60bbf0",
+      "executed_bytes": 8090,
+      "git_blob_sha256": "0bdf5892fcc6dff4ebd44ccc6f0f787defa833021570cecd5f1a1c92aa597f46",
+      "archive": "executed_sources/scripts/audit_r4_r3_native_shadow_numbers_v2.py.gz"
+    },
+    {
+      "path": "scripts/r24_simulation.py",
+      "executed_sha256": "e8e4ab38f00a09b449e6055d2eb622a0b3a221f4f70cb0b8856c2db26e9507f9",
+      "executed_bytes": 5470,
+      "git_blob_sha256": "e8e4ab38f00a09b449e6055d2eb622a0b3a221f4f70cb0b8856c2db26e9507f9",
+      "archive": "executed_sources/scripts/r24_simulation.py.gz"
+    },
+    {
+      "path": "scripts/r24r1_simulation.py",
+      "executed_sha256": "474123ad128e459d5edd9f6cf739e06a3a48845e54c0b90c1520e8d1d2d7ce4a",
+      "executed_bytes": 7726,
+      "git_blob_sha256": "474123ad128e459d5edd9f6cf739e06a3a48845e54c0b90c1520e8d1d2d7ce4a",
+      "archive": "executed_sources/scripts/r24r1_simulation.py.gz"
+    },
+    {
+      "path": "scripts/r4_shadow_pg_readonly.py",
+      "executed_sha256": "9cfaea80b9512e8ef92c4b312a49fc5f448c0d197e5aac983eefa73102d655f2",
+      "executed_bytes": 5175,
+      "git_blob_sha256": "9cfaea80b9512e8ef92c4b312a49fc5f448c0d197e5aac983eefa73102d655f2",
+      "archive": "executed_sources/scripts/r4_shadow_pg_readonly.py.gz"
+    },
+    {
+      "path": "scripts/v4_16_go_forward_shadow_runtime.py",
+      "executed_sha256": "e6ec9940b42403c72714a6418aae3a14fa5645481a56677fcadd457d0d89199d",
+      "executed_bytes": 36995,
+      "git_blob_sha256": "e6ec9940b42403c72714a6418aae3a14fa5645481a56677fcadd457d0d89199d",
+      "archive": "executed_sources/scripts/v4_16_go_forward_shadow_runtime.py.gz"
+    },
+    {
+      "path": "scripts/v4_16_go_forward_shadow_runtime_r4r3.py",
+      "executed_sha256": "f4deee7dabd475656ca187ea64852e3d7f8c86563438cb07f8f6b7ae40459018",
+      "executed_bytes": 20282,
+      "git_blob_sha256": "f4deee7dabd475656ca187ea64852e3d7f8c86563438cb07f8f6b7ae40459018",
+      "archive": "executed_sources/scripts/v4_16_go_forward_shadow_runtime_r4r3.py.gz"
+    },
+    {
+      "path": "scripts/v4_16_real_shadow_runtime.py",
+      "executed_sha256": "bebd3614fb79b981c7a7f3c5b5b48fa34e0a5440cf90d2aaaff584436736d772",
+      "executed_bytes": 33353,
+      "git_blob_sha256": "bebd3614fb79b981c7a7f3c5b5b48fa34e0a5440cf90d2aaaff584436736d772",
+      "archive": "executed_sources/scripts/v4_16_real_shadow_runtime.py.gz"
+    },
+    {
+      "path": "scripts/v4_16_settlement_worker_v2.py",
+      "executed_sha256": "0b3e3b18a0a469c7ab807652a3fcec811dae8f395438733c448186de06d91c19",
+      "executed_bytes": 8781,
+      "git_blob_sha256": "0b3e3b18a0a469c7ab807652a3fcec811dae8f395438733c448186de06d91c19",
+      "archive": "executed_sources/scripts/v4_16_settlement_worker_v2.py.gz"
+    },
+    {
+      "path": "scripts/validate_r24_activation.py",
+      "executed_sha256": "ba0d8fc2e4ca9feb0302f6a6ba8bbb571e3b7a000717721db6ed0ff394a52688",
+      "executed_bytes": 13883,
+      "git_blob_sha256": "bef9ca71c7d2a6e86b82503a1049d4889e75ce64719200e6dbbeca64ee7e0e5a",
+      "archive": "executed_sources/scripts/validate_r24_activation.py.gz"
+    },
+    {
+      "path": "scripts/validate_r24r1_activation.py",
+      "executed_sha256": "2a358715e3ee4c5f2cbbf22420b8f0d190f86114568cc53cba11164f677535c4",
+      "executed_bytes": 21018,
+      "git_blob_sha256": "eb6285ac096c1977c0a62525c29d5b1cf9d14f972cf73e7163b31ee2d4163f63",
+      "archive": "executed_sources/scripts/validate_r24r1_activation.py.gz"
+    },
+    {
+      "path": "src/workbench_db/v4_shadow_live_pg_r3.py",
+      "executed_sha256": "ab242d2d30a3596c03b193bf63990c92aff35843126d00e035daf952a19b629b",
+      "executed_bytes": 11272,
+      "git_blob_sha256": "3a365070310f8dc532a53f904d86fd2157f0bb99320a83fd5fd452f34aa04e53",
+      "archive": "executed_sources/src/workbench_db/v4_shadow_live_pg_r3.py.gz"
+    },
+    {
+      "path": "tests/r4_shadow_pg_corruption_fixtures.py",
+      "executed_sha256": "474f098c6df035f17c3360e05b22d3cdf9d27f4819902cc9acf3a7ed2e24b19e",
+      "executed_bytes": 2390,
+      "git_blob_sha256": "474f098c6df035f17c3360e05b22d3cdf9d27f4819902cc9acf3a7ed2e24b19e",
+      "archive": "executed_sources/tests/r4_shadow_pg_corruption_fixtures.py.gz"
+    },
+    {
+      "path": "tests/test_full_chain_repair.py",
+      "executed_sha256": "a4ba42ef109d29bbf98d1677731403d14bfee9d96e1c0a048a6f3fe80cd7a449",
+      "executed_bytes": 19448,
+      "git_blob_sha256": "510f5b739ce390ad9a4cd1b09fd79c0166ec1db29f2ec1c8c3f9692a988cf2fb",
+      "archive": "executed_sources/tests/test_full_chain_repair.py.gz"
+    },
+    {
+      "path": "tests/test_r24_activation.py",
+      "executed_sha256": "9a2bdbc189b75717f0cf64bfa08d114433e1417d3840d297c02438cc18ed77ff",
+      "executed_bytes": 12855,
+      "git_blob_sha256": "cb08c5a6bd089cdd35607fa5547d56f7d8d21dba4714903c480dfeb9f83f36a5",
+      "archive": "executed_sources/tests/test_r24_activation.py.gz"
+    },
+    {
+      "path": "tests/test_r24r1_authority.py",
+      "executed_sha256": "1f1eb82d93d938888539c29d7e5b35b54492a71635cdf34625c9f1f0f43938f2",
+      "executed_bytes": 9656,
+      "git_blob_sha256": "bbce46f47b12ed75cacc93a6d6fa2f45c50f74209452266df5db64e0fc0b0252",
+      "archive": "executed_sources/tests/test_r24r1_authority.py.gz"
+    }
+  ],
+  "matrices": [
+    {
+      "label": "SHADOW_LIVE_NATIVE_ORIGINAL_R1",
+      "nodes": 152,
+      "pass_count": 115,
+      "fail_count": 37,
+      "original_152_retained": true,
+      "source_bytes_stable": true,
+      "acceptance": "RETAINED_DIAGNOSTIC_NOT_FINAL_ACCEPTANCE"
+    },
+    {
+      "label": "SHADOW_LIVE_NATIVE_ORIGINAL_R2",
+      "nodes": 152,
+      "pass_count": 130,
+      "fail_count": 22,
+      "original_152_retained": true,
+      "source_bytes_stable": true,
+      "acceptance": "RETAINED_DIAGNOSTIC_NOT_FINAL_ACCEPTANCE"
+    },
+    {
+      "label": "SHADOW_LIVE_NATIVE_ORIGINAL_R3",
+      "nodes": 152,
+      "pass_count": 137,
+      "fail_count": 15,
+      "original_152_retained": true,
+      "source_bytes_stable": true,
+      "acceptance": "RETAINED_DIAGNOSTIC_NOT_FINAL_ACCEPTANCE"
+    },
+    {
+      "label": "SHADOW_LIVE_NATIVE_ORIGINAL_R4",
+      "nodes": 152,
+      "pass_count": 152,
+      "fail_count": 0,
+      "original_152_retained": true,
+      "source_bytes_stable": true,
+      "acceptance": "RETAINED_DIAGNOSTIC_NOT_FINAL_ACCEPTANCE"
+    },
+    {
+      "label": "SHADOW_LIVE_NATIVE_ORIGINAL_R5",
+      "nodes": 155,
+      "pass_count": 155,
+      "fail_count": 0,
+      "original_152_retained": true,
+      "source_bytes_stable": true,
+      "acceptance": "REPAIRED_WITH_EXACT_BYTES_AND_NUMERICS"
+    }
+  ],
+  "raw_evidence": [
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_FIRST_INDEPENDENT_NUMERIC_FAILURE_R1.json",
+      "raw_sha256": "2008c1215b08077d0266a080b9c5faa58bc37f704349af18bb61db6bed0bcf5f",
+      "raw_bytes": 577,
+      "archive": "raw/SHADOW_FIRST_INDEPENDENT_NUMERIC_FAILURE_R1.json.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_INDEPENDENT_SOURCE_FAILURE_REPRO_R1_RAW.log",
+      "raw_sha256": "7966bd6e0831de723cbfb4921d788e6f249ede7a04876b7052a8eecb99fbd926",
+      "raw_bytes": 795,
+      "archive": "raw/SHADOW_INDEPENDENT_SOURCE_FAILURE_REPRO_R1_RAW.log.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R1.xml",
+      "raw_sha256": "ba81e2a575848d85fc1f0d2b5a14a18a4661ed677132917fd0e23af4ef8fcfb1",
+      "raw_bytes": 184547,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R1.xml.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R1_EXECUTION.json",
+      "raw_sha256": "f45afadcd2b68d11cc02a3b4bbb8eeedc39ecf1d84ca3f0cc4a8b2edd6e43ea2",
+      "raw_bytes": 1017,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R1_EXECUTION.json.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R1_INTENTS.jsonl",
+      "raw_sha256": "9c1fc1223aeefe2dccf2bbbc9dc41124e9660f4782d2268941df546c03345a14",
+      "raw_bytes": 37556746,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R1_INTENTS.jsonl.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R1_INTENTS_COLLECTED_NODES.json",
+      "raw_sha256": "63367d79f6e5a21732ccc6740c9e434359063d2291f2b6b2678f00a31a05b447",
+      "raw_bytes": 11522,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R1_INTENTS_COLLECTED_NODES.json.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R1_RAW.log",
+      "raw_sha256": "365dac770aa20340b20c15aa64b2f291222096e5fa0122a75cac108505bdc3d4",
+      "raw_bytes": 160713,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R1_RAW.log.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R1_SOURCE_BINDINGS.json",
+      "raw_sha256": "42a1a6782e0cf25cb3aaada43310ec392b15d050a24596e60cb815d467a4d30b",
+      "raw_bytes": 561897,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R1_SOURCE_BINDINGS.json.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R2.xml",
+      "raw_sha256": "d4df72d61c42d3190c486394b2ada41bf9d23366cad42e59da20bf2b239bc757",
+      "raw_bytes": 58969,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R2.xml.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R2_EXECUTION.json",
+      "raw_sha256": "6c912b0e14a493de1932e06229e1b1813ff506a3c640080df9d273001b901dd7",
+      "raw_bytes": 1017,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R2_EXECUTION.json.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R2_INTENTS.jsonl",
+      "raw_sha256": "8ad24eb13c9cba1185e7c3a3580492d91f953599023fdc33d4fab12031939ed1",
+      "raw_bytes": 38581674,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R2_INTENTS.jsonl.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R2_INTENTS_COLLECTED_NODES.json",
+      "raw_sha256": "87dfd2b79c8d2634945a7e72b7901390dae1665621c630db8a9d8d04512c4979",
+      "raw_bytes": 11522,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R2_INTENTS_COLLECTED_NODES.json.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R2_RAW.log",
+      "raw_sha256": "38e80fd615e41ee561c4823bea75401bb52213306afdea6de52d080534e2e54c",
+      "raw_bytes": 45045,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R2_RAW.log.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R2_SOURCE_BINDINGS.json",
+      "raw_sha256": "48cffce7e3eec05e0891b99a393b5323c2c95cfa2f8b313255e57a00f372ac50",
+      "raw_bytes": 561897,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R2_SOURCE_BINDINGS.json.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R3.xml",
+      "raw_sha256": "37bbb43b7ae7c02febe51d72b7546bc9be39ebb6968dde55588c22e0c738726d",
+      "raw_bytes": 36235,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R3.xml.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R3_EXECUTION.json",
+      "raw_sha256": "7246e85045e5afe516586984a169b34dee91d387b72e1c9b3bd2816733b7f844",
+      "raw_bytes": 1017,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R3_EXECUTION.json.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R3_INTENTS.jsonl",
+      "raw_sha256": "efc04104c800f796b9e0d1ee55d1712d58fd2814b1e277f9ff2d297b75945967",
+      "raw_bytes": 52271868,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R3_INTENTS.jsonl.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R3_INTENTS_COLLECTED_NODES.json",
+      "raw_sha256": "a0c9efdfdb4ffe576600c30ad7c9eac23a669eb7ed7bee5db8caa11841073a4e",
+      "raw_bytes": 11522,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R3_INTENTS_COLLECTED_NODES.json.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R3_RAW.log",
+      "raw_sha256": "fe7ee446ee80da13c8849f174e3a623b30fbe53926e2227517588a44443cb4f7",
+      "raw_bytes": 21016,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R3_RAW.log.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R3_SOURCE_BINDINGS.json",
+      "raw_sha256": "3925610a11415853f6147c648c53d02737f4c5c07f86d3dc20f69e869ffd5379",
+      "raw_bytes": 562054,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R3_SOURCE_BINDINGS.json.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R4.xml",
+      "raw_sha256": "2770f2acea7b11416254e2ab49cbfcbae66a3fdfa62cb9cc3ff610fe5fa4b253",
+      "raw_bytes": 16080,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R4.xml.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R4_EXECUTION.json",
+      "raw_sha256": "7f249803b16f91bcf5de3ff3857acfee93a2d5841f1e3206d61e444cbee59642",
+      "raw_bytes": 1017,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R4_EXECUTION.json.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R4_INTENTS.jsonl",
+      "raw_sha256": "09adebfdaa3f178907d6ee58a940ef3bbe7264e89918fc918341b9beeb3a3898",
+      "raw_bytes": 53099161,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R4_INTENTS.jsonl.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R4_INTENTS_COLLECTED_NODES.json",
+      "raw_sha256": "530a19f7ae3fce44f7c4fa652c6a35f24c6705b96e151d90e273d550378b9da3",
+      "raw_bytes": 11522,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R4_INTENTS_COLLECTED_NODES.json.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R4_RAW.log",
+      "raw_sha256": "ec05bb0638afc917ad817c8420cd94a11a76298ff4371fb117e02f237428bb52",
+      "raw_bytes": 276,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R4_RAW.log.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R4_SOURCE_BINDINGS.json",
+      "raw_sha256": "831ef3b1783c7485fc8053630c6d117b294b5540a8e5ea05ab4a6656b75ed32f",
+      "raw_bytes": 562220,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R4_SOURCE_BINDINGS.json.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R5.xml",
+      "raw_sha256": "5316dfbf2feae0da9715b845ef8f1a74a9a2ce92fb299983d11d61a155f44b33",
+      "raw_bytes": 16469,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R5.xml.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R5_EXECUTION.json",
+      "raw_sha256": "94fa46924b4aaf431524edfd3bd5656cb26858971c2fa0fad96fa8056f8fae86",
+      "raw_bytes": 1016,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R5_EXECUTION.json.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R5_INDEPENDENT_NUMERIC_R1.json",
+      "raw_sha256": "425aeab23975e7f5d76be533201d3ad2b8601abc110a15baebab89ec66cf0872",
+      "raw_bytes": 25769,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R5_INDEPENDENT_NUMERIC_R1.json.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R5_INDEPENDENT_NUMERIC_R2.json",
+      "raw_sha256": "57030c6449838bd14a211532003512f1b8db4e2eca878e534793427d7ff3fb2e",
+      "raw_bytes": 25608,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R5_INDEPENDENT_NUMERIC_R2.json.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R5_INTENTS.jsonl",
+      "raw_sha256": "501937f21c534f8be9edbd6617f5a7cd630907997f872f0ce6cc049cf62bba56",
+      "raw_bytes": 53461129,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R5_INTENTS.jsonl.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R5_INTENTS_COLLECTED_NODES.json",
+      "raw_sha256": "9fc379d87c7f4fa4849e9a6e4a6920351224f057481905967aee88ae86ae84dc",
+      "raw_bytes": 11815,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R5_INTENTS_COLLECTED_NODES.json.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R5_RAW.log",
+      "raw_sha256": "7bdef7c56818936915568174864c9a0af415b329c27f2981d2bb3ef9c1bd887d",
+      "raw_bytes": 276,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R5_RAW.log.gz"
+    },
+    {
+      "path": "docs/audits/r4_r3_scope_20261011/SHADOW_LIVE_NATIVE_ORIGINAL_R5_SOURCE_BINDINGS.json",
+      "raw_sha256": "ab547b1c2e0c69ecc53a93df3566bf52de8bfeda8562db3d90513febd32bf1ed",
+      "raw_bytes": 562389,
+      "archive": "raw/SHADOW_LIVE_NATIVE_ORIGINAL_R5_SOURCE_BINDINGS.json.gz"
+    }
+  ],
+  "independent_numeric": {
+    "outcomes": 29,
+    "status_counts": {
+      "OBSERVED": 28,
+      "ADJUSTMENT_UNKNOWN": 1
+    },
+    "checks": 116,
+    "mismatches": 0,
+    "oracle_source_sha256": "d43b189421e345ff8e3d7f5ec6e5fb2aed38ed80ee22424ffafcefe38a60bbf0",
+    "scope": "Subject price paths from exact raw files, not benchmark/control semantic acceptance"
+  },
+  "closure_conditions": [
+    {
+      "item": "Twenty-table native PostgreSQL ledger and queue",
+      "status": "SCOPED_PASS",
+      "evidence": "Original full 152-node modules retained plus 3 actual source-negative nodes"
+    },
+    {
+      "item": "Stop/restart and two actual PG sessions with one CAS winner",
+      "status": "SCOPED_PASS",
+      "evidence": "Original restart, crash/retry and two-connection nodes"
+    },
+    {
+      "item": "Immutable facts, relational binding, schema/function corruption rejection",
+      "status": "SCOPED_PASS",
+      "evidence": "Original direct database negatives and genuine PG corruption clones"
+    },
+    {
+      "item": "Exact evaluation-source file bytes and rows",
+      "status": "SCOPED_PASS",
+      "evidence": "SHA/size/rows forged negatives; corrected actual file with different return"
+    },
+    {
+      "item": "Complete V4 denominator and all semantic consumers",
+      "status": "OPEN",
+      "evidence": "Requires separate final whole current-V4 run and all semantic oracles"
+    }
+  ],
+  "old_numeric_source_failure_retained": true,
+  "old_oracle_contract_status_failure_retained": true,
+  "external_acceptance": "NOT_GRANTED",
+  "production_changed": false,
+  "real_maturity_permission": false,
+  "full_system_acceptance": "OPEN",
+  "notes": [
+    "Executed source bytes are archived losslessly; git blob hashes are separate because Windows line ending representation may differ.",
+    "Current native dispatch cannot open an embedded database; predecessor implementations remain unreachable in native isolation."
+  ]
+}

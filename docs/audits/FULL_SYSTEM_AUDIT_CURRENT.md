@@ -1,5 +1,13 @@
 # 全系统代码审计当前入口
 
+R3 主任务接管续行：完整诊断运行保留 4,740 个原始节点（3,866 PASS／414 FAIL／209 ERROR／251 SKIP，另有一个精确 V3-only 排除）；该运行期间存在代码更新，不是最终冻结版本认证。缺失输入恢复后的 29 模块诊断为 456 PASS／94 FAIL／10 ERROR，全部 560 节点及旧失败原件保留，不能替换完整分母。当前三个总目标仍未实现。
+
+最新已推送局部实现 `d4a1c00bc364a153558a4fbc2cb479a55a27fd47`：[31 项完整 PG 内容校验与两交易日实际性能封存](r4_r3_integration_20261011/CAPACITY_VERIFIER_SEAL_R3.json)；首次／热访问及 1、4、8 并发完整响应 SHA 一致，独立发布的 09-30 R2 快照完整内容验证成功，峰值 RSS 2,533,408,768 字节。容量阈值未获批准，容量验收仍 OPEN。[Drive 新副本字节读回](r4_r3_integration_20261011/DRIVE_CAPACITY_BYTE_READBACK_R1.json)一致。该结果不声明全部真实消费者或 56 类通过。
+
+Canonical 重构／元数据／权限局部 263 项通过，提交 `c2281724a5bdc727b1f8f1000948e9900ea7a5db`；逐请求 PG 校验事务复用 28 项通过，提交 `4d3f845d52dff6997ac762064b494a4e293afbac`。历史 09-30 实际生产者在隔离 PG 联合发布与 7 路 HTTP 健康读回成功，仍需完成运行消费者总体闭环；不得借此授予 FIRST_OBSERVED／PIT 或生产切换。
+
+2026-10-11 用户明确取消我设置的 1 GiB 总量与 100 MiB 单文件冻结输入复制上限。继续 G 盘无该人为大小上限恢复、精确 SHA、源只读与已有冲突保留；此前达到复制上限的记录保持历史原件，不再作为后续工程停止理由。真实当日捕获、成熟样本与部署授权仍单列，所有可执行工程缺口仍 OPEN。
+
 R3 B2 续行增量：[UI/传输/Shadow证据](r4_r3_integration_20261011/B2_UI_TRANSPORT_SHADOW_INCREMENT_R3.md)，提交 `b476e8de43388390892b6b01db8c4f56f42d4a02` 已推送；[Drive完整字节读回](r4_r3_integration_20261011/DRIVE_B2_INCREMENT_BYTE_READBACK_R3.json) SHA一致。48个合法局部节点通过，六路传输前后完整内容SHA一致，桌面/390浏览器及4项数据数量对照已补。旧基线失败保留，完整合法回归/全部消费者/56类及全语义门仍OPEN。Series全1,309,832行PG对照是另一个未提交增量，联合发布仍在修复，不构成总验收。
 
 R3 续行工程检查点：[进度与未关闭门](r4_r3_integration_20261011/ENGINEERING_PROGRESS.md) / [Drive 检查点读回](r4_r3_integration_20261011/DRIVE_CHECKPOINT_READBACK.json)。实现提交 `2a7c6cb4d41822a1bed83e9abcfab11bba4deb90`，有界13项真实调度/控制与36项复权测试；合法全分母、所有消费者和全语义仍OPEN，完整基线重跑尚未绿。该检查点不替代下方R2与历史裁决。

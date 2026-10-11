@@ -1,0 +1,74 @@
+...................................................FFF.................. [ 75%]
+.......................                                                  [100%]
+================================== FAILURES ===================================
+_________________ test_default_old_sqlite_binding_is_rejected _________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/r4_r2_hardening_final/test_default_old_sqlite_bindin0')
+
+    def test_default_old_sqlite_binding_is_rejected(tmp_path):
+        bff = vector(tmp_path, {'path': 'history.sqlite', 'sha256': 'a' * 64})
+>       with pytest.raises(ValueError, match='^PG_HISTORY_BINDING_REQUIRED_NO_FALLBACK$'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: 
+E       - PRODUCT_AUTHORITY_CONTRACT_REQUIRED
+E       + PG_HISTORY_BINDING_REQUIRED_NO_FALLBACK
+
+tests\test_v4_default_history_authority_r4.py:34: AssertionError
+_________________ test_default_pg_binding_reads_exact_history _________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/r4_r2_hardening_final/test_default_pg_binding_reads_0')
+
+    def test_default_pg_binding_reads_exact_history(tmp_path):
+        bars = [{'trade_date': '2026-10-09', 'raw_ohlc': [1, 2, 1, 2],
+                 'qfq_ohlc': [2, 4, 2, 4], 'volume': 100, 'amount': 150}]
+        index = build(tmp_path, [{'security_id': 'ENGINEERING', 'bars': bars}],
+                      head_token='a' * 64, t0='2026-10-09', source_digest='b' * 64)
+        bff = vector(tmp_path, index)
+>       manifest, facts = bff.history_pack('2026-10-09')
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_default_history_authority_r4.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_service\core_product_bff_r1.py:132: in history_pack
+    return self.pack(day)
+           ^^^^^^^^^^^^^^
+src\workbench_service\core_product_bff_r1.py:139: in pack
+    manifest=dated_product_manifest(self.api.root,json.loads(authority.read_bytes()),day)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_service\core_product_bff_r1.py:31: in dated_product_manifest
+    product_manifest_bindings(authority)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+authority = {'manifest': {'bytes': 854, 'path': 'data/manifest.json', 'sha256': '8d8817ca52d5eec5692d84adc160093e4c8a6970b1be91fc924238cee3fb8e59'}}
+
+    def product_manifest_bindings(authority):
+        """Versioned authority: R1 singleton or R2 exact date catalogue."""
+        if authority.get('contract_id') == 'CORE_PRODUCT_READ_AUTHORITY_R1':
+            return [authority['manifest']]
+        if authority.get('contract_id') == 'CORE_PRODUCT_READ_AUTHORITY_R2':
+            if set(authority) != {'contract_id', 'dates'} or not isinstance(authority['dates'], dict):
+                raise ValueError('PRODUCT_AUTHORITY_CATALOG_INVALID')
+            return list(authority['dates'].values())
+>       raise ValueError('PRODUCT_AUTHORITY_CONTRACT_REQUIRED')
+E       ValueError: PRODUCT_AUTHORITY_CONTRACT_REQUIRED
+
+src\workbench_service\core_product_bff_r1.py:27: ValueError
+________________ test_default_manifest_tamper_fails_before_pg _________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/r4_r2_hardening_final/test_default_manifest_tamper_f0')
+
+    def test_default_manifest_tamper_fails_before_pg(tmp_path):
+        bff = vector(tmp_path, {'engine': 'postgresql'})
+        (tmp_path / 'data/manifest.json').write_text('{}')
+>       with pytest.raises(ValueError, match='DIGEST_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'DIGEST_MISMATCH'
+E         Actual message: 'PRODUCT_AUTHORITY_CONTRACT_REQUIRED'
+
+tests\test_v4_default_history_authority_r4.py:56: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_v4_default_history_authority_r4.py::test_default_old_sqlite_binding_is_rejected
+FAILED tests/test_v4_default_history_authority_r4.py::test_default_pg_binding_reads_exact_history
+FAILED tests/test_v4_default_history_authority_r4.py::test_default_manifest_tamper_fails_before_pg
+3 failed, 92 passed, 3 deselected in 17.07s

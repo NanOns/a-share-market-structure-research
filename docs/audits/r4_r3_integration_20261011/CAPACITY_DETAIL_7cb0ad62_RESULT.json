@@ -1,0 +1,116 @@
+{
+  "contract_id": "R4_R3_TWO_T0_CAPACITY_DETAILS",
+  "rows": [
+    {
+      "T0": "2026-09-29",
+      "token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "fresh_handler_context": {
+        "seconds": 10.157204100047238,
+        "bytes": 3852,
+        "decoded_bytes": 3852,
+        "sha256": "32c3d54e0717f92e7401aa8d7bca151351a8809dfebb9cff08d89442d3451080"
+      },
+      "first_home": {
+        "seconds": 1.584597399982158,
+        "bytes": 1076592,
+        "decoded_bytes": 6034702,
+        "sha256": "25a8c6d1f84436fd74703ed90e33d24ac47e5f1fc3e97916259a8d1997c652c8"
+      },
+      "hot_home": {
+        "seconds": 2.0126135000027716,
+        "bytes": 1076592,
+        "decoded_bytes": 6034702,
+        "sha256": "25a8c6d1f84436fd74703ed90e33d24ac47e5f1fc3e97916259a8d1997c652c8"
+      },
+      "concurrency": [
+        {
+          "workers": 1,
+          "requests": 2,
+          "p95_seconds": 1.6079628000152297,
+          "throughput": 0.6183213182193088
+        },
+        {
+          "workers": 4,
+          "requests": 8,
+          "p95_seconds": 6.715501600003336,
+          "throughput": 0.608387453009667
+        },
+        {
+          "workers": 8,
+          "requests": 16,
+          "p95_seconds": 13.293316499970388,
+          "throughput": 0.6104848498923091
+        }
+      ]
+    },
+    {
+      "T0": "2026-10-09",
+      "token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "fresh_handler_context": {
+        "seconds": 15.636405800003558,
+        "bytes": 3976,
+        "decoded_bytes": 3976,
+        "sha256": "a95638b6987a8f75bd189c6a218db35b2285449caaf31409144b368907dbf700"
+      },
+      "first_home": {
+        "seconds": 3.8224342000321485,
+        "bytes": 1129951,
+        "decoded_bytes": 6313877,
+        "sha256": "cb1932a33c3e52f6bb36a348ebdf5951ffc9b62de0aa4f313e9ae5fc2e27e37e"
+      },
+      "hot_home": {
+        "seconds": 3.7325799000100233,
+        "bytes": 1129951,
+        "decoded_bytes": 6313877,
+        "sha256": "cb1932a33c3e52f6bb36a348ebdf5951ffc9b62de0aa4f313e9ae5fc2e27e37e"
+      },
+      "concurrency": [
+        {
+          "workers": 1,
+          "requests": 2,
+          "p95_seconds": 3.670457499974873,
+          "throughput": 0.2848262300802624
+        },
+        {
+          "workers": 4,
+          "requests": 8,
+          "p95_seconds": 14.46178409998538,
+          "throughput": 0.2785405261912035
+        },
+        {
+          "workers": 8,
+          "requests": 16,
+          "p95_seconds": 28.861151699966285,
+          "throughput": 0.279609597336542
+        }
+      ]
+    }
+  ],
+  "snapshot_verification": {
+    "seconds": 31.24139479995938,
+    "root": "G:\\codex_tmp\\r4_r3_pg_publication_v2",
+    "release_id": "05cf8913242f46c8af53b3d89f323b64",
+    "database": {
+      "bytes": 6141658,
+      "path": "data/v4/research_snapshots/05cf8913242f46c8af53b3d89f323b64/research.pg.json",
+      "sha256": "38b83ba5504a0d5b7a99874f9a0b5111dada88561bf98708e49db8c3f5988983"
+    },
+    "scope": "Separately published 09-30 native R2 snapshot: complete constructor and read verification; distinct from two-T0 operational-owner workload"
+  },
+  "rss_initial_bytes": 126439424,
+  "rss_peak_bytes": 2533408768,
+  "source_sha256": {
+    "src\\workbench_service\\core_product_server_r1.py": "8d464abe6e039603b4353bc1bdd26a86c8ae887c5cf4609b77aa5322e207c6d6",
+    "src\\workbench_service\\core_product_bff_r1.py": "1c9c41c5f0c6d0eb99eaff25fc1914a7903eda04c6d8b69a24b1a2f2010a5d7b",
+    "src\\workbench_service\\product_http_transport_r2.py": "75b420dd4eff9fd75c6e9bb6d97a2c3af31db61a382bf75f0950416e588c624f",
+    "src\\workbench_service\\operational_successor_bff_v1.py": "96cb09b8bc4ed0b357af643f55fab2170523691a97c7fcd34625781e49ebaa53",
+    "src\\workbench_service\\r43_operational_bff.py": "f83e090adf8839161be54817e17a3ff39e7f2ccde5751dc436ca61d298d89a25",
+    "src\\workbench_service\\production_v4.py": "9500acbaf02b1efb7e5add3943e675ae108caf7499a9178b8d9ed8a5d9507c13"
+  },
+  "capacity_acceptance": "OPEN_NO_APPROVED_THRESHOLD",
+  "status": "SCOPED_CONTENT_ORACLE_PASS",
+  "limits": [
+    "Fresh handler is measured; OS/PG cache is not purged and is not claimed cold",
+    "Concurrent shared-host engineering workload; no capacity threshold approved"
+  ]
+}

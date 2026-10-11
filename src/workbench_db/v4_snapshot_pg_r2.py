@@ -127,6 +127,9 @@ def table_manifest(pg, schema, storage_kind='snapshot'):
                 sql.Identifier(column)) for column in ORDER.get(table, (columns[0],))))
         h = hashlib.sha256(); count = 0
         with pg.cursor(name='snapshot_verify_' + uuid.uuid4().hex) as cursor:
+            # Bound client allocations for large object payloads. Every row
+            # remains in the same deterministic full-content digest scan.
+            cursor.itersize=32
             cursor.execute(query)
             for row in cursor:
                 values = [value.isoformat() if kind == 'date' and value is not None else value

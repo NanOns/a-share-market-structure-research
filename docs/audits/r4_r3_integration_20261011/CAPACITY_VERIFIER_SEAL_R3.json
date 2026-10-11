@@ -1,0 +1,82 @@
+{
+  "contract_id": "R4_R3_CAPACITY_AND_COMPLETE_CONTENT_VERIFIER_SEAL_R3",
+  "base_head": "4d3f845d52dff6997ac762064b494a4e293afbac",
+  "source_sha256": {
+    "src/workbench_db/v4_snapshot_pg_r2.py": "12631bbcce665665fca4b2ed6eb8cef8f148f98e73b52d2f910d0b4b592be7ee",
+    "scripts/audit_r4_r3_capacity_detail.py": "7729ab177815133d23314f47f9cedb55ce549b2ffc990889cf88c6133a6a8497"
+  },
+  "independent_counts": {
+    "PASS": 31
+  },
+  "evidence": [
+    {
+      "path": "docs/audits/r4_r3_integration_20261011/CAPACITY_DETAIL_7cb0ad62_INTENTS.jsonl",
+      "raw_sha256": "a08fa6d87bbf62352091cb513c9aaca62dd5a1f960dfbe65a77aeb4c6b2f9325",
+      "raw_bytes": 17337,
+      "gzip_path": "docs/audits/r4_r3_integration_20261011/CAPACITY_DETAIL_7cb0ad62_INTENTS.jsonl.gz",
+      "gzip_sha256": "d11572d0f6e8b43f33a8661a16edb32bc2f8dada56a91f577794ef962e51d883"
+    },
+    {
+      "path": "docs/audits/r4_r3_integration_20261011/CAPACITY_DETAIL_7cb0ad62_PARTIAL.json",
+      "raw_sha256": "8e7a487b236989748e0bf9488c258115fa8d7406a0d6d6fb7fc40f2c463b9c9b",
+      "raw_bytes": 3498,
+      "gzip_path": "docs/audits/r4_r3_integration_20261011/CAPACITY_DETAIL_7cb0ad62_PARTIAL.json.gz",
+      "gzip_sha256": "0aef6d79d43495ebc553a9c7bfa8e7b986adc864247e788790f858bc45e56eb4"
+    },
+    {
+      "path": "docs/audits/r4_r3_integration_20261011/CAPACITY_DETAIL_7cb0ad62_RESULT.json",
+      "raw_sha256": "0c8d4c503f8d6af1abf70bb87c25036adc3722360ef3b796e67e76a64fdd98a6",
+      "raw_bytes": 4400,
+      "gzip_path": "docs/audits/r4_r3_integration_20261011/CAPACITY_DETAIL_7cb0ad62_RESULT.json.gz",
+      "gzip_sha256": "9d46e5acda24355ab4ea248d2ef85e081cfbc5c22232a6bdc635064e08abd2cf"
+    },
+    {
+      "path": "docs/audits/r4_r3_integration_20261011/CAPACITY_DETAIL_CONTINUATION_R4_RAW.log",
+      "raw_sha256": "65930bc77b64399b99b49d25e8dd48d436909707a7e3b26984848317adbda831",
+      "raw_bytes": 13199,
+      "gzip_path": "docs/audits/r4_r3_integration_20261011/CAPACITY_DETAIL_CONTINUATION_R4_RAW.log.gz",
+      "gzip_sha256": "df4e6e26eb10e59493429e71c84a6454457fcf299d24a375a8df47756550f71e"
+    },
+    {
+      "path": "docs/audits/r4_r3_integration_20261011/CAPACITY_DETAIL_CONTINUATION_R5_RAW.log",
+      "raw_sha256": "6a237be73f1b2c209f12da4b38ca7617b4e3e629e82eb8ba3f237fc2e68ce29c",
+      "raw_bytes": 11254,
+      "gzip_path": "docs/audits/r4_r3_integration_20261011/CAPACITY_DETAIL_CONTINUATION_R5_RAW.log.gz",
+      "gzip_sha256": "5b4d21ac2b7e66b01ca83a2e5fa63de1814048971f528115bb02c1f5ed4e4cf8"
+    },
+    {
+      "path": "docs/audits/r4_r3_integration_20261011/PG_VERIFIER_BATCH_R1.xml",
+      "raw_sha256": "e7409fc50c35d9b2f49668ec3db14c9d8c5ab32754adc2ad2edba44ca4484ceb",
+      "raw_bytes": 4724,
+      "gzip_path": "docs/audits/r4_r3_integration_20261011/PG_VERIFIER_BATCH_R1.xml.gz",
+      "gzip_sha256": "cf6029583576594046ebf1ceab2120db73a113959a9cee4e5e6d87abb2e4985b"
+    },
+    {
+      "path": "docs/audits/r4_r3_integration_20261011/PG_VERIFIER_BATCH_R1_INTENTS.jsonl",
+      "raw_sha256": "e5990cdf5e38aa10477a47479d21ba7b669795c6ed09726837bfcdfd677d56ad",
+      "raw_bytes": 1216896,
+      "gzip_path": "docs/audits/r4_r3_integration_20261011/PG_VERIFIER_BATCH_R1_INTENTS.jsonl.gz",
+      "gzip_sha256": "2964297fa0a3f44fc125d74d62c01c72bbae262fb5a4c9007565cbced3ea35d1"
+    },
+    {
+      "path": "docs/audits/r4_r3_integration_20261011/PG_VERIFIER_BATCH_R1_INTENTS_COLLECTED_NODES.json",
+      "raw_sha256": "69aa3263f93f74f5acb05c8ec43c941d544b80e4e1f647664a26528361c8f0ff",
+      "raw_bytes": 4002,
+      "gzip_path": "docs/audits/r4_r3_integration_20261011/PG_VERIFIER_BATCH_R1_INTENTS_COLLECTED_NODES.json.gz",
+      "gzip_sha256": "8b24fd316763c45103e664909b1a6a325d53c3780babd52b37e69f44caa9e1b1"
+    },
+    {
+      "path": "docs/audits/r4_r3_integration_20261011/PG_VERIFIER_BATCH_R1_RAW.log",
+      "raw_sha256": "4c32bc67fd7dd96de462fdfe381058c2d1c5be5222827321ec267280bbd16a4f",
+      "raw_bytes": 102,
+      "gzip_path": "docs/audits/r4_r3_integration_20261011/PG_VERIFIER_BATCH_R1_RAW.log.gz",
+      "gzip_sha256": "ec80b25404a00feea74f43dbd91dd19cd2e2fd93ca027cbd63ff06f5251f70c2"
+    }
+  ],
+  "runtime_result": "CAPACITY_DETAIL_7cb0ad62_RESULT.json",
+  "closure": "Full-content integrity and two-T0 workload execution only",
+  "capacity_acceptance": "OPEN_NO_APPROVED_THRESHOLD",
+  "full_legal_denominator": "OPEN",
+  "all_56_consumers": "OPEN",
+  "production_changed": false
+}

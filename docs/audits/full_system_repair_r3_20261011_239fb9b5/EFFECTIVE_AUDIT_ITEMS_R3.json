@@ -115,7 +115,9 @@
       "batch": "B",
       "status": "OPEN",
       "acceptance_independent_of_current_stage": true,
-      "effective_location": "tests/remainder_plugin.py;tests/v4_09;tests/fep_e4"
+      "effective_location": "tests/remainder_plugin.py;tests/v4_09;tests/fep_e4",
+      "effective_regression_scope": "V4 only; mixed all-repository/legacy DB attempts excluded",
+      "continuation_evidence": "B3_SCOPE_CORRECTION_R3.json"
     },
     {
       "audit_item_id": "FA-007",
@@ -320,6 +322,32 @@
       "acceptance": "Explicit empty-population result/rejection contract and handled response; singleton plus unrelated sector, n=2/multi/overlap tests retain semantics; no formal LOO grant inferred",
       "effective_location": null,
       "repair_evidence": "A5_REPAIR_RESULT.json"
+    },
+    {
+      "audit_item_id": "FA-018",
+      "severity": "P2",
+      "classification": "CONFIRMED_CURRENT_V4_BACKEND_CONSTRAINT_CONFLICT",
+      "title": "V4日更调度持久化使用SQLite，与用户PostgreSQL-only约束冲突",
+      "scope": "V4 operational DailyJobs",
+      "status": "OPEN_POSTGRES_MIGRATION_AND_CONSUMER_GATE",
+      "effective_location": "src/workbench_analysis/operational_daily_jobs_v1.py:31,147",
+      "evidence": "FA018_V4_NON_POSTGRES_SCHEDULER_AUDIT.json",
+      "acceptance_independent_of_current_stage": true,
+      "current_block": "PG_SCHEDULER_CONTRACT_MIGRATION_REPLAY_AND_CUTOVER_OPEN",
+      "repair_recommendation": "独立A7工程候选及迁移回放；不得擅改运行中调度器/日记、Head或Grant"
+    },
+    {
+      "audit_item_id": "FA-019",
+      "severity": "P2",
+      "classification": "CONFIRMED_CURRENT_V4_SQLITE_READ_INDEX_DEPENDENCY",
+      "title": "V4现行图表读取SQLite派生历史索引，与PostgreSQL-only约束冲突",
+      "scope": "Core product dated charts / derived read index",
+      "status": "OPEN_POSTGRES_READ_INDEX_CONTRACT_AND_CONSUMER_MIGRATION",
+      "effective_location": "src/workbench_service/core_product_bff_r1.py:207-209",
+      "evidence": "FA019_V4_SQLITE_DERIVED_INDEX_AUDIT.json",
+      "acceptance_independent_of_current_stage": true,
+      "current_block": "NEW_PG_INDEX_CONTRACT_CANDIDATE_VALUE_TIME_IDENTITY_AND_PRODUCTION_GATE",
+      "repair_recommendation": "A8新版本PG索引候选/全消费delta，保留旧不可变Owner和历史SQLite原件"
     }
   ],
   "additional_items": [
@@ -328,6 +356,17 @@
       "status": "ENGINEERING_FIXED_EXTERNAL_PENDING",
       "original_bytes_preserved": true,
       "acceptance": "Effective view resolves FA-012 without mutating historical originals"
+    },
+    {
+      "audit_item_id": "AR3-E02",
+      "severity": "P2",
+      "classification": "AUDIT_SCOPE_GOVERNANCE",
+      "status": "SCOPE_FIXED_FINAL_REGRESSION_PENDING",
+      "evidence": "B3_SCOPE_CORRECTION_R3.json",
+      "acceptance_independent_of_current_stage": true
     }
-  ]
+  ],
+  "audit_scope": "V4_ONLY",
+  "database_requirement": "POSTGRESQL_ONLY",
+  "regression_scope_contract": "config/v4_audit_regression_scope_r3.json"
 }

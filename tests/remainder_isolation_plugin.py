@@ -58,6 +58,30 @@ def pytest_configure(config):
     clusters=json.loads(manifest.read_bytes()) if manifest.exists() else {}
     allowed={str(v['port']) for v in clusters.values()}
     verified=set()
+    if os.environ.get('REMAINDER_PG_DYNAMIC_REGISTRATION')=='1':
+        from functools import partial
+        from scripts import run_v4_08_r3_isolated_verification as bootstrap
+        def admit_cluster(temp,data,port,connection):
+            temp,data=Path(temp).resolve(),Path(data).resolve()
+            if not temp.is_relative_to(Path('G:/codex_tmp/test_temp').resolve()) or not temp.name.startswith('v4_08_r3_isolated_pg_') or data!=temp/'pgdata':
+                raise ValueError('DISPOSABLE_PG_BOOTSTRAP_ROOT_REJECTED')
+            params=conninfo_to_dict(connection)
+            if params.get('host')!='127.0.0.1' or params.get('port')!=str(port) or str(port) in allowed:
+                raise ValueError('DISPOSABLE_PG_BOOTSTRAP_ADDRESS_REJECTED')
+            # Original connect is used only for a read-only identity witness,
+            # before admission and before the bootstrap creates its database.
+            with connect(connection,autocommit=True) as witness:
+                actual=Path(witness.execute('show data_directory').fetchone()[0]).resolve()
+                if actual!=data:raise ValueError('DISPOSABLE_PG_DIRECTORY_IDENTITY_MISMATCH')
+            key='dynamic-'+str(port)
+            clusters[key]=dict(port=port,root=str(temp),data_directory=str(data),admin_dsn=connection)
+            allowed.add(str(port));verified.add(str(port))
+            EVENTS.append(dict(event='dynamic_pg_admission',decision='ALLOW_VERIFIED_DISPOSABLE_PG',port=port,data_directory=str(data)))
+            def release():
+                allowed.discard(str(port));verified.discard(str(port));clusters.pop(key,None)
+                EVENTS.append(dict(event='dynamic_pg_release',port=port))
+            return release
+        storage.setattr(bootstrap,'disposable_cluster',partial(bootstrap.disposable_cluster,admit_cluster=admit_cluster))
     def isolated(conninfo='',*args,**kw):
         params=conninfo_to_dict(conninfo,**{k:v for k,v in kw.items() if k in ('host','port','dbname','user')})
         if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
@@ -67,7 +91,7 @@ def pytest_configure(config):
         if port not in verified:
             with connect(cluster['admin_dsn'],autocommit=True) as witness:
                 directory=Path(witness.execute('show data_directory').fetchone()[0]).resolve()
-                if directory!=(Path(cluster['root'])/'data').resolve() or not any(directory.is_relative_to(base) for base in ALLOWED):raise ValueError('DISPOSABLE_PG_DIRECTORY_IDENTITY_MISMATCH')
+                if directory!=Path(cluster.get('data_directory',str(Path(cluster['root'])/'data'))).resolve() or not any(directory.is_relative_to(base) for base in ALLOWED):raise ValueError('DISPOSABLE_PG_DIRECTORY_IDENTITY_MISMATCH')
             verified.add(port)
         EVENTS.append(dict(event='psycopg.connect',decision='ALLOW_VERIFIED_DISPOSABLE_PG',database=params.get('dbname'),port=port,cluster_root=cluster['root']))
         return connect(conninfo,*args,**kw)

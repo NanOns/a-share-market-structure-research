@@ -1,0 +1,62 @@
+{
+  "contract_id": "B4_AMOUNT_A_REUSE_FORMAL_ADMISSION_R3",
+  "prior_pass_evidence": [
+    {
+      "path": "docs/audits/full_system_audit_r2_20261011_58faf74e/b4_amount_oracle.json",
+      "sha256": "2df71fc983ab86fff9b7f6b1df1265c9d6b074c8819e9aeb1a61ad0199b595f1",
+      "bytes": 1388516
+    },
+    {
+      "path": "docs/audits/full_system_audit_r2_20261011_58faf74e/b4_cross_source_amount_differences.csv",
+      "sha256": "2cd8d4984502dc9200e6d83789494425809d5e994299ae6c4ca5ddb7e2cb12a4",
+      "bytes": 418179
+    },
+    {
+      "path": "docs/audits/full_system_audit_r2_20261011_58faf74e/b4_real_warmup_junit.xml",
+      "sha256": "54f2f667c161b3e38656c5092658fe42fe160071409514d1069fcf8c6832fb3a",
+      "bytes": 414
+    },
+    {
+      "path": "docs/audits/full_system_audit_r2_20261011_58faf74e/b4_real_warmup_readback.json",
+      "sha256": "6960f411d34d3920b3d759af3ce10c71f926464fe020a1d4519ad14543388a3b",
+      "bytes": 486
+    }
+  ],
+  "reuse_scope": "Cross-source amount representation and window arithmetic only; no rerun or new grant",
+  "formal_H21": {
+    "status": "REAL_WARMUP_READBACK_PASS_SCOPED",
+    "observation_count": 1,
+    "sector_count": 378,
+    "unknown_amount_count": 378,
+    "missing_session_counts": [
+      20
+    ],
+    "formal_consumer_enabled": false,
+    "observation_bindings": [
+      {
+        "path": "data/v4/a04_go_forward_r3/observations/d1c7a8c82f3ce65d8301fc672a9320895ad5d23ea3807dd6c5d19b81fe72b93e.json",
+        "sha256": "e25f025bff2982de95ab1d2ceca268ad86400f66f2137f4bf738833fbbdadf62",
+        "bytes": 2694328
+      }
+    ]
+  },
+  "acceptance": "PRIOR_NUMERIC_SCOPE_REUSED_FORMAL_H21_AND_CONSUMER_OPEN",
+  "next": "Require 20 legal PIT observations under current A04 source admission; missing sessions remain UNKNOWN",
+  "effective_contracts": [
+    {
+      "path": "config/a04_amount_a_go_forward_r3.json",
+      "sha256": "1b16422fead3d58e2e88cf3bafb65cb239389c8406ba2ccfc5d2f17c286531bf",
+      "bytes": 1586
+    },
+    {
+      "path": "config/a04_amount_a_namespace_r3.json",
+      "sha256": "c723a3b69a33b58229aa22caa0550b724a8f00c091abf702fba9a74c0f45505b",
+      "bytes": 734
+    },
+    {
+      "path": "config/a04_amount_a_source_admission_r3_1.json",
+      "sha256": "f66e900f63cd4db02292fe2353db4b7ffd7af07e7a7f4a8717b0306c3aadae2e",
+      "bytes": 540
+    }
+  ]
+}

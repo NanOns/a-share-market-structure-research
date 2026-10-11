@@ -47,3 +47,17 @@ E3 的 artifact kind 同样参与路径构造，现补充单段 token 约束，�
 新增84个配置版本、674个字段记录、298个字段名、37,264个schema原子与源码候选锚点。控制、首页、比较、三时间标签及历史标签有5组明确范围的语义检查；全系统合法需求分母仍null，逐字段公式/source/quality/API/UI证明仍OPEN，39模块不能升级。
 
 FIRST由真实SettlementRuntime生成函数验证120种事件排列，按最早日期及同日风险优先；右截尾保留NONE，按日期等权。ANY重叠事件频率可同时为1，不共同归一化。但ANY输入为合成，FIRST/ANY正式target仍REGISTERED_NOT_ENABLED且工程adapter=false；没有已准入正式label全分母。旧日prior、D0/D1/D2与完整Cohort仍OPEN。
+
+## 用户范围纠正 / AR3-E02
+
+本次审计有效范围为V4，数据库约束为PostgreSQL-only。此前全仓库pytest带入旧M2/M12的DuckDB测试，属于范围扩张；该混合回归已停止，其日志、旧DB/Parquet复制与API尝试仅保留作过程记录，全部不计V4验收。73项PG namespace/E2/E5选择性工程证据仍不等于全量回归。
+
+V4专用清单冻结245个模块，源码与排除原因绑定SHA；V4测试启动不再自动装载旧库兼容夹具。对DuckDB/SQLite连接及未登记PG直接拒绝，G隔离PG先核对真实data_directory。V4-name测试中遗留旧库依赖若触发将作为失败，不以旧版库补PASS。最终全量结果另见B3收据，不能复用混合范围计数。
+
+## FA-018 独立后端约束问题
+
+实际V4 DailyJobs在runtime/dynamic_daily/jobs.sqlite3持久化调度状态，connect使用sqlite3与WAL。Core product/桌面Engine确有构造路径；现有启动收据声明加载的jobs源码SHA与当前文件相同，运行目录存在该数据库及WAL/SHM。它是V4任务日记后端冲突，不能归为刚才旧DuckDB测试误入。已有反例截获真实构造函数的SQLite连接意图，无真实DB写入；尚未迁移，FA-018保持OPEN。下一A7须独立PG合同/表结构/迁移与取消重启并发回放；当前生产调度器及日记保持原状。
+
+## FA-019 现行图表派生索引
+
+使用真实accepted_api及2026-10-09冻结Owner调用实际chart函数，截获已绑定history.sqlite的mode=ro连接；未打开数据库，所有Head不变。现行manifest绑定426,196,992字节SQLite索引。生产启动对应Git源码的pack/chart AST与当前相同，证明这段读取逻辑不属于A1/A3才引入的改动。故另开FA-019，范围是V4图表派生读取层，与FA-018调度状态及市场PG主表分别验收。production_v4中另有SQLite snapshot源码；不从合成旧夹具直接推定其当前默认入口可达性。A8须新PG派生索引合同/候选以及值、日期、身份、分页与完整consumer delta，旧Owner/索引原字节保留，不原地迁移。

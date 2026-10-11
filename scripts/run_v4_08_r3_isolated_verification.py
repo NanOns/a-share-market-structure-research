@@ -25,8 +25,8 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 @contextmanager
-def disposable_cluster(pg_bin: Path):
-    temporary = tempfile.TemporaryDirectory(prefix='v4_08_r3_isolated_pg_')
+def disposable_cluster(pg_bin: Path, *, admit_cluster=None):
+    temporary = tempfile.TemporaryDirectory(prefix='v4_08_r3_isolated_pg_',dir='G:/codex_tmp/test_temp')
     temp = Path(temporary.name)
     data = temp / 'pgdata'
     def run(args, **kwargs):
@@ -38,11 +38,14 @@ def disposable_cluster(pg_bin: Path):
     with socket.socket() as sock:
         sock.bind(('127.0.0.1', 0)); port = sock.getsockname()[1]
     started = False
+    release_admission = None
     try:
         run([exe('initdb'), '-D', data, '-U', 'postgres', '--auth=trust', '--encoding=UTF8', '--locale=C'])
         run([exe('pg_ctl'), '-D', data, '-o', f'-h 127.0.0.1 -p {port}', '-l', temp/'postgres.log', '-w', 'start'])
         started = True
         connection = f'host=127.0.0.1 port={port} user=postgres dbname=postgres'
+        if admit_cluster is not None:
+            release_admission=admit_cluster(temp,data,port,connection)
         with psycopg.connect(connection, autocommit=True) as pg:
             pg.execute('''CREATE DATABASE market_research OWNER postgres ENCODING 'UTF8'
                          LC_COLLATE 'Chinese (Simplified)_China.936' LC_CTYPE 'Chinese (Simplified)_China.936' TEMPLATE template0''')
@@ -50,6 +53,8 @@ def disposable_cluster(pg_bin: Path):
     finally:
         if started or (data / 'postmaster.pid').exists():
             run([exe('pg_ctl'), '-D', data, '-m', 'immediate', '-w', 'stop'])
+        if release_admission is not None:
+            release_admission()
         temporary.cleanup()
         if temp.exists():
             raise RuntimeError('disposable cluster cleanup failed')

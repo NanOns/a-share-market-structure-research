@@ -12,6 +12,8 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def scoped_copy(tmp_path, key, mutate=None):
+    from tests.r4_r3_protection_fixture_inputs import hydrate
+    hydrate(tmp_path)
     _, payload = read_payload(ROOT, key)
     refs = payload["protected_heads"] + [payload["external_authority"], payload["independent_readback"]]
     for ref in refs:

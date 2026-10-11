@@ -33,6 +33,12 @@ def validate_protected_binding(root,ref):
     try:
         return bound_path(root,ref)
     except ValueError:
+        if ref.get('path')=='data/v4/V4_STAGE_ACCEPTED_HEAD.json':
+            from .protected_stage_metadata_r3 import resolve
+            archived,receipt=resolve(root,ref)
+            if receipt['grants_current_permission'] or receipt['current_bytes_substituted']:
+                raise ValueError('PROTECTION_CURRENT_PERMISSION_OVERCLAIM')
+            return archived
         if ref.get('path') not in REPRESENTABLE_HEADS:
             raise
         metadata=load(root,PROTECTED_REPRESENTATIONS)
@@ -63,7 +69,12 @@ def validate_record(root,record,package):
     if record.get('current_state')!=CURRENT_STATES[package]:raise ValueError('SCOPED_CURRENT_STATE_CONTRADICTION')
     if record.get('permissions')!=PERMISSIONS or record.get('business_reacceptance') is not False or record.get('head_action')!=dict(data='KEEP',stage='KEEP',v4_06='KEEP',v4_09='KEEP',v4_10='KEEP'):raise ValueError('SCOPED_PERMISSION_OVERCLAIM')
     if not record.get('evidence_bindings') or not record.get('runtime_bindings'):raise ValueError('SCOPED_PROOF_REQUIRED')
-    for ref in [*record['evidence_bindings'],*record['runtime_bindings']]:bound_path(root,ref)
+    for ref in record['evidence_bindings']:bound_path(root,ref)
+    for ref in record['runtime_bindings']:
+        if package=='READER' and ref.get('path')=='src/workbench_analysis/dm01_publication_history_reader_v1.py':
+            from .protected_stage_metadata_r3 import resolve_recorded_reader_source
+            resolve_recorded_reader_source(root,ref)
+        else:bound_path(root,ref)
     for ref in record['protected_heads']:validate_protected_binding(root,ref)
     return dict(status='PASS_EXACT_SCOPED_EXTERNAL_ACCEPTANCE',package=package,disposition=record['disposition'])
 
@@ -109,8 +120,13 @@ def validate_reader_manifest(root,manifest):
     if manifest.get('contract_id')!='ACCEPTED_HISTORY_ONLY_PUBLICATION_READER_R1' or manifest.get('accepted_reader_version')!='v2':raise ValueError('HISTORY_READER_VERSION_INVALID')
     if manifest.get('acceptance_record')!=binding(root,record_path('READER')) or manifest.get('validation_scope')!='ACCEPTED_PUBLICATION_HISTORY_ONLY':raise ValueError('HISTORY_READER_ACCEPTANCE_SCOPE_INVALID')
     if manifest.get('permissions')!=PERMISSIONS or manifest.get('business_reacceptance') is not False:raise ValueError('HISTORY_READER_PERMISSION_OVERCLAIM')
-    expected=[binding(root,p) for p in ['src/workbench_analysis/dm01_publication_history_reader_v2.py','src/workbench_analysis/dm01_publication_history_reader_v1.py','scripts/promote_v4_09_accepted_head.py','scripts/validate_v4_10_promotion_r1.py']]
-    if manifest.get('reader_and_preserved_validator_bindings')!=expected:raise ValueError('HISTORY_READER_RUNTIME_BINDING_INVALID')
+    paths=['src/workbench_analysis/dm01_publication_history_reader_v2.py','src/workbench_analysis/dm01_publication_history_reader_v1.py','scripts/promote_v4_09_accepted_head.py','scripts/validate_v4_10_promotion_r1.py']
+    refs=manifest.get('reader_and_preserved_validator_bindings')
+    if not isinstance(refs,list) or [ref.get('path') for ref in refs]!=paths:raise ValueError('HISTORY_READER_RUNTIME_BINDING_INVALID')
+    from .protected_stage_metadata_r3 import resolve_recorded_reader_source
+    for ref in refs:
+        if ref['path']==paths[1]:resolve_recorded_reader_source(root,ref)
+        elif ref!=binding(root,ref['path']):raise ValueError('HISTORY_READER_RUNTIME_BINDING_INVALID')
     return dict(status='PASS_ACCEPTED_V2_HISTORY_ONLY',business_reacceptance=False,production_authorization=False)
 
 

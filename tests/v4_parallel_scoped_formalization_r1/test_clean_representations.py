@@ -60,6 +60,8 @@ def test_runtime_and_evidence_do_not_use_protected_representation_resolver():
     with pytest.raises(ValueError):validate_record(ROOT,record,'A03')
 
 def test_real_validate_record_in_lf_checkout_and_strict_nonprotected_refs(tmp_path):
+    from tests.r4_r3_protection_fixture_inputs import hydrate
+    hydrate(tmp_path)
     from workbench_analysis.parallel_scoped_acceptance_r1 import AUDIT
     record=json.loads((ROOT/record_path('A03')).read_bytes())
     rows={r['original_binding']['path']:r for r in metadata()['representations']}

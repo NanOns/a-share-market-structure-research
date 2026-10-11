@@ -33,6 +33,12 @@ def verify_protected_metadata(root, ref):
         bound(root, ref)
         return
     except ValueError:
+        if ref.get('path')=='data/v4/V4_STAGE_ACCEPTED_HEAD.json':
+            from workbench_analysis.protected_stage_metadata_r3 import resolve
+            _,receipt=resolve(root,ref)
+            if receipt['grants_current_permission'] or receipt['current_bytes_substituted']:
+                raise ValueError('PROTECTION_CURRENT_PERMISSION_OVERCLAIM')
+            return
         records = json.loads(bound(root, PROTECTED_REPRESENTATIONS_BINDING))["representations"]
         matches = [row for row in records if row["original_binding"] == ref]
         if len(matches) != 1:

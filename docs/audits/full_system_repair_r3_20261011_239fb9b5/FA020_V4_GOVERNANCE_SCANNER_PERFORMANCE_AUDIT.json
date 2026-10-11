@@ -1,0 +1,43 @@
+{
+  "contract_id": "V4_R3_GOVERNANCE_SCANNER_PERFORMANCE_COUNTEREXAMPLE_V1",
+  "source": {
+    "path": "scripts/scan_no_symbol_specific_runtime_logic.py",
+    "sha256": "0a2bac5e9de7443c3ab9981317507f142aa1a7c5eb0e9369fcd9eb6a0a69dfb1",
+    "line": 120
+  },
+  "observation": "Actual V4 test_confirmation::test_no_symbol stack repeatedly runs scan_file line 120 on frozen identity and Focus artifacts",
+  "fixture_kind": "Independent synthetic operation benchmark; no claim of production load or full scanner parity",
+  "mechanism": "For M matches in N characters, text.count from 0 repeats prefix traversals; worst-case O(N*M)",
+  "measurements": [
+    {
+      "matches": 1000,
+      "characters": 121999,
+      "original_seconds": 0.014680799969937652,
+      "independent_line_index_seconds": 0.0002544000162743032,
+      "all_positions_equal": true
+    },
+    {
+      "matches": 5000,
+      "characters": 609999,
+      "original_seconds": 0.3732618999783881,
+      "independent_line_index_seconds": 0.0009564000065438449,
+      "all_positions_equal": true
+    },
+    {
+      "matches": 10000,
+      "characters": 1219999,
+      "original_seconds": 1.4916856999625452,
+      "independent_line_index_seconds": 0.001964299997780472,
+      "all_positions_equal": true
+    }
+  ],
+  "repair_applied": false,
+  "hard_policy_changed": false,
+  "audit_item_id": "FA-020",
+  "severity": "P2",
+  "scope": "V4 governance scanner, separate from service performance and database backend",
+  "acceptance": "CONFIRMED_ALGORITHM_COST_CANDIDATE_REPAIR_NOT_APPLIED",
+  "status": "OPEN",
+  "independent_acceptance_required": true,
+  "next": "Versioned linear/prefix line indexing, exact hits/line/category/policy parity including Unicode and CRLF, real immutable artifact readback; preserve existing hard gates"
+}

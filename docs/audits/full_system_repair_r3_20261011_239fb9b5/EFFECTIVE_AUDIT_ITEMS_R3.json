@@ -348,6 +348,20 @@
       "acceptance_independent_of_current_stage": true,
       "current_block": "NEW_PG_INDEX_CONTRACT_CANDIDATE_VALUE_TIME_IDENTITY_AND_PRODUCTION_GATE",
       "repair_recommendation": "A8新版本PG索引候选/全消费delta，保留旧不可变Owner和历史SQLite原件"
+    },
+    {
+      "audit_item_id": "FA-020",
+      "severity": "P2",
+      "classification": "V4_GOVERNANCE_SCANNER_PERFORMANCE",
+      "title": "V4治理扫描按每个证券命中重复遍历文件前缀",
+      "scope": "V4 GOVERNANCE_SCAN",
+      "location": "scripts/scan_no_symbol_specific_runtime_logic.py:120",
+      "effective_location": "scripts/scan_no_symbol_specific_runtime_logic.py:120",
+      "evidence": "FA020_V4_GOVERNANCE_SCANNER_PERFORMANCE_AUDIT.json",
+      "status": "OPEN",
+      "current_block": "OPEN",
+      "repair_recommendation": "独立版本化行号索引优化及完整语义/真实文件一致性验证；保持原硬门",
+      "acceptance_independent_of_current_stage": true
     }
   ],
   "additional_items": [

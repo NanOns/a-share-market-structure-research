@@ -1,5 +1,7 @@
 # 全系统代码审计当前入口
 
+FEP 全字段结构补证已推送 `55637e73`：[315 SQL 字段／35 表及 47 注册特征完整清单封存](r4_r3_semantics_focus_20261011/FEP_CATALOG_FIELD_PACKAGE_R2/SEAL.json) / [Drive 字节读回](r4_r3_semantics_focus_20261011/DRIVE_FEP_FIELDS_BYTE_READBACK_R2.json)。独立 `pg_attribute` 字段身份集合与全清单相等，遗漏和伪增字段负例可检出；首次错误的零字段前缀筛选原始输出保留并判为未接受。该清单只证明结构枚举，逐字段生产者、cutoff、quality、实际消费者和数值语义门仍 OPEN，不替代整体 V4 合法分母。
+
 2026-10-12 新增真实输入复权回归包，代码提交 `83e68911e6f4603809376684086d7471b5f00d22`：[限定范围封存](r4_r3_consumers_20261011/EXACT_CORE_REGRESSION_PACKAGE_R1/SEAL.json) / [Drive 完整字节读回](r4_r3_consumers_20261011/DRIVE_EXACT_CORE_BYTE_READBACK_R1.json)。旧五日完整历史 oracle 覆盖 10,762,706 根 bar、42,974,144 个可比较复权价格，发现 80 处一分舍入差异；原始失败保留。精确有理数候选逐项重现全部 80 处，四个 OHLC 均与独立原生输入计算一致，字面数值及负例 11 PASS。该结果仅关闭限定舍入回归；R13 五日实际消费者链及新完整历史对照仍在执行，56 类消费者、全语义、全部 PostgreSQL 入口及正式验收仍 OPEN，生产未切换。
 
 无复制上限补齐后的 29 模块重跑保留全部 560 个原始节点，独立原始 XML 重计为 488 PASS / 72 FAIL / 0 ERROR；旧失败未删。已启动包含新增精确 Core 测试的扩展完整基线重跑，尚未得出最终计数或合法分母终审，不以局部通过代替完整工程关闭。

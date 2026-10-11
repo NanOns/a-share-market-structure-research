@@ -10,6 +10,12 @@ import os
 import psycopg
 
 
+def require_legacy_api_scope():
+    """A V4 native PG process must never activate the historical SQL bridge."""
+    if 'V4_NATIVE_PG_DSN' in os.environ or os.environ.get('R4_NATIVE_ISOLATION')=='1':
+        raise RuntimeError('V4_LEGACY_API_DATABASE_FORBIDDEN_NO_FALLBACK')
+
+
 class ApiConnectionProvider(Protocol):
     @contextmanager
     def connect(self, *, read_only: bool = False) -> Iterator[Any]: ...
@@ -24,11 +30,13 @@ class DuckDBApiConnectionProvider:
 
     @contextmanager
     def connect(self, *, read_only: bool = False) -> Iterator[duckdb.DuckDBPyConnection]:
+        require_legacy_api_scope()
         with duckdb.connect(str(self.database_path), read_only=read_only) as connection:
             yield connection
 
     @contextmanager
     def memory(self) -> Iterator[duckdb.DuckDBPyConnection]:
+        require_legacy_api_scope()
         with duckdb.connect() as connection:
             yield connection
 
@@ -49,6 +57,7 @@ class PostgresDuckDBApiConnectionProvider:
         self.schema = schema
 
     def _open(self) -> duckdb.DuckDBPyConnection:
+        require_legacy_api_scope()
         connection = duckdb.connect(":memory:")
         try:
             connection.execute("INSTALL postgres_scanner")
@@ -123,6 +132,7 @@ class PostgresDuckDBApiConnectionProvider:
 
     @contextmanager
     def memory(self) -> Iterator[duckdb.DuckDBPyConnection]:
+        require_legacy_api_scope()
         with duckdb.connect() as connection:
             yield connection
 

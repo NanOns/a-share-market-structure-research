@@ -2,7 +2,7 @@
 
 最新完整原始运行为 4,789 节点：4,487 PASS / 201 FAIL / 98 ERROR / 3 SKIP；原 4,568 节点保留，精确一个 V3-only AST 节点仍为已记录排除，原始交集为 4,567，禁止把后续局部修复回填为本次全量已通过。运行与独立重计已无损封存于 [原始节点修复包](r4_r3_scope_20261011/NATIVE_FIXTURE_REPAIR_PACKAGE_R1/SEAL.json)，提交 `a0dae754de7f27dc49b1ffc1cbd14d0c0c616ad3`。[Drive 完整字节读回](r4_r3_scope_20261011/DRIVE_NATIVE_FIXTURE_BYTE_READBACK_R1.json)一致。后续修复中 V4_13 原有三个模块 77 节点、FEP 原有 20 节点均全部通过，节点身份集合无减少、无新增；FEP fresh 与 upgrade 分别来自真实对应的隔离 canonical 来源，旧同来源副本和早期失败全部保留。伪造生产准入的能力清单被实际拒绝，未进入采集。
 
-历史保护元数据矩阵仍有 6 FAIL / 156 PASS，未关闭；五日精确链正在继续运行，09-28 实际 Core 已输出 5,222 个证券行，尚未完成全历史窗口 oracle 或全部真实消费者验收。总体保持 EXTERNAL_ACCEPTANCE_BLOCKED / AUDIT_INCOMPLETE，工程缺口不得归入未来交易日、成熟样本或部署授权等待门。
+历史保护元数据局部工作包已推送 `1c644a721cc706b51c4145647bf849a22d851ce1`：[166 PASS、原 162 节点完整保留、旧失败无损封存](r4_r3_scope_20261011/PROTECTED_METADATA_REPAIR_PACKAGE_R1/SEAL.json) / [Drive 实际下载字节一致](r4_r3_scope_20261011/DRIVE_PROTECTED_METADATA_BYTE_READBACK_R1.json)。该运行源字节稳定；历史阶段与读者源仅解析精确登记归档，当前权限由当前完整 authority 独立核对，不授予旧源当前业务接受。其他可达历史读者四模块实际仍有 19 FAIL / 3 PASS，当前阶段升级适配仍 OPEN，原始输出保留于 `HISTORY_REACHABLE_ORIGINAL_MATRIX_R1`。五日精确链已完成 09-28、09-29、09-30 Core，分别 5,222／5,223／5,224 个证券行、阶段 errors 为 0；尚未完成全部日期、全历史窗口 oracle 或全部真实消费者验收。总体保持 EXTERNAL_ACCEPTANCE_BLOCKED / AUDIT_INCOMPLETE，工程缺口不得归入未来交易日、成熟样本或部署授权等待门。
 
 FEP 全字段结构补证已推送 `55637e73`：[315 SQL 字段／35 表及 47 注册特征完整清单封存](r4_r3_semantics_focus_20261011/FEP_CATALOG_FIELD_PACKAGE_R2/SEAL.json) / [Drive 字节读回](r4_r3_semantics_focus_20261011/DRIVE_FEP_FIELDS_BYTE_READBACK_R2.json)。独立 `pg_attribute` 字段身份集合与全清单相等，遗漏和伪增字段负例可检出；首次错误的零字段前缀筛选原始输出保留并判为未接受。该清单只证明结构枚举，逐字段生产者、cutoff、quality、实际消费者和数值语义门仍 OPEN，不替代整体 V4 合法分母。
 

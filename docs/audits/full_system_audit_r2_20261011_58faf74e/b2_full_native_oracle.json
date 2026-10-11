@@ -1,0 +1,883 @@
+{
+  "contract": "FULL_NATIVE_PRICE_ADJUSTMENT_RETURN_RPS_B2_R2",
+  "audited_head": "58faf74e0a108bff74dcafd4e2bbca854fc67cd3",
+  "inputs": [
+    {
+      "bytes": 6906,
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/DAY_RECEIPT.json",
+      "sha256": "1b0da91a2dc953fbcaa408433977cd90cff1ab7ea222052a8b4fa68e1a9fc2d1",
+      "verified_sha256": "1b0da91a2dc953fbcaa408433977cd90cff1ab7ea222052a8b4fa68e1a9fc2d1"
+    },
+    {
+      "bytes": 1856437,
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/CORE_REPLAY.json",
+      "sha256": "8781ecd5b57f913995970cc5e93f292bfb396d1f575903d71dd0e0e5417cc151",
+      "verified_sha256": "8781ecd5b57f913995970cc5e93f292bfb396d1f575903d71dd0e0e5417cc151"
+    },
+    {
+      "bytes": 551726664,
+      "path": "data/v4/dynamic_daily_sources/tdx/20261009/sha256-635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6/hsjday.zip",
+      "sha256": "635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6",
+      "verified_sha256": "635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6"
+    },
+    {
+      "path": "data/v4/corrected_owner_sources/c2f07f4aa8a9e8893e5dc24c1a83ac63f2ab27198ecde444154fd591c73e2739/gbbq",
+      "sha256": "c2f07f4aa8a9e8893e5dc24c1a83ac63f2ab27198ecde444154fd591c73e2739",
+      "bytes": 5614317,
+      "verified_sha256": "c2f07f4aa8a9e8893e5dc24c1a83ac63f2ab27198ecde444154fd591c73e2739"
+    },
+    {
+      "path": "config\\v4_02_gbbq_price_impact_classification_v1.json",
+      "sha256": "c39ff7e14209d250139352dcf78b326c7579721681fd467bac68d21d2515681c",
+      "bytes": 4334
+    },
+    {
+      "path": "src\\tdx\\_gbbq_key.py",
+      "sha256": "10ea1ce6d1e87b6249fdb5ab936c8835c02cc802656b32db2b6cb26c962a3d89",
+      "bytes": 9238
+    },
+    {
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-09-28/core.jsonl.gz",
+      "sha256": "dc3a361aa80735154f61c5170eeb582e7561ccc961f3687ba17d6c4ad535b273",
+      "bytes": 19774743,
+      "verified_sha256": "dc3a361aa80735154f61c5170eeb582e7561ccc961f3687ba17d6c4ad535b273"
+    },
+    {
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-09-29/core.jsonl.gz",
+      "sha256": "4f37f66eedd25142a7233dcf7776992a9ab5c22418a5fd1672806bee6dc17350",
+      "bytes": 19778364,
+      "verified_sha256": "4f37f66eedd25142a7233dcf7776992a9ab5c22418a5fd1672806bee6dc17350"
+    },
+    {
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-09-30/core.jsonl.gz",
+      "sha256": "b80655aeeb0c48cd071bfe7cd7d95018660f23bee393c0cc8a38c0fde222cef6",
+      "bytes": 19793812,
+      "verified_sha256": "b80655aeeb0c48cd071bfe7cd7d95018660f23bee393c0cc8a38c0fde222cef6"
+    },
+    {
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-08/core.jsonl.gz",
+      "sha256": "fe92ea622dd13cdca4ee690fe6c91b9f4ae1fef2321fa78a6c0b66a734b6c9a4",
+      "bytes": 19801167,
+      "verified_sha256": "fe92ea622dd13cdca4ee690fe6c91b9f4ae1fef2321fa78a6c0b66a734b6c9a4"
+    },
+    {
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+      "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270",
+      "bytes": 19792536,
+      "verified_sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+    },
+    {
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/history.jsonl.gz",
+      "sha256": "1297fb01a999165f117afec1660cbb2549366f51030ecf09ba237b9e88607b24",
+      "bytes": 67380907,
+      "verified_sha256": "1297fb01a999165f117afec1660cbb2549366f51030ecf09ba237b9e88607b24"
+    }
+  ],
+  "counts": {
+    "ALL_CURRENT_NATIVE_RAW": {
+      "pass_count": 12977772,
+      "fail_count": 0
+    },
+    "ALL_CURRENT_ADJUSTMENT_AVAILABILITY": {
+      "pass_count": 2162962,
+      "fail_count": 0
+    },
+    "ALL_CURRENT_INDEPENDENT_QFQ": {
+      "pass_count": 8636496,
+      "fail_count": 16
+    },
+    "ALL_FIVE_SESSION_WINDOW": {
+      "pass_count": 104069,
+      "fail_count": 0
+    },
+    "ALL_FIVE_NATIVE_RETURN": {
+      "pass_count": 104069,
+      "fail_count": 0
+    },
+    "ALL_FIVE_RPS_FROM_NATIVE": {
+      "pass_count": 52234,
+      "fail_count": 0
+    }
+  },
+  "errors": [
+    {
+      "group": "ALL_CURRENT_INDEPENDENT_QFQ",
+      "entity": "SEC-3A5B40C6141461B88CA555E0BB852BDF",
+      "field": "OHLC_EXACT_RATIONAL_EVENT_RECURRENCE",
+      "failed_count": 1,
+      "first_indices": [
+        236
+      ],
+      "differences": [
+        {
+          "trade_date": "2025-04-14",
+          "column": "open",
+          "exact_rational": 9.78,
+          "recorded": 9.77,
+          "source_key": "sh688553"
+        }
+      ]
+    },
+    {
+      "group": "ALL_CURRENT_INDEPENDENT_QFQ",
+      "entity": "SEC-55A8B56C7FF6A3DE33B3CB91748FAB9D",
+      "field": "OHLC_EXACT_RATIONAL_EVENT_RECURRENCE",
+      "failed_count": 1,
+      "first_indices": [
+        226
+      ],
+      "differences": [
+        {
+          "trade_date": "2025-04-09",
+          "column": "low",
+          "exact_rational": 9.79,
+          "recorded": 9.78,
+          "source_key": "sh688179"
+        }
+      ]
+    },
+    {
+      "group": "ALL_CURRENT_INDEPENDENT_QFQ",
+      "entity": "SEC-732042B85CB8C459760B3EA97BDA8CEC",
+      "field": "OHLC_EXACT_RATIONAL_EVENT_RECURRENCE",
+      "failed_count": 2,
+      "first_indices": [
+        68,
+        417
+      ],
+      "differences": [
+        {
+          "trade_date": "2025-02-12",
+          "column": "open",
+          "exact_rational": 9.97,
+          "recorded": 9.96,
+          "source_key": "sz000551"
+        },
+        {
+          "trade_date": "2025-06-20",
+          "column": "high",
+          "exact_rational": 9.97,
+          "recorded": 9.96,
+          "source_key": "sz000551"
+        }
+      ]
+    },
+    {
+      "group": "ALL_CURRENT_INDEPENDENT_QFQ",
+      "entity": "SEC-73F4BF10249943885A3D10B9F607ABF3",
+      "field": "OHLC_EXACT_RATIONAL_EVENT_RECURRENCE",
+      "failed_count": 1,
+      "first_indices": [
+        234
+      ],
+      "differences": [
+        {
+          "trade_date": "2025-04-11",
+          "column": "low",
+          "exact_rational": 9.83,
+          "recorded": 9.82,
+          "source_key": "sz002987"
+        }
+      ]
+    },
+    {
+      "group": "ALL_CURRENT_INDEPENDENT_QFQ",
+      "entity": "SEC-BFE774CD5B8008286EBF69F29DEFA452",
+      "field": "OHLC_EXACT_RATIONAL_EVENT_RECURRENCE",
+      "failed_count": 2,
+      "first_indices": [
+        278,
+        286
+      ],
+      "differences": [
+        {
+          "trade_date": "2025-04-28",
+          "column": "low",
+          "exact_rational": 9.83,
+          "recorded": 9.82,
+          "source_key": "sh600668"
+        },
+        {
+          "trade_date": "2025-04-30",
+          "column": "low",
+          "exact_rational": 9.98,
+          "recorded": 9.97,
+          "source_key": "sh600668"
+        }
+      ]
+    },
+    {
+      "group": "ALL_CURRENT_INDEPENDENT_QFQ",
+      "entity": "SEC-E895A31CFD109869E86AEA01D6A1A389",
+      "field": "OHLC_EXACT_RATIONAL_EVENT_RECURRENCE",
+      "failed_count": 1,
+      "first_indices": [
+        270
+      ],
+      "differences": [
+        {
+          "trade_date": "2025-04-24",
+          "column": "low",
+          "exact_rational": 9.93,
+          "recorded": 9.92,
+          "source_key": "sz301395"
+        }
+      ]
+    },
+    {
+      "group": "ALL_CURRENT_INDEPENDENT_QFQ",
+      "entity": "SEC-ED3E719608C869F99FAE03AF724AC348",
+      "field": "OHLC_EXACT_RATIONAL_EVENT_RECURRENCE",
+      "failed_count": 8,
+      "first_indices": [
+        269,
+        271,
+        273,
+        289,
+        292,
+        299,
+        328,
+        330
+      ],
+      "differences": [
+        {
+          "trade_date": "2025-04-24",
+          "column": "high",
+          "exact_rational": 9.98,
+          "recorded": 9.97,
+          "source_key": "sh603538"
+        },
+        {
+          "trade_date": "2025-04-24",
+          "column": "close",
+          "exact_rational": 9.88,
+          "recorded": 9.87,
+          "source_key": "sh603538"
+        },
+        {
+          "trade_date": "2025-04-25",
+          "column": "high",
+          "exact_rational": 9.93,
+          "recorded": 9.92,
+          "source_key": "sh603538"
+        },
+        {
+          "trade_date": "2025-05-06",
+          "column": "high",
+          "exact_rational": 9.93,
+          "recorded": 9.92,
+          "source_key": "sh603538"
+        },
+        {
+          "trade_date": "2025-05-07",
+          "column": "open",
+          "exact_rational": 9.93,
+          "recorded": 9.92,
+          "source_key": "sh603538"
+        },
+        {
+          "trade_date": "2025-05-08",
+          "column": "close",
+          "exact_rational": 9.93,
+          "recorded": 9.92,
+          "source_key": "sh603538"
+        },
+        {
+          "trade_date": "2025-05-20",
+          "column": "open",
+          "exact_rational": 9.93,
+          "recorded": 9.92,
+          "source_key": "sh603538"
+        },
+        {
+          "trade_date": "2025-05-20",
+          "column": "low",
+          "exact_rational": 9.93,
+          "recorded": 9.92,
+          "source_key": "sh603538"
+        }
+      ]
+    }
+  ],
+  "samples": [
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250110",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250113",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250114",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250115",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250116",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250117",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250120",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250121",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250122",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250123",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250124",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250127",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250205",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250206",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250207",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250210",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250211",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250212",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250213",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250214",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250217",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250218",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250219",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250220",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250221",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250224",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250225",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250226",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250227",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250228",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250303",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250304",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250305",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250306",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250307",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250310",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250311",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250312",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250313",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "ALL_CURRENT_ADJUSTMENT_AVAILABILITY",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "field": "20250314",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    }
+  ],
+  "unknown_return_reasons": [
+    {
+      "day": "2026-10-08",
+      "field": "ret20",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 21
+    },
+    {
+      "day": "2026-09-30",
+      "field": "ret20",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 17
+    },
+    {
+      "day": "2026-10-09",
+      "field": "ret20",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 19
+    },
+    {
+      "day": "2026-09-28",
+      "field": "ret20",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 16
+    },
+    {
+      "day": "2026-09-28",
+      "field": "ret1",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 13
+    },
+    {
+      "day": "2026-09-28",
+      "field": "ret3",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 14
+    },
+    {
+      "day": "2026-09-28",
+      "field": "ret5",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 15
+    },
+    {
+      "day": "2026-09-29",
+      "field": "ret1",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 15
+    },
+    {
+      "day": "2026-09-29",
+      "field": "ret3",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 15
+    },
+    {
+      "day": "2026-09-29",
+      "field": "ret5",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 16
+    },
+    {
+      "day": "2026-09-29",
+      "field": "ret20",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 17
+    },
+    {
+      "day": "2026-09-30",
+      "field": "ret1",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 15
+    },
+    {
+      "day": "2026-09-30",
+      "field": "ret3",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 16
+    },
+    {
+      "day": "2026-09-30",
+      "field": "ret5",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 17
+    },
+    {
+      "day": "2026-10-08",
+      "field": "ret1",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 15
+    },
+    {
+      "day": "2026-10-08",
+      "field": "ret3",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 20
+    },
+    {
+      "day": "2026-10-08",
+      "field": "ret5",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 20
+    },
+    {
+      "day": "2026-10-09",
+      "field": "ret1",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 15
+    },
+    {
+      "day": "2026-10-09",
+      "field": "ret3",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 18
+    },
+    {
+      "day": "2026-10-09",
+      "field": "ret5",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 19
+    },
+    {
+      "day": "2026-09-28",
+      "field": "ret20",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 10
+    },
+    {
+      "day": "2026-09-29",
+      "field": "ret20",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 11
+    },
+    {
+      "day": "2026-09-30",
+      "field": "ret20",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 10
+    },
+    {
+      "day": "2026-10-08",
+      "field": "ret20",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 9
+    },
+    {
+      "day": "2026-10-09",
+      "field": "ret20",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 9
+    },
+    {
+      "day": "2026-09-30",
+      "field": "ret1",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 1
+    },
+    {
+      "day": "2026-09-30",
+      "field": "ret3",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 2
+    },
+    {
+      "day": "2026-09-30",
+      "field": "ret5",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 2
+    },
+    {
+      "day": "2026-10-08",
+      "field": "ret3",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 2
+    },
+    {
+      "day": "2026-10-08",
+      "field": "ret5",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 2
+    },
+    {
+      "day": "2026-10-09",
+      "field": "ret3",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 1
+    },
+    {
+      "day": "2026-10-09",
+      "field": "ret5",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 2
+    },
+    {
+      "day": "2026-09-28",
+      "field": "ret5",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 1
+    },
+    {
+      "day": "2026-09-29",
+      "field": "ret5",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 2
+    },
+    {
+      "day": "2026-09-29",
+      "field": "ret1",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 1
+    },
+    {
+      "day": "2026-09-29",
+      "field": "ret3",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 1
+    }
+  ],
+  "stock_count": 5224,
+  "sessions": [
+    "2026-09-28",
+    "2026-09-29",
+    "2026-09-30",
+    "2026-10-08",
+    "2026-10-09"
+  ],
+  "gbbq_record_count": 193597,
+  "gbbq_category_counts": {
+    "1": 63704,
+    "5": 112190,
+    "2": 4142,
+    "3": 4437,
+    "9": 7574,
+    "10": 274,
+    "14": 15,
+    "4": 2,
+    "8": 657,
+    "6": 67,
+    "15": 91,
+    "13": 9,
+    "12": 8,
+    "7": 18,
+    "11": 409
+  },
+  "gbbq_market_counts": {
+    "0": 116399,
+    "1": 69058,
+    "2": 8140
+  },
+  "all_zip_members_crc_pass": true,
+  "native_calendar_sha256": "557880a95281daa5295f405f3ff5c98c060f720cac67dd10f6ac45f64e584172",
+  "elapsed_seconds": 110.54440689086914,
+  "limitations": [
+    "GBBQ immutable key schedule shared input; independent vector inverse Feistel, no audited decoder import.",
+    "Raw source snapshot is later reconstructed and NOT historical first available/PIT.",
+    "Return population eligibility is frozen OBSERVED field quality; independent eligibility/identity/PIT not proved by rank parity.",
+    "Current full QFQ exact rational recurrence independently decoded events; upstream economic event truth not independently sourced.",
+    "Five-session independent returns use native index actual session dates, not all five full historical field formulas."
+  ]
+}

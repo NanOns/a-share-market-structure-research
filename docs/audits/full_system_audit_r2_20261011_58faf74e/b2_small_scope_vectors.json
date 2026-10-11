@@ -1,0 +1,137 @@
+{
+  "contract": "B2_SMALL_LOO_AND_EVENT_FAMILY_STATIC_ORACLE_R2",
+  "checks": [
+    {
+      "case": "LOO_N1_no_unhandled_exception",
+      "expected": true,
+      "actual": "SectorAttentionError: CURRENT_REQUIRES_ONE_TRADE_DATE",
+      "passed": false
+    },
+    {
+      "case": "LOO_N2_remaining_member_count",
+      "expected": 1,
+      "actual": 1,
+      "passed": true
+    },
+    {
+      "case": "LOO_N2_market_median",
+      "expected": -0.04,
+      "actual": -0.04,
+      "passed": true
+    },
+    {
+      "case": "LOO_N2_sector_median",
+      "expected": 0.02,
+      "actual": 0.02,
+      "passed": true
+    },
+    {
+      "case": "LOO_N6_remaining_member_count",
+      "expected": 5,
+      "actual": 5,
+      "passed": true
+    },
+    {
+      "case": "LOO_N6_market_median",
+      "expected": 0.035,
+      "actual": 0.035,
+      "passed": true
+    },
+    {
+      "case": "LOO_N6_sector_median",
+      "expected": 0.04,
+      "actual": 0.04,
+      "passed": true
+    },
+    {
+      "case": "LOO_N1_WITH_OTHER_SECTOR_EMPTY_REASON",
+      "expected": "SECTOR_EMPTY_AFTER_EXCLUSION",
+      "actual": "SECTOR_EMPTY_AFTER_EXCLUSION",
+      "passed": true
+    },
+    {
+      "case": "LOO_N1_WITH_OTHER_SECTOR_UNKNOWN",
+      "expected": null,
+      "actual": null,
+      "passed": true
+    },
+    {
+      "case": "LOO_OVERLAP_RELATIONS",
+      "expected": 2,
+      "actual": 2,
+      "passed": true
+    },
+    {
+      "case": "LOO_OVERLAP_COUNTS",
+      "expected": [
+        5,
+        6
+      ],
+      "actual": [
+        5,
+        6
+      ],
+      "passed": true
+    },
+    {
+      "case": "LOO_OVERLAP_MARKET",
+      "expected": 0.03,
+      "actual": 0.03,
+      "passed": true
+    },
+    {
+      "case": "FIRST_EXCLUSIVE_WEIGHTED_FREQUENCY",
+      "expected": {
+        "NONE": 0.25,
+        "EXIT": 0.25,
+        "INVALIDATED": 0.5
+      },
+      "actual": {
+        "NONE": 0.25,
+        "EXIT": 0.25,
+        "INVALIDATED": 0.5
+      },
+      "passed": true
+    },
+    {
+      "case": "FIRST_TOTAL_MASS",
+      "expected": 1.0,
+      "actual": 1.0,
+      "passed": true
+    },
+    {
+      "case": "ANY_COOCCURRENCE_MASS",
+      "expected": {
+        "EXIT": 0.75,
+        "INVALIDATED": 0.75
+      },
+      "actual": {
+        "EXIT": 0.75,
+        "INVALIDATED": 0.75
+      },
+      "passed": true
+    },
+    {
+      "case": "ANY_NOT_JOINT_NORMALIZATION",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    }
+  ],
+  "passed": 15,
+  "failed": 1,
+  "limitations": [
+    "LOO candidate V3.3 synthetic audit only; no formal PIT or D0 grant.",
+    "FIRST/ANY verifies conditional aggregation over fixed labels; historical label generation and risk-set completeness not established."
+  ],
+  "sources": [
+    {
+      "path": "src/workbench_analysis/full_loo_v3_3.py",
+      "sha256": "f00174db94545628e7b5f81486a9ad4b2f5b6f5cc3993747c1e94a30ba7e1033"
+    },
+    {
+      "path": "src/workbench_analysis/fep_e2/conditional.py",
+      "sha256": "4aa2fdf3373e8cc8749358dac1d40b904974848c678260e3a79cc8206eb925b3"
+    }
+  ]
+}

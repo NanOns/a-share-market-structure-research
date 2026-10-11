@@ -1,0 +1,281 @@
+{
+  "contract": "B3_SYMBOL_HIT_EXECUTION_PURPOSE_TRIAGE_R2",
+  "hard_gate_status_preserved": "FAIL",
+  "count": 24,
+  "path_count": 14,
+  "category_counts": {
+    "EXPLICIT_AUDIT_QA_SAMPLE": 15,
+    "USER_SCOPE_EVIDENCE": 5,
+    "SYNTHETIC_VECTOR": 1,
+    "INDEX_IDENTITY_EXCLUSION": 2,
+    "ACQUISITION_BOUNDED_SMOKE_FALLBACK": 1
+  },
+  "rows": [
+    {
+      "path": "scripts/audit_r43_r1_ui_compatibility.py",
+      "line": 122,
+      "value": "SH.600000",
+      "kind": "EXPLICIT_SECURITY_OR_SYMBOL_LITERAL",
+      "category": "EXPLICIT_AUDIT_QA_SAMPLE",
+      "source_sha256": "9f4f1886fcfb3a821373a881bf3d31935a4ada7ddc8415b08022b92f0093b467",
+      "context": "                real_detail=read(state,'/api/v4/stocks/'+sh600000['entity_id']+suffix)\n                assert real_detail['item']['symbol']=='SH.600000'\n                profile=read(state,'/api/v4/stocks/'+sh600000['entity_id']+'/profile'+suffix)",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/audit_r43_r1_ui_compatibility.py",
+      "line": 127,
+      "value": "SH.600000",
+      "kind": "EXPLICIT_SECURITY_OR_SYMBOL_LITERAL",
+      "category": "EXPLICIT_AUDIT_QA_SAMPLE",
+      "source_sha256": "9f4f1886fcfb3a821373a881bf3d31935a4ada7ddc8415b08022b92f0093b467",
+      "context": "                focus_search=read(state,'/api/v4/focus'+suffix+'&q=600000')\n                assert all(x['symbol']=='SH.600000' for x in focus_search['items'])\n                for path in ('stocks/'+stocks['items'][0]['entity_id']+'/chart','forward/statistics','replay','diagnostics/health','diagnostics/jobs','focus/statistics'):",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/audit_r43_r1_ui_compatibility.py",
+      "line": 117,
+      "value": "SH.600000",
+      "kind": "EXPLICIT_SECURITY_OR_SYMBOL_LITERAL",
+      "category": "EXPLICIT_AUDIT_QA_SAMPLE",
+      "source_sha256": "9f4f1886fcfb3a821373a881bf3d31935a4ada7ddc8415b08022b92f0093b467",
+      "context": "                real_search=read(state,'/api/v4/stocks'+suffix+'&q=600000')\n                sh600000=next(x for x in real_search['items'] if x['symbol']=='SH.600000')\n                assert sh600000['fields']['primary_industry']['quality']=='KNOWN' and sh600000['fields']['primary_industry']['value'].startswith('INDUSTRY:')",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/audit_r43_r2_ui_compatibility.py",
+      "line": 125,
+      "value": "SH.600000",
+      "kind": "EXPLICIT_SECURITY_OR_SYMBOL_LITERAL",
+      "category": "EXPLICIT_AUDIT_QA_SAMPLE",
+      "source_sha256": "5b53a79439710a1c1579d612e0d41e290b007bdb59a179e7cf7d7749616e7264",
+      "context": "                real_detail=read(state,'/api/v4/stocks/'+sh600000['entity_id']+suffix)\n                assert real_detail['item']['symbol']=='SH.600000'\n                profile=read(state,'/api/v4/stocks/'+sh600000['entity_id']+'/profile'+suffix)",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/audit_r43_r2_ui_compatibility.py",
+      "line": 130,
+      "value": "SH.600000",
+      "kind": "EXPLICIT_SECURITY_OR_SYMBOL_LITERAL",
+      "category": "EXPLICIT_AUDIT_QA_SAMPLE",
+      "source_sha256": "5b53a79439710a1c1579d612e0d41e290b007bdb59a179e7cf7d7749616e7264",
+      "context": "                focus_search=read(state,'/api/v4/focus'+suffix+'&q=600000')\n                assert all(x['symbol']=='SH.600000' for x in focus_search['items'])\n                for path in ('stocks/'+stocks['items'][0]['entity_id']+'/chart','forward/statistics','replay','diagnostics/health','diagnostics/jobs','focus/statistics'):",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/audit_r43_r2_ui_compatibility.py",
+      "line": 120,
+      "value": "SH.600000",
+      "kind": "EXPLICIT_SECURITY_OR_SYMBOL_LITERAL",
+      "category": "EXPLICIT_AUDIT_QA_SAMPLE",
+      "source_sha256": "5b53a79439710a1c1579d612e0d41e290b007bdb59a179e7cf7d7749616e7264",
+      "context": "                real_search=read(state,'/api/v4/stocks'+suffix+'&q=600000')\n                sh600000=next(x for x in real_search['items'] if x['symbol']=='SH.600000')\n                assert sh600000['fields']['primary_industry']['quality']=='KNOWN' and sh600000['fields']['primary_industry']['value'].startswith('INDUSTRY:')",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/build_fp13_field_matrix.py",
+      "line": 14,
+      "value": "600000",
+      "kind": "UNQUALIFIED_SECURITY_CODE_IN_IDENTIFIER_CONTEXT",
+      "category": "EXPLICIT_AUDIT_QA_SAMPLE",
+      "source_sha256": "08ec24064443e096bcf23e4f26b4613bfbd48a3eeec80e08a0606359535f8c0f",
+      "context": "    sources=r.manifest['sources'];raw_ref=sources['RAW_DAILY'];raw_bytes=(ROOT/raw_ref['path']).read_bytes();assert digest(raw_bytes)==raw_ref['sha256'];raw=json.loads(raw_bytes)['rows'];by={x['security_id']:x for x in raw}\n    stock=r.query('stocks',{'q':'600000'})['items'][0];sid=stock['entity_id'];profile=get('stocks/'+sid+'/profile')\n    checks=[]",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/deepen_immediate_r3.py",
+      "line": 21,
+      "value": "SZ.001235",
+      "kind": "EXPLICIT_SECURITY_OR_SYMBOL_LITERAL",
+      "category": "USER_SCOPE_EVIDENCE",
+      "source_sha256": "de65aa62cdaf0fa0896c3aecc1dd27eb0666e47b0bdcc2ea8a9dc60fba8ec465",
+      "context": "      exclusions=[dict(scope='BSE',reason='USER_DEFERRED_NETWORK_IDENTITY_VERIFICATION'),\n                  dict(scope='SZ.001235',reason='USER_REPORTED_DELISTED_EXCLUDED_THIS_ROUND',\n                       provenance='User message in current chat; no source authority or historical identity replacement')],",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/evidence_post_r4_runtime.py",
+      "line": 19,
+      "value": "SEC-C08B6C24E4F39D8E85C03F8588661538",
+      "kind": "CANONICAL_SECURITY_ID_LITERAL",
+      "category": "EXPLICIT_AUDIT_QA_SAMPLE",
+      "source_sha256": "a59afea691a0900b663467be0d362def6b51c2aea6eb2271dabd3890f5540da6",
+      "context": "        ('stocks', dict(q='688349', trade_date='2026-09-30')),\n        ('stocks/SEC-C08B6C24E4F39D8E85C03F8588661538', {}),\n        ('market/breadth', {}), ('market/axes', {}), ('forward', {})]",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/evidence_post_r4_runtime.py",
+      "line": 32,
+      "value": "688349",
+      "kind": "UNQUALIFIED_SECURITY_CODE_IN_IDENTIFIER_CONTEXT",
+      "category": "EXPLICIT_AUDIT_QA_SAMPLE",
+      "source_sha256": "a59afea691a0900b663467be0d362def6b51c2aea6eb2271dabd3890f5540da6",
+      "context": "                        context_token=data.get('context_token'), payload=data))\n    code, old = bff.get('/api/v4/stocks', dict(context_token=token, q='688349', trade_date='2026-09-30'))\n    new.append(dict(route='stocks historical 688349', code=code, payload=old))",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/finalize_r3_deepening.py",
+      "line": 31,
+      "value": "SZ.301628",
+      "kind": "EXPLICIT_SECURITY_OR_SYMBOL_LITERAL",
+      "category": "EXPLICIT_AUDIT_QA_SAMPLE",
+      "source_sha256": "942b43a14a4a04e7fd4f8d77b8156de22d90aefb35bffb3d35206527279426e3",
+      "context": "        query=__import__('urllib.parse',fromlist=['urlencode']).urlencode(dict(context_token=prod['context_token'],trade_date=prod['context']['trade_date']))\n        identity=load(load(h['membership_snapshot'])['identity_source']);target=next(r['security_id'] for r in identity['rows'] if r.get('source_security_key')=='SZ.301628')\n        with urlopen('http://127.0.0.1:28765/api/v4/stocks/'+target+'/profile?'+query,timeout=30) as r:profile=json.load(r)",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/finalize_r3_deepening.py",
+      "line": 43,
+      "value": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "kind": "CANONICAL_SECURITY_ID_LITERAL",
+      "category": "EXPLICIT_AUDIT_QA_SAMPLE",
+      "source_sha256": "942b43a14a4a04e7fd4f8d77b8156de22d90aefb35bffb3d35206527279426e3",
+      "context": "      dict(case='unknown_filters',url='maturity=UNKNOWN&health=UNKNOWN',excerpt='电气设备 行业 322 349 27；成熟度/健康度 来源能力不足；共1条'),\n      dict(case='historical_688349_after_fix',url='/v4/research/stocks/SEC-00096141BD5420F5CB3120E687CDA5B9?trade_date=2026-09-30&offset=0',excerpt='研究日期2026-09-30 selected；收盘价13.240；图表DATED_HISTORY_INDEX_NOT_BOUND；竞争解释CONSISTENT_PRICE_BASIS 来源不足'),\n      dict(case='conditional_competing_explanations',url='/v4/research/stocks/301628',excerpt='结构性趋势延续的解释；短暂反弹或波动、尚未形成持续趋势的解释；分别列反证与下一判别条件；未把后继结果写回'),",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/finalize_r3_deepening.py",
+      "line": 39,
+      "value": "SH.688349",
+      "kind": "EXPLICIT_SECURITY_OR_SYMBOL_LITERAL",
+      "category": "EXPLICIT_AUDIT_QA_SAMPLE",
+      "source_sha256": "942b43a14a4a04e7fd4f8d77b8156de22d90aefb35bffb3d35206527279426e3",
+      "context": "      six_entries=[dict(entry=name,viewports=['1920x1080','1366x768'],excerpt=excerpt) for name,excerpt in [\n      ('今日总览','符合 366 / 展示 30；去重净变化 457 · 无变化持续记录 645'),('板块研究','板块研究；行业/概念列表；来源能力不足；400-sector API pagination independently bound'),('个股研究','三一重能 SH.688349 13.590 启动确认 符合'),('关注跟踪','Focus 独立关注清单；共 2805 条 · 第 1 页'),('市场与事件','分母 5224 · 实际行情 5210 · 通达信成交额 19003.65 亿元；涨停72 跌停11 停牌14 不可判定11'),('数据与诊断','R43:2026-10-09 5210 重建研究；共1条 第1页')]],\n      actual_scenarios=[dict(case='parent_filter_roundtrip_after_member_page_and_reload',url='/v4/research/sectors?trade_date=2026-10-09&type=INDUSTRY&offset=0&q=%E7%94%B5%E6%B0%94%E8%AE%BE%E5%A4%87&sort=-sector_rs20',excerpt='电气设备 INDUSTRY:T0706；共 1 条 · 第 1 页；返回链接保留完整 query'),",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/prepare_immediate_r3.py",
+      "line": 23,
+      "value": "SZ.301628",
+      "kind": "EXPLICIT_SECURITY_OR_SYMBOL_LITERAL",
+      "category": "EXPLICIT_AUDIT_QA_SAMPLE",
+      "source_sha256": "867612943c1fc397f57d2ce1f20b60f0b36cadef519e3f4707618417ec911c21",
+      "context": "    snapshot=load(head['membership_snapshot']);identity=load(snapshot['identity_source']);members=load(snapshot['memberships'])\n    target=next(r['security_id'] for r in identity['rows'] if r.get('source_security_key')=='SZ.301628');selected.add(target)\n    sources=[];d0=[];d2=[];histories={};sectors=[];rotations=[];loo=[]",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/qa_core_product_api_r2.py",
+      "line": 89,
+      "value": "SEC-C08B6C24E4F39D8E85C03F8588661538",
+      "kind": "CANONICAL_SECURITY_ID_LITERAL",
+      "category": "EXPLICIT_AUDIT_QA_SAMPLE",
+      "source_sha256": "4c8620dda344e96dd4907cab56cd0e317d3181ffc98afb9845f4b52e20e69e41",
+      "context": "    _,failed_focus,_=request(base,'focus',dict(q,q='301628',limit=200))\n    _,failed_episodes,_=request(base,'focus/SEC-C08B6C24E4F39D8E85C03F8588661538/episodes',q)\n    if not failed_focus['items'] or not any(e.get('end_date')=='2026-10-09' for e in failed_episodes['items']):errors.append(dict(reason='REAL_INVALIDATED_FOCUS_NOT_ENDED'))",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/record_r3_continuation.py",
+      "line": 20,
+      "value": "SZ.001235",
+      "kind": "EXPLICIT_SECURITY_OR_SYMBOL_LITERAL",
+      "category": "USER_SCOPE_EVIDENCE",
+      "source_sha256": "771f32fa6466fc9be5389b34a5ac00b6f9c50aa73f79abcb462b7f5699e3dcfe",
+      "context": "    bao=load(out/'SZ001235_BAOSTOCK_DIAGNOSTIC.json');assert all(r['error_code']=='0' and not r['rows'] for r in bao['requests'])\n    write(out/'SZ001235_LOCAL_DATA_DISPOSITION.json',dict(raw_id='SZ.001235',tdx_package=owner['sources']['package'],tdx_matching_day_entries=entries,accepted_identity_source=owner['sources']['identity'],accepted_matching_rows=[r for r in identity['rows'] if r.get('source_security_key')=='SZ.001235'],baostock=binding(out/'SZ001235_BAOSTOCK_DIAGNOSTIC.json'),status='SOURCE_NOT_PRESENT_IN_CURRENT_TWO_FEEDS',reason='Frozen package has no day entry; accepted identity has no row; bounded baostock basic/daily requests succeed with empty rows',not_listed_claim=False,identity_created=False))\n    write(out/'CONTINUATION_ACCEPTANCE.json',dict(algorithm=dict(checks=alg['checks'],errors=alg['errors'],unknown_endpoint_window_checks=len(alg['unknown_quality_branches']),scope='Observed ATR/structure/base values plus independently unavailable windows/endpoints'),full_current_LOO=loo,first_pulse=dict(checks=pulse['checks'],errors=pulse['errors'],real_rows=pulse['observed_pulse_rows']),amount=dict(exact_representation_counts=amount['counts'],unexplained_representation=amount['counts'].get('UNEXPLAINED_REPRESENTATION',0),provider_algorithm_proven=False,formal_authority_changed=False),cohort=dict(regression_passed=14,fix='Bound first availability to immutable T0 freeze, independent of later read cutoff; absent-owner counts remain unknown',owner_permission='NOT_GRANTED'),sector_candidate_rows=len(rows),BSE='USER_DEFERRED',protected_heads='UNCHANGED'))",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/record_r3_continuation.py",
+      "line": 27,
+      "value": "SZ.001235",
+      "kind": "EXPLICIT_SECURITY_OR_SYMBOL_LITERAL",
+      "category": "USER_SCOPE_EVIDENCE",
+      "source_sha256": "771f32fa6466fc9be5389b34a5ac00b6f9c50aa73f79abcb462b7f5699e3dcfe",
+      "context": "            issue.update(status='PASS_SCOPED_CURRENT_PUBLISHED_NUMERIC_CHAIN',scope='ATR/structural values and unavailable endpoints; all current operational LOO contexts; first-pulse baskets',evidence='09_CONTINUATION/CONTINUATION_ACCEPTANCE.json',next_action='Future full LOO rank/recursive-episode production scope needs separately published owner; not present in this operational owner')\n        if 'R3-MEMBER27' in issue['issue_id']:issue.update(status='26_USER_DEFERRED_1_CURRENT_TWO_FEEDS_ABSENT',next_action='Do not acquire public-network BSE evidence; preserve raw rows. Recheck SZ.001235 only when actual local/Bao feed provides data',evidence='09_CONTINUATION/SZ001235_LOCAL_DATA_DISPOSITION.json')\n        if issue['issue_id']=='M10/DD-A05/R3':issue.update(status='REPRESENTATION_PASS_SCOPED_AUTHORITY_SEPARATE',next_action='Keep original Native authority; exact representation audit is closed for sampled actual captures. Economic-equivalence and formal sector Amount A remain separate',evidence='09_CONTINUATION/AMOUNT_REPRESENTATION_RESULT.json')",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/record_r3_continuation.py",
+      "line": 20,
+      "value": "SZ.001235",
+      "kind": "EXPLICIT_SECURITY_OR_SYMBOL_LITERAL",
+      "category": "USER_SCOPE_EVIDENCE",
+      "source_sha256": "771f32fa6466fc9be5389b34a5ac00b6f9c50aa73f79abcb462b7f5699e3dcfe",
+      "context": "    bao=load(out/'SZ001235_BAOSTOCK_DIAGNOSTIC.json');assert all(r['error_code']=='0' and not r['rows'] for r in bao['requests'])\n    write(out/'SZ001235_LOCAL_DATA_DISPOSITION.json',dict(raw_id='SZ.001235',tdx_package=owner['sources']['package'],tdx_matching_day_entries=entries,accepted_identity_source=owner['sources']['identity'],accepted_matching_rows=[r for r in identity['rows'] if r.get('source_security_key')=='SZ.001235'],baostock=binding(out/'SZ001235_BAOSTOCK_DIAGNOSTIC.json'),status='SOURCE_NOT_PRESENT_IN_CURRENT_TWO_FEEDS',reason='Frozen package has no day entry; accepted identity has no row; bounded baostock basic/daily requests succeed with empty rows',not_listed_claim=False,identity_created=False))\n    write(out/'CONTINUATION_ACCEPTANCE.json',dict(algorithm=dict(checks=alg['checks'],errors=alg['errors'],unknown_endpoint_window_checks=len(alg['unknown_quality_branches']),scope='Observed ATR/structure/base values plus independently unavailable windows/endpoints'),full_current_LOO=loo,first_pulse=dict(checks=pulse['checks'],errors=pulse['errors'],real_rows=pulse['observed_pulse_rows']),amount=dict(exact_representation_counts=amount['counts'],unexplained_representation=amount['counts'].get('UNEXPLAINED_REPRESENTATION',0),provider_algorithm_proven=False,formal_authority_changed=False),cohort=dict(regression_passed=14,fix='Bound first availability to immutable T0 freeze, independent of later read cutoff; absent-owner counts remain unknown',owner_permission='NOT_GRANTED'),sector_candidate_rows=len(rows),BSE='USER_DEFERRED',protected_heads='UNCHANGED'))",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/record_r3_deepening_delivery.py",
+      "line": 17,
+      "value": "SZ.001235",
+      "kind": "EXPLICIT_SECURITY_OR_SYMBOL_LITERAL",
+      "category": "USER_SCOPE_EVIDENCE",
+      "source_sha256": "d143956fa9f1b97fb19a5fd4a21ec321db24d2228eee5e6d4a7758fb4ae7cdf6",
+      "context": "      protected_heads=stage['protected_heads'],independent_offline_runs=offline['runs'],acceptance='ENGINEERING_PASS_SCOPED_EXACT_FORMAL_GAPS_OPEN',EXTERNAL_RECHECK_REQUESTED=True,EXTERNAL_ACCEPTANCE_PASS=False,\n      user_exclusions=['BSE26','SZ.001235 user-reported delisted excluded this round'],production_loading='PROD_RESTART_PENDING',receipt_commit_follows_result=True))\n    print(json.dumps(dict(RESULT_SHA=result,files=[dict(file_id=r['file_id'],bytes=r['local']['bytes'],sha256=r['local']['sha256'],status=r['status']) for r in records]),ensure_ascii=False))",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/supplement_dd_r21_compact.py",
+      "line": 57,
+      "value": "SH.600000",
+      "kind": "EXPLICIT_SECURITY_OR_SYMBOL_LITERAL",
+      "category": "SYNTHETIC_VECTOR",
+      "source_sha256": "c465e2aa4bc36e3a5e2e7a222aef3d78bcbb108d56c0e25122a7e21f7cffaaab",
+      "context": "        ('ALL_SUSPENDED',[],{'2026-10-08':'SUSPENDED','2026-10-09':'SUSPENDED'},'2026-10-09','2026-10-08')]:\n        member=dict(security_id='FIXTURE_SECURITY',source_security_key='SH.600000')\n        expected=derive_periods(member,history,statuses,fixture_sessions,target,'2026-10-31',start_session=start)",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/verify_fp02_research_delivery.py",
+      "line": 45,
+      "value": "600000",
+      "kind": "UNQUALIFIED_SECURITY_CODE_IN_IDENTIFIER_CONTEXT",
+      "category": "EXPLICIT_AUDIT_QA_SAMPLE",
+      "source_sha256": "6d554c661542500b07c7e00c0b00e382b63a4b248a2ef4e3e5a143b1b6471728",
+      "context": "    assert reader.query('stocks',{'q':'浦发银行'})['total']==1\n    receipt['search']=dict(code='600000',chinese_name='浦发银行',result='PASS')\n    for key in ['context_token','trade_date','release_id','model_namespace']:",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/verify_r4_audit_r1_bytes.py",
+      "line": 112,
+      "value": "bj.899050",
+      "kind": "EXPLICIT_SECURITY_OR_SYMBOL_LITERAL",
+      "category": "INDEX_IDENTITY_EXCLUSION",
+      "source_sha256": "b295a37963427cbc5b39baa697595485908b979f13abdeddd038aa99c9425f84",
+      "context": "        fs = facts.get(code, [])\n        if code in ('bj.899050', 'bj.899601'):\n            category = 'INDEX_EXCLUDED'",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "scripts/verify_r4_audit_r1_bytes.py",
+      "line": 112,
+      "value": "bj.899601",
+      "kind": "EXPLICIT_SECURITY_OR_SYMBOL_LITERAL",
+      "category": "INDEX_IDENTITY_EXCLUSION",
+      "source_sha256": "b295a37963427cbc5b39baa697595485908b979f13abdeddd038aa99c9425f84",
+      "context": "        fs = facts.get(code, [])\n        if code in ('bj.899050', 'bj.899601'):\n            category = 'INDEX_EXCLUDED'",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "NAMED_MANUAL_ENTRY; NO_FULL_DYNAMIC_IMPORT_GRAPH_CLAIM"
+    },
+    {
+      "path": "src/workbench_analysis/market_source_acquisition.py",
+      "line": 233,
+      "value": "sh.600000",
+      "kind": "EXPLICIT_SECURITY_OR_SYMBOL_LITERAL",
+      "category": "ACQUISITION_BOUNDED_SMOKE_FALLBACK",
+      "source_sha256": "e8b8334132012af15e0fc877414b0f5e2d21df8a26f575ab573a9eb768c1fc15",
+      "context": "                codes = sorted(set(gap_codes))\n                smoke = codes[:1] or ['sh.600000']\n                smoke_ok = True",
+      "disposition": "OPEN_VERSIONED_PATH_POLICY_REVIEW; NOT_AUTOMATIC_EXEMPTION",
+      "runtime_reachability": "SOURCE_ACQUISITION_CALLABLE_NOT_STOCK_SCORING_RULE"
+    }
+  ],
+  "prior_report_correction": "One hit is src/workbench_analysis/market_source_acquisition.py smoke fallback; not all 24 are audit-only script paths.",
+  "not_proved": "Absence of arbitrary dynamic execution; no blanket whitelist; no full-system zero hardcoded symbols claim"
+}

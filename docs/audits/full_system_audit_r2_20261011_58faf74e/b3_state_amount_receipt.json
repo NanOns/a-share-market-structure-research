@@ -1,0 +1,38 @@
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "tests/v4_11/test_persistence.py",
+    "tests/upgrade_v3/test_p12_12_full_loo.py",
+    "tests/v4_a04_r3/test_amount_a_go_forward.py",
+    "tests/v4_10/test_research_state.py",
+    "-k",
+    "not complete_axis and not real_input_missing",
+    "-q",
+    "--tb=short",
+    "-p",
+    "no:cacheprovider",
+    "-p",
+    "tests.remainder_isolation_plugin",
+    "--basetemp=G:/codex_tmp/test_temp/full_audit_r2_state_amount",
+    "--junitxml=G:\\codex_tmp\\full_system_audit_r2_58faf74e\\b3_state_amount_junit.xml"
+  ],
+  "exit_code": 1,
+  "summary": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "1",
+    "skipped": "0",
+    "tests": "124",
+    "time": "3.536",
+    "timestamp": "2026-10-11T09:18:21.060367+08:00",
+    "hostname": "DESKTOP-PMEP5GE"
+  },
+  "elapsed_seconds": 4.5381269454956055,
+  "verified_data_directory": "G:/codex_tmp/test_temp/audit_full_a2eadda_pg/data",
+  "isolated_database": "audit_r2_candidate",
+  "bootstrap": "Explicit official test DSN to pre-registered cluster; existing guards enabled; no arbitrary port admission",
+  "limitations": "Does not prove generic automatic cluster registration"
+}

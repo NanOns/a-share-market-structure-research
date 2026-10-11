@@ -1,0 +1,557 @@
+{
+  "contract": "87A_EXPLICIT_FAMILY_EXPANSION_R2",
+  "authority": {
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "families": [
+    {
+      "family_id": "87A-01",
+      "source_line": 6750,
+      "family": "trend_state; weekly_trend_state; monthly_trend_state",
+      "contract": "TREND_STATE_V1",
+      "stage": "V4-04",
+      "quality": "required缺失UNKNOWN",
+      "explicit_fields": [
+        "trend_state",
+        "weekly_trend_state",
+        "monthly_trend_state"
+      ],
+      "unresolved": [],
+      "line_sha256": "36716e4291d0914fe87bbb22e6b4a22dbf8dc509d2aabe65ab73204ce7b9fec7",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-02",
+      "source_line": 6751,
+      "family": "position_state; near_high20_state; near_high60_state; drawdown20_state; drawdown60_state; pos60/250; bias20_atr; dist_high20_atr",
+      "contract": "POSITION_STATE_V1",
+      "stage": "V4-04",
+      "quality": "分母0/历史不足UNKNOWN；pos250独立",
+      "explicit_fields": [
+        "position_state",
+        "near_high20_state",
+        "near_high60_state",
+        "drawdown20_state",
+        "drawdown60_state",
+        "pos60",
+        "pos250",
+        "bias20_atr",
+        "dist_high20_atr"
+      ],
+      "unresolved": [],
+      "line_sha256": "2dfefcd7529f33926db46b69f2c7886bce98aa260a64c76a7e9fc9aa0c9996c7",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-03",
+      "source_line": 6752,
+      "family": "ma_structure_state",
+      "contract": "MA_STRUCTURE_V1",
+      "stage": "V4-04",
+      "quality": "UNKNOWN",
+      "explicit_fields": [
+        "ma_structure_state"
+      ],
+      "unresolved": [],
+      "line_sha256": "143f9217f4d2ea09e3af62d47e008fc2bd3e6b05e2b427c185e09f4e79f4c0cf",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-04",
+      "source_line": 6753,
+      "family": "relative_market_state; RPS5/20; delta1/3; rel_market_1/3/5",
+      "contract": "RELATIVE_STATE_V1 + CORE_FACTOR_V1 + MARKET_RELATIVE_REFERENCE_V1",
+      "stage": "V4-03 / V4-04",
+      "quality": "non-PIT只diagnostic",
+      "explicit_fields": [
+        "relative_market_state",
+        "rps5",
+        "rps20",
+        "rps5_delta1",
+        "rps5_delta3",
+        "rps20_delta3",
+        "rel_market_1",
+        "rel_market_3",
+        "rel_market_5"
+      ],
+      "unresolved": [],
+      "line_sha256": "8e315fd9af1968cc851d71cd08a9fd0f1ddc7fcb2137f3805505f273671ae424",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-05",
+      "source_line": 6754,
+      "family": "compression_state",
+      "contract": "COMPRESSION_STATE_V1",
+      "stage": "V4-04",
+      "quality": "UNKNOWN",
+      "explicit_fields": [
+        "compression_state"
+      ],
+      "unresolved": [],
+      "line_sha256": "1d2c21c224c4cb113475ea1097876ac661a009d1665eed69bc9ae69abec6f721",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-06",
+      "source_line": 6755,
+      "family": "amount_state; volume_state; core_participation_result",
+      "contract": "AMOUNT_VOLUME_STATE_V1",
+      "stage": "V4-04",
+      "quality": "UNKNOWN",
+      "explicit_fields": [
+        "amount_state",
+        "volume_state",
+        "core_participation_result"
+      ],
+      "unresolved": [],
+      "line_sha256": "b00b719cc1b6556f85f54c9ff5f7c585707f50e725d6c10d019f8aeab478cee9",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-07",
+      "source_line": 6756,
+      "family": "core_extension_risk; core_price_damage",
+      "contract": "EXTENSION_RISK_V1 + CORE_FACTOR_V1",
+      "stage": "V4-03 / V4-04",
+      "quality": "UNKNOWN",
+      "explicit_fields": [
+        "core_extension_risk",
+        "core_price_damage"
+      ],
+      "unresolved": [],
+      "line_sha256": "fff9a6d12828398ad867b0030daa7e1ad239aafddd1cccf503243a2dd61d0603",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-08",
+      "source_line": 6757,
+      "family": "trading_status; limit_status; resumed_event; lifecycle_status",
+      "contract": "TRADING_STATUS_V1 / PRICE_LIMIT_RULE_V1",
+      "stage": "V4-02",
+      "quality": "UNKNOWN；补充不得覆盖",
+      "explicit_fields": [
+        "trading_status",
+        "limit_status",
+        "resumed_event",
+        "lifecycle_status"
+      ],
+      "unresolved": [],
+      "line_sha256": "a806b361db02e7a7c754c6efe29b32c051309e21f9427873e5522db17cbdc4a4",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-09",
+      "source_line": 6758,
+      "family": "turnover_state; turnover_ratio20; turnover_pct20/60; turnover_ma5; turnover_delta3; supplemental_participation_context; supplemental_extension_note",
+      "contract": "TURNOVER_CONTEXT_V1",
+      "stage": "V4-06",
+      "quality": "PENDING/UNAVAILABLE/UNKNOWN_DATA",
+      "explicit_fields": [
+        "turnover_state",
+        "turnover_ratio20",
+        "turnover_pct20",
+        "turnover_pct60",
+        "turnover_ma5",
+        "turnover_delta3",
+        "supplemental_participation_context",
+        "supplemental_extension_note"
+      ],
+      "unresolved": [],
+      "line_sha256": "622ddb4f760d7bb5388e6cf9a08cf5d705c22cb54ef87a753fc1beab45e2c1bc",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-10",
+      "source_line": 6759,
+      "family": "base_seed_state; matched_seed_paths; seed_participation_annotation",
+      "contract": "BASE_SEED_V1",
+      "stage": "V4-07",
+      "quality": "Kleene三值",
+      "explicit_fields": [
+        "base_seed_state",
+        "matched_seed_paths",
+        "seed_participation_annotation"
+      ],
+      "unresolved": [],
+      "line_sha256": "cdd623e9a7e296647eb858fa859ac8760a4684856532d383858f2f3f23ddfc6d",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-11",
+      "source_line": 6760,
+      "family": "sector_emergence; sector_rs5/20; rank_velocity; dq5; breadth_delta; ma20_width; seed_width; retention; entered/exited; top1/top3_concentration; sector_participation_proxy",
+      "contract": "SECTOR_FACTORS_V1 / SEED_WIDTH_V1 / SECTOR_AXES_V1",
+      "stage": "V4-08",
+      "quality": "覆盖低UNKNOWN，0分母NA",
+      "explicit_fields": [
+        "sector_emergence",
+        "sector_rs5",
+        "sector_rs20",
+        "rank_velocity",
+        "dq5",
+        "breadth_delta",
+        "ma20_width",
+        "seed_width",
+        "retention",
+        "entered_count",
+        "exited_count",
+        "top1_concentration",
+        "top3_concentration",
+        "sector_participation_proxy"
+      ],
+      "unresolved": [],
+      "line_sha256": "dc037331dd6de53ea14a1f754668e6a3115bbc86bc3694c1581c72467e7561d2",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-12",
+      "source_line": 6761,
+      "family": "amount_a_value; amount_a_quality; amount_a_contract_id",
+      "contract": "AUD-AMOUNT-A-06",
+      "stage": "V4-08",
+      "quality": "OPEN只diagnostic，禁止正式consumer",
+      "explicit_fields": [
+        "amount_a_value",
+        "amount_a_quality",
+        "amount_a_contract_id"
+      ],
+      "unresolved": [],
+      "line_sha256": "d964b98a754b31a51ee8bfbfc534c3d33feb0dc7e89fa8e6dce6c23fbcc2d6f5",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-13",
+      "source_line": 6762,
+      "family": "rotation_core_state; sector_price_retention_core; rotation_episode_id; early_retained; mature_retained; base_seed_retention; breadth_retention; rotation_structure_enrichment",
+      "contract": "ROTATION_CORE_V1",
+      "stage": "V4-08 / V4-13",
+      "quality": "UNKNOWN保留last_known",
+      "explicit_fields": [
+        "rotation_core_state",
+        "sector_price_retention_core",
+        "rotation_episode_id",
+        "early_retained",
+        "mature_retained",
+        "base_seed_retention",
+        "breadth_retention",
+        "rotation_structure_enrichment"
+      ],
+      "unresolved": [],
+      "line_sha256": "f45cb7786850e625f7adf0308cb92f85e65f0627d95f4ed71f1bd080ddf6d0bb",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-14",
+      "source_line": 6763,
+      "family": "primary_industry; supporting_concepts; algorithmic_support_sector; relative_sector_state; sector_context_state; sector_context_quality",
+      "contract": "LOO_CONTEXT_V1",
+      "stage": "V4-13",
+      "quality": "无合格NA，数据不足UNKNOWN",
+      "explicit_fields": [
+        "primary_industry",
+        "supporting_concepts",
+        "algorithmic_support_sector",
+        "relative_sector_state",
+        "sector_context_state",
+        "sector_context_quality"
+      ],
+      "unresolved": [],
+      "line_sha256": "59fc5c11ed24e0eed1217c4682d0945402aa258ae6faf85663ab1e905fc4aa09",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-15",
+      "source_line": 6764,
+      "family": "stock_prewatch; raw_qualification; final_eligibility",
+      "contract": "STOCK_PREWATCH_V1 / RESEARCH_STATE_V1",
+      "stage": "V4-09 / V4-10",
+      "quality": "UNKNOWN不计eligible",
+      "explicit_fields": [
+        "stock_prewatch",
+        "raw_qualification",
+        "final_eligibility"
+      ],
+      "unresolved": [],
+      "line_sha256": "166f9f540813cf6ba632e8942f474379d401333bbad5828a6983e6732fa31746",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-16",
+      "source_line": 6765,
+      "family": "maturity_stage; health_state; validity_state; tracking_state; scenario; state_freshness; expiry; reentry",
+      "contract": "RESEARCH_STATE_V1",
+      "stage": "V4-10",
+      "quality": "STALE/UNKNOWN不制造退出",
+      "explicit_fields": [
+        "maturity_stage",
+        "health_state",
+        "validity_state",
+        "tracking_state",
+        "scenario",
+        "state_freshness",
+        "expiry",
+        "reentry"
+      ],
+      "unresolved": [],
+      "line_sha256": "d20189c0f6f7599cc7d69f6cba2d99f3cea89f75758c2471aaffc6c1983a31ca",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-17",
+      "source_line": 6766,
+      "family": "confirmation_event_type; primary_scenario; matched_scenarios; source_model_boundary",
+      "contract": "LEGACY_ADAPTER_V1 / STATE_EVENT_V1",
+      "stage": "V4-11",
+      "quality": "FIRST_OBSERVED或NA",
+      "explicit_fields": [
+        "confirmation_event_type",
+        "primary_scenario",
+        "matched_scenarios",
+        "source_model_boundary"
+      ],
+      "unresolved": [],
+      "line_sha256": "5dbfea48251af976aa3ab80be540d1def55c3f5953571ac9a04e46b164558e24",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-18",
+      "source_line": 6767,
+      "family": "active_anchor_id; anchor_view_asof_t; basic_breakout_state; basic_pullback_state; basic_recovery_state; structure_health; structure_events",
+      "contract": "STRUCTURE_EVENT_V1",
+      "stage": "V4-12",
+      "quality": "NOT_IMPLEMENTED/NA/UNKNOWN分开",
+      "explicit_fields": [
+        "active_anchor_id",
+        "anchor_view_asof_t",
+        "basic_breakout_state",
+        "basic_pullback_state",
+        "basic_recovery_state",
+        "structure_health",
+        "structure_events"
+      ],
+      "unresolved": [],
+      "line_sha256": "c4f84e3d929eaddc9aed375845d2fa17f5b4abd3f3d5dd66196515c4b1a7e2eb",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-19",
+      "source_line": 6768,
+      "family": "support_state; acceptance_state; impulse_retention_1/3; retest_count",
+      "contract": "SUPPORT_STATE_V1 / RETENTION_V1",
+      "stage": "V4-12",
+      "quality": "PENDING/UNKNOWN/NA分开",
+      "explicit_fields": [
+        "support_state",
+        "acceptance_state",
+        "impulse_retention_1",
+        "impulse_retention_3",
+        "retest_count"
+      ],
+      "unresolved": [],
+      "line_sha256": "0888d8554e99ec9bb58027e50c91efdfc4a6e0f40943c38a3b9e6c3a114b8fb9",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-20",
+      "source_line": 6769,
+      "family": "market_regime_axes; stress_level; stress_change; regime_ui",
+      "contract": "MARKET_REGIME_V1",
+      "stage": "V4-03 / V4-04",
+      "quality": "UNKNOWN及last_known",
+      "explicit_fields": [
+        "trend_axis",
+        "breadth_axis",
+        "participation_axis",
+        "stress_level",
+        "stress_level",
+        "stress_change",
+        "regime_ui"
+      ],
+      "unresolved": [],
+      "line_sha256": "4a5e80a57da8712e9455d97bb6e7dbdaea41f51adbd68a2964ed5ff664d15333",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-21",
+      "source_line": 6770,
+      "family": "waiting_for; invalid_if; why_now; conflict_panel; hypothesis_set",
+      "contract": "NEAR_MISS_V1 / STATE_EVENT_V1 / HYPOTHESIS_V1",
+      "stage": "V4-15",
+      "quality": "UNRESOLVED/INCOMPLETE，不强造文本",
+      "explicit_fields": [
+        "waiting_for",
+        "invalid_if",
+        "why_now",
+        "conflict_panel",
+        "hypothesis_set"
+      ],
+      "unresolved": [],
+      "line_sha256": "406828cd62d41cdce51975cab1d211a61813905f1d80a9b553cd0deeb3cbf18f",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-22",
+      "source_line": 6771,
+      "family": "eligibility_rank; priority_bucket; priority_rank; display_rank; overlap_cluster_id; also_in_sectors",
+      "contract": "PRIORITY_V1 / DISPLAY_V1",
+      "stage": "V4-15",
+      "quality": "unknown排序末尾，cap不改资格",
+      "explicit_fields": [
+        "eligibility_rank",
+        "priority_bucket",
+        "priority_rank",
+        "display_rank",
+        "overlap_cluster_id",
+        "also_in_sectors"
+      ],
+      "unresolved": [],
+      "line_sha256": "09024f6e3e532657098be9425fc161680483d2931b1303af54f403a2a9e06e42",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-23",
+      "source_line": 6772,
+      "family": "daily_eligibility_ledger; statistical_signal_event; enrollment_id; controls; forward_outcome; benchmark; MFE; MAE; MDD",
+      "contract": "COHORT_V1 / CONTROL_ASSIGNMENT_V1 / FORWARD_PRICE_PATH_V1 / FORWARD_MARKET_BENCHMARK_V1 / FORWARD_SECTOR_BENCHMARK_V1",
+      "stage": "V4-15",
+      "quality": "按到期/缺失/停牌/退市分开",
+      "explicit_fields": [
+        "daily_eligibility_ledger",
+        "statistical_signal_event",
+        "enrollment_id",
+        "forward_outcome",
+        "benchmark",
+        "MFE",
+        "MAE",
+        "MDD"
+      ],
+      "unresolved": [
+        "controls"
+      ],
+      "line_sha256": "92594ea41e827d94fb6a4aea71b5308969ff583661b03335e23eec9c04c4176e",
+      "expansion_status": "PARTIAL_UNRESOLVED_FAMILY"
+    },
+    {
+      "family_id": "87A-24",
+      "source_line": 6773,
+      "family": "focus_activation; Focus timeline/path/outcome",
+      "contract": "现有Focus版本清单 + migration manifest",
+      "stage": "V4-19",
+      "quality": "Shadow不写production",
+      "explicit_fields": [
+        "focus_activation"
+      ],
+      "unresolved": [
+        "Focus timeline/path/outcome"
+      ],
+      "line_sha256": "9b58fcaf601597315e4d399ea2e86d6af8b37ae7bd57ee0b1741ba9252ce2872",
+      "expansion_status": "PARTIAL_UNRESOLVED_FAMILY"
+    },
+    {
+      "family_id": "87A-25",
+      "source_line": 6774,
+      "family": "profile component statuses; quality; source_asof; context token; diagnostic counters",
+      "contract": "PUBLICATION_V1 / QUALITY_V1",
+      "stage": "V4-00C / V4-04 / V4-15",
+      "quality": "unknown和NOT_IMPLEMENTED分开",
+      "explicit_fields": [
+        "quality",
+        "source_asof"
+      ],
+      "unresolved": [
+        "profile component statuses",
+        "context token",
+        "diagnostic counters"
+      ],
+      "line_sha256": "6700cd5958bf9dddace6e2f3be7c248ca70609616dbeae80fcfe3b177a27e944",
+      "expansion_status": "PARTIAL_UNRESOLVED_FAMILY"
+    },
+    {
+      "family_id": "87A-26",
+      "source_line": 6784,
+      "family": "technical_window_identity; field_window_mapping; calendar_span; actual_count; suspended_count",
+      "contract": "TECHNICAL_BAR_WINDOW_V1 / CROSS_SECTION_SESSION_WINDOW_V1 / FORWARD_SESSION_WINDOW_V1",
+      "stage": "V4-00G定义；V4-03及V4-15分别消费",
+      "quality": "OPEN决策不得冒充冻结",
+      "explicit_fields": [
+        "technical_window_identity",
+        "field_window_mapping",
+        "calendar_span",
+        "actual_count",
+        "suspended_count"
+      ],
+      "unresolved": [],
+      "line_sha256": "a962d210fb2c50a0c34435c0dd9790a6b2700b088bb6fae66660ed1323bd4fb6",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-27",
+      "source_line": 6785,
+      "family": "benchmark_constituent_policy; benchmark_endpoint_coverage; benchmark_missing_weight; benchmark_suspended_weight; benchmark_delisted_weight; benchmark_unknown_weight; benchmark_quality; benchmark_valuation_coverage; benchmark_marked_weight; relative_market_return_marked",
+      "contract": "FORWARD_MARKET_BENCHMARK_V1 / FORWARD_CONSTITUENT_POLICY_V1",
+      "stage": "V4-15",
+      "quality": "实际/估值/无法估值分层，不改原权重",
+      "explicit_fields": [
+        "benchmark_constituent_policy",
+        "benchmark_endpoint_coverage",
+        "benchmark_missing_weight",
+        "benchmark_suspended_weight",
+        "benchmark_delisted_weight",
+        "benchmark_unknown_weight",
+        "benchmark_quality",
+        "benchmark_valuation_coverage",
+        "benchmark_marked_weight",
+        "relative_market_return_marked"
+      ],
+      "unresolved": [],
+      "line_sha256": "5632951e951d34e73a4c4c7040b410ef1e21dcbf67fa6df84aa56076af9f85af",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-28",
+      "source_line": 6786,
+      "family": "effective_from/to; provider_available_at; observed_at; ingested_at; system_available_at; source_revision_id; supersedes_revision_id; source_identity",
+      "contract": "REVISIONABLE_FACT_META_V1",
+      "stage": "V4-02",
+      "quality": "§6A指定各身份/关系表显式嵌入",
+      "explicit_fields": [
+        "effective_from",
+        "effective_to",
+        "provider_available_at",
+        "observed_at",
+        "ingested_at",
+        "system_available_at",
+        "source_revision_id",
+        "supersedes_revision_id",
+        "source_identity"
+      ],
+      "unresolved": [],
+      "line_sha256": "1518a9a54ab93beee37568c7470ebf86b4ffdace9cd8e2b43d614fbf502e696c",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    },
+    {
+      "family_id": "87A-29",
+      "source_line": 6787,
+      "family": "cutover_receipt; production_permission; dependency_scope",
+      "contract": "CUTOVER_V2",
+      "stage": "V4-17G / V4-18 / V4-19 / V4-20",
+      "quality": "分能力证据与依赖均通过才授权",
+      "explicit_fields": [
+        "cutover_receipt",
+        "production_permission",
+        "dependency_scope"
+      ],
+      "unresolved": [],
+      "line_sha256": "004f6906fa62fc26b4340a40f1ed5c240ada8cc0d49dbd9140daa6e4ff65df59",
+      "expansion_status": "EXPLICIT_NAME_EXPANSION_ONLY"
+    }
+  ],
+  "distinct_explicit_names": 156,
+  "requirement_rows": 157,
+  "family_count": 29,
+  "unresolved_count": 5,
+  "not_full_field_denominator": true,
+  "not_all_versions": true
+}

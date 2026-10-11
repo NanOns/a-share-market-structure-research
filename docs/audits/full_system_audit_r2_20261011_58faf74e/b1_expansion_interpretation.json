@@ -1,0 +1,73 @@
+{
+  "explicit_rules": {
+    "pos60/250": [
+      "pos60",
+      "pos250"
+    ],
+    "RPS5/20": [
+      "rps5",
+      "rps20"
+    ],
+    "rel_market_1/3/5": [
+      "rel_market_1",
+      "rel_market_3",
+      "rel_market_5"
+    ],
+    "turnover_pct20/60": [
+      "turnover_pct20",
+      "turnover_pct60"
+    ],
+    "sector_rs5/20": [
+      "sector_rs5",
+      "sector_rs20"
+    ],
+    "top1/top3_concentration": [
+      "top1_concentration",
+      "top3_concentration"
+    ],
+    "impulse_retention_1/3": [
+      "impulse_retention_1",
+      "impulse_retention_3"
+    ],
+    "effective_from/to": [
+      "effective_from",
+      "effective_to"
+    ],
+    "delta1/3": [
+      "rps5_delta1",
+      "rps5_delta3",
+      "rps20_delta3"
+    ],
+    "entered/exited": [
+      "entered_count",
+      "exited_count"
+    ],
+    "market_regime_axes": [
+      "trend_axis",
+      "breadth_axis",
+      "participation_axis",
+      "stress_level"
+    ]
+  },
+  "additional_authority_anchors": {
+    "delta1/3": [
+      2729,
+      2730,
+      2731,
+      2764
+    ],
+    "entered/exited": [
+      2075,
+      2076,
+      3559
+    ],
+    "market_regime_axes": [
+      3727,
+      3728,
+      3729
+    ]
+  },
+  "atomic_scope": "Only explicit expanded 87A schema dimensions; excludes unresolved family internals, normative requirements outside 87A and full FEP",
+  "scoped_atomic_count": 1413,
+  "not_global_denominator": true
+}

@@ -1,0 +1,2295 @@
+{
+  "table_count": 33,
+  "column_count": 286,
+  "rows": [
+    {
+      "table": "fep.contracts",
+      "column": "contract_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 5,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.contracts",
+      "column": "family",
+      "declaration": "text NOT NULL",
+      "source_table_line": 5,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.contracts",
+      "column": "version",
+      "declaration": "text NOT NULL",
+      "source_table_line": 5,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.contracts",
+      "column": "body",
+      "declaration": "jsonb NOT NULL CHECK(jsonb_typeof(body)='object')",
+      "source_table_line": 5,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.contracts",
+      "column": "digest",
+      "declaration": "fep.sha256 NOT NULL UNIQUE",
+      "source_table_line": 5,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.contracts",
+      "column": "created_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 5,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.scopes",
+      "column": "scope_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 10,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.scopes",
+      "column": "entity_type",
+      "declaration": "text NOT NULL CHECK(entity_type IN ('STOCK','SECTOR','MARKET'))",
+      "source_table_line": 10,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.scopes",
+      "column": "observation_kind",
+      "declaration": "text NOT NULL CHECK(observation_kind IN ('ENTRY','DAILY_LANDMARK','MARKET_WIDE','MARKET_DAY','ROTATION_ENTRY'))",
+      "source_table_line": 10,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.scopes",
+      "column": "signal_type",
+      "declaration": "text NOT NULL",
+      "source_table_line": 10,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.scopes",
+      "column": "feature_variant",
+      "declaration": "text NOT NULL",
+      "source_table_line": 10,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.scopes",
+      "column": "namespace_id",
+      "declaration": "text NOT NULL REFERENCES v4.model_namespaces(namespace_id)",
+      "source_table_line": 10,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.scopes",
+      "column": "observation_contract_id",
+      "declaration": "text NOT NULL REFERENCES fep.contracts(contract_id)",
+      "source_table_line": 10,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.scopes",
+      "column": "digest",
+      "declaration": "fep.sha256 NOT NULL UNIQUE",
+      "source_table_line": 10,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.field_registry",
+      "column": "feature_contract_id",
+      "declaration": "text NOT NULL REFERENCES fep.contracts(contract_id)",
+      "source_table_line": 16,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.field_registry",
+      "column": "field_name",
+      "declaration": "text NOT NULL",
+      "source_table_line": 16,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.field_registry",
+      "column": "producer",
+      "declaration": "text NOT NULL",
+      "source_table_line": 16,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.field_registry",
+      "column": "source_field",
+      "declaration": "text NOT NULL",
+      "source_table_line": 16,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.field_registry",
+      "column": "data_type",
+      "declaration": "text NOT NULL",
+      "source_table_line": 16,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.field_registry",
+      "column": "unit",
+      "declaration": "text NOT NULL",
+      "source_table_line": 16,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.field_registry",
+      "column": "nullable",
+      "declaration": "boolean NOT NULL",
+      "source_table_line": 16,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.field_registry",
+      "column": "required",
+      "declaration": "boolean NOT NULL",
+      "source_table_line": 16,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.field_registry",
+      "column": "availability_rule",
+      "declaration": "text NOT NULL",
+      "source_table_line": 16,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.field_registry",
+      "column": "quality_allowlist",
+      "declaration": "jsonb NOT NULL",
+      "source_table_line": 16,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.field_registry",
+      "column": "window_contract_id",
+      "declaration": "text NOT NULL REFERENCES fep.contracts(contract_id)",
+      "source_table_line": 16,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.field_scope",
+      "column": "feature_contract_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 23,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.field_scope",
+      "column": "field_name",
+      "declaration": "text NOT NULL",
+      "source_table_line": 23,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.field_scope",
+      "column": "scope_id",
+      "declaration": "text NOT NULL REFERENCES fep.scopes(scope_id)",
+      "source_table_line": 23,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.targets",
+      "column": "target_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 28,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.targets",
+      "column": "contract_id",
+      "declaration": "text NOT NULL REFERENCES fep.contracts(contract_id)",
+      "source_table_line": 28,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.targets",
+      "column": "scope_id",
+      "declaration": "text NOT NULL REFERENCES fep.scopes(scope_id)",
+      "source_table_line": 28,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.targets",
+      "column": "horizon",
+      "declaration": "integer NOT NULL CHECK(horizon IN (1,3,5,10,20))",
+      "source_table_line": 28,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.targets",
+      "column": "unit",
+      "declaration": "text NOT NULL",
+      "source_table_line": 28,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.targets",
+      "column": "value_kind",
+      "declaration": "text NOT NULL CHECK(value_kind IN ('NUMERIC','BINARY','CLASS'))",
+      "source_table_line": 28,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.targets",
+      "column": "formula",
+      "declaration": "text NOT NULL",
+      "source_table_line": 28,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.targets",
+      "column": "risk_set",
+      "declaration": "jsonb NOT NULL",
+      "source_table_line": 28,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.targets",
+      "column": "allowed_quality",
+      "declaration": "jsonb NOT NULL",
+      "source_table_line": 28,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.targets",
+      "column": "enabled",
+      "declaration": "boolean NOT NULL DEFAULT false",
+      "source_table_line": 28,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.observations",
+      "column": "observation_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 35,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.observations",
+      "column": "scope_id",
+      "declaration": "text NOT NULL REFERENCES fep.scopes(scope_id)",
+      "source_table_line": 35,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.observations",
+      "column": "entity_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 35,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.observations",
+      "column": "trade_date",
+      "declaration": "date NOT NULL",
+      "source_table_line": 35,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.observations",
+      "column": "signal_key",
+      "declaration": "text NOT NULL",
+      "source_table_line": 35,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.observations",
+      "column": "episode_key",
+      "declaration": "text",
+      "source_table_line": 35,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.observations",
+      "column": "core_signal_contract_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 35,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.observations",
+      "column": "slot_deadline",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 35,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.observation_revisions",
+      "column": "observation_id",
+      "declaration": "text NOT NULL REFERENCES fep.observations(observation_id)",
+      "source_table_line": 41,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.observation_revisions",
+      "column": "revision",
+      "declaration": "integer NOT NULL CHECK(revision>0)",
+      "source_table_line": 41,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.observation_revisions",
+      "column": "publication_id",
+      "declaration": "text NOT NULL REFERENCES v4.publications(publication_id)",
+      "source_table_line": 41,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.observation_revisions",
+      "column": "feature_cutoff",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 41,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.observation_revisions",
+      "column": "dependency_manifest",
+      "declaration": "jsonb NOT NULL",
+      "source_table_line": 41,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.observation_revisions",
+      "column": "dependency_digest",
+      "declaration": "fep.sha256 NOT NULL",
+      "source_table_line": 41,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.observation_revisions",
+      "column": "enrichment_token",
+      "declaration": "text NOT NULL",
+      "source_table_line": 41,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.observation_revisions",
+      "column": "evidence_origin",
+      "declaration": "text NOT NULL CHECK(evidence_origin IN ('PIT_OBSERVED','RECONSTRUCTED_ASOF','RECONSTRUCTED_CORRECTED','DIAGNOSTIC_NON_PIT'))",
+      "source_table_line": 41,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.observation_revisions",
+      "column": "execution_mode",
+      "declaration": "text NOT NULL CHECK(execution_mode IN ('SHADOW','PRODUCTION','REPLAY'))",
+      "source_table_line": 41,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.observation_revisions",
+      "column": "supersedes_revision",
+      "declaration": "integer",
+      "source_table_line": 41,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.observation_revisions",
+      "column": "created_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 41,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.snapshots",
+      "column": "snapshot_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 53,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.snapshots",
+      "column": "observation_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 53,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.snapshots",
+      "column": "observation_revision",
+      "declaration": "integer NOT NULL",
+      "source_table_line": 53,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.snapshots",
+      "column": "feature_contract_id",
+      "declaration": "text NOT NULL REFERENCES fep.contracts(contract_id)",
+      "source_table_line": 53,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.snapshots",
+      "column": "feature_digest",
+      "declaration": "fep.sha256 NOT NULL",
+      "source_table_line": 53,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.snapshots",
+      "column": "quality_digest",
+      "declaration": "fep.sha256 NOT NULL",
+      "source_table_line": 53,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.snapshots",
+      "column": "created_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 53,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.feature_values",
+      "column": "snapshot_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 61,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.feature_values",
+      "column": "feature_contract_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 61,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.feature_values",
+      "column": "field_name",
+      "declaration": "text NOT NULL",
+      "source_table_line": 61,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.feature_values",
+      "column": "value",
+      "declaration": "jsonb",
+      "source_table_line": 61,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.feature_values",
+      "column": "quality",
+      "declaration": "text NOT NULL",
+      "source_table_line": 61,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.feature_values",
+      "column": "reason",
+      "declaration": "text",
+      "source_table_line": 61,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.feature_values",
+      "column": "source_digest",
+      "declaration": "fep.sha256 NOT NULL",
+      "source_table_line": 61,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_source_bindings",
+      "column": "binding_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 71,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_source_bindings",
+      "column": "authority_contract_id",
+      "declaration": "text NOT NULL REFERENCES fep.contracts(contract_id)",
+      "source_table_line": 71,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_source_bindings",
+      "column": "upstream_key",
+      "declaration": "text NOT NULL",
+      "source_table_line": 71,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_source_bindings",
+      "column": "upstream_revision",
+      "declaration": "text NOT NULL",
+      "source_table_line": 71,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_source_bindings",
+      "column": "source_digest",
+      "declaration": "fep.sha256 NOT NULL",
+      "source_table_line": 71,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_source_bindings",
+      "column": "label_event_end",
+      "declaration": "date NOT NULL",
+      "source_table_line": 71,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_source_bindings",
+      "column": "source_fact_available_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 71,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_source_bindings",
+      "column": "label_training_mature_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 71,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_source_bindings",
+      "column": "label_revision_available_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 71,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_source_bindings",
+      "column": "created_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 71,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_revisions",
+      "column": "observation_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 79,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_revisions",
+      "column": "scope_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 79,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_revisions",
+      "column": "target_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 79,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_revisions",
+      "column": "horizon",
+      "declaration": "integer NOT NULL",
+      "source_table_line": 79,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_revisions",
+      "column": "revision",
+      "declaration": "integer NOT NULL CHECK(revision>0)",
+      "source_table_line": 79,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_revisions",
+      "column": "binding_id",
+      "declaration": "text NOT NULL REFERENCES fep.label_source_bindings(binding_id)",
+      "source_table_line": 79,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_revisions",
+      "column": "numeric_value",
+      "declaration": "double precision",
+      "source_table_line": 79,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_revisions",
+      "column": "class_value",
+      "declaration": "text",
+      "source_table_line": 79,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_revisions",
+      "column": "quality",
+      "declaration": "text NOT NULL",
+      "source_table_line": 79,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_revisions",
+      "column": "training_allowed",
+      "declaration": "boolean NOT NULL",
+      "source_table_line": 79,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_revisions",
+      "column": "target_digest",
+      "declaration": "fep.sha256 NOT NULL",
+      "source_table_line": 79,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.label_revisions",
+      "column": "supersedes_revision",
+      "declaration": "integer",
+      "source_table_line": 79,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.datasets",
+      "column": "dataset_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 94,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.datasets",
+      "column": "scope_id",
+      "declaration": "text NOT NULL REFERENCES fep.scopes(scope_id)",
+      "source_table_line": 94,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.datasets",
+      "column": "feature_contract_id",
+      "declaration": "text NOT NULL REFERENCES fep.contracts(contract_id)",
+      "source_table_line": 94,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.datasets",
+      "column": "policy_contract_id",
+      "declaration": "text NOT NULL REFERENCES fep.contracts(contract_id)",
+      "source_table_line": 94,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.datasets",
+      "column": "dataset_cutoff",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 94,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.datasets",
+      "column": "manifest",
+      "declaration": "jsonb NOT NULL",
+      "source_table_line": 94,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.datasets",
+      "column": "digest",
+      "declaration": "fep.sha256 NOT NULL UNIQUE",
+      "source_table_line": 94,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.datasets",
+      "column": "created_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 94,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_eligibility_ledger",
+      "column": "dataset_id",
+      "declaration": "text NOT NULL REFERENCES fep.datasets(dataset_id)",
+      "source_table_line": 102,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_eligibility_ledger",
+      "column": "observation_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 102,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_eligibility_ledger",
+      "column": "scope_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 102,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_eligibility_ledger",
+      "column": "target_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 102,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_eligibility_ledger",
+      "column": "horizon",
+      "declaration": "integer NOT NULL",
+      "source_table_line": 102,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_eligibility_ledger",
+      "column": "status",
+      "declaration": "text NOT NULL CHECK(status IN ('EXPECTED','SCOPE_EXCLUDED'))",
+      "source_table_line": 102,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_eligibility_ledger",
+      "column": "reason",
+      "declaration": "text",
+      "source_table_line": 102,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_fold_cutoffs",
+      "column": "dataset_id",
+      "declaration": "text NOT NULL REFERENCES fep.datasets(dataset_id)",
+      "source_table_line": 114,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_fold_cutoffs",
+      "column": "fold_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 114,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_fold_cutoffs",
+      "column": "partition_name",
+      "declaration": "text NOT NULL CHECK(partition_name IN ('FIT','TUNE','CALIBRATION','OUTER_TEST'))",
+      "source_table_line": 114,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_fold_cutoffs",
+      "column": "fold_dataset_cutoff",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 114,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_fold_cutoffs",
+      "column": "phase_started_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 114,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_fold_cutoffs",
+      "column": "selection_policy_contract_id",
+      "declaration": "text NOT NULL REFERENCES fep.contracts(contract_id)",
+      "source_table_line": 114,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_fold_cutoffs",
+      "column": "split_digest",
+      "declaration": "fep.sha256 NOT NULL",
+      "source_table_line": 114,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_fold_label_selection",
+      "column": "dataset_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 121,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_fold_label_selection",
+      "column": "fold_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 121,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_fold_label_selection",
+      "column": "partition_name",
+      "declaration": "text NOT NULL",
+      "source_table_line": 121,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_fold_label_selection",
+      "column": "observation_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 121,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_fold_label_selection",
+      "column": "target_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 121,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_fold_label_selection",
+      "column": "selected_label_revision",
+      "declaration": "integer",
+      "source_table_line": 121,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_fold_label_selection",
+      "column": "selected_label_digest",
+      "declaration": "fep.sha256",
+      "source_table_line": 121,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_fold_label_selection",
+      "column": "selection_reason",
+      "declaration": "text NOT NULL",
+      "source_table_line": 121,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_fold_label_selection",
+      "column": "eligibility",
+      "declaration": "text NOT NULL CHECK(eligibility IN ('ELIGIBLE','PENDING','MISSING_LABEL','QUALITY_EXCLUDED','SCOPE_EXCLUDED'))",
+      "source_table_line": 121,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_rows",
+      "column": "dataset_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 135,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_rows",
+      "column": "scope_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 135,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_rows",
+      "column": "feature_contract_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 135,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_rows",
+      "column": "observation_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 135,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_rows",
+      "column": "snapshot_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 135,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_rows",
+      "column": "target_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 135,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_rows",
+      "column": "label_revision",
+      "declaration": "integer NOT NULL",
+      "source_table_line": 135,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_rows",
+      "column": "selected_label_digest",
+      "declaration": "fep.sha256 NOT NULL",
+      "source_table_line": 135,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_rows",
+      "column": "weight",
+      "declaration": "double precision NOT NULL CHECK(weight>0 AND weight<'Infinity'::float8)",
+      "source_table_line": 135,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_rows",
+      "column": "partition_name",
+      "declaration": "text NOT NULL CHECK(partition_name IN ('FIT','TUNE','CALIBRATION','OUTER_TEST'))",
+      "source_table_line": 135,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_rows",
+      "column": "fold_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 135,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.dataset_rows",
+      "column": "exclusion_reason",
+      "declaration": "text",
+      "source_table_line": 135,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.training_runs",
+      "column": "training_run_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 151,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.training_runs",
+      "column": "dataset_id",
+      "declaration": "text NOT NULL REFERENCES fep.datasets(dataset_id)",
+      "source_table_line": 151,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.training_runs",
+      "column": "fold_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 151,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.training_runs",
+      "column": "phase_manifest",
+      "declaration": "jsonb NOT NULL CHECK(jsonb_typeof(phase_manifest)='object')",
+      "source_table_line": 151,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.training_runs",
+      "column": "experiment_lineage",
+      "declaration": "text NOT NULL",
+      "source_table_line": 151,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.training_runs",
+      "column": "parameter_contract_id",
+      "declaration": "text NOT NULL REFERENCES fep.contracts(contract_id)",
+      "source_table_line": 151,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.training_runs",
+      "column": "code_commit",
+      "declaration": "text NOT NULL",
+      "source_table_line": 151,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.training_runs",
+      "column": "runtime_manifest",
+      "declaration": "jsonb NOT NULL",
+      "source_table_line": 151,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.training_runs",
+      "column": "split_manifest",
+      "declaration": "jsonb NOT NULL",
+      "source_table_line": 151,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.training_runs",
+      "column": "fit_started_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 151,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.training_runs",
+      "column": "fit_finished_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 151,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.training_runs",
+      "column": "calibration_finished_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 151,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.training_runs",
+      "column": "artifact_path",
+      "declaration": "text NOT NULL",
+      "source_table_line": 151,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.training_runs",
+      "column": "artifact_digest",
+      "declaration": "fep.sha256 NOT NULL",
+      "source_table_line": 151,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.models",
+      "column": "model_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 160,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.models",
+      "column": "training_run_id",
+      "declaration": "text NOT NULL REFERENCES fep.training_runs(training_run_id)",
+      "source_table_line": 160,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.models",
+      "column": "scope_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 160,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.models",
+      "column": "target_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 160,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.models",
+      "column": "horizon",
+      "declaration": "integer NOT NULL",
+      "source_table_line": 160,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.models",
+      "column": "feature_contract_id",
+      "declaration": "text NOT NULL REFERENCES fep.contracts(contract_id)",
+      "source_table_line": 160,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.models",
+      "column": "family",
+      "declaration": "text NOT NULL",
+      "source_table_line": 160,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.models",
+      "column": "transform_digest",
+      "declaration": "fep.sha256 NOT NULL",
+      "source_table_line": 160,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.models",
+      "column": "calibration_digest",
+      "declaration": "fep.sha256 NOT NULL",
+      "source_table_line": 160,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.models",
+      "column": "ood_digest",
+      "declaration": "fep.sha256 NOT NULL",
+      "source_table_line": 160,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.models",
+      "column": "model_digest",
+      "declaration": "fep.sha256 NOT NULL UNIQUE",
+      "source_table_line": 160,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.models",
+      "column": "accepted_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 160,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.model_sets",
+      "column": "model_set_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 169,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.model_sets",
+      "column": "policy_contract_id",
+      "declaration": "text NOT NULL REFERENCES fep.contracts(contract_id)",
+      "source_table_line": 169,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.model_sets",
+      "column": "digest",
+      "declaration": "fep.sha256 NOT NULL UNIQUE",
+      "source_table_line": 169,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.model_sets",
+      "column": "accepted_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 169,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.model_set_members",
+      "column": "model_set_id",
+      "declaration": "text NOT NULL REFERENCES fep.model_sets(model_set_id)",
+      "source_table_line": 173,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.model_set_members",
+      "column": "scope_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 173,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.model_set_members",
+      "column": "target_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 173,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.model_set_members",
+      "column": "horizon",
+      "declaration": "integer NOT NULL",
+      "source_table_line": 173,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.model_set_members",
+      "column": "feature_contract_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 173,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.model_set_members",
+      "column": "model_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 173,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.model_set_members",
+      "column": "role",
+      "declaration": "text NOT NULL CHECK(role IN ('CHAMPION','BASELINE','CHALLENGER'))",
+      "source_table_line": 173,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.permission_keys",
+      "column": "grant_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 185,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.permission_keys",
+      "column": "scope_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 185,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.permission_keys",
+      "column": "target_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 185,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.permission_keys",
+      "column": "horizon",
+      "declaration": "integer NOT NULL",
+      "source_table_line": 185,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.permission_keys",
+      "column": "feature_contract_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 185,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.permission_keys",
+      "column": "model_set_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 185,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.permission_keys",
+      "column": "model_role",
+      "declaration": "text NOT NULL DEFAULT 'CHAMPION'",
+      "source_table_line": 185,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.permission_keys",
+      "column": "capability",
+      "declaration": "text NOT NULL CHECK(capability IN ('SHADOW_INFERENCE','DESCRIPTIVE_DISPLAY','MODEL_DISPLAY','PRIORITY_USE'))",
+      "source_table_line": 185,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.activations",
+      "column": "activation_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 196,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.activations",
+      "column": "grant_id",
+      "declaration": "text NOT NULL REFERENCES fep.permission_keys(grant_id)",
+      "source_table_line": 196,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.activations",
+      "column": "action",
+      "declaration": "text NOT NULL CHECK(action IN ('ALLOW','REVOKE'))",
+      "source_table_line": 196,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.activations",
+      "column": "effective_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 196,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.activations",
+      "column": "recorded_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 196,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.activations",
+      "column": "prior_activation_id",
+      "declaration": "text REFERENCES fep.activations(activation_id)",
+      "source_table_line": 196,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.activations",
+      "column": "expected_head_version",
+      "declaration": "bigint NOT NULL CHECK(expected_head_version>=0)",
+      "source_table_line": 196,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.activations",
+      "column": "receipt_digest",
+      "declaration": "fep.sha256 NOT NULL",
+      "source_table_line": 196,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.deployment_heads",
+      "column": "scope_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 205,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.deployment_heads",
+      "column": "capability",
+      "declaration": "text NOT NULL",
+      "source_table_line": 205,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.deployment_heads",
+      "column": "target_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 205,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.deployment_heads",
+      "column": "horizon",
+      "declaration": "integer NOT NULL",
+      "source_table_line": 205,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.deployment_heads",
+      "column": "feature_contract_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 205,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.deployment_heads",
+      "column": "model_set_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 205,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.deployment_heads",
+      "column": "grant_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 205,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.deployment_heads",
+      "column": "activation_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 205,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.deployment_heads",
+      "column": "head_version",
+      "declaration": "bigint NOT NULL CHECK(head_version>0)",
+      "source_table_line": 205,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.deployment_heads",
+      "column": "updated_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 205,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.deployment_change_receipts",
+      "column": "activation_id",
+      "declaration": "text PRIMARY KEY REFERENCES fep.activations(activation_id)",
+      "source_table_line": 214,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.deployment_change_receipts",
+      "column": "grant_id",
+      "declaration": "text NOT NULL REFERENCES fep.permission_keys(grant_id)",
+      "source_table_line": 214,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.deployment_change_receipts",
+      "column": "expected_prior_activation_id",
+      "declaration": "text",
+      "source_table_line": 214,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.deployment_change_receipts",
+      "column": "expected_head_version",
+      "declaration": "bigint NOT NULL",
+      "source_table_line": 214,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.deployment_change_receipts",
+      "column": "new_head_version",
+      "declaration": "bigint NOT NULL",
+      "source_table_line": 214,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.deployment_change_receipts",
+      "column": "request_id",
+      "declaration": "text NOT NULL UNIQUE",
+      "source_table_line": 214,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.deployment_change_receipts",
+      "column": "accepted_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 214,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.deployment_change_receipts",
+      "column": "checks",
+      "declaration": "jsonb NOT NULL",
+      "source_table_line": 214,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.prediction_slots",
+      "column": "slot_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 222,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.prediction_slots",
+      "column": "observation_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 222,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.prediction_slots",
+      "column": "scope_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 222,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.prediction_slots",
+      "column": "target_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 222,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.prediction_slots",
+      "column": "horizon",
+      "declaration": "integer NOT NULL",
+      "source_table_line": 222,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.prediction_slots",
+      "column": "model_family_scope",
+      "declaration": "text NOT NULL",
+      "source_table_line": 222,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.prediction_slots",
+      "column": "selection_cutoff",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 222,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.prediction_slots",
+      "column": "deadline",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 222,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.prediction_slots",
+      "column": "selection_status",
+      "declaration": "text NOT NULL CHECK(selection_status IN ('PLANNED','NO_ACTIVE_MODEL','SELECTED'))",
+      "source_table_line": 222,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.slot_model_bindings",
+      "column": "slot_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 232,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.slot_model_bindings",
+      "column": "observation_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 232,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.slot_model_bindings",
+      "column": "scope_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 232,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.slot_model_bindings",
+      "column": "target_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 232,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.slot_model_bindings",
+      "column": "horizon",
+      "declaration": "integer NOT NULL",
+      "source_table_line": 232,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.slot_model_bindings",
+      "column": "model_set_id",
+      "declaration": "text NOT NULL REFERENCES fep.model_sets(model_set_id)",
+      "source_table_line": 232,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.slot_model_bindings",
+      "column": "selected_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 232,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.slot_model_bindings",
+      "column": "selection_receipt_digest",
+      "declaration": "fep.sha256 NOT NULL",
+      "source_table_line": 232,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.prediction_runs",
+      "column": "run_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 241,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.prediction_runs",
+      "column": "publication_id",
+      "declaration": "text NOT NULL REFERENCES v4.publications(publication_id)",
+      "source_table_line": 241,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.prediction_runs",
+      "column": "model_set_id",
+      "declaration": "text NOT NULL REFERENCES fep.model_sets(model_set_id)",
+      "source_table_line": 241,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.prediction_runs",
+      "column": "input_digest",
+      "declaration": "fep.sha256 NOT NULL",
+      "source_table_line": 241,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.prediction_runs",
+      "column": "started_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 241,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.prediction_runs",
+      "column": "finished_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 241,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.prediction_runs",
+      "column": "output_digest",
+      "declaration": "fep.sha256 NOT NULL",
+      "source_table_line": 241,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.prediction_runs",
+      "column": "counts",
+      "declaration": "jsonb NOT NULL",
+      "source_table_line": 241,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "prediction_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "slot_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "revision",
+      "declaration": "integer NOT NULL CHECK(revision>0)",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "observation_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "scope_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "target_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "horizon",
+      "declaration": "integer NOT NULL",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "model_set_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "model_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "feature_contract_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "snapshot_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "run_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "prediction_evidence",
+      "declaration": "text NOT NULL CHECK(prediction_evidence IN ('FIRST_OBSERVED','LATE_RECONSTRUCTION','CORRECTED_RECONSTRUCTION','HISTORICAL_SIMULATION'))",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "quality",
+      "declaration": "text NOT NULL",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "unknown_reason",
+      "declaration": "text",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "outputs",
+      "declaration": "jsonb NOT NULL",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "support",
+      "declaration": "jsonb NOT NULL",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "output_digest",
+      "declaration": "fep.sha256 NOT NULL",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "accepted_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.predictions",
+      "column": "supersedes_id",
+      "declaration": "text",
+      "source_table_line": 248,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.slot_receipts",
+      "column": "slot_id",
+      "declaration": "text NOT NULL REFERENCES fep.prediction_slots(slot_id)",
+      "source_table_line": 272,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.slot_receipts",
+      "column": "receipt_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 272,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.slot_receipts",
+      "column": "recorded_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 272,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.slot_receipts",
+      "column": "status",
+      "declaration": "text NOT NULL CHECK(status IN ('MISSED','FAILED','PARTIAL','ACCEPTED'))",
+      "source_table_line": 272,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.slot_receipts",
+      "column": "payload",
+      "declaration": "jsonb NOT NULL",
+      "source_table_line": 272,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.slot_receipts",
+      "column": "receipt_digest",
+      "declaration": "fep.sha256 NOT NULL",
+      "source_table_line": 272,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.acceptance_receipts",
+      "column": "receipt_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 278,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.acceptance_receipts",
+      "column": "run_id",
+      "declaration": "text NOT NULL REFERENCES fep.prediction_runs(run_id)",
+      "source_table_line": 278,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.acceptance_receipts",
+      "column": "accepted_at",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 278,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.acceptance_receipts",
+      "column": "grant_id",
+      "declaration": "text NOT NULL REFERENCES fep.permission_keys(grant_id)",
+      "source_table_line": 278,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.acceptance_receipts",
+      "column": "activation_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 278,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.acceptance_receipts",
+      "column": "validation_contract_id",
+      "declaration": "text NOT NULL REFERENCES fep.contracts(contract_id)",
+      "source_table_line": 278,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.acceptance_receipts",
+      "column": "checks",
+      "declaration": "jsonb NOT NULL",
+      "source_table_line": 278,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.reports",
+      "column": "report_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 286,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.reports",
+      "column": "kind",
+      "declaration": "text NOT NULL CHECK(kind IN ('CALIBRATION','EVALUATION','DRIFT','PROMOTION','MISSINGNESS'))",
+      "source_table_line": 286,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.reports",
+      "column": "model_id",
+      "declaration": "text REFERENCES fep.models(model_id)",
+      "source_table_line": 286,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.reports",
+      "column": "dataset_id",
+      "declaration": "text REFERENCES fep.datasets(dataset_id)",
+      "source_table_line": 286,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.reports",
+      "column": "cutoff",
+      "declaration": "timestamptz NOT NULL",
+      "source_table_line": 286,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.reports",
+      "column": "contract_id",
+      "declaration": "text NOT NULL REFERENCES fep.contracts(contract_id)",
+      "source_table_line": 286,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.reports",
+      "column": "manifest",
+      "declaration": "jsonb NOT NULL",
+      "source_table_line": 286,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.reports",
+      "column": "results",
+      "declaration": "jsonb NOT NULL",
+      "source_table_line": 286,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.reports",
+      "column": "digest",
+      "declaration": "fep.sha256 NOT NULL UNIQUE",
+      "source_table_line": 286,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.priority_projection",
+      "column": "projection_id",
+      "declaration": "text PRIMARY KEY",
+      "source_table_line": 292,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.priority_projection",
+      "column": "run_id",
+      "declaration": "text NOT NULL REFERENCES fep.prediction_runs(run_id)",
+      "source_table_line": 292,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.priority_projection",
+      "column": "observation_id",
+      "declaration": "text NOT NULL REFERENCES fep.observations(observation_id)",
+      "source_table_line": 292,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.priority_projection",
+      "column": "priority_contract_id",
+      "declaration": "text NOT NULL REFERENCES fep.contracts(contract_id)",
+      "source_table_line": 292,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.priority_projection",
+      "column": "core_rank_identity",
+      "declaration": "fep.sha256 NOT NULL",
+      "source_table_line": 292,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.priority_projection",
+      "column": "axis_state",
+      "declaration": "text NOT NULL",
+      "source_table_line": 292,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.priority_projection",
+      "column": "axis_values",
+      "declaration": "jsonb NOT NULL",
+      "source_table_line": 292,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.priority_projection",
+      "column": "prediction_refs",
+      "declaration": "jsonb NOT NULL",
+      "source_table_line": 292,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.priority_projection_grants",
+      "column": "projection_id",
+      "declaration": "text NOT NULL REFERENCES fep.priority_projection(projection_id)",
+      "source_table_line": 302,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.priority_projection_grants",
+      "column": "grant_id",
+      "declaration": "text NOT NULL REFERENCES fep.permission_keys(grant_id)",
+      "source_table_line": 302,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.priority_projection_grants",
+      "column": "run_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 302,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    },
+    {
+      "table": "fep.priority_projection_grants",
+      "column": "permission_receipt_id",
+      "declaration": "text NOT NULL",
+      "source_table_line": 302,
+      "source_sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356",
+      "semantic_status": "DDL_REGISTRATION_ONLY_NOT_PRODUCER_VALIDATOR_UI_PASS"
+    }
+  ],
+  "scope": "028 initial schema; successor migrations and normative FEP requirements remain separate"
+}

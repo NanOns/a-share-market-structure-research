@@ -1,0 +1,11 @@
+....................F................................................... [ 58%]
+....................................................                     [100%]
+================================== FAILURES ===================================
+_ test_real_warmup_historical_block_no_head_move_and_exact_observation_readback _
+tests\v4_a04_r3\test_amount_a_go_forward.py:86: in test_real_warmup_historical_block_no_head_move_and_exact_observation_readback
+    assert len(bindings)==1
+E   assert 0 == 1
+E    +  where 0 = len([])
+=========================== short test summary info ===========================
+FAILED tests/v4_a04_r3/test_amount_a_go_forward.py::test_real_warmup_historical_block_no_head_move_and_exact_observation_readback
+1 failed, 123 passed, 2 deselected in 3.55s

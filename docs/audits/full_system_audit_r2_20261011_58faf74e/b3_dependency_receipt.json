@@ -1,0 +1,32 @@
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "tests/v4_03/test_r3_closure.py::test_trend_producer_identity_tamper",
+    "tests/v4_04/test_accepted_input.py::test_real_accepted_chain_resolves_expected_sources",
+    "tests/fep_e3/test_e3_contract.py::test_e3_20_no_display_priority_grant",
+    "tests/fep_e4/test_e4_contract.py::test_e4_tree_serialization_actual_parity",
+    "-q",
+    "--tb=short",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=G:/codex_tmp/test_temp/full_audit_r2_dependencies",
+    "--junitxml=G:\\codex_tmp\\full_system_audit_r2_58faf74e\\b3_dependency_junit.xml"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 12.414689064025879,
+  "summary": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "7",
+    "time": "11.136",
+    "timestamp": "2026-10-11T09:16:22.426529+08:00",
+    "hostname": "DESKTOP-PMEP5GE"
+  },
+  "dependencies": "G target exact protocol pins",
+  "protected_source_root": "G:\\codex_tmp\\full_system_audit_a2eadda\\frozen"
+}

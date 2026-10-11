@@ -115,9 +115,22 @@
       "batch": "B",
       "status": "OPEN",
       "acceptance_independent_of_current_stage": true,
-      "effective_location": "tests/remainder_plugin.py;tests/v4_09;tests/fep_e4",
-      "effective_regression_scope": "V4 only; mixed all-repository/legacy DB attempts excluded",
-      "continuation_evidence": "B3_SCOPE_CORRECTION_R3.json"
+      "effective_location": "config/v4_audit_regression_scope_r3.json;tests/v4_audit_isolation_plugin_r3.py;tests/remainder_isolation_plugin.py",
+      "effective_regression_scope": "All 4568 collected nodes in the 245-module V4-only manifest; historical V3 positive DB compatibility excluded from acceptance; legal full requirements denominator remains OPEN",
+      "continuation_evidence": "B3_V4_FULL_REGRESSION_RESULT.json",
+      "full_regression_statuses": {
+        "SKIP": 312,
+        "PASS": 3810,
+        "FAIL": 237,
+        "ERROR": 209
+      },
+      "targeted_fixture_rerun_statuses": {
+        "PASS": 435,
+        "FAIL": 98,
+        "SKIP": 1,
+        "ERROR": 64
+      },
+      "final_regression_disposition": "MANIFEST_FULL_EXECUTION_COMPLETE_NOT_GREEN; separate subset cannot erase original failures or close independent backend, source-policy and semantic gates"
     },
     {
       "audit_item_id": "FA-007",
@@ -375,9 +388,22 @@
       "audit_item_id": "AR3-E02",
       "severity": "P2",
       "classification": "AUDIT_SCOPE_GOVERNANCE",
-      "status": "SCOPE_FIXED_FINAL_REGRESSION_PENDING",
-      "evidence": "B3_SCOPE_CORRECTION_R3.json",
+      "status": "SCOPE_FIXED_MANIFEST_EXECUTED_EXTERNAL_PENDING",
+      "evidence": [
+        "B3_SCOPE_CORRECTION_R3.json",
+        "B3_V4_FULL_REGRESSION_RESULT.json"
+      ],
       "acceptance_independent_of_current_stage": true
+    },
+    {
+      "audit_item_id": "AR3-E03",
+      "severity": "P2",
+      "classification": "AUDIT_GUARD_BUSINESS_EXCEPTION_CONFOUNDING",
+      "status": "ENGINEERING_FIXED_SUBSET_EXECUTED_FULL_SEMANTICS_OPEN",
+      "scope": "V4-only audit database guard, independent of product stage",
+      "evidence": "AR3_E03_GUARD_SEMANTICS_AUDIT.json",
+      "acceptance_independent_of_current_stage": true,
+      "subset_evidence": "B3_V4_FULL_REGRESSION_RESULT.json"
     }
   ],
   "audit_scope": "V4_ONLY",

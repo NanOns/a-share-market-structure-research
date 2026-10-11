@@ -1,0 +1,34 @@
+{
+  "audit_item_id": "AR3-E03",
+  "severity": "P2",
+  "classification": "AUDIT_GUARD_BUSINESS_EXCEPTION_CONFOUNDING",
+  "status": "ENGINEERING_FIXED_SUBSET_EXECUTED_FULL_SEMANTICS_OPEN",
+  "scope": "V4-only audit database guard, independent of product stage",
+  "original": "Full original guard raised ValueError; generic ValueError/Exception negative assertions could pass because the guard rejected the DB instead of the business rule",
+  "repair": "V4NonPostgresBackendError derives from BaseException; configured real SQLite/DuckDB connect negatives do not satisfy business ValueError assertions; per-test node logged",
+  "proof": {
+    "contract_id": "V4_R3_NON_BUSINESS_DATABASE_GUARD_SEMANTICS_V1",
+    "status": "PASS_2_CONFIGURED_REAL_CONNECT_NEGATIVES",
+    "rows": [
+      {
+        "backend": "sqlite3",
+        "actual_connect_intercepted": true,
+        "business_ValueError_negative_not_satisfied": true,
+        "node_recorded": "guard_semantics_probe::sqlite3"
+      },
+      {
+        "backend": "duckdb",
+        "actual_connect_intercepted": true,
+        "business_ValueError_negative_not_satisfied": true,
+        "node_recorded": "guard_semantics_probe::duckdb"
+      }
+    ],
+    "source_sha256": "437f9527be194e12309c51eccbdf8637933415229046253c348b35b0b7ce7f9c",
+    "full_original": "Original full run uses older ValueError guard; generic negative PASS is not retrospectively semantic-accepted",
+    "no_database_opened": true
+  },
+  "acceptance": "2 configured real connection negatives and explicit subset executed; original full PASS entries not retrospectively granted semantic acceptance",
+  "external_acceptance": false,
+  "subset_node_denominator": 598,
+  "subset_evidence": "B3_V4_FULL_REGRESSION_RESULT.json"
+}

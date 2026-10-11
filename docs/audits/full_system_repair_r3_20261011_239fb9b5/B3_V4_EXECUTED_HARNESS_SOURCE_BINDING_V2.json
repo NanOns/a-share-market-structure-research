@@ -7,27 +7,57 @@
       "path": "conftest.py",
       "full_executed_raw_sha256": "ab6cb84f6044d5f53486b934165fe013c042742fcf4ba71627ad7169acd4b907",
       "archive": "b3_v4_full_executed_0.source.gz",
-      "current_working_sha256": "ab6cb84f6044d5f53486b934165fe013c042742fcf4ba71627ad7169acd4b907"
+      "current_working_sha256": "ab6cb84f6044d5f53486b934165fe013c042742fcf4ba71627ad7169acd4b907",
+      "working_sha256_at_initial_capture": "ab6cb84f6044d5f53486b934165fe013c042742fcf4ba71627ad7169acd4b907"
     },
     {
       "path": "tests/v4_audit_isolation_plugin_r3.py",
       "full_executed_raw_sha256": "d6276468cb1806244fd6cb34edc4cfde520d5ec3a0f6b61e0ad201bf9534ca2b",
       "archive": "b3_v4_full_executed_1.source.gz",
-      "current_working_sha256": "b631743fbd1fd2d8aecca4521db658cb7f2783a06ddeb60b1d17b71d3eb49ccd"
+      "current_working_sha256": "437f9527be194e12309c51eccbdf8637933415229046253c348b35b0b7ce7f9c",
+      "working_sha256_at_initial_capture": "b631743fbd1fd2d8aecca4521db658cb7f2783a06ddeb60b1d17b71d3eb49ccd"
     },
     {
       "path": "tests/remainder_isolation_plugin.py",
       "full_executed_raw_sha256": "0fbe02fc77dcb68c168163df3b7c44a596082973c851c3e7167bacd46e9d4828",
       "archive": "b3_v4_full_executed_2.source.gz",
-      "current_working_sha256": "ac435efa0781890017ccb626679289f128416199ef74f405918d6edf4f589ef1"
+      "current_working_sha256": "ac435efa0781890017ccb626679289f128416199ef74f405918d6edf4f589ef1",
+      "working_sha256_at_initial_capture": "ac435efa0781890017ccb626679289f128416199ef74f405918d6edf4f589ef1"
     },
     {
       "path": "scripts/run_v4_08_r3_isolated_verification.py",
       "full_executed_raw_sha256": "448839d646b2f53b77ca2003f92aaad7da63361954391d1090c1ac6ccb0c1c35",
       "archive": "b3_v4_full_executed_3.source.gz",
-      "current_working_sha256": "448839d646b2f53b77ca2003f92aaad7da63361954391d1090c1ac6ccb0c1c35"
+      "current_working_sha256": "448839d646b2f53b77ca2003f92aaad7da63361954391d1090c1ac6ccb0c1c35",
+      "working_sha256_at_initial_capture": "448839d646b2f53b77ca2003f92aaad7da63361954391d1090c1ac6ccb0c1c35"
     }
   ],
-  "current_working_harness": "Additional exact G pre033 proof and narrow V4 R24 fixture are pending a separate explicit subset run; not attributed to the ongoing full run",
-  "old_binding": "B3_EXECUTED_HARNESS_SOURCE_BINDING.json retained for its earlier stage"
+  "current_working_harness": "Explicit G pre033 proof and narrow V4 historical R24 fixture executed in the separate subset; sources archived independently from full run",
+  "old_binding": "B3_EXECUTED_HARNESS_SOURCE_BINDING.json retained for its earlier stage",
+  "subset_executed_bindings": [
+    {
+      "path": "conftest.py",
+      "executed_raw_sha256": "ab6cb84f6044d5f53486b934165fe013c042742fcf4ba71627ad7169acd4b907",
+      "archive": "b3_v4_subset_executed_0.source.gz",
+      "current_working_sha256": "ab6cb84f6044d5f53486b934165fe013c042742fcf4ba71627ad7169acd4b907"
+    },
+    {
+      "path": "tests/v4_audit_isolation_plugin_r3.py",
+      "executed_raw_sha256": "437f9527be194e12309c51eccbdf8637933415229046253c348b35b0b7ce7f9c",
+      "archive": "b3_v4_subset_executed_1.source.gz",
+      "current_working_sha256": "437f9527be194e12309c51eccbdf8637933415229046253c348b35b0b7ce7f9c"
+    },
+    {
+      "path": "tests/remainder_isolation_plugin.py",
+      "executed_raw_sha256": "ac435efa0781890017ccb626679289f128416199ef74f405918d6edf4f589ef1",
+      "archive": "b3_v4_subset_executed_2.source.gz",
+      "current_working_sha256": "ac435efa0781890017ccb626679289f128416199ef74f405918d6edf4f589ef1"
+    },
+    {
+      "path": "scripts/run_v4_08_r3_isolated_verification.py",
+      "executed_raw_sha256": "448839d646b2f53b77ca2003f92aaad7da63361954391d1090c1ac6ccb0c1c35",
+      "archive": "b3_v4_subset_executed_3.source.gz",
+      "current_working_sha256": "448839d646b2f53b77ca2003f92aaad7da63361954391d1090c1ac6ccb0c1c35"
+    }
+  ]
 }

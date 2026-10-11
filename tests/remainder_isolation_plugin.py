@@ -130,7 +130,17 @@ def pytest_collection_modifyitems(session,config,items):
         from types import SimpleNamespace
         import psycopg
         from psycopg.conninfo import conninfo_to_dict
-        proof=json.loads((REPOSITORY/'reports/forward_r2_remainder_consolidated_20261007/IA06_SIGNAL_GUARD_BASELINE_PROOF.json').read_bytes())
+        supplied=os.environ.get('V4_AUDIT_PRE033_PROOF')
+        proof_path=Path(supplied).resolve() if supplied else REPOSITORY/'reports/forward_r2_remainder_consolidated_20261007/IA06_SIGNAL_GUARD_BASELINE_PROOF.json'
+        if supplied and not proof_path.is_relative_to(Path('G:/codex_tmp').resolve()):raise ValueError('PRE033_PROOF_OUTSIDE_G_ISOLATION')
+        proof=json.loads(proof_path.read_bytes())
+        if supplied:
+            if proof.get('contract_id')!='V4_R3_EXACT_PRE033_G_FIXTURE_V1' or not proof.get('current_schema_not_downgraded'):raise ValueError('PRE033_EXPLICIT_CONTRACT_REQUIRED')
+            for kind,value in proof['DSNS'].items():
+                data=Path(proof['data_directory_by_kind'][kind]).resolve()
+                if not data.is_relative_to(DISPOSABLE_BASE):raise ValueError('PRE033_DATA_DIRECTORY_OUTSIDE_G_ISOLATION')
+                with psycopg.connect(value) as witness:
+                    if Path(witness.execute('show data_directory').fetchone()[0]).resolve()!=data:raise ValueError('PRE033_DATA_DIRECTORY_IDENTITY')
         def historical_signal_connect(dsn,*args,**kw):
             params=conninfo_to_dict(dsn);kind='fresh' if params.get('port')=='55492' else 'upgrade' if params.get('port')=='55493' else None
             if kind is None or params.get('host')!='127.0.0.1' or params.get('dbname')!='fep_e5b_'+kind:raise ValueError('UNREGISTERED_PRE033_FIXTURE')

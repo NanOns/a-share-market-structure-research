@@ -10,3 +10,5 @@
 本轮审计范围为 **V4 / PostgreSQL-only**。旧版DuckDB混合回归不计入V4验收；FA-018调度SQLite、FA-019图表SQLite派生索引分别OPEN。
 
 各批次工程结果见报告和独立 REPAIR_RESULT。正式PIT/H21/Cohort/FEP/Windows门未解除；提交和push不代签外部接受。
+
+B3已完成245模块冻结清单、4,568用例的执行及独立夹具重跑；清单内回归未绿，合法全需求分母仍OPEN。详见本轮B3_V4_FULL_REGRESSION_RESULT.json。FA-020治理扫描性能独立OPEN。

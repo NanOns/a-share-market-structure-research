@@ -1,0 +1,50 @@
+{
+  "contract_id": "R4_INDEPENDENT_DATED_SOURCE_CHART_ORACLE_R1",
+  "denominator": 450,
+  "differences": [],
+  "current_status": "SCOPED_SOURCE_ORACLE_PASS",
+  "source_bindings": [
+    {
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-09-28/history.jsonl.gz",
+      "sha256": "918c2e689c230869fe5dad66f1e40743fb11e531c4c0013d4bda7a9f1b262f3d",
+      "bytes": 66747343
+    },
+    {
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-09-29/history.jsonl.gz",
+      "sha256": "28ae440aa7639a6b94fd10aab2c4b11640ecd6af0f6c0bed2eda8fcde3d9f8d4",
+      "bytes": 66905732
+    },
+    {
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-09-30/history.jsonl.gz",
+      "sha256": "1a4e34ace538c49bb5f54c49a1986706c5518cb88cbca2afc28a4a9d53c8609a",
+      "bytes": 67076523
+    },
+    {
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-08/history.jsonl.gz",
+      "sha256": "5af05c9aea4057d852105be5aff28b3db2a9c661cf9728a94fadc785499b1428",
+      "bytes": 67231482
+    },
+    {
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/history.jsonl.gz",
+      "sha256": "1297fb01a999165f117afec1660cbb2549366f51030ecf09ba237b9e88607b24",
+      "bytes": 67380907
+    }
+  ],
+  "source_hashes_verified_before_after": true,
+  "limitations": [
+    "Independent pure bar calculation; reconstructed sources, not historical PIT",
+    "Period owner gaps are explicit, not READY cases"
+  ],
+  "base_head": "14a4b61876ce64f77f001623d0b13554da2744a2",
+  "source_SHA": "4f7e49d22a3f703813c62db0d8132d04eb6f2ae6",
+  "run_utc": "2026-10-11T09:50:27.865781+00:00",
+  "scope": "Bounded V4 isolated PG engineering",
+  "negative_vectors": [],
+  "previous_status": "AUDIT_INCOMPLETE",
+  "evidence_links": [],
+  "owner": "Codex / root",
+  "next_conditions": [
+    "Independent external review"
+  ],
+  "receipt_metadata_utc_meaning": "Envelope completion time; actual original execution logs/source bindings retained"
+}

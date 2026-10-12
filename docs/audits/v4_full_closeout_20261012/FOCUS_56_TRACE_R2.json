@@ -1,0 +1,665 @@
+{
+  "contract_id": "R4_R3_PRESERVED_56_REAL_CALL_TRACE",
+  "entry": "Current exact action contract five-day projection and PG journal",
+  "denominator": 56,
+  "observed": 7,
+  "rows": [
+    {
+      "path": "src/phase0_2a_runner.py",
+      "source_sha256": "728bf7c079af8dca0c008dee9dbb7b9cdd3b9532fd60749e018fe77e4eb1ef54",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/phase0_2b_runner.py",
+      "source_sha256": "1c9c9ba9e43777357cba23ee99205ed750a76208dc86726cbd4af7e859c2b13a",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/phase0_2_runner.py",
+      "source_sha256": "0a972aa642e2df87e4995021f18fc25cb52daa6e321940dc3a4da7493ec53a3c",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/phase4_runner.py",
+      "source_sha256": "5f12cb96731315cec48cfa99a0657b2574eb41d2f7d6ce92434f0dedb2cec44a",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/adjustment/engine.py",
+      "source_sha256": "b28a5982a1ff7d48331b3ab9c5a055ddedab15a40123d25bce03602e3567ae37",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/adjustment/tdx_adjustment.py",
+      "source_sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0",
+      "actual_call_count": 3,
+      "calls": [
+        {
+          "function": "<module>",
+          "line": 1,
+          "calls": 1
+        },
+        {
+          "function": "XrxdEvent",
+          "line": 24,
+          "calls": 1
+        },
+        {
+          "function": "AdjustmentFactor",
+          "line": 87,
+          "calls": 1
+        }
+      ],
+      "classification": "OBSERVED_IN_ACTUAL_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/adjustment/tdx_adjustment_v0_3.py",
+      "source_sha256": "fd13b88915a42120fb1d338c72b7849802c10cdbb1b018ff6b7daf3695a0068d",
+      "actual_call_count": 1115607,
+      "calls": [
+        {
+          "function": "<module>",
+          "line": 1,
+          "calls": 1
+        },
+        {
+          "function": "XrxdEvent",
+          "line": 33,
+          "calls": 1
+        },
+        {
+          "function": "AdjustmentFactor",
+          "line": 96,
+          "calls": 1
+        },
+        {
+          "function": "build_affine_factors",
+          "line": 127,
+          "calls": 37782
+        },
+        {
+          "function": "<genexpr>",
+          "line": 141,
+          "calls": 38108
+        },
+        {
+          "function": "qfq_price",
+          "line": 114,
+          "calls": 344072
+        },
+        {
+          "function": "_decimal",
+          "line": 24,
+          "calls": 345376
+        },
+        {
+          "function": "_round_exact_price",
+          "line": 15,
+          "calls": 344072
+        },
+        {
+          "function": "xrxd_from_gbbq",
+          "line": 77,
+          "calls": 326
+        },
+        {
+          "function": "parameter",
+          "line": 82,
+          "calls": 1304
+        },
+        {
+          "function": "<lambda>",
+          "line": 142,
+          "calls": 326
+        },
+        {
+          "function": "validate",
+          "line": 43,
+          "calls": 652
+        },
+        {
+          "function": "<genexpr>",
+          "line": 50,
+          "calls": 3260
+        },
+        {
+          "function": "mc",
+          "line": 55,
+          "calls": 326
+        }
+      ],
+      "classification": "OBSERVED_IN_ACTUAL_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/adjustment/__init__.py",
+      "source_sha256": "3785484d5d13bb803bba6547fea7e5447d7268ba497137e6c0290b6ccb1fcdc1",
+      "actual_call_count": 1,
+      "calls": [
+        {
+          "function": "<module>",
+          "line": 1,
+          "calls": 1
+        }
+      ],
+      "classification": "OBSERVED_IN_ACTUAL_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/focus_tracker/materialize.py",
+      "source_sha256": "9685cce288a27a219bc33aaf55e07f3d0fc2116113ab15d9dc7036a8476ede64",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/focus_tracker/pit_rps.py",
+      "source_sha256": "320278d299a177fafe608d5aeddfb32771cbbeafc6ccc71c1ba396bf24cd58f5",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/focus_tracker/predicate_facts_by_date.py",
+      "source_sha256": "d3fbfe5dbb337790b8f1a722cb1a813c965a8eda85d6a0bbed824004cde9a8d2",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/focus_tracker/price_path.py",
+      "source_sha256": "a262e64c3866f0976dc76f27d1a66a471d27c2e2a4ce3ac27a5f182c682b1824",
+      "actual_call_count": 231316,
+      "calls": [
+        {
+          "function": "<module>",
+          "line": 1,
+          "calls": 1
+        },
+        {
+          "function": "Bar",
+          "line": 18,
+          "calls": 1
+        },
+        {
+          "function": "AdjustmentEvent",
+          "line": 28,
+          "calls": 1
+        },
+        {
+          "function": "ActualTradedPath",
+          "line": 35,
+          "calls": 1
+        },
+        {
+          "function": "path_metrics",
+          "line": 178,
+          "calls": 37782
+        },
+        {
+          "function": "<genexpr>",
+          "line": 179,
+          "calls": 123800
+        },
+        {
+          "function": "due_date",
+          "line": 78,
+          "calls": 69730
+        }
+      ],
+      "classification": "OBSERVED_IN_ACTUAL_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/focus_tracker/technical_facts.py",
+      "source_sha256": "37b2d875d96913aee1d917c327fdef641e73dfcfbeaa7f1b3c2497149a9009ea",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/focus_tracker/v4_native_core_adapter.py",
+      "source_sha256": "94c229a55a4c1ae82f308a3e44d3fb5dd42892261b11308f0516bb0e8b4ad6f5",
+      "actual_call_count": 37326,
+      "calls": [
+        {
+          "function": "<module>",
+          "line": 1,
+          "calls": 1
+        },
+        {
+          "function": "AcceptedPaths",
+          "line": 10,
+          "calls": 1
+        },
+        {
+          "function": "__init__",
+          "line": 11,
+          "calls": 16
+        },
+        {
+          "function": "enriched_project",
+          "line": 61,
+          "calls": 6
+        },
+        {
+          "function": "native_facts",
+          "line": 49,
+          "calls": 37302
+        }
+      ],
+      "classification": "OBSERVED_IN_ACTUAL_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/focus_tracker/v4_path_adapter.py",
+      "source_sha256": "243c1dec85b505f2385bd0e0a49edd6597f6cc9d952b6ed587a390a83144d0fd",
+      "actual_call_count": 418520,
+      "calls": [
+        {
+          "function": "<module>",
+          "line": 1,
+          "calls": 1
+        },
+        {
+          "function": "AcceptedPaths",
+          "line": 29,
+          "calls": 1
+        },
+        {
+          "function": "checked",
+          "line": 21,
+          "calls": 544
+        },
+        {
+          "function": "__init__",
+          "line": 30,
+          "calls": 16
+        },
+        {
+          "function": "<genexpr>",
+          "line": 43,
+          "calls": 417952
+        },
+        {
+          "function": "enriched_project",
+          "line": 89,
+          "calls": 6
+        }
+      ],
+      "classification": "OBSERVED_IN_ACTUAL_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/normalize/phase1.py",
+      "source_sha256": "78bc99490426863597e65cdd2a5a41f2c69772c9e238bd9bbc711190f2402c08",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/production/dashboard.py",
+      "source_sha256": "e58aeca36ff966c85bf242f5e95d52514cc2d975c42789c991970849291f19a3",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/scanner/stock_scanner.py",
+      "source_sha256": "b24c157350e04835b058ca8e5a29cb70431373a68631a20b1e7280212142c434",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/sector/accepted_input_r5_1.py",
+      "source_sha256": "f6d5e47742bfe984e7ffab273d48703047724111d26b8ecd9bc0afc0552fcf94",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/v4/adjustment_basis_r4.py",
+      "source_sha256": "6668f50dfd1a43069615cc174ccf628c33d158f6f1e8988cd8dafc74260fc1c2",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/chart.py",
+      "source_sha256": "d808ae5d4af649b6dfd45f6de0c60531da13eea8559133dddb8c61cc8845dcb6",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/corrected_focus_replay.py",
+      "source_sha256": "e24b1a17855a16cd315981c12ca5881742561480391ea65f974d088b9fd04e40",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/corrected_market_rotation.py",
+      "source_sha256": "f110bcec39144f2058320eb80e35410912d0a10fece0614d6e8de7a653c0b2f3",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/corrected_owner_replay.py",
+      "source_sha256": "dbb1dfbc53b2493cdb30787c7c810b279b997d5ccdca728c3cccf6d69cd665b4",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/corrected_sector_replay.py",
+      "source_sha256": "b9aa7ffa53e028158176fd102de5b9621cbb31c93dacb116f6531bc69250b830",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/corrected_structure_replay.py",
+      "source_sha256": "5120f708278730556706f89820d8bd2ad785a1d6275bae5b16234668e14638a2",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/coverage.py",
+      "source_sha256": "5141f9d174ed49032fbb3630efa97af93352690fd03f844b45381d02320d768e",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+      "source_sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/dm01_incremental_component_builders_r3.py",
+      "source_sha256": "f07d8c21dde548c84e037403ab18da54ba4f509f36811027a5f17606a4c704ae",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_2.py",
+      "source_sha256": "86670dc79064b8876137595ecb1a7b19e509e28521e1470abdaed5e81df16845",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+      "source_sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/forward_outcome_materializer_v3_3.py",
+      "source_sha256": "0925c69546b7ab7efdb0206cd7402310d96226f1da7bc1b4527a7e213dfe33bb",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/highs.py",
+      "source_sha256": "16dac2ee2358649bee84e42379812a1aaf38cf8d25fa1d8ccacd2f47b0c0f8f5",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/history_adapter.py",
+      "source_sha256": "83d8990df85d8787e4c2efd59043e8522f26b5cdb2907af7f86aa2785cd6b487",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/market_cycle.py",
+      "source_sha256": "d47c721c307c69b3c220c88e3a632988e1c7d15af251877a55e70d513bfc751b",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/operational_daily_periods_v1.py",
+      "source_sha256": "a40ad2cec659e65c7ff793fb6610f0ab402ea9a846ed3e44c9e3f7d3d06f1c87",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/r43_focus_replay.py",
+      "source_sha256": "ac0f3bb3b2437751d81427b6fa4737e42e3a3bcd4230198073e672689796a1ba",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/r43_market_replay.py",
+      "source_sha256": "1609652397b4fc1ae5cbd885dbc88447e3a30814462b1010e1ede2008a543554",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/r43_owner_replay.py",
+      "source_sha256": "fd7cb2bb67e0b050302498c67d19eb45b491712938c060a720e9886a5f8ede92",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/r43_structure_replay.py",
+      "source_sha256": "4bd82d65c49af30a6ab12abfad1dc6130d17c5559c3f78135061146660a30c8f",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/research_features.py",
+      "source_sha256": "1393f4d33f8b6aecb2e666d57e9cd528859a21b8a7712e3749e8f7f2c59a5b20",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/sector_cycle.py",
+      "source_sha256": "cdd67e213c0ecc5d6e3db89b49cf5b4126de6299d40ebf0420a92e66b67a65bd",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/tdx_sector_retro_r43.py",
+      "source_sha256": "0d4aee71c61375fa1d1f02821d164aa5f598e75174b9d950ec2ed3b55b0037e9",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/technical.py",
+      "source_sha256": "df660e3f399f611eecb8123c64585a2055494bf15b9cb4d44a8085f00a809910",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/v4_12_structure_engine.py",
+      "source_sha256": "6623c8cdcf0eb8123daa88581a6e0ab1d391f1cb670d8855c728b22cc529854b",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/v4_15_radar_cohort.py",
+      "source_sha256": "1897b81d5618d3b077af6d65e77b0df9bc26175b44facfee5dac5021a92dd06e",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_db/api_connection.py",
+      "source_sha256": "400508decbc966c635a3e92e176f547804b912437bedab0d7866352865fd2f9f",
+      "actual_call_count": 4,
+      "calls": [
+        {
+          "function": "<module>",
+          "line": 1,
+          "calls": 1
+        },
+        {
+          "function": "ApiConnectionProvider",
+          "line": 19,
+          "calls": 1
+        },
+        {
+          "function": "DuckDBApiConnectionProvider",
+          "line": 27,
+          "calls": 1
+        },
+        {
+          "function": "PostgresDuckDBApiConnectionProvider",
+          "line": 44,
+          "calls": 1
+        }
+      ],
+      "classification": "OBSERVED_IN_ACTUAL_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_service/app.py",
+      "source_sha256": "4a3b013c70a728d2ea5e86128092948167313881b84e947655e3bf8404d60528",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_service/core_product_bff_r1.py",
+      "source_sha256": "1c9c41c5f0c6d0eb99eaff25fc1914a7903eda04c6d8b69a24b1a2f2010a5d7b",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_service/forward_daily.py",
+      "source_sha256": "a1e7b29ac86d3c8602dc6e70c3483a7348012b5b3a8aef7d37ece097e0fecfa9",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_service/quotes.py",
+      "source_sha256": "f079f5237b11163127b5cafd7c1ccf2e920e9aa878911da34b24bd69e056be09",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_service/research_builder.py",
+      "source_sha256": "19b570a65e4809a2fcbb370ba8342e3e995ce17fc6b8af414f99fe93649264e6",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_service/research_signal_evaluation.py",
+      "source_sha256": "b4666cbddc8d338836410588e31b13b8001d3f2a375953abb5ccb2a287828e78",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_service/stock_views.py",
+      "source_sha256": "392504ad567fd0f82f6ab6a2dd0bb92e9b7f751665933c6e1050278feca34327",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_service/v3_daily_entry.py",
+      "source_sha256": "09088e307adeced47564a2efd1796adad9c2661a20c18ad6bc65acaa1c19db0d",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    },
+    {
+      "path": "src/workbench_analysis/fep_e2/historical_owners.py",
+      "source_sha256": "9c8ab5e1560bc5173e710719a5a44b0f5adb1e92fd58d781055acd899d8f09c9",
+      "actual_call_count": 0,
+      "calls": [],
+      "classification": "UNRESOLVED_NOT_OBSERVED_IN_ENTRY",
+      "numerical_acceptance": "SEPARATE_ORACLE_REQUIRED"
+    }
+  ],
+  "full_acceptance": "OPEN",
+  "limitation": "Call execution alone does not establish exact adjustment semantics; lack of observation does not establish exclusion"
+}

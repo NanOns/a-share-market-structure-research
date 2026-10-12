@@ -1,0 +1,38 @@
+{
+  "contract_id": "R4_R3_EXACT_COLLECTED_NODE_SET_R1",
+  "nodes": [
+    "tests/test_core_product_read_r1.py::test_week_end_uses_formal_owner_not_always_forming",
+    "tests/test_core_product_read_r1.py::test_future_bar_fails_closed",
+    "tests/test_core_product_read_r1.py::test_unknown_adjustment_does_not_draw_fake_price",
+    "tests/test_core_product_read_r1.py::test_negative_chart_paging_rejected",
+    "tests/test_v4_daily_default_dispatch_closeout.py::test_actual_daily_reader_preserves_authority_and_date",
+    "tests/test_v4_daily_default_dispatch_closeout.py::test_daily_policy_unready_is_rejected_before_consumer",
+    "tests/test_v4_daily_default_dispatch_closeout.py::test_daily_policy_digest_mismatch_is_rejected",
+    "tests/test_v4_cohort_pg_closeout.py::test_pg_exact_owner_read_requires_same_accepted_grant",
+    "tests/test_v4_cohort_pg_closeout.py::test_pg_descriptor_corruption_and_missing_dsn_fail_closed",
+    "tests/test_v4_cohort_pg_closeout.py::test_reconstructed_or_late_source_never_materializes_cohort",
+    "tests/test_v4_cohort_pg_closeout.py::test_missing_real_owner_route_preserves_unknown_counts",
+    "tests/test_windows_package_runtime.py::test_workspace_lock_survives_stopped_engine",
+    "tests/test_windows_package_runtime.py::test_maintenance_resume_preserves_user_cancel_and_pause",
+    "tests/test_windows_package_runtime.py::test_restart_recreates_objects_and_keeps_settings",
+    "tests/test_windows_package_runtime.py::test_http_remains_alive_while_active_executor_finishes",
+    "tests/test_windows_package_runtime.py::test_start_failure_does_not_report_stopped_resources_as_running",
+    "tests/test_windows_package_runtime.py::test_cancel_pending_restart_keeps_live_objects",
+    "tests/test_windows_package_runtime.py::test_source_task_only_with_workspace_owner",
+    "tests/test_windows_package_runtime.py::test_production_port_reserved_before_recovery",
+    "tests/test_windows_package_runtime.py::test_native_source_view_preserves_rows_unknowns_and_raw_bytes",
+    "tests/test_windows_package_runtime.py::test_known_legacy_writer_blocks_workspace_before_any_lock_or_db"
+  ],
+  "modules": [
+    "tests/test_core_product_read_r1.py",
+    "tests/test_v4_cohort_pg_closeout.py",
+    "tests/test_v4_daily_default_dispatch_closeout.py",
+    "tests/test_windows_package_runtime.py"
+  ],
+  "source_sha256": {
+    "tests/test_core_product_read_r1.py": "0ff0349401f2b17a682ef23feb901aa06d5d5ed339c5c00f25cc063bb7a38d99",
+    "tests/test_v4_daily_default_dispatch_closeout.py": "f3750cd6e7e1b8538a3834aff3e056bdea8389520020ec2e2c97d1452001a890",
+    "tests/test_v4_cohort_pg_closeout.py": "39f81a75615cc7a77057b58ac3c6def2606fa4d85af11a28021b0ffb217f41aa",
+    "tests/test_windows_package_runtime.py": "2c06fb204a08581ef6f0d514995381e3f5484d38d792b9382cdaf86b8f5d9d63"
+  }
+}

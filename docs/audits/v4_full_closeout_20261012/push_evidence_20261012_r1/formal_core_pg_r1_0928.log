@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "G:\codex work\v4-full-closeout-20261012\scripts\migrate_core_product_pg_closeout.py", line 70, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "G:\codex work\v4-full-closeout-20261012\scripts\migrate_core_product_pg_closeout.py", line 20, in main
+    identity=pg.execute("select current_database(),(pg_control_system()).system_identifier,current_setting('data_directory')").fetchone()
+             ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python\Lib\site-packages\psycopg\connection.py", line 304, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.InsufficientPrivilege: permission denied to examine "data_directory"
+DETAIL:  Only roles with privileges of the "pg_read_all_settings" role may examine this parameter.

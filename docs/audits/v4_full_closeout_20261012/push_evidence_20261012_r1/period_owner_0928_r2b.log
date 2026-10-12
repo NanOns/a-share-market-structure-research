@@ -1,0 +1,67 @@
+{"day": "2026-09-28", "securities": 100}
+{"day": "2026-09-28", "securities": 200}
+{"day": "2026-09-28", "securities": 300}
+{"day": "2026-09-28", "securities": 400}
+{"day": "2026-09-28", "securities": 500}
+{"day": "2026-09-28", "securities": 600}
+{"day": "2026-09-28", "securities": 700}
+{"day": "2026-09-28", "securities": 800}
+{"day": "2026-09-28", "securities": 900}
+{"day": "2026-09-28", "securities": 1000}
+{"day": "2026-09-28", "securities": 1100}
+{"day": "2026-09-28", "securities": 1200}
+{"day": "2026-09-28", "securities": 1300}
+{"day": "2026-09-28", "securities": 1400}
+{"day": "2026-09-28", "securities": 1500}
+{"day": "2026-09-28", "securities": 1600}
+{"day": "2026-09-28", "securities": 1700}
+{"day": "2026-09-28", "securities": 1800}
+{"day": "2026-09-28", "securities": 1900}
+{"day": "2026-09-28", "securities": 2000}
+{"day": "2026-09-28", "securities": 2100}
+{"day": "2026-09-28", "securities": 2200}
+{"day": "2026-09-28", "securities": 2300}
+{"day": "2026-09-28", "securities": 2400}
+{"day": "2026-09-28", "securities": 2500}
+{"day": "2026-09-28", "securities": 2600}
+{"day": "2026-09-28", "securities": 2700}
+{"day": "2026-09-28", "securities": 2800}
+{"day": "2026-09-28", "securities": 2900}
+{"day": "2026-09-28", "securities": 3000}
+{"day": "2026-09-28", "securities": 3100}
+{"day": "2026-09-28", "securities": 3200}
+{"day": "2026-09-28", "securities": 3300}
+{"day": "2026-09-28", "securities": 3400}
+{"day": "2026-09-28", "securities": 3500}
+{"day": "2026-09-28", "securities": 3600}
+{"day": "2026-09-28", "securities": 3700}
+{"day": "2026-09-28", "securities": 3800}
+{"day": "2026-09-28", "securities": 3900}
+{"day": "2026-09-28", "securities": 4000}
+{"day": "2026-09-28", "securities": 4100}
+{"day": "2026-09-28", "securities": 4200}
+{"day": "2026-09-28", "securities": 4300}
+{"day": "2026-09-28", "securities": 4400}
+{"day": "2026-09-28", "securities": 4500}
+{"day": "2026-09-28", "securities": 4600}
+{"day": "2026-09-28", "securities": 4700}
+{"day": "2026-09-28", "securities": 4800}
+{"day": "2026-09-28", "securities": 4900}
+{"day": "2026-09-28", "securities": 5000}
+{"day": "2026-09-28", "securities": 5100}
+{"day": "2026-09-28", "securities": 5200}
+Traceback (most recent call last):
+  File "G:\codex work\v4-full-closeout-20261012\scripts\v4_closeout_period_owners.py", line 87, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "G:\codex work\v4-full-closeout-20261012\scripts\v4_closeout_period_owners.py", line 72, in main
+    binding=prepare(TARGET,payload,token+'_'+day+'_'+domain+'_'+run_signature)
+  File "G:\codex work\v4-full-closeout-20261012\src\workbench_db\v4_period_pg_r1.py", line 9, in prepare
+    return ForwardFactStore(root,'data/v4/core_period_pg_r1').append(payload['domain'],key,payload,migration_timeout_seconds=120)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "G:\codex work\v4-full-closeout-20261012\src\workbench_db\v4_forward_pg_r1.py", line 96, in append
+    pg.execute('INSERT INTO forward_facts(kind,fact_key,payload,payload_sha256) VALUES(%s,%s,%s,%s) ON CONFLICT DO NOTHING', (kind, key, raw.decode(), digest(raw)))
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python\Lib\site-packages\psycopg\connection.py", line 304, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.QueryCanceled: canceling statement due to statement timeout

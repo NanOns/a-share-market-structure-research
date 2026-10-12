@@ -1,0 +1,1050 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="45" skipped="0" tests="237" time="1227.080" timestamp="2026-10-12T16:41:57.552769+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_corrected_owner_replay_r4" name="test_descendant_reader_preserves_exact_head_and_producer_identities" time="2.063" /><testcase classname="tests.test_dd_r21_process_races" name="test_two_scheduler_processes_and_manual_retry_share_one_attempt" time="5.309" /><testcase classname="tests.test_dd_r21_source_orchestration" name="test_accepted_pool_lifecycle_and_later_observation_fail_closed[prelisting]" time="2.230" /><testcase classname="tests.test_dd_r21_source_orchestration" name="test_accepted_pool_lifecycle_and_later_observation_fail_closed[delisted]" time="0.795" /><testcase classname="tests.test_dd_r21_source_orchestration" name="test_accepted_pool_lifecycle_and_later_observation_fail_closed[unknown_identity]" time="0.488" /><testcase classname="tests.test_dd_r21_source_orchestration" name="test_accepted_pool_lifecycle_and_later_observation_fail_closed[halt_valid]" time="0.453" /><testcase classname="tests.test_dd_r21_source_orchestration" name="test_accepted_pool_lifecycle_and_later_observation_fail_closed[later_package_old_day]" time="0.480" /><testcase classname="tests.test_forward_p1_regression" name="test_worker_keeps_queue_fencing_and_contract_is_additive" time="14.393" /><testcase classname="tests.test_full_chain_fep_db" name="test_baseline_unknown_signal_accepted[pg0]" time="0.430" /><testcase classname="tests.test_full_chain_fep_db" name="test_baseline_unknown_signal_accepted[pg1]" time="0.188" /><testcase classname="tests.test_full_chain_fep_db" name="test_signal_db_reject[pg0-unknown]" time="0.596" /><testcase classname="tests.test_full_chain_fep_db" name="test_signal_db_reject[pg0-target]" time="0.053" /><testcase classname="tests.test_full_chain_fep_db" name="test_signal_db_reject[pg0-reconstruction]" time="0.047" /><testcase classname="tests.test_full_chain_fep_db" name="test_signal_db_reject[pg0-scope]" time="0.292" /><testcase classname="tests.test_full_chain_fep_db" name="test_signal_db_reject[pg0-predicate]" time="0.213" /><testcase classname="tests.test_full_chain_fep_db" name="test_signal_db_reject[pg0-signal]" time="0.032" /><testcase classname="tests.test_full_chain_fep_db" name="test_signal_db_reject[pg0-family]" time="0.155" /><testcase classname="tests.test_full_chain_fep_db" name="test_signal_db_reject[pg1-unknown]" time="0.615" /><testcase classname="tests.test_full_chain_fep_db" name="test_signal_db_reject[pg1-target]" time="0.140" /><testcase classname="tests.test_full_chain_fep_db" name="test_signal_db_reject[pg1-reconstruction]" time="0.075" /><testcase classname="tests.test_full_chain_fep_db" name="test_signal_db_reject[pg1-scope]" time="0.151" /><testcase classname="tests.test_full_chain_fep_db" name="test_signal_db_reject[pg1-predicate]" time="0.053" /><testcase classname="tests.test_full_chain_fep_db" name="test_signal_db_reject[pg1-signal]" time="0.040" /><testcase classname="tests.test_full_chain_fep_db" name="test_signal_db_reject[pg1-family]" time="0.067" /><testcase classname="tests.test_full_chain_fep_db" name="test_signal_registry_positive_and_immutable[pg0]" time="0.158" /><testcase classname="tests.test_full_chain_fep_db" name="test_signal_registry_positive_and_immutable[pg1]" time="0.240" /><testcase classname="tests.test_full_chain_fep_db" name="test_signal_registry_role_and_search_path[pg0]" time="0.075" /><testcase classname="tests.test_full_chain_fep_db" name="test_signal_registry_role_and_search_path[pg1]" time="0.395" /><testcase classname="tests.test_identity_gate_reason_r2" name="test_actual_provider_identity_classification[same]" time="0.734" /><testcase classname="tests.test_identity_gate_reason_r2" name="test_actual_provider_identity_classification[new]" time="1.148" /><testcase classname="tests.test_identity_gate_reason_r2" name="test_actual_provider_identity_classification[delist]" time="1.809" /><testcase classname="tests.test_identity_gate_reason_r2" name="test_actual_provider_identity_classification[rename]" time="1.840" /><testcase classname="tests.test_identity_gate_reason_r2" name="test_actual_provider_identity_classification[suspended]" time="0.625" /><testcase classname="tests.test_identity_gate_reason_r2" name="test_actual_provider_identity_classification[tdx_conflict]" time="1.047" /><testcase classname="tests.test_identity_gate_reason_r2" name="test_actual_provider_identity_classification[package_missing]" time="0.693" /><testcase classname="tests.test_identity_gate_reason_r2" name="test_actual_provider_identity_classification[member_version]" time="0.684" /><testcase classname="tests.test_next_t0_old_identity_preflight" name="test_real_gate_preserves_bytes_and_explains_old_scope[False]" time="0.881" /><testcase classname="tests.test_next_t0_old_identity_preflight" name="test_real_gate_preserves_bytes_and_explains_old_scope[True]" time="1.161" /><testcase classname="tests.test_pre16_governance" name="test_reader_metadata_not_permission" time="0.252"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\reports\\r21\\OPEN_AUDIT_ITEMS.json'">def test_reader_metadata_not_permission():
+&gt;       reader=CurrentAuditStatus();assert reader.stage_permission() is False
+               ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\pre16_current_audit_reader.py:9: in __init__
+    self.validation=validate(self.root)
+                    ^^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:165: in validate
+    for key,path in source_paths.items():require(h['sources'].get(key)==binding(path,root),'SOURCE_SELECTION_'+key)
+                                                                        ^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:58: in binding
+    raw=(root/path).read_bytes();return dict(path=path,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw))
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/reports/r21/OPEN_AUDIT_ITEMS.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\reports\\r21\\OPEN_AUDIT_ITEMS.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_full_independent_oracle" time="0.003"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\reports\\r21\\OPEN_AUDIT_ITEMS.json'">&gt;   def test_full_independent_oracle():assert o.validate()['PRE16_CROSS_STAGE_GOVERNANCE_RECONCILIATION']=='PASS_LOCAL'
+                                              ^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:165: in validate
+    for key,path in source_paths.items():require(h['sources'].get(key)==binding(path,root),'SOURCE_SELECTION_'+key)
+                                                                        ^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:58: in binding
+    raw=(root/path).read_bytes();return dict(path=path,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw))
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/reports/r21/OPEN_AUDIT_ITEMS.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\reports\\r21\\OPEN_AUDIT_ITEMS.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_protected_all_history" time="4.113"><failure message="ValueError: BUSINESS_SOURCE_KEEP_ALL">&gt;   def test_protected_all_history():assert len(o.protected(o.ROOT))&gt;=25
+                                                ^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:160: in protected
+    require(subprocess.check_output(['git','diff',BASE,'--name-only','--','src'],cwd=root)==b'','BUSINESS_SOURCE_KEEP_ALL')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'BUSINESS_SOURCE_KEEP_ALL'
+
+    def require(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: BUSINESS_SOURCE_KEEP_ALL
+
+scripts\validate_pre16_governance.py:55: ValueError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_reader_resolves_canonical_issue" time="0.003"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\reports\\r21\\OPEN_AUDIT_ITEMS.json'">def test_reader_resolves_canonical_issue():
+&gt;       r=CurrentAuditStatus();assert r.canonical_entry('AUD_A04_AMOUNT_A_FORWARD_CONSUMER')==r.canonical_entry('A04_H21_CONSUMER')
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:187: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\pre16_current_audit_reader.py:9: in __init__
+    self.validation=validate(self.root)
+                    ^^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:165: in validate
+    for key,path in source_paths.items():require(h['sources'].get(key)==binding(path,root),'SOURCE_SELECTION_'+key)
+                                                                        ^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:58: in binding
+    raw=(root/path).read_bytes();return dict(path=path,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw))
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/reports/r21/OPEN_AUDIT_ITEMS.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\reports\\r21\\OPEN_AUDIT_ITEMS.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_business_runtime_sources_unchanged" time="0.097"><failure message="AssertionError: assert b'src/adjustm...4_server.py\n' == b''&#10;  &#10;  Use -v to get more diff">def test_business_runtime_sources_unchanged():
+&gt;       assert o.subprocess.check_output(['git','diff',o.REPAIR_BASE,'--name-only','--','src'],cwd=o.ROOT)==b''
+E       AssertionError: assert b'src/adjustm...4_server.py\n' == b''
+E         
+E         Use -v to get more diff
+
+tests\test_pre16_governance.py:201: AssertionError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_current_reader_never_merges_alias_conflict" time="0.003"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\reports\\r21\\OPEN_AUDIT_ITEMS.json'">def test_current_reader_never_merges_alias_conflict():
+&gt;       r=CurrentAuditStatus();r.head['entries']['AUD_A04_AMOUNT_A_FORWARD_CONSUMER']['blocks_affected_capability_in_shadow']=False
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:216: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\pre16_current_audit_reader.py:9: in __init__
+    self.validation=validate(self.root)
+                    ^^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:165: in validate
+    for key,path in source_paths.items():require(h['sources'].get(key)==binding(path,root),'SOURCE_SELECTION_'+key)
+                                                                        ^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:58: in binding
+    raw=(root/path).read_bytes();return dict(path=path,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw))
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/reports/r21/OPEN_AUDIT_ITEMS.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\reports\\r21\\OPEN_AUDIT_ITEMS.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre_next_t0_executor_chain" name="test_full_executor_entry[True]" time="5.761" /><testcase classname="tests.test_r17b_promotion" name="test_independent_p01_p15_promotion_gate" time="10.277"><failure message="AssertionError: assert ('FAIL' == 'PASS'&#10;  &#10;  - PASS&#10;  + FAIL)">def test_independent_p01_p15_promotion_gate():
+&gt;       result=v.validate();assert result['status']=='PASS' and len(result['checks'])==15 and all(result['checks'].values())
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: assert ('FAIL' == 'PASS'
+E         
+E         - PASS
+E         + FAIL)
+
+tests\test_r17b_promotion.py:9: AssertionError</failure></testcase><testcase classname="tests.test_r17b_promotion" name="test_formal_reader_does_not_consult_informal_receipt" time="0.002"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\reports\\r17r1a\\stage_contract.json'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002409A9B5B70&gt;
+
+    def test_formal_reader_does_not_consult_informal_receipt(monkeypatch):
+        original=Path.read_bytes
+        def read(path):
+            if path.name=='contract_amendment_decision.json':raise AssertionError('INFORMAL_RECEIPT_MUST_NOT_BE_AUTHORITY')
+            return original(path)
+        monkeypatch.setattr(Path,'read_bytes',read)
+&gt;       pkg=AcceptedContracts(ROOT)
+            ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r17b_promotion.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:54: in validate
+    for ref in read('reports/r17r1a/stage_contract.json',root)['protected']:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:8: in read
+    def read(p,root=ROOT):return json.loads((root/p).read_bytes())
+                                            ^^^^^^^^^^^^^^^^^^^^^
+tests\test_r17b_promotion.py:47: in read
+    return original(path)
+           ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/reports/r17r1a/stage_contract.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\reports\\r17r1a\\stage_contract.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_r17b_promotion" name="test_formal_reader_resolves_stage_without_changing_frozen_contract_or_binder" time="0.002"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\reports\\r17r1a\\stage_contract.json'">def test_formal_reader_resolves_stage_without_changing_frozen_contract_or_binder():
+&gt;       pkg=AcceptedContracts(ROOT)
+            ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r17b_promotion.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:54: in validate
+    for ref in read('reports/r17r1a/stage_contract.json',root)['protected']:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:8: in read
+    def read(p,root=ROOT):return json.loads((root/p).read_bytes())
+                                            ^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/reports/r17r1a/stage_contract.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\reports\\r17r1a\\stage_contract.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_r18b_persisted" name="test_full_persisted_owner_lifecycle" time="0.670"><failure message="ValueError: ORACLE_SOURCE_MISSING">def test_full_persisted_owner_lifecycle():
+&gt;       o=Oracle(ROOT);g=json.loads((ROOT/'reports/v4_14_replay_r18/full_dag_r3/completion_gate.json').read_bytes());assert o.gate(ROOT,g)
+                                                                                                                            ^^^^^^^^^^^^^^
+
+tests\test_r18b_persisted.py:10: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\v4_14_independent_oracle.py:117: in gate
+    m=read(artifact_root,r['publication']);self.manifest(artifact_root,m)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_14_independent_oracle.py:19: in read
+    def read(root,binding):return json.loads(exact(root,binding).read_bytes())
+                                             ^^^^^^^^^^^^^^^^^^^
+scripts\v4_14_independent_oracle.py:15: in exact
+    require(p.is_file() and not p.is_symlink(),'ORACLE_SOURCE_MISSING')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'ORACLE_SOURCE_MISSING'
+
+    def require(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ORACLE_SOURCE_MISSING
+
+scripts\v4_14_independent_oracle.py:12: ValueError</failure></testcase><testcase classname="tests.test_r18b_persisted" name="test_fresh_process_pair_revision_and_determinism" time="4.857"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;frozen runpy&gt;&quot;, line 203, in _run_module_as_main&#10;  File &quot;&lt;frozen runpy&gt;&quot;, line 88, in _run_code&#10;  File &quot;G:\codex work\v4-full-closeout-20261012\scripts\r18_replay_worker.py&quot;, line 21, in &lt;module&gt;&#10;    if __name__=='__main__':print(json.dumps(run(*sys.argv[1:]),sort_keys=True))&#10;                                             ~~~^^^^^^^^^^^^^^^&#10;  File &quot;G:\codex work\v4-full-closeout-20261012\scripts\r18_replay_worker.py&quot;, line 16, in run&#10;    result=replay(a,envelope,prior)&#10;  File &quot;G:\codex work\v4-full-closeout-20261012\src\workbench_analysis\v4_14_full_dag.py&quot;, line 89, in replay&#10;    contracts=AcceptedContracts(root);selection=dict(quality='UNKNOWN',membership_basis='UNKNOWN')&#10;  File &quot;G:\codex work\v4-full-closeout-20261012\src\workbench_analysis\v4_13_accepted_contract_package.py&quot;, line 12, in __init__&#10;    try: validate(self.root)&#10;         ~~~~~~~~^^^^^^^^^^^&#10;  File &quot;G:\codex work\v4-full-closeout-20261012\scripts\validate_r17r1_active_closure.py&quot;, line 54, in validate&#10;    for ref in read('reports/r17r1a/stage_contract.json',root)['protected']:&#10;               ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^&#10;  File &quot;G:\codex work\v4-full-closeout-20261012\scripts\validate_r17r1_active_closure.py&quot;, line 8, in read&#10;    def read(p,root=ROOT):return json.loads((root/p).read_bytes())&#10;                                            ~~~~~~~~~~~~~~~~~~~^^&#10;  File &quot;E:\python\Lib\pathlib\_abc.py&quot;, line 625, in read_bytes&#10;    with self.open(mode='rb') as f:&#10;         ~~~~~~~~~^^^^^^^^^^^&#10;  File &quot;E:\python\Lib\pathlib\_local.py&quot;, line 537, in open&#10;    return io.open(self, mode, buffering, encoding, errors, newline)&#10;           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^&#10;FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\reports\\r17r1a\\stage_contract.json'">tmp_path = WindowsPath('G:/codex_tmp/test_temp/REMAININGR5/test_fresh_process_pair_revisi0')
+
+    def test_fresh_process_pair_revision_and_determinism(tmp_path):
+        a=ReplayAuthority(ROOT);o=Oracle(ROOT);ns='proof'
+&gt;       prior,pr,producer=invoke(a,tmp_path,ns,'2026-09-29',dict(confirmation=True),None,0)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r18b_persisted.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+a = &lt;workbench_analysis.v4_14_authority.ReplayAuthority object at 0x0000024099952CF0&gt;
+artifact_root = WindowsPath('G:/codex_tmp/test_temp/REMAININGR5/test_fresh_process_pair_revisi0')
+namespace = 'proof', date = '2026-09-29', choice = {'confirmation': True}
+prior = None, index = 0, revision = 'r1'
+
+    def invoke(a,artifact_root,namespace,date,choice,prior,index,revision='r1'):
+        envelope=dict(target_trade_date=date,target_revision=revision,previous_market_session=a.previous(date),cutoff=date+'T16:00:00+00:00',authority_bindings=a.bindings(),contract_package_digest=a.package_digest,previous_state_publication=prior,source_refs=[*a.refs,*a.owners.values(),ref(ROOT,'config/v4_07_machine_vectors_v1.json'),ref(ROOT,'config/v4_10_machine_vectors_r1_2.json'),ref(ROOT,'config/v4_12_machine_vectors_v1.json')],source_availability=[dict(max_source_trade_date=date,system_available_at=date+'T01:00:00+00:00',basis='EXPLICIT_SYNTHETIC_FACTS')],evidence_class='ENGINEERING_SYNTHETIC',owner_inputs=choice)
+        input_ref=publish(artifact_root,namespace+'/execution/'+str(index)+'/input.json',envelope)
+        rp=namespace+'/execution/'+str(index)+'/child_receipt.json'
+        process=subprocess.Popen([sys.executable,'-m','scripts.r18_replay_worker',str(Path(artifact_root)/input_ref['path']),str(artifact_root),namespace,rp],cwd=ROOT,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,encoding='utf8',errors='replace')
+        out,err=process.communicate(timeout=120);exited=datetime.now(timezone.utc).isoformat()
+&gt;       if process.returncode:raise RuntimeError(err)
+                              ^^^^^^^^^^^^^^^^^^^^^^^
+E       RuntimeError: Traceback (most recent call last):
+E         File "&lt;frozen runpy&gt;", line 203, in _run_module_as_main
+E         File "&lt;frozen runpy&gt;", line 88, in _run_code
+E         File "G:\codex work\v4-full-closeout-20261012\scripts\r18_replay_worker.py", line 21, in &lt;module&gt;
+E           if __name__=='__main__':print(json.dumps(run(*sys.argv[1:]),sort_keys=True))
+E                                                    ~~~^^^^^^^^^^^^^^^
+E         File "G:\codex work\v4-full-closeout-20261012\scripts\r18_replay_worker.py", line 16, in run
+E           result=replay(a,envelope,prior)
+E         File "G:\codex work\v4-full-closeout-20261012\src\workbench_analysis\v4_14_full_dag.py", line 89, in replay
+E           contracts=AcceptedContracts(root);selection=dict(quality='UNKNOWN',membership_basis='UNKNOWN')
+E         File "G:\codex work\v4-full-closeout-20261012\src\workbench_analysis\v4_13_accepted_contract_package.py", line 12, in __init__
+E           try: validate(self.root)
+E                ~~~~~~~~^^^^^^^^^^^
+E         File "G:\codex work\v4-full-closeout-20261012\scripts\validate_r17r1_active_closure.py", line 54, in validate
+E           for ref in read('reports/r17r1a/stage_contract.json',root)['protected']:
+E                      ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         File "G:\codex work\v4-full-closeout-20261012\scripts\validate_r17r1_active_closure.py", line 8, in read
+E           def read(p,root=ROOT):return json.loads((root/p).read_bytes())
+E                                                   ~~~~~~~~~~~~~~~~~~~^^
+E         File "E:\python\Lib\pathlib\_abc.py", line 625, in read_bytes
+E           with self.open(mode='rb') as f:
+E                ~~~~~~~~~^^^^^^^^^^^
+E         File "E:\python\Lib\pathlib\_local.py", line 537, in open
+E           return io.open(self, mode, buffering, encoding, errors, newline)
+E                  ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\reports\\r17r1a\\stage_contract.json'
+
+scripts\run_r18b.py:16: RuntimeError</failure></testcase><testcase classname="tests.test_r18r1r1_consumption" name="test_field_precise_preexecution_proof" time="0.070"><failure message="ValueError: ORACLE_EXACT_BYTES_CHANGED">sample = (&lt;scripts.v4_14_consumption_oracle_r18r1r1.ConsumptionOracle object at 0x0000024099952F90&gt;, {'ALGORITHM_STATE_REPLAY_P...act_package_digest': '83321af31405711af12231e96694634fe86c829c9f0f90cb7327a7f5a3514696', 'dimension_results': [], ...})
+
+    def test_field_precise_preexecution_proof(sample):
+&gt;       o,m=sample;assert o.manifest(ROOT,m)
+                          ^^^^^^^^^^^^^^^^^^
+
+tests\test_r18r1r1_consumption.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\v4_14_independent_edge_oracle_r18r1.py:68: in manifest
+    super().manifest(artifact_root,m);return self.edges(artifact_root,m)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_14_independent_oracle.py:90: in manifest
+    e=m['envelope'];self.temporal(e)
+                    ^^^^^^^^^^^^^^^^
+scripts\v4_14_independent_oracle.py:37: in temporal
+    self.authority(e);require(e['previous_market_session']==self.previous(e['target_trade_date']),'ORACLE_WRONG_PREVIOUS_SESSION')
+    ^^^^^^^^^^^^^^^^^
+scripts\v4_14_independent_oracle.py:34: in authority
+    for r in [a['amended_v4_13'],a['active_family_closure'],a['data'],a['stage'],a['calendar'],a['membership'],*a['owners'].values(),*a['contract_package']]:exact(self.root,r)
+                                                                                                                                                             ^^^^^^^^^^^^^^^^^^
+scripts\v4_14_independent_oracle.py:17: in exact
+    require(sha==binding['sha256'] and p.stat().st_size==binding.get('bytes',binding.get('byte_count')),'ORACLE_EXACT_BYTES_CHANGED')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'ORACLE_EXACT_BYTES_CHANGED'
+
+    def require(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ORACLE_EXACT_BYTES_CHANGED
+
+scripts\v4_14_independent_oracle.py:12: ValueError</failure></testcase><testcase classname="tests.test_r20a_current" name="test_independent_gate" time="0.025"><failure message="ValueError: CURRENT_METADATA_COHERENCE_EXACT">&gt;   def test_independent_gate():assert oracle.validate()['R20A_CURRENT_STAGE_AUTHORITY']=='PASS_LOCAL'
+                                       ^^^^^^^^^^^^^^^^^
+
+tests\test_r20a_current.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_r20a_current.py:33: in validate
+    require(stage==expected,'CURRENT_METADATA_COHERENCE_EXACT')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'CURRENT_METADATA_COHERENCE_EXACT'
+
+    def require(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: CURRENT_METADATA_COHERENCE_EXACT
+
+scripts\validate_r20a_current.py:8: ValueError</failure></testcase><testcase classname="tests.test_r20e_persisted" name="test_full_independent_disk_oracle" time="0.218"><failure message="ValueError: CURRENT_METADATA_COHERENCE_EXACT">def test_full_independent_disk_oracle():
+&gt;       result=oracle.validate()
+               ^^^^^^^^^^^^^^^^^
+
+tests\test_r20e_persisted.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_r20e_oracle.py:25: in validate
+    current_gate()
+scripts\validate_r20a_current.py:33: in validate
+    require(stage==expected,'CURRENT_METADATA_COHERENCE_EXACT')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'CURRENT_METADATA_COHERENCE_EXACT'
+
+    def require(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: CURRENT_METADATA_COHERENCE_EXACT
+
+scripts\validate_r20a_current.py:8: ValueError</failure></testcase><testcase classname="tests.test_r21_promotion" name="test_independent_promotion" time="0.813"><failure message="ValueError: BUSINESS_ALGORITHMS_KEEP">&gt;   def test_independent_promotion():assert oracle.validate()['R21_V4_15_PROMOTION']=='PASS_LOCAL'
+                                            ^^^^^^^^^^^^^^^^^
+
+tests\test_r21_promotion.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_r21_promotion.py:58: in validate
+    require(set(changed)&lt;={'src/workbench_analysis/v4_current_stage_authority.py','src/workbench_analysis/v4_14_authority.py','src/workbench_analysis/v4_15_radar_cohort.py'},'BUSINESS_ALGORITHMS_KEEP')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'BUSINESS_ALGORITHMS_KEEP'
+
+    def require(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: BUSINESS_ALGORITHMS_KEEP
+
+scripts\validate_r21_promotion.py:6: ValueError</failure></testcase><testcase classname="tests.test_r21_promotion" name="test_exact_rollback_restoration" time="0.221" /><testcase classname="tests.test_remainder_historical_routing" name="test_old_v13_reader_remains_pinned" time="3.129"><failure message="Failed: DID NOT RAISE ValueError">def test_old_v13_reader_remains_pinned():
+        from workbench_analysis.v4_13_accepted_contract_package import current_contracts
+&gt;       with pytest.raises(ValueError,match='UNAUTHORIZED_V4_13_STAGE'):current_contracts(ROOT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_remainder_historical_routing.py:32: Failed</failure></testcase><testcase classname="tests.test_v4_12_authority_r2" name="test_completeness_requires_authority_parity_not_file_presence" time="513.461" /><testcase classname="tests.test_v4_12_authority_r2" name="test_r6r1_and_r1_ast_vectors_preserved" time="3.695" /><testcase classname="tests.test_v4_12_contract_freeze_r1" name="test_candidate_only_scope_and_protected_heads" time="2.019" /><testcase classname="tests.test_v4_12_time_counter_r2_1" name="test_full_contract_time_gate" time="1.950" /><testcase classname="tests.test_v4_13_r15_contract" name="test_full_contract_completeness_and_protected_artifacts" time="2.213"><failure message="AssertionError: AGENTS.md">def test_full_contract_completeness_and_protected_artifacts():
+&gt;       result=validate(checkout=True)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r15_contract.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_v4_13_r1_1.py:165: in validate
+    exact(r);protected.append(dict(path=r['path'],before=r['sha256'],after=actual['sha256'],unchanged=True,comparison='EXACT_BYTES'))
+    ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+r = {'bytes': 1616, 'path': 'AGENTS.md', 'sha256': 'fe3ca08043743023f23d5767bf8d3570e2dc4a72c7215056a2daba53a0ea7a77'}
+
+    def exact(r):
+&gt;    p=(ROOT/r['path']).resolve();assert p.is_relative_to(ROOT.resolve());b=p.read_bytes();assert hashlib.sha256(b).hexdigest()==r['sha256'] and len(b)==r.get('bytes',r.get('byte_count')),r['path'];return b
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E    AssertionError: AGENTS.md
+
+scripts\repair_v4_13_r1_1.py:15: AssertionError</failure></testcase><testcase classname="tests.test_v4_13_r16a_runtime" name="test_A01_dominant_excluded_independent_median_seed" time="5.189" /><testcase classname="tests.test_v4_13_r16a_runtime" name="test_A02_minimum" time="0.003" /><testcase classname="tests.test_v4_13_r16a_runtime" name="test_A03_history_missing_relationship_independent" time="0.002" /><testcase classname="tests.test_v4_13_r16a_runtime" name="test_A04_unknown_not_empty" time="0.000" /><testcase classname="tests.test_v4_13_r16a_runtime" name="test_A05_relation_conflict_and_concepts" time="0.000" /><testcase classname="tests.test_v4_13_r16a_runtime" name="test_A06_no_relation" time="0.000" /><testcase classname="tests.test_v4_13_r16a_runtime" name="test_A07_coverage_no_zero_imputation" time="0.002" /><testcase classname="tests.test_v4_13_r16a_runtime" name="test_A08_history_common_cohort_excludes_target" time="0.003" /><testcase classname="tests.test_v4_13_r16a_runtime" name="test_A09_relative_owner_literal_parity" time="0.002" /><testcase classname="tests.test_v4_13_r16a_runtime" name="test_A11_historical_membership_fail_closed" time="1.749"><failure message="ValueError: ACCEPTED_SOURCE_DIGEST_MISMATCH">contracts = &lt;workbench_analysis.v4_13_accepted_contract_package.CurrentOwnerContracts object at 0x0000024099996D50&gt;
+
+    def test_A11_historical_membership_fail_closed(contracts):
+&gt;       b=AcceptedInputBinder(contracts,'2026-09-29','2026-10-02T15:00:00+08:00')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16a_runtime.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_input_binder.py:33: in __init__
+    self.refs.append(ref);exact(self.root,ref)
+                          ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex work/v4-full-closeout-20261012')
+binding = {'byte_count': 32316843, 'logical_digest': '0cfe708567935726f0ad51ae4bb47237ec7aee556db3437c12f21f0c623bd0d2', 'path':.../V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz', 'sha256': '17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48'}
+
+    def exact(root, binding):
+        root=Path(root).resolve();path=(root/binding['path']).resolve()
+        if not path.is_relative_to(root):raise ValueError('ACCEPTED_PATH_OUTSIDE_WORKSPACE')
+        b=path.read_bytes()
+&gt;       if hashlib.sha256(b).hexdigest()!=binding['sha256']:raise ValueError('ACCEPTED_SOURCE_DIGEST_MISMATCH')
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ACCEPTED_SOURCE_DIGEST_MISMATCH
+
+src\workbench_analysis\v4_13_io.py:29: ValueError</failure></testcase><testcase classname="tests.test_v4_13_r16a_runtime" name="test_A12_fallback_unknown_no_io" time="0.784"><failure message="ValueError: ACCEPTED_SOURCE_DIGEST_MISMATCH">contracts = &lt;workbench_analysis.v4_13_accepted_contract_package.CurrentOwnerContracts object at 0x0000024099996D50&gt;
+
+    def test_A12_fallback_unknown_no_io(contracts):
+&gt;       b=AcceptedInputBinder(contracts,'2026-09-30','2026-10-02T15:00:00+08:00');assert not b.current and not b.history
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16a_runtime.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_input_binder.py:33: in __init__
+    self.refs.append(ref);exact(self.root,ref)
+                          ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex work/v4-full-closeout-20261012')
+binding = {'byte_count': 32316843, 'logical_digest': '0cfe708567935726f0ad51ae4bb47237ec7aee556db3437c12f21f0c623bd0d2', 'path':.../V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz', 'sha256': '17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48'}
+
+    def exact(root, binding):
+        root=Path(root).resolve();path=(root/binding['path']).resolve()
+        if not path.is_relative_to(root):raise ValueError('ACCEPTED_PATH_OUTSIDE_WORKSPACE')
+        b=path.read_bytes()
+&gt;       if hashlib.sha256(b).hexdigest()!=binding['sha256']:raise ValueError('ACCEPTED_SOURCE_DIGEST_MISMATCH')
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ACCEPTED_SOURCE_DIGEST_MISMATCH
+
+src\workbench_analysis\v4_13_io.py:29: ValueError</failure></testcase><testcase classname="tests.test_v4_13_r16a_runtime" name="test_full_cross_section_rank_rebuilt_after_exclusion" time="0.004" /><testcase classname="tests.test_v4_13_r16a_runtime" name="test_relative_uses_exact_stock_owner_not_native_member_alias" time="0.002" /><testcase classname="tests.test_v4_13_r16b_runtime" name="test_B01_B02_B10_literal_quality[qualities0-DEGRADED]" time="2.543" /><testcase classname="tests.test_v4_13_r16b_runtime" name="test_B01_B02_B10_literal_quality[qualities1-DEGRADED]" time="0.000" /><testcase classname="tests.test_v4_13_r16b_runtime" name="test_B01_B02_B10_literal_quality[qualities2-UNKNOWN]" time="0.000" /><testcase classname="tests.test_v4_13_r16b_runtime" name="test_B01_B02_B10_literal_quality[qualities3-NOT_APPLICABLE]" time="0.000" /><testcase classname="tests.test_v4_13_r16b_runtime" name="test_B01_B02_B10_literal_quality[qualities4-KNOWN]" time="0.000" /><testcase classname="tests.test_v4_13_r16b_runtime" name="test_B03_no_eligible" time="0.000" /><testcase classname="tests.test_v4_13_r16b_runtime" name="test_B04_uncertain_selection" time="0.000" /><testcase classname="tests.test_v4_13_r16b_runtime" name="test_B05_structure_unavailable" time="0.000" /><testcase classname="tests.test_v4_13_r16b_runtime" name="test_B06_B07_exact_copy_no_anchor_reselection[A]" time="0.001" /><testcase classname="tests.test_v4_13_r16b_runtime" name="test_B06_B07_exact_copy_no_anchor_reselection[B]" time="0.001" /><testcase classname="tests.test_v4_13_r16b_runtime" name="test_B08_B09_independent_dual_sources[KNOWN-UNKNOWN-DEGRADED]" time="0.000" /><testcase classname="tests.test_v4_13_r16b_runtime" name="test_B08_B09_independent_dual_sources[UNKNOWN-KNOWN-DEGRADED]" time="0.000" /><testcase classname="tests.test_v4_13_r16b_runtime" name="test_B11_B12_no_input_writeback[context]" time="0.000" /><testcase classname="tests.test_v4_13_r16b_runtime" name="test_B11_B12_no_input_writeback[D1]" time="0.000" /><testcase classname="tests.test_v4_13_r16b_runtime" name="test_selected_context_lossless_component_independence" time="0.000" /><testcase classname="tests.test_v4_13_r16b_runtime" name="test_source_known_null_and_unknown_reason_are_not_reclassified" time="0.001" /><testcase classname="tests.test_v4_13_r16c_publication" name="test_actual_profile_pipeline_perturbation_raw_freeze[membership]" time="2.567" /><testcase classname="tests.test_v4_13_r16c_publication" name="test_actual_profile_pipeline_perturbation_raw_freeze[context]" time="2.543" /><testcase classname="tests.test_v4_13_r16c_publication" name="test_actual_profile_pipeline_perturbation_raw_freeze[D1]" time="2.448" /><testcase classname="tests.test_v4_13_r16c_publication" name="test_actual_profile_pipeline_perturbation_raw_freeze[sector_order]" time="2.414" /><testcase classname="tests.test_v4_13_r16c_publication" name="test_actual_profile_pipeline_perturbation_raw_freeze[concept_order]" time="2.464" /><testcase classname="tests.test_v4_13_r16c_publication" name="test_actual_profile_pipeline_perturbation_raw_freeze[display_cap]" time="2.517" /><testcase classname="tests.test_v4_13_r16c_publication" name="test_real_persisted_capability_scope_if_available" time="18.731" /><testcase classname="tests.test_v4_13_r16r1_repair" name="test_machine_quality_and_reason_exact[support-support_state]" time="2.518" /><testcase classname="tests.test_v4_13_r16r1_repair" name="test_machine_quality_and_reason_exact[acceptance-acceptance_state]" time="0.001" /><testcase classname="tests.test_v4_13_r16r1_repair" name="test_machine_quality_and_reason_exact[pullback-basic_pullback_state]" time="0.001" /><testcase classname="tests.test_v4_13_r16r1_repair" name="test_machine_quality_and_reason_exact[recovery-basic_recovery_state]" time="0.001" /><testcase classname="tests.test_v4_13_r16r1_repair" name="test_nested_unknown_and_missing_metadata" time="0.001" /><testcase classname="tests.test_v4_13_r16r1_repair" name="test_producer_mismatch_rejected" time="0.000" /><testcase classname="tests.test_v4_13_r16r1_repair" name="test_numeric_revision_and_binder_selection" time="1.978" /><testcase classname="tests.test_v4_13_r16r1_repair" name="test_component_provenance_owner_dates" time="0.694"><failure message="ValueError: ACCEPTED_SOURCE_DIGEST_MISMATCH">contracts = &lt;workbench_analysis.v4_13_accepted_contract_package.CurrentOwnerContracts object at 0x00000240EFC7A450&gt;
+
+    def test_component_provenance_owner_dates(contracts):
+&gt;       b=AcceptedInputBinder(contracts,'2026-09-30','2026-10-03T00:00:00+08:00')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16r1_repair.py:90: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_input_binder.py:33: in __init__
+    self.refs.append(ref);exact(self.root,ref)
+                          ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex work/v4-full-closeout-20261012')
+binding = {'byte_count': 32316843, 'logical_digest': '0cfe708567935726f0ad51ae4bb47237ec7aee556db3437c12f21f0c623bd0d2', 'path':.../V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz', 'sha256': '17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48'}
+
+    def exact(root, binding):
+        root=Path(root).resolve();path=(root/binding['path']).resolve()
+        if not path.is_relative_to(root):raise ValueError('ACCEPTED_PATH_OUTSIDE_WORKSPACE')
+        b=path.read_bytes()
+&gt;       if hashlib.sha256(b).hexdigest()!=binding['sha256']:raise ValueError('ACCEPTED_SOURCE_DIGEST_MISMATCH')
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ACCEPTED_SOURCE_DIGEST_MISMATCH
+
+src\workbench_analysis\v4_13_io.py:29: ValueError</failure></testcase><testcase classname="tests.test_v4_13_r16r1_repair" name="test_v1_2_minimal_same_family" time="0.001" /><testcase classname="tests.test_v4_14_rollback" name="test_eight_actual_sandbox_scenarios" time="0.760"><failure message="ValueError: ORACLE_REAL_V4_14_HEAD">evidence = (&lt;scripts.v4_14_rollback_oracle.RollbackOracle object at 0x00000240EFE1A3C0&gt;, {'ALGORITHM_STATE_REPLAY_PASS': 'NOT_GRANTED_PENDING_EXTERNAL_AUDIT', 'Data_advance': False, 'Stage_advance': False, 'V4_14_ACCEPTED_HEAD': 'NOT_CREATED', ...})
+
+    def test_eight_actual_sandbox_scenarios(evidence):
+&gt;       o,r=evidence;assert o.validate(r)
+                            ^^^^^^^^^^^^^
+
+tests\test_v4_14_rollback.py:10: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\v4_14_rollback_oracle.py:41: in validate
+    require(not (self.root/'data/v4/V4_14_ACCEPTED_HEAD.json').exists(),'ORACLE_REAL_V4_14_HEAD')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'ORACLE_REAL_V4_14_HEAD'
+
+    def require(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ORACLE_REAL_V4_14_HEAD
+
+scripts\v4_14_rollback_oracle.py:11: ValueError</failure></testcase><testcase classname="tests.test_v4_18_migration_contract" name="test_all_declared_tables_have_explicit_namespace_rules" time="0.672"><failure message="AssertionError: assert {('migrations...isions'), ...} == {('migrations...isions'), ...}&#10;  &#10;  Extra items in the left set:&#10;  ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.reports')&#10;  ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.label_revisions')&#10;  ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.dataset_eligibility_ledger')&#10;  ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.dataset_rows')&#10;  ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.activations')...&#10;  &#10;  ...Full output truncated (31 lines hidden), use '-vv' to show">def test_all_declared_tables_have_explicit_namespace_rules():
+        sources = list((ROOT/'src/workbench_db').rglob('*.sql'))+[ROOT/'migrations/v4_16_r24_real_shadow_v1.sql']
+        actual = {(p.relative_to(ROOT).as_posix(), t) for p in sources for t in re.findall(r'CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?([\w.]+)', p.read_text(encoding='utf8'), re.I)}
+        rows = C['namespace_matrix']
+&gt;       assert actual == {(r['declaration'],r['state_or_table']) for r in rows if r['declaration'] != 'DESIGN_ONLY_NOT_CREATED'}
+E       AssertionError: assert {('migrations...isions'), ...} == {('migrations...isions'), ...}
+E         
+E         Extra items in the left set:
+E         ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.reports')
+E         ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.label_revisions')
+E         ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.dataset_eligibility_ledger')
+E         ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.dataset_rows')
+E         ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.activations')...
+E         
+E         ...Full output truncated (31 lines hidden), use '-vv' to show
+
+tests\test_v4_18_migration_contract.py:24: AssertionError</failure></testcase><testcase classname="tests.test_v4_backend_contract_r3" name="test_current_daily_jobs_require_sqlite_before_postgres_only_guard" time="0.298"><failure message="Failed: DID NOT RAISE ValueError">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000240AC383700&gt;
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/REMAININGR5/test_current_daily_jobs_requir0')
+
+    def test_current_daily_jobs_require_sqlite_before_postgres_only_guard(monkeypatch,tmp_path):
+        attempted=[]
+        def reject(path,*args,**kwargs):
+            attempted.append(Path(path))
+            raise ValueError('V4_POSTGRES_ONLY_COUNTEREXAMPLE_SQLITE_ATTEMPT')
+        monkeypatch.setattr(sqlite3,'connect',reject)
+&gt;       with pytest.raises(ValueError,match='V4_POSTGRES_ONLY_COUNTEREXAMPLE_SQLITE_ATTEMPT'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_v4_backend_contract_r3.py:13: Failed</failure></testcase><testcase classname="tests.test_v4_default_workbench_service" name="test_service_starts_without_legacy_and_root_is_v4" time="5.051"><failure message="urllib.error.HTTPError: HTTP Error 503: Service Unavailable">service = 'http://127.0.0.1:13937'
+
+    def test_service_starts_without_legacy_and_root_is_v4(service):
+        from workbench_service.joint_release import load,checked_path
+        authority=load(ROOT)
+        assert authority is not None
+        approved_html=checked_path(ROOT,authority['ui_assets']['index.html']).read_bytes()
+        for path in ['/','/v4','/v4/']:
+            assert get(service,path)[1]==approved_html
+&gt;       status=get(service,'/api/operations/status')[1]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_default_workbench_service.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_v4_default_workbench_service.py:29: in get
+    with urllib.request.urlopen(base+path,timeout=10) as response:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\urllib\request.py:189: in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\urllib\request.py:495: in open
+    response = meth(req, response)
+               ^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\urllib\request.py:604: in http_response
+    response = self.parent.error(
+E:\python\Lib\urllib\request.py:533: in error
+    return self._call_chain(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\urllib\request.py:466: in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;urllib.request.HTTPDefaultErrorHandler object at 0x0000024099953E00&gt;
+req = &lt;urllib.request.Request object at 0x00000240EFC73E10&gt;
+fp = &lt;http.client.HTTPResponse object at 0x00000240FFABB9A0&gt;, code = 503
+msg = 'Service Unavailable'
+hdrs = &lt;http.client.HTTPMessage object at 0x00000240AC2AFD10&gt;
+
+    def http_error_default(self, req, fp, code, msg, hdrs):
+&gt;       raise HTTPError(req.full_url, code, msg, hdrs, fp)
+E       urllib.error.HTTPError: HTTP Error 503: Service Unavailable
+
+E:\python\Lib\urllib\request.py:613: HTTPError</failure></testcase><testcase classname="tests.test_v4_default_workbench_service" name="test_current_routes_without_real_shadow" time="11.855" /><testcase classname="tests.test_v4_default_workbench_service" name="test_entity_search_and_context_stability" time="0.986" /><testcase classname="tests.test_v4_native_source_scope_r3" name="test_current_engineering_replay_cannot_reach_promotion_or_read_before_scope_guard" time="0.002" /><testcase classname="tests.test_v4_r14_governance_contracts" name="test_exact_scoped_promotion" time="37.218"><failure message="AssertionError: scripts/validate_v4_12_r11_chain.py">&gt;   def test_exact_scoped_promotion():assert validate(post=True)['status']=='PASS'
+                                             ^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_r14_governance_contracts.py:7: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_v4_12_promotion_r14.py:27: in validate
+    h=read(HEAD if post else OUT+'V4_12_ACCEPTED_HEAD_CANDIDATE.json');check_head(h)
+                                                                       ^^^^^^^^^^^^^
+scripts\validate_v4_12_promotion_r14.py:20: in check_head
+    for r in h['contracts_runtime_validators_external_evidence']:exact(r)
+                                                                 ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+r = {'bytes': 9383, 'path': 'scripts/validate_v4_12_r11_chain.py', 'sha256': 'ab76426fba950a58ba4a38ae144084801082d784e508c1985120f00a5c1a167d'}
+
+    def exact(r):
+&gt;    p=(ROOT/r['path']).resolve();assert p.is_relative_to(ROOT.resolve());b=p.read_bytes();assert hashlib.sha256(b).hexdigest()==r['sha256'] and len(b)==r['bytes'],r['path'];return b
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E    AssertionError: scripts/validate_v4_12_r11_chain.py
+
+scripts\v4_12_promotion_r14.py:20: AssertionError</failure></testcase><testcase classname="tests.test_v4_r14_governance_contracts" name="test_zero_mutation_repeat" time="1.510"><failure message="AssertionError: scripts/validate_v4_12_r11_chain.py">def test_zero_mutation_repeat():
+     before={p.relative_to(ROOT).as_posix():ref(p.relative_to(ROOT).as_posix()) for d in ['reports/v4_12_promotion_r14','data/v4'] for p in (ROOT/d).glob('*.json')}
+&gt;    promote()
+
+tests\test_v4_r14_governance_contracts.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\v4_12_promotion_r14.py:45: in promote
+    if (ROOT/HEAD).exists():validate(post=True);print('PASS_IDEMPOTENT_ZERO_MUTATIONS');return
+                            ^^^^^^^^^^^^^^^^^^^
+scripts\validate_v4_12_promotion_r14.py:27: in validate
+    h=read(HEAD if post else OUT+'V4_12_ACCEPTED_HEAD_CANDIDATE.json');check_head(h)
+                                                                       ^^^^^^^^^^^^^
+scripts\validate_v4_12_promotion_r14.py:20: in check_head
+    for r in h['contracts_runtime_validators_external_evidence']:exact(r)
+                                                                 ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+r = {'bytes': 9383, 'path': 'scripts/validate_v4_12_r11_chain.py', 'sha256': 'ab76426fba950a58ba4a38ae144084801082d784e508c1985120f00a5c1a167d'}
+
+    def exact(r):
+&gt;    p=(ROOT/r['path']).resolve();assert p.is_relative_to(ROOT.resolve());b=p.read_bytes();assert hashlib.sha256(b).hexdigest()==r['sha256'] and len(b)==r['bytes'],r['path'];return b
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E    AssertionError: scripts/validate_v4_12_r11_chain.py
+
+scripts\v4_12_promotion_r14.py:20: AssertionError</failure></testcase><testcase classname="tests.test_v4_r14_governance_contracts" name="test_full_contract_completeness" time="0.865"><failure message="AssertionError: scripts/validate_v4_12_r11_chain.py">def test_full_contract_completeness():
+&gt;    result=contracts();assert result['status']=='PASS' and result['V4_13_RUNTIME']=='NOT_IMPLEMENTED'
+            ^^^^^^^^^^^
+
+tests\test_v4_r14_governance_contracts.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_v4_13_contract_r1.py:49: in validate
+    assert promotion(post=True)['status']=='PASS'
+           ^^^^^^^^^^^^^^^^^^^^
+scripts\validate_v4_12_promotion_r14.py:27: in validate
+    h=read(HEAD if post else OUT+'V4_12_ACCEPTED_HEAD_CANDIDATE.json');check_head(h)
+                                                                       ^^^^^^^^^^^^^
+scripts\validate_v4_12_promotion_r14.py:20: in check_head
+    for r in h['contracts_runtime_validators_external_evidence']:exact(r)
+                                                                 ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+r = {'bytes': 9383, 'path': 'scripts/validate_v4_12_r11_chain.py', 'sha256': 'ab76426fba950a58ba4a38ae144084801082d784e508c1985120f00a5c1a167d'}
+
+    def exact(r):
+&gt;    p=(ROOT/r['path']).resolve();assert p.is_relative_to(ROOT.resolve());b=p.read_bytes();assert hashlib.sha256(b).hexdigest()==r['sha256'] and len(b)==r['bytes'],r['path'];return b
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E    AssertionError: scripts/validate_v4_12_r11_chain.py
+
+scripts\v4_12_promotion_r14.py:20: AssertionError</failure></testcase><testcase classname="tests.test_v4_shadow_pg_r4" name="test_invalid_contract_blocks_v4_startup" time="0.018"><failure message="Failed: DID NOT RAISE ResearchContextError">tmp_path = WindowsPath('G:/codex_tmp/test_temp/REMAININGR5/test_invalid_contract_blocks_v0')
+
+    def test_invalid_contract_blocks_v4_startup(tmp_path):
+        from workbench_service.shadow_server import make_shadow_handler
+        from workbench_service.research_context import ResearchContextError
+        root = tmp_path / 'broken'
+        (root / 'config').mkdir(parents=True)
+        contract = json.loads((Path(__file__).resolve().parents[1] / 'config/v4_17_shadow_ui_contract_v1.json').read_bytes())
+        contract['identity_fields'] = []
+        (root / 'config/v4_17_shadow_ui_contract_v1.json').write_text(json.dumps(contract))
+&gt;       with pytest.raises(ResearchContextError, match='CONTRACT_IDENTITY_DRIFT'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ResearchContextError
+
+tests\test_v4_shadow_pg_r4.py:102: Failed</failure></testcase><testcase classname="tests.test_windows_package_runtime" name="test_maintenance_resume_preserves_user_cancel_and_pause" time="1.472" /><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_b0_validator_rejects_self_consistent_wrong_producer_or_contract[b0_contract]" time="0.229"><failure message="AssertionError: assert False&#10; +  where False = all(dict_values([True, False, True, True]))&#10; +    where dict_values([True, False, True, True]) = &lt;built-in method values of dict object at 0x00000240EE7C6D80&gt;()&#10; +      where &lt;built-in method values of dict object at 0x00000240EE7C6D80&gt; = {'b0_contract_matches_implementation': True, 'b0_producer_matches_implementation': False, 'b0_producer_exports_evaluate_b0': True, 'b0_evidence_binding_matches_implementation': True}.values&#10; +        where {'b0_contract_matches_implementation': True, 'b0_producer_matches_implementation': False, 'b0_producer_exports_evaluate_b0': True, 'b0_evidence_binding_matches_implementation': True} = b0_semantic_checks({'accepted_at': '2026-09-30', 'accepted_context_contract': {'byte_count': 2134, 'path': 'config/v4_08_accepted_context..., 'sha256': 'e71a66757ae664bf6f65b8c5a030caf4e35b70921925fc9e83953fa2ba71a737'}, ...}, 'amended_at': '2026-09-30', ...})">field = 'b0_contract'
+
+    @pytest.mark.parametrize('field',['b0_contract','b0_producer'])
+    def test_b0_validator_rejects_self_consistent_wrong_producer_or_contract(field):
+        head=deepcopy(read('data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json'))
+&gt;       assert all(b0_semantic_checks(head).values())
+E       AssertionError: assert False
+E        +  where False = all(dict_values([True, False, True, True]))
+E        +    where dict_values([True, False, True, True]) = &lt;built-in method values of dict object at 0x00000240EE7C6D80&gt;()
+E        +      where &lt;built-in method values of dict object at 0x00000240EE7C6D80&gt; = {'b0_contract_matches_implementation': True, 'b0_producer_matches_implementation': False, 'b0_producer_exports_evaluate_b0': True, 'b0_evidence_binding_matches_implementation': True}.values
+E        +        where {'b0_contract_matches_implementation': True, 'b0_producer_matches_implementation': False, 'b0_producer_exports_evaluate_b0': True, 'b0_evidence_binding_matches_implementation': True} = b0_semantic_checks({'accepted_at': '2026-09-30', 'accepted_context_contract': {'byte_count': 2134, 'path': 'config/v4_08_accepted_context..., 'sha256': 'e71a66757ae664bf6f65b8c5a030caf4e35b70921925fc9e83953fa2ba71a737'}, ...}, 'amended_at': '2026-09-30', ...})
+
+tests\v4_09\test_r1_1_lineage_immutability.py:34: AssertionError</failure></testcase><testcase classname="tests.v4_09.test_r1_1_lineage_immutability" name="test_b0_validator_rejects_self_consistent_wrong_producer_or_contract[b0_producer]" time="0.005"><failure message="AssertionError: assert False&#10; +  where False = all(dict_values([True, False, True, True]))&#10; +    where dict_values([True, False, True, True]) = &lt;built-in method values of dict object at 0x00000240FFDFF700&gt;()&#10; +      where &lt;built-in method values of dict object at 0x00000240FFDFF700&gt; = {'b0_contract_matches_implementation': True, 'b0_producer_matches_implementation': False, 'b0_producer_exports_evaluate_b0': True, 'b0_evidence_binding_matches_implementation': True}.values&#10; +        where {'b0_contract_matches_implementation': True, 'b0_producer_matches_implementation': False, 'b0_producer_exports_evaluate_b0': True, 'b0_evidence_binding_matches_implementation': True} = b0_semantic_checks({'accepted_at': '2026-09-30', 'accepted_context_contract': {'byte_count': 2134, 'path': 'config/v4_08_accepted_context..., 'sha256': 'e71a66757ae664bf6f65b8c5a030caf4e35b70921925fc9e83953fa2ba71a737'}, ...}, 'amended_at': '2026-09-30', ...})">field = 'b0_producer'
+
+    @pytest.mark.parametrize('field',['b0_contract','b0_producer'])
+    def test_b0_validator_rejects_self_consistent_wrong_producer_or_contract(field):
+        head=deepcopy(read('data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json'))
+&gt;       assert all(b0_semantic_checks(head).values())
+E       AssertionError: assert False
+E        +  where False = all(dict_values([True, False, True, True]))
+E        +    where dict_values([True, False, True, True]) = &lt;built-in method values of dict object at 0x00000240FFDFF700&gt;()
+E        +      where &lt;built-in method values of dict object at 0x00000240FFDFF700&gt; = {'b0_contract_matches_implementation': True, 'b0_producer_matches_implementation': False, 'b0_producer_exports_evaluate_b0': True, 'b0_evidence_binding_matches_implementation': True}.values
+E        +        where {'b0_contract_matches_implementation': True, 'b0_producer_matches_implementation': False, 'b0_producer_exports_evaluate_b0': True, 'b0_evidence_binding_matches_implementation': True} = b0_semantic_checks({'accepted_at': '2026-09-30', 'accepted_context_contract': {'byte_count': 2134, 'path': 'config/v4_08_accepted_context..., 'sha256': 'e71a66757ae664bf6f65b8c5a030caf4e35b70921925fc9e83953fa2ba71a737'}, ...}, 'amended_at': '2026-09-30', ...})
+
+tests\v4_09\test_r1_1_lineage_immutability.py:34: AssertionError</failure></testcase><testcase classname="tests.v4_09.test_stock_prewatch" name="test_production_and_v4_09_acceptance_stay_disabled" time="0.422"><failure message="workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED">def test_production_and_v4_09_acceptance_stay_disabled():
+        from workbench_analysis.historical_stage_governance_r17 import resolve,current_state,STAGE
+        import subprocess,json
+        historical=json.loads(resolve(ROOT,dict(path=STAGE,sha256='6620089e9a1ca550e89c2c0bb177887528c8e7d160a44c584664f04b91a1c48e',bytes=6789)).read_bytes())
+        assert historical['accepted_stage_range']=='V4_00_TO_V4_08_ACCEPTED'
+        assert 'v4_09_binding' not in historical
+        assert subprocess.run(['git','cat-file','-e','5eca56d3555a826c4cca94d6e3d7ae9d11628be6:data/v4/V4_09_ACCEPTED_HEAD.json'],cwd=ROOT,capture_output=True).returncode!=0
+        assert historical['v4_08_production_permission'] is False
+&gt;       assert current_state(ROOT)['status']=='PASS'
+               ^^^^^^^^^^^^^^^^^^^
+
+tests\v4_09\test_stock_prewatch.py:104: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex work/v4-full-closeout-20261012')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+&gt;       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError</failure></testcase><testcase classname="tests.v4_10.test_accepted_head_r1" name="test_promotion_and_all_25_independent_checks" time="16.778" /><testcase classname="tests.v4_10.test_accepted_head_r1" name="test_changed_authority_or_overclaim_rejected[implementation_commit-wrong]" time="3.605" /><testcase classname="tests.v4_10.test_accepted_head_r1" name="test_changed_authority_or_overclaim_rejected[audited_sealed_head-wrong]" time="4.888" /><testcase classname="tests.v4_10.test_accepted_head_r1" name="test_changed_authority_or_overclaim_rejected[external_acceptance_decision-wrong]" time="4.231" /><testcase classname="tests.v4_10.test_accepted_head_r1" name="test_changed_authority_or_overclaim_rejected[production_permission-True]" time="4.212" /><testcase classname="tests.v4_10.test_accepted_head_r1" name="test_changed_authority_or_overclaim_rejected[parent_binding-value4]" time="4.280" /><testcase classname="tests.v4_10.test_accepted_head_r1" name="test_changed_authority_or_overclaim_rejected[capabilities-value5]" time="4.538" /><testcase classname="tests.v4_10.test_accepted_head_r1" name="test_changed_authority_or_overclaim_rejected[open_audit_registry-value6]" time="4.564" /><testcase classname="tests.v4_10.test_accepted_head_r1" name="test_changed_authority_or_overclaim_rejected[global_head_parent_archive-value7]" time="4.676" /><testcase classname="tests.v4_10.test_promotion" name="test_promoted_exact" time="4.799" /><testcase classname="tests.v4_10.test_promotion" name="test_overclaim_or_wrong_authority_rejected[capabilities-value0]" time="3.812" /><testcase classname="tests.v4_10.test_promotion" name="test_overclaim_or_wrong_authority_rejected[implementation_commit-wrong]" time="3.898" /><testcase classname="tests.v4_10.test_promotion" name="test_overclaim_or_wrong_authority_rejected[external_acceptance_decision-wrong]" time="3.868" /><testcase classname="tests.v4_10.test_promotion" name="test_overclaim_or_wrong_authority_rejected[production_permission-True]" time="3.810" /><testcase classname="tests.v4_10.test_promotion" name="test_overclaim_or_wrong_authority_rejected[upstream_binding-value4]" time="4.250" /><testcase classname="tests.v4_10.test_promotion" name="test_overclaim_or_wrong_authority_rejected[artifact-value5]" time="3.853" /><testcase classname="tests.v4_11.test_confirmation" name="test_no_symbol" time="78.498"><failure message="AssertionError: assert 'FAIL' == 'PASS'&#10;  &#10;  - PASS&#10;  + FAIL">def test_no_symbol():
+        from scripts.scan_no_symbol_specific_runtime_logic import run
+&gt;       assert run(ROOT)['status']==EXPECTED['NO_SYMBOL']
+E       AssertionError: assert 'FAIL' == 'PASS'
+E         
+E         - PASS
+E         + FAIL
+
+tests\v4_11\test_confirmation.py:146: AssertionError</failure></testcase><testcase classname="tests.v4_a03_a04_a07_r2.test_real_candidate_readback" name="test_real_accepted_baseline_immutable_pit_readback" time="0.079"><failure message="ValueError: SOURCE_BINDING_MISMATCH">def test_real_accepted_baseline_immutable_pit_readback():
+&gt;       value=report("A03_FORWARD_PIT_BUILDER_R2_REAL_OBSERVATION.json")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_a03_a04_a07_r2\test_real_candidate_readback.py:26: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_a03_a04_a07_r2\test_real_candidate_readback.py:18: in report
+    bound(ROOT,value[key])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex work/v4-full-closeout-20261012')
+ref = {'bytes': 8574, 'path': 'data/v4/V4_STAGE_ACCEPTED_HEAD.json', 'sha256': '529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb'}
+
+    def bound(root, ref):
+        root = Path(root).resolve()
+        path = (root / ref["path"]).resolve()
+        if not path.is_relative_to(root):
+            raise ValueError("SOURCE_OUTSIDE_PROJECT")
+        raw = path.read_bytes()
+        if digest(raw) != ref["sha256"] or len(raw) != ref.get("bytes", ref.get("byte_count")):
+&gt;           raise ValueError("SOURCE_BINDING_MISMATCH")
+E           ValueError: SOURCE_BINDING_MISMATCH
+
+src\workbench_analysis\forward_pit_ledger_r2.py:64: ValueError</failure></testcase><testcase classname="tests.v4_a03_a04_a07_r2.test_real_candidate_readback" name="test_real_amount_raw_bytes_and_independent_exact_twenty_arithmetic" time="0.092"><failure message="ValueError: SOURCE_BINDING_MISMATCH">def test_real_amount_raw_bytes_and_independent_exact_twenty_arithmetic():
+&gt;       value=report("A04_AMOUNT_A_FORMAL_AUTHORITY_R2_REAL_PROOF.json")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_a03_a04_a07_r2\test_real_candidate_readback.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_a03_a04_a07_r2\test_real_candidate_readback.py:18: in report
+    bound(ROOT,value[key])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex work/v4-full-closeout-20261012')
+ref = {'bytes': 8574, 'path': 'data/v4/V4_STAGE_ACCEPTED_HEAD.json', 'sha256': '529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb'}
+
+    def bound(root, ref):
+        root = Path(root).resolve()
+        path = (root / ref["path"]).resolve()
+        if not path.is_relative_to(root):
+            raise ValueError("SOURCE_OUTSIDE_PROJECT")
+        raw = path.read_bytes()
+        if digest(raw) != ref["sha256"] or len(raw) != ref.get("bytes", ref.get("byte_count")):
+&gt;           raise ValueError("SOURCE_BINDING_MISMATCH")
+E           ValueError: SOURCE_BINDING_MISMATCH
+
+src\workbench_analysis\forward_pit_ledger_r2.py:64: ValueError</failure></testcase><testcase classname="tests.v4_a03_a04_a07_r2.test_real_candidate_readback" name="test_real_gbbq_capture_and_historical_fail_closed_readback" time="0.013"><failure message="ValueError: SOURCE_BINDING_MISMATCH">def test_real_gbbq_capture_and_historical_fail_closed_readback():
+&gt;       value=report("A07_HISTORICAL_ADJUSTED_PRICE_LINEAGE_R2_REAL_PROOF.json")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_a03_a04_a07_r2\test_real_candidate_readback.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_a03_a04_a07_r2\test_real_candidate_readback.py:18: in report
+    bound(ROOT,value[key])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex work/v4-full-closeout-20261012')
+ref = {'bytes': 8574, 'path': 'data/v4/V4_STAGE_ACCEPTED_HEAD.json', 'sha256': '529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb'}
+
+    def bound(root, ref):
+        root = Path(root).resolve()
+        path = (root / ref["path"]).resolve()
+        if not path.is_relative_to(root):
+            raise ValueError("SOURCE_OUTSIDE_PROJECT")
+        raw = path.read_bytes()
+        if digest(raw) != ref["sha256"] or len(raw) != ref.get("bytes", ref.get("byte_count")):
+&gt;           raise ValueError("SOURCE_BINDING_MISMATCH")
+E           ValueError: SOURCE_BINDING_MISMATCH
+
+src\workbench_analysis\forward_pit_ledger_r2.py:64: ValueError</failure></testcase><testcase classname="tests.v4_a03_a04_a07_r2.test_real_candidate_readback" name="test_final_durable_inventory_byte_archives_and_runtime_handoffs" time="0.276"><failure message="ValueError: SOURCE_BINDING_MISMATCH">def test_final_durable_inventory_byte_archives_and_runtime_handoffs():
+        for package in ("A03","A04","A07"):
+            handoff=json.loads((ROOT/f"reports/audits/{package}_R2_CANDIDATE_EXTERNAL_REAUDIT_HANDOFF_R1.json").read_text(encoding="utf8"))
+            assert handoff["status"]=="CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+            for runtime in handoff["runtime_bindings"]:bound(ROOT,runtime)
+            bound(ROOT,handoff["contract"])
+            bound(ROOT,handoff["candidate_proof"])
+&gt;       final_a04=report("A04_AMOUNT_A_FORMAL_AUTHORITY_R2_DURABLE_REAL_PROOF_R1.json")
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_a03_a04_a07_r2\test_real_candidate_readback.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_a03_a04_a07_r2\test_real_candidate_readback.py:18: in report
+    bound(ROOT,value[key])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex work/v4-full-closeout-20261012')
+ref = {'bytes': 8574, 'path': 'data/v4/V4_STAGE_ACCEPTED_HEAD.json', 'sha256': '529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb'}
+
+    def bound(root, ref):
+        root = Path(root).resolve()
+        path = (root / ref["path"]).resolve()
+        if not path.is_relative_to(root):
+            raise ValueError("SOURCE_OUTSIDE_PROJECT")
+        raw = path.read_bytes()
+        if digest(raw) != ref["sha256"] or len(raw) != ref.get("bytes", ref.get("byte_count")):
+&gt;           raise ValueError("SOURCE_BINDING_MISMATCH")
+E           ValueError: SOURCE_BINDING_MISMATCH
+
+src\workbench_analysis\forward_pit_ledger_r2.py:64: ValueError</failure></testcase><testcase classname="tests.v4_a04_r3.test_independent_arithmetic_and_evidence" name="test_real_scope_archaeology_consumer_and_candidate_evidence_byte_readback" time="0.075"><failure message="ValueError: SOURCE_BINDING_MISMATCH">def test_real_scope_archaeology_consumer_and_candidate_evidence_byte_readback():
+        proof=json.loads((ROOT/"reports/audits/a04_r3/A04_R3_REAL_SCOPED_CANDIDATE_PROOF_R1.json").read_text(encoding="utf8"))
+        for field in ("task","master","scope_external_audit","stage_entry","data_head","stage_head","namespace_contract","producer_contract"):
+&gt;           bound(ROOT,proof[field])
+
+tests\v4_a04_r3\test_independent_arithmetic_and_evidence.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex work/v4-full-closeout-20261012')
+ref = {'bytes': 8574, 'path': 'data/v4/V4_STAGE_ACCEPTED_HEAD.json', 'sha256': '529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb'}
+
+    def bound(root, ref):
+        root = Path(root).resolve()
+        path = (root / ref["path"]).resolve()
+        if not path.is_relative_to(root):
+            raise ValueError("SOURCE_OUTSIDE_PROJECT")
+        raw = path.read_bytes()
+        if digest(raw) != ref["sha256"] or len(raw) != ref.get("bytes", ref.get("byte_count")):
+&gt;           raise ValueError("SOURCE_BINDING_MISMATCH")
+E           ValueError: SOURCE_BINDING_MISMATCH
+
+src\workbench_analysis\forward_pit_ledger_r2.py:64: ValueError</failure></testcase><testcase classname="tests.v4_a04_r3.test_strict_source_admission" name="test_current_source_roots_are_verified_against_actual_accepted_scope" time="1.814"><failure message="ValueError: SOURCE_BINDING_MISMATCH">def test_current_source_roots_are_verified_against_actual_accepted_scope():
+&gt;       result=validate_roots(ROOT,reference(ROOT,ROOT/"data/v4/V4_DATA_ACCEPTED_HEAD.json"),reference(ROOT,ROOT/"data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json"))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_a04_r3\test_strict_source_admission.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\amount_a_source_binding_r3_1.py:17: in validate_roots
+    stage=json.loads(bound(root,data["stage_head"]))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex work/v4-full-closeout-20261012')
+ref = {'bytes': 8574, 'path': 'data/v4/V4_STAGE_ACCEPTED_HEAD.json', 'sha256': '529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb'}
+
+    def bound(root, ref):
+        root = Path(root).resolve()
+        path = (root / ref["path"]).resolve()
+        if not path.is_relative_to(root):
+            raise ValueError("SOURCE_OUTSIDE_PROJECT")
+        raw = path.read_bytes()
+        if digest(raw) != ref["sha256"] or len(raw) != ref.get("bytes", ref.get("byte_count")):
+&gt;           raise ValueError("SOURCE_BINDING_MISMATCH")
+E           ValueError: SOURCE_BINDING_MISMATCH
+
+src\workbench_analysis\forward_pit_ledger_r2.py:64: ValueError</failure></testcase><testcase classname="tests.v4_a04_r3.test_strict_source_admission" name="test_self_declared_accepted_membership_replica_not_admitted" time="1.954"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'MEMBERSHIP_NOT_EXACT_ACCEPTED_V4_08_SOURCE'&#10;  Actual message: 'SOURCE_BINDING_MISMATCH'">tmp_path = WindowsPath('G:/codex_tmp/test_temp/REMAININGR5/test_self_declared_accepted_me0')
+
+    def test_self_declared_accepted_membership_replica_not_admitted(tmp_path):
+        # Preserve actual data root and source artifacts; only inject an alternate
+        # JSON head path inside the actual project temporary namespace.
+        from tempfile import TemporaryDirectory
+        (ROOT/"tmp").mkdir(exist_ok=True)
+        with TemporaryDirectory(dir=ROOT/"tmp") as directory:
+            path=Path(directory)/"self_declared_membership.json"
+            actual=json.loads((ROOT/"data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json").read_text(encoding="utf8"))
+            atomic(path,canonical(actual))
+&gt;           with pytest.raises(ValueError,match="MEMBERSHIP_NOT_EXACT_ACCEPTED_V4_08_SOURCE"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: Regex pattern did not match.
+E             Expected regex: 'MEMBERSHIP_NOT_EXACT_ACCEPTED_V4_08_SOURCE'
+E             Actual message: 'SOURCE_BINDING_MISMATCH'
+
+tests\v4_a04_r3\test_strict_source_admission.py:25: AssertionError</failure></testcase><testcase classname="tests.v4_a08.test_repair_freeze_authority" name="test_historical_archive_does_not_accept_current_runtime_for_new_promotion" time="4.001" /><testcase classname="tests.v4_dm01_promotion.test_accepted_chain" name="test_exact_real_chain_and_final_permissions" time="1.687" /><testcase classname="tests.v4_dm01_promotion.test_accepted_chain" name="test_production_permissions_stay_closed[production]" time="0.022" /><testcase classname="tests.v4_dm01_promotion.test_accepted_chain" name="test_production_permissions_stay_closed[shadow]" time="0.022" /><testcase classname="tests.v4_dm01_promotion.test_accepted_chain" name="test_production_permissions_stay_closed[focus]" time="0.022" /><testcase classname="tests.v4_dm01_promotion.test_accepted_chain" name="test_reconstruction_does_not_grant_temporal_claims[AS_RECORDED]" time="0.023" /><testcase classname="tests.v4_dm01_promotion.test_accepted_chain" name="test_reconstruction_does_not_grant_temporal_claims[first_available_at_target_proven]" time="0.024" /><testcase classname="tests.v4_dm01_promotion.test_accepted_chain" name="test_anchor_is_exact_bytes_and_wrong_hash_never_redirects" time="0.015"><failure message="AssertionError: assert 'BLOCKED' == 'PASS_ENGINEERING_EXPORTS'&#10;  &#10;  - PASS_ENGINEERING_EXPORTS&#10;  + BLOCKED">head = {'AS_RECORDED': False, 'accepted_chain': {'bytes': 182128, 'path': 'data/v4/DM01_A01_R3_ACCEPTED_CHAIN_20260924_202609...DIT_REMEDIATION_REGISTRY_R10.json', 'sha256': '14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174'}, ...}
+
+    def test_anchor_is_exact_bytes_and_wrong_hash_never_redirects(head):
+        archive=load(ROOT,head['parent_archive']);assert archive['accepted_trade_date']=='2026-09-24'
+        p=resolve_frozen_binding(ROOT,dict(path=HEAD_PATH,sha256=ANCHOR_SHA,bytes=2478))
+        assert binding(ROOT,p.relative_to(ROOT).as_posix())['sha256']==ANCHOR_SHA
+        with pytest.raises(AcceptedChainError):resolve_frozen_binding(ROOT,dict(path=HEAD_PATH,sha256='0'*64))
+&gt;       assert validate_historical_incremental_registry(ROOT)['status']=='PASS_ENGINEERING_EXPORTS'
+E       AssertionError: assert 'BLOCKED' == 'PASS_ENGINEERING_EXPORTS'
+E         
+E         - PASS_ENGINEERING_EXPORTS
+E         + BLOCKED
+
+tests\v4_dm01_promotion\test_accepted_chain.py:81: AssertionError</failure></testcase><testcase classname="tests.v4_dm01_promotion.test_accepted_chain" name="test_ready_rows_cannot_upgrade_degraded_capability[ADJUSTED_DAILY]" time="1.796" /><testcase classname="tests.v4_dm01_promotion.test_accepted_chain" name="test_ready_rows_cannot_upgrade_degraded_capability[PERIOD_ADJUSTED]" time="1.765" /><testcase classname="tests.v4_dm01_promotion.test_accepted_chain" name="test_ready_rows_cannot_upgrade_degraded_capability[PRICE_LIMIT]" time="1.774" /><testcase classname="tests.v4_dm01_promotion.test_accepted_chain" name="test_business_publication_history_has_explicit_archive_scope" time="9.381" /><testcase classname="tests.v4_dm01_r3.test_real_authority_and_chain" name="test_atomic_failure_determinism_and_heads_preserved" time="0.245"><failure message="AssertionError: assert '936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0' in ('529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb', '529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb')">def test_atomic_failure_determinism_and_heads_preserved():
+        atomic=read(P+'ATOMIC_FAILURE_PROBES_R1.json');det=read(P+'DETERMINISM_R1.json')
+        assert atomic['status']=='PASS' and not atomic['partial_candidates_visible']
+        for binding in atomic['failure_bindings']:
+            assert not (ROOT/binding['path']).parent.joinpath('PROMOTION_CANDIDATE.json').exists()
+        assert det['status']=='PASS' and det['old_candidates_immutable']
+        for binding in read(P+'STAGE_ENTRY_R1.json')['protected_bindings']:
+            from workbench_analysis.dm01_accepted_chain_v1 import resolve_frozen_binding, HEAD_PATH, ANCHOR_SHA
+            path=resolve_frozen_binding(ROOT,binding) if binding['path']==HEAD_PATH else ROOT/binding['path']
+            actual=hashlib.sha256(path.read_bytes()).hexdigest()
+&gt;           assert actual in (binding['sha256'],binding.get('git_sha256'))
+E           AssertionError: assert '936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0' in ('529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb', '529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb')
+
+tests\v4_dm01_r3\test_real_authority_and_chain.py:127: AssertionError</failure></testcase><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_actual_all_nine_and_identical_rerun" time="2.988" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_bad_inputs_before_marker[DM01R4-06-&lt;lambda&gt;-PARENT_DIGEST]" time="0.166" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_bad_inputs_before_marker[DM01R4-13-&lt;lambda&gt;-RECONSTRUCTED]" time="0.140" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_bad_inputs_before_marker[DM01R4-14-&lt;lambda&gt;-FUTURE_OR_RECONSTRUCTED]" time="0.122" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_bad_inputs_before_marker[DM01R4-15-&lt;lambda&gt;-TARGET_SOURCE_DATE]" time="0.116" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_component_oracle_failure" time="0.351" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_cross_oracle_failure" time="1.765" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_revised_source_immutable_candidate" time="4.340" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_component_tamper_rerun" time="3.006" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_stage_change_rejected" time="2.760" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_current_real_v2_parent_and_future_wait" time="0.016"><error message="failed on setup with &quot;FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_dm01\\dm01_go_forward_runtime_contract_r4r1.json'&quot;">request = &lt;SubRequest 'legacy_pre_acceptance_profile' for &lt;Function test_current_real_v2_parent_and_future_wait&gt;&gt;
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/REMAININGR5/test_current_real_v2_parent_an0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000240AC3075B0&gt;
+
+    @pytest.fixture(autouse=True)
+    def legacy_pre_acceptance_profile(request,tmp_path,monkeypatch):
+        if request.node.name!='test_current_real_v2_parent_and_future_wait':return
+        from workbench_analysis import dm01_runtime_r4 as r
+        root=create(tmp_path/'historical_pre_acceptance')
+        profile=json.loads((ROOT/'reports/forward_r2_remainder_consolidated_20261007/DM01_LEGACY_TEST_SUPERSESSION_PROOF.json').read_bytes())
+        for row in profile['historical_pre_acceptance']['profile']:
+&gt;           raw=(ROOT/row['archive']['path']).read_bytes()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4\conftest.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_dm01/dm01_go_forward_runtime_contract_r4r1.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_dm01\\dm01_go_forward_runtime_contract_r4r1.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</error></testcase><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_actual_entrypoint_no_capture" time="3.570"><failure message="AssertionError: &#10;assert 2 == 0&#10; +  where 2 = CompletedProcess(args=['E:\\python\\python.exe', '-B', 'G:\\codex work\\v4-full-closeout-20261012\\scripts\\run_v4_dm0...CKED&quot;, &quot;reason&quot;: &quot;R4_ACCEPTED_ENVELOPE_DIGEST_MISMATCH&quot;, &quot;source_requests&quot;: 0, &quot;data_head_moved&quot;: false}\n', stderr='').returncode">def test_actual_entrypoint_no_capture():
+        result=subprocess.run([sys.executable,'-B',str(r.ROOT/'scripts/run_v4_dm01_daily_increment.py'),
+            '--target-date','2026-10-08'],cwd=r.ROOT,capture_output=True,text=True)
+&gt;       assert result.returncode==0,result.stderr
+E       AssertionError: 
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['E:\\python\\python.exe', '-B', 'G:\\codex work\\v4-full-closeout-20261012\\scripts\\run_v4_dm0...CKED", "reason": "R4_ACCEPTED_ENVELOPE_DIGEST_MISMATCH", "source_requests": 0, "data_head_moved": false}\n', stderr='').returncode
+
+tests\v4_dm01_r4\test_runtime.py:125: AssertionError</failure></testcase><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_simulation_cannot_promote_even_with_fake_envelope" time="2.311" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_promotion_negative[DM01R4-07]" time="2.325" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_promotion_negative[DM01R4-09]" time="6.449" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_promotion_negative[DM01R4-10]" time="5.393" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_promotion_negative[DM01R4-17]" time="3.406" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_promotion_negative[DM01R4-19]" time="3.152" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_promotion_state_machine_no_stage_r25_or_counter_grant" time="2.858" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_current_parent_package_is_exact_accepted_chain" time="5.084"><failure message="ValueError: INPUT_DIGEST_MISMATCH">def test_current_parent_package_is_exact_accepted_chain():
+        from workbench_analysis.dm01_sources_r4 import parent_tdx_package
+        parent=r.current_parent();chain=r.read(r.ROOT,parent['head']['accepted_chain']);context=r.read(r.ROOT,chain['source_context'])
+&gt;       assert parent_tdx_package(r.ROOT)==context['inputs']['2026-09-30']['families']['TDX_FULL_PACKAGE']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4\test_runtime.py:222: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_sources_r4.py:19: in parent_tdx_package
+    runtime.path(root,binding)
+src\workbench_analysis\dm01_runtime_r4.py:41: in path
+    require(p.is_file() and sha(p) == binding['sha256'], 'INPUT_DIGEST_MISMATCH')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, reason = 'INPUT_DIGEST_MISMATCH'
+
+    def require(condition, reason):
+        if not condition:
+&gt;           raise ValueError(reason)
+E           ValueError: INPUT_DIGEST_MISMATCH
+
+src\workbench_analysis\dm01_runtime_r4.py:34: ValueError</failure></testcase><testcase classname="tests.v4_dm01_r4r1.test_lineage" name="test_R4R1_02_false_forward_marker_cannot_promote" time="2.330" /><testcase classname="tests.v4_dm01_r4r1.test_lineage" name="test_no_first_availability_without_proof[R4R1-03-2026-09-28T08:00:00+00:00]" time="2.382" /><testcase classname="tests.v4_dm01_r4r1.test_lineage" name="test_no_first_availability_without_proof[R4R1-04-None]" time="2.449" /><testcase classname="tests.v4_dm01_r4r1.test_lineage" name="test_R4R1_05_simulation_cannot_claim_real_forward" time="2.552" /><testcase classname="tests.v4_dm01_r4r1.test_lineage" name="test_R4R1_07_synthetic_explicit_proof_remains_engineering" time="2.175" /><testcase classname="tests.v4_dm01_r4r1.test_lineage" name="test_R4R1_08_promoted_whole_head_keeps_mixed_lineage" time="2.741" /><testcase classname="tests.v4_dm01_r4r1.test_lineage" name="test_R4R1_09_whole_head_overclaim_rejected" time="2.199" /><testcase classname="tests.v4_dm01_r4r1.test_lineage" name="test_R4R1_11_exact_engineering_target_bridge_no_grant" time="2.504" /><testcase classname="tests.v4_dm01_r4r1.test_lineage" name="test_R4R1_12_unknown_identity_rows_are_retained" time="2.236" /><testcase classname="tests.v4_dm01_r4r2.test_acceptance_seal" name="test_sealed_future_wait_has_no_source_or_publication" time="0.001"><failure message="ValueError: BRIDGE_EXACT_BINDING_REQUIRED">def test_sealed_future_wait_has_no_source_or_publication():
+        data = (ROOT / r.HEAD).read_bytes()
+        output = ROOT / 'reports/r25/target_session_bridge/acceptance_seal_wait_not_created.json'
+        assert not output.exists()
+&gt;       result = produce_bridge(ROOT, parent=None, child=None, candidate=None,
+                                source=None, receipts=None, observation=None,
+                                target='2026-10-08', observed_at=datetime.now(timezone.utc).isoformat(),
+                                output=output.relative_to(ROOT).as_posix())
+
+tests\v4_dm01_r4r2\test_acceptance_seal.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\build_r25_bridge_r4r2.py:24: in produce_bridge
+    validate_bridge_object(root,b,engineering=engineering)
+scripts\build_r25_bridge_r4r2.py:33: in validate_bridge_object
+    o.inspect_bridge_object(root,b,engineering=engineering)
+scripts\r25_bridge_oracle_r4r2.py:35: in inspect_bridge_object
+    parent=exact(root,b['parent_data_head']);child=exact(root,b['child_data_head']);candidate=exact(root,b['candidate'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r25_bridge_oracle_r4r2.py:20: in exact
+    check(isinstance(b,dict) and set(b)=={'path','bytes','sha256'},'BRIDGE_EXACT_BINDING_REQUIRED')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'BRIDGE_EXACT_BINDING_REQUIRED'
+
+    def check(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: BRIDGE_EXACT_BINDING_REQUIRED
+
+scripts\r25_bridge_oracle_r4r2.py:14: ValueError</failure></testcase><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[1]" time="3.174" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[2]" time="2.724" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[3]" time="2.904" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[4]" time="3.542" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[5]" time="6.108" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[6]" time="3.984" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[7]" time="3.035" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[8]" time="2.633" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[9]" time="3.745" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[10]" time="2.635" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_negative[13]" time="2.785" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_R4R2_11_engineering_producer" time="3.872" /><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_R4R2_12_real_shaped_parity" time="5.319"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\r25\\V4_R24R1_GO_FORWARD_INPUT_AUTHORITY_COHORT_IDENTITY_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md'">vector = {'root': WindowsPath('G:/codex_tmp/test_temp/REMAININGR5/test_R4R2_12_real_shaped_parit0'), 'e': {'parent': {'head': {...0', 'contract_id': 'DM01_TARGET_SESSION_OBSERVATION_R4R1_V1', 'engineering_observation_checks_passed': True, ...}, ...}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000240AC1D7CB0&gt;
+
+    def test_R4R2_12_real_shaped_parity(vector,monkeypatch):
+        v=vector;shape(v)
+        runtime=admission(v);preflight=o.inspect_daily_bridge(v['root'],v['d'],o.binding(v['root'],o.CONTRACT_PATH),test_only=True)
+        assert runtime==preflight and runtime['real_ready'] is False and runtime['r25_grant'] is False
+        packet=packet_vector(v,v['d']['target_session_pit_binding'])
+        assert inspect_inputs(v['root'],*[packet[k] for k in ('candidate','daily','sources','deps','contract','predecessor')],test_only=True)['status']=='PASS_ENGINEERING_VECTOR_NOT_REAL'
+        assert GoForwardInputAuthority.validate_bridge(v['root'],packet['daily'],packet['deps']['go_forward_input'],test_only=True)['real_ready'] is False
+        # Complete packet producer -&gt; exact manifest oracle in an isolated root.
+        from scripts.build_r25_bridge_r4r2 import produce_packet
+        from scripts.validate_r25_preflight import inspect_packet
+        deps_ref=put(v['root'],'config/v4_16_runtime_dependencies_v4.json',(ROOT/'config/v4_16_runtime_dependencies_v4.json').read_bytes())
+        for reference in packet['deps']['bindings']:
+            source=ROOT/reference['path']
+            if reference['path']=='scripts/validate_r25_preflight.py':
+                source=ROOT/'docs/evidence/full_chain_repair_20261006/baseline_runtime/validate_r25_preflight.py'
+            put(v['root'],reference['path'],source.read_bytes())
+        audit='docs/evidence/r25/V4_R24R1_GO_FORWARD_INPUT_AUTHORITY_COHORT_IDENTITY_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md'
+&gt;       put(v['root'],audit,(ROOT/audit).read_bytes())
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4r2\test_bridge.py:128: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/r25/V4_R24R1_GO_FORWARD_INPUT_AUTHORITY_COHORT_IDENTITY_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\r25\\V4_R24R1_GO_FORWARD_INPUT_AUTHORITY_COHORT_IDENTITY_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.v4_dm01_r4r2.test_bridge" name="test_R4R2_14_old_V1_historical_only" time="3.122" /><testcase classname="tests.v4_parallel_scoped_consolidation_r3.test_clean_protected_representations" name="test_real_consolidation_retains_batch_refs_and_passes_only_exact_clean_representations" time="14.033" /><testcase classname="tests.v4_parallel_scoped_consolidation_r3.test_consolidation" name="test_serialized_latest_registry_retains_external_scopes_and_prior_unscoped_entries" time="9.077" /><testcase classname="tests.v4_parallel_scoped_consolidation_r3.test_consolidation" name="test_real_independent_readback_preserves_permanent_capability_and_current_fail_closed_gate" time="26.267" /><testcase classname="tests.v4_parallel_scoped_formalization_r1.test_clean_representations" name="test_real_validate_record_in_lf_checkout_and_strict_nonprotected_refs" time="4.052" /><testcase classname="tests.v4_parallel_scoped_formalization_r1.test_scoped_acceptance" name="test_exact_external_scope_record[A03]" time="1.841" /><testcase classname="tests.v4_parallel_scoped_formalization_r1.test_scoped_acceptance" name="test_exact_external_scope_record[A06]" time="1.591" /><testcase classname="tests.v4_parallel_scoped_formalization_r1.test_scoped_acceptance" name="test_exact_external_scope_record[A07]" time="1.483" /><testcase classname="tests.v4_parallel_scoped_formalization_r1.test_scoped_acceptance" name="test_exact_external_scope_record[OWNER]" time="1.517" /><testcase classname="tests.v4_parallel_scoped_formalization_r1.test_scoped_acceptance" name="test_exact_external_scope_record[READER]" time="1.565" /><testcase classname="tests.v4_parallel_scoped_formalization_r1.test_scoped_acceptance" name="test_a03_real_immutable_append_and_no_natural_future_engineering_blocker" time="3.215" /><testcase classname="tests.v4_parallel_scoped_formalization_r1.test_scoped_acceptance" name="test_a07_exact_capture_time_boundary_and_no_formal_adjusted_consumer" time="4.477" /><testcase classname="tests.v4_parallel_scoped_formalization_r1.test_scoped_acceptance" name="test_seven_owner_fields_exact_unchanged_inactive_metadata" time="1.600" /><testcase classname="tests.v4_parallel_scoped_formalization_r1.test_scoped_acceptance" name="test_accepted_reader_v2_history_only_and_actual_three_thread_parity" time="2.999" /><testcase classname="tests.v4_phase0.test_tdx_local_snapshot" name="test_symlink_input_is_rejected" time="0.042" /><testcase classname="tests.v4_phase0.test_tdx_snapshot" name="test_extracted_symlink_is_rejected" time="0.050" /><testcase classname="tests.v4_publication_reader_di_r1.test_explicit_views" name="test_exact_outputs_and_two_history_plus_current_concurrency" time="18.509" /><testcase classname="tests.v4_publication_reader_di_r1.test_explicit_views" name="test_wrong_candidate_hash_behavior_exact" time="13.503" /><testcase classname="tests.v4_publication_reader_di_r1.test_explicit_views" name="test_exact_view_cannot_arbitrarily_remap_or_wrong_sha" time="1.926" /><testcase classname="tests.v4_registry_r3.test_formalization" name="test_external_dispositions_and_protected_bytes" time="2.059" /><testcase classname="tests.v4_registry_r4.test_entry" name="test_independent_acceptance_exact_evidence" time="1.723" /><testcase classname="tests.v4_scoped_promotions_r3.test_scoped_readers" name="test_a02_cannot_expand_reconstructed_lineage[V4_05]" time="6.598" /><testcase classname="tests.v4_scoped_promotions_r3.test_scoped_readers" name="test_a02_cannot_expand_reconstructed_lineage[V4_07]" time="6.935" /><testcase classname="tests.v4_scoped_promotions_r3.test_scoped_readers" name="test_a02_cannot_expand_reconstructed_lineage[V4_09]" time="6.529" /><testcase classname="tests.v4_scoped_promotions_r3.test_scoped_readers" name="test_a05_amount_a_warm_branch_stays_closed" time="6.473" /><testcase classname="tests.v4_scoped_promotions_r3.test_scoped_readers" name="test_a04_engineering_acceptance_never_opens_consumer[formal_consumer_enabled-True]" time="6.300" /><testcase classname="tests.v4_scoped_promotions_r3.test_scoped_readers" name="test_a04_engineering_acceptance_never_opens_consumer[historical_reconstruction_accepted-True]" time="6.936" /><testcase classname="tests.v4_scoped_promotions_r3.test_scoped_readers" name="test_a04_engineering_acceptance_never_opens_consumer[H21_warmup_required-False]" time="7.670" /><testcase classname="tests.v4_scoped_promotions_r3.test_scoped_readers" name="test_a04_engineering_acceptance_never_opens_consumer[stock_amr20_dependency-True]" time="6.018" /><testcase classname="tests.v4_scoped_promotions_r3.test_scoped_readers" name="test_scoped_reader_rejects_rehashed_unaudited_candidate" time="4.434" /><testcase classname="tests.v4_scoped_promotions_r3.test_scoped_readers" name="test_scoped_acceptance_cannot_escalate_permissions[production]" time="4.253" /><testcase classname="tests.v4_scoped_promotions_r3.test_scoped_readers" name="test_scoped_acceptance_cannot_escalate_permissions[shadow]" time="4.273" /><testcase classname="tests.v4_scoped_promotions_r3.test_scoped_readers" name="test_scoped_acceptance_cannot_escalate_permissions[focus]" time="5.496" /><testcase classname="tests.v4_scoped_promotions_r3.test_scoped_readers" name="test_scoped_acceptance_cannot_escalate_permissions[global_mandatory_adoption]" time="4.099" /><testcase classname="tests.v4_scoped_promotions_r3.test_scoped_readers" name="test_publication_is_idempotent_and_conflicting_revision_is_append_only" time="4.167" /><testcase classname="tests.v4_scoped_promotions_r3.test_scoped_readers" name="test_rollback_removes_only_exact_allowlisted_pointer" time="4.407" /></testsuite></testsuites>

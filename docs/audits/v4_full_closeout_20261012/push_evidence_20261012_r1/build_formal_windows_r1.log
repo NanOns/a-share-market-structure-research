@@ -1,0 +1,22 @@
+Traceback (most recent call last):
+  File "E:\python\Lib\importlib\metadata\__init__.py", line 407, in from_name
+    return next(iter(cls.discover(name=name)))
+StopIteration
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "G:\codex_tmp\v4_full_closeout_20261012\build_formal_windows_r1.py", line 5, in <module>
+    raise SystemExit(build.main())
+                     ~~~~~~~~~~^^
+  File "G:\codex work\v4-full-closeout-20261012\scripts\build_windows_package_v1.py", line 171, in main
+    graph, resources = prepare()
+                       ~~~~~~~^^
+  File "G:\codex work\v4-full-closeout-20261012\scripts\build_windows_package_v1.py", line 98, in prepare
+    dist=distribution(name)
+  File "E:\python\Lib\importlib\metadata\__init__.py", line 960, in distribution
+    return Distribution.from_name(distribution_name)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "E:\python\Lib\importlib\metadata\__init__.py", line 409, in from_name
+    raise PackageNotFoundError(name)
+importlib.metadata.PackageNotFoundError: No package metadata was found for pystray

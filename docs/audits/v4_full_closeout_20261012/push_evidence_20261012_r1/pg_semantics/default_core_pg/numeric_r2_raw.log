@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "G:\codex work\v4-full-closeout-20261012\scripts\audit_core_market_numeric_closeout.py", line 73, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "G:\codex work\v4-full-closeout-20261012\scripts\audit_core_market_numeric_closeout.py", line 14, in main
+    authority=json.loads((r/'config/core_product_read_authority_r1.json').read_bytes());manifest=json.loads(checked(r,authority['manifest']).read_bytes());day=manifest['T0'];facts=read(r,manifest['market_facts'],day)
+                                                                                                                      ~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'manifest'

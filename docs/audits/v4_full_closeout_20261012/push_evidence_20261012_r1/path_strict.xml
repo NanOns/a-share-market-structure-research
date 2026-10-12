@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="26" time="3.201" timestamp="2026-10-12T15:15:55.645702+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_r2_focus_path_outcome" name="test_exit_followup_due_settlement_and_reentry_are_separate" time="0.001" /><testcase classname="tests.test_r2_focus_path_outcome" name="test_invalidated_episode_closes_and_settles_independently" time="0.001" /><testcase classname="tests.test_r2_focus_path_outcome" name="test_missing_suspension_and_future_corporate_action" time="0.016"><failure message="tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3">tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_path_strict/test_missing_suspension_and_fu0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001FE37B89AE0&gt;
+
+    def test_missing_suspension_and_future_corporate_action(tmp_path, monkeypatch):
+        # Build the adapter around a real SQLite price index, inject a future
+        # unsupported action: it must not poison an earlier observation.
+        from types import SimpleNamespace
+        path = tmp_path / 'bars.sqlite'
+&gt;       with sqlite3.connect(path) as db:
+             ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r2_focus_path_outcome.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('G:/codex_tmp/test_temp/v4_path_strict/test_missing_suspension_and_fu0/bars.sqlite'),)
+kwargs = {}
+
+    def call(*args,**kwargs):
+        EVENTS.append(dict(nodeid=ACTIVE,engine=engine,decision='REJECT',stack=traceback.format_stack(limit=8)))
+&gt;       raise V4DatabaseGuardViolation('R4_NON_POSTGRES_FORBIDDEN:'+engine)
+E       tests.v4_native_isolation_plugin_r4.V4DatabaseGuardViolation: R4_NON_POSTGRES_FORBIDDEN:sqlite3
+
+tests\v4_native_isolation_plugin_r4.py:145: V4DatabaseGuardViolation</failure></testcase><testcase classname="tests.test_r2_focus_path_outcome" name="test_dated_owner_updates_preserve_history_and_reject_kernel_change" time="0.052"><failure message="ValueError: PG_JOURNAL_DESCRIPTOR_REQUIRED_NO_FALLBACK">tmp_path = WindowsPath('G:/codex_tmp/test_temp/v4_path_strict/test_dated_owner_updates_prese0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001FE37B8A470&gt;
+
+    def test_dated_owner_updates_preserve_history_and_reject_kernel_change(tmp_path,monkeypatch):
+        class Dated(Paths):
+            def __init__(self,root,inputs):self.inputs=inputs
+            def path(self,sid,start,end):
+                result=super().path(sid,start,end)
+                result['metrics']['return_close']=self.inputs['owner']
+                return result
+        monkeypatch.setattr('focus_tracker.v4_path_adapter.AcceptedPaths',Dated)
+        bindings=[]
+        for day in Paths.calendar:
+            path=tmp_path/(day+'.json');path.write_text(json.dumps({'rows':[row(day)]}))
+            bindings.append(dict(path=path.name,sha256=digest(path.read_bytes())))
+        journal=tmp_path/'journal.sqlite'
+        inputs=dict(owner='0.1',implementation={'kernel':{'sha256':'old'}})
+&gt;       first=append(journal,tmp_path,bindings[0],None,path_inputs=inputs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r2_focus_path_outcome.py:89: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\focus_tracker\v4_journal.py:22: in append
+    db=JournalConnection(path,root,CONTRACT)
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;workbench_db.v4_journal_pg_r1.JournalConnection object at 0x000001FE37B2A660&gt;
+path = WindowsPath('G:/codex_tmp/test_temp/v4_path_strict/test_dated_owner_updates_prese0/journal.sqlite')
+root = WindowsPath('G:/codex_tmp/test_temp/v4_path_strict/test_dated_owner_updates_prese0')
+contract = 'R4_V4_FOCUS_JOURNAL_PG_R1'
+
+    def __init__(self,path,root,contract):
+        self.path=Path(path);self.contract=contract
+        self.release_id=uuid.uuid4().hex
+&gt;       if self.path.suffix!='.json':raise ValueError('PG_JOURNAL_DESCRIPTOR_REQUIRED_NO_FALLBACK')
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: PG_JOURNAL_DESCRIPTOR_REQUIRED_NO_FALLBACK
+
+src\workbench_db\v4_journal_pg_r1.py:16: ValueError</failure></testcase><testcase classname="tests.test_v4_focus_source_identity_r4" name="test_internal_id_resolves_cash_action_on_real_pg_path" time="0.177" /><testcase classname="tests.test_v4_focus_source_identity_r4" name="test_mismatched_series_symbol_is_refused_not_unadjusted" time="0.288" /><testcase classname="tests.test_v4_focus_source_identity_r4" name="test_missing_identity_and_unsupported_action_fail_closed" time="0.167" /><testcase classname="tests.test_v4_focus_source_identity_r4" name="test_future_action_does_not_change_earlier_coordinate" time="0.262" /><testcase classname="tests.test_v4_focus_source_identity_r4" name="test_action_without_supported_formula_fails_closed[2-SUPPORTED_PRICE_AFFECTING]" time="0.143" /><testcase classname="tests.test_v4_focus_source_identity_r4" name="test_action_without_supported_formula_fails_closed[2-PRICE_AFFECTING_SUPPORTED]" time="0.160" /><testcase classname="tests.test_v4_focus_source_identity_r4" name="test_action_without_supported_formula_fails_closed[2-UNKNOWN_PRICE_IMPACT]" time="0.147" /><testcase classname="tests.test_v4_focus_source_identity_r4" name="test_action_without_supported_formula_fails_closed[2-typo]" time="0.137" /><testcase classname="tests.test_v4_focus_source_identity_r4" name="test_action_without_supported_formula_fails_closed[1-NON_PRICE_AFFECTING]" time="0.244" /><testcase classname="tests.test_v4_focus_source_identity_r4" name="test_action_without_supported_formula_fails_closed[1-typo]" time="0.160" /><testcase classname="tests.test_v4_focus_source_identity_r4" name="test_action_without_supported_formula_fails_closed[99-None]" time="0.351" /><testcase classname="tests.test_v4_focus_source_identity_r4" name="test_explicit_non_price_action_is_ignored" time="0.163" /><testcase classname="tests.test_v4_focus_source_identity_r4" name="test_bound_map_rejects_invalid_or_duplicate_identity[rows0-KEY_INVALID]" time="0.008" /><testcase classname="tests.test_v4_focus_source_identity_r4" name="test_bound_map_rejects_invalid_or_duplicate_identity[rows1-IDENTITY_DUPLICATE]" time="0.007" /><testcase classname="tests.test_v4_focus_source_identity_r4" name="test_bound_map_rejects_invalid_or_duplicate_identity[rows2-IDENTITY_DUPLICATE]" time="0.007" /><testcase classname="tests.test_v4_focus_source_identity_r4" name="test_producer_and_consumer_share_hash_bound_mapping" time="0.006" /><testcase classname="tests.test_v4_exact_focus_path_r3" name="test_exact_coordinate_tie_and_real_metrics_consumer" time="0.001" /><testcase classname="tests.test_v4_exact_focus_path_r3" name="test_missing_session_remains_source_incomplete" time="0.001" /><testcase classname="tests.test_v4_exact_focus_path_r3" name="test_source_drift_and_missing_exact_refused" time="0.001" /><testcase classname="tests.test_v4_exact_focus_path_r3" name="test_mixed_row_date_and_float_raw_refused" time="0.001" /><testcase classname="tests.test_v4_exact_focus_path_r3" name="test_empty_and_duplicate_calendar_refused" time="0.001" /><testcase classname="tests.test_v4_exact_focus_path_r3" name="test_observation_coordinate_cancels_later_actions_without_decimal_approximation" time="0.001" /></testsuite></testsuites>

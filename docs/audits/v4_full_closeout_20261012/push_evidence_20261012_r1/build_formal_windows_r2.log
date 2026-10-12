@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "G:\codex_tmp\v4_full_closeout_20261012\build_formal_windows_r1.py", line 5, in <module>
+    raise SystemExit(build.main())
+                     ~~~~~~~~~~^^
+  File "G:\codex work\v4-full-closeout-20261012\scripts\build_windows_package_v1.py", line 171, in main
+    graph, resources = prepare()
+                       ~~~~~~~^^
+  File "G:\codex work\v4-full-closeout-20261012\scripts\build_windows_package_v1.py", line 110, in prepare
+    if sha(source)!=binding['sha256']:raise ValueError('ACCEPTED_ALGORITHM_ORIGINAL_CHANGED')
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: ACCEPTED_ALGORITHM_ORIGINAL_CHANGED

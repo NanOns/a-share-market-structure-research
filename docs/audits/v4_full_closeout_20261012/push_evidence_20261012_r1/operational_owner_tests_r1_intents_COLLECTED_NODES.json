@@ -1,0 +1,19 @@
+{
+  "contract_id": "R4_R3_EXACT_COLLECTED_NODE_SET_R1",
+  "nodes": [
+    "tests/test_v4_operational_owner_pg_closeout.py::test_complete_native_read_and_reject_cross_date_domain_head",
+    "tests/test_v4_operational_owner_pg_closeout.py::test_missing_dsn_and_changed_archive_evidence_reject",
+    "tests/test_v4_operational_owner_pg_closeout.py::test_authority_requires_complete_unchanged_source_mapping",
+    "tests/test_core_product_home_cache_closeout.py::test_cached_home_checks_database_identity_and_availability",
+    "tests/test_core_product_home_cache_closeout.py::test_cached_home_rejects_wrong_token",
+    "tests/test_core_product_home_cache_closeout.py::test_cached_home_invalidates_changed_source"
+  ],
+  "modules": [
+    "tests/test_core_product_home_cache_closeout.py",
+    "tests/test_v4_operational_owner_pg_closeout.py"
+  ],
+  "source_sha256": {
+    "tests/test_v4_operational_owner_pg_closeout.py": "847f6e3dde8931d539527ef00ce62f81a567be26e6eb21d91d54ab3e7064a557",
+    "tests/test_core_product_home_cache_closeout.py": "6b495fc12559dc7e2005b7ca657d17de72de2a6f902e1965ac652e11f8362796"
+  }
+}

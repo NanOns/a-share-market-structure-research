@@ -1,0 +1,44 @@
+{
+  "contract_id": "R4_R3_EXACT_COLLECTED_NODE_SET_R1",
+  "nodes": [
+    "tests/test_v4_period_pg_chunks_closeout.py::test_all_rows_survive_bound_chunks_and_read_is_read_only",
+    "tests/v4_dm01_r4/test_runtime.py::test_actual_all_nine_and_identical_rerun",
+    "tests/v4_dm01_r4/test_runtime.py::test_bad_inputs_before_marker[DM01R4-05-<lambda>-V1_PARENT]",
+    "tests/v4_dm01_r4/test_runtime.py::test_bad_inputs_before_marker[DM01R4-06-<lambda>-PARENT_DIGEST]",
+    "tests/v4_dm01_r4/test_runtime.py::test_bad_inputs_before_marker[DM01R4-13-<lambda>-RECONSTRUCTED]",
+    "tests/v4_dm01_r4/test_runtime.py::test_bad_inputs_before_marker[DM01R4-14-<lambda>-FUTURE_OR_RECONSTRUCTED]",
+    "tests/v4_dm01_r4/test_runtime.py::test_bad_inputs_before_marker[DM01R4-15-<lambda>-TARGET_SOURCE_DATE]",
+    "tests/v4_dm01_r4/test_runtime.py::test_missing_builder",
+    "tests/v4_dm01_r4/test_runtime.py::test_component_oracle_failure",
+    "tests/v4_dm01_r4/test_runtime.py::test_cross_oracle_failure",
+    "tests/v4_dm01_r4/test_runtime.py::test_revised_source_immutable_candidate",
+    "tests/v4_dm01_r4/test_runtime.py::test_component_tamper_rerun",
+    "tests/v4_dm01_r4/test_runtime.py::test_stage_change_rejected",
+    "tests/v4_dm01_r4/test_runtime.py::test_current_real_v2_parent_and_future_wait",
+    "tests/v4_dm01_r4/test_runtime.py::test_actual_entrypoint_no_capture",
+    "tests/v4_dm01_r4/test_runtime.py::test_simulation_cannot_promote_even_with_fake_envelope",
+    "tests/v4_dm01_r4/test_runtime.py::test_promotion_negative[DM01R4-07]",
+    "tests/v4_dm01_r4/test_runtime.py::test_promotion_negative[DM01R4-09]",
+    "tests/v4_dm01_r4/test_runtime.py::test_promotion_negative[DM01R4-10]",
+    "tests/v4_dm01_r4/test_runtime.py::test_promotion_negative[DM01R4-17]",
+    "tests/v4_dm01_r4/test_runtime.py::test_promotion_negative[DM01R4-19]",
+    "tests/v4_dm01_r4/test_runtime.py::test_promotion_state_machine_no_stage_r25_or_counter_grant",
+    "tests/v4_dm01_r4/test_runtime.py::test_calendar_unaccepted",
+    "tests/v4_dm01_r4/test_runtime.py::test_forged_external_acceptance_rejected",
+    "tests/v4_dm01_r4/test_runtime.py::test_real_native_completion_stamp_cannot_be_invented",
+    "tests/v4_dm01_r4/test_runtime.py::test_current_parent_package_is_exact_accepted_chain",
+    "tests/v4_dm01_r4r2/test_acceptance_seal.py::test_real_external_envelope_and_extension_bytes",
+    "tests/v4_dm01_r4r2/test_acceptance_seal.py::test_sealed_future_wait_has_no_source_or_publication",
+    "tests/v4_dm01_r4r2/test_acceptance_seal.py::test_acceptance_does_not_grant_shadow_or_move_heads"
+  ],
+  "modules": [
+    "tests/test_v4_period_pg_chunks_closeout.py",
+    "tests/v4_dm01_r4/test_runtime.py",
+    "tests/v4_dm01_r4r2/test_acceptance_seal.py"
+  ],
+  "source_sha256": {
+    "tests/test_v4_period_pg_chunks_closeout.py": "60f31937bddebe603a81bc53842a98dcdeacd538c120800557773ecd83d6a50f",
+    "tests/v4_dm01_r4/test_runtime.py": "22c96a78c97495b0a98c2cc10e639ab371b518c4c8546d63deedb24286884eec",
+    "tests/v4_dm01_r4r2/test_acceptance_seal.py": "63869718dff3346bfcd2590ba7f9b782b58bd31849cb77ddd53e46cae35a27ec"
+  }
+}

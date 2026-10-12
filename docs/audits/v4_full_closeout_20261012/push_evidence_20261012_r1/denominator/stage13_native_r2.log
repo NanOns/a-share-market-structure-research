@@ -1,0 +1,41 @@
+............................................F........................... [ 62%]
+...........................................                              [100%]
+================================== FAILURES ===================================
+___________ test_full_contract_completeness_and_protected_artifacts ___________
+
+    def test_full_contract_completeness_and_protected_artifacts():
+>       result=validate(checkout=True)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r15_contract.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_v4_13_r1_1.py:154: in validate
+    actual=ref(r['path'])
+           ^^^^^^^^^^^^^^
+scripts\repair_v4_13_r1_1.py:13: in ref
+    b=(ROOT/p).read_bytes();return dict(path=p,sha256=hashlib.sha256(b).hexdigest(),bytes=len(b))
+      ^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/reports/v4_12_promotion_r14/.gitattributes')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\reports\\v4_12_promotion_r14\\.gitattributes'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/test_v4_13_r15_contract.py::test_full_contract_completeness_and_protected_artifacts
+1 failed, 114 passed in 13.30s

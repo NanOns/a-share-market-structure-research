@@ -1,0 +1,944 @@
+............................................F.........EEEEEEEEE...EEEEEE [ 62%]
+EEEE........E...............EE.............                              [100%]
+=================================== ERRORS ====================================
+____ ERROR at setup of test_A01_dominant_excluded_independent_median_seed _____
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16a_runtime.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________________ ERROR at setup of test_A02_minimum ______________________
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16a_runtime.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____ ERROR at setup of test_A03_history_missing_relationship_independent _____
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16a_runtime.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+________________ ERROR at setup of test_A04_unknown_not_empty _________________
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16a_runtime.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+__________ ERROR at setup of test_A05_relation_conflict_and_concepts __________
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16a_runtime.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+___________________ ERROR at setup of test_A06_no_relation ____________________
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16a_runtime.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+___________ ERROR at setup of test_A07_coverage_no_zero_imputation ____________
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16a_runtime.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+______ ERROR at setup of test_A08_history_common_cohort_excludes_target _______
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16a_runtime.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+__________ ERROR at setup of test_A09_relative_owner_literal_parity ___________
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16a_runtime.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+________ ERROR at setup of test_A11_historical_membership_fail_closed _________
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16a_runtime.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+______________ ERROR at setup of test_A12_fallback_unknown_no_io ______________
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16a_runtime.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+___ ERROR at setup of test_full_cross_section_rank_rebuilt_after_exclusion ____
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16a_runtime.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_ ERROR at setup of test_relative_uses_exact_stock_owner_not_native_member_alias _
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16a_runtime.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_ ERROR at setup of test_machine_quality_and_reason_exact[support-support_state] _
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16r1_repair.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_ ERROR at setup of test_machine_quality_and_reason_exact[acceptance-acceptance_state] _
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16r1_repair.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_ ERROR at setup of test_machine_quality_and_reason_exact[pullback-basic_pullback_state] _
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16r1_repair.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_ ERROR at setup of test_machine_quality_and_reason_exact[recovery-basic_recovery_state] _
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16r1_repair.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_________ ERROR at setup of test_nested_unknown_and_missing_metadata __________
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16r1_repair.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+______________ ERROR at setup of test_producer_mismatch_rejected ______________
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16r1_repair.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+________ ERROR at setup of test_numeric_revision_and_binder_selection _________
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16r1_repair.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+___________ ERROR at setup of test_component_provenance_owner_dates ___________
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16r1_repair.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_______________ ERROR at setup of test_v1_2_minimal_same_family _______________
+
+    @pytest.fixture(scope='module')
+>   def contracts():return FrozenContracts(ROOT)
+                           ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r16r1_repair.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_13_accepted_contract_package.py:91: in current_contracts
+    if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_13_accepted_contract_package.py:12: in __init__
+    try: validate(self.root)
+         ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r17r1_active_closure.py:55: in validate
+    exact(ref,root)
+scripts\validate_r17r1_active_closure.py:11: in exact
+    raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==ref['sha256'] and len(raw)==ref['bytes'],ref['path'];return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+================================== FAILURES ===================================
+___________ test_full_contract_completeness_and_protected_artifacts ___________
+
+    def test_full_contract_completeness_and_protected_artifacts():
+>       result=validate(checkout=True)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_13_r15_contract.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_v4_13_r1_1.py:154: in validate
+    actual=ref(r['path'])
+           ^^^^^^^^^^^^^^
+scripts\repair_v4_13_r1_1.py:13: in ref
+    b=(ROOT/p).read_bytes();return dict(path=p,sha256=hashlib.sha256(b).hexdigest(),bytes=len(b))
+      ^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_historical_stage13/AGENTS.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_historical_stage13\\AGENTS.md'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/test_v4_13_r15_contract.py::test_full_contract_completeness_and_protected_artifacts
+ERROR tests/test_v4_13_r16a_runtime.py::test_A01_dominant_excluded_independent_median_seed
+ERROR tests/test_v4_13_r16a_runtime.py::test_A02_minimum - FileNotFoundError:...
+ERROR tests/test_v4_13_r16a_runtime.py::test_A03_history_missing_relationship_independent
+ERROR tests/test_v4_13_r16a_runtime.py::test_A04_unknown_not_empty - FileNotF...
+ERROR tests/test_v4_13_r16a_runtime.py::test_A05_relation_conflict_and_concepts
+ERROR tests/test_v4_13_r16a_runtime.py::test_A06_no_relation - FileNotFoundEr...
+ERROR tests/test_v4_13_r16a_runtime.py::test_A07_coverage_no_zero_imputation
+ERROR tests/test_v4_13_r16a_runtime.py::test_A08_history_common_cohort_excludes_target
+ERROR tests/test_v4_13_r16a_runtime.py::test_A09_relative_owner_literal_parity
+ERROR tests/test_v4_13_r16a_runtime.py::test_A11_historical_membership_fail_closed
+ERROR tests/test_v4_13_r16a_runtime.py::test_A12_fallback_unknown_no_io - Fil...
+ERROR tests/test_v4_13_r16a_runtime.py::test_full_cross_section_rank_rebuilt_after_exclusion
+ERROR tests/test_v4_13_r16a_runtime.py::test_relative_uses_exact_stock_owner_not_native_member_alias
+ERROR tests/test_v4_13_r16r1_repair.py::test_machine_quality_and_reason_exact[support-support_state]
+ERROR tests/test_v4_13_r16r1_repair.py::test_machine_quality_and_reason_exact[acceptance-acceptance_state]
+ERROR tests/test_v4_13_r16r1_repair.py::test_machine_quality_and_reason_exact[pullback-basic_pullback_state]
+ERROR tests/test_v4_13_r16r1_repair.py::test_machine_quality_and_reason_exact[recovery-basic_recovery_state]
+ERROR tests/test_v4_13_r16r1_repair.py::test_nested_unknown_and_missing_metadata
+ERROR tests/test_v4_13_r16r1_repair.py::test_producer_mismatch_rejected - Fil...
+ERROR tests/test_v4_13_r16r1_repair.py::test_numeric_revision_and_binder_selection
+ERROR tests/test_v4_13_r16r1_repair.py::test_component_provenance_owner_dates
+ERROR tests/test_v4_13_r16r1_repair.py::test_v1_2_minimal_same_family - FileN...
+1 failed, 92 passed, 22 errors in 4.58s

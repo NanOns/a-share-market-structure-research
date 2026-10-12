@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="29" time="84.808" timestamp="2026-10-12T20:25:38.713724+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_v4_period_pg_chunks_closeout" name="test_all_rows_survive_bound_chunks_and_read_is_read_only" time="1.212"><failure message="AttributeError: 'ForwardFactStore' object has no attribute 'dsn'">tmp_path = WindowsPath('G:/codex_tmp/test_temp/chunks_history_r5/test_all_rows_survive_bound_ch0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E581E7EFD0&gt;
+
+    def test_all_rows_survive_bound_chunks_and_read_is_read_only(tmp_path,monkeypatch):
+        rows=[{'sequence':i,'value':None if i%3==0 else str(i)} for i in range(2003)]
+        payload=dict(contract_id=OWNER,T0='2026-09-28',domain='period_raw',head_token='head',source_bindings={},rows=rows)
+        ref=prepare(tmp_path,payload,'full')
+        def forbid(*args,**kwargs):raise AssertionError('Read attempted migration DDL')
+        monkeypatch.setattr(ForwardFactStore,'__init__',forbid)
+&gt;       assert read(tmp_path,ref,payload['T0'],payload['domain'],'head')==rows
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_period_pg_chunks_closeout.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_db\v4_period_pg_r1.py:37: in read
+    part=store.read(ref)
+         ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;workbench_db.v4_forward_pg_r1.ForwardFactStore object at 0x000001E58205C690&gt;
+binding = {'bytes': 332, 'path': 'data/v4/core_period_pg_r1/period_raw/bc4bbd7aade135e80383a3b1c83ef0bb32b964f9e9a0eac803938d3e76863ff8.pg.json', 'sha256': '3761935a7687cdd7e4d7ac6bba1f8e31a32810adc2605424cd5fe802583278f5'}
+
+    def read(self, binding):
+        path = (self.root / binding['path']).resolve()
+        if not path.is_relative_to(self.folder):
+            # A bound immutable input is source evidence, not a Forward store.
+            from focus_tracker.v4_path_adapter import checked
+            return json.loads(checked(self.root, binding).read_bytes())
+        if path.name.endswith('.pg.json'):
+            raw = path.read_bytes()
+            if digest(raw) != binding['sha256']:
+                raise ValueError('FORWARD_DESCRIPTOR_DIGEST_MISMATCH')
+            descriptor = json.loads(raw)
+            if descriptor.get('contract_id') != CONTRACT or descriptor.get('schema') != self.schema or descriptor.get('engine') != 'postgresql' or descriptor.get('database_identity') != self.database_identity:
+                raise ValueError('FORWARD_DESCRIPTOR_IDENTITY_MISMATCH')
+            kind, key, expected = descriptor['kind'], descriptor['fact_key'], descriptor['payload_sha256']
+        else:
+            kind, key, expected = path.parent.name, path.stem, binding['sha256']
+&gt;       with connection(self.schema, dsn=self.dsn, read_only=True) as pg:
+                                         ^^^^^^^^
+E       AttributeError: 'ForwardFactStore' object has no attribute 'dsn'
+
+src\workbench_db\v4_forward_pg_r1.py:123: AttributeError</failure></testcase><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_actual_all_nine_and_identical_rerun" time="16.763" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_bad_inputs_before_marker[DM01R4-05-&lt;lambda&gt;-V1_PARENT]" time="0.080" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_bad_inputs_before_marker[DM01R4-06-&lt;lambda&gt;-PARENT_DIGEST]" time="0.109" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_bad_inputs_before_marker[DM01R4-13-&lt;lambda&gt;-RECONSTRUCTED]" time="0.088" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_bad_inputs_before_marker[DM01R4-14-&lt;lambda&gt;-FUTURE_OR_RECONSTRUCTED]" time="0.122" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_bad_inputs_before_marker[DM01R4-15-&lt;lambda&gt;-TARGET_SOURCE_DATE]" time="0.093" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_missing_builder" time="0.068" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_component_oracle_failure" time="0.220" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_cross_oracle_failure" time="1.548" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_revised_source_immutable_candidate" time="3.295" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_component_tamper_rerun" time="1.867" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_stage_change_rejected" time="1.739" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_current_real_v2_parent_and_future_wait" time="12.986" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_actual_entrypoint_no_capture" time="2.831" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_simulation_cannot_promote_even_with_fake_envelope" time="2.236" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_promotion_negative[DM01R4-07]" time="2.391" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_promotion_negative[DM01R4-09]" time="2.617" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_promotion_negative[DM01R4-10]" time="2.655" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_promotion_negative[DM01R4-17]" time="2.582" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_promotion_negative[DM01R4-19]" time="2.509" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_promotion_state_machine_no_stage_r25_or_counter_grant" time="2.468" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_calendar_unaccepted" time="0.008" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_forged_external_acceptance_rejected" time="0.082" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_real_native_completion_stamp_cannot_be_invented" time="0.147" /><testcase classname="tests.v4_dm01_r4.test_runtime" name="test_current_parent_package_is_exact_accepted_chain" time="9.785" /><testcase classname="tests.v4_dm01_r4r2.test_acceptance_seal" name="test_real_external_envelope_and_extension_bytes" time="13.441" /><testcase classname="tests.v4_dm01_r4r2.test_acceptance_seal" name="test_sealed_future_wait_has_no_source_or_publication" time="0.167" /><testcase classname="tests.v4_dm01_r4r2.test_acceptance_seal" name="test_acceptance_does_not_grant_shadow_or_move_heads" time="0.062" /></testsuite></testsuites>

@@ -1,0 +1,14 @@
+..........................F                                              [100%]
+================================== FAILURES ===================================
+_____________________ test_old_v13_reader_remains_pinned ______________________
+
+    def test_old_v13_reader_remains_pinned():
+        from workbench_analysis.v4_13_accepted_contract_package import current_contracts
+>       with pytest.raises(ValueError,match='UNAUTHORIZED_V4_13_STAGE'):current_contracts(ROOT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_remainder_historical_routing.py:32: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_remainder_historical_routing.py::test_old_v13_reader_remains_pinned
+1 failed, 26 passed in 4.92s

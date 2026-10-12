@@ -1,0 +1,41 @@
+{
+  "contract_id": "R4_R3_EXACT_COLLECTED_NODE_SET_R1",
+  "nodes": [
+    "tests/test_r2_focus_path_outcome.py::test_exit_followup_due_settlement_and_reentry_are_separate",
+    "tests/test_r2_focus_path_outcome.py::test_invalidated_episode_closes_and_settles_independently",
+    "tests/test_r2_focus_path_outcome.py::test_missing_suspension_and_future_corporate_action",
+    "tests/test_r2_focus_path_outcome.py::test_dated_owner_updates_preserve_history_and_reject_kernel_change",
+    "tests/test_v4_focus_source_identity_r4.py::test_internal_id_resolves_cash_action_on_real_pg_path",
+    "tests/test_v4_focus_source_identity_r4.py::test_mismatched_series_symbol_is_refused_not_unadjusted",
+    "tests/test_v4_focus_source_identity_r4.py::test_missing_identity_and_unsupported_action_fail_closed",
+    "tests/test_v4_focus_source_identity_r4.py::test_future_action_does_not_change_earlier_coordinate",
+    "tests/test_v4_focus_source_identity_r4.py::test_action_without_supported_formula_fails_closed[2-SUPPORTED_PRICE_AFFECTING]",
+    "tests/test_v4_focus_source_identity_r4.py::test_action_without_supported_formula_fails_closed[2-PRICE_AFFECTING_SUPPORTED]",
+    "tests/test_v4_focus_source_identity_r4.py::test_action_without_supported_formula_fails_closed[2-UNKNOWN_PRICE_IMPACT]",
+    "tests/test_v4_focus_source_identity_r4.py::test_action_without_supported_formula_fails_closed[2-typo]",
+    "tests/test_v4_focus_source_identity_r4.py::test_action_without_supported_formula_fails_closed[1-NON_PRICE_AFFECTING]",
+    "tests/test_v4_focus_source_identity_r4.py::test_action_without_supported_formula_fails_closed[1-typo]",
+    "tests/test_v4_focus_source_identity_r4.py::test_action_without_supported_formula_fails_closed[99-None]",
+    "tests/test_v4_focus_source_identity_r4.py::test_explicit_non_price_action_is_ignored",
+    "tests/test_v4_focus_source_identity_r4.py::test_bound_map_rejects_invalid_or_duplicate_identity[rows0-KEY_INVALID]",
+    "tests/test_v4_focus_source_identity_r4.py::test_bound_map_rejects_invalid_or_duplicate_identity[rows1-IDENTITY_DUPLICATE]",
+    "tests/test_v4_focus_source_identity_r4.py::test_bound_map_rejects_invalid_or_duplicate_identity[rows2-IDENTITY_DUPLICATE]",
+    "tests/test_v4_focus_source_identity_r4.py::test_producer_and_consumer_share_hash_bound_mapping",
+    "tests/test_v4_exact_focus_path_r3.py::test_exact_coordinate_tie_and_real_metrics_consumer",
+    "tests/test_v4_exact_focus_path_r3.py::test_missing_session_remains_source_incomplete",
+    "tests/test_v4_exact_focus_path_r3.py::test_source_drift_and_missing_exact_refused",
+    "tests/test_v4_exact_focus_path_r3.py::test_mixed_row_date_and_float_raw_refused",
+    "tests/test_v4_exact_focus_path_r3.py::test_empty_and_duplicate_calendar_refused",
+    "tests/test_v4_exact_focus_path_r3.py::test_observation_coordinate_cancels_later_actions_without_decimal_approximation"
+  ],
+  "modules": [
+    "tests/test_r2_focus_path_outcome.py",
+    "tests/test_v4_exact_focus_path_r3.py",
+    "tests/test_v4_focus_source_identity_r4.py"
+  ],
+  "source_sha256": {
+    "tests/test_r2_focus_path_outcome.py": "c8cd075e9f9363e301da8b2d2516ce27eb3284d9eb734d4e263581aad011be5a",
+    "tests/test_v4_focus_source_identity_r4.py": "01f4ca2329e21a4bdaae92676584d9a4aa4916981748757fb15fd87922553681",
+    "tests/test_v4_exact_focus_path_r3.py": "0672b78442b08aee41d33f36935e80eaf7ffe0060c3f66aeed544a1471965e0c"
+  }
+}

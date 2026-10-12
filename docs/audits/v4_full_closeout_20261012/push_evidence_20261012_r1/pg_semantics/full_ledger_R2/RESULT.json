@@ -1,0 +1,37 @@
+{
+  "contract_id": "V4_FULL_NORMATIVE_AND_56_PRESERVATION_R2",
+  "normative_source_sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205",
+  "all_87a_table_rows": 29,
+  "four_column_table_rows": 4,
+  "declared_expressions": 157,
+  "registry_versions": 16,
+  "versioned_concrete_field_entries": 711,
+  "consumer_denominator": 56,
+  "observed_consumers": 13,
+  "trace_bindings": [
+    {
+      "path": "docs/audits/v4_full_closeout_20261012/FOCUS_56_TRACE_R2.json",
+      "sha256": "9c8ccc35b764a182bec3b40d6217ddf24098d6f8336656ec575f02943df89001"
+    },
+    {
+      "path": "docs/audits/v4_full_closeout_20261012/producers/EXACT_56_TRACE.json",
+      "sha256": "a0f18b94e5642b1967e402225b9dcd4a924815a29871f475d98b7056d84dcb7b"
+    },
+    {
+      "path": "docs/audits/v4_full_closeout_20261012/producers_R2/EXACT_56_TRACE.json",
+      "sha256": "517a56e20fd60affd51e8b6e5e7cf055a1f0eff1de65493b8fa6e8dff225cc12"
+    },
+    {
+      "path": "docs/audits/v4_full_closeout_20261012/producers_R3/EXACT_56_TRACE.json",
+      "sha256": "44cc6f267d30b610005747968466d967a0678e3ec67aecd059679d164070c8fe"
+    }
+  ],
+  "normative_approved_atom_denominator": null,
+  "full_semantics_acceptance": "OPEN_NOT_COLUMN_ENUMERATION_PASS",
+  "limitations": [
+    "R1 five-column-only ledger omitted the four-column supplement; R2 preserves all tables",
+    "All registry file versions are retained; no version is excluded by filename",
+    "Trace close-time source SHA is not substituted for the actually loaded before-run source",
+    "An unobserved caller is unresolved, never automatically a legacy exclusion"
+  ]
+}

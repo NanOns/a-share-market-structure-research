@@ -1,0 +1,21 @@
+{
+  "contract_id": "R4_R3_EXACT_COLLECTED_NODE_SET_R1",
+  "nodes": [
+    "tests/test_v4_operational_owner_pg_closeout.py::test_complete_native_read_and_reject_cross_date_domain_head",
+    "tests/test_v4_operational_owner_pg_closeout.py::test_missing_dsn_and_changed_archive_evidence_reject",
+    "tests/test_v4_operational_owner_pg_closeout.py::test_authority_requires_complete_unchanged_source_mapping",
+    "tests/test_v4_operational_owner_pg_closeout.py::test_cached_attestation_rehashes_actual_native_payload",
+    "tests/test_core_product_home_cache_closeout.py::test_cached_home_checks_database_identity_and_availability",
+    "tests/test_core_product_home_cache_closeout.py::test_cached_home_rejects_wrong_token",
+    "tests/test_core_product_home_cache_closeout.py::test_cached_home_invalidates_changed_source",
+    "tests/test_core_product_home_cache_closeout.py::test_context_request_rejects_disconnected_or_other_native_owner_database"
+  ],
+  "modules": [
+    "tests/test_core_product_home_cache_closeout.py",
+    "tests/test_v4_operational_owner_pg_closeout.py"
+  ],
+  "source_sha256": {
+    "tests/test_v4_operational_owner_pg_closeout.py": "5b19683323e14cecf8c5656b498d4314e5f96dc0d77d446ec8c9502eebaccb98",
+    "tests/test_core_product_home_cache_closeout.py": "5178aa1e66029ced281ab20b787915e907727e6d6b74cf74284f311498fc6667"
+  }
+}

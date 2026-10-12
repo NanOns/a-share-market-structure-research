@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="3.362" timestamp="2026-10-12T15:59:03.743410+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_v4_12_authority_r2" name="test_completeness_requires_authority_parity_not_file_presence" time="0.864"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_r9_fixture\\reports\\audits\\next_round_r2\\A02_EXTERNAL_ACCEPTANCE_RECORD_R1.json'">def test_completeness_requires_authority_parity_not_file_presence():
+&gt;       result=validate()
+               ^^^^^^^^^^
+
+tests\test_v4_12_authority_r2.py:90: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_v4_12_authority_r2.py:142: in validate
+    return time_validate(emit)
+           ^^^^^^^^^^^^^^^^^^^
+scripts\validate_v4_12_time_counter_r2_1.py:162: in validate
+    parity=authority_parity();coordinate=coordinate_audit(configs);units=unit_audit(configs)
+           ^^^^^^^^^^^^^^^^^^
+scripts\validate_v4_12_authority_r2.py:27: in authority_parity
+    rps=read(RPS_HEAD);record=read(rps['acceptance_record']['path'])
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\repair_v4_12_authority_r2.py:23: in read
+    def read(path):return json.loads((ROOT/path).read_bytes())
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_r9_fixture/reports/audits/next_round_r2/A02_EXTERNAL_ACCEPTANCE_RECORD_R1.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_r9_fixture\\reports\\audits\\next_round_r2\\A02_EXTERNAL_ACCEPTANCE_RECORD_R1.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_v4_12_authority_r2" name="test_r6r1_and_r1_ast_vectors_preserved" time="0.669"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_r9_fixture\\reports\\audits\\next_round_r2\\A02_EXTERNAL_ACCEPTANCE_RECORD_R1.json'">def test_r6r1_and_r1_ast_vectors_preserved():
+&gt;       result=validate()
+               ^^^^^^^^^^
+
+tests\test_v4_12_authority_r2.py:97: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_v4_12_authority_r2.py:142: in validate
+    return time_validate(emit)
+           ^^^^^^^^^^^^^^^^^^^
+scripts\validate_v4_12_time_counter_r2_1.py:162: in validate
+    parity=authority_parity();coordinate=coordinate_audit(configs);units=unit_audit(configs)
+           ^^^^^^^^^^^^^^^^^^
+scripts\validate_v4_12_authority_r2.py:27: in authority_parity
+    rps=read(RPS_HEAD);record=read(rps['acceptance_record']['path'])
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\repair_v4_12_authority_r2.py:23: in read
+    def read(path):return json.loads((ROOT/path).read_bytes())
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_r9_fixture/reports/audits/next_round_r2/A02_EXTERNAL_ACCEPTANCE_RECORD_R1.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_r9_fixture\\reports\\audits\\next_round_r2\\A02_EXTERNAL_ACCEPTANCE_RECORD_R1.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_v4_12_contract_freeze_r1" name="test_candidate_only_scope_and_protected_heads" time="0.668"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_r9_fixture\\reports\\audits\\next_round_r2\\A02_EXTERNAL_ACCEPTANCE_RECORD_R1.json'">def test_candidate_only_scope_and_protected_heads():
+&gt;       result=validate()
+               ^^^^^^^^^^
+
+tests\test_v4_12_contract_freeze_r1.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_v4_12_contract_freeze_r1.py:273: in validate
+    return validate_authority()
+           ^^^^^^^^^^^^^^^^^^^^
+scripts\validate_v4_12_authority_r2.py:142: in validate
+    return time_validate(emit)
+           ^^^^^^^^^^^^^^^^^^^
+scripts\validate_v4_12_time_counter_r2_1.py:162: in validate
+    parity=authority_parity();coordinate=coordinate_audit(configs);units=unit_audit(configs)
+           ^^^^^^^^^^^^^^^^^^
+scripts\validate_v4_12_authority_r2.py:27: in authority_parity
+    rps=read(RPS_HEAD);record=read(rps['acceptance_record']['path'])
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\repair_v4_12_authority_r2.py:23: in read
+    def read(path):return json.loads((ROOT/path).read_bytes())
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_r9_fixture/reports/audits/next_round_r2/A02_EXTERNAL_ACCEPTANCE_RECORD_R1.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_r9_fixture\\reports\\audits\\next_round_r2\\A02_EXTERNAL_ACCEPTANCE_RECORD_R1.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_v4_12_time_counter_r2_1" name="test_full_contract_time_gate" time="0.684"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_r9_fixture\\reports\\audits\\next_round_r2\\A02_EXTERNAL_ACCEPTANCE_RECORD_R1.json'">def test_full_contract_time_gate():
+&gt;       result=validate()
+               ^^^^^^^^^^
+
+tests\test_v4_12_time_counter_r2_1.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_v4_12_time_counter_r2_1.py:162: in validate
+    parity=authority_parity();coordinate=coordinate_audit(configs);units=unit_audit(configs)
+           ^^^^^^^^^^^^^^^^^^
+scripts\validate_v4_12_authority_r2.py:27: in authority_parity
+    rps=read(RPS_HEAD);record=read(rps['acceptance_record']['path'])
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\repair_v4_12_authority_r2.py:23: in read
+    def read(path):return json.loads((ROOT/path).read_bytes())
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_r9_fixture/reports/audits/next_round_r2/A02_EXTERNAL_ACCEPTANCE_RECORD_R1.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_r9_fixture\\reports\\audits\\next_round_r2\\A02_EXTERNAL_ACCEPTANCE_RECORD_R1.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase></testsuite></testsuites>

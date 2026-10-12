@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="13" time="48.776" timestamp="2026-10-12T22:55:11.724625+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[A01]" time="8.259" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[A02]" time="5.355" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[A03]" time="7.045" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[A04]" time="4.735" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[A05]" time="2.871" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[A06]" time="2.919" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[payload_identity]" time="2.839" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[acceptance_identity]" time="2.595" /><testcase classname="tests.test_settlement_r1r1" name="test_queue_exact_idempotency[Q01]" time="2.311" /><testcase classname="tests.test_settlement_r1r1" name="test_queue_exact_idempotency[Q02]" time="2.508" /><testcase classname="tests.test_settlement_r1r1" name="test_queue_exact_idempotency[Q03]" time="2.201"><failure message="assert 0 == 1&#10; +  where 0 = len([])">shadow = (&lt;workbench_db.v4_shadow_live_pg_r3.NativeShadowDatabase object at 0x00000262DA728050&gt;, {'base': 'reports/r24r1/activa...V1', 'parameter_set_id': 'V4_10_STATE_REDUCER_PARAMETER_SET_V1', 'state_lineage_id': 'R24R1_SIMULATION_LINEAGE', ...}})
+case = 'Q03'
+
+    @pytest.mark.parametrize('case',['Q01','Q02','Q03','Q04','Q05'])
+    def test_queue_exact_idempotency(shadow,case):
+        db,x=shadow;authority,source=future(db);worker=DurableSettlementWorker(db,'R1R1')
+        due=next(d for d in db.rows('due') if d['horizon']==1);due_id=digest([due['enrollment_id'],1]);sha=source.binding['sha256']
+        if case in ('Q02','Q03'):
+            key=worker.queue_identity(due,db.get('enrollment',due['enrollment_id']))
+            if case=='Q02':
+                other=next(d for d in db.rows('due') if d['horizon']!=1)
+                other_id=digest([other['enrollment_id'],other['horizon']])
+                db.conn.execute("INSERT INTO settlement_queue_v2(queue_key,evaluation_source_digest,due_kind,due_id,status) VALUES(?,?,?,?,'READY')",(key,sha,'due',other_id))
+            if case=='Q03':
+                # Malformed persisted queue fixture: bypass insert references, not the application guard.
+                from workbench_db.v4_shadow_live_pg_r3 import native_mode
+                if native_mode():
+                    from psycopg import sql
+                    constraints=db.pg.execute("SELECT conname FROM pg_constraint WHERE conrelid='settlement_queue_v2'::regclass AND contype='f' AND confrelid='integrity_due_v2'::regclass").fetchall()
+&gt;                   assert len(constraints)==1
+E                   assert 0 == 1
+E                    +  where 0 = len([])
+
+tests\test_settlement_r1r1.py:83: AssertionError</failure></testcase><testcase classname="tests.test_settlement_r1r1" name="test_queue_exact_idempotency[Q04]" time="2.417" /><testcase classname="tests.test_settlement_r1r1" name="test_queue_exact_idempotency[Q05]" time="2.557" /></testsuite></testsuites>

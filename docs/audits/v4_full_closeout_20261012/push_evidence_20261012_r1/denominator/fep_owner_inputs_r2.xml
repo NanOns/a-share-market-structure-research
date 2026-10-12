@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="14" time="0.683" timestamp="2026-10-12T21:51:17.603557+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.fep.test_feature_owner" name="test_all_47_accepted_historical_fields_and_seven_relative_rps_are_copied" time="0.053"><failure message="ValueError: FEP_EXACT_BINDING_MISMATCH">def test_all_47_accepted_historical_fields_and_seven_relative_rps_are_copied():
+        contract,row=load()
+&gt;       projection=owner.read(ROOT,contract,entity_id=row['security_id'],trade_date=row['trade_date'])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep\test_feature_owner.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\fep_e1\feature_owner.py:121: in read
+    validate_contract(root,contract)
+src\workbench_analysis\fep_e1\feature_owner.py:42: in validate_contract
+    receipt = exact(root, contract['owner_receipt'])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('G:/codex work/v4-full-closeout-20261012')
+binding = {'path': 'reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json', 'bytes': 6714, 'sha256': '678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649'}
+
+    def exact(root, binding):
+        root = Path(root).resolve()
+        path = (root / binding['path']).resolve()
+        if not path.is_relative_to(root):
+            raise ValueError('FEP_BINDING_PATH_ESCAPE')
+        raw = path.read_bytes()
+        if len(raw) != binding['bytes'] or hashlib.sha256(raw).hexdigest() != binding['sha256']:
+&gt;           raise ValueError('FEP_EXACT_BINDING_MISMATCH')
+E           ValueError: FEP_EXACT_BINDING_MISMATCH
+
+src\workbench_analysis\fep_e1\contracts.py:28: ValueError</failure></testcase><testcase classname="tests.fep.test_feature_owner" name="test_owner_envelope_counterfactuals[missing_field]" time="0.002" /><testcase classname="tests.fep.test_feature_owner" name="test_owner_envelope_counterfactuals[wrong_date]" time="0.002" /><testcase classname="tests.fep.test_feature_owner" name="test_owner_envelope_counterfactuals[nonfinite]" time="0.002" /><testcase classname="tests.fep.test_feature_owner" name="test_owner_envelope_counterfactuals[wrong_type]" time="0.002" /><testcase classname="tests.fep.test_feature_owner" name="test_owner_envelope_counterfactuals[unknown_without_reason]" time="0.002" /><testcase classname="tests.fep.test_feature_owner" name="test_owner_envelope_counterfactuals[missing_window]" time="0.002" /><testcase classname="tests.fep.test_feature_owner" name="test_unknown_is_present_and_not_imputed" time="0.002" /><testcase classname="tests.fep.test_feature_owner" name="test_owner_contract_counterfactuals[guessed_alias]" time="0.003" /><testcase classname="tests.fep.test_feature_owner" name="test_owner_contract_counterfactuals[wrong_owner_digest]" time="0.003" /><testcase classname="tests.fep.test_feature_owner" name="test_owner_contract_counterfactuals[reduced_fields]" time="0.003" /><testcase classname="tests.fep.test_feature_owner" name="test_owner_contract_counterfactuals[pit_overclaim]" time="0.003" /><testcase classname="tests.fep.test_feature_owner" name="test_owner_contract_counterfactuals[wrong_calendar_digest]" time="0.005" /><testcase classname="tests.fep.test_feature_owner" name="test_engineering_snapshot_same_capture_replay_is_stable_and_rejects_pit" time="0.047" /></testsuite></testsuites>

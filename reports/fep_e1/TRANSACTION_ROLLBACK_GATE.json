@@ -1,7 +1,7 @@
 {
   "status": "PASS",
-  "database": "fep_e1_rollback_40fc1702",
-  "transaction_id": 1132,
+  "database": "fep_e1_rollback_832dca21",
+  "transaction_id": 5883,
   "exception": "type \"nonexistent_type\" does not exist\nLINE 1: create table fep.failed_install (id nonexistent_type)\n                                            ^",
   "sqlstate": "42704",
   "before_core_tables": [
@@ -248,7 +248,7 @@
       "universe_snapshots"
     ]
   ],
-  "fep_tables_during_install": 33,
+  "fep_tables_during_install": 35,
   "fep_tables_after_rollback": 0,
   "fep_migration_rows_after_rollback": 0,
   "fixture_state_retained": true

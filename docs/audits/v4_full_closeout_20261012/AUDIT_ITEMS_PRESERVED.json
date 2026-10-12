@@ -1,0 +1,895 @@
+{
+  "contract_id": "V4_ONE_ROUND_FULL_CLOSEOUT_R1_20261012",
+  "task_card_sha256": "7e4313b91736019068a0a502b921a45f47dc40b348e5ab060faa66eaa76658b5",
+  "production_cutover_user_authorized": true,
+  "input_bindings": [
+    {
+      "path": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+      "sha256": "608399218fdf7ba9db1b37c22537433a30521a32ef6bd952aeaf5dae2a8b3e61"
+    },
+    {
+      "path": "G:\\codex work\\v4-full-closeout-20261012\\docs\\audits\\s1b_20261012\\AUDIT_ITEMS.json",
+      "sha256": "42c5cc27c718eadc844d4d260842603d1b3066f06366bfc5b65179ec57f1117c"
+    }
+  ],
+  "items": [
+    {
+      "id": "FA-001",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "audit_item_id": "FA-001",
+            "severity": "P1",
+            "classification": "CONFIRMED_LATENT_CODE_DEFECT",
+            "title": "主页同实体多事件去重保留低优先级 NEW，遮蔽 INVALIDATED",
+            "scope": "M29 Focus / M35 Six Entry",
+            "owner": "OWNER_UNKNOWN",
+            "location": "src/workbench_service/core_product_bff_r1.py:312-313",
+            "evidence": "G:\\codex_tmp\\full_system_audit_a2eadda\\home_counterexample.json",
+            "reproduction": "冻结 home 原函数；合成同实体 NEW+INVALIDATED；expected risk=1 actual=0；当前快照无此多类型实体，未证明真实事故",
+            "expected_vs_actual": "主页同实体多事件去重保留低优先级 NEW，遮蔽 INVALIDATED",
+            "current_block": "EXTERNAL_RECHECK_PENDING",
+            "repair_recommendation": "按冻结 reducer 保留排序后第一条，补互斥事件组合/排序无关性与真实 Focus 回放",
+            "batch": "A",
+            "status": "ENGINEERING_FIXED_EXTERNAL_PENDING",
+            "acceptance_independent_of_current_stage": true,
+            "effective_location": "src/workbench_service/core_product_bff_r1.py:312-313",
+            "repair_evidence": "A1_REAL_FIVE_DAY_READBACK.json",
+            "disposition_contract": "HOME_EVENT_SELECTION_R2"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FA-002",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "audit_item_id": "FA-002",
+            "severity": "P1",
+            "classification": "EXISTING_FORMAL_DATA_GATE",
+            "title": "正式 D2/PIT/LOO 全链未证明；运营重构不等于正式先验",
+            "scope": "M12/M15/M16",
+            "owner": "OWNER_UNKNOWN",
+            "location": "src/v4/sector;src/workbench_analysis/sector_rotation_legacy_reproducer.py",
+            "evidence": "runtime PIT_ELIGIBLE=false; module matrix",
+            "reproduction": "已读取运营板块400项；不能从此推定先前合法 state/D2完整",
+            "expected_vs_actual": "正式 D2/PIT/LOO 全链未证明；运营重构不等于正式先验",
+            "current_block": "BLOCKED_DATA",
+            "repair_recommendation": "先复核既有冻结旧日 prior-state 与 LOO，再独立授权真实后继日",
+            "batch": "B/C",
+            "status": "OPEN",
+            "acceptance_independent_of_current_stage": true,
+            "effective_location": "src/v4/sector;src/workbench_analysis/sector_rotation_legacy_reproducer.py",
+            "continuation_evidence": "B2_FIRST_ANY_STATE_AUDIT.json"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FA-003",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "audit_item_id": "FA-003",
+            "severity": "P1",
+            "classification": "EXISTING_OWNER_GAP",
+            "title": "当前正式 Radar/Cohort/Forward owner 与完整可消费分母不足",
+            "scope": "M17/M20/M22",
+            "owner": "OWNER_UNKNOWN",
+            "location": "src/workbench_service/core_product_bff_r1.py",
+            "evidence": "HTTP forward NO_AUTHORIZED_COHORT_OWNER；home gap；正式预测 gate",
+            "reproduction": "只读API与UI正确显示来源不足；2805运营Focus不是完整验证Cohort",
+            "expected_vs_actual": "当前正式 Radar/Cohort/Forward owner 与完整可消费分母不足",
+            "current_block": "BLOCKED_DATA",
+            "repair_recommendation": "分别实现/绑定已批准 owner 合同并核对准入；不得以UI通替代样本",
+            "batch": "B/D",
+            "status": "OPEN",
+            "acceptance_independent_of_current_stage": true,
+            "effective_location": "src/workbench_service/core_product_bff_r1.py",
+            "continuation_evidence": "B2_FIRST_ANY_STATE_AUDIT.json"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FA-004",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "audit_item_id": "FA-004",
+            "severity": "P2",
+            "classification": "OBSERVED_PERFORMANCE_RISK",
+            "title": "主页响应6.31MB；首次历史个股读约8秒，handler全局锁可能排队",
+            "scope": "M21/UI",
+            "owner": "OWNER_UNKNOWN",
+            "location": "src/workbench_service/core_product_server_r1.py;core_product_bff_r1.py",
+            "evidence": "HTTP latency/bytes receipts",
+            "reproduction": "单审计客户端；未做并发负载，不能外推容量",
+            "expected_vs_actual": "主页响应6.31MB；首次历史个股读约8秒，handler全局锁可能排队",
+            "current_block": "CAPACITY_THRESHOLD_AND_OPTIMIZATION_OPEN",
+            "repair_recommendation": "后续测并发/缓存/分页，保持同token一致性并测慢读不阻塞其它域",
+            "batch": "A/B",
+            "status": "OPEN_CAPACITY_AND_PAYLOAD_GATE",
+            "acceptance_independent_of_current_stage": true,
+            "effective_location": "src/workbench_service/core_product_server_r1.py;core_product_bff_r1.py",
+            "repair_evidence": "A6_REPAIR_RESULT.json"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FA-005",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "audit_item_id": "FA-005",
+            "severity": "P1",
+            "classification": "CONFIRMED_CONTRACT_CONFLICT",
+            "title": "FEP E2/E3 路径只允许 E/F，G盘隔离写入被拒",
+            "scope": "M24 E2/E3",
+            "owner": "OWNER_UNKNOWN",
+            "location": "src/workbench_analysis/fep_e2/registry.py:11-12;src/workbench_analysis/fep_e3/protocol.py:147",
+            "evidence": "checks_08 3cases ENGINEERING_STORAGE_REQUIRED",
+            "reproduction": "工程路径在G，按当前用户要求应允许；代码仅startswith E/F；生产FEP未授权不受此结论扩权",
+            "expected_vs_actual": "FEP E2/E3 路径只允许 E/F，G盘隔离写入被拒",
+            "current_block": "EXTERNAL_RECHECK_PENDING",
+            "repair_recommendation": "统一显式工程根配置与resolve边界；仅G临时根测试，保留生产目录拒绝",
+            "batch": "A",
+            "status": "ENGINEERING_FIXED_EXTERNAL_PENDING",
+            "acceptance_independent_of_current_stage": true,
+            "effective_location": "src/workbench_analysis/fep_e2/registry.py:11-12;src/workbench_analysis/fep_e3/protocol.py:147",
+            "repair_evidence": "A2_PATH_KIND_ADDENDUM.json"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FA-006",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "audit_item_id": "FA-006",
+            "severity": "P2",
+            "classification": "QA_REPRODUCIBILITY_AND_TRIAGE",
+            "title": "完整回归未绿：历史fixture、B0 producer兼容、依赖与未定原因须分开",
+            "scope": "CROSS_CUTTING_QA",
+            "owner": "OWNER_UNKNOWN",
+            "location": "tests/remainder_plugin.py;tests/v4_09;tests/fep_e4",
+            "evidence": "checks_08 JUnit; rerun receipt",
+            "reproduction": "41failure/35error不能全部视为业务bug；部分前置数据/错误隔离DSN已经重测",
+            "expected_vs_actual": "完整回归未绿：历史fixture、B0 producer兼容、依赖与未定原因须分开",
+            "current_block": "OPEN",
+            "repair_recommendation": "提供版本化夹具manifest、G盘bootstrap、依赖清单；逐失败定位不修改冻结合同值",
+            "batch": "B",
+            "status": "OPEN",
+            "acceptance_independent_of_current_stage": true,
+            "effective_location": "config/v4_audit_regression_scope_r3.json;tests/v4_audit_isolation_plugin_r3.py;tests/remainder_isolation_plugin.py",
+            "effective_regression_scope": "All 4568 collected nodes in the 245-module V4-only manifest; historical V3 positive DB compatibility excluded from acceptance; legal full requirements denominator remains OPEN",
+            "continuation_evidence": "B3_V4_FULL_REGRESSION_RESULT.json",
+            "full_regression_statuses": {
+              "SKIP": 312,
+              "PASS": 3810,
+              "FAIL": 237,
+              "ERROR": 209
+            },
+            "targeted_fixture_rerun_statuses": {
+              "PASS": 435,
+              "FAIL": 98,
+              "SKIP": 1,
+              "ERROR": 64
+            },
+            "final_regression_disposition": "MANIFEST_FULL_EXECUTION_COMPLETE_NOT_GREEN; separate subset cannot erase original failures or close independent backend, source-policy and semantic gates"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FA-007",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "audit_item_id": "FA-007",
+            "severity": "WAIT_USER_AUTH",
+            "classification": "DEPLOYMENT_ACCEPTANCE_GAP",
+            "title": "运行12模块SHA匹配，整个进程仍登记旧HEAD；Windows S2真实机器验收待授权",
+            "scope": "M00 Runtime / M36 Windows",
+            "owner": "OWNER_UNKNOWN",
+            "location": "scripts/start_product_attested_r4.py;Windows S2 receipt",
+            "evidence": "attestation exact_HEAD be2a3d6d; delta25 files",
+            "reproduction": "不能用12模块字节一致宣称整个加载图等于a2eadda；S2工程PASS不等于安装/重启PASS",
+            "expected_vs_actual": "运行12模块SHA匹配，整个进程仍登记旧HEAD；Windows S2真实机器验收待授权",
+            "current_block": "PENDING_PERMISSION",
+            "repair_recommendation": "批准窗口后单实例切换、当前加载图attestation、安装/重启/托盘/卸载回滚",
+            "batch": "E",
+            "status": "OPEN",
+            "acceptance_independent_of_current_stage": true,
+            "effective_location": "scripts/start_product_attested_r4.py;Windows S2 receipt"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FA-008",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "audit_item_id": "FA-008",
+            "severity": "WAIT_REAL_SESSION",
+            "classification": "FIRST_OBSERVED_AND_SUCCESSOR_GATE",
+            "title": "真实首获、身份writer/source grant及下一日完整发布需真实交易日",
+            "scope": "M02/M26/M27/M29",
+            "owner": "OWNER_UNKNOWN",
+            "location": "daily-update source readiness/first capture",
+            "evidence": "HTTP049 UP_TO_DATE; lastgood10/09",
+            "reproduction": "10/11周日读取10/09；未执行10/12 acquisition/CAS/消费者",
+            "expected_vs_actual": "真实首获、身份writer/source grant及下一日完整发布需真实交易日",
+            "current_block": "PENDING_REAL_SESSION",
+            "repair_recommendation": "10/12依真实source日期与精确授权执行；UTC/local times分录，不补历史firstseen",
+            "batch": "C",
+            "status": "OPEN",
+            "acceptance_independent_of_current_stage": true,
+            "effective_location": "daily-update source readiness/first capture"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FA-009",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "audit_item_id": "FA-009",
+            "severity": "AUDIT_INCOMPLETE",
+            "classification": "AUDIT_COMPLETION_GAP",
+            "title": "逐原子需求与§87A家庭全版本语义映射尚未闭环",
+            "scope": "ALL",
+            "owner": "OWNER_UNKNOWN",
+            "location": "three inventories",
+            "evidence": "5550 nonblank authority lines;2238 registry occurrences;613 field IDs/family anchors",
+            "reproduction": "自动词法匹配一律候选NOT_VERIFIABLE；39人工模块审查仍非全原子需求",
+            "expected_vs_actual": "逐原子需求与§87A家庭全版本语义映射尚未闭环",
+            "current_block": "AUDIT_INCOMPLETE",
+            "repair_recommendation": "展开斜杠家庭和版本，逐公式/producer/consumer/quality/权限核实，重建合法分母",
+            "batch": "B",
+            "status": "OPEN",
+            "acceptance_independent_of_current_stage": true,
+            "effective_location": "three inventories",
+            "continuation_evidence": "B1_AUDIT_RESULT.json"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FA-010",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "audit_item_id": "FA-010",
+            "severity": "OPEN",
+            "classification": "OLD_DAY_COVERAGE_GAP",
+            "title": "全证券原生收益复算、加密GBBQ独立解码及全部状态反事实未完成",
+            "scope": "M04/M05/M10/M19",
+            "owner": "OWNER_UNKNOWN",
+            "location": "independent_oracle.py",
+            "evidence": "92536 numerical comparisons with explicit bounds",
+            "reproduction": "8证券价格/窗口+五日全RPS秩；RPS输入收益来自frozen core",
+            "expected_vs_actual": "全证券原生收益复算、加密GBBQ独立解码及全部状态反事实未完成",
+            "current_block": "OPEN",
+            "repair_recommendation": "旧日可补独立解码、实际会话/停牌边界、完整prior-state/expiry回放",
+            "batch": "B",
+            "status": "OPEN",
+            "acceptance_independent_of_current_stage": true,
+            "effective_location": "independent_oracle.py"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FA-011",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "audit_item_id": "FA-011",
+            "severity": "WAIT_OOS",
+            "classification": "CORRECT_FAIL_CLOSED",
+            "title": "FEP成熟分母、真实OOS/active model/Priority V2尚无正式准入证据",
+            "scope": "M23/M24",
+            "owner": "OWNER_UNKNOWN",
+            "location": "FEP admission/authority ledger",
+            "evidence": "HTTP FEP MODEL_OR_PERMISSION_NOT_READY;NOT_GRANTED;counts null",
+            "reproduction": "UNKNOWN分母不写0；现网基础读页继续工作",
+            "expected_vs_actual": "FEP成熟分母、真实OOS/active model/Priority V2尚无正式准入证据",
+            "current_block": "PENDING_OOS",
+            "repair_recommendation": "记录真实目标/窗口/分母/成熟与控制组，长期预注册验证后独立授权",
+            "batch": "D",
+            "status": "OPEN",
+            "acceptance_independent_of_current_stage": true,
+            "effective_location": "FEP admission/authority ledger",
+            "continuation_evidence": "B2_FIRST_ANY_STATE_AUDIT.json"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FA-012",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "audit_item_id": "FA-012",
+            "severity": "OPEN",
+            "classification": "INDEPENDENT_CROSS_CUTTING_AUDIT",
+            "title": "Amount A须独立跟踪，原生CNY和辅助量额差异不由当前amr通过关闭",
+            "scope": "ALL_AMOUNT",
+            "owner": "OWNER_UNKNOWN",
+            "location": "config/amount_authority_audit_brief_v1.json",
+            "evidence": "health amount_authority=NATIVE_TDX_CNY;BAOSTOCK_DIFFERENCE_AUDIT_OPEN",
+            "reproduction": "native金额采样PASS只验证当前读取字节/单位，非全时期差异归因",
+            "expected_vs_actual": "Amount A须独立跟踪，原生CNY和辅助量额差异不由当前amr通过关闭",
+            "current_block": "OPEN_SCOPE",
+            "repair_recommendation": "跨源数量/单位/复权/停牌/时间逐类核对；单独合同、分母与验收",
+            "batch": "B",
+            "status": "OPEN",
+            "acceptance_independent_of_current_stage": true,
+            "effective_location": [
+              "config/a04_amount_a_go_forward_r3.json",
+              "config/a04_amount_a_namespace_r3.json",
+              "config/a04_amount_a_source_admission_r3_1.json"
+            ],
+            "superseded_location": "config/amount_authority_audit_brief_v1.json",
+            "disposition_contract": "AR2-E01_VERSIONED_LOCATION_ERRATUM_R3"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FA-013",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "audit_item_id": "FA-013",
+            "severity": "P2",
+            "classification": "CONFIRMED_LIVE_UI_CODE_DEFECT",
+            "title": "比较页旧代码300114返回来源不足；302132同日期成功",
+            "scope": "M35 Six Entry / historical compare",
+            "owner": "OWNER_UNKNOWN",
+            "location": "src/workbench_service/core_product_bff_r1.py:352-355",
+            "evidence": "HTTP047 READY vs048 SOURCE_INCOMPLETE; compare_alias_300114_failure_dom.txt",
+            "reproduction": "as_of=2026-09-28 stock-stock left300114 right688349失败；left302132成功；search/APIalias已可识别",
+            "expected_vs_actual": "比较页旧代码300114返回来源不足；302132同日期成功",
+            "current_block": "EXTERNAL_RECHECK_PENDING",
+            "repair_recommendation": "复用按日期的实体别名解析并保留身份合同；未知代码与真实缺源分开",
+            "batch": "A",
+            "status": "ENGINEERING_FIXED_EXTERNAL_PENDING",
+            "acceptance_independent_of_current_stage": true,
+            "effective_location": "src/workbench_service/core_product_bff_r1.py:352-355",
+            "repair_evidence": "A3_REPAIR_RESULT.json"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FA-014",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "audit_item_id": "FA-014",
+            "severity": "P2",
+            "classification": "CONFIRMED_LIVE_UI_FIELD_MAPPING_DEFECT",
+            "title": "股票比较使用sector_rs5/20，已有rps5/20被显示字段未接入",
+            "scope": "M35 Six Entry / historical compare",
+            "owner": "OWNER_UNKNOWN",
+            "location": "src/workbench_service/static/core-product-r1/replay.js:13",
+            "evidence": "HTTP047左侧rps5=61.82516810758886/rps20=56.689124157844084；DOM两列未接入",
+            "reproduction": "相同API数据中rps已OBSERVED，股票表却固定读板块字段",
+            "expected_vs_actual": "股票比较使用sector_rs5/20，已有rps5/20被显示字段未接入",
+            "current_block": "EXTERNAL_RECHECK_PENDING",
+            "repair_recommendation": "按比较domain选择股票RPS或板块pct alias，标签注明百分位单位；四种mode页面验证",
+            "batch": "A",
+            "status": "ENGINEERING_FIXED_EXTERNAL_PENDING",
+            "acceptance_independent_of_current_stage": true,
+            "effective_location": "src/workbench_service/static/core-product-r1/replay.js:13",
+            "repair_evidence": "A3_REPAIR_RESULT.json"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FA-015",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "id": "FA-015",
+            "priority": "P2",
+            "category": "AUDIT_DOCUMENT_ERRATUM",
+            "status": "CORRECTED_BY_VERSIONED_R2_ERRATUM",
+            "scope": "CLV report prose/registry and FA-012 source-path attribution; original package immutable",
+            "evidence": [
+              "ERRATA_R2.md",
+              "b1_acceptance.json"
+            ],
+            "acceptance": "Correct formula and scope stated; no original numeric PASS inflation",
+            "effective_location": null
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FA-016",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "id": "FA-016",
+            "priority": "P2",
+            "category": "CROSS_CUTTING_PRICE_ADJUSTMENT_ROUNDING",
+            "status": "EXACT_NUMERIC_CANDIDATE_PASS_CONSUMER_GATES_OPEN",
+            "scope": "7 securities, 16 OHLC cells dated 2025-02-12 through 2025-06-20 in the 2026-10-09 reconstructed owner",
+            "producer": "src/adjustment/tdx_adjustment.py:96",
+            "evidence": [
+              "b2_full_native_oracle.json",
+              "b2_rounding_counterexamples.json",
+              "reproduce/rounding_repro.py"
+            ],
+            "trigger": "Exact rational half-cent; finite affine coefficients plus ambient Decimal arithmetic fall below HALF_UP boundary",
+            "impact": "Recorded QFQ prices are 0.01 CNY below exact contract recurrence at these cells; selected five-day return/RPS endpoints still match",
+            "acceptance": "Deterministic exact rounding contract; all listed ties plus non-ties, multi-event ordering, unsupported events and consumer replay independently pass; isolated new candidate only; no accepted Owner overwrite",
+            "effective_location": [
+              "src/adjustment/tdx_adjustment.py",
+              "src/adjustment/tdx_adjustment_v0_3.py"
+            ],
+            "repair_evidence": "A4_REPAIR_RESULT.json"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FA-017",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "id": "FA-017",
+            "priority": "P2",
+            "category": "LOO_CANDIDATE_EMPTY_POPULATION_BOUNDARY",
+            "status": "CANDIDATE_ENGINEERING_FIXED_EXTERNAL_PENDING",
+            "scope": "V3.3 candidate; singleton target sector and no remaining sector rows after exclusion, nonempty market reference; not a demonstrated current production failure",
+            "producer": "src/workbench_analysis/full_loo_v3_3.py:77",
+            "evidence": [
+              "b2_small_scope_vectors.json",
+              "reproduce/b2_small_scope_vectors.py"
+            ],
+            "trigger": "build_sector_current rejects the empty remaining member frame before outer per-relation SECTOR_EMPTY_AFTER_EXCLUSION handling",
+            "acceptance": "Explicit empty-population result/rejection contract and handled response; singleton plus unrelated sector, n=2/multi/overlap tests retain semantics; no formal LOO grant inferred",
+            "effective_location": null,
+            "repair_evidence": "A5_REPAIR_RESULT.json"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FA-018",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "audit_item_id": "FA-018",
+            "severity": "P2",
+            "classification": "CONFIRMED_CURRENT_V4_BACKEND_CONSTRAINT_CONFLICT",
+            "title": "V4日更调度持久化使用SQLite，与用户PostgreSQL-only约束冲突",
+            "scope": "V4 operational DailyJobs",
+            "status": "OPEN_POSTGRES_MIGRATION_AND_CONSUMER_GATE",
+            "effective_location": "src/workbench_analysis/operational_daily_jobs_v1.py:31,147",
+            "evidence": "FA018_V4_NON_POSTGRES_SCHEDULER_AUDIT.json",
+            "acceptance_independent_of_current_stage": true,
+            "current_block": "PG_SCHEDULER_CONTRACT_MIGRATION_REPLAY_AND_CUTOVER_OPEN",
+            "repair_recommendation": "独立A7工程候选及迁移回放；不得擅改运行中调度器/日记、Head或Grant"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FA-019",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "audit_item_id": "FA-019",
+            "severity": "P2",
+            "classification": "CONFIRMED_CURRENT_V4_SQLITE_READ_INDEX_DEPENDENCY",
+            "title": "V4现行图表读取SQLite派生历史索引，与PostgreSQL-only约束冲突",
+            "scope": "Core product dated charts / derived read index",
+            "status": "OPEN_POSTGRES_READ_INDEX_CONTRACT_AND_CONSUMER_MIGRATION",
+            "effective_location": "src/workbench_service/core_product_bff_r1.py:207-209",
+            "evidence": "FA019_V4_SQLITE_DERIVED_INDEX_AUDIT.json",
+            "acceptance_independent_of_current_stage": true,
+            "current_block": "NEW_PG_INDEX_CONTRACT_CANDIDATE_VALUE_TIME_IDENTITY_AND_PRODUCTION_GATE",
+            "repair_recommendation": "A8新版本PG索引候选/全消费delta，保留旧不可变Owner和历史SQLite原件"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FA-020",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "audit_item_id": "FA-020",
+            "severity": "P2",
+            "classification": "V4_GOVERNANCE_SCANNER_PERFORMANCE",
+            "title": "V4治理扫描按每个证券命中重复遍历文件前缀",
+            "scope": "V4 GOVERNANCE_SCAN",
+            "location": "scripts/scan_no_symbol_specific_runtime_logic.py:120",
+            "effective_location": "scripts/scan_no_symbol_specific_runtime_logic.py:120",
+            "evidence": "FA020_V4_GOVERNANCE_SCANNER_PERFORMANCE_AUDIT.json",
+            "status": "OPEN",
+            "current_block": "OPEN",
+            "repair_recommendation": "独立版本化行号索引优化及完整语义/真实文件一致性验证；保持原硬门",
+            "acceptance_independent_of_current_stage": true
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "AR2-E01",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "id": "AR2-E01",
+            "status": "ENGINEERING_FIXED_EXTERNAL_PENDING",
+            "original_bytes_preserved": true,
+            "acceptance": "Effective view resolves FA-012 without mutating historical originals"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "AR3-E02",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "audit_item_id": "AR3-E02",
+            "severity": "P2",
+            "classification": "AUDIT_SCOPE_GOVERNANCE",
+            "status": "SCOPE_FIXED_MANIFEST_EXECUTED_EXTERNAL_PENDING",
+            "evidence": [
+              "B3_SCOPE_CORRECTION_R3.json",
+              "B3_V4_FULL_REGRESSION_RESULT.json"
+            ],
+            "acceptance_independent_of_current_stage": true
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "AR3-E03",
+      "history": [
+        {
+          "source": "G:\\codex work\\大A交易\\docs\\audits\\full_system_repair_r3_20261011_239fb9b5\\EFFECTIVE_AUDIT_ITEMS_R3.json",
+          "item": {
+            "audit_item_id": "AR3-E03",
+            "severity": "P2",
+            "classification": "AUDIT_GUARD_BUSINESS_EXCEPTION_CONFOUNDING",
+            "status": "ENGINEERING_FIXED_SUBSET_EXECUTED_FULL_SEMANTICS_OPEN",
+            "scope": "V4-only audit database guard, independent of product stage",
+            "evidence": "AR3_E03_GUARD_SEMANTICS_AUDIT.json",
+            "acceptance_independent_of_current_stage": true,
+            "subset_evidence": "B3_V4_FULL_REGRESSION_RESULT.json"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "AUDIT-FOCUS-SOURCE-IDENTITY-R4",
+      "history": [
+        {
+          "source": "G:\\codex work\\v4-full-closeout-20261012\\docs\\audits\\s1b_20261012\\AUDIT_ITEMS.json",
+          "item": {
+            "id": "AUDIT-FOCUS-SOURCE-IDENTITY-R4",
+            "priority": "P0",
+            "status": "OPEN",
+            "scope": [
+              "r43_focus_replay",
+              "corrected_focus_replay",
+              "v4_journal",
+              "v4_native_core_journal",
+              "Forward",
+              "settlement",
+              "build_snapshot",
+              "default_research_HTTP",
+              "default_operational_HTTP",
+              "Joint_all_daily_owners"
+            ],
+            "evidence": [
+              "FROZEN_REGRESSION.json",
+              "RESULT.json",
+              "HTTP_RECEIPTS.json",
+              "TESTS_FINAL.xml",
+              "EXIT_REPORT.md"
+            ],
+            "accepted_scope": "101 real-source observation paths, explicit action classification boundary, 34-security default research HTTP and isolated Joint CAS/rollback/readback",
+            "remaining": "Full replay producer numerical acceptance, new action-contract Journal namespace replay, Forward/settlement dynamic identity and numerical acceptance, full Snapshot construction, operational HTTP branch and all owner T0/token binding",
+            "independent_acceptance": "Every scoped producer and consumer must have explicit identity binding, actual company-action numerical readback, dated source and code SHA, fail-closed negatives; no unresolved paths; tests and this stage do not automatically close this item"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "S1-HTTP-JOINT",
+      "history": [
+        {
+          "source": "G:\\codex work\\v4-full-closeout-20261012\\docs\\audits\\s1b_20261012\\AUDIT_ITEMS.json",
+          "item": {
+            "id": "S1-HTTP-JOINT",
+            "priority": "P0",
+            "status": "PARTIAL_OPEN",
+            "scope": "Default research dispatch scoped pass; operational dispatch and complete daily owner joint validation remain OPEN",
+            "evidence": [
+              "RESULT.json",
+              "HTTP_RECEIPTS.json"
+            ],
+            "independent_acceptance": "Full corrected candidate publication and default consumers, all owners at identical T0/source token, PG content verification and rollback"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "S2-DENOMINATOR",
+      "history": [
+        {
+          "source": "G:\\codex work\\v4-full-closeout-20261012\\docs\\audits\\s1b_20261012\\AUDIT_ITEMS.json",
+          "item": {
+            "id": "S2-DENOMINATOR",
+            "priority": "P0",
+            "status": "NOT_ENTERED",
+            "scope": "148 to 155 module delta and unique legal node denominator",
+            "independent_acceptance": "After S1 full pass only"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "ALL-PG-CONSUMERS",
+      "history": [
+        {
+          "source": "G:\\codex work\\v4-full-closeout-20261012\\docs\\audits\\s1b_20261012\\AUDIT_ITEMS.json",
+          "item": {
+            "id": "ALL-PG-CONSUMERS",
+            "priority": "P0",
+            "status": "OPEN",
+            "scope": "DB06/08/09/12, Desktop, Source to Joint",
+            "independent_acceptance": "Dynamic per-entry PG-only consumer evidence"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "EXACT-56",
+      "history": [
+        {
+          "source": "G:\\codex work\\v4-full-closeout-20261012\\docs\\audits\\s1b_20261012\\AUDIT_ITEMS.json",
+          "item": {
+            "id": "EXACT-56",
+            "priority": "P0",
+            "status": "OPEN",
+            "scope": "56 adjustment consumer categories",
+            "independent_acceptance": "Independent numerical acceptance of every consumer category"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FEP-87A",
+      "history": [
+        {
+          "source": "G:\\codex work\\v4-full-closeout-20261012\\docs\\audits\\s1b_20261012\\AUDIT_ITEMS.json",
+          "item": {
+            "id": "FEP-87A",
+            "priority": "P1",
+            "status": "OPEN",
+            "scope": "producer/owner/cutoff/quality numerical semantics",
+            "independent_acceptance": "Field enumeration alone is insufficient"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "UI-CAPACITY",
+      "history": [
+        {
+          "source": "G:\\codex work\\v4-full-closeout-20261012\\docs\\audits\\s1b_20261012\\AUDIT_ITEMS.json",
+          "item": {
+            "id": "UI-CAPACITY",
+            "priority": "P1",
+            "status": "OPEN",
+            "scope": "Six UI entries, 390px Focus overflow, concurrency and large content",
+            "independent_acceptance": "Separate UI and capacity evidence"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FINAL-CLEAN",
+      "history": [
+        {
+          "source": "G:\\codex work\\v4-full-closeout-20261012\\docs\\audits\\s1b_20261012\\AUDIT_ITEMS.json",
+          "item": {
+            "id": "FINAL-CLEAN",
+            "priority": "P0",
+            "status": "OPEN",
+            "scope": "Frozen legal denominator clean-slate full run",
+            "independent_acceptance": "One full run and independent review after preceding gates"
+          }
+        }
+      ],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "ALL_CONSUMERS",
+      "history": [],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "PG_ONLY",
+      "history": [],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "FOCUS_FORWARD_SETTLEMENT",
+      "history": [],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "EXACT56_FIELDS",
+      "history": [],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "LEGAL_FULL_REGRESSION",
+      "history": [],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "SIX_UI_WINDOWS",
+      "history": [],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "CAPACITY_ROLLBACK",
+      "history": [],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    },
+    {
+      "id": "PRODUCTION_ROLE_AND_CUTOVER",
+      "history": [],
+      "status": "IN_PROGRESS_NOT_ACCEPTED",
+      "independent_acceptance": true,
+      "stage_stop_policy": "Continue every independent executable work package; no production promotion until all objective hard gates pass"
+    }
+  ],
+  "full_acceptance": false
+}

@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="7" skipped="0" tests="17" time="38.914" timestamp="2026-10-12T22:52:17.594960+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_fp05_home" name="test_home_does_not_hide_risk_or_invent_changes[NEW_CONFIRMED-42]" time="0.502"><failure message="KeyError: 'context'">tmp_path = WindowsPath('G:/codex_tmp/test_temp/HOMESETTLER2/test_home_does_not_hide_risk_o0')
+event = 'NEW_CONFIRMED', count = 42
+
+    @pytest.mark.parametrize('event,count', [('NEW_CONFIRMED',42),('INVALIDATED',35),('PERSISTENT',40),('NONE',0)])
+    def test_home_does_not_hide_risk_or_invent_changes(tmp_path,event,count):
+        from workbench_db.v4_snapshot_pg_r2 import Builder,read
+        db=Builder(tmp_path,uuid.uuid4().hex)
+        db.executescript('CREATE TABLE objects(domain text,id text,name text,symbol text,state text,payload text,PRIMARY KEY(domain,id));CREATE TABLE members(sector text,security text,PRIMARY KEY(sector,security));CREATE TABLE aliases(alias text,id text,PRIMARY KEY(alias,id));CREATE TABLE metadata(key text PRIMARY KEY,value text);')
+        for i in range(count):
+            r=dict(entity_id=str(i),fields={'effective_event':{'value':event}})
+            db.execute('INSERT INTO objects VALUES(?,?,?,?,?,?)',('events',str(i),'','','',json.dumps(r)))
+&gt;       descriptor=db.seal(dict(release_id='home-synthetic-test-only',fixture_scope='NEVER_PRODUCTION'));db.commit();db.close()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_fp05_home.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;workbench_db.v4_snapshot_pg_r2.Builder object at 0x000001ADFCF63620&gt;
+meta = {'release_id': 'home-synthetic-test-only', 'fixture_scope': 'NEVER_PRODUCTION'}
+source_binding = {'kind': 'MANIFEST_BOUND_SOURCES', 'manifest_sha256': 'b856d1f81255a2df36ad2c17340a8df05e8ca4362215d7f8591ef994b80f72e8'}
+consumer_binding = {}
+
+    def seal(self, meta, *, source_binding=None, consumer_binding=None):
+        source_binding = source_binding or dict(kind='MANIFEST_BOUND_SOURCES',
+                                                manifest_sha256=digest(meta))
+        consumer_binding=consumer_binding or {}
+        if set(consumer_binding)!=EXTRA_FIELDS[self.storage_kind]:
+            raise ValueError('PG_SNAPSHOT_CONSUMER_BINDING_REQUIRED')
+        manifest = dict(contract_id=DIGEST_CONTRACT, storage_kind=self.storage_kind, metadata=meta,
+                        metadata_sha256=digest(meta), source_binding=source_binding,
+                        tables=table_manifest(self.pg, self.schema, self.storage_kind))
+        identity = database_identity(self.pg)
+        descriptor = dict(contract_id=CONTRACT, engine='postgresql', schema=self.schema,
+&gt;                         release_id=meta['release_id'], T0=meta['context']['accepted_trade_date'],
+                                                            ^^^^^^^^^^^^^^^
+                          content_manifest=manifest, database_identity=identity)
+E       KeyError: 'context'
+
+src\workbench_db\v4_snapshot_pg_r2.py:165: KeyError</failure></testcase><testcase classname="tests.test_fp05_home" name="test_home_does_not_hide_risk_or_invent_changes[INVALIDATED-35]" time="0.064"><failure message="KeyError: 'context'">tmp_path = WindowsPath('G:/codex_tmp/test_temp/HOMESETTLER2/test_home_does_not_hide_risk_o1')
+event = 'INVALIDATED', count = 35
+
+    @pytest.mark.parametrize('event,count', [('NEW_CONFIRMED',42),('INVALIDATED',35),('PERSISTENT',40),('NONE',0)])
+    def test_home_does_not_hide_risk_or_invent_changes(tmp_path,event,count):
+        from workbench_db.v4_snapshot_pg_r2 import Builder,read
+        db=Builder(tmp_path,uuid.uuid4().hex)
+        db.executescript('CREATE TABLE objects(domain text,id text,name text,symbol text,state text,payload text,PRIMARY KEY(domain,id));CREATE TABLE members(sector text,security text,PRIMARY KEY(sector,security));CREATE TABLE aliases(alias text,id text,PRIMARY KEY(alias,id));CREATE TABLE metadata(key text PRIMARY KEY,value text);')
+        for i in range(count):
+            r=dict(entity_id=str(i),fields={'effective_event':{'value':event}})
+            db.execute('INSERT INTO objects VALUES(?,?,?,?,?,?)',('events',str(i),'','','',json.dumps(r)))
+&gt;       descriptor=db.seal(dict(release_id='home-synthetic-test-only',fixture_scope='NEVER_PRODUCTION'));db.commit();db.close()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_fp05_home.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;workbench_db.v4_snapshot_pg_r2.Builder object at 0x000001ADFD100CD0&gt;
+meta = {'release_id': 'home-synthetic-test-only', 'fixture_scope': 'NEVER_PRODUCTION'}
+source_binding = {'kind': 'MANIFEST_BOUND_SOURCES', 'manifest_sha256': 'b856d1f81255a2df36ad2c17340a8df05e8ca4362215d7f8591ef994b80f72e8'}
+consumer_binding = {}
+
+    def seal(self, meta, *, source_binding=None, consumer_binding=None):
+        source_binding = source_binding or dict(kind='MANIFEST_BOUND_SOURCES',
+                                                manifest_sha256=digest(meta))
+        consumer_binding=consumer_binding or {}
+        if set(consumer_binding)!=EXTRA_FIELDS[self.storage_kind]:
+            raise ValueError('PG_SNAPSHOT_CONSUMER_BINDING_REQUIRED')
+        manifest = dict(contract_id=DIGEST_CONTRACT, storage_kind=self.storage_kind, metadata=meta,
+                        metadata_sha256=digest(meta), source_binding=source_binding,
+                        tables=table_manifest(self.pg, self.schema, self.storage_kind))
+        identity = database_identity(self.pg)
+        descriptor = dict(contract_id=CONTRACT, engine='postgresql', schema=self.schema,
+&gt;                         release_id=meta['release_id'], T0=meta['context']['accepted_trade_date'],
+                                                            ^^^^^^^^^^^^^^^
+                          content_manifest=manifest, database_identity=identity)
+E       KeyError: 'context'
+
+src\workbench_db\v4_snapshot_pg_r2.py:165: KeyError</failure></testcase><testcase classname="tests.test_fp05_home" name="test_home_does_not_hide_risk_or_invent_changes[PERSISTENT-40]" time="0.057"><failure message="KeyError: 'context'">tmp_path = WindowsPath('G:/codex_tmp/test_temp/HOMESETTLER2/test_home_does_not_hide_risk_o2')
+event = 'PERSISTENT', count = 40
+
+    @pytest.mark.parametrize('event,count', [('NEW_CONFIRMED',42),('INVALIDATED',35),('PERSISTENT',40),('NONE',0)])
+    def test_home_does_not_hide_risk_or_invent_changes(tmp_path,event,count):
+        from workbench_db.v4_snapshot_pg_r2 import Builder,read
+        db=Builder(tmp_path,uuid.uuid4().hex)
+        db.executescript('CREATE TABLE objects(domain text,id text,name text,symbol text,state text,payload text,PRIMARY KEY(domain,id));CREATE TABLE members(sector text,security text,PRIMARY KEY(sector,security));CREATE TABLE aliases(alias text,id text,PRIMARY KEY(alias,id));CREATE TABLE metadata(key text PRIMARY KEY,value text);')
+        for i in range(count):
+            r=dict(entity_id=str(i),fields={'effective_event':{'value':event}})
+            db.execute('INSERT INTO objects VALUES(?,?,?,?,?,?)',('events',str(i),'','','',json.dumps(r)))
+&gt;       descriptor=db.seal(dict(release_id='home-synthetic-test-only',fixture_scope='NEVER_PRODUCTION'));db.commit();db.close()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_fp05_home.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;workbench_db.v4_snapshot_pg_r2.Builder object at 0x000001ADFD101950&gt;
+meta = {'release_id': 'home-synthetic-test-only', 'fixture_scope': 'NEVER_PRODUCTION'}
+source_binding = {'kind': 'MANIFEST_BOUND_SOURCES', 'manifest_sha256': 'b856d1f81255a2df36ad2c17340a8df05e8ca4362215d7f8591ef994b80f72e8'}
+consumer_binding = {}
+
+    def seal(self, meta, *, source_binding=None, consumer_binding=None):
+        source_binding = source_binding or dict(kind='MANIFEST_BOUND_SOURCES',
+                                                manifest_sha256=digest(meta))
+        consumer_binding=consumer_binding or {}
+        if set(consumer_binding)!=EXTRA_FIELDS[self.storage_kind]:
+            raise ValueError('PG_SNAPSHOT_CONSUMER_BINDING_REQUIRED')
+        manifest = dict(contract_id=DIGEST_CONTRACT, storage_kind=self.storage_kind, metadata=meta,
+                        metadata_sha256=digest(meta), source_binding=source_binding,
+                        tables=table_manifest(self.pg, self.schema, self.storage_kind))
+        identity = database_identity(self.pg)
+        descriptor = dict(contract_id=CONTRACT, engine='postgresql', schema=self.schema,
+&gt;                         release_id=meta['release_id'], T0=meta['context']['accepted_trade_date'],
+                                                            ^^^^^^^^^^^^^^^
+                          content_manifest=manifest, database_identity=identity)
+E       KeyError: 'context'
+
+src\workbench_db\v4_snapshot_pg_r2.py:165: KeyError</failure></testcase><testcase classname="tests.test_fp05_home" name="test_home_does_not_hide_risk_or_invent_changes[NONE-0]" time="0.047"><failure message="KeyError: 'context'">tmp_path = WindowsPath('G:/codex_tmp/test_temp/HOMESETTLER2/test_home_does_not_hide_risk_o3')
+event = 'NONE', count = 0
+
+    @pytest.mark.parametrize('event,count', [('NEW_CONFIRMED',42),('INVALIDATED',35),('PERSISTENT',40),('NONE',0)])
+    def test_home_does_not_hide_risk_or_invent_changes(tmp_path,event,count):
+        from workbench_db.v4_snapshot_pg_r2 import Builder,read
+        db=Builder(tmp_path,uuid.uuid4().hex)
+        db.executescript('CREATE TABLE objects(domain text,id text,name text,symbol text,state text,payload text,PRIMARY KEY(domain,id));CREATE TABLE members(sector text,security text,PRIMARY KEY(sector,security));CREATE TABLE aliases(alias text,id text,PRIMARY KEY(alias,id));CREATE TABLE metadata(key text PRIMARY KEY,value text);')
+        for i in range(count):
+            r=dict(entity_id=str(i),fields={'effective_event':{'value':event}})
+            db.execute('INSERT INTO objects VALUES(?,?,?,?,?,?)',('events',str(i),'','','',json.dumps(r)))
+&gt;       descriptor=db.seal(dict(release_id='home-synthetic-test-only',fixture_scope='NEVER_PRODUCTION'));db.commit();db.close()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_fp05_home.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;workbench_db.v4_snapshot_pg_r2.Builder object at 0x000001ADFD190D60&gt;
+meta = {'release_id': 'home-synthetic-test-only', 'fixture_scope': 'NEVER_PRODUCTION'}
+source_binding = {'kind': 'MANIFEST_BOUND_SOURCES', 'manifest_sha256': 'b856d1f81255a2df36ad2c17340a8df05e8ca4362215d7f8591ef994b80f72e8'}
+consumer_binding = {}
+
+    def seal(self, meta, *, source_binding=None, consumer_binding=None):
+        source_binding = source_binding or dict(kind='MANIFEST_BOUND_SOURCES',
+                                                manifest_sha256=digest(meta))
+        consumer_binding=consumer_binding or {}
+        if set(consumer_binding)!=EXTRA_FIELDS[self.storage_kind]:
+            raise ValueError('PG_SNAPSHOT_CONSUMER_BINDING_REQUIRED')
+        manifest = dict(contract_id=DIGEST_CONTRACT, storage_kind=self.storage_kind, metadata=meta,
+                        metadata_sha256=digest(meta), source_binding=source_binding,
+                        tables=table_manifest(self.pg, self.schema, self.storage_kind))
+        identity = database_identity(self.pg)
+        descriptor = dict(contract_id=CONTRACT, engine='postgresql', schema=self.schema,
+&gt;                         release_id=meta['release_id'], T0=meta['context']['accepted_trade_date'],
+                                                            ^^^^^^^^^^^^^^^
+                          content_manifest=manifest, database_identity=identity)
+E       KeyError: 'context'
+
+src\workbench_db\v4_snapshot_pg_r2.py:165: KeyError</failure></testcase><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[A01]" time="4.400" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[A02]" time="3.990" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[A03]" time="2.812" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[A04]" time="2.635" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[A05]" time="2.862"><failure message="psycopg.errors.CheckViolation: new row for relation &quot;facts&quot; violates check constraint &quot;facts_check1&quot;&#10;DETAIL:  Failing row contains (activation, R24R1_SIMULATION_aff18292e0654430b377b0cc5888130b_B, SHADOW_V4, SHADOW, ACTIVATION_SIMULATION, {&quot;authority_binding&quot;:{&quot;bytes&quot;:4676,&quot;path&quot;:&quot;reports/r24r1/activat..., 0000000000000000000000000000000000000000000000000000000000000000, 26).">accepted = (&lt;workbench_db.v4_shadow_live_pg_r3.NativeShadowDatabase object at 0x000001ADFD190640&gt;, {'base': 'reports/r24r1/activa...88130b/authority_b.json', 'bytes': 4676, 'sha256': '0a85b2b237e4d1c44bdad6ffbe047e3a53f3395566a6c28bfe691ca09e32b0ef'})
+case = 'A05'
+
+    @pytest.mark.parametrize('case',['A01','A02','A03','A04','A05','A06','payload_identity','acceptance_identity'])
+    def test_activation_head_exact(accepted,case):
+        db,x,a,b,binding=accepted
+        selected=a if case=='A02' else b
+        db.conn.execute('UPDATE activation_head SET authority_id=?',(selected,))
+        if case=='A03':db.conn.execute('DELETE FROM activation_head')
+        if case=='A04':db.conn.execute("UPDATE activation_head SET authority_id='MISSING'")
+        if case in ('A05','A06','payload_identity'):
+            # Corruption fixture bypasses append-only guard only in this disposable simulation.
+            from workbench_db.v4_shadow_live_pg_r3 import native_mode
+            db.conn.execute('DROP TRIGGER immutable_facts ON facts' if native_mode() else 'DROP TRIGGER no_fact_update')
+            p=db.get('activation',b)
+            if case=='A06':p['authority_binding']=dict(binding,sha256='0'*64)
+            if case=='payload_identity':p['authority_id']='WRONG'
+            raw=canonical(p);sha='0'*64 if case=='A05' else hashlib.sha256(raw.encode()).hexdigest()
+&gt;           db.conn.execute("UPDATE facts SET payload=?,digest=? WHERE kind='activation' AND id=?",(raw,sha,b))
+
+tests\test_settlement_r1r1.py:48: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_db\v4_shadow_live_pg_r3.py:25: in execute
+    return self.pg.execute(translate(query),params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\v4_native_isolation_plugin_r4.py:162: in call
+    return original(owner,query,*args,**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;psycopg.Connection [IDLE] (host=127.0.0.1 port=55791 user=r4_isolated_admin database=postgres) at 0x1adfd01f6b0&gt;
+query = "UPDATE facts SET payload=%s,digest=%s WHERE kind='activation' AND id=%s"
+params = ('{"authority_binding":{"bytes":4676,"path":"reports/r24r1/activation_simulation/aff18292e0654430b377b0cc5888130b/auth...00000000000000000000000000000000000000000000000000000000000000', 'R24R1_SIMULATION_aff18292e0654430b377b0cc5888130b_B')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -&gt; Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+&gt;           raise ex.with_traceback(None)
+E           psycopg.errors.CheckViolation: new row for relation "facts" violates check constraint "facts_check1"
+E           DETAIL:  Failing row contains (activation, R24R1_SIMULATION_aff18292e0654430b377b0cc5888130b_B, SHADOW_V4, SHADOW, ACTIVATION_SIMULATION, {"authority_binding":{"bytes":4676,"path":"reports/r24r1/activat..., 0000000000000000000000000000000000000000000000000000000000000000, 26).
+
+E:\python\Lib\site-packages\psycopg\connection.py:304: CheckViolation</failure></testcase><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[A06]" time="2.608" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[payload_identity]" time="2.930" /><testcase classname="tests.test_settlement_r1r1" name="test_activation_head_exact[acceptance_identity]" time="2.464" /><testcase classname="tests.test_settlement_r1r1" name="test_queue_exact_idempotency[Q01]" time="2.701" /><testcase classname="tests.test_settlement_r1r1" name="test_queue_exact_idempotency[Q02]" time="2.593" /><testcase classname="tests.test_settlement_r1r1" name="test_queue_exact_idempotency[Q03]" time="2.821"><failure message="ValueError: NATIVE_PG_QUERY_REQUIRED">shadow = (&lt;workbench_db.v4_shadow_live_pg_r3.NativeShadowDatabase object at 0x000001ADD31498B0&gt;, {'base': 'reports/r24r1/activa...V1', 'parameter_set_id': 'V4_10_STATE_REDUCER_PARAMETER_SET_V1', 'state_lineage_id': 'R24R1_SIMULATION_LINEAGE', ...}})
+case = 'Q03'
+
+    @pytest.mark.parametrize('case',['Q01','Q02','Q03','Q04','Q05'])
+    def test_queue_exact_idempotency(shadow,case):
+        db,x=shadow;authority,source=future(db);worker=DurableSettlementWorker(db,'R1R1')
+        due=next(d for d in db.rows('due') if d['horizon']==1);due_id=digest([due['enrollment_id'],1]);sha=source.binding['sha256']
+        if case in ('Q02','Q03'):
+            key=worker.queue_identity(due,db.get('enrollment',due['enrollment_id']))
+            if case=='Q02':
+                other=next(d for d in db.rows('due') if d['horizon']!=1)
+                other_id=digest([other['enrollment_id'],other['horizon']])
+                db.conn.execute("INSERT INTO settlement_queue_v2(queue_key,evaluation_source_digest,due_kind,due_id,status) VALUES(?,?,?,?,'READY')",(key,sha,'due',other_id))
+            if case=='Q03':
+                # Malformed persisted queue fixture: bypass insert references, not the application guard.
+&gt;               db.conn.execute('PRAGMA foreign_keys=OFF')
+
+tests\test_settlement_r1r1.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_db\v4_shadow_live_pg_r3.py:24: in execute
+    require('sqlite_master' not in query.casefold() and not query.lstrip().upper().startswith(('PRAGMA','BEGIN IMMEDIATE')),'NATIVE_PG_QUERY_REQUIRED')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = False, reason = 'NATIVE_PG_QUERY_REQUIRED'
+
+    def require(value,reason):
+&gt;       if not value:raise ValueError(reason)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: NATIVE_PG_QUERY_REQUIRED
+
+src\workbench_db\v4_shadow_live_pg_r3.py:17: ValueError</failure></testcase><testcase classname="tests.test_settlement_r1r1" name="test_queue_exact_idempotency[Q04]" time="2.645" /><testcase classname="tests.test_settlement_r1r1" name="test_queue_exact_idempotency[Q05]" time="2.524"><failure message="ValueError: EVALUATION_SOURCE_EXACT_BYTES_REQUIRED">shadow = (&lt;workbench_db.v4_shadow_live_pg_r3.NativeShadowDatabase object at 0x000001ADD3190050&gt;, {'base': 'reports/r24r1/activa...V1', 'parameter_set_id': 'V4_10_STATE_REDUCER_PARAMETER_SET_V1', 'state_lineage_id': 'R24R1_SIMULATION_LINEAGE', ...}})
+case = 'Q05'
+
+    @pytest.mark.parametrize('case',['Q01','Q02','Q03','Q04','Q05'])
+    def test_queue_exact_idempotency(shadow,case):
+        db,x=shadow;authority,source=future(db);worker=DurableSettlementWorker(db,'R1R1')
+        due=next(d for d in db.rows('due') if d['horizon']==1);due_id=digest([due['enrollment_id'],1]);sha=source.binding['sha256']
+        if case in ('Q02','Q03'):
+            key=worker.queue_identity(due,db.get('enrollment',due['enrollment_id']))
+            if case=='Q02':
+                other=next(d for d in db.rows('due') if d['horizon']!=1)
+                other_id=digest([other['enrollment_id'],other['horizon']])
+                db.conn.execute("INSERT INTO settlement_queue_v2(queue_key,evaluation_source_digest,due_kind,due_id,status) VALUES(?,?,?,?,'READY')",(key,sha,'due',other_id))
+            if case=='Q03':
+                # Malformed persisted queue fixture: bypass insert references, not the application guard.
+                db.conn.execute('PRAGMA foreign_keys=OFF')
+                db.conn.execute("INSERT INTO settlement_queue_v2(queue_key,evaluation_source_digest,due_kind,due_id,status) VALUES(?,?,?,?,'READY')",(key,sha,'due_revision',due_id))
+                db.conn.execute('PRAGMA foreign_keys=ON')
+            before=worker.row(key,sha)
+            with pytest.raises(ValueError,match='QUEUE_IDEMPOTENCY_CONFLICT'):worker.enqueue(due_id,sha,'2026-10-09')
+            assert worker.row(key,sha)==before
+            return
+        if case=='Q04':
+            key=worker.enqueue(due_id,sha,'2026-10-09');original=db.get
+            count=0
+            def corrupt_readback(kind,key):
+                nonlocal count
+                value=original(kind,key)
+                if kind=='enrollment':
+                    count+=1
+                    if count==2:value=dict(value,state_lineage_id='CORRUPTED_FROZEN_IDENTITY')
+                return value
+            with patch.object(db,'get',corrupt_readback):
+                with pytest.raises(ValueError,match='QUEUE_IDEMPOTENCY_CONFLICT'):worker.enqueue(due_id,sha,'2026-10-09')
+            assert db.conn.execute('SELECT count(*) FROM settlement_queue_v2').fetchone()[0]==1
+            return
+        key=worker.enqueue(due_id,sha,'2026-10-09');before=worker.row(key,sha)
+        assert worker.enqueue(due_id,sha,'2026-10-09')==key and worker.row(key,sha)==before
+        if case=='Q05':
+            result=worker.deliver(key,sha,authority,lambda:source,'2026-10-09')
+            source.binding=dict(source.binding,sha256=digest('R1R1_CORRECTED_SIMULATION'))
+            authority.data['component_artifacts']['ADJUSTED_DAILY']=source.binding
+            revised_sha=source.binding['sha256'];assert worker.enqueue(due_id,revised_sha,'2026-10-09')==key
+&gt;           revised=worker.deliver(key,revised_sha,authority,lambda:source,'2026-10-09')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_settlement_r1r1.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\v4_16_settlement_worker_v2.py:102: in deliver
+    result=self.db.transaction(settle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_db\v4_shadow_live_pg_r3.py:115: in transaction
+    return fn()
+           ^^^^
+scripts\v4_16_settlement_worker_v2.py:94: in settle
+    if native:self.db.register_evaluation_source(source.binding,source.rows)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_db\v4_shadow_live_pg_r3.py:98: in register_evaluation_source
+    require(len(raw)==binding['bytes'] and digest(raw)==binding['sha256'],'EVALUATION_SOURCE_EXACT_BYTES_REQUIRED')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = False, reason = 'EVALUATION_SOURCE_EXACT_BYTES_REQUIRED'
+
+    def require(value,reason):
+&gt;       if not value:raise ValueError(reason)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: EVALUATION_SOURCE_EXACT_BYTES_REQUIRED
+
+src\workbench_db\v4_shadow_live_pg_r3.py:17: ValueError</failure></testcase></testsuite></testsuites>

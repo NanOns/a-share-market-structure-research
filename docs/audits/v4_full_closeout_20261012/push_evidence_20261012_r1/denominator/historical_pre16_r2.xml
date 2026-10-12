@@ -1,0 +1,1056 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="29" skipped="0" tests="94" time="7.940" timestamp="2026-10-12T17:15:33.848836+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_pre16_governance" name="test_historical_r1_registry_immutable" time="0.022" /><testcase classname="tests.test_pre16_governance" name="test_current_a01_not_taken_from_stale_r1" time="0.003" /><testcase classname="tests.test_pre16_governance" name="test_current_a02_exact_scoped_acceptance" time="0.014"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+
+    def test_current_a02_exact_scoped_acceptance(h):
+&gt;       assert o.verify_entries(h,o.ROOT)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_a02_as_recorded_not_upgraded" time="0.016"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+
+    def test_a02_as_recorded_not_upgraded(h):
+        h['entries']['A02']['capability_dimensions']['AS_RECORDED']=True
+&gt;       with pytest.raises(ValueError,match='A02_AS_RECORDED_OVERCLAIM'):o.verify_entries(h,o.ROOT)
+                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:26: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_a04_scope_not_overclaimed[formal_consumer_enabled-True]" time="0.013"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+field = 'formal_consumer_enabled', value = True
+
+    @pytest.mark.parametrize('field,value',[('formal_consumer_enabled',True),('historical_formal_capability','PASS'),('known_amount_a',1),('consumer_auto_activation_after_H21',True)])
+    def test_a04_scope_not_overclaimed(h,field,value):
+        h['entries']['A04']['capability_dimensions'][field]=value
+&gt;       with pytest.raises(ValueError,match='A04_SCOPE_OVERCLAIM'):o.verify_entries(h,o.ROOT)
+                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_a04_scope_not_overclaimed[historical_formal_capability-PASS]" time="0.013"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+field = 'historical_formal_capability', value = 'PASS'
+
+    @pytest.mark.parametrize('field,value',[('formal_consumer_enabled',True),('historical_formal_capability','PASS'),('known_amount_a',1),('consumer_auto_activation_after_H21',True)])
+    def test_a04_scope_not_overclaimed(h,field,value):
+        h['entries']['A04']['capability_dimensions'][field]=value
+&gt;       with pytest.raises(ValueError,match='A04_SCOPE_OVERCLAIM'):o.verify_entries(h,o.ROOT)
+                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_a04_scope_not_overclaimed[known_amount_a-1]" time="0.013"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+field = 'known_amount_a', value = 1
+
+    @pytest.mark.parametrize('field,value',[('formal_consumer_enabled',True),('historical_formal_capability','PASS'),('known_amount_a',1),('consumer_auto_activation_after_H21',True)])
+    def test_a04_scope_not_overclaimed(h,field,value):
+        h['entries']['A04']['capability_dimensions'][field]=value
+&gt;       with pytest.raises(ValueError,match='A04_SCOPE_OVERCLAIM'):o.verify_entries(h,o.ROOT)
+                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_a04_scope_not_overclaimed[consumer_auto_activation_after_H21-True]" time="0.015"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+field = 'consumer_auto_activation_after_H21', value = True
+
+    @pytest.mark.parametrize('field,value',[('formal_consumer_enabled',True),('historical_formal_capability','PASS'),('known_amount_a',1),('consumer_auto_activation_after_H21',True)])
+    def test_a04_scope_not_overclaimed(h,field,value):
+        h['entries']['A04']['capability_dimensions'][field]=value
+&gt;       with pytest.raises(ValueError,match='A04_SCOPE_OVERCLAIM'):o.verify_entries(h,o.ROOT)
+                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_a08_a09_implementation_only_does_not_close_audit[A08]" time="0.013"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+key = 'A08'
+
+    @pytest.mark.parametrize('key',['A08','A09','A08_CURRENT_RUNTIME'])
+    def test_a08_a09_implementation_only_does_not_close_audit(h,key):
+        assert h['entries']['A08']['current_state']==h['entries']['A09']['current_state']=='ACCEPTED_SCOPED'
+        assert h['entries']['A08_CURRENT_RUNTIME']['current_state']=='OPEN_EXTERNAL_REAUDIT'
+        e=h['entries'][key];e['current_authority']={'implementation':h['sources']['open_items']};e['evidence_bindings']=list(e['current_authority'].values())
+&gt;       with pytest.raises(ValueError,match='EXACT_REQUIRED_AUTHORITY'):o.verify_entries(h,o.ROOT)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_a08_a09_implementation_only_does_not_close_audit[A09]" time="0.014"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+key = 'A09'
+
+    @pytest.mark.parametrize('key',['A08','A09','A08_CURRENT_RUNTIME'])
+    def test_a08_a09_implementation_only_does_not_close_audit(h,key):
+        assert h['entries']['A08']['current_state']==h['entries']['A09']['current_state']=='ACCEPTED_SCOPED'
+        assert h['entries']['A08_CURRENT_RUNTIME']['current_state']=='OPEN_EXTERNAL_REAUDIT'
+        e=h['entries'][key];e['current_authority']={'implementation':h['sources']['open_items']};e['evidence_bindings']=list(e['current_authority'].values())
+&gt;       with pytest.raises(ValueError,match='EXACT_REQUIRED_AUTHORITY'):o.verify_entries(h,o.ROOT)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_a08_a09_implementation_only_does_not_close_audit[A08_CURRENT_RUNTIME]" time="0.015"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+key = 'A08_CURRENT_RUNTIME'
+
+    @pytest.mark.parametrize('key',['A08','A09','A08_CURRENT_RUNTIME'])
+    def test_a08_a09_implementation_only_does_not_close_audit(h,key):
+        assert h['entries']['A08']['current_state']==h['entries']['A09']['current_state']=='ACCEPTED_SCOPED'
+        assert h['entries']['A08_CURRENT_RUNTIME']['current_state']=='OPEN_EXTERNAL_REAUDIT'
+        e=h['entries'][key];e['current_authority']={'implementation':h['sources']['open_items']};e['evidence_bindings']=list(e['current_authority'].values())
+&gt;       with pytest.raises(ValueError,match='EXACT_REQUIRED_AUTHORITY'):o.verify_entries(h,o.ROOT)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_current_stage_is_v4_15" time="0.727"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\source_evidence\\dm01_a01_r3\\chain_inputs_r1\\identity_projection_dc4b72168585944ca0925e806ebaff0a7785d180a85802e320c4973c1cc898f8.json'">def test_current_stage_is_v4_15():
+        from workbench_analysis.v4_current_stage_authority import CurrentStageAuthority
+&gt;       assert CurrentStageAuthority(o.ROOT).head['stage']=='V4-15'
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\v4_current_stage_authority.py:53: in __init__
+    self.read(self.identity_ref);self.read(self.membership_ref)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:66: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:29: in read
+    _,p=path_in(self.root,binding['path']);raw=p.read_bytes();observed=identity(raw)
+                                               ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/identity_projection_dc4b72168585944ca0925e806ebaff0a7785d180a85802e320c4973c1cc898f8.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\source_evidence\\dm01_a01_r3\\chain_inputs_r1\\identity_projection_dc4b72168585944ca0925e806ebaff0a7785d180a85802e320c4973c1cc898f8.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_data_head_is_2026_09_30" time="0.000" /><testcase classname="tests.test_pre16_governance" name="test_v4_10_to_v4_15_heads_unchanged" time="0.191" /><testcase classname="tests.test_pre16_governance" name="test_historical_pit_not_granted" time="0.013"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+
+    def test_historical_pit_not_granted(h):
+        h['entries']['HISTORICAL_PIT_EFFECTIVENESS']['capability_dimensions']['capability']='PASS'
+&gt;       with pytest.raises(ValueError,match='HISTORICAL_PIT_NOT_GRANTED'):o.verify_entries(h,o.ROOT)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_real_maturity_none" time="0.015"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+
+    def test_real_maturity_none(h):
+        assert o.read('data/v4/V4_15_ACCEPTED_HEAD.json',o.ROOT)['CURRENT_REAL_MATURITY_EVIDENCE']=='NONE'
+        h['entries']['REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME']['capability_dimensions']['PROVED_HORIZONS']=[1]
+&gt;       with pytest.raises(ValueError,match='NONBLOCKING_DEBT_NOT_PASS'):o.verify_entries(h,o.ROOT)
+                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_nonblocking_debt_not_promoted_to_pass[REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME]" time="0.014"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+key = 'REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME'
+
+    @pytest.mark.parametrize('key',['REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME','REALTIME_ACCEPTED_COHORT_MATURITY','V4_15_FWD_ADJ_VECTOR_01'])
+    def test_nonblocking_debt_not_promoted_to_pass(h,key):
+        h['entries'][key]['current_state']='ACCEPTED_FULL_REQUIRED_SCOPE'
+&gt;       with pytest.raises(ValueError,match='DERIVED_STATE'):o.verify_entries(h,o.ROOT)
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:62: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_nonblocking_debt_not_promoted_to_pass[REALTIME_ACCEPTED_COHORT_MATURITY]" time="0.014"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+key = 'REALTIME_ACCEPTED_COHORT_MATURITY'
+
+    @pytest.mark.parametrize('key',['REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME','REALTIME_ACCEPTED_COHORT_MATURITY','V4_15_FWD_ADJ_VECTOR_01'])
+    def test_nonblocking_debt_not_promoted_to_pass(h,key):
+        h['entries'][key]['current_state']='ACCEPTED_FULL_REQUIRED_SCOPE'
+&gt;       with pytest.raises(ValueError,match='DERIVED_STATE'):o.verify_entries(h,o.ROOT)
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:62: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_nonblocking_debt_not_promoted_to_pass[V4_15_FWD_ADJ_VECTOR_01]" time="0.015"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+key = 'V4_15_FWD_ADJ_VECTOR_01'
+
+    @pytest.mark.parametrize('key',['REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME','REALTIME_ACCEPTED_COHORT_MATURITY','V4_15_FWD_ADJ_VECTOR_01'])
+    def test_nonblocking_debt_not_promoted_to_pass(h,key):
+        h['entries'][key]['current_state']='ACCEPTED_FULL_REQUIRED_SCOPE'
+&gt;       with pytest.raises(ValueError,match='DERIVED_STATE'):o.verify_entries(h,o.ROOT)
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:62: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_permissions_all_false[production]" time="0.550"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+key = 'production'
+
+    @pytest.mark.parametrize('key',['production','shadow','focus'])
+    def test_permissions_all_false(h,key):
+        h[key]=True
+&gt;       with pytest.raises(ValueError,match='PERMISSIONS_FALSE'):o.validate(head=h)
+                                                                 ^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:167: in validate
+    raw=exact(b,root)
+        ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_permissions_all_false[shadow]" time="0.536"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+key = 'shadow'
+
+    @pytest.mark.parametrize('key',['production','shadow','focus'])
+    def test_permissions_all_false(h,key):
+        h[key]=True
+&gt;       with pytest.raises(ValueError,match='PERMISSIONS_FALSE'):o.validate(head=h)
+                                                                 ^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:167: in validate
+    raw=exact(b,root)
+        ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_permissions_all_false[focus]" time="0.547"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+key = 'focus'
+
+    @pytest.mark.parametrize('key',['production','shadow','focus'])
+    def test_permissions_all_false(h,key):
+        h[key]=True
+&gt;       with pytest.raises(ValueError,match='PERMISSIONS_FALSE'):o.validate(head=h)
+                                                                 ^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:167: in validate
+    raw=exact(b,root)
+        ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_v4_16_false" time="0.534"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': True, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+
+    def test_v4_16_false(h):
+        h['V4_16']=True
+&gt;       with pytest.raises(ValueError,match='PERMISSIONS_FALSE'):o.validate(head=h)
+                                                                 ^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:71: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:167: in validate
+    raw=exact(b,root)
+        ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_supersession_graph_acyclic" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_no_latest_glob_discovery" time="0.000" /><testcase classname="tests.test_pre16_governance" name="test_missing_mandatory_item_fail_closed[A01]" time="0.003" /><testcase classname="tests.test_pre16_governance" name="test_missing_mandatory_item_fail_closed[A02]" time="0.003" /><testcase classname="tests.test_pre16_governance" name="test_missing_mandatory_item_fail_closed[A03]" time="0.003" /><testcase classname="tests.test_pre16_governance" name="test_missing_mandatory_item_fail_closed[A04]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_missing_mandatory_item_fail_closed[A05]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_missing_mandatory_item_fail_closed[A06]" time="0.003" /><testcase classname="tests.test_pre16_governance" name="test_missing_mandatory_item_fail_closed[A07]" time="0.003" /><testcase classname="tests.test_pre16_governance" name="test_missing_mandatory_item_fail_closed[A08]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_missing_mandatory_item_fail_closed[A09]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_missing_mandatory_item_fail_closed[OWNER]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_missing_mandatory_item_fail_closed[READER]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_missing_mandatory_item_fail_closed[HISTORICAL_PIT_EFFECTIVENESS]" time="0.003" /><testcase classname="tests.test_pre16_governance" name="test_missing_mandatory_item_fail_closed[REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME]" time="0.004" /><testcase classname="tests.test_pre16_governance" name="test_missing_mandatory_item_fail_closed[REALTIME_ACCEPTED_COHORT_MATURITY]" time="0.003" /><testcase classname="tests.test_pre16_governance" name="test_missing_mandatory_item_fail_closed[V4_15_FWD_ADJ_VECTOR_01]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_no_global_authority_activation[A03]" time="0.014"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+key = 'A03'
+
+    @pytest.mark.parametrize('key',['A03','A06','A07','OWNER','READER'])
+    def test_no_global_authority_activation(h,key):
+        h['entries'][key]['capability_dimensions']['active_global_trust_root']=True
+&gt;       with pytest.raises(ValueError,match='INACTIVE_OWNER_NO_CUTOVER'):o.verify_entries(h,o.ROOT)
+                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:92: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_no_global_authority_activation[A06]" time="0.014"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+key = 'A06'
+
+    @pytest.mark.parametrize('key',['A03','A06','A07','OWNER','READER'])
+    def test_no_global_authority_activation(h,key):
+        h['entries'][key]['capability_dimensions']['active_global_trust_root']=True
+&gt;       with pytest.raises(ValueError,match='INACTIVE_OWNER_NO_CUTOVER'):o.verify_entries(h,o.ROOT)
+                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:92: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_no_global_authority_activation[A07]" time="0.016"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+key = 'A07'
+
+    @pytest.mark.parametrize('key',['A03','A06','A07','OWNER','READER'])
+    def test_no_global_authority_activation(h,key):
+        h['entries'][key]['capability_dimensions']['active_global_trust_root']=True
+&gt;       with pytest.raises(ValueError,match='INACTIVE_OWNER_NO_CUTOVER'):o.verify_entries(h,o.ROOT)
+                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:92: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_no_global_authority_activation[OWNER]" time="0.013"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+key = 'OWNER'
+
+    @pytest.mark.parametrize('key',['A03','A06','A07','OWNER','READER'])
+    def test_no_global_authority_activation(h,key):
+        h['entries'][key]['capability_dimensions']['active_global_trust_root']=True
+&gt;       with pytest.raises(ValueError,match='INACTIVE_OWNER_NO_CUTOVER'):o.verify_entries(h,o.ROOT)
+                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:92: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_no_global_authority_activation[READER]" time="0.014"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+key = 'READER'
+
+    @pytest.mark.parametrize('key',['A03','A06','A07','OWNER','READER'])
+    def test_no_global_authority_activation(h,key):
+        h['entries'][key]['capability_dimensions']['active_global_trust_root']=True
+&gt;       with pytest.raises(ValueError,match='INACTIVE_OWNER_NO_CUTOVER'):o.verify_entries(h,o.ROOT)
+                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:92: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_reader_metadata_not_permission" time="0.539"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">def test_reader_metadata_not_permission():
+&gt;       reader=CurrentAuditStatus();assert reader.stage_permission() is False
+               ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\pre16_current_audit_reader.py:9: in __init__
+    self.validation=validate(self.root)
+                    ^^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:167: in validate
+    raw=exact(b,root)
+        ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_independent_oracle_no_writer_or_business_evaluator" time="0.005" /><testcase classname="tests.test_pre16_governance" name="test_full_independent_oracle" time="0.535"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">&gt;   def test_full_independent_oracle():assert o.validate()['PRE16_CROSS_STAGE_GOVERNANCE_RECONCILIATION']=='PASS_LOCAL'
+                                              ^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:167: in validate
+    raw=exact(b,root)
+        ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_protected_all_history" time="1.287" /><testcase classname="tests.test_pre16_governance" name="test_governance_namespace_cannot_change_accepted" time="0.001" /><testcase classname="tests.test_pre16_governance" name="test_source_selection_cannot_use_implementation" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_protected_literal_newline_change_rejected[V4_STAGE_ACCEPTED_HEAD]" time="0.015" /><testcase classname="tests.test_pre16_governance" name="test_protected_literal_newline_change_rejected[V4_DATA_ACCEPTED_HEAD]" time="0.014" /><testcase classname="tests.test_pre16_governance" name="test_protected_literal_newline_change_rejected[V4_10_ACCEPTED_HEAD]" time="0.010" /><testcase classname="tests.test_pre16_governance" name="test_protected_literal_newline_change_rejected[V4_11_ACCEPTED_HEAD]" time="0.012" /><testcase classname="tests.test_pre16_governance" name="test_protected_literal_newline_change_rejected[V4_12_ACCEPTED_HEAD]" time="0.009" /><testcase classname="tests.test_pre16_governance" name="test_protected_literal_newline_change_rejected[V4_13_ACCEPTED_HEAD_AMENDED_R1]" time="0.007" /><testcase classname="tests.test_pre16_governance" name="test_protected_literal_newline_change_rejected[V4_14_ACCEPTED_HEAD]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_protected_literal_newline_change_rejected[V4_15_ACCEPTED_HEAD]" time="0.011" /><testcase classname="tests.test_pre16_governance" name="test_historical_status_cannot_be_rewritten" time="0.004" /><testcase classname="tests.test_pre16_governance" name="test_consumer_inventory_complete" time="0.000" /><testcase classname="tests.test_pre16_governance" name="test_a04_h21_single_canonical_issue" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_a04_h21_alias_consistent" time="0.026" /><testcase classname="tests.test_pre16_governance" name="test_alias_cycle_rejected" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_alias_target_missing_rejected" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_alias_block_semantics_mismatch_rejected[blocking_scope-NONE]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_alias_block_semantics_mismatch_rejected[blocks_v4_16_contract_entry-True]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_alias_block_semantics_mismatch_rejected[blocks_v4_16_runtime_activation-True]" time="0.003" /><testcase classname="tests.test_pre16_governance" name="test_alias_block_semantics_mismatch_rejected[blocks_affected_capability_in_shadow-False]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_alias_block_semantics_mismatch_rejected[blocks_production_cutover_for_scope-False]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_alias_block_semantics_mismatch_rejected[blocks_shadow_entry-False]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_alias_block_semantics_mismatch_rejected[affected_capabilities-value6]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_alias_state_mismatch_rejected" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_duplicate_logical_identity_rejected" time="0.003" /><testcase classname="tests.test_pre16_governance" name="test_only_gov_pre16_blocks_global_contract_entry" time="0.003" /><testcase classname="tests.test_pre16_governance" name="test_a04_h21_does_not_block_contract_entry" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_historical_amount_a_does_not_block_contract_entry" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_a08_current_runtime_does_not_block_contract_entry" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_a08_current_runtime_remains_shadow_capability_blocked" time="0.013"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">h = {'GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS': ['GOV_PRE16_01'], 'NEXT': 'STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT', 'V4_16': False, 'V4_16_entry': 'HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT', ...}
+
+    def test_a08_current_runtime_remains_shadow_capability_blocked(h):
+        e=h['entries']['A08_CURRENT_RUNTIME'];assert e['blocks_affected_capability_in_shadow'] and e['affected_capabilities']==['V4_09_N01_CURRENT_RUNTIME_PREWATCH']
+        e['current_state']='ACCEPTED_SCOPED'
+&gt;       with pytest.raises(ValueError,match='DERIVED_STATE_A08_CURRENT_RUNTIME'):o.verify_entries(h,o.ROOT)
+                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:174: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:110: in verify_entries
+    for b in e['evidence_bindings']:exact(b,root)
+                                    ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_accumulation_does_not_block_unrelated_engineering[A03]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_accumulation_does_not_block_unrelated_engineering[A04_H21_CONSUMER]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_accumulation_does_not_block_unrelated_engineering[A04_HISTORICAL_AMOUNT_A]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_accumulation_does_not_block_unrelated_engineering[A07]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_accumulation_does_not_block_unrelated_engineering[HISTORICAL_PIT_EFFECTIVENESS]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_accumulation_does_not_block_unrelated_engineering[REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME]" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_capability_only_block_not_global_shadow_block" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_reader_resolves_canonical_issue" time="0.550"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">def test_reader_resolves_canonical_issue():
+&gt;       r=CurrentAuditStatus();assert r.canonical_entry('AUD_A04_AMOUNT_A_FORWARD_CONSUMER')==r.canonical_entry('A04_H21_CONSUMER')
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:187: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\pre16_current_audit_reader.py:9: in __init__
+    self.validation=validate(self.root)
+                    ^^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:167: in validate
+    raw=exact(b,root)
+        ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_pre16_governance" name="test_stage_head_unchanged" time="0.022" /><testcase classname="tests.test_pre16_governance" name="test_data_head_unchanged" time="0.022" /><testcase classname="tests.test_pre16_governance" name="test_business_runtime_sources_unchanged" time="0.075" /><testcase classname="tests.test_pre16_governance" name="test_audited_core_cannot_change" time="0.025" /><testcase classname="tests.test_pre16_governance" name="test_missing_blocking_schema_rejected" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_unregistered_alias_rejected" time="0.002" /><testcase classname="tests.test_pre16_governance" name="test_current_reader_never_merges_alias_conflict" time="0.537"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'">def test_current_reader_never_merges_alias_conflict():
+&gt;       r=CurrentAuditStatus();r.head['entries']['AUD_A04_AMOUNT_A_FORWARD_CONSUMER']['blocks_affected_capability_in_shadow']=False
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:216: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\pre16_current_audit_reader.py:9: in __init__
+    self.validation=validate(self.root)
+                    ^^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:167: in validate
+    raw=exact(b,root)
+        ^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:61: in exact
+    raw=p.read_bytes();require(hashlib.sha256(raw).hexdigest()==b['sha256'] and len(raw)==b.get('bytes',b.get('byte_count')),'EXACT_EVIDENCE_'+b['path']);return raw
+        ^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/v4_full_closeout_20261012/denominator/historical_pre16_fixture/data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_pre16_fixture\\data\\v4\\scoped_acceptance_r3\\b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase></testsuite></testsuites>

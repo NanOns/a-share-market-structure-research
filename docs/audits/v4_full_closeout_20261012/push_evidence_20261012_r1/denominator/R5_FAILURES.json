@@ -1,0 +1,232 @@
+[
+ [
+  "tests.test_pre16_governance",
+  "test_reader_metadata_not_permission",
+  "FileNotFoundError: [Errno 2] No such file or directory: 'G:\\\\codex work\\\\v4-full-closeout-20261012\\\\reports\\\\r21\\\\OPEN_AUDIT_ITEMS.json'"
+ ],
+ [
+  "tests.test_pre16_governance",
+  "test_full_independent_oracle",
+  "FileNotFoundError: [Errno 2] No such file or directory: 'G:\\\\codex work\\\\v4-full-closeout-20261012\\\\reports\\\\r21\\\\OPEN_AUDIT_ITEMS.json'"
+ ],
+ [
+  "tests.test_pre16_governance",
+  "test_protected_all_history",
+  "ValueError: BUSINESS_SOURCE_KEEP_ALL"
+ ],
+ [
+  "tests.test_pre16_governance",
+  "test_reader_resolves_canonical_issue",
+  "FileNotFoundError: [Errno 2] No such file or directory: 'G:\\\\codex work\\\\v4-full-closeout-20261012\\\\reports\\\\r21\\\\OPEN_AUDIT_ITEMS.json'"
+ ],
+ [
+  "tests.test_pre16_governance",
+  "test_business_runtime_sources_unchanged",
+  "AssertionError: assert b'src/adjustm...4_server.py\\n' == b''\n  \n  Use -v to get more diff"
+ ],
+ [
+  "tests.test_pre16_governance",
+  "test_current_reader_never_merges_alias_conflict",
+  "FileNotFoundError: [Errno 2] No such file or directory: 'G:\\\\codex work\\\\v4-full-closeout-20261012\\\\reports\\\\r21\\\\OPEN_AUDIT_ITEMS.json'"
+ ],
+ [
+  "tests.test_r17b_promotion",
+  "test_independent_p01_p15_promotion_gate",
+  "AssertionError: assert ('FAIL' == 'PASS'\n  \n  - PASS\n  + FAIL)"
+ ],
+ [
+  "tests.test_r17b_promotion",
+  "test_formal_reader_does_not_consult_informal_receipt",
+  "FileNotFoundError: [Errno 2] No such file or directory: 'G:\\\\codex work\\\\v4-full-closeout-20261012\\\\reports\\\\r17r1a\\\\stage_contract.json'"
+ ],
+ [
+  "tests.test_r17b_promotion",
+  "test_formal_reader_resolves_stage_without_changing_frozen_contract_or_binder",
+  "FileNotFoundError: [Errno 2] No such file or directory: 'G:\\\\codex work\\\\v4-full-closeout-20261012\\\\reports\\\\r17r1a\\\\stage_contract.json'"
+ ],
+ [
+  "tests.test_r18b_persisted",
+  "test_full_persisted_owner_lifecycle",
+  "ValueError: ORACLE_SOURCE_MISSING"
+ ],
+ [
+  "tests.test_r18b_persisted",
+  "test_fresh_process_pair_revision_and_determinism",
+  "RuntimeError: Traceback (most recent call last):\n  File \"<frozen runpy>\", line 203, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"G:\\codex work\\v4-full-closeout-20261012\\scripts\\r18_replay_worker.py\", line 21, in <module>\n    if __name__=='__main__':print(json.dumps(run(*sys.argv[1:]),sort_keys=True))\n                                             ~~~^^^^^^^^^^^^^^^\n  File \"G:\\codex work\\v4-full-closeout-20261012\\scripts\\r18_replay_worker.py\", line 16, in run\n    result=replay(a,envelope,prior)\n  File \"G:\\codex work\\v4-full-closeout-20261012\\src\\workbench_analysis\\v4_14_full_dag.py\", line 89, in replay\n    contracts=AcceptedContracts(root);selection=dict(quality='UNKNOWN',membership_basis='UNKNOWN')\n  File \"G:\\codex work\\v4-full-closeout-20261012\\src\\workbench_analysis\\v4_13_accepted_contract_package.py\", line 12, in __init__\n    try: validate(self.root)\n         ~~~~~~~~^^^^^^^^^^^\n  File \"G:\\codex work\\v4-full-closeout-20261012\\scripts\\validate_r17r1_active_closure.py\", line 54, in validate\n    for ref in read('reports/r17r1a/stage_contract.json',root)['protected']:\n               ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"G:\\codex work\\v4-full-closeout-20261012\\scripts\\validate_r17r1_active_closure.py\", line 8, in read\n    def read(p,root=ROOT):return json.loads((root/p).read_bytes())\n                                            ~~~~~~~~~~~~~~~~~~~^^\n  File \"E:\\python\\Lib\\pathlib\\_abc.py\", line 625, in read_bytes\n    with self.open(mode='rb') as f:\n         ~~~~~~~~~^^^^^^^^^^^\n  File \"E:\\python\\Lib\\pathlib\\_local.py\", line 537, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: 'G:\\\\codex work\\\\v4-full-closeout-20261012\\\\reports\\\\r17r1a\\\\stage_contract.json'"
+ ],
+ [
+  "tests.test_r18r1r1_consumption",
+  "test_field_precise_preexecution_proof",
+  "ValueError: ORACLE_EXACT_BYTES_CHANGED"
+ ],
+ [
+  "tests.test_r20a_current",
+  "test_independent_gate",
+  "ValueError: CURRENT_METADATA_COHERENCE_EXACT"
+ ],
+ [
+  "tests.test_r20e_persisted",
+  "test_full_independent_disk_oracle",
+  "ValueError: CURRENT_METADATA_COHERENCE_EXACT"
+ ],
+ [
+  "tests.test_r21_promotion",
+  "test_independent_promotion",
+  "ValueError: BUSINESS_ALGORITHMS_KEEP"
+ ],
+ [
+  "tests.test_remainder_historical_routing",
+  "test_old_v13_reader_remains_pinned",
+  "Failed: DID NOT RAISE ValueError"
+ ],
+ [
+  "tests.test_v4_13_r15_contract",
+  "test_full_contract_completeness_and_protected_artifacts",
+  "AssertionError: AGENTS.md"
+ ],
+ [
+  "tests.test_v4_13_r16a_runtime",
+  "test_A11_historical_membership_fail_closed",
+  "ValueError: ACCEPTED_SOURCE_DIGEST_MISMATCH"
+ ],
+ [
+  "tests.test_v4_13_r16a_runtime",
+  "test_A12_fallback_unknown_no_io",
+  "ValueError: ACCEPTED_SOURCE_DIGEST_MISMATCH"
+ ],
+ [
+  "tests.test_v4_13_r16r1_repair",
+  "test_component_provenance_owner_dates",
+  "ValueError: ACCEPTED_SOURCE_DIGEST_MISMATCH"
+ ],
+ [
+  "tests.test_v4_14_rollback",
+  "test_eight_actual_sandbox_scenarios",
+  "ValueError: ORACLE_REAL_V4_14_HEAD"
+ ],
+ [
+  "tests.test_v4_18_migration_contract",
+  "test_all_declared_tables_have_explicit_namespace_rules",
+  "AssertionError: assert {('migrations...isions'), ...} == {('migrations...isions'), ...}\n  \n  Extra items in the left set:\n  ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.reports')\n  ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.label_revisions')\n  ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.dataset_eligibility_ledger')\n  ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.dataset_rows')\n  ('src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql', 'fep.activations')...\n  \n  ...Full output truncated (31 lines hidden), use '-vv' to show"
+ ],
+ [
+  "tests.test_v4_backend_contract_r3",
+  "test_current_daily_jobs_require_sqlite_before_postgres_only_guard",
+  "Failed: DID NOT RAISE ValueError"
+ ],
+ [
+  "tests.test_v4_default_workbench_service",
+  "test_service_starts_without_legacy_and_root_is_v4",
+  "urllib.error.HTTPError: HTTP Error 503: Service Unavailable"
+ ],
+ [
+  "tests.test_v4_r14_governance_contracts",
+  "test_exact_scoped_promotion",
+  "AssertionError: scripts/validate_v4_12_r11_chain.py"
+ ],
+ [
+  "tests.test_v4_r14_governance_contracts",
+  "test_zero_mutation_repeat",
+  "AssertionError: scripts/validate_v4_12_r11_chain.py"
+ ],
+ [
+  "tests.test_v4_r14_governance_contracts",
+  "test_full_contract_completeness",
+  "AssertionError: scripts/validate_v4_12_r11_chain.py"
+ ],
+ [
+  "tests.test_v4_shadow_pg_r4",
+  "test_invalid_contract_blocks_v4_startup",
+  "Failed: DID NOT RAISE ResearchContextError"
+ ],
+ [
+  "tests.v4_09.test_r1_1_lineage_immutability",
+  "test_b0_validator_rejects_self_consistent_wrong_producer_or_contract[b0_contract]",
+  "AssertionError: assert False\n +  where False = all(dict_values([True, False, True, True]))\n +    where dict_values([True, False, True, True]) = <built-in method values of dict object at 0x00000240EE7C6D80>()\n +      where <built-in method values of dict object at 0x00000240EE7C6D80> = {'b0_contract_matches_implementation': True, 'b0_producer_matches_implementation': False, 'b0_producer_exports_evaluate_b0': True, 'b0_evidence_binding_matches_implementation': True}.values\n +        where {'b0_contract_matches_implementation': True, 'b0_producer_matches_implementation': False, 'b0_producer_exports_evaluate_b0': True, 'b0_evidence_binding_matches_implementation': True} = b0_semantic_checks({'accepted_at': '2026-09-30', 'accepted_context_contract': {'byte_count': 2134, 'path': 'config/v4_08_accepted_context..., 'sha256': 'e71a66757ae664bf6f65b8c5a030caf4e35b70921925fc9e83953fa2ba71a737'}, ...}, 'amended_at': '2026-09-30', ...})"
+ ],
+ [
+  "tests.v4_09.test_r1_1_lineage_immutability",
+  "test_b0_validator_rejects_self_consistent_wrong_producer_or_contract[b0_producer]",
+  "AssertionError: assert False\n +  where False = all(dict_values([True, False, True, True]))\n +    where dict_values([True, False, True, True]) = <built-in method values of dict object at 0x00000240FFDFF700>()\n +      where <built-in method values of dict object at 0x00000240FFDFF700> = {'b0_contract_matches_implementation': True, 'b0_producer_matches_implementation': False, 'b0_producer_exports_evaluate_b0': True, 'b0_evidence_binding_matches_implementation': True}.values\n +        where {'b0_contract_matches_implementation': True, 'b0_producer_matches_implementation': False, 'b0_producer_exports_evaluate_b0': True, 'b0_evidence_binding_matches_implementation': True} = b0_semantic_checks({'accepted_at': '2026-09-30', 'accepted_context_contract': {'byte_count': 2134, 'path': 'config/v4_08_accepted_context..., 'sha256': 'e71a66757ae664bf6f65b8c5a030caf4e35b70921925fc9e83953fa2ba71a737'}, ...}, 'amended_at': '2026-09-30', ...})"
+ ],
+ [
+  "tests.v4_09.test_stock_prewatch",
+  "test_production_and_v4_09_acceptance_stay_disabled",
+  "workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED"
+ ],
+ [
+  "tests.v4_11.test_confirmation",
+  "test_no_symbol",
+  "AssertionError: assert 'FAIL' == 'PASS'\n  \n  - PASS\n  + FAIL"
+ ],
+ [
+  "tests.v4_a03_a04_a07_r2.test_real_candidate_readback",
+  "test_real_accepted_baseline_immutable_pit_readback",
+  "ValueError: SOURCE_BINDING_MISMATCH"
+ ],
+ [
+  "tests.v4_a03_a04_a07_r2.test_real_candidate_readback",
+  "test_real_amount_raw_bytes_and_independent_exact_twenty_arithmetic",
+  "ValueError: SOURCE_BINDING_MISMATCH"
+ ],
+ [
+  "tests.v4_a03_a04_a07_r2.test_real_candidate_readback",
+  "test_real_gbbq_capture_and_historical_fail_closed_readback",
+  "ValueError: SOURCE_BINDING_MISMATCH"
+ ],
+ [
+  "tests.v4_a03_a04_a07_r2.test_real_candidate_readback",
+  "test_final_durable_inventory_byte_archives_and_runtime_handoffs",
+  "ValueError: SOURCE_BINDING_MISMATCH"
+ ],
+ [
+  "tests.v4_a04_r3.test_independent_arithmetic_and_evidence",
+  "test_real_scope_archaeology_consumer_and_candidate_evidence_byte_readback",
+  "ValueError: SOURCE_BINDING_MISMATCH"
+ ],
+ [
+  "tests.v4_a04_r3.test_strict_source_admission",
+  "test_current_source_roots_are_verified_against_actual_accepted_scope",
+  "ValueError: SOURCE_BINDING_MISMATCH"
+ ],
+ [
+  "tests.v4_a04_r3.test_strict_source_admission",
+  "test_self_declared_accepted_membership_replica_not_admitted",
+  "AssertionError: Regex pattern did not match.\n  Expected regex: 'MEMBERSHIP_NOT_EXACT_ACCEPTED_V4_08_SOURCE'\n  Actual message: 'SOURCE_BINDING_MISMATCH'"
+ ],
+ [
+  "tests.v4_dm01_promotion.test_accepted_chain",
+  "test_anchor_is_exact_bytes_and_wrong_hash_never_redirects",
+  "AssertionError: assert 'BLOCKED' == 'PASS_ENGINEERING_EXPORTS'\n  \n  - PASS_ENGINEERING_EXPORTS\n  + BLOCKED"
+ ],
+ [
+  "tests.v4_dm01_r3.test_real_authority_and_chain",
+  "test_atomic_failure_determinism_and_heads_preserved",
+  "AssertionError: assert '936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0' in ('529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb', '529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb')"
+ ],
+ [
+  "tests.v4_dm01_r4.test_runtime",
+  "test_current_real_v2_parent_and_future_wait",
+  "failed on setup with \"FileNotFoundError: [Errno 2] No such file or directory: 'G:\\\\codex work\\\\v4-full-closeout-20261012\\\\docs\\\\evidence\\\\forward_r2_remainder_consolidated_20261007\\\\historical_dm01\\\\dm01_go_forward_runtime_contract_r4r1.json'\""
+ ],
+ [
+  "tests.v4_dm01_r4.test_runtime",
+  "test_actual_entrypoint_no_capture",
+  "AssertionError: \nassert 2 == 0\n +  where 2 = CompletedProcess(args=['E:\\\\python\\\\python.exe', '-B', 'G:\\\\codex work\\\\v4-full-closeout-20261012\\\\scripts\\\\run_v4_dm0...CKED\", \"reason\": \"R4_ACCEPTED_ENVELOPE_DIGEST_MISMATCH\", \"source_requests\": 0, \"data_head_moved\": false}\\n', stderr='').returncode"
+ ],
+ [
+  "tests.v4_dm01_r4.test_runtime",
+  "test_current_parent_package_is_exact_accepted_chain",
+  "ValueError: INPUT_DIGEST_MISMATCH"
+ ],
+ [
+  "tests.v4_dm01_r4r2.test_acceptance_seal",
+  "test_sealed_future_wait_has_no_source_or_publication",
+  "ValueError: BRIDGE_EXACT_BINDING_REQUIRED"
+ ],
+ [
+  "tests.v4_dm01_r4r2.test_bridge",
+  "test_R4R2_12_real_shaped_parity",
+  "FileNotFoundError: [Errno 2] No such file or directory: 'G:\\\\codex work\\\\v4-full-closeout-20261012\\\\docs\\\\evidence\\\\r25\\\\V4_R24R1_GO_FORWARD_INPUT_AUTHORITY_COHORT_IDENTITY_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md'"
+ ]
+]

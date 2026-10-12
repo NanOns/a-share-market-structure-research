@@ -1,0 +1,43 @@
+....F...                                                                 [100%]
+================================== FAILURES ===================================
+_____________ test_week_end_uses_formal_owner_not_always_forming ______________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/chunk_index_r1/test_week_end_uses_formal_owne0')
+
+    def test_week_end_uses_formal_owner_not_always_forming(tmp_path):
+        bff=fixture_bff(tmp_path,[bar('2026-10-08',[10,12,9,11]),bar('2026-10-09',[11,13,10,12])])
+>       _,data=bff.chart('2026-10-09','SEC-X',{'period':'W','price_basis':'RAW'})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_core_product_read_r1.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <test_core_product_read_r1.ChartFixture object at 0x000001EFF1EB9E80>
+day = '2026-10-09', sid = 'SEC-X', q = {'period': 'W', 'price_basis': 'RAW'}
+
+    def chart(self,day,sid,q):
+        period=q.get('period','D');basis=q.get('price_basis','QFQ')
+        if period not in ('D','W','M') or basis not in ('RAW','QFQ'):raise ValueError('INVALID_CHART_QUERY')
+        pack=self.history_pack(day)
+        if not pack:return self.missing(day,'stocks/'+sid+'/chart','DATED_HISTORY_INDEX_NOT_BOUND')
+        manifest,_=pack
+        from workbench_db.v4_history_pg_r1 import read
+        index_root=self.isolated_history[1] if self.isolated_history is not None else self.api.root
+        value=read(index_root,manifest['history_index'],day,sid)
+        if value is None:return 404,self.envelope(day,status='NOT_FOUND',code='ENTITY_NOT_FOUND')
+        bars=[]
+        for b in value:
+            if b['trade_date']>day:raise ValueError('FUTURE_CHART_BAR')
+            prices=b['raw_ohlc' if basis=='RAW' else 'qfq_ohlc']
+            bars.append(dict(trade_date=b['trade_date'],**dict(zip(('open','high','low','close'),prices or [None]*4)),volume=b['volume'],amount=b['amount'],quality='KNOWN' if prices else 'UNKNOWN',reason='BLOCKED_ADJUSTMENT_EVENT' if not prices else None))
+        data=aggregate(bars,period)
+        if period!='D' and data:
+            owner_domain='period_raw' if basis=='RAW' else 'period_adjusted'
+>           period_rows=self.source(owner_domain,day,security_id=sid)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           TypeError: ChartFixture.source() got an unexpected keyword argument 'security_id'
+
+src\workbench_service\core_product_bff_r1.py:302: TypeError
+=========================== short test summary info ===========================
+FAILED tests/test_core_product_read_r1.py::test_week_end_uses_formal_owner_not_always_forming
+1 failed, 7 passed in 2.89s

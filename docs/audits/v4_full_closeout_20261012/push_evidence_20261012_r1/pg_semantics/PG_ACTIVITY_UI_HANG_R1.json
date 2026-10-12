@@ -1,0 +1,41 @@
+{
+  "activities": [
+    [
+      8876,
+      "postgres",
+      "r4_isolated_admin",
+      "",
+      "idle in transaction",
+      "Client",
+      "ClientRead",
+      "2026-10-12 13:35:15.360052+08",
+      "2026-10-12 13:34:27.428382+08",
+      "SELECT security,payload FROM bars WHERE day=$1"
+    ],
+    [
+      22720,
+      "postgres",
+      "r4_isolated_admin",
+      "",
+      "idle in transaction",
+      "Client",
+      "ClientRead",
+      "2026-10-12 13:34:35.971957+08",
+      "2026-10-12 13:34:04.687541+08",
+      "SELECT day,payload FROM day_inputs"
+    ],
+    [
+      35992,
+      "postgres",
+      "r4_isolated_admin",
+      "",
+      "active",
+      null,
+      null,
+      "2026-10-12 13:35:15.53228+08",
+      "2026-10-12 13:35:15.53228+08",
+      "select pid,datname,usename,application_name,state,wait_event_type,wait_event,query_start::text,xact_start::text,query from pg_stat_activity where backend_type='client backend' order by pid"
+    ]
+  ],
+  "ungranted_locks": []
+}

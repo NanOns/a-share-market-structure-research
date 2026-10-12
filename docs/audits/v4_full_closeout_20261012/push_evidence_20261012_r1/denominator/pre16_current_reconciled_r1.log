@@ -1,0 +1,1979 @@
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE [ 76%]
+EEEEEEEEEEEEEEEEEEEEEE                                                   [100%]
+=================================== ERRORS ====================================
+___________ ERROR at setup of test_historical_r1_registry_immutable ___________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_________ ERROR at setup of test_current_a01_not_taken_from_stale_r1 __________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_________ ERROR at setup of test_current_a02_exact_scoped_acceptance __________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_____________ ERROR at setup of test_a02_as_recorded_not_upgraded _____________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_a04_scope_not_overclaimed[formal_consumer_enabled-True] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_a04_scope_not_overclaimed[historical_formal_capability-PASS] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_____ ERROR at setup of test_a04_scope_not_overclaimed[known_amount_a-1] ______
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_a04_scope_not_overclaimed[consumer_auto_activation_after_H21-True] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_a08_a09_implementation_only_does_not_close_audit[A08] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_a08_a09_implementation_only_does_not_close_audit[A09] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_a08_a09_implementation_only_does_not_close_audit[A08_CURRENT_RUNTIME] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+________________ ERROR at setup of test_current_stage_is_v4_15 ________________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_______________ ERROR at setup of test_data_head_is_2026_09_30 ________________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+____________ ERROR at setup of test_v4_10_to_v4_15_heads_unchanged ____________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+______________ ERROR at setup of test_historical_pit_not_granted ______________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+__________________ ERROR at setup of test_real_maturity_none __________________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_nonblocking_debt_not_promoted_to_pass[REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_nonblocking_debt_not_promoted_to_pass[REALTIME_ACCEPTED_COHORT_MATURITY] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_nonblocking_debt_not_promoted_to_pass[V4_15_FWD_ADJ_VECTOR_01] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+__________ ERROR at setup of test_permissions_all_false[production] ___________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+____________ ERROR at setup of test_permissions_all_false[shadow] _____________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_____________ ERROR at setup of test_permissions_all_false[focus] _____________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_____________________ ERROR at setup of test_v4_16_false ______________________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+______________ ERROR at setup of test_supersession_graph_acyclic ______________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_______________ ERROR at setup of test_no_latest_glob_discovery _______________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_______ ERROR at setup of test_missing_mandatory_item_fail_closed[A01] ________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_______ ERROR at setup of test_missing_mandatory_item_fail_closed[A02] ________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_______ ERROR at setup of test_missing_mandatory_item_fail_closed[A03] ________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_______ ERROR at setup of test_missing_mandatory_item_fail_closed[A04] ________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_______ ERROR at setup of test_missing_mandatory_item_fail_closed[A05] ________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_______ ERROR at setup of test_missing_mandatory_item_fail_closed[A06] ________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_______ ERROR at setup of test_missing_mandatory_item_fail_closed[A07] ________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_______ ERROR at setup of test_missing_mandatory_item_fail_closed[A08] ________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_______ ERROR at setup of test_missing_mandatory_item_fail_closed[A09] ________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+______ ERROR at setup of test_missing_mandatory_item_fail_closed[OWNER] _______
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+______ ERROR at setup of test_missing_mandatory_item_fail_closed[READER] ______
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_missing_mandatory_item_fail_closed[HISTORICAL_PIT_EFFECTIVENESS] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_missing_mandatory_item_fail_closed[REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_missing_mandatory_item_fail_closed[REALTIME_ACCEPTED_COHORT_MATURITY] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_missing_mandatory_item_fail_closed[V4_15_FWD_ADJ_VECTOR_01] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_________ ERROR at setup of test_no_global_authority_activation[A03] __________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_________ ERROR at setup of test_no_global_authority_activation[A06] __________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_________ ERROR at setup of test_no_global_authority_activation[A07] __________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+________ ERROR at setup of test_no_global_authority_activation[OWNER] _________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+________ ERROR at setup of test_no_global_authority_activation[READER] ________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+____________ ERROR at setup of test_reader_metadata_not_permission ____________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+__ ERROR at setup of test_independent_oracle_no_writer_or_business_evaluator __
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_______________ ERROR at setup of test_full_independent_oracle ________________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+________________ ERROR at setup of test_protected_all_history _________________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_____ ERROR at setup of test_governance_namespace_cannot_change_accepted ______
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+______ ERROR at setup of test_source_selection_cannot_use_implementation ______
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_protected_literal_newline_change_rejected[V4_STAGE_ACCEPTED_HEAD] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_protected_literal_newline_change_rejected[V4_DATA_ACCEPTED_HEAD] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_protected_literal_newline_change_rejected[V4_10_ACCEPTED_HEAD] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_protected_literal_newline_change_rejected[V4_11_ACCEPTED_HEAD] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_protected_literal_newline_change_rejected[V4_12_ACCEPTED_HEAD] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_protected_literal_newline_change_rejected[V4_13_ACCEPTED_HEAD_AMENDED_R1] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_protected_literal_newline_change_rejected[V4_14_ACCEPTED_HEAD] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_protected_literal_newline_change_rejected[V4_15_ACCEPTED_HEAD] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+________ ERROR at setup of test_historical_status_cannot_be_rewritten _________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_____________ ERROR at setup of test_consumer_inventory_complete ______________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+____________ ERROR at setup of test_a04_h21_single_canonical_issue ____________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_______________ ERROR at setup of test_a04_h21_alias_consistent _______________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_________________ ERROR at setup of test_alias_cycle_rejected _________________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+____________ ERROR at setup of test_alias_target_missing_rejected _____________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_alias_block_semantics_mismatch_rejected[blocking_scope-NONE] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_alias_block_semantics_mismatch_rejected[blocks_v4_16_contract_entry-True] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_alias_block_semantics_mismatch_rejected[blocks_v4_16_runtime_activation-True] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_alias_block_semantics_mismatch_rejected[blocks_affected_capability_in_shadow-False] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_alias_block_semantics_mismatch_rejected[blocks_production_cutover_for_scope-False] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_alias_block_semantics_mismatch_rejected[blocks_shadow_entry-False] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_alias_block_semantics_mismatch_rejected[affected_capabilities-value6] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+____________ ERROR at setup of test_alias_state_mismatch_rejected _____________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_________ ERROR at setup of test_duplicate_logical_identity_rejected __________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_____ ERROR at setup of test_only_gov_pre16_blocks_global_contract_entry ______
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+________ ERROR at setup of test_a04_h21_does_not_block_contract_entry _________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+__ ERROR at setup of test_historical_amount_a_does_not_block_contract_entry ___
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+__ ERROR at setup of test_a08_current_runtime_does_not_block_contract_entry ___
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_a08_current_runtime_remains_shadow_capability_blocked _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_accumulation_does_not_block_unrelated_engineering[A03] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_accumulation_does_not_block_unrelated_engineering[A04_H21_CONSUMER] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_accumulation_does_not_block_unrelated_engineering[A04_HISTORICAL_AMOUNT_A] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_accumulation_does_not_block_unrelated_engineering[A07] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_accumulation_does_not_block_unrelated_engineering[HISTORICAL_PIT_EFFECTIVENESS] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_ ERROR at setup of test_accumulation_does_not_block_unrelated_engineering[REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME] _
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+____ ERROR at setup of test_capability_only_block_not_global_shadow_block _____
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+___________ ERROR at setup of test_reader_resolves_canonical_issue ____________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_________________ ERROR at setup of test_stage_head_unchanged _________________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_________________ ERROR at setup of test_data_head_unchanged __________________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+__________ ERROR at setup of test_business_runtime_sources_unchanged __________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+______________ ERROR at setup of test_audited_core_cannot_change ______________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+___________ ERROR at setup of test_missing_blocking_schema_rejected ___________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+_____________ ERROR at setup of test_unregistered_alias_rejected ______________
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+______ ERROR at setup of test_current_reader_never_merges_alias_conflict ______
+
+request = <SubRequest 'exact_frozen_stage_test_profile' for <Function test_historical_r1_registry_immutable>>
+
+    @pytest.fixture(autouse=True,scope='module')
+    def exact_frozen_stage_test_profile(request):
+        """Only enumerated historical test modules use their exact Git input tree."""
+        import sys,types
+        monkeypatch=pytest.MonkeyPatch();request.addfinalizer(monkeypatch.undo)
+        from tests.remainder_historical_profiles import profile,install
+        registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
+        relative=request.node.path.relative_to(REPOSITORY).as_posix()
+        row=next((r for r in registry['profiles'] if r['path']==relative),None)
+        if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
+        import hashlib
+>       if hashlib.sha256(request.node.path.read_bytes()).hexdigest()!=row['source']['sha256']:raise ValueError('FROZEN_TEST_SOURCE_CHANGED')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: FROZEN_TEST_SOURCE_CHANGED
+
+tests\remainder_isolation_plugin.py:353: ValueError
+=========================== short test summary info ===========================
+ERROR tests/test_pre16_governance.py::test_historical_r1_registry_immutable
+ERROR tests/test_pre16_governance.py::test_current_a01_not_taken_from_stale_r1
+ERROR tests/test_pre16_governance.py::test_current_a02_exact_scoped_acceptance
+ERROR tests/test_pre16_governance.py::test_a02_as_recorded_not_upgraded - Val...
+ERROR tests/test_pre16_governance.py::test_a04_scope_not_overclaimed[formal_consumer_enabled-True]
+ERROR tests/test_pre16_governance.py::test_a04_scope_not_overclaimed[historical_formal_capability-PASS]
+ERROR tests/test_pre16_governance.py::test_a04_scope_not_overclaimed[known_amount_a-1]
+ERROR tests/test_pre16_governance.py::test_a04_scope_not_overclaimed[consumer_auto_activation_after_H21-True]
+ERROR tests/test_pre16_governance.py::test_a08_a09_implementation_only_does_not_close_audit[A08]
+ERROR tests/test_pre16_governance.py::test_a08_a09_implementation_only_does_not_close_audit[A09]
+ERROR tests/test_pre16_governance.py::test_a08_a09_implementation_only_does_not_close_audit[A08_CURRENT_RUNTIME]
+ERROR tests/test_pre16_governance.py::test_current_stage_is_v4_15 - ValueErro...
+ERROR tests/test_pre16_governance.py::test_data_head_is_2026_09_30 - ValueErr...
+ERROR tests/test_pre16_governance.py::test_v4_10_to_v4_15_heads_unchanged - V...
+ERROR tests/test_pre16_governance.py::test_historical_pit_not_granted - Value...
+ERROR tests/test_pre16_governance.py::test_real_maturity_none - ValueError: F...
+ERROR tests/test_pre16_governance.py::test_nonblocking_debt_not_promoted_to_pass[REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME]
+ERROR tests/test_pre16_governance.py::test_nonblocking_debt_not_promoted_to_pass[REALTIME_ACCEPTED_COHORT_MATURITY]
+ERROR tests/test_pre16_governance.py::test_nonblocking_debt_not_promoted_to_pass[V4_15_FWD_ADJ_VECTOR_01]
+ERROR tests/test_pre16_governance.py::test_permissions_all_false[production]
+ERROR tests/test_pre16_governance.py::test_permissions_all_false[shadow] - Va...
+ERROR tests/test_pre16_governance.py::test_permissions_all_false[focus] - Val...
+ERROR tests/test_pre16_governance.py::test_v4_16_false - ValueError: FROZEN_T...
+ERROR tests/test_pre16_governance.py::test_supersession_graph_acyclic - Value...
+ERROR tests/test_pre16_governance.py::test_no_latest_glob_discovery - ValueEr...
+ERROR tests/test_pre16_governance.py::test_missing_mandatory_item_fail_closed[A01]
+ERROR tests/test_pre16_governance.py::test_missing_mandatory_item_fail_closed[A02]
+ERROR tests/test_pre16_governance.py::test_missing_mandatory_item_fail_closed[A03]
+ERROR tests/test_pre16_governance.py::test_missing_mandatory_item_fail_closed[A04]
+ERROR tests/test_pre16_governance.py::test_missing_mandatory_item_fail_closed[A05]
+ERROR tests/test_pre16_governance.py::test_missing_mandatory_item_fail_closed[A06]
+ERROR tests/test_pre16_governance.py::test_missing_mandatory_item_fail_closed[A07]
+ERROR tests/test_pre16_governance.py::test_missing_mandatory_item_fail_closed[A08]
+ERROR tests/test_pre16_governance.py::test_missing_mandatory_item_fail_closed[A09]
+ERROR tests/test_pre16_governance.py::test_missing_mandatory_item_fail_closed[OWNER]
+ERROR tests/test_pre16_governance.py::test_missing_mandatory_item_fail_closed[READER]
+ERROR tests/test_pre16_governance.py::test_missing_mandatory_item_fail_closed[HISTORICAL_PIT_EFFECTIVENESS]
+ERROR tests/test_pre16_governance.py::test_missing_mandatory_item_fail_closed[REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME]
+ERROR tests/test_pre16_governance.py::test_missing_mandatory_item_fail_closed[REALTIME_ACCEPTED_COHORT_MATURITY]
+ERROR tests/test_pre16_governance.py::test_missing_mandatory_item_fail_closed[V4_15_FWD_ADJ_VECTOR_01]
+ERROR tests/test_pre16_governance.py::test_no_global_authority_activation[A03]
+ERROR tests/test_pre16_governance.py::test_no_global_authority_activation[A06]
+ERROR tests/test_pre16_governance.py::test_no_global_authority_activation[A07]
+ERROR tests/test_pre16_governance.py::test_no_global_authority_activation[OWNER]
+ERROR tests/test_pre16_governance.py::test_no_global_authority_activation[READER]
+ERROR tests/test_pre16_governance.py::test_reader_metadata_not_permission - V...
+ERROR tests/test_pre16_governance.py::test_independent_oracle_no_writer_or_business_evaluator
+ERROR tests/test_pre16_governance.py::test_full_independent_oracle - ValueErr...
+ERROR tests/test_pre16_governance.py::test_protected_all_history - ValueError...
+ERROR tests/test_pre16_governance.py::test_governance_namespace_cannot_change_accepted
+ERROR tests/test_pre16_governance.py::test_source_selection_cannot_use_implementation
+ERROR tests/test_pre16_governance.py::test_protected_literal_newline_change_rejected[V4_STAGE_ACCEPTED_HEAD]
+ERROR tests/test_pre16_governance.py::test_protected_literal_newline_change_rejected[V4_DATA_ACCEPTED_HEAD]
+ERROR tests/test_pre16_governance.py::test_protected_literal_newline_change_rejected[V4_10_ACCEPTED_HEAD]
+ERROR tests/test_pre16_governance.py::test_protected_literal_newline_change_rejected[V4_11_ACCEPTED_HEAD]
+ERROR tests/test_pre16_governance.py::test_protected_literal_newline_change_rejected[V4_12_ACCEPTED_HEAD]
+ERROR tests/test_pre16_governance.py::test_protected_literal_newline_change_rejected[V4_13_ACCEPTED_HEAD_AMENDED_R1]
+ERROR tests/test_pre16_governance.py::test_protected_literal_newline_change_rejected[V4_14_ACCEPTED_HEAD]
+ERROR tests/test_pre16_governance.py::test_protected_literal_newline_change_rejected[V4_15_ACCEPTED_HEAD]
+ERROR tests/test_pre16_governance.py::test_historical_status_cannot_be_rewritten
+ERROR tests/test_pre16_governance.py::test_consumer_inventory_complete - Valu...
+ERROR tests/test_pre16_governance.py::test_a04_h21_single_canonical_issue - V...
+ERROR tests/test_pre16_governance.py::test_a04_h21_alias_consistent - ValueEr...
+ERROR tests/test_pre16_governance.py::test_alias_cycle_rejected - ValueError:...
+ERROR tests/test_pre16_governance.py::test_alias_target_missing_rejected - Va...
+ERROR tests/test_pre16_governance.py::test_alias_block_semantics_mismatch_rejected[blocking_scope-NONE]
+ERROR tests/test_pre16_governance.py::test_alias_block_semantics_mismatch_rejected[blocks_v4_16_contract_entry-True]
+ERROR tests/test_pre16_governance.py::test_alias_block_semantics_mismatch_rejected[blocks_v4_16_runtime_activation-True]
+ERROR tests/test_pre16_governance.py::test_alias_block_semantics_mismatch_rejected[blocks_affected_capability_in_shadow-False]
+ERROR tests/test_pre16_governance.py::test_alias_block_semantics_mismatch_rejected[blocks_production_cutover_for_scope-False]
+ERROR tests/test_pre16_governance.py::test_alias_block_semantics_mismatch_rejected[blocks_shadow_entry-False]
+ERROR tests/test_pre16_governance.py::test_alias_block_semantics_mismatch_rejected[affected_capabilities-value6]
+ERROR tests/test_pre16_governance.py::test_alias_state_mismatch_rejected - Va...
+ERROR tests/test_pre16_governance.py::test_duplicate_logical_identity_rejected
+ERROR tests/test_pre16_governance.py::test_only_gov_pre16_blocks_global_contract_entry
+ERROR tests/test_pre16_governance.py::test_a04_h21_does_not_block_contract_entry
+ERROR tests/test_pre16_governance.py::test_historical_amount_a_does_not_block_contract_entry
+ERROR tests/test_pre16_governance.py::test_a08_current_runtime_does_not_block_contract_entry
+ERROR tests/test_pre16_governance.py::test_a08_current_runtime_remains_shadow_capability_blocked
+ERROR tests/test_pre16_governance.py::test_accumulation_does_not_block_unrelated_engineering[A03]
+ERROR tests/test_pre16_governance.py::test_accumulation_does_not_block_unrelated_engineering[A04_H21_CONSUMER]
+ERROR tests/test_pre16_governance.py::test_accumulation_does_not_block_unrelated_engineering[A04_HISTORICAL_AMOUNT_A]
+ERROR tests/test_pre16_governance.py::test_accumulation_does_not_block_unrelated_engineering[A07]
+ERROR tests/test_pre16_governance.py::test_accumulation_does_not_block_unrelated_engineering[HISTORICAL_PIT_EFFECTIVENESS]
+ERROR tests/test_pre16_governance.py::test_accumulation_does_not_block_unrelated_engineering[REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME]
+ERROR tests/test_pre16_governance.py::test_capability_only_block_not_global_shadow_block
+ERROR tests/test_pre16_governance.py::test_reader_resolves_canonical_issue - ...
+ERROR tests/test_pre16_governance.py::test_stage_head_unchanged - ValueError:...
+ERROR tests/test_pre16_governance.py::test_data_head_unchanged - ValueError: ...
+ERROR tests/test_pre16_governance.py::test_business_runtime_sources_unchanged
+ERROR tests/test_pre16_governance.py::test_audited_core_cannot_change - Value...
+ERROR tests/test_pre16_governance.py::test_missing_blocking_schema_rejected
+ERROR tests/test_pre16_governance.py::test_unregistered_alias_rejected - Valu...
+ERROR tests/test_pre16_governance.py::test_current_reader_never_merges_alias_conflict
+94 errors in 1.16s

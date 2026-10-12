@@ -1,0 +1,768 @@
+............EF..........FEEEEEEEEEEEEEE....                              [100%]
+=================================== ERRORS ====================================
+________ ERROR at setup of test_current_real_v2_parent_and_future_wait ________
+
+request = <SubRequest 'legacy_pre_acceptance_profile' for <Function test_current_real_v2_parent_and_future_wait>>
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/DM01_SUCCESSOR_R1/test_current_real_v2_parent_an0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001EA6D823B90>
+
+    @pytest.fixture(autouse=True)
+    def legacy_pre_acceptance_profile(request,tmp_path,monkeypatch):
+        if request.node.name!='test_current_real_v2_parent_and_future_wait':return
+        from workbench_analysis import dm01_runtime_r4 as r
+        root=create(tmp_path/'historical_pre_acceptance')
+        profile=json.loads((ROOT/'reports/forward_r2_remainder_consolidated_20261007/DM01_LEGACY_TEST_SUPERSESSION_PROOF.json').read_bytes())
+        for row in profile['historical_pre_acceptance']['profile']:
+>           raw=(ROOT/row['archive']['path']).read_bytes()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4\conftest.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_dm01/DM01_R4_CALENDAR_HEAD_V1.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_dm01\\DM01_R4_CALENDAR_HEAD_V1.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________________ ERROR at setup of test_negative[1] ______________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/DM01_SUCCESSOR_R1/test_negative_1_0')
+
+    @pytest.fixture
+    def vector(tmp_path):
+        e=prior_env.__wrapped__(tmp_path)
+        e['parent']['head']['component_artifacts']=e['parent']['components']
+        e['parent']['binding']=put(tmp_path,'fixture_v2_head.json',e['parent']['head'])
+        e['freeze']['parent_data_head_digest']=e['parent']['binding']['sha256']
+        e['freeze']['manifest_sha256']=o.digest({k:x for k,x in e['freeze'].items() if k!='manifest_sha256'})
+        built=r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=tmp_path)
+        c=r.read(tmp_path,built['candidate']);obs=r.read(tmp_path,c['target_session_observation_receipt'])
+        child=dict(e['parent']['head'],**l.head_lineage(e['parent']['head'],c,c['target_session_observation_receipt']),
+            final_candidate=built['candidate'],parent_archive=e['parent']['binding'],parent_head_sha256=e['parent']['binding']['sha256'],
+            calendar=c['calendar'],accepted_trade_date=c['target_trade_date'])
+        child['component_artifacts']={cap:r.ref(tmp_path,Path(receipt['artifact_path'])) for cap,receipt in c['components'].items()}
+        childref=put(tmp_path,r.HEAD,child)
+        put(tmp_path,r.CALENDAR,dict(calendar=c['calendar']))
+        for p in [o.CONTRACT_PATH,'config/v4_16_go_forward_input_authority_v1.json']:
+            put(tmp_path,p,(ROOT/p).read_bytes())
+        archival=json.loads((ROOT/o.CONTRACT_PATH).read_bytes())['immutable_data_head_readback']
+>       put(tmp_path,archival['path'],(ROOT/archival['path']).read_bytes())
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4r2\test_bridge.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/data/v4/r25_r4r2/historical_data_head_20260930.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\data\\v4\\r25_r4r2\\historical_data_head_20260930.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________________ ERROR at setup of test_negative[2] ______________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/DM01_SUCCESSOR_R1/test_negative_2_0')
+
+    @pytest.fixture
+    def vector(tmp_path):
+        e=prior_env.__wrapped__(tmp_path)
+        e['parent']['head']['component_artifacts']=e['parent']['components']
+        e['parent']['binding']=put(tmp_path,'fixture_v2_head.json',e['parent']['head'])
+        e['freeze']['parent_data_head_digest']=e['parent']['binding']['sha256']
+        e['freeze']['manifest_sha256']=o.digest({k:x for k,x in e['freeze'].items() if k!='manifest_sha256'})
+        built=r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=tmp_path)
+        c=r.read(tmp_path,built['candidate']);obs=r.read(tmp_path,c['target_session_observation_receipt'])
+        child=dict(e['parent']['head'],**l.head_lineage(e['parent']['head'],c,c['target_session_observation_receipt']),
+            final_candidate=built['candidate'],parent_archive=e['parent']['binding'],parent_head_sha256=e['parent']['binding']['sha256'],
+            calendar=c['calendar'],accepted_trade_date=c['target_trade_date'])
+        child['component_artifacts']={cap:r.ref(tmp_path,Path(receipt['artifact_path'])) for cap,receipt in c['components'].items()}
+        childref=put(tmp_path,r.HEAD,child)
+        put(tmp_path,r.CALENDAR,dict(calendar=c['calendar']))
+        for p in [o.CONTRACT_PATH,'config/v4_16_go_forward_input_authority_v1.json']:
+            put(tmp_path,p,(ROOT/p).read_bytes())
+        archival=json.loads((ROOT/o.CONTRACT_PATH).read_bytes())['immutable_data_head_readback']
+>       put(tmp_path,archival['path'],(ROOT/archival['path']).read_bytes())
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4r2\test_bridge.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/data/v4/r25_r4r2/historical_data_head_20260930.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\data\\v4\\r25_r4r2\\historical_data_head_20260930.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________________ ERROR at setup of test_negative[3] ______________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/DM01_SUCCESSOR_R1/test_negative_3_0')
+
+    @pytest.fixture
+    def vector(tmp_path):
+        e=prior_env.__wrapped__(tmp_path)
+        e['parent']['head']['component_artifacts']=e['parent']['components']
+        e['parent']['binding']=put(tmp_path,'fixture_v2_head.json',e['parent']['head'])
+        e['freeze']['parent_data_head_digest']=e['parent']['binding']['sha256']
+        e['freeze']['manifest_sha256']=o.digest({k:x for k,x in e['freeze'].items() if k!='manifest_sha256'})
+        built=r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=tmp_path)
+        c=r.read(tmp_path,built['candidate']);obs=r.read(tmp_path,c['target_session_observation_receipt'])
+        child=dict(e['parent']['head'],**l.head_lineage(e['parent']['head'],c,c['target_session_observation_receipt']),
+            final_candidate=built['candidate'],parent_archive=e['parent']['binding'],parent_head_sha256=e['parent']['binding']['sha256'],
+            calendar=c['calendar'],accepted_trade_date=c['target_trade_date'])
+        child['component_artifacts']={cap:r.ref(tmp_path,Path(receipt['artifact_path'])) for cap,receipt in c['components'].items()}
+        childref=put(tmp_path,r.HEAD,child)
+        put(tmp_path,r.CALENDAR,dict(calendar=c['calendar']))
+        for p in [o.CONTRACT_PATH,'config/v4_16_go_forward_input_authority_v1.json']:
+            put(tmp_path,p,(ROOT/p).read_bytes())
+        archival=json.loads((ROOT/o.CONTRACT_PATH).read_bytes())['immutable_data_head_readback']
+>       put(tmp_path,archival['path'],(ROOT/archival['path']).read_bytes())
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4r2\test_bridge.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/data/v4/r25_r4r2/historical_data_head_20260930.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\data\\v4\\r25_r4r2\\historical_data_head_20260930.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________________ ERROR at setup of test_negative[4] ______________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/DM01_SUCCESSOR_R1/test_negative_4_0')
+
+    @pytest.fixture
+    def vector(tmp_path):
+        e=prior_env.__wrapped__(tmp_path)
+        e['parent']['head']['component_artifacts']=e['parent']['components']
+        e['parent']['binding']=put(tmp_path,'fixture_v2_head.json',e['parent']['head'])
+        e['freeze']['parent_data_head_digest']=e['parent']['binding']['sha256']
+        e['freeze']['manifest_sha256']=o.digest({k:x for k,x in e['freeze'].items() if k!='manifest_sha256'})
+        built=r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=tmp_path)
+        c=r.read(tmp_path,built['candidate']);obs=r.read(tmp_path,c['target_session_observation_receipt'])
+        child=dict(e['parent']['head'],**l.head_lineage(e['parent']['head'],c,c['target_session_observation_receipt']),
+            final_candidate=built['candidate'],parent_archive=e['parent']['binding'],parent_head_sha256=e['parent']['binding']['sha256'],
+            calendar=c['calendar'],accepted_trade_date=c['target_trade_date'])
+        child['component_artifacts']={cap:r.ref(tmp_path,Path(receipt['artifact_path'])) for cap,receipt in c['components'].items()}
+        childref=put(tmp_path,r.HEAD,child)
+        put(tmp_path,r.CALENDAR,dict(calendar=c['calendar']))
+        for p in [o.CONTRACT_PATH,'config/v4_16_go_forward_input_authority_v1.json']:
+            put(tmp_path,p,(ROOT/p).read_bytes())
+        archival=json.loads((ROOT/o.CONTRACT_PATH).read_bytes())['immutable_data_head_readback']
+>       put(tmp_path,archival['path'],(ROOT/archival['path']).read_bytes())
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4r2\test_bridge.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/data/v4/r25_r4r2/historical_data_head_20260930.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\data\\v4\\r25_r4r2\\historical_data_head_20260930.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________________ ERROR at setup of test_negative[5] ______________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/DM01_SUCCESSOR_R1/test_negative_5_0')
+
+    @pytest.fixture
+    def vector(tmp_path):
+        e=prior_env.__wrapped__(tmp_path)
+        e['parent']['head']['component_artifacts']=e['parent']['components']
+        e['parent']['binding']=put(tmp_path,'fixture_v2_head.json',e['parent']['head'])
+        e['freeze']['parent_data_head_digest']=e['parent']['binding']['sha256']
+        e['freeze']['manifest_sha256']=o.digest({k:x for k,x in e['freeze'].items() if k!='manifest_sha256'})
+        built=r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=tmp_path)
+        c=r.read(tmp_path,built['candidate']);obs=r.read(tmp_path,c['target_session_observation_receipt'])
+        child=dict(e['parent']['head'],**l.head_lineage(e['parent']['head'],c,c['target_session_observation_receipt']),
+            final_candidate=built['candidate'],parent_archive=e['parent']['binding'],parent_head_sha256=e['parent']['binding']['sha256'],
+            calendar=c['calendar'],accepted_trade_date=c['target_trade_date'])
+        child['component_artifacts']={cap:r.ref(tmp_path,Path(receipt['artifact_path'])) for cap,receipt in c['components'].items()}
+        childref=put(tmp_path,r.HEAD,child)
+        put(tmp_path,r.CALENDAR,dict(calendar=c['calendar']))
+        for p in [o.CONTRACT_PATH,'config/v4_16_go_forward_input_authority_v1.json']:
+            put(tmp_path,p,(ROOT/p).read_bytes())
+        archival=json.loads((ROOT/o.CONTRACT_PATH).read_bytes())['immutable_data_head_readback']
+>       put(tmp_path,archival['path'],(ROOT/archival['path']).read_bytes())
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4r2\test_bridge.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/data/v4/r25_r4r2/historical_data_head_20260930.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\data\\v4\\r25_r4r2\\historical_data_head_20260930.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________________ ERROR at setup of test_negative[6] ______________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/DM01_SUCCESSOR_R1/test_negative_6_0')
+
+    @pytest.fixture
+    def vector(tmp_path):
+        e=prior_env.__wrapped__(tmp_path)
+        e['parent']['head']['component_artifacts']=e['parent']['components']
+        e['parent']['binding']=put(tmp_path,'fixture_v2_head.json',e['parent']['head'])
+        e['freeze']['parent_data_head_digest']=e['parent']['binding']['sha256']
+        e['freeze']['manifest_sha256']=o.digest({k:x for k,x in e['freeze'].items() if k!='manifest_sha256'})
+        built=r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=tmp_path)
+        c=r.read(tmp_path,built['candidate']);obs=r.read(tmp_path,c['target_session_observation_receipt'])
+        child=dict(e['parent']['head'],**l.head_lineage(e['parent']['head'],c,c['target_session_observation_receipt']),
+            final_candidate=built['candidate'],parent_archive=e['parent']['binding'],parent_head_sha256=e['parent']['binding']['sha256'],
+            calendar=c['calendar'],accepted_trade_date=c['target_trade_date'])
+        child['component_artifacts']={cap:r.ref(tmp_path,Path(receipt['artifact_path'])) for cap,receipt in c['components'].items()}
+        childref=put(tmp_path,r.HEAD,child)
+        put(tmp_path,r.CALENDAR,dict(calendar=c['calendar']))
+        for p in [o.CONTRACT_PATH,'config/v4_16_go_forward_input_authority_v1.json']:
+            put(tmp_path,p,(ROOT/p).read_bytes())
+        archival=json.loads((ROOT/o.CONTRACT_PATH).read_bytes())['immutable_data_head_readback']
+>       put(tmp_path,archival['path'],(ROOT/archival['path']).read_bytes())
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4r2\test_bridge.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/data/v4/r25_r4r2/historical_data_head_20260930.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\data\\v4\\r25_r4r2\\historical_data_head_20260930.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________________ ERROR at setup of test_negative[7] ______________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/DM01_SUCCESSOR_R1/test_negative_7_0')
+
+    @pytest.fixture
+    def vector(tmp_path):
+        e=prior_env.__wrapped__(tmp_path)
+        e['parent']['head']['component_artifacts']=e['parent']['components']
+        e['parent']['binding']=put(tmp_path,'fixture_v2_head.json',e['parent']['head'])
+        e['freeze']['parent_data_head_digest']=e['parent']['binding']['sha256']
+        e['freeze']['manifest_sha256']=o.digest({k:x for k,x in e['freeze'].items() if k!='manifest_sha256'})
+        built=r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=tmp_path)
+        c=r.read(tmp_path,built['candidate']);obs=r.read(tmp_path,c['target_session_observation_receipt'])
+        child=dict(e['parent']['head'],**l.head_lineage(e['parent']['head'],c,c['target_session_observation_receipt']),
+            final_candidate=built['candidate'],parent_archive=e['parent']['binding'],parent_head_sha256=e['parent']['binding']['sha256'],
+            calendar=c['calendar'],accepted_trade_date=c['target_trade_date'])
+        child['component_artifacts']={cap:r.ref(tmp_path,Path(receipt['artifact_path'])) for cap,receipt in c['components'].items()}
+        childref=put(tmp_path,r.HEAD,child)
+        put(tmp_path,r.CALENDAR,dict(calendar=c['calendar']))
+        for p in [o.CONTRACT_PATH,'config/v4_16_go_forward_input_authority_v1.json']:
+            put(tmp_path,p,(ROOT/p).read_bytes())
+        archival=json.loads((ROOT/o.CONTRACT_PATH).read_bytes())['immutable_data_head_readback']
+>       put(tmp_path,archival['path'],(ROOT/archival['path']).read_bytes())
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4r2\test_bridge.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/data/v4/r25_r4r2/historical_data_head_20260930.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\data\\v4\\r25_r4r2\\historical_data_head_20260930.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________________ ERROR at setup of test_negative[8] ______________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/DM01_SUCCESSOR_R1/test_negative_8_0')
+
+    @pytest.fixture
+    def vector(tmp_path):
+        e=prior_env.__wrapped__(tmp_path)
+        e['parent']['head']['component_artifacts']=e['parent']['components']
+        e['parent']['binding']=put(tmp_path,'fixture_v2_head.json',e['parent']['head'])
+        e['freeze']['parent_data_head_digest']=e['parent']['binding']['sha256']
+        e['freeze']['manifest_sha256']=o.digest({k:x for k,x in e['freeze'].items() if k!='manifest_sha256'})
+        built=r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=tmp_path)
+        c=r.read(tmp_path,built['candidate']);obs=r.read(tmp_path,c['target_session_observation_receipt'])
+        child=dict(e['parent']['head'],**l.head_lineage(e['parent']['head'],c,c['target_session_observation_receipt']),
+            final_candidate=built['candidate'],parent_archive=e['parent']['binding'],parent_head_sha256=e['parent']['binding']['sha256'],
+            calendar=c['calendar'],accepted_trade_date=c['target_trade_date'])
+        child['component_artifacts']={cap:r.ref(tmp_path,Path(receipt['artifact_path'])) for cap,receipt in c['components'].items()}
+        childref=put(tmp_path,r.HEAD,child)
+        put(tmp_path,r.CALENDAR,dict(calendar=c['calendar']))
+        for p in [o.CONTRACT_PATH,'config/v4_16_go_forward_input_authority_v1.json']:
+            put(tmp_path,p,(ROOT/p).read_bytes())
+        archival=json.loads((ROOT/o.CONTRACT_PATH).read_bytes())['immutable_data_head_readback']
+>       put(tmp_path,archival['path'],(ROOT/archival['path']).read_bytes())
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4r2\test_bridge.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/data/v4/r25_r4r2/historical_data_head_20260930.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\data\\v4\\r25_r4r2\\historical_data_head_20260930.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________________ ERROR at setup of test_negative[9] ______________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/DM01_SUCCESSOR_R1/test_negative_9_0')
+
+    @pytest.fixture
+    def vector(tmp_path):
+        e=prior_env.__wrapped__(tmp_path)
+        e['parent']['head']['component_artifacts']=e['parent']['components']
+        e['parent']['binding']=put(tmp_path,'fixture_v2_head.json',e['parent']['head'])
+        e['freeze']['parent_data_head_digest']=e['parent']['binding']['sha256']
+        e['freeze']['manifest_sha256']=o.digest({k:x for k,x in e['freeze'].items() if k!='manifest_sha256'})
+        built=r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=tmp_path)
+        c=r.read(tmp_path,built['candidate']);obs=r.read(tmp_path,c['target_session_observation_receipt'])
+        child=dict(e['parent']['head'],**l.head_lineage(e['parent']['head'],c,c['target_session_observation_receipt']),
+            final_candidate=built['candidate'],parent_archive=e['parent']['binding'],parent_head_sha256=e['parent']['binding']['sha256'],
+            calendar=c['calendar'],accepted_trade_date=c['target_trade_date'])
+        child['component_artifacts']={cap:r.ref(tmp_path,Path(receipt['artifact_path'])) for cap,receipt in c['components'].items()}
+        childref=put(tmp_path,r.HEAD,child)
+        put(tmp_path,r.CALENDAR,dict(calendar=c['calendar']))
+        for p in [o.CONTRACT_PATH,'config/v4_16_go_forward_input_authority_v1.json']:
+            put(tmp_path,p,(ROOT/p).read_bytes())
+        archival=json.loads((ROOT/o.CONTRACT_PATH).read_bytes())['immutable_data_head_readback']
+>       put(tmp_path,archival['path'],(ROOT/archival['path']).read_bytes())
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4r2\test_bridge.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/data/v4/r25_r4r2/historical_data_head_20260930.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\data\\v4\\r25_r4r2\\historical_data_head_20260930.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________________ ERROR at setup of test_negative[10] _____________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/DM01_SUCCESSOR_R1/test_negative_10_0')
+
+    @pytest.fixture
+    def vector(tmp_path):
+        e=prior_env.__wrapped__(tmp_path)
+        e['parent']['head']['component_artifacts']=e['parent']['components']
+        e['parent']['binding']=put(tmp_path,'fixture_v2_head.json',e['parent']['head'])
+        e['freeze']['parent_data_head_digest']=e['parent']['binding']['sha256']
+        e['freeze']['manifest_sha256']=o.digest({k:x for k,x in e['freeze'].items() if k!='manifest_sha256'})
+        built=r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=tmp_path)
+        c=r.read(tmp_path,built['candidate']);obs=r.read(tmp_path,c['target_session_observation_receipt'])
+        child=dict(e['parent']['head'],**l.head_lineage(e['parent']['head'],c,c['target_session_observation_receipt']),
+            final_candidate=built['candidate'],parent_archive=e['parent']['binding'],parent_head_sha256=e['parent']['binding']['sha256'],
+            calendar=c['calendar'],accepted_trade_date=c['target_trade_date'])
+        child['component_artifacts']={cap:r.ref(tmp_path,Path(receipt['artifact_path'])) for cap,receipt in c['components'].items()}
+        childref=put(tmp_path,r.HEAD,child)
+        put(tmp_path,r.CALENDAR,dict(calendar=c['calendar']))
+        for p in [o.CONTRACT_PATH,'config/v4_16_go_forward_input_authority_v1.json']:
+            put(tmp_path,p,(ROOT/p).read_bytes())
+        archival=json.loads((ROOT/o.CONTRACT_PATH).read_bytes())['immutable_data_head_readback']
+>       put(tmp_path,archival['path'],(ROOT/archival['path']).read_bytes())
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4r2\test_bridge.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/data/v4/r25_r4r2/historical_data_head_20260930.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\data\\v4\\r25_r4r2\\historical_data_head_20260930.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________________ ERROR at setup of test_negative[13] _____________________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/DM01_SUCCESSOR_R1/test_negative_13_0')
+
+    @pytest.fixture
+    def vector(tmp_path):
+        e=prior_env.__wrapped__(tmp_path)
+        e['parent']['head']['component_artifacts']=e['parent']['components']
+        e['parent']['binding']=put(tmp_path,'fixture_v2_head.json',e['parent']['head'])
+        e['freeze']['parent_data_head_digest']=e['parent']['binding']['sha256']
+        e['freeze']['manifest_sha256']=o.digest({k:x for k,x in e['freeze'].items() if k!='manifest_sha256'})
+        built=r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=tmp_path)
+        c=r.read(tmp_path,built['candidate']);obs=r.read(tmp_path,c['target_session_observation_receipt'])
+        child=dict(e['parent']['head'],**l.head_lineage(e['parent']['head'],c,c['target_session_observation_receipt']),
+            final_candidate=built['candidate'],parent_archive=e['parent']['binding'],parent_head_sha256=e['parent']['binding']['sha256'],
+            calendar=c['calendar'],accepted_trade_date=c['target_trade_date'])
+        child['component_artifacts']={cap:r.ref(tmp_path,Path(receipt['artifact_path'])) for cap,receipt in c['components'].items()}
+        childref=put(tmp_path,r.HEAD,child)
+        put(tmp_path,r.CALENDAR,dict(calendar=c['calendar']))
+        for p in [o.CONTRACT_PATH,'config/v4_16_go_forward_input_authority_v1.json']:
+            put(tmp_path,p,(ROOT/p).read_bytes())
+        archival=json.loads((ROOT/o.CONTRACT_PATH).read_bytes())['immutable_data_head_readback']
+>       put(tmp_path,archival['path'],(ROOT/archival['path']).read_bytes())
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4r2\test_bridge.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/data/v4/r25_r4r2/historical_data_head_20260930.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\data\\v4\\r25_r4r2\\historical_data_head_20260930.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________ ERROR at setup of test_R4R2_11_engineering_producer _____________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/DM01_SUCCESSOR_R1/test_R4R2_11_engineering_produ0')
+
+    @pytest.fixture
+    def vector(tmp_path):
+        e=prior_env.__wrapped__(tmp_path)
+        e['parent']['head']['component_artifacts']=e['parent']['components']
+        e['parent']['binding']=put(tmp_path,'fixture_v2_head.json',e['parent']['head'])
+        e['freeze']['parent_data_head_digest']=e['parent']['binding']['sha256']
+        e['freeze']['manifest_sha256']=o.digest({k:x for k,x in e['freeze'].items() if k!='manifest_sha256'})
+        built=r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=tmp_path)
+        c=r.read(tmp_path,built['candidate']);obs=r.read(tmp_path,c['target_session_observation_receipt'])
+        child=dict(e['parent']['head'],**l.head_lineage(e['parent']['head'],c,c['target_session_observation_receipt']),
+            final_candidate=built['candidate'],parent_archive=e['parent']['binding'],parent_head_sha256=e['parent']['binding']['sha256'],
+            calendar=c['calendar'],accepted_trade_date=c['target_trade_date'])
+        child['component_artifacts']={cap:r.ref(tmp_path,Path(receipt['artifact_path'])) for cap,receipt in c['components'].items()}
+        childref=put(tmp_path,r.HEAD,child)
+        put(tmp_path,r.CALENDAR,dict(calendar=c['calendar']))
+        for p in [o.CONTRACT_PATH,'config/v4_16_go_forward_input_authority_v1.json']:
+            put(tmp_path,p,(ROOT/p).read_bytes())
+        archival=json.loads((ROOT/o.CONTRACT_PATH).read_bytes())['immutable_data_head_readback']
+>       put(tmp_path,archival['path'],(ROOT/archival['path']).read_bytes())
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4r2\test_bridge.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/data/v4/r25_r4r2/historical_data_head_20260930.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\data\\v4\\r25_r4r2\\historical_data_head_20260930.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+______________ ERROR at setup of test_R4R2_12_real_shaped_parity ______________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/DM01_SUCCESSOR_R1/test_R4R2_12_real_shaped_parit0')
+
+    @pytest.fixture
+    def vector(tmp_path):
+        e=prior_env.__wrapped__(tmp_path)
+        e['parent']['head']['component_artifacts']=e['parent']['components']
+        e['parent']['binding']=put(tmp_path,'fixture_v2_head.json',e['parent']['head'])
+        e['freeze']['parent_data_head_digest']=e['parent']['binding']['sha256']
+        e['freeze']['manifest_sha256']=o.digest({k:x for k,x in e['freeze'].items() if k!='manifest_sha256'})
+        built=r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=tmp_path)
+        c=r.read(tmp_path,built['candidate']);obs=r.read(tmp_path,c['target_session_observation_receipt'])
+        child=dict(e['parent']['head'],**l.head_lineage(e['parent']['head'],c,c['target_session_observation_receipt']),
+            final_candidate=built['candidate'],parent_archive=e['parent']['binding'],parent_head_sha256=e['parent']['binding']['sha256'],
+            calendar=c['calendar'],accepted_trade_date=c['target_trade_date'])
+        child['component_artifacts']={cap:r.ref(tmp_path,Path(receipt['artifact_path'])) for cap,receipt in c['components'].items()}
+        childref=put(tmp_path,r.HEAD,child)
+        put(tmp_path,r.CALENDAR,dict(calendar=c['calendar']))
+        for p in [o.CONTRACT_PATH,'config/v4_16_go_forward_input_authority_v1.json']:
+            put(tmp_path,p,(ROOT/p).read_bytes())
+        archival=json.loads((ROOT/o.CONTRACT_PATH).read_bytes())['immutable_data_head_readback']
+>       put(tmp_path,archival['path'],(ROOT/archival['path']).read_bytes())
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4r2\test_bridge.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/data/v4/r25_r4r2/historical_data_head_20260930.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\data\\v4\\r25_r4r2\\historical_data_head_20260930.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+____________ ERROR at setup of test_R4R2_14_old_V1_historical_only ____________
+
+tmp_path = WindowsPath('G:/codex_tmp/test_temp/DM01_SUCCESSOR_R1/test_R4R2_14_old_V1_historical0')
+
+    @pytest.fixture
+    def vector(tmp_path):
+        e=prior_env.__wrapped__(tmp_path)
+        e['parent']['head']['component_artifacts']=e['parent']['components']
+        e['parent']['binding']=put(tmp_path,'fixture_v2_head.json',e['parent']['head'])
+        e['freeze']['parent_data_head_digest']=e['parent']['binding']['sha256']
+        e['freeze']['manifest_sha256']=o.digest({k:x for k,x in e['freeze'].items() if k!='manifest_sha256'})
+        built=r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=tmp_path)
+        c=r.read(tmp_path,built['candidate']);obs=r.read(tmp_path,c['target_session_observation_receipt'])
+        child=dict(e['parent']['head'],**l.head_lineage(e['parent']['head'],c,c['target_session_observation_receipt']),
+            final_candidate=built['candidate'],parent_archive=e['parent']['binding'],parent_head_sha256=e['parent']['binding']['sha256'],
+            calendar=c['calendar'],accepted_trade_date=c['target_trade_date'])
+        child['component_artifacts']={cap:r.ref(tmp_path,Path(receipt['artifact_path'])) for cap,receipt in c['components'].items()}
+        childref=put(tmp_path,r.HEAD,child)
+        put(tmp_path,r.CALENDAR,dict(calendar=c['calendar']))
+        for p in [o.CONTRACT_PATH,'config/v4_16_go_forward_input_authority_v1.json']:
+            put(tmp_path,p,(ROOT/p).read_bytes())
+        archival=json.loads((ROOT/o.CONTRACT_PATH).read_bytes())['immutable_data_head_readback']
+>       put(tmp_path,archival['path'],(ROOT/archival['path']).read_bytes())
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4r2\test_bridge.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/data/v4/r25_r4r2/historical_data_head_20260930.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\data\\v4\\r25_r4r2\\historical_data_head_20260930.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+================================== FAILURES ===================================
+______________________ test_actual_entrypoint_no_capture ______________________
+
+    def test_actual_entrypoint_no_capture():
+        result=subprocess.run([sys.executable,'-B',str(r.ROOT/'scripts/run_v4_dm01_daily_increment.py'),
+            '--target-date','2026-10-08'],cwd=r.ROOT,capture_output=True,text=True)
+>       assert result.returncode==0,result.stderr
+E       AssertionError: 
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['E:\\python\\python.exe', '-B', 'G:\\codex work\\v4-full-closeout-20261012\\scripts\\run_v4_dm0...{"status": "BLOCKED", "reason": "INPUT_DIGEST_MISMATCH", "source_requests": 0, "data_head_moved": false}\n', stderr='').returncode
+
+tests\v4_dm01_r4\test_runtime.py:125: AssertionError
+_____________ test_current_parent_package_is_exact_accepted_chain _____________
+
+    def test_current_parent_package_is_exact_accepted_chain():
+        from workbench_analysis.dm01_sources_r4 import parent_tdx_package
+        parent=r.current_parent();chain=r.read(r.ROOT,parent['head']['accepted_chain']);context=r.read(r.ROOT,chain['source_context'])
+>       assert parent_tdx_package(r.ROOT)==context['inputs']['2026-09-30']['families']['TDX_FULL_PACKAGE']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4\test_runtime.py:222: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_sources_r4.py:19: in parent_tdx_package
+    runtime.path(root,binding)
+src\workbench_analysis\dm01_runtime_r4.py:41: in path
+    require(p.is_file() and sha(p) == binding['sha256'], 'INPUT_DIGEST_MISMATCH')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, reason = 'INPUT_DIGEST_MISMATCH'
+
+    def require(condition, reason):
+        if not condition:
+>           raise ValueError(reason)
+E           ValueError: INPUT_DIGEST_MISMATCH
+
+src\workbench_analysis\dm01_runtime_r4.py:34: ValueError
+=========================== short test summary info ===========================
+FAILED tests/v4_dm01_r4/test_runtime.py::test_actual_entrypoint_no_capture - ...
+FAILED tests/v4_dm01_r4/test_runtime.py::test_current_parent_package_is_exact_accepted_chain
+ERROR tests/v4_dm01_r4/test_runtime.py::test_current_real_v2_parent_and_future_wait
+ERROR tests/v4_dm01_r4r2/test_bridge.py::test_negative[1] - FileNotFoundError...
+ERROR tests/v4_dm01_r4r2/test_bridge.py::test_negative[2] - FileNotFoundError...
+ERROR tests/v4_dm01_r4r2/test_bridge.py::test_negative[3] - FileNotFoundError...
+ERROR tests/v4_dm01_r4r2/test_bridge.py::test_negative[4] - FileNotFoundError...
+ERROR tests/v4_dm01_r4r2/test_bridge.py::test_negative[5] - FileNotFoundError...
+ERROR tests/v4_dm01_r4r2/test_bridge.py::test_negative[6] - FileNotFoundError...
+ERROR tests/v4_dm01_r4r2/test_bridge.py::test_negative[7] - FileNotFoundError...
+ERROR tests/v4_dm01_r4r2/test_bridge.py::test_negative[8] - FileNotFoundError...
+ERROR tests/v4_dm01_r4r2/test_bridge.py::test_negative[9] - FileNotFoundError...
+ERROR tests/v4_dm01_r4r2/test_bridge.py::test_negative[10] - FileNotFoundErro...
+ERROR tests/v4_dm01_r4r2/test_bridge.py::test_negative[13] - FileNotFoundErro...
+ERROR tests/v4_dm01_r4r2/test_bridge.py::test_R4R2_11_engineering_producer - ...
+ERROR tests/v4_dm01_r4r2/test_bridge.py::test_R4R2_12_real_shaped_parity - Fi...
+ERROR tests/v4_dm01_r4r2/test_bridge.py::test_R4R2_14_old_V1_historical_only
+2 failed, 26 passed, 15 errors in 62.35s (0:01:02)

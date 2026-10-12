@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="23" skipped="0" tests="27" time="6.069" timestamp="2026-10-12T20:32:15.864621+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[0]" time="0.028"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\74b0fdd3358ab0da95ffa0522a5cf9a34bb168cb0bfb0a8adfbfc32d5578ef71.bin'">number = 0
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/74b0fdd3358ab0da95ffa0522a5cf9a34bb168cb0bfb0a8adfbfc32d5578ef71.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\74b0fdd3358ab0da95ffa0522a5cf9a34bb168cb0bfb0a8adfbfc32d5578ef71.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[1]" time="0.002"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0.bin'">number = 1
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[2]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\3a8a3b01d3e556b86934139dacc58c941727060ac72f11f9a60de229f58ffcd2.bin'">number = 2
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/3a8a3b01d3e556b86934139dacc58c941727060ac72f11f9a60de229f58ffcd2.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\3a8a3b01d3e556b86934139dacc58c941727060ac72f11f9a60de229f58ffcd2.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[3]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\74b0fdd3358ab0da95ffa0522a5cf9a34bb168cb0bfb0a8adfbfc32d5578ef71.bin'">number = 3
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/74b0fdd3358ab0da95ffa0522a5cf9a34bb168cb0bfb0a8adfbfc32d5578ef71.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\74b0fdd3358ab0da95ffa0522a5cf9a34bb168cb0bfb0a8adfbfc32d5578ef71.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[4]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0.bin'">number = 4
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[5]" time="0.012"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\9c8a5d11219199e1b93ab5efccc34b1b586624aadd3b58348fd48274aa7f84a4.bin'">number = 5
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/9c8a5d11219199e1b93ab5efccc34b1b586624aadd3b58348fd48274aa7f84a4.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\9c8a5d11219199e1b93ab5efccc34b1b586624aadd3b58348fd48274aa7f84a4.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[6]" time="0.002"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\c1725119a64270f109816d6cc64815ce9984af5633bc59f4e30c92c41c0611d5.bin'">number = 6
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/c1725119a64270f109816d6cc64815ce9984af5633bc59f4e30c92c41c0611d5.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\c1725119a64270f109816d6cc64815ce9984af5633bc59f4e30c92c41c0611d5.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[7]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\67b091af5937de5050784611e5b4bf306d0ba33e653814337c829d63974b1a73.bin'">number = 7
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/67b091af5937de5050784611e5b4bf306d0ba33e653814337c829d63974b1a73.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\67b091af5937de5050784611e5b4bf306d0ba33e653814337c829d63974b1a73.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[8]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\6620089e9a1ca550e89c2c0bb177887528c8e7d160a44c584664f04b91a1c48e.bin'">number = 8
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/6620089e9a1ca550e89c2c0bb177887528c8e7d160a44c584664f04b91a1c48e.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\6620089e9a1ca550e89c2c0bb177887528c8e7d160a44c584664f04b91a1c48e.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[9]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0.bin'">number = 9
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[10]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\f7607601de402f2b2bdada84dffdefbacad7f9f66e252c57dfdf045060e90e99.bin'">number = 10
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/f7607601de402f2b2bdada84dffdefbacad7f9f66e252c57dfdf045060e90e99.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\f7607601de402f2b2bdada84dffdefbacad7f9f66e252c57dfdf045060e90e99.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[11]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0.bin'">number = 11
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[12]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\ab76426fba950a58ba4a38ae144084801082d784e508c1985120f00a5c1a167d.bin'">number = 12
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/ab76426fba950a58ba4a38ae144084801082d784e508c1985120f00a5c1a167d.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\ab76426fba950a58ba4a38ae144084801082d784e508c1985120f00a5c1a167d.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[13]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\359eafa3793ab386cb4cd0a4904a520c965fee9cf57794d4194dfd417d73ad69.bin'">number = 13
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/359eafa3793ab386cb4cd0a4904a520c965fee9cf57794d4194dfd417d73ad69.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\359eafa3793ab386cb4cd0a4904a520c965fee9cf57794d4194dfd417d73ad69.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[14]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\adb3ac9bf48a977cecfbd2895b2ccc17ec8048ac9a0aa7e0ccfee77b77f23449.bin'">number = 14
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/adb3ac9bf48a977cecfbd2895b2ccc17ec8048ac9a0aa7e0ccfee77b77f23449.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\adb3ac9bf48a977cecfbd2895b2ccc17ec8048ac9a0aa7e0ccfee77b77f23449.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[15]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\84a1d87b92eed1db714119dc27a7837abd55b349d169980082baa4b9f7b44354.bin'">number = 15
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/84a1d87b92eed1db714119dc27a7837abd55b349d169980082baa4b9f7b44354.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\84a1d87b92eed1db714119dc27a7837abd55b349d169980082baa4b9f7b44354.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[16]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\d3e4c9900503ea6328ed6866b74d366297aa1fff4c36bf2779c5c34fd88ad5f8.bin'">number = 16
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/d3e4c9900503ea6328ed6866b74d366297aa1fff4c36bf2779c5c34fd88ad5f8.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\d3e4c9900503ea6328ed6866b74d366297aa1fff4c36bf2779c5c34fd88ad5f8.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[17]" time="0.002"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\b0e1c2402efdd71d706a87f45280206a87fbe9e637a4168255b7ff4c036520f7.bin'">number = 17
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/b0e1c2402efdd71d706a87f45280206a87fbe9e637a4168255b7ff4c036520f7.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\b0e1c2402efdd71d706a87f45280206a87fbe9e637a4168255b7ff4c036520f7.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[18]" time="0.002"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\b0e1c2402efdd71d706a87f45280206a87fbe9e637a4168255b7ff4c036520f7.bin'">number = 18
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/b0e1c2402efdd71d706a87f45280206a87fbe9e637a4168255b7ff4c036520f7.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\b0e1c2402efdd71d706a87f45280206a87fbe9e637a4168255b7ff4c036520f7.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_all_historical_occurrences_exact[19]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb.bin'">number = 19
+
+    @pytest.mark.parametrize('number',range(20))
+    def test_all_historical_occurrences_exact(number):
+&gt;       r=HistoricalExactReader(ROOT);b=r.registry['occurrences'][number]['binding'];raw,receipt=r.read(b)
+                                                                                                 ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_wrong_identities_and_windows_alias[sha]" time="0.001" /><testcase classname="tests.test_remainder_historical_routing" name="test_wrong_identities_and_windows_alias[bytes]" time="0.001" /><testcase classname="tests.test_remainder_historical_routing" name="test_wrong_identities_and_windows_alias[path]" time="0.001" /><testcase classname="tests.test_remainder_historical_routing" name="test_wrong_identities_and_windows_alias[windows]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\74b0fdd3358ab0da95ffa0522a5cf9a34bb168cb0bfb0a8adfbfc32d5578ef71.bin'">kind = 'windows'
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002AFD29062E0&gt;
+
+    @pytest.mark.parametrize('kind',['sha','bytes','path','windows','blob'])
+    def test_wrong_identities_and_windows_alias(kind,monkeypatch):
+        r=HistoricalExactReader(ROOT);b=dict(r.registry['occurrences'][0]['binding'])
+        if kind=='sha':b['sha256']='0'*64
+        elif kind=='bytes':b['byte_count']+=1
+        elif kind=='path':b['path']='unknown.json'
+&gt;       elif kind=='windows':b['path']=b['path'].replace('/','\\');assert r.read(b)[0];return
+                                                                          ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/74b0fdd3358ab0da95ffa0522a5cf9a34bb168cb0bfb0a8adfbfc32d5578ef71.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\74b0fdd3358ab0da95ffa0522a5cf9a34bb168cb0bfb0a8adfbfc32d5578ef71.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_wrong_identities_and_windows_alias[blob]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\74b0fdd3358ab0da95ffa0522a5cf9a34bb168cb0bfb0a8adfbfc32d5578ef71.bin'">kind = 'blob'
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002AFD27D24A0&gt;
+
+    @pytest.mark.parametrize('kind',['sha','bytes','path','windows','blob'])
+    def test_wrong_identities_and_windows_alias(kind,monkeypatch):
+        r=HistoricalExactReader(ROOT);b=dict(r.registry['occurrences'][0]['binding'])
+        if kind=='sha':b['sha256']='0'*64
+        elif kind=='bytes':b['byte_count']+=1
+        elif kind=='path':b['path']='unknown.json'
+        elif kind=='windows':b['path']=b['path'].replace('/','\\');assert r.read(b)[0];return
+        elif kind=='blob':
+            original=subprocess.check_output
+            def changed(args,**kw):return b'wrong blob' if args[1:3]==['cat-file','blob'] else original(args,**kw)
+            monkeypatch.setattr(subprocess,'check_output',changed)
+&gt;       with pytest.raises(ValueError):r.read(b)
+                                       ^^^^^^^^^
+
+tests\test_remainder_historical_routing.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\historical_binding_routing_remainder.py:25: in read
+    raw=safe(self.root,row['archive']['path']).read_bytes()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/evidence/forward_r2_remainder_consolidated_20261007/historical_blobs/74b0fdd3358ab0da95ffa0522a5cf9a34bb168cb0bfb0a8adfbfc32d5578ef71.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\evidence\\forward_r2_remainder_consolidated_20261007\\historical_blobs\\74b0fdd3358ab0da95ffa0522a5cf9a34bb168cb0bfb0a8adfbfc32d5578ef71.bin'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="tests.test_remainder_historical_routing" name="test_current_never_reads_historical_stage" time="2.681" /><testcase classname="tests.test_remainder_historical_routing" name="test_old_v13_reader_remains_pinned" time="2.942"><failure message="Failed: DID NOT RAISE ValueError">def test_old_v13_reader_remains_pinned():
+        from workbench_analysis.v4_13_accepted_contract_package import current_contracts
+&gt;       with pytest.raises(ValueError,match='UNAUTHORIZED_V4_13_STAGE'):current_contracts(ROOT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_remainder_historical_routing.py:32: Failed</failure></testcase></testsuite></testsuites>

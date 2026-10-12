@@ -1,0 +1,25 @@
+{
+  "negative_count": 4,
+  "results": [
+    {
+      "vector": "cross_date",
+      "exception_type": "ValueError",
+      "reason": "PG_MARKET_CONTEXT_MISMATCH"
+    },
+    {
+      "vector": "descriptor_digest",
+      "exception_type": "ValueError",
+      "reason": "CORRECTED_INPUT_DIGEST_MISMATCH:data/v4/core_market_pg_r1/market_facts/79743a016f45cc2735c6bd18fb6a67405c43d8daaaae6d3e2a304e4fe97c2d66.pg.json"
+    },
+    {
+      "vector": "old_json_authority_refused",
+      "exception_type": "ValueError",
+      "reason": "PG_MARKET_DESCRIPTOR_REQUIRED_NO_FALLBACK"
+    },
+    {
+      "vector": "missing_native_dsn",
+      "exception_type": "RuntimeError",
+      "reason": "V4_NATIVE_PG_DSN_REQUIRED_NO_FALLBACK"
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="5" time="2.932" timestamp="2026-10-12T16:31:44.163283+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_v4_default_workbench_service" name="test_service_starts_without_legacy_and_root_is_v4" time="0.468"><failure message="urllib.error.HTTPError: HTTP Error 503: Service Unavailable">service = 'http://127.0.0.1:11401'
+
+    def test_service_starts_without_legacy_and_root_is_v4(service):
+        from workbench_service.joint_release import load,checked_path
+        authority=load(ROOT)
+        assert authority is not None
+        approved_html=checked_path(ROOT,authority['ui_assets']['index.html']).read_bytes()
+        for path in ['/','/v4','/v4/']:
+            assert get(service,path)[1]==approved_html
+&gt;       status=get(service,'/api/operations/status')[1]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_default_workbench_service.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_v4_default_workbench_service.py:29: in get
+    with urllib.request.urlopen(base+path,timeout=10) as response:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\urllib\request.py:189: in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\urllib\request.py:495: in open
+    response = meth(req, response)
+               ^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\urllib\request.py:604: in http_response
+    response = self.parent.error(
+E:\python\Lib\urllib\request.py:533: in error
+    return self._call_chain(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\urllib\request.py:466: in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;urllib.request.HTTPDefaultErrorHandler object at 0x000002D0CD0474D0&gt;
+req = &lt;urllib.request.Request object at 0x000002D0CD0675C0&gt;
+fp = &lt;http.client.HTTPResponse object at 0x000002D0CBB3F640&gt;, code = 503
+msg = 'Service Unavailable'
+hdrs = &lt;http.client.HTTPMessage object at 0x000002D0CD0A5250&gt;
+
+    def http_error_default(self, req, fp, code, msg, hdrs):
+&gt;       raise HTTPError(req.full_url, code, msg, hdrs, fp)
+E       urllib.error.HTTPError: HTTP Error 503: Service Unavailable
+
+E:\python\Lib\urllib\request.py:613: HTTPError</failure></testcase><testcase classname="tests.test_v4_default_workbench_service" name="test_current_routes_without_real_shadow" time="0.452"><failure message="urllib.error.HTTPError: HTTP Error 409: Conflict">service = 'http://127.0.0.1:10196'
+
+    def test_current_routes_without_real_shadow(service):
+&gt;       token=get(service,'/api/v4/current/context')[1]['context_token']
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_default_workbench_service.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_v4_default_workbench_service.py:29: in get
+    with urllib.request.urlopen(base+path,timeout=10) as response:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\urllib\request.py:189: in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\urllib\request.py:495: in open
+    response = meth(req, response)
+               ^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\urllib\request.py:604: in http_response
+    response = self.parent.error(
+E:\python\Lib\urllib\request.py:533: in error
+    return self._call_chain(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\urllib\request.py:466: in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;urllib.request.HTTPDefaultErrorHandler object at 0x000002D0CD0474D0&gt;
+req = &lt;urllib.request.Request object at 0x000002D0CD066B10&gt;
+fp = &lt;http.client.HTTPResponse object at 0x000002D0CBB6CB20&gt;, code = 409
+msg = 'Conflict', hdrs = &lt;http.client.HTTPMessage object at 0x000002D0CD20F070&gt;
+
+    def http_error_default(self, req, fp, code, msg, hdrs):
+&gt;       raise HTTPError(req.full_url, code, msg, hdrs, fp)
+E       urllib.error.HTTPError: HTTP Error 409: Conflict
+
+E:\python\Lib\urllib\request.py:613: HTTPError</failure></testcase><testcase classname="tests.test_v4_default_workbench_service" name="test_ui_writes_forbidden" time="0.508" /><testcase classname="tests.test_v4_default_workbench_service" name="test_entity_search_and_context_stability" time="0.455"><failure message="urllib.error.HTTPError: HTTP Error 409: Conflict">service = 'http://127.0.0.1:1035'
+
+    def test_entity_search_and_context_stability(service):
+&gt;       token=get(service,'/api/v4/current/context')[1]['context_token']
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_default_workbench_service.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_v4_default_workbench_service.py:29: in get
+    with urllib.request.urlopen(base+path,timeout=10) as response:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\urllib\request.py:189: in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\urllib\request.py:495: in open
+    response = meth(req, response)
+               ^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\urllib\request.py:604: in http_response
+    response = self.parent.error(
+E:\python\Lib\urllib\request.py:533: in error
+    return self._call_chain(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+E:\python\Lib\urllib\request.py:466: in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;urllib.request.HTTPDefaultErrorHandler object at 0x000002D0CD0474D0&gt;
+req = &lt;urllib.request.Request object at 0x000002D0CD202F50&gt;
+fp = &lt;http.client.HTTPResponse object at 0x000002D0CD1332B0&gt;, code = 409
+msg = 'Conflict', hdrs = &lt;http.client.HTTPMessage object at 0x000002D0CD873070&gt;
+
+    def http_error_default(self, req, fp, code, msg, hdrs):
+&gt;       raise HTTPError(req.full_url, code, msg, hdrs, fp)
+E       urllib.error.HTTPError: HTTP Error 409: Conflict
+
+E:\python\Lib\urllib\request.py:613: HTTPError</failure></testcase><testcase classname="tests.test_v4_default_workbench_service" name="test_service_restart_same_context" time="0.001"><failure message="workbench_service.current_v4_context.SourceInvalid: BOUND_ARTIFACT_MISSING:data/v4/production_views/blobs/38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40.json">self = &lt;workbench_service.current_v4_context.CurrentAcceptedV4Reader object at 0x000002D0CD0D3530&gt;
+ref = {'authority_source_path': 'data/v4/V4_DATA_ACCEPTED_HEAD.json', 'bytes': 16890, 'contract_id': 'data/v4/V4_DATA_ACCEPTED_HEAD.json', 'owner_stage': 'GOVERNANCE', ...}
+
+    def _read(self, ref):
+        path=self._path(ref['path'])
+&gt;       try:raw=path.read_bytes()
+                ^^^^^^^^^^^^^^^^^
+
+src\workbench_service\current_v4_context.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/data/v4/production_views/blobs/38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\data\\v4\\production_views\\blobs\\38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+    def test_service_restart_same_context():
+        from workbench_service.current_v4_context import CurrentAcceptedV4Reader
+&gt;       assert CurrentAcceptedV4Reader(ROOT).load_context()==CurrentAcceptedV4Reader(ROOT).load_context()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_v4_default_workbench_service.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_service\current_v4_context.py:108: in load_context
+    return self._load_context(contract,contract_digest)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_service\current_v4_context.py:111: in _load_context
+    heads=self._heads(contract)
+          ^^^^^^^^^^^^^^^^^^^^^
+src\workbench_service\current_v4_context.py:80: in _heads
+    heads={key:self._read(ref) for key,ref in contract['anchors'].items()}
+               ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;workbench_service.current_v4_context.CurrentAcceptedV4Reader object at 0x000002D0CD0D3530&gt;
+ref = {'authority_source_path': 'data/v4/V4_DATA_ACCEPTED_HEAD.json', 'bytes': 16890, 'contract_id': 'data/v4/V4_DATA_ACCEPTED_HEAD.json', 'owner_stage': 'GOVERNANCE', ...}
+
+    def _read(self, ref):
+        path=self._path(ref['path'])
+        try:raw=path.read_bytes()
+&gt;       except OSError as exc:raise SourceInvalid('BOUND_ARTIFACT_MISSING:'+ref['path']) from exc
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_service.current_v4_context.SourceInvalid: BOUND_ARTIFACT_MISSING:data/v4/production_views/blobs/38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40.json
+
+src\workbench_service\current_v4_context.py:45: SourceInvalid</failure></testcase></testsuite></testsuites>

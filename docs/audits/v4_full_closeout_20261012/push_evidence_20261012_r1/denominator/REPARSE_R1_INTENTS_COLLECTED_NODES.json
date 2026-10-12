@@ -1,0 +1,27 @@
+{
+  "contract_id": "R4_R3_EXACT_COLLECTED_NODE_SET_R1",
+  "nodes": [
+    "tests/v4_phase0/test_tdx_local_snapshot.py::test_local_tdx_snapshot_is_content_addressed_outside_input_and_repeatable",
+    "tests/v4_phase0/test_tdx_local_snapshot.py::test_snapshot_fails_if_existing_content_addressed_copy_was_mutated",
+    "tests/v4_phase0/test_tdx_local_snapshot.py::test_symlink_input_is_rejected",
+    "tests/v4_phase0/test_tdx_snapshot.py::test_zip_and_extracted_snapshot_are_matched_by_every_member_hash",
+    "tests/v4_phase0/test_tdx_snapshot.py::test_mutated_snapshot_fails_closed[extract]",
+    "tests/v4_phase0/test_tdx_snapshot.py::test_mutated_snapshot_fails_closed[inventory]",
+    "tests/v4_phase0/test_tdx_snapshot.py::test_mutated_snapshot_fails_closed[digest]",
+    "tests/v4_phase0/test_tdx_snapshot.py::test_archive_inventory_name_mismatch_fails_closed",
+    "tests/v4_phase0/test_tdx_snapshot.py::test_unsafe_zip_member_path_is_rejected_before_resolution",
+    "tests/v4_phase0/test_tdx_snapshot.py::test_windows_and_posix_path_escape_members_are_rejected[C:/outside.day]",
+    "tests/v4_phase0/test_tdx_snapshot.py::test_windows_and_posix_path_escape_members_are_rejected[SH/../escape.day]",
+    "tests/v4_phase0/test_tdx_snapshot.py::test_windows_and_posix_path_escape_members_are_rejected[/rooted.day]",
+    "tests/v4_phase0/test_tdx_snapshot.py::test_zip_symlink_member_is_rejected",
+    "tests/v4_phase0/test_tdx_snapshot.py::test_extracted_symlink_is_rejected"
+  ],
+  "modules": [
+    "tests/v4_phase0/test_tdx_local_snapshot.py",
+    "tests/v4_phase0/test_tdx_snapshot.py"
+  ],
+  "source_sha256": {
+    "tests/v4_phase0/test_tdx_local_snapshot.py": "250f6a40b23a9233aff402f386a8903c990a839f86dd39e5b424557750413300",
+    "tests/v4_phase0/test_tdx_snapshot.py": "5f76565dd0221625750117f6e73fb75de1e10c9d64d2d136dabf6870db3c3d05"
+  }
+}

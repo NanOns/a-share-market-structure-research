@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="3" time="0.799" timestamp="2026-10-12T13:38:39.018782+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_v4_daily_default_dispatch_closeout" name="test_actual_daily_reader_preserves_authority_and_date" time="0.665" /><testcase classname="tests.test_v4_daily_default_dispatch_closeout" name="test_daily_policy_unready_is_rejected_before_consumer" time="0.019" /><testcase classname="tests.test_v4_daily_default_dispatch_closeout" name="test_daily_policy_digest_mismatch_is_rejected" time="0.011"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'SHA|HASH'&#10;  Actual message: 'CORRECTED_INPUT_DIGEST_MISMATCH:config/read_only_operational_daily_release_policy_v1_1.json'">tmp_path = WindowsPath('G:/codex_tmp/test_temp/pg_daily_dispatch_r2_20261012/test_daily_policy_digest_misma0')
+
+    def test_daily_policy_digest_mismatch_is_rejected(tmp_path):
+        from workbench_analysis.operational_successor_v1 import accepted_api
+        candidate = json.loads((SOURCE / 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())
+        path = tmp_path / candidate['release_policy']['path']
+        path.parent.mkdir(parents=True)
+        path.write_bytes(b'{}')
+        head = tmp_path / 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+        head.parent.mkdir(parents=True)
+        head.write_text(json.dumps(candidate), encoding='utf8')
+&gt;       with pytest.raises(ValueError, match='SHA|HASH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'SHA|HASH'
+E         Actual message: 'CORRECTED_INPUT_DIGEST_MISMATCH:config/read_only_operational_daily_release_policy_v1_1.json'
+
+tests\test_v4_daily_default_dispatch_closeout.py:51: AssertionError</failure></testcase></testsuite></testsuites>

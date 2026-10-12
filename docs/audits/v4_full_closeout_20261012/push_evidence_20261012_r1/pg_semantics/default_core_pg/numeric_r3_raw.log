@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "G:\codex work\v4-full-closeout-20261012\scripts\audit_core_market_numeric_closeout.py", line 73, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "G:\codex work\v4-full-closeout-20261012\scripts\audit_core_market_numeric_closeout.py", line 59, in main
+    if native['sha256'] not in providers:providers[native['sha256']]={x['code'].lower():x for x in json.loads(checked(r,native).read_bytes())['rows']}
+                                                                                                              ~~~~~~~^^^^^^^^^^
+  File "G:\codex work\v4-full-closeout-20261012\src\workbench_analysis\r43_owner_replay.py", line 37, in checked
+    if sha256_file(p) != binding['sha256']:
+       ~~~~~~~~~~~^^^
+  File "G:\codex work\v4-full-closeout-20261012\src\workbench_analysis\tdx_official_daily_source.py", line 151, in sha256_file
+    with path.open("rb") as stream:
+         ~~~~~~~~~^^^^^^
+  File "E:\python\Lib\pathlib\_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_ui_default_r1\\data\\v4\\dynamic_daily_owners\\2026-10-09\\6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917\\sources\\daily.json'

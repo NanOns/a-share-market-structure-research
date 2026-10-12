@@ -1,0 +1,28 @@
+BUILD_DAY 2026-09-28
+{"T0": "2026-09-28", "manifest": {"path": "data/v4/core_product_read_pg_r1/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/2026-09-28/MANIFEST.json", "sha256": "485d4efd741ac49f406a3d307b4a3f696d250ee2eaf0bf3664bc669d8b8ccd61", "bytes": 2678}, "indices": 5, "breadth": {"up": 861, "down": 4245, "flat": 103, "unknown": 13, "denominator": 5222, "actual_quote_count": 5210, "amount_cny": 1702660147924.0, "definition": "ret1 in native T0 QFQ coordinate; actual T0 bar required"}, "limits": {"NOT_LIMIT": 5097, "LIMIT_DOWN": 60, "UNKNOWN": 18, "LIMIT_UP": 35, "SUSPENDED": 12}}
+{"contract_id": "CORE_PRODUCT_PG_SOURCE_MIGRATION_CLOSEOUT_R1", "status": "CANDIDATE_WHOLE_SOURCE_READBACK_PASS", "database_identity": {"database": "postgres", "system_identifier": "7695278778933357404", "data_directory": "G:/codex_tmp/full_system_r4_fbd23a6b/pg_data"}, "T0": "2026-09-28", "head_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e", "symbols": 5222, "bars": 2142119, "differences": [], "manifest": {"path": "data/v4/core_product_read_pg_r1/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/2026-09-28/MANIFEST.json", "sha256": "65a21f51b5f6da0c4752b5d5db09a27e2c3f23c724710b486360b345317a818f", "bytes": 2718}, "production_changed": false, "external_acceptance": "NOT_GRANTED", "builder_sha256": "049dac3093d7f183cea64dd4018bd7242458aff35f4ccff7d98f19f3f4d880a3"}
+BUILD_DAY 2026-09-29
+{"T0": "2026-09-29", "manifest": {"path": "data/v4/core_product_read_pg_r1/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/2026-09-29/MANIFEST.json", "sha256": "c59a4ff8343406912c5d428c429b8ad04306c07a140b47ed82b3039045c87e66", "bytes": 2899}, "indices": 5, "breadth": {"up": 3257, "down": 1810, "flat": 140, "unknown": 16, "denominator": 5223, "actual_quote_count": 5211, "amount_cny": 1409070711114.5, "definition": "ret1 in native T0 QFQ coordinate; actual T0 bar required"}, "limits": {"NOT_LIMIT": 5108, "LIMIT_UP": 54, "UNKNOWN": 37, "SUSPENDED": 12, "LIMIT_DOWN": 12}}
+{"contract_id": "CORE_PRODUCT_PG_SOURCE_MIGRATION_CLOSEOUT_R1", "status": "CANDIDATE_WHOLE_SOURCE_READBACK_PASS", "database_identity": {"database": "postgres", "system_identifier": "7695278778933357404", "data_directory": "G:/codex_tmp/full_system_r4_fbd23a6b/pg_data"}, "T0": "2026-09-29", "head_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e", "symbols": 5223, "bars": 2147330, "differences": [], "manifest": {"path": "data/v4/core_product_read_pg_r1/55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e/2026-09-29/MANIFEST.json", "sha256": "eb0c38d007d58f7f47ed2c99652bfcc49a8374d2dab527a58aa0888fcb0109f3", "bytes": 2939}, "production_changed": false, "external_acceptance": "NOT_GRANTED", "builder_sha256": "049dac3093d7f183cea64dd4018bd7242458aff35f4ccff7d98f19f3f4d880a3"}
+BUILD_DAY 2026-09-30
+Traceback (most recent call last):
+  File "G:\codex work\v4-full-closeout-20261012\scripts\migrate_core_product_pg_closeout.py", line 62, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "G:\codex work\v4-full-closeout-20261012\scripts\migrate_core_product_pg_closeout.py", line 22, in main
+    module.ROOT=root;sys.argv=['build_core_product_read_pack_r1.py']+(['--trade-date',a.trade_date] if a.trade_date else []);module.main()
+                                                                                                                             ~~~~~~~~~~~^^
+  File "G:\codex work\v4-full-closeout-20261012\scripts\build_core_product_read_pack_r1.py", line 37, in main
+    history_index=build(ROOT,history_rows(),head_token=hashlib.sha256(headpath.read_bytes()).hexdigest(),t0=day,source_digest=bindings['history']['sha256'])
+  File "G:\codex work\v4-full-closeout-20261012\src\workbench_db\v4_history_pg_r1.py", line 55, in build
+    pg.execute('INSERT INTO history SELECT %s,security,payload FROM stage_history',(version,))
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python\Lib\site-packages\psycopg\connection.py", line 304, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.QueryCanceled: canceling statement due to statement timeout
+Traceback (most recent call last):
+  File "<stdin>", line 6, in <module>
+  File "E:\python\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['E:\\python\\python.exe', '-B', 'scripts/migrate_core_product_pg_closeout.py', '--root', 'G:\\codex_tmp\\v4_ui_default_r1', '--evidence', 'G:/codex_tmp/v4_full_closeout_20261012/pg_semantics/default_core_pg/2026-09-30', '--trade-date', '2026-09-30']' returned non-zero exit status 1.

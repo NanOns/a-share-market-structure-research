@@ -1,0 +1,192 @@
+FFFF                                                                     [100%]
+================================== FAILURES ===================================
+________ test_completeness_requires_authority_parity_not_file_presence ________
+
+    def test_completeness_requires_authority_parity_not_file_presence():
+>       result=validate()
+               ^^^^^^^^^^
+
+tests\test_v4_12_authority_r2.py:90: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (), kwargs = {}
+
+    def replay(*args,**kwargs):
+        env=dict(os.environ,TMP='G:/codex_tmp',TEMP='G:/codex_tmp',TMPDIR='G:/codex_tmp',
+                 PYTHONDONTWRITEBYTECODE='1',PYTHONUTF8='1',
+                 PYTHONPATH=os.pathsep.join([str(HISTORICAL/'src'),str(HISTORICAL)]))
+        code='import importlib,json; result=importlib.import_module('+repr(validator)+').validate(); print(json.dumps(result))'
+        result=subprocess.run([sys.executable,'-B','-c',code],cwd=HISTORICAL,env=env,text=True,capture_output=True,encoding='utf8')
+        raw=Path('G:/codex_tmp/v4_full_closeout_20261012/denominator')/(request.function.__name__+'_HISTORICAL_RAW.log')
+        raw.write_text(result.stdout+'\n'+result.stderr,encoding='utf8')
+>       assert result.returncode==0,result.stderr
+               ^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Traceback (most recent call last):
+E         File "<string>", line 1, in <module>
+E           import importlib,json; result=importlib.import_module('scripts.validate_v4_12_authority_r2').validate(); print(json.dumps(result))
+E                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\validate_v4_12_authority_r2.py", line 142, in validate
+E           return time_validate(emit)
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\validate_v4_12_time_counter_r2_1.py", line 162, in validate
+E           parity=authority_parity();coordinate=coordinate_audit(configs);units=unit_audit(configs)
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\validate_v4_12_authority_r2.py", line 63, in authority_parity
+E           assert pub['artifact']==expected,'NATIVE_PUBLICATION_SUBSTITUTION';exact(expected)
+E                                                                              ~~~~~^^^^^^^^^^
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\validate_v4_12_authority_r2.py", line 31, in exact
+E           assert bind(ref['path'])['sha256']==ref['sha256'],'PUBLICATION_DIGEST_MISMATCH'
+E                  ~~~~^^^^^^^^^^^^^
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\v4_11_promotion_contract_r1.py", line 30, in bind
+E           raw=(ROOT/path).read_bytes();return dict(path=path,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw))
+E         File "E:\python\Lib\pathlib\_abc.py", line 625, in read_bytes
+E           with self.open(mode='rb') as f:
+E                ~~~~~~~~~^^^^^^^^^^^
+E         File "E:\python\Lib\pathlib\_local.py", line 537, in open
+E           return io.open(self, mode, buffering, encoding, errors, newline)
+E                  ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_r9_fixture\\data\\v4\\dm01_candidate_staging_r3\\durable_r3\\da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40\\ADJUSTED_DAILY\\artifact.json'
+
+tests\historical_r9_fixture_closeout.py:31: AssertionError
+___________________ test_r6r1_and_r1_ast_vectors_preserved ____________________
+
+    def test_r6r1_and_r1_ast_vectors_preserved():
+>       result=validate()
+               ^^^^^^^^^^
+
+tests\test_v4_12_authority_r2.py:97: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (), kwargs = {}
+
+    def replay(*args,**kwargs):
+        env=dict(os.environ,TMP='G:/codex_tmp',TEMP='G:/codex_tmp',TMPDIR='G:/codex_tmp',
+                 PYTHONDONTWRITEBYTECODE='1',PYTHONUTF8='1',
+                 PYTHONPATH=os.pathsep.join([str(HISTORICAL/'src'),str(HISTORICAL)]))
+        code='import importlib,json; result=importlib.import_module('+repr(validator)+').validate(); print(json.dumps(result))'
+        result=subprocess.run([sys.executable,'-B','-c',code],cwd=HISTORICAL,env=env,text=True,capture_output=True,encoding='utf8')
+        raw=Path('G:/codex_tmp/v4_full_closeout_20261012/denominator')/(request.function.__name__+'_HISTORICAL_RAW.log')
+        raw.write_text(result.stdout+'\n'+result.stderr,encoding='utf8')
+>       assert result.returncode==0,result.stderr
+               ^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Traceback (most recent call last):
+E         File "<string>", line 1, in <module>
+E           import importlib,json; result=importlib.import_module('scripts.validate_v4_12_authority_r2').validate(); print(json.dumps(result))
+E                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\validate_v4_12_authority_r2.py", line 142, in validate
+E           return time_validate(emit)
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\validate_v4_12_time_counter_r2_1.py", line 162, in validate
+E           parity=authority_parity();coordinate=coordinate_audit(configs);units=unit_audit(configs)
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\validate_v4_12_authority_r2.py", line 63, in authority_parity
+E           assert pub['artifact']==expected,'NATIVE_PUBLICATION_SUBSTITUTION';exact(expected)
+E                                                                              ~~~~~^^^^^^^^^^
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\validate_v4_12_authority_r2.py", line 31, in exact
+E           assert bind(ref['path'])['sha256']==ref['sha256'],'PUBLICATION_DIGEST_MISMATCH'
+E                  ~~~~^^^^^^^^^^^^^
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\v4_11_promotion_contract_r1.py", line 30, in bind
+E           raw=(ROOT/path).read_bytes();return dict(path=path,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw))
+E         File "E:\python\Lib\pathlib\_abc.py", line 625, in read_bytes
+E           with self.open(mode='rb') as f:
+E                ~~~~~~~~~^^^^^^^^^^^
+E         File "E:\python\Lib\pathlib\_local.py", line 537, in open
+E           return io.open(self, mode, buffering, encoding, errors, newline)
+E                  ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_r9_fixture\\data\\v4\\dm01_candidate_staging_r3\\durable_r3\\da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40\\ADJUSTED_DAILY\\artifact.json'
+
+tests\historical_r9_fixture_closeout.py:31: AssertionError
+________________ test_candidate_only_scope_and_protected_heads ________________
+
+    def test_candidate_only_scope_and_protected_heads():
+>       result=validate()
+               ^^^^^^^^^^
+
+tests\test_v4_12_contract_freeze_r1.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (), kwargs = {}
+
+    def replay(*args,**kwargs):
+        env=dict(os.environ,TMP='G:/codex_tmp',TEMP='G:/codex_tmp',TMPDIR='G:/codex_tmp',
+                 PYTHONDONTWRITEBYTECODE='1',PYTHONUTF8='1',
+                 PYTHONPATH=os.pathsep.join([str(HISTORICAL/'src'),str(HISTORICAL)]))
+        code='import importlib,json; result=importlib.import_module('+repr(validator)+').validate(); print(json.dumps(result))'
+        result=subprocess.run([sys.executable,'-B','-c',code],cwd=HISTORICAL,env=env,text=True,capture_output=True,encoding='utf8')
+        raw=Path('G:/codex_tmp/v4_full_closeout_20261012/denominator')/(request.function.__name__+'_HISTORICAL_RAW.log')
+        raw.write_text(result.stdout+'\n'+result.stderr,encoding='utf8')
+>       assert result.returncode==0,result.stderr
+               ^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Traceback (most recent call last):
+E         File "<string>", line 1, in <module>
+E           import importlib,json; result=importlib.import_module('scripts.validate_v4_12_contract_freeze_r1').validate(); print(json.dumps(result))
+E                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\validate_v4_12_contract_freeze_r1.py", line 273, in validate
+E           return validate_authority()
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\validate_v4_12_authority_r2.py", line 142, in validate
+E           return time_validate(emit)
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\validate_v4_12_time_counter_r2_1.py", line 162, in validate
+E           parity=authority_parity();coordinate=coordinate_audit(configs);units=unit_audit(configs)
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\validate_v4_12_authority_r2.py", line 63, in authority_parity
+E           assert pub['artifact']==expected,'NATIVE_PUBLICATION_SUBSTITUTION';exact(expected)
+E                                                                              ~~~~~^^^^^^^^^^
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\validate_v4_12_authority_r2.py", line 31, in exact
+E           assert bind(ref['path'])['sha256']==ref['sha256'],'PUBLICATION_DIGEST_MISMATCH'
+E                  ~~~~^^^^^^^^^^^^^
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\v4_11_promotion_contract_r1.py", line 30, in bind
+E           raw=(ROOT/path).read_bytes();return dict(path=path,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw))
+E         File "E:\python\Lib\pathlib\_abc.py", line 625, in read_bytes
+E           with self.open(mode='rb') as f:
+E                ~~~~~~~~~^^^^^^^^^^^
+E         File "E:\python\Lib\pathlib\_local.py", line 537, in open
+E           return io.open(self, mode, buffering, encoding, errors, newline)
+E                  ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_r9_fixture\\data\\v4\\dm01_candidate_staging_r3\\durable_r3\\da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40\\ADJUSTED_DAILY\\artifact.json'
+
+tests\historical_r9_fixture_closeout.py:31: AssertionError
+________________________ test_full_contract_time_gate _________________________
+
+    def test_full_contract_time_gate():
+>       result=validate()
+               ^^^^^^^^^^
+
+tests\test_v4_12_time_counter_r2_1.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (), kwargs = {}
+
+    def replay(*args,**kwargs):
+        env=dict(os.environ,TMP='G:/codex_tmp',TEMP='G:/codex_tmp',TMPDIR='G:/codex_tmp',
+                 PYTHONDONTWRITEBYTECODE='1',PYTHONUTF8='1',
+                 PYTHONPATH=os.pathsep.join([str(HISTORICAL/'src'),str(HISTORICAL)]))
+        code='import importlib,json; result=importlib.import_module('+repr(validator)+').validate(); print(json.dumps(result))'
+        result=subprocess.run([sys.executable,'-B','-c',code],cwd=HISTORICAL,env=env,text=True,capture_output=True,encoding='utf8')
+        raw=Path('G:/codex_tmp/v4_full_closeout_20261012/denominator')/(request.function.__name__+'_HISTORICAL_RAW.log')
+        raw.write_text(result.stdout+'\n'+result.stderr,encoding='utf8')
+>       assert result.returncode==0,result.stderr
+               ^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Traceback (most recent call last):
+E         File "<string>", line 1, in <module>
+E           import importlib,json; result=importlib.import_module('scripts.validate_v4_12_time_counter_r2_1').validate(); print(json.dumps(result))
+E                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\validate_v4_12_time_counter_r2_1.py", line 162, in validate
+E           parity=authority_parity();coordinate=coordinate_audit(configs);units=unit_audit(configs)
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\validate_v4_12_authority_r2.py", line 63, in authority_parity
+E           assert pub['artifact']==expected,'NATIVE_PUBLICATION_SUBSTITUTION';exact(expected)
+E                                                                              ~~~~~^^^^^^^^^^
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\validate_v4_12_authority_r2.py", line 31, in exact
+E           assert bind(ref['path'])['sha256']==ref['sha256'],'PUBLICATION_DIGEST_MISMATCH'
+E                  ~~~~^^^^^^^^^^^^^
+E         File "G:\codex_tmp\v4_full_closeout_20261012\denominator\historical_r9_fixture\scripts\v4_11_promotion_contract_r1.py", line 30, in bind
+E           raw=(ROOT/path).read_bytes();return dict(path=path,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw))
+E         File "E:\python\Lib\pathlib\_abc.py", line 625, in read_bytes
+E           with self.open(mode='rb') as f:
+E                ~~~~~~~~~^^^^^^^^^^^
+E         File "E:\python\Lib\pathlib\_local.py", line 537, in open
+E           return io.open(self, mode, buffering, encoding, errors, newline)
+E                  ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\historical_r9_fixture\\data\\v4\\dm01_candidate_staging_r3\\durable_r3\\da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40\\ADJUSTED_DAILY\\artifact.json'
+
+tests\historical_r9_fixture_closeout.py:31: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_v4_12_authority_r2.py::test_completeness_requires_authority_parity_not_file_presence
+FAILED tests/test_v4_12_authority_r2.py::test_r6r1_and_r1_ast_vectors_preserved
+FAILED tests/test_v4_12_contract_freeze_r1.py::test_candidate_only_scope_and_protected_heads
+FAILED tests/test_v4_12_time_counter_r2_1.py::test_full_contract_time_gate - ...
+4 failed in 3.75s

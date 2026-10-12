@@ -1,0 +1,855 @@
+F......FFFFF.FFFFFFFF.....F.                                             [100%]
+================================== FAILURES ===================================
+__________________ test_actual_all_nine_and_identical_rerun ___________________
+
+env = {'parent': {'head': {'accepted_trade_date': '2026-09-24', 'canonical_data_revision': '0e2e2204b32bb8b9fad379bcb0c4ef3a...ENGINEERING-INPUT-A', 'source_security_key': 'SH.600001', 'symbol': 'SH.600001', 'board_scope': 'SH_MAIN', ...}]}, ...}
+
+    def test_actual_all_nine_and_identical_rerun(env):
+>       result=build(env); marker=r.read(env['root'],result['candidate'])
+               ^^^^^^^^^^
+
+tests\v4_dm01_r4\test_runtime.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_dm01_r4\test_runtime.py:47: in build
+    return r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=e['root'],**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:295: in build_candidate
+    receipts[cap]=builders[cap](target,parent,freeze,cal,identity,staging,project_root=root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:266: in build_identity_universe
+    def build_identity_universe(*a, **kw): return run_kernel('IDENTITY_UNIVERSE',*a,**kw)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:264: in run_kernel
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:191: in build_identity_universe
+    return _finish(c,rows,dict(lifecycle_event_status=lifecycle['event_status'],boundary_events=lifecycle['boundary_events']))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:242: in _finish
+    first_availability_by_source=first_availability(c['freeze'],c['root']))
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_lineage_r4r1.py:48: in first_availability
+    contract=r.read(r.ROOT,r.ref(r.ROOT,r.ROOT/r.CONTRACT))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_runtime_r4.py:51: in ref
+    return dict(path=p.relative_to(Path(root).resolve()).as_posix(), sha256=sha(p), bytes=p.stat().st_size)
+                                                                            ^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:49: in sha
+    with Path(path).open('rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^^
+tests\remainder_historical_profiles.py:151: in opened
+    materialize(path);return open_path(path,mode,*args,**kw)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_frozen_v5_487bf4e19793/config/dm01_go_forward_runtime_contract_full_closeout_r1.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_frozen_v5_487bf4e19793\\config\\dm01_go_forward_runtime_contract_full_closeout_r1.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+________________________ test_component_oracle_failure ________________________
+
+env = {'parent': {'head': {'accepted_trade_date': '2026-09-24', 'canonical_data_revision': '0e2e2204b32bb8b9fad379bcb0c4ef3a...ENGINEERING-INPUT-A', 'source_security_key': 'SH.600001', 'symbol': 'SH.600001', 'board_scope': 'SH_MAIN', ...}]}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002369566E190>
+
+    def test_component_oracle_failure(env,monkeypatch):
+        monkeypatch.setattr(r,'check_component',lambda *a:dict(status='FAIL'))
+>       with pytest.raises(ValueError,match='COMPONENT_POSTCHECK_FAIL'):build(env)
+                                                                        ^^^^^^^^^^
+
+tests\v4_dm01_r4\test_runtime.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_dm01_r4\test_runtime.py:47: in build
+    return r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=e['root'],**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:295: in build_candidate
+    receipts[cap]=builders[cap](target,parent,freeze,cal,identity,staging,project_root=root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:266: in build_identity_universe
+    def build_identity_universe(*a, **kw): return run_kernel('IDENTITY_UNIVERSE',*a,**kw)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:264: in run_kernel
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:191: in build_identity_universe
+    return _finish(c,rows,dict(lifecycle_event_status=lifecycle['event_status'],boundary_events=lifecycle['boundary_events']))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:242: in _finish
+    first_availability_by_source=first_availability(c['freeze'],c['root']))
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_lineage_r4r1.py:48: in first_availability
+    contract=r.read(r.ROOT,r.ref(r.ROOT,r.ROOT/r.CONTRACT))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_runtime_r4.py:51: in ref
+    return dict(path=p.relative_to(Path(root).resolve()).as_posix(), sha256=sha(p), bytes=p.stat().st_size)
+                                                                            ^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:49: in sha
+    with Path(path).open('rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^^
+tests\remainder_historical_profiles.py:151: in opened
+    materialize(path);return open_path(path,mode,*args,**kw)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_frozen_v5_487bf4e19793/config/dm01_go_forward_runtime_contract_full_closeout_r1.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_frozen_v5_487bf4e19793\\config\\dm01_go_forward_runtime_contract_full_closeout_r1.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+__________________________ test_cross_oracle_failure __________________________
+
+env = {'parent': {'head': {'accepted_trade_date': '2026-09-24', 'canonical_data_revision': '0e2e2204b32bb8b9fad379bcb0c4ef3a...ENGINEERING-INPUT-A', 'source_security_key': 'SH.600001', 'symbol': 'SH.600001', 'board_scope': 'SH_MAIN', ...}]}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000023695E042C0>
+
+    def test_cross_oracle_failure(env,monkeypatch):
+        monkeypatch.setattr(r,'check_cross_components',lambda *a:dict(status='FAIL'))
+>       with pytest.raises(ValueError,match='CROSS_COMPONENT_POSTCHECK_FAILED'):build(env)
+                                                                                ^^^^^^^^^^
+
+tests\v4_dm01_r4\test_runtime.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_dm01_r4\test_runtime.py:47: in build
+    return r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=e['root'],**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:295: in build_candidate
+    receipts[cap]=builders[cap](target,parent,freeze,cal,identity,staging,project_root=root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:266: in build_identity_universe
+    def build_identity_universe(*a, **kw): return run_kernel('IDENTITY_UNIVERSE',*a,**kw)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:264: in run_kernel
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:191: in build_identity_universe
+    return _finish(c,rows,dict(lifecycle_event_status=lifecycle['event_status'],boundary_events=lifecycle['boundary_events']))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:242: in _finish
+    first_availability_by_source=first_availability(c['freeze'],c['root']))
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_lineage_r4r1.py:48: in first_availability
+    contract=r.read(r.ROOT,r.ref(r.ROOT,r.ROOT/r.CONTRACT))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_runtime_r4.py:51: in ref
+    return dict(path=p.relative_to(Path(root).resolve()).as_posix(), sha256=sha(p), bytes=p.stat().st_size)
+                                                                            ^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:49: in sha
+    with Path(path).open('rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^^
+tests\remainder_historical_profiles.py:151: in opened
+    materialize(path);return open_path(path,mode,*args,**kw)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_frozen_v5_487bf4e19793/config/dm01_go_forward_runtime_contract_full_closeout_r1.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_frozen_v5_487bf4e19793\\config\\dm01_go_forward_runtime_contract_full_closeout_r1.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+___________________ test_revised_source_immutable_candidate ___________________
+
+env = {'parent': {'head': {'accepted_trade_date': '2026-09-24', 'canonical_data_revision': '0e2e2204b32bb8b9fad379bcb0c4ef3a...ENGINEERING-INPUT-A', 'source_security_key': 'SH.600001', 'symbol': 'SH.600001', 'board_scope': 'SH_MAIN', ...}]}, ...}
+
+    def test_revised_source_immutable_candidate(env):
+>       first=build(env);old=r.path(env['root'],first['candidate']).read_bytes()
+              ^^^^^^^^^^
+
+tests\v4_dm01_r4\test_runtime.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_dm01_r4\test_runtime.py:47: in build
+    return r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=e['root'],**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:295: in build_candidate
+    receipts[cap]=builders[cap](target,parent,freeze,cal,identity,staging,project_root=root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:266: in build_identity_universe
+    def build_identity_universe(*a, **kw): return run_kernel('IDENTITY_UNIVERSE',*a,**kw)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:264: in run_kernel
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:191: in build_identity_universe
+    return _finish(c,rows,dict(lifecycle_event_status=lifecycle['event_status'],boundary_events=lifecycle['boundary_events']))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:242: in _finish
+    first_availability_by_source=first_availability(c['freeze'],c['root']))
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_lineage_r4r1.py:48: in first_availability
+    contract=r.read(r.ROOT,r.ref(r.ROOT,r.ROOT/r.CONTRACT))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_runtime_r4.py:51: in ref
+    return dict(path=p.relative_to(Path(root).resolve()).as_posix(), sha256=sha(p), bytes=p.stat().st_size)
+                                                                            ^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:49: in sha
+    with Path(path).open('rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^^
+tests\remainder_historical_profiles.py:151: in opened
+    materialize(path);return open_path(path,mode,*args,**kw)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_frozen_v5_487bf4e19793/config/dm01_go_forward_runtime_contract_full_closeout_r1.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_frozen_v5_487bf4e19793\\config\\dm01_go_forward_runtime_contract_full_closeout_r1.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_________________________ test_component_tamper_rerun _________________________
+
+env = {'parent': {'head': {'accepted_trade_date': '2026-09-24', 'canonical_data_revision': '0e2e2204b32bb8b9fad379bcb0c4ef3a...ENGINEERING-INPUT-A', 'source_security_key': 'SH.600001', 'symbol': 'SH.600001', 'board_scope': 'SH_MAIN', ...}]}, ...}
+
+    def test_component_tamper_rerun(env):
+>       result=build(env);marker=r.read(env['root'],result['candidate'])
+               ^^^^^^^^^^
+
+tests\v4_dm01_r4\test_runtime.py:99: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_dm01_r4\test_runtime.py:47: in build
+    return r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=e['root'],**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:295: in build_candidate
+    receipts[cap]=builders[cap](target,parent,freeze,cal,identity,staging,project_root=root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:266: in build_identity_universe
+    def build_identity_universe(*a, **kw): return run_kernel('IDENTITY_UNIVERSE',*a,**kw)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:264: in run_kernel
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:191: in build_identity_universe
+    return _finish(c,rows,dict(lifecycle_event_status=lifecycle['event_status'],boundary_events=lifecycle['boundary_events']))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:242: in _finish
+    first_availability_by_source=first_availability(c['freeze'],c['root']))
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_lineage_r4r1.py:48: in first_availability
+    contract=r.read(r.ROOT,r.ref(r.ROOT,r.ROOT/r.CONTRACT))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_runtime_r4.py:51: in ref
+    return dict(path=p.relative_to(Path(root).resolve()).as_posix(), sha256=sha(p), bytes=p.stat().st_size)
+                                                                            ^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:49: in sha
+    with Path(path).open('rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^^
+tests\remainder_historical_profiles.py:151: in opened
+    materialize(path);return open_path(path,mode,*args,**kw)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_frozen_v5_487bf4e19793/config/dm01_go_forward_runtime_contract_full_closeout_r1.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_frozen_v5_487bf4e19793\\config\\dm01_go_forward_runtime_contract_full_closeout_r1.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_________________________ test_stage_change_rejected __________________________
+
+env = {'parent': {'head': {'accepted_trade_date': '2026-09-24', 'canonical_data_revision': '0e2e2204b32bb8b9fad379bcb0c4ef3a...ENGINEERING-INPUT-A', 'source_security_key': 'SH.600001', 'symbol': 'SH.600001', 'board_scope': 'SH_MAIN', ...}]}, ...}
+
+    def test_stage_change_rejected(env):
+>       build(env); p=next(iter(json.loads((r.ROOT/r.CONTRACT).read_bytes())['protected_runtime_paths']))
+        ^^^^^^^^^^
+
+tests\v4_dm01_r4\test_runtime.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_dm01_r4\test_runtime.py:47: in build
+    return r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=e['root'],**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:295: in build_candidate
+    receipts[cap]=builders[cap](target,parent,freeze,cal,identity,staging,project_root=root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:266: in build_identity_universe
+    def build_identity_universe(*a, **kw): return run_kernel('IDENTITY_UNIVERSE',*a,**kw)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:264: in run_kernel
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:191: in build_identity_universe
+    return _finish(c,rows,dict(lifecycle_event_status=lifecycle['event_status'],boundary_events=lifecycle['boundary_events']))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:242: in _finish
+    first_availability_by_source=first_availability(c['freeze'],c['root']))
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_lineage_r4r1.py:48: in first_availability
+    contract=r.read(r.ROOT,r.ref(r.ROOT,r.ROOT/r.CONTRACT))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_runtime_r4.py:51: in ref
+    return dict(path=p.relative_to(Path(root).resolve()).as_posix(), sha256=sha(p), bytes=p.stat().st_size)
+                                                                            ^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:49: in sha
+    with Path(path).open('rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^^
+tests\remainder_historical_profiles.py:151: in opened
+    materialize(path);return open_path(path,mode,*args,**kw)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_frozen_v5_487bf4e19793/config/dm01_go_forward_runtime_contract_full_closeout_r1.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_frozen_v5_487bf4e19793\\config\\dm01_go_forward_runtime_contract_full_closeout_r1.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+______________________ test_actual_entrypoint_no_capture ______________________
+
+    def test_actual_entrypoint_no_capture():
+        result=subprocess.run([sys.executable,'-B',str(r.ROOT/'scripts/run_v4_dm01_daily_increment.py'),
+            '--target-date','2026-10-08'],cwd=r.ROOT,capture_output=True,text=True)
+>       assert result.returncode==0,result.stderr
+E       AssertionError: 
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['E:\\python\\python.exe', '-B', 'G:\\codex_tmp\\test_temp\\remainder_frozen_v5_487bf4e19793\\sc..."reason": "BLOCKED_PENDING_DM01_R4_EXTERNAL_ACCEPTANCE", "source_requests": 0, "data_head_moved": false}\n', stderr='').returncode
+
+tests\v4_dm01_r4\test_runtime.py:125: AssertionError
+___________ test_simulation_cannot_promote_even_with_fake_envelope ____________
+
+env = {'parent': {'head': {'accepted_trade_date': '2026-09-24', 'canonical_data_revision': '0e2e2204b32bb8b9fad379bcb0c4ef3a...ENGINEERING-INPUT-A', 'source_security_key': 'SH.600001', 'symbol': 'SH.600001', 'board_scope': 'SH_MAIN', ...}]}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000236960D6CB0>
+
+    def test_simulation_cannot_promote_even_with_fake_envelope(env,monkeypatch):
+>       result=build(env)
+               ^^^^^^^^^^
+
+tests\v4_dm01_r4\test_runtime.py:131: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_dm01_r4\test_runtime.py:47: in build
+    return r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=e['root'],**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:295: in build_candidate
+    receipts[cap]=builders[cap](target,parent,freeze,cal,identity,staging,project_root=root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:266: in build_identity_universe
+    def build_identity_universe(*a, **kw): return run_kernel('IDENTITY_UNIVERSE',*a,**kw)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:264: in run_kernel
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:191: in build_identity_universe
+    return _finish(c,rows,dict(lifecycle_event_status=lifecycle['event_status'],boundary_events=lifecycle['boundary_events']))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:242: in _finish
+    first_availability_by_source=first_availability(c['freeze'],c['root']))
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_lineage_r4r1.py:48: in first_availability
+    contract=r.read(r.ROOT,r.ref(r.ROOT,r.ROOT/r.CONTRACT))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_runtime_r4.py:51: in ref
+    return dict(path=p.relative_to(Path(root).resolve()).as_posix(), sha256=sha(p), bytes=p.stat().st_size)
+                                                                            ^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:49: in sha
+    with Path(path).open('rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^^
+tests\remainder_historical_profiles.py:151: in opened
+    materialize(path);return open_path(path,mode,*args,**kw)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_frozen_v5_487bf4e19793/config/dm01_go_forward_runtime_contract_full_closeout_r1.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_frozen_v5_487bf4e19793\\config\\dm01_go_forward_runtime_contract_full_closeout_r1.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________________ test_promotion_negative[DM01R4-07] ______________________
+
+env = {'parent': {'head': {'accepted_trade_date': '2026-09-24', 'canonical_data_revision': '0e2e2204b32bb8b9fad379bcb0c4ef3a...ENGINEERING-INPUT-A', 'source_security_key': 'SH.600001', 'symbol': 'SH.600001', 'board_scope': 'SH_MAIN', ...}]}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000023695694E60>
+case = 'DM01R4-07'
+
+    @pytest.mark.parametrize('case', ['DM01R4-07','DM01R4-09','DM01R4-10','DM01R4-17','DM01R4-19'])
+    def test_promotion_negative(env,monkeypatch,case):
+>       marker=promotion_fixture(env,monkeypatch)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4\test_runtime.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_dm01_r4\test_runtime.py:145: in promotion_fixture
+    result=build(env);marker=r.read(env['root'],result['candidate'])
+           ^^^^^^^^^^
+tests\v4_dm01_r4\test_runtime.py:47: in build
+    return r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=e['root'],**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:295: in build_candidate
+    receipts[cap]=builders[cap](target,parent,freeze,cal,identity,staging,project_root=root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:266: in build_identity_universe
+    def build_identity_universe(*a, **kw): return run_kernel('IDENTITY_UNIVERSE',*a,**kw)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:264: in run_kernel
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:191: in build_identity_universe
+    return _finish(c,rows,dict(lifecycle_event_status=lifecycle['event_status'],boundary_events=lifecycle['boundary_events']))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:242: in _finish
+    first_availability_by_source=first_availability(c['freeze'],c['root']))
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_lineage_r4r1.py:48: in first_availability
+    contract=r.read(r.ROOT,r.ref(r.ROOT,r.ROOT/r.CONTRACT))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_runtime_r4.py:51: in ref
+    return dict(path=p.relative_to(Path(root).resolve()).as_posix(), sha256=sha(p), bytes=p.stat().st_size)
+                                                                            ^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:49: in sha
+    with Path(path).open('rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^^
+tests\remainder_historical_profiles.py:151: in opened
+    materialize(path);return open_path(path,mode,*args,**kw)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_frozen_v5_487bf4e19793/config/dm01_go_forward_runtime_contract_full_closeout_r1.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_frozen_v5_487bf4e19793\\config\\dm01_go_forward_runtime_contract_full_closeout_r1.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________________ test_promotion_negative[DM01R4-09] ______________________
+
+env = {'parent': {'head': {'accepted_trade_date': '2026-09-24', 'canonical_data_revision': '0e2e2204b32bb8b9fad379bcb0c4ef3a...ENGINEERING-INPUT-A', 'source_security_key': 'SH.600001', 'symbol': 'SH.600001', 'board_scope': 'SH_MAIN', ...}]}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000236950AF2D0>
+case = 'DM01R4-09'
+
+    @pytest.mark.parametrize('case', ['DM01R4-07','DM01R4-09','DM01R4-10','DM01R4-17','DM01R4-19'])
+    def test_promotion_negative(env,monkeypatch,case):
+>       marker=promotion_fixture(env,monkeypatch)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4\test_runtime.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_dm01_r4\test_runtime.py:145: in promotion_fixture
+    result=build(env);marker=r.read(env['root'],result['candidate'])
+           ^^^^^^^^^^
+tests\v4_dm01_r4\test_runtime.py:47: in build
+    return r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=e['root'],**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:295: in build_candidate
+    receipts[cap]=builders[cap](target,parent,freeze,cal,identity,staging,project_root=root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:266: in build_identity_universe
+    def build_identity_universe(*a, **kw): return run_kernel('IDENTITY_UNIVERSE',*a,**kw)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:264: in run_kernel
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:191: in build_identity_universe
+    return _finish(c,rows,dict(lifecycle_event_status=lifecycle['event_status'],boundary_events=lifecycle['boundary_events']))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:242: in _finish
+    first_availability_by_source=first_availability(c['freeze'],c['root']))
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_lineage_r4r1.py:48: in first_availability
+    contract=r.read(r.ROOT,r.ref(r.ROOT,r.ROOT/r.CONTRACT))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_runtime_r4.py:51: in ref
+    return dict(path=p.relative_to(Path(root).resolve()).as_posix(), sha256=sha(p), bytes=p.stat().st_size)
+                                                                            ^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:49: in sha
+    with Path(path).open('rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^^
+tests\remainder_historical_profiles.py:151: in opened
+    materialize(path);return open_path(path,mode,*args,**kw)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_frozen_v5_487bf4e19793/config/dm01_go_forward_runtime_contract_full_closeout_r1.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_frozen_v5_487bf4e19793\\config\\dm01_go_forward_runtime_contract_full_closeout_r1.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________________ test_promotion_negative[DM01R4-10] ______________________
+
+env = {'parent': {'head': {'accepted_trade_date': '2026-09-24', 'canonical_data_revision': '0e2e2204b32bb8b9fad379bcb0c4ef3a...ENGINEERING-INPUT-A', 'source_security_key': 'SH.600001', 'symbol': 'SH.600001', 'board_scope': 'SH_MAIN', ...}]}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000023696087850>
+case = 'DM01R4-10'
+
+    @pytest.mark.parametrize('case', ['DM01R4-07','DM01R4-09','DM01R4-10','DM01R4-17','DM01R4-19'])
+    def test_promotion_negative(env,monkeypatch,case):
+>       marker=promotion_fixture(env,monkeypatch)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4\test_runtime.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_dm01_r4\test_runtime.py:145: in promotion_fixture
+    result=build(env);marker=r.read(env['root'],result['candidate'])
+           ^^^^^^^^^^
+tests\v4_dm01_r4\test_runtime.py:47: in build
+    return r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=e['root'],**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:295: in build_candidate
+    receipts[cap]=builders[cap](target,parent,freeze,cal,identity,staging,project_root=root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:266: in build_identity_universe
+    def build_identity_universe(*a, **kw): return run_kernel('IDENTITY_UNIVERSE',*a,**kw)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:264: in run_kernel
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:191: in build_identity_universe
+    return _finish(c,rows,dict(lifecycle_event_status=lifecycle['event_status'],boundary_events=lifecycle['boundary_events']))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:242: in _finish
+    first_availability_by_source=first_availability(c['freeze'],c['root']))
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_lineage_r4r1.py:48: in first_availability
+    contract=r.read(r.ROOT,r.ref(r.ROOT,r.ROOT/r.CONTRACT))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_runtime_r4.py:51: in ref
+    return dict(path=p.relative_to(Path(root).resolve()).as_posix(), sha256=sha(p), bytes=p.stat().st_size)
+                                                                            ^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:49: in sha
+    with Path(path).open('rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^^
+tests\remainder_historical_profiles.py:151: in opened
+    materialize(path);return open_path(path,mode,*args,**kw)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_frozen_v5_487bf4e19793/config/dm01_go_forward_runtime_contract_full_closeout_r1.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_frozen_v5_487bf4e19793\\config\\dm01_go_forward_runtime_contract_full_closeout_r1.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________________ test_promotion_negative[DM01R4-17] ______________________
+
+env = {'parent': {'head': {'accepted_trade_date': '2026-09-24', 'canonical_data_revision': '0e2e2204b32bb8b9fad379bcb0c4ef3a...ENGINEERING-INPUT-A', 'source_security_key': 'SH.600001', 'symbol': 'SH.600001', 'board_scope': 'SH_MAIN', ...}]}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000236951591D0>
+case = 'DM01R4-17'
+
+    @pytest.mark.parametrize('case', ['DM01R4-07','DM01R4-09','DM01R4-10','DM01R4-17','DM01R4-19'])
+    def test_promotion_negative(env,monkeypatch,case):
+>       marker=promotion_fixture(env,monkeypatch)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4\test_runtime.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_dm01_r4\test_runtime.py:145: in promotion_fixture
+    result=build(env);marker=r.read(env['root'],result['candidate'])
+           ^^^^^^^^^^
+tests\v4_dm01_r4\test_runtime.py:47: in build
+    return r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=e['root'],**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:295: in build_candidate
+    receipts[cap]=builders[cap](target,parent,freeze,cal,identity,staging,project_root=root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:266: in build_identity_universe
+    def build_identity_universe(*a, **kw): return run_kernel('IDENTITY_UNIVERSE',*a,**kw)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:264: in run_kernel
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:191: in build_identity_universe
+    return _finish(c,rows,dict(lifecycle_event_status=lifecycle['event_status'],boundary_events=lifecycle['boundary_events']))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:242: in _finish
+    first_availability_by_source=first_availability(c['freeze'],c['root']))
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_lineage_r4r1.py:48: in first_availability
+    contract=r.read(r.ROOT,r.ref(r.ROOT,r.ROOT/r.CONTRACT))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_runtime_r4.py:51: in ref
+    return dict(path=p.relative_to(Path(root).resolve()).as_posix(), sha256=sha(p), bytes=p.stat().st_size)
+                                                                            ^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:49: in sha
+    with Path(path).open('rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^^
+tests\remainder_historical_profiles.py:151: in opened
+    materialize(path);return open_path(path,mode,*args,**kw)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_frozen_v5_487bf4e19793/config/dm01_go_forward_runtime_contract_full_closeout_r1.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_frozen_v5_487bf4e19793\\config\\dm01_go_forward_runtime_contract_full_closeout_r1.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________________ test_promotion_negative[DM01R4-19] ______________________
+
+env = {'parent': {'head': {'accepted_trade_date': '2026-09-24', 'canonical_data_revision': '0e2e2204b32bb8b9fad379bcb0c4ef3a...ENGINEERING-INPUT-A', 'source_security_key': 'SH.600001', 'symbol': 'SH.600001', 'board_scope': 'SH_MAIN', ...}]}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002369569F4D0>
+case = 'DM01R4-19'
+
+    @pytest.mark.parametrize('case', ['DM01R4-07','DM01R4-09','DM01R4-10','DM01R4-17','DM01R4-19'])
+    def test_promotion_negative(env,monkeypatch,case):
+>       marker=promotion_fixture(env,monkeypatch)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4\test_runtime.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_dm01_r4\test_runtime.py:145: in promotion_fixture
+    result=build(env);marker=r.read(env['root'],result['candidate'])
+           ^^^^^^^^^^
+tests\v4_dm01_r4\test_runtime.py:47: in build
+    return r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=e['root'],**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:295: in build_candidate
+    receipts[cap]=builders[cap](target,parent,freeze,cal,identity,staging,project_root=root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:266: in build_identity_universe
+    def build_identity_universe(*a, **kw): return run_kernel('IDENTITY_UNIVERSE',*a,**kw)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:264: in run_kernel
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:191: in build_identity_universe
+    return _finish(c,rows,dict(lifecycle_event_status=lifecycle['event_status'],boundary_events=lifecycle['boundary_events']))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:242: in _finish
+    first_availability_by_source=first_availability(c['freeze'],c['root']))
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_lineage_r4r1.py:48: in first_availability
+    contract=r.read(r.ROOT,r.ref(r.ROOT,r.ROOT/r.CONTRACT))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_runtime_r4.py:51: in ref
+    return dict(path=p.relative_to(Path(root).resolve()).as_posix(), sha256=sha(p), bytes=p.stat().st_size)
+                                                                            ^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:49: in sha
+    with Path(path).open('rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^^
+tests\remainder_historical_profiles.py:151: in opened
+    materialize(path);return open_path(path,mode,*args,**kw)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_frozen_v5_487bf4e19793/config/dm01_go_forward_runtime_contract_full_closeout_r1.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_frozen_v5_487bf4e19793\\config\\dm01_go_forward_runtime_contract_full_closeout_r1.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+_________ test_promotion_state_machine_no_stage_r25_or_counter_grant __________
+
+env = {'parent': {'head': {'accepted_trade_date': '2026-09-24', 'canonical_data_revision': '0e2e2204b32bb8b9fad379bcb0c4ef3a...ENGINEERING-INPUT-A', 'source_security_key': 'SH.600001', 'symbol': 'SH.600001', 'board_scope': 'SH_MAIN', ...}]}, ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002369569C8A0>
+
+    def test_promotion_state_machine_no_stage_r25_or_counter_grant(env,monkeypatch):
+>       marker=promotion_fixture(env,monkeypatch)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_dm01_r4\test_runtime.py:181: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_dm01_r4\test_runtime.py:145: in promotion_fixture
+    result=build(env);marker=r.read(env['root'],result['candidate'])
+           ^^^^^^^^^^
+tests\v4_dm01_r4\test_runtime.py:47: in build
+    return r.build_candidate(parent=e['parent'],freeze=e['freeze'],cal=e['calendar'],identity=e['identity'],root=e['root'],**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:295: in build_candidate
+    receipts[cap]=builders[cap](target,parent,freeze,cal,identity,staging,project_root=root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:266: in build_identity_universe
+    def build_identity_universe(*a, **kw): return run_kernel('IDENTITY_UNIVERSE',*a,**kw)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:264: in run_kernel
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:191: in build_identity_universe
+    return _finish(c,rows,dict(lifecycle_event_status=lifecycle['event_status'],boundary_events=lifecycle['boundary_events']))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+G:\codex_tmp\test_temp\remainder_frozen_v5_487bf4e19793\src\workbench_analysis\dm01_runtime_r4.py:242: in _finish
+    first_availability_by_source=first_availability(c['freeze'],c['root']))
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_lineage_r4r1.py:48: in first_availability
+    contract=r.read(r.ROOT,r.ref(r.ROOT,r.ROOT/r.CONTRACT))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_runtime_r4.py:51: in ref
+    return dict(path=p.relative_to(Path(root).resolve()).as_posix(), sha256=sha(p), bytes=p.stat().st_size)
+                                                                            ^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders_r3_3.py:49: in sha
+    with Path(path).open('rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^^
+tests\remainder_historical_profiles.py:151: in opened
+    materialize(path);return open_path(path,mode,*args,**kw)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex_tmp/test_temp/remainder_frozen_v5_487bf4e19793/config/dm01_go_forward_runtime_contract_full_closeout_r1.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex_tmp\\test_temp\\remainder_frozen_v5_487bf4e19793\\config\\dm01_go_forward_runtime_contract_full_closeout_r1.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+____________ test_sealed_future_wait_has_no_source_or_publication _____________
+
+    def test_sealed_future_wait_has_no_source_or_publication():
+        data = (ROOT / r.HEAD).read_bytes()
+        output = ROOT / 'reports/r25/target_session_bridge/acceptance_seal_wait_not_created.json'
+        assert not output.exists()
+>       result = produce_bridge(ROOT, parent=None, child=None, candidate=None,
+                                source=None, receipts=None, observation=None,
+                                target='2026-10-08', observed_at=datetime.now(timezone.utc).isoformat(),
+                                output=output.relative_to(ROOT).as_posix())
+
+tests\v4_dm01_r4r2\test_acceptance_seal.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\build_r25_bridge_r4r2.py:24: in produce_bridge
+    validate_bridge_object(root,b,engineering=engineering)
+scripts\build_r25_bridge_r4r2.py:33: in validate_bridge_object
+    o.inspect_bridge_object(root,b,engineering=engineering)
+scripts\r25_bridge_oracle_r4r2.py:35: in inspect_bridge_object
+    parent=exact(root,b['parent_data_head']);child=exact(root,b['child_data_head']);candidate=exact(root,b['candidate'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r25_bridge_oracle_r4r2.py:20: in exact
+    check(isinstance(b,dict) and set(b)=={'path','bytes','sha256'},'BRIDGE_EXACT_BINDING_REQUIRED')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'BRIDGE_EXACT_BINDING_REQUIRED'
+
+    def check(ok,reason):
+>       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: BRIDGE_EXACT_BINDING_REQUIRED
+
+scripts\r25_bridge_oracle_r4r2.py:14: ValueError
+=========================== short test summary info ===========================
+FAILED tests/v4_dm01_r4/test_runtime.py::test_actual_all_nine_and_identical_rerun
+FAILED tests/v4_dm01_r4/test_runtime.py::test_component_oracle_failure - File...
+FAILED tests/v4_dm01_r4/test_runtime.py::test_cross_oracle_failure - FileNotF...
+FAILED tests/v4_dm01_r4/test_runtime.py::test_revised_source_immutable_candidate
+FAILED tests/v4_dm01_r4/test_runtime.py::test_component_tamper_rerun - FileNo...
+FAILED tests/v4_dm01_r4/test_runtime.py::test_stage_change_rejected - FileNot...
+FAILED tests/v4_dm01_r4/test_runtime.py::test_actual_entrypoint_no_capture - ...
+FAILED tests/v4_dm01_r4/test_runtime.py::test_simulation_cannot_promote_even_with_fake_envelope
+FAILED tests/v4_dm01_r4/test_runtime.py::test_promotion_negative[DM01R4-07]
+FAILED tests/v4_dm01_r4/test_runtime.py::test_promotion_negative[DM01R4-09]
+FAILED tests/v4_dm01_r4/test_runtime.py::test_promotion_negative[DM01R4-10]
+FAILED tests/v4_dm01_r4/test_runtime.py::test_promotion_negative[DM01R4-17]
+FAILED tests/v4_dm01_r4/test_runtime.py::test_promotion_negative[DM01R4-19]
+FAILED tests/v4_dm01_r4/test_runtime.py::test_promotion_state_machine_no_stage_r25_or_counter_grant
+FAILED tests/v4_dm01_r4r2/test_acceptance_seal.py::test_sealed_future_wait_has_no_source_or_publication
+15 failed, 13 passed in 55.99s

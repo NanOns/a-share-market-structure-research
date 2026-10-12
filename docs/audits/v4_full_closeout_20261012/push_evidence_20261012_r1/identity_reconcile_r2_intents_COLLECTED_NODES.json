@@ -1,0 +1,35 @@
+{
+  "contract_id": "R4_R3_EXACT_COLLECTED_NODE_SET_R1",
+  "nodes": [
+    "tests/test_identity_gate_reason_r2.py::test_actual_provider_identity_classification[same]",
+    "tests/test_identity_gate_reason_r2.py::test_actual_provider_identity_classification[new]",
+    "tests/test_identity_gate_reason_r2.py::test_actual_provider_identity_classification[delist]",
+    "tests/test_identity_gate_reason_r2.py::test_actual_provider_identity_classification[rename]",
+    "tests/test_identity_gate_reason_r2.py::test_actual_provider_identity_classification[suspended]",
+    "tests/test_identity_gate_reason_r2.py::test_actual_provider_identity_classification[tdx_conflict]",
+    "tests/test_identity_gate_reason_r2.py::test_actual_provider_identity_classification[package_missing]",
+    "tests/test_identity_gate_reason_r2.py::test_actual_provider_identity_classification[member_version]",
+    "tests/test_v4_native_source_scope_r3.py::test_exact_required_scope_with_all_raw_rows_and_quarantine_retained",
+    "tests/test_v4_native_source_scope_r3.py::test_raw_scope_and_exact_value_negatives[new_sh]",
+    "tests/test_v4_native_source_scope_r3.py::test_raw_scope_and_exact_value_negatives[duplicate_bj]",
+    "tests/test_v4_native_source_scope_r3.py::test_raw_scope_and_exact_value_negatives[tiny_decimal_difference]",
+    "tests/test_v4_native_source_scope_r3.py::test_raw_scope_and_exact_value_negatives[missing_active]",
+    "tests/test_v4_native_source_scope_r3.py::test_raw_scope_and_exact_value_negatives[suspended_with_bar]",
+    "tests/test_v4_native_source_scope_r3.py::test_raw_scope_and_exact_value_negatives[nonfinite]",
+    "tests/test_v4_native_source_scope_r3.py::test_raw_scope_and_exact_value_negatives[wrong_date]",
+    "tests/test_v4_native_source_scope_r3.py::test_current_engineering_replay_cannot_reach_promotion_or_read_before_scope_guard",
+    "tests/test_v4_native_source_scope_r3.py::test_same_payload_different_location_or_dependency_cannot_borrow_ready_gate",
+    "tests/test_pre_next_t0_executor_chain.py::test_full_executor_entry[False]",
+    "tests/test_pre_next_t0_executor_chain.py::test_full_executor_entry[True]"
+  ],
+  "modules": [
+    "tests/test_identity_gate_reason_r2.py",
+    "tests/test_pre_next_t0_executor_chain.py",
+    "tests/test_v4_native_source_scope_r3.py"
+  ],
+  "source_sha256": {
+    "tests/test_identity_gate_reason_r2.py": "a6e81f296c37f634f461c05f2c978ee87ac0ec930408cf80d5598bd09e28e350",
+    "tests/test_v4_native_source_scope_r3.py": "b731cd194570655e6e3aac9eb882b87f9615cc7691116906a346913dce6a69ea",
+    "tests/test_pre_next_t0_executor_chain.py": "76a7c4d9ab3a91eda70d899304102e0ff626c3c59979069e2a6a8ec4cd60eba9"
+  }
+}

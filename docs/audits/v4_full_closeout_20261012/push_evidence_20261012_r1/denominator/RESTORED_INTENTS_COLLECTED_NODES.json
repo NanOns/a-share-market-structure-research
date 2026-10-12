@@ -1,0 +1,35 @@
+{
+  "contract_id": "R4_R3_EXACT_COLLECTED_NODE_SET_R1",
+  "nodes": [
+    "tests/test_engineering_pg_publication_r3.py::test_production_root_refused_before_pg",
+    "tests/test_engineering_pg_publication_r3.py::test_isolated_admission_scope_refused_before_pg[mutation0]",
+    "tests/test_engineering_pg_publication_r3.py::test_isolated_admission_scope_refused_before_pg[mutation1]",
+    "tests/test_v4_exact_period_quality_r3.py::test_missing_status_never_relabelled_as_adjustment_after_next_actual_bar",
+    "tests/test_v4_exact_period_quality_r3.py::test_true_adjustment_damage_stays_adjustment_even_with_unknown_status",
+    "tests/test_v4_exact_period_quality_r3.py::test_known_suspension_is_not_unknown_and_is_never_inferred",
+    "tests/test_v4_exact_candidate_gate_r3.py::test_explicit_engineering_gate_precedes_every_io",
+    "tests/test_v4_exact_candidate_gate_r3.py::test_production_workspace_rejected_before_source_or_pg_io",
+    "tests/test_v4_exact_candidate_gate_r3.py::test_bad_queries_refused_before_source_pg_access[query0]",
+    "tests/test_v4_exact_candidate_gate_r3.py::test_bad_queries_refused_before_source_pg_access[query1]",
+    "tests/test_v4_exact_candidate_gate_r3.py::test_bad_queries_refused_before_source_pg_access[query2]",
+    "tests/test_v4_exact_candidate_gate_r3.py::test_bad_queries_refused_before_source_pg_access[query3]",
+    "tests/test_v4_exact_focus_path_r3.py::test_exact_coordinate_tie_and_real_metrics_consumer",
+    "tests/test_v4_exact_focus_path_r3.py::test_missing_session_remains_source_incomplete",
+    "tests/test_v4_exact_focus_path_r3.py::test_source_drift_and_missing_exact_refused",
+    "tests/test_v4_exact_focus_path_r3.py::test_mixed_row_date_and_float_raw_refused",
+    "tests/test_v4_exact_focus_path_r3.py::test_empty_and_duplicate_calendar_refused",
+    "tests/test_v4_exact_focus_path_r3.py::test_observation_coordinate_cancels_later_actions_without_decimal_approximation"
+  ],
+  "modules": [
+    "tests/test_engineering_pg_publication_r3.py",
+    "tests/test_v4_exact_candidate_gate_r3.py",
+    "tests/test_v4_exact_focus_path_r3.py",
+    "tests/test_v4_exact_period_quality_r3.py"
+  ],
+  "source_sha256": {
+    "tests/test_engineering_pg_publication_r3.py": "e3339e8a462dbd6d6c89734b6ecb2274864f15d6315587f36e8b1abac6417659",
+    "tests/test_v4_exact_period_quality_r3.py": "cea7b35b67047834444d18a21eba55861d5b8d15dea9a63138f2b338063d71d5",
+    "tests/test_v4_exact_candidate_gate_r3.py": "9db17d7de75343dcc2005dfddfde568a197ebaecca522f764fd80f856320221e",
+    "tests/test_v4_exact_focus_path_r3.py": "0672b78442b08aee41d33f36935e80eaf7ffe0060c3f66aeed544a1471965e0c"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "contract_id": "V4_FULL_DATED_PERIOD_AGGREGATION_INDEPENDENT_ORACLE_R1",
+  "day": "2026-09-30",
+  "head_token": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+  "source": {
+    "bytes": 67076523,
+    "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-09-30/history.jsonl.gz",
+    "sha256": "1a4e34ace538c49bb5f54c49a1986706c5518cb88cbca2afc28a4a9d53c8609a"
+  },
+  "period_bindings": {
+    "period_adjusted": {
+      "bytes": 493,
+      "path": "data/v4/core_period_pg_r1/period_adjusted/e32489f03e3dd0d9af4ede47c51d775a2f187be8d2851c99621b946879bbf81e.pg.json",
+      "sha256": "b9953f92480f3cd88cd0d50a90066696934417ab3e5d8a8fc7ef3bd1f7083d8b"
+    },
+    "period_raw": {
+      "bytes": 483,
+      "path": "data/v4/core_period_pg_r1/period_raw/4308551b3817113eaa9f7d462f7a9dae811ff66ad4b7a3ebd62cc38c76e6691a.pg.json",
+      "sha256": "937bc63ddc39e07ea00a8b2a99e4d150260cbb7aeb8548b9948f70c211c4b2ca"
+    }
+  },
+  "domains": {
+    "period_raw": {
+      "securities": 5224,
+      "rows": 572520,
+      "checks": 9160320
+    },
+    "period_adjusted": {
+      "securities": 5224,
+      "rows": 572520,
+      "checks": 9160320
+    }
+  },
+  "rows": 1145040,
+  "checks": 18320640,
+  "differences": 0,
+  "first_differences": [],
+  "status": "PASS_AGGREGATION_ONLY",
+  "adjustment_factor_oracle": "SEPARATE_REQUIRED",
+  "production_accepted": false,
+  "oracle_source_sha256": "49cf8341b3daae6393c4479e261724fc05c282f93b9dbbdd1ffe47a21e1ebd9a"
+}

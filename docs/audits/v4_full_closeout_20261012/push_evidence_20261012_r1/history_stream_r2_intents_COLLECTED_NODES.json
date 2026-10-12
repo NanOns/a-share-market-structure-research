@@ -1,0 +1,22 @@
+{
+  "contract_id": "R4_R3_EXACT_COLLECTED_NODE_SET_R1",
+  "nodes": [
+    "tests/test_v4_focus_replay_history_closeout.py::test_bounded_payload_preserves_complete_timeline_and_missing_bar",
+    "tests/test_v4_focus_replay_history_closeout.py::test_duplicate_security_is_rejected_without_silent_merge",
+    "tests/test_corrected_owner_replay_r4.py::test_unsupported_event_only_blocks_crossing_bars",
+    "tests/test_corrected_owner_replay_r4.py::test_future_events_and_suspension_gap_do_not_leak",
+    "tests/test_corrected_owner_replay_r4.py::test_sorted_midrank_preserves_frozen_tie_formula",
+    "tests/test_corrected_owner_replay_r4.py::test_descendant_reader_preserves_exact_head_and_producer_identities",
+    "tests/test_corrected_owner_replay_r4.py::test_health_metadata_does_not_promote_unknown_support",
+    "tests/test_corrected_owner_replay_r4.py::test_new_d0_wrapper_preserves_unknown_dominant_rules",
+    "tests/test_corrected_owner_replay_r4.py::test_wait_exit_zero_cannot_publish_or_publish_old_session"
+  ],
+  "modules": [
+    "tests/test_corrected_owner_replay_r4.py",
+    "tests/test_v4_focus_replay_history_closeout.py"
+  ],
+  "source_sha256": {
+    "tests/test_v4_focus_replay_history_closeout.py": "86f928e6da687f3e38290a74f5b58744461ef0bc6b2d4931d0ad72e5260df7ea",
+    "tests/test_corrected_owner_replay_r4.py": "163da1e0caa9c8ee8265fd82e03c697efb97fe86a84e41ffda7a0e0f86cf34ba"
+  }
+}

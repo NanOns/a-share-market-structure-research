@@ -1,0 +1,58 @@
+{
+  "contract_id": "CORE_MARKET_INDEPENDENT_NUMERIC_ORACLE_R1",
+  "status": "SCOPED_NUMERIC_PASS",
+  "T0": "2026-10-09",
+  "ret1_comparisons": 5209,
+  "unknown_ret1": 15,
+  "breadth_source_denominator": 5224,
+  "raw_actual_quote_count": 5210,
+  "exact_amount_sum": "3800729487491/2",
+  "index_numeric_comparisons": 3600,
+  "differences": [],
+  "source_bindings": {
+    "core": {
+      "bytes": 19792536,
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+      "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+    },
+    "history": {
+      "bytes": 67380907,
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/history.jsonl.gz",
+      "sha256": "1297fb01a999165f117afec1660cbb2549366f51030ecf09ba237b9e88607b24"
+    },
+    "limits_0": {
+      "bytes": 257002,
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/daily_price_limits_v1.jsonl.gz",
+      "sha256": "446ff3b24cdb6e9ee80819c03938a43607049a69c61d036d885b2e3e407f32d5"
+    },
+    "limits_1": {
+      "bytes": 256491,
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-08/daily_price_limits_v1.jsonl.gz",
+      "sha256": "faf73305462a7deee91a83e278be54b6d76f57a9f85330310dc66960ac3af317"
+    },
+    "market": {
+      "bytes": 5925,
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/market_owner_candidate_v2.json",
+      "sha256": "327c4d3dfbdf6a20219a14a86c507d413933da3ebaba39bc708f1bfcdb7a8146"
+    },
+    "names": {
+      "bytes": 1355970,
+      "path": "data/v4/display_names/a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f/names.json",
+      "sha256": "a34f906e19218c679360c8a03f6fa7ad0d0dc041c3418bec20778e7ee2c2827f"
+    },
+    "package": {
+      "bytes": 551726664,
+      "path": "data/v4/dynamic_daily_sources/tdx/20261009/sha256-635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6/hsjday.zip",
+      "sha256": "635c775940b2efdb8c9779c9898306c475822517f072c0eddcec8273b14e7ad6"
+    },
+    "raw": {
+      "bytes": 242313,
+      "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/raw.jsonl.gz",
+      "sha256": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5"
+    }
+  },
+  "limitations": [
+    "Daily limits and streak producer semantics require separate acceptance",
+    "Exact source equivalence does not grant cohort PIT or external acceptance"
+  ]
+}

@@ -1,0 +1,36 @@
+............................................................F            [100%]
+================================== FAILURES ===================================
+_____________ test_all_seven_stock_sixteen_frozen_counterexamples _____________
+
+    def test_all_seven_stock_sixteen_frozen_counterexamples():
+        root=Path(__file__).resolve().parents[1]
+        source=root/'docs/audits/full_system_audit_r2_20261011_58faf74e/b2_rounding_counterexamples.json'
+>       rows=json.loads(source.read_bytes())['rows']
+                        ^^^^^^^^^^^^^^^^^^^
+
+tests\test_audit_repair_adjustment_r3.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\python\Lib\pathlib\_abc.py:625: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('G:/codex work/v4-full-closeout-20261012/docs/audits/full_system_audit_r2_20261011_58faf74e/b2_rounding_counterexamples.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'G:\\codex work\\v4-full-closeout-20261012\\docs\\audits\\full_system_audit_r2_20261011_58faf74e\\b2_rounding_counterexamples.json'
+
+E:\python\Lib\pathlib\_local.py:537: FileNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/test_audit_repair_adjustment_r3.py::test_all_seven_stock_sixteen_frozen_counterexamples
+1 failed, 60 passed in 9.34s

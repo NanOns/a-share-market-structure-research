@@ -1,0 +1,531 @@
+2026-10-12 20:49:46.592 CST [12004] LOG:  starting PostgreSQL 18.6 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit
+2026-10-12 20:49:46.593 CST [12004] LOG:  listening on IPv4 address "127.0.0.1", port 55793
+2026-10-12 20:49:47.105 CST [39420] LOG:  database system was interrupted; last known up at 2026-10-12 18:24:39 CST
+2026-10-12 20:49:57.123 CST [39420] LOG:  syncing data directory (fsync), elapsed time: 10.00 s, current path: ./base/19003/2617_vm
+2026-10-12 20:50:06.881 CST [39420] LOG:  database system was not properly shut down; automatic recovery in progress
+2026-10-12 20:50:06.923 CST [39420] LOG:  redo starts at 0/AA67BF0
+2026-10-12 20:50:06.923 CST [39420] LOG:  invalid record length at 0/AA67D30: expected at least 24, got 0
+2026-10-12 20:50:06.923 CST [39420] LOG:  redo done at 0/AA67CF8 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+2026-10-12 20:50:06.972 CST [3960] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-10-12 20:50:07.071 CST [3960] LOG:  checkpoint complete: wrote 0 buffers (0.0%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.002 s, sync=0.030 s, total=0.129 s; sync files=2, longest=0.017 s, average=0.015 s; distance=0 kB, estimate=0 kB; lsn=0/AA67D30, redo lsn=0/AA67D30
+2026-10-12 20:50:07.099 CST [12004] LOG:  database system is ready to accept connections
+2026-10-12 20:51:02.393 CST [35456] ERROR:  FEP_OBSERVATION_SIGNAL_AUTHORITY_MISMATCH
+2026-10-12 20:51:02.393 CST [35456] CONTEXT:  PL/pgSQL function observation_signal_guard() line 6 at RAISE
+2026-10-12 20:51:02.393 CST [35456] STATEMENT:  INSERT INTO fep.observations SELECT * FROM jsonb_populate_record(NULL::fep.observations,$1)
+2026-10-12 20:51:02.428 CST [39132] ERROR:  FEP_OBSERVATION_SIGNAL_AUTHORITY_MISMATCH
+2026-10-12 20:51:02.428 CST [39132] CONTEXT:  PL/pgSQL function observation_signal_guard() line 6 at RAISE
+2026-10-12 20:51:02.428 CST [39132] STATEMENT:  INSERT INTO fep.observations SELECT * FROM jsonb_populate_record(NULL::fep.observations,$1)
+2026-10-12 20:51:02.461 CST [15544] ERROR:  FEP_OBSERVATION_SIGNAL_AUTHORITY_MISMATCH
+2026-10-12 20:51:02.461 CST [15544] CONTEXT:  PL/pgSQL function observation_signal_guard() line 6 at RAISE
+2026-10-12 20:51:02.461 CST [15544] STATEMENT:  INSERT INTO fep.observations SELECT * FROM jsonb_populate_record(NULL::fep.observations,$1)
+2026-10-12 20:51:02.738 CST [13744] ERROR:  FEP_OBSERVATION_SIGNAL_AUTHORITY_MISMATCH
+2026-10-12 20:51:02.738 CST [13744] CONTEXT:  PL/pgSQL function observation_signal_guard() line 6 at RAISE
+2026-10-12 20:51:02.738 CST [13744] STATEMENT:  INSERT INTO fep.observations SELECT * FROM jsonb_populate_record(NULL::fep.observations,$1)
+2026-10-12 20:51:02.779 CST [25564] ERROR:  FEP_SIGNAL_REGISTRY_SEMANTIC_MISMATCH
+2026-10-12 20:51:02.779 CST [25564] CONTEXT:  PL/pgSQL function signal_registry_guard() line 10 at RAISE
+2026-10-12 20:51:02.779 CST [25564] STATEMENT:  INSERT INTO fep.signal_contract_registry VALUES('WRONG_EVENT_CONTRACT','FEP_STOCK_ENTRY_CORE','FIRST_PREWATCH','FEP_E2_ENTRY_EVENT_STRATA_V1_1',$1,$2)
+2026-10-12 20:51:02.781 CST [25564] ERROR:  FEP_OBSERVATION_SIGNAL_AUTHORITY_MISMATCH
+2026-10-12 20:51:02.781 CST [25564] CONTEXT:  PL/pgSQL function observation_signal_guard() line 6 at RAISE
+2026-10-12 20:51:02.781 CST [25564] STATEMENT:  INSERT INTO fep.observations SELECT * FROM jsonb_populate_record(NULL::fep.observations,$1)
+2026-10-12 20:51:02.811 CST [16768] ERROR:  FEP_OBSERVATION_SIGNAL_AUTHORITY_MISMATCH
+2026-10-12 20:51:02.811 CST [16768] CONTEXT:  PL/pgSQL function observation_signal_guard() line 6 at RAISE
+2026-10-12 20:51:02.811 CST [16768] STATEMENT:  INSERT INTO fep.observations SELECT * FROM jsonb_populate_record(NULL::fep.observations,$1)
+2026-10-12 20:51:02.843 CST [6444] ERROR:  FEP_SIGNAL_REGISTRY_SEMANTIC_MISMATCH
+2026-10-12 20:51:02.843 CST [6444] CONTEXT:  PL/pgSQL function signal_registry_guard() line 10 at RAISE
+2026-10-12 20:51:02.843 CST [6444] STATEMENT:  INSERT INTO fep.signal_contract_registry VALUES('WRONG_EVENT_CONTRACT','FEP_STOCK_ENTRY_CORE','FIRST_PREWATCH','FEP_E2_ENTRY_EVENT_STRATA_V1_1',$1,$2)
+2026-10-12 20:51:02.844 CST [6444] ERROR:  FEP_OBSERVATION_SIGNAL_AUTHORITY_MISMATCH
+2026-10-12 20:51:02.844 CST [6444] CONTEXT:  PL/pgSQL function observation_signal_guard() line 6 at RAISE
+2026-10-12 20:51:02.844 CST [6444] STATEMENT:  INSERT INTO fep.observations SELECT * FROM jsonb_populate_record(NULL::fep.observations,$1)
+2026-10-12 20:51:03.098 CST [40068] ERROR:  IMMUTABLE_SIGNAL_REGISTRY
+2026-10-12 20:51:03.098 CST [40068] CONTEXT:  PL/pgSQL function signal_registry_immutable() line 2 at RAISE
+2026-10-12 20:51:03.098 CST [40068] STATEMENT:  UPDATE fep.signal_contract_registry SET signal_family='BAD'
+2026-10-12 20:51:03.099 CST [40068] ERROR:  IMMUTABLE_SIGNAL_REGISTRY
+2026-10-12 20:51:03.099 CST [40068] CONTEXT:  PL/pgSQL function signal_registry_immutable() line 2 at RAISE
+2026-10-12 20:51:03.099 CST [40068] STATEMENT:  DELETE FROM fep.signal_contract_registry
+2026-10-12 20:55:06.072 CST [3960] LOG:  checkpoint starting: time
+2026-10-12 20:55:20.772 CST [3960] LOG:  checkpoint complete: wrote 123 buffers (0.8%), wrote 2 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=13.201 s, sync=1.430 s, total=14.701 s; sync files=93, longest=0.085 s, average=0.016 s; distance=972 kB, estimate=972 kB; lsn=0/AB5AFA8, redo lsn=0/AB5AF18
+2026-10-12 21:20:45.488 CST [33396] ERROR:  type "nonexistent_type" does not exist at character 37
+2026-10-12 21:20:45.488 CST [33396] STATEMENT:  create table fep.failed_install (id nonexistent_type)
+2026-10-12 21:21:04.649 CST [35556] ERROR:  relation "fep.deployment_heads" does not exist at character 25
+2026-10-12 21:21:04.649 CST [35556] STATEMENT:  select to_jsonb(t) from fep."deployment_heads" t where "scope_id"=$1 and "target_id"=$2 and "horizon"=$3 and "feature_contract_id"=$4 and "capability"=$5
+2026-10-12 21:21:10.833 CST [28496] ERROR:  FEP_RECONSTRUCTION_IS_NOT_PUBLICATION
+2026-10-12 21:21:10.833 CST [28496] CONTEXT:  PL/pgSQL function reject_reconstruction_publication() line 5 at RAISE
+2026-10-12 21:21:10.833 CST [28496] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-12 21:21:11.316 CST [32940] ERROR:  new row for relation "reconstruction_authorities" violates check constraint "reconstruction_authorities_historical_availability_claim_check"
+2026-10-12 21:21:11.316 CST [32940] DETAIL:  Failing row contains (FEP_RECONSTRUCTION_AUTHORITY:90a1a6add28d5aa9f25d6e88e2668cc3e0a..., FEP_E5_HISTORICAL_RECONSTRUCTION_AUTHORITY_V1, FEP_STOCK_ENTRY_CORE, FEP_E5_RECONSTRUCTION_ONLY_V1, 2024-11-08, RECONSTRUCTED_CORRECTED, REPLAY, {"calendar": {"path": "data/v4/candidate_calendars/V4_02_MARKET_..., 90a1a6add28d5aa9f25d6e88e2668cc3e0aef8577fd1fa5bb90e7956c11fd947, FEP_E2_HISTORICAL_CORE_FEATURE_V1, {"data_head": {"path": "data/v4/V4_DATA_ACCEPTED_HEAD.json", "by..., 2026-10-11 20:21:23.236728+08, HISTORICALLY_ACCEPTED, f, f, f).
+2026-10-12 21:21:11.316 CST [32940] STATEMENT:  insert into fep."reconstruction_authorities" select * from jsonb_populate_record(null::fep."reconstruction_authorities",$1)
+2026-10-12 21:21:11.526 CST [8356] ERROR:  query returned no rows
+2026-10-12 21:21:11.526 CST [8356] CONTEXT:  PL/pgSQL function validate_observation_authority_union() line 7 at SQL statement
+2026-10-12 21:21:11.526 CST [8356] STATEMENT:  insert into fep."observation_revisions" select * from jsonb_populate_record(null::fep."observation_revisions",$1)
+2026-10-12 21:21:12.214 CST [7348] ERROR:  new row for relation "observation_revisions" violates check constraint "observation_authority_union"
+2026-10-12 21:21:12.214 CST [7348] DETAIL:  Failing row contains (001b29e772b43a338054b01cd4ab8dc645f1f0c8e185132e00937c1ecd6d0014, 2, UNIT_PIT_PUBLICATION, 2024-12-13 15:00:00+08, {"calendar": {"path": "data/v4/candidate_calendars/V4_02_MARKET_..., fd2ac95510e05437640d60379809a6ac4ea51727f95993154ab1db0133fba7df, NONE, RECONSTRUCTED_CORRECTED, REPLAY, 1, 2026-10-11 20:21:22.933761+08, HISTORICAL_RECONSTRUCTION, FEP_RECONSTRUCTION_AUTHORITY:f3ba1c7455044cd27a94c1f07191e4e5d93...).
+2026-10-12 21:21:12.214 CST [7348] STATEMENT:  insert into fep."observation_revisions" select * from jsonb_populate_record(null::fep."observation_revisions",$1)
+2026-10-12 21:21:12.492 CST [32144] ERROR:  FEP_RECONSTRUCTION_EXACT_FROZEN_AUTHORITY_REQUIRED
+2026-10-12 21:21:12.492 CST [32144] CONTEXT:  PL/pgSQL function validate_reconstruction_authority() line 15 at RAISE
+2026-10-12 21:21:12.492 CST [32144] STATEMENT:  insert into fep."reconstruction_authorities" select * from jsonb_populate_record(null::fep."reconstruction_authorities",$1)
+2026-10-12 21:21:12.560 CST [34472] ERROR:  FEP_RECONSTRUCTION_EXACT_FROZEN_AUTHORITY_REQUIRED
+2026-10-12 21:21:12.560 CST [34472] CONTEXT:  PL/pgSQL function validate_reconstruction_authority() line 15 at RAISE
+2026-10-12 21:21:12.560 CST [34472] STATEMENT:  insert into fep."reconstruction_authorities" select * from jsonb_populate_record(null::fep."reconstruction_authorities",$1)
+2026-10-12 21:21:12.619 CST [2308] ERROR:  FEP_RECONSTRUCTION_EXACT_FROZEN_AUTHORITY_REQUIRED
+2026-10-12 21:21:12.619 CST [2308] CONTEXT:  PL/pgSQL function validate_reconstruction_authority() line 15 at RAISE
+2026-10-12 21:21:12.619 CST [2308] STATEMENT:  insert into fep."reconstruction_authorities" select * from jsonb_populate_record(null::fep."reconstruction_authorities",$1)
+2026-10-12 21:21:13.004 CST [37116] ERROR:  FEP_RECONSTRUCTION_MANIFEST_REQUIRED
+2026-10-12 21:21:13.004 CST [37116] CONTEXT:  PL/pgSQL function validate_reconstruction_authority() line 24 at RAISE
+2026-10-12 21:21:13.004 CST [37116] STATEMENT:  insert into fep."reconstruction_authorities" select * from jsonb_populate_record(null::fep."reconstruction_authorities",$1)
+2026-10-12 21:21:13.073 CST [9680] ERROR:  FEP_RECONSTRUCTION_MANIFEST_REQUIRED
+2026-10-12 21:21:13.073 CST [9680] CONTEXT:  PL/pgSQL function validate_reconstruction_authority() line 24 at RAISE
+2026-10-12 21:21:13.073 CST [9680] STATEMENT:  insert into fep."reconstruction_authorities" select * from jsonb_populate_record(null::fep."reconstruction_authorities",$1)
+2026-10-12 21:21:13.140 CST [30128] ERROR:  FEP_RECONSTRUCTION_MANIFEST_REQUIRED
+2026-10-12 21:21:13.140 CST [30128] CONTEXT:  PL/pgSQL function validate_reconstruction_authority() line 24 at RAISE
+2026-10-12 21:21:13.140 CST [30128] STATEMENT:  insert into fep."reconstruction_authorities" select * from jsonb_populate_record(null::fep."reconstruction_authorities",$1)
+2026-10-12 21:21:13.203 CST [13556] ERROR:  FEP_RECONSTRUCTION_MANIFEST_REQUIRED
+2026-10-12 21:21:13.203 CST [13556] CONTEXT:  PL/pgSQL function validate_reconstruction_authority() line 24 at RAISE
+2026-10-12 21:21:13.203 CST [13556] STATEMENT:  insert into fep."reconstruction_authorities" select * from jsonb_populate_record(null::fep."reconstruction_authorities",$1)
+2026-10-12 21:21:14.393 CST [18100] ERROR:  FEP_RECONSTRUCTION_EVIDENCE_UPGRADE_FORBIDDEN
+2026-10-12 21:21:14.393 CST [18100] CONTEXT:  PL/pgSQL function validate_canonical_prediction_authority() line 21 at RAISE
+2026-10-12 21:21:14.393 CST [18100] STATEMENT:  insert into fep."predictions" select * from jsonb_populate_record(null::fep."predictions",$1)
+2026-10-12 21:21:14.477 CST [28948] ERROR:  FEP_RECONSTRUCTION_EVIDENCE_UPGRADE_FORBIDDEN
+2026-10-12 21:21:14.477 CST [28948] CONTEXT:  PL/pgSQL function validate_canonical_prediction_authority() line 21 at RAISE
+2026-10-12 21:21:14.477 CST [28948] STATEMENT:  insert into fep."predictions" select * from jsonb_populate_record(null::fep."predictions",$1)
+2026-10-12 21:21:14.558 CST [37684] ERROR:  FEP_RECONSTRUCTION_EVIDENCE_UPGRADE_FORBIDDEN
+2026-10-12 21:21:14.558 CST [37684] CONTEXT:  PL/pgSQL function validate_canonical_prediction_authority() line 21 at RAISE
+2026-10-12 21:21:14.558 CST [37684] STATEMENT:  insert into fep."predictions" select * from jsonb_populate_record(null::fep."predictions",$1)
+2026-10-12 21:21:14.630 CST [3680] ERROR:  FEP_RECONSTRUCTION_EVIDENCE_UPGRADE_FORBIDDEN
+2026-10-12 21:21:14.630 CST [3680] CONTEXT:  PL/pgSQL function validate_canonical_prediction_authority() line 21 at RAISE
+2026-10-12 21:21:14.630 CST [3680] STATEMENT:  insert into fep."predictions" select * from jsonb_populate_record(null::fep."predictions",$1)
+2026-10-12 21:21:14.709 CST [33828] ERROR:  FEP_RECONSTRUCTION_EVIDENCE_UPGRADE_FORBIDDEN
+2026-10-12 21:21:14.709 CST [33828] CONTEXT:  PL/pgSQL function validate_canonical_prediction_authority() line 21 at RAISE
+2026-10-12 21:21:14.709 CST [33828] STATEMENT:  insert into fep."predictions" select * from jsonb_populate_record(null::fep."predictions",$1)
+2026-10-12 21:21:14.789 CST [23192] ERROR:  FEP_RECONSTRUCTION_EVIDENCE_UPGRADE_FORBIDDEN
+2026-10-12 21:21:14.789 CST [23192] CONTEXT:  PL/pgSQL function validate_canonical_prediction_authority() line 21 at RAISE
+2026-10-12 21:21:14.789 CST [23192] STATEMENT:  insert into fep."predictions" select * from jsonb_populate_record(null::fep."predictions",$1)
+2026-10-12 21:21:14.875 CST [38640] ERROR:  FEP_RECONSTRUCTION_EVIDENCE_UPGRADE_FORBIDDEN
+2026-10-12 21:21:14.875 CST [38640] CONTEXT:  PL/pgSQL function validate_canonical_prediction_authority() line 21 at RAISE
+2026-10-12 21:21:14.875 CST [38640] STATEMENT:  insert into fep."predictions" select * from jsonb_populate_record(null::fep."predictions",$1)
+2026-10-12 21:21:15.267 CST [16980] ERROR:  FEP_MIXED_AUTHORITY_KEYS
+2026-10-12 21:21:15.267 CST [16980] CONTEXT:  PL/pgSQL function validate_observation_authority_union() line 5 at RAISE
+2026-10-12 21:21:15.267 CST [16980] STATEMENT:  insert into fep."observation_revisions" select * from jsonb_populate_record(null::fep."observation_revisions",$1)
+2026-10-12 21:21:15.333 CST [33716] ERROR:  query returned no rows
+2026-10-12 21:21:15.333 CST [33716] CONTEXT:  PL/pgSQL function validate_observation_authority_union() line 7 at SQL statement
+2026-10-12 21:21:15.333 CST [33716] STATEMENT:  insert into fep."observation_revisions" select * from jsonb_populate_record(null::fep."observation_revisions",$1)
+2026-10-12 21:21:15.392 CST [6452] ERROR:  new row for relation "observation_revisions" violates check constraint "observation_authority_union"
+2026-10-12 21:21:15.392 CST [6452] DETAIL:  Failing row contains (001b29e772b43a338054b01cd4ab8dc645f1f0c8e185132e00937c1ecd6d0014, 2, null, 2024-12-13 15:00:00+08, {"calendar": {"path": "data/v4/candidate_calendars/V4_02_MARKET_..., fd2ac95510e05437640d60379809a6ac4ea51727f95993154ab1db0133fba7df, NONE, RECONSTRUCTED_CORRECTED, REPLAY, 1, 2026-10-11 20:21:22.933761+08, INVALID, FEP_RECONSTRUCTION_AUTHORITY:f3ba1c7455044cd27a94c1f07191e4e5d93...).
+2026-10-12 21:21:15.392 CST [6452] STATEMENT:  insert into fep."observation_revisions" select * from jsonb_populate_record(null::fep."observation_revisions",$1)
+2026-10-12 21:21:15.455 CST [20352] ERROR:  new row for relation "observation_revisions" violates check constraint "observation_authority_union"
+2026-10-12 21:21:15.455 CST [20352] DETAIL:  Failing row contains (001b29e772b43a338054b01cd4ab8dc645f1f0c8e185132e00937c1ecd6d0014, 2, null, 2024-12-13 15:00:00+08, {"calendar": {"path": "data/v4/candidate_calendars/V4_02_MARKET_..., fd2ac95510e05437640d60379809a6ac4ea51727f95993154ab1db0133fba7df, NONE, RECONSTRUCTED_CORRECTED, SHADOW, 1, 2026-10-11 20:21:22.933761+08, HISTORICAL_RECONSTRUCTION, FEP_RECONSTRUCTION_AUTHORITY:f3ba1c7455044cd27a94c1f07191e4e5d93...).
+2026-10-12 21:21:15.455 CST [20352] STATEMENT:  insert into fep."observation_revisions" select * from jsonb_populate_record(null::fep."observation_revisions",$1)
+2026-10-12 21:21:15.617 CST [39776] ERROR:  FEP_RECONSTRUCTION_OBSERVATION_MISMATCH
+2026-10-12 21:21:15.617 CST [39776] CONTEXT:  PL/pgSQL function validate_observation_authority_union() line 15 at RAISE
+2026-10-12 21:21:15.617 CST [39776] STATEMENT:  insert into fep."observation_revisions" select * from jsonb_populate_record(null::fep."observation_revisions",$1)
+2026-10-12 21:21:15.669 CST [28824] ERROR:  new row for relation "observation_revisions" violates check constraint "observation_authority_union"
+2026-10-12 21:21:15.669 CST [28824] DETAIL:  Failing row contains (001b29e772b43a338054b01cd4ab8dc645f1f0c8e185132e00937c1ecd6d0014, 2, UNIT_NOT_PUBLICATION, 2024-12-13 15:00:00+08, {"calendar": {"path": "data/v4/candidate_calendars/V4_02_MARKET_..., fd2ac95510e05437640d60379809a6ac4ea51727f95993154ab1db0133fba7df, NONE, RECONSTRUCTED_CORRECTED, REPLAY, 1, 2026-10-11 20:21:22.933761+08, HISTORICAL_RECONSTRUCTION, FEP_RECONSTRUCTION_AUTHORITY:f3ba1c7455044cd27a94c1f07191e4e5d93...).
+2026-10-12 21:21:15.669 CST [28824] STATEMENT:  insert into fep."observation_revisions" select * from jsonb_populate_record(null::fep."observation_revisions",$1)
+2026-10-12 21:21:15.929 CST [37552] ERROR:  new row for relation "prediction_runs" violates check constraint "prediction_run_authority_union"
+2026-10-12 21:21:15.929 CST [37552] DETAIL:  Failing row contains (UNIT_BAD_RUN, null, FEP_CANONICAL_SET:da58f814c02e57ee30c14cd907a4bf48c6f1c1c0180f1b..., 4864c33b5ee3031347b5092ba2e60a8f380d1a470fb25b382e54bfc8422cf708, 2026-10-11 20:21:27.993517+08, 2026-10-11 20:21:27.993667+08, 9aa2038a168a3468a96a314d45db5eac29c538357558bd0dae6f0c72f7f9bd84, {"expected": 1, "produced": 1}, CANONICAL_PUBLICATION, FEP_RECONSTRUCTION_AUTHORITY:74656d7413de2ef2d7097ebf88c6704c0e6...).
+2026-10-12 21:21:15.929 CST [37552] STATEMENT:  insert into fep."prediction_runs" select * from jsonb_populate_record(null::fep."prediction_runs",$1)
+2026-10-12 21:21:15.954 CST [13568] ERROR:  query returned no rows
+2026-10-12 21:21:15.954 CST [13568] CONTEXT:  PL/pgSQL function validate_reconstruction_run() line 5 at SQL statement
+2026-10-12 21:21:15.954 CST [13568] STATEMENT:  insert into fep."prediction_runs" select * from jsonb_populate_record(null::fep."prediction_runs",$1)
+2026-10-12 21:21:15.981 CST [37864] ERROR:  new row for relation "prediction_runs" violates check constraint "prediction_run_authority_union"
+2026-10-12 21:21:15.981 CST [37864] DETAIL:  Failing row contains (UNIT_BAD_RUN, null, FEP_CANONICAL_SET:da58f814c02e57ee30c14cd907a4bf48c6f1c1c0180f1b..., 4864c33b5ee3031347b5092ba2e60a8f380d1a470fb25b382e54bfc8422cf708, 2026-10-11 20:21:27.993517+08, 2026-10-11 20:21:27.993667+08, 9aa2038a168a3468a96a314d45db5eac29c538357558bd0dae6f0c72f7f9bd84, {"expected": 1, "produced": 1}, INVALID, FEP_RECONSTRUCTION_AUTHORITY:74656d7413de2ef2d7097ebf88c6704c0e6...).
+2026-10-12 21:21:15.981 CST [37864] STATEMENT:  insert into fep."prediction_runs" select * from jsonb_populate_record(null::fep."prediction_runs",$1)
+2026-10-12 21:21:16.072 CST [17392] ERROR:  new row for relation "prediction_runs" violates check constraint "prediction_run_authority_union"
+2026-10-12 21:21:16.072 CST [17392] DETAIL:  Failing row contains (UNIT_BAD_RUN, UNIT_NOT_PUBLICATION, FEP_CANONICAL_SET:da58f814c02e57ee30c14cd907a4bf48c6f1c1c0180f1b..., 4864c33b5ee3031347b5092ba2e60a8f380d1a470fb25b382e54bfc8422cf708, 2026-10-11 20:21:27.993517+08, 2026-10-11 20:21:27.993667+08, 9aa2038a168a3468a96a314d45db5eac29c538357558bd0dae6f0c72f7f9bd84, {"expected": 1, "produced": 1}, HISTORICAL_RECONSTRUCTION, FEP_RECONSTRUCTION_AUTHORITY:74656d7413de2ef2d7097ebf88c6704c0e6...).
+2026-10-12 21:21:16.072 CST [17392] STATEMENT:  insert into fep."prediction_runs" select * from jsonb_populate_record(null::fep."prediction_runs",$1)
+2026-10-12 21:21:16.097 CST [35860] ERROR:  FEP_RECONSTRUCTION_RUN_BINDING_REQUIRED
+2026-10-12 21:21:16.097 CST [35860] CONTEXT:  PL/pgSQL function validate_reconstruction_run() line 12 at RAISE
+2026-10-12 21:21:16.097 CST [35860] STATEMENT:  insert into fep."prediction_runs" select * from jsonb_populate_record(null::fep."prediction_runs",$1)
+2026-10-12 21:21:16.334 CST [37624] ERROR:  FEP_RECONSTRUCTION_SNAPSHOT_EXACT_REQUIRED
+2026-10-12 21:21:16.334 CST [37624] CONTEXT:  PL/pgSQL function validate_reconstruction_snapshot() line 8 at RAISE
+2026-10-12 21:21:16.334 CST [37624] STATEMENT:  insert into fep."snapshots" select * from jsonb_populate_record(null::fep."snapshots",$1)
+2026-10-12 21:21:16.363 CST [35680] ERROR:  FEP_RECONSTRUCTION_SNAPSHOT_EXACT_REQUIRED
+2026-10-12 21:21:16.363 CST [35680] CONTEXT:  PL/pgSQL function validate_reconstruction_snapshot() line 8 at RAISE
+2026-10-12 21:21:16.363 CST [35680] STATEMENT:  insert into fep."snapshots" select * from jsonb_populate_record(null::fep."snapshots",$1)
+2026-10-12 21:21:16.394 CST [2856] ERROR:  FEP_RECONSTRUCTION_SNAPSHOT_EXACT_REQUIRED
+2026-10-12 21:21:16.394 CST [2856] CONTEXT:  PL/pgSQL function validate_reconstruction_snapshot() line 8 at RAISE
+2026-10-12 21:21:16.394 CST [2856] STATEMENT:  insert into fep."snapshots" select * from jsonb_populate_record(null::fep."snapshots",$1)
+2026-10-12 21:21:16.432 CST [4960] ERROR:  FEP_SNAPSHOT_FEATURE_CONTRACT_MISMATCH
+2026-10-12 21:21:16.432 CST [4960] CONTEXT:  PL/pgSQL function validate_snapshot() line 6 at RAISE
+2026-10-12 21:21:16.432 CST [4960] STATEMENT:  insert into fep."snapshots" select * from jsonb_populate_record(null::fep."snapshots",$1)
+2026-10-12 21:21:16.768 CST [3096] ERROR:  FEP_RECONSTRUCTION_FEATURE_EXACT_REQUIRED
+2026-10-12 21:21:16.768 CST [3096] CONTEXT:  PL/pgSQL function validate_reconstruction_feature() line 11 at RAISE
+2026-10-12 21:21:16.768 CST [3096] STATEMENT:  insert into fep."feature_values" select * from jsonb_populate_record(null::fep."feature_values",$1)
+2026-10-12 21:21:16.813 CST [13564] ERROR:  FEP_RECONSTRUCTION_FEATURE_EXACT_REQUIRED
+2026-10-12 21:21:16.813 CST [13564] CONTEXT:  PL/pgSQL function validate_reconstruction_feature() line 11 at RAISE
+2026-10-12 21:21:16.813 CST [13564] STATEMENT:  insert into fep."feature_values" select * from jsonb_populate_record(null::fep."feature_values",$1)
+2026-10-12 21:21:16.860 CST [16836] ERROR:  FEP_RECONSTRUCTION_FEATURE_EXACT_REQUIRED
+2026-10-12 21:21:16.860 CST [16836] CONTEXT:  PL/pgSQL function validate_reconstruction_feature() line 11 at RAISE
+2026-10-12 21:21:16.860 CST [16836] STATEMENT:  insert into fep."feature_values" select * from jsonb_populate_record(null::fep."feature_values",$1)
+2026-10-12 21:21:17.023 CST [4540] ERROR:  new row for relation "permission_keys" violates check constraint "permission_role_capability"
+2026-10-12 21:21:17.023 CST [4540] DETAIL:  Failing row contains (UNIT_FORBIDDEN_MODEL_DISPLAY, FEP_STOCK_ENTRY_CORE, ABS_RETURN_N:T1, 1, FEP_E2_HISTORICAL_CORE_FEATURE_V1, FEP_CANONICAL_SET:da58f814c02e57ee30c14cd907a4bf48c6f1c1c0180f1b..., CHALLENGER, MODEL_DISPLAY).
+2026-10-12 21:21:17.023 CST [4540] STATEMENT:  insert into fep."permission_keys" select * from jsonb_populate_record(null::fep."permission_keys",$1)
+2026-10-12 21:21:17.045 CST [3308] ERROR:  new row for relation "permission_keys" violates check constraint "permission_role_capability"
+2026-10-12 21:21:17.045 CST [3308] DETAIL:  Failing row contains (UNIT_FORBIDDEN_DESCRIPTIVE_DISPLAY, FEP_STOCK_ENTRY_CORE, ABS_RETURN_N:T1, 1, FEP_E2_HISTORICAL_CORE_FEATURE_V1, FEP_CANONICAL_SET:da58f814c02e57ee30c14cd907a4bf48c6f1c1c0180f1b..., CHALLENGER, DESCRIPTIVE_DISPLAY).
+2026-10-12 21:21:17.045 CST [3308] STATEMENT:  insert into fep."permission_keys" select * from jsonb_populate_record(null::fep."permission_keys",$1)
+2026-10-12 21:21:17.073 CST [14128] ERROR:  new row for relation "permission_keys" violates check constraint "permission_role_capability"
+2026-10-12 21:21:17.073 CST [14128] DETAIL:  Failing row contains (UNIT_FORBIDDEN_PRIORITY_USE, FEP_STOCK_ENTRY_CORE, ABS_RETURN_N:T1, 1, FEP_E2_HISTORICAL_CORE_FEATURE_V1, FEP_CANONICAL_SET:da58f814c02e57ee30c14cd907a4bf48c6f1c1c0180f1b..., CHALLENGER, PRIORITY_USE).
+2026-10-12 21:21:17.073 CST [14128] STATEMENT:  insert into fep."permission_keys" select * from jsonb_populate_record(null::fep."permission_keys",$1)
+2026-10-12 21:21:17.163 CST [22756] ERROR:  insert or update on table "permission_keys" violates foreign key constraint "permission_keys_model_set_id_scope_id_target_id_horizon_fe_fkey"
+2026-10-12 21:21:17.163 CST [22756] DETAIL:  Key (model_set_id, scope_id, target_id, horizon, feature_contract_id, model_role)=(FEP_CANONICAL_SET:da58f814c02e57ee30c14cd907a4bf48c6f1c1c0180f1bb52811c685cb9bac22, FEP_STOCK_ENTRY_CORE, ABS_RETURN_N:T1, 1, FEP_E2_HISTORICAL_CORE_FEATURE_V1, CHAMPION) is not present in table "model_set_members".
+2026-10-12 21:21:17.163 CST [22756] STATEMENT:  insert into fep."permission_keys" select * from jsonb_populate_record(null::fep."permission_keys",$1)
+2026-10-12 21:21:17.330 CST [39952] ERROR:  FEP_IMPORTED_DIAGNOSTIC_CHAMPION_FORBIDDEN
+2026-10-12 21:21:17.330 CST [39952] CONTEXT:  PL/pgSQL function validate_import_member_role() line 7 at RAISE
+2026-10-12 21:21:17.330 CST [39952] STATEMENT:  insert into fep."model_set_members" select * from jsonb_populate_record(null::fep."model_set_members",$1)
+2026-10-12 21:21:18.736 CST [15548] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:18.736 CST [15548] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:18.736 CST [15548] STATEMENT:  update fep."reconstruction_authorities" set "real_oos"="real_oos"
+2026-10-12 21:21:18.831 CST [34412] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:18.831 CST [34412] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:18.831 CST [34412] STATEMENT:  update fep."observation_revisions" set "revision"="revision"
+2026-10-12 21:21:18.857 CST [38272] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:18.857 CST [38272] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:18.857 CST [38272] STATEMENT:  update fep."snapshots" set "created_at"="created_at"
+2026-10-12 21:21:18.905 CST [31212] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:18.905 CST [31212] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:18.905 CST [31212] STATEMENT:  update fep."feature_values" set "value"="value"
+2026-10-12 21:21:18.957 CST [17604] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:18.957 CST [17604] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:18.957 CST [17604] STATEMENT:  update fep."models" set "family"="family"
+2026-10-12 21:21:19.031 CST [9340] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.031 CST [9340] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.031 CST [9340] STATEMENT:  update fep."model_sets" set "digest"="digest"
+2026-10-12 21:21:19.060 CST [28676] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.060 CST [28676] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.060 CST [28676] STATEMENT:  update fep."model_set_members" set "role"="role"
+2026-10-12 21:21:19.091 CST [37884] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.091 CST [37884] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.091 CST [37884] STATEMENT:  update fep."permission_keys" set "horizon"="horizon"
+2026-10-12 21:21:19.139 CST [15652] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.139 CST [15652] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.139 CST [15652] STATEMENT:  update fep."prediction_slots" set "horizon"="horizon"
+2026-10-12 21:21:19.203 CST [39404] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.203 CST [39404] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.203 CST [39404] STATEMENT:  update fep."slot_model_bindings" set "horizon"="horizon"
+2026-10-12 21:21:19.236 CST [4560] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.236 CST [4560] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.236 CST [4560] STATEMENT:  update fep."prediction_runs" set "counts"="counts"
+2026-10-12 21:21:19.346 CST [5228] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.346 CST [5228] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.346 CST [5228] STATEMENT:  update fep."predictions" set "run_id"="run_id"
+2026-10-12 21:21:19.400 CST [36252] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.400 CST [36252] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.400 CST [36252] STATEMENT:  update fep."acceptance_receipts" set "checks"="checks"
+2026-10-12 21:21:19.444 CST [4820] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.444 CST [4820] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.444 CST [4820] STATEMENT:  update fep."slot_receipts" set "status"="status"
+2026-10-12 21:21:19.511 CST [23268] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.511 CST [23268] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.511 CST [23268] STATEMENT:  update fep."activations" set "action"="action"
+2026-10-12 21:21:19.550 CST [34804] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.550 CST [34804] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.550 CST [34804] STATEMENT:  update fep."deployment_change_receipts" set "checks"="checks"
+2026-10-12 21:21:19.571 CST [28752] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.571 CST [28752] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.571 CST [28752] STATEMENT:  delete from fep."reconstruction_authorities"
+2026-10-12 21:21:19.597 CST [28500] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.597 CST [28500] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.597 CST [28500] STATEMENT:  delete from fep."observation_revisions"
+2026-10-12 21:21:19.629 CST [16604] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.629 CST [16604] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.629 CST [16604] STATEMENT:  delete from fep."snapshots"
+2026-10-12 21:21:19.659 CST [33864] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.659 CST [33864] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.659 CST [33864] STATEMENT:  delete from fep."feature_values"
+2026-10-12 21:21:19.690 CST [6680] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.690 CST [6680] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.690 CST [6680] STATEMENT:  delete from fep."models"
+2026-10-12 21:21:19.720 CST [29348] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.720 CST [29348] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.720 CST [29348] STATEMENT:  delete from fep."model_sets"
+2026-10-12 21:21:19.751 CST [33888] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.751 CST [33888] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.751 CST [33888] STATEMENT:  delete from fep."model_set_members"
+2026-10-12 21:21:19.783 CST [38888] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.783 CST [38888] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.783 CST [38888] STATEMENT:  delete from fep."permission_keys"
+2026-10-12 21:21:19.813 CST [36556] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.813 CST [36556] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.813 CST [36556] STATEMENT:  delete from fep."prediction_slots"
+2026-10-12 21:21:19.944 CST [36928] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.944 CST [36928] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.944 CST [36928] STATEMENT:  delete from fep."slot_model_bindings"
+2026-10-12 21:21:19.968 CST [6596] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.968 CST [6596] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.968 CST [6596] STATEMENT:  delete from fep."prediction_runs"
+2026-10-12 21:21:19.998 CST [33932] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:19.998 CST [33932] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:19.998 CST [33932] STATEMENT:  delete from fep."predictions"
+2026-10-12 21:21:20.029 CST [22008] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:20.029 CST [22008] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:20.029 CST [22008] STATEMENT:  delete from fep."acceptance_receipts"
+2026-10-12 21:21:20.060 CST [39300] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:20.060 CST [39300] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:20.060 CST [39300] STATEMENT:  delete from fep."slot_receipts"
+2026-10-12 21:21:20.090 CST [38992] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:20.090 CST [38992] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:20.090 CST [38992] STATEMENT:  delete from fep."activations"
+2026-10-12 21:21:20.120 CST [12612] ERROR:  FEP_APPEND_ONLY
+2026-10-12 21:21:20.120 CST [12612] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 21:21:20.120 CST [12612] STATEMENT:  delete from fep."deployment_change_receipts"
+2026-10-12 21:21:20.673 CST [33176] ERROR:  FEP_RECONSTRUCTION_EVIDENCE_UPGRADE_FORBIDDEN
+2026-10-12 21:21:20.673 CST [33176] CONTEXT:  PL/pgSQL function validate_canonical_prediction_authority() line 21 at RAISE
+2026-10-12 21:21:20.673 CST [33176] STATEMENT:  insert into fep."predictions" select * from jsonb_populate_record(null::fep."predictions",$1)
+2026-10-12 21:21:20.774 CST [37216] ERROR:  insert or update on table "predictions" violates foreign key constraint "predictions_slot_id_observation_id_scope_id_target_id_hori_fkey"
+2026-10-12 21:21:20.774 CST [37216] DETAIL:  Key (slot_id, observation_id, scope_id, target_id, horizon, model_set_id)=(FEP_CANONICAL_SLOT:fd92defe89092cb7d38329c5b80f493293ed0de5df7674c00d60b1ea4ef4ef15, dfde5dfe37b90ecbd2dc6d397c46a97291f033242aaf6c09cfa2a61033c12ef3, FEP_STOCK_ENTRY_CORE, UNIT_WRONG, 1, FEP_CANONICAL_SET:da58f814c02e57ee30c14cd907a4bf48c6f1c1c0180f1bb52811c685cb9bac22) is not present in table "slot_model_bindings".
+2026-10-12 21:21:20.774 CST [37216] STATEMENT:  insert into fep."predictions" select * from jsonb_populate_record(null::fep."predictions",$1)
+2026-10-12 21:21:20.866 CST [26720] ERROR:  insert or update on table "predictions" violates foreign key constraint "predictions_slot_id_observation_id_scope_id_target_id_hori_fkey"
+2026-10-12 21:21:20.866 CST [26720] DETAIL:  Key (slot_id, observation_id, scope_id, target_id, horizon, model_set_id)=(FEP_CANONICAL_SLOT:fd92defe89092cb7d38329c5b80f493293ed0de5df7674c00d60b1ea4ef4ef15, dfde5dfe37b90ecbd2dc6d397c46a97291f033242aaf6c09cfa2a61033c12ef3, FEP_STOCK_ENTRY_CORE, ABS_RETURN_N:T1, 20, FEP_CANONICAL_SET:da58f814c02e57ee30c14cd907a4bf48c6f1c1c0180f1bb52811c685cb9bac22) is not present in table "slot_model_bindings".
+2026-10-12 21:21:20.866 CST [26720] STATEMENT:  insert into fep."predictions" select * from jsonb_populate_record(null::fep."predictions",$1)
+2026-10-12 21:21:20.954 CST [2760] ERROR:  insert or update on table "predictions" violates foreign key constraint "predictions_slot_id_observation_id_scope_id_target_id_hori_fkey"
+2026-10-12 21:21:20.954 CST [2760] DETAIL:  Key (slot_id, observation_id, scope_id, target_id, horizon, model_set_id)=(FEP_CANONICAL_SLOT:fd92defe89092cb7d38329c5b80f493293ed0de5df7674c00d60b1ea4ef4ef15, dfde5dfe37b90ecbd2dc6d397c46a97291f033242aaf6c09cfa2a61033c12ef3, FEP_STOCK_ENTRY_CORE, ABS_RETURN_N:T1, 1, UNIT_WRONG) is not present in table "slot_model_bindings".
+2026-10-12 21:21:20.954 CST [2760] STATEMENT:  insert into fep."predictions" select * from jsonb_populate_record(null::fep."predictions",$1)
+2026-10-12 21:21:21.029 CST [40140] ERROR:  query returned no rows
+2026-10-12 21:21:21.029 CST [40140] CONTEXT:  PL/pgSQL function validate_canonical_prediction_authority() line 6 at SQL statement
+2026-10-12 21:21:21.029 CST [40140] STATEMENT:  insert into fep."predictions" select * from jsonb_populate_record(null::fep."predictions",$1)
+2026-10-12 21:21:22.155 CST [31824] ERROR:  FEP_PUBLICATION_OBSERVATION_MISMATCH
+2026-10-12 21:21:22.155 CST [31824] CONTEXT:  PL/pgSQL function validate_observation_revision() line 9 at RAISE
+2026-10-12 21:21:22.155 CST [31824] STATEMENT:  insert into fep."observation_revisions" select * from jsonb_populate_record(null::fep."observation_revisions",$1)
+2026-10-12 21:21:22.189 CST [30440] ERROR:  FEP_PUBLICATION_OBSERVATION_MISMATCH
+2026-10-12 21:21:22.189 CST [30440] CONTEXT:  PL/pgSQL function validate_observation_revision() line 9 at RAISE
+2026-10-12 21:21:22.189 CST [30440] STATEMENT:  insert into fep."observation_revisions" select * from jsonb_populate_record(null::fep."observation_revisions",$1)
+2026-10-12 21:21:22.330 CST [8888] ERROR:  FEP_PUBLICATION_OBSERVATION_MISMATCH
+2026-10-12 21:21:22.330 CST [8888] CONTEXT:  PL/pgSQL function validate_observation_revision() line 9 at RAISE
+2026-10-12 21:21:22.330 CST [8888] STATEMENT:  insert into fep."observation_revisions" select * from jsonb_populate_record(null::fep."observation_revisions",$1)
+2026-10-12 21:21:22.362 CST [17704] ERROR:  FEP_PUBLICATION_OBSERVATION_MISMATCH
+2026-10-12 21:21:22.362 CST [17704] CONTEXT:  PL/pgSQL function validate_observation_revision() line 9 at RAISE
+2026-10-12 21:21:22.362 CST [17704] STATEMENT:  insert into fep."observation_revisions" select * from jsonb_populate_record(null::fep."observation_revisions",$1)
+2026-10-12 21:21:22.386 CST [13932] ERROR:  FEP_MANIFEST_DEPENDENCY_MISSING:calendar
+2026-10-12 21:21:22.386 CST [13932] CONTEXT:  PL/pgSQL function validate_observation_revision() line 15 at RAISE
+2026-10-12 21:21:22.386 CST [13932] STATEMENT:  insert into fep."observation_revisions" select * from jsonb_populate_record(null::fep."observation_revisions",$1)
+2026-10-12 21:21:22.411 CST [40668] ERROR:  FEP_MANIFEST_PUBLICATION_MISMATCH
+2026-10-12 21:21:22.411 CST [40668] CONTEXT:  PL/pgSQL function validate_observation_revision() line 17 at RAISE
+2026-10-12 21:21:22.411 CST [40668] STATEMENT:  insert into fep."observation_revisions" select * from jsonb_populate_record(null::fep."observation_revisions",$1)
+2026-10-12 21:21:22.437 CST [38704] ERROR:  FEP_RECONSTRUCTION_NOT_PIT
+2026-10-12 21:21:22.437 CST [38704] CONTEXT:  PL/pgSQL function validate_observation_revision() line 12 at RAISE
+2026-10-12 21:21:22.437 CST [38704] STATEMENT:  insert into fep."observation_revisions" select * from jsonb_populate_record(null::fep."observation_revisions",$1)
+2026-10-12 21:21:23.203 CST [30832] ERROR:  FEP_CAS_CONFLICT
+2026-10-12 21:21:23.203 CST [30832] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-12 21:21:23.203 CST [30832] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 21:21:23.277 CST [22168] ERROR:  FEP_CAS_CONFLICT
+2026-10-12 21:21:23.277 CST [22168] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-12 21:21:23.277 CST [22168] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 21:21:23.349 CST [33164] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-12 21:21:23.349 CST [33164] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-12 21:21:23.349 CST [33164] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 21:21:23.513 CST [36916] ERROR:  FEP_INVALID_CAS_INPUT
+2026-10-12 21:21:23.513 CST [36916] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 21 at RAISE
+2026-10-12 21:21:23.513 CST [36916] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 21:21:23.583 CST [19220] ERROR:  FEP_INVALID_CAS_INPUT
+2026-10-12 21:21:23.583 CST [19220] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 21 at RAISE
+2026-10-12 21:21:23.583 CST [19220] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 21:21:24.989 CST [17188] ERROR:  FEP_RECONSTRUCTION_EVIDENCE_UPGRADE_FORBIDDEN
+2026-10-12 21:21:24.989 CST [17188] CONTEXT:  PL/pgSQL function validate_canonical_prediction_authority() line 21 at RAISE
+2026-10-12 21:21:24.989 CST [17188] STATEMENT:  insert into fep."predictions" select * from jsonb_populate_record(null::fep."predictions",$1)
+2026-10-12 21:21:25.437 CST [4784] ERROR:  FEP_PREDICTION_EXACT_AUTHORITY_CLOCK_REQUIRED
+2026-10-12 21:21:25.437 CST [4784] CONTEXT:  PL/pgSQL function validate_canonical_prediction_authority() line 13 at RAISE
+2026-10-12 21:21:25.437 CST [4784] STATEMENT:  insert into fep."predictions" select * from jsonb_populate_record(null::fep."predictions",$1)
+2026-10-12 21:21:25.615 CST [24976] ERROR:  FEP_EXACT_SHADOW_ACCEPTANCE_REQUIRED
+2026-10-12 21:21:25.615 CST [24976] CONTEXT:  PL/pgSQL function validate_reconstruction_acceptance() line 16 at RAISE
+2026-10-12 21:21:25.615 CST [24976] STATEMENT:  insert into fep."acceptance_receipts" select * from jsonb_populate_record(null::fep."acceptance_receipts",$1)
+2026-10-12 21:21:25.616 CST [24976] ERROR:  FEP_ACCEPTANCE_MODELSET_MISMATCH
+2026-10-12 21:21:25.616 CST [24976] CONTEXT:  PL/pgSQL function validate_acceptance_grant() line 6 at RAISE
+2026-10-12 21:21:25.616 CST [24976] STATEMENT:  insert into fep."acceptance_receipts" select * from jsonb_populate_record(null::fep."acceptance_receipts",$1)
+2026-10-12 21:21:26.169 CST [8748] ERROR:  FEP_CAS_CONFLICT
+2026-10-12 21:21:26.169 CST [8748] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-12 21:21:26.169 CST [8748] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 21:21:26.246 CST [6504] ERROR:  FEP_EXACT_SHADOW_ACCEPTANCE_REQUIRED
+2026-10-12 21:21:26.246 CST [6504] CONTEXT:  PL/pgSQL function validate_reconstruction_acceptance() line 16 at RAISE
+2026-10-12 21:21:26.246 CST [6504] STATEMENT:  insert into fep."acceptance_receipts" select * from jsonb_populate_record(null::fep."acceptance_receipts",$1)
+2026-10-12 21:21:26.398 CST [32480] ERROR:  FEP_RECONSTRUCTION_RUN_BINDING_REQUIRED
+2026-10-12 21:21:26.398 CST [32480] CONTEXT:  PL/pgSQL function validate_reconstruction_run() line 12 at RAISE
+2026-10-12 21:21:26.398 CST [32480] STATEMENT:  insert into fep."prediction_runs" select * from jsonb_populate_record(null::fep."prediction_runs",$1)
+2026-10-12 21:23:32.506 CST [13916] ERROR:  FEP_OBSERVATION_SIGNAL_AUTHORITY_MISMATCH
+2026-10-12 21:23:32.506 CST [13916] CONTEXT:  PL/pgSQL function observation_signal_guard() line 6 at RAISE
+2026-10-12 21:23:32.506 CST [13916] STATEMENT:  INSERT INTO fep.observations SELECT * FROM jsonb_populate_record(NULL::fep.observations,$1)
+2026-10-12 21:23:32.555 CST [18228] ERROR:  FEP_OBSERVATION_SIGNAL_AUTHORITY_MISMATCH
+2026-10-12 21:23:32.555 CST [18228] CONTEXT:  PL/pgSQL function observation_signal_guard() line 6 at RAISE
+2026-10-12 21:23:32.555 CST [18228] STATEMENT:  INSERT INTO fep.observations SELECT * FROM jsonb_populate_record(NULL::fep.observations,$1)
+2026-10-12 21:23:32.641 CST [38824] ERROR:  FEP_OBSERVATION_SIGNAL_AUTHORITY_MISMATCH
+2026-10-12 21:23:32.641 CST [38824] CONTEXT:  PL/pgSQL function observation_signal_guard() line 6 at RAISE
+2026-10-12 21:23:32.641 CST [38824] STATEMENT:  INSERT INTO fep.observations SELECT * FROM jsonb_populate_record(NULL::fep.observations,$1)
+2026-10-12 21:23:32.685 CST [32016] ERROR:  FEP_OBSERVATION_SIGNAL_AUTHORITY_MISMATCH
+2026-10-12 21:23:32.685 CST [32016] CONTEXT:  PL/pgSQL function observation_signal_guard() line 6 at RAISE
+2026-10-12 21:23:32.685 CST [32016] STATEMENT:  INSERT INTO fep.observations SELECT * FROM jsonb_populate_record(NULL::fep.observations,$1)
+2026-10-12 21:23:32.743 CST [14380] ERROR:  FEP_SIGNAL_REGISTRY_SEMANTIC_MISMATCH
+2026-10-12 21:23:32.743 CST [14380] CONTEXT:  PL/pgSQL function signal_registry_guard() line 10 at RAISE
+2026-10-12 21:23:32.743 CST [14380] STATEMENT:  INSERT INTO fep.signal_contract_registry VALUES('WRONG_EVENT_CONTRACT','FEP_STOCK_ENTRY_CORE','FIRST_PREWATCH','FEP_E2_ENTRY_EVENT_STRATA_V1_1',$1,$2)
+2026-10-12 21:23:32.745 CST [14380] ERROR:  FEP_OBSERVATION_SIGNAL_AUTHORITY_MISMATCH
+2026-10-12 21:23:32.745 CST [14380] CONTEXT:  PL/pgSQL function observation_signal_guard() line 6 at RAISE
+2026-10-12 21:23:32.745 CST [14380] STATEMENT:  INSERT INTO fep.observations SELECT * FROM jsonb_populate_record(NULL::fep.observations,$1)
+2026-10-12 21:23:32.808 CST [36044] ERROR:  FEP_OBSERVATION_SIGNAL_AUTHORITY_MISMATCH
+2026-10-12 21:23:32.808 CST [36044] CONTEXT:  PL/pgSQL function observation_signal_guard() line 6 at RAISE
+2026-10-12 21:23:32.808 CST [36044] STATEMENT:  INSERT INTO fep.observations SELECT * FROM jsonb_populate_record(NULL::fep.observations,$1)
+2026-10-12 21:23:32.844 CST [34396] ERROR:  FEP_SIGNAL_REGISTRY_SEMANTIC_MISMATCH
+2026-10-12 21:23:32.844 CST [34396] CONTEXT:  PL/pgSQL function signal_registry_guard() line 10 at RAISE
+2026-10-12 21:23:32.844 CST [34396] STATEMENT:  INSERT INTO fep.signal_contract_registry VALUES('WRONG_EVENT_CONTRACT','FEP_STOCK_ENTRY_CORE','FIRST_PREWATCH','FEP_E2_ENTRY_EVENT_STRATA_V1_1',$1,$2)
+2026-10-12 21:23:32.845 CST [34396] ERROR:  FEP_OBSERVATION_SIGNAL_AUTHORITY_MISMATCH
+2026-10-12 21:23:32.845 CST [34396] CONTEXT:  PL/pgSQL function observation_signal_guard() line 6 at RAISE
+2026-10-12 21:23:32.845 CST [34396] STATEMENT:  INSERT INTO fep.observations SELECT * FROM jsonb_populate_record(NULL::fep.observations,$1)
+2026-10-12 21:23:32.923 CST [3120] ERROR:  IMMUTABLE_SIGNAL_REGISTRY
+2026-10-12 21:23:32.923 CST [3120] CONTEXT:  PL/pgSQL function signal_registry_immutable() line 2 at RAISE
+2026-10-12 21:23:32.923 CST [3120] STATEMENT:  UPDATE fep.signal_contract_registry SET signal_family='BAD'
+2026-10-12 21:23:32.923 CST [3120] ERROR:  IMMUTABLE_SIGNAL_REGISTRY
+2026-10-12 21:23:32.923 CST [3120] CONTEXT:  PL/pgSQL function signal_registry_immutable() line 2 at RAISE
+2026-10-12 21:23:32.923 CST [3120] STATEMENT:  DELETE FROM fep.signal_contract_registry
+2026-10-12 21:25:06.821 CST [3960] LOG:  checkpoint starting: time
+2026-10-12 21:29:30.863 CST [3960] LOG:  checkpoint complete: wrote 2027 buffers (12.4%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 1 recycled; write=221.865 s, sync=41.835 s, total=264.042 s; sync files=1993, longest=2.817 s, average=0.021 s; distance=16348 kB, estimate=16348 kB; lsn=0/BB520E0, redo lsn=0/BB52050
+2026-10-12 22:31:49.190 CST [33416] ERROR:  FEP_CAS_CONFLICT
+2026-10-12 22:31:49.190 CST [33416] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-12 22:31:49.190 CST [33416] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:49.291 CST [35516] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-12 22:31:49.291 CST [35516] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-12 22:31:49.291 CST [35516] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:49.350 CST [38020] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-12 22:31:49.350 CST [38020] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-12 22:31:49.350 CST [38020] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:49.430 CST [18092] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-12 22:31:49.430 CST [18092] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-12 22:31:49.430 CST [18092] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:49.496 CST [22292] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-12 22:31:49.496 CST [22292] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-12 22:31:49.496 CST [22292] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:49.552 CST [3712] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-12 22:31:49.552 CST [3712] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-12 22:31:49.552 CST [3712] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:49.701 CST [32260] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-12 22:31:49.701 CST [32260] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-12 22:31:49.701 CST [32260] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:49.756 CST [38896] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-12 22:31:49.756 CST [38896] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-12 22:31:49.756 CST [38896] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:49.818 CST [14848] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-12 22:31:49.818 CST [14848] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-12 22:31:49.818 CST [14848] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:49.874 CST [36400] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-12 22:31:49.874 CST [36400] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-12 22:31:49.874 CST [36400] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:49.918 CST [40076] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-12 22:31:49.918 CST [40076] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-12 22:31:49.918 CST [40076] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:49.965 CST [20836] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-12 22:31:49.965 CST [20836] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-12 22:31:49.965 CST [20836] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:50.015 CST [4900] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-12 22:31:50.015 CST [4900] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-12 22:31:50.015 CST [4900] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:50.059 CST [39552] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-12 22:31:50.059 CST [39552] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-12 22:31:50.059 CST [39552] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:50.105 CST [11084] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-12 22:31:50.105 CST [11084] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-12 22:31:50.105 CST [11084] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:50.156 CST [11528] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-12 22:31:50.156 CST [11528] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-12 22:31:50.156 CST [11528] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:50.157 CST [11528] ERROR:  FEP_CAS_CONFLICT
+2026-10-12 22:31:50.157 CST [11528] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-12 22:31:50.157 CST [11528] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:50.207 CST [32348] ERROR:  FEP_CAS_CONFLICT
+2026-10-12 22:31:50.207 CST [32348] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-12 22:31:50.207 CST [32348] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:50.257 CST [3000] ERROR:  FEP_HEAD_ACTIVATION_INVALID
+2026-10-12 22:31:50.257 CST [3000] CONTEXT:  PL/pgSQL function validate_deployment_head() line 6 at RAISE
+2026-10-12 22:31:50.257 CST [3000] STATEMENT:  insert into fep.deployment_heads values ($1,'SHADOW_INFERENCE','ABS:T5',5,'FEATURE','set1','g1','future',1,$2)
+2026-10-12 22:31:50.314 CST [1360] ERROR:  permission denied for function cas_deploy
+2026-10-12 22:31:50.314 CST [1360] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:50.376 CST [32076] ERROR:  permission denied for table deployment_heads
+2026-10-12 22:31:50.376 CST [32076] STATEMENT:  update fep.deployment_heads set head_version=2
+2026-10-12 22:31:50.377 CST [32076] ERROR:  permission denied for table deployment_heads
+2026-10-12 22:31:50.377 CST [32076] STATEMENT:  delete from fep.deployment_heads
+2026-10-12 22:31:50.378 CST [32076] ERROR:  permission denied for table contracts
+2026-10-12 22:31:50.378 CST [32076] STATEMENT:  update fep.contracts set version='x'
+2026-10-12 22:31:50.386 CST [32076] ERROR:  must be owner of table deployment_heads
+2026-10-12 22:31:50.386 CST [32076] STATEMENT:  alter table fep.deployment_heads disable trigger all
+2026-10-12 22:31:50.387 CST [32076] ERROR:  permission denied to set role "fep_cas_owner"
+2026-10-12 22:31:50.387 CST [32076] STATEMENT:  set role fep_cas_owner
+2026-10-12 22:31:52.417 CST [39328] ERROR:  FEP_CAS_CONFLICT
+2026-10-12 22:31:52.417 CST [39328] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-12 22:31:52.417 CST [39328] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:52.550 CST [8256] ERROR:  query returned no rows
+2026-10-12 22:31:52.550 CST [8256] CONTEXT:  PL/pgSQL function validate_observation() line 4 at SQL statement
+2026-10-12 22:31:52.550 CST [8256] STATEMENT:  insert into fep.observations values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:31:52.722 CST [40852] ERROR:  insert or update on table "label_revisions" violates foreign key constraint "label_revisions_observation_id_scope_id_fkey"
+2026-10-12 22:31:52.722 CST [40852] DETAIL:  Key (observation_id, scope_id)=(o, OTHER) is not present in table "observations".
+2026-10-12 22:31:52.722 CST [40852] STATEMENT:  insert into fep.label_revisions values ('o','OTHER','ABS:T5',1,2,$1,.2,null,'OBSERVED',true,$2,null)
+2026-10-12 22:31:52.788 CST [7564] ERROR:  insert or update on table "dataset_rows" violates foreign key constraint "dataset_rows_snapshot_id_observation_id_fkey"
+2026-10-12 22:31:52.788 CST [7564] DETAIL:  Key (snapshot_id, observation_id)=(snap, other) is not present in table "snapshots".
+2026-10-12 22:31:52.788 CST [7564] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-12 22:31:52.825 CST [36056] ERROR:  FEP_SNAPSHOT_FEATURE_CONTRACT_MISMATCH
+2026-10-12 22:31:52.825 CST [36056] CONTEXT:  PL/pgSQL function validate_snapshot() line 6 at RAISE
+2026-10-12 22:31:52.825 CST [36056] STATEMENT:  insert into fep.snapshots values ('wrong','o',1,'WINDOW',$1,$2,$3)
+2026-10-12 22:31:52.870 CST [3500] ERROR:  insert or update on table "dataset_fold_label_selection" violates foreign key constraint "dataset_fold_label_selection_observation_id_target_id_sele_fkey"
+2026-10-12 22:31:52.870 CST [3500] DETAIL:  Key (observation_id, target_id, selected_label_revision, selected_label_digest)=(o, ABS:T5, 1, d78ed9efa6ae77434392252f5e55039c106c229f28150fb5fbffbedbc40e15df) is not present in table "label_revisions".
+2026-10-12 22:31:52.870 CST [3500] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-12 22:31:52.927 CST [23792] ERROR:  query returned no rows
+2026-10-12 22:31:52.927 CST [23792] CONTEXT:  PL/pgSQL function validate_dataset_row() line 6 at SQL statement
+2026-10-12 22:31:52.927 CST [23792] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-12 22:31:52.974 CST [32716] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-12 22:31:52.974 CST [32716] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-12 22:31:52.974 CST [32716] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-12 22:31:53.019 CST [4064] ERROR:  FEP_FOLD_LABEL_NOT_TRAINABLE
+2026-10-12 22:31:53.019 CST [4064] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 14 at RAISE
+2026-10-12 22:31:53.019 CST [4064] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-12 22:31:53.069 CST [21168] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-12 22:31:53.069 CST [21168] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-12 22:31:53.069 CST [21168] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-12 22:31:53.126 CST [37372] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-12 22:31:53.126 CST [37372] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-12 22:31:53.126 CST [37372] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-12 22:31:53.224 CST [31400] ERROR:  FEP_RECONSTRUCTION_NOT_PIT
+2026-10-12 22:31:53.224 CST [31400] CONTEXT:  PL/pgSQL function validate_observation_revision() line 12 at RAISE
+2026-10-12 22:31:53.224 CST [31400] STATEMENT:  insert into fep.observation_revisions values ('o',2,'PUB',$1,$2,$3,'NONE','PIT_OBSERVED','REPLAY',1,$4)
+2026-10-12 22:31:53.320 CST [9000] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-12 22:31:53.320 CST [9000] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-12 22:31:53.320 CST [9000] STATEMENT:  set constraints all immediate
+2026-10-12 22:31:54.925 CST [25588] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-12 22:31:54.925 CST [25588] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-12 22:31:54.925 CST [25588] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-12 22:31:54.977 CST [9032] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-12 22:31:54.977 CST [9032] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-12 22:31:54.977 CST [9032] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-12 22:31:55.035 CST [35952] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-12 22:31:55.035 CST [35952] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-12 22:31:55.035 CST [35952] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-12 22:31:55.124 CST [28432] ERROR:  FEP_APPEND_ONLY
+2026-10-12 22:31:55.124 CST [28432] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 22:31:55.124 CST [28432] STATEMENT:  update fep.contracts set version='2' where contract_id='OBS'
+2026-10-12 22:31:55.158 CST [11372] ERROR:  FEP_APPEND_ONLY
+2026-10-12 22:31:55.158 CST [11372] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-12 22:31:55.158 CST [11372] STATEMENT:  delete from fep.contracts where contract_id='OBS'
+2026-10-12 22:31:55.264 CST [28640] ERROR:  FEP_LABEL_EXACT_SOURCE_MISMATCH
+2026-10-12 22:31:55.264 CST [28640] CONTEXT:  PL/pgSQL function validate_label_revision() line 14 at RAISE
+2026-10-12 22:31:55.264 CST [28640] STATEMENT:  insert into fep.label_revisions values ('o',$1,'ABS:T5',5,2,$2,.9,null,'OBSERVED',true,$3,1)
+2026-10-12 22:31:55.310 CST [3304] ERROR:  FEP_UPSTREAM_EXACT_AUTHORITY_REQUIRED
+2026-10-12 22:31:55.310 CST [3304] CONTEXT:  PL/pgSQL function validate_label_binding() line 12 at RAISE
+2026-10-12 22:31:55.310 CST [3304] STATEMENT:  insert into fep.label_source_bindings values ('missing','OBS','key','r',$1,'2026-09-08',$2,$3,$4,$5)
+2026-10-12 22:31:55.367 CST [5228] ERROR:  duplicate key value violates unique constraint "prediction_slots_observation_id_target_id_horizon_model_fam_key"
+2026-10-12 22:31:55.367 CST [5228] DETAIL:  Key (observation_id, target_id, horizon, model_family_scope)=(o, ABS:T5, 5, CORE) already exists.
+2026-10-12 22:31:55.367 CST [5228] STATEMENT:  insert into fep.prediction_slots values ($1,'o',$2,'ABS:T5',5,'CORE',$3,$4,'NO_ACTIVE_MODEL')
+2026-10-12 22:32:18.561 CST [11468] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-12 22:32:18.561 CST [11468] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-12 22:32:18.561 CST [11468] STATEMENT:  insert into fep.datasets values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-12 22:32:18.891 CST [30836] ERROR:  query returned no rows
+2026-10-12 22:32:18.891 CST [30836] CONTEXT:  PL/pgSQL function validate_observation_revision() line 5 at SQL statement
+2026-10-12 22:32:18.891 CST [30836] STATEMENT:  insert into fep.observation_revisions values ($1,1,$2,$3,$4,$5,'NONE','PIT_OBSERVED','SHADOW',null,$6)
+2026-10-12 22:32:18.930 CST [36328] ERROR:  FEP_PUBLICATION_OBSERVATION_MISMATCH
+2026-10-12 22:32:18.930 CST [36328] CONTEXT:  PL/pgSQL function validate_observation_revision() line 9 at RAISE
+2026-10-12 22:32:18.930 CST [36328] STATEMENT:  insert into fep.observation_revisions values ($1,1,$2,$3,$4,$5,'NONE','PIT_OBSERVED','SHADOW',null,$6)
+2026-10-12 22:35:06.977 CST [3960] LOG:  checkpoint starting: time
+2026-10-12 22:39:07.568 CST [3960] LOG:  checkpoint complete: wrote 1911 buffers (11.7%), wrote 4 SLRU buffers; 0 WAL file(s) added, 0 removed, 1 recycled; write=206.052 s, sync=33.762 s, total=240.591 s; sync files=850, longest=0.325 s, average=0.040 s; distance=8623 kB, estimate=15575 kB; lsn=0/C3BDDE0, redo lsn=0/C3BDD50
+2026-10-12 22:48:26.254 CST [37012] ERROR:  E5_APPEND_ONLY
+2026-10-12 22:48:26.254 CST [37012] CONTEXT:  PL/pgSQL function fep_e5_engineering.immutable() line 2 at RAISE
+2026-10-12 22:48:26.254 CST [37012] STATEMENT:  delete from fep_e5_engineering.prediction_slots where id=$1
+2026-10-12 22:48:26.885 CST [37332] ERROR:  E5_APPEND_ONLY
+2026-10-12 22:48:26.885 CST [37332] CONTEXT:  PL/pgSQL function fep_e5_engineering.immutable() line 2 at RAISE
+2026-10-12 22:48:26.885 CST [37332] STATEMENT:  update fep_e5_engineering.predictions set payload=payload where id=$1
+2026-10-12 22:50:06.608 CST [3960] LOG:  checkpoint starting: time
+2026-10-12 22:50:29.529 CST [3960] LOG:  checkpoint complete: wrote 189 buffers (1.2%), wrote 4 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=20.484 s, sync=2.316 s, total=22.921 s; sync files=111, longest=0.109 s, average=0.021 s; distance=1172 kB, estimate=14135 kB; lsn=0/C4E3000, redo lsn=0/C4E2F70

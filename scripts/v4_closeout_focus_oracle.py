@@ -55,7 +55,7 @@ def main():
         WORK=Path('G:/codex work/v4-production-20261012')
         candidate=load(run['candidate'])
         assert candidate['exact_daily_adjustment_contract']=='V4_OPERATIONAL_CORE_EXACT_AFFINE_CANDIDATE_R3'
-        folder=checked(run['candidate']).parent
+        folder=(WORK/run['candidate']['path']).resolve().parent
         receipt=dict(result=json.loads((folder/'owner_v3/FOCUS_FORWARD_REPLAY.json').read_bytes()))
         OUT=ROOT/'docs/audits/v4_full_closeout_20261012/continuation_20261013'/('FORMAL_EXACT_FOCUS_ORACLE_'+sys.argv[3])
         from scripts.v4_closeout_prepare_formal_pg_roles import load_credentials,ROLES

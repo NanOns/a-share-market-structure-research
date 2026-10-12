@@ -13,10 +13,24 @@ REQUIRED_SOURCES={
         'operational_daily_exact_policy_v2','operational_successor_release_v1',
         'operational_daily_executor_v1','operational_daily_periods_v1',
         'v4_13_descendant_contracts','portable_historical_archives_r1',
+        'operational_upstream_checkpoint_r1',
         'r43_owner_replay','r43_structure_replay','r43_focus_replay','r43_market_replay')),
 }
 REQUIRED_SOURCES.add('config/v4_portable_historical_archive_witness_r1.json')
 REQUIRED_SOURCES.update(('config/v4_03_parameter_set_v1.json','config/v4_03_parameter_registry_v1.json'))
+
+def verify_loaded_versions(bindings):
+    import sys,hashlib
+    for item in bindings:
+        logical=item.get('module_path',item['path'])
+        if not logical.startswith('src/') or not logical.endswith('.py'):continue
+        name=logical[4:-3].replace('/','.')
+        if name.endswith('.__init__'):name=name[:-9]
+        module=sys.modules.get(name)
+        if module is not None and getattr(module,'__file__',None):
+            origin=Path(module.__file__)
+            if not origin.is_file() or hashlib.sha256(origin.read_bytes()).hexdigest()!=item['sha256']:
+                raise ValueError('EXACT_V2_LOADED_ALGORITHM_VERSION_MISMATCH:'+logical)
 
 def verify(root,binding=None,*,candidate_only=False):
     root=Path(root).resolve()
@@ -43,6 +57,7 @@ def verify(root,binding=None,*,candidate_only=False):
         # Existing historical Owner identities retain their original namespace.
         # Current executable versions reside in separate immutable archives.
         for original in load(predecessor)['accepted_algorithm_bindings']:checked(root,original)
+        verify_loaded_versions(bindings)
         evidence=load(checked(root,policy['admission_evidence']))
         if evidence.get('contract_id')!='V4_AUTO_EXACT_RUNTIME_ACCEPTANCE_R1' or evidence.get('acceptance')!='PASS' or evidence.get('accepted_algorithm_bindings')!=bindings:
             raise ValueError('EXACT_V2_DAILY_ACCEPTANCE_EVIDENCE_REQUIRED')

@@ -1,0 +1,31 @@
+{
+  "contract_id": "V4_R2_LOCAL_CONTINUATION_CHECKPOINT_R1",
+  "head": "d7f632fad2282e2314ca707cd5a6461394be836a",
+  "latest_task": {
+    "path": "docs/upgrade/V4_FULL_CLOSEOUT_CONTINUATION_TASK_R2_20261013.md",
+    "sha256": "b51a1fbb50e19597ec98c12c22fc28f2a15a501a1645c77f7ca4b6e5ea22d4ce"
+  },
+  "active_production": {
+    "pid": 12528,
+    "port": 28765,
+    "changed": false
+  },
+  "completed_processes": {
+    "exact_daily_R3": "FAILED_RETAINED_StopIteration_AT_SECTOR_MISSING_2026_10_09_COMPARATOR",
+    "full_7209_diagnostic": {
+      "pass_count": 6385,
+      "fail_count": 322,
+      "error_count": 255,
+      "skip_count": 247,
+      "final_acceptance": false
+    }
+  },
+  "reusable_upstream_checkpoint": {
+    "path": "data/v4/dynamic_daily_owners/2026-10-12/cb4f2b229a6ba4a0ef19e8f118e9dac8ef2c1936d9010f8980bccc19b453c336/CORE_PROFILE_REUSE_CHECKPOINT_R1.json",
+    "sha256": "9079d35cbd1a592e1906daeba920ae3b5af8b2ffde10334a6178704de1110f9b",
+    "bytes": 98399
+  },
+  "next_action": "REPAIR_SECTOR_DATE_COVERAGE_AND_RESUME_WITH_VERIFIED_CORE_PROFILE_REUSE",
+  "source_code_uncommitted": false,
+  "existing_modified_reports_preserved": true
+}

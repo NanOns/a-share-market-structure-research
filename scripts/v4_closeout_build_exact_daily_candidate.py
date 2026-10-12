@@ -11,7 +11,7 @@ OUT=Path('G:/codex_tmp/v4_full_closeout_20261012/exact_daily_candidate_20261013_
 
 def main():
     global OUT
-    parser=argparse.ArgumentParser();parser.add_argument('--label',default='R1');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--label',default='R1');parser.add_argument('--resume-checkpoint');args=parser.parse_args()
     if not args.label.isalnum():raise ValueError('VERSIONED_CANDIDATE_RUN_LABEL_REQUIRED')
     OUT=OUT.with_name('exact_daily_candidate_20261013_'+args.label+'.json')
     if OUT.exists():raise ValueError('PRESERVE_PRIOR_CANDIDATE_RUN')
@@ -26,7 +26,9 @@ def main():
     trace=ConsumerTrace(OUT.with_name(OUT.stem+'_EXACT56_TRACE.json'),'Actual formal next-session exact V2 daily Owner candidate '+args.label)
     trace.start()
     try:
-        produced,context=build(STAGING,source['source_freeze'],source_readiness=source['source_readiness'],candidate_only_exact=True)
+        checkpoint=ref(STAGING,STAGING/args.resume_checkpoint) if args.resume_checkpoint else None
+        produced,context=build(STAGING,source['source_freeze'],source_readiness=source['source_readiness'],candidate_only_exact=True,resume_checkpoint=checkpoint)
+        if context.get('upstream_reuse'):result['upstream_reuse']=context['upstream_reuse']
         print('REAL_EXACT_OWNER_BUILD_FINISHED_SEAL_STARTED',flush=True)
         candidate,binding=seal(STAGING,context)
         result.update(status='CANDIDATE_SEALED_NOT_PUBLISHED',candidate=binding,

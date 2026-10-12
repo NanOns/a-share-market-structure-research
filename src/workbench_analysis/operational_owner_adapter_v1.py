@@ -13,6 +13,7 @@ from . import r43_daily_price_limits as limits
 from . import r43_market_replay as market
 from . import r43_focus_replay as focus
 from . import tdx_sector_retro_r43 as sector
+from adjustment import tdx_adjustment_v0_3 as exact_kernel
 
 
 def private_scope(module, replacements):
@@ -59,16 +60,17 @@ def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,o
     def ref(base,path):
         target=mapped(path)
         if exact_adjustment and target==root/'src/adjustment/tdx_adjustment.py':
-            target=Path(__file__).resolve().parents[2]/'src/adjustment/tdx_adjustment_v0_3.py'
+            target=Path(exact_kernel.__file__).resolve()
         if not target.is_relative_to(root):
             # Record the bytes of the code actually executed, separately from
             # the accepted source copies inside the isolated workspace.
-            repository=Path(__file__).resolve().parents[2]
-            if not target.is_relative_to(repository/'src') or target.suffix!='.py':
+            origins={Path(module.__file__).resolve():'src/'+module.__name__.replace('.','/')+'.py'
+                for module in (core,structure,limits,market,focus,sector,exact_kernel)}
+            if target not in origins:
                 raise ValueError('EXTERNAL_OWNER_BINDING_OUTSIDE_EXECUTED_SOURCE')
             blob=target.read_bytes()
             import hashlib
-            destination=folder/'executed_sources'/hashlib.sha256(blob).hexdigest()/target.relative_to(repository)
+            destination=folder/'executed_sources'/hashlib.sha256(blob).hexdigest()/origins[target]
             destination.parent.mkdir(parents=True,exist_ok=True)
             immutable_source_write(destination,blob,tdx_root=Path('D:/new_tdx'))
             return core.ref(base,destination)
@@ -89,7 +91,7 @@ def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,o
     core_path=folder/'owner_v3/CORE_REPLAY.json'
     if exact_adjustment and core_path.exists():
         source=load(folder/'owner_v3/SOURCE_BINDINGS.json')['sources']['adjustment_kernel']
-        expected=Path(__file__).resolve().parents[2]/'src/adjustment/tdx_adjustment_v0_3.py'
+        expected=Path(exact_kernel.__file__).resolve()
         from .tdx_official_daily_source import sha256_file
         if source['sha256']!=sha256_file(expected):raise ValueError('EXACT_CORE_CACHED_SOURCE_MISMATCH')
     owners=load(core_path)['owners'] if core_path.exists() else c['materialize_core'](root,dates,
@@ -116,6 +118,20 @@ def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,o
     # The comparator is explicitly an UNKNOWN bootstrap for new dates. The
     # unchanged producer computes every stock Seed from real Core/Profile.
     seed_path=root/sector.OUT/'SECTOR_REPLAY.json'
+    # Every replay date needs a comparator, including previously published
+    # successors absent from the original four-date historical registry.
+    # Missing comparators stay UNKNOWN; actual Seed is computed from Core/Profile.
+    registered={row['trade_date'] for row in seed_registry['owners']}
+    additions=[]
+    for item in profiles:
+        dated=item['owner'];day=dated['trade_date']
+        if day in registered:continue
+        rows=core.gzrows(core.checked(root,dated['core']))
+        comparator=core.gzwrite(root,folder/'sources/unknown_seed_comparators'/ (day+'.jsonl.gz'),[
+            dict(security_id=row['security_id'],base_seed_state='UNKNOWN',
+                contract_id='EXPLICIT_NO_PRIOR_TARGET_SEED_COMPARATOR_V1') for row in rows])
+        additions.append(dict(trade_date=day,seed=comparator))
+    seed_registry=dict(seed_registry,owners=seed_registry['owners']+additions)
     old_load=sec['load']
     sec['load']=lambda path: seed_registry if Path(path).resolve()==seed_path.resolve() else old_load(path)
     sector_path=folder/'sector_v3/SECTOR_REPLAY.json'

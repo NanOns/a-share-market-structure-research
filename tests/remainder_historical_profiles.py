@@ -38,6 +38,11 @@ def profile(commit):
             if win.drive or win.root or '..' in win.parts:raise ValueError('HISTORICAL_GIT_PATH_ESCAPE')
             entries[path]=oid.decode()
     representations={}
+    baseline='reports/fep_e1/ENTRY_BASELINE.json'
+    if baseline in entries and commit=='e4ea913d8926e904e55cbf16993ec63c0e90b031':
+        accepted=json.loads(subprocess.check_output(['git','cat-file','blob',entries[baseline]],cwd=out))
+        for ref in accepted['protected']:
+            if ref['path'] in entries:representations[ref['path']]=ref
     manifest='reports/r19a/PROTECTED_WORKTREE_BYTES.json'
     if manifest in entries and commit=='2020234020e09020aca13fd84cdabde6fbb81f50':
         values=json.loads(subprocess.check_output(['git','cat-file','blob',entries[manifest]],cwd=out))

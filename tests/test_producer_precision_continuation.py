@@ -31,6 +31,8 @@ def test_capture_precedes_old_pool_gate_even_when_universe_not_ready(chain, monk
 @pytest.mark.parametrize('capture_failure', [False, True])
 def test_executor_real_adapter_build_seal_and_strict_review_no_real_cas(chain,monkeypatch,capture_failure):
     root,day,freeze,new_head,_=chain
+    from tests.exact_daily_policy_fixture import install_pending
+    install_pending(root)
     head_binding=new_head()
     candidate=json.loads((root/head_binding['path']).read_bytes())
     old=(root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes()
@@ -67,7 +69,7 @@ def test_executor_real_adapter_build_seal_and_strict_review_no_real_cas(chain,mo
     monkeypatch.setattr(bootstrap,'produce_daily_sector',lambda *a,**k:head_binding)
     if capture_failure:
         monkeypatch.setattr(bootstrap,'capture_daily_sources',lambda *a,**k:(_ for _ in ()).throw(OSError('SIDECAR_FAULT')))
-    result=executor.derive_ready_sources(root,day,dict(source_freeze=freeze))
+    result=executor.derive_ready_sources(root,day,dict(source_freeze=freeze),candidate_only_exact=True)
     assert calls==['OWNER_PREPARE','KERNEL_REPLAY_FIXTURE']
     assert result['status']=='QA_BLOCKED' and result['reason']=='LIVE_SERVICE_READBACK_ENDPOINT_REQUIRED'
     assert (root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes()==old

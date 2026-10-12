@@ -26,11 +26,11 @@ class RealShadowController(HistoricalController):
         self.dependency_path=path
         self.dependency_bytes=(self.root/path).read_bytes()
         self.deps=json.loads(self.dependency_bytes)
-        validate_dependencies(self.root,self.deps)
         self.activation=json.loads(exact(self.root,self.deps['activation']))
         # Nothing that observes source availability or opens storage precedes this.
         check(self.activation['runtime_authorized'] is True and self.activation['real_shadow_authorized'] is True,
               'REAL_SHADOW_NOT_AUTHORIZED_BEFORE_CONSUMPTION')
+        validate_dependencies(self.root,self.deps)
         check(self.activation['environment_class']==('ACTIVATION_SIMULATION' if self.simulation else 'REAL'),'AUTHORITY_ENVIRONMENT_MISMATCH')
         check(not any(self.activation[k] for k in ('production','focus','V4_16')),'NON_SHADOW_PERMISSION_FORBIDDEN')
         for binding in self.deps['bindings']: exact(self.root,binding)

@@ -10,6 +10,14 @@ import pytest
 from tests.v4_frozen_history_closeout import exact_pre16_history_native_scope,exact_registered_history_native_scope,exact_original_r17b_promotion_node,exact_original_stage13_native_scope,exact_original_r15_contract_node,exact_historical_dm01_preclose_clock
 from tests.v4_frozen_history_closeout import original_pre_successor_v13_reader_gate
 from tests.v4_frozen_history_closeout import original_fep_feature_owner_envelope
+from tests.v4_static_stage_continuation import exact_original_static_stage_node
+
+@pytest.fixture(autouse=True)
+def exact_clean_phase0_database(request,monkeypatch):
+    if not request.node.path.as_posix().endswith('/tests/v4_phase0/test_postgres_schema.py'):return
+    import psycopg
+    from scripts.v4_closeout_phase0_clean_fixture import DATABASE,connection
+    monkeypatch.setattr(request.module,'connect',lambda:psycopg.connect(**connection(DATABASE)))
 
 @pytest.fixture(autouse=True,scope='module')
 def real_default_service_native_snapshot_scope(request):
@@ -70,6 +78,23 @@ def pytest_configure(config):
     original=psycopg.connect
     allowed_identities={tuple(expected[k] for k in ('host','port','dbname','user'))}
     fixture_clusters={}
+    phase0_identity=None
+    from scripts.v4_closeout_phase0_clean_fixture import RECEIPT,CONTRACT,DATABASE,connection,identity
+    if RECEIPT.exists():
+        receipt=json.loads(RECEIPT.read_bytes())
+        if receipt['contract']!=CONTRACT or receipt['database']!=DATABASE or receipt['production_authorized'] is not False:
+            raise V4DatabaseGuardViolation('PHASE0_EXACT_ENGINEERING_CONTRACT_REQUIRED')
+        root=Path(__file__).resolve().parents[1]
+        with original(**connection(DATABASE)) as witness:
+            identity(witness)
+            if witness.execute('select contract,admission from r4_evidence.phase0_clean_fixture').fetchall()!=[(CONTRACT,'ENGINEERING_ONLY_NO_PRODUCTION_AUTHORITY')]:
+                raise V4DatabaseGuardViolation('PHASE0_ENGINEERING_MARKER_REQUIRED')
+            actual=dict(witness.execute('select version,checksum_sha256 from v4_meta.schema_migrations').fetchall())
+            for row in receipt['migrations']:
+                raw=(root/row['path']).read_bytes()
+                if hashlib.sha256(raw).hexdigest()!=row['source_sha256'] or actual.get(row['version'],'').strip()!=row['sql_checksum_sha256']:
+                    raise V4DatabaseGuardViolation('PHASE0_EXECUTED_SQL_SOURCE_REQUIRED')
+        phase0_identity=tuple(str(connection(DATABASE)[k]) for k in ('host','port','dbname','user'))
     capability=os.environ.get('R4_PG_TEST_CAPABILITIES')
     if capability:
         path=Path(capability).resolve()
@@ -134,6 +159,8 @@ def pytest_configure(config):
     def guarded_pg(conninfo='',**kwargs):
         parsed=conninfo_to_dict(conninfo,**{k:kwargs[k] for k in ('host','port','dbname','user') if k in kwargs})
         decision='ALLOW' if tuple(parsed.get(k) for k in ('host','port','dbname','user')) in allowed_identities else 'REJECT'
+        if phase0_identity and tuple(str(parsed.get(k)) for k in ('host','port','dbname','user'))==phase0_identity and ACTIVE and ACTIVE.startswith('tests/v4_phase0/test_postgres_schema.py::'):
+            decision='ALLOW'
         cluster=fixture_clusters.get(tuple(parsed.get(k) for k in ('host','port','user')))
         if decision=='REJECT' and cluster and ACTIVE and ACTIVE.endswith('test_E1_24_concurrent_cas_and_same_request'):
             base,directory=cluster;database=parsed.get('dbname','')

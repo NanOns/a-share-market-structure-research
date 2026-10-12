@@ -16,7 +16,7 @@ BASE='docs/evidence/r4_3_four_session_closeout_20261009'
 ACQUISITION='docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json'
 
 
-def prepare(root,freeze_binding,*,replay_current=False):
+def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None):
     root=Path(root).resolve();freeze=load(checked(root,freeze_binding));day=freeze['target_session']
     parent=load(root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json')
     sessions=official_sessions(root);previous=parent['accepted_trade_date']
@@ -54,6 +54,9 @@ def prepare(root,freeze_binding,*,replay_current=False):
         gbbq=hashlib.sha256(blob).hexdigest(),member_sources=member_source_hashes,
         producer={name:sha256_file(root/'src/workbench_analysis'/name) for name in ('operational_daily_owner_v1.py','operational_owner_adapter_v1.py')})
     generation_key=hashlib.sha256(json.dumps(generation,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+    if adjustment_contract:
+        generation['adjustment_contract']=adjustment_contract
+        generation_key=hashlib.sha256(json.dumps(generation,sort_keys=True,separators=(',',':')).encode()).hexdigest()
     folder=root/'data/v4/dynamic_daily_owners'/day/generation_key
     folder.mkdir(parents=True,exist_ok=True)
     scope_path=folder/'GENERATION_SCOPE.json'
@@ -266,7 +269,7 @@ def seal(root,context):
         accepted_trade_date=day,data_cutoff_date=day,published_sessions=context['dates'],dates=context['dates'],
         predecessor=ref(root,predecessor),day_receipt=ref(root,receipt),observed_at=datetime.now(timezone.utc).isoformat(),
         AS_RECORDED=False,PIT_ELIGIBLE=False,historical_PIT_permission=False,
-        release_policy=ref(root,root/'config/read_only_operational_daily_release_policy_v1_1.json'))
+        release_policy=context.get('exact_daily_policy') or ref(root,root/'config/read_only_operational_daily_release_policy_v1_1.json'))
     candidate.update(membership_snapshot=ref(root,folder/'MEMBER_SNAPSHOT_S.json'),
                      membership_snapshot_id=context['snapshot']['membership_snapshot_id'],
                      membership_observed_at=context['snapshot']['membership_observed_at'],
@@ -275,8 +278,12 @@ def seal(root,context):
     candidate['source_registry']=dict(parent.get('source_registry',{
         d:dict(lifecycle=parent['owners'][d]['lifecycle'],membership=parent['membership_snapshot']) for d in parent['dates']}),
         **{day:dict(freeze=context['freeze'],generation=ref(root,folder/'GENERATION_SCOPE.json'),lifecycle=context['lifecycle'],gbbq=owner['sources']['gbbq'],membership=ref(root,folder/'MEMBER_SNAPSHOT_S.json'))})
-    policy=load(root/'config/read_only_operational_daily_release_policy_v1_1.json')
+    policy=load(checked(root,candidate['release_policy']))
     candidate['accepted_algorithm_bindings']=policy.get('accepted_algorithm_bindings',[])
+    if context.get('exact_daily_policy'):
+        from .operational_daily_exact_policy_v2 import KERNEL
+        candidate['exact_daily_adjustment_contract']=KERNEL
+        candidate['exact_daily_generation_scope']=ref(root,folder/'GENERATION_SCOPE.json')
     original_registry=load(checked(root,parent['registry']))
     registry=folder/'BUILDER_REGISTRY.json'
     atomic_json(root,registry,dict(original_registry,contract_id='DYNAMIC_DAILY_BUILDER_REGISTRY_V1',owner_bindings=candidate['owners'],

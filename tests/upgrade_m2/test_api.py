@@ -1,21 +1,30 @@
 import json
 import re
 import pytest
+from types import CodeType
 from pathlib import Path
 from workbench_service.app import Api,MAX_PAGE_SIZE,resolve_workbench_path
 from workbench_db import WorkbenchRepository
 
 ROOT=Path(__file__).resolve().parents[2]
 @pytest.fixture(autouse=True)
-def publication_context(request):
+def publication_context(request, explicit_legacy_api_isolation):
  # Collection and source-only assertions must not open a business database.
  # Runtime API assertions retain the original database and expected values.
- if not {'PUBS','TEST_PUB'} & set(request.function.__code__.co_names):
+ def names(code):
+  result=set(code.co_names)
+  for constant in code.co_consts:
+   if isinstance(constant,CodeType):result.update(names(constant))
+  return result
+ if not {'PUBS','TEST_PUB'} & names(request.function.__code__):
   return
  global PUBS,TEST_PUB
  with WorkbenchRepository(ROOT) as _repo:
   PUBS={str(day):publication_id for day,publication_id in _repo.connection.execute("select trade_date,publication_id from publication_heads where publication_id is not null order by trade_date").fetchall()}
  TEST_PUB=PUBS[sorted(PUBS, reverse=True)[0]]
+ if request.node.name in ('test_pagination_is_bounded_and_linkage_is_publication_bound','test_reverse_linkage_preserves_real_sector_rank_and_count'):
+  _,_,env=request.getfixturevalue('remainder_legacy_api_snapshot')
+  TEST_PUB=env['REMAINDER_COMPLETE_PUBLICATION_ID']
 
 def test_publications_and_dashboard_are_bound_to_one_publication():
  api=Api(ROOT/'data/database/market_research.duckdb'); pubs=api.publications()

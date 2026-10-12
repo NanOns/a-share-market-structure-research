@@ -17,9 +17,11 @@ def put(root,path,value):
 
 def copy_governance(root):
     deps=load('config/v4_16_runtime_dependencies_v6.json')
-    for ref in deps['bindings']:
-        put(root,ref['path'],(ROOT/ref['path']).read_bytes())
-    put(root,'config/v4_16_runtime_dependencies_v6.json',(ROOT/'config/v4_16_runtime_dependencies_v6.json').read_bytes())
+    # Current source qualification is confined to a disposable engineering vector.
+    assert root.resolve().is_relative_to(Path('G:/codex_tmp/test_temp').resolve())
+    deps=copy.deepcopy(deps)
+    deps['bindings']=[put(root,ref['path'],(ROOT/ref['path']).read_bytes()) for ref in deps['bindings']]
+    put(root,'config/v4_16_runtime_dependencies_v6.json',deps)
     return deps
 
 def test_exact_head_scope_and_only_A08_diff():

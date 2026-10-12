@@ -10,6 +10,15 @@ from .operational_successor_v1 import validate,digest
 def verify_policy(root,candidate):
     root=Path(root)
     binding=candidate['release_policy'];policy=json.loads(checked(root,binding).read_bytes())
+    from .operational_daily_exact_policy_v2 import CONTRACT,KERNEL,verify
+    if policy.get('contract_id')==CONTRACT:
+        policy,_=verify(root,binding)
+        if candidate.get('accepted_algorithm_bindings')!=policy['accepted_algorithm_bindings']:
+            raise ValueError('DAILY_ALGORITHM_BINDING_MISMATCH')
+        generation=json.loads(checked(root,candidate['exact_daily_generation_scope']).read_bytes())
+        if candidate.get('exact_daily_adjustment_contract')!=KERNEL or generation.get('adjustment_contract')!=dict(contract=KERNEL,policy=binding):
+            raise ValueError('DAILY_EXACT_GENERATION_BINDING_REQUIRED')
+        return
     if checked(root,binding)!=root/'config/read_only_operational_daily_release_policy_v1_1.json':
         raise ValueError('EXACT_DAILY_POLICY_REQUIRED')
     if policy.get('publication_ready') is not True:

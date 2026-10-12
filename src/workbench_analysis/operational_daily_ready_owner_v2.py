@@ -7,7 +7,7 @@ from .operational_daily_storage_v1 import atomic_json
 
 CONTRACT='DYNAMIC_DAILY_READY_OWNER_ADAPTER_V2'
 
-def build(root,freeze_binding,*,source_readiness,engineering_replay_current=False):
+def build(root,freeze_binding,*,source_readiness,engineering_replay_current=False,candidate_only_exact=False):
     root=Path(root)
     if engineering_replay_current:
         import os
@@ -24,13 +24,20 @@ def build(root,freeze_binding,*,source_readiness,engineering_replay_current=Fals
     for key in ('parent_head','lifecycle','identity','membership_snapshot'):checked(root,deps[key])
     if sha256_file(Path(deps['gbbq']['path']))!=deps['gbbq']['sha256']:
         raise ValueError('SOURCE_READY_GBBQ_REVISION_MOVED')
-    context=owner.prepare(root,freeze_binding,replay_current=engineering_replay_current)
+    exact_policy=None
+    if not engineering_replay_current:
+        from .operational_daily_exact_policy_v2 import verify,KERNEL
+        _,exact_policy=verify(root,candidate_only=candidate_only_exact)
+    context=owner.prepare(root,freeze_binding,replay_current=engineering_replay_current,
+        adjustment_contract=dict(contract=KERNEL,policy=exact_policy) if exact_policy else None)
+    if exact_policy:context['exact_daily_policy']=exact_policy
     if sha256_file(context['folder']/'sources/gbbq')!=deps['gbbq']['sha256']:
         raise ValueError('SOURCE_READY_GBBQ_REVISION_MOVED')
     context['source_readiness']=source_readiness
     produced=owner.replay(root,context['folder'],context['dates'],context['mappings'],
         membership_snapshot=context['snapshot'],seed_registry=context['seed_registry'],
-        observed_at=load(checked(root,context['freeze']))['observed_at'],exact_adjustment=bool(exact_candidate))
+        observed_at=load(checked(root,context['freeze']))['observed_at'],exact_adjustment=bool(exact_candidate or exact_policy),
+        exact_daily_policy=exact_policy,candidate_only_exact=candidate_only_exact)
     return produced,context
 
 def seal(root,context):

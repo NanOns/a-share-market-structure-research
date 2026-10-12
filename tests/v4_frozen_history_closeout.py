@@ -113,7 +113,7 @@ def exact_registered_history_native_scope(request):
     relative=request.node.path.relative_to(REPOSITORY).as_posix()
     # These original modules already have an explicit signed historical
     # profile. Reuse its complete original setup under the native PG guard.
-    selected={'tests/test_r17b_promotion.py','tests/test_v4_r14_governance_contracts.py',
+    selected={'tests/test_r17b_promotion.py','tests/test_r17a_historical_governance.py','tests/test_v4_r14_governance_contracts.py',
               'tests/test_v4_18_migration_contract.py',
               'tests/test_r18b_persisted.py','tests/test_r18r1r1_consumption.py',
               'tests/v4_09/test_stock_prewatch.py',

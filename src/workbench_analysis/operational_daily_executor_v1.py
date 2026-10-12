@@ -142,10 +142,12 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     return derive_ready_sources(root,day,result,cancelled=cancelled,readback_url=readback_url,progress=progress)
 
 
-def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=None,progress=lambda *args:None,engineering_replay_current=False):
+def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=None,progress=lambda *args:None,engineering_replay_current=False,candidate_only_exact=False):
     """Revalidate frozen bytes at the final boundary before any Owner work."""
     from .r43_owner_replay import checked
     root=Path(root)
+    if candidate_only_exact and readback_url is not None:
+        raise ValueError('EXACT_CANDIDATE_ONLY_CANNOT_PROMOTE')
     if engineering_replay_current:
         import os
         if readback_url is not None or os.environ.get('R4_NATIVE_ISOLATION')!='1' or not root.resolve().is_relative_to(Path('G:/codex_tmp').resolve()):
@@ -160,7 +162,7 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
         return dict(result,status=readiness['status'],reason=readiness['reason'])
     progress(day,'DERIVING',result)
     from .operational_daily_ready_owner_v2 import build,seal
-    produced,context=build(root,result['source_freeze'],source_readiness=result['source_readiness'],engineering_replay_current=engineering_replay_current)
+    produced,context=build(root,result['source_freeze'],source_readiness=result['source_readiness'],engineering_replay_current=engineering_replay_current,candidate_only_exact=candidate_only_exact)
     context['source_readiness']=result['source_readiness']
     if cancelled():return dict(result,status='CANCELLED',reason='CANCELLED_BEFORE_CAS')
     candidate,binding=seal(root,context)

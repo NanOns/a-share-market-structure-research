@@ -34,9 +34,13 @@ def private_scope(module, replacements):
     return scope
 
 
-def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,observed_at,exact_adjustment=False):
+def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,observed_at,exact_adjustment=False,exact_daily_policy=None,candidate_only_exact=False):
     root=Path(root).resolve();folder=Path(folder).resolve()
-    if exact_adjustment:
+    if exact_daily_policy:
+        from .operational_daily_exact_policy_v2 import verify
+        verify(root,exact_daily_policy,candidate_only=candidate_only_exact)
+        if not exact_adjustment:raise ValueError('EXACT_DAILY_KERNEL_REQUIRED')
+    elif exact_adjustment:
         import os
         if os.environ.get('R4_NATIVE_ISOLATION')!='1' or not root.is_relative_to(Path('G:/codex_tmp').resolve()):
             raise ValueError('ISOLATED_EXACT_CORE_CANDIDATE_REQUIRED')

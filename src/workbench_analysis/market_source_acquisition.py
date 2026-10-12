@@ -230,8 +230,12 @@ def acquire(root, dates, folder, gap_codes=()):
                     query(client, 'query_daily_adjust_factor', date=day)
                 # Three separate coordinates/capabilities; never infer QFQ from RAW.
                 codes = sorted(set(gap_codes))
-                smoke = codes[:1] or ['sh.600000']
-                smoke_ok = True
+                # Probe an identity returned by this actual dated universe;
+                # never privilege a named equity when the requested gap is empty.
+                observed_codes=sorted({row['code'] for rows in universes.values() for row in rows
+                                       if isinstance(row.get('code'),str) and is_stock_code(row['code'])})
+                smoke = (codes or observed_codes)[:1]
+                smoke_ok = bool(smoke)
                 for code in smoke:
                     for flag in ('3', '2'):
                         smoke_ok &= bool(query(client, 'query_history_k_data_plus', code=code, fields=FIELDS,

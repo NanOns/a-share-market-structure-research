@@ -1,6 +1,41 @@
 import struct
 from workbench_analysis.market_source_acquisition import corrected_candidate, read_day_bytes, official_sessions, is_stock_code
 from pathlib import Path
+import pytest
+
+@pytest.mark.parametrize('gap,observed,expected',[
+    ([],['sh.000001','sz.300222'],['sz.300222']),
+    (['sh.600111'],['sz.300222'],['sh.600111']),
+    ([],[],[]),
+])
+def test_live_smoke_uses_requested_or_observed_stock_identity(tmp_path,monkeypatch,gap,observed,expected):
+    """Explicit provider fixture; no network call or real-source acceptance."""
+    import json
+    import workbench_analysis.market_source_acquisition as m
+    (tmp_path/'config').mkdir()
+    for name,value in [('v4_market_source_fallback_policy_v1.json',dict(contract_id=m.CONTRACT,production_admission=False)),
+                       ('dm01_go_forward_runtime_contract_r4.json',dict(read_only_tdx_roots=[]))]:
+        (tmp_path/'config'/name).write_text(json.dumps(value))
+    monkeypatch.setattr(m,'official_sessions',lambda root:['2026-10-08'])
+    monkeypatch.setattr(m.time,'sleep',lambda _:None)
+    def unavailable(**kwargs):raise OSError('explicit unavailable source fixture')
+    monkeypatch.setattr(m,'capture_tdx_official_daily_package',unavailable)
+    calls=[]
+    class SDK:
+        def __getattr__(self,name):return lambda **kwargs:None
+    class Client:
+        sdk=SDK();login_result={'error_code':'0'};logout_result={'error_code':'0'};runtime_endpoint={};last_query_result={}
+        def __init__(self,*a,**kw):pass
+        def __enter__(self):return self
+        def __exit__(self,*a):pass
+        _safe_message=staticmethod(str)
+        def query_rows(self,operation,method,**params):
+            calls.append((method,params))
+            return ([{'code':code} for code in observed] if method=='query_all_stock' else []),{'error_code':'0','page_count':1}
+    monkeypatch.setattr(m,'BaoStockClient',Client)
+    m.acquire(tmp_path,['2026-10-08'],tmp_path/'evidence',gap_codes=gap)
+    selected={params['code'] for method,params in calls if method in ('query_history_k_data_plus','query_adjust_factor')}
+    assert selected==set(expected)
 
 
 def test_calendar_holiday_and_exact_predecessors():

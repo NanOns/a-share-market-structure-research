@@ -1,0 +1,32 @@
+{
+  "contract": "R4_R3_FOCUS_FULL_CHECKPOINT_ORACLE_S1_V1",
+  "status": "PASS_SCOPED",
+  "episodes": 2805,
+  "unique_observation_paths": 10329,
+  "numerical_comparisons": 61908,
+  "actual_company_action_paths": 170,
+  "unavailable_paths": 11,
+  "lifecycle_checks": 10329,
+  "priority_checks": 10329,
+  "predicate_input_formula_checks": 103180,
+  "settlement_checks": 15345,
+  "failures": [],
+  "quality_counts": {
+    "READY": 10318,
+    "DATA_UNAVAILABLE": 11
+  },
+  "source_projection": {
+    "path": "runtime/v4_full_closeout_focus_20261012_R2/CURRENT_ACTION_FOCUS_ORACLE_INPUT.json.gz",
+    "bytes": 5438528,
+    "sha256": "73803657dbceec1e1540698d08179d72bf528a4b1edc9d25eebba3acc7633367"
+  },
+  "limitations": [
+    "Full predicates are independently checked against bound Core/Profile values only when FULL mode is enabled.",
+    "Actual company-action count is reported; zero does not establish company-action coverage.",
+    "No historical PIT, external acceptance or production permission granted."
+  ],
+  "production_changed": false,
+  "independent_gbbq_decoder": "V4_INDEPENDENT_GBBQ_BULK_FEISTEL_ORACLE_R1",
+  "acceptance": "PASS",
+  "formal_pg_readback": false
+}

@@ -1,0 +1,37 @@
+{
+  "contract_id": "V4_ONE_ROUND_FULL_CLOSEOUT_R1_20261012",
+  "status": "IN_PROGRESS_NOT_RELEASE_READY",
+  "baseline": "2a8cc696086b78be4ccf443c23489e15ba2eaad2",
+  "production_git_head": "fbd23a6ba08d0948fe7ad421d1765fe363648522",
+  "observed_pid": 12528,
+  "observed_port": 28765,
+  "protected": [
+    {
+      "path": "config/v4_joint_release_authority_v1.json",
+      "sha256": "8d342393fe129596d2f9438428b48ff3839f846313777d17adf7d6a65e9f2298",
+      "mtime_ns": 1791467154637721200
+    },
+    {
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "mtime_ns": 1790857673391193900
+    },
+    {
+      "path": "config/v4_research_snapshot_authority_v1.json",
+      "sha256": "42333ea0beeb27524d009fe8755351e80a12bc5ccbe55380162a83614eb2d56c",
+      "mtime_ns": 1791433174783200400
+    }
+  ],
+  "cutover_authorized": true,
+  "drive_access": false,
+  "required_gates": [
+    "ALL_CONSUMERS",
+    "PG_ONLY",
+    "FOCUS_FORWARD_SETTLEMENT",
+    "EXACT56_FIELDS",
+    "LEGAL_FULL_REGRESSION",
+    "SIX_UI_WINDOWS",
+    "CAPACITY_ROLLBACK"
+  ],
+  "next": "Preserve 4568 baseline nodes; reconcile 4789 diagnostic nodes and all independent open items"
+}

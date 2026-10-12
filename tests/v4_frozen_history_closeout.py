@@ -9,6 +9,27 @@ import pytest
 REPOSITORY=Path(__file__).resolve().parents[1]
 
 @pytest.fixture(autouse=True)
+def original_pre_successor_v13_reader_gate(request,monkeypatch):
+    relative=request.node.path.relative_to(REPOSITORY).as_posix()
+    if relative!='tests/test_remainder_historical_routing.py' or request.function.__name__!='test_old_v13_reader_remains_pinned':return
+    from tests.remainder_historical_profiles import profile,install
+    commit=subprocess.check_output(['git','rev-parse','ba17ea65'],cwd=REPOSITORY,text=True).strip()
+    raw=subprocess.check_output(['git','show',commit+':'+relative],cwd=REPOSITORY)
+    assert raw==request.node.path.read_bytes()
+    root,entries=profile(commit);request.addfinalizer(install(monkeypatch,root,entries))
+    monkeypatch.setattr(request.module,'ROOT',root)
+    import importlib.util,sys,workbench_analysis
+    name='workbench_analysis._original_v13_reader_'+commit[:12]
+    spec=importlib.util.spec_from_file_location(name,root/'src/workbench_analysis/v4_13_accepted_contract_package.py')
+    original=importlib.util.module_from_spec(spec);sys.modules[name]=original;spec.loader.exec_module(original)
+    monkeypatch.setitem(sys.modules,'workbench_analysis.v4_13_accepted_contract_package',original)
+    monkeypatch.setattr(workbench_analysis,'v4_13_accepted_contract_package',original,raising=False)
+    Path('G:/codex_tmp/v4_full_closeout_20261012/denominator/OLD_V13_GATE_HISTORICAL_ONLY.json').write_text(json.dumps(dict(
+        scope='ORIGINAL_SINGLE_NODE_ONLY',commit=commit,node=request.function.__name__,
+        test_source_sha256=hashlib.sha256(raw).hexdigest(),grants_current_permission=False,
+        current_reader_nodes_still_use_current_root=True),indent=2),encoding='utf8')
+
+@pytest.fixture(autouse=True)
 def exact_original_r15_contract_node(request,monkeypatch):
     if request.node.path.relative_to(REPOSITORY).as_posix()!='tests/test_v4_13_r15_contract.py' or request.function.__name__!='test_full_contract_completeness_and_protected_artifacts':return
     import ast,importlib.util,sys

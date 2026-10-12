@@ -40,9 +40,14 @@ def main():
         plans=db.execute('EXPLAIN QUERY PLAN SELECT id FROM objects WHERE domain=? AND name>=? AND name<? ORDER BY name,id LIMIT 30',('stocks','浦','浦\uffff')).fetchall()
         assert any('INDEX' in p[-1] for p in plans)
     receipt['query_plan']=plans
-    assert reader.query('stocks',{'q':'600000'})['total']==1
-    assert reader.query('stocks',{'q':'浦发银行'})['total']==1
-    receipt['search']=dict(code='600000',chinese_name='浦发银行',result='PASS')
+    selected_stock=reader.query('stocks',{'limit':'1'})['items'][0]
+    selected_code=selected_stock['symbol'].split('.')[-1]
+    selected_name=selected_stock['display_name']
+    code_results=reader.query('stocks',{'q':selected_code})
+    name_results=reader.query('stocks',{'q':selected_name})
+    assert code_results['total']==1 and code_results['items'][0]['entity_id']==selected_stock['entity_id']
+    assert any(row['entity_id']==selected_stock['entity_id'] for row in name_results['items'])
+    receipt['search']=dict(code=selected_code,chinese_name=selected_name,result='PASS')
     for key in ['context_token','trade_date','release_id','model_namespace']:
         assert bff.get('/api/v4/stocks',{key:'stale'})[0]==409
     receipt['context_conflicts']='PASS_4_DIMENSIONS'

@@ -39,7 +39,7 @@ def main():
         do_PATCH=do_POST
         do_DELETE=do_POST
     server=ThreadingHTTPServer(('127.0.0.1',55891),ReadOnlyHandler)
-    print(json.dumps(dict(url='http://127.0.0.1:55891/v4/research/stocks/SH.600000',production=False,authority=str(authority))),flush=True)
+    print(json.dumps(dict(url='http://127.0.0.1:55891/v4/research/stocks',production=False,authority=str(authority))),flush=True)
     try:server.serve_forever()
     finally:server.server_close();jobs.close();guard.pytest_sessionfinish(None,0);guard.pytest_unconfigure(config)
 

@@ -14,7 +14,7 @@ def junction(source,dest):
     statement="New-Item -ItemType Junction -Path '"+str(dest).replace("'","''")+"' -Target '"+str(source).replace("'","''")+"' | Out-Null"
     subprocess.run(['powershell','-NoProfile','-Command',statement],check=True,capture_output=True)
 def isolate(candidate,reuse=None):
-    parent=Path('E:/codex_tmp/r43_r1_ui');parent.mkdir(parents=True,exist_ok=True)
+    parent=Path('G:/codex_tmp/r43_r1_ui');parent.mkdir(parents=True,exist_ok=True)
     store=Path(reuse).resolve() if reuse else Path(tempfile.mkdtemp(dir=parent))
     assert store.is_relative_to(parent.resolve())
     for tree in ('src','config'):shutil.copytree(ROOT/tree,store/tree,dirs_exist_ok=True)
@@ -113,18 +113,22 @@ def main():
             stocks=read(state,'/api/v4/stocks'+suffix);symbol=stocks['items'][0]['symbol']
             search=read(state,'/api/v4/stocks'+suffix+'&q='+symbol);assert search['total']>0
             if state=='LEGAL_HEAD_SIMULATION':
-                real_search=read(state,'/api/v4/stocks'+suffix+'&q=600000')
-                sh600000=next(x for x in real_search['items'] if x['symbol']=='SH.600000')
-                assert sh600000['fields']['primary_industry']['quality']=='KNOWN' and sh600000['fields']['primary_industry']['value'].startswith('INDUSTRY:')
-                assert sh600000['fields']['close']['source_digest']==candidate['owners']['2026-10-08']['raw']['sha256']
-                assert sh600000['fields']['scenario']['source_digest']==candidate['owners']['2026-10-08']['focus']['sha256']
-                real_detail=read(state,'/api/v4/stocks/'+sh600000['entity_id']+suffix)
-                assert real_detail['item']['symbol']=='SH.600000'
-                profile=read(state,'/api/v4/stocks/'+sh600000['entity_id']+'/profile'+suffix)
+                candidates=read(state,'/api/v4/stocks'+suffix+'&limit=200')['items']
+                selected_stock=next(x for x in candidates if x['fields']['primary_industry']['quality']=='KNOWN' and x['fields']['primary_industry']['value'].startswith('INDUSTRY:'))
+                selected_symbol=selected_stock['symbol']
+                selected_code=selected_symbol.split('.')[-1]
+                real_search=read(state,'/api/v4/stocks'+suffix+'&q='+selected_code)
+                assert any(x['entity_id']==selected_stock['entity_id'] for x in real_search['items'])
+                assert selected_stock['fields']['primary_industry']['quality']=='KNOWN' and selected_stock['fields']['primary_industry']['value'].startswith('INDUSTRY:')
+                assert selected_stock['fields']['close']['source_digest']==candidate['owners']['2026-10-08']['raw']['sha256']
+                assert selected_stock['fields']['scenario']['source_digest']==candidate['owners']['2026-10-08']['focus']['sha256']
+                real_detail=read(state,'/api/v4/stocks/'+selected_stock['entity_id']+suffix)
+                assert real_detail['item']['symbol']==selected_symbol
+                profile=read(state,'/api/v4/stocks/'+selected_stock['entity_id']+'/profile'+suffix)
                 assert profile['F']['close']['source_digest']==candidate['owners']['2026-10-08']['raw']['sha256']
                 assert any(x['role']=='primary_industry' for x in profile['membership_relations']['items'])
-                focus_search=read(state,'/api/v4/focus'+suffix+'&q=600000')
-                assert all(x['symbol']=='SH.600000' for x in focus_search['items'])
+                focus_search=read(state,'/api/v4/focus'+suffix+'&q='+selected_code)
+                assert all(x['symbol']==selected_symbol for x in focus_search['items'])
                 for path in ('stocks/'+stocks['items'][0]['entity_id']+'/chart','forward/statistics','replay','diagnostics/health','diagnostics/jobs','focus/statistics'):
                     missing=read(state,'/api/v4/'+path+suffix);assert missing['status']=='SOURCE_INCOMPLETE' and missing['reason'] and not missing['mixed_date_fallback']
                 read(state,'/api/v4/stocks?context_token=wrong',409)

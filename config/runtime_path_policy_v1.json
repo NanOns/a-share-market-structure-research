@@ -1,6 +1,6 @@
 {
   "policy_id": "NO_SYMBOL_SPECIFIC_RUNTIME_LOGIC",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "status": "HARD_GATE",
   "scan_roots": [
     "src",
@@ -458,6 +458,123 @@
       "category": "TEST_ONLY",
       "attestation_basis": "Reviewed source shows the only equity identifiers are isolated synthetic test inputs; no production entrypoint calls this test script.",
       "reviewed_source_sha256": "c36ac26d8e0f1c481b0459f0ffff17b28425a5f115d662bea40f0d1b77a319db"
+    },
+    "scripts/audit_r4_r3_scanner_performance.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Synthetic adverse scanner cases in G:/codex_tmp; compares all original scanner fields and writes only docs/audits/r4_r3_integration_20261011 oracle receipts.",
+      "reviewed_source_sha256": "3af52158d6d33828f81356560264b98d3cc308be11c0d8ae13c339e87526ca36",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/deepen_immediate_r3.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Historical R3 contract and transition explanation writer; immediate_r3_common output is docs/evidence/v4_immediate_r3_20261010. Old exclusions are historical receipt data and do not authorize current exclusions.",
+      "reviewed_source_sha256": "de65aa62cdaf0fa0896c3aecc1dd27eb0666e47b0bdcc2ea8a9dc60fba8ec465",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/prepare_immediate_r3.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Historical compact oracle extraction from hash-bound accepted owners; selected case identities are evidence sample inputs; writes docs/evidence/v4_immediate_r3_20261010 only.",
+      "reviewed_source_sha256": "867612943c1fc397f57d2ce1f20b60f0b36cadef519e3f4707618417ec911c21",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/finalize_r3_deepening.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reads actual localhost product profiles and immutable protected sources; appends docs/evidence historical scope dispositions and manually transcribed browser excerpts; no live publication.",
+      "reviewed_source_sha256": "942b43a14a4a04e7fd4f8d77b8156de22d90aefb35bffb3d35206527279426e3",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/record_r3_continuation.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reads exact local/provider evidence and protected owner bytes; writes only docs/evidence R3 readiness and historical ledger. Does not mutate identities or exclude current legal nodes.",
+      "reviewed_source_sha256": "771f32fa6466fc9be5389b34a5ac00b6f9c50aa73f79abcb462b7f5699e3dcfe",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/record_r3_deepening_delivery.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Historical receipt only: reads existing G local downloaded copies and Git report bytes; writes local docs/evidence receipt. No Google Drive tool or network request is made; this script is not run in current closeout.",
+      "reviewed_source_sha256": "d143956fa9f1b97fb19a5fd4a21ec321db24d2228eee5e6d4a7758fb4ae7cdf6",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/evidence_post_r4_runtime.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Read-only local HTTP and in-process BFF probes plus process inventory; emits docs/evidence runtime/deployment observations. Narrative commands are historical receipt text, not executed process control.",
+      "reviewed_source_sha256": "a59afea691a0900b663467be0d362def6b51c2aea6eb2271dabd3890f5540da6",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/qa_core_product_api_r2.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Read-only localhost route and field contract audit; selected real cases are evidence probes. Writes docs/evidence API audit and compact numeric samples only.",
+      "reviewed_source_sha256": "c105d843a3521b723dc849eddeac690ee3118cd1c765f1df07c205c747528502",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/run_r4_r3_exact_http.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Isolated G candidate HTTP oracle, explicit isolated PG identity and read-only history; independent Fraction arithmetic; writes docs/audits scoped receipts only.",
+      "reviewed_source_sha256": "a9747b37e69901f455516f54ee95d9a55571c894fb5fb2af95d5defdc1c20d11",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/run_r4_r3_period_consumer.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reads isolated PG history and immutable adjustment evidence; invokes unchanged pure period consumers, compares arithmetic and negative vectors; writes docs/audits oracle receipts only.",
+      "reviewed_source_sha256": "dc36a1b7354814d714252ab0c5fc6d601aea0a829bad18007a755f006f4b40d1",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/trace_r4_r3_exact_consumers.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Isolated local HTTP call profiling over all preserved 56 modules; writes docs/audits trace/CSV and preserves unobserved modules as UNRESOLVED. Does not authorize runtime or remove any consumer.",
+      "reviewed_source_sha256": "d2e9aa44362bc8ded0f8a5b102408dd766c6b9dc93f7bb3eca5835de4b801d10",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/supplement_dd_r21_compact.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reads hash-verified accepted immutable owner data and produces docs/evidence compact LOO/market receipts plus explicitly labelled synthetic period fixtures; no production writes.",
+      "reviewed_source_sha256": "c465e2aa4bc36e3a5e2e7a222aef3d78bcbb108d56c0e25122a7e21f7cffaaab",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/verify_r4_audit_r1_bytes.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reads actual source package SHA/CRC, identity and provider evidence; independent byte-level verification emits docs/evidence only. Index classifications are evidence, not runtime equity exceptions.",
+      "reviewed_source_sha256": "b295a37963427cbc5b39baa697595485908b979f13abdeddd038aa99c9425f84",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
     }
   },
   "audit_evidence_paths": [

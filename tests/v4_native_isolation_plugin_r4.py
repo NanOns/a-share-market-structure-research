@@ -8,6 +8,7 @@ import hashlib
 import sys
 import pytest
 from tests.v4_frozen_history_closeout import exact_pre16_history_native_scope,exact_registered_history_native_scope,exact_original_r17b_promotion_node,exact_original_stage13_native_scope,exact_original_r15_contract_node,exact_historical_dm01_preclose_clock
+from tests.v4_frozen_history_closeout import original_pre_successor_v13_reader_gate
 
 class V4DatabaseGuardViolation(BaseException): pass
 ACTIVE=None

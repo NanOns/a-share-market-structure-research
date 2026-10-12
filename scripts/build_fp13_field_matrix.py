@@ -11,7 +11,7 @@ def main():
     def get(path):
         with urllib.request.urlopen('http://127.0.0.1:28765/api/v4/'+path) as response:return json.load(response)
     sources=r.manifest['sources'];raw_ref=sources['RAW_DAILY'];raw_bytes=(ROOT/raw_ref['path']).read_bytes();assert digest(raw_bytes)==raw_ref['sha256'];raw=json.loads(raw_bytes)['rows'];by={x['security_id']:x for x in raw}
-    stock=r.query('stocks',{'q':'600000'})['items'][0];sid=stock['entity_id'];profile=get('stocks/'+sid+'/profile')
+    stock=r.query('stocks',{'limit':1})['items'][0];sid=stock['entity_id'];profile=get('stocks/'+sid+'/profile')
     checks=[]
     for name in ('close','open','high','low','amount','volume'):
         if name in stock['fields'] and name in by[sid]:

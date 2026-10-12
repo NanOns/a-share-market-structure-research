@@ -5,14 +5,16 @@ import pytest,psycopg
 from scripts.full_chain_repair_io import ROOT
 
 def test_unknown_pg_endpoint_rejected_before_connect():
-    with pytest.raises(ValueError,match='DISPOSABLE_PG_CLUSTER_REQUIRED'):
+    from tests.v4_native_isolation_plugin_r4 import V4DatabaseGuardViolation
+    with pytest.raises(V4DatabaseGuardViolation,match='R4_UNATTESTED_PG_FORBIDDEN'):
         psycopg.connect('host=127.0.0.1 port=5432 dbname=market_research connect_timeout=1')
 
 @pytest.mark.parametrize('operation',['open','mkdir','rename'])
 def test_protected_filesystem_mutation_rejected(operation,tmp_path):
-    target=ROOT/'data'/'REMAINDER_GUARD_NEGATIVE_MUST_NOT_EXIST'
+    from tests.v4_native_isolation_plugin_r4 import V4DatabaseGuardViolation
+    target=Path('G:/codex work/大A交易/data/REMAINDER_GUARD_NEGATIVE_MUST_NOT_EXIST')
     assert not target.exists()
-    with pytest.raises(ValueError,match='PROTECTED_FILESYSTEM_WRITE_FORBIDDEN'):
+    with pytest.raises(V4DatabaseGuardViolation,match='R4_READONLY_SOURCE_MUTATION_FORBIDDEN'):
         if operation=='open':target.write_bytes(b'forbidden')
         elif operation=='mkdir':target.mkdir()
         else:

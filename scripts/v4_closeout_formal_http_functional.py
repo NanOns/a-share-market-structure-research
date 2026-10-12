@@ -1,10 +1,14 @@
 """Sequential desktop functional readback, without performance or rollback tests."""
-import hashlib,json,sys,urllib.error,urllib.request
+import argparse,hashlib,json,sys,urllib.error,urllib.request
 from pathlib import Path
 from urllib.parse import urlencode
 BASE='http://127.0.0.1:28871'
 OUT=Path('G:/codex_tmp/v4_full_closeout_20261012/formal_http_functional_r1')
 def main():
+    global OUT
+    p=argparse.ArgumentParser();p.add_argument('--label',default='r1');a=p.parse_args()
+    if not a.label.isalnum():raise ValueError('EXPLICIT_FUNCTIONAL_RUN_LABEL_REQUIRED')
+    OUT=OUT.with_name('formal_http_functional_'+a.label)
     OUT.mkdir(parents=True,exist_ok=False);records=[];context={}
     routes=['/api/v4/desktop/status','/api/v4/context']
     routes+=['/v4/research/'+name for name in ('home','sectors','stocks','focus','market','diagnostics')]

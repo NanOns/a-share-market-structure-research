@@ -39,7 +39,8 @@ def test_activation_head_exact(accepted,case):
     if case=='A04':db.conn.execute("UPDATE activation_head SET authority_id='MISSING'")
     if case in ('A05','A06','payload_identity'):
         # Corruption fixture bypasses append-only guard only in this disposable simulation.
-        db.conn.execute('DROP TRIGGER no_fact_update')
+        from workbench_db.v4_shadow_live_pg_r3 import native_mode
+        db.conn.execute('DROP TRIGGER no_fact_update ON facts' if native_mode() else 'DROP TRIGGER no_fact_update')
         p=db.get('activation',b)
         if case=='A06':p['authority_binding']=dict(binding,sha256='0'*64)
         if case=='payload_identity':p['authority_id']='WRONG'

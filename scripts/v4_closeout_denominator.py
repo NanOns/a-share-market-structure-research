@@ -162,7 +162,7 @@ def remaining(label,full=False,failed_from=None):
              FEP_SIGNAL_BASELINE32_UPGRADE_TEST_DSN='host=127.0.0.1 port=55793 user=r4_isolated_admin dbname=fep_signal_baseline32_upgrade')
     if full:
         env.update(FEP_E1_TEST_DSN='host=127.0.0.1 port=55793 user=r4_isolated_admin dbname=fep_e1_upgrade',
-                   FEP_E5_TEST_DSN='host=127.0.0.1 port=55793 user=r4_isolated_admin dbname=fep_e5b_upgrade',
+                   FEP_E5_TEST_DSN='host=127.0.0.1 port=55793 user=r4_isolated_admin dbname=fep_e1_upgrade',
                    V4_10_DISPOSABLE_TEST_DSN='host=127.0.0.1 port=55791 user=r4_isolated_admin dbname=postgres',
                    WORKBENCH_PG_DSN='host=127.0.0.1 port=55791 user=r4_isolated_admin dbname=postgres',
                    FEP_TEST_RECEIPT_ROOT='G:/codex_tmp/v4_full_closeout_20261012/denominator/'+label+'_FEP_E1_RECEIPTS')

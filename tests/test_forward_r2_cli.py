@@ -11,7 +11,7 @@ from tests.runtime_isolation import DISPOSABLE_BASE
 def child_vector(number,root):
     root=Path(root);root.mkdir(parents=True,exist_ok=True)
     env={k:os.environ[k] for k in ('SystemRoot','WINDIR','PATH') if k in os.environ}
-    env.update(TEMP=str(DISPOSABLE_BASE),TMP=str(DISPOSABLE_BASE),PYTHONNOUSERSITE='1',PYTHONPATH='',PYTHONIOENCODING='utf8')
+    env.update(TEMP=str(DISPOSABLE_BASE),TMP=str(DISPOSABLE_BASE),TMPDIR=str(DISPOSABLE_BASE),PYTHONNOUSERSITE='1',PYTHONPATH='',PYTHONIOENCODING='utf8')
     command=[sys.executable,'-I','-B',str(ROOT/'scripts/_bootstrap.py')]
     cwd=root
     if number in (1,2,3):command+=['--help']
@@ -45,7 +45,7 @@ def test_clean_child_vector(number,tmp_path):child_vector(number,tmp_path)
 
 def test_clean_direct_r4_fixture_and_legacy_module_help(tmp_path):
     env={k:os.environ[k] for k in ('SystemRoot','WINDIR','PATH') if k in os.environ}
-    env.update(PYTHONPATH='',PYTHONNOUSERSITE='1',TEMP=str(DISPOSABLE_BASE),TMP=str(DISPOSABLE_BASE))
+    env.update(PYTHONPATH='',PYTHONNOUSERSITE='1',TEMP=str(DISPOSABLE_BASE),TMP=str(DISPOSABLE_BASE),TMPDIR=str(DISPOSABLE_BASE))
     base=[sys.executable,'-I','-B',str(ROOT/'scripts/_bootstrap.py')]
     result=subprocess.run(base+['--module','scripts.verify_dm01_r4_runtime','--fixture-root',str(tmp_path/'r4')],cwd=tmp_path,env=env,capture_output=True,timeout=180)
     assert result.returncode==0,result.stderr

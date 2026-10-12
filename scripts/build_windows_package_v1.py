@@ -108,12 +108,22 @@ def prepare():
     from workbench_desktop.closeout_runtime_sources_r1 import admitted,AUTHORITY
     runtime_repairs=admitted(ROOT)
     if runtime_repairs:files.append(ROOT/AUTHORITY)
+    from workbench_analysis.operational_daily_exact_policy_v2 import PATH as exact_path,verify as verify_exact
+    exact_versions={}
+    if (ROOT/exact_path).is_file():
+        exact_policy,_=verify_exact(ROOT,candidate_only=True)
+        exact_versions={b.get('module_path',b['path']):b for b in exact_policy['accepted_algorithm_bindings']}
+        files.extend(ROOT/b['path'] for b in exact_versions.values())
     for binding in policy['accepted_algorithm_bindings']:
         source=ROOT/binding['path']
         if sha(source)!=binding['sha256']:
+            version=exact_versions.get(binding['path'])
             repair=runtime_repairs.get(binding['path'])
-            if not repair or sha(source)!=repair['runtime']['sha256']:raise ValueError('ACCEPTED_ALGORITHM_ORIGINAL_CHANGED:'+binding['path'])
-            files.extend(ROOT/repair[key]['path'] for key in ('upstream','runtime'))
+            if version and sha(source)==version['sha256']:
+                files.append(ROOT/version['path'])
+            elif repair and sha(source)==repair['runtime']['sha256']:
+                files.extend(ROOT/repair[key]['path'] for key in ('upstream','runtime'))
+            else:raise ValueError('ACCEPTED_ALGORITHM_ORIGINAL_CHANGED:'+binding['path'])
         files.append(source)
         if source.suffix=='.py' and source.is_relative_to(ROOT/'src'):
             name='.'.join(source.relative_to(ROOT/'src').with_suffix('').parts)

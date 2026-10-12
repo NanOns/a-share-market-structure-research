@@ -1,5 +1,5 @@
 """Real next-session source/Owner calculation; no CAS or first-capture claim."""
-import hashlib,json,os,traceback
+import hashlib,json,os,traceback,argparse
 from pathlib import Path
 from scripts.v4_closeout_prepare_formal_pg_roles import load_credentials,ROLES
 from workbench_analysis.operational_daily_ready_owner_v2 import build,seal
@@ -10,6 +10,10 @@ STAGING=Path('G:/codex work/v4-production-20261012')
 OUT=Path('G:/codex_tmp/v4_full_closeout_20261012/exact_daily_candidate_20261013_R1.json')
 
 def main():
+    global OUT
+    parser=argparse.ArgumentParser();parser.add_argument('--label',default='R1');args=parser.parse_args()
+    if not args.label.isalnum():raise ValueError('VERSIONED_CANDIDATE_RUN_LABEL_REQUIRED')
+    OUT=OUT.with_name('exact_daily_candidate_20261013_'+args.label+'.json')
     if OUT.exists():raise ValueError('PRESERVE_PRIOR_CANDIDATE_RUN')
     os.environ['V4_NATIVE_PG_DSN']=load_credentials(STAGING/'config/native_pg_roles.dpapi')[ROLES[1]]
     diagnosis=json.loads(Path('G:/codex_tmp/v4_full_closeout_20261012/formal_capture_diagnosis_20261013.json').read_bytes())
@@ -18,6 +22,9 @@ def main():
     heads={n:(STAGING/'data/v4'/n).read_bytes() for n in names}
     result=dict(contract_id='V4_REAL_NEXT_SESSION_EXACT_DAILY_CANDIDATE_R1',target=diagnosis['target'],publication=False,first_capture_acceptance=False)
     print('REAL_EXACT_OWNER_BUILD_STARTED',flush=True)
+    from scripts.r4_r3_consumer_trace import ConsumerTrace
+    trace=ConsumerTrace(OUT.with_name(OUT.stem+'_EXACT56_TRACE.json'),'Actual formal next-session exact V2 daily Owner candidate '+args.label)
+    trace.start()
     try:
         produced,context=build(STAGING,source['source_freeze'],source_readiness=source['source_readiness'],candidate_only_exact=True)
         print('REAL_EXACT_OWNER_BUILD_FINISHED_SEAL_STARTED',flush=True)
@@ -29,6 +36,7 @@ def main():
     except Exception as error:
         result.update(status='FAILED_RETAINED',exception_class=type(error).__name__,traceback=traceback.format_exc())
     finally:
+        trace.close()
         assert all((STAGING/'data/v4'/n).read_bytes()==raw for n,raw in heads.items())
         result['heads_unchanged']={n:hashlib.sha256(raw).hexdigest() for n,raw in heads.items()}
         temp=OUT.with_suffix('.tmp');temp.write_text(json.dumps(result,indent=2),encoding='utf8');os.replace(temp,OUT)

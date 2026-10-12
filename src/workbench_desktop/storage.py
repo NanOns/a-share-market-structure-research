@@ -54,7 +54,19 @@ def activate_workspace_sources(root):
     if repairs and identities.get(AUTHORITY)!=hashlib.sha256((Path(root)/AUTHORITY).read_bytes()).hexdigest():
         raise ValueError('WORKSPACE_PACKAGE_RUNTIME_SOURCE_AUTHORITY_MISMATCH')
     policy=Path(root)/'config/read_only_operational_daily_release_policy_v1_1.json'
-    if policy.is_file():
+    from workbench_analysis.operational_daily_exact_policy_v2 import PATH as exact_path,verify as verify_exact
+    exact_policy=Path(root)/exact_path
+    runtime_versions={}
+    if exact_policy.is_file():
+        current,_=verify_exact(root)
+        if identities.get(exact_path)!=hashlib.sha256(exact_policy.read_bytes()).hexdigest():
+            raise ValueError('WORKSPACE_PACKAGE_EXACT_DAILY_POLICY_MISMATCH')
+        for row in current['accepted_algorithm_bindings']:
+            logical=row.get('module_path',row['path'])
+            if identities.get(logical)!=row['sha256']:
+                raise ValueError('WORKSPACE_PACKAGE_EXACT_ALGORITHM_VERSION_MISMATCH')
+            runtime_versions[logical]=row
+    elif policy.is_file():
         required=json.loads(policy.read_bytes())['accepted_algorithm_bindings']
         required+= [dict(path=name,sha256=identities[name]) for name in
             ('config/v4_03_parameter_set_v1.json','config/v4_03_parameter_registry_v1.json')]
@@ -70,7 +82,8 @@ def activate_workspace_sources(root):
         module=sys.modules.get(row['module'])
         if module is None:continue
         repair=repairs.get(row['path'])
-        candidate=Path(root)/(repair['runtime']['path'] if repair else row['path'])
+        version=runtime_versions.get(row['path'])
+        candidate=Path(root)/(version['path'] if version else repair['runtime']['path'] if repair else row['path'])
         if candidate.is_file() and hashlib.sha256(candidate.read_bytes()).hexdigest()==identities[row['path']]:
             module.__file__=str(candidate)
             module.__spec__.origin=str(candidate)

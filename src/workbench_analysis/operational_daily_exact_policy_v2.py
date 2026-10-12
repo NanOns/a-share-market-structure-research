@@ -12,8 +12,11 @@ REQUIRED_SOURCES={
         'operational_daily_owner_v1','operational_daily_ready_owner_v2',
         'operational_daily_exact_policy_v2','operational_successor_release_v1',
         'operational_daily_executor_v1','operational_daily_periods_v1',
+        'v4_13_descendant_contracts','portable_historical_archives_r1',
         'r43_owner_replay','r43_structure_replay','r43_focus_replay','r43_market_replay')),
 }
+REQUIRED_SOURCES.add('config/v4_portable_historical_archive_witness_r1.json')
+REQUIRED_SOURCES.update(('config/v4_03_parameter_set_v1.json','config/v4_03_parameter_registry_v1.json'))
 
 def verify(root,binding=None,*,candidate_only=False):
     root=Path(root).resolve()
@@ -30,12 +33,16 @@ def verify(root,binding=None,*,candidate_only=False):
     if predecessor.resolve()!=root/'config/read_only_operational_daily_release_policy_v1_1.json':
         raise ValueError('EXACT_V2_DAILY_PREDECESSOR_REQUIRED')
     bindings=policy['accepted_algorithm_bindings']
-    paths=[b['path'] for b in bindings]
+    paths=[b.get('module_path',b['path']) for b in bindings]
     if len(paths)!=len(set(paths)) or not REQUIRED_SOURCES<=set(paths):
         raise ValueError('EXACT_V2_DAILY_SOURCE_BINDINGS_REQUIRED')
     for item in bindings:checked(root,item)
     if not candidate_only:
         if policy.get('publication_ready') is not True:raise ValueError('EXACT_V2_DAILY_ADMISSION_PENDING')
+        if 'admission_evidence' not in policy:raise ValueError('EXACT_V2_DAILY_ACCEPTANCE_EVIDENCE_REQUIRED')
+        # Existing historical Owner identities retain their original namespace.
+        # Current executable versions reside in separate immutable archives.
+        for original in load(predecessor)['accepted_algorithm_bindings']:checked(root,original)
         evidence=load(checked(root,policy['admission_evidence']))
         if evidence.get('contract_id')!='V4_AUTO_EXACT_RUNTIME_ACCEPTANCE_R1' or evidence.get('acceptance')!='PASS' or evidence.get('accepted_algorithm_bindings')!=bindings:
             raise ValueError('EXACT_V2_DAILY_ACCEPTANCE_EVIDENCE_REQUIRED')

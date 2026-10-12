@@ -13,31 +13,62 @@ def policy(root):
     old=json.loads((root/PREDECESSOR).read_bytes())
     sources={b['path'] for b in old['accepted_algorithm_bindings']}|REQUIRED_SOURCES
     sources.discard('src/adjustment/tdx_adjustment.py')
+    bindings=[]
+    for name in sorted(sources):
+        raw=(ROOT/name).read_bytes()
+        if name.startswith('src/'):
+            digest=hashlib.sha256(raw).hexdigest()
+            archive=Path('data/v4/closeout_exact_daily_sources_v2')/digest/name
+            target=root/archive
+            if target.exists() and target.read_bytes()!=raw:raise ValueError('PRESERVE_EXACT_RUNTIME_SOURCE_ARCHIVE')
+            if not target.exists():atomic(target,raw)
+            bindings.append(dict(ref(root,target),module_path=name))
+        else:bindings.append(ref(root,root/name))
     return dict(contract_id=CONTRACT,adjustment_contract=KERNEL,publication_ready=False,
         status='PENDING_REAL_NUMERIC_AND_CONSUMER_ACCEPTANCE',historical_PIT_permission=False,
         automated_trading_permission=False,probability_claims=False,external_acceptance='NOT_GRANTED',
         task_contract=ref(root,root/DOC),predecessor_policy=ref(root,root/PREDECESSOR),
-        accepted_algorithm_bindings=[ref(root,root/p) for p in sorted(sources)])
+        accepted_algorithm_bindings=bindings)
 
 def atomic(path,raw):
     path.parent.mkdir(parents=True,exist_ok=True)
     temp=path.with_suffix(path.suffix+'.exact.tmp');temp.write_bytes(raw);os.replace(temp,path)
 
 def prepare():
+    import argparse
+    parser=argparse.ArgumentParser();parser.add_argument('--label',default='R1');args=parser.parse_args()
+    if not args.label.isalnum():raise ValueError('VERSIONED_PENDING_POLICY_STAGE_REQUIRED')
     record=ROOT/'docs/audits/v4_full_closeout_20261012/continuation_20261013/EXACT_DAILY_PENDING_STAGING_R1.json'
+    record=record.with_name('EXACT_DAILY_PENDING_STAGING_'+args.label+'.json')
     if record.exists():raise ValueError('PRESERVE_PRIOR_STAGING_RECEIPT')
     if (STAGING/PREDECESSOR).read_bytes()!=(ROOT/PREDECESSOR).read_bytes():raise ValueError('PRESERVE_FORMAL_PREDECESSOR_POLICY')
     names=('V4_DATA_ACCEPTED_HEAD.json','V4_OPERATIONAL_RESEARCH_HEAD.json')
     heads={n:(STAGING/'data/v4'/n).read_bytes() for n in names}
     pending=policy(ROOT);rows=[]
-    for name in [b['path'] for b in pending['accepted_algorithm_bindings']]+[DOC]:
+    for name in [b.get('module_path',b['path']) for b in pending['accepted_algorithm_bindings']]+[DOC]:
         raw=(ROOT/name).read_bytes();target=STAGING/name
+        if name.startswith('src/'):
+            rows.append(dict(path=name,sha256=hashlib.sha256(raw).hexdigest(),storage='SEPARATE_IMMUTABLE_EXECUTED_SOURCE_VERSION'))
+            continue
         if target.exists() and target.read_bytes()!=raw:
             old=target.read_bytes();archive=STAGING/'runtime/exact_daily_source_predecessors'/hashlib.sha256(old).hexdigest()/name
             if archive.exists():assert archive.read_bytes()==old
             else:atomic(archive,old)
         atomic(target,raw)
         rows.append(dict(path=name,sha256=hashlib.sha256(raw).hexdigest()))
+    # Restore original accepted source namespaces from preserved exact copies.
+    # Current executable bytes remain in their own content-addressed archives.
+    old=json.loads((STAGING/PREDECESSOR).read_bytes())
+    for binding in old['accepted_algorithm_bindings']:
+        target=STAGING/binding['path']
+        if hashlib.sha256(target.read_bytes()).hexdigest()==binding['sha256']:continue
+        alternatives=[STAGING/'runtime/exact_daily_source_predecessors'/binding['sha256']/binding['path'],
+            STAGING/'data/v4/closeout_runtime_sources_r1/upstream'/binding['path']]
+        original=next((p for p in alternatives if p.exists() and hashlib.sha256(p.read_bytes()).hexdigest()==binding['sha256']),None)
+        if original is None:raise ValueError('EXACT_UPSTREAM_SOURCE_RESTORATION_REQUIRED:'+binding['path'])
+        changed=target.read_bytes();archive=STAGING/'runtime/exact_daily_source_predecessors'/hashlib.sha256(changed).hexdigest()/binding['path']
+        if not archive.exists():atomic(archive,changed)
+        atomic(target,original.read_bytes())
     for root in (ROOT,STAGING):atomic(root/PATH,json.dumps(policy(root),indent=2).encode())
     assert all((STAGING/'data/v4'/n).read_bytes()==raw for n,raw in heads.items())
     result=dict(contract_id='V4_EXACT_DAILY_PENDING_STAGING_R1',files=rows,publication_ready=False,

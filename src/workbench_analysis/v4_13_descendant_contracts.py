@@ -66,9 +66,12 @@ class DescendantContracts:
                     row=next((r for r in book['entries'] if r['original']==binding),None)
                     if row is None:raise ValueError('UNREGISTERED_CORRECTED_HISTORICAL_IDENTITY')
                     raw=exact(self.root,row['archive'])
-                    original=subprocess.check_output(['git','show',row['source_commit']+':'+binding['path']],cwd=self.historical_git_repository)
-                    if raw!=original:raise ValueError('CORRECTED_ARCHIVE_NOT_EXACT_HISTORICAL_GIT_BYTES')
-                    p=self.root/row['archive']['path']
+                    from .portable_historical_archives_r1 import PATH,resolve as portable
+                    if (self.root/PATH).exists():p=portable(self.root,binding)
+                    else:
+                        original=subprocess.check_output(['git','show',row['source_commit']+':'+binding['path']],cwd=self.historical_git_repository)
+                        if raw!=original:raise ValueError('CORRECTED_ARCHIVE_NOT_EXACT_HISTORICAL_GIT_BYTES')
+                        p=self.root/row['archive']['path']
             raw=p.read_bytes()
             import hashlib
             if hashlib.sha256(raw).hexdigest()!=binding['sha256']:

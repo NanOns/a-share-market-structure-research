@@ -55,6 +55,10 @@ def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None)
         producer={name:sha256_file(root/'src/workbench_analysis'/name) for name in ('operational_daily_owner_v1.py','operational_owner_adapter_v1.py')})
     generation_key=hashlib.sha256(json.dumps(generation,sort_keys=True,separators=(',',':')).encode()).hexdigest()
     if adjustment_contract:
+        policy=load(checked(root,adjustment_contract['policy']))
+        versions={b.get('module_path',b['path']):b for b in policy['accepted_algorithm_bindings']}
+        generation['upstream_producer_namespaces']=generation['producer']
+        generation['producer']={name:versions['src/workbench_analysis/'+name]['sha256'] for name in generation['producer']}
         generation['adjustment_contract']=adjustment_contract
         generation_key=hashlib.sha256(json.dumps(generation,sort_keys=True,separators=(',',':')).encode()).hexdigest()
     folder=root/'data/v4/dynamic_daily_owners'/day/generation_key
@@ -286,9 +290,12 @@ def seal(root,context):
         candidate['exact_daily_generation_scope']=ref(root,folder/'GENERATION_SCOPE.json')
     original_registry=load(checked(root,parent['registry']))
     registry=folder/'BUILDER_REGISTRY.json'
+    if context.get('exact_daily_policy'):
+        versions={b.get('module_path',b['path']):b for b in policy['accepted_algorithm_bindings']}
+        executing=[versions['src/workbench_analysis/'+name] for name in ('operational_owner_adapter_v1.py','operational_daily_owner_v1.py')]
+    else:executing=[ref(root,root/'src/workbench_analysis/operational_owner_adapter_v1.py'),ref(root,root/'src/workbench_analysis/operational_daily_owner_v1.py')]
     atomic_json(root,registry,dict(original_registry,contract_id='DYNAMIC_DAILY_BUILDER_REGISTRY_V1',owner_bindings=candidate['owners'],
-        bindings=original_registry['bindings']+[ref(root,root/'src/workbench_analysis/operational_owner_adapter_v1.py'),
-                                                  ref(root,root/'src/workbench_analysis/operational_daily_owner_v1.py')]))
+        bindings=original_registry['bindings']+executing))
     candidate['registry']=ref(root,registry)
     candidate['external_review_contract']='DYNAMIC_DAILY_EXTERNAL_ACCEPTANCE_SEPARATE_V1'
     path=folder/'SUCCESSOR_CANDIDATE.json';atomic_json(root,path,candidate)

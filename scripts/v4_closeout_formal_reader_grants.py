@@ -5,6 +5,11 @@ SOURCE=Path(__file__).resolve().parents[1];sys.path[:0]=[str(SOURCE),str(SOURCE/
 ROOT=Path('G:/codex work/v4-production-20261012')
 OUT=Path('G:/codex_tmp/v4_full_closeout_20261012/formal_reader_grants_r1')
 def main():
+    global OUT
+    import argparse
+    parser=argparse.ArgumentParser();parser.add_argument('--label',default='r1');args=parser.parse_args()
+    if not args.label.isalnum():raise ValueError('VERSIONED_READER_GRANT_RUN_REQUIRED')
+    OUT=OUT.with_name('formal_reader_grants_'+args.label)
     import psycopg
     from psycopg import sql
     from scripts.v4_closeout_prepare_formal_pg_roles import load_credentials,ROLES

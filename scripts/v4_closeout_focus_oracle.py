@@ -41,17 +41,35 @@ def load(binding):
 
 
 def main():
-    global OUT
+    global OUT,WORK
+    formal=len(sys.argv)>1 and sys.argv[1]=='--formal-exact-daily'
+    dsn=dict(host='127.0.0.1',port=55791,user='r4_isolated_admin',dbname='postgres',options='-c default_transaction_read_only=on')
+    expected_system='7695278778933357404'
     receipt_path = ROOT / 'docs/audits/r4_r3_consumers_20261011/FOCUS_RESUME_R1/RESULT.json'
-    if len(sys.argv) > 1:
+    if formal:
+        assert len(sys.argv)==4 and sys.argv[3].isalnum()
+        run_path=Path(sys.argv[2]).resolve()
+        assert run_path.is_relative_to(Path('G:/codex_tmp/v4_full_closeout_20261012').resolve())
+        run=json.loads(run_path.read_bytes())
+        assert run['contract_id']=='V4_REAL_NEXT_SESSION_EXACT_DAILY_CANDIDATE_R1' and run['status']=='CANDIDATE_SEALED_NOT_PUBLISHED'
+        WORK=Path('G:/codex work/v4-production-20261012')
+        candidate=load(run['candidate'])
+        assert candidate['exact_daily_adjustment_contract']=='V4_OPERATIONAL_CORE_EXACT_AFFINE_CANDIDATE_R3'
+        folder=checked(run['candidate']).parent
+        receipt=dict(result=json.loads((folder/'owner_v3/FOCUS_FORWARD_REPLAY.json').read_bytes()))
+        OUT=ROOT/'docs/audits/v4_full_closeout_20261012/continuation_20261013'/('FORMAL_EXACT_FOCUS_ORACLE_'+sys.argv[3])
+        from scripts.v4_closeout_prepare_formal_pg_roles import load_credentials,ROLES
+        dsn=load_credentials(WORK/'config/native_pg_roles.dpapi')[ROLES[0]]
+        expected_system='7688198230782699460'
+    elif len(sys.argv) > 1:
         receipt_path = Path(sys.argv[1]).resolve()
         assert receipt_path.is_relative_to(ROOT / 'docs/audits/r4_r3_local_delivery_20261012')
         OUT = OUT.with_name('S1_ORACLE_REPAIRED')
-    if len(sys.argv) > 2:
+    if not formal and len(sys.argv) > 2:
         assert sys.argv[2] == 'FULL'
         OUT = OUT.with_name('S1_ORACLE_FULL')
     OUT.mkdir(parents=True, exist_ok=False)
-    receipt = json.loads(receipt_path.read_bytes())
+    if not formal:receipt = json.loads(receipt_path.read_bytes())
     projection = load(receipt['result']['focus'])
     bindings = projection['source_bindings']
     calendar = load(bindings['calendar'])['session_dates']
@@ -64,18 +82,17 @@ def main():
         symbols = {r['security_id']: r['source_security_key'] for r in identity_rows}
         assert len(symbols) == len(identity_rows) and len(set(symbols.values())) == len(symbols)
     bars = defaultdict(dict)
-    with psycopg.connect(host='127.0.0.1', port=55791, user='r4_isolated_admin', dbname='postgres', options='-c default_transaction_read_only=on') as pg:
+    with psycopg.connect(dsn) if isinstance(dsn,str) else psycopg.connect(**dsn) as pg:
         pg.execute('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY')
-        assert pg.execute('select system_identifier::text from pg_control_system()').fetchone()[0] == '7695278778933357404'
+        assert pg.execute('select system_identifier::text from pg_control_system()').fetchone()[0] == expected_system
         for sid, day, payload in pg.execute(sql.SQL('SELECT security,day::text,payload FROM {}.bars ORDER BY security,day').format(sql.Identifier(descriptor['schema']))):
             bars[sid][day] = json.loads(payload)
             if symbols is not None:
                 assert bars[sid][day]['symbol'] == symbols[sid], 'INDEPENDENT_SOURCE_IDENTITY_MISMATCH'
-    # The already audited binary parser is reused only to decode source records.
-    from tdx.gbbq_reader import read_gbbq
+    from scripts.v4_closeout_independent_gbbq import decode
     checked(bindings['gbbq'])
     actions = defaultdict(list)
-    for event in read_gbbq(WORK / bindings['gbbq']['path']):
+    for event in decode((WORK / bindings['gbbq']['path']).read_bytes()):
         actions[event.security_id].append(event)
     dispositions = load(bindings['classification'])['dispositions']
     failures, gaps, seen = [], [], set()
@@ -257,6 +274,7 @@ def main():
             previous[sid] = eid
             lifecycle_checks += 1
     result = dict(contract='R4_R3_FOCUS_FULL_CHECKPOINT_ORACLE_S1_V1', status='PASS_SCOPED' if not failures else 'FAIL', episodes=len(projection['episodes']), unique_observation_paths=len(seen), numerical_comparisons=comparisons, actual_company_action_paths=action_paths, unavailable_paths=len(gaps), lifecycle_checks=lifecycle_checks, priority_checks=priority_checks, predicate_input_formula_checks=predicate_checks, settlement_checks=settlement_checks, failures=failures, quality_counts=dict(Counter(o['price_path']['quality'] for e in projection['episodes'] for o in e['observations'])), source_projection=receipt['result']['focus'], limitations=['Full predicates are independently checked against bound Core/Profile values only when FULL mode is enabled.', 'Actual company-action count is reported; zero does not establish company-action coverage.', 'No historical PIT, external acceptance or production permission granted.'], production_changed=False)
+    result.update(independent_gbbq_decoder='V4_INDEPENDENT_GBBQ_BULK_FEISTEL_ORACLE_R1',acceptance='PASS' if not failures else 'FAIL',formal_pg_readback=formal)
     for name, value in [('RESULT.json', result), ('UNAVAILABLE_PATHS.json', gaps)]:
         temp = OUT / (name + '.tmp')
         temp.write_text(json.dumps(value, indent=2, ensure_ascii=False) + '\n', encoding='utf8')

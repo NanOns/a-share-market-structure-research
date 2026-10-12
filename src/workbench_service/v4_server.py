@@ -30,7 +30,8 @@ def make_v4_handler(root):
         # Daily successors have their own exact policy admission; the frozen
         # four-session reader's external attestation cannot admit that contract.
         authority=root/('config/read_only_operational_daily_release_policy_v1_1.json' if candidate.get('contract_id')==DAILY_CONTRACT else 'data/v4/R43_OPERATIONAL_USER_AUTHORIZATION.json' if candidate.get('authority_mode')=='USER_AUTHORIZED_SCOPED_OPERATIONAL_V1' else 'data/v4/R43_OPERATIONAL_EXTERNAL_ACCEPTANCE.json')
-        signature=hashlib.sha256(head.read_bytes()+(authority.read_bytes() if authority.exists() else b'')).hexdigest()
+        owner_authority=root/'config/v4_operational_owner_pg_closeout_r1.json'
+        signature=hashlib.sha256(head.read_bytes()+(authority.read_bytes() if authority.exists() else b'')+(owner_authority.read_bytes() if owner_authority.exists() else b'')).hexdigest()
         with operational_lock:
             cached=operational_cache.get('reader')
             signatures=operational_cache.get('sources',{})
@@ -47,6 +48,7 @@ def make_v4_handler(root):
                     elif isinstance(value,list):
                         for child in value:collect(child)
                 collect(registry);collect(cached.candidate);collect(cached.snapshot)
+                if owner_authority.exists():collect(json.loads(owner_authority.read_bytes()))
                 paths={root/b['path'] for b in bindings}
                 operational_cache.update(reader=cached,signature=signature,sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
             return cached
@@ -61,7 +63,7 @@ def make_v4_handler(root):
                 if any(len(v)!=1 for v in values.values()):return self.send(400,dict(code='DUPLICATE_PARAMETER'))
                 code,payload=bff.get('/api/v4/'+parsed.path.removeprefix('/api/v4/original-0930/'),{k:v[0] for k,v in values.items()})
                 return self.send(code,payload)
-            if parsed.path.startswith('/api/v4/') and not parsed.path.startswith('/api/v4/shadow/'):
+            if parsed.path.startswith('/api/v4/') and not parsed.path.startswith(('/api/v4/shadow/','/api/v4/current/')):
                 try:
                     operational=operational_reader()
                 except (ValueError,KeyError,OSError) as error:

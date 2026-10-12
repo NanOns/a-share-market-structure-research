@@ -84,6 +84,8 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
         self.snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
         self.user_authorized_cutover=True;self.independent_external_acceptance=False
         self.domain_disposition={'rotation':'VALIDATION_ONGOING','forward':'VALIDATION_ONGOING'}
+        from workbench_db.v4_operational_owner_pg_closeout import load_authority
+        self.pg_owner_authority=load_authority(root,candidate,self.token)
 
     def context(self):
         from .tdx_member_retro_r43 import metadata
@@ -100,6 +102,18 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
         # Reuse frozen field/forward slicing in a private per-instance date scope.
         original=CandidateReadV2.read
         scope=dict(original.__globals__,DATES=self.candidate['published_sessions'])
+        if self.pg_owner_authority is not None:
+            from workbench_db.v4_operational_owner_pg_closeout import read as pg_read
+            def pg_rows(root,binding):
+                domains=[name for name,value in self.candidate['owners'][day].items() if value==binding]
+                selected=domain if domain in domains else domains[0] if len(domains)==1 else None
+                if selected is None:raise ValueError('PG_OPERATIONAL_OWNER_AMBIGUOUS_BINDING')
+                return pg_read(root,self.pg_owner_authority['owners'][day][selected],self.token,day,selected,binding)
+            scope['rows']=pg_rows
+            # Each request reattests actual PG data and database identity. The
+            # inherited archive cache must never bypass the native read gate.
+            self.cache.pop((day,domain),None)
+            if domain=='profile':self.cache.pop((day,'relative_sector'),None)
         return FunctionType(original.__code__,scope)(self,domain,day,token)
 
     def dispatch(self,url,token=None):

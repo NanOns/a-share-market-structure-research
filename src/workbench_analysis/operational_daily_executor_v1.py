@@ -259,7 +259,12 @@ def verify_source_gate(root,day,artifact,result,now=None):
         scoped_reconciliation=reconcile(native,daily,expected_codes,json.loads(policy_path.read_bytes()),day)
         scoped_reconciliation['scope_policy']=ref(root,policy_path)
         scoped_reconciliation['dated_identity']=life['identity']
-        reconciled=scoped_reconciliation['status']=='SCOPED_REQUIRED_PROVIDER_FACTS_RECONCILED'
+        # Provider arithmetic agreement and canonical identity admission are
+        # distinct gates. A correctly reconciled new/delisted roster still
+        # waits for dated identity authority below; it is not a bad price source.
+        provider_reconciliation=reconcile(native,daily,actual_codes,json.loads(policy_path.read_bytes()),day)
+        reconciled=provider_reconciliation['status']=='SCOPED_REQUIRED_PROVIDER_FACTS_RECONCILED'
+        scoped_reconciliation['provider_facts']=provider_reconciliation
         for family in ('baostock_daily','baostock_factor'):
             sources[family]['identity_reconciliation_passed']=reconciled
             sources[family]['scope_reconciliation']=scoped_reconciliation
@@ -301,7 +306,7 @@ def verify_source_gate(root,day,artifact,result,now=None):
         readiness['native_provider_facts'].update(
             reconciliation_scope=scoped_reconciliation,
             full_market_coverage_pass=False,
-            current_contract_scope_pass=reconciled)
+            current_contract_scope_pass=scoped_reconciliation['status']=='SCOPED_REQUIRED_PROVIDER_FACTS_RECONCILED')
     if identity_preflight:readiness['old_head_identity_preflight']=identity_preflight
     # Equal payloads at distinct immutable locations must not borrow a gate
     # whose exact source binding names another artifact.

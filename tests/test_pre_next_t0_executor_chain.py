@@ -59,7 +59,7 @@ def test_full_executor_entry(chain, monkeypatch, gate_ready):
         ready = publish(root, 'inputs/ready.json', dict(source_ready=True, source_freeze=result['source_freeze'], dependency_bindings=deps))
         return dict(result, source_readiness=ready), dict(source_ready=gate_ready, status='WAIT_BAOSTOCK_DAILY', reason='SYNTHETIC_GATE')
     monkeypatch.setattr(executor, 'verify_source_gate', gate)
-    def prepare(root, freeze_binding):
+    def prepare(root, freeze_binding, *, replay_current=False):
         assert gate_ready
         calls.append('OWNER_PREPARE')
         return dict(folder=folder, dates=[day], mappings={}, snapshot=candidate['membership_snapshot'], seed_registry={}, freeze=freeze_binding)

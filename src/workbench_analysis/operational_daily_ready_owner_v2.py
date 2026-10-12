@@ -9,14 +9,14 @@ CONTRACT='DYNAMIC_DAILY_READY_OWNER_ADAPTER_V2'
 
 def build(root,freeze_binding,*,source_readiness,engineering_replay_current=False):
     root=Path(root)
-    freeze_document=load(checked(root,freeze_binding))
-    exact_candidate=freeze_document.get('engineering_exact_adjustment_candidate')
-    if exact_candidate and (not engineering_replay_current or exact_candidate.get('contract')!='V4_OPERATIONAL_CORE_EXACT_AFFINE_CANDIDATE_R3'):
-        raise ValueError('EXACT_CORE_ENGINEERING_CONTRACT_REQUIRED')
     if engineering_replay_current:
         import os
         if os.environ.get('R4_NATIVE_ISOLATION')!='1' or not root.resolve().is_relative_to(Path('G:/codex_tmp').resolve()):
             raise ValueError('ISOLATED_ENGINEERING_CURRENT_REPLAY_REQUIRED')
+    freeze_document=load(checked(root,freeze_binding))
+    exact_candidate=freeze_document.get('engineering_exact_adjustment_candidate')
+    if exact_candidate and (not engineering_replay_current or exact_candidate.get('contract')!='V4_OPERATIONAL_CORE_EXACT_AFFINE_CANDIDATE_R3'):
+        raise ValueError('EXACT_CORE_ENGINEERING_CONTRACT_REQUIRED')
     gate=load(checked(root,source_readiness))
     if not gate.get('source_ready') or gate.get('source_freeze')!=freeze_binding:
         raise ValueError('OWNER_READY_FREEZE_BINDING_REQUIRED')

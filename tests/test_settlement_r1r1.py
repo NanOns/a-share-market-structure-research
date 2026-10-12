@@ -40,7 +40,13 @@ def test_activation_head_exact(accepted,case):
     if case in ('A05','A06','payload_identity'):
         # Corruption fixture bypasses append-only guard only in this disposable simulation.
         from workbench_db.v4_shadow_live_pg_r3 import native_mode
-        db.conn.execute('DROP TRIGGER no_fact_update ON facts' if native_mode() else 'DROP TRIGGER no_fact_update')
+        db.conn.execute('DROP TRIGGER immutable_facts ON facts' if native_mode() else 'DROP TRIGGER no_fact_update')
+        if native_mode() and case=='A05':
+            # This deliberately corrupts a disposable fixture; production digest checks stay enabled.
+            from psycopg import sql
+            constraints=db.pg.execute("SELECT conname FROM pg_constraint WHERE conrelid='facts'::regclass AND contype='c' AND pg_get_constraintdef(oid) LIKE '%sha256%'").fetchall()
+            assert len(constraints)==1
+            db.pg.execute(sql.SQL('ALTER TABLE facts DROP CONSTRAINT {}').format(sql.Identifier(constraints[0][0])))
         p=db.get('activation',b)
         if case=='A06':p['authority_binding']=dict(binding,sha256='0'*64)
         if case=='payload_identity':p['authority_id']='WRONG'
@@ -70,9 +76,15 @@ def test_queue_exact_idempotency(shadow,case):
             db.conn.execute("INSERT INTO settlement_queue_v2(queue_key,evaluation_source_digest,due_kind,due_id,status) VALUES(?,?,?,?,'READY')",(key,sha,'due',other_id))
         if case=='Q03':
             # Malformed persisted queue fixture: bypass insert references, not the application guard.
-            db.conn.execute('PRAGMA foreign_keys=OFF')
+            from workbench_db.v4_shadow_live_pg_r3 import native_mode
+            if native_mode():
+                from psycopg import sql
+                constraints=db.pg.execute("SELECT conname FROM pg_constraint WHERE conrelid='settlement_queue_v2'::regclass AND contype='f' AND pg_get_constraintdef(oid) LIKE 'FOREIGN KEY (due_kind, due_id)%'").fetchall()
+                assert len(constraints)==1
+                db.pg.execute(sql.SQL('ALTER TABLE settlement_queue_v2 DROP CONSTRAINT {}').format(sql.Identifier(constraints[0][0])))
+            else:db.conn.execute('PRAGMA foreign_keys=OFF')
             db.conn.execute("INSERT INTO settlement_queue_v2(queue_key,evaluation_source_digest,due_kind,due_id,status) VALUES(?,?,?,?,'READY')",(key,sha,'due_revision',due_id))
-            db.conn.execute('PRAGMA foreign_keys=ON')
+            if not native_mode():db.conn.execute('PRAGMA foreign_keys=ON')
         before=worker.row(key,sha)
         with pytest.raises(ValueError,match='QUEUE_IDEMPOTENCY_CONFLICT'):worker.enqueue(due_id,sha,'2026-10-09')
         assert worker.row(key,sha)==before
@@ -95,7 +107,12 @@ def test_queue_exact_idempotency(shadow,case):
     assert worker.enqueue(due_id,sha,'2026-10-09')==key and worker.row(key,sha)==before
     if case=='Q05':
         result=worker.deliver(key,sha,authority,lambda:source,'2026-10-09')
-        source.binding=dict(source.binding,sha256=digest('R1R1_CORRECTED_SIMULATION'))
+        from workbench_db.v4_shadow_live_pg_r3 import native_mode
+        if native_mode():
+            from scripts.r24r1_io import read,atomic
+            corrected=dict(read(source.binding['path']),fixture_revision='R1R1_CORRECTED_SIMULATION')
+            source.binding=atomic(source.binding['path']+'.corrected.json',corrected)
+        else:source.binding=dict(source.binding,sha256=digest('R1R1_CORRECTED_SIMULATION'))
         authority.data['component_artifacts']['ADJUSTED_DAILY']=source.binding
         revised_sha=source.binding['sha256'];assert worker.enqueue(due_id,revised_sha,'2026-10-09')==key
         revised=worker.deliver(key,revised_sha,authority,lambda:source,'2026-10-09')

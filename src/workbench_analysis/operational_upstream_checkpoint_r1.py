@@ -52,8 +52,30 @@ def install(root,context,binding):
         target=context['folder']/'owner_v3'/name
         if target.exists() and load(target)!=document:raise ValueError('PRESERVE_EXISTING_UPSTREAM_CHECKPOINT')
         if not target.exists():atomic_json(root,target,document)
+    sector=checkpoint.get('completed_sector')
+    if sector:
+        sector_generation=load(checked(root,sector['generation']))
+        for key in ('source_freeze','parent_head','identity','gbbq','member_sources'):
+            if sector_generation[key]!=new[key]:raise ValueError('SECTOR_CHECKPOINT_INPUT_CHANGED:'+key)
+        if sector_generation.get('adjustment_contract',{}).get('contract')!=new.get('adjustment_contract',{}).get('contract'):
+            raise ValueError('SECTOR_CHECKPOINT_COORDINATE_CHANGED')
+        producer=sector['producer']
+        source=repository/producer['module_path']
+        if producer['module_path'] in versions:source=checked(root,versions[producer['module_path']])
+        if hashlib.sha256(source.read_bytes()).hexdigest()!=producer['sha256']:
+            raise ValueError('SECTOR_CHECKPOINT_PRODUCER_CHANGED')
+        document=load(checked(root,sector['document']))
+        if not document.get('oracle') or not all(row.get('passed') is True for row in document['oracle']):
+            raise ValueError('SECTOR_CHECKPOINT_ORACLE_FAILURE')
+        if [row['trade_date'] for row in document['owners']]!=context['dates']:
+            raise ValueError('SECTOR_CHECKPOINT_DATES_CHANGED')
+        verify_refs(document)
+        target=context['folder']/'sector_v3/SECTOR_REPLAY.json'
+        if target.exists() and load(target)!=document:raise ValueError('PRESERVE_EXISTING_SECTOR_CHECKPOINT')
+        if not target.exists():atomic_json(root,target,document)
     receipt=dict(contract_id=CONTRACT,acceptance='PASS_UPSTREAM_REUSE_ONLY',checkpoint=binding,
         previous_generation=checkpoint['original_generation'],current_generation=ref(root,context['folder']/'GENERATION_SCOPE.json'),
-        dates=context['dates'],source_hash_checks=len(checkpoint['unchanged_component_sources']),numerical_recomputed=False,publication=False)
+        dates=context['dates'],source_hash_checks=len(checkpoint['unchanged_component_sources']),
+        sector_reused=bool(sector),numerical_recomputed=False,publication=False)
     atomic_json(root,context['folder']/'CORE_PROFILE_REUSE_RECEIPT_R1.json',receipt)
     return receipt

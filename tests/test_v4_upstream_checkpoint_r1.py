@@ -20,6 +20,29 @@ def fixture(root):
     path=root/'checkpoint.json';path.write_text(json.dumps(checkpoint))
     return dict(folder=new,dates=dates,exact_daily_policy=ref(root,policy)),path
 
+
+@pytest.mark.parametrize('mutation',['none','input','coordinate','oracle','dates','producer'])
+def test_sector_checkpoint_rejects_changed_inputs_or_unverified_output(tmp_path,mutation):
+    context,path=fixture(tmp_path)
+    checkpoint=json.loads(path.read_bytes())
+    generation=json.loads((context['folder']/'GENERATION_SCOPE.json').read_bytes())
+    if mutation=='input':generation['gbbq']='changed'
+    if mutation=='coordinate':generation['adjustment_contract']['contract']='changed'
+    original=tmp_path/'sector_generation.json';original.write_text(json.dumps(generation))
+    document=tmp_path/'sector.json'
+    document.write_text(json.dumps(dict(owners=[dict(trade_date='changed' if mutation=='dates' else '2026-10-12')],oracle=[dict(passed=mutation!='oracle')])))
+    producer=Path(algorithm.__file__).resolve()
+    checkpoint['completed_sector']=dict(generation=ref(tmp_path,original),document=ref(tmp_path,document),
+        producer=dict(module_path='src/workbench_analysis/exact_operational_core_candidate_r3.py',
+            sha256='changed' if mutation=='producer' else hashlib.sha256(producer.read_bytes()).hexdigest()))
+    path.write_text(json.dumps(checkpoint))
+    if mutation=='none':
+        receipt=install(tmp_path,context,ref(tmp_path,path))
+        assert receipt['sector_reused'] and receipt['publication'] is False
+        assert (context['folder']/'sector_v3/SECTOR_REPLAY.json').is_file()
+    else:
+        with pytest.raises(ValueError):install(tmp_path,context,ref(tmp_path,path))
+
 @pytest.mark.parametrize('mutation',['none','input','coordinate','artifact','numeric','dates'])
 def test_reuse_conserves_inputs_and_bound_outputs(tmp_path,mutation):
     context,path=fixture(tmp_path)

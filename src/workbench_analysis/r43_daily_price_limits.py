@@ -24,9 +24,22 @@ def materialize_daily_limits(root):
         if e.category==1:events[e.security_id.lower()].append(e.event_date)
     contract=out/'DAILY_PRICE_LIMIT_CONTRACT_V1.json'
     write(contract,dict(contract_id='R43_RECONSTRUCTED_DAILY_PRICE_LIMIT_V1',task='R4.3 W5',identity='Accepted canonical board and dated saved BaoStock native isST; never infer ST from code or current name',reference='Saved native preclose must equal preceding official raw close; ex-right day unavailable official ex-reference remains UNKNOWN',daily_observable=['close_limit_up','close_limit_down','daily_high_equals_limit_up','daily_low_equals_limit_down','one_price_limit_bar'],intraday='NOT_OBSERVABLE_FROM_DAILY',legal_rules=rules_binding,AS_RECORDED=False,PIT_ELIGIBLE=False,production_admission=False,acceptance='IN_PROGRESS',next_stage='INDEPENDENT_DATED_LIMIT_QA'))
+    # Match dated receipts explicitly. Successor sessions need not be present
+    # in the original four-session trace; acquisition carries their real freezes.
+    dated_sources={item['trade_date']:item['baostock'] for item in trace['dates']}
+    acquisition=load(root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
+    for query in acquisition['queries']:
+        if query.get('method')=='query_daily_history_k_AStock' and query.get('path'):
+            date=query['params'].get('date',query['params'].get('day'))
+            dated_sources[date]=ref(root,Path(query['path']))
     receipts=[]
-    for owner,item in zip(core['owners'],trace['dates']):
+    for owner in core['owners']:
+        day=owner['trade_date']
+        if day not in dated_sources:raise ValueError('DATED_DAILY_LIMIT_SOURCE_REQUIRED:'+day)
+        item=dict(baostock=dated_sources[day])
         day=owner['trade_date'];previous=sessions[sessions.index(day)-1];bao=load(checked(root,item['baostock']))
+        if any(row.get('date')!=day for row in bao['rows']):
+            raise ValueError('DATED_DAILY_LIMIT_SOURCE_DATE_MISMATCH:'+day)
         source_rows={r['code'].lower():r for r in bao['rows']};raw={r['security_id']:r for r in gzrows(checked(root,owner['raw']))};histories={r['security_id']:{b['trade_date']:b for b in r['bars']} for r in gzrows(checked(root,owner['history']))};records=[]
         for sid,bars in histories.items():
             identity=identities[sid];code=identity['source_security_key'].lower();provider=source_rows.get(code,{});bar=raw.get(sid);board=policy.standard_rule_key(day,identity['board_scope']);phase,event=resolve_event_phase(store,sid,day,sessions,policy,identity['board_scope'])

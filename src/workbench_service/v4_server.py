@@ -22,11 +22,14 @@ def make_v4_handler(root):
     operational_cache={};operational_lock=threading.RLock()
 
     def operational_reader():
-        from workbench_analysis.r43_operational_publication import accepted_api
+        from workbench_analysis.operational_successor_v1 import CONTRACT as DAILY_CONTRACT, accepted_api
         head=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
-        authority=root/('data/v4/R43_OPERATIONAL_USER_AUTHORIZATION.json' if head.exists() and json.loads(head.read_bytes()).get('authority_mode')=='USER_AUTHORIZED_SCOPED_OPERATIONAL_V1' else 'data/v4/R43_OPERATIONAL_EXTERNAL_ACCEPTANCE.json')
         if not head.exists():
             operational_cache.clear();return None
+        candidate=json.loads(head.read_bytes())
+        # Daily successors have their own exact policy admission; the frozen
+        # four-session reader's external attestation cannot admit that contract.
+        authority=root/('config/read_only_operational_daily_release_policy_v1_1.json' if candidate.get('contract_id')==DAILY_CONTRACT else 'data/v4/R43_OPERATIONAL_USER_AUTHORIZATION.json' if candidate.get('authority_mode')=='USER_AUTHORIZED_SCOPED_OPERATIONAL_V1' else 'data/v4/R43_OPERATIONAL_EXTERNAL_ACCEPTANCE.json')
         signature=hashlib.sha256(head.read_bytes()+(authority.read_bytes() if authority.exists() else b'')).hexdigest()
         with operational_lock:
             cached=operational_cache.get('reader')
@@ -59,17 +62,19 @@ def make_v4_handler(root):
                 code,payload=bff.get('/api/v4/'+parsed.path.removeprefix('/api/v4/original-0930/'),{k:v[0] for k,v in values.items()})
                 return self.send(code,payload)
             if parsed.path.startswith('/api/v4/') and not parsed.path.startswith('/api/v4/shadow/'):
-                from workbench_analysis.r43_operational_publication import accepted_api
                 try:
                     operational=operational_reader()
                 except (ValueError,KeyError,OSError) as error:
                     return self.send(503,dict(code='OPERATIONAL_ACCEPTED_SOURCE_INVALID',reason=str(error)))
                 if operational is not None:
                     from .r43_operational_bff import OperationalResearchBFF
+                    from .operational_successor_bff_v1 import OperationalSuccessorBFFV1
+                    from workbench_analysis.operational_successor_v1 import CONTRACT as DAILY_CONTRACT
                     try:
                         values=parse_qs(parsed.query,keep_blank_values=True)
                         if any(len(v)!=1 for v in values.values()):raise ValueError('DUPLICATE_PARAMETER')
-                        code,payload=OperationalResearchBFF(operational,bff).get(parsed.path,{k:v[0] for k,v in values.items()})
+                        projector=OperationalSuccessorBFFV1 if operational.candidate.get('contract_id')==DAILY_CONTRACT else OperationalResearchBFF
+                        code,payload=projector(operational,bff).get(parsed.path,{k:v[0] for k,v in values.items()})
                         return self.send(code,payload)
                     except (ValueError,KeyError) as error:
                         return self.send(409 if str(error)=='CONTEXT_TOKEN_MISMATCH' else 400,dict(code='INVALID_OPERATIONAL_QUERY',reason=str(error)))

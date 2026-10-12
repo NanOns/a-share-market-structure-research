@@ -31,7 +31,10 @@ def materialize_daily_limits(root):
     for query in acquisition['queries']:
         if query.get('method')=='query_daily_history_k_AStock' and query.get('path'):
             date=query['params'].get('date',query['params'].get('day'))
-            dated_sources[date]=ref(root,Path(query['path']))
+            source=Path(query['path']).resolve()
+            if date not in {owner['trade_date'] for owner in core['owners']}:continue
+            if source.is_relative_to(root):dated_sources[date]=ref(root,source)
+            elif date not in dated_sources:raise ValueError('DATED_DAILY_LIMIT_SOURCE_OUTSIDE_WORKSPACE:'+date)
     receipts=[]
     for owner in core['owners']:
         day=owner['trade_date']

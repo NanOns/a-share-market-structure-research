@@ -1,0 +1,55 @@
+{
+  "contract_id": "V4_V41011_FULL_SQL_REPAIR_ACCEPTANCE_R1",
+  "scope": "Transactional engineering V4-10/11 SQL assertions plus native no-fallback guard, not live source/maturity or production acceptance",
+  "targeted_tests": 270,
+  "targeted_pass": 270,
+  "fixture_scope_negative_tests": 2,
+  "fixture_scope_negative_pass": 2,
+  "initial_retained": {
+    "passed": 183,
+    "failed": 87,
+    "reason": "Phase0 14 migrations did not include V4-10/11 tables"
+  },
+  "production_authorized": false,
+  "existing_databases_preserved": true,
+  "partial_fixture_database_retained": "v4_v41011_clean_20261013_r1 on 55791, unadmitted",
+  "fresh_cluster_port": 55795,
+  "launcher_recovery": "Only exact Python controller PID13560 waiting on inherited pipe handles terminated; healthy PG server retained; resumed verified empty task cluster",
+  "artifacts": [
+    {
+      "path": "R2V41011SQL_R1.xml",
+      "sha256": "bf1992e26e1c559210ed299b635076813ad6b0a7ee59d8e2b01257f4cac83a3b",
+      "bytes": 316103
+    },
+    {
+      "path": "R2V41011SQL_R1.log",
+      "sha256": "1d35398bb24cab01141ac376e3ba3cc816cd1873f03f4bc8622d60c509892cd1",
+      "bytes": 274571
+    },
+    {
+      "path": "R2V41011SQL_R2.xml",
+      "sha256": "8d4c067b7436f987581d1493eb2a4f3378eba8320d173cf82e98ebbb63e14b56",
+      "bytes": 36039
+    },
+    {
+      "path": "R2V41011SQL_R2.log",
+      "sha256": "4f9d53d3e15706f24a38a568720dc6638fc95ca32f9fa83d60e677b7f9152926",
+      "bytes": 357
+    },
+    {
+      "path": "R2V41011SQL_R2_INTENTS.jsonl",
+      "sha256": "4f9fe58b70cffd1f12dc3424a73dacfbdc83301c77d907fe3a362fd0878eaad7",
+      "bytes": 8288245
+    },
+    {
+      "path": "R2SQLSCOPE_R1.xml",
+      "sha256": "2b2915cb70ddd11afdaca33f70604daa1103a8fbde2d99c5aa50fe6fce9c3910",
+      "bytes": 543
+    },
+    {
+      "path": "R2SQLSCOPE_R1_INTENTS.jsonl",
+      "sha256": "416bf6674f1b11c95d92876015e7925e0446ba2b4121345867b630a064e120b1",
+      "bytes": 2976
+    }
+  ]
+}

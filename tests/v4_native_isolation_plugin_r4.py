@@ -79,6 +79,12 @@ def pytest_configure(config):
     allowed_identities={tuple(expected[k] for k in ('host','port','dbname','user'))}
     fixture_clusters={}
     phase0_identity=None
+    v41011_identity=None
+    from scripts.v4_closeout_v41011_sql_fixture import RECEIPT as SQL_RECEIPT,DATABASE as SQL_DATABASE,verify as verify_full_sql,connection as sql_connection
+    if SQL_RECEIPT.exists():
+        sql_receipt=json.loads(SQL_RECEIPT.read_bytes())
+        with original(**sql_connection(SQL_DATABASE)) as witness:verify_full_sql(witness,sql_receipt)
+        v41011_identity=tuple(str(sql_connection(SQL_DATABASE)[k]) for k in ('host','port','dbname','user'))
     from scripts.v4_closeout_phase0_clean_fixture import RECEIPT,CONTRACT,DATABASE,connection,identity
     if RECEIPT.exists():
         receipt=json.loads(RECEIPT.read_bytes())
@@ -160,6 +166,8 @@ def pytest_configure(config):
         parsed=conninfo_to_dict(conninfo,**{k:kwargs[k] for k in ('host','port','dbname','user') if k in kwargs})
         decision='ALLOW' if tuple(parsed.get(k) for k in ('host','port','dbname','user')) in allowed_identities else 'REJECT'
         if phase0_identity and tuple(str(parsed.get(k)) for k in ('host','port','dbname','user'))==phase0_identity and ACTIVE and ACTIVE.startswith('tests/v4_phase0/test_postgres_schema.py::'):
+            decision='ALLOW'
+        if v41011_identity and tuple(str(parsed.get(k)) for k in ('host','port','dbname','user'))==v41011_identity and ACTIVE and ACTIVE.startswith(('tests/v4_10/','tests/v4_11/')):
             decision='ALLOW'
         cluster=fixture_clusters.get(tuple(parsed.get(k) for k in ('host','port','user')))
         if decision=='REJECT' and cluster and ACTIVE and ACTIVE.endswith('test_E1_24_concurrent_cas_and_same_request'):

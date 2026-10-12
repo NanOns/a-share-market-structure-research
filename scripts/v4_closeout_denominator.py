@@ -163,7 +163,7 @@ def remaining(label,full=False,failed_from=None):
     if full:
         env.update(FEP_E1_TEST_DSN='host=127.0.0.1 port=55793 user=r4_isolated_admin dbname=fep_e1_upgrade',
                    FEP_E5_TEST_DSN='host=127.0.0.1 port=55793 user=r4_isolated_admin dbname=fep_e1_upgrade',
-                   V4_10_DISPOSABLE_TEST_DSN='host=127.0.0.1 port=55791 user=r4_isolated_admin dbname=postgres',
+                   V4_10_DISPOSABLE_TEST_DSN='host=127.0.0.1 port=55795 user=r4_isolated_admin dbname=v4_v41011_clean_20261013_r1',
                    WORKBENCH_PG_DSN='host=127.0.0.1 port=55791 user=r4_isolated_admin dbname=postgres',
                    FEP_TEST_RECEIPT_ROOT='G:/codex_tmp/v4_full_closeout_20261012/denominator/'+label+'_FEP_E1_RECEIPTS')
     if failed_from:

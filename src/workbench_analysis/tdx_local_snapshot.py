@@ -50,7 +50,7 @@ def build_local_snapshot(source_root: Path, output_root: Path) -> dict[str, Any]
     """Read only `{root}/vipdoc/{sh,sz,bj}/lday/*.day` and atomically copy out."""
     def reject_reparse(path):
         info=path.lstat()
-        if stat.S_ISLNK(info.st_mode) or getattr(info,'st_file_attributes',0) & getattr(stat,'FILE_ATTRIBUTE_REPARSE_POINT',0x400):
+        if path.is_symlink() or stat.S_ISLNK(info.st_mode) or getattr(info,'st_file_attributes',0) & getattr(stat,'FILE_ATTRIBUTE_REPARSE_POINT',0x400):
             raise LocalSnapshotError('TDX_INPUT_SYMLINK_REJECTED')
     reject_reparse(source_root)
     reject_reparse(source_root/'vipdoc')

@@ -1,5 +1,7 @@
 # 全系统代码审计当前入口
 
+原生 Shadow/结算队列工作包已推送：代码 `e05d3268a74776e259e1117d304fad0612988a94`，证据 `6be82f16d179f1fceee02a92310414dd2ab484f1`。[20 表原生 PG、155 PASS、原 152 节点保留及逐项关闭条件](r4_r3_scope_20261011/NATIVE_SHADOW_QUEUE_PACKAGE_R1/SEAL.json) / [Drive 实际下载完整字节一致](r4_r3_scope_20261011/DRIVE_NATIVE_SHADOW_BYTE_READBACK_R1.json)。原 37／22／15 失败及首次全绿但来源 SHA 未独立校验的诊断全部无损保留；实际来源 SHA／大小／行内容负例已补，29 条持久化结算、116 个独立有理数价格路径比较为 0 差异。旧 UNKNOWN 到期记录保留，新增日历到期修订、停止后重启、两个真实 PG 连接的一胜 CAS 通过。独立首版 oracle 的 UNKNOWN 契约状态差异作为失败保留，第二版分别核对直接与 durable 全路径契约。此包只关闭隔离 native Shadow/队列及价格路径局部范围；benchmark/control 全语义、完整合法分母、全部消费者、56 类及生产授权仍 OPEN。R13 五日 Core／Profile／Sector／Market／D0-D2 均已落盘，但 Focus 总收尾及 RESULT 回执缺失，进程已不在运行，断点恢复属于未完成工程，不计通过。
+
 R13 五日 Core 全历史独立对照已推送 `583cbcd9ac65e5f0361e18dc2b58bc222e557c85`：[完整数值与源绑定封存](r4_r3_consumers_20261011/FULL_HISTORY_EXACT_ORACLE_PACKAGE_R1/SEAL.json) / [Drive 实际下载字节一致](r4_r3_consumers_20261011/DRIVE_FULL_HISTORY_BYTE_READBACK_R1.json)。覆盖 16,696,926 条原生二进制记录、26,117 个证券日期行、10,762,706 根 bar、42,974,144 个可比较复权 OHLC 值，差异为 0；19,170 根 UNKNOWN bar 独立核对一致。旧代 80 处舍入失败原件保留，四个执行数学源 SHA 未变。本项仅关闭 R13 五日 Core 全历史价格对照；56 类消费者、后续链、全语义及完整合法分母继续 OPEN。Shadow 原生 PG 首轮 152 节点为 115 PASS / 37 FAIL / 0 ERROR，失败原件保留，仍在工程修复，生产未切换。
 
 DB06 动态桥入口负例补证已推送 `6373cfcbaf288d0c8cb7cc5baa73974775f70c3e`：[已配置／空配置／缺失配置下 12 PASS，原 4 节点保留](r4_r3_scope_20261011/DB06_FAIL_CLOSED_PACKAGE_R3/SEAL.json) / [Drive 实际下载一致](r4_r3_scope_20261011/DRIVE_DB06_BOUNDARY_BYTE_READBACK_R1.json)。独立无 pytest、无驱动替换的实际调用同样拒绝 12 次，socket 连接及新增数据库文件均为 0；该包仅关闭 native 隔离模式的动态桥拒绝边界，不声明所有业务入口已迁移。

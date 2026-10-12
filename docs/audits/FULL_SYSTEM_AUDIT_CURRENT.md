@@ -1,3 +1,5 @@
+用户暂停检查点（2026-10-12）：当前 Series 投影读取与五日 Focus 续跑完成。26 项真实 PG 测试通过，Focus 2,805 episodes；无公司行动的 READY 路径独立有理数对照 61,908 项、0 差异，11 条路径未纳入该局部数值对照。原始失败、全部未提交工作快照及精确字节清单见 [暂停证据包](r4_r3_integration_20261011/PAUSE_CHECKPOINT_20261012_R1/SEAL.json)。完整合法分母、全部消费者、56 类、全语义和后续候选封存/发布仍 OPEN，生产未切换。按用户要求，提交与 Drive 核对完成后暂停后续工程。
+
 # 全系统代码审计当前入口
 
 原生 Shadow/结算队列工作包已推送：代码 `e05d3268a74776e259e1117d304fad0612988a94`，证据 `6be82f16d179f1fceee02a92310414dd2ab484f1`。[20 表原生 PG、155 PASS、原 152 节点保留及逐项关闭条件](r4_r3_scope_20261011/NATIVE_SHADOW_QUEUE_PACKAGE_R1/SEAL.json) / [Drive 实际下载完整字节一致](r4_r3_scope_20261011/DRIVE_NATIVE_SHADOW_BYTE_READBACK_R1.json)。原 37／22／15 失败及首次全绿但来源 SHA 未独立校验的诊断全部无损保留；实际来源 SHA／大小／行内容负例已补，29 条持久化结算、116 个独立有理数价格路径比较为 0 差异。旧 UNKNOWN 到期记录保留，新增日历到期修订、停止后重启、两个真实 PG 连接的一胜 CAS 通过。独立首版 oracle 的 UNKNOWN 契约状态差异作为失败保留，第二版分别核对直接与 durable 全路径契约。此包只关闭隔离 native Shadow/队列及价格路径局部范围；benchmark/control 全语义、完整合法分母、全部消费者、56 类及生产授权仍 OPEN。R13 五日 Core／Profile／Sector／Market／D0-D2 均已落盘，但 Focus 总收尾及 RESULT 回执缺失，进程已不在运行，断点恢复属于未完成工程，不计通过。

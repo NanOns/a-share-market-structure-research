@@ -36,7 +36,7 @@ class AcceptedPaths(PricePaths):
                             elif value is not None and (type(value) not in (int,float) or not math.isfinite(value)):
                                 raise SourceInvalid('FOCUS_NATIVE_CORE_NUMBER')
                             values[key]=value
-            from workbench_db.v4_snapshot_pg_r1 import read
+            from workbench_db.v4_series_pg_r1 import verified_series_read as read
             descriptor=json.loads(checked(root,owner['series']).read_bytes())
             with read(descriptor) as db:
                 for sid,payload in db.execute('SELECT security,payload FROM bars WHERE day=?',(day,)):

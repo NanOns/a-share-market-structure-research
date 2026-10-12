@@ -347,6 +347,14 @@ def exact_frozen_stage_test_profile(request):
     from tests.remainder_historical_profiles import profile,install
     registry=json.loads((REPOSITORY/'config/v4_frozen_test_profiles_remainder_v1.json').read_bytes())
     relative=request.node.path.relative_to(REPOSITORY).as_posix()
+    extension=REPOSITORY/'config/v4_frozen_test_profiles_full_closeout_r1.json'
+    if extension.exists():
+        additive=json.loads(extension.read_bytes())
+        assert additive['contract_id']=='V4_FULL_CLOSEOUT_ADDITIVE_FROZEN_TEST_PROFILES_R1'
+        assert additive['no_current_fallback'] is True and additive['grants_current_permission'] is False
+        assert not {r['path'] for r in registry['profiles']} & {r['path'] for r in additive['profiles']}
+        assert all(r['grants_current_permission'] is False for r in additive['profiles'])
+        registry['profiles'].extend(additive['profiles'])
     row=next((r for r in registry['profiles'] if r['path']==relative),None)
     if row is None or row.get('scope')=='SINGLE_FROZEN_AST_NODE':return
     import hashlib

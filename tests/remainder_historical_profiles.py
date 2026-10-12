@@ -7,13 +7,17 @@ from scripts.full_chain_repair_io import ROOT as REPOSITORY
 BASE=Path('G:/codex_tmp/test_temp')
 _LOCK=threading.RLock()
 _REPRESENTATIONS={}
+def git_storage_root():
+    raw=subprocess.check_output(['git','rev-parse','--git-common-dir'],cwd=REPOSITORY,text=True).strip()
+    path=Path(raw)
+    return path.resolve() if path.is_absolute() else (REPOSITORY/path).resolve()
 @lru_cache(maxsize=None)
 def profile(commit):
     out=resolve_destination_inside_root(BASE,'remainder_frozen_v5_'+commit[:12])
     if not (out/'.git').exists():
         out.mkdir(parents=True,exist_ok=True)
         subprocess.run(['git','init',str(out)],check=True,stdout=subprocess.DEVNULL)
-        (out/'.git/objects/info/alternates').write_bytes(((REPOSITORY/'.git/objects').as_posix()+'\n').encode())
+        (out/'.git/objects/info/alternates').write_bytes(((git_storage_root()/'objects').as_posix()+'\n').encode())
         subprocess.run(['git','-C',str(out),'config','core.longpaths','true'],check=True)
         subprocess.run(['git','-C',str(out),'read-tree',commit],check=True)
         names=subprocess.check_output(['git','-C',str(out),'ls-files','-z'])
@@ -126,7 +130,7 @@ def install(monkeypatch,out,entries):
                 import re
                 match=re.fullmatch(rb'version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n',pointer)
                 if match is None:raise ValueError('HISTORICAL_LFS_POINTER_INVALID')
-                sha=match[1].decode();size=int(match[2]);obj=REPOSITORY/'.git/lfs/objects'/sha[:2]/sha[2:4]/sha
+                sha=match[1].decode();size=int(match[2]);obj=git_storage_root()/'lfs/objects'/sha[:2]/sha[2:4]/sha
                 digest=hashlib.sha256();count=0
                 with open_path(obj,'rb') as source,open_path(temp,'wb') as stream:
                     while block:=source.read(8*1024*1024):stream.write(block);digest.update(block);count+=len(block)

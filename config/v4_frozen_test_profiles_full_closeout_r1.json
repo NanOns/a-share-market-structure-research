@@ -1,0 +1,43 @@
+{
+  "contract_id": "V4_FULL_CLOSEOUT_ADDITIVE_FROZEN_TEST_PROFILES_R1",
+  "no_current_fallback": true,
+  "grants_current_permission": false,
+  "profiles": [
+    {
+      "path": "tests/v4_09/test_r1_1_lineage_immutability.py",
+      "historical_commit": "5eca56d3555a826c4cca94d6e3d7ae9d11628be6",
+      "grants_current_permission": false,
+      "profile": "EXACT_TEST_SOURCE_REVISION_GIT_TREE",
+      "source": {
+        "path": "tests/v4_09/test_r1_1_lineage_immutability.py",
+        "bytes": 4104,
+        "sha256": "87e4a2698c5891d4209c2a3c3728be635020bf4d0219b41a03b3a17e605581a2"
+      },
+      "reason": "Original stage-specific accepted byte witnesses; current successor and production gates remain separately required"
+    },
+    {
+      "path": "tests/v4_dm01_r4/test_runtime.py",
+      "historical_commit": "487bf4e1979356c3f3130bdc7e913a87df6acc03",
+      "grants_current_permission": false,
+      "profile": "EXACT_TEST_SOURCE_REVISION_GIT_TREE",
+      "source": {
+        "path": "tests/v4_dm01_r4/test_runtime.py",
+        "bytes": 12735,
+        "sha256": "22c96a78c97495b0a98c2cc10e639ab371b518c4c8546d63deedb24286884eec"
+      },
+      "reason": "Original stage-specific accepted byte witnesses; current successor and production gates remain separately required"
+    },
+    {
+      "path": "tests/v4_dm01_r4r2/test_acceptance_seal.py",
+      "historical_commit": "ce44488ae972cf0f4d9f4af34cb03d81be436387",
+      "grants_current_permission": false,
+      "profile": "EXACT_TEST_SOURCE_REVISION_GIT_TREE",
+      "source": {
+        "path": "tests/v4_dm01_r4r2/test_acceptance_seal.py",
+        "bytes": 2729,
+        "sha256": "63869718dff3346bfcd2590ba7f9b782b58bd31849cb77ddd53e46cae35a27ec"
+      },
+      "reason": "Original stage-specific accepted byte witnesses; current successor and production gates remain separately required"
+    }
+  ]
+}

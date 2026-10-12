@@ -157,6 +157,15 @@ class EngineController:
             self.http_thread = threading.Thread(target=server.serve_forever, name='v4-http', daemon=False)
             self.http_thread.start()
             jobs.start()
+            if getattr(server.RequestHandlerClass,'PREFLIGHT_PRODUCT_CONTEXT',False):
+                # A listening socket is not yet a usable product. Complete
+                # the same real read/admission path before reporting RUNNING.
+                from urllib.request import urlopen
+                with urlopen(f'http://127.0.0.1:{self.port}/api/v4/context',timeout=120) as response:
+                    product=json.loads(response.read())
+                if response.status!=200 or not product.get('context_token') or not product.get('context',{}).get('trade_date'):
+                    raise ValueError('PRODUCT_CONTEXT_PREFLIGHT_FAILED')
+                self.last_snapshot=dict(context_token=product['context_token'],context=product['context'])
             self.transition('RUNNING')
         except Exception as exc:
             if self.jobs:

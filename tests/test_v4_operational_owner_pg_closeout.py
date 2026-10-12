@@ -2,7 +2,7 @@
 import hashlib
 import json
 import pytest
-from workbench_db.v4_operational_owner_pg_closeout import prepare,read,load_authority,OWNER
+from workbench_db.v4_operational_owner_pg_closeout import prepare,read,load_authority,attest_cached,OWNER
 
 def source(root):
     path=root/'source.json';path.write_text('{"rows":[{"security_id":"600000","trade_date":"2026-10-09","value":3}]}')
@@ -31,3 +31,18 @@ def test_authority_requires_complete_unchanged_source_mapping(tmp_path):
     assert load_authority(tmp_path,candidate,'abc')==authority
     authority['owners']['2026-10-09']={};path.write_text(json.dumps(authority))
     with pytest.raises(ValueError,match='DOMAINS_INCOMPLETE'):load_authority(tmp_path,candidate,'abc')
+
+def test_cached_attestation_rehashes_actual_native_payload(tmp_path):
+    from workbench_db.v4_native import connection
+    binding,rows=source(tmp_path);ref=prepare(tmp_path,'abc','2026-10-09','core',binding,rows)
+    assert read(tmp_path,ref,'abc','2026-10-09','core',binding)==rows
+    attest_cached(tmp_path,ref,'core',binding)
+    descriptor=json.loads((tmp_path/ref['path']).read_bytes())
+    # Deliberately damage this test's own isolated schema, leaving the signed
+    # descriptor and recorded SHA untouched. Cached reads must see corruption.
+    with connection(descriptor['schema']) as pg:
+        pg.execute('ALTER TABLE forward_facts DISABLE TRIGGER forward_append_only')
+        pg.execute("UPDATE forward_facts SET payload='{}' WHERE kind=%s AND fact_key=%s",('core',descriptor['fact_key']))
+        pg.execute('ALTER TABLE forward_facts ENABLE TRIGGER forward_append_only')
+    with pytest.raises(ValueError,match='PAYLOAD_DIGEST_MISMATCH'):
+        attest_cached(tmp_path,ref,'core',binding)

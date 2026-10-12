@@ -19,6 +19,7 @@ def cache_server(tmp_path,monkeypatch):
     registry=tmp_path/'registry.json';registry.write_text('{}')
     state=dict(database='one',available=True,calls=0)
     api=SimpleNamespace(candidate={'registry':{'path':'registry.json','sha256':hashlib.sha256(registry.read_bytes()).hexdigest()}},snapshot={})
+    state['api']=api
     monkeypatch.setattr(module,'accepted_api',lambda root:api)
     class BFF:
         def __init__(self,*args,**kwargs):pass
@@ -39,9 +40,9 @@ def cache_server(tmp_path,monkeypatch):
     monkeypatch.setattr(v4_native,'configured_dsn',lambda:'mocked transport fixture')
     server=ThreadingHTTPServer(('127.0.0.1',0),module.make_product_handler(tmp_path,None))
     thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
-    def get(token='valid'):
+    def get(token='valid',path='/api/v4/home'):
         try:
-            response=urllib.request.urlopen(f'http://127.0.0.1:{server.server_port}/api/v4/home?context_token={token}')
+            response=urllib.request.urlopen(f'http://127.0.0.1:{server.server_port}{path}?context_token={token}')
         except urllib.error.HTTPError as error:response=error
         with response:return response.status,json.loads(response.read())
     yield state,get,registry
@@ -66,3 +67,14 @@ def test_cached_home_invalidates_changed_source(cache_server):
     assert get()==(200,{'version':1})
     registry.write_text('{"changed":true}')
     assert get()==(200,{'version':2}) and state['calls']==2
+
+def test_context_request_rejects_disconnected_or_other_native_owner_database(cache_server):
+    state,get,registry=cache_server
+    descriptor=registry.parent/'owner.pg.json'
+    descriptor.write_text(json.dumps({'database_identity':{'database':'one','database_oid':1,'host':'127.0.0.1','port':55791}}))
+    state['api'].pg_owner_authority={'owners':{'2026-10-09':{'core':{'path':descriptor.name}}}}
+    assert get(path='/api/v4/context')[0]==200
+    state['database']='other'
+    assert get(path='/api/v4/context')[0]==503 and state['calls']==1
+    state['database']='one';state['available']=False
+    assert get(path='/api/v4/context')[0]==503 and state['calls']==1

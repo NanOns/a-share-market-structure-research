@@ -1,4 +1,4 @@
-"""Actual lifecycle/SQLite, simulated executor; no numeric-release assertion."""
+"""Actual PostgreSQL lifecycle, simulated executor; no numeric-release assertion."""
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
@@ -59,7 +59,17 @@ def test_maintenance_resume_preserves_user_cancel_and_pause(tmp_path, plan):
     restarted.tick()
     assert restarted.job(interrupted)['status'] == 'PUBLISHED_FULL'
     with restarted.connect() as db:
-        assert db.execute('PRAGMA integrity_check').fetchone()[0] == 'ok'
+        # Inspect the persisted native store after recovery, including foreign
+        # key consistency and the user's paused policy. SQLite PRAGMA cannot
+        # establish integrity for this PostgreSQL-only runtime.
+        persisted = db.execute('SELECT job_id,status FROM update_jobs ORDER BY job_id').fetchall()
+        assert {row['job_id']: row['status'] for row in persisted} == {
+            cancelled: 'CANCELLED', interrupted: 'PUBLISHED_FULL'}
+        assert db.execute('SELECT enabled FROM scheduler_policy WHERE id=1').fetchone()[0] == 0
+        assert db.execute('SELECT count(*) FROM update_job_days d LEFT JOIN update_jobs j ON d.job_id=j.job_id WHERE j.job_id IS NULL').fetchone()[0] == 0
+        # Policy events have a nullable job_id by contract; every event that
+        # names a job must refer to an existing job.
+        assert db.execute('SELECT count(*) FROM update_events e LEFT JOIN update_jobs j ON e.job_id=j.job_id WHERE e.job_id IS NOT NULL AND j.job_id IS NULL').fetchone()[0] == 0
 
 
 def factory(root, executor=None):
@@ -71,6 +81,59 @@ def factory(root, executor=None):
     worker = jobs(root, executor)
     worker.settings(False)
     return ThreadingHTTPServer(('127.0.0.1', 0), Handler), worker
+
+def test_product_stays_starting_until_real_context_readback(tmp_path,plan):
+    entered=threading.Event();release=threading.Event();errors=[]
+    class Handler(BaseHTTPRequestHandler):
+        PREFLIGHT_PRODUCT_CONTEXT=True
+        def do_GET(self):
+            assert self.path=='/api/v4/context'
+            entered.set();release.wait(5)
+            raw=json.dumps({'context_token':'engineering-token','context':{'trade_date':'2026-10-09'}}).encode()
+            self.send_response(200);self.send_header('Content-Length',str(len(raw)));self.end_headers();self.wfile.write(raw)
+        def log_message(self,*args):pass
+    def create():
+        worker=jobs(tmp_path);worker.settings(False)
+        return ThreadingHTTPServer(('127.0.0.1',0),Handler),worker
+    controller=EngineController(tmp_path,factory=create)
+    def start():
+        try:controller.perform('start')
+        except Exception as error:errors.append(error)
+    with WorkspaceLease(tmp_path):
+        thread=threading.Thread(target=start);thread.start()
+        try:
+            assert entered.wait(5)
+            assert controller.state=='STARTING'
+            release.set();thread.join(5)
+            assert not thread.is_alive() and not errors
+            assert controller.state=='RUNNING'
+            assert controller.last_snapshot['context_token']=='engineering-token'
+        finally:
+            release.set();thread.join(5);controller.perform('stop')
+
+def test_rejected_context_releases_resources_and_never_reports_running(tmp_path,plan):
+    from urllib.error import HTTPError
+    class Handler(BaseHTTPRequestHandler):
+        PREFLIGHT_PRODUCT_CONTEXT=True
+        def do_GET(self):
+            self.send_response(409);self.send_header('Content-Length','0');self.end_headers()
+        def log_message(self,*args):pass
+    allocated=[]
+    def create():
+        worker=jobs(tmp_path);worker.settings(False)
+        server=ThreadingHTTPServer(('127.0.0.1',0),Handler)
+        allocated.append((server,worker));return server,worker
+    controller=EngineController(tmp_path,factory=create)
+    with WorkspaceLease(tmp_path):
+        with pytest.raises(HTTPError):controller.perform('start')
+        assert controller.state=='FAILED'
+        assert controller.server is controller.jobs is controller.http_thread is None
+        server,worker=allocated[0]
+        assert server.socket.fileno()==-1
+        assert not worker.thread or not worker.thread.is_alive()
+        states=[json.loads(path.read_bytes())['engine_state'] for path in (tmp_path/'runtime/desktop/events').glob('*.json')]
+        assert 'RUNNING' not in states
+        controller.perform('stop');assert controller.state=='STOPPED'
 
 
 def test_restart_recreates_objects_and_keeps_settings(tmp_path, plan):

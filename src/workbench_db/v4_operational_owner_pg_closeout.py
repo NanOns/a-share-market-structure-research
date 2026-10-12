@@ -52,3 +52,19 @@ def load_authority(root,candidate,head_token):
         if set(authority['owners'][day])!=set(owners):raise ValueError('PG_OPERATIONAL_OWNER_AUTHORITY_DOMAINS_INCOMPLETE')
         for binding in authority['owners'][day].values():checked(root,binding)
     return authority
+
+def attest_cached(root,binding,domain,source_binding):
+    """Rehash live PG bytes before reusing a previously fully verified owner."""
+    from workbench_analysis.r43_owner_replay import checked
+    path=checked(root,binding);descriptor=json.loads(path.read_bytes())
+    schema=workspace_schema(Path(root)/FOLDER,'forward')
+    if (descriptor.get('contract_id'),descriptor.get('engine'),descriptor.get('schema'),descriptor.get('kind'))!=(CONTRACT,'postgresql',schema,domain):
+        raise ValueError('PG_OPERATIONAL_OWNER_DESCRIPTOR_REQUIRED_NO_FALLBACK')
+    checked(root,source_binding)
+    with connection(schema,read_only=True) as pg:
+        if ForwardFactStore._database_identity(pg)!=descriptor.get('database_identity'):
+            raise ValueError('PG_OPERATIONAL_OWNER_DATABASE_IDENTITY_MISMATCH')
+        row=pg.execute("SELECT payload_sha256,encode(sha256(convert_to(payload,'UTF8')),'hex') FROM forward_facts WHERE kind=%s AND fact_key=%s",
+                       (domain,descriptor['fact_key'])).fetchone()
+    if row is None or row!=(descriptor['payload_sha256'],descriptor['payload_sha256']):
+        raise ValueError('PG_OPERATIONAL_OWNER_PAYLOAD_DIGEST_MISMATCH')

@@ -11,6 +11,7 @@ from workbench_analysis.operational_successor_v1 import accepted_api
 def make_product_handler(root,jobs,*,isolated_history_authority=None):
     root=Path(root);base=make_daily_handler(root,jobs);lock=threading.RLock();cache={}
     class Handler(base):
+        PREFLIGHT_PRODUCT_CONTEXT=True
         def send(self,status,body,content_type='application/json; charset=utf-8'):
             from .product_http_transport_r2 import encode
             raw,encoding=encode(body,content_type,self.headers.get('Accept-Encoding',''))
@@ -62,6 +63,22 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None):
                             if focus_authority.exists():
                                 a=json.loads(focus_authority.read_bytes());collect(a);collect(json.loads((root/a['manifest']['path']).read_bytes()))
                             cache.clear();cache.update(signature=signature,bff=CoreProductBFFR1(api,jobs,isolated_history_authority=isolated_history_authority),sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
+                            native=getattr(api,'pg_owner_authority',None)
+                            if native is not None:
+                                identities=[json.loads((root/binding['path']).read_bytes())['database_identity']
+                                            for owners in native['owners'].values() for binding in owners.values()]
+                                if not identities or any(value!=identities[0] for value in identities):
+                                    raise RuntimeError('PG_OPERATIONAL_OWNER_DATABASE_IDENTITY_MISMATCH')
+                                cache['operational_database_identity']=identities[0]
+                        # Projected BFF and transport caches still depend on
+                        # live native authority, including context-only reads.
+                        if 'operational_database_identity' in cache:
+                            from workbench_db.v4_native import configured_dsn
+                            from workbench_db.v4_forward_pg_r1 import ForwardFactStore
+                            with psycopg.connect(configured_dsn(),connect_timeout=5) as pg:
+                                pg.execute('SET TRANSACTION READ ONLY')
+                                if ForwardFactStore._database_identity(pg)!=cache['operational_database_identity']:
+                                    raise RuntimeError('PG_OPERATIONAL_OWNER_DATABASE_IDENTITY_MISMATCH')
                         # A home response is derived entirely from this signed
                         # immutable Head and its verified source closure. Every
                         # request still passes the signature/change gate above.

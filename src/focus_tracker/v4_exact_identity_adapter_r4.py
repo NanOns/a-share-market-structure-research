@@ -12,23 +12,37 @@ from .v4_native_core_adapter import AcceptedPaths as NativePaths
 from .v4_path_adapter import checked
 
 CONTRACT = 'V4_FOCUS_EXACT_SOURCE_IDENTITY_CANDIDATE_R4'
+ACTION_CONTRACT = 'V4_FOCUS_EXACT_ACTION_ALLOWLIST_S1B_V1'
+
+
+def action_supported(event, dispositions):
+    """Only category 1 has a price formula; other categories need explicit ignore."""
+    disposition = dispositions.get(str(event.category), {}).get('formal_disposition')
+    if event.category == 1:
+        return disposition in ('PRICE_AFFECTING_SUPPORTED', 'SUPPORTED_PRICE_AFFECTING')
+    return disposition == 'NON_PRICE_AFFECTING'
+
+
+def security_symbols(root, binding):
+    """One frozen bijection shared by the Series producers and path consumer."""
+    identity = json.loads(checked(root, binding).read_bytes())
+    symbols, reverse = {}, {}
+    for row in identity['rows']:
+        sid, symbol = row['security_id'], row['source_security_key']
+        if not re.fullmatch(r'(SH|SZ|BJ)\.[0-9]{6}', symbol):
+            raise SourceInvalid('FOCUS_SOURCE_SECURITY_KEY_INVALID')
+        if sid in symbols or symbol in reverse:
+            raise SourceInvalid('FOCUS_SOURCE_SECURITY_IDENTITY_DUPLICATE')
+        symbols[sid] = symbol
+        reverse[symbol] = sid
+    return symbols
 
 
 class AcceptedPaths(NativePaths):
     def __init__(self, root, bindings):
         if bindings.get('path_contract') != CONTRACT:
             raise SourceInvalid('FOCUS_EXACT_IDENTITY_CONTRACT_REQUIRED')
-        identity = json.loads(checked(root, bindings['security_identity']).read_bytes())
-        self.symbols = {}
-        reverse = {}
-        for row in identity['rows']:
-            sid, symbol = row['security_id'], row['source_security_key']
-            if not re.fullmatch(r'(SH|SZ|BJ)\.[0-9]{6}', symbol):
-                raise SourceInvalid('FOCUS_SOURCE_SECURITY_KEY_INVALID')
-            if sid in self.symbols or symbol in reverse:
-                raise SourceInvalid('FOCUS_SOURCE_SECURITY_IDENTITY_DUPLICATE')
-            self.symbols[sid] = symbol
-            reverse[symbol] = sid
+        self.symbols = security_symbols(root, bindings['security_identity'])
         super().__init__(root, bindings)
 
     def path(self, sid, start, end):
@@ -56,11 +70,11 @@ class AcceptedPaths(NativePaths):
                 missing.append(day)
         result = dict(quality='DATA_UNAVAILABLE', metrics=None, suspended_dates=suspended,
                       missing_dates=missing, target_state='BAR' if end in bars else 'SUSPENDED' if end in suspended else None,
-                      anchor_actual_bar=start in bars, source_security_key=symbol,
-                      input_digest=digest(canonical(dict(contract=CONTRACT, bindings=self.bindings, sid=sid, start=start, end=end))))
+                      anchor_actual_bar=start in bars, source_security_key=symbol, action_contract=ACTION_CONTRACT,
+                      input_digest=digest(canonical(dict(contract=CONTRACT, action_contract=ACTION_CONTRACT, bindings=self.bindings, sid=sid, start=start, end=end))))
         if not missing and start in bars and end in bars:
             events = [e for e in self.events[symbol] if int(start.replace('-', '')) < e.event_date <= int(end.replace('-', ''))]
-            blocked = any(self.dispositions.get(str(e.category), {}).get('formal_disposition', 'UNKNOWN_PRICE_IMPACT') in ('PRICE_AFFECTING_UNSUPPORTED', 'UNKNOWN_PRICE_IMPACT') for e in events)
+            blocked = any(not action_supported(e, self.dispositions) for e in events)
             if not blocked:
                 factors = build_affine_factors([int(d.replace('-', '')) for d in sorted(bars)], [xrxd_from_gbbq(e) for e in events if e.category == 1])
                 path = [Bar(date.fromisoformat(d), *[factors[int(d.replace('-', ''))].qfq_price(Decimal(str(v))) for v in bars[d]['raw_ohlc']]) for d in sorted(bars)]

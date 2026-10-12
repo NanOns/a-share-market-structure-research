@@ -65,6 +65,8 @@ def materialize_focus(root):
     cal['publication_id']='R4_CALENDAR:'+digest(cal);write(out/'FOCUS_CALENDAR.json',cal)
     acquisition=load(root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
     sources=load(out/'SOURCE_BINDINGS.json')['sources'];pathstatus={};allbars={};native={};mainline_context={}
+    from focus_tracker.v4_exact_identity_adapter_r4 import security_symbols, AcceptedPaths, CONTRACT
+    symbols = security_symbols(root, sources['identity'])
     for item,sector in zip(replay['owners'],sectors['owners']):
         owner=item['owner'];day=owner['trade_date'];folder=out/'owners'/day
         factors=gzrows(checked(root,owner['core']));profiles={r['security_id']:r for r in gzrows(checked(root,owner['profiles']))}
@@ -154,7 +156,7 @@ def materialize_focus(root):
         for sid,bars in history.items():
             for bar in bars:
                 if bar['trade_date']==day:
-                    allbars[(sid,day)]=dict(bar,symbol=sid)
+                    allbars[(sid,day)]=dict(bar,symbol=symbols[sid])
         native[day]=dict(contract_id='R2_V4_FOCUS_NATIVE_CORE_FACTS_V1',trade_date=day,price_basis='TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE',factors=owner['core'],profiles=owner['profiles'])
         receipt=dict(trade_date=day,rows=len(rows),D0=dict(Counter(r['confirmation']['confirmation_status'] for r in calculations)),
              PREWATCH=dict(Counter(r['prewatch']['raw_qualification'] for r in calculations)),
@@ -167,7 +169,8 @@ def materialize_focus(root):
     for owner in native.values():owner['series']=ref(root,series)
     bindings=dict(series=ref(root,series),calendar=ref(root,out/'FOCUS_CALENDAR.json'),gbbq=sources['gbbq'],
           classification=ref(root,root/'config/v4_02_gbbq_price_impact_classification_v1.json'),status=pathstatus,native_core=native)
-    from focus_tracker.v4_native_core_adapter import AcceptedPaths,enriched_project
+    bindings.update(security_identity=sources['identity'], path_contract=CONTRACT)
+    from focus_tracker.v4_native_core_adapter import enriched_project
     projection=enriched_project(days,AcceptedPaths(root,bindings))
     for episode in projection['episodes']:
         episode.update(metadata)

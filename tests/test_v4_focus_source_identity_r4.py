@@ -5,7 +5,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from focus_tracker.v4_exact_identity_adapter_r4 import AcceptedPaths, CONTRACT
+from focus_tracker.v4_exact_identity_adapter_r4 import AcceptedPaths, CONTRACT, security_symbols
 from workbench_db.v4_series_pg_r1 import build
 from workbench_service.current_v4_context import SourceInvalid, digest
 
@@ -55,6 +55,29 @@ def test_future_action_does_not_change_earlier_coordinate(tmp_path):
     assert Decimal(fact['metrics']['return_close']) == 0
 
 
+@pytest.mark.parametrize('category,disposition', [
+    (2, 'SUPPORTED_PRICE_AFFECTING'), (2, 'PRICE_AFFECTING_SUPPORTED'),
+    (2, 'UNKNOWN_PRICE_IMPACT'), (2, 'typo'), (1, 'NON_PRICE_AFFECTING'),
+    (1, 'typo'), (99, None),
+])
+def test_action_without_supported_formula_fails_closed(tmp_path, category, disposition):
+    p = paths(tmp_path)
+    p.events['SZ.000062'][0].category = category
+    p.dispositions[str(category)] = {'formal_disposition': disposition}
+    fact = p.path('SEC-A', '2026-09-28', '2026-09-30')
+    assert fact['quality'] == 'DATA_UNAVAILABLE'
+    assert fact['metrics'] is None
+
+
+def test_explicit_non_price_action_is_ignored(tmp_path):
+    p = paths(tmp_path)
+    p.events['SZ.000062'][0].category = 2
+    p.dispositions['2'] = {'formal_disposition': 'NON_PRICE_AFFECTING'}
+    fact = p.path('SEC-A', '2026-09-28', '2026-09-30')
+    assert fact['quality'] == 'READY'
+    assert Decimal(fact['metrics']['return_close']) == Decimal('-0.03')
+
+
 @pytest.mark.parametrize('rows,error', [
     ([{'security_id': 'SEC-A', 'source_security_key': 'SEC-A'}], 'KEY_INVALID'),
     ([{'security_id': 'SEC-A', 'source_security_key': 'SH.600000'}] * 2, 'IDENTITY_DUPLICATE'),
@@ -65,3 +88,13 @@ def test_bound_map_rejects_invalid_or_duplicate_identity(tmp_path, rows, error):
     path.write_text(json.dumps({'rows': rows}))
     with pytest.raises(SourceInvalid, match=error):
         AcceptedPaths(tmp_path, dict(path_contract=CONTRACT, security_identity=dict(path='identity.json', sha256=digest(path.read_bytes()))))
+
+
+def test_producer_and_consumer_share_hash_bound_mapping(tmp_path):
+    path = tmp_path / 'identity.json'
+    path.write_text(json.dumps({'rows': [{'security_id': 'SEC-A', 'source_security_key': 'SZ.000062'}]}))
+    binding = dict(path='identity.json', sha256=digest(path.read_bytes()))
+    assert security_symbols(tmp_path, binding) == {'SEC-A': 'SZ.000062'}
+    path.write_text('{}')
+    with pytest.raises(SourceInvalid, match='DIGEST_OR_PATH_INVALID'):
+        security_symbols(tmp_path, binding)

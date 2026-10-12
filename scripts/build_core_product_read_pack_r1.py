@@ -14,8 +14,12 @@ def load(p):
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--publish-authority',action='store_true',help='Requires separately authorized authority publication')
+    parser.add_argument('--trade-date',help='Exact already-published operational Owner date; no Head change')
     args=parser.parse_args()
     headpath=ROOT/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json';head=load(headpath);day=head['accepted_trade_date']
+    if args.trade_date:
+        if args.trade_date not in head.get('published_sessions',[]) or args.trade_date not in head['owners']:raise ValueError('TARGET_DATE_NOT_GRANTED')
+        day=args.trade_date
     folder=checked(ROOT,head['day_receipt']).parent
     replay=load(folder/'owner_v3/CORE_REPLAY.json');owner=next(o for o in replay['owners'] if o['trade_date']==day)
     bindings=dict(history=owner['history'],package=owner['sources']['package'],raw=head['owners'][day]['raw'],core=head['owners'][day]['core'],
@@ -24,6 +28,7 @@ def main():
     limitrefs=[b for b in market['input_bindings'] if 'daily_price_limits' in b['path']]
     bindings.update({'limits_'+str(i):b for i,b in enumerate(limitrefs)})
     out=ROOT/'data/v4/core_product_read_pg_r1'/hashlib.sha256(headpath.read_bytes()).hexdigest();out.mkdir(parents=True,exist_ok=True)
+    if args.trade_date:out=out/day;out.mkdir(parents=True,exist_ok=True)
     from workbench_db.v4_history_pg_r1 import build
     def history_rows():
         with gzip.open(checked(ROOT,bindings['history']),'rt',encoding='utf8') as stream:

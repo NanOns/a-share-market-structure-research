@@ -59,8 +59,10 @@ def test_actual_profile_pipeline_perturbation_raw_freeze(perturb):
     if perturb in ['sector_order','concept_order','display_cap']:assert digest(p)==digest(q)
 
 def test_real_persisted_capability_scope_if_available():
-    path=ROOT/'reports/v4_13_runtime_r16/real/2026-09-30/r5/manifest.json'
-    if not path.exists():pytest.skip('Real replay is sequentially run after local unit gate')
+    # The explicit R6 persisted producer supersedes the missing R5 output;
+    # this validates R6 content, without asserting historical R5 acceptance.
+    path=ROOT/'reports/v4_13_runtime_r16/real/2026-09-30/r6/manifest.json'
+    assert path.is_file(),'EXPLICIT_REAL_R6_OWNER_REQUIRED'
     from workbench_analysis.v4_13_io import file_ref
     result=readback(ROOT,file_ref(ROOT,path.relative_to(ROOT).as_posix()),collect=False)
     assert result['profile_advanced']==5224

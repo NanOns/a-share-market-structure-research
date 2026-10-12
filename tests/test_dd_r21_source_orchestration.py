@@ -8,6 +8,13 @@ from workbench_analysis import operational_daily_ready_owner_v2 as adapter
 from workbench_analysis import operational_successor_release_v1 as publication
 from workbench_analysis.operational_daily_storage_v1 import atomic_json
 
+@pytest.fixture(autouse=True)
+def exact_delta_scope_policy(tmp_path):
+    source=Path(__file__).resolve().parents[1]/'config/tdx_a_stock_delta_scope_policy_v2.json'
+    target=tmp_path/'config/tdx_a_stock_delta_scope_policy_v2.json'
+    target.parent.mkdir(parents=True,exist_ok=True)
+    target.write_bytes(source.read_bytes())
+
 @pytest.mark.parametrize('factor_proof,expected',[('missing','WAIT_BAOSTOCK_FACTOR'),('valid','QA_FAILURE')])
 def test_missing_source_never_builds_and_ready_then_qa_failure_never_publishes(tmp_path,monkeypatch,factor_proof,expected):
     day='2026-10-09';observed=day+'T18:35:00+08:00'

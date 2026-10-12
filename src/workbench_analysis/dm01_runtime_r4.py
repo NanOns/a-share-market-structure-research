@@ -20,7 +20,7 @@ from .daily_data_head import CAPABILITIES
 from .daily_source_freeze import ensure_outside_tdx, source_freeze_complete_v2
 
 ROOT = Path(__file__).resolve().parents[2]
-CONTRACT = 'config/dm01_go_forward_runtime_contract_r4r1.json'
+CONTRACT = 'config/dm01_go_forward_runtime_contract_full_closeout_r1.json'
 POLICY = 'config/dm01_v2_promotion_policy_r4r1.json'
 CALENDAR = 'data/v4/DM01_R4_CALENDAR_HEAD_V1.json'
 HEAD = 'data/v4/V4_DATA_ACCEPTED_HEAD.json'

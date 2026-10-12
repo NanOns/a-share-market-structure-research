@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import os
 import stat
+import subprocess
 import zipfile
 from pathlib import Path
 
@@ -98,6 +99,9 @@ def test_extracted_symlink_is_rejected(tmp_path: Path):
     try:
         os.symlink(extracted / "sz/lday/sz000001.day", link)
     except (OSError, NotImplementedError):
-        pytest.skip("symlink creation is unavailable on this runner")
+        if os.name!='nt':raise
+        directory=tmp_path/'outside_directory';directory.mkdir()
+        subprocess.run(['cmd','/c','mklink','/J',str(link),str(directory)],check=True,capture_output=True)
+        assert link.is_junction()
     with pytest.raises(SnapshotIntegrityError, match="EXTRACTED_REPARSE_POINT_REJECTED"):
         verify_zip_snapshot(archive, extracted, inventory, 2, expected_digest)

@@ -12,7 +12,7 @@ from .v4_12_structure_io import digest
 CONTRACT_ID = 'OPERATIONAL_DAILY_PERIOD_REPLAY_V1'
 
 
-def derive_periods(member, history, statuses, sessions, target, coverage_end, *, start_session=None):
+def derive_periods(member, history, statuses, sessions, target, coverage_end, *, start_session=None,indexed_calendar=False):
     if target not in sessions or coverage_end < target:
         raise ValueError('PERIOD_OFFICIAL_CALENDAR_REQUIRED')
     start=start_session or (history[0]['trade_date'] if history else None)
@@ -32,6 +32,10 @@ def derive_periods(member, history, statuses, sessions, target, coverage_end, *,
                 scope[name] = FunctionType(function.__code__, scope, name, function.__defaults__, function.__closure__)
                 scope[name].__kwdefaults__ = function.__kwdefaults__
         scope['period_key']=cached_key
+        parent_digest=digest
+        if indexed_calendar:
+            from .period_indexed_closeout import install,parent_digest_factory
+            install(scope,sessions);parent_digest=parent_digest_factory()
         for day in dates:
             index = indices[day]
             if not index:
@@ -50,7 +54,7 @@ def derive_periods(member, history, statuses, sessions, target, coverage_end, *,
                     'TRADING_STATUS': [dict(member, status=state)], 'IDENTITY_UNIVERSE': [member]}
             parent = {'rows': previous_rows}
             scope.update(_dependency=lambda c, key: (deps[key], {'logical_digest': digest(deps[key])}),
-                         _parent_component=lambda c, key: (parent, {'sha256': digest(parent)}),
+                         _parent_component=lambda c, key: (parent, {'sha256': parent_digest(parent)}),
                          _actions=lambda c: ({}, {}),
                          _finish=lambda c, rows, extra=None: rows)
             context = dict(cap=cap, target=day, calendar=dict(session_dates=sessions, coverage_end=coverage_end),

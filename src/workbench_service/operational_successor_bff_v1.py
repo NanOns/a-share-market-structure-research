@@ -18,6 +18,28 @@ class OperationalSuccessorBFFV1(OperationalGapBFFV2):
             raise ValueError('CONTEXT_TOKEN_MISMATCH')
         query.setdefault('trade_date',self.api.candidate['accepted_trade_date'])
         day=query['trade_date']
+        if day not in self.api.candidate['published_sessions']:
+            raise ValueError('TARGET_DATE_NOT_GRANTED')
+        if path in ('/api/v4/forward/statistics','/api/v4/forward/plans'):
+            if query.get('context_token')!=self.api.token:
+                raise ValueError('CONTEXT_TOKEN_MISMATCH')
+            from workbench_analysis.validation_cohort_read_contract_r3 import read_statistics, read_authorized_statistics, maturity_schedule, enrollment_identity
+            owner=self.api.candidate['owners'][day].get('validation_cohort')
+            stats=read_authorized_statistics(self.api.root,
+                accepted_head={'path':'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json','sha256':self.api.token},
+                owner_binding=owner,trade_date=day) if owner else read_statistics(None,cutoff=None,trade_date=day)
+            rows=stats['items']
+            count=stats['observed_count']
+            plans=[dict(enrollment_id=enrollment_identity(r),T0=r['T0'],horizons=maturity_schedule(r['T0'],self.api.candidate['published_sessions'],day,horizons=(1,3,5,10,20))) for r in rows]
+            statistics=dict(stats,enrollment_denominator=count,planned_horizon_denominator=None if count is None else count*5,
+                published_outcomes=None,published_enrollment_count=None,mature_eligible_count=None,
+                win_rate=None,return_quantiles=None,reason='NO_AUTHORIZED_COHORT_OWNER' if owner is None else 'SEPARATE_ACCEPTED_SETTLEMENT_OWNER_REQUIRED')
+            return 200,self.envelope(day,status='READY' if owner else 'SOURCE_INCOMPLETE',
+                reason=None if owner else 'NO_AUTHORIZED_COHORT_OWNER',data=statistics,
+                items=plans if path.endswith('/plans') else [],total=len(plans) if owner else None,
+                source=owner,contract_id='VALIDATION_COHORT_STATISTICS_BFF_R3_V1',
+                missing_inputs=[] if owner else ['COMPLETE_FIRST_CAPTURE_SIGNAL_PRODUCER','ACCEPTED_COHORT_OWNER','EXPLICIT_READ_GRANT'],
+                engineering_route_implemented=True,focus_is_validation_cohort=False,write_authorized=False,PIT_ELIGIBLE=False)
         if day in self.api.candidate['source_registry']:
             import json
             from workbench_analysis.r43_owner_replay import checked

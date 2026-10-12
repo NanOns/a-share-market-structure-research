@@ -21,6 +21,16 @@ def protect(raw):
     try:return ctypes.string_at(dst.pbData,dst.cbData)
     finally:ctypes.windll.kernel32.LocalFree(dst.pbData)
 
+def load_credentials(path):
+    path=Path(path).resolve()
+    if path.drive.upper()!='G:' or sys.platform!='win32':raise ValueError('G_LOCAL_WINDOWS_DPAPI_REQUIRED')
+    raw=path.read_bytes();buf=(ctypes.c_ubyte*len(raw)).from_buffer_copy(raw);src=Blob(len(raw),buf);dst=Blob()
+    if not ctypes.windll.crypt32.CryptUnprotectData(ctypes.byref(src),None,None,None,None,1,ctypes.byref(dst)):raise ctypes.WinError()
+    try:value=json.loads(ctypes.string_at(dst.pbData,dst.cbData))
+    finally:ctypes.windll.kernel32.LocalFree(dst.pbData)
+    if set(value)!=set(ROLES):raise ValueError('FORMAL_ROLE_SECRET_CONTRACT_MISMATCH')
+    return value
+
 def main():
     OUT.mkdir(parents=True,exist_ok=True)
     if PRIVATE.exists() or (OUT/'RESULT.json').exists():raise ValueError('PRESERVE_EXISTING_FORMAL_ROLE_PREPARATION')

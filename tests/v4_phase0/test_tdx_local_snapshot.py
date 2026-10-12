@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import os
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -51,6 +53,9 @@ def test_symlink_input_is_rejected(tmp_path: Path):
     try:
         link.symlink_to(target)
     except (OSError, NotImplementedError):
-        pytest.skip("symlink creation unavailable")
+        if os.name!='nt':raise
+        directory=tmp_path/'outside_directory';directory.mkdir()
+        subprocess.run(['cmd','/c','mklink','/J',str(link),str(directory)],check=True,capture_output=True)
+        assert link.is_junction()
     with pytest.raises(LocalSnapshotError, match="TDX_INPUT_SYMLINK_REJECTED"):
         build_local_snapshot(source, tmp_path / "project/data/v4/local_tdx_snapshots")

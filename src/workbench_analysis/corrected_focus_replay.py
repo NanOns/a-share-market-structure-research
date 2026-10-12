@@ -46,8 +46,16 @@ def confirmation(values):
          scenario_evidence=evidence,source_sha256=manifest['legacy_source']['sha256'])
 
 
-def materialize_focus(root):
-    root=Path(root).resolve();out=root/OUT;replay=load(out/'PROFILE_STRUCTURE_REPLAY.json');sectors=load(out/'SECTOR_REPLAY.json')
+def materialize_focus(root, *, input_namespace=None, output_namespace=None, sector_namespace=None):
+    root=Path(root).resolve();inputs=root/(input_namespace or OUT);out=root/(output_namespace or OUT)
+    if not inputs.resolve().is_relative_to(root) or not out.resolve().is_relative_to(root):
+        raise ValueError('FOCUS_REPLAY_NAMESPACE_OUTSIDE_ROOT')
+    if output_namespace:
+        out.mkdir(parents=True,exist_ok=False)
+    sector_inputs=root/sector_namespace if sector_namespace else inputs
+    if not sector_inputs.resolve().is_relative_to(root):
+        raise ValueError('FOCUS_REPLAY_NAMESPACE_OUTSIDE_ROOT')
+    replay=load(inputs/'PROFILE_STRUCTURE_REPLAY.json');sectors=load(sector_inputs/'SECTOR_REPLAY.json')
     sessions=official_sessions(root);cutoff=datetime.now(timezone.utc).isoformat();prior=None;prior_pid=None;days={};receipts=[]
     contract=out/'FOCUS_STAGE_CONTRACT_V1.json'
     write(contract,dict(contract_id='V4_R4_CORRECTED_D0_D2_FOCUS_FORWARD_V1',task='R4.1',
@@ -62,15 +70,17 @@ def materialize_focus(root):
           lineage_id='R4_OFFICIAL_MASTER_CALENDAR',producer_contract_id='MARKET_CALENDAR_V1')
     cal['publication_id']='R4_CALENDAR:'+digest(cal);write(out/'FOCUS_CALENDAR.json',cal)
     acquisition=load(root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
-    sources=load(out/'SOURCE_BINDINGS.json')['sources'];pathstatus={};allbars={};native={}
+    sources=load(inputs/'SOURCE_BINDINGS.json')['sources'];pathstatus={};allbars={};native={}
     from focus_tracker.v4_exact_identity_adapter_r4 import security_symbols, AcceptedPaths, CONTRACT
     symbols = security_symbols(root, sources['identity'])
     for item,sector in zip(replay['owners'],sectors['owners']):
         owner=item['owner'];day=owner['trade_date'];folder=out/'owners'/day
         factors=gzrows(checked(root,owner['core']));profiles={r['security_id']:r for r in gzrows(checked(root,owner['profiles']))}
         seeds={r['security_id']:r for r in gzrows(checked(root,sector['seed']))}
-        history={r['security_id']:r['bars'] for r in gzrows(checked(root,owner['history']))}
-        rs=[];rawfeatures=[];windows={};window=sessions[max(0,sessions.index(day)-119):sessions.index(day)+1]
+        window=sessions[max(0,sessions.index(day)-119):sessions.index(day)+1]
+        from .focus_replay_history_r1 import read_history
+        history,timelines=read_history(checked(root,owner['history']),window)
+        rs=[];rawfeatures=[];windows={}
         for factor in factors:
             sid=factor['security_id'];by={b['trade_date']:b for b in history[sid]};slots=[]
             for date in window:
@@ -98,7 +108,7 @@ def materialize_focus(root):
         for factor in factors:
             sid=factor['security_id'];f=factor['fields'];p=profiles[sid];feature=features[sid]
             for key in ('rps5','rps20','rps5_delta3'):feature[key]=f[key]['value']/100 if f[key]['value'] is not None else None
-            observed=frozenset(int(b['trade_date'].replace('-','')) for b in history[sid])
+            observed=timelines[sid]
             timeline=StockTimeline(sid,min(observed),max(observed),len(observed),observed,file_exists=True,structurally_valid=True,current_member=True)
             normal,normal_evidence=qualifies_normal_universe(timeline,[int(d.replace('-','')) for d in window])
             values,signals=produce(windows[sid][-27:],feature,normal_universe=normal,identity_compatible=True,parameters=cfg)
@@ -158,14 +168,16 @@ def materialize_focus(root):
         receipts.append(receipt);print(json.dumps(dict(stage='D0_D2',**{k:v for k,v in receipt.items() if k in ('trade_date','rows','D0','PREWATCH','D2_freshness')})),flush=True)
     series=out/'focus_actual_bars.pg.json'
     from workbench_db.v4_series_pg_r1 import build
-    from workbench_service.current_v4_context import canonical,digest
-    build(root,series,((sid,day,b) for (sid,day),b in allbars.items()),t0=max(days),source_digest=digest(canonical(sources)))
+    from workbench_service.current_v4_context import canonical,digest as content_digest
+    build(root,series,((sid,day,b) for (sid,day),b in allbars.items()),t0=max(days),source_digest=content_digest(canonical(sources)))
     for owner in native.values():owner['series']=ref(root,series)
     bindings=dict(series=ref(root,series),calendar=ref(root,out/'FOCUS_CALENDAR.json'),gbbq=sources['gbbq'],
           classification=ref(root,root/'config/v4_02_gbbq_price_impact_classification_v1.json'),status=pathstatus,native_core=native)
     bindings.update(security_identity=sources['identity'], path_contract=CONTRACT)
     from focus_tracker.v4_native_core_adapter import enriched_project
-    projection=enriched_project(days,AcceptedPaths(root,bindings))
+    from workbench_db.v4_series_pg_r1 import verified_series_scope
+    with verified_series_scope():
+        projection=enriched_project(days,AcceptedPaths(root,bindings))
     projection.update(contract_id='V4_R4_CORRECTED_FOCUS_FORWARD_CANDIDATE_V1',source_bindings=bindings,
          knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,production_admission=False)
     path=out/'CORRECTED_FOCUS_FORWARD.json.gz'

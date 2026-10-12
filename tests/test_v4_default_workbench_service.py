@@ -16,7 +16,9 @@ ROOT=Path(__file__).resolve().parents[1]
 def service(monkeypatch):
     import psycopg,duckdb
     def forbidden(*args,**kwargs):raise AssertionError('legacy database dependency')
-    monkeypatch.setattr(psycopg,'connect',forbidden);monkeypatch.setattr(duckdb,'connect',forbidden)
+    # Native PG is the required V4 authority; only the retired backend is
+    # forbidden. The runtime isolation plugin attests every PG connection.
+    monkeypatch.setattr(duckdb,'connect',forbidden)
     server=ThreadingHTTPServer(('127.0.0.1',0),make_v4_handler(ROOT))
     thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
     try:yield f'http://127.0.0.1:{server.server_port}'

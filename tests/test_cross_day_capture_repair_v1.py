@@ -13,6 +13,10 @@ from workbench_analysis.source_scope_reconciliation_v1 import reconcile
 
 @pytest.fixture
 def chain(tmp_path, monkeypatch):
+    policy=Path(__file__).resolve().parents[1]/'config/tdx_a_stock_delta_scope_policy_v2.json'
+    target_policy=tmp_path/'config/tdx_a_stock_delta_scope_policy_v2.json'
+    target_policy.parent.mkdir(parents=True,exist_ok=True)
+    target_policy.write_bytes(policy.read_bytes())
     day = datetime.now(timezone.utc).astimezone(timezone(timedelta(hours=8))).date().isoformat()
     previous = (datetime.fromisoformat(day)-timedelta(days=1)).date().isoformat()
     def doc(name, value): return publish(tmp_path, 'inputs/'+name+'.json', value)

@@ -10,9 +10,21 @@ SOURCE=Path(__file__).resolve().parents[1]
 sys.path[:0]=[str(SOURCE),str(SOURCE/'src')]
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--root',required=True);parser.add_argument('--out',required=True)
+    parser=argparse.ArgumentParser();parser.add_argument('--root',required=True);parser.add_argument('--out',required=True);parser.add_argument('--formal-roles')
     args=parser.parse_args();root=Path(args.root).resolve();out=Path(args.out).resolve()
-    if not root.is_relative_to(Path('G:/codex_tmp').resolve()) or out.drive.upper()!='G:':raise ValueError('ISOLATED_G_ROOT_REQUIRED')
+    if args.formal_roles:
+        if root!=Path('G:/codex work/v4-production-20261012').resolve() or not (root/'FORMAL_STAGING_FORK.json').exists():raise ValueError('FORMAL_STAGING_ROOT_REQUIRED')
+        secret=Path(args.formal_roles).resolve()
+        if secret!=root/'config/native_pg_roles.dpapi':raise ValueError('FORMAL_ROLE_FILE_REQUIRED')
+        from scripts.v4_closeout_prepare_formal_pg_roles import load_credentials,ROLES
+        import psycopg
+        os.environ['V4_NATIVE_PG_DSN']=load_credentials(secret)[ROLES[1]]
+        with psycopg.connect(os.environ['V4_NATIVE_PG_DSN']) as pg:
+            pg.execute('SET TRANSACTION READ ONLY')
+            actual=pg.execute('SELECT current_user,current_database(),system_identifier::text FROM pg_control_system()').fetchone()
+            if actual!=(ROLES[1],'market_research','7688198230782699460'):raise ValueError('FORMAL_CLUSTER_ROLE_IDENTITY_MISMATCH')
+    elif not root.is_relative_to(Path('G:/codex_tmp').resolve()):raise ValueError('ISOLATED_G_ROOT_REQUIRED')
+    if out.drive.upper()!='G:':raise ValueError('G_EVIDENCE_REQUIRED')
     out.mkdir(parents=True,exist_ok=False)
     os.environ.update(TMP='G:/codex_tmp',TEMP='G:/codex_tmp',TMPDIR='G:/codex_tmp')
     from workbench_analysis.operational_successor_v1 import accepted_api

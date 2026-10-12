@@ -28,7 +28,11 @@ def main(target_root=ROOT,seed_only=False,selected_seeds=None):
             'reports/dm01/a01_r2/20261001T033251758661Z/normalized_schema_v2_1']
     if selected_seeds:seed=selected_seeds
     # Visit every direct seed before following transitive source references.
-    queue = deque(p.relative_to(SOURCE).as_posix() for name in seed for p in (SOURCE / name).rglob('*') if p.is_file())
+    queue = deque()
+    for name in seed:
+        seed_path=SOURCE/name
+        files=[seed_path] if seed_path.is_file() else seed_path.rglob('*')
+        queue.extend(p.relative_to(SOURCE).as_posix() for p in files if p.is_file())
     visited = set(); records = []; total = 0
     while queue:
         rel = queue.popleft()

@@ -99,5 +99,15 @@ def test_invalid_contract_blocks_v4_startup(tmp_path):
     contract = json.loads((Path(__file__).resolve().parents[1] / 'config/v4_17_shadow_ui_contract_v1.json').read_bytes())
     contract['identity_fields'] = []
     (root / 'config/v4_17_shadow_ui_contract_v1.json').write_text(json.dumps(contract))
-    with pytest.raises(ResearchContextError, match='CONTRACT_IDENTITY_DRIFT'):
-        make_shadow_handler(root)
+    # The current shared service isolates this broken domain. A returned
+    # handler must reject actual Shadow requests rather than serving data.
+    server=ThreadingHTTPServer(('127.0.0.1',0),make_shadow_handler(root))
+    thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+    try:
+        with pytest.raises(HTTPError) as caught:
+            urlopen(f'http://127.0.0.1:{server.server_port}'+PREFIX+'context')
+        assert caught.value.code==409
+        payload=json.loads(caught.value.read())
+        assert payload['status']=='BLOCKED' and payload['code']=='SHADOW_CONTRACT_INVALID'
+        assert payload['items']==[]
+    finally:server.shutdown();server.server_close();thread.join(2)

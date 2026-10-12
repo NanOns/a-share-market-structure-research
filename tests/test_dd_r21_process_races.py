@@ -189,6 +189,9 @@ if sys.argv[2]=='manual':result=q.retry(sys.argv[3])
 else:
  try:q.tick();result='TICKED'
  except PermissionError:result='WORKER_LOCK_CONFLICT'
+ except RuntimeError as error:
+  if str(error)!='V4_PG_WORKER_ALREADY_OWNED':raise
+  result='WORKER_LOCK_CONFLICT'
 print(json.dumps(dict(role=sys.argv[2],pid=os.getpid(),result=result)))
 '''
     env=dict(os.environ,PYTHONPATH=str(Path(__file__).resolve().parents[1]/'src'))

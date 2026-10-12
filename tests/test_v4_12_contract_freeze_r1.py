@@ -138,3 +138,4 @@ def test_candidate_only_scope_and_protected_heads():
     assert not result['runtime_implemented'] and not result['runtime_authorized']
     assert all(r['byte_identical'] for r in result['scope_proof']['protected_artifacts'])
     assert not any(result['permissions'].values())
+from tests.historical_r9_fixture_closeout import isolated_r9_replay

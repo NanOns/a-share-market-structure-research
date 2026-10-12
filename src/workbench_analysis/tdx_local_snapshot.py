@@ -4,6 +4,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import stat
 import shutil
 import tempfile
 from datetime import datetime, timezone
@@ -47,6 +48,12 @@ def _safe_relative(path: Path, base: Path) -> str:
 
 def build_local_snapshot(source_root: Path, output_root: Path) -> dict[str, Any]:
     """Read only `{root}/vipdoc/{sh,sz,bj}/lday/*.day` and atomically copy out."""
+    def reject_reparse(path):
+        info=path.lstat()
+        if stat.S_ISLNK(info.st_mode) or getattr(info,'st_file_attributes',0) & getattr(stat,'FILE_ATTRIBUTE_REPARSE_POINT',0x400):
+            raise LocalSnapshotError('TDX_INPUT_SYMLINK_REJECTED')
+    reject_reparse(source_root)
+    reject_reparse(source_root/'vipdoc')
     source = source_root.resolve(strict=True)
     vipdoc = (source / "vipdoc").resolve(strict=True)
     if source == output_root.resolve() or source in output_root.resolve().parents:
@@ -55,9 +62,10 @@ def build_local_snapshot(source_root: Path, output_root: Path) -> dict[str, Any]
     for market in ("sh", "sz", "bj"):
         market_root = vipdoc / market / "lday"
         if market_root.is_dir():
+            reject_reparse(vipdoc/market)
+            reject_reparse(market_root)
             for path in market_root.glob("*.day"):
-                if path.is_symlink():
-                    raise LocalSnapshotError("TDX_INPUT_SYMLINK_REJECTED")
+                reject_reparse(path)
                 if path.is_file():
                     files.append((_safe_relative(path, vipdoc), path))
     files.sort(key=lambda item: item[0].casefold())

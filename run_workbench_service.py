@@ -2,9 +2,18 @@ from pathlib import Path
 import argparse,json,os,re,sys,time
 os.environ.update(TMP='G:/codex_tmp',TEMP='G:/codex_tmp',TMPDIR='G:/codex_tmp')
 sys.dont_write_bytecode=True
-ROOT=Path(__file__).resolve().parent; sys.path.insert(0,str(ROOT/'src'))
+SOURCE_ROOT=Path(__file__).resolve().parent
+ROOT=SOURCE_ROOT; sys.path[:0]=[str(SOURCE_ROOT),str(SOURCE_ROOT/'src')]
 if __name__=='__main__':
- p=argparse.ArgumentParser(); p.add_argument('--host',default='127.0.0.1'); p.add_argument('--port',type=int,default=28765); p.add_argument('--database'); modes=p.add_mutually_exclusive_group(); modes.add_argument('--v4-shadow-only',action='store_true',help='Serve the read-only V4 preview without legacy workbench dependencies'); modes.add_argument('--v4-default','--v4-production',dest='v4_default',action='store_true'); modes.add_argument('--legacy-v3',action='store_true'); a=p.parse_args()
+ p=argparse.ArgumentParser(); p.add_argument('--host',default='127.0.0.1'); p.add_argument('--port',type=int,default=28765); p.add_argument('--database'); modes=p.add_mutually_exclusive_group(); modes.add_argument('--v4-shadow-only',action='store_true',help='Serve the read-only V4 preview without legacy workbench dependencies'); modes.add_argument('--v4-default','--v4-production',dest='v4_default',action='store_true'); modes.add_argument('--legacy-v3',action='store_true'); p.add_argument('--workspace-root',type=Path,help='Explicit G-local data/config workspace; source imports remain bound to this release'); p.add_argument('--native-pg-roles',type=Path,help='Explicit Windows user DPAPI role credentials inside the chosen workspace'); a=p.parse_args()
+ if a.workspace_root is not None:
+  ROOT=a.workspace_root.resolve()
+  if ROOT.drive.upper()!='G:' or not ROOT.is_dir():raise SystemExit('G_LOCAL_WORKSPACE_REQUIRED')
+ if a.native_pg_roles is not None:
+  role_file=a.native_pg_roles.resolve()
+  if not role_file.is_relative_to(ROOT/'config'):raise SystemExit('PG_ROLE_FILE_OUTSIDE_WORKSPACE_CONFIG')
+  from scripts.v4_closeout_prepare_formal_pg_roles import load_credentials,ROLES
+  os.environ['V4_NATIVE_PG_DSN']=load_credentials(role_file)[ROLES[1]]
  if a.v4_shadow_only:
   from workbench_service.shadow_server import serve_shadow
   serve_shadow(ROOT,a.host,a.port)

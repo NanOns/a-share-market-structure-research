@@ -31,6 +31,9 @@ def build(root,rows,*,head_token,t0,source_digest):
     with psycopg.connect(configured_dsn(),connect_timeout=5) as pg: create_schema(pg,schema)
     version=hashlib.sha256(canonical(dict(contract_id=CONTRACT,head_token=head_token,t0=t0,source_digest=source_digest))).hexdigest()
     with connection(schema) as pg:
+        # Whole frozen history publication writes millions of bars. Bound this
+        # producer transaction separately from latency-bounded HTTP reads.
+        pg.execute("SET LOCAL statement_timeout = '120s'")
         pg.execute('SELECT pg_advisory_xact_lock(hashtextextended(%s,0))',(schema,))
         pg.execute(DDL)
         existing=pg.execute('SELECT logical_digest,symbol_count,bar_count,head_token,t0::text,source_digest FROM history_versions WHERE version=%s',(version,)).fetchone()

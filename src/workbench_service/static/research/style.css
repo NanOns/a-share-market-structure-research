@@ -7,3 +7,7 @@ main svg{display:block;width:100%;max-width:100%;height:auto}
 .table-wrap{max-width:100%}
 .filters>*{max-width:100%;min-width:0}
 @media(max-width:600px){.grid{grid-template-columns:minmax(0,1fr)}header>*{min-width:0;max-width:100%}.pagination{overflow-wrap:anywhere}}
+/* Focus summaries and evidence drawers contain long publication identities. */
+main details,main summary,.badge,.pagination>*{min-width:0;max-width:100%;overflow-wrap:anywhere}
+dialog{width:min(850px,90vw);overflow:auto}dialog section{min-width:0;max-width:100%}
+@media(max-width:600px){main button{max-width:100%;white-space:normal}.pagination>div{display:flex;flex-wrap:wrap;gap:6px}}

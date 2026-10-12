@@ -2,7 +2,7 @@
 import copy,json,math
 from decimal import Decimal
 from pathlib import Path
-from adjustment.tdx_adjustment import build_affine_factors,xrxd_from_gbbq
+from adjustment.tdx_adjustment_v0_3 import build_affine_factors,xrxd_from_gbbq
 from focus_tracker.v4_path_adapter import AcceptedPaths,checked
 from workbench_analysis.v4_current_stage_authority import CurrentStageAuthority
 from workbench_analysis.v4_15_settlement import VectorPriceSource,due_plan
@@ -32,7 +32,7 @@ class OperationalForwardAuthority(CurrentStageAuthority):
         self.root=Path(root).resolve();self.sessions=sessions;self.operational_bindings=bindings
     def bindings(self):return copy.deepcopy(self.operational_bindings)
 
-class ForwardStore:
+class HistoricalForwardStore:
     def __init__(self,root,folder):
         self.root=Path(root).resolve();self.folder=self.root/folder;self._reads={};self._refs={}
     def read(self,binding):
@@ -51,6 +51,15 @@ class ForwardStore:
         if kind not in self._refs:self._refs[kind]=[reference(self.root,p) for p in sorted((self.folder/kind).glob('*.json'))]
         return copy.deepcopy(self._refs[kind])
 
+from workbench_db.v4_forward_pg_r1 import ForwardFactStore
+
+class ForwardStore(ForwardFactStore):
+    def append(self,kind,key,value):
+        try:return super().append(kind,key,value)
+        except ValueError as error:
+            if str(error)=='FORWARD_APPEND_IDENTITY_CONFLICT':raise SourceInvalid(str(error)) from error
+            raise
+
 class LocalForwardPriceSource(VectorPriceSource):
     evidence_class='REAL_ACCEPTED_LOCAL_CORRECTED_FORWARD'
     def __init__(self,root,inputs,t0,cutoff,t0_coordinates=None,kernel=None,accepted_paths=None):
@@ -67,10 +76,16 @@ class LocalForwardPriceSource(VectorPriceSource):
         from workbench_db.v4_series_pg_r1 import range_rows
         bars=dict(range_rows(self.paths.series,sid,self.t0,basis))
         if self.t0 not in bars:self.cache[key]={};return {}
-        symbol=bars[self.t0]['symbol'];events=[e for e in self.paths.events[symbol]
+        import re
+        symbol=bars[self.t0]['symbol']
+        if not re.fullmatch(r'(SH|SZ|BJ)\.[0-9]{6}',symbol) or any(bar.get('symbol')!=symbol for bar in bars.values()):
+            raise SourceInvalid('FORWARD_SOURCE_SECURITY_IDENTITY_MISMATCH')
+        if hasattr(self.paths,'symbols') and self.paths.symbols.get(sid)!=symbol:
+            raise SourceInvalid('FORWARD_SOURCE_SECURITY_IDENTITY_MISMATCH')
+        events=[e for e in self.paths.events[symbol]
             if int(self.t0.replace('-',''))<e.event_date<=int(basis.replace('-',''))]
-        blocked=any(self.paths.dispositions.get(str(e.category),{}).get('formal_disposition','UNKNOWN_PRICE_IMPACT')
-            in ('PRICE_AFFECTING_UNSUPPORTED','UNKNOWN_PRICE_IMPACT') for e in events)
+        blocked=any(self.paths.dispositions.get(str(e.category),{}).get('formal_disposition') not in
+            (('PRICE_AFFECTING_SUPPORTED','SUPPORTED_PRICE_AFFECTING') if e.category==1 else ('NON_PRICE_AFFECTING',)) for e in events)
         factors=build_affine_factors([int(d.replace('-','')) for d in sorted(bars)],
             [xrxd_from_gbbq(e) for e in events if e.category==1])
         coord=self.coordinates.get(sid,dict(qfq_mul='1',qfq_add='0'))

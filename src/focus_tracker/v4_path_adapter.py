@@ -6,7 +6,7 @@ from datetime import date
 from decimal import Decimal
 from pathlib import Path
 
-from adjustment.tdx_adjustment import build_affine_factors, xrxd_from_gbbq
+from adjustment.tdx_adjustment_v0_3 import build_affine_factors, xrxd_from_gbbq
 from tdx.gbbq_reader import read_gbbq
 from workbench_service.current_v4_context import SourceInvalid, canonical, digest
 from .outcomes import classify_outcome
@@ -16,6 +16,7 @@ from .price_path import Bar, path_metrics
 from .v4_successor import project
 
 CONTRACT = 'R2_V4_FOCUS_PATH_OUTCOME_V2'
+ACTION_CONTRACT = 'V4_FOCUS_EXACT_ACTION_ALLOWLIST_S1B_V1'
 
 
 def checked(root, binding):
@@ -64,22 +65,25 @@ class AcceptedPaths:
                 suspended.append(day)
             else:
                 missing.append(day)
-        result = dict(quality='DATA_UNAVAILABLE', metrics=None, suspended_dates=suspended,
+        result = dict(quality='DATA_UNAVAILABLE', metrics=None, suspended_dates=suspended, action_contract=ACTION_CONTRACT,
                       missing_dates=missing, target_state='BAR' if end in bars else 'SUSPENDED' if end in suspended else None,
                       anchor_actual_bar=start in bars, input_digest=digest(canonical(dict(
-                          contract=CONTRACT, bindings=self.bindings, sid=sid, start=start, end=end))))
+                          contract=CONTRACT, action_contract=ACTION_CONTRACT, bindings=self.bindings, sid=sid, start=start, end=end))))
         if not missing and start in bars and end in bars:
             symbol = bars[end]['symbol']
+            import re
+            if not re.fullmatch(r'(SH|SZ|BJ)\.[0-9]{6}', symbol) or any(bar.get('symbol') != symbol for bar in bars.values()):
+                raise SourceInvalid('FOCUS_SOURCE_SECURITY_IDENTITY_MISMATCH')
             events = [e for e in self.events[symbol] if int(start.replace('-', '')) < e.event_date <= int(end.replace('-', ''))]
-            blocked = any(self.dispositions.get(str(e.category), {}).get('formal_disposition', 'UNKNOWN_PRICE_IMPACT') in
-                          ('PRICE_AFFECTING_UNSUPPORTED', 'UNKNOWN_PRICE_IMPACT') for e in events)
+            blocked = any(self.dispositions.get(str(e.category), {}).get('formal_disposition') not in
+                          (('PRICE_AFFECTING_SUPPORTED', 'SUPPORTED_PRICE_AFFECTING') if e.category == 1 else ('NON_PRICE_AFFECTING',)) for e in events)
             if not blocked:
                 factors = build_affine_factors([int(d.replace('-', '')) for d in sorted(bars)],
                                               [xrxd_from_gbbq(e) for e in events if e.category == 1])
-                path = [Bar(date.fromisoformat(d), *[factors[int(d.replace('-', ''))].qfq_price(Decimal(v))
+                path = [Bar(date.fromisoformat(d), *[factors[int(d.replace('-', ''))].qfq_price(Decimal(str(v)))
                             for v in bars[d]['raw_ohlc']]) for d in sorted(bars)]
                 result.update(quality='READY', metrics={k: str(v) for k, v in path_metrics(path).items()},
-                              close=str(path[-1].close), price_basis='TDX_NATIVE_AFFINE_AS_OF_OBSERVATION')
+                              close=str(path[-1].close), price_basis='TDX_EXACT_NATIVE_AFFINE_AS_OF_OBSERVATION_R4')
             else:
                 result['reason'] = 'UNSUPPORTED_OR_UNKNOWN_PRICE_IMPACT'
         self.cache[key] = result

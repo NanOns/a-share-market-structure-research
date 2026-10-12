@@ -52,7 +52,8 @@ def read_authorized_statistics(root, *, accepted_head, owner_binding, trade_date
     grant_ref=head.get('cohort_read_grants',{}).get(trade_date)
     if not grant_ref:raise ValueError('COHORT_READ_GRANT_MISSING')
     grant=json.loads(checked(root,grant_ref).read_bytes())
-    owner=json.loads(checked(root,owner_binding).read_bytes())
+    from workbench_db.v4_cohort_pg_r1 import load_owner
+    owner=load_owner(root,owner_binding)
     if (grant.get('contract_id')!='VALIDATION_COHORT_READ_GRANT_R4_V1' or
         grant.get('capability')!='READ_STATISTICS' or grant.get('authorized') is not True or
         grant.get('owner')!=owner_binding or grant.get('trade_date')!=trade_date or

@@ -97,3 +97,4 @@ def test_r6r1_and_r1_ast_vectors_preserved():
     result=validate()
     assert all(p['byte_identical'] for p in result['protected_and_keep_proof'])
     assert result['independent_vector_oracle']['passed']==69
+from tests.historical_r9_fixture_closeout import isolated_r9_replay

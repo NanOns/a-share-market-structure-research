@@ -1,5 +1,4 @@
 import json
-import sqlite3
 from datetime import date
 from decimal import Decimal
 
@@ -49,14 +48,14 @@ def test_invalidated_episode_closes_and_settles_independently():
 
 
 def test_missing_suspension_and_future_corporate_action(tmp_path, monkeypatch):
-    # Build the adapter around a real SQLite price index, inject a future
+    # Build the adapter around a real native PG price index, inject a future
     # unsupported action: it must not poison an earlier observation.
     from types import SimpleNamespace
-    path = tmp_path / 'bars.sqlite'
-    with sqlite3.connect(path) as db:
-        db.execute('CREATE TABLE bars(security,day,payload)')
-        for day, close in [('2026-09-28', '10'), ('2026-09-30', '11')]:
-            db.execute('INSERT INTO bars VALUES(?,?,?)', ('A', day, json.dumps(dict(symbol='SH.600000',raw_ohlc=[close]*4))))
+    from workbench_db.v4_series_pg_r1 import build
+    path = tmp_path / 'bars.pg.json'
+    build(tmp_path,path,(("A",day,dict(trade_date=day,symbol='SH.600000',raw_ohlc=[close]*4))
+                        for day,close in [('2026-09-28','10'),('2026-09-30','11')]),
+          t0='2026-09-30',source_digest=digest(b'R2_PATH_FROZEN_TEST_BARS'))
     p = AcceptedPaths.__new__(AcceptedPaths)
     p.series=path;p.calendar=Paths.calendar;p.bindings={};p.cache={};p.status={}
     from collections import defaultdict
@@ -84,12 +83,13 @@ def test_dated_owner_updates_preserve_history_and_reject_kernel_change(tmp_path,
     for day in Paths.calendar:
         path=tmp_path/(day+'.json');path.write_text(json.dumps({'rows':[row(day)]}))
         bindings.append(dict(path=path.name,sha256=digest(path.read_bytes())))
-    journal=tmp_path/'journal.sqlite'
+    journal=tmp_path/'journal.pg.json'
     inputs=dict(owner='0.1',implementation={'kernel':{'sha256':'old'}})
     first=append(journal,tmp_path,bindings[0],None,path_inputs=inputs)
     updated=dict(owner='0.2',implementation=inputs['implementation'])
     second=append(journal,tmp_path,bindings[1],first['head'],path_inputs=updated)
-    with sqlite3.connect(journal) as db:
+    from workbench_db.v4_journal_pg_r1 import open_read
+    with open_read(journal) as db:
         projection=json.loads(db.execute("SELECT value FROM metadata WHERE key='projection'").fetchone()[0])
     observations=projection['episodes'][0]['observations']
     assert observations[0]['price_path']['metrics']['return_close']=='0.1'

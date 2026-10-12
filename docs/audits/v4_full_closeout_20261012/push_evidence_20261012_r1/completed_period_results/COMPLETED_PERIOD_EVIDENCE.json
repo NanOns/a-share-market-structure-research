@@ -1,0 +1,91 @@
+{
+  "contract_id": "FIVE_DATE_COMPLETE_NATIVE_PERIOD_AGGREGATION_AND_FORMAL_TRANSFER_EVIDENCE_R1",
+  "dates": [
+    {
+      "day": "2026-09-28",
+      "aggregation_checks": 18320512,
+      "aggregation_differences": 0,
+      "formal_transfer": "FORMAL_PERIOD_COMPLETE_TRANSFER_READBACK_PASS"
+    },
+    {
+      "day": "2026-09-29",
+      "aggregation_checks": 18320576,
+      "aggregation_differences": 0,
+      "formal_transfer": "FORMAL_PERIOD_COMPLETE_TRANSFER_READBACK_PASS"
+    },
+    {
+      "day": "2026-09-30",
+      "aggregation_checks": 18320640,
+      "aggregation_differences": 0,
+      "formal_transfer": "FORMAL_PERIOD_COMPLETE_TRANSFER_READBACK_PASS"
+    },
+    {
+      "day": "2026-10-08",
+      "aggregation_checks": 18654976,
+      "aggregation_differences": 0,
+      "formal_transfer": "FORMAL_PERIOD_COMPLETE_TRANSFER_READBACK_PASS"
+    },
+    {
+      "day": "2026-10-09",
+      "aggregation_checks": 18654976,
+      "aggregation_differences": 0,
+      "formal_transfer": "FORMAL_PERIOD_COMPLETE_TRANSFER_READBACK_PASS"
+    }
+  ],
+  "files": [
+    {
+      "path": "period_oracle/R1/2026-09-28/RESULT.json",
+      "bytes": 1589,
+      "sha256": "f4456a996f47ea2ec403e3409622164b86d166948c6a77b5c46369166ae20eaf"
+    },
+    {
+      "path": "formal_period_r1/2026-09-28/RESULT.json",
+      "bytes": 316,
+      "sha256": "00c621413c487bf019182f0d55a0ca24b364ae82dcd27de7e0de5c3a3cede5ac"
+    },
+    {
+      "path": "period_oracle/R1/2026-09-29/RESULT.json",
+      "bytes": 1589,
+      "sha256": "a457a970f739f11d96d4018b356b67483d31583d766153f3785266a4872a53cc"
+    },
+    {
+      "path": "formal_period_r1/2026-09-29/RESULT.json",
+      "bytes": 316,
+      "sha256": "d2534beaeac8728eec4ee75ac20f37f19dc16ccb87edd6f8ae9469536d22dac0"
+    },
+    {
+      "path": "period_oracle/R1/2026-09-30/RESULT.json",
+      "bytes": 1589,
+      "sha256": "2e42b6faa67ceb0552643b74114331d3b57ad3d9f0deb305de2f865f4f8947a5"
+    },
+    {
+      "path": "formal_period_r1/2026-09-30/RESULT.json",
+      "bytes": 316,
+      "sha256": "79f7dedee778b5150c992bd7aed0b25902bf21ab8df59cc5f349f3844d314dc2"
+    },
+    {
+      "path": "period_oracle/R1/2026-10-08/RESULT.json",
+      "bytes": 1589,
+      "sha256": "634020847364f008ea05c423f079c912966fff8c507616f37cdd5131129b3e52"
+    },
+    {
+      "path": "formal_period_r1/2026-10-08/RESULT.json",
+      "bytes": 316,
+      "sha256": "aa13e46957a1f41499981123d216ad4d12a3780f01ad45f6d6cc8925f9b8341e"
+    },
+    {
+      "path": "period_oracle/R1/2026-10-09/RESULT.json",
+      "bytes": 1589,
+      "sha256": "ec9c97beca551b16cb2bd94ec85017bf6d8e5746abe630722728333316e97a94"
+    },
+    {
+      "path": "formal_period_r1/2026-10-09/RESULT.json",
+      "bytes": 316,
+      "sha256": "39b660271d0780efd6dd56155325937759535f00fec735a3d8e4d7a9fef1a501"
+    }
+  ],
+  "scope": "AGGREGATION_AND_COMPLETE_TRANSFER_ONLY",
+  "adjustment_factor_oracle": "SEPARATE_REQUIRED",
+  "production_cutover": false,
+  "full_acceptance": false
+}

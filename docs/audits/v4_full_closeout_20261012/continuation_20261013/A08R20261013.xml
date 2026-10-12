@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="15" time="19.894" timestamp="2026-10-13T00:59:39.410127+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_a08_governance_propagation" name="test_exact_head_scope_and_only_A08_diff" time="0.064" /><testcase classname="tests.test_a08_governance_propagation" name="test_capability_scopes[PURE_CORE_STOCK-None]" time="0.104" /><testcase classname="tests.test_a08_governance_propagation" name="test_capability_scopes[AMOUNT_A_H21_FORMAL_CONSUMER-A04_H21_CONSUMER]" time="0.003" /><testcase classname="tests.test_a08_governance_propagation" name="test_capability_scopes[HISTORICAL_AMOUNT_A_FORMAL_CONSUMER-A04_HISTORICAL_AMOUNT_A]" time="0.003" /><testcase classname="tests.test_a08_governance_propagation" name="test_fail_closed_governance[unknown_issue]" time="0.955" /><testcase classname="tests.test_a08_governance_propagation" name="test_fail_closed_governance[stale_V3_head]" time="0.339" /><testcase classname="tests.test_a08_governance_propagation" name="test_fail_closed_governance[mismatched_head_sha]" time="0.356" /><testcase classname="tests.test_a08_governance_propagation" name="test_fail_closed_governance[stale_resolver]" time="0.389" /><testcase classname="tests.test_a08_governance_propagation" name="test_fail_closed_governance[external_audit_tamper]" time="0.387" /><testcase classname="tests.test_a08_governance_propagation" name="test_V5_grant_rejected_by_V6_and_actual_settlement_controller" time="9.203" /><testcase classname="tests.test_a08_governance_propagation" name="test_V6_grant_rejected_by_historical_V5_actual_restart" time="3.736" /><testcase classname="tests.test_a08_governance_propagation" name="test_V6_real_runtime_disabled_without_source_or_database" time="0.009"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'NOT_AUTHORIZED_BEFORE_CONSUMPTION'&#10;  Actual message: 'EXACT_DEPENDENCY_MISMATCH'">def test_V6_real_runtime_disabled_without_source_or_database():
+        from scripts.v4_16_go_forward_shadow_runtime_r4r4 import RealShadowController
+&gt;       with pytest.raises(ValueError,match='NOT_AUTHORIZED_BEFORE_CONSUMPTION'):RealShadowController(ROOT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'NOT_AUTHORIZED_BEFORE_CONSUMPTION'
+E         Actual message: 'EXACT_DEPENDENCY_MISMATCH'
+
+tests\test_a08_governance_propagation.py:91: AssertionError</failure></testcase><testcase classname="tests.test_a08_governance_propagation" name="test_V6_grant_digest_and_resolver_parity" time="0.009"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">def test_V6_grant_digest_and_resolver_parity():
+        deps=load('config/v4_16_runtime_dependencies_v6.json')
+        validate_grant(deps,dict(runtime_dependency_contract_id=deps['contract_id'],dependency_set_digest=dependency_digest(deps)))
+&gt;       assert validate_dependencies(ROOT,deps)['admitted'] is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_a08_governance_propagation.py:97: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\v4_16_capability_resolution_v2.py:36: in validate_dependencies
+    for ref in deps['bindings']:exact(root,ref)
+                                ^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'EXACT_DEPENDENCY_MISMATCH'
+
+    def check(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: EXACT_DEPENDENCY_MISMATCH
+
+scripts\v4_16_shadow_runtime.py:17: ValueError</failure></testcase><testcase classname="tests.test_a08_governance_propagation" name="test_V6_r25_selection_waits_for_real_target" time="0.587"><failure message="ValueError: HISTORICAL_PROTECTED_BYTES_CHANGED">def test_V6_r25_selection_waits_for_real_target():
+        from scripts.validate_r25_preflight_v6 import selection
+&gt;       result=selection();assert result['status']=='WAIT_ACCEPTED_DAILY_INPUT'
+               ^^^^^^^^^^^
+
+tests\test_a08_governance_propagation.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_r25_preflight_v6.py:256: in selection
+    state = protected(root)
+            ^^^^^^^^^^^^^^^
+scripts\validate_r25_preflight_v6.py:106: in protected
+    check(not set(names) &amp; set(changed) - {'.gitattributes','scripts/validate_r25_preflight.py','tests/test_r25_packet.py','scripts/v4_16_shadow_runtime.py'}, 'HISTORICAL_PROTECTED_BYTES_CHANGED')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, reason = 'HISTORICAL_PROTECTED_BYTES_CHANGED'
+
+    def check(condition, reason):
+        if not condition:
+&gt;           raise ValueError(reason)
+E           ValueError: HISTORICAL_PROTECTED_BYTES_CHANGED
+
+scripts\validate_r25_preflight_v6.py:20: ValueError</failure></testcase><testcase classname="tests.test_a08_governance_propagation" name="test_V6_packet_builder_and_validator_engineering_roundtrip" time="3.260"><failure message="ValueError: BRIDGE_EXACT_BINDING_MISMATCH">tmp_path = WindowsPath('G:/codex_tmp/test_temp/A08R20261013/test_V6_packet_builder_and_val0')
+
+    def test_V6_packet_builder_and_validator_engineering_roundtrip(tmp_path):
+        from tests.v4_dm01_r4r2.test_bridge import vector,packet_vector
+        from scripts import r25_bridge_oracle_r4r2 as oracle
+        from scripts.build_r25_packet_r4r4 import produce_packet
+        from scripts.validate_r25_preflight_v6 import inspect_packet
+        v=vector.__wrapped__(tmp_path);packet=packet_vector(v,v['d']['target_session_pit_binding'])
+        deps=copy_governance(tmp_path)
+        packet['daily']['bridge_mode']='ENGINEERING';packet['daily']['daily_input_digest']=oracle.digest({k:x for k,x in packet['daily'].items() if k!='daily_input_digest'})
+        daily=put(tmp_path,'vector/v6_daily.json',packet['daily'])
+        candidate=packet['candidate'];candidate['grant'].update(runtime_dependency_contract_id=deps['contract_id'],dependency_set_digest=dependency_digest(deps),daily_input_authority=daily,daily_input_digest=packet['daily']['daily_input_digest'])
+        candidate_ref=put(tmp_path,'reports/r25/activation_candidate/v6_candidate.json',candidate)
+        source_ref=candidate['grant']['source_authority'];predecessor=candidate['grant']['predecessor']
+&gt;       ref=produce_packet(tmp_path,daily=daily,candidate=candidate_ref,sources=source_ref,predecessor=predecessor,output='reports/r25/activation_candidate/v6_packet.json',engineering=True)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_a08_governance_propagation.py:118: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\build_r25_packet_r4r4.py:11: in produce_packet
+    for reference in deps['bindings']:o.exact_bytes(root,reference)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\r25_bridge_oracle_r4r2.py:115: in exact_bytes
+    check(binding(root,b['path'])==b,'BRIDGE_EXACT_BINDING_MISMATCH');return (Path(root)/b['path']).read_bytes()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'BRIDGE_EXACT_BINDING_MISMATCH'
+
+    def check(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: BRIDGE_EXACT_BINDING_MISMATCH
+
+scripts\r25_bridge_oracle_r4r2.py:14: ValueError</failure></testcase></testsuite></testsuites>

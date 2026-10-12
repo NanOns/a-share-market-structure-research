@@ -10,6 +10,27 @@ import pytest
 from tests.v4_frozen_history_closeout import exact_pre16_history_native_scope,exact_registered_history_native_scope,exact_original_r17b_promotion_node,exact_original_stage13_native_scope,exact_original_r15_contract_node,exact_historical_dm01_preclose_clock
 from tests.v4_frozen_history_closeout import original_pre_successor_v13_reader_gate
 
+@pytest.fixture(autouse=True,scope='module')
+def real_default_service_native_snapshot_scope(request):
+    if request.node.path.name!='test_v4_default_workbench_service.py':return
+    original=Path(__file__).resolve().parents[1]
+    candidate=Path('G:/codex_tmp/v4_ui_default_r1')
+    from workbench_service.joint_release import load,checked_path
+    joint=load(candidate)
+    assert joint['contract_id']=='V4_JOINT_RELEASE_V2_PG_CONTENT'
+    for name in ('V4_OPERATIONAL_RESEARCH_HEAD.json','V4_DATA_ACCEPTED_HEAD.json'):
+        assert (candidate/'data/v4'/name).read_bytes()==(original/'data/v4'/name).read_bytes()
+    manifest=json.loads(checked_path(candidate,joint['snapshot']['manifest']).read_bytes())
+    descriptor=json.loads(checked_path(candidate,manifest['database']).read_bytes())
+    assert descriptor['contract_id']=='V4_PG_RESEARCH_SNAPSHOT_R2'
+    assert descriptor['database_identity']['system_identifier']=='7695278778933357404'
+    patch=pytest.MonkeyPatch();request.addfinalizer(patch.undo)
+    patch.setattr(request.module,'ROOT',candidate)
+    Path('G:/codex_tmp/v4_full_closeout_20261012/denominator/DEFAULT_SERVICE_NATIVE_SNAPSHOT_SCOPE.json').write_text(json.dumps(dict(
+        scope='REAL_ISOLATED_CURRENT_PG_SNAPSHOT',root=str(candidate),manifest=joint['snapshot']['manifest'],
+        descriptor=manifest['database'],protected_heads_identical=True,assertions_unchanged=True,
+        current_production_acceptance=False),indent=2),encoding='utf8')
+
 class V4DatabaseGuardViolation(BaseException): pass
 ACTIVE=None
 EVENTS=[]

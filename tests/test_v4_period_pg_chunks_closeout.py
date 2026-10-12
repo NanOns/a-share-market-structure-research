@@ -6,12 +6,14 @@ from workbench_db.v4_native import connection
 from workbench_db.v4_forward_pg_r1 import ForwardFactStore
 
 def test_all_rows_survive_bound_chunks_and_read_is_read_only(tmp_path,monkeypatch):
-    rows=[{'sequence':i,'value':None if i%3==0 else str(i)} for i in range(2003)]
+    rows=[{'security_id':'fixture_'+str(i%2),'sequence':i,'value':None if i%3==0 else str(i)} for i in range(2003)]
     payload=dict(contract_id=OWNER,T0='2026-09-28',domain='period_raw',head_token='head',source_bindings={},rows=rows)
     ref=prepare(tmp_path,payload,'full')
     def forbid(*args,**kwargs):raise AssertionError('Read attempted migration DDL')
     monkeypatch.setattr(ForwardFactStore,'__init__',forbid)
     assert read(tmp_path,ref,payload['T0'],payload['domain'],'head')==rows
+    assert read(tmp_path,ref,payload['T0'],payload['domain'],'head',security_id='fixture_1')==rows[1::2]
+    assert read(tmp_path,ref,payload['T0'],payload['domain'],'head',security_id='absent')==[]
     with pytest.raises(ValueError,match='CONTEXT_MISMATCH'):
         read(tmp_path,ref,'2026-09-29',payload['domain'],'head')
     descriptor=json.loads((tmp_path/ref['path']).read_bytes())

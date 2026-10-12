@@ -74,15 +74,36 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             if manifest['T0']!=day or manifest['head']['sha256']!=self.api.token:return None
             checked(self.api.root,manifest['head']);checked(self.api.root,manifest['implementation'])
             for ref in manifest['source_bindings'].values():checked(self.api.root,ref)
-            projection=json.loads(gzip.decompress(checked(self.api.root,manifest['projection']).read_bytes()))
+            if manifest.get('contract_id')=='CORE_PRODUCT_FOCUS_READ_MANIFEST_R3_NATIVE_PG':
+                from workbench_db.v4_focus_projection_pg_closeout import read as read_focus_pg
+                projection=read_focus_pg(self.api.root,manifest['projection'],t0=day,head_token=self.api.token)
+            elif manifest.get('contract_id')=='CORE_PRODUCT_FOCUS_READ_MANIFEST_R2':
+                projection=json.loads(gzip.decompress(checked(self.api.root,manifest['projection']).read_bytes()))
+            else:
+                raise ValueError('FOCUS_READ_PROJECTION_CONTRACT_UNSUPPORTED')
             self.api.cache[key]=(manifest,projection)
         return self.api.cache[key]
 
-    def source(self,domain,day):
+    def source(self,domain,day,*,security_id=None):
+        if domain in ('period_raw','period_adjusted'):
+            pack=self.pack(day)
+            binding=pack[0].get('period_owners',{}).get(domain) if pack else None
+            if binding:
+                from workbench_db.v4_period_pg_r1 import read
+                if security_id is not None:return read(self.api.root,binding,day,domain,self.api.token,security_id=security_id)
+                key=('pg-period-owner',self.api.token,day,domain,binding['sha256'])
+                if key not in self.api.cache:self.api.cache[key]=read(self.api.root,binding,day,domain,self.api.token)
+                return self.api.cache[key]
         pack=self.focus_projection(day) if domain=='forward' else None
         if not pack:return super().source(domain,day)
-        projection=deepcopy(pack[1]);projection['events']=[e for e in projection['events'] if e['trade_date']==day]
-        return projection
+        key=('focus-dated-forward',self.api.token,day,pack[0]['projection']['sha256'])
+        if key not in self.api.cache:
+            # Bound immutable source objects are never modified by readers.
+            # Copy the container and dated event selection, not every episode
+            # observation and settlement path on every read/count request.
+            projection=dict(pack[1]);projection['events']=[e for e in projection['events'] if e['trade_date']==day]
+            self.api.cache[key]=projection
+        return self.api.cache[key]
 
     def get(self,path,query):
         code,data=self._get_product(path,query)
@@ -149,7 +170,11 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     raise ValueError('PRODUCT_HISTORY_ONLY_SCOPE_MISMATCH')
                 facts=None
             else:
-                facts=json.loads(checked(self.api.root,manifest['market_facts']).read_bytes())
+                if manifest.get('contract_id')=='CORE_PRODUCT_DATED_READ_PACK_PG_MARKET_R2':
+                    from workbench_db.v4_market_fact_pg_r1 import read
+                    facts=read(self.api.root,manifest['market_facts'],day)
+                else:
+                    facts=json.loads(checked(self.api.root,manifest['market_facts']).read_bytes())
             self.api.cache[key]=(manifest,facts)
         return self.api.cache[key]
 
@@ -274,12 +299,13 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         data=aggregate(bars,period)
         if period!='D' and data:
             owner_domain='period_raw' if basis=='RAW' else 'period_adjusted'
-            period_rows=self.source(owner_domain,day)
+            period_rows=self.source(owner_domain,day,security_id=sid)
             if period_rows is None:
                 return self.missing(day,'stocks/'+sid+'/chart','DATED_'+owner_domain.upper()+'_OWNER_NOT_BOUND')
-            formal=next((r for r in period_rows if r['security_id']==sid and r['period_type']==('WEEKLY' if period=='W' else 'MONTHLY')),None)
+            formal=max((r for r in period_rows if r['security_id']==sid and r['period_type']==('WEEKLY' if period=='W' else 'MONTHLY')),key=lambda r:r.get('as_of_date',r.get('max_source_date','')),default=None)
             if formal:
-                data[-1].update(period_status=formal['period_status'],calendar_count=formal['calendar_count'],suspended_count=formal['suspended_count'],formal_period_source=self.api.candidate['owners'][day][owner_domain])
+                formal_ref=manifest.get('period_owners',{}).get(owner_domain) or self.api.candidate['owners'][day][owner_domain]
+                data[-1].update(period_status=formal['period_status'],calendar_count=formal['calendar_count'],suspended_count=formal['suspended_count'],formal_period_source=formal_ref)
         for i,b in enumerate(data):
             for n in (5,20,60):
                 w=data[max(0,i-n+1):i+1];b['ma'+str(n)]=sum(x['close'] for x in w)/n if len(w)==n and all(x['close'] is not None for x in w) else None
@@ -397,7 +423,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 selected_events.setdefault(e['entity_id'],e)
             changes=[]
             for e in selected_events.values():
-                row=deepcopy(stocks[e['entity_id']]);row['fields'].update(effective_event=owner_cell(e['event'],self.api.candidate['owners'][day]['forward'],'events.event',day),trade_date=owner_cell(day,self.api.candidate['owners'][day]['forward'],'events.trade_date',day));changes.append(row)
+                row=dict(stocks[e['entity_id']]);row['fields']=dict(row['fields']);row['fields'].update(effective_event=owner_cell(e['event'],self.api.candidate['owners'][day]['forward'],'events.event',day),trade_date=owner_cell(day,self.api.candidate['owners'][day]['forward'],'events.trade_date',day));changes.append(row)
             sectors=self.project('sectors',day);native={r['sector_id']:r for r in self.source('sector',day)}
             rotations=[r for r in sectors if r['fields']['output_state']['value'] in ROTATIONS and r['fields']['output_state']['value']!=r['fields']['prior_rotation_state']['value']]
             rotations.sort(key=lambda r:(0 if r['fields']['output_state']['value'] in ('ROTATION_OUT','ROTATION_FAILED') else 1,-(r['fields'].get('sector_rs5',{}).get('value') or 0),r['entity_id']))

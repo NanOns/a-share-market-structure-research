@@ -11,7 +11,7 @@ def main():
     heads=('data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json','data/v4/V4_DATA_ACCEPTED_HEAD.json')
     before={name:(SOURCE/name).read_bytes() for name in heads}
     OUT.mkdir(parents=True,exist_ok=True);count=linked=copied=0;skipped=[]
-    for tree in ('src','scripts','config','data','docs'):
+    for tree in ('src','scripts','config','data','docs','reports','migrations'):
         for base,dirs,files in os.walk(SOURCE/tree):
             dirs[:]=[name for name in dirs if name not in ('__pycache__','.git','.pytest_cache')]
             for name in files:

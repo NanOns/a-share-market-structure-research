@@ -21,7 +21,7 @@ def main():
     from workbench_service.core_product_bff_r1 import dated_product_manifest
     from workbench_analysis.period_indexed_closeout import CONTRACT as KERNEL_CONTRACT
     from workbench_analysis.operational_successor_v1 import accepted_api
-    parser=argparse.ArgumentParser();parser.add_argument('day');parser.add_argument('--label',default='R2')
+    parser=argparse.ArgumentParser();parser.add_argument('day');parser.add_argument('--label',default='R2');parser.add_argument('--checkpoints-only',action='store_true',help='Calculate unchanged kernels only; no PG publication or authority writes')
     args=parser.parse_args();day=args.day
     if not args.label.isalnum():raise ValueError('EXPLICIT_PERIOD_RUN_LABEL_REQUIRED')
     OUT.mkdir(parents=True,exist_ok=True);folder=OUT/args.label/day;folder.mkdir(parents=True,exist_ok=True)
@@ -63,6 +63,11 @@ def main():
             rows['period_raw'].extend(result['PERIOD_RAW']);rows['period_adjusted'].extend(result['PERIOD_ADJUSTED'])
             count+=1
             if count%100==0:print(json.dumps(dict(day=day,securities=count)),flush=True)
+    if args.checkpoints_only:
+        if head_path.read_bytes()!=before:raise ValueError('PERIOD_CHECKPOINT_HEAD_CHANGED')
+        (folder/'CHECKPOINTS_ONLY_RESULT.json').write_bytes(canonical(dict(day=day,securities=count,run_signature=run_signature,status='CALCULATION_CHECKPOINTS_ONLY_NOT_ACCEPTED',PG_publication=False,authority_publication=False,numeric_oracle='SEPARATE_REQUIRED')))
+        print('CALCULATION_CHECKPOINTS_ONLY_NOT_ACCEPTED',flush=True)
+        return
     bindings={}
     for domain,values in rows.items():
         payload=dict(contract_id=OWNER,T0=day,head_token=token,domain=domain,rows=values,

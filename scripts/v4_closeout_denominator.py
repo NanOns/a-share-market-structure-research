@@ -153,6 +153,9 @@ def remaining(label,full=False):
              FEP_AUTHORITY_TEST_DSN='host=127.0.0.1 port=55793 user=r4_isolated_admin dbname=fep_authority_isolated',
              FEP_SIGNAL_BASELINE32_FRESH_TEST_DSN='host=127.0.0.1 port=55794 user=r4_isolated_admin dbname=fep_signal_baseline32_actual_fresh',
              FEP_SIGNAL_BASELINE32_UPGRADE_TEST_DSN='host=127.0.0.1 port=55793 user=r4_isolated_admin dbname=fep_signal_baseline32_upgrade')
+    if full:
+        env.update(FEP_E1_TEST_DSN='host=127.0.0.1 port=55793 user=r4_isolated_admin dbname=fep_e1_upgrade',
+                   FEP_TEST_RECEIPT_ROOT='G:/codex_tmp/v4_full_closeout_20261012/denominator/'+label+'_FEP_E1_RECEIPTS')
     targets=sorted({node.split('::')[0] for node in nodes}) if full else nodes
     cmd=[sys.executable,'-B','-m','pytest','-q',*targets,'--basetemp=G:/codex_tmp/test_temp/'+label,
          '-o','cache_dir=G:/codex_tmp/v4_full_closeout_20261012/pytest_cache','--junitxml='+str(prefix.with_suffix('.xml'))]

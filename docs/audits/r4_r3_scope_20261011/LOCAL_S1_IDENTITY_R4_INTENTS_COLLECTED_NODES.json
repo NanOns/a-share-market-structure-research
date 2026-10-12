@@ -1,0 +1,42 @@
+{
+  "contract_id": "R4_R3_EXACT_COLLECTED_NODE_SET_R1",
+  "nodes": [
+    "tests/test_v4_focus_source_identity_r4.py::test_internal_id_resolves_cash_action_on_real_pg_path",
+    "tests/test_v4_focus_source_identity_r4.py::test_mismatched_series_symbol_is_refused_not_unadjusted",
+    "tests/test_v4_focus_source_identity_r4.py::test_missing_identity_and_unsupported_action_fail_closed",
+    "tests/test_v4_focus_source_identity_r4.py::test_future_action_does_not_change_earlier_coordinate",
+    "tests/test_v4_focus_source_identity_r4.py::test_bound_map_rejects_invalid_or_duplicate_identity[rows0-KEY_INVALID]",
+    "tests/test_v4_focus_source_identity_r4.py::test_bound_map_rejects_invalid_or_duplicate_identity[rows1-IDENTITY_DUPLICATE]",
+    "tests/test_v4_focus_source_identity_r4.py::test_bound_map_rejects_invalid_or_duplicate_identity[rows2-IDENTITY_DUPLICATE]",
+    "tests/test_v4_exact_focus_path_r3.py::test_exact_coordinate_tie_and_real_metrics_consumer",
+    "tests/test_v4_exact_focus_path_r3.py::test_missing_session_remains_source_incomplete",
+    "tests/test_v4_exact_focus_path_r3.py::test_source_drift_and_missing_exact_refused",
+    "tests/test_v4_exact_focus_path_r3.py::test_mixed_row_date_and_float_raw_refused",
+    "tests/test_v4_exact_focus_path_r3.py::test_empty_and_duplicate_calendar_refused",
+    "tests/test_v4_exact_focus_path_r3.py::test_observation_coordinate_cancels_later_actions_without_decimal_approximation",
+    "tests/test_r2_focus_path_outcome.py::test_exit_followup_due_settlement_and_reentry_are_separate",
+    "tests/test_r2_focus_path_outcome.py::test_invalidated_episode_closes_and_settles_independently",
+    "tests/test_r2_focus_path_outcome.py::test_missing_suspension_and_future_corporate_action",
+    "tests/test_r2_focus_path_outcome.py::test_dated_owner_updates_preserve_history_and_reject_kernel_change",
+    "tests/test_r2_focus_native_core.py::test_native_facts_require_observation_date_and_matching_price_coordinate",
+    "tests/test_r2_focus_native_core.py::test_native_loader_rejects_future_row_and_parameter_revision",
+    "tests/test_v4_pg_journal_r4.py::test_native_journal_copy_on_write_failure_and_immutable_snapshot",
+    "tests/test_v4_pg_journal_r4.py::test_migration_idempotency_and_full_row_reconciliation",
+    "tests/test_v4_pg_journal_r4.py::test_journal_shared_lock_serializes_stale_head_and_export_failure",
+    "tests/test_v4_pg_journal_r4.py::test_staged_journal_fork_uses_frozen_version_and_new_cas_namespace"
+  ],
+  "modules": [
+    "tests/test_r2_focus_native_core.py",
+    "tests/test_r2_focus_path_outcome.py",
+    "tests/test_v4_exact_focus_path_r3.py",
+    "tests/test_v4_focus_source_identity_r4.py",
+    "tests/test_v4_pg_journal_r4.py"
+  ],
+  "source_sha256": {
+    "tests/test_v4_focus_source_identity_r4.py": "2288efc4c4a6e94305aba50ecebba40b7b9d10f08792ec9a88fbd20e16b6533a",
+    "tests/test_v4_exact_focus_path_r3.py": "0672b78442b08aee41d33f36935e80eaf7ffe0060c3f66aeed544a1471965e0c",
+    "tests/test_r2_focus_path_outcome.py": "4214127f332350245cb3cb075259386fb94f4cf4a5910a92de24fc84b0715483",
+    "tests/test_r2_focus_native_core.py": "307c22bc71c0e382a753c29f0e1972da88d3b83f9a95b2fb742b44e898cebb14",
+    "tests/test_v4_pg_journal_r4.py": "4451592393f8723f9028362a4c7d72a16e0bb300207db1af6a1f0d979522281a"
+  }
+}

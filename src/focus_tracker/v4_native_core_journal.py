@@ -45,6 +45,11 @@ def append(path,root,binding,expected,*,fail_after_append=False,path_inputs=None
         days={d:json.loads(p) for d,p in db.execute('SELECT day,payload FROM days ORDER BY day')}
         if path_inputs:
             from .v4_native_core_adapter import AcceptedPaths,enriched_project
+            if path_inputs.get('path_contract'):
+                from .v4_exact_identity_adapter_r4 import CONTRACT as exact_contract, AcceptedPaths as ExactPaths
+                if path_inputs['path_contract'] != exact_contract:
+                    raise SourceInvalid('JOURNAL_PATH_CONTRACT_UNSUPPORTED')
+                AcceptedPaths = ExactPaths
             db.execute('INSERT INTO day_inputs VALUES(?,?)',(day,canonical(path_inputs).decode()))
             current_paths=AcceptedPaths(root,path_inputs)
             if last and (last not in current_paths.calendar or current_paths.calendar.index(day)!=current_paths.calendar.index(last)+1):

@@ -49,6 +49,10 @@ def activate_workspace_sources(root):
     require_owned(root)
     manifest=verify_resources()
     identities={row['path']:row['sha256'] for row in manifest['resources']}
+    from .closeout_runtime_sources_r1 import admitted,AUTHORITY
+    repairs=admitted(root)
+    if repairs and identities.get(AUTHORITY)!=hashlib.sha256((Path(root)/AUTHORITY).read_bytes()).hexdigest():
+        raise ValueError('WORKSPACE_PACKAGE_RUNTIME_SOURCE_AUTHORITY_MISMATCH')
     policy=Path(root)/'config/read_only_operational_daily_release_policy_v1_1.json'
     if policy.is_file():
         required=json.loads(policy.read_bytes())['accepted_algorithm_bindings']
@@ -56,14 +60,17 @@ def activate_workspace_sources(root):
             ('config/v4_03_parameter_set_v1.json','config/v4_03_parameter_registry_v1.json')]
         for row in required:
             path=Path(root)/row['path']
-            if identities.get(row['path'])!=row['sha256'] or hashlib.sha256(path.read_bytes()).hexdigest()!=row['sha256']:
+            repair=repairs.get(row['path'])
+            resource_sha=repair['runtime']['sha256'] if repair else row['sha256']
+            if identities.get(row['path'])!=resource_sha or hashlib.sha256(path.read_bytes()).hexdigest()!=row['sha256']:
                 raise ValueError('WORKSPACE_PACKAGE_ALGORITHM_IDENTITY_MISMATCH')
     os.environ['DAAV4_WORKSPACE_ROOT']=str(Path(root).resolve())
     for row in manifest['module_locations']:
         if row['module'].startswith('workbench_desktop'):continue
         module=sys.modules.get(row['module'])
         if module is None:continue
-        candidate=Path(root)/row['path']
+        repair=repairs.get(row['path'])
+        candidate=Path(root)/(repair['runtime']['path'] if repair else row['path'])
         if candidate.is_file() and hashlib.sha256(candidate.read_bytes()).hexdigest()==identities[row['path']]:
             module.__file__=str(candidate)
             module.__spec__.origin=str(candidate)

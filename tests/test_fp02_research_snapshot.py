@@ -1,23 +1,34 @@
 """Isolated BFF contract tests. Synthetic rows never enter production snapshots."""
 import json
-import sqlite3
+import uuid
 import pytest
 from workbench_service.production_v4 import ProductionV4ResearchReader,reference,value_projection,frozen_current_reader,REQUIRED_METADATA,rollback_snapshot,POINTER
 from workbench_service.current_v4_context import canonical,SourceInvalid,digest
 from workbench_service.v4_daily_refresh import atomic_bytes
 from workbench_service.research_bff import ResearchBFF
 
-@pytest.fixture
-def reader(tmp_path):
-    path=tmp_path/'research.sqlite';db=sqlite3.connect(path)
-    db.executescript('CREATE TABLE objects(domain,id,name,symbol,state,payload,PRIMARY KEY(domain,id)); CREATE TABLE aliases(alias,id);CREATE TABLE members(sector,security);')
+def native_fixture_database(root,release_id='unit-test-only',events=False):
+    from workbench_db.v4_snapshot_pg_r2 import Builder
+    path=root/('research_'+uuid.uuid4().hex+'.pg.json');db=Builder(root,uuid.uuid4().hex)
+    db.executescript('CREATE TABLE objects(domain text,id text,name text,symbol text,state text,payload text,PRIMARY KEY(domain,id)); CREATE TABLE aliases(alias text,id text,PRIMARY KEY(alias,id));CREATE TABLE members(sector text,security text,PRIMARY KEY(sector,security));CREATE TABLE metadata(key text PRIMARY KEY,value text);')
     for i in range(7):
         row=dict(entity_id='SEC'+str(i),display_name='公司'+str(i),symbol='SH.'+str(i),fields={'close':dict(value=i,quality='KNOWN'),'state':dict(value='INELIGIBLE',quality='KNOWN')})
         db.execute('INSERT INTO objects VALUES(?,?,?,?,?,?)',('stocks',row['entity_id'],row['display_name'],row['symbol'],'INELIGIBLE',canonical(row).decode()))
         db.execute('INSERT INTO aliases VALUES(?,?)',('old'+str(i),row['entity_id']))
-    db.execute('INSERT INTO members VALUES(?,?)',('sector1','SEC2'));db.commit();db.close()
-    manifest=dict(database=reference(tmp_path,path),context=dict(accepted_trade_date='2026-09-30',data_updated_at='2026-10-01T00:00:00Z'),release_id='unit-test-only',source_contract_digest='a'*64,sources={'advanced':{'sha256':'b'*64}},quality='QUALITY_DEGRADED',gaps=[],counts={'stocks':7})
-    # Contract fixtures are isolated to pytest's E: temporary root.
+    db.execute('INSERT INTO members VALUES(?,?)',('sector1','SEC2'))
+    if events:
+        for suffix in ('event1','event2'):
+            row=dict(entity_id='SEC2',display_name='公司2',symbol='SH.2',fields={})
+            db.execute('INSERT INTO objects VALUES(?,?,?,?,?,?)',('events','SEC2:'+suffix,'公司2','SH.2','',canonical(row).decode()))
+    meta=dict(release_id=release_id,context=dict(accepted_trade_date='2026-09-30'),fixture_scope='SYNTHETIC_TEST_ONLY_NEVER_PRODUCTION')
+    descriptor=db.seal(meta);db.commit();db.close();atomic_bytes(path,canonical(descriptor))
+    return reference(root,path)
+
+@pytest.fixture
+def reader(tmp_path):
+    binding=native_fixture_database(tmp_path)
+    manifest=dict(database=binding,context=dict(accepted_trade_date='2026-09-30',data_updated_at='2026-10-01T00:00:00Z'),release_id='unit-test-only',source_contract_digest='a'*64,sources={'advanced':{'sha256':'b'*64}},quality='QUALITY_DEGRADED',gaps=[],counts={'stocks':7})
+    # Real native PG fixtures stay within pytest's G: test workspace.
     manifest['metadata']={k:'unit-test-only' for k in REQUIRED_METADATA}
     manifest['metadata'].update(trading_date='2026-09-30',evidence_origin='REAL_ACCEPTED_SOURCE')
     atomic_bytes(tmp_path/'manifest.json',canonical(manifest));atomic_bytes(tmp_path/'config/v4_research_snapshot_authority_v1.json',canonical({'manifest':reference(tmp_path,tmp_path/'manifest.json')}))
@@ -95,12 +106,11 @@ def test_rollback_rejects_ineligible_draft_before_pointer_swap(reader):
     assert path.read_bytes()==raw
 
 def test_alias_search_finds_multiple_event_objects_for_one_security(reader):
-    with sqlite3.connect(reader.path) as db:
-        for suffix in ('event1','event2'):
-            row=dict(entity_id='SEC2',display_name='公司2',symbol='SH.2',fields={})
-            db.execute('INSERT INTO objects VALUES(?,?,?,?,?,?)',('events','SEC2:'+suffix,'公司2','SH.2','',canonical(row).decode()))
-        db.commit()
-    stat=reader.path.stat();reader.file_signature=(stat.st_size,stat.st_mtime_ns)
+    manifest=json.loads((reader.root/'manifest.json').read_bytes())
+    manifest['database']=native_fixture_database(reader.root,events=True)
+    atomic_bytes(reader.root/'manifest.json',canonical(manifest))
+    atomic_bytes(reader.root/POINTER,canonical(dict(manifest=reference(reader.root,reader.root/'manifest.json'))))
+    reader=ProductionV4ResearchReader(reader.root)
     assert reader.query('events',{'q':'old2'})['total']==2
     assert reader.query('events',{'q':'old'})['total']==2
 
@@ -113,6 +123,7 @@ def test_staged_reader_verifies_candidate_while_live_joint_stays_old(reader):
     original=joint.read_bytes()
     manifest=json.loads((reader.root/live['manifest']['path']).read_bytes())
     manifest['release_id']='candidate';manifest['metadata']['release_id']='candidate'
+    manifest['database']=native_fixture_database(reader.root,release_id='candidate')
     path=reader.root/'candidate_manifest.json';atomic_bytes(path,canonical(manifest))
     candidate=dict(manifest=reference(reader.root,path))
     staged=ProductionV4ResearchReader(reader.root,snapshot_authority=candidate)

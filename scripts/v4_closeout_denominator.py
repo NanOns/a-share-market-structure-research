@@ -138,10 +138,17 @@ def collect(modules):
     emit('COLLECTION_EXECUTION.json',dict(command=cmd,exit_code=result.returncode,node_count=len(collected)))
     return result.returncode
 
-def remaining(label,full=False):
+def remaining(label,full=False,failed_from=None):
     if not label.isalnum():
         raise ValueError('EXPLICIT_LABEL_REQUIRED')
     nodes=json.loads((OUT/'V4_LEGAL_TEST_DENOMINATOR.json').read_bytes())['collected_nodes'] if full else json.loads((OUT/'REMAINING_FAILURE_NODEIDS.json').read_bytes())
+    if failed_from:
+        legal=json.loads((OUT/'V4_LEGAL_TEST_DENOMINATOR.json').read_bytes())['collected_nodes']
+        def junit_identity(node):
+            parts=node.split('::');return parts[0].removesuffix('.py').replace('/','.')+('.'+'.'.join(parts[1:-1]) if len(parts)>2 else '')+'::'+parts[-1]
+        wanted={c.get('classname')+'::'+c.get('name') for c in ET.parse(failed_from).findall('.//testcase') if any(c.find(tag) is not None for tag in ('failure','error','skipped'))}
+        nodes=[n for n in legal if junit_identity(n) in wanted]
+        if {junit_identity(n) for n in nodes}!=wanted:raise ValueError('FAILED_NODE_IDENTITY_MAPPING_INCOMPLETE')
     prefix=OUT/label
     if prefix.with_suffix('.xml').exists():
         raise ValueError('PRESERVE_PRIOR_EXECUTION')
@@ -155,20 +162,25 @@ def remaining(label,full=False):
              FEP_SIGNAL_BASELINE32_UPGRADE_TEST_DSN='host=127.0.0.1 port=55793 user=r4_isolated_admin dbname=fep_signal_baseline32_upgrade')
     if full:
         env.update(FEP_E1_TEST_DSN='host=127.0.0.1 port=55793 user=r4_isolated_admin dbname=fep_e1_upgrade',
+                   FEP_E5_TEST_DSN='host=127.0.0.1 port=55793 user=r4_isolated_admin dbname=fep_e5b_upgrade',
+                   V4_10_DISPOSABLE_TEST_DSN='host=127.0.0.1 port=55791 user=r4_isolated_admin dbname=postgres',
+                   WORKBENCH_PG_DSN='host=127.0.0.1 port=55791 user=r4_isolated_admin dbname=postgres',
                    FEP_TEST_RECEIPT_ROOT='G:/codex_tmp/v4_full_closeout_20261012/denominator/'+label+'_FEP_E1_RECEIPTS')
-    targets=sorted({node.split('::')[0] for node in nodes}) if full else nodes
+    if failed_from:
+        response=prefix.with_suffix('.args');response.write_text('\n'.join(nodes)+'\n',encoding='utf8');targets=['@'+str(response)]
+    else:targets=sorted({node.split('::')[0] for node in nodes}) if full else nodes
     cmd=[sys.executable,'-B','-m','pytest','-q',*targets,'--basetemp=G:/codex_tmp/test_temp/'+label,
          '-o','cache_dir=G:/codex_tmp/v4_full_closeout_20261012/pytest_cache','--junitxml='+str(prefix.with_suffix('.xml'))]
     with prefix.with_suffix('.log').open('w',encoding='utf8') as f:
         result=subprocess.run(cmd,cwd=ROOT,env=env,stdout=f,stderr=subprocess.STDOUT)
     emit(label+'_EXECUTION.json',dict(command=cmd,exit_code=result.returncode,expected_nodes=len(nodes),
-         scope='FULL_ADDITIVE_LEGAL_NODE_UNION_NO_EXCLUSIONS' if full else 'ONLY_ORIGINAL_FAILURE_ERROR_SKIP_NODES_EXCLUDING_THREE_REPAIRED_MODULES'))
+         scope='EXACT_FULL_RUN_FAILURE_ERROR_SKIP_SET_NO_OMISSIONS' if failed_from else 'FULL_ADDITIVE_LEGAL_NODE_UNION_NO_EXCLUSIONS' if full else 'ONLY_ORIGINAL_FAILURE_ERROR_SKIP_NODES_EXCLUDING_THREE_REPAIRED_MODULES'))
     return result.returncode
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--collect',action='store_true');p.add_argument('--remaining');p.add_argument('--full');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--collect',action='store_true');p.add_argument('--remaining');p.add_argument('--full');p.add_argument('--failed-from',type=Path);a=p.parse_args()
     if a.full:
-        raise SystemExit(remaining(a.full,full=True))
+        raise SystemExit(remaining(a.full,full=True,failed_from=a.failed_from))
     if a.remaining:
         raise SystemExit(remaining(a.remaining))
     m=build();raise SystemExit(collect(m) if a.collect else 0)

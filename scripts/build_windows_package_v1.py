@@ -105,9 +105,15 @@ def prepare():
     module_locations=list(graph['modules'])
     known_modules={row['module'] for row in module_locations}
     policy=json.loads((ROOT/'config/read_only_operational_daily_release_policy_v1_1.json').read_bytes())
+    from workbench_desktop.closeout_runtime_sources_r1 import admitted,AUTHORITY
+    runtime_repairs=admitted(ROOT)
+    if runtime_repairs:files.append(ROOT/AUTHORITY)
     for binding in policy['accepted_algorithm_bindings']:
         source=ROOT/binding['path']
-        if sha(source)!=binding['sha256']:raise ValueError('ACCEPTED_ALGORITHM_ORIGINAL_CHANGED')
+        if sha(source)!=binding['sha256']:
+            repair=runtime_repairs.get(binding['path'])
+            if not repair or sha(source)!=repair['runtime']['sha256']:raise ValueError('ACCEPTED_ALGORITHM_ORIGINAL_CHANGED:'+binding['path'])
+            files.extend(ROOT/repair[key]['path'] for key in ('upstream','runtime'))
         files.append(source)
         if source.suffix=='.py' and source.is_relative_to(ROOT/'src'):
             name='.'.join(source.relative_to(ROOT/'src').with_suffix('').parts)

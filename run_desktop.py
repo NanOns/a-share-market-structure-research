@@ -19,9 +19,17 @@ def main():
     parser.add_argument('--workspace', default='G:/codex work/大A交易')
     parser.add_argument('--port', type=int, default=28765)
     parser.add_argument('--no-browser', action='store_true')
+    parser.add_argument('--native-pg-roles', type=Path, help='G-local Windows user DPAPI credentials inside the selected workspace')
     parser.add_argument('--task', choices=('inspect-package','qa-e2e','qa-daily-replay','qa-tray'))
     parser.add_argument('--report')
     args = parser.parse_args()
+    selected_root=Path(args.workspace).resolve()
+    role_file=args.native_pg_roles.resolve() if args.native_pg_roles else selected_root/'config/native_pg_roles.dpapi'
+    if args.native_pg_roles or role_file.is_file():
+        if selected_root.drive.upper()!='G:' or role_file!=selected_root/'config/native_pg_roles.dpapi':
+            raise ValueError('EXACT_G_WORKSPACE_NATIVE_ROLE_FILE_REQUIRED')
+        from scripts.v4_closeout_prepare_formal_pg_roles import load_credentials,ROLES
+        os.environ['V4_NATIVE_PG_DSN']=load_credentials(role_file)[ROLES[1]]
     from workbench_desktop.storage import atomic, verify_resources, WorkspaceLease, g_path
     if getattr(sys, 'frozen', False):
         from workbench_desktop.storage import resource_root

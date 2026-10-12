@@ -9,6 +9,23 @@ import pytest
 REPOSITORY=Path(__file__).resolve().parents[1]
 
 @pytest.fixture(autouse=True)
+def original_fep_feature_owner_envelope(request,monkeypatch):
+    relative=request.node.path.relative_to(REPOSITORY).as_posix()
+    if relative!='tests/fep/test_feature_owner.py' or request.function.__name__!='test_all_47_accepted_historical_fields_and_seven_relative_rps_are_copied':return
+    from tests.remainder_historical_profiles import profile,install
+    commit='06549c102da2a203a19004fbeb17a0a0cf717b6a'
+    original=subprocess.check_output(['git','show',commit+':'+relative],cwd=REPOSITORY)
+    assert original==request.node.path.read_bytes()
+    contract='config/fep_feature_owner_contract_v1.json'
+    assert subprocess.check_output(['git','show',commit+':'+contract],cwd=REPOSITORY)==(REPOSITORY/contract).read_bytes()
+    root,entries=profile(commit);request.addfinalizer(install(monkeypatch,root,entries))
+    monkeypatch.setattr(request.module,'ROOT',root);monkeypatch.setattr(request.module,'OUT',root/'reports/fep_e1_r2_final')
+    Path('G:/codex_tmp/v4_full_closeout_20261012/denominator/FEP_ORIGINAL_OWNER_ENVELOPE_SCOPE.json').write_text(json.dumps(dict(
+        commit=commit,node=request.node.nodeid,original_test_identical=True,original_owner_contract_identical=True,
+        scope='HISTORICAL_RECONSTRUCTED_OWNER_ENVELOPE_ONLY',current_production_acceptance=False,
+        other_module_nodes_use_current_contract=True),indent=2),encoding='utf8')
+
+@pytest.fixture(autouse=True)
 def original_pre_successor_v13_reader_gate(request,monkeypatch):
     relative=request.node.path.relative_to(REPOSITORY).as_posix()
     if relative!='tests/test_remainder_historical_routing.py' or request.function.__name__!='test_old_v13_reader_remains_pinned':return

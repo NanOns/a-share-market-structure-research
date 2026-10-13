@@ -18,6 +18,10 @@ REQUIRED_SOURCES={
 }
 REQUIRED_SOURCES.add('config/v4_portable_historical_archive_witness_r1.json')
 REQUIRED_SOURCES.update(('config/v4_03_parameter_set_v1.json','config/v4_03_parameter_registry_v1.json'))
+REQUIRED_SOURCES.update(('src/workbench_db/v4_operational_owner_authority_v2.py',
+    'src/workbench_db/v4_operational_owner_pg_closeout.py',
+    'src/workbench_analysis/operational_successor_v1.py',
+    'src/workbench_service/core_product_server_r1.py'))
 
 def verify_loaded_versions(bindings):
     import sys,hashlib

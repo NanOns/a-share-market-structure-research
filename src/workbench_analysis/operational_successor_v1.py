@@ -84,8 +84,13 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
         self.snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
         self.user_authorized_cutover=True;self.independent_external_acceptance=False
         self.domain_disposition={'rotation':'VALIDATION_ONGOING','forward':'VALIDATION_ONGOING'}
-        from workbench_db.v4_operational_owner_pg_closeout import load_authority
-        self.pg_owner_authority=load_authority(root,candidate,self.token)
+        from workbench_db.v4_operational_owner_authority_v2 import KEY,load
+        self.embedded_pg_owner_authority=KEY in candidate
+        if self.embedded_pg_owner_authority or candidate.get('exact_daily_adjustment_contract'):
+            self.pg_owner_authority=load(root,candidate)
+        else:
+            from workbench_db.v4_operational_owner_pg_closeout import load_authority
+            self.pg_owner_authority=load_authority(root,candidate,self.token)
 
     def context(self):
         from .tdx_member_retro_r43 import metadata
@@ -108,6 +113,9 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
                 domains=[name for name,value in self.candidate['owners'][day].items() if value==binding]
                 selected=domain if domain in domains else domains[0] if len(domains)==1 else None
                 if selected is None:raise ValueError('PG_OPERATIONAL_OWNER_AMBIGUOUS_BINDING')
+                if self.embedded_pg_owner_authority:
+                    from workbench_db.v4_operational_owner_authority_v2 import read
+                    return read(root,self.pg_owner_authority,day,selected,binding)
                 return pg_read(root,self.pg_owner_authority['owners'][day][selected],self.token,day,selected,binding)
             scope['rows']=pg_rows
             # Cached owners were fully verified by pg_rows on first access.
@@ -115,7 +123,11 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
             # reparsing the complete payload on every request.
             for name in (domain,'relative_sector') if domain=='profile' else (domain,):
                 if (day,name) in self.cache:
-                    attest_cached(self.root,self.pg_owner_authority['owners'][day][name],name,self.candidate['owners'][day][name])
+                    if self.embedded_pg_owner_authority:
+                        from workbench_db.v4_operational_owner_authority_v2 import attest
+                        attest(self.root,self.pg_owner_authority,day,name,self.candidate['owners'][day][name])
+                    else:
+                        attest_cached(self.root,self.pg_owner_authority['owners'][day][name],name,self.candidate['owners'][day][name])
         return FunctionType(original.__code__,scope)(self,domain,day,token)
 
     def dispatch(self,url,token=None):

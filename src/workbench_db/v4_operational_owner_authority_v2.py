@@ -14,6 +14,19 @@ from workbench_analysis.operational_daily_storage_v1 import atomic_json
 CONTRACT='V4_HEAD_EMBEDDED_NATIVE_PG_OWNER_AUTHORITY_V2'
 KEY='native_pg_owner_authority'
 
+def prepare_successor(root,candidate):
+    """Append dated facts and bind their authority before the single Head CAS."""
+    root=Path(root).resolve()
+    predecessor=json.loads(checked(root,candidate['predecessor']).read_bytes())
+    if KEY in predecessor:
+        prior=load(root,predecessor)
+    else:
+        from .v4_operational_owner_pg_closeout import load_authority
+        prior=load_authority(root,predecessor,candidate['predecessor']['sha256'])
+    binding,receipt=prepare(root,candidate,prior)
+    candidate[KEY]=binding
+    return receipt
+
 def validate(candidate,authority):
     if authority.get('contract_id')!=CONTRACT:raise ValueError('PG_OWNER_EMBEDDED_CONTRACT_REQUIRED')
     if any(authority.get(key) is not False for key in ('historical_PIT_permission','AS_RECORDED','PIT_ELIGIBLE')):

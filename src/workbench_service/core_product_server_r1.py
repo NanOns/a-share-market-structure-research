@@ -65,8 +65,11 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None):
                             cache.clear();cache.update(signature=signature,bff=CoreProductBFFR1(api,jobs,isolated_history_authority=isolated_history_authority),sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
                             native=getattr(api,'pg_owner_authority',None)
                             if native is not None:
+                                collect(native)
+                                cache['sources'].update({p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
                                 identities=[json.loads((root/binding['path']).read_bytes())['database_identity']
-                                            for owners in native['owners'].values() for binding in owners.values()]
+                                            for owners in native['owners'].values() for entry in owners.values()
+                                            for binding in [entry['descriptor'] if getattr(api,'embedded_pg_owner_authority',False) else entry]]
                                 if not identities or any(value!=identities[0] for value in identities):
                                     raise RuntimeError('PG_OPERATIONAL_OWNER_DATABASE_IDENTITY_MISMATCH')
                                 cache['operational_database_identity']=identities[0]

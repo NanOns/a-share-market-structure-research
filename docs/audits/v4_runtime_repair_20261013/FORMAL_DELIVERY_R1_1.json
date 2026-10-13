@@ -1,0 +1,149 @@
+{
+  "contract_id": "V4_R1_1_FORMAL_DELIVERY_RECEIPT",
+  "acceptance": "PASS_SCOPED_PRODUCTION",
+  "T0": "2026-10-13",
+  "context_token": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+  "package": "V4_PACKAGE_1.0.0_b06b274246d5",
+  "pid": 1172,
+  "job": {
+    "job_id": "f6d227b93468464d8b7b548b9bec3949",
+    "mode": "SEALED_RESUME",
+    "job_mode": "CATCH_UP",
+    "target_trade_date": "2026-10-13",
+    "stage_state": "PUBLISHED_FULL",
+    "started_at": "2026-10-14T07:26:51.889046+08:00",
+    "finished_at": "2026-10-14T07:29:19.884923+08:00",
+    "error_code": null,
+    "stage": "PUBLISHED",
+    "stage_started_at": "2026-10-14T07:29:19.858179+08:00",
+    "last_progress_at": "2026-10-14T07:29:19.858179+08:00",
+    "processed": null,
+    "total": null,
+    "unit": null,
+    "recent_message": "PUBLISHED",
+    "heartbeat_at": "2026-10-14T07:29:18.004469+08:00",
+    "elapsed_seconds": 147.995877,
+    "stage_elapsed_seconds": 0.026744,
+    "seconds_since_progress": 740.438348,
+    "contract_id": "V4_DAILY_PROGRESS_R1",
+    "eta_seconds": null,
+    "error_detail": null,
+    "head_unchanged": false,
+    "worker_error": null,
+    "last_published_trade_date": "2026-10-13"
+  },
+  "transaction": {
+    "current_joint": {
+      "bytes": 2870,
+      "path": "data/v4/current_native_snapshots_v3/974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3/f51cb4d9cde2b33af57b8406622d111fdca24c206c7337b099acbe1eeb300298/JOINT.json",
+      "sha256": "0d8372fa81a34f5c12e41e6f2432af449abaf2bcdb658e4ac38dbf8bd25c22b6"
+    },
+    "current_joint_predecessor": {
+      "bytes": 2910,
+      "path": "data/v4/current_joint_predecessors/696fc0b9b91b3003ab0791a114dfa5e6b87e7febdc720e27ffba5248e798bc02.json",
+      "sha256": "696fc0b9b91b3003ab0791a114dfa5e6b87e7febdc720e27ffba5248e798bc02"
+    },
+    "head_sha256": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+    "predecessor": {
+      "bytes": 51660,
+      "path": "data/v4/predecessors/d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc.json",
+      "sha256": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc"
+    },
+    "readback": {
+      "accepted_trade_date": "2026-10-13",
+      "checks": [
+        {
+          "accepted_trade_date": "2026-10-13",
+          "context_token": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+          "path": "/api/v4/context",
+          "status": "PASS"
+        },
+        {
+          "accepted_trade_date": "2026-10-13",
+          "context_token": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+          "path": "/api/operations/status",
+          "status": "PASS"
+        },
+        {
+          "accepted_trade_date": "2026-10-13",
+          "context_token": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+          "path": "/api/v4/stocks",
+          "status": "PASS"
+        },
+        {
+          "accepted_trade_date": "2026-10-13",
+          "context_token": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+          "path": "/api/v4/sectors",
+          "status": "PASS"
+        },
+        {
+          "accepted_trade_date": "2026-10-13",
+          "context_token": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+          "path": "/api/v4/market",
+          "status": "PASS"
+        },
+        {
+          "accepted_trade_date": "2026-10-13",
+          "context_token": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+          "path": "/api/v4/focus",
+          "status": "PASS"
+        }
+      ],
+      "context_token": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+      "status": "PASS"
+    },
+    "state": "COMMITTED"
+  },
+  "auto_daily_enabled": false,
+  "old_package_preserved": true,
+  "local_build_count": 2,
+  "formal_install_count": 1,
+  "core_replay_count": 1,
+  "scope": "Actual Core CPU source benchmark plus packaged Worker numeric revalidation/PG CPU formal benchmark; no second Core replay",
+  "known_ui_disclosures": [
+    "Missing optional metadata remains unknown; terminal progress banner retains age-of-last-progress wording"
+  ],
+  "readback": {
+    "accepted_trade_date": "2026-10-13",
+    "checks": [
+      {
+        "accepted_trade_date": "2026-10-13",
+        "context_token": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+        "path": "/api/v4/context",
+        "status": "PASS"
+      },
+      {
+        "accepted_trade_date": "2026-10-13",
+        "context_token": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+        "path": "/api/operations/status",
+        "status": "PASS"
+      },
+      {
+        "accepted_trade_date": "2026-10-13",
+        "context_token": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+        "path": "/api/v4/stocks",
+        "status": "PASS"
+      },
+      {
+        "accepted_trade_date": "2026-10-13",
+        "context_token": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+        "path": "/api/v4/sectors",
+        "status": "PASS"
+      },
+      {
+        "accepted_trade_date": "2026-10-13",
+        "context_token": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+        "path": "/api/v4/market",
+        "status": "PASS"
+      },
+      {
+        "accepted_trade_date": "2026-10-13",
+        "context_token": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+        "path": "/api/v4/focus",
+        "status": "PASS"
+      }
+    ],
+    "context_token": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+    "status": "PASS"
+  }
+}

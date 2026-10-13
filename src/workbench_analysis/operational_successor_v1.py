@@ -119,6 +119,9 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
                     from workbench_db.v4_profile_semantic_corrections_pg_v1 import KEY,apply
                     if selected=='profile' and KEY in self.candidate:
                         content=apply(root,self.candidate,day,content)
+                    from workbench_db.v4_profile_dependent_corrections_pg_v1 import KEY as DEPENDENT,apply as apply_dependent
+                    if selected in ('focus','prewatch') and DEPENDENT in self.candidate:
+                        content=apply_dependent(root,self.candidate,day,selected,content)
                     return content
                 return pg_read(root,self.pg_owner_authority['owners'][day][selected],self.token,day,selected,binding)
             scope['rows']=pg_rows
@@ -127,6 +130,9 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
             # reparsing the complete payload on every request.
             for name in (domain,'relative_sector') if domain=='profile' else (domain,):
                 if (day,name) in self.cache:
+                    if name in ('focus','prewatch'):
+                        from workbench_db.v4_profile_dependent_corrections_pg_v1 import KEY as DEPENDENT,attest as attest_dependent
+                        if DEPENDENT in self.candidate:attest_dependent(self.root,self.candidate,day,name)
                     if name=='profile':
                         from workbench_db.v4_profile_semantic_corrections_pg_v1 import KEY,attest as attest_correction
                         if KEY in self.candidate:attest_correction(self.root,self.candidate,day)

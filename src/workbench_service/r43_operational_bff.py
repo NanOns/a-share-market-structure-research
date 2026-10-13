@@ -78,11 +78,11 @@ class OperationalResearchBFF:
             field_paths={k:'fields.'+k for k in fs}
             if domain=='stocks':
                 fs.update(r.get('derived_fields',{}));fs.update(r.get('states',{}));fs.update({k:v for k,v in quote.get(identity,{}).items() if k in ('open','high','low','close','amount','volume')})
+                field_paths.update({k:'derived_fields.'+k for k in r.get('derived_fields',{})})
+                field_paths.update({k:'states.'+k for k in r.get('states',{})})
                 if identity in correction_ids:
                     field_refs.update({k:correction for k in ('core_extension_risk','severe_extension')})
                     field_paths.update({k:'replacement.states.'+k for k in ('core_extension_risk','severe_extension')})
-                field_paths.update({k:'derived_fields.'+k for k in r.get('derived_fields',{})})
-                field_paths.update({k:'states.'+k for k in r.get('states',{})})
                 fs.update({k:d2.get(identity,{}).get(k,'UNKNOWN') for k in ('scenario','final_eligibility','maturity','health','validity','tracking')})
                 fs['relative_sector_state']=r.get('relative_sector_state',r.get('states',{}).get('relative_sector_state'))
                 leaves=leaf_by_security.get(identity,[])

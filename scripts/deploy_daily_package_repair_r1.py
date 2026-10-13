@@ -6,8 +6,8 @@ import psutil
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'docs/audits/v4_daily_package_repair_20261013_r1'
 RUNTIME=Path('G:/codex work/v4-production-20261012')
-BUILD=Path('G:/codex_tmp/windows_daily_repair_20261013_r3')
-SOURCE=Path('G:/codex work/大A交易_交付/windows_daily_repair_20261013_r3/versions/V4_PACKAGE_1.0.0_aa1f959c5e54')
+BUILD=Path('G:/codex_tmp/windows_daily_repair_20261013_r4')
+SOURCE=Path('G:/codex work/大A交易_交付/windows_daily_repair_20261013_r4/versions')/json.loads(next(BUILD.glob('resources_*/package_manifest.json')).read_bytes())['build_release_id']
 sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 def write(p,v):
     p=Path(p);p.parent.mkdir(parents=True,exist_ok=True)
@@ -27,7 +27,7 @@ def observe(label):
     return v
 def deploy():
     assert not (OUT/'DEPLOYMENT_R1.json').exists()
-    for name in ['SOURCE_IMPORT_QA_R3.json','LIFECYCLE_QA_R3.json']:
+    for name in ['SOURCE_IMPORT_QA_FINAL.json','LIFECYCLE_QA_FINAL.json']:
         v=json.loads((BUILD/name).read_bytes());assert v['status']=='PASS',v
         write(OUT/name,(BUILD/name).read_bytes())
     before=observe('BEFORE_DEPLOY_R1')
@@ -79,7 +79,32 @@ def retry():
     result=http('/api/v4/operations/daily-update/jobs/'+job['job_id']+'/retry',{},'POST')
     write(OUT/'EXPLICIT_AUTHORIZED_RETRY_R1.json',dict(before=job,result=result,authority='User direct repair instruction',observed_at=datetime.now(timezone.utc).isoformat()))
     print(json.dumps(result))
+def activate_installed():
+    before=json.loads((OUT/'BEFORE_DEPLOY_R1.json').read_bytes())
+    old_exe=RUNTIME/'versions/V4_PACKAGE_1.0.0_fe11c18cfdf7/DaAV4/DaAV4.exe'
+    try:
+        process=psutil.Process(before['desktop']['pid'])
+        if process.is_running():
+            assert Path(process.exe()).resolve()==old_exe.resolve()
+            process.terminate();process.wait(timeout=30)
+    except psutil.NoSuchProcess:pass
+    subprocess.run(['powershell.exe','-NoProfile','-Command',"Start-ScheduledTask -TaskName 'Codex-V4-OperationalDaily-28765'"],check=True,capture_output=True)
+    expected=json.loads((SOURCE/'DaAV4/_internal/resources/package_manifest.json').read_bytes())['source_sha']
+    deadline=time.monotonic()+120
+    while time.monotonic()<deadline:
+        try:
+            status=http('/api/v4/desktop/status')
+            if status['engine_state']=='RUNNING' and status['SOURCE_SHA']==expected:break
+        except Exception:pass
+        time.sleep(1)
+    else:raise RuntimeError('NEW_PACKAGE_START_TIMEOUT_REQUIRES_OLD_TASK_RESTORE')
+    assert heads()==before['heads']
+    http('/api/v4/operations/daily-update/settings',dict(auto_enabled=before['desktop']['auto_daily_enabled']),'PUT')
+    after=observe('AFTER_DEPLOY_R1')
+    assert after['context']['context_token']==before['context']['context_token']
+    write(OUT/'DEPLOYMENT_R1.json',dict(acceptance='PASS_NEW_PACKAGE_RESTART_LAST_GOOD_CONSERVED',before_pid=before['desktop']['pid'],after_pid=after['desktop']['pid'],new_source_sha=expected,heads_conserved=True,auto_enabled_restored=after['desktop']['auto_daily_enabled'],old_package_preserved=True,task_update='Native task cmdlets; system file execution policy unchanged'))
 if __name__=='__main__':
     if sys.argv[1]=='deploy':deploy()
     elif sys.argv[1]=='retry':retry()
+    elif sys.argv[1]=='activate':activate_installed()
     elif sys.argv[1]=='observe':observe(sys.argv[2])

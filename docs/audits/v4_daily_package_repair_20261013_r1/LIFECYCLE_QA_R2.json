@@ -1,0 +1,7 @@
+{
+  "executable": "G:\\codex work\\大A交易_交付\\windows_daily_repair_20261013_r2\\versions\\V4_PACKAGE_1.0.0_1870894dbead\\DaAV4\\DaAV4.exe",
+  "frozen": true,
+  "reason": "语法错误 在 \"PRAGMA\" 或附近的\nLINE 1: PRAGMA integrity_check\n        ^",
+  "status": "FAIL",
+  "traceback": "Traceback (most recent call last):\n  File \"run_desktop.py\", line 57, in main\n    from workbench_desktop.tray import DesktopTray\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"workbench_desktop\\qa.py\", line 127, in run\n    checked('SQLITE_INTEGRITY',db.execute('PRAGMA integrity_check').fetchone()[0]=='ok')\n                               ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"workbench_analysis\\operational_daily_jobs_pg_r1.py\", line 61, in execute\n    return self.pg.execute(replacements.get(query,query.replace('?', '%s')),params)\n           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"psycopg\\connection.py\", line 304, in execute\npsycopg.errors.SyntaxError: 语法错误 在 \"PRAGMA\" 或附近的\nLINE 1: PRAGMA integrity_check\n        ^\n"
+}

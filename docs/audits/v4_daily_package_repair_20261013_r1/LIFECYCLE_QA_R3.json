@@ -1,0 +1,7 @@
+{
+  "executable": "G:\\codex work\\大A交易_交付\\windows_daily_repair_20261013_r3\\versions\\V4_PACKAGE_1.0.0_aa1f959c5e54\\DaAV4\\DaAV4.exe",
+  "frozen": true,
+  "reason": "PG_STORE_PRESERVED_AFTER_LIFECYCLE",
+  "status": "FAIL",
+  "traceback": "Traceback (most recent call last):\n  File \"run_desktop.py\", line 57, in main\n    from workbench_desktop.tray import DesktopTray\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"workbench_desktop\\qa.py\", line 133, in run\n    checked('PG_STORE_PRESERVED_AFTER_LIFECYCLE',db.execute(\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        'SELECT count(*) FROM update_jobs'\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ).fetchone()[0]>0)\n    ^^^^^^^^^^^^^^^^^^\n  File \"workbench_desktop\\qa.py\", line 30, in checked\n    raise AssertionError(name)\nAssertionError: PG_STORE_PRESERVED_AFTER_LIFECYCLE\n"
+}

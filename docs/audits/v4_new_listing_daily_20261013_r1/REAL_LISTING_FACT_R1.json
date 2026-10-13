@@ -1,0 +1,48 @@
+{
+  "contract_id": "V4_NEW_LISTING_REAL_PROVIDER_CHECK_R1",
+  "acceptance": "PASS_CURRENT_OPERATIONAL_LISTING_FACT",
+  "identity": {
+    "path": "data/v4/dynamic_daily_sources/new_listing_r1/2026-10-13/identities/7c22a6643851ae9e56df36140ba7c8a19521ce3f4052122bbc71d62ebc14655b/IDENTITY.json",
+    "sha256": "7b18a27e1dfdfe8e7162e1492778111928b41ed2c1e93c6bfc8d397154741d46",
+    "bytes": 3114684
+  },
+  "added": [
+    {
+      "AS_RECORDED": false,
+      "PIT_ELIGIBLE": false,
+      "absence_is_delisting_evidence": false,
+      "bao_daily_row_is_identity_authority": false,
+      "board_scope": "CHINEXT",
+      "delist_date": null,
+      "exchange": "SZ",
+      "identity_status": "IDENTITY_BOUND",
+      "knowledge_lineage": "CURRENT_DATED_OPERATIONAL_PROVIDER_FACT",
+      "knowledge_time": "2026-10-13T11:35:57.023965+00:00",
+      "list_date": "2026-10-13",
+      "name": "粤芯半导体",
+      "security_id": "SEC-7C8816903D4BA9B6267531D5705888B9",
+      "security_type": "A_STOCK",
+      "source_binding": {
+        "bytes": 478,
+        "path": "data/v4/dynamic_daily_sources/new_listing_r1/2026-10-13/SZ.301660.json",
+        "sha256": "7a960ea28f21dbba08a248014a43aed15dfa6866256ded3a120b57c5ac34da03"
+      },
+      "source_security_key": "SZ.301660",
+      "symbol": "SZ.301660",
+      "trade_date": "2026-10-13"
+    }
+  ],
+  "total": 5225,
+  "parent": {
+    "bytes": 3112040,
+    "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/artifact.json",
+    "sha256": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf"
+  },
+  "TDX_read_only": true,
+  "source_freeze": {
+    "path": "data/v4/dynamic_daily_sources/daily_freezes/2026-10-13/59740ea0d0559253f7f1859b8b599a05bc899f187a63fc07ddcd145ade5cedd2.json",
+    "sha256": "25da5a1ed222723c27fdb4b416f2298d8dd724c8aef0e15b37bf6a8a25c78a96"
+  },
+  "phase": "PROVIDER_METADATA_AND_NATIVE_ROSTER_CHECK",
+  "next_stage": "REAL_OWNER_AND_PG_PUBLICATION_VALIDATION"
+}

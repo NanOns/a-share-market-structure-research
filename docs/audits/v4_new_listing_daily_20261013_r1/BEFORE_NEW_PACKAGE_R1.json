@@ -1,0 +1,414 @@
+{
+  "observed_at": "2026-10-13T11:39:33.047092+00:00",
+  "daily": {
+    "contract_id": "V4_OPERATIONAL_DAILY_CALENDAR_V2",
+    "observed_at": "2026-10-13T19:39:26.219976+08:00",
+    "last_good_trade_date": "2026-10-12",
+    "requested_through_date": "2026-10-13",
+    "latest_closed_session": "2026-10-13",
+    "eligible_target": "2026-10-13",
+    "missing_sessions": [
+      "2026-10-13"
+    ],
+    "eligible_sessions": [
+      "2026-10-13"
+    ],
+    "scheduled_sessions": [],
+    "next_trigger_at": "2026-10-13T20:05:00+08:00",
+    "calendar_binding": {
+      "bytes": 5147,
+      "path": "data/v4/dm01_r4/calendar/SESSION_CALENDAR_20260930_20261231_R1.json",
+      "sha256": "3cbce200d5dff2916b98af050c51c16fc2906c82da7214af9d8f0c736fc12465"
+    },
+    "calendar_acceptance": "ACCEPTED_CALENDAR_BYTES_LOCAL_AUDIT_CANDIDATE",
+    "status": "TIME_ELIGIBLE",
+    "source_ready": false,
+    "head_mutated": false,
+    "external_acceptance": "NOT_GRANTED",
+    "last_good_head_sha256": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc",
+    "settings": {
+      "contract_id": "READ_ONLY_OPERATIONAL_DAILY_RELEASE_POLICY_V1_1",
+      "auto_enabled": true,
+      "revision": 4,
+      "updated_at": "2026-10-13T19:08:35.235488+08:00",
+      "first_check": "18:35",
+      "timezone": "Asia/Shanghai",
+      "retry_times": [
+        "19:05",
+        "19:35",
+        "20:05",
+        "20:35",
+        "21:05",
+        "22:05"
+      ],
+      "service_alive": true,
+      "operational_mode": "AUTO_ON",
+      "permission_scope": "READ_ONLY_OPERATIONAL_RESEARCH",
+      "publication_ready": true,
+      "policy_binding": {
+        "path": "config/read_only_operational_daily_release_policy_v1_1.json",
+        "sha256": "5c025d6c40774241ac86637f883824b5b98d14ce1c186c5b25fdcc162215a53a"
+      }
+    },
+    "last_job": {
+      "job_id": "ebfc419323f34729b0b56093a6790a09",
+      "trigger": "SCHEDULER",
+      "mode": "CATCH_UP",
+      "through_date": "2026-10-13",
+      "status": "WAIT_DATED_IDENTITY_AUTHORITY",
+      "created_at": "2026-10-13T18:35:04.578903+08:00",
+      "finished_at": null,
+      "idempotency_key": "AUTO:2026-10-13:1",
+      "error": "NEW_DATED_IDENTITY_SOURCE_NOT_INDEPENDENTLY_ADMITTED",
+      "days": [
+        {
+          "job_id": "ebfc419323f34729b0b56093a6790a09",
+          "trade_date": "2026-10-13",
+          "state": "WAIT_DATED_IDENTITY_AUTHORITY",
+          "attempt_count": 4,
+          "next_retry_at": "2026-10-13T20:05:00+08:00",
+          "source_checks": {
+            "status": "WAIT_DATED_IDENTITY_AUTHORITY",
+            "source_freeze": {
+              "path": "data/v4/dynamic_daily_sources/daily_freezes/2026-10-13/be9bac546483670d265c3ee6a9eeb656e677b27f5e40d8f1ff2f306120a9932e.json",
+              "sha256": "05ce167afde3b94ec2b662aa352eaedac158c683b6e2a79a1a8716e8699dd4d3"
+            },
+            "tdx_bar_count": 5212,
+            "baostock_row_count": 5225,
+            "source_captured": true,
+            "source_ready": false,
+            "derived_ready": false,
+            "published": false,
+            "last_good_preserved": true,
+            "first_capture_source_candidate": {
+              "status": "CANDIDATE_PRODUCED",
+              "candidate": {
+                "path": "data/v4/source_candidates/2026-10-13/2d8dfd47f1fe5446e929b4b7f3ec7e99f345850149043f08a7ad5d832ccef88b/capture.json",
+                "sha256": "7f62f11047166c789183706512f827f7961719830dcea9822e7d1aef854e2d50",
+                "bytes": 216048
+              },
+              "production": false
+            },
+            "source_readiness": {
+              "path": "data/v4/dynamic_daily_sources/source_readiness/2026-10-13/ec04b279942d4a615f95a97437df31c54c4f587eea89a3819b58b1e2af2e125b.json",
+              "sha256": "5f9fb018a5b3a9b3ba723b6621675537107e5727a3e8c54c3b0f21dc0f04ddac"
+            },
+            "reason": "NEW_DATED_IDENTITY_SOURCE_NOT_INDEPENDENTLY_ADMITTED"
+          }
+        }
+      ]
+    },
+    "active_job": {
+      "job_id": "ebfc419323f34729b0b56093a6790a09",
+      "trigger": "SCHEDULER",
+      "mode": "CATCH_UP",
+      "through_date": "2026-10-13",
+      "status": "WAIT_DATED_IDENTITY_AUTHORITY",
+      "created_at": "2026-10-13T18:35:04.578903+08:00",
+      "finished_at": null,
+      "idempotency_key": "AUTO:2026-10-13:1",
+      "error": "NEW_DATED_IDENTITY_SOURCE_NOT_INDEPENDENTLY_ADMITTED",
+      "days": [
+        {
+          "job_id": "ebfc419323f34729b0b56093a6790a09",
+          "trade_date": "2026-10-13",
+          "state": "WAIT_DATED_IDENTITY_AUTHORITY",
+          "attempt_count": 4,
+          "next_retry_at": "2026-10-13T20:05:00+08:00",
+          "source_checks": {
+            "status": "WAIT_DATED_IDENTITY_AUTHORITY",
+            "source_freeze": {
+              "path": "data/v4/dynamic_daily_sources/daily_freezes/2026-10-13/be9bac546483670d265c3ee6a9eeb656e677b27f5e40d8f1ff2f306120a9932e.json",
+              "sha256": "05ce167afde3b94ec2b662aa352eaedac158c683b6e2a79a1a8716e8699dd4d3"
+            },
+            "tdx_bar_count": 5212,
+            "baostock_row_count": 5225,
+            "source_captured": true,
+            "source_ready": false,
+            "derived_ready": false,
+            "published": false,
+            "last_good_preserved": true,
+            "first_capture_source_candidate": {
+              "status": "CANDIDATE_PRODUCED",
+              "candidate": {
+                "path": "data/v4/source_candidates/2026-10-13/2d8dfd47f1fe5446e929b4b7f3ec7e99f345850149043f08a7ad5d832ccef88b/capture.json",
+                "sha256": "7f62f11047166c789183706512f827f7961719830dcea9822e7d1aef854e2d50",
+                "bytes": 216048
+              },
+              "production": false
+            },
+            "source_readiness": {
+              "path": "data/v4/dynamic_daily_sources/source_readiness/2026-10-13/ec04b279942d4a615f95a97437df31c54c4f587eea89a3819b58b1e2af2e125b.json",
+              "sha256": "5f9fb018a5b3a9b3ba723b6621675537107e5727a3e8c54c3b0f21dc0f04ddac"
+            },
+            "reason": "NEW_DATED_IDENTITY_SOURCE_NOT_INDEPENDENTLY_ADMITTED"
+          }
+        }
+      ]
+    },
+    "last_catch_up_job": {
+      "job_id": "ebfc419323f34729b0b56093a6790a09",
+      "trigger": "SCHEDULER",
+      "mode": "CATCH_UP",
+      "through_date": "2026-10-13",
+      "status": "WAIT_DATED_IDENTITY_AUTHORITY",
+      "created_at": "2026-10-13T18:35:04.578903+08:00",
+      "finished_at": null,
+      "idempotency_key": "AUTO:2026-10-13:1",
+      "error": "NEW_DATED_IDENTITY_SOURCE_NOT_INDEPENDENTLY_ADMITTED",
+      "days": [
+        {
+          "job_id": "ebfc419323f34729b0b56093a6790a09",
+          "trade_date": "2026-10-13",
+          "state": "WAIT_DATED_IDENTITY_AUTHORITY",
+          "attempt_count": 4,
+          "next_retry_at": "2026-10-13T20:05:00+08:00",
+          "source_checks": {
+            "status": "WAIT_DATED_IDENTITY_AUTHORITY",
+            "source_freeze": {
+              "path": "data/v4/dynamic_daily_sources/daily_freezes/2026-10-13/be9bac546483670d265c3ee6a9eeb656e677b27f5e40d8f1ff2f306120a9932e.json",
+              "sha256": "05ce167afde3b94ec2b662aa352eaedac158c683b6e2a79a1a8716e8699dd4d3"
+            },
+            "tdx_bar_count": 5212,
+            "baostock_row_count": 5225,
+            "source_captured": true,
+            "source_ready": false,
+            "derived_ready": false,
+            "published": false,
+            "last_good_preserved": true,
+            "first_capture_source_candidate": {
+              "status": "CANDIDATE_PRODUCED",
+              "candidate": {
+                "path": "data/v4/source_candidates/2026-10-13/2d8dfd47f1fe5446e929b4b7f3ec7e99f345850149043f08a7ad5d832ccef88b/capture.json",
+                "sha256": "7f62f11047166c789183706512f827f7961719830dcea9822e7d1aef854e2d50",
+                "bytes": 216048
+              },
+              "production": false
+            },
+            "source_readiness": {
+              "path": "data/v4/dynamic_daily_sources/source_readiness/2026-10-13/ec04b279942d4a615f95a97437df31c54c4f587eea89a3819b58b1e2af2e125b.json",
+              "sha256": "5f9fb018a5b3a9b3ba723b6621675537107e5727a3e8c54c3b0f21dc0f04ddac"
+            },
+            "reason": "NEW_DATED_IDENTITY_SOURCE_NOT_INDEPENDENTLY_ADMITTED"
+          }
+        }
+      ]
+    },
+    "worker_error": null,
+    "last_good_preserved": true
+  },
+  "context": {
+    "context": {
+      "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+      "taxonomy": "TDX_INDUSTRY_CONCEPT",
+      "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+      "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+      "AS_RECORDED": false,
+      "PIT_ELIGIBLE": false,
+      "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+      "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+      "survivorship_bias_risk": true,
+      "trade_date": "2026-10-12",
+      "contract_id": "V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1",
+      "context_token": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc",
+      "publication_id": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc",
+      "accepted_trade_date": "2026-10-12",
+      "data_cutoff_date": "2026-10-12",
+      "available_trade_dates": [
+        "2026-09-28",
+        "2026-09-29",
+        "2026-09-30",
+        "2026-10-08",
+        "2026-10-09",
+        "2026-10-12"
+      ],
+      "membership_snapshot": {
+        "bytes": 2281,
+        "path": "data/v4/dynamic_daily_owners/2026-10-12/ae732fbf3c54b0cd88cebd7686e23c915e9e01e69982a25962eb053a46cb2580/MEMBER_SNAPSHOT_S.json",
+        "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+      },
+      "historical_PIT_permission": false,
+      "read_scope": "USER_AUTHORIZED_OPERATIONAL_DAILY",
+      "production_accepted": true,
+      "independent_external_acceptance": false,
+      "external_domain_disposition": {
+        "rotation": "VALIDATION_ONGOING",
+        "forward": "VALIDATION_ONGOING"
+      },
+      "rotation_validation_state": "VALIDATION_ONGOING",
+      "release_id": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc",
+      "model_namespace": "TDX_INDUSTRY_CONCEPT",
+      "data_updated_at": "2026-10-12T23:54:40.077249+00:00",
+      "scoped_release": true,
+      "operational_release_scope": [
+        "stocks_daily",
+        "sectors_current_facts",
+        "market_current",
+        "focus_read_corrected",
+        "diagnostics"
+      ],
+      "domain_readiness": {
+        "focus": {
+          "earliest_valid_date": "2026-09-28"
+        }
+      },
+      "read_source_label": "通达信最新成员回算；非历史当日成员",
+      "bff_contract_id": "CORE_PRODUCT_BFF_R1",
+      "product_engineering_acceptance": "EXTERNAL_PENDING",
+      "focus_write": false
+    },
+    "context_token": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc",
+    "production_accepted": true,
+    "status": "READY",
+    "counts": {
+      "stocks": 5224,
+      "sectors": 400,
+      "focus": 3025
+    },
+    "gaps": [
+      {
+        "domain": "rotation",
+        "state": "SOURCE_INCOMPLETE",
+        "validation_state": "VALIDATION_ONGOING",
+        "contract_id": "V4_OPERATIONAL_ROUTE_GAP_V2",
+        "task_stage": "FP03",
+        "missing_owner": "DATED_OPERATIONAL_ROTATION_OWNER",
+        "owner_scope": "2026-10-12 operational research",
+        "ui_presentation": "来源尚未接入；显示缺失 Owner 与修复阶段，保留当前已接受日期",
+        "next_task": "Bind real dated producer, verify source QA and token, then browser acceptance under FP03"
+      },
+      {
+        "domain": "forward",
+        "state": "SOURCE_INCOMPLETE",
+        "validation_state": "VALIDATION_ONGOING",
+        "contract_id": "V4_OPERATIONAL_ROUTE_GAP_V2",
+        "task_stage": "FP10",
+        "missing_owner": "DATED_OPERATIONAL_FORWARD_OWNER",
+        "owner_scope": "2026-10-12 operational research",
+        "ui_presentation": "来源尚未接入；显示缺失 Owner 与修复阶段，保留当前已接受日期",
+        "next_task": "Bind real dated producer, verify source QA and token, then browser acceptance under FP10"
+      },
+      {
+        "domain": "forward/statistics",
+        "state": "SOURCE_INCOMPLETE",
+        "reason": "NO_FORWARD_ENROLLMENT_STATISTICS_OWNER",
+        "contract_id": "V4_OPERATIONAL_ROUTE_GAP_V2",
+        "task_stage": "FP10",
+        "missing_owner": "DATED_OPERATIONAL_FORWARD_STATISTICS_OWNER",
+        "owner_scope": "2026-10-12 operational research",
+        "ui_presentation": "来源尚未接入；显示缺失 Owner 与修复阶段，保留当前已接受日期",
+        "next_task": "Bind real dated producer, verify source QA and token, then browser acceptance under FP10"
+      }
+    ],
+    "current_native_joint": {
+      "contract_id": "V4_CURRENT_NATIVE_PRODUCT_JOINT_V3",
+      "T0": "2026-10-12",
+      "business_token": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc",
+      "snapshot": {
+        "bytes": 27341,
+        "path": "data/v4/current_native_snapshots_v3/d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc/c9a30f51a95e9bd3179d5f865009a0712f606bc6a55c2cf05c0e233a2d0a0cbe/SNAPSHOT.json",
+        "sha256": "38b603c203a80f0358f5e5bf6e4132c34424e2fed9f539b030cb7a7ee9403eea"
+      },
+      "full_product_release": false
+    }
+  },
+  "desktop": {
+    "contract_id": "V4_WINDOWS_PACKAGE_RUNTIME_V1",
+    "engine_state": "RUNNING",
+    "reason": null,
+    "operation_id": "4edd5f7730454da99e86388cb521e995",
+    "instance_id": "5ae783ccf45c45269ab1bcb06fcfc66d",
+    "pid": 5252,
+    "port": 28765,
+    "APP_RESOURCE_ROOT": "G:\\codex work\\v4-production-20261012\\versions\\V4_PACKAGE_1.0.0_d6b09b5f0e67\\DaAV4\\_internal\\resources",
+    "WORKSPACE_ROOT": "G:\\codex work\\v4-production-20261012",
+    "BUILD_RELEASE_ID": "V4_PACKAGE_1.0.0_d6b09b5f0e67",
+    "SOURCE_SHA": "d6b09b5f0e67cc16409d63599025c2b39c52f03f91c8f389f7a8c10c116d7061",
+    "RESOURCE_MANIFEST_SHA": "62a472f46f723a94ceaa0fcac5e2962d48ecc8726b90206aee6b0d4df9f9d9de",
+    "WORKSPACE_SCHEMA_VERSION": 1,
+    "observed_at": "2026-10-13T11:39:33.046459+00:00",
+    "capture_requirement": "CAPTURE_REQUIRES_APP_RUNNING",
+    "auto_daily_enabled": true,
+    "scheduler_backend": "POSTGRESQL",
+    "scheduler_settings_state": "KNOWN",
+    "first_capture_state": "CHECK_SOURCE_AND_SCHEDULER",
+    "cached_snapshot": {
+      "context_token": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc",
+      "context": {
+        "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+        "taxonomy": "TDX_INDUSTRY_CONCEPT",
+        "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+        "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+        "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+        "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+        "AS_RECORDED": false,
+        "PIT_ELIGIBLE": false,
+        "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+        "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+        "survivorship_bias_risk": true,
+        "trade_date": "2026-10-12",
+        "contract_id": "V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1",
+        "context_token": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc",
+        "publication_id": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc",
+        "accepted_trade_date": "2026-10-12",
+        "data_cutoff_date": "2026-10-12",
+        "available_trade_dates": [
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30",
+          "2026-10-08",
+          "2026-10-09",
+          "2026-10-12"
+        ],
+        "membership_snapshot": {
+          "bytes": 2281,
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/ae732fbf3c54b0cd88cebd7686e23c915e9e01e69982a25962eb053a46cb2580/MEMBER_SNAPSHOT_S.json",
+          "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+        },
+        "historical_PIT_permission": false,
+        "read_scope": "USER_AUTHORIZED_OPERATIONAL_DAILY",
+        "production_accepted": true,
+        "independent_external_acceptance": false,
+        "external_domain_disposition": {
+          "rotation": "VALIDATION_ONGOING",
+          "forward": "VALIDATION_ONGOING"
+        },
+        "rotation_validation_state": "VALIDATION_ONGOING",
+        "release_id": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc",
+        "model_namespace": "TDX_INDUSTRY_CONCEPT",
+        "data_updated_at": "2026-10-12T23:54:40.077249+00:00",
+        "scoped_release": true,
+        "operational_release_scope": [
+          "stocks_daily",
+          "sectors_current_facts",
+          "market_current",
+          "focus_read_corrected",
+          "diagnostics"
+        ],
+        "domain_readiness": {
+          "focus": {
+            "earliest_valid_date": "2026-09-28"
+          }
+        },
+        "read_source_label": "通达信最新成员回算；非历史当日成员",
+        "bff_contract_id": "CORE_PRODUCT_BFF_R1",
+        "product_engineering_acceptance": "EXTERNAL_PENDING",
+        "focus_write": false
+      }
+    },
+    "engine_health": {
+      "status": "LIVE",
+      "consecutive_failures": 0,
+      "observed_at": "2026-10-13T11:39:28.413854+00:00"
+    },
+    "data_freshness": "CHECK_ORIGINAL_V4_CONTEXT",
+    "external_acceptance": "NOT_GRANTED"
+  },
+  "heads": {
+    "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc",
+    "data/v4/V4_DATA_ACCEPTED_HEAD.json": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+    "config/v4_current_native_joint_authority_v3.json": "696fc0b9b91b3003ab0791a114dfa5e6b87e7febdc720e27ffba5248e798bc02"
+  }
+}

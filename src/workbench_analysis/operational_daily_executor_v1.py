@@ -171,6 +171,12 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
     period_qa=audit_periods(root,context['folder'])
     if period_qa['acceptance']!='PASS':raise ValueError('FULL_PERIOD_NUMERIC_ORACLE_FAILED')
     candidate['period_numeric_oracle']=ref(root,context['folder']/'PERIOD_NUMERIC_ORACLE.json')
+    if context.get('exact_daily_policy'):
+        from .operational_product_pack_v3 import prepare as prepare_product_pack
+        core_replay=json.loads((context['folder']/'owner_v3/CORE_REPLAY.json').read_bytes())
+        owner=next(row for row in core_replay['owners'] if row['trade_date']==day)
+        pack_receipt=prepare_product_pack(root,candidate,owner)
+        atomic_json(root,context['folder']/'NATIVE_PRODUCT_PACK_PREPARATION_V3.json',pack_receipt)
     candidate_path=root/binding['path'];atomic_json(root,candidate_path,candidate);binding=ref(root,candidate_path)
     from .producer_bootstrap_v1 import produce_daily_state, produce_daily_sector, optional_step
     result=dict(result,full_state_signal_candidate=optional_step(produce_daily_state,root,day,binding),

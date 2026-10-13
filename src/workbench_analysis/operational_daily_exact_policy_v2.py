@@ -4,6 +4,7 @@ from .r43_owner_replay import checked,load,ref
 
 CONTRACT='V4_OPERATIONAL_DAILY_EXACT_RELEASE_POLICY_V2'
 PATH='config/operational_daily_exact_release_policy_v2.json'
+ARCHIVE='data/v4/exact_daily_policies_v2'
 KERNEL='V4_OPERATIONAL_CORE_EXACT_AFFINE_CANDIDATE_R3'
 REQUIRED_SOURCES={
     'src/adjustment/tdx_adjustment_v0_3.py',
@@ -22,6 +23,10 @@ REQUIRED_SOURCES.update(('src/workbench_db/v4_operational_owner_authority_v2.py'
     'src/workbench_db/v4_operational_owner_pg_closeout.py',
     'src/workbench_analysis/operational_successor_v1.py',
     'src/workbench_service/core_product_server_r1.py'))
+REQUIRED_SOURCES.update(('src/workbench_service/native_product_catalog_v3.py',
+    'src/workbench_service/core_product_bff_r1.py',
+    'src/workbench_db/v4_history_pg_r1.py','src/workbench_db/v4_history_corrections_pg_v2.py'))
+REQUIRED_SOURCES.add('src/workbench_analysis/operational_product_pack_v3.py')
 
 def verify_loaded_versions(bindings):
     import sys,hashlib
@@ -36,11 +41,26 @@ def verify_loaded_versions(bindings):
             if not origin.is_file() or hashlib.sha256(origin.read_bytes()).hexdigest()!=item['sha256']:
                 raise ValueError('EXACT_V2_LOADED_ALGORITHM_VERSION_MISMATCH:'+logical)
 
+def immutable_policy_binding(root,binding=None):
+    """Retain exact policy bytes; accepted Heads never depend on a mutable file."""
+    import hashlib
+    from .tdx_official_daily_source import _atomic_write
+    root=Path(root).resolve();binding=binding or ref(root,root/PATH)
+    path=checked(root,binding).resolve()
+    if path==root/PATH:
+        raw=path.read_bytes();archive=root/ARCHIVE/hashlib.sha256(raw).hexdigest()/'POLICY.json'
+        if archive.exists():
+            if archive.read_bytes()!=raw:raise ValueError('EXACT_V2_IMMUTABLE_POLICY_CONFLICT')
+        else:_atomic_write(archive,raw,tdx_root=Path('D:/new_tdx'))
+        return ref(root,archive)
+    expected=root/ARCHIVE/binding['sha256']/'POLICY.json'
+    if path!=expected:raise ValueError('EXACT_V2_DAILY_POLICY_PATH_REQUIRED')
+    return binding
+
 def verify(root,binding=None,*,candidate_only=False):
     root=Path(root).resolve()
-    binding=binding or ref(root,root/PATH)
+    binding=immutable_policy_binding(root,binding)
     path=checked(root,binding)
-    if path.resolve()!=root/PATH:raise ValueError('EXACT_V2_DAILY_POLICY_PATH_REQUIRED')
     policy=load(path)
     if policy.get('contract_id')!=CONTRACT or policy.get('adjustment_contract')!=KERNEL:
         raise ValueError('EXACT_V2_DAILY_CONTRACT_REQUIRED')

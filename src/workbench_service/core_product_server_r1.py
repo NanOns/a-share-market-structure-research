@@ -52,6 +52,11 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None):
                                 elif isinstance(x,list):
                                     for v in x:collect(v)
                             collect(api.candidate);collect(api.snapshot)
+                            from .native_product_catalog_v3 import KEY,load as load_catalog
+                            if KEY in api.candidate:
+                                catalog=load_catalog(root,api.candidate);collect(catalog)
+                                for binding in catalog['dates'].values():
+                                    collect(json.loads((root/binding['path']).read_bytes()))
                             if owner_authority.exists():collect(json.loads(owner_authority.read_bytes()))
                             identity_head=root/'data/v4/V4_DATA_ACCEPTED_HEAD.json'
                             paths.add(identity_head);collect(json.loads(identity_head.read_bytes())['identity'])

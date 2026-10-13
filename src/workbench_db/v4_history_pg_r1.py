@@ -60,6 +60,9 @@ def build(root,rows,*,head_token,t0,source_digest):
     return dict(contract_id=CONTRACT,engine='postgresql',schema=schema,version=version,head_token=head_token,T0=t0,source_digest=source_digest,logical_digest=digest,symbol_count=symbols,bar_count=bars,price_basis='ACCEPTED_RAW_AND_QFQ_UNCHANGED')
 
 def read(root,binding,day,sid):
+    if binding.get('contract_id')=='V4_PG_DATED_HISTORY_QFQ_CORRECTIONS_R2':
+        from .v4_history_corrections_pg_v2 import read as corrected_read
+        return corrected_read(root,binding,day,sid)
     if binding.get('contract_id')!=CONTRACT or binding.get('engine')!='postgresql': raise ValueError('PG_HISTORY_BINDING_REQUIRED_NO_FALLBACK')
     if binding.get('schema')!=workspace_schema(root,'history') or binding.get('T0')!=day: raise ValueError('PG_HISTORY_CONTEXT_MISMATCH')
     with connection(binding['schema'],read_only=True) as pg:

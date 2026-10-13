@@ -90,9 +90,10 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             binding=pack[0].get('period_owners',{}).get(domain) if pack else None
             if binding:
                 from workbench_db.v4_period_pg_r1 import read
-                if security_id is not None:return read(self.api.root,binding,day,domain,self.api.token,security_id=security_id)
+                fact_token=pack[0].get('fact_token',self.api.token)
+                if security_id is not None:return read(self.api.root,binding,day,domain,fact_token,security_id=security_id)
                 key=('pg-period-owner',self.api.token,day,domain,binding['sha256'])
-                if key not in self.api.cache:self.api.cache[key]=read(self.api.root,binding,day,domain,self.api.token)
+                if key not in self.api.cache:self.api.cache[key]=read(self.api.root,binding,day,domain,fact_token)
                 return self.api.cache[key]
         pack=self.focus_projection(day) if domain=='forward' else None
         if not pack:return super().source(domain,day)
@@ -155,15 +156,22 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
     def pack(self, day):
         key=('product-pack',day)
         if key not in self.api.cache:
-            authority=self.api.root/'config/core_product_read_authority_r1.json'
-            if not authority.exists():return None
-            manifest=dated_product_manifest(self.api.root,json.loads(authority.read_bytes()),day)
+            from .native_product_catalog_v3 import KEY,load
+            embedded=KEY in self.api.candidate
+            if embedded or self.api.candidate.get('exact_daily_adjustment_contract'):
+                authority=load(self.api.root,self.api.candidate)
+                binding=authority['dates'].get(day)
+                manifest=json.loads(checked(self.api.root,binding).read_bytes()) if binding else None
+            else:
+                authority=self.api.root/'config/core_product_read_authority_r1.json'
+                if not authority.exists():return None
+                manifest=dated_product_manifest(self.api.root,json.loads(authority.read_bytes()),day)
             if manifest is None:return None
             head=self.api.root/manifest['head']['path']
             if manifest['T0']!=day or head.read_bytes()!=checked(self.api.root,manifest['head']).read_bytes():return None
             if manifest['history_index'].get('engine')!='postgresql':
                 raise ValueError('PG_HISTORY_BINDING_REQUIRED_NO_FALLBACK')
-            if (manifest['history_index'].get('T0'),manifest['history_index'].get('head_token'))!=(day,manifest['head']['sha256']):
+            if (manifest['history_index'].get('T0'),manifest['history_index'].get('head_token'))!=(day,manifest.get('fact_token',manifest['head']['sha256'])):
                 raise ValueError('PG_HISTORY_MANIFEST_CONTEXT_MISMATCH')
             if manifest.get('contract_id')=='CORE_PRODUCT_DATED_HISTORY_ONLY_PACK_R1':
                 if manifest.get('capabilities')!=['CHART_HISTORY'] or manifest.get('market_facts') is not None:

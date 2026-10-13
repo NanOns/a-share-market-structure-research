@@ -1,0 +1,75 @@
+{
+  "contract_id": "V4_DAILY_SOURCE_READINESS_V2",
+  "status": "WAIT_DATED_IDENTITY_AUTHORITY",
+  "source_ready": false,
+  "derived_ready": false,
+  "published": false,
+  "reason": "NEW_DATED_IDENTITY_SOURCE_NOT_INDEPENDENTLY_ADMITTED",
+  "dependency_bindings": {
+    "accepted_pool_count": 5224,
+    "accepted_pool_sha256": "553d38c475fcf6efd05e48a0a3422cef852308eafebb9f372dba98c374859a59",
+    "gbbq": {
+      "bytes": 5614317,
+      "path": "D:\\new_tdx\\T0002\\hq_cache\\gbbq",
+      "sha256": "c2f07f4aa8a9e8893e5dc24c1a83ac63f2ab27198ecde444154fd591c73e2739"
+    },
+    "identity": {
+      "bytes": 3112040,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/artifact.json",
+      "sha256": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf"
+    },
+    "lifecycle": {
+      "bytes": 1666843,
+      "path": "data/v4/dynamic_daily_owners/2026-10-12/ae732fbf3c54b0cd88cebd7686e23c915e9e01e69982a25962eb053a46cb2580/sources/2026-10-12/lifecycle.json",
+      "sha256": "a0bd5d351225eed3481900bcc7379da8e89a96e355aaeb8a8ca65b19d666c2e7"
+    },
+    "membership_snapshot": {
+      "bytes": 2281,
+      "path": "data/v4/dynamic_daily_owners/2026-10-12/ae732fbf3c54b0cd88cebd7686e23c915e9e01e69982a25962eb053a46cb2580/MEMBER_SNAPSHOT_S.json",
+      "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+    },
+    "missing_codes": [],
+    "parent_head": {
+      "bytes": 51660,
+      "path": "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json",
+      "sha256": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc"
+    },
+    "unknown_codes": [
+      "SZ.301660"
+    ]
+  },
+  "sources": {
+    "baostock_daily": {
+      "status": "VERIFIED",
+      "target_session": "2026-10-13",
+      "row_count": 5225,
+      "provider_date": "2026-10-13",
+      "verified_no_change": null,
+      "source_sha256": "76930566e4b138a71b5ed6945dd49f54f7fa2bbc63a777e2999e680ea4b20135"
+    },
+    "baostock_factor": {
+      "status": "VERIFIED",
+      "target_session": "2026-10-13",
+      "row_count": 20,
+      "provider_date": "2026-10-13",
+      "verified_no_change": null,
+      "source_sha256": "accc1434d6fac81c93682781b05196b2104a8f00681e885df6dce296b7073ac2"
+    },
+    "dated_identity_authority": {
+      "status": "WAIT_DATED_IDENTITY_AUTHORITY",
+      "target_session": "2026-10-13",
+      "row_count": null,
+      "provider_date": null,
+      "verified_no_change": null,
+      "source_sha256": null
+    },
+    "tdx": {
+      "status": "VERIFIED",
+      "target_session": "2026-10-13",
+      "row_count": 5212,
+      "provider_date": null,
+      "verified_no_change": null,
+      "source_sha256": "cd5d34c7945b3caae4a49e42eecefad396ee07364628fa13546c9befad133352"
+    }
+  }
+}

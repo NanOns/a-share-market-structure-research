@@ -54,7 +54,7 @@ def deploy():
     text+="$action=New-ScheduledTaskAction -Execute '"+str(destination/'DaAV4/DaAV4.exe')+"' -Argument $task.Actions.Arguments -WorkingDirectory $task.Actions.WorkingDirectory\nSet-ScheduledTask -TaskName $task.TaskName -Action $action | Out-Null\n"
     write(action_script,text.encode('utf8'))
     http('/api/v4/operations/daily-update/settings',dict(auto_enabled=False),'PUT')
-    subprocess.run(['powershell.exe','-NoProfile','-File',str(action_script)],check=True,capture_output=True)
+    subprocess.run(['powershell.exe','-NoProfile','-Command',text],check=True,capture_output=True)
     if process.is_running():
         assert process.exe()==old_exe
         process.terminate();process.wait(timeout=30)

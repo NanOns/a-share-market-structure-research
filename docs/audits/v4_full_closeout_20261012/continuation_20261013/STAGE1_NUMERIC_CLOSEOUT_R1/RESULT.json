@@ -1,0 +1,155 @@
+{
+  "contract_id": "V4_STAGE1_CURRENT_NUMERIC_SEMANTIC_CLOSEOUT_R1",
+  "stage": "1/6",
+  "acceptance": "PASS_CURRENT_STAGE1_SCOPE",
+  "scope": "Current numeric semantic work package: Extension and bounded D2/Forward, current market/LOO/Sector, D1 state source/counters/selection/input digests and daily/closed-period Profile primitives. This is not four-gate release admission.",
+  "task_contract": "docs/upgrade/V4_FULL_CLOSEOUT_CONTINUATION_TASK_R2_20261013.md",
+  "source_commit": "62de367eb9a158931a69f2ab958fd007eafc45af",
+  "policy_sources_checked": 657,
+  "source_drift": [],
+  "evidence": [
+    {
+      "path": "G:\\codex_tmp\\v4_full_closeout_20261012\\CORE_UNCOVERED_NUMERIC_ORACLE_R6_R1.json",
+      "sha256": "88244a9cd5af02998dd595208906a5d0891fff39bd2e08ad7ca6ef53573c6891",
+      "acceptance": "PASS_KNOWN_SCOPE",
+      "errors": 0,
+      "scope": "All non-null current technical/return/volatility/derived Core fields and full RPS/delta readback; market-reference fields and independent unknown-window conditions remain separate"
+    },
+    {
+      "path": "G:\\codex_tmp\\v4_full_closeout_20261012\\PROFILE_KNOWN_PRIMITIVE_ORACLE_R6_R1.json",
+      "sha256": "dfa82234ea551b533283affa4c836fcbd7687fe36eaca5e06c0088611ff9037d",
+      "acceptance": "PASS_KNOWN_SCOPE",
+      "errors": null,
+      "scope": "Known five daily primitive arithmetic only; calendar/status UNKNOWN window completeness remains separate; previously passed MA20/ATR20 reused, producers not imported or reexecuted"
+    },
+    {
+      "path": "G:\\codex_tmp\\v4_full_closeout_20261012\\PROFILE_HORIZON_CONTINUATION_R6_R1.json",
+      "sha256": "6fd0c96bcef660a15c50e59cf5c464d62aea2ffacd1babff2a7985c377145528",
+      "acceptance": "PASS_RULE_SCOPE",
+      "errors": null,
+      "scope": "Only 20783 original failed four-horizon known branches; 18 other original failures remain unresolved; 62783 previous PASS cells retained"
+    },
+    {
+      "path": "G:\\codex_tmp\\v4_full_closeout_20261012\\EXTENSION_CHANGED_SCOPE_SIX_DATES_R6_R1.json",
+      "sha256": "676cd9ed09faac61f620cd295dbdaade24ab8ccde71b7bd5bf01ea390beb28bf",
+      "acceptance": "PASS_CHANGED_FUNCTION_ONLY",
+      "errors": null,
+      "scope": "Only genuinely changed Extension function across existing six-date scope; all unaffected Core/Profile/Focus/period arithmetic retained. Dependent output lineage requires bounded correction before release."
+    },
+    {
+      "path": "G:\\codex_tmp\\v4_full_closeout_20261012\\BOUNDED_D2_UNKNOWN_BRANCH_ORACLE_R6_R2.json",
+      "sha256": "9f8d260908c9dd8062cff1ddff779929123306ef218c5c5331c83d7136ccf69a",
+      "acceptance": "PASS_CHANGED_INPUT_BRANCH_SCOPE",
+      "errors": null,
+      "scope": "Exactly 78 affected row required-CONFIRMED-UNKNOWN branches; no extrapolation to other reducer branches. Genuine UNKNOWN preserved despite corrected optional risk."
+    },
+    {
+      "path": "G:\\codex_tmp\\v4_full_closeout_20261012\\BOUNDED_FORWARD_SEMANTIC_CORRECTION_R6_R1.json",
+      "sha256": "517046bd2d8749804c6136cbf3d5af1dc5168fdf8f7ff26bea4a06709608129c",
+      "acceptance": "PASS_AFFECTED_BRANCH_CONSERVATION_ONLY",
+      "errors": null,
+      "scope": null
+    },
+    {
+      "path": "G:\\codex_tmp\\v4_full_closeout_20261012\\RELATIVE_MARKET_NUMERIC_ORACLE_R6_R1.json",
+      "sha256": "2a25b01af692dfa31dacb8669badb3e885dc27f6df272f60924b4e5ca8d2db28",
+      "acceptance": "PASS_DATED_RELATIVE_SCOPE",
+      "errors": 0,
+      "scope": "Three current relative fields plus exact dated-universe coverage/identity/UNKNOWN semantics; previously passed endpoint return arithmetic reused"
+    },
+    {
+      "path": "G:\\codex_tmp\\v4_full_closeout_20261012\\FULL_CURRENT_LOO_NUMERIC_ORACLE_R6_R1.json",
+      "sha256": "03a342736123ebc907510dca7c0b1dcf1c374b659772f608aa9a98ddaed58cf4",
+      "acceptance": "PASS_FULL_CURRENT_LOO_SCOPE",
+      "errors": 0,
+      "scope": "All 50214 current leaf-industry/concept target-excluded contexts, coverage, relative substitutions, complete known/UNKNOWN rule branches and deterministic all-membership selection; no original period or Focus recomputation"
+    },
+    {
+      "path": "G:\\codex_tmp\\v4_full_closeout_20261012\\FULL_CURRENT_SECTOR_NUMERIC_ORACLE_R6_R1.json",
+      "sha256": "13c346414718bfe1b43a7f3efd7f2fd9f607fbd82b81fe73f0468869990d39b6",
+      "acceptance": "PASS_FULL_CURRENT_SECTOR_SCOPE",
+      "errors": 0,
+      "scope": "Current400 native sectors, all32 fields values/UNKNOWN reasons/quality, separate leaf/parent rank pools, prior common-set delta/retention and Wilson seed width; previous800 width/breadth value assertions reused, original producer not rerun"
+    },
+    {
+      "path": "G:\\codex_tmp\\v4_full_closeout_20261012\\D1_ANCHOR_INPUT_CONTINUATION_R6_R2.json",
+      "sha256": "6b71f54be8fded85f9e7075516d11325b106ad11028354ee6e0c5447bcd55507",
+      "acceptance": "FAIL",
+      "errors": 1892,
+      "scope": "Per-anchor exact values/quality/matched-rule identities using previous-session owning anchor facts and independently reconstructed current local inputs; fresh anchors use frozen creation templates. Metadata digests, full upstream binder, counters and active selector remain separate."
+    },
+    {
+      "path": "G:\\codex_tmp\\v4_full_closeout_20261012\\D1_OTHERWISE_RULE_CONTINUATION_R6_R3.json",
+      "sha256": "d59ebe5677f994720e7d6cc01852a668d805cc46ab164c16a2d56c1d715382a5",
+      "acceptance": "PASS_CURRENT_D1_OTHERWISE_RULE_SCOPE",
+      "errors": 0,
+      "scope": "Only otherwise matched-rule identities affected by the independent interpreter correction. R2 value/quality and other rule identities are retained. Metadata digests, full upstream binder, counters and active selector remain separate."
+    },
+    {
+      "path": "G:\\codex_tmp\\v4_full_closeout_20261012\\D1_COUNTER_SELECTOR_ORACLE_R6_R1.json",
+      "sha256": "8b40b4ea89d067089161124090e04b7752740fc947acf2246c8dd61d0ca9bcfb",
+      "acceptance": "PASS_CURRENT_D1_COUNTER_SELECTOR_SCOPE",
+      "errors": 0,
+      "scope": "Only previously uncovered counter recurrence, validity and active selection. Prior machine value/quality/rule PASS retained. Full upstream provenance and metadata digest remain separate."
+    },
+    {
+      "path": "G:\\codex_tmp\\v4_full_closeout_20261012\\D1_UPSTREAM_BINDING_ORACLE_R6_R1.json",
+      "sha256": "76912e8091ee652d2d05b0b1922b26ff42a1935b868f4a7f19e053a25ed6853a",
+      "acceptance": "PASS_D1_UPSTREAM_BINDING_SCOPE",
+      "errors": 0,
+      "scope": "All declared upstream fields: value, quality, producer, source digest, namespace and time role. Local input digests remain separate."
+    },
+    {
+      "path": "G:\\codex_tmp\\v4_full_closeout_20261012\\PROFILE_WINDOW_COMPLETENESS_ORACLE_R6_R1.json",
+      "sha256": "66eb5b636fc8a1c5fb7ebc8262653ae6d715115ef62afc0c794a8267f8312e49",
+      "acceptance": "PASS_PROFILE_DAILY_WINDOW_SCOPE",
+      "errors": 0,
+      "scope": "Five daily primitive availability, calendar/status window and UNKNOWN metadata. Closed-period primitives remain separate."
+    },
+    {
+      "path": "G:\\codex_tmp\\v4_full_closeout_20261012\\PROFILE_CLOSED_PERIOD_PRIMITIVE_ORACLE_R6_R1.json",
+      "sha256": "2d060491fc3b19bcdda9102a9d273ae726d9ac0f1a3cc0a87614d1c7761f6e60",
+      "acceptance": "PASS_CLOSED_PERIOD_PRIMITIVE_SCOPE",
+      "errors": 0,
+      "scope": "Closed weekly/monthly primitive evidence only; exclusion of last forming bucket is preserved from versioned original adapter. No historical PIT grant."
+    },
+    {
+      "path": "G:\\codex_tmp\\v4_full_closeout_20261012\\D1_INPUT_DIGEST_ORACLE_R6_R3.json",
+      "sha256": "cdd26d82ba500565d11025a1110382ef3a69b6a61eac3bf3b04706cdefb544de",
+      "acceptance": "PASS_D1_INPUT_DIGEST_SCOPE",
+      "errors": 0,
+      "scope": "Only 14 R2 failed overlay/context checks; enum UNKNOWN record reason normalizes an empty runtime reason without changing the actual binding. Independent canonical input and counter digests on reconstructed owning-session contexts. Prior support value/quality PASS retained and its reason metadata reused; no machine value reexecution."
+    },
+    {
+      "path": "G:\\codex_tmp\\v4_full_closeout_20261012\\COMPONENT_SOURCE_CONSERVATION_R6_R1.json",
+      "sha256": "08f0f3f8bf16a6f6a1a1e130d0094886dda9bd0ebd13415d00dd7ce9f37954b1",
+      "acceptance": "PASS_COMPONENT_CONSERVATION_AND_BOUNDED_PROFILE_CORRECTION",
+      "errors": null,
+      "scope": null
+    },
+    {
+      "path": "G:\\codex_tmp\\v4_full_closeout_20261012\\DAILY_PERIOD_ORACLE_R6.json",
+      "sha256": "2340d5c404ef184c6bdfaf2bc3d418da974361f4a9111cd5007994c51093645d",
+      "acceptance": "PASS",
+      "errors": null,
+      "scope": "New dated RAW/QFQ current-month and week period outputs; existing prior full-history PASS evidence not rerun"
+    }
+  ],
+  "failure_resolution": {
+    "D1_R2": "37558 original PASS reused; 1892 failed matched-rule identities resolved by D1_OTHERWISE_RULE_CONTINUATION_R6_R3",
+    "D1_digest": "R1/R2 failures preserved; namespace and UNKNOWN reason representation verifier repairs, final 14 failed cells PASS",
+    "PROFILE": "20783 original horizon adapter failures resolved; original 12 Compression guard discrepancies and 6 actual Extension errors separately closed with 27 six-date patches and bounded dependencies"
+  },
+  "source_changed": false,
+  "previous_numeric_producers_reexecuted": false,
+  "publication_ready": false,
+  "production_cutover": false,
+  "next_stage": "2/6 Original 56 current reachability disposition and corresponding numeric/consumer source proof",
+  "remaining_release_gates": [
+    "exact56 active scope",
+    "current PG/HTTP consumers",
+    "real daily publication and current Snapshot/Joint identity",
+    "frozen regression reconciliation",
+    "Windows28765 cutover and G-local final delivery"
+  ]
+}

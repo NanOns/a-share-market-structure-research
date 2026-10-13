@@ -29,6 +29,7 @@ class DesktopTray:
         self.icon = pystray.Icon('DaAV4', image, '大A V4', pystray.Menu(
             item('打开 V4 研究工作台', self.open_page, enabled=lambda _:controller.state=='RUNNING', default=True),
             item('查看运行状态与最近错误', self.show_status),
+            item('查看日更进度', self.open_progress, enabled=lambda _:controller.state=='RUNNING'),
             pystray.Menu.SEPARATOR,
             item('启动引擎', lambda *_:self.action('start'), enabled=lambda _:controller.state in ('STOPPED','FAILED') and not controller.operation.locked()),
             item('安全停止引擎', lambda *_:self.action('stop'), enabled=lambda _:controller.state=='RUNNING' and not controller.operation.locked()),
@@ -112,6 +113,10 @@ class DesktopTray:
     def open_page(self, *_):
         if self.controller.state == 'RUNNING':
             webbrowser.open(f'http://127.0.0.1:{self.controller.port}/v4')
+
+    def open_progress(self, *_):
+        if self.controller.state == 'RUNNING':
+            webbrowser.open(f'http://127.0.0.1:{self.controller.port}/v4/research/diagnostics?tab=jobs')
 
     def show_status(self, *_):
         status = self.controller.status()

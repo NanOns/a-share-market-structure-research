@@ -9,7 +9,7 @@ import threading
 import time
 import uuid
 from .storage import atomic, resource_root, verify_resources, require_owned, owned_identity
-from .jobs import ManagedDailyJobs
+from .jobs import ManagedDailyJobs, ProcessDailyJobs
 
 STATES = ('STOPPED','STARTING','RUNNING','QUIESCING','WAITING_SAFE_BOUNDARY','STOPPING','FAILED')
 
@@ -110,10 +110,7 @@ class EngineController:
             server.server_activate()
             self.port = server.server_port
             recover(self.root)
-            jobs = ManagedDailyJobs(self.root, source_probe=probe_source_revision)
-            jobs.original_executor = lambda day, mode: execute_sources(
-                self.root, day, mode, cancelled=jobs.maintenance_cancelled,
-                readback_url=f'http://127.0.0.1:{self.port}', progress=jobs.checkpoint)
+            jobs = ProcessDailyJobs(self.root,readback_url=f'http://127.0.0.1:{self.port}')
             base = make_product_handler(self.root, jobs)
         except Exception:
             server.server_close()

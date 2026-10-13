@@ -78,3 +78,27 @@ def test_context_request_rejects_disconnected_or_other_native_owner_database(cac
     assert get(path='/api/v4/context')[0]==503 and state['calls']==1
     state['database']='one';state['available']=False
     assert get(path='/api/v4/context')[0]==503 and state['calls']==1
+
+
+def test_three_business_requests_do_not_wait_for_shared_projection_lock(cache_server,monkeypatch):
+    from concurrent.futures import ThreadPoolExecutor
+    import workbench_service.core_product_server_r1 as module
+    state,get,_=cache_server
+    assert get(path='/api/v4/context')[0]==200
+    barrier=threading.Barrier(3)
+    original=module.CoreProductBFFR1.get
+    def overlap(self,path,params):
+        barrier.wait(timeout=3)
+        return original(self,path,params)
+    monkeypatch.setattr(module.CoreProductBFFR1,'get',overlap)
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        results=list(pool.map(lambda p:get(path=p),['/api/v4/stocks','/api/v4/sectors','/api/v4/context']))
+    assert all(code==200 for code,_ in results)
+
+
+def test_read_index_authority_change_invalidates_encoded_home(cache_server):
+    state,get,registry=cache_server
+    assert get()==(200,{'version':1})
+    config=registry.parent/'config';config.mkdir()
+    (config/'v4_read_index_authority_r1.json').write_text('{}')
+    assert get()==(200,{'version':2}) and state['calls']==2

@@ -10,7 +10,7 @@ from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 import pandas as pd
-from .r43_owner_replay import load, checked, gzrows, gzwrite, ref, OUT
+from .r43_owner_replay import load, checked, gzrows, gzwrite, ref, OUT, progress_items
 from .market_source_acquisition import write, official_sessions
 from .tdx_official_daily_source import _atomic_write
 from .research_features import build_stock_research_features, ResearchFeatureContext
@@ -46,7 +46,7 @@ def confirmation(values):
          scenario_evidence=evidence,source_sha256=manifest['legacy_source']['sha256'])
 
 
-def materialize_focus(root, *, input_namespace=None, output_namespace=None, sector_namespace=None):
+def materialize_focus(root, *, input_namespace=None, output_namespace=None, sector_namespace=None, predecessor_state=None, progress_counter=None):
     root=Path(root).resolve();inputs=root/(input_namespace or OUT);out=root/(output_namespace or OUT)
     if not inputs.resolve().is_relative_to(root) or not out.resolve().is_relative_to(root):
         raise ValueError('FOCUS_REPLAY_NAMESPACE_OUTSIDE_ROOT')
@@ -57,6 +57,9 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
         raise ValueError('FOCUS_REPLAY_NAMESPACE_OUTSIDE_ROOT')
     replay=load(inputs/'PROFILE_STRUCTURE_REPLAY.json');sectors=load(sector_inputs/'SECTOR_REPLAY.json')
     sessions=official_sessions(root);cutoff=datetime.now(timezone.utc).isoformat();prior=None;prior_pid=None;days={};receipts=[]
+    if predecessor_state:
+        prior=predecessor_state['prior'];prior_pid=predecessor_state['prior_pid']
+        days=dict(predecessor_state['days']);receipts=list(predecessor_state['receipts'])
     contract=out/'FOCUS_STAGE_CONTRACT_V1.json'
     write(contract,dict(contract_id='V4_R4_CORRECTED_D0_D2_FOCUS_FORWARD_V1',task='R4.3',
         source_admission='Exact R4 sealed owner files; corrected candidate only',
@@ -73,6 +76,9 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
     cal['publication_id']='R4_CALENDAR:'+digest(cal);write(out/'FOCUS_CALENDAR.json',cal)
     acquisition=load(root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
     sources=load(inputs/'SOURCE_BINDINGS.json')['sources'];pathstatus={};allbars={};native={};mainline_context={}
+    if predecessor_state:
+        pathstatus=dict(predecessor_state['pathstatus']);allbars=dict(predecessor_state['allbars'])
+        native=dict(predecessor_state['native']);mainline_context=dict(predecessor_state['mainline_context'])
     from focus_tracker.v4_exact_identity_adapter_r4 import security_symbols, AcceptedPaths, CONTRACT
     symbols = security_symbols(root, sources['identity'])
     for item,sector in zip(replay['owners'],sectors['owners']):
@@ -85,7 +91,7 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
         from .focus_replay_history_r1 import read_history
         history,timelines=read_history(checked(root,owner['history']),window)
         rs=[];rawfeatures=[];windows={}
-        for factor in factors:
+        for factor in progress_items(factors,progress_counter,coordinate_endpoint=day,phase='FOCUS_FEATURES'):
             sid=factor['security_id'];by={b['trade_date']:b for b in history[sid]};slots=[]
             for date in window:
                 b=by.get(date,{});q=b.get('qfq_ohlc');r=b.get('raw_ohlc')
@@ -109,7 +115,7 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
             ResearchFeatureContext('R4','R4:'+day,owner['source_digest'],'NO_SECTOR_SUBSTITUTION',cal['publication_id'],day),
             liquidity20_amount_gte=cfg['thresholds']['stock_signals']['risk']['liquidity20_amount_gte'])
         features={r['security_id']:clean(r) for r in features.to_dict('records')};factrows=[];calculations=[];statusrows=[]
-        for factor in factors:
+        for factor in progress_items(factors,progress_counter,coordinate_endpoint=day,phase='FOCUS_FACTS'):
             sid=factor['security_id'];f=factor['fields'];p=profiles[sid];feature=features[sid]
             for key in ('rps5','rps20','rps5_delta3'):feature[key]=f[key]['value']/100 if f[key]['value'] is not None else None
             observed=timelines[sid]
@@ -193,6 +199,8 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
             outcome.update(metadata);outcome['research_mainline_context']=mainline_context.get(outcome['trade_date'],{}).get(episode['entity_id'])
         for anchor in episode['anchors']:anchor.update(metadata)
     projection['research_mainline_source_bindings']=[s['relative_sector'] for s in sectors['owners']]
+    if predecessor_state:
+        projection['research_mainline_source_bindings']=predecessor_state.get('research_mainline_source_bindings',[])+projection['research_mainline_source_bindings']
     projection.update(**metadata,contract_id='V4_R4_CORRECTED_FOCUS_FORWARD_CANDIDATE_V1',source_bindings=bindings,
          production_admission=False)
     path=out/'CORRECTED_FOCUS_FORWARD.json.gz'

@@ -22,6 +22,8 @@ def main():
         for schema in schemas:
             pg.execute(sql.SQL('GRANT USAGE ON SCHEMA {} TO {}').format(sql.Identifier(schema),sql.Identifier(ROLES[0])))
             pg.execute(sql.SQL('GRANT SELECT ON ALL TABLES IN SCHEMA {} TO {}').format(sql.Identifier(schema),sql.Identifier(ROLES[0])))
+            # Jobs/read-index additions remain SELECT-only for the reader.
+            pg.execute(sql.SQL('ALTER DEFAULT PRIVILEGES IN SCHEMA {} GRANT SELECT ON TABLES TO {}').format(sql.Identifier(schema),sql.Identifier(ROLES[0])))
     tables=[]
     with psycopg.connect(credentials[ROLES[0]]) as pg:
         pg.execute('SET TRANSACTION READ ONLY')

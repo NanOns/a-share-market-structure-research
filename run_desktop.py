@@ -19,6 +19,8 @@ def main():
     parser.add_argument('--workspace', default='G:/codex work/大A交易')
     parser.add_argument('--port', type=int, default=28765)
     parser.add_argument('--no-browser', action='store_true')
+    parser.add_argument('--daily-worker', action='store_true')
+    parser.add_argument('--readback-url')
     parser.add_argument('--native-pg-roles', type=Path, help='G-local Windows user DPAPI credentials inside the selected workspace')
     parser.add_argument('--task', choices=('inspect-package','qa-e2e','qa-daily-replay','qa-tray','qa-source-imports'))
     parser.add_argument('--report')
@@ -29,7 +31,16 @@ def main():
         if selected_root.drive.upper()!='G:' or role_file!=selected_root/'config/native_pg_roles.dpapi':
             raise ValueError('EXACT_G_WORKSPACE_NATIVE_ROLE_FILE_REQUIRED')
         from scripts.v4_closeout_prepare_formal_pg_roles import load_credentials,ROLES
-        os.environ['V4_NATIVE_PG_DSN']=load_credentials(role_file)[ROLES[1]]
+        credentials=load_credentials(role_file)
+        os.environ['V4_NATIVE_PG_DSN']=credentials[ROLES[1]]
+        os.environ['V4_NATIVE_PG_READER_DSN']=credentials[ROLES[0]]
+    if args.daily_worker:
+        from urllib.parse import urlparse
+        parsed=urlparse(args.readback_url or '')
+        if parsed.scheme!='http' or parsed.hostname not in ('127.0.0.1','localhost') or not parsed.port:
+            raise ValueError('LOCAL_WORKER_READBACK_REQUIRED')
+        from workbench_desktop.jobs import run_daily_worker
+        return run_daily_worker(selected_root,args.readback_url)
     from workbench_desktop.storage import atomic, verify_resources, WorkspaceLease, g_path
     if getattr(sys, 'frozen', False):
         from workbench_desktop.storage import resource_root

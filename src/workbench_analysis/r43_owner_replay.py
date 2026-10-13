@@ -95,7 +95,25 @@ def midrank(returns, members):
                  .5*(bisect.bisect_right(values,returns[s])-bisect.bisect_left(values,returns[s])-1))/(n-1) for s in members}
 
 
-def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE'):
+def progress_items(rows, callback, *, coordinate_endpoint=None, phase=None, clock=None):
+    """Report completed loop work in bounded batches; never alter numeric rows."""
+    if callback is None:
+        yield from rows
+        return
+    import time
+    clock=clock or time.monotonic
+    total=len(rows);last_at=clock();last_count=0
+    base=dict(total=total,unit='securities',coordinate_endpoint=coordinate_endpoint,phase=phase)
+    callback(dict(base,processed=0,message=f'{phase or "处理"} 证券对象开始；计算坐标端点 {coordinate_endpoint or "未指定"}'))
+    for processed,row in enumerate(rows,1):
+        yield row
+        now=clock()
+        if processed-last_count>=200 or now-last_at>=2 or processed==total:
+            callback(dict(base,processed=processed,message=f'{phase or "处理"} 已处理证券对象（含不足/缺源）；计算坐标端点 {coordinate_endpoint or "未指定"}'))
+            last_at=now;last_count=processed
+
+
+def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE', accepted_history=None, progress_counter=None):
     if basis_namespace not in ('TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE','TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE'):
         raise ValueError('UNSUPPORTED_CORE_BASIS_NAMESPACE')
     root = Path(root).resolve(); policy = load(root/CONTRACT)
@@ -111,7 +129,7 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
     acquisition = load(root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
     batches = {}; universes = {}; bao_queries=[]
     for q in acquisition['queries']:
-        if q.get('path') and q['method'] in ('query_daily_history_k_AStock','query_all_stock'):
+        if q.get('path') and q['method'] in ('query_daily_history_k_AStock','query_all_stock','validated_daily_universe'):
             payload=load(q['path']); rows=payload.get('rows',[]); day=q['params'].get('date',q['params'].get('day'))
             if q['method']=='query_daily_history_k_AStock':batches[day]={r['code'].lower():r for r in rows}
             else:universes[day]={r['code'].lower():r for r in rows if is_stock_code(r['code'])}
@@ -165,6 +183,11 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
             raw=[v for v in struct.iter_unpack('<IIIIIfII',z.read(name)) if v[0]<=int(max(dates).replace('-',''))]
             # Preserve enough actual bars for the original 250-bar Profile and period windows.
             cache[ids[code]['security_id']]=(code,raw[-420:])
+    if accepted_history:
+        # A normal append may add a new bar, but cannot silently borrow an old
+        # acceptance after a provider corrects an overlapping historical bar.
+        from .operational_increment_plan_v1 import verify_history_overlap
+        verify_history_overlap(cache,gzrows(checked(root,accepted_history)),active_security_ids=dated_identity.get(max(dates)))
     write(out/'SOURCE_BINDINGS.json',dict(sources=sources,unknown_canonical_identity=unknown_codes,
           query_receipts=bao_queries,knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False))
     rps={}; receipts=[]; oracle=[]
@@ -173,7 +196,7 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
         previous=sessions[sessions.index(target)-1]
         members=dated_identity.get(target)
         if members is None:raise ValueError('NO_DATED_IDENTITY_UNIVERSE:'+target)
-        for i in identity:
+        for i in progress_items(identity,progress_counter,coordinate_endpoint=target,phase='CORE'):
             sid=i['security_id']
             if sid not in members or sid not in cache:continue
             code,raw=cache[sid];bs=transform_window(raw,events[code],dispositions,target)

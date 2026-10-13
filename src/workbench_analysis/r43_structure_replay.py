@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from decimal import Decimal
 from pathlib import Path
 
-from .r43_owner_replay import load, checked, gzrows, gzwrite as base_gzwrite, ref, OUT, CONTRACT
+from .r43_owner_replay import load, checked, gzrows, gzwrite as base_gzwrite, ref, OUT, CONTRACT, progress_items
 from .market_source_acquisition import official_sessions, write
 from .v4_12_structure_io import FrozenContracts, CandidateStore, digest
 from .v4_12_breakout_snapshot import EpisodeBinder, EpisodeSnapshotMaterializer
@@ -109,7 +109,7 @@ class CorrectedEpisodeEngine(BreakoutEpisodeEngine):
         self.engineering_empty_seed=False
 
 
-def materialize_profiles_structure(root):
+def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_ids=None, progress_counter=None):
     root=Path(root).resolve();out=root/OUT;replay=load(out/'CORE_REPLAY.json')
     if replay['acceptance']!='PASS_CORRECTED_CORE_NUMERIC_ORACLE':raise ValueError('CORRECTED_CORE_GATE_REQUIRED')
     write(out/'STRUCTURE_STAGE_ENTRY.json',dict(contract=ref(root,root/CONTRACT),upgrade_document='R4.3',
@@ -121,7 +121,8 @@ def materialize_profiles_structure(root):
     from .v4_13_descendant_contracts import DescendantContracts
     from .v4_13_profile_runtime import copy_structure
     c13=DescendantContracts(root)
-    c=FrozenContracts(root);sessions=official_sessions(root);receipts=[];prior=None
+    c=FrozenContracts(root);sessions=official_sessions(root);receipts=[];prior=prior_snapshot
+    previous_ids=set(prior_security_ids or ())
     verified_status={}
     historical_status=load(root/'config/v4_sector_operational_authority_v1.json')['sources']['historical_status']
     for r in gzrows(checked(root,historical_status)):
@@ -143,7 +144,7 @@ def materialize_profiles_structure(root):
         histories={r['security_id']:r['bars'] for r in gzrows(checked(root,owner['history']))}
         builder.CUTOFF=day;profiles=[];statuses=[]
         regime=RegimeUI('UNKNOWN','UNKNOWN',None,0,{'reason':'CORRECTED_MARKET_AXES_NOT_YET_BOUND'},'CORRECTED_MARKET_AXES_NOT_YET_BOUND')
-        for factor in factors:
+        for factor in progress_items(factors,progress_counter,coordinate_endpoint=day,phase='PROFILE'):
             sid=factor['security_id'];bs=histories[sid]
             actual={b['trade_date'] for b in bs};status=[(d,'ACTUAL_TRADED' if d in actual else verified_status.get((sid,d),'UNKNOWN')) for d in sessions if bs[0]['trade_date']<=d<=day]
             bars=[dict(trade_date=b['trade_date'],qfq_close=b['qfq_ohlc'][3] if b['qfq_ohlc'] else None,
@@ -157,7 +158,7 @@ def materialize_profiles_structure(root):
         owner=dict(owner,profiles=gzwrite(root,folder/'profiles.jsonl.gz',profiles),status=gzwrite(root,folder/'status.jsonl.gz',statuses))
         engine=CorrectedEpisodeEngine(c,day,cutoff,owner,profiles,statuses)
         results=[]
-        for factor in factors:
+        for factor in progress_items(factors,progress_counter,coordinate_endpoint=day,phase='STRUCTURE'):
             sid=factor['security_id']
             # Newly listed identities have no predecessor row: absence stays UNKNOWN.
             use_prior=prior if prior and sid in previous_ids else None

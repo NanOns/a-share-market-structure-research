@@ -219,10 +219,11 @@ class DailyJobs:
 
     def cancel(self,job):
         with self.connect() as db:
-            db.execute('BEGIN IMMEDIATE');row=db.execute('SELECT status FROM update_jobs WHERE job_id=?',(job,)).fetchone()
+            db.execute('BEGIN IMMEDIATE');row=db.execute('SELECT status FROM update_jobs WHERE job_id=? FOR UPDATE',(job,)).fetchone()
             if not row:raise ValueError('JOB_NOT_FOUND')
             if row['status'] in TERMINAL:return job
-            if row['status'] not in {'RUNNING','PUBLISHING'}:
+            if row['status']=='PUBLISHING':raise ValueError('PUBLICATION_SAFE_BOUNDARY')
+            if row['status']!='RUNNING':
                 db.execute("UPDATE update_jobs SET status='CANCELLED',finished_at=? WHERE job_id=?",(self.clock().isoformat(),job))
                 db.execute("UPDATE update_job_days SET state='CANCELLED' WHERE job_id=? AND state NOT IN ('PUBLISHED','PROBED')",(job,))
                 self.event(db,job,'CANCEL','CANCELLED',dict(boundary='No in-flight executor'))
@@ -293,6 +294,8 @@ class DailyJobs:
                     db.execute("UPDATE update_jobs SET status='RUNNING',finished_at=NULL WHERE job_id=?",(job['job_id'],))
                     db.execute("UPDATE update_job_days SET state='SOURCE_CHECKING',attempt_count=attempt_count+1 WHERE job_id=? AND trade_date=?",(job['job_id'],day['trade_date']))
                     self.event(db,job['job_id'],'SOURCE_PREFLIGHT','ATTEMPT_STARTED',dict(trade_date=day['trade_date']))
+                if hasattr(self,'record_progress'):
+                    self.record_progress(day['trade_date'],'SOURCE_CHECKING',{})
                 try:
                     result=self.executor(day['trade_date'],job['mode']) if self.executor else dict(
                         status='QA_BLOCKED',reason='DATED_SUCCESSOR_PRODUCER_NOT_ADMITTED')
@@ -318,6 +321,8 @@ class DailyJobs:
                     db.execute("UPDATE update_jobs SET status=CASE WHEN status='CANCEL_REQUESTED' AND ?='QUEUED' THEN status ELSE ? END,error=? WHERE job_id=?",
                         (job_state,job_state,result.get('reason'),job['job_id']))
                     self.event(db,job['job_id'],'DAY_RECEIPT',state,dict(trade_date=day['trade_date'],**result))
+                if hasattr(self,'record_progress'):
+                    self.record_progress(day['trade_date'],state,result)
                 if state not in {'PUBLISHED','PROBED'}:return
             with self.connect() as db:
                 db.execute('UPDATE update_jobs SET status=?,finished_at=? WHERE job_id=?',

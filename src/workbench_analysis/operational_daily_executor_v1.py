@@ -162,7 +162,7 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
         return dict(result,status=readiness['status'],reason=readiness['reason'])
     progress(day,'DERIVING',result)
     from .operational_daily_ready_owner_v2 import build,seal
-    produced,context=build(root,result['source_freeze'],source_readiness=result['source_readiness'],engineering_replay_current=engineering_replay_current,candidate_only_exact=candidate_only_exact)
+    produced,context=build(root,result['source_freeze'],source_readiness=result['source_readiness'],engineering_replay_current=engineering_replay_current,candidate_only_exact=candidate_only_exact,progress=progress)
     context['source_readiness']=result['source_readiness']
     if cancelled():return dict(result,status='CANCELLED',reason='CANCELLED_BEFORE_CAS')
     candidate,binding=seal(root,context)
@@ -197,12 +197,18 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
     capture_readiness=inspect_daily_candidate(root,candidate_binding=binding,
         trade_date=day,cutoff=datetime.now(timezone.utc).isoformat())
     result=dict(result,cohort_capture_readiness=capture_readiness)
+    from workbench_db.v4_read_index_r1 import prepare_bff
+    progress(day,'READ_INDEX',dict(result,processed=0,total=1,unit='versions'))
+    read_index=prepare_bff(root,candidate)
+    result=dict(result,read_index=read_index)
+    progress(day,'READ_INDEX',dict(result,processed=1,total=1,unit='versions'))
     progress(day,'DERIVED_READY',dict(result,candidate=binding,derived_ready=True,source_ready=True))
     if cancelled():return dict(result,status='CANCELLED',reason='CANCELLED_BEFORE_CAS')
     if not readback_url:return dict(result,status='QA_BLOCKED',reason='LIVE_SERVICE_READBACK_ENDPOINT_REQUIRED',candidate=binding)
     from .operational_successor_release_v1 import promote
     from .operational_daily_http_readback_v1 import readback
     progress(day,'PUBLISHING',dict(result,candidate=binding,derived_ready=True,source_ready=True))
+    if cancelled():return dict(result,status='CANCELLED',reason='CANCELLED_BEFORE_CAS')
     publication=promote(root,candidate,candidate['predecessor']['sha256'],lambda c:readback(readback_url,c))
     return dict(result,**publication,source_ready=True,derived_ready=True,published=True,candidate=binding)
 
@@ -229,7 +235,12 @@ def verify_source_gate(root,day,artifact,result,now=None):
     for row in daily:
         bar=bycode.get(row['code'].upper())
         if row['date']!=day or row['tradestatus'] not in {'0','1'}:reconciled=False
-        if row['tradestatus']=='1' and (not bar or any(float(row[f])!=float(bar[f]) for f in ('open','high','low','close','volume'))):reconciled=False
+        try:
+            if row['tradestatus']=='1' and (not bar or any(float(row[f])!=float(bar[f]) for f in ('open','high','low','close','volume'))):reconciled=False
+        except (KeyError,TypeError,ValueError,OverflowError):
+            # The versioned per-code gate below records and quarantines this
+            # object; malformed numeric input must not bypass that diagnostic.
+            reconciled=False
         if row['tradestatus']=='0' and bar:reconciled=False
     sources={}
     for name,rows in [('baostock_daily',daily),('baostock_factor',factors)]:
@@ -269,6 +280,8 @@ def verify_source_gate(root,day,artifact,result,now=None):
         identity=json.loads(checked(root,life['identity']).read_bytes())['rows']
         expected_codes={r['source_security_key'].upper() for r in identity if r.get('board_scope') in {'SH_MAIN','SZ_MAIN','CHINEXT','STAR'} and date_valid_identity(r,day)}
         actual_codes={code for code in codes if code.startswith(('SH.','SZ.'))}
+        from .operational_new_listing_r1 import classify_codes
+        code_changes=classify_codes(expected_codes,daily,native,day)
         from .native_source_reconciliation_r3 import reconcile
         policy_path=root/'config/tdx_a_stock_delta_scope_policy_v2.json'
         scoped_reconciliation=reconcile(native,daily,expected_codes,json.loads(policy_path.read_bytes()),day)
@@ -297,6 +310,7 @@ def verify_source_gate(root,day,artifact,result,now=None):
         dependencies=dict(parent_head=ref(root,head_path),lifecycle=life_binding,identity=life['identity'],
             accepted_pool_sha256=tdx.sha256_bytes(tdx._json_bytes(sorted(expected_codes))),
             accepted_pool_count=len(expected_codes),missing_codes=sorted(expected_codes-actual_codes),unknown_codes=sorted(actual_codes-expected_codes),
+            code_changes=code_changes,new_codes=code_changes['new_codes'],absent_codes=code_changes['absent_codes'],invalid_codes=code_changes['invalid_codes'],active_universe=code_changes['valid_codes'],
             gbbq=dict(path=str(gbbq),sha256=gbbq_sha,bytes=before.st_size),membership_snapshot=head['membership_snapshot'])
         from .next_t0_identity_preflight_v1 import diagnose
         transport=raw.get('source_transport_v2',{})

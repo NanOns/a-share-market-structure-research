@@ -15,6 +15,7 @@ REQUIRED_SOURCES={
         'operational_daily_executor_v1','operational_daily_periods_v1',
         'v4_13_descendant_contracts','portable_historical_archives_r1',
         'operational_upstream_checkpoint_r1',
+        'operational_increment_plan_v1',
         'r43_owner_replay','r43_structure_replay','r43_focus_replay','r43_market_replay')),
 }
 REQUIRED_SOURCES.add('config/v4_portable_historical_archive_witness_r1.json')

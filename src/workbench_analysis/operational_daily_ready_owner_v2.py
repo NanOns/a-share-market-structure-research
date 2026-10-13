@@ -7,7 +7,7 @@ from .operational_daily_storage_v1 import atomic_json
 
 CONTRACT='DYNAMIC_DAILY_READY_OWNER_ADAPTER_V2'
 
-def build(root,freeze_binding,*,source_readiness,engineering_replay_current=False,candidate_only_exact=False,resume_checkpoint=None):
+def build(root,freeze_binding,*,source_readiness,engineering_replay_current=False,candidate_only_exact=False,resume_checkpoint=None,progress=None):
     root=Path(root)
     if engineering_replay_current:
         import os
@@ -37,10 +37,11 @@ def build(root,freeze_binding,*,source_readiness,engineering_replay_current=Fals
     if resume_checkpoint:
         from .operational_upstream_checkpoint_r1 import install
         context['upstream_reuse']=install(root,context,resume_checkpoint)
-    produced=owner.replay(root,context['folder'],context['dates'],context['mappings'],
+    produced=owner.replay(root,context['folder'],context['compute_dates'],context['mappings'],
         membership_snapshot=context['snapshot'],seed_registry=context['seed_registry'],
         observed_at=load(checked(root,context['freeze']))['observed_at'],exact_adjustment=bool(exact_candidate or exact_policy),
-        exact_daily_policy=exact_policy,candidate_only_exact=candidate_only_exact)
+        exact_daily_policy=exact_policy,candidate_only_exact=candidate_only_exact,
+        predecessor=context['parent'] if context['increment_plan']['mode']=='APPEND_DAY' else None,progress=progress)
     return produced,context
 
 def seal(root,context):

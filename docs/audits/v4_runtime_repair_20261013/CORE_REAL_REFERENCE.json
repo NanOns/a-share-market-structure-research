@@ -1,0 +1,86 @@
+{
+  "contract_id": "V4_APPEND_FIXED_REAL_SAMPLE_CHECK_R1",
+  "scope": "Exact target-coordinate saved Core history and independent OHLC oracle only; not end-to-end append parity",
+  "acceptance": "PASS_LIMITED_CORE_SAMPLE",
+  "append_all_domain_acceptance": "BLOCKED_NOT_EXECUTED",
+  "source_root": "G:\\codex work\\v4-production-20261012",
+  "reference_core_replay": {
+    "path": "G:\\codex work\\v4-production-20261012\\data\\v4\\dynamic_daily_owners\\2026-10-13\\35e5a7c80925e59b640bcc694df1184e8bb850634b10085473cd26f6b9b89b57\\owner_v3\\CORE_REPLAY.json",
+    "sha256": "4ffbc64510c03759b44ea14000f139ca5de2670eeeb5247618f6790653d1fb26"
+  },
+  "package": {
+    "bytes": 552090117,
+    "path": "data/v4/dynamic_daily_sources/tdx/20261013/sha256-fe1de8b8dd28179f5da555159c03ddd1f8f60a88441694523f27d06be3ae53b5/hsjday.zip",
+    "sha256": "fe1de8b8dd28179f5da555159c03ddd1f8f60a88441694523f27d06be3ae53b5"
+  },
+  "gbbq": {
+    "path": "data/v4/corrected_owner_sources/c2f07f4aa8a9e8893e5dc24c1a83ac63f2ab27198ecde444154fd591c73e2739/gbbq",
+    "sha256": "c2f07f4aa8a9e8893e5dc24c1a83ac63f2ab27198ecde444154fd591c73e2739",
+    "bytes": 5614317
+  },
+  "identities": {
+    "bytes": 3114684,
+    "path": "data/v4/dynamic_daily_sources/new_listing_r1/2026-10-13/identities/7c22a6643851ae9e56df36140ba7c8a19521ce3f4052122bbc71d62ebc14655b/IDENTITY.json",
+    "sha256": "7b18a27e1dfdfe8e7162e1492778111928b41ed2c1e93c6bfc8d397154741d46"
+  },
+  "sample_security_ids": [
+    "SEC-00096141BD5420F5CB3120E687CDA5B9",
+    "SEC-002E8949D07D2829AB967520C65C0845",
+    "SEC-0051683845B17D59641B7D1DC261FE2A",
+    "SEC-005EA670068174623A3C365FCA9A8B2D",
+    "SEC-0081C3FB364C2FF2BBF61903A767EACB",
+    "SEC-0086F7F2614CE0006C835421BA75BD51",
+    "SEC-00B87010D45BBCB2A1CB277B6C177121",
+    "SEC-00B93BC23F1AFA8F276F5C61207F5A4F",
+    "SEC-00BA2362AC25C35CCF865BBC535D35A5",
+    "SEC-00BBE1A73FF15F55B1F79765E71E142E",
+    "SEC-00BE615596F05D4E950A4A0CF8A0DB73",
+    "SEC-00E228DA7EBF038EA528EF36B65B4C97",
+    "SEC-00F7600938E29E801B3FB9F22775458E",
+    "SEC-01007B161569BFF64F7079B3DBACF9CC",
+    "SEC-0133C24DA4D131FD193B382B8FF9E57C",
+    "SEC-01503FBCF39C18F6512A1F63139DF7FA",
+    "SEC-01573CAE74FF0911E6CF4E148A380C29",
+    "SEC-0157C18162F1E5F08F5949B6EA4A7514",
+    "SEC-01759C0DD3567723A74069E26F961A95",
+    "SEC-01790ECE7EBB0C0D3946582CCD3F15F6",
+    "SEC-01AE565AAB38D6DBE68548A166DA9001",
+    "SEC-01AEABA52190D2FADA47F333541450C9",
+    "SEC-01B23170BD2BAB91112C46FC904EB613",
+    "SEC-01B755B34CE3712C3B8559DA825A14EF",
+    "SEC-01BD8B3110028195B2FF8E69DA90DE33",
+    "SEC-01C3F7FE4A8F68A54FF3191D9F2E2BC9",
+    "SEC-01D04123834F9A8FE1E071507108E37A",
+    "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+    "SEC-01F2D1E8B23687640561F7CA4D2DC2FF",
+    "SEC-7C8816903D4BA9B6267531D5705888B9"
+  ],
+  "days": [
+    {
+      "day": "2026-10-09",
+      "securities": 29,
+      "window_bars": 12079,
+      "independent_ohlc_checks": 8700,
+      "errors": []
+    },
+    {
+      "day": "2026-10-12",
+      "securities": 29,
+      "window_bars": 12108,
+      "independent_ohlc_checks": 8700,
+      "errors": []
+    },
+    {
+      "day": "2026-10-13",
+      "securities": 30,
+      "window_bars": 12138,
+      "independent_ohlc_checks": 8704,
+      "errors": []
+    }
+  ],
+  "elapsed_seconds": 27.303,
+  "cached_reference": {
+    "path": "G:\\codex_tmp\\append-fixed-reference-20261013\\core_sample_reference.json",
+    "sha256": "83e899e5ad46aecb5e57ab7679186b5ea1d6548d3993457927f09b8b701091f0"
+  }
+}

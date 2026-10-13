@@ -57,6 +57,11 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
     def resolve_dated_object(self,domain,day,key):
         """Same dated identity aliases for detail and compare; ambiguity fails closed."""
         if not key:return None
+        if not getattr(self,'building_read_index',False):
+            from workbench_db.v4_read_index_r1 import load as load_index
+            index=load_index(self.api.root,self.api.token,day,allow_missing=day!=self.api.candidate['accepted_trade_date'])
+            if index is not None and domain in ('stocks','sectors','focus'):
+                return index.detail(domain,str(key).strip().upper())
         needle=str(key).strip().upper()
         def aliases(row):
             values=(row['entity_id'],row['symbol'],*row.get('search_aliases',[]))
@@ -107,7 +112,27 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         return self.api.cache[key]
 
     def get(self,path,query):
+        from workbench_db.v4_read_index_r1 import load as load_index, validate_query
+        day=validate_query(query,self.api.token,self.api.candidate['published_sessions'],
+                           self.api.candidate['accepted_trade_date'],path)
+        index=None if getattr(self,'building_read_index',False) or path not in ('/api/v4/context','/api/v4/home','/api/v4/stocks','/api/v4/sectors','/api/v4/focus') else load_index(self.api.root,self.api.token,day,allow_missing=day!=self.api.candidate['accepted_trade_date'])
+        if index is not None and path in ('/api/v4/context','/api/v4/home','/api/v4/stocks','/api/v4/sectors','/api/v4/focus'):
+            if path in ('/api/v4/context','/api/v4/home'):
+                response=index.response(path)
+                if response is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
+                return 200,response
+            response=index.response('/api/v4/context')
+            if response is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
+            response={k:v for k,v in response.items() if k in ('context','context_token','production_accepted','source_quality')}
+            response.update(index.page(path.rsplit('/',1)[-1],query))
+            if path=='/api/v4/focus':
+                extra=index.response('/api/v4/focus-meta')
+                if extra is None:raise ValueError('READ_INDEX_FOCUS_NOT_PREPARED')
+                response.update(extra)
+            return 200,response
         code,data=self._get_product(path,query)
+        if index is None and day!=self.api.candidate['accepted_trade_date']:
+            data['read_index_status']='HISTORICAL_UNINDEXED_READ_ONLY'
         day=query.get('trade_date',self.api.candidate['accepted_trade_date']);pack=self.focus_projection(day)
         if path=='/api/v4/focus' and code==200:
             episodes=self.source('forward',day)['episodes'];active={e['entity_id'] for e in episodes if e.get('end_date') is None}
@@ -195,6 +220,11 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         response['context']['bff_contract_id']=CONTRACT
         response['context']['product_engineering_acceptance']='EXTERNAL_PENDING'
         response['context']['focus_write']=False
+        quality=self.api.candidate.get('source_quality') if day==self.api.candidate['accepted_trade_date'] else None
+        if quality:
+            response['source_quality']={k:v for k,v in quality.items() if k!='valid_codes'}
+            response['context']['identity_coverage']=quality['status']
+            response['context']['effective_universe_count']=quality['effective_universe_count']
         if self.isolated_history is not None:
             response['production_accepted']=False
             response['context'].update(production_accepted=False,read_scope='ISOLATED_ENGINEERING_HISTORY',isolated_authority_sha256=self.isolated_history[2])
@@ -211,6 +241,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         profiles={r['security_id']:r for r in self.source('profile',day)} if domain=='stocks' else {}
         sector_native={r['sector_id']:r for r in self.source('sector',day)} if domain=='sectors' else {}
         identities,identity_ref=self.identity_records() if domain=='stocks' else ([],None)
+        current_identities={r['security_id']:r for r in self.identity_rows()} if domain=='stocks' else {}
         aliases={}
         for record in identities:
             aliases.setdefault(record['security_id'],set()).update(str(record.get(k,'')) for k in ('symbol','source_security_key','security_name'))
@@ -220,6 +251,14 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 code=row['symbol'].upper();name=names['stocks'].get(code)
                 if name:row.update(display_name=name,display_name_scope='OBSERVED_DISPLAY_ONLY_NOT_PIT',display_name_source=name_source,display_name_observed_at=names['observed_at'])
             if domain=='stocks':
+                ident=current_identities.get(row['entity_id'],{})
+                if ident.get('first_seen_date'):
+                    row['identity_observation']={k:ident.get(k) for k in
+                        ('first_seen_date','confirmed_ipo_date','code_status','metadata_status','alias_status')}
+                    row['fields']['code_status']=dict(value=ident.get('code_status','NEW_CODE_OBSERVED'),
+                        quality='KNOWN',unit='state',as_of=day,source=self.api.snapshot['identity_source'])
+                    if ident.get('name'):
+                        row.update(display_name=ident['name'],display_name_scope='OBSERVED_METADATA_NOT_PIT')
                 row['search_aliases']=sorted(aliases.get(row['entity_id'],set()))
                 row['alias_source']=identity_ref
                 for k,v in cores.get(row['entity_id'],{}).get('fields',{}).items():
@@ -263,6 +302,13 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
 
     def page(self,domain,day,q,entity=None,sector=None):
         """Filter the full dated collection; missing sort values always remain last."""
+        if not getattr(self,'building_read_index',False):
+            from workbench_db.v4_read_index_r1 import load as load_index
+            index=load_index(self.api.root,self.api.token,day,allow_missing=day!=self.api.candidate['accepted_trade_date'])
+            if index is not None and domain in ('stocks','sectors','focus'):
+                context=index.response('/api/v4/context')
+                return {**{k:v for k,v in context.items() if k in ('context','context_token','production_accepted','source_quality')},
+                        **index.page(domain,q,entity=entity,sector=sector)}
         data=self.project(domain,day)
         if entity:data=[r for r in data if entity in (r['entity_id'],r['symbol']) or entity in r.get('search_aliases',[])]
         if sector:
@@ -333,7 +379,9 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
     def _get_product(self,path,query):
         q=dict(query);q.setdefault('trade_date',self.api.candidate['accepted_trade_date']);day=q['trade_date']
         # Base route validation applies before any product-specific read.
-        super().get('/api/v4/context',q)
+        from workbench_db.v4_read_index_r1 import validate_query
+        validate_query(q,self.api.token,self.api.candidate['published_sessions'],
+                       self.api.candidate['accepted_trade_date'],path)
         if path!='/api/v4/context' and q.get('context_token')!=self.api.token:raise ValueError('CONTEXT_TOKEN_MISMATCH')
         p=[unquote(x) for x in path.removeprefix('/api/v4/').split('/')]
         if p[0]=='candidates' and (p[1:]==['cohort'] or len(p)==3 and p[1]=='sectors'):

@@ -26,7 +26,8 @@ def install(root,context,binding):
             source=root/item['path']
         if hashlib.sha256(source.read_bytes()).hexdigest()!=item['sha256']:
             raise ValueError('UPSTREAM_CHECKPOINT_COMPONENT_CHANGED:'+item['path'])
-    if checkpoint['completed_dates']!=context['dates']:raise ValueError('UPSTREAM_CHECKPOINT_DATES_CHANGED')
+    compute_dates=context.get('compute_dates',context['dates'])
+    if checkpoint['completed_dates']!=compute_dates:raise ValueError('UPSTREAM_CHECKPOINT_DATES_CHANGED')
     seen=set()
     def verify_refs(value):
         if isinstance(value,dict):
@@ -43,9 +44,9 @@ def install(root,context,binding):
             for child in value:verify_refs(child)
     documents={name:load(checked(root,b)) for name,b in checkpoint['documents'].items()}
     core=documents['CORE_REPLAY.json']
-    if len(core['oracle'])!=len(context['dates']) or not all(r['result']=='PASS' and not r['errors'] for r in core['oracle']):
+    if len(core['oracle'])!=len(compute_dates) or not all(r['result']=='PASS' and not r['errors'] for r in core['oracle']):
         raise ValueError('UPSTREAM_CHECKPOINT_NUMERIC_FAILURE')
-    if [o['trade_date'] for o in core['owners']]!=context['dates'] or [o['owner']['trade_date'] for o in documents['PROFILE_STRUCTURE_REPLAY.json']['owners']]!=context['dates']:
+    if [o['trade_date'] for o in core['owners']]!=compute_dates or [o['owner']['trade_date'] for o in documents['PROFILE_STRUCTURE_REPLAY.json']['owners']]!=compute_dates:
         raise ValueError('UPSTREAM_CHECKPOINT_OWNER_DATES_CHANGED')
     for name,document in documents.items():
         verify_refs(document)
@@ -67,7 +68,7 @@ def install(root,context,binding):
         document=load(checked(root,sector['document']))
         if not document.get('oracle') or not all(row.get('passed') is True for row in document['oracle']):
             raise ValueError('SECTOR_CHECKPOINT_ORACLE_FAILURE')
-        if [row['trade_date'] for row in document['owners']]!=context['dates']:
+        if [row['trade_date'] for row in document['owners']]!=compute_dates:
             raise ValueError('SECTOR_CHECKPOINT_DATES_CHANGED')
         verify_refs(document)
         target=context['folder']/'sector_v3/SECTOR_REPLAY.json'
@@ -75,7 +76,7 @@ def install(root,context,binding):
         if not target.exists():atomic_json(root,target,document)
     receipt=dict(contract_id=CONTRACT,acceptance='PASS_UPSTREAM_REUSE_ONLY',checkpoint=binding,
         previous_generation=checkpoint['original_generation'],current_generation=ref(root,context['folder']/'GENERATION_SCOPE.json'),
-        dates=context['dates'],source_hash_checks=len(checkpoint['unchanged_component_sources']),
+        dates=compute_dates,source_hash_checks=len(checkpoint['unchanged_component_sources']),
         sector_reused=bool(sector),numerical_recomputed=False,publication=False)
     atomic_json(root,context['folder']/'CORE_PROFILE_REUSE_RECEIPT_R1.json',receipt)
     return receipt

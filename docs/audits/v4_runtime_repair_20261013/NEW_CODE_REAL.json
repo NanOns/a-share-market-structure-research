@@ -1,0 +1,61 @@
+{
+  "contract_id": "V4_NEW_CODE_REAL_FROZEN_301660_R2",
+  "status": "PASS_TWO_SOURCE_REAL_BAR_AND_OBSERVED_IDENTITY",
+  "original_freeze": {
+    "path": "G:\\codex work\\v4-production-20261012\\data\\v4\\dynamic_daily_sources\\daily_freezes\\2026-10-13\\2d1fad93af77e256987243b1e2b701ca9fbbf2e73c4b142d1ba00d636efac4c9.json",
+    "sha256": "b45b51ce971d849f2a76022e1c1b732f514422d9b441cd832a266b9d0495246e"
+  },
+  "native_binding": {
+    "bytes": 2060030,
+    "path": "G:\\codex work\\v4-production-20261012\\data\\v4\\dynamic_daily_sources\\sh_sz_native_views\\2026-10-13\\cd5d34c7945b3caae4a49e42eecefad396ee07364628fa13546c9befad133352.json",
+    "sha256": "cd5d34c7945b3caae4a49e42eecefad396ee07364628fa13546c9befad133352"
+  },
+  "rows_compared": 1,
+  "compared_fields": [
+    "open",
+    "high",
+    "low",
+    "close",
+    "volume"
+  ],
+  "identity": {
+    "source_security_key": "SZ.301660",
+    "security_id": "SEC-7C8816903D4BA9B6267531D5705888B9",
+    "exchange": "SZ",
+    "symbol": "SZ.301660",
+    "list_date": "2026-10-13",
+    "first_seen_date": "2026-10-13",
+    "confirmed_ipo_date": "2026-10-13",
+    "delist_date": null,
+    "board_scope": "CHINEXT",
+    "security_type": "A_STOCK",
+    "name": "粤芯半导体",
+    "identity_status": "IDENTITY_BOUND",
+    "trade_date": "2026-10-13",
+    "observation_status": "ACTIVE",
+    "code_status": "CONFIRMED_IPO",
+    "metadata_status": "VERIFIED",
+    "alias_status": "UNVERIFIED",
+    "knowledge_lineage": "CURRENT_DATED_OPERATIONAL_PROVIDER_FACT",
+    "AS_RECORDED": false,
+    "PIT_ELIGIBLE": false,
+    "absence_is_delisting_evidence": false,
+    "bao_daily_row_is_identity_authority": false
+  },
+  "code_changes": {
+    "contract_id": "V4_CURRENT_OPERATIONAL_NEW_CODE_R2",
+    "new_codes": [
+      "SZ.301660"
+    ],
+    "still_codes": [],
+    "absent_codes": [],
+    "invalid_codes": [],
+    "valid_codes": [
+      "SZ.301660"
+    ],
+    "identity_coverage": "COMPLETE",
+    "absence_is_delisting_evidence": false
+  },
+  "full_derivation_acceptance": "NOT_RUN_BY_THIS_CHECK",
+  "production_write_count": 0
+}

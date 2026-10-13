@@ -99,6 +99,7 @@ def make_daily_handler(root,jobs):
             if path.startswith(PREFIX):
                 try:
                     tail=path.removeprefix(PREFIX).strip('/').split('/')
+                    if tail==['progress']:return self.send(200,jobs.progress())
                     if tail==['status']:return self.send(200,jobs.status())
                     if tail==['settings']:return self.send(200,jobs.settings())
                     if len(tail)==2 and tail[0]=='jobs':return self.send(200,jobs.job(tail[1]))

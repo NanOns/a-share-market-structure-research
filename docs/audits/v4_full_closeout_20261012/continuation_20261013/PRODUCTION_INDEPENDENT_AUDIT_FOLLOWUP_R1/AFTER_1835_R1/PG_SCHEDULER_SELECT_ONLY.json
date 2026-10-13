@@ -1,0 +1,192 @@
+{
+  "identity": [
+    "v4_closeout_producer_20261012",
+    "market_research",
+    5432,
+    "on"
+  ],
+  "schema": "v4_jobs_80ef60f40eca6e6d",
+  "tables": {
+    "scheduler_policy": [
+      [
+        1,
+        1,
+        2,
+        "2026-10-13 17:53:03.975022+08:00"
+      ]
+    ],
+    "scheduler_dispatch": [
+      [
+        "2026-10-12",
+        "fdaacbe2aa25488b9052c421331a7e9f"
+      ],
+      [
+        "2026-10-13",
+        "ebfc419323f34729b0b56093a6790a09"
+      ]
+    ],
+    "scheduler_attempts": [
+      [
+        "2026-10-12",
+        1,
+        "fdaacbe2aa25488b9052c421331a7e9f",
+        null,
+        "fe763f4dfadd519a4dbca2e13da76bdf2532ce6fd737a861cf80747fc05656c9",
+        "SOURCE_REVISION_OR_SYSTEM_RECOVERY",
+        "2026-10-12 21:32:07.939108+08:00"
+      ],
+      [
+        "2026-10-13",
+        1,
+        "ebfc419323f34729b0b56093a6790a09",
+        null,
+        null,
+        "SOURCE_REVISION_OR_SYSTEM_RECOVERY",
+        "2026-10-13 18:35:04.580432+08:00"
+      ]
+    ],
+    "source_probe_state": [
+      [
+        "2026-10-12",
+        {
+          "observed_at": "2026-10-12T21:32:07.803811+08:00",
+          "next_probe_at": "2026-10-12T22:02:07.803823+08:00"
+        },
+        "2026-10-12 21:32:07.857661+08:00"
+      ],
+      [
+        "2026-10-13",
+        {
+          "observed_at": "2026-10-13T18:35:04.494454+08:00",
+          "next_probe_at": "2026-10-13T19:05:04.494477+08:00"
+        },
+        "2026-10-13 18:35:04.540841+08:00"
+      ]
+    ],
+    "update_jobs": [
+      [
+        "fdaacbe2aa25488b9052c421331a7e9f",
+        "SCHEDULER",
+        "CATCH_UP",
+        "2026-10-12",
+        "CANCELLED",
+        "2026-10-12 21:32:07.938197+08:00",
+        "2026-10-12 21:35:02.676279+08:00",
+        "AUTO:2026-10-12:1",
+        "SOURCE_EXECUTION_FileNotFoundError"
+      ],
+      [
+        "ebfc419323f34729b0b56093a6790a09",
+        "SCHEDULER",
+        "CATCH_UP",
+        "2026-10-13",
+        "QA_BLOCKED",
+        "2026-10-13 18:35:04.578903+08:00",
+        null,
+        "AUTO:2026-10-13:1",
+        "SOURCE_EXECUTION_UNPACKAGED_LOCAL_MODULE"
+      ]
+    ],
+    "update_job_days": [
+      [
+        "fdaacbe2aa25488b9052c421331a7e9f",
+        "2026-10-12",
+        "CANCELLED",
+        1,
+        "2026-10-12 22:05:00+08:00",
+        "{\"status\": \"FAILED_RETRYABLE\", \"reason\": \"SOURCE_EXECUTION_FileNotFoundError\", \"retry_class\": \"TRANSIENT_INFRASTRUCTURE\"}"
+      ],
+      [
+        "ebfc419323f34729b0b56093a6790a09",
+        "2026-10-13",
+        "QA_BLOCKED",
+        1,
+        null,
+        "{\"status\": \"QA_BLOCKED\", \"reason\": \"SOURCE_EXECUTION_UNPACKAGED_LOCAL_MODULE\", \"retry_class\": \"DETERMINISTIC_SOURCE_OR_VALIDATION\"}"
+      ]
+    ],
+    "update_events": [
+      [
+        1,
+        "fdaacbe2aa25488b9052c421331a7e9f",
+        "2026-10-12 21:32:07.939756+08:00",
+        "CALENDAR_GAP_PLAN",
+        "GAP_PLANNED",
+        "{\"contract_id\": \"V4_OPERATIONAL_DAILY_CALENDAR_V2\", \"observed_at\": \"2026-10-12T21:32:07.355496+08:00\", \"last_good_trade_date\": \"2026-10-09\", \"requested_through_date\": \"2026-10-12\", \"latest_closed_session\": \"2026-10-12\", \"eligible_target\": \"2026-10-12\", \"missing_sessions\": [\"2026-10-12\"], \"eligible_sessions\": [\"2026-10-12\"], \"scheduled_sessions\": [], \"next_trigger_at\": \"2026-10-13T18:35:00+08:00\", \"calendar_binding\": {\"bytes\": 5147, \"path\": \"data/v4/dm01_r4/calendar/SESSION_CALENDAR_20260930_20261231_R1.json\", \"sha256\": \"3cbce200d5dff2916b98af050c51c16fc2906c82da7214af9d8f0c736fc12465\"}, \"calendar_acceptance\": \"ACCEPTED_CALENDAR_BYTES_LOCAL_AUDIT_CANDIDATE\", \"status\": \"TIME_ELIGIBLE\", \"source_ready\": false, \"head_mutated\": false, \"external_acceptance\": \"NOT_GRANTED\", \"last_good_head_sha256\": \"55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e\"}"
+      ],
+      [
+        2,
+        "fdaacbe2aa25488b9052c421331a7e9f",
+        "2026-10-12 21:32:08.133462+08:00",
+        "SOURCE_PREFLIGHT",
+        "ATTEMPT_STARTED",
+        "{\"trade_date\": \"2026-10-12\"}"
+      ],
+      [
+        3,
+        "fdaacbe2aa25488b9052c421331a7e9f",
+        "2026-10-12 21:33:45.613359+08:00",
+        "SOURCE_READY",
+        "IMMUTABLE_STAGE_CHECKPOINT",
+        "{\"trade_date\": \"2026-10-12\", \"status\": \"SOURCE_CAPTURED\", \"source_freeze\": {\"path\": \"data/v4/dynamic_daily_sources/daily_freezes/2026-10-12/797af556c4cb49af4c889db65c6a9367d33ed3c391cfa62331624f480c3d6829.json\", \"sha256\": \"81edb9dc09946f1097e0470f1203e36425a3f99d209fbd0c1033964ea3369487\"}, \"tdx_bar_count\": 5212, \"baostock_row_count\": 5224, \"source_captured\": true, \"source_ready\": true, \"derived_ready\": false, \"published\": false, \"last_good_preserved\": true, \"first_capture_source_candidate\": {\"status\": \"CANDIDATE_PRODUCED\", \"candidate\": {\"path\": \"data/v4/source_candidates/2026-10-12/2e9564ae17bf33f3e7f7f0aff07f3f19b721b9c5c517b8f81b7cd5af89c8c3af/capture.json\", \"sha256\": \"519caec832e6b994ed32bc0c1acd19eeeab5a88c931df48c23f745dbf437e302\", \"bytes\": 216048}, \"production\": false}, \"source_readiness\": {\"path\": \"data/v4/dynamic_daily_sources/source_readiness/2026-10-12/b4f9d705ab77f897abe77a49822feafe19e80fb24f807fe12393a3af0dd3a627.json\", \"sha256\": \"afbdc10b99c32cc0b3fc7bef0e38d475838404525b8b3a4a72e2d5851f618f61\"}}"
+      ],
+      [
+        4,
+        "fdaacbe2aa25488b9052c421331a7e9f",
+        "2026-10-12 21:33:45.908616+08:00",
+        "DERIVING",
+        "IMMUTABLE_STAGE_CHECKPOINT",
+        "{\"trade_date\": \"2026-10-12\", \"status\": \"SOURCE_CAPTURED\", \"source_freeze\": {\"path\": \"data/v4/dynamic_daily_sources/daily_freezes/2026-10-12/797af556c4cb49af4c889db65c6a9367d33ed3c391cfa62331624f480c3d6829.json\", \"sha256\": \"81edb9dc09946f1097e0470f1203e36425a3f99d209fbd0c1033964ea3369487\"}, \"tdx_bar_count\": 5212, \"baostock_row_count\": 5224, \"source_captured\": true, \"source_ready\": true, \"derived_ready\": false, \"published\": false, \"last_good_preserved\": true, \"first_capture_source_candidate\": {\"status\": \"CANDIDATE_PRODUCED\", \"candidate\": {\"path\": \"data/v4/source_candidates/2026-10-12/2e9564ae17bf33f3e7f7f0aff07f3f19b721b9c5c517b8f81b7cd5af89c8c3af/capture.json\", \"sha256\": \"519caec832e6b994ed32bc0c1acd19eeeab5a88c931df48c23f745dbf437e302\", \"bytes\": 216048}, \"production\": false}, \"source_readiness\": {\"path\": \"data/v4/dynamic_daily_sources/source_readiness/2026-10-12/b4f9d705ab77f897abe77a49822feafe19e80fb24f807fe12393a3af0dd3a627.json\", \"sha256\": \"afbdc10b99c32cc0b3fc7bef0e38d475838404525b8b3a4a72e2d5851f618f61\"}}"
+      ],
+      [
+        5,
+        "fdaacbe2aa25488b9052c421331a7e9f",
+        "2026-10-12 21:33:46.168983+08:00",
+        "DAY_RECEIPT",
+        "FAILED_RETRYABLE",
+        "{\"trade_date\": \"2026-10-12\", \"status\": \"FAILED_RETRYABLE\", \"reason\": \"SOURCE_EXECUTION_FileNotFoundError\", \"retry_class\": \"TRANSIENT_INFRASTRUCTURE\"}"
+      ],
+      [
+        6,
+        "fdaacbe2aa25488b9052c421331a7e9f",
+        "2026-10-12 21:35:02.677624+08:00",
+        "CANCEL",
+        "CANCELLED",
+        "{\"boundary\": \"No in-flight executor\"}"
+      ],
+      [
+        7,
+        null,
+        "2026-10-13 17:53:03.979049+08:00",
+        "SETTINGS",
+        "AUTO_RESUMED",
+        "{}"
+      ],
+      [
+        8,
+        "ebfc419323f34729b0b56093a6790a09",
+        "2026-10-13 18:35:04.580882+08:00",
+        "CALENDAR_GAP_PLAN",
+        "GAP_PLANNED",
+        "{\"contract_id\": \"V4_OPERATIONAL_DAILY_CALENDAR_V2\", \"observed_at\": \"2026-10-13T18:35:03.832957+08:00\", \"last_good_trade_date\": \"2026-10-12\", \"requested_through_date\": \"2026-10-13\", \"latest_closed_session\": \"2026-10-13\", \"eligible_target\": \"2026-10-13\", \"missing_sessions\": [\"2026-10-13\"], \"eligible_sessions\": [\"2026-10-13\"], \"scheduled_sessions\": [], \"next_trigger_at\": \"2026-10-14T18:35:00+08:00\", \"calendar_binding\": {\"bytes\": 5147, \"path\": \"data/v4/dm01_r4/calendar/SESSION_CALENDAR_20260930_20261231_R1.json\", \"sha256\": \"3cbce200d5dff2916b98af050c51c16fc2906c82da7214af9d8f0c736fc12465\"}, \"calendar_acceptance\": \"ACCEPTED_CALENDAR_BYTES_LOCAL_AUDIT_CANDIDATE\", \"status\": \"TIME_ELIGIBLE\", \"source_ready\": false, \"head_mutated\": false, \"external_acceptance\": \"NOT_GRANTED\", \"last_good_head_sha256\": \"d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc\"}"
+      ],
+      [
+        9,
+        "ebfc419323f34729b0b56093a6790a09",
+        "2026-10-13 18:35:04.913460+08:00",
+        "SOURCE_PREFLIGHT",
+        "ATTEMPT_STARTED",
+        "{\"trade_date\": \"2026-10-13\"}"
+      ],
+      [
+        10,
+        "ebfc419323f34729b0b56093a6790a09",
+        "2026-10-13 18:35:05.797985+08:00",
+        "DAY_RECEIPT",
+        "QA_BLOCKED",
+        "{\"trade_date\": \"2026-10-13\", \"status\": \"QA_BLOCKED\", \"reason\": \"SOURCE_EXECUTION_UNPACKAGED_LOCAL_MODULE\", \"retry_class\": \"DETERMINISTIC_SOURCE_OR_VALIDATION\"}"
+      ]
+    ]
+  },
+  "read_only": true
+}

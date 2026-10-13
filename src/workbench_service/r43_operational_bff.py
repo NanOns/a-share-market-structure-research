@@ -23,6 +23,16 @@ def owner_cell(value,ref,field,day):
 class OperationalResearchBFF:
     def __init__(self,api,legacy):
         self.api=api;self.legacy=legacy
+    def membership_rows(self):
+        from workbench_db.v4_membership_reference_pg_v1 import KEY,read
+        if KEY in self.api.candidate or self.api.candidate.get('exact_daily_adjustment_contract'):
+            return normalized_frozen_rows(read(self.api.root,self.api.candidate))
+        return normalized_frozen_rows(rows(self.api.root,self.api.snapshot['memberships']))
+    def identity_rows(self):
+        from workbench_db.v4_membership_reference_pg_v1 import KEY,read_identity
+        if KEY in self.api.candidate or self.api.candidate.get('exact_daily_adjustment_contract'):
+            return read_identity(self.api.root,self.api.candidate)
+        return rows(self.api.root,self.api.snapshot['identity_source'])
     def envelope(self,day,**payload):
         c=self.api.context();c.update(trade_date=day,accepted_trade_date='2026-10-08',release_id=self.api.token,model_namespace='TDX_INDUSTRY_CONCEPT',data_updated_at=self.api.candidate['membership_observed_at'],scoped_release=True,operational_release_scope=['stocks_daily','sectors_current_facts','market_current','focus_read_corrected','diagnostics'],domain_readiness={'focus':{'earliest_valid_date':'2026-09-28'}},read_source_label='通达信最新成员回算；非历史当日成员',bff_contract_id=CONTRACT)
         return dict(context=c,context_token=self.api.token,production_accepted=c.get('production_accepted',False),**payload)
@@ -45,8 +55,8 @@ class OperationalResearchBFF:
             raw=list(latest.values())
         if not isinstance(raw,list):return []
         ref=self.api.candidate['owners'][day][native];result=[]
-        member_rows=normalized_frozen_rows(rows(self.api.root,self.api.snapshot['memberships'])) if domain in ('stocks','sectors') else []
-        identities={r['security_id']:r for r in rows(self.api.root,self.api.snapshot['identity_source']) if r.get('security_id')}
+        member_rows=self.membership_rows() if domain in ('stocks','sectors') else []
+        identities={r['security_id']:r for r in self.identity_rows() if r.get('security_id')}
         leaf_by_security={}
         for m in member_rows:
             if m.get('sector_type')=='INDUSTRY' and m.get('industry_level')=='LEAF' and m.get('primary_industry_rank_eligible'):leaf_by_security.setdefault(m.get('security_id'),[]).append(m['sector_id'])

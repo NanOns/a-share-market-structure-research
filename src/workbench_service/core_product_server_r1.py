@@ -52,6 +52,8 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None):
                                 elif isinstance(x,list):
                                     for v in x:collect(v)
                             collect(api.candidate);collect(api.snapshot)
+                            if api.candidate.get('native_membership_reference'):
+                                collect(json.loads((root/api.candidate['native_membership_reference']['path']).read_bytes()))
                             from .native_product_catalog_v3 import KEY,load as load_catalog
                             if KEY in api.candidate:
                                 catalog=load_catalog(root,api.candidate);collect(catalog)

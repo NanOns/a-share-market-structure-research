@@ -302,6 +302,12 @@ def seal(root,context):
         from workbench_db.v4_operational_owner_authority_v2 import prepare_successor
         pg_receipt=prepare_successor(root,candidate)
         atomic_json(root,folder/'NATIVE_PG_OWNER_PREPARATION_V2.json',pg_receipt)
+        from workbench_db.v4_membership_reference_pg_v1 import prepare as prepare_membership_reference
+        reference_receipt=prepare_membership_reference(root,candidate)
+        from workbench_db.v4_membership_reference_pg_v1 import prepare_identity,prepare_search_identity
+        reference_receipt['identity']=prepare_identity(root,candidate)
+        reference_receipt['search_identity']=prepare_search_identity(root,candidate)
+        atomic_json(root,folder/'NATIVE_MEMBERSHIP_REFERENCE_PREPARATION_V1.json',reference_receipt)
     path=folder/'SUCCESSOR_CANDIDATE.json';atomic_json(root,path,candidate)
     entry=load(folder/'STAGE_ENTRY.json');entry.update(acceptance='DERIVED_READY',evidence=ref(root,receipt),next_stage='AUTHORIZED_CAS_HTTP_READBACK')
     atomic_json(root,folder/'STAGE_ENTRY.json',entry)

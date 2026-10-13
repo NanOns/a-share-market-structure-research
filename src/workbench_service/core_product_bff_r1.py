@@ -140,6 +140,10 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
     def identity_records(self):
         key=('product-identity',)
         if key not in self.api.cache:
+            from workbench_db.v4_membership_reference_pg_v1 import KEY,read_search_identity
+            if KEY in self.api.candidate or self.api.candidate.get('exact_daily_adjustment_contract'):
+                self.api.cache[key]=read_search_identity(self.api.root,self.api.candidate)
+                return self.api.cache[key]
             head=json.loads((self.api.root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
             ref=head['identity'];data=json.loads(checked(self.api.root,ref).read_bytes())
             self.api.cache[key]=(data['records'],ref)

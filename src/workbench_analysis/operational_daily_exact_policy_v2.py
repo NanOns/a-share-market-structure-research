@@ -27,6 +27,7 @@ REQUIRED_SOURCES.update(('src/workbench_service/native_product_catalog_v3.py',
     'src/workbench_service/core_product_bff_r1.py',
     'src/workbench_db/v4_history_pg_r1.py','src/workbench_db/v4_history_corrections_pg_v2.py'))
 REQUIRED_SOURCES.add('src/workbench_analysis/operational_product_pack_v3.py')
+REQUIRED_SOURCES.update(('src/workbench_db/v4_membership_reference_pg_v1.py','src/workbench_service/r43_operational_bff.py'))
 
 def verify_loaded_versions(bindings):
     import sys,hashlib

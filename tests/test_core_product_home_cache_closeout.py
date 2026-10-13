@@ -22,7 +22,7 @@ def cache_server(tmp_path,monkeypatch):
     state['api']=api
     monkeypatch.setattr(module,'accepted_api',lambda root:api)
     class BFF:
-        def __init__(self,*args,**kwargs):pass
+        def __init__(self,reader,*args,**kwargs):self.api=reader
         def get(self,path,params):
             state['calls']+=1
             if params.get('context_token')!='valid':raise ValueError('CONTEXT_TOKEN_MISMATCH')

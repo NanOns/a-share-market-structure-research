@@ -24,7 +24,7 @@ def vector(root, index):
                     history_index=index, market_facts=facts))
     save(root, 'config/core_product_read_authority_r1.json', {'contract_id': 'CORE_PRODUCT_READ_AUTHORITY_R1', 'manifest': manifest})
     bff = object.__new__(CoreProductBFFR1)
-    bff.api = SimpleNamespace(root=root, cache={})
+    bff.api = SimpleNamespace(root=root, cache={}, candidate={})
     bff.isolated_history = None
     return bff
 

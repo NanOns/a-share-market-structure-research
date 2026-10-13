@@ -10,7 +10,17 @@ import pytest
 from tests.v4_frozen_history_closeout import exact_pre16_history_native_scope,exact_registered_history_native_scope,exact_original_r17b_promotion_node,exact_original_stage13_native_scope,exact_original_r15_contract_node,exact_historical_dm01_preclose_clock
 from tests.v4_frozen_history_closeout import original_pre_successor_v13_reader_gate
 from tests.v4_frozen_history_closeout import original_fep_feature_owner_envelope
-from tests.v4_static_stage_continuation import exact_original_static_stage_node,original_mutable_exact_policy_contract,original_pre_exact_synthetic_executor_contract
+from tests.v4_static_stage_continuation import exact_original_static_stage_node,original_mutable_exact_policy_contract,original_pre_exact_synthetic_executor_contract,original_pending_policy_precision_layer
+from tests.v4_static_stage_continuation import original_extension_required_inputs_node
+
+@pytest.fixture(autouse=True)
+def restore_import_search_path_after_each_node():
+    """Historical script imports may prepend their root; never leak it to later nodes."""
+    original=list(sys.path)
+    try:
+        yield
+    finally:
+        sys.path[:]=original
 
 @pytest.fixture(autouse=True)
 def exact_clean_phase0_database(request,monkeypatch):

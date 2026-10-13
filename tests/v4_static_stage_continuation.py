@@ -7,6 +7,23 @@ from tests.remainder_historical_profiles import profile,install
 ROOT=Path(__file__).resolve().parents[1]
 
 @pytest.fixture(autouse=True)
+def original_extension_required_inputs_node(request,monkeypatch):
+    """One superseded all-inputs vector; current REV2 three-valued gate is separate."""
+    relative=request.node.path.relative_to(ROOT).as_posix()
+    if relative!='tests/v4_04/test_all_rule_branches.py' or request.node.name!='test_extension_branches[1-None-1-0-UNKNOWN]':return
+    commit='4eb7bab573b3c0d928cedfbd22bed592e496fbd2'
+    original=subprocess.check_output(['git','show',commit+':'+relative],cwd=ROOT)
+    assert ast.dump(ast.parse(original))==ast.dump(ast.parse(request.node.path.read_bytes()))
+    raw=subprocess.check_output(['git','show',commit+':src/v4/profile_core.py'],cwd=ROOT)
+    tree=ast.parse(raw)
+    node=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='extension_risk')
+    import src.v4.profile_core as current
+    namespace=dict(current.__dict__)
+    exec(compile(ast.Module(body=[node],type_ignores=[]),'<original-extension-required-inputs>','exec'),namespace)
+    monkeypatch.setattr(request.module,'extension_risk',namespace['extension_risk'])
+    request.node.user_properties.extend([('scope','SUPERSEDED_ALL_INPUTS_VECTOR_HISTORICAL_ONLY_NO_CURRENT_ADMISSION'),('original_source_sha256',hashlib.sha256(raw).hexdigest())])
+
+@pytest.fixture(autouse=True)
 def original_mutable_exact_policy_contract(request,monkeypatch):
     """Retain original mutable-path assertions as their exact historical IO contract.
 
@@ -50,6 +67,37 @@ def original_pre_exact_synthetic_executor_contract(request,monkeypatch):
     monkeypatch.setattr(request.module,'executor',modules['operational_daily_executor_v1'])
     request.node.user_properties.append(('historical_contract','ORIGINAL_PRE_EXACT_SYNTHETIC_IO_ONLY_NO_CURRENT_ADMISSION'))
 
+@pytest.fixture(autouse=True)
+def original_pending_policy_precision_layer(request,monkeypatch):
+    relative=request.node.path.relative_to(ROOT).as_posix()
+    if relative!='tests/test_producer_precision_continuation.py' or request.function.__name__!='test_executor_real_adapter_build_seal_and_strict_review_no_real_cas':return
+    commit='57a86681662c5cc008a224666b2402378d69b4b3'
+    original=subprocess.check_output(['git','show',commit+':'+relative],cwd=ROOT)
+    assert original==request.node.path.read_bytes().replace(b'\r\n',b'\n')
+    folder=Path('G:/codex_tmp/test_temp')/('original_precision_layer_'+commit[:12]);folder.mkdir(parents=True,exist_ok=True)
+    modules={}
+    for name in ('operational_daily_executor_v1','operational_daily_ready_owner_v2','operational_daily_exact_policy_v2'):
+        raw=subprocess.check_output(['git','show',commit+':src/workbench_analysis/'+name+'.py'],cwd=ROOT)
+        path=folder/(name+'.py')
+        if path.exists():assert path.read_bytes()==raw
+        else:path.write_bytes(raw)
+        spec=importlib.util.spec_from_file_location('workbench_analysis._precision_original_'+name,path)
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);modules[name]=module
+    from workbench_analysis import operational_daily_executor_v1 as executor,operational_daily_ready_owner_v2 as ready,operational_daily_exact_policy_v2 as policy
+    original_derive=modules['operational_daily_executor_v1'].derive_ready_sources
+    # Preserve keyword-only defaults as well as the original function code.
+    def scoped_with_defaults(*args,**kwargs):
+        from types import FunctionType
+        scope=dict(original_derive.__globals__,verify_source_gate=executor.verify_source_gate)
+        function=FunctionType(original_derive.__code__,scope,original_derive.__name__,original_derive.__defaults__)
+        function.__kwdefaults__=original_derive.__kwdefaults__
+        return function(*args,**kwargs)
+    monkeypatch.setattr(executor,'derive_ready_sources',scoped_with_defaults)
+    monkeypatch.setattr(ready,'build',modules['operational_daily_ready_owner_v2'].build)
+    monkeypatch.setattr(ready,'seal',modules['operational_daily_ready_owner_v2'].seal)
+    monkeypatch.setattr(policy,'verify',modules['operational_daily_exact_policy_v2'].verify)
+    request.node.user_properties.append(('scope','ORIGINAL_PENDING_POLICY_SYNTHETIC_IO_LAYER_NO_CURRENT_ADMISSION'))
+
 NODES={
  ('tests/test_a08_governance_propagation.py','test_V6_grant_digest_and_resolver_parity'):'b8bf5768ffde690d5d9820a9250b384d1fb3f82c',
  ('tests/test_a08_governance_propagation.py','test_V6_r25_selection_waits_for_real_target'):'b8bf5768ffde690d5d9820a9250b384d1fb3f82c',
@@ -65,7 +113,10 @@ NODES={
 
 def load(root,relative,name):
     spec=importlib.util.spec_from_file_location(name,root/relative)
-    module=importlib.util.module_from_spec(spec);sys.modules[name]=module;spec.loader.exec_module(module)
+    module=importlib.util.module_from_spec(spec);sys.modules[name]=module
+    original=list(sys.path)
+    try:spec.loader.exec_module(module)
+    finally:sys.path[:]=original
     return module
 
 @pytest.fixture(autouse=True)

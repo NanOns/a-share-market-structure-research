@@ -1,0 +1,186 @@
+{
+  "contract_id": "V4_NATIVE_FAILURE_RECONCILIATION_R4",
+  "acceptance": "PASS_EXACT_FAILED_NODE_RESOLUTION_ONLY",
+  "full_run": {
+    "nodes": 4749,
+    "pass": 4689,
+    "failed": 20,
+    "skipped": 40
+  },
+  "resolved_failures": [
+    {
+      "node": "tests/test_core_product_home_cache_closeout.py::test_cached_home_checks_database_identity_and_availability",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_CACHE_FIXTURE_CONTINUATION_R4"
+    },
+    {
+      "node": "tests/test_core_product_home_cache_closeout.py::test_cached_home_invalidates_changed_source",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_CACHE_FIXTURE_CONTINUATION_R4"
+    },
+    {
+      "node": "tests/test_core_product_home_cache_closeout.py::test_cached_home_rejects_wrong_token",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_CACHE_FIXTURE_CONTINUATION_R4"
+    },
+    {
+      "node": "tests/test_core_product_home_cache_closeout.py::test_context_request_rejects_disconnected_or_other_native_owner_database",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_CACHE_FIXTURE_CONTINUATION_R4"
+    },
+    {
+      "node": "tests/test_producer_precision_continuation.py::test_executor_real_adapter_build_seal_and_strict_review_no_real_cas[False]",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_PRECISION_LAYER_CONTINUATION_R5"
+    },
+    {
+      "node": "tests/test_producer_precision_continuation.py::test_executor_real_adapter_build_seal_and_strict_review_no_real_cas[True]",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_PRECISION_LAYER_CONTINUATION_R5"
+    },
+    {
+      "node": "tests/test_v4_13_r16r1_repair.py::test_independent_oracle_rejects_each_category_mutation[10]",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_IMPORT_PATH_ORDER_CONTINUATION_R2"
+    },
+    {
+      "node": "tests/test_v4_13_r16r1_repair.py::test_independent_oracle_rejects_each_category_mutation[8]",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_IMPORT_PATH_ORDER_CONTINUATION_R2"
+    },
+    {
+      "node": "tests/test_v4_13_r16r1_repair.py::test_independent_oracle_rejects_each_category_mutation[9]",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_IMPORT_PATH_ORDER_CONTINUATION_R2"
+    },
+    {
+      "node": "tests/test_v4_13_r16r1_repair.py::test_independent_provenance_mismatch_rejected[path-config/v4_13_projection_v1_1.json]",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_IMPORT_PATH_ORDER_CONTINUATION_R2"
+    },
+    {
+      "node": "tests/test_v4_13_r16r1_repair.py::test_independent_provenance_mismatch_rejected[producer_contract_id-WRONG]",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_IMPORT_PATH_ORDER_CONTINUATION_R2"
+    },
+    {
+      "node": "tests/test_v4_13_r16r1_repair.py::test_independent_provenance_mismatch_rejected[sha256-0000000000000000000000000000000000000000000000000000000000000000]",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_IMPORT_PATH_ORDER_CONTINUATION_R2"
+    },
+    {
+      "node": "tests/test_v4_default_history_authority_r4.py::test_default_manifest_tamper_fails_before_pg",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_NEW_FAILURE_CONTINUATION_R2"
+    },
+    {
+      "node": "tests/test_v4_default_history_authority_r4.py::test_default_old_sqlite_binding_is_rejected",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_NEW_FAILURE_CONTINUATION_R2"
+    },
+    {
+      "node": "tests/test_v4_default_history_authority_r4.py::test_default_pg_binding_reads_exact_history",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_NEW_FAILURE_CONTINUATION_R2"
+    },
+    {
+      "node": "tests/v4_04/test_all_rule_branches.py::test_extension_branches[1-None-1-0-UNKNOWN]",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_NEW_FAILURE_CONTINUATION_R2"
+    },
+    {
+      "node": "tests/v4_a02_a05_formal_r1/test_formal_amendments.py::test_A02_full_independent_replay_and_prior_big_diff",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_IMPORT_PATH_ORDER_CONTINUATION_R2"
+    },
+    {
+      "node": "tests/v4_a02_a05_formal_r1/test_formal_amendments.py::test_A05_full_real_snapshot_independent_AST_readback",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_IMPORT_PATH_ORDER_CONTINUATION_R2"
+    },
+    {
+      "node": "tests/v4_a02_r2/test_rps_history.py::test_real_six_publication_source_rank_and_delta_oracle",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_IMPORT_PATH_ORDER_CONTINUATION_R2"
+    },
+    {
+      "node": "tests/v4_a05_r2/test_legacy_exact.py::test_real_541_original_byte_bound_outputs_match_exact_recovery",
+      "original_state": "FAILURE",
+      "continuation": "FINAL_IMPORT_PATH_ORDER_CONTINUATION_R2"
+    }
+  ],
+  "extra_order_trigger_controls": [
+    {
+      "node": "tests.test_r2_sector_width::test_width_adapter_rejects_missing_stale_or_unknown_basis_dependencies",
+      "receipt": "FINAL_IMPORT_PATH_ORDER_CONTINUATION_R2"
+    }
+  ],
+  "current_fixture_sha256": {
+    "tests/test_core_product_home_cache_closeout.py": "ecec2140fcb0e974309edb4279eebad79c03d751b16bedb68b0b97b3bdc12889",
+    "tests/test_v4_default_history_authority_r4.py": "79027a563ebdef0185ccf450f51f0bf49207b4adf828b15ef6bbab6dbdb98c6f",
+    "tests/v4_static_stage_continuation.py": "acf7ec015ce1c997d2f139a03daa5473d99979ebcb1eab689b2b4135ec80870b",
+    "tests/v4_native_isolation_plugin_r4.py": "40eec7c1927b2d5e76b3d83130be6e067e39253e6204b826ef8d47197c25b004"
+  },
+  "business_source_drift": [],
+  "original_full_failure_retained": true,
+  "uniform_clean_slate_full_acceptance": false,
+  "historical_full_run": "FINAL_FROZEN_HISTORICAL_R3_RUNNING",
+  "production_cutover": false,
+  "evidence": [
+    {
+      "path": "FINAL_FROZEN_NATIVE_R3.xml",
+      "bytes": 715834,
+      "sha256": "1fe9ccfd101734c7cd40655a803d2f0b1eaaf8a35d855e50d2a4330483a82d22"
+    },
+    {
+      "path": "FINAL_FROZEN_NATIVE_R3.manifest.json",
+      "bytes": 553010,
+      "sha256": "09f45e6a0f682db1561402a6942fe53af427495c901a4f639b7abdafaf2a6315"
+    },
+    {
+      "path": "FINAL_FIXTURE_CONTINUATION_BUSINESS_SOURCE_CONSERVATION_R1.json",
+      "bytes": 233,
+      "sha256": "9cb69b1cf6cee66fd5d18e2224ec21252e551dd72bf26ec293953d16b8d2cdf9"
+    },
+    {
+      "path": "FINAL_CACHE_FIXTURE_CONTINUATION_R4.xml",
+      "bytes": 816,
+      "sha256": "cd0c845925727818c767c893cd98b0764d1b9d5ad93e18192baabc2bfd5486d3"
+    },
+    {
+      "path": "FINAL_CACHE_FIXTURE_CONTINUATION_R4.manifest.json",
+      "bytes": 801,
+      "sha256": "70580695950e72b9da46f750ff64e2b7810d351ad80a08f50eccc2013c05cceb"
+    },
+    {
+      "path": "FINAL_PRECISION_LAYER_CONTINUATION_R5.xml",
+      "bytes": 836,
+      "sha256": "89231eafd8b69d6ba07dbd2c2428afd1f8b78234b6d0a9d71380c83a654ff716"
+    },
+    {
+      "path": "FINAL_PRECISION_LAYER_CONTINUATION_R5.manifest.json",
+      "bytes": 622,
+      "sha256": "977d8f7d3aa085d9c503250e50476297058572ec4b70e5c03622335f609f5b38"
+    },
+    {
+      "path": "FINAL_NEW_FAILURE_CONTINUATION_R2.xml",
+      "bytes": 1016,
+      "sha256": "4f9f57636368fb05716e0fe116b4cf08cfb92de7c1acab6e45659db77aea1d8e"
+    },
+    {
+      "path": "FINAL_NEW_FAILURE_CONTINUATION_R2.manifest.json",
+      "bytes": 866,
+      "sha256": "97ef9a1ab3bbfb8b60c3dd69b392ef84cf5bf46716189c163f4b27ab83e99c24"
+    },
+    {
+      "path": "FINAL_IMPORT_PATH_ORDER_CONTINUATION_R2.xml",
+      "bytes": 1860,
+      "sha256": "6a9748b894a29d05c56424e4fb9310cb7a39595fea250d9bde5dd1f4e7254e07"
+    },
+    {
+      "path": "FINAL_IMPORT_PATH_ORDER_CONTINUATION_R2.manifest.json",
+      "bytes": 2065,
+      "sha256": "66f7bf421744b18877dafc5c4eb8c498ef81e5150f2f9c9337417a8d6c9157af"
+    }
+  ]
+}

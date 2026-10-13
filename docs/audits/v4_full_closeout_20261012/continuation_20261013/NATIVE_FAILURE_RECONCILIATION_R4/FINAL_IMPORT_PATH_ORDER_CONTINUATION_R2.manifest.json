@@ -1,0 +1,27 @@
+{
+  "contract_id": "V4_FINAL_SOURCE_NODE_PROFILE_R3",
+  "source_commit": "929086b8c996b19458ea8ffec963eed4f255bca3",
+  "nodes": [
+    "tests/test_r2_sector_width.py::test_width_adapter_rejects_missing_stale_or_unknown_basis_dependencies",
+    "tests/test_v4_13_r16r1_repair.py::test_independent_oracle_rejects_each_category_mutation[10]",
+    "tests/test_v4_13_r16r1_repair.py::test_independent_oracle_rejects_each_category_mutation[8]",
+    "tests/test_v4_13_r16r1_repair.py::test_independent_oracle_rejects_each_category_mutation[9]",
+    "tests/test_v4_13_r16r1_repair.py::test_independent_provenance_mismatch_rejected[path-config/v4_13_projection_v1_1.json]",
+    "tests/test_v4_13_r16r1_repair.py::test_independent_provenance_mismatch_rejected[producer_contract_id-WRONG]",
+    "tests/test_v4_13_r16r1_repair.py::test_independent_provenance_mismatch_rejected[sha256-0000000000000000000000000000000000000000000000000000000000000000]",
+    "tests/v4_a02_a05_formal_r1/test_formal_amendments.py::test_A02_full_independent_replay_and_prior_big_diff",
+    "tests/v4_a02_a05_formal_r1/test_formal_amendments.py::test_A05_full_real_snapshot_independent_AST_readback",
+    "tests/v4_a02_r2/test_rps_history.py::test_real_six_publication_source_rank_and_delta_oracle",
+    "tests/v4_a05_r2/test_legacy_exact.py::test_real_541_original_byte_bound_outputs_match_exact_recovery"
+  ],
+  "node_count": 11,
+  "sources": {
+    "tests/test_r2_sector_width.py": "421e30618b05e3ef5293dd14820d74c9f3cf8cfc868c1ee283062ab7ec37af68",
+    "tests/test_v4_13_r16r1_repair.py": "65240ea6022f7d65bdec6ebc994d1d1dc9cadae96be369be956f26e9b00f278c",
+    "tests/v4_a02_a05_formal_r1/test_formal_amendments.py": "be15a41ef4e6d15b40492cc8a19a1d8cedd6cb76cc94e612f990a07ae7d8a341",
+    "tests/v4_a02_r2/test_rps_history.py": "5ef869df35bd108d474747b5accc9bcfaec145b604ee187bf1f69440d7c2c28c",
+    "tests/v4_a05_r2/test_legacy_exact.py": "9ef88814c4ae7cdd668fe9d8fe38b7090adfddaed65246dce963c8b1ecfe5aed"
+  },
+  "profile": "CURRENT_NATIVE_PG_ONLY",
+  "exclusions": []
+}

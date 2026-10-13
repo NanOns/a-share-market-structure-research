@@ -30,19 +30,23 @@ REQUIRED_SOURCES.add('src/workbench_analysis/operational_product_pack_v3.py')
 REQUIRED_SOURCES.update(('src/workbench_db/v4_membership_reference_pg_v1.py','src/workbench_service/r43_operational_bff.py'))
 REQUIRED_SOURCES.add('src/workbench_analysis/operational_sealed_preparation_v1.py')
 REQUIRED_SOURCES.update(('src/workbench_analysis/producer_bootstrap_v1.py','src/workbench_service/candidate_research_read_v2.py'))
+REQUIRED_SOURCES.update(('src/v4/profile_core.py','src/workbench_db/v4_profile_semantic_corrections_pg_v1.py',
+    'src/workbench_db/v4_profile_dependent_corrections_pg_v1.py',
+    'src/workbench_analysis/operational_component_source_conservation_v2.py'))
 
 def verify_loaded_versions(bindings):
     import sys,hashlib
     for item in bindings:
         logical=item.get('module_path',item['path'])
-        if not logical.startswith('src/') or not logical.endswith('.py'):continue
-        name=logical[4:-3].replace('/','.')
+        if not logical.endswith('.py') or not logical.startswith(('src/','scripts/')):continue
+        name=(logical[4:-3] if logical.startswith('src/') else logical[:-3]).replace('/','.')
         if name.endswith('.__init__'):name=name[:-9]
-        module=sys.modules.get(name)
-        if module is not None and getattr(module,'__file__',None):
-            origin=Path(module.__file__)
-            if not origin.is_file() or hashlib.sha256(origin.read_bytes()).hexdigest()!=item['sha256']:
-                raise ValueError('EXACT_V2_LOADED_ALGORITHM_VERSION_MISMATCH:'+logical)
+        for alias in (name,'src.'+name) if logical.startswith('src/') else (name,):
+            module=sys.modules.get(alias)
+            if module is not None and getattr(module,'__file__',None):
+                origin=Path(module.__file__)
+                if not origin.is_file() or hashlib.sha256(origin.read_bytes()).hexdigest()!=item['sha256']:
+                    raise ValueError('EXACT_V2_LOADED_ALGORITHM_VERSION_MISMATCH:'+logical+':'+alias)
 
 def immutable_policy_binding(root,binding=None):
     """Retain exact policy bytes; accepted Heads never depend on a mutable file."""
@@ -78,17 +82,24 @@ def verify(root,binding=None,*,candidate_only=False):
     if len(paths)!=len(set(paths)) or not REQUIRED_SOURCES<=set(paths):
         raise ValueError('EXACT_V2_DAILY_SOURCE_BINDINGS_REQUIRED')
     for item in bindings:checked(root,item)
+    components=policy.get('component_source_bindings',[])
+    component_paths=[b.get('module_path') for b in components]
+    if policy.get('component_source_binding_contract')!='V4_EXACT_COMPONENT_SOURCE_BINDINGS_R2' or len(components)!=604 or len(set(component_paths))!=604:
+        raise ValueError('EXACT_V2_COMPLETE_COMPONENT_SOURCE_BINDINGS_REQUIRED')
+    for item in components:checked(root,item)
     if not candidate_only:
         if policy.get('publication_ready') is not True:raise ValueError('EXACT_V2_DAILY_ADMISSION_PENDING')
         if 'admission_evidence' not in policy:raise ValueError('EXACT_V2_DAILY_ACCEPTANCE_EVIDENCE_REQUIRED')
         # Existing historical Owner identities retain their original namespace.
         # Current executable versions reside in separate immutable archives.
         for original in load(predecessor)['accepted_algorithm_bindings']:checked(root,original)
-        verify_loaded_versions(bindings)
+        verify_loaded_versions(bindings+policy.get('component_source_bindings',[]))
         evidence=load(checked(root,policy['admission_evidence']))
         if evidence.get('contract_id')!='V4_AUTO_EXACT_RUNTIME_ACCEPTANCE_R1' or evidence.get('acceptance')!='PASS' or evidence.get('accepted_algorithm_bindings')!=bindings:
             raise ValueError('EXACT_V2_DAILY_ACCEPTANCE_EVIDENCE_REQUIRED')
+        if evidence.get('component_source_bindings')!=components:raise ValueError('EXACT_V2_COMPONENT_ACCEPTANCE_SOURCE_MISMATCH')
         for key in ('full_numeric_oracle','exact_56_dispositions','native_pg_consumers','field_semantics'):
             result=load(checked(root,evidence[key]))
             if result.get('acceptance')!='PASS':raise ValueError('EXACT_V2_DAILY_REQUIRED_GATE_FAILED:'+key)
+            if result.get('accepted_algorithm_bindings')!=bindings or result.get('component_source_bindings')!=components:raise ValueError('EXACT_V2_REQUIRED_GATE_SOURCE_MISMATCH:'+key)
     return policy,binding

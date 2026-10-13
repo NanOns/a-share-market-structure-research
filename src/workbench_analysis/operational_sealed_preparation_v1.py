@@ -23,6 +23,9 @@ ADDED_MODULES=frozenset((
     'src/workbench_service/r43_operational_bff.py',
     'src/workbench_analysis/operational_sealed_preparation_v1.py',
     'src/workbench_analysis/producer_bootstrap_v1.py','src/workbench_service/candidate_research_read_v2.py',
+    'src/v4/profile_core.py','src/workbench_db/v4_profile_semantic_corrections_pg_v1.py',
+    'src/workbench_db/v4_profile_dependent_corrections_pg_v1.py',
+    'src/workbench_analysis/operational_component_source_conservation_v2.py',
 ))
 
 def source_conservation(root,original,current):
@@ -47,7 +50,9 @@ def source_conservation(root,original,current):
         after=StripPreparedIO().visit(after)
         if not 1<=len(removed)<=2 or ast.dump(before)!=ast.dump(after):raise ValueError('SEALED_NUMERIC_AST_CONSERVATION_FAILED:'+name)
         proof.append(dict(module_path=name,scope='POST_GENERATION_IO_ONLY',removed_branches=len(removed)))
-    return dict(changed_source_proof=proof,added_read_and_preparation_modules=sorted(set(new)-set(old)))
+    added=set(new)-set(old);result=dict(changed_source_proof=proof,added_read_and_preparation_modules=sorted(added-{'src/v4/profile_core.py'}))
+    if 'src/v4/profile_core.py' in added:result['added_math_module_requires_separate_component_conservation']='src/v4/profile_core.py'
+    return result
 
 def verify(root,candidate,policy):
     root=Path(root);receipt=json.loads(checked(root,candidate[KEY]).read_bytes())
@@ -60,7 +65,10 @@ def verify(root,candidate,policy):
     for key,value in sealed.items():
         if key not in permitted and candidate.get(key)!=value:raise ValueError('SEALED_NUMERIC_ORIGINAL_FIELD_CHANGED:'+key)
     extra=set(candidate)-set(sealed)
-    if extra-{'native_pg_owner_authority','native_product_read_authority','native_membership_reference',KEY,'period_numeric_oracle'}:raise ValueError('SEALED_PREPARATION_UNAPPROVED_FIELD')
+    if extra-{'native_pg_owner_authority','native_product_read_authority','native_membership_reference',KEY,'period_numeric_oracle','native_profile_semantic_corrections','native_profile_dependent_corrections','component_source_conservation'}:raise ValueError('SEALED_PREPARATION_UNAPPROVED_FIELD')
+    if 'src/v4/profile_core.py' in {b.get('module_path',b['path']) for b in policy['accepted_algorithm_bindings']}:
+        from .operational_component_source_conservation_v2 import verify as verify_components
+        verify_components(root,candidate,policy)
     generation=json.loads(checked(root,sealed['exact_daily_generation_scope']).read_bytes())
     if generation['adjustment_contract']['policy']!=sealed['release_policy'] or old_policy['accepted_algorithm_bindings']!=sealed['accepted_algorithm_bindings']:
         raise ValueError('SEALED_PREPARATION_GENERATION_LINEAGE_MISMATCH')

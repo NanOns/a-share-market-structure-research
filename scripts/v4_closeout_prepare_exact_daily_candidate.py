@@ -24,11 +24,21 @@ def policy(root):
             if not target.exists():atomic(target,raw)
             bindings.append(dict(ref(root,target),module_path=name))
         else:bindings.append(ref(root,root/name))
+    # Preserve the original complete checkpoint denominator; do not bind only
+    # top-level orchestration while leaving imported Profile math unversioned.
+    checkpoint=json.loads((ROOT/'docs/audits/v4_full_closeout_20261012/continuation_20261013/PROFILE_COMPONENT_CHECKPOINT_SOURCE_R1.json').read_bytes())
+    components=[]
+    for item in checkpoint['unchanged_component_sources']:
+        name=item['path'];raw=(ROOT/name).read_bytes();sha=hashlib.sha256(raw).hexdigest()
+        target=root/'data/v4/exact_component_sources_v2'/sha/name
+        if target.exists() and target.read_bytes()!=raw:raise ValueError('PRESERVE_COMPONENT_SOURCE_ARCHIVE')
+        if not target.exists():atomic(target,raw)
+        components.append(dict(ref(root,target),module_path=name))
     return dict(contract_id=CONTRACT,adjustment_contract=KERNEL,publication_ready=False,
         status='PENDING_REAL_NUMERIC_AND_CONSUMER_ACCEPTANCE',historical_PIT_permission=False,
         automated_trading_permission=False,probability_claims=False,external_acceptance='NOT_GRANTED',
         task_contract=ref(root,root/DOC),predecessor_policy=ref(root,root/PREDECESSOR),
-        accepted_algorithm_bindings=bindings)
+        accepted_algorithm_bindings=bindings,component_source_binding_contract='V4_EXACT_COMPONENT_SOURCE_BINDINGS_R2',component_source_bindings=components)
 
 def atomic(path,raw):
     path.parent.mkdir(parents=True,exist_ok=True)

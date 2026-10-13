@@ -1,0 +1,64 @@
+{
+  "contract_id": "V4_STAGE4_REAL_DAILY_RELEASE_CURRENT_MARKET_CONTINUATION_R1",
+  "stage": "4/6",
+  "acceptance": "IN_PROGRESS_NO_PUBLICATION_ADMISSION",
+  "observed_at": "2026-10-13T04:34:54.350290+00:00",
+  "task_contract": {
+    "path": "G:\\codex work\\v4-full-closeout-20261012\\docs\\upgrade\\V4_FULL_CLOSEOUT_CONTINUATION_TASK_R2_20261013.md",
+    "sha256": "b51a1fbb50e19597ec98c12c22fc28f2a15a501a1645c77f7ca4b6e5ea22d4ce",
+    "bytes": 20630
+  },
+  "candidate": {
+    "path": "G:\\codex work\\v4-production-20261012\\data\\v4\\sealed_numeric_preparations_v1\\412bb713abc87cd16cf2cb0bff5653971dcd97909609b6a7c574c616f18ca858\\CANDIDATE.json",
+    "sha256": "0f5c3589887e08d1571b69c4fca4a9b0393f2b2d2e1ebcfd1f35cbb16ce7b79a",
+    "bytes": 51335
+  },
+  "T0": "2026-10-12",
+  "release_policy": {
+    "path": "G:\\codex work\\v4-production-20261012\\data\\v4\\exact_daily_policies_v2\\355efeccd98d1fc844a88767e6897c68f7a4e4e0f67f70f36296ed086fe2817c\\POLICY.json",
+    "sha256": "355efeccd98d1fc844a88767e6897c68f7a4e4e0f67f70f36296ed086fe2817c",
+    "bytes": 226718
+  },
+  "publication_ready": false,
+  "admission_evidence_present": false,
+  "accepted_algorithm_count": 53,
+  "component_source_count": 604,
+  "current_market_arithmetic_checks": 41,
+  "current_market_metadata_and_regime_checks": 13,
+  "retained_metadata_pass_checks": 9,
+  "failed_only_continuation_checks": 4,
+  "evidence": [
+    {
+      "path": "G:\\codex work\\v4-full-closeout-20261012\\docs\\audits\\v4_full_closeout_20261012\\continuation_20261013\\CURRENT_MARKET_ORACLE_R1\\RESULT.json",
+      "sha256": "647e48c00c5097005ba471135e00182edfd8a71395bdf41afd21c77c124b6bdd",
+      "bytes": 4570
+    },
+    {
+      "path": "G:\\codex work\\v4-full-closeout-20261012\\docs\\audits\\v4_full_closeout_20261012\\continuation_20261013\\CURRENT_MARKET_ORACLE_R1\\METADATA_AND_REGIME.json",
+      "sha256": "2325dcc064f06d6500269065d4ac421c5cd651b539d63f411cd0b66d412085b1",
+      "bytes": 5741
+    },
+    {
+      "path": "G:\\codex work\\v4-full-closeout-20261012\\docs\\audits\\v4_full_closeout_20261012\\continuation_20261013\\CURRENT_MARKET_ORACLE_R1\\METADATA_AND_REGIME_R2.json",
+      "sha256": "e38eea5abe55e72fed226ae6d05638bb5615008ea765d7a9bf24e1f6a67b6001",
+      "bytes": 4208
+    }
+  ],
+  "current_heads": {
+    "V4_DATA_ACCEPTED_HEAD.json": {
+      "path": "G:\\codex work\\v4-production-20261012\\data\\v4\\V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "bytes": 16890
+    },
+    "V4_OPERATIONAL_RESEARCH_HEAD.json": {
+      "path": "G:\\codex work\\v4-production-20261012\\data\\v4\\V4_OPERATIONAL_RESEARCH_HEAD.json",
+      "sha256": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+      "bytes": 29799
+    }
+  },
+  "production_cutover": false,
+  "next_work": "Independently qualify current Core UNKNOWN/window availability and reconcile complete four-gate denominators before producing immutable admission evidence and real daily CAS. Then frozen legal regression and desktop cutover.",
+  "rotation_validation_interpretation": "Home transparently exposes VALIDATION_ONGOING; independent external rotation acceptance is not invented. This marker alone has not been established as a publication hard blocker.",
+  "original_failures_preserved": true,
+  "previous_numerical_producers_reexecuted": false
+}

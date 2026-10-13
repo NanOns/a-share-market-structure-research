@@ -65,3 +65,26 @@ def test_source_parent_archive_alias_requires_same_checked_bytes(tmp_path,monkey
 def test_wrong_append_mode_pointer_fails_closed_instead_of_falling_into_full_producer(tmp_path,monkeypatch):
     fixture(tmp_path,monkeypatch);p=tmp_path/module.POINTER;pointer=json.loads(p.read_text());pointer['allowed_modes']=['APPEND'];p.write_text(json.dumps(pointer))
     with pytest.raises(ValueError,match='JOB_MODE_CONTRACT_REQUIRED'):module.selected(tmp_path,'2026-10-13','CATCH_UP')
+
+
+def test_cancel_admitted_at_publication_checkpoint_never_promotes(tmp_path,monkeypatch):
+    from scripts import audit_dynamic_daily_period_numbers_v1 as period
+    from workbench_analysis import operational_owner_adapter_v1,operational_product_pack_v3,operational_successor_release_v1
+    from workbench_db import v4_read_index_r1
+    generation=tmp_path/'generation.json';generation.write_text('{}')
+    owner=tmp_path/'owner_v3';owner.mkdir();(owner/'CORE_REPLAY.json').write_text(json.dumps({'owners':[{'trade_date':'2026-10-13'}]}))
+    candidate={'accepted_trade_date':'2026-10-13'};saved=tmp_path/'candidate.json';saved.write_text(json.dumps(candidate))
+    manifest={'generation':{'path':'generation.json'},'period_verifier':{'path':period.__file__,'sha256':'verified'},'candidate':{'path':'candidate.json'},'predecessor':{'sha256':'old'}}
+    monkeypatch.setattr(module,'selected',lambda *args:(manifest,{'sha256':'resume'}))
+    monkeypatch.setattr(module,'verify',lambda *args:dict(candidate))
+    monkeypatch.setattr(module,'checked',lambda root,b:__import__('pathlib').Path(root)/b['path'])
+    monkeypatch.setattr(module,'sha256_file',lambda *args:'verified')
+    monkeypatch.setattr(operational_owner_adapter_v1,'private_scope',lambda *args:{'audit':lambda *args:{'acceptance':'PASS','errors':[]}})
+    monkeypatch.setattr(operational_product_pack_v3,'prepare',lambda *args:None)
+    monkeypatch.setattr(v4_read_index_r1,'prepare_bff',lambda *args:None)
+    monkeypatch.setattr(operational_successor_release_v1,'promote',lambda *args:pytest.fail('cancelled publication executed'))
+    cancelled=[False]
+    def checkpoint(day,stage,detail):
+        if stage=='PUBLISHING':cancelled[0]=True
+    result=module.resume(tmp_path,'2026-10-13','CATCH_UP',cancelled=lambda:cancelled[0],progress=checkpoint,readback_url='http://127.0.0.1:1')
+    assert result['status']=='CANCELLED' and result['reason']=='CANCELLED_AT_PUBLICATION_BOUNDARY'

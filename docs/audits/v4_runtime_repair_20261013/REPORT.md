@@ -82,3 +82,8 @@ T1真实引用链检查继续：正式12 D2的episode早期前态可能指向自
 ### T1—T3 运行准入结果
 
 完整G1/G2/G3及Market单日修正全PASS；真实影子七路HTTP同T0/token成功与错误token回滚均PASS，正式指针原bytes未变。原20采样主要API P95：context0.391、stocks0.300、sectors0.290、focus0.319、home0.337、market0.154秒；新股chart4.012秒。Worker路径实际预检修复角色授权和前态引用别名，定向8项通过；最新66/604源码版本已通过独立元数据守恒及新token真实七路读回。最终policy deab6efe...、候选5742efd6...，仍STAGED_RUNTIME_ADMITTED_NOT_ACTIVATED。CATCH_UP已封存候选续接清单actual预检PASS，不重算Core。下一阶段仅一次EXE及正式28765验收，尚未生产发布。
+
+
+### RI-04 发布检查点取消复查（已修）
+
+首次本地工程包d076509e7aa5生成后、安装前发现新sealed续接模块在PUBLISHING checkpoint之后缺少取消复查，存在取消请求先赢PG行锁而后继续CAS的竞态。该工程包未安装/未发布；源码补独立cancelled复查，检查点注入取消负例证明不调用promote，7项续接定向PASS。此为本轮实现缺陷，不伪称数值/原身份门失败。为修复安全边界，必须例外重新生成本地修正版包，不能遵守一次本地编译限制；正式安装/28765切换仍只一轮。新66/604源准入、真实七路success/rollback、CATCH_UP清单预检均重新通过，policy80207ac8...、候选974c60e0...；原deab版本及失败包保留。

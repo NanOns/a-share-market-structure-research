@@ -89,5 +89,6 @@ def resume(root,day,mode,*,cancelled=lambda:False,readback_url=None,progress=lam
     from .operational_successor_release_v1 import promote
     from .operational_daily_http_readback_v1 import readback
     progress(day,'PUBLISHING',dict(candidate=manifest['candidate'],numerical_recomputed=False))
+    if cancelled():return dict(status='CANCELLED',reason='CANCELLED_AT_PUBLICATION_BOUNDARY')
     publication=promote(root,candidate,manifest['predecessor']['sha256'],lambda c:readback(readback_url,c))
     return dict(publication,status='PUBLISHED',published=True,source_ready=True,derived_ready=True,candidate=manifest['candidate'],sealed_resume=binding,numerical_recomputed=False)

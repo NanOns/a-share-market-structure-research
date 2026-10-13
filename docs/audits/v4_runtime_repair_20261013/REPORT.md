@@ -2,7 +2,11 @@
 
 用户授权执行任务卡 `docs/upgrade/V4_RUNTIME_PERFORMANCE_REPAIR_R1_20261013.md`。按用户最新要求逐项先判定修复合理性；非停止授权，设计冲突单独列出。基线由文档5f322baa前进至远端c5a98cad。本轮所有临时/测试输出在G，TDX只读，保留原包、正式Head、原始输入和无关工作区改动。
 
-## 总体结果
+## 最新执行状态（R1.1，2026-10-14）
+
+13日完整增量数值、Structure/Focus身份与摘要、周月已完成工程核验。新增Market前态缺陷已仅修13日，业务与真实摘要PASS，新PG候选准备成功351.639秒；正在汇总最终全域门、真实影子CAS及Windows唯一交付。原正式Head仍12日，未安装新EXE。下文R1原结论为历史记录，不能当成R1.1当前终态。
+
+## 总体结果（原R1历史记录）
 
 **源码与隔离工程验证已完成A/B/D；C已实现并实际对照，但严格身份/摘要一致性要求与旧Owner不可变发生设计冲突，未放行。E按任务卡“仅A—D通过之后”跳过，未打包/部署/恢复自动日更。不能宣称全文任务已完成或生产验收通过。**
 
@@ -57,3 +61,24 @@ RI-02 来源/算法修订最小影响传播：目前只实现修订检测及显�
 五并发20请求最大：空闲0.360秒、独立CPU0.301秒。每接口20样本。stocks/sectors/focus首屏gzip约5.5/7.0/5.9KB；home仍约923KB，保留完整home响应值，后续可按真实首屏字段进一步拆摘要/证据。生产者构建耗时与原全量投影耗时见READ_INDEX_REAL_PARITY.json；不混入日更实际耗时承诺。
 
 下一步仅针对RI-01修正参考/身份守恒验收合同，补RI-02最小修订传播与真实剩余门禁；通过后再一次完整新增日QA、一次EXE、原28765安全切换与六页面实测。当前所有阶段已处理或明确列为设计/依赖问题，未以“已推Git”冒充安装完成。
+
+
+## R1.1 继续执行（2026-10-13）
+
+用户新授权按 `docs/upgrade/V4_INCREMENT_IDENTITY_PARITY_AMENDMENT_R1_1_20261013.md`继续，优先替代原4.4/7.C/8.3.6身份逐字同一要求；原FAIL_PARITY及DESIGN_CONFLICT原样保留。新G1/G2/G3/G4独立验收进行中，不把数值相同直接写全链PASS。
+
+T2真实无修订独立检查通过：13号固定ZIP对正式12号history全5224对象、2163109根历史bar重叠逐OHLC/amount/volume核对0差异；GBBQ及成员源与正式12 generation一致；新candidate policy实际执行9 numerical bindings与正式接受版本一致。21修订负例通过，修订明确RANGE_REPAIR_REQUIRED，不启动修订重放。开发驱动版本独立归档且publication_ready=false，等待四道门；未用旧运行证据批准新源码。
+
+T1真实引用链检查继续：正式12 D2的episode早期前态可能指向自身生成批次内部历史D2而非Head逐日Owner；必须沿实际正式provenance解析，不能简单删ID字段判相同。生产active_job=null/自动用户暂停，未擅自恢复任务或切包。
+
+
+### R1.1 全量汇合口进展（2026-10-14）
+
+实际13日仅compute_sessions=[2026-10-13]完整派生840.744秒，正式Head未变。全5225 Structure、Focus/Forward 的G1/G2/G3通过；5225/400九域数值对照经独立accepted Profile/Seed6行参考订正后零差异，原FAIL保留。当前周月219436项数值检查PASS。PG/read-index准备完成120.194秒。实际派生CPU期间随机loopback的真实PG/HTTP证据另存，尚非新EXE正式28765。
+
+新增全域Market比较抓到真实业务缺陷：breadth0/UNKNOWN和桥接路径与冻结参考不符，全域G123被拦截。RI-03独立审计已开，不采用局部PASS发布；正在核对前态与阶段缓存，并仅修受影响13日Market。正式包、Head和用户暂停设置仍不变。Windows最终验收与Git最终交付尚未完成，任务继续。
+
+
+### T1—T3 运行准入结果
+
+完整G1/G2/G3及Market单日修正全PASS；真实影子七路HTTP同T0/token成功与错误token回滚均PASS，正式指针原bytes未变。原20采样主要API P95：context0.391、stocks0.300、sectors0.290、focus0.319、home0.337、market0.154秒；新股chart4.012秒。Worker路径实际预检修复角色授权和前态引用别名，定向8项通过；最新66/604源码版本已通过独立元数据守恒及新token真实七路读回。最终policy deab6efe...、候选5742efd6...，仍STAGED_RUNTIME_ADMITTED_NOT_ACTIVATED。CATCH_UP已封存候选续接清单actual预检PASS，不重算Core。下一阶段仅一次EXE及正式28765验收，尚未生产发布。

@@ -41,6 +41,12 @@ def accepted_candidate_head(root, current, token, binding, day):
         raise ValueError('OLD_TOKEN')
     cutoff=current.get('accepted_trade_date')
     if not cutoff or day>cutoff:raise ValueError('FUTURE_DATE')
+    if current.get('exact_daily_adjustment_contract'):
+        from workbench_db.v4_membership_reference_pg_v1 import research_authority
+        research=research_authority(root,current,day)
+        if research['input_candidate']!=binding:raise ValueError('NATIVE_RESEARCH_INPUT_HEAD_MISMATCH')
+        # Input-owner conservation never accepts the pending producer Head.
+        return json.loads(checked(root,binding).read_bytes())
     candidate=current;seen=set()
     for _ in range(4096):
         identity=digest(candidate)
@@ -83,9 +89,14 @@ def read_candidates(root, *, head, token, day, sector_id=None):
         if not entry:return dict(result,reason='HISTORICAL_CANDIDATE_SOURCE_NOT_CAPTURED')
         if index.get('contract_id')!='PRODUCER_CANDIDATE_INDEX_V2' or entry.get('production') is not False:
             raise ValueError('CANDIDATE_INDEX_SCOPE_REQUIRED')
-        head=accepted_candidate_head(root,head,token,entry['head'],day)
+        current=head;head=accepted_candidate_head(root,head,token,entry['head'],day)
+        def read_document(binding):
+            if current.get('exact_daily_adjustment_contract'):
+                from workbench_db.v4_membership_reference_pg_v1 import read_research
+                return read_research(root,current,day,binding)
+            return json.loads(checked(root,binding).read_bytes())
         if sector_id is not None:
-            binding=entry['sector'];document=json.loads(checked(root,binding).read_bytes())
+            binding=entry['sector'];document=read_document(binding)
             if document['T0']!=day or document['production'] is not False:raise ValueError('RESEARCH_SCOPE_REQUIRED')
             if set(document['sources'])!={'lifecycle','core','sector','prewatch'}:
                 raise ValueError('COMPLETE_CANDIDATE_SOURCE_BINDINGS_REQUIRED')
@@ -112,7 +123,7 @@ def read_candidates(root, *, head, token, day, sector_id=None):
                 clock_status='HISTORICAL_FIRST_AVAILABLE_NOT_VERIFIABLE',
                 reason='VERSIONED_IDENTIFIER_CORRECTION_FOR_RESEARCH; A05_FORMAL_ADMISSION_PENDING')
         bindings={k:entry.get(k) for k in ('source_capture','full_state','strict_source')}
-        docs={k:json.loads(checked(root,b).read_bytes()) for k,b in bindings.items() if b}
+        docs={k:read_document(b) for k,b in bindings.items() if b}
         state=docs.get('full_state',{});strict=docs.get('strict_source',{})
         if state and (state.get('T0')!=day or state.get('production') is not False or state.get('source')!=head['owners'][day]['prewatch']):
             raise ValueError('STATE_CANDIDATE_SCOPE_REQUIRED')

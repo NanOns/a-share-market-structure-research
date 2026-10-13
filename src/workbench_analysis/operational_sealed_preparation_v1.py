@@ -12,7 +12,7 @@ KEY='sealed_numeric_preparation'
 POLICY_MODULE='src/workbench_analysis/operational_daily_exact_policy_v2.py'
 IO_MODULES={
     'src/workbench_analysis/operational_daily_owner_v1.py':frozenset(('workbench_db.v4_operational_owner_authority_v2','workbench_db.v4_membership_reference_pg_v1')),
-    'src/workbench_analysis/operational_daily_executor_v1.py':frozenset(('operational_product_pack_v3',)),
+    'src/workbench_analysis/operational_daily_executor_v1.py':frozenset(('operational_product_pack_v3','workbench_db.v4_membership_reference_pg_v1')),
 }
 ADDED_MODULES=frozenset((
     'src/workbench_analysis/operational_product_pack_v3.py','src/workbench_analysis/operational_successor_v1.py',
@@ -22,6 +22,7 @@ ADDED_MODULES=frozenset((
     'src/workbench_service/core_product_server_r1.py','src/workbench_service/native_product_catalog_v3.py',
     'src/workbench_service/r43_operational_bff.py',
     'src/workbench_analysis/operational_sealed_preparation_v1.py',
+    'src/workbench_analysis/producer_bootstrap_v1.py','src/workbench_service/candidate_research_read_v2.py',
 ))
 
 def source_conservation(root,original,current):
@@ -44,7 +45,7 @@ def source_conservation(root,original,current):
                     removed.append(ast.dump(node));return None
                 return self.generic_visit(node)
         after=StripPreparedIO().visit(after)
-        if len(removed)!=1 or ast.dump(before)!=ast.dump(after):raise ValueError('SEALED_NUMERIC_AST_CONSERVATION_FAILED:'+name)
+        if not 1<=len(removed)<=2 or ast.dump(before)!=ast.dump(after):raise ValueError('SEALED_NUMERIC_AST_CONSERVATION_FAILED:'+name)
         proof.append(dict(module_path=name,scope='POST_GENERATION_IO_ONLY',removed_branches=len(removed)))
     return dict(changed_source_proof=proof,added_read_and_preparation_modules=sorted(set(new)-set(old)))
 

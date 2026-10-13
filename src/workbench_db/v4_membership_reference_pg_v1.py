@@ -88,3 +88,44 @@ def read_search_identity(root,candidate):
     content=read_fact(root,entry['descriptor'],entry['fact_token'],authority['T0'],'reference_search_identity',entry['source'])
     if len(content)!=entry['rows']:raise ValueError('NATIVE_SEARCH_IDENTITY_ROW_DENOMINATOR')
     return content,entry['source']
+
+def prepare_research(root,candidate,input_candidate,index):
+    """Store already frozen research sidecars; never recalculate their facts."""
+    root=Path(root);authority=json.loads(checked(root,candidate[KEY]).read_bytes());day=candidate['accepted_trade_date']
+    entry=index.get('sessions',{}).get(day)
+    if not entry or entry['head']!=input_candidate or entry.get('production') is not False:raise ValueError('NATIVE_RESEARCH_INPUT_CANDIDATE_REQUIRED')
+    original=json.loads(checked(root,input_candidate).read_bytes())
+    for name in ('owners','source_registry','day_receipt','exact_daily_generation_scope','membership_snapshot'):
+        if original.get(name)!=candidate.get(name):raise ValueError('NATIVE_RESEARCH_OWNER_CONSERVATION_REQUIRED:'+name)
+    documents={}
+    for name in ('sector','full_state','strict_source','source_capture'):
+        source=entry.get(name)
+        if not source:continue
+        content=json.loads(checked(root,source).read_bytes())
+        if content.get('production') is not False:raise ValueError('NATIVE_RESEARCH_PERMISSION_ESCALATION')
+        token=digest(canonical(dict(contract_id=CONTRACT,domain='research_'+name,T0=day,source=source)))
+        descriptor=append(root,token,day,'reference_research_'+name,source,content)
+        if canonical(read_fact(root,descriptor,token,day,'reference_research_'+name,source))!=canonical(content):raise ValueError('NATIVE_RESEARCH_FULL_PAYLOAD_DIFFERENCE')
+        documents[name]=dict(source=source,descriptor=descriptor,fact_token=token)
+    authority['research']=dict(input_candidate=input_candidate,T0=day,documents=documents)
+    path=root/'data/v4/membership_reference_pg_v1'/digest(canonical(authority))/'AUTHORITY.json';atomic_json(root,path,authority);candidate[KEY]=ref(root,path)
+    return dict(documents=sorted(documents),numeric_producers_reexecuted=False,publication=False)
+
+def research_authority(root,candidate,day):
+    authority=json.loads(checked(root,candidate[KEY]).read_bytes())
+    if authority.get('contract_id')!=CONTRACT or authority.get('T0')!=candidate['accepted_trade_date'] or authority.get('membership_snapshot')!=candidate['membership_snapshot']:
+        raise ValueError('NATIVE_RESEARCH_AUTHORITY_SCOPE_MISMATCH')
+    if any(authority.get(k) is not False for k in ('PIT_ELIGIBLE','AS_RECORDED')):raise ValueError('NATIVE_REFERENCE_PIT_ESCALATION')
+    research=authority.get('research')
+    if not research or research['T0']!=day:raise ValueError('NATIVE_RESEARCH_DATED_AUTHORITY_REQUIRED')
+    original=json.loads(checked(root,research['input_candidate']).read_bytes())
+    for name in ('owners','source_registry','day_receipt','exact_daily_generation_scope','membership_snapshot'):
+        if original.get(name)!=candidate.get(name):raise ValueError('NATIVE_RESEARCH_OWNER_CONSERVATION_REQUIRED:'+name)
+    return research
+
+def read_research(root,candidate,day,source):
+    research=research_authority(root,candidate,day)
+    matches=[(name,entry) for name,entry in research['documents'].items() if entry['source']==source]
+    if len(matches)!=1:raise ValueError('NATIVE_RESEARCH_SOURCE_NOT_BOUND_NO_FALLBACK')
+    name,entry=matches[0]
+    return read_fact(root,entry['descriptor'],entry['fact_token'],day,'reference_research_'+name,source)

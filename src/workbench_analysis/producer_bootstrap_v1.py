@@ -140,7 +140,10 @@ def produce_daily_sector(root, day, candidate_binding):
 
 def optional_step(function, *args, **kwargs):
     try:
-        return dict(status='CANDIDATE_PRODUCED', candidate=function(*args, **kwargs), production=False)
+        value=function(*args, **kwargs)
+        if isinstance(value,dict) and 'status' in value and not (value.get('path') and value.get('sha256')):
+            return dict(value,production=False,main_flow_blocked=False)
+        return dict(status='CANDIDATE_PRODUCED', candidate=value, production=False)
     except (OSError, ValueError, KeyError, TypeError) as error:
         return dict(status='CANDIDATE_FAILED', reason=f'{type(error).__name__}:{error}',
                     production=False, main_flow_blocked=False)

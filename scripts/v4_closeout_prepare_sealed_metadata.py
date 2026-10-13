@@ -10,11 +10,14 @@ from workbench_analysis.operational_successor_v1 import validate
 ROOT=Path('G:/codex work/v4-production-20261012');OUT=Path('G:/codex_tmp/v4_full_closeout_20261012')
 
 def main():
-    report=OUT/'SEALED_METADATA_CONSERVATION_R6_R1.json'
+    import argparse
+    parser=argparse.ArgumentParser();parser.add_argument('--label',default='R1');parser.add_argument('--native-research',action='store_true');args=parser.parse_args()
+    if not args.label.isalnum():raise ValueError('VERSIONED_PREPARATION_REQUIRED')
+    report=OUT/('SEALED_METADATA_CONSERVATION_R6_'+args.label+'.json')
     if report.exists():raise ValueError('PRESERVE_PRIOR_SEALED_METADATA_PREPARATION')
     source=json.loads((OUT/'SEALED_NATIVE_OWNER_R6.json').read_bytes())['source_candidate']
     sealed=json.loads(checked(ROOT,source).read_bytes())
-    previous=json.loads((OUT/'NATIVE_SEARCH_IDENTITY_PREPARATION_R6.json').read_bytes())['candidate']
+    previous=json.loads((OUT/('NATIVE_RESEARCH_REFERENCE_PREPARATION_R6_R1.json' if args.native_research else 'NATIVE_SEARCH_IDENTITY_PREPARATION_R6.json')).read_bytes())['candidate']
     candidate=json.loads(checked(ROOT,previous).read_bytes())
     generation_policy=dict(sealed['release_policy'],path='data/v4/exact_daily_policies_v2/'+sealed['release_policy']['sha256']+'/POLICY.json')
     original=json.loads(checked(ROOT,generation_policy).read_bytes())

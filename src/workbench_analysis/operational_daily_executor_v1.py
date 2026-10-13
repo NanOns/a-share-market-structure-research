@@ -184,6 +184,13 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
     from .producer_bootstrap_v1 import build_review_and_display_candidates
     result=dict(result,producer_review_candidates=optional_step(build_review_and_display_candidates,root,day,binding,
             result.get('first_capture_source_candidate',{})))
+    if context.get('exact_daily_policy'):
+        from workbench_db.v4_membership_reference_pg_v1 import prepare_research
+        index=json.loads((root/'data/v4/producer_candidate_index_v2.json').read_bytes())
+        reference_receipt=prepare_research(root,candidate,binding,index)
+        atomic_json(root,context['folder']/'NATIVE_RESEARCH_REFERENCE_PREPARATION_V1.json',reference_receipt)
+        candidate_path=context['folder']/'NATIVE_RESEARCH_SUCCESSOR_CANDIDATE.json'
+        atomic_json(root,candidate_path,candidate);binding=ref(root,candidate_path)
     # Observe the exact sealed daily candidate. This never grants authority,
     # enrolls corrected events or blocks publication of otherwise usable domains.
     from .cohort_capture_readiness_r1 import inspect_daily_candidate

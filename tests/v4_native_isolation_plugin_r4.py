@@ -10,7 +10,7 @@ import pytest
 from tests.v4_frozen_history_closeout import exact_pre16_history_native_scope,exact_registered_history_native_scope,exact_original_r17b_promotion_node,exact_original_stage13_native_scope,exact_original_r15_contract_node,exact_historical_dm01_preclose_clock
 from tests.v4_frozen_history_closeout import original_pre_successor_v13_reader_gate
 from tests.v4_frozen_history_closeout import original_fep_feature_owner_envelope
-from tests.v4_static_stage_continuation import exact_original_static_stage_node
+from tests.v4_static_stage_continuation import exact_original_static_stage_node,original_mutable_exact_policy_contract,original_pre_exact_synthetic_executor_contract
 
 @pytest.fixture(autouse=True)
 def exact_clean_phase0_database(request,monkeypatch):
@@ -44,6 +44,18 @@ class V4DatabaseGuardViolation(BaseException): pass
 ACTIVE=None
 EVENTS=[]
 FILESYSTEM_GUARD_ACTIVE=False
+
+@pytest.fixture(autouse=True)
+def unavailable_original_v1_v2_reports(request):
+    """Keep unavailable pre-V4 nodes as explicit SKIP, never numerical PASS."""
+    root=Path(__file__).resolve().parents[1]
+    qualification=json.loads((root/'config/v4_unavailable_v1_v2_historical_nodes_r3.json').read_bytes())
+    row=next((x for x in qualification['nodes'] if x['node']==request.node.nodeid),None)
+    if row is None:return
+    assert qualification['grants_current_permission'] is False
+    assert hashlib.sha256(request.node.path.read_bytes()).hexdigest()==row['test_sha256']
+    request.node.user_properties.append(('scope','HISTORICAL_ONLY_V1_V2_INPUT_UNAVAILABLE_NO_CURRENT_ADMISSION'))
+    pytest.skip(row['reason'])
 
 def source_write_guard(event,args):
     if not FILESYSTEM_GUARD_ACTIVE:return
@@ -167,7 +179,7 @@ def pytest_configure(config):
         decision='ALLOW' if tuple(parsed.get(k) for k in ('host','port','dbname','user')) in allowed_identities else 'REJECT'
         if phase0_identity and tuple(str(parsed.get(k)) for k in ('host','port','dbname','user'))==phase0_identity and ACTIVE and ACTIVE.startswith('tests/v4_phase0/test_postgres_schema.py::'):
             decision='ALLOW'
-        if v41011_identity and tuple(str(parsed.get(k)) for k in ('host','port','dbname','user'))==v41011_identity and ACTIVE and ACTIVE.startswith(('tests/v4_10/','tests/v4_11/')):
+        if v41011_identity and tuple(str(parsed.get(k)) for k in ('host','port','dbname','user'))==v41011_identity and ACTIVE and ACTIVE.startswith(('tests/v4_10/','tests/v4_11/','tests/v4_a09/test_consumer_identity_sql.py::')):
             decision='ALLOW'
         cluster=fixture_clusters.get(tuple(parsed.get(k) for k in ('host','port','user')))
         if decision=='REJECT' and cluster and ACTIVE and ACTIVE.endswith('test_E1_24_concurrent_cas_and_same_request'):

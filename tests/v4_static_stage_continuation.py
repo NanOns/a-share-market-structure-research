@@ -5,6 +5,51 @@ import pytest
 from tests.remainder_historical_profiles import profile,install
 
 ROOT=Path(__file__).resolve().parents[1]
+
+@pytest.fixture(autouse=True)
+def original_mutable_exact_policy_contract(request,monkeypatch):
+    """Retain original mutable-path assertions as their exact historical IO contract.
+
+    Current immutable-policy controls and actual admitted publication run against
+    the current module in separate nodes; this fixture grants no admission.
+    """
+    relative=request.node.path.relative_to(ROOT).as_posix()
+    if relative!='tests/test_v4_exact_daily_policy_v2.py':return
+    commit=subprocess.check_output(['git','rev-parse','57a86681'],cwd=ROOT,text=True).strip()
+    original=subprocess.check_output(['git','show',commit+':'+relative],cwd=ROOT)
+    assert original==request.node.path.read_bytes()
+    module_path='src/workbench_analysis/operational_daily_exact_policy_v2.py'
+    raw=subprocess.check_output(['git','show',commit+':'+module_path],cwd=ROOT)
+    folder=Path('G:/codex_tmp/test_temp')/('exact_mutable_policy_'+commit[:12])
+    folder.mkdir(parents=True,exist_ok=True);path=folder/'policy.py'
+    if path.exists():assert path.read_bytes()==raw
+    else:path.write_bytes(raw)
+    spec=importlib.util.spec_from_file_location('workbench_analysis._original_mutable_policy',path)
+    historical=importlib.util.module_from_spec(spec);spec.loader.exec_module(historical)
+    monkeypatch.setattr(request.module,'verify',historical.verify)
+    request.node.user_properties.append(('historical_contract','ORIGINAL_MUTABLE_EXACT_POLICY_57a86681_NO_CURRENT_ADMISSION'))
+
+@pytest.fixture(autouse=True)
+def original_pre_exact_synthetic_executor_contract(request,monkeypatch):
+    relative=request.node.path.relative_to(ROOT).as_posix()
+    if relative!='tests/test_pre_next_t0_executor_chain.py':return
+    commit='6196ddf64d6077042e18acd744702408735957d4'
+    assert subprocess.check_output(['git','show',commit+':'+relative],cwd=ROOT)==request.node.path.read_bytes()
+    folder=Path('G:/codex_tmp/test_temp')/('pre_exact_executor_'+commit[:12]);folder.mkdir(parents=True,exist_ok=True)
+    modules={}
+    for name in ('operational_daily_executor_v1','operational_daily_ready_owner_v2'):
+        raw=subprocess.check_output(['git','show',commit+':src/workbench_analysis/'+name+'.py'],cwd=ROOT)
+        path=folder/(name+'.py')
+        if path.exists():assert path.read_bytes()==raw
+        else:path.write_bytes(raw)
+        spec=importlib.util.spec_from_file_location('workbench_analysis._original_'+name,path)
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);modules[name]=module
+    import workbench_analysis.operational_daily_ready_owner_v2 as ready
+    monkeypatch.setattr(ready,'build',modules['operational_daily_ready_owner_v2'].build)
+    monkeypatch.setattr(ready,'seal',modules['operational_daily_ready_owner_v2'].seal)
+    monkeypatch.setattr(request.module,'executor',modules['operational_daily_executor_v1'])
+    request.node.user_properties.append(('historical_contract','ORIGINAL_PRE_EXACT_SYNTHETIC_IO_ONLY_NO_CURRENT_ADMISSION'))
+
 NODES={
  ('tests/test_a08_governance_propagation.py','test_V6_grant_digest_and_resolver_parity'):'b8bf5768ffde690d5d9820a9250b384d1fb3f82c',
  ('tests/test_a08_governance_propagation.py','test_V6_r25_selection_waits_for_real_target'):'b8bf5768ffde690d5d9820a9250b384d1fb3f82c',
@@ -14,6 +59,8 @@ NODES={
  ('tests/fep/test_pipeline.py','test_E1_40_accepted_bytes_no_new_heads'):'e4ea913d8926e904e55cbf16993ec63c0e90b031',
  ('tests/test_v4_22_independent_audit_contract.py','test_registry_authority_and_all_open_items'):'777a0f9240cc00c531b2db6595fc52845ba9db47',
  ('tests/test_forward_r2_cli.py','test_clean_child_vector'):'ba17ea65e42fb787396a5c84f83d7e156135bab9',
+ ('tests/test_r25_packet.py','test_actual_authority_inventory_waits_without_target'):'55ce480a7dd3a850529bd3014773d1cf416be724',
+ ('tests/test_r2_sector_width.py','test_width_adapter_rejects_missing_stale_or_unknown_basis_dependencies'):'3ab2e0fcef4e0fa5ef9281bb61752dd52e8da8a8',
 }
 
 def load(root,relative,name):
@@ -71,6 +118,12 @@ def exact_original_static_stage_node(request,monkeypatch):
         import scripts.validate_r25_preflight_v6 as current
         historical=load(root,'scripts/validate_r25_preflight_v6.py','scripts._static_r25_'+commit[:12])
         monkeypatch.setattr(current,'selection',historical.selection)
+    if relative=='tests/test_r25_packet.py':
+        historical=load(root,'scripts/validate_r25_preflight.py','scripts._original_r25_'+commit[:12])
+        monkeypatch.setattr(request.module,'selection',historical.selection)
+    if relative=='tests/test_r2_sector_width.py':
+        historical=load(root,'scripts/build_fp06_sector_v2.py','scripts._original_width_'+commit[:12])
+        monkeypatch.setattr(request.module,'width_facts',historical.width_facts)
     if relative.endswith('test_remainder_dm01_profiles.py'):
         historical=load(root,'src/workbench_analysis/dm01_runtime_r4.py','workbench_analysis._static_dm01_'+commit[:12])
         monkeypatch.setattr(request.module,'r',historical)

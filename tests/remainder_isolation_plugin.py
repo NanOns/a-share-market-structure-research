@@ -8,6 +8,46 @@ EVENTS=[]
 GUARDED_ROOTS=[]
 PG_DISPOSABLE_BASE=DISPOSABLE_BASE
 
+@pytest.fixture(autouse=True)
+def original_v3_tray_labels_read_only_git_scope(request,monkeypatch):
+    if request.node.path.as_posix().endswith('/tests/upgrade_m5/test_operations_ui_contract.py') and request.function.__name__=='test_windows_tray_exposes_service_controls':
+        import ast,subprocess
+        from tests.remainder_historical_profiles import profile,install
+        commit='ad38bc13a25041bf75e822fa056bda0924bc6ab3'
+        relative='tests/upgrade_m5/test_operations_ui_contract.py'
+        original=subprocess.check_output(['git','show',commit+':'+relative],cwd=REPOSITORY)
+        def node(raw):return next(x for x in ast.parse(raw).body if isinstance(x,ast.FunctionDef) and x.name==request.function.__name__)
+        assert ast.dump(node(original))==ast.dump(node(request.node.path.read_bytes()))
+        root,entries=profile(commit);request.addfinalizer(install(monkeypatch,root,entries))
+        monkeypatch.setattr(request.module,'ROOT',root)
+        request.node.user_properties.append(('scope','ORIGINAL_V3_TRAY_LABELS_NO_CURRENT_WINDOWS_ACCEPTANCE'))
+
+@pytest.fixture(autouse=True)
+def unavailable_original_v3_receipts(request):
+    path=REPOSITORY/'config/v4_unavailable_v3_historical_receipts_r3.json'
+    if not path.exists():return
+    qualification=json.loads(path.read_bytes())
+    row=next((r for r in qualification['nodes'] if r['node']==request.node.nodeid),None)
+    if row is None:return
+    import hashlib
+    assert qualification['grants_current_permission'] is False
+    assert hashlib.sha256(request.node.path.read_bytes()).hexdigest()==row['test_sha256']
+    request.node.user_properties.append(('scope','HISTORICAL_ONLY_V3_RECEIPT_UNAVAILABLE_NO_CURRENT_ADMISSION'))
+    pytest.skip(row['reason'])
+
+@pytest.fixture(autouse=True)
+def nested_original_r18_perturbation_uses_owning_fixture(request,monkeypatch):
+    if request.node.path.name!='test_r18r1_canonical.py' or request.function.__name__!='test_inherited_perturbations_on_current_canonical':return
+    import ast,subprocess
+    import tests.test_r18c_oracle as nested
+    selected=request.module.ROOT
+    commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=selected,text=True).strip()
+    original=subprocess.check_output(['git','show',commit+':tests/test_r18c_oracle.py'],cwd=selected)
+    def node(raw):return next(n for n in ast.parse(raw).body if isinstance(n,ast.FunctionDef) and n.name=='test_mandatory_perturbations')
+    assert ast.dump(node(original))==ast.dump(node(Path(nested.__file__).read_bytes()))
+    monkeypatch.setattr(nested,'ROOT',selected)
+    request.node.user_properties.append(('scope','ORIGINAL_NESTED_R18_PERTURBATION_OWNING_GIT_FIXTURE_ONLY'))
+
 def protected(value):
     if not isinstance(value,(str,bytes,os.PathLike)):return False
     try:p=Path(os.fsdecode(value)).resolve()

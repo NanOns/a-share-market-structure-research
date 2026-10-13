@@ -1,0 +1,329 @@
+{
+  "contract_id": "V4_RETAINED_V1_V2_UNAVAILABLE_INPUT_QUALIFICATION_R3",
+  "task_contract": "docs/upgrade/V4_FULL_CLOSEOUT_CONTINUATION_TASK_R2_20261013.md",
+  "scope_rule": "B3.1 V3-only not required for current V4; B3.5 keep every node and disclose legal skip reasons",
+  "nodes": [
+    {
+      "node": "tests/phase6/test_run_daily_latest_resolution.py::test_latest_is_local_and_calendar",
+      "test_sha256": "58224ae17f37492e15806db66fb5b709227d0b6cb5c6abbb4a6a148e04ab3dfe",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/phase6_1/test_source_fingerprint.py::test_real_fingerprint_components",
+      "test_sha256": "b0791fb443ce94ed95c0d3be2b3117c082903b235d0dd168a310a0963d3b51a8",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_01/test_r3_01_gate.py::test_gate_outputs_and_partition",
+      "test_sha256": "092b4bc7625687c215b29ee35aa94d9234e55ef48c3d822fb6204f9073b67807",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_01/test_return_concentration_reused.py::test_concentration_is_exact_reuse",
+      "test_sha256": "b79bf51db56e8e1609597e8be5a3db92164cb9b9e9fd1a8f9759eec615ddaa2d",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_01/test_shadow_only.py::test_all_rows_shadow_only",
+      "test_sha256": "966c2626cc81cce22e13c0824b0b75ffc7d503b830cc4525460866d6238d6d67",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_01/test_v1_base_unchanged.py::test_v1_steady_baseline_is_198",
+      "test_sha256": "70c3e22f8e85b49aba577f9f99808355a5935a7b8b8eae2ca44cce50dd003a21",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_02/test_r3_02_gate.py::test_outputs_partition_base",
+      "test_sha256": "5756bccb5a801ff7fec6074d724349f8edba9448c79b8b161ba78d8797fb99f5",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_02/test_shadow_only.py::test_output_is_never_production_eligible",
+      "test_sha256": "6eb388be06d72fd71d9ce3fdfea0d4d9b9a788d515c44f9319ead8aa0a43d27f",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_02/test_v1_pullback_base_unchanged.py::test_v1_count_is_345",
+      "test_sha256": "00da94a986886e86fa64ea39b088f0b8aec45f618acf46913e1539d517e5d1ba",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_03/test_r3_03_gate.py::test_outputs_and_partition",
+      "test_sha256": "2e27902969e54e9c6ddf91e719e30b98ebce681ec3643d5eaaecd27f51f064cc",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_03/test_shadow_only.py::test_shadow_flags",
+      "test_sha256": "656aff204dde1c5b451476fdcb72ce50732103ed890e506c2c617071195a11de",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_03/test_v1_breakout_base_unchanged.py::test_v1_count_304",
+      "test_sha256": "6086bb750d1efa6ef8e1f63ad60728c5f92a581d857717492d3c134d0225e2a8",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_04/test_r3_04_gate.py::test_gate",
+      "test_sha256": "02ad03af7c5cf9400a0265c98caf9af7e879858fd962ba1744dac6b3325c9a16",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_04/test_shadow_only.py::test_flags",
+      "test_sha256": "76f226026ae9de394844069c4aee24e5d7d3efae0ff3a7ee52d1a159464ac990",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_04/test_v1_leader_base_unchanged.py::test_v1_count",
+      "test_sha256": "0b63a4708386169fa9cc6998add294d303155ab98b7d6fff49049101a5e4bc69",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_05/test_r3_05_gate.py::test_gate",
+      "test_sha256": "5517cb0f958bf9209a314079b49cbf1a42d14c46743649759ae209a59a58f6d4",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_05/test_shadow_only.py::test_flags",
+      "test_sha256": "1604423d354877ffc60648d293b8579e0c9cb21f3e60f02450e52d33e069f981",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_05/test_v1_early_base_unchanged.py::test_count",
+      "test_sha256": "ccc726516fbde0d3afb39a68aab67b5deadef27067619c719621054e1b27b127",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_06/test_no_v2_abcd_rating.py::test_no_rating",
+      "test_sha256": "e1ac8ae93255426d25e63af53d6eb0dd2333a98f2850649c5250386da468655e",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_06/test_one_security_one_unified_row.py::test_unique",
+      "test_sha256": "a4f1b03bf56530f34b53579cd97dc9c5044b9ca267034c8236169941da791c80",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_06/test_queue_membership_long_table.py::test_long_schema",
+      "test_sha256": "1071459e6a34661730688544b59519662ce88b6be357aba62a05bec3567f07d7",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_06/test_r3_06_gate.py::test_gate",
+      "test_sha256": "c37bf07d296235dc616d25c678ad694617b07c6ccb3770d0088db7585a75f45d",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_06/test_shadow_only.py::test_flags",
+      "test_sha256": "aee67e9de515c9064069352daa1c3a7d7088438522fb8224d88bfaa530d54d29",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_06/test_source_shadow_receipts_bound.py::test_bound",
+      "test_sha256": "d7218f67c53049fc5b957819bc2ed8fe4c51cd6aab38b185e9e85c07c47dc4e9",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_seal/test_data_insufficient_neutrality.py::test_neutral",
+      "test_sha256": "147b23f1e6ad8152866fe55cfee3e45aac19d03a6b4ab7e04053649dcc6d6dd3",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_seal/test_integrated_identity.py::test_identity",
+      "test_sha256": "63d8afce67cebf0c8bef81f26c18c2eed8288ac0d3ba7d37239622cf51f36cd0",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_seal/test_no_score_or_rating.py::test_absent",
+      "test_sha256": "513a71a58b35a01bad253677a3aa2d843785707b046ab9676ab41e5097ca11c5",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_seal/test_one_security_one_row.py::test_unique",
+      "test_sha256": "7dc341c4fd0ff866965ad9c0c930465afa082efddb782b6cb35c29fdd0ee8605",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_seal/test_receipt_chain.py::test_chain",
+      "test_sha256": "d5288c1df6efc0a09bf4ad475bdab558abf0d02674a5faea4cf0bdee190acb84",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_seal/test_semantic_freezes.py::test_frozen",
+      "test_sha256": "d537099871f2dc187c715f4d606f310515838c94e3ae444ffbf159361cb6eb29",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r3_seal/test_v1_identity.py::test_v1",
+      "test_sha256": "080c8f28d2ff0ea4a87b320ed5f1b7bd5e6a4ec5707947078f8a11b38359aca4",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r4_00/test_baseline_seed.py::test_final_seed",
+      "test_sha256": "d0caa0f0230bc793de0b841427f3cab51f26877285518f7adee06ee052246b71",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r4_00/test_no_future_outcome_generation.py::test_no_future_outcomes_are_generated",
+      "test_sha256": "cf1460fc91f8e5d86d87226fca90bd19a327af8f93cae50d1f85304421c54d46",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r4_00/test_r4_00_gate.py::test_artifacts",
+      "test_sha256": "f39d8ed972718860b5177191bec0083da52dfb84dd763b2cfa0ed11d5344eed9",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r4_00/test_v1_v2_identity_binding.py::test_binding",
+      "test_sha256": "589d6c4f4017ee94956b409c8fefd52d066211d788cdb215c11b7776824a13f0",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r4_01/test_v2_rules_unchanged.py::test_v2_identity",
+      "test_sha256": "4032d1d1a92c5259186ece2297ee62c9ab31dfb4588bf98103c64c262e1a581b",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r4_repair/test_post_reaudit_blockers.py::test_integrated_seal_accepts_unmodified_bound_artifacts",
+      "test_sha256": "b3040e59ed034004d8f93682eb977bd9e73ab040282dc0c699b7449417011a0d",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r4_repair/test_post_reaudit_blockers.py::test_integrated_seal_rejects_artifact_or_membership_mutation[swapped_classes]",
+      "test_sha256": "b3040e59ed034004d8f93682eb977bd9e73ab040282dc0c699b7449417011a0d",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r4_repair/test_post_reaudit_blockers.py::test_integrated_seal_rejects_artifact_or_membership_mutation[duplicate_membership]",
+      "test_sha256": "b3040e59ed034004d8f93682eb977bd9e73ab040282dc0c699b7449417011a0d",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    },
+    {
+      "node": "tests/r4_repair/test_post_reaudit_blockers.py::test_entrypoint_threshold_change_is_a_model_change",
+      "test_sha256": "b3040e59ed034004d8f93682eb977bd9e73ab040282dc0c699b7449417011a0d",
+      "classification": "HISTORICAL_ONLY_V1_V2_ARTIFACT_UNAVAILABLE",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "current_production_gate": false,
+      "prior_failure_receipt": "PRE_FINAL_NATIVE_R3.xml"
+    }
+  ],
+  "grants_current_permission": false,
+  "original_assertions_unchanged": true
+}

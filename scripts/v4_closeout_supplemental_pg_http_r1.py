@@ -142,7 +142,10 @@ def main():
     if legacy_calls:errors.append(dict(scope='LEGACY_CONNECT_ATTEMPTS',count=len(legacy_calls)))
     result=dict(contract_id='V4_SUPPLEMENTAL_CURRENT_FORMAL_PG_HTTP_R1',acceptance='PASS_SUPPLEMENTAL_HTTP_SCOPE' if not errors else 'FAIL',candidate=dict(path=CANDIDATE,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw)),T0=day,records=records,checks=len(records),errors=errors,legacy_connect_attempts=len(legacy_calls),reader_role=ROLES[0],server_stopped=True,publication=False,production_cutover=False,previous_main_routes_reexecuted=False,
         scope='Additional actual stock detail, history/chart, sector, layered Focus, compare, market and fail-closed validation-cohort/FEP HTTP resources. No independent numerical producer reexecution.')
-    result['dated_code_change_alias_proof']=dict(old_code='300114',new_code='302132',entity_id=stock,symbol=new_alias['symbol'],same_dated_identity=True)
+    current_alias=new_alias['symbol'].rsplit('.',1)[-1]
+    prior_aliases={str(value).rsplit('.',1)[-1] for value in old_alias.get('search_aliases',[]) if str(value).rsplit('.',1)[-1].isdigit() and len(str(value).rsplit('.',1)[-1])==6}-{current_alias}
+    if len(prior_aliases)!=1:raise ValueError('UNIQUE_REAL_PRIOR_ALIAS_REQUIRED')
+    result['dated_code_change_alias_proof']=dict(old_code=prior_aliases.pop(),new_code=current_alias,entity_id=stock,symbol=new_alias['symbol'],same_dated_identity=True)
     if retained is not None:
         if len(retained['records'])!=24 or len(retained['errors'])!=3 or len(metadata_repairs)!=2 or len(records)!=1:
             raise ValueError('SUPPLEMENTAL_FAILED_SCOPE_DENOMINATOR_DRIFT')

@@ -86,7 +86,8 @@ def main():
     admitted=dict(policy,publication_ready=True,status='PASS_CURRENT_FOUR_REQUIRED_GATES',admission_evidence=admission_binding)
     raw=(json.dumps(admitted,sort_keys=True,separators=(',',':'),ensure_ascii=False)+'\n').encode('utf8')
     path=ROOT/'data/v4/exact_daily_policies_v2'/hashlib.sha256(raw).hexdigest()/'POLICY.json'
-    if not path.exists():path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+    if not path.exists():
+        path.parent.mkdir(parents=True,exist_ok=True);temporary=path.with_suffix('.tmp');temporary.write_bytes(raw);os.replace(temporary,path)
     admitted_binding=ref(ROOT,path);verify_policy(ROOT,admitted_binding)
     receipt=load(checked(ROOT,candidate[KEY]));folder=ROOT/'data/v4/sealed_numeric_preparations_v1'/hashlib.sha256(json.dumps(receipt,sort_keys=True).encode()+admitted_binding['sha256'].encode()).hexdigest()
     atomic_json(ROOT,folder/'CONSERVATION.json',receipt);candidate[KEY]=ref(ROOT,folder/'CONSERVATION.json');candidate['release_policy']=admitted_binding

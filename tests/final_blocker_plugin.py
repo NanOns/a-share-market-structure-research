@@ -52,7 +52,10 @@ def isolated_v3_live_url(tmp_path_factory):
     from workbench_service.research_bundle_v3_3 import activate_bundle, validate_bundle, build_bundle
     pointer = json.loads((REPOSITORY / 'data/current/ACTIVE_RESEARCH_BUNDLE_V3_3.json').read_bytes())
     source = Path(pointer['bundle_path']).resolve()
-    if not source.is_relative_to((REPOSITORY / 'data/research_bundles_v3_3').resolve()):
+    # The retained V3 pointer records the original pre-G-storage source.
+    # Read that immutable input only; all fixture output remains on G.
+    roots=[REPOSITORY/'data/research_bundles_v3_3',Path('E:/codex work/大A交易/data/research_bundles_v3_3')]
+    if not any(source.is_relative_to(p.resolve()) for p in roots) or source.name!=pointer['output_digest']:
         raise ValueError('UI_FIXTURE_BUNDLE_SOURCE_ESCAPE')
     manifest = validate_bundle(source)
     if manifest['output_digest'] != pointer['output_digest']:

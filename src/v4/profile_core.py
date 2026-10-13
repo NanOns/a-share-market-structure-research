@@ -213,10 +213,20 @@ def extension_risk(inputs: Mapping[str, object]) -> State:
         return _state("EXTREME", contract, inputs, keys)
     if bias is not None and bias >= P["EXTENSION_HIGH"]:
         return _state("HIGH", contract, inputs, keys)
-    if bias is None or not _required(inputs, keys[1:]) or _number(inputs, "close") <= 0:
+    if bias is None:
         return _state("UNKNOWN", contract, inputs, keys, "REQUIRED_INPUT_UNKNOWN")
     ret5, atr, close, amount, ret1 = (_number(inputs, x) for x in keys[1:])
-    value = "HIGH" if ret5 >= P["EXTENSION_RET5_ATR"] * atr / close and amount >= P["EXTENSION_AMOUNT"] and ret1 <= 0 else "MEDIUM" if bias >= P["EXTENSION_MEDIUM"] else "LOW"
+    # REV2 §10I: an established false term makes the conjunction false even
+    # when another term is unknown. Only an unresolved HIGH branch blocks
+    # evaluation of MEDIUM/LOW; do not require all later-branch inputs globally.
+    price_test = (ret5 >= P["EXTENSION_RET5_ATR"] * atr / close
+                  if ret5 is not None and atr is not None and close is not None and close > 0 else None)
+    terms = (price_test, amount >= P["EXTENSION_AMOUNT"] if amount is not None else None,
+             ret1 <= 0 if ret1 is not None else None)
+    branch = False if False in terms else None if None in terms else True
+    if branch is None:
+        return _state("UNKNOWN", contract, inputs, keys, "REQUIRED_INPUT_UNKNOWN")
+    value = "HIGH" if branch else "MEDIUM" if bias >= P["EXTENSION_MEDIUM"] else "LOW"
     return _state(value, contract, inputs, keys)
 
 

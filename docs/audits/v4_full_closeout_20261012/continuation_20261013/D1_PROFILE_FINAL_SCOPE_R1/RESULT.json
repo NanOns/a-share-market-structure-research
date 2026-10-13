@@ -1,0 +1,79 @@
+{
+  "contract_id": "V4_D1_PROFILE_REMAINING_NUMERIC_SCOPE_CLOSURE_R1",
+  "stage": "1/6",
+  "task_contract": "docs/upgrade/V4_FULL_CLOSEOUT_CONTINUATION_TASK_R2_20261013.md",
+  "acceptance": "PASS_D1_PROFILE_REMAINING_SCOPE",
+  "new_pass_checks": 590314,
+  "evidence": [
+    {
+      "path": "docs/audits/v4_full_closeout_20261012/continuation_20261013/D1_PROFILE_FINAL_SCOPE_R1/D1_COUNTER_SELECTOR_ORACLE_R6_R1.json",
+      "sha256": "8b40b4ea89d067089161124090e04b7752740fc947acf2246c8dd61d0ca9bcfb",
+      "acceptance": "PASS_CURRENT_D1_COUNTER_SELECTOR_SCOPE",
+      "checks": 31148,
+      "errors": 0
+    },
+    {
+      "path": "docs/audits/v4_full_closeout_20261012/continuation_20261013/D1_PROFILE_FINAL_SCOPE_R1/D1_UPSTREAM_BINDING_ORACLE_R6_R1.json",
+      "sha256": "76912e8091ee652d2d05b0b1922b26ff42a1935b868f4a7f19e053a25ed6853a",
+      "acceptance": "PASS_D1_UPSTREAM_BINDING_SCOPE",
+      "checks": 334336,
+      "errors": 0
+    },
+    {
+      "path": "docs/audits/v4_full_closeout_20261012/continuation_20261013/D1_PROFILE_FINAL_SCOPE_R1/PROFILE_WINDOW_COMPLETENESS_ORACLE_R6_R1.json",
+      "sha256": "66eb5b636fc8a1c5fb7ebc8262653ae6d715115ef62afc0c794a8267f8312e49",
+      "acceptance": "PASS_PROFILE_DAILY_WINDOW_SCOPE",
+      "checks": 183038,
+      "errors": 0
+    },
+    {
+      "path": "docs/audits/v4_full_closeout_20261012/continuation_20261013/D1_PROFILE_FINAL_SCOPE_R1/PROFILE_CLOSED_PERIOD_PRIMITIVE_ORACLE_R6_R1.json",
+      "sha256": "2d060491fc3b19bcdda9102a9d273ae726d9ac0f1a3cc0a87614d1c7761f6e60",
+      "acceptance": "PASS_CLOSED_PERIOD_PRIMITIVE_SCOPE",
+      "checks": 41792,
+      "errors": 0
+    },
+    {
+      "path": "docs/audits/v4_full_closeout_20261012/continuation_20261013/D1_PROFILE_FINAL_SCOPE_R1/D1_INPUT_DIGEST_ORACLE_R6_R1.json",
+      "sha256": "1dab1cee7b69762e34f9b1f712063d7371bdc49627f7312ff135d8edd1b4a0ab",
+      "acceptance": "FAIL",
+      "checks": 7210,
+      "errors": 4540
+    },
+    {
+      "path": "docs/audits/v4_full_closeout_20261012/continuation_20261013/D1_PROFILE_FINAL_SCOPE_R1/D1_INPUT_DIGEST_ORACLE_R6_R2.json",
+      "sha256": "f7d38be6cfe416d93bfa51733b945cc9314a115964a12b0316454b070ec482d9",
+      "acceptance": "FAIL",
+      "checks": 4580,
+      "errors": 14
+    },
+    {
+      "path": "docs/audits/v4_full_closeout_20261012/continuation_20261013/D1_PROFILE_FINAL_SCOPE_R1/D1_INPUT_DIGEST_ORACLE_R6_R3.json",
+      "sha256": "cdd26d82ba500565d11025a1110382ef3a69b6a61eac3bf3b04706cdefb544de",
+      "acceptance": "PASS_D1_INPUT_DIGEST_SCOPE",
+      "checks": 14,
+      "errors": 0
+    }
+  ],
+  "digest_reconciliation": {
+    "R1_checks": 7210,
+    "R1_pass": 2670,
+    "R1_fail": 4540,
+    "R2_checks": 4580,
+    "R2_pass": 4566,
+    "R2_fail": 14,
+    "R2_previous_pass_checks_affected_by_namespace_correction": 40,
+    "R3_failed_only_checks": 14,
+    "R3_pass": 14,
+    "original_results_preserved": true
+  },
+  "source_changed": false,
+  "publication": false,
+  "production_cutover": false,
+  "next_stage": "Aggregate complete stage-1 conserved numeric sources, then original56 active disposition",
+  "limitations": [
+    "Not an exact56/PG/field/global release PASS",
+    "Source namespace reconstruction was corrected only in the new independent verifier",
+    "Hashless dated status records remain reconstructed saved observations; no historical first-capture or PIT grant"
+  ]
+}

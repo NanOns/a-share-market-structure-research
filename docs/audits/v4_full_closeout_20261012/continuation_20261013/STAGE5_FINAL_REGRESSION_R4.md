@@ -1,0 +1,11 @@
+# Stage 5 complete frozen legal regression
+
+Acceptance: PASS_COMPLETE_FROZEN_LEGAL_REGRESSION. Contract: V4_FULL_CLOSEOUT_CONTINUATION_TASK_R2_20261013 B3.
+
+All 7,288 distinct legal nodes were executed once after final repair, with 7,225 passed, zero failures/errors and 63 input-limited historical skips. Native: 4,753 passed / 40 skipped. Historical: 2,472 passed / 23 skipped. Original 5,463 and prior 7,209 denominators remain preserved; the final collection added 79 nodes. Every original node and skip reason is retained in the complete XML and RESULT.json, with no exclusion or assertion change. Earlier focused repair passes were not substituted for this full denominator.
+
+Frozen source commit a789a9719440972c4813bdc7c27bf354b7937e1d and exact source/test hashes are retained in FREEZE.json. Source drift is empty. Four disposable PG identities and the admitted policy/current Head are recorded in PG_IDENTITY_CONTEXT_R4.json. Current formal operational Head is d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc, T0 2026-10-12; V2 policy SHA is 6e0bc03db7811a812394b319b3cc9fc14903ca7fd0b0e78f6cbbc98c3561437a. Historical frozen source/CRLF, original validator aliases and browser event-loop ownership were repaired through external fixtures, without current production grants. Original failures and focused continuations remain archived separately.
+
+Tests alone do not establish release readiness. Stage 1 independent arithmetic/source conservation, Stage 2 exact56 dispositions (20 active, 1 historical-only, 35 proved absent, zero unresolved), Stage 3 real formal PG/field/consumer readback and Stage 4 coordinated current Snapshot/Joint publication provide the other current hard gates. The installed compiled package verifies the same frozen source SHA fe11c18cfdf75e9b0713b43a57139672792df8e11c5002fd67754a26af930744. Future first capture/PIT/cohort/model/OOS limitations remain explicit.
+
+Next: authorized actual Windows original-port 28765 cutover, six-entry business/browser readback and one real restart with enabled automatic daily state preserved. Old production PID 12528 remains running at this stage acceptance. Production cutover has not yet happened; external acceptance and unrestricted product release are not granted.

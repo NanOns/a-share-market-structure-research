@@ -1,0 +1,424 @@
+{
+  "contract_id": "V4_COMPLETE_LEGAL_FULL_REGRESSION_RECONCILIATION_R4",
+  "acceptance": "PASS_COMPLETE_FROZEN_LEGAL_REGRESSION",
+  "denominator": 7288,
+  "records": [
+    {
+      "profile": "native",
+      "nodes": 4793,
+      "counts": {
+        "passed": 4753,
+        "skipped": 40
+      },
+      "xml_path": "G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\FINAL_COMPLETE_NATIVE_R4.xml",
+      "xml_sha256": "9c5c6e1877bdeb326bdca62c14906f3465dfdaeeac89a2c75b7b434b7c353d06",
+      "source_commit": "a789a9719440972c4813bdc7c27bf354b7937e1d"
+    },
+    {
+      "profile": "historical",
+      "nodes": 2495,
+      "counts": {
+        "passed": 2472,
+        "skipped": 23
+      },
+      "xml_path": "G:\\codex_tmp\\v4_full_closeout_20261012\\denominator\\FINAL_COMPLETE_HISTORICAL_R4.xml",
+      "xml_sha256": "61abfa4fccb62c478e1a626b69f214e844ccfb9ae21bac224390a75ca9e34258",
+      "source_commit": "a789a9719440972c4813bdc7c27bf354b7937e1d"
+    }
+  ],
+  "counts": {
+    "passed": 7225,
+    "failure": 0,
+    "error": 0,
+    "skipped": 63
+  },
+  "original_nodes_preserved": true,
+  "exclusions": [],
+  "source_commit": "a789a9719440972c4813bdc7c27bf354b7937e1d",
+  "source_drift": [],
+  "skips": [
+    {
+      "node": "tests/phase6/test_run_daily_latest_resolution.py::test_latest_is_local_and_calendar",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\phase6\\test_run_daily_latest_resolution.py:3: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/phase6_1/test_source_fingerprint.py::test_real_fingerprint_components",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\phase6_1\\test_source_fingerprint.py:3: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_01/test_r3_01_gate.py::test_gate_outputs_and_partition",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_01\\test_r3_01_gate.py:5: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_01/test_return_concentration_reused.py::test_concentration_is_exact_reuse",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_01\\test_return_concentration_reused.py:5: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_01/test_shadow_only.py::test_all_rows_shadow_only",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_01\\test_shadow_only.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_01/test_v1_base_unchanged.py::test_v1_steady_baseline_is_198",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_01\\test_v1_base_unchanged.py:5: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_02/test_r3_02_gate.py::test_outputs_partition_base",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_02\\test_r3_02_gate.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_02/test_shadow_only.py::test_output_is_never_production_eligible",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_02\\test_shadow_only.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_02/test_v1_pullback_base_unchanged.py::test_v1_count_is_345",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_02\\test_v1_pullback_base_unchanged.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_03/test_r3_03_gate.py::test_outputs_and_partition",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_03\\test_r3_03_gate.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_03/test_shadow_only.py::test_shadow_flags",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_03\\test_shadow_only.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_03/test_v1_breakout_base_unchanged.py::test_v1_count_304",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_03\\test_v1_breakout_base_unchanged.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_04/test_r3_04_gate.py::test_gate",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_04\\test_r3_04_gate.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_04/test_shadow_only.py::test_flags",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_04\\test_shadow_only.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_04/test_v1_leader_base_unchanged.py::test_v1_count",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_04\\test_v1_leader_base_unchanged.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_05/test_r3_05_gate.py::test_gate",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_05\\test_r3_05_gate.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_05/test_shadow_only.py::test_flags",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_05\\test_shadow_only.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_05/test_v1_early_base_unchanged.py::test_count",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_05\\test_v1_early_base_unchanged.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_06/test_no_v2_abcd_rating.py::test_no_rating",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_06\\test_no_v2_abcd_rating.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_06/test_one_security_one_unified_row.py::test_unique",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_06\\test_one_security_one_unified_row.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_06/test_queue_membership_long_table.py::test_long_schema",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_06\\test_queue_membership_long_table.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_06/test_r3_06_gate.py::test_gate",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_06\\test_r3_06_gate.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_06/test_shadow_only.py::test_flags",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_06\\test_shadow_only.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_06/test_source_shadow_receipts_bound.py::test_bound",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_06\\test_source_shadow_receipts_bound.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_seal/test_data_insufficient_neutrality.py::test_neutral",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_seal\\test_data_insufficient_neutrality.py:3: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_seal/test_integrated_identity.py::test_identity",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_seal\\test_integrated_identity.py:3: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_seal/test_no_score_or_rating.py::test_absent",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_seal\\test_no_score_or_rating.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_seal/test_one_security_one_row.py::test_unique",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_seal\\test_one_security_one_row.py:4: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_seal/test_receipt_chain.py::test_chain",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_seal\\test_receipt_chain.py:3: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_seal/test_semantic_freezes.py::test_frozen",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_seal\\test_semantic_freezes.py:3: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r3_seal/test_v1_identity.py::test_v1",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r3_seal\\test_v1_identity.py:3: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r4_00/test_baseline_seed.py::test_final_seed",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r4_00\\test_baseline_seed.py:3: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r4_00/test_no_future_outcome_generation.py::test_no_future_outcomes_are_generated",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r4_00\\test_no_future_outcome_generation.py:3: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r4_00/test_r4_00_gate.py::test_artifacts",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r4_00\\test_r4_00_gate.py:3: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r4_00/test_v1_v2_identity_binding.py::test_binding",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r4_00\\test_v1_v2_identity_binding.py:3: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r4_01/test_v2_rules_unchanged.py::test_v2_identity",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r4_01\\test_v2_rules_unchanged.py:5: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r4_repair/test_post_reaudit_blockers.py::test_integrated_seal_accepts_unmodified_bound_artifacts",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r4_repair\\test_post_reaudit_blockers.py:47: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r4_repair/test_post_reaudit_blockers.py::test_integrated_seal_rejects_artifact_or_membership_mutation[swapped_classes]",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r4_repair\\test_post_reaudit_blockers.py:111: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r4_repair/test_post_reaudit_blockers.py::test_integrated_seal_rejects_artifact_or_membership_mutation[duplicate_membership]",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r4_repair\\test_post_reaudit_blockers.py:111: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/r4_repair/test_post_reaudit_blockers.py::test_entrypoint_threshold_change_is_a_model_change",
+      "profile": "native",
+      "reason": "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\r4_repair\\test_post_reaudit_blockers.py:134: Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance."
+    },
+    {
+      "node": "tests/upgrade_m14/test_m14_artifact_consistency.py::test_m14_source_bound_hashes_are_current",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_m14\\test_m14_artifact_consistency.py:24: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_m14/test_m14_artifact_consistency.py::test_m14_personal_branch_reopen_is_bound_to_batch_foundation",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_m14\\test_m14_artifact_consistency.py:32: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_m14/test_source_registry.py::test_probe_report_is_metadata_only_and_keeps_capabilities_unverified",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_m14\\test_source_registry.py:51: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_m6/test_m6_acceptance_contract.py::test_m6_starts_only_after_m5_full_pass",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_m6\\test_m6_acceptance_contract.py:12: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_m6/test_m6_acceptance_contract.py::test_user_internal_acceptance_replaces_external_audit_gate",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_m6\\test_m6_acceptance_contract.py:21: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_m6/test_m6_acceptance_contract.py::test_m6_acceptance_dates_are_real_published_days",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_m6\\test_m6_acceptance_contract.py:32: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_v3/test_p09_01_b_lz_ext01.py::test_checked_in_ext01_receipt_is_bound_to_the_new_contract",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_v3\\test_p09_01_b_lz_ext01.py:46: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_v3/test_p09_01_source_registry.py::test_checked_in_receipt_has_the_same_static_scope",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_v3\\test_p09_01_source_registry.py:53: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_v3/test_p11_02_old_write_recovery_preview.py::test_p11_02_report_records_read_only_acceptance",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_v3\\test_p11_02_old_write_recovery_preview.py:21: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_v3/test_p11_03_old_table_retention_decision.py::test_old_tables_are_frozen_until_v3_and_ui_migration_complete",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_v3\\test_p11_03_old_table_retention_decision.py:11: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_v3/test_p11_03_recovery_execution.py::test_p11_03_authorized_recovery_postconditions",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_v3\\test_p11_03_recovery_execution.py:11: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_v3/test_p11_03_recovery_waiting_decision.py::test_p11_03_register_is_waiting_decision_and_no_recovery_executed",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_v3\\test_p11_03_recovery_waiting_decision.py:15: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_v3/test_p11_03_recovery_waiting_decision.py::test_p11_03_register_has_exact_targets_and_carries_open_audits",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_v3\\test_p11_03_recovery_waiting_decision.py:27: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_v3/test_p11_04_entry_handoff.py::test_p11_04_switches_primary_entry_and_preserves_fallback",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_v3\\test_p11_04_entry_handoff.py:11: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_v3/test_p11_04_handoff_preflight.py::test_p11_04_handoff_preflight_is_ready_without_switching_entry",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_v3\\test_p11_04_handoff_preflight.py:11: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_v3/test_p11_auxiliary_writer_boundary.py::test_auxiliary_writer_audit_is_bounded_without_table_cleanup",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_v3\\test_p11_auxiliary_writer_boundary.py:11: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_v3/test_p11_daily_operation.py::test_p11_daily_operation_receipt_is_full_pass_and_effect_gate_is_honest",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_v3\\test_p11_daily_operation.py:9: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_v3/test_p11_post_handoff_daily_preflight.py::test_p11_post_handoff_daily_preflight_receipt_is_full_pass_and_read_only",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_v3\\test_p11_post_handoff_daily_preflight.py:9: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_v3/test_p11_storage_reference_graph.py::test_storage_reference_graph_is_fully_reconciled_without_mutation",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_v3\\test_p11_storage_reference_graph.py:11: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_v3/test_p11_storage_stop_growth.py::test_p11_storage_stop_growth_gate_is_ready_for_separate_handoff",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_v3\\test_p11_storage_stop_growth.py:11: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_v3/test_p11_v3_daily_activation.py::test_p11_v3_daily_activation_receipt_is_full_pass_and_bounded",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_v3\\test_p11_v3_daily_activation.py:9: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_v3/test_p11_v3_snapshot_compatibility_repair.py::test_p11_v3_snapshot_compatibility_repair_is_full_pass_without_deletion",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_v3\\test_p11_v3_snapshot_compatibility_repair.py:9: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    },
+    {
+      "node": "tests/upgrade_v3/test_p12_16_history_170_consumer.py::test_checked_in_170_dataset_is_verified_and_consumable",
+      "profile": "historical",
+      "reason": "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.",
+      "detail": "G:\\codex work\\v4-full-closeout-20261012\\tests\\upgrade_v3\\test_p12_16_history_170_consumer.py:4: Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance."
+    }
+  ],
+  "skip_reasons": {
+    "Original fixed 20260904 V1/V2 shadow/forward reports or local production calendar are absent from retained inputs; not current V4 native PG contract. Original node and failure remain in denominator; no regenerated historical acceptance.": 40,
+    "Unavailable original checked-in V3/M-stage acceptance receipt; retained failure and node, no fabricated old receipt or current V4 acceptance.": 23
+  },
+  "production_cutover": false
+}

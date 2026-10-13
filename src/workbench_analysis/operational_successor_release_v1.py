@@ -16,7 +16,12 @@ def verify_policy(root,candidate):
         if candidate.get('accepted_algorithm_bindings')!=policy['accepted_algorithm_bindings']:
             raise ValueError('DAILY_ALGORITHM_BINDING_MISMATCH')
         generation=json.loads(checked(root,candidate['exact_daily_generation_scope']).read_bytes())
-        if candidate.get('exact_daily_adjustment_contract')!=KERNEL or generation.get('adjustment_contract')!=dict(contract=KERNEL,policy=binding):
+        if candidate.get('exact_daily_adjustment_contract')!=KERNEL:
+            raise ValueError('DAILY_EXACT_GENERATION_BINDING_REQUIRED')
+        from .operational_sealed_preparation_v1 import KEY,verify as verify_preparation
+        if KEY in candidate:
+            verify_preparation(root,candidate,policy)
+        elif generation.get('adjustment_contract')!=dict(contract=KERNEL,policy=binding):
             raise ValueError('DAILY_EXACT_GENERATION_BINDING_REQUIRED')
         return
     if checked(root,binding)!=root/'config/read_only_operational_daily_release_policy_v1_1.json':

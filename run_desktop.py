@@ -20,7 +20,7 @@ def main():
     parser.add_argument('--port', type=int, default=28765)
     parser.add_argument('--no-browser', action='store_true')
     parser.add_argument('--native-pg-roles', type=Path, help='G-local Windows user DPAPI credentials inside the selected workspace')
-    parser.add_argument('--task', choices=('inspect-package','qa-e2e','qa-daily-replay','qa-tray'))
+    parser.add_argument('--task', choices=('inspect-package','qa-e2e','qa-daily-replay','qa-tray','qa-source-imports'))
     parser.add_argument('--report')
     args = parser.parse_args()
     selected_root=Path(args.workspace).resolve()
@@ -43,6 +43,9 @@ def main():
         try:
             if args.task == 'inspect-package':
                 result = dict(status='PASS', frozen=bool(getattr(sys,'frozen',False)), manifest=verify_resources())
+            elif args.task == 'qa-source-imports':
+                from workbench_desktop.qa_source_imports_r1 import run
+                result = run(g_path(args.workspace))
             elif args.task == 'qa-daily-replay':
                 from workbench_desktop.qa_daily import run
                 result = run(g_path(args.workspace))

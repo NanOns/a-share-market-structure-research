@@ -124,7 +124,15 @@ def run(root):
         controller.perform('stop')
         checked('STOPPED_WITH_NO_THREADS',controller.state=='STOPPED' and controller.server is None)
         with original_jobs.connect() as db:
-            checked('SQLITE_INTEGRITY',db.execute('PRAGMA integrity_check').fetchone()[0]=='ok')
+            checked('PG_JOB_DAY_FOREIGN_KEYS',db.execute(
+                'SELECT count(*) FROM update_job_days d LEFT JOIN update_jobs j ON d.job_id=j.job_id WHERE j.job_id IS NULL'
+            ).fetchone()[0]==0)
+            checked('PG_EVENT_FOREIGN_KEYS',db.execute(
+                'SELECT count(*) FROM update_events e LEFT JOIN update_jobs j ON e.job_id=j.job_id WHERE e.job_id IS NOT NULL AND j.job_id IS NULL'
+            ).fetchone()[0]==0)
+            checked('PG_STORE_PRESERVED_AFTER_LIFECYCLE',db.execute(
+                'SELECT count(*) FROM update_jobs'
+            ).fetchone()[0]>0)
     return dict(status='PASS', contract_id='V4_FROZEN_RUNTIME_TRANSACTION_QA_V1',
         evidence_kind='ACTUAL_FROZEN_RUNTIME_AND_LIFECYCLE_WITH_SIMULATED_NUMERIC_ADMISSION',
         frozen=bool(getattr(sys,'frozen',False)), executable=sys.executable,

@@ -29,6 +29,11 @@ def inventory():
             name = prefix+'.'.join(parts)
             if name:
                 modules[name.rstrip('.')] = path
+                # Historical scripts import siblings after prepending scripts/.
+                # Freeze those exact import names as well as scripts.<name>;
+                # otherwise the source loader would be needed at request time.
+                if prefix and len(parts)==1:
+                    modules[parts[0]] = path
     modules['run_desktop'] = ROOT/'run_desktop.py'
     pending = ['run_desktop']
     seen, edges, calls, dynamic = set(), [], [], []
@@ -188,7 +193,7 @@ def main():
     manifest=json.loads((resources/'package_manifest.json').read_bytes())
     release_dir=DELIVERY/'versions'/manifest['build_release_id']
     command = [sys.executable, '-m','PyInstaller','--noconfirm','--clean','--onedir','--windowed',
-        '--name','DaAV4','--paths',str(ROOT/'src'),'--paths',str(ROOT),
+        '--name','DaAV4','--paths',str(ROOT/'src'),'--paths',str(ROOT),'--paths',str(ROOT/'scripts'),
         '--workpath',str(BUILD/'work'),'--specpath',str(BUILD), '--distpath',str(release_dir),
         '--add-data',str(resources)+';resources', '--collect-all','baostock', '--collect-all','tzdata',
         '--runtime-hook',str(ROOT/'scripts/pyinstaller_workspace_paths_v1.py'),

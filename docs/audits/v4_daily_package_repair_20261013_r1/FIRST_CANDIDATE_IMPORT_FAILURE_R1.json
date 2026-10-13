@@ -1,0 +1,7 @@
+{
+  "executable": "G:\\codex work\\大A交易_交付\\windows_daily_repair_20261013_r1\\versions\\V4_PACKAGE_1.0.0_64e85c225931\\DaAV4\\DaAV4.exe",
+  "frozen": true,
+  "reason": "UNPACKAGED_LOCAL_MODULE:v4_01_security_entity_map_r5",
+  "status": "FAIL",
+  "traceback": "Traceback (most recent call last):\n  File \"run_desktop.py\", line 48, in main\n    import traceback\n                 ^^^\n  File \"workbench_desktop\\qa_source_imports_r1.py\", line 9, in run\n    from scripts import capture_dm01_a01_r3_tdx_package\n  File \"pyimod02_importers.py\", line 457, in exec_module\n  File \"scripts\\capture_dm01_a01_r3_tdx_package.py\", line 9, in <module>\n    from scripts.build_v4_08_r2_membership_evidence import atomic_json,atomic_bytes\n  File \"pyimod02_importers.py\", line 457, in exec_module\n  File \"scripts\\build_v4_08_r2_membership_evidence.py\", line 24, in <module>\n    from v4_01_security_entity_map_r5 import board_for  # noqa: E402\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"pyinstaller_workspace_paths_v1.py\", line 29, in find_spec\n    raise ImportError('UNPACKAGED_LOCAL_MODULE:'+fullname)\nImportError: UNPACKAGED_LOCAL_MODULE:v4_01_security_entity_map_r5\n"
+}

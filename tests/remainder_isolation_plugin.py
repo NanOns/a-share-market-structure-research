@@ -2,6 +2,9 @@
 import os,json,sys
 from pathlib import Path
 import pytest
+from tests.historical_r9_fixture_closeout import isolated_r9_replay
+from tests.v4_historical_continuation_r4 import original_protection_fixture_metadata,original_dm01_runtime_contract_constants,exact_original_scoped_functions
+from tests.v4_frozen_history_closeout import exact_historical_dm01_preclose_clock
 from tests.runtime_isolation import REPOSITORY,DISPOSABLE_BASE,protected_roots
 ACTIVE=False
 EVENTS=[]
@@ -161,6 +164,14 @@ def pytest_unconfigure(config):
 
 
 def pytest_collection_modifyitems(session,config,items):
+    # The original session browser holds Playwright's sync asyncio loop open.
+    # Close it at its owning module boundary before another sync browser starts.
+    from _pytest.scope import Scope
+    for item in items:
+        if item.nodeid.startswith('tests/upgrade_m12/test_browser_behavior.py::'):
+            for fixture in item._fixtureinfo.name2fixturedefs.get('browser_page',()):
+                assert Path(fixture.func.__code__.co_filename).name=='test_browser_behavior.py'
+                fixture._scope=Scope.Module
     # Pinned V4-13 tests run against their actual accepted stage checkout.
     # Current consumers retain the stage-aware successor and current root.
     import subprocess
@@ -559,9 +570,6 @@ def frozen_additive_ast_node(request,monkeypatch):
 @pytest.fixture(autouse=True)
 def accepted_observation_projection_replay(request,monkeypatch):
     relative=request.node.path.relative_to(REPOSITORY).as_posix()
-    if relative=='tests/v4_dm01_r4r2/test_acceptance_seal.py' and request.node.name=='test_sealed_future_wait_has_no_source_or_publication':
-        from scripts import validate_r25_preflight
-        monkeypatch.setattr(request.module,'selection',lambda root:validate_r25_preflight.selection(Path('G:/codex_tmp/test_temp/remainder_entry_checkout')))
     if relative!='tests/v4_a03_a04_a07_r2/test_payload_governance_r2_1.py' or request.node.name!='test_real_accepted_baseline_r2_1_replay_retains_original_identity':return
     from scripts.forward_remainder_profiles import relative_reference
     import shutil

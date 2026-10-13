@@ -16,14 +16,15 @@ NODES={'test_completeness_requires_authority_parity_not_file_presence','test_r6r
 
 @pytest.fixture(autouse=True)
 def isolated_r9_replay(request,monkeypatch):
+    if request.node.path.relative_to(CURRENT).as_posix() not in {'tests/test_v4_12_authority_r2.py','tests/test_v4_12_contract_freeze_r1.py','tests/test_v4_12_time_counter_r2_1.py'}:return
     if request.function.__name__ not in NODES:return
     actual=subprocess.check_output(['git','rev-parse','HEAD'],cwd=HISTORICAL,text=True).strip()
     assert actual==COMMIT,'EXACT_R9_HISTORICAL_FIXTURE_REQUIRED'
-    validator=request.module.validate.__module__
+    validator='scripts.'+request.module.validate.__module__.split('_remainder_validator_',1)[-1].removesuffix('_'+COMMIT[:12]) if '_remainder_validator_' in request.module.validate.__module__ else request.module.validate.__module__
     def replay(*args,**kwargs):
         env=dict(os.environ,TMP='G:/codex_tmp',TEMP='G:/codex_tmp',TMPDIR='G:/codex_tmp',
                  PYTHONDONTWRITEBYTECODE='1',PYTHONUTF8='1',
-                 PYTHONPATH=os.pathsep.join([str(HISTORICAL/'src'),str(HISTORICAL)]))
+                 PYTHONPATH=os.pathsep.join([str(CURRENT/'tests/final_child_guard'),str(HISTORICAL/'src'),str(HISTORICAL)]))
         code='import importlib,json; result=importlib.import_module('+repr(validator)+').validate(); print(json.dumps(result))'
         result=subprocess.run([sys.executable,'-B','-c',code],cwd=HISTORICAL,env=env,text=True,capture_output=True,encoding='utf8')
         raw=Path('G:/codex_tmp/v4_full_closeout_20261012/denominator')/(request.function.__name__+'_HISTORICAL_RAW.log')

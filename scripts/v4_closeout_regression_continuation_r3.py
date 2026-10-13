@@ -14,6 +14,12 @@ def historical_modules():
         for row in json.loads((ROOT/'config'/name).read_bytes())[key]:
             if row.get('scope')!='SINGLE_FROZEN_AST_NODE':result[row['path']]=name
     result['tests/test_forward_p1_isolation.py']='Explicit original DuckDB runtime isolation contract'
+    current=json.loads((ROOT/'config/v4_current_native_test_contracts_r4.json').read_bytes())
+    assert current['grants_current_permission'] is False
+    for row in current['modules']:
+        assert hashlib.sha256((ROOT/row['path']).read_bytes()).hexdigest()==row['source_sha256']
+        assert row['profile']=='CURRENT_NATIVE_PG_ONLY'
+        result.pop(row['path'],None)
     return result
 def environment(label,native):
     from tests.final_disposable_paths import configured_source_roots

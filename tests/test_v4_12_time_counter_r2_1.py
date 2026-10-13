@@ -51,4 +51,3 @@ def test_full_contract_time_gate():
     assert result['time_domain_compatibility']['incompatible_edges']==0
     assert result['authority_keep']['status']=='PASS_KEEP'
     assert result['AST_diff']['retention_formula_unchanged']
-from tests.historical_r9_fixture_closeout import isolated_r9_replay

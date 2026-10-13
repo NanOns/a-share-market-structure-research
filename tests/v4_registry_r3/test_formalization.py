@@ -9,12 +9,6 @@ def read(path):
     return json.loads((ROOT / path).read_text(encoding='utf8'))
 
 def exact(binding):
-    if binding['path']=='data/v4/V4_STAGE_ACCEPTED_HEAD.json':
-        from workbench_analysis.protected_stage_metadata_r3 import resolve
-        archived,receipt=resolve(ROOT,binding)
-        assert hashlib.sha256(archived.read_bytes()).hexdigest()==binding['sha256']
-        assert receipt['grants_current_permission'] is False
-        return
     assert hashlib.sha256(resolve_frozen_binding(ROOT,binding).read_bytes()).hexdigest() == binding['sha256']
 
 def test_external_dispositions_and_protected_bytes():

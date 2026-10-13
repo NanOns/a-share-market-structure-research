@@ -13,7 +13,8 @@ def git_storage_root():
     return path.resolve() if path.is_absolute() else (REPOSITORY/path).resolve()
 @lru_cache(maxsize=None)
 def profile(commit):
-    out=resolve_destination_inside_root(BASE,'remainder_frozen_v5_'+commit[:12])
+    version='v6' if commit=='e853c05408b50a3fdea59ee10b7751d458a0135d' else 'v5'
+    out=resolve_destination_inside_root(BASE,'remainder_frozen_'+version+'_'+commit[:12])
     if not (out/'.git').exists():
         out.mkdir(parents=True,exist_ok=True)
         subprocess.run(['git','init',str(out)],check=True,stdout=subprocess.DEVNULL)
@@ -38,6 +39,12 @@ def profile(commit):
             if win.drive or win.root or '..' in win.parts:raise ValueError('HISTORICAL_GIT_PATH_ESCAPE')
             entries[path]=oid.decode()
     representations={}
+    if commit=='e853c05408b50a3fdea59ee10b7751d458a0135d':
+        for package in ('A03','A06','A07','OWNER','READER'):
+            name='reports/next_round_r2/scoped_acceptance/'+package+'_EXTERNAL_ACCEPTANCE_RECORD_R1.json'
+            record=json.loads(subprocess.check_output(['git','cat-file','blob',entries[name]],cwd=out))
+            for ref in record['protected_heads']:
+                if ref['path'] in entries:representations[ref['path']]=ref
     baseline='reports/fep_e1/ENTRY_BASELINE.json'
     if baseline in entries and commit=='e4ea913d8926e904e55cbf16993ec63c0e90b031':
         accepted=json.loads(subprocess.check_output(['git','cat-file','blob',entries[baseline]],cwd=out))

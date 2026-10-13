@@ -66,8 +66,6 @@ def test_actual_drift_and_unapproved_mapping_remain_fail_closed(tmp_path,index,f
 
 
 def test_real_consolidation_retains_batch_refs_and_passes_only_exact_clean_representations(tmp_path):
-    from tests.r4_r3_protection_fixture_inputs import hydrate
-    hydrate(tmp_path)
     registry=read(REGISTRY)
     refs=[registry['external_authority']['document'],registry['stage_contract'],registry['master'],
           registry['supersedes'],PRIOR_AUDIT,*registry['protected_bindings']]

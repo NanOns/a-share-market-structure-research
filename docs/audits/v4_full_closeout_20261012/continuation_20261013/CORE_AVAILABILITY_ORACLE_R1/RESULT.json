@@ -1,0 +1,533 @@
+{
+  "contract_id": "V4_CORE_CURRENT_ALL_FIELD_AVAILABILITY_INDEPENDENT_ORACLE_R1",
+  "acceptance": "PASS_CORE_AVAILABILITY_SCOPE",
+  "candidate": {
+    "bytes": 51335,
+    "path": "data/v4/sealed_numeric_preparations_v1/412bb713abc87cd16cf2cb0bff5653971dcd97909609b6a7c574c616f18ca858/CANDIDATE.json",
+    "sha256": "0f5c3589887e08d1571b69c4fca4a9b0393f2b2d2e1ebcfd1f35cbb16ce7b79a"
+  },
+  "T0": "2026-10-12",
+  "core": {
+    "bytes": 19783866,
+    "path": "data/v4/dynamic_daily_owners/2026-10-12/cb4f2b229a6ba4a0ef19e8f118e9dac8ef2c1936d9010f8980bccc19b453c336/owner_v3/owners/2026-10-12/core.jsonl.gz",
+    "sha256": "d3ee745695567e08a1d93e78c4ed81c0fe1c50bd898d1a55ab49d558f50a4615"
+  },
+  "history": {
+    "bytes": 88792230,
+    "path": "data/v4/dynamic_daily_owners/2026-10-12/cb4f2b229a6ba4a0ef19e8f118e9dac8ef2c1936d9010f8980bccc19b453c336/owner_v3/owners/2026-10-12/history.jsonl.gz",
+    "sha256": "25a0dbf7b955ce1240d72b9e8ec7f839be9e98892e5a7a4cf2e5c68ff95e81d2"
+  },
+  "status_sources": [
+    {
+      "bytes": 2302327,
+      "path": "data/v4/dynamic_daily_owners/2026-10-12/cb4f2b229a6ba4a0ef19e8f118e9dac8ef2c1936d9010f8980bccc19b453c336/sources/acquisition.json",
+      "sha256": "0cf26b83e8cbe6a8885d6dbcb10c521566d6e09843eb9104349cda096b6cc099"
+    },
+    {
+      "bytes": 100075252,
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+      "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+    },
+    {
+      "bytes": 2589620,
+      "path": "docs/evidence/source_acquisition_r4_20261009/capture/queries/45ffb8d1d9437bc1286199aa0539b14555914e9d039e52eb58e9f592d100ebcc.json",
+      "sha256": "6730130336d10de4fe2e5f788f0c15dbd8d82db969a90ca6456d67a40c713985"
+    },
+    {
+      "bytes": 2588323,
+      "path": "docs/evidence/source_acquisition_r4_20261009/capture/queries/01dc0ab2bed09842a513f82e2d6bf4e391c586230d24fcf5598434453e9681c7.json",
+      "sha256": "81292e059a3645556c86722964f5ccf646a445c8d993cf8efa70ffd082f2d098"
+    },
+    {
+      "bytes": 2586723,
+      "path": "docs/evidence/source_acquisition_r4_20261009/capture/queries/d502ecf1a2a389168289a74ce802c6c64a34af74bcf3bbc3794761f42cb79d94.json",
+      "sha256": "959eed810d15ea1921299b82017c4552851df32355203c4ab6793f72f3ceb39a"
+    },
+    {
+      "bytes": 2589619,
+      "path": "docs/evidence/source_acquisition_r4_20261009/capture/queries/374a6cd9a19a41e88689194772bca41918c4b40bdef81b0e2d1a688938df4074.json",
+      "sha256": "c8be013816808a52cda6e8e10b076998968ebc379c8b0ec252bb9f84b81217dc"
+    },
+    {
+      "bytes": 1784512,
+      "path": "data/v4/dynamic_daily_owners/2026-10-12/cb4f2b229a6ba4a0ef19e8f118e9dac8ef2c1936d9010f8980bccc19b453c336/sources/daily.json",
+      "sha256": "1e488d8af6563c808efb048e22d4ea6b68027d1167c959bef2ca2dcc4fd97bfb"
+    },
+    {
+      "bytes": 1783851,
+      "path": "data/v4/dynamic_daily_owners/2026-10-12/cb4f2b229a6ba4a0ef19e8f118e9dac8ef2c1936d9010f8980bccc19b453c336/sources/prior_daily/2026-10-09.json",
+      "sha256": "5a7ff1a3b03028ae940cab5a7bd3eac6c5fb72d6ec0583c2ee95572e8e9ce9fe"
+    }
+  ],
+  "normative_window_contract": "config/v4_03_field_window_mapping_v1.json",
+  "checks": {
+    "quality_state": 203736,
+    "unknown_reason": 203736,
+    "value_available": 203736
+  },
+  "check_count": 611208,
+  "error_count": 0,
+  "first_errors": [],
+  "reason_counts": [
+    {
+      "field": "amount_ratio20",
+      "reason": "CURRENT_BAR_UNAVAILABLE",
+      "count": 12
+    },
+    {
+      "field": "amount_ratio20",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 9
+    },
+    {
+      "field": "amount_ratio20",
+      "reason": "OBSERVED",
+      "count": 5203
+    },
+    {
+      "field": "amount_ratio5",
+      "reason": "CURRENT_BAR_UNAVAILABLE",
+      "count": 12
+    },
+    {
+      "field": "amount_ratio5",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 2
+    },
+    {
+      "field": "amount_ratio5",
+      "reason": "OBSERVED",
+      "count": 5210
+    },
+    {
+      "field": "atr20",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 9
+    },
+    {
+      "field": "atr20",
+      "reason": "OBSERVED",
+      "count": 5215
+    },
+    {
+      "field": "atr5",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 2
+    },
+    {
+      "field": "atr5",
+      "reason": "OBSERVED",
+      "count": 5222
+    },
+    {
+      "field": "atr_ratio",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 9
+    },
+    {
+      "field": "atr_ratio",
+      "reason": "OBSERVED",
+      "count": 5215
+    },
+    {
+      "field": "clv",
+      "reason": "CURRENT_BAR_UNAVAILABLE",
+      "count": 12
+    },
+    {
+      "field": "clv",
+      "reason": "OBSERVED",
+      "count": 5204
+    },
+    {
+      "field": "clv",
+      "reason": "ZERO_DENOMINATOR",
+      "count": 8
+    },
+    {
+      "field": "core_price_damage",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 9
+    },
+    {
+      "field": "core_price_damage",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 14
+    },
+    {
+      "field": "core_price_damage",
+      "reason": "OBSERVED",
+      "count": 5201
+    },
+    {
+      "field": "hh_progress",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 3
+    },
+    {
+      "field": "hh_progress",
+      "reason": "OBSERVED",
+      "count": 5221
+    },
+    {
+      "field": "hhv20",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 8
+    },
+    {
+      "field": "hhv20",
+      "reason": "OBSERVED",
+      "count": 5216
+    },
+    {
+      "field": "hhv5",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 1
+    },
+    {
+      "field": "hhv5",
+      "reason": "OBSERVED",
+      "count": 5223
+    },
+    {
+      "field": "hhv60",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 24
+    },
+    {
+      "field": "hhv60",
+      "reason": "OBSERVED",
+      "count": 5200
+    },
+    {
+      "field": "ll_progress",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 3
+    },
+    {
+      "field": "ll_progress",
+      "reason": "OBSERVED",
+      "count": 5221
+    },
+    {
+      "field": "llv20",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 8
+    },
+    {
+      "field": "llv20",
+      "reason": "OBSERVED",
+      "count": 5216
+    },
+    {
+      "field": "llv5",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 1
+    },
+    {
+      "field": "llv5",
+      "reason": "OBSERVED",
+      "count": 5223
+    },
+    {
+      "field": "llv60",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 24
+    },
+    {
+      "field": "llv60",
+      "reason": "OBSERVED",
+      "count": 5200
+    },
+    {
+      "field": "ma20",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 8
+    },
+    {
+      "field": "ma20",
+      "reason": "OBSERVED",
+      "count": 5216
+    },
+    {
+      "field": "ma5",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 1
+    },
+    {
+      "field": "ma5",
+      "reason": "OBSERVED",
+      "count": 5223
+    },
+    {
+      "field": "ma60",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 24
+    },
+    {
+      "field": "ma60",
+      "reason": "OBSERVED",
+      "count": 5200
+    },
+    {
+      "field": "pos60",
+      "reason": "CURRENT_BAR_UNAVAILABLE",
+      "count": 12
+    },
+    {
+      "field": "pos60",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 24
+    },
+    {
+      "field": "pos60",
+      "reason": "OBSERVED",
+      "count": 5188
+    },
+    {
+      "field": "prior60_percentile",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 24
+    },
+    {
+      "field": "prior60_percentile",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 12
+    },
+    {
+      "field": "prior60_percentile",
+      "reason": "OBSERVED",
+      "count": 5188
+    },
+    {
+      "field": "prior_high20",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 9
+    },
+    {
+      "field": "prior_high20",
+      "reason": "OBSERVED",
+      "count": 5215
+    },
+    {
+      "field": "prior_high5",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 2
+    },
+    {
+      "field": "prior_high5",
+      "reason": "OBSERVED",
+      "count": 5222
+    },
+    {
+      "field": "prior_high60",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 24
+    },
+    {
+      "field": "prior_high60",
+      "reason": "OBSERVED",
+      "count": 5200
+    },
+    {
+      "field": "prior_low20",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 9
+    },
+    {
+      "field": "prior_low20",
+      "reason": "OBSERVED",
+      "count": 5215
+    },
+    {
+      "field": "prior_low5",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 2
+    },
+    {
+      "field": "prior_low5",
+      "reason": "OBSERVED",
+      "count": 5222
+    },
+    {
+      "field": "prior_low60",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 24
+    },
+    {
+      "field": "prior_low60",
+      "reason": "OBSERVED",
+      "count": 5200
+    },
+    {
+      "field": "range_ratio",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 8
+    },
+    {
+      "field": "range_ratio",
+      "reason": "OBSERVED",
+      "count": 5216
+    },
+    {
+      "field": "ret1",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 14
+    },
+    {
+      "field": "ret1",
+      "reason": "OBSERVED",
+      "count": 5210
+    },
+    {
+      "field": "ret20",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 9
+    },
+    {
+      "field": "ret20",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 18
+    },
+    {
+      "field": "ret20",
+      "reason": "OBSERVED",
+      "count": 5197
+    },
+    {
+      "field": "ret3",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 14
+    },
+    {
+      "field": "ret3",
+      "reason": "OBSERVED",
+      "count": 5210
+    },
+    {
+      "field": "ret5",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 2
+    },
+    {
+      "field": "ret5",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 17
+    },
+    {
+      "field": "ret5",
+      "reason": "OBSERVED",
+      "count": 5205
+    },
+    {
+      "field": "slope20",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 12
+    },
+    {
+      "field": "slope20",
+      "reason": "OBSERVED",
+      "count": 5212
+    },
+    {
+      "field": "slope60",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 26
+    },
+    {
+      "field": "slope60",
+      "reason": "OBSERVED",
+      "count": 5198
+    },
+    {
+      "field": "tr",
+      "reason": "CURRENT_BAR_UNAVAILABLE",
+      "count": 12
+    },
+    {
+      "field": "tr",
+      "reason": "OBSERVED",
+      "count": 5212
+    },
+    {
+      "field": "vol20",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 9
+    },
+    {
+      "field": "vol20",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 37
+    },
+    {
+      "field": "vol20",
+      "reason": "OBSERVED",
+      "count": 5178
+    },
+    {
+      "field": "vol5",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 2
+    },
+    {
+      "field": "vol5",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 22
+    },
+    {
+      "field": "vol5",
+      "reason": "OBSERVED",
+      "count": 5200
+    },
+    {
+      "field": "vol_ratio",
+      "reason": "INSUFFICIENT_SESSION_HISTORY",
+      "count": 9
+    },
+    {
+      "field": "vol_ratio",
+      "reason": "MISSING_OR_SUSPENDED_ENDPOINT",
+      "count": 37
+    },
+    {
+      "field": "vol_ratio",
+      "reason": "OBSERVED",
+      "count": 5178
+    },
+    {
+      "field": "volume_ratio20",
+      "reason": "CURRENT_BAR_UNAVAILABLE",
+      "count": 12
+    },
+    {
+      "field": "volume_ratio20",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 9
+    },
+    {
+      "field": "volume_ratio20",
+      "reason": "OBSERVED",
+      "count": 5203
+    },
+    {
+      "field": "volume_ratio5",
+      "reason": "CURRENT_BAR_UNAVAILABLE",
+      "count": 12
+    },
+    {
+      "field": "volume_ratio5",
+      "reason": "INSUFFICIENT_HISTORY",
+      "count": 2
+    },
+    {
+      "field": "volume_ratio5",
+      "reason": "OBSERVED",
+      "count": 5210
+    }
+  ],
+  "known_numerical_arithmetic_reexecuted": false,
+  "primary_core_module_imported": false,
+  "publication_ready": false,
+  "scope": "All 39 primitive/derived Core field availability and UNKNOWN reasons from dated actual bars and frozen suspension queries. RPS and relative-reference gates are separately conserved. Window digest metadata and arithmetic are separate evidence.",
+  "scope_description_erratum": "Original execution description said 38; actual denominator is 39 fields * 5224 rows * 3 checks = 611208. No check reexecution or result change."
+}

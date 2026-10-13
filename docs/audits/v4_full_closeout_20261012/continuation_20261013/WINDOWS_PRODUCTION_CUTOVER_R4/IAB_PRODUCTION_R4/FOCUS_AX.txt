@@ -1,0 +1,729 @@
+Browser tab: 1, Title: "大 A · V4 研究工作台", URL: "http://127.0.0.1:28765/v4/research/focus?trade_date=2026-10-12".
+1 AXWebArea 大 A · V4 研究工作台, URL: 127.0.0.1:28765/v4/research/focus?trade_date=2026-10-12
+	2 container Description: 采集与引擎运行条件, ID: daav4-capture-status
+		3 text CAPTURE_REQUIRES_APP_RUNNING · 真实采集需要电脑可用、用户已登录、应用及引擎运行、自动日更未暂停且来源可用。补日更不能补造首次观测。
+		35 text 引擎：RUNNING · 自动日更：开启 · 版本：V4_PACKAGE_1.0.0_fe11c18cfdf7 · 观测：2026-10-13T10:02:18.155928+00:00。数据日期以研究页面原上下文为准。
+	5 link Description: 跳到主要内容, Value: 127.0.0.1:28765/v4/research/focus?trade_date=2026-10-12#content
+	6 container
+		7 link Description: 大 A V4 研究工作台, Value: 127.0.0.1:28765/v4/research/home
+		8 container 主导航
+			9 link Description: 今日总览, Value: 127.0.0.1:28765/v4/research/home
+			10 link Description: 板块研究, Value: 127.0.0.1:28765/v4/research/sectors
+			11 link Description: 个股研究, Value: 127.0.0.1:28765/v4/research/stocks
+			12 link Description: 关注跟踪, Value: 127.0.0.1:28765/v4/research/focus
+			13 link Description: 市场与事件, Value: 127.0.0.1:28765/v4/research/market
+			14 link Description: 数据与诊断, Value: 127.0.0.1:28765/v4/research/diagnostics
+		15 text 真实生产快照
+		16 text 研究与持续验证
+	17 container research-header
+		36 text 当前已处理截至 2026-10-12
+		37 text 数据更新时间：2026/10/13 07:54:40（北京时间） · 持续验证中
+		38 text 已发布分域：个股当期、板块当期、市场盘后、关注读域、诊断
+		39 text 通达信最新成员回算；非历史当日成员 · 成员采集 2026-10-09T09:44:01.158745+08:00 · 存续偏差风险
+		40 text 当前研究日期 2026-10-12 · 当前成员重建，非严格 PIT
+		41 pop up button (collapsed, settable) Description: 研究日期, Value: 2026-10-12, Secondary Actions: Expand
+			42 menu
+				43 2026-09-28
+				44 2026-09-29
+				45 2026-09-30
+				46 2026-10-08
+				47 2026-10-09
+				48 (selected) 2026-10-12
+	49 container content
+		50 text 研究工作台 / 关注跟踪
+		51 heading 关注跟踪, Value: 1
+			52 text 关注跟踪
+		53 text 真实结果、输入质量与持续验证进度分别呈现。
+		54 text 真实已发布的重建研究跟踪读域；不是 Validation Cohort，也不表示持仓。用户新增与自动写入未获准，保持只读。
+		55 container
+			56 heading 同板块跟踪集中度 · 不代表持仓, Value: 2
+				57 text 同板块跟踪集中度 · 不代表持仓
+			58 text 未结束的唯一跟踪对象 3025 · 行业未映射 0
+			59 link Description: INDUSTRY:T0706 · 194 个 · 6.4%, Value: 127.0.0.1:28765/v4/research/sectors/INDUSTRY%3AT0706
+			60 link Description: INDUSTRY:T020401 · 142 个 · 4.7%, Value: 127.0.0.1:28765/v4/research/sectors/INDUSTRY%3AT020401
+			61 link Description: INDUSTRY:T1205 · 133 个 · 4.4%, Value: 127.0.0.1:28765/v4/research/sectors/INDUSTRY%3AT1205
+			62 link Description: INDUSTRY:T040202 · 128 个 · 4.2%, Value: 127.0.0.1:28765/v4/research/sectors/INDUSTRY%3AT040202
+			63 link Description: INDUSTRY:T070506 · 118 个 · 3.9%, Value: 127.0.0.1:28765/v4/research/sectors/INDUSTRY%3AT070506
+			64 button 完整集中度与成员来源
+		65 container
+			66 heading Focus 独立关注清单, Value: 2
+				67 text Focus 独立关注清单
+			68 search text field (settable) 搜索代码或名称
+			69 pop up button (collapsed, settable) Description: 排序, Value: 默认顺序, Secondary Actions: Expand
+				70 menu
+					71 (selected) 默认顺序
+					72 名称升序
+					73 名称降序
+					74 代码升序
+			75 button 搜索
+			76 table
+				77 row
+					78 cell
+						79 text 研究对象
+					80 cell
+						81 text 入组日期
+					82 cell
+						83 text 事件
+					84 cell
+						85 text 关注资格
+					86 cell
+						87 text 有效性
+					88 cell
+						89 text 路径判定完整度
+					90 cell
+						91 text 已确认路径事实
+					92 cell
+						93 text 退出日期
+					94 cell
+						95 text 证据
+				96 row
+					97 cell
+						98 link Description: 三一重能, Value: 127.0.0.1:28765/v4/research/focus/SEC-00096141BD5420F5CB3120E687CDA5B9
+						99 text  SH.688349
+					100 cell
+						101 button 2026-09-29
+					102 cell
+						103 button 来源暂缺
+					104 cell
+						105 button 来源能力不足
+					106 cell
+						107 button 来源能力不足
+					108 cell
+						109 button 尚缺判定证据
+					110 cell
+						111 button 来源能力不足
+					112 cell
+						113 button —
+					114 cell
+						115 button 来源
+				116 row
+					117 cell
+						118 link Description: 晨曦航空, Value: 127.0.0.1:28765/v4/research/focus/SEC-002610CF9EBB4227722834AADA8F757E
+						119 text  SZ.300581
+					120 cell
+						121 button 2026-09-28
+					122 cell
+						123 button 来源暂缺
+					124 cell
+						125 button 来源能力不足
+					126 cell
+						127 button 来源能力不足
+					128 cell
+						129 button 尚缺判定证据
+					130 cell
+						131 button 来源能力不足
+					132 cell
+						133 button —
+					134 cell
+						135 button 来源
+				136 row
+					137 cell
+						138 link Description: 兔 宝 宝, Value: 127.0.0.1:28765/v4/research/focus/SEC-0051683845B17D59641B7D1DC261FE2A
+						139 text  SZ.002043
+					140 cell
+						141 button 2026-09-30
+					142 cell
+						143 button 来源暂缺
+					144 cell
+						145 button 来源能力不足
+					146 cell
+						147 button 来源能力不足
+					148 cell
+						149 button 尚缺判定证据
+					150 cell
+						151 button 来源能力不足
+					152 cell
+						153 button —
+					154 cell
+						155 button 来源
+				156 row
+					157 cell
+						158 link Description: 节能铁汉, Value: 127.0.0.1:28765/v4/research/focus/SEC-0068F2B3CBB78D2F594248A35D1EF6E6
+						159 text  SZ.300197
+					160 cell
+						161 button 2026-09-29
+					162 cell
+						163 button 来源暂缺
+					164 cell
+						165 button 来源能力不足
+					166 cell
+						167 button 来源能力不足
+					168 cell
+						169 button 尚缺判定证据
+					170 cell
+						171 button 来源能力不足
+					172 cell
+						173 button —
+					174 cell
+						175 button 来源
+				176 row
+					177 cell
+						178 link Description: 广州酒家, Value: 127.0.0.1:28765/v4/research/focus/SEC-0086F7F2614CE0006C835421BA75BD51
+						179 text  SH.603043
+					180 cell
+						181 button 2026-09-28
+					182 cell
+						183 button 来源暂缺
+					184 cell
+						185 button 来源能力不足
+					186 cell
+						187 button 来源能力不足
+					188 cell
+						189 button 尚缺判定证据
+					190 cell
+						191 button 来源能力不足
+					192 cell
+						193 button —
+					194 cell
+						195 button 来源
+				196 row
+					197 cell
+						198 link Description: 赤天化, Value: 127.0.0.1:28765/v4/research/focus/SEC-00B0B75CF5BA6E38D7C2D3FEBF949622
+						199 text  SH.600227
+					200 cell
+						201 button 2026-09-30
+					202 cell
+						203 button 来源暂缺
+					204 cell
+						205 button 来源能力不足
+					206 cell
+						207 button 来源能力不足
+					208 cell
+						209 button 尚缺判定证据
+					210 cell
+						211 button 来源能力不足
+					212 cell
+						213 button —
+					214 cell
+						215 button 来源
+				216 row
+					217 cell
+						218 link Description: 中国中免, Value: 127.0.0.1:28765/v4/research/focus/SEC-00B87010D45BBCB2A1CB277B6C177121
+						219 text  SH.601888
+					220 cell
+						221 button 2026-09-28
+					222 cell
+						223 button 来源暂缺
+					224 cell
+						225 button 来源能力不足
+					226 cell
+						227 button 来源能力不足
+					228 cell
+						229 button 尚缺判定证据
+					230 cell
+						231 button 来源能力不足
+					232 cell
+						233 button —
+					234 cell
+						235 button 来源
+				236 row
+					237 cell
+						238 link Description: 矽电股份, Value: 127.0.0.1:28765/v4/research/focus/SEC-00B93BC23F1AFA8F276F5C61207F5A4F
+						239 text  SZ.301629
+					240 cell
+						241 button 2026-09-30
+					242 cell
+						243 button 来源暂缺
+					244 cell
+						245 button 来源能力不足
+					246 cell
+						247 button 来源能力不足
+					248 cell
+						249 button 尚缺判定证据
+					250 cell
+						251 button 来源能力不足
+					252 cell
+						253 button —
+					254 cell
+						255 button 来源
+				256 row
+					257 cell
+						258 link Description: 中船防务, Value: 127.0.0.1:28765/v4/research/focus/SEC-00BE615596F05D4E950A4A0CF8A0DB73
+						259 text  SH.600685
+					260 cell
+						261 button 2026-10-08
+					262 cell
+						263 button 来源暂缺
+					264 cell
+						265 button 来源能力不足
+					266 cell
+						267 button 来源能力不足
+					268 cell
+						269 button 尚缺判定证据
+					270 cell
+						271 button 来源能力不足
+					272 cell
+						273 button —
+					274 cell
+						275 button 来源
+				276 row
+					277 cell
+						278 link Description: 真视通, Value: 127.0.0.1:28765/v4/research/focus/SEC-00E228DA7EBF038EA528EF36B65B4C97
+						279 text  SZ.002771
+					280 cell
+						281 button 2026-09-28
+					282 cell
+						283 button 来源暂缺
+					284 cell
+						285 button 来源能力不足
+					286 cell
+						287 button 来源能力不足
+					288 cell
+						289 button 尚缺判定证据
+					290 cell
+						291 button 来源能力不足
+					292 cell
+						293 button —
+					294 cell
+						295 button 来源
+				296 row
+					297 cell
+						298 link Description: 盟固利, Value: 127.0.0.1:28765/v4/research/focus/SEC-00F7600938E29E801B3FB9F22775458E
+						299 text  SZ.301487
+					300 cell
+						301 button 2026-09-29
+					302 cell
+						303 button 来源暂缺
+					304 cell
+						305 button 来源能力不足
+					306 cell
+						307 button 来源能力不足
+					308 cell
+						309 button 尚缺判定证据
+					310 cell
+						311 button 来源能力不足
+					312 cell
+						313 button —
+					314 cell
+						315 button 来源
+				316 row
+					317 cell
+						318 link Description: *ST启环, Value: 127.0.0.1:28765/v4/research/focus/SEC-01007B161569BFF64F7079B3DBACF9CC
+						319 text  SZ.000826
+					320 cell
+						321 button 2026-10-12
+					322 cell
+						323 button 新增关注
+					324 cell
+						325 button 预观察层
+					326 cell
+						327 button 来源能力不足
+					328 cell
+						329 button 部分证据已确认
+					330 cell
+						331 button 等待确认
+					332 cell
+						333 button —
+					334 cell
+						335 button 来源
+				336 row
+					337 cell
+						338 link Description: ST佳缘, Value: 127.0.0.1:28765/v4/research/focus/SEC-010CC3E0E86D1885E84000A59CD4BD67
+						339 text  SZ.301117
+					340 cell
+						341 button 2026-10-12
+					342 cell
+						343 button 新增关注
+					344 cell
+						345 button 预观察层
+					346 cell
+						347 button 来源能力不足
+					348 cell
+						349 button 部分证据已确认
+					350 cell
+						351 button 等待确认
+					352 cell
+						353 button —
+					354 cell
+						355 button 来源
+				356 row
+					357 cell
+						358 link Description: 伟星新材, Value: 127.0.0.1:28765/v4/research/focus/SEC-0133C24DA4D131FD193B382B8FF9E57C
+						359 text  SZ.002372
+					360 cell
+						361 button 2026-09-30
+					362 cell
+						363 button 来源暂缺
+					364 cell
+						365 button 来源能力不足
+					366 cell
+						367 button 来源能力不足
+					368 cell
+						369 button 尚缺判定证据
+					370 cell
+						371 button 来源能力不足
+					372 cell
+						373 button —
+					374 cell
+						375 button 来源
+				376 row
+					377 cell
+						378 link Description: 洪通燃气, Value: 127.0.0.1:28765/v4/research/focus/SEC-01503FBCF39C18F6512A1F63139DF7FA
+						379 text  SH.605169
+					380 cell
+						381 button 2026-09-29
+					382 cell
+						383 button 来源暂缺
+					384 cell
+						385 button 来源能力不足
+					386 cell
+						387 button 来源能力不足
+					388 cell
+						389 button 尚缺判定证据
+					390 cell
+						391 button 来源能力不足
+					392 cell
+						393 button —
+					394 cell
+						395 button 来源
+				396 row
+					397 cell
+						398 link Description: 元力股份, Value: 127.0.0.1:28765/v4/research/focus/SEC-01573CAE74FF0911E6CF4E148A380C29
+						399 text  SZ.300174
+					400 cell
+						401 button 2026-10-12
+					402 cell
+						403 button 新增关注
+					404 cell
+						405 button 预观察层
+					406 cell
+						407 button 来源能力不足
+					408 cell
+						409 button 部分证据已确认
+					410 cell
+						411 button 等待确认
+					412 cell
+						413 button —
+					414 cell
+						415 button 来源
+				416 row
+					417 cell
+						418 link Description: ST豆神, Value: 127.0.0.1:28765/v4/research/focus/SEC-0157C18162F1E5F08F5949B6EA4A7514
+						419 text  SZ.300010
+					420 cell
+						421 button 2026-10-09
+					422 cell
+						423 button 来源暂缺
+					424 cell
+						425 button 来源能力不足
+					426 cell
+						427 button 来源能力不足
+					428 cell
+						429 button 尚缺判定证据
+					430 cell
+						431 button 来源能力不足
+					432 cell
+						433 button —
+					434 cell
+						435 button 来源
+				436 row
+					437 cell
+						438 link Description: 建设机械, Value: 127.0.0.1:28765/v4/research/focus/SEC-016E7A08F4649411F936422991E5AFD3
+						439 text  SH.600984
+					440 cell
+						441 button 2026-09-28
+					442 cell
+						443 button 来源暂缺
+					444 cell
+						445 button 来源能力不足
+					446 cell
+						447 button 来源能力不足
+					448 cell
+						449 button 尚缺判定证据
+					450 cell
+						451 button 来源能力不足
+					452 cell
+						453 button —
+					454 cell
+						455 button 来源
+				456 row
+					457 cell
+						458 link Description: 兴业股份, Value: 127.0.0.1:28765/v4/research/focus/SEC-01759C0DD3567723A74069E26F961A95
+						459 text  SH.603928
+					460 cell
+						461 button 2026-09-28
+					462 cell
+						463 button 来源暂缺
+					464 cell
+						465 button 来源能力不足
+					466 cell
+						467 button 来源能力不足
+					468 cell
+						469 button 尚缺判定证据
+					470 cell
+						471 button 来源能力不足
+					472 cell
+						473 button —
+					474 cell
+						475 button 来源
+				476 row
+					477 cell
+						478 link Description: 惠发食品, Value: 127.0.0.1:28765/v4/research/focus/SEC-01790ECE7EBB0C0D3946582CCD3F15F6
+						479 text  SH.603536
+					480 cell
+						481 button 2026-09-28
+					482 cell
+						483 button 来源暂缺
+					484 cell
+						485 button 来源能力不足
+					486 cell
+						487 button 来源能力不足
+					488 cell
+						489 button 尚缺判定证据
+					490 cell
+						491 button 来源能力不足
+					492 cell
+						493 button —
+					494 cell
+						495 button 来源
+				496 row
+					497 cell
+						498 link Description: ST合纵, Value: 127.0.0.1:28765/v4/research/focus/SEC-01AE565AAB38D6DBE68548A166DA9001
+						499 text  SZ.300477
+					500 cell
+						501 button 2026-09-28
+					502 cell
+						503 button 关注升级
+					504 cell
+						505 button 确认层
+					506 cell
+						507 button 来源能力不足
+					508 cell
+						509 button 部分证据已确认
+					510 cell
+						511 button 突破已确认
+					512 cell
+						513 button —
+					514 cell
+						515 button 来源
+				516 row
+					517 cell
+						518 link Description: 华鹏飞, Value: 127.0.0.1:28765/v4/research/focus/SEC-01B755B34CE3712C3B8559DA825A14EF
+						519 text  SZ.300350
+					520 cell
+						521 button 2026-09-28
+					522 cell
+						523 button 来源暂缺
+					524 cell
+						525 button 来源能力不足
+					526 cell
+						527 button 来源能力不足
+					528 cell
+						529 button 尚缺判定证据
+					530 cell
+						531 button 来源能力不足
+					532 cell
+						533 button —
+					534 cell
+						535 button 来源
+				536 row
+					537 cell
+						538 link Description: 湖南天雁, Value: 127.0.0.1:28765/v4/research/focus/SEC-01C85C8E5695D64550AAD9C8210F3614
+						539 text  SH.600698
+					540 cell
+						541 button 2026-09-28
+					542 cell
+						543 button 来源暂缺
+					544 cell
+						545 button 来源能力不足
+					546 cell
+						547 button 来源能力不足
+					548 cell
+						549 button 尚缺判定证据
+					550 cell
+						551 button 来源能力不足
+					552 cell
+						553 button —
+					554 cell
+						555 button 来源
+				556 row
+					557 cell
+						558 link Description: 罗 牛 山, Value: 127.0.0.1:28765/v4/research/focus/SEC-01CA1B1B92F68D1C3E383F8E3E6C5203
+						559 text  SZ.000735
+					560 cell
+						561 button 2026-09-30
+					562 cell
+						563 button 持续关注
+					564 cell
+						565 button 预观察层
+					566 cell
+						567 button 来源能力不足
+					568 cell
+						569 button 部分证据已确认
+					570 cell
+						571 button 等待确认
+					572 cell
+						573 button —
+					574 cell
+						575 button 来源
+				576 row
+					577 cell
+						578 link Description: 太极股份, Value: 127.0.0.1:28765/v4/research/focus/SEC-01D04123834F9A8FE1E071507108E37A
+						579 text  SZ.002368
+					580 cell
+						581 button 2026-09-30
+					582 cell
+						583 button 来源暂缺
+					584 cell
+						585 button 来源能力不足
+					586 cell
+						587 button 来源能力不足
+					588 cell
+						589 button 尚缺判定证据
+					590 cell
+						591 button 来源能力不足
+					592 cell
+						593 button —
+					594 cell
+						595 button 来源
+				596 row
+					597 cell
+						598 link Description: 通达动力, Value: 127.0.0.1:28765/v4/research/focus/SEC-01EBCDF66D7972914DC16BEEFD189612
+						599 text  SZ.002576
+					600 cell
+						601 button 2026-09-28
+					602 cell
+						603 button 关注升级
+					604 cell
+						605 button 确认层
+					606 cell
+						607 button 有效
+					608 cell
+						609 button 可读取
+					610 cell
+						611 button 突破已确认
+					612 cell
+						613 button —
+					614 cell
+						615 button 来源
+				616 row
+					617 cell
+						618 link Description: 中华企业, Value: 127.0.0.1:28765/v4/research/focus/SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319
+						619 text  SH.600675
+					620 cell
+						621 button 2026-09-30
+					622 cell
+						623 button 来源暂缺
+					624 cell
+						625 button 来源能力不足
+					626 cell
+						627 button 来源能力不足
+					628 cell
+						629 button 尚缺判定证据
+					630 cell
+						631 button 来源能力不足
+					632 cell
+						633 button —
+					634 cell
+						635 button 来源
+				636 row
+					637 cell
+						638 link Description: 沪农商行, Value: 127.0.0.1:28765/v4/research/focus/SEC-020789B1F4101B76691771251CDFC9B9
+						639 text  SH.601825
+					640 cell
+						641 button 2026-10-12
+					642 cell
+						643 button 新增关注
+					644 cell
+						645 button 确认层
+					646 cell
+						647 button 有效
+					648 cell
+						649 button 可读取
+					650 cell
+						651 button 突破已确认
+					652 cell
+						653 button —
+					654 cell
+						655 button 来源
+				656 row
+					657 cell
+						658 link Description: 山东黄金, Value: 127.0.0.1:28765/v4/research/focus/SEC-025B71A288DA1070DC2299964C634BC4
+						659 text  SH.600547
+					660 cell
+						661 button 2026-10-12
+					662 cell
+						663 button 新增关注
+					664 cell
+						665 button 预观察层
+					666 cell
+						667 button 来源能力不足
+					668 cell
+						669 button 部分证据已确认
+					670 cell
+						671 button 等待确认
+					672 cell
+						673 button —
+					674 cell
+						675 button 来源
+				676 row
+					677 cell
+						678 link Description: 日辰股份, Value: 127.0.0.1:28765/v4/research/focus/SEC-026449994149D1BA02ADE629A0E5FC92
+						679 text  SH.603755
+					680 cell
+						681 button 2026-09-28
+					682 cell
+						683 button 来源暂缺
+					684 cell
+						685 button 来源能力不足
+					686 cell
+						687 button 来源能力不足
+					688 cell
+						689 button 尚缺判定证据
+					690 cell
+						691 button 来源能力不足
+					692 cell
+						693 button —
+					694 cell
+						695 button 来源
+			696 text 共 3025 条 · 第 1 页
+			697 container
+				698 button (disabled) 上一页
+				699 button 下一页
+		700 container
+			701 heading 持续事件（与股票画像互相导航）, Value: 2
+				702 text 持续事件（与股票画像互相导航）
+			703 link Description: 2026-10-12 来源暂缺, Value: 127.0.0.1:28765/v4/research/focus/SEC-00096141BD5420F5CB3120E687CDA5B9
+			704 link Description: 2026-10-12 来源暂缺, Value: 127.0.0.1:28765/v4/research/focus/SEC-002610CF9EBB4227722834AADA8F757E
+			705 link Description: 2026-10-12 来源暂缺, Value: 127.0.0.1:28765/v4/research/focus/SEC-0051683845B17D59641B7D1DC261FE2A
+			706 link Description: 2026-10-12 来源暂缺, Value: 127.0.0.1:28765/v4/research/focus/SEC-0068F2B3CBB78D2F594248A35D1EF6E6
+			707 link Description: 2026-10-12 来源暂缺, Value: 127.0.0.1:28765/v4/research/focus/SEC-0086F7F2614CE0006C835421BA75BD51
+			708 link Description: 2026-10-12 来源暂缺, Value: 127.0.0.1:28765/v4/research/focus/SEC-00B0B75CF5BA6E38D7C2D3FEBF949622
+			709 link Description: 2026-10-12 来源暂缺, Value: 127.0.0.1:28765/v4/research/focus/SEC-00B87010D45BBCB2A1CB277B6C177121
+			710 link Description: 2026-10-12 来源暂缺, Value: 127.0.0.1:28765/v4/research/focus/SEC-00B93BC23F1AFA8F276F5C61207F5A4F
+			711 link Description: 2026-10-12 来源暂缺, Value: 127.0.0.1:28765/v4/research/focus/SEC-00BE615596F05D4E950A4A0CF8A0DB73
+			712 link Description: 2026-10-12 来源暂缺, Value: 127.0.0.1:28765/v4/research/focus/SEC-00E228DA7EBF038EA528EF36B65B4C97
+			713 link Description: 2026-10-12 来源暂缺, Value: 127.0.0.1:28765/v4/research/focus/SEC-00F7600938E29E801B3FB9F22775458E
+			714 link Description: 2026-10-12 新增关注, Value: 127.0.0.1:28765/v4/research/focus/SEC-01007B161569BFF64F7079B3DBACF9CC
+			715 link Description: 2026-10-12 新增关注, Value: 127.0.0.1:28765/v4/research/focus/SEC-010CC3E0E86D1885E84000A59CD4BD67
+			716 link Description: 2026-10-12 来源暂缺, Value: 127.0.0.1:28765/v4/research/focus/SEC-0133C24DA4D131FD193B382B8FF9E57C
+			717 link Description: 2026-10-12 来源暂缺, Value: 127.0.0.1:28765/v4/research/focus/SEC-01503FBCF39C18F6512A1F63139DF7FA
+			718 link Description: 2026-10-12 新增关注, Value: 127.0.0.1:28765/v4/research/focus/SEC-01573CAE74FF0911E6CF4E148A380C29
+			719 link Description: 2026-10-12 来源暂缺, Value: 127.0.0.1:28765/v4/research/focus/SEC-0157C18162F1E5F08F5949B6EA4A7514
+			720 link Description: 2026-10-12 来源暂缺, Value: 127.0.0.1:28765/v4/research/focus/SEC-016E7A08F4649411F936422991E5AFD3
+			721 link Description: 2026-10-12 来源暂缺, Value: 127.0.0.1:28765/v4/research/focus/SEC-01759C0DD3567723A74069E26F961A95
+			722 link Description: 2026-10-12 来源暂缺, Value: …
+			723 link Description: 2026-10-12 关注升级, Value: …
+			724 link Description: 2026-10-12 来源暂缺, Value: …
+			725 link Description: 2026-10-12 来源暂缺, Value: …
+			726 link Description: 2026-10-12 持续关注, Value: …
+			727 link Description: 2026-10-12 来源暂缺, Value: …
+			728 link Description: 2026-10-12 关注升级, Value: …
+			729 link Description: 2026-10-12 来源暂缺, Value: …
+			730 link Description: 2026-10-12 新增关注, Value: …
+			731 link Description: 2026-10-12 新增关注, Value: …
+			732 link Description: 2026-10-12 来源暂缺, Value: …
+			733 text 事件总数 3025；各对象详情包含完整分层记录。
+		734 container
+			735 heading Forward Validation Cohort · 独立检验样本, Value: 2
+				736 text Forward Validation Cohort · 独立检验样本
+			737 text 独立检验样本尚未准入，样本数与统计结果保持不可判定。关注跟踪记录不计入检验样本。
+			738 text 来源状态：SOURCE_INCOMPLETE · NO_AUTHORIZED_COHORT_OWNER
+			739 button 重新核验来源
+		740 heading Cohort 来源准备 · 独立研究候选, Value: 2
+			741 text Cohort 来源准备 · 独立研究候选
+	32 container
+		33 text V4 六入口框架 · 数据、证据与研究状态分别展示
+		34 link Description: 历史摘要, Value: …
+
+The focused UI element is 12 link Description: 关注跟踪, URL: 127.0.0.1:28765/v4/research/focus

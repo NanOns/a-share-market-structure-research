@@ -1,0 +1,126 @@
+{
+  "contract_id": "V4_REAL_ORIGINAL_PORT_BUSINESS_PAYLOAD_CONSERVATION_R4",
+  "acceptance": "PASS",
+  "records": [
+    {
+      "path": "context",
+      "T0": "2026-10-12",
+      "business_token": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc",
+      "http": 200,
+      "total": null,
+      "response_sha256": "0d4a268f7fba94eeda440bf8915032ac42cf6d916a9cb1f142038c6b2cc047a9",
+      "checks": {
+        "http": true,
+        "token": true,
+        "date": true,
+        "business_payload_equal_to_frozen_verified_staging": true,
+        "current_joint": true
+      },
+      "response_seconds": 9.84640799999761
+    },
+    {
+      "path": "home",
+      "T0": "2026-10-12",
+      "business_token": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc",
+      "http": 200,
+      "total": null,
+      "response_sha256": "fbe6543952125e0f25e5b977388d5437ab732607230d61096cf3cd9885c95a4c",
+      "checks": {
+        "http": true,
+        "token": true,
+        "date": true,
+        "business_payload_equal_to_frozen_verified_staging": true,
+        "current_joint": true
+      },
+      "response_seconds": 7.606497300002957
+    },
+    {
+      "path": "stocks",
+      "T0": "2026-10-12",
+      "business_token": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc",
+      "http": 200,
+      "total": 5224,
+      "response_sha256": "9fb1e0919b9c80b83f33c8a160c29373099474cec75cdbdc547cb4b09236b182",
+      "checks": {
+        "http": true,
+        "token": true,
+        "date": true,
+        "business_payload_equal_to_frozen_verified_staging": true,
+        "current_joint": true,
+        "exact_count": true
+      },
+      "response_seconds": 5.989100899998448
+    },
+    {
+      "path": "sectors",
+      "T0": "2026-10-12",
+      "business_token": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc",
+      "http": 200,
+      "total": 400,
+      "response_sha256": "edf72db68a53c2ea61c93402f982911fc6f53ecabdbeb4472f055dcb917bb71b",
+      "checks": {
+        "http": true,
+        "token": true,
+        "date": true,
+        "business_payload_equal_to_frozen_verified_staging": true,
+        "current_joint": true,
+        "exact_count": true
+      },
+      "response_seconds": 6.43805440000142
+    },
+    {
+      "path": "focus",
+      "T0": "2026-10-12",
+      "business_token": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc",
+      "http": 200,
+      "total": 3025,
+      "response_sha256": "881327693315890e10e1e1f0f6741338328a42ef241b6bf201cc65bf9b14f9c1",
+      "checks": {
+        "http": true,
+        "token": true,
+        "date": true,
+        "business_payload_equal_to_frozen_verified_staging": true,
+        "current_joint": true,
+        "exact_count": true
+      },
+      "response_seconds": 6.622956599996542
+    },
+    {
+      "path": "market",
+      "T0": "2026-10-12",
+      "business_token": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc",
+      "http": 200,
+      "total": null,
+      "response_sha256": "fe90655d97c5d38c436823de13d58b2a3941db74eccee72c68ed8196ecc7de71",
+      "checks": {
+        "http": true,
+        "token": true,
+        "date": true,
+        "business_payload_equal_to_frozen_verified_staging": true,
+        "current_joint": true
+      },
+      "response_seconds": 6.198472100004437
+    },
+    {
+      "path": "diagnostics",
+      "T0": "2026-10-12",
+      "business_token": "d86b5a003704b52e72fefb81a23dc9d96c73df4db79d6c22f86ba08e7c6fcbfc",
+      "http": 200,
+      "total": 1,
+      "response_sha256": "519aee2a5c5d02ba4693828c6e5a09c4c13a42dcaa724c2f17d752b59a6d28ec",
+      "checks": {
+        "http": true,
+        "token": true,
+        "date": true,
+        "business_payload_equal_to_frozen_verified_staging": true,
+        "current_joint": true,
+        "exact_count": true
+      },
+      "response_seconds": 12.848618799995165
+    }
+  ],
+  "port": 28765,
+  "full_values_and_field_metadata_compared": true,
+  "numerical_recalculation": false,
+  "performance_test": false
+}

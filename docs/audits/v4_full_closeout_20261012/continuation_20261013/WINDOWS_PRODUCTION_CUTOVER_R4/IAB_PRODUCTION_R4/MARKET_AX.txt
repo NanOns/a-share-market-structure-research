@@ -1,0 +1,464 @@
+Browser tab: 1, Title: "大 A · V4 研究工作台", URL: "http://127.0.0.1:28765/v4/research/market?trade_date=2026-10-12".
+1 AXWebArea 大 A · V4 研究工作台, URL: 127.0.0.1:28765/v4/research/market?trade_date=2026-10-12
+	2 container Description: 采集与引擎运行条件, ID: daav4-capture-status
+		3 text CAPTURE_REQUIRES_APP_RUNNING · 真实采集需要电脑可用、用户已登录、应用及引擎运行、自动日更未暂停且来源可用。补日更不能补造首次观测。
+		50 text 引擎：RUNNING · 自动日更：开启 · 版本：V4_PACKAGE_1.0.0_fe11c18cfdf7 · 观测：2026-10-13T10:03:38.042608+00:00。数据日期以研究页面原上下文为准。
+	5 link Description: 跳到主要内容, Value: 127.0.0.1:28765/v4/research/market?trade_date=2026-10-12#content
+	6 container
+		7 link Description: 大 A V4 研究工作台, Value: 127.0.0.1:28765/v4/research/home
+		8 container 主导航
+			9 link Description: 今日总览, Value: 127.0.0.1:28765/v4/research/home
+			10 link Description: 板块研究, Value: 127.0.0.1:28765/v4/research/sectors
+			11 link Description: 个股研究, Value: 127.0.0.1:28765/v4/research/stocks
+			12 link Description: 关注跟踪, Value: 127.0.0.1:28765/v4/research/focus
+			13 link Description: 市场与事件, Value: 127.0.0.1:28765/v4/research/market
+			14 link Description: 数据与诊断, Value: 127.0.0.1:28765/v4/research/diagnostics
+		15 text 真实生产快照
+		16 text 研究与持续验证
+	17 container research-header
+		51 text 当前已处理截至 2026-10-12
+		52 text 数据更新时间：2026/10/13 07:54:40（北京时间） · 持续验证中
+		53 text 已发布分域：个股当期、板块当期、市场盘后、关注读域、诊断
+		54 text 通达信最新成员回算；非历史当日成员 · 成员采集 2026-10-09T09:44:01.158745+08:00 · 存续偏差风险
+		55 text 当前研究日期 2026-10-12 · 当前成员重建，非严格 PIT
+		56 pop up button (collapsed, settable) Description: 研究日期, Value: 2026-10-12, Secondary Actions: Expand
+			57 menu
+				58 2026-09-28
+				59 2026-09-29
+				60 2026-09-30
+				61 2026-10-08
+				62 2026-10-09
+				63 (selected) 2026-10-12
+	49 container content
+		64 text 研究工作台 / 市场与事件
+		65 heading 市场与事件, Value: 1
+			66 text 市场与事件
+		67 text 真实结果、输入质量与持续验证进度分别呈现。
+		68 text 盘后已接受截面；无新交易日保留 last-good，不是实时行情。
+		69 container
+			70 heading 市场四轴与环境, Value: 2
+				71 text 市场四轴与环境
+			72 text 趋势 偏弱 宽度变化 恶化 参与度 正常 压力 低 合成环境：风险环境
+			73 button 四轴数值与来源
+		74 container
+			75 heading 市场宽度与成交额, Value: 2
+				76 text 市场宽度与成交额
+			77 text 上涨家数 1109 下跌家数 4036 平盘家数 65 不可判定家数 14 分母 5224 · 实际行情 5212 · 通达信成交额 15376.09 亿元
+			78 button 宽度定义、单位与来源
+		79 container
+			80 heading 真实市场指数, Value: 2
+				81 text 真实市场指数
+			82 button (collapsed) 上证指数 · 收盘 3797.24, Secondary Actions: Expand
+				83 text 上证指数 · 收盘 3797.24
+			84 button (collapsed) 深证成指 · 收盘 12384.87, Secondary Actions: Expand
+				85 text 深证成指 · 收盘 12384.87
+			86 button (collapsed) 创业板指 · 收盘 2963.82, Secondary Actions: Expand
+				87 text 创业板指 · 收盘 2963.82
+			88 button (collapsed) 沪深300 · 收盘 4287.98, Secondary Actions: Expand
+				89 text 沪深300 · 收盘 4287.98
+			90 button (collapsed) 中证1000 · 收盘 7021.47, Secondary Actions: Expand
+				91 text 中证1000 · 收盘 7021.47
+			92 button 指数来源
+		93 container
+			94 heading 合规涨跌停统计, Value: 2
+				95 text 合规涨跌停统计
+			96 text 涨停 47 · 跌停 23 · 停牌 12 · 不可判定 20
+			97 button 价格规则、ST/新股与来源
+		98 container
+			99 heading 涨停梯队 · 日线可观察范围, Value: 2
+				100 text 涨停梯队 · 日线可观察范围
+			101 button (collapsed) 真实梯队 · 47, Secondary Actions: Expand
+				102 text 真实梯队 · 47
+			103 text 分钟首封、炸板路径与新闻事实源未具备；不由日线推造。
+		104 container
+			105 heading 正式研究结构事件, Value: 2
+				106 text 正式研究结构事件
+			107 search text field (settable) 搜索代码或名称
+			108 pop up button (collapsed, settable) Description: 排序, Value: 默认顺序, Secondary Actions: Expand
+				109 menu
+					110 (selected) 默认顺序
+					111 名称升序
+					112 名称降序
+					113 代码升序
+			114 button 搜索
+			115 table
+				116 row
+					117 cell
+						118 text 研究对象
+					119 cell
+						120 text 事件类型
+					121 cell
+						122 text 发布交易日
+					123 cell
+						124 text 同股同日独立锚点序号
+					125 cell
+						126 text 证据
+				127 row
+					128 cell
+						129 link Description: ST合纵, Value: 127.0.0.1:28765/v4/research/stocks/SEC-01AE565AAB38D6DBE68548A166DA9001
+						130 text  SZ.300477
+					131 cell
+						132 button 上涨结构脉冲
+					133 cell
+						134 button 2026-10-12
+					135 cell
+						136 button 2
+					137 cell
+						138 button 来源
+				139 row
+					140 cell
+						141 link Description: ST合纵, Value: 127.0.0.1:28765/v4/research/stocks/SEC-01AE565AAB38D6DBE68548A166DA9001
+						142 text  SZ.300477
+					143 cell
+						144 button 上涨结构脉冲
+					145 cell
+						146 button 2026-10-12
+					147 cell
+						148 button 1
+					149 cell
+						150 button 来源
+				151 row
+					152 cell
+						153 link Description: 通达动力, Value: 127.0.0.1:28765/v4/research/stocks/SEC-01EBCDF66D7972914DC16BEEFD189612
+						154 text  SZ.002576
+					155 cell
+						156 button 上涨结构脉冲
+					157 cell
+						158 button 2026-10-12
+					159 cell
+						160 button 2
+					161 cell
+						162 button 来源
+				163 row
+					164 cell
+						165 link Description: 通达动力, Value: 127.0.0.1:28765/v4/research/stocks/SEC-01EBCDF66D7972914DC16BEEFD189612
+						166 text  SZ.002576
+					167 cell
+						168 button 上涨结构脉冲
+					169 cell
+						170 button 2026-10-12
+					171 cell
+						172 button 1
+					173 cell
+						174 button 来源
+				175 row
+					176 cell
+						177 link Description: 沪农商行, Value: 127.0.0.1:28765/v4/research/stocks/SEC-020789B1F4101B76691771251CDFC9B9
+						178 text  SH.601825
+					179 cell
+						180 button 上涨结构脉冲
+					181 cell
+						182 button 2026-10-12
+					183 cell
+						184 button 1
+					185 cell
+						186 button 来源
+				187 row
+					188 cell
+						189 link Description: 沪农商行, Value: 127.0.0.1:28765/v4/research/stocks/SEC-020789B1F4101B76691771251CDFC9B9
+						190 text  SH.601825
+					191 cell
+						192 button 上涨结构脉冲
+					193 cell
+						194 button 2026-10-12
+					195 cell
+						196 button 2
+					197 cell
+						198 button 来源
+				199 row
+					200 cell
+						201 link Description: 中国通号, Value: 127.0.0.1:28765/v4/research/stocks/SEC-0374035D22E21406707583D88F2742DA
+						202 text  SH.688009
+					203 cell
+						204 button 上涨结构脉冲
+					205 cell
+						206 button 2026-10-12
+					207 cell
+						208 button 2
+					209 cell
+						210 button 来源
+				211 row
+					212 cell
+						213 link Description: 中国通号, Value: 127.0.0.1:28765/v4/research/stocks/SEC-0374035D22E21406707583D88F2742DA
+						214 text  SH.688009
+					215 cell
+						216 button 上涨结构脉冲
+					217 cell
+						218 button 2026-10-12
+					219 cell
+						220 button 1
+					221 cell
+						222 button 来源
+				223 row
+					224 cell
+						225 link Description: 亚香股份, Value: 127.0.0.1:28765/v4/research/stocks/SEC-03A54CA77932F23F9DEC40DB14535DF1
+						226 text  SZ.301220
+					227 cell
+						228 button 上涨结构脉冲
+					229 cell
+						230 button 2026-10-12
+					231 cell
+						232 button 1
+					233 cell
+						234 button 来源
+				235 row
+					236 cell
+						237 link Description: 亚香股份, Value: 127.0.0.1:28765/v4/research/stocks/SEC-03A54CA77932F23F9DEC40DB14535DF1
+						238 text  SZ.301220
+					239 cell
+						240 button 上涨结构脉冲
+					241 cell
+						242 button 2026-10-12
+					243 cell
+						244 button 2
+					245 cell
+						246 button 来源
+				247 row
+					248 cell
+						249 link Description: 青龙管业, Value: 127.0.0.1:28765/v4/research/stocks/SEC-0462B378DC21FDEDF332260276AF2073
+						250 text  SZ.002457
+					251 cell
+						252 button GAP_REGISTERED
+					253 cell
+						254 button 2026-10-12
+					255 cell
+						256 button 1
+					257 cell
+						258 button 来源
+				259 row
+					260 cell
+						261 link Description: 德新科技, Value: 127.0.0.1:28765/v4/research/stocks/SEC-068A3602810F6E6DCFF02F109B7BA9D4
+						262 text  SH.603032
+					263 cell
+						264 button 上涨结构脉冲
+					265 cell
+						266 button 2026-10-12
+					267 cell
+						268 button 2
+					269 cell
+						270 button 来源
+				271 row
+					272 cell
+						273 link Description: 德新科技, Value: 127.0.0.1:28765/v4/research/stocks/SEC-068A3602810F6E6DCFF02F109B7BA9D4
+						274 text  SH.603032
+					275 cell
+						276 button 上涨结构脉冲
+					277 cell
+						278 button 2026-10-12
+					279 cell
+						280 button 1
+					281 cell
+						282 button 来源
+				283 row
+					284 cell
+						285 link Description: 当虹科技, Value: 127.0.0.1:28765/v4/research/stocks/SEC-09A25031C0133A8AA6E9CD1B1F68C431
+						286 text  SH.688039
+					287 cell
+						288 button 上涨结构脉冲
+					289 cell
+						290 button 2026-10-12
+					291 cell
+						292 button 1
+					293 cell
+						294 button 来源
+				295 row
+					296 cell
+						297 link Description: 当虹科技, Value: 127.0.0.1:28765/v4/research/stocks/SEC-09A25031C0133A8AA6E9CD1B1F68C431
+						298 text  SH.688039
+					299 cell
+						300 button 上涨结构脉冲
+					301 cell
+						302 button 2026-10-12
+					303 cell
+						304 button 2
+					305 cell
+						306 button 来源
+				307 row
+					308 cell
+						309 link Description: 东软集团, Value: 127.0.0.1:28765/v4/research/stocks/SEC-0A3E8A5EC0314C33C5459CACC7DF374E
+						310 text  SH.600718
+					311 cell
+						312 button 上涨结构脉冲
+					313 cell
+						314 button 2026-10-12
+					315 cell
+						316 button 1
+					317 cell
+						318 button 来源
+				319 row
+					320 cell
+						321 link Description: 东软集团, Value: 127.0.0.1:28765/v4/research/stocks/SEC-0A3E8A5EC0314C33C5459CACC7DF374E
+						322 text  SH.600718
+					323 cell
+						324 button 上涨结构脉冲
+					325 cell
+						326 button 2026-10-12
+					327 cell
+						328 button 2
+					329 cell
+						330 button 来源
+				331 row
+					332 cell
+						333 link Description: 文投控股, Value: 127.0.0.1:28765/v4/research/stocks/SEC-0B39C06B70C1DAB53E051334E2FA0530
+						334 text  SH.600715
+					335 cell
+						336 button GAP_REGISTERED
+					337 cell
+						338 button 2026-10-12
+					339 cell
+						340 button 1
+					341 cell
+						342 button 来源
+				343 row
+					344 cell
+						345 link Description: 新产业, Value: 127.0.0.1:28765/v4/research/stocks/SEC-0BD9BC768EC0F8CA9BB6064CB38B3A11
+						346 text  SZ.300832
+					347 cell
+						348 button GAP_REGISTERED
+					349 cell
+						350 button 2026-10-12
+					351 cell
+						352 button 1
+					353 cell
+						354 button 来源
+				355 row
+					356 cell
+						357 link Description: 久盛电气, Value: 127.0.0.1:28765/v4/research/stocks/SEC-13224A6EFFCBF3887021D8AB669E4A1D
+						358 text  SZ.301082
+					359 cell
+						360 button 上涨结构脉冲
+					361 cell
+						362 button 2026-10-12
+					363 cell
+						364 button 1
+					365 cell
+						366 button 来源
+				367 row
+					368 cell
+						369 link Description: 久盛电气, Value: 127.0.0.1:28765/v4/research/stocks/SEC-13224A6EFFCBF3887021D8AB669E4A1D
+						370 text  SZ.301082
+					371 cell
+						372 button 上涨结构脉冲
+					373 cell
+						374 button 2026-10-12
+					375 cell
+						376 button 2
+					377 cell
+						378 button 来源
+				379 row
+					380 cell
+						381 link Description: 崧盛股份, Value: 127.0.0.1:28765/v4/research/stocks/SEC-16746D365D85145D1AB3A39DC2BD3E85
+						382 text  SZ.301002
+					383 cell
+						384 button 上涨结构脉冲
+					385 cell
+						386 button 2026-10-12
+					387 cell
+						388 button 1
+					389 cell
+						390 button 来源
+				391 row
+					392 cell
+						393 link Description: 崧盛股份, Value: 127.0.0.1:28765/v4/research/stocks/SEC-16746D365D85145D1AB3A39DC2BD3E85
+						394 text  SZ.301002
+					395 cell
+						396 button 上涨结构脉冲
+					397 cell
+						398 button 2026-10-12
+					399 cell
+						400 button 2
+					401 cell
+						402 button 来源
+				403 row
+					404 cell
+						405 link Description: 吉视传媒, Value: 127.0.0.1:28765/v4/research/stocks/SEC-173581A01B922815F42E23AD4F1BFDC2
+						406 text  SH.601929
+					407 cell
+						408 button 上涨结构脉冲
+					409 cell
+						410 button 2026-10-12
+					411 cell
+						412 button 1
+					413 cell
+						414 button 来源
+				415 row
+					416 cell
+						417 link Description: 吉视传媒, Value: 127.0.0.1:28765/v4/research/stocks/SEC-173581A01B922815F42E23AD4F1BFDC2
+						418 text  SH.601929
+					419 cell
+						420 button 上涨结构脉冲
+					421 cell
+						422 button 2026-10-12
+					423 cell
+						424 button 2
+					425 cell
+						426 button 来源
+				427 row
+					428 cell
+						429 link Description: 吉视传媒, Value: 127.0.0.1:28765/v4/research/stocks/SEC-173581A01B922815F42E23AD4F1BFDC2
+						430 text  SH.601929
+					431 cell
+						432 button GAP_REGISTERED
+					433 cell
+						434 button 2026-10-12
+					435 cell
+						436 button 1
+					437 cell
+						438 button 来源
+				439 row
+					440 cell
+						441 link Description: 上海医药, Value: 127.0.0.1:28765/v4/research/stocks/SEC-173EBB2D4DA7A5A56ADCF270BE7D0B31
+						442 text  SH.601607
+					443 cell
+						444 button 上涨结构脉冲
+					445 cell
+						446 button 2026-10-12
+					447 cell
+						448 button 2
+					449 cell
+						450 button 来源
+				451 row
+					452 cell
+						453 link Description: 上海医药, Value: 127.0.0.1:28765/v4/research/stocks/SEC-173EBB2D4DA7A5A56ADCF270BE7D0B31
+						454 text  SH.601607
+					455 cell
+						456 button 上涨结构脉冲
+					457 cell
+						458 button 2026-10-12
+					459 cell
+						460 button 1
+					461 cell
+						462 button 来源
+				463 row
+					464 cell
+						465 link Description: 迈瑞医疗, Value: 127.0.0.1:28765/v4/research/stocks/SEC-185876F80625C20AC8D086A21E8D7E1F
+						466 text  SZ.300760
+					467 cell
+						468 button 上涨结构脉冲
+					469 cell
+						470 button 2026-10-12
+					471 cell
+						472 button 1
+					473 cell
+						474 button 来源
+				475 row
+					476 cell
+						477 link Description: 迈瑞医疗, Value: 127.0.0.1:28765/v4/research/stocks/SEC-185876F80625C20AC8D086A21E8D7E1F
+						478 text  SZ.300760
+					479 cell
+						480 button 上涨结构脉冲
+					481 cell
+						482 button 2026-10-12
+					483 cell
+						484 button 2
+					485 cell
+						486 button 来源
+			487 text 共 340 条 · 第 1 页
+			488 container
+				489 button (disabled) 上一页
+				490 button 下一页
+	32 container
+		33 text V4 六入口框架 · 数据、证据与研究状态分别展示
+		34 link Description: 历史摘要, Value: 127.0.0.1:28765/v4/legacy-summary
+
+The focused UI element is 13 link Description: 市场与事件, URL: 127.0.0.1:28765/v4/research/market

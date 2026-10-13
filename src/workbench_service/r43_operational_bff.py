@@ -64,6 +64,12 @@ class OperationalResearchBFF:
         d2={r['entity_id']:r for r in self.source('focus',day)} if domain=='stocks' else {}
         rotation={r['sector_id']:r for r in self.source('rotation',day)} if domain=='sectors' else {}
         member_names={r['sector_id']:r.get('sector_name',r['sector_id']) for r in member_rows} if domain=='sectors' else {}
+        correction=None;correction_ids=set()
+        if domain=='stocks':
+            from workbench_db.v4_profile_semantic_corrections_pg_v1 import KEY,load as load_correction
+            if KEY in self.api.candidate:
+                entry=load_correction(self.api.root,self.api.candidate)['dates'][day]
+                correction=entry['source'];correction_ids=set(entry['security_ids'])
         for r in raw:
             identity=r.get('security_id',r.get('sector_id',r.get('entity_id')))
             if not identity:continue
@@ -72,6 +78,9 @@ class OperationalResearchBFF:
             field_paths={k:'fields.'+k for k in fs}
             if domain=='stocks':
                 fs.update(r.get('derived_fields',{}));fs.update(r.get('states',{}));fs.update({k:v for k,v in quote.get(identity,{}).items() if k in ('open','high','low','close','amount','volume')})
+                if identity in correction_ids:
+                    field_refs.update({k:correction for k in ('core_extension_risk','severe_extension')})
+                    field_paths.update({k:'replacement.states.'+k for k in ('core_extension_risk','severe_extension')})
                 field_paths.update({k:'derived_fields.'+k for k in r.get('derived_fields',{})})
                 field_paths.update({k:'states.'+k for k in r.get('states',{})})
                 fs.update({k:d2.get(identity,{}).get(k,'UNKNOWN') for k in ('scenario','final_eligibility','maturity','health','validity','tracking')})

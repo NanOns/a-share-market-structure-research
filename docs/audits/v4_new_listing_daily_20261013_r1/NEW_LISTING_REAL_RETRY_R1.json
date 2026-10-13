@@ -1,0 +1,54 @@
+{
+  "before": {
+    "job_id": "ebfc419323f34729b0b56093a6790a09",
+    "trigger": "SCHEDULER",
+    "mode": "CATCH_UP",
+    "through_date": "2026-10-13",
+    "status": "WAIT_DATED_IDENTITY_AUTHORITY",
+    "created_at": "2026-10-13T18:35:04.578903+08:00",
+    "finished_at": null,
+    "idempotency_key": "AUTO:2026-10-13:1",
+    "error": "NEW_DATED_IDENTITY_SOURCE_NOT_INDEPENDENTLY_ADMITTED",
+    "days": [
+      {
+        "job_id": "ebfc419323f34729b0b56093a6790a09",
+        "trade_date": "2026-10-13",
+        "state": "WAIT_DATED_IDENTITY_AUTHORITY",
+        "attempt_count": 4,
+        "next_retry_at": "2026-10-13T20:05:00+08:00",
+        "source_checks": {
+          "status": "WAIT_DATED_IDENTITY_AUTHORITY",
+          "source_freeze": {
+            "path": "data/v4/dynamic_daily_sources/daily_freezes/2026-10-13/be9bac546483670d265c3ee6a9eeb656e677b27f5e40d8f1ff2f306120a9932e.json",
+            "sha256": "05ce167afde3b94ec2b662aa352eaedac158c683b6e2a79a1a8716e8699dd4d3"
+          },
+          "tdx_bar_count": 5212,
+          "baostock_row_count": 5225,
+          "source_captured": true,
+          "source_ready": false,
+          "derived_ready": false,
+          "published": false,
+          "last_good_preserved": true,
+          "first_capture_source_candidate": {
+            "status": "CANDIDATE_PRODUCED",
+            "candidate": {
+              "path": "data/v4/source_candidates/2026-10-13/2d8dfd47f1fe5446e929b4b7f3ec7e99f345850149043f08a7ad5d832ccef88b/capture.json",
+              "sha256": "7f62f11047166c789183706512f827f7961719830dcea9822e7d1aef854e2d50",
+              "bytes": 216048
+            },
+            "production": false
+          },
+          "source_readiness": {
+            "path": "data/v4/dynamic_daily_sources/source_readiness/2026-10-13/ec04b279942d4a615f95a97437df31c54c4f587eea89a3819b58b1e2af2e125b.json",
+            "sha256": "5f9fb018a5b3a9b3ba723b6621675537107e5727a3e8c54c3b0f21dc0f04ddac"
+          },
+          "reason": "NEW_DATED_IDENTITY_SOURCE_NOT_INDEPENDENTLY_ADMITTED"
+        }
+      }
+    ]
+  },
+  "result": {
+    "job_id": "ebfc419323f34729b0b56093a6790a09"
+  },
+  "authority": "User direct new-listing repair and daily validation request"
+}

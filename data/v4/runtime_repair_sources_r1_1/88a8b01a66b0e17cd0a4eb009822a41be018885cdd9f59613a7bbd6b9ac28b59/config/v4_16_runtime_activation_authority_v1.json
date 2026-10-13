@@ -1,0 +1,25 @@
+{
+  "PIT_OBSERVED_REAL_SAMPLES": 0,
+  "V4_16": false,
+  "allowed_modes": [
+    "CONTRACT_TEST",
+    "ENGINEERING_FIXTURE",
+    "DRY_RUN_NO_ACCEPT"
+  ],
+  "contract_id": "V4_16_RUNTIME_ACTIVATION_AUTHORITY_V1",
+  "external_clock_acceptance": {
+    "bytes": 2369,
+    "path": "data/v4/V4_16_CLOCK_GOVERNANCE_ACCEPTED_HEAD_R1.json",
+    "sha256": "0823fbaed7abfe37c3d1ff27e25d173997df07f99e4d74c60524702aac6879a3"
+  },
+  "focus": false,
+  "future_activation_requires": "NEW_VERSIONED_EXTERNALLY_ACCEPTED_AUTHORITY; ENVIRONMENT_FLAGS_NEVER_GRANT_PERMISSION",
+  "production": false,
+  "real_shadow_authorized": false,
+  "real_shadow_entry": "FAIL_BEFORE_SOURCE_READ_OR_DATABASE_OPEN",
+  "real_shadow_observations": 0,
+  "runtime_authorized": false,
+  "shadow": false,
+  "status": "ENGINEERING_CANDIDATE_DISABLED",
+  "version": "1.0.0"
+}

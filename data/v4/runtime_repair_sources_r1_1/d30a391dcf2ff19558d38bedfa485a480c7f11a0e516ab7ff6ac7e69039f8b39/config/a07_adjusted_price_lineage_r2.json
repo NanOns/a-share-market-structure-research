@@ -1,0 +1,19 @@
+{
+  "contract_id": "A07_ADJUSTED_PRICE_KNOWLEDGE_LINEAGE_R2",
+  "version": "2.0.0",
+  "lineages": ["AS_RECORDED", "RECONSTRUCTED_CORRECTED", "CURRENT_RECOMPUTED"],
+  "as_recorded_requires": ["first_available_at", "source_revision", "knowledge_time", "immutable_source_bytes", "immutable_verified_capture_receipt"],
+  "pre_capture_as_recorded": "PERMANENTLY_BLOCKED",
+  "as_recorded_scope": "CAPTURED_SOURCE_VERSION_AT_ACTUAL_RECEIVED_TIME_OR_LATER; DOES_NOT_GRANT_ANY_ADJUSTED_PRICE_CONSUMER",
+  "provider_source_identity_required": true,
+  "capturable_families": ["GBBQ", "PROVIDER_FACTOR", "MANUAL_RECORD"],
+  "consumer_policy": {
+    "V4-05_REPLAY": "RECONSTRUCTED_CORRECTED_ONLY_WITH_EXPLICIT_ACCEPTED_REPLAY_CONTRACT",
+    "V4-12_STRUCTURE_ANCHOR": "ENGINEERING_ENTRY_FORBIDDEN_THIS_BATCH; FUTURE_PRICE_BASIS_INTERFACE_ONLY",
+    "FORWARD_OUTCOME": "AS_RECORDED_REQUIRED_FOR_KNOWLEDGE_TIME_CLAIMS; OTHERWISE_EXPLICIT_RECONSTRUCTED_MODE",
+    "SUPPORT_RETENTION": "AS_RECORDED_REQUIRED_FOR_HISTORICAL_KNOWLEDGE_CLAIMS; NO_IMPLICIT_BASIS_CONVERSION"
+  },
+  "formal_consumer_enabled": false,
+  "external_acceptance": null,
+  "head_write_permission": false
+}

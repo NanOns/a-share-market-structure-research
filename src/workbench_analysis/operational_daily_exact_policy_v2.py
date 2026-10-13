@@ -66,7 +66,7 @@ def immutable_policy_binding(root,binding=None):
     if path!=expected:raise ValueError('EXACT_V2_DAILY_POLICY_PATH_REQUIRED')
     return binding
 
-def verify(root,binding=None,*,candidate_only=False):
+def verify(root,binding=None,*,candidate_only=False,verify_loaded=True):
     root=Path(root).resolve()
     binding=immutable_policy_binding(root,binding)
     path=checked(root,binding)
@@ -82,6 +82,10 @@ def verify(root,binding=None,*,candidate_only=False):
     bindings=policy['accepted_algorithm_bindings']
     paths=[b.get('module_path',b['path']) for b in bindings]
     required=REQUIRED_SOURCES if not candidate_only else REQUIRED_SOURCES-{'src/workbench_service/native_current_snapshot_v3.py'}
+    if not verify_loaded and not policy.get('runtime_repair_contract'):
+        # Archived V2 evidence predates the R1.1 append driver. Reader verifies
+        # those historical source bytes; it never executes a producer under it.
+        required=required-{'src/workbench_analysis/operational_increment_plan_v1.py'}
     if len(paths)!=len(set(paths)) or not required<=set(paths):
         raise ValueError('EXACT_V2_DAILY_SOURCE_BINDINGS_REQUIRED')
     for item in bindings:checked(root,item)
@@ -96,8 +100,25 @@ def verify(root,binding=None,*,candidate_only=False):
         # Existing historical Owner identities retain their original namespace.
         # Current executable versions reside in separate immutable archives.
         for original in load(predecessor)['accepted_algorithm_bindings']:checked(root,original)
-        verify_loaded_versions(bindings+policy.get('component_source_bindings',[]))
+        if verify_loaded:verify_loaded_versions(bindings+policy.get('component_source_bindings',[]))
         evidence=load(checked(root,policy['admission_evidence']))
+        if policy.get('runtime_repair_contract')=='V4_RUNTIME_REPAIR_ACCEPTANCE_R1_1':
+            if evidence.get('contract_id')!='V4_RUNTIME_REPAIR_ACCEPTANCE_R1_1' or evidence.get('acceptance')!='PASS':
+                raise ValueError('R1_1_RUNTIME_ACCEPTANCE_REQUIRED')
+            if evidence.get('accepted_algorithm_bindings')!=bindings or evidence.get('component_source_bindings')!=components:
+                raise ValueError('R1_1_RUNTIME_SOURCE_BINDINGS_MISMATCH')
+            for key in ('G1','G2','G3','G4'):
+                result=load(checked(root,evidence['gates'][key]))
+                if result.get('acceptance')!='PASS' or result.get('gate')!=key:
+                    raise ValueError('R1_1_RUNTIME_GATE_FAILED:'+key)
+                if result.get('accepted_algorithm_bindings')!=bindings:
+                    raise ValueError('R1_1_RUNTIME_GATE_VERSION_MISMATCH:'+key)
+                if result.get('unexplained_differences',0)!=0:
+                    raise ValueError('R1_1_RUNTIME_UNEXPLAINED_DIFFERENCES:'+key)
+            revision=load(checked(root,evidence['revision_check']))
+            if revision.get('acceptance')!='PASS' or revision.get('mode')!='APPEND_DAY' or revision.get('revisions'):
+                raise ValueError('R1_1_RUNTIME_REVISION_GATE_REQUIRED')
+            return policy,binding
         if evidence.get('contract_id')!='V4_AUTO_EXACT_RUNTIME_ACCEPTANCE_R1' or evidence.get('acceptance')!='PASS' or evidence.get('accepted_algorithm_bindings')!=bindings:
             raise ValueError('EXACT_V2_DAILY_ACCEPTANCE_EVIDENCE_REQUIRED')
         if evidence.get('component_source_bindings')!=components:raise ValueError('EXACT_V2_COMPONENT_ACCEPTANCE_SOURCE_MISMATCH')

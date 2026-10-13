@@ -1,0 +1,21 @@
+{
+  "contract_id": "TDX_A_STOCK_DELTA_SCOPE_POLICY_V2",
+  "version": "2.0.0",
+  "delta_contract": "TDX_A_STOCK_PACKAGE_DELTA_V2",
+  "scope": "HASH_BOUND_ACCEPTED_CANONICAL_A_STOCK_IDENTITY_AND_DATE_EFFECTIVE_ROSTER",
+  "required_boards": ["SH_MAIN", "SZ_MAIN", "STAR", "CHINEXT"],
+  "unknown_identity": "QUARANTINE_NEVER_INVENT_CANONICAL_ID",
+  "instrument_range_evidence": ["src/tdx/security_master.py", "config/workbench_universe.yaml"],
+  "range_evidence_scope": "EXCLUSION_AND_INFERENCE_ONLY; NEVER_POSITIVE_A_STOCK_IDENTITY_AUTHORITY",
+  "other_instruments": "HASH_BOUND_QUARANTINE_WITH_VALIDATION_AND_REVISION_ERRORS",
+  "indices": "INDEX_SEPARATE_CONSUMER_REQUIRED",
+  "integrity": ["SHA256", "CRC", "PATH_SAFETY", "DUPLICATE_PATH", "SYMLINK_REJECTION"],
+  "target_checks": ["LENGTH", "DATE", "MONOTONIC", "FINITE_OHLCVA", "POSITIVE_TRADE_PRICES", "TRUNCATION", "REWRITE", "REMOVAL"],
+  "historical_correction": "EXPLICIT_CHANGED_RECORD_DIGEST_AND_DATES",
+  "zero_volume_rows": "REQUIRE_DATED_STATUS_BEFORE_CONSUMPTION",
+  "price_limits": "NOT_GRANTED_WITHOUT_DATED_ACCEPTED_LIMIT_OWNER",
+  "source_mode": "RECONSTRUCTED_CORRECTED",
+  "AS_RECORDED": false,
+  "production_permission": false,
+  "migration": "V1_REMAINS_IMMUTABLE; V2_CANNOT_BE_RELABELLED_V1_OR_FROZEN_AS_RECORDED"
+}

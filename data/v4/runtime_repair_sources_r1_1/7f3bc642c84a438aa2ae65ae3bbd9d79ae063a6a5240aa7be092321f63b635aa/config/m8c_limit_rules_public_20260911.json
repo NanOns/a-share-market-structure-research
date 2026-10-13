@@ -1,0 +1,256 @@
+{
+  "contract_id": "LIMIT_RULES_V1_1",
+  "artifact_version": "M8C_PUBLIC_RULE_REGISTRY_V1_1",
+  "scope": "当前本地 M13 窗口 2026-09-08..2026-09-10",
+  "effective_date_policy": "只登记在当前窗口内适用的公开规则版本；不回填未核验的更早历史版本",
+  "sources": {
+    "sse_2026": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/c_20260424_10816482.shtml",
+    "szse_2023": "https://docs.static.szse.cn/www/lawrules/rule/trade/W020230217564423808793.pdf",
+    "szse_main_qa": "https://www.szse.cn/www/investor/knowledge/t20230308_599141.html",
+    "bse_2026": "https://www.bse.cn/jygl_list/200028217.html"
+  },
+  "rules": [
+    {
+      "rule_id": "SSE_MAIN_NORMAL_20260706_V11",
+      "exchange": "SH",
+      "board": "MAIN",
+      "risk_status": "NORMAL",
+      "valid_from": "2026-07-06",
+      "valid_to": null,
+      "limit_ratio": 0.1,
+      "tick": 0.01,
+      "rounding_mode": "HALF_UP",
+      "special_period_policy": {
+        "rule_verified": true,
+        "no_limit_listing_phases": ["IPO_FIRST_5_TRADING_DAYS", "DELISTING_FIRST_DAY", "RELISTING_FIRST_DAY"],
+        "unknown_phase_policy": "UNKNOWN",
+        "public_rule_version": "SSE交易规则（2026年修订）"
+      },
+      "source_ref": "PUBLIC_OFFICIAL:SSE_2026_RULE:https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/c_20260424_10816482.shtml"
+      ,"rule_verified": true
+      ,"source_sha256": "aa47b7d4fe85f1f46b51c9e435cab7cfdccc0b60a10494253b78e0bfc8e66870"
+      ,"audit_status": "VERIFIED"
+      ,"audit_reason": "LOCAL_CLAUSE_ATTESTATION:SSE_2026_RULE"
+    },
+    {
+      "rule_id": "SSE_MAIN_RISK_WARNING_20260706_V11",
+      "exchange": "SH",
+      "board": "MAIN",
+      "risk_status": "RISK_WARNING",
+      "valid_from": "2026-07-06",
+      "valid_to": null,
+      "limit_ratio": 0.1,
+      "tick": 0.01,
+      "rounding_mode": "HALF_UP",
+      "special_period_policy": {
+        "rule_verified": true,
+        "no_limit_listing_phases": ["IPO_FIRST_5_TRADING_DAYS", "DELISTING_FIRST_DAY", "RELISTING_FIRST_DAY"],
+        "unknown_phase_policy": "UNKNOWN",
+        "public_rule_version": "SSE交易规则（2026年修订）主板风险警示调整"
+      },
+      "source_ref": "PUBLIC_OFFICIAL:SSE_2026_RULE_MAIN_RISK_WARNING_10PCT:https://star.sse.com.cn/aboutus/mediacenter/hotandd/c/c_20260424_10816474.shtml"
+      ,"rule_verified": true
+      ,"source_sha256": "aa47b7d4fe85f1f46b51c9e435cab7cfdccc0b60a10494253b78e0bfc8e66870"
+      ,"audit_status": "VERIFIED"
+      ,"audit_reason": "LOCAL_CLAUSE_ATTESTATION:SSE_MAIN_RISK_2026"
+    },
+    {
+      "rule_id": "SSE_STAR_NORMAL_20260706_V11",
+      "exchange": "SH",
+      "board": "STAR",
+      "risk_status": "NORMAL",
+      "valid_from": "2026-07-06",
+      "valid_to": null,
+      "limit_ratio": 0.2,
+      "tick": 0.01,
+      "rounding_mode": "HALF_UP",
+      "special_period_policy": {
+        "rule_verified": true,
+        "no_limit_listing_phases": ["IPO_FIRST_5_TRADING_DAYS", "DELISTING_FIRST_DAY"],
+        "unknown_phase_policy": "UNKNOWN",
+        "public_rule_version": "SSE交易规则（2026年修订）第六章科创板"
+      },
+      "source_ref": "PUBLIC_OFFICIAL:SSE_2026_RULE_STAR_20PCT:https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/c_20260424_10816482.shtml"
+      ,"rule_verified": true
+      ,"source_sha256": "aa47b7d4fe85f1f46b51c9e435cab7cfdccc0b60a10494253b78e0bfc8e66870"
+      ,"audit_status": "VERIFIED"
+      ,"audit_reason": "LOCAL_CLAUSE_ATTESTATION:SSE_2026_RULE"
+    },
+    {
+      "rule_id": "SSE_STAR_RISK_WARNING_20260706_V11",
+      "exchange": "SH",
+      "board": "STAR",
+      "risk_status": "RISK_WARNING",
+      "valid_from": "2026-07-06",
+      "valid_to": null,
+      "limit_ratio": 0.2,
+      "tick": 0.01,
+      "rounding_mode": "HALF_UP",
+      "special_period_policy": {
+        "rule_verified": true,
+        "no_limit_listing_phases": ["IPO_FIRST_5_TRADING_DAYS", "DELISTING_FIRST_DAY"],
+        "unknown_phase_policy": "UNKNOWN",
+        "public_rule_version": "SSE交易规则（2026年修订）第六章科创板"
+      },
+      "source_ref": "PUBLIC_OFFICIAL:SSE_2026_RULE_STAR_RISK_WARNING_20PCT:https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/c_20260424_10816482.shtml"
+      ,"rule_verified": true
+      ,"source_sha256": "aa47b7d4fe85f1f46b51c9e435cab7cfdccc0b60a10494253b78e0bfc8e66870"
+      ,"audit_status": "VERIFIED"
+      ,"audit_reason": "LOCAL_CLAUSE_ATTESTATION:SSE_2026_RULE"
+    },
+    {
+      "rule_id": "SZSE_MAIN_NORMAL_20230410_V11",
+      "exchange": "SZ",
+      "board": "MAIN",
+      "risk_status": "NORMAL",
+      "valid_from": "2023-04-10",
+      "valid_to": null,
+      "limit_ratio": 0.1,
+      "tick": 0.01,
+      "rounding_mode": "HALF_UP",
+      "special_period_policy": {
+        "rule_verified": true,
+        "no_limit_listing_phases": ["IPO_FIRST_5_TRADING_DAYS", "DELISTING_FIRST_DAY", "RELISTING_FIRST_DAY"],
+        "unknown_phase_policy": "UNKNOWN",
+        "public_rule_version": "SZSE交易规则（2023年修订）"
+      },
+      "source_ref": "PUBLIC_OFFICIAL:SZSE_2023_RULE_MAIN_10PCT:https://docs.static.szse.cn/www/lawrules/rule/trade/W020230217564423808793.pdf"
+      ,"rule_verified": true
+      ,"source_sha256": "aa47b7d4fe85f1f46b51c9e435cab7cfdccc0b60a10494253b78e0bfc8e66870"
+      ,"audit_status": "VERIFIED"
+      ,"audit_reason": "LOCAL_CLAUSE_ATTESTATION:SZSE_2023_RULE"
+    },
+    {
+      "rule_id": "SZSE_MAIN_RISK_WARNING_20230410_V11",
+      "exchange": "SZ",
+      "board": "MAIN",
+      "risk_status": "RISK_WARNING",
+      "valid_from": "2023-04-10",
+      "valid_to": "2026-07-05",
+      "limit_ratio": 0.05,
+      "tick": 0.01,
+      "rounding_mode": "HALF_UP",
+      "special_period_policy": {
+        "rule_verified": true,
+        "no_limit_listing_phases": ["IPO_FIRST_5_TRADING_DAYS", "DELISTING_FIRST_DAY"],
+        "unknown_phase_policy": "UNKNOWN",
+        "public_rule_version": "SZSE交易规则（2023年修订）风险警示"
+      },
+      "source_ref": "PUBLIC_OFFICIAL:SZSE_2023_RULE_MAIN_RISK_WARNING_5PCT:https://docs.static.szse.cn/www/lawrules/rule/trade/W020230217564423808793.pdf"
+      ,"rule_verified": true
+      ,"source_sha256": "aa47b7d4fe85f1f46b51c9e435cab7cfdccc0b60a10494253b78e0bfc8e66870"
+      ,"audit_status": "VERIFIED"
+      ,"audit_reason": "LOCAL_CLAUSE_ATTESTATION:SZSE_2023_RULE_PRE_20260706"
+    },
+    {
+      "rule_id": "SZSE_MAIN_RISK_WARNING_20260706_V11",
+      "exchange": "SZ",
+      "board": "MAIN",
+      "risk_status": "RISK_WARNING",
+      "valid_from": "2026-07-06",
+      "valid_to": null,
+      "limit_ratio": 0.1,
+      "tick": 0.01,
+      "rounding_mode": "HALF_UP",
+      "special_period_policy": {
+        "rule_verified": true,
+        "no_limit_listing_phases": ["IPO_FIRST_5_TRADING_DAYS", "DELISTING_FIRST_DAY"],
+        "unknown_phase_policy": "UNKNOWN",
+        "public_rule_version": "SZSE主板风险警示2026调整"
+      },
+      "source_ref": "PUBLIC_OFFICIAL:SZSE_MAIN_RISK_2026:https://www.szse.cn/lawrules/service/member/t20260630_621404.html",
+      "rule_verified": true,
+      "source_sha256": "aa47b7d4fe85f1f46b51c9e435cab7cfdccc0b60a10494253b78e0bfc8e66870",
+      "audit_status": "VERIFIED",
+      "audit_reason": "LOCAL_CLAUSE_ATTESTATION:SZSE_MAIN_RISK_2026"
+    },
+    {
+      "rule_id": "SZSE_GROWTH_NORMAL_20230410_V11",
+      "exchange": "SZ",
+      "board": "GROWTH",
+      "risk_status": "NORMAL",
+      "valid_from": "2023-04-10",
+      "valid_to": null,
+      "limit_ratio": 0.2,
+      "tick": 0.01,
+      "rounding_mode": "HALF_UP",
+      "special_period_policy": {
+        "rule_verified": true,
+        "no_limit_listing_phases": ["IPO_FIRST_5_TRADING_DAYS", "DELISTING_FIRST_DAY"],
+        "unknown_phase_policy": "UNKNOWN",
+        "public_rule_version": "SZSE交易规则（2023年修订）创业板"
+      },
+      "source_ref": "PUBLIC_OFFICIAL:SZSE_2023_RULE_GROWTH_20PCT:https://docs.static.szse.cn/www/lawrules/rule/trade/W020230217564423808793.pdf"
+      ,"rule_verified": true
+      ,"source_sha256": "aa47b7d4fe85f1f46b51c9e435cab7cfdccc0b60a10494253b78e0bfc8e66870"
+      ,"audit_status": "VERIFIED"
+      ,"audit_reason": "LOCAL_CLAUSE_ATTESTATION:SZSE_2023_RULE"
+    },
+    {
+      "rule_id": "SZSE_GROWTH_RISK_WARNING_20230410_V11",
+      "exchange": "SZ",
+      "board": "GROWTH",
+      "risk_status": "RISK_WARNING",
+      "valid_from": "2023-04-10",
+      "valid_to": null,
+      "limit_ratio": 0.2,
+      "tick": 0.01,
+      "rounding_mode": "HALF_UP",
+      "special_period_policy": {
+        "rule_verified": true,
+        "no_limit_listing_phases": ["IPO_FIRST_5_TRADING_DAYS", "DELISTING_FIRST_DAY"],
+        "unknown_phase_policy": "UNKNOWN",
+        "public_rule_version": "SZSE交易规则（2023年修订）创业板风险警示"
+      },
+      "source_ref": "PUBLIC_OFFICIAL:SZSE_2023_RULE_GROWTH_RISK_WARNING_20PCT:https://docs.static.szse.cn/www/lawrules/rule/trade/W020230217564423808793.pdf"
+      ,"rule_verified": true
+      ,"source_sha256": "aa47b7d4fe85f1f46b51c9e435cab7cfdccc0b60a10494253b78e0bfc8e66870"
+      ,"audit_status": "VERIFIED"
+      ,"audit_reason": "LOCAL_CLAUSE_ATTESTATION:SZSE_2023_RULE"
+    },
+    {
+      "rule_id": "BSE_NORMAL_20260706_V11",
+      "exchange": "BJ",
+      "board": "BJ",
+      "risk_status": "NORMAL",
+      "valid_from": "2026-07-06",
+      "valid_to": null,
+      "limit_ratio": 0.3,
+      "tick": 0.01,
+      "rounding_mode": "HALF_UP",
+      "special_period_policy": {
+        "rule_verified": true,
+        "no_limit_listing_phases": ["IPO_FIRST_TRADING_DAY", "DELISTING_FIRST_DAY"],
+        "unknown_phase_policy": "UNKNOWN",
+        "public_rule_version": "北交所交易规则（2026年）"
+      },
+      "source_ref": "PUBLIC_OFFICIAL:BSE_2026_RULE_30PCT:https://www.bse.cn/jygl_list/200028217.html"
+      ,"rule_verified": true
+      ,"source_sha256": "aa47b7d4fe85f1f46b51c9e435cab7cfdccc0b60a10494253b78e0bfc8e66870"
+      ,"audit_status": "VERIFIED"
+      ,"audit_reason": "LOCAL_CLAUSE_ATTESTATION:BSE_2026_RULE_BASE_ONLY"
+    },
+    {
+      "rule_id": "BSE_RISK_WARNING_20260706_V11",
+      "exchange": "BJ",
+      "board": "BJ",
+      "risk_status": "RISK_WARNING",
+      "valid_from": "2026-07-06",
+      "valid_to": null,
+      "limit_ratio": 0.3,
+      "tick": 0.01,
+      "rounding_mode": "HALF_UP",
+      "special_period_policy": {
+        "rule_verified": true,
+        "no_limit_listing_phases": ["IPO_FIRST_TRADING_DAY", "DELISTING_FIRST_DAY"],
+        "unknown_phase_policy": "UNKNOWN",
+        "public_rule_version": "北交所交易规则（2026年）风险警示未设独立比例"
+      },
+      "source_ref": "PUBLIC_OFFICIAL:BSE_2026_RULE_RISK_WARNING_BASE_30PCT:https://www.bse.cn/jygl_list/200028217.html"
+      ,"rule_verified": false
+      ,"source_sha256": "aa47b7d4fe85f1f46b51c9e435cab7cfdccc0b60a10494253b78e0bfc8e66870"
+      ,"audit_status": "PENDING_REVIEW"
+      ,"audit_reason": "BSE_RISK_WARNING_RATIO_NOT_CONFIRMED"
+    }
+  ]
+}

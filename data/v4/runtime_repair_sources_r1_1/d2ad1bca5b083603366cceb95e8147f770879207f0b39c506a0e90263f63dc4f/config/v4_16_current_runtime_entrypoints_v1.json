@@ -1,0 +1,38 @@
+{
+  "contract_id": "V4_16_CURRENT_RUNTIME_ENTRYPOINTS_V1",
+  "entry_policy": "EXPLICIT_VERSIONED_V6_ONLY; LEGACY_DEFAULT_DISPATCH_IS_HISTORICAL",
+  "external_acceptance": false,
+  "first_real_shadow_authorized": false,
+  "historical_v5_settlement": {
+    "bytes": 1149,
+    "path": "scripts/run_v4_16_settlement_v2.py",
+    "sha256": "9b7275845318a2e46d1e2c54cd66bca7ee6c820f1dc1ebaa58dc9bc90c7b256a"
+  },
+  "r25_builder": {
+    "bytes": 2814,
+    "path": "scripts/build_r25_packet_r4r4.py",
+    "sha256": "230ed4a3e9eff05c35840d487373643213e3530e78ee5f9dbf9809024b7a9a81"
+  },
+  "r25_validator": {
+    "bytes": 22176,
+    "path": "scripts/validate_r25_preflight_v6.py",
+    "sha256": "356db2b7b4611984517f6f0156eb413e627073dad05537542308db47d9398842"
+  },
+  "runtime": {
+    "bytes": 355,
+    "path": "scripts/v4_16_shadow_runtime_v6.py",
+    "sha256": "3a54a89244e3617eb5689509c5a329fd40b04c6fb240d253f172f1f14b4e9f82"
+  },
+  "runtime_authorized": false,
+  "runtime_dependencies": {
+    "bytes": 19641,
+    "path": "config/v4_16_runtime_dependencies_v6.json",
+    "sha256": "44e304620cbab14c43a25e8bcd2bad816c58507594906ba792ba4c8255f02d06"
+  },
+  "settlement": {
+    "bytes": 1471,
+    "path": "scripts/run_v4_16_settlement_v3.py",
+    "sha256": "6b52f108b776fe212bb79d67350e019927131505bc3143e4c388cc44cc1cea44"
+  },
+  "version": "1.0.0"
+}

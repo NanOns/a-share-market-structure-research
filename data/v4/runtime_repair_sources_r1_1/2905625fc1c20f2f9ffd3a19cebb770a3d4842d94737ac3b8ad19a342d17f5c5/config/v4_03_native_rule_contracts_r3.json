@@ -1,0 +1,1111 @@
+{
+  "amendment": "Native aggregate/stateful rules use this executable deterministic schema because RULE_AST_V2 cannot express path state or set-identity objects without changing existing 1.1 contracts.",
+  "contract_id": "V4_03_NATIVE_DETERMINISTIC_RULE_SCHEMA_R3",
+  "contracts": [
+    {
+      "contract_id": "MARKET_RELATIVE_REFERENCE_V1",
+      "rule": {
+        "missing_gate_parameter_id": "V4_03_MARKET_REFERENCE_MAX_MISSING_FRACTION",
+        "operator": "PIT_EQUAL_WEIGHT_REFERENCE"
+      },
+      "vectors": [
+        {
+          "category": "normal_coverage",
+          "expected_subset": {
+            "evaluable_count": 2,
+            "reference_return": 0.15000000000000002
+          },
+          "input": {
+            "members": [
+              "A",
+              "B"
+            ],
+            "returns": {
+              "A": 0.1,
+              "B": 0.2
+            }
+          },
+          "vector_id": "REF_NORMAL"
+        },
+        {
+          "category": "missing_threshold",
+          "expected_subset": {
+            "reference_return": null,
+            "unknown_reason": "MISSING_COVERAGE_EXCEEDED"
+          },
+          "input": {
+            "members": [
+              "A",
+              "B"
+            ],
+            "returns": {
+              "A": 0.1
+            }
+          },
+          "vector_id": "REF_MISSING_GATE"
+        },
+        {
+          "category": "universe_n_lt_2",
+          "expected_subset": {
+            "reference_return": 0.1,
+            "universe_count": 1
+          },
+          "input": {
+            "members": [
+              "A"
+            ],
+            "returns": {
+              "A": 0.1
+            }
+          },
+          "vector_id": "REF_N1"
+        },
+        {
+          "category": "endpoint_unavailable",
+          "expected_subset": {
+            "evaluable_count": 0,
+            "reference_return": null
+          },
+          "input": {
+            "members": [
+              "A",
+              "B"
+            ],
+            "returns": {
+              "A": null,
+              "B": null
+            }
+          },
+          "vector_id": "REF_ENDPOINT_UNKNOWN"
+        },
+        {
+          "category": "evaluable_set_identity_change",
+          "expected_subset": {
+            "evaluable_count": 2,
+            "evaluable_members": [
+              "A",
+              "B"
+            ],
+            "evaluable_set_identity": "b64e3448a83a5b86466465080361c1a7e1157a27ddccd4b68069cb18caffb74a"
+          },
+          "input": {
+            "members": [
+              "A",
+              "B",
+              "C"
+            ],
+            "returns": {
+              "A": 0.1,
+              "B": 0.2,
+              "C": null
+            }
+          },
+          "vector_id": "REF_EVALUABLE_SET"
+        }
+      ]
+    },
+    {
+      "contract_id": "V4_03_MARKET_REFERENCE_PATH_V1",
+      "rule": {
+        "base_level": 1.0,
+        "operator": "UNKNOWN_SUFFIX_PATH",
+        "rebase_requires_new_series_version": true
+      },
+      "vectors": [
+        {
+          "category": "normal_chain",
+          "expected_subset": {
+            "levels": [
+              1.1,
+              1.045
+            ]
+          },
+          "input": {
+            "daily_returns": [
+              0.1,
+              -0.05
+            ],
+            "series_version": "S1",
+            "start_universe_ids": [
+              "U1",
+              "U1"
+            ]
+          },
+          "vector_id": "PATH_NORMAL"
+        },
+        {
+          "category": "unknown_suffix",
+          "expected_subset": {
+            "levels": [
+              1.1,
+              null,
+              null
+            ]
+          },
+          "input": {
+            "daily_returns": [
+              0.1,
+              null,
+              0.2
+            ],
+            "series_version": "S1",
+            "start_universe_ids": [
+              "U1",
+              "U2",
+              "U3"
+            ]
+          },
+          "vector_id": "PATH_UNKNOWN_SUFFIX"
+        },
+        {
+          "category": "new_series_rebase",
+          "expected_subset": {
+            "levels": [
+              1.2
+            ],
+            "series_version": "S2"
+          },
+          "input": {
+            "daily_returns": [
+              0.2
+            ],
+            "series_version": "S2",
+            "start_universe_ids": [
+              "U3"
+            ]
+          },
+          "vector_id": "PATH_NEW_VERSION"
+        },
+        {
+          "category": "pit_universe_change_input",
+          "expected_subset": {
+            "levels": [
+              1.1,
+              1.32
+            ],
+            "start_universe_ids": [
+              "U1",
+              "U2"
+            ]
+          },
+          "input": {
+            "daily_returns": [
+              0.1,
+              0.2
+            ],
+            "series_version": "S1",
+            "start_universe_ids": [
+              "U1",
+              "U2"
+            ]
+          },
+          "vector_id": "PATH_PIT_CHANGE"
+        }
+      ]
+    },
+    {
+      "contract_id": "MARKET_REGIME_V1_PRIMITIVES",
+      "raw_vectors": [
+        {
+          "category": "common_membership_enter_exit",
+          "expected_subset": {
+            "breadth_axis": "IMPROVING",
+            "breadth_common_count": 2,
+            "breadth_delta3": 0.5,
+            "participation_median_amount_ratio20": 1,
+            "stress_change": "RISING",
+            "stress_common_count": 2,
+            "stress_same_member_current_ratio": 0.5,
+            "stress_same_member_prior_ratio": 0
+          },
+          "input": {
+            "amount_t": {
+              "A": 15,
+              "B": 5,
+              "NEW": 100
+            },
+            "index_close": 12,
+            "index_ma20": 11,
+            "index_ma20_t_minus_5": 10,
+            "limit_t": {
+              "A": "LIMIT_DOWN",
+              "B": "NOT_LIMIT",
+              "NEW": "LIMIT_DOWN"
+            },
+            "limit_t_minus_1": {
+              "A": "NOT_LIMIT",
+              "B": "NOT_LIMIT",
+              "OLD": "LIMIT_DOWN"
+            },
+            "members_t": [
+              "A",
+              "B",
+              "NEW"
+            ],
+            "members_t_minus_1": [
+              "A",
+              "B",
+              "OLD"
+            ],
+            "members_t_minus_3": [
+              "A",
+              "B",
+              "EXIT"
+            ],
+            "prior20_actual_amounts": {
+              "A": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "B": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "NEW": [
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100
+              ]
+            },
+            "prior20_window_valid": {
+              "A": true,
+              "B": true,
+              "NEW": true
+            },
+            "ret1_t": {
+              "A": 0.1,
+              "B": -0.1,
+              "NEW": 0.9
+            },
+            "ret1_t_minus_3": {
+              "A": -0.1,
+              "B": -0.1,
+              "EXIT": 0.9
+            }
+          },
+          "vector_id": "REGIME_RAW_MEMBERSHIP"
+        },
+        {
+          "category": "member_amount_ratio20_partial_unknown",
+          "expected_subset": {
+            "participation_axis": "EXPANDING",
+            "participation_evaluable_count": 1,
+            "participation_median_amount_ratio20": 1.5
+          },
+          "input": {
+            "amount_t": {
+              "A": 15,
+              "B": 5,
+              "NEW": 100
+            },
+            "index_close": 12,
+            "index_ma20": 11,
+            "index_ma20_t_minus_5": 10,
+            "limit_t": {
+              "A": "LIMIT_DOWN",
+              "B": "NOT_LIMIT",
+              "NEW": "LIMIT_DOWN"
+            },
+            "limit_t_minus_1": {
+              "A": "NOT_LIMIT",
+              "B": "NOT_LIMIT",
+              "OLD": "LIMIT_DOWN"
+            },
+            "members_t": [
+              "A",
+              "B",
+              "NEW"
+            ],
+            "members_t_minus_1": [
+              "A",
+              "B",
+              "OLD"
+            ],
+            "members_t_minus_3": [
+              "A",
+              "B",
+              "EXIT"
+            ],
+            "prior20_actual_amounts": {
+              "A": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "B": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ]
+            },
+            "prior20_window_valid": {
+              "A": true,
+              "B": true,
+              "NEW": true
+            },
+            "ret1_t": {
+              "A": 0.1,
+              "B": -0.1,
+              "NEW": 0.9
+            },
+            "ret1_t_minus_3": {
+              "A": -0.1,
+              "B": -0.1,
+              "EXIT": 0.9
+            }
+          },
+          "vector_id": "REGIME_RAW_PARTIAL"
+        },
+        {
+          "category": "missing_common_endpoint",
+          "expected_subset": {
+            "breadth_axis": null,
+            "breadth_delta3": null,
+            "stress_change": null
+          },
+          "input": {
+            "amount_t": {
+              "A": 15,
+              "B": 5,
+              "NEW": 100
+            },
+            "index_close": 12,
+            "index_ma20": 11,
+            "index_ma20_t_minus_5": 10,
+            "limit_t": {
+              "A": "LIMIT_DOWN",
+              "B": "NOT_LIMIT",
+              "NEW": "LIMIT_DOWN"
+            },
+            "limit_t_minus_1": {},
+            "members_t": [
+              "A",
+              "B",
+              "NEW"
+            ],
+            "members_t_minus_1": [
+              "A",
+              "B",
+              "OLD"
+            ],
+            "members_t_minus_3": [
+              "A",
+              "B",
+              "EXIT"
+            ],
+            "prior20_actual_amounts": {
+              "A": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "B": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "NEW": [
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100
+              ]
+            },
+            "prior20_window_valid": {
+              "A": true,
+              "B": true,
+              "NEW": true
+            },
+            "ret1_t": {
+              "A": 0.1,
+              "B": -0.1,
+              "NEW": 0.9
+            },
+            "ret1_t_minus_3": {}
+          },
+          "vector_id": "REGIME_RAW_UNKNOWN"
+        },
+        {
+          "category": "unexplained_amount_window_gap",
+          "expected_subset": {
+            "participation_axis": "THIN",
+            "participation_evaluable_count": 1,
+            "participation_median_amount_ratio20": 0.5
+          },
+          "input": {
+            "amount_t": {
+              "A": 15,
+              "B": 5,
+              "NEW": 100
+            },
+            "index_close": 12,
+            "index_ma20": 11,
+            "index_ma20_t_minus_5": 10,
+            "limit_t": {
+              "A": "LIMIT_DOWN",
+              "B": "NOT_LIMIT",
+              "NEW": "LIMIT_DOWN"
+            },
+            "limit_t_minus_1": {
+              "A": "NOT_LIMIT",
+              "B": "NOT_LIMIT",
+              "OLD": "LIMIT_DOWN"
+            },
+            "members_t": [
+              "A",
+              "B",
+              "NEW"
+            ],
+            "members_t_minus_1": [
+              "A",
+              "B",
+              "OLD"
+            ],
+            "members_t_minus_3": [
+              "A",
+              "B",
+              "EXIT"
+            ],
+            "prior20_actual_amounts": {
+              "A": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "B": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "NEW": [
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100
+              ]
+            },
+            "prior20_window_valid": {
+              "A": false,
+              "B": true,
+              "NEW": false
+            },
+            "ret1_t": {
+              "A": 0.1,
+              "B": -0.1,
+              "NEW": 0.9
+            },
+            "ret1_t_minus_3": {
+              "A": -0.1,
+              "B": -0.1,
+              "EXIT": 0.9
+            }
+          },
+          "vector_id": "REGIME_RAW_AMOUNT_GAP"
+        },
+        {
+          "category": "same_member_stress_vs_changed_universe",
+          "expected_subset": {
+            "stress_change": "DECLINING",
+            "stress_same_member_current_ratio": 0,
+            "stress_same_member_prior_ratio": 0.5
+          },
+          "input": {
+            "amount_t": {
+              "A": 15,
+              "B": 5,
+              "NEW": 100
+            },
+            "index_close": 12,
+            "index_ma20": 11,
+            "index_ma20_t_minus_5": 10,
+            "limit_t": {
+              "A": "NOT_LIMIT",
+              "B": "NOT_LIMIT",
+              "NEW": "LIMIT_DOWN"
+            },
+            "limit_t_minus_1": {
+              "A": "LIMIT_DOWN",
+              "B": "NOT_LIMIT",
+              "OLD": "NOT_LIMIT"
+            },
+            "members_t": [
+              "A",
+              "B",
+              "NEW"
+            ],
+            "members_t_minus_1": [
+              "A",
+              "B",
+              "OLD"
+            ],
+            "members_t_minus_3": [
+              "A",
+              "B",
+              "EXIT"
+            ],
+            "prior20_actual_amounts": {
+              "A": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "B": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "NEW": [
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100
+              ]
+            },
+            "prior20_window_valid": {
+              "A": true,
+              "B": true,
+              "NEW": true
+            },
+            "ret1_t": {
+              "A": 0.1,
+              "B": -0.1,
+              "NEW": 0.9
+            },
+            "ret1_t_minus_3": {
+              "A": -0.1,
+              "B": -0.1,
+              "EXIT": 0.9
+            }
+          },
+          "vector_id": "REGIME_RAW_STRESS_SCOPE"
+        }
+      ],
+      "rule": {
+        "governing_section": "REV2 §27; common-member delta definition §15",
+        "operator": "MARKET_REGIME_AXES",
+        "raw_primitive_rule": {
+          "amount_window_policy": "CONFIRMED_SUSPENSION_SKIP; UNEXPLAINED_GAP_OR_MIXED_BASIS_UNKNOWN",
+          "breadth_policy": "PIT_COMMON_T_T_MINUS_3_BOTH_RET1_EVALUABLE",
+          "operator": "MARKET_REGIME_REV2_RAW",
+          "prior_actual_bar_count": 20,
+          "stress_change_policy": "PIT_COMMON_T_T_MINUS_1_BOTH_LIMIT_EVALUABLE",
+          "valid_limit_statuses": [
+            "LIMIT_UP",
+            "LIMIT_DOWN",
+            "NOT_LIMIT"
+          ]
+        },
+        "trend_producer": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1"
+      },
+      "vectors": [
+        {
+          "category": "threshold_above",
+          "expected_subset": {
+            "breadth_axis": "IMPROVING",
+            "participation_axis": "EXPANDING",
+            "stress_change": "RISING",
+            "stress_level": "HIGH",
+            "trend_axis": "STRONG"
+          },
+          "input": {
+            "breadth": 0.06,
+            "index_close": 12,
+            "index_ma20": 11,
+            "index_ma20_t_minus_5": 10,
+            "limit_coverage": 1,
+            "participation": 1.3,
+            "prior_stress": 0.02,
+            "stress": 0.06
+          },
+          "vector_id": "REGIME_ABOVE"
+        },
+        {
+          "category": "threshold_exact_boundary",
+          "expected_subset": {
+            "breadth_axis": "STABLE",
+            "participation_axis": "EXPANDING",
+            "stress_change": "STABLE",
+            "stress_level": "ELEVATED",
+            "trend_axis": "NEUTRAL"
+          },
+          "input": {
+            "breadth": 0.05,
+            "index_close": 10,
+            "index_ma20": 10,
+            "index_ma20_t_minus_5": 10,
+            "limit_coverage": 0.8,
+            "participation": 1.2,
+            "prior_stress": 0.01,
+            "stress": 0.01
+          },
+          "vector_id": "REGIME_EXACT"
+        },
+        {
+          "category": "threshold_below",
+          "expected_subset": {
+            "breadth_axis": "DETERIORATING",
+            "participation_axis": "THIN",
+            "stress_change": "DECLINING",
+            "stress_level": "LOW",
+            "trend_axis": "WEAK"
+          },
+          "input": {
+            "breadth": -0.06,
+            "index_close": 9,
+            "index_ma20": 10,
+            "index_ma20_t_minus_5": 11,
+            "limit_coverage": 1,
+            "participation": 0.7,
+            "prior_stress": 0.01,
+            "stress": 0.005
+          },
+          "vector_id": "REGIME_BELOW"
+        },
+        {
+          "category": "unknown_and_coverage",
+          "expected_subset": {
+            "breadth_axis": null,
+            "participation_axis": null,
+            "stress_change": null,
+            "stress_level": null,
+            "trend_axis": "UNKNOWN"
+          },
+          "input": {
+            "breadth": null,
+            "index_close": null,
+            "index_ma20": 10,
+            "index_ma20_t_minus_5": 9,
+            "limit_coverage": 0.5,
+            "participation": null,
+            "prior_stress": null,
+            "stress": 0.02
+          },
+          "vector_id": "REGIME_UNKNOWN"
+        },
+        {
+          "category": "mixed_trend_neutral",
+          "expected_subset": {
+            "trend_axis": "NEUTRAL"
+          },
+          "input": {
+            "breadth": 0,
+            "index_close": 9,
+            "index_ma20": 10,
+            "index_ma20_t_minus_5": 9,
+            "limit_coverage": 1,
+            "participation": 1,
+            "prior_stress": 0,
+            "stress": 0
+          },
+          "vector_id": "REGIME_MIXED"
+        }
+      ]
+    },
+    {
+      "contract_id": "V4_03_SECTOR_NATIVE_PRIMITIVE_V1",
+      "rule": {
+        "membership_identity_required_for_publication": true,
+        "operator": "SECTOR_FIELD_LOCAL_PRIMITIVES"
+      },
+      "vectors": [
+        {
+          "category": "field_local_denominator",
+          "expected_subset": {
+            "amount_evaluable_count": 2,
+            "ma20_width_denominator": 2,
+            "positive_breadth_denominator": 1,
+            "raw_quote_coverage": 0.5
+          },
+          "input": {
+            "members": [
+              "A",
+              "B"
+            ],
+            "membership_snapshot_id": "SYNTHETIC_PIT_MEMBERSHIP_V1",
+            "rows": {
+              "A": {
+                "above_ma20": true,
+                "amount": 10,
+                "amount_quality_state": "OBSERVED",
+                "ma20_quality_state": "OBSERVED",
+                "quote_quality_state": "OBSERVED",
+                "ret1": 0.1,
+                "ret1_quality_state": "OBSERVED"
+              },
+              "B": {
+                "above_ma20": false,
+                "amount": 30,
+                "amount_quality_state": "OBSERVED",
+                "ma20_quality_state": "OBSERVED",
+                "quote_quality_state": "UNKNOWN",
+                "ret1": 0.2,
+                "ret1_quality_state": "UNKNOWN"
+              }
+            }
+          },
+          "vector_id": "SECTOR_LOCAL"
+        },
+        {
+          "category": "empty_member_set",
+          "expected_subset": {
+            "amount_median_primitive": null,
+            "member_count": 0,
+            "raw_quote_coverage": null
+          },
+          "input": {
+            "members": [],
+            "membership_snapshot_id": "SYNTHETIC_PIT_MEMBERSHIP_V1",
+            "rows": {}
+          },
+          "vector_id": "SECTOR_EMPTY"
+        },
+        {
+          "category": "partial_evaluable_rows",
+          "expected_subset": {
+            "input_row_count": 1,
+            "raw_quote_coverage": 0.3333333333333333
+          },
+          "input": {
+            "members": [
+              "A",
+              "B",
+              "C"
+            ],
+            "membership_snapshot_id": "SYNTHETIC_PIT_MEMBERSHIP_V1",
+            "rows": {
+              "A": {
+                "above_ma20": true,
+                "amount": 10,
+                "amount_quality_state": "OBSERVED",
+                "ma20_quality_state": "OBSERVED",
+                "quote_quality_state": "OBSERVED",
+                "ret1": 0.1,
+                "ret1_quality_state": "OBSERVED"
+              }
+            }
+          },
+          "vector_id": "SECTOR_PARTIAL"
+        },
+        {
+          "category": "member_reorder_invariance",
+          "expected_subset": {
+            "amount_median_primitive": 20,
+            "member_count": 2
+          },
+          "input": {
+            "members": [
+              "B",
+              "A",
+              "B"
+            ],
+            "membership_snapshot_id": "SYNTHETIC_PIT_MEMBERSHIP_V1",
+            "rows": {
+              "A": {
+                "above_ma20": true,
+                "amount": 10,
+                "amount_quality_state": "OBSERVED",
+                "ma20_quality_state": "OBSERVED",
+                "quote_quality_state": "OBSERVED",
+                "ret1": 0.1,
+                "ret1_quality_state": "OBSERVED"
+              },
+              "B": {
+                "above_ma20": false,
+                "amount": 30,
+                "amount_quality_state": "OBSERVED",
+                "ma20_quality_state": "OBSERVED",
+                "quote_quality_state": "UNKNOWN",
+                "ret1": 0.2,
+                "ret1_quality_state": "UNKNOWN"
+              }
+            }
+          },
+          "vector_id": "SECTOR_REORDER"
+        },
+        {
+          "category": "member_change",
+          "expected_subset": {
+            "amount_median_primitive": 10,
+            "member_count": 1
+          },
+          "input": {
+            "members": [
+              "A"
+            ],
+            "membership_snapshot_id": "SYNTHETIC_PIT_MEMBERSHIP_V1",
+            "rows": {
+              "A": {
+                "above_ma20": true,
+                "amount": 10,
+                "amount_quality_state": "OBSERVED",
+                "ma20_quality_state": "OBSERVED",
+                "quote_quality_state": "OBSERVED",
+                "ret1": 0.1,
+                "ret1_quality_state": "OBSERVED"
+              },
+              "B": {
+                "above_ma20": false,
+                "amount": 30,
+                "amount_quality_state": "OBSERVED",
+                "ma20_quality_state": "OBSERVED",
+                "quote_quality_state": "UNKNOWN",
+                "ret1": 0.2,
+                "ret1_quality_state": "UNKNOWN"
+              }
+            }
+          },
+          "vector_id": "SECTOR_CHANGE"
+        },
+        {
+          "category": "missing_membership_identity",
+          "expected_subset": {
+            "error": "accepted PIT sector membership identity missing"
+          },
+          "input": {
+            "members": [],
+            "rows": {}
+          },
+          "vector_id": "SECTOR_MISSING_ID"
+        }
+      ]
+    }
+  ],
+  "governing_task": "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md",
+  "version": "1.1.0"
+}

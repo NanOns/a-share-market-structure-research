@@ -1,0 +1,101 @@
+{
+  "continuous_daily_candidate_write": true,
+  "contract_id": "R2_CONTINUOUS_DAILY_ADMISSION_V1",
+  "due_forward": "NO_DUE_ON_REAL_REPLAY_DATES_FUTURE_DUE_REQUIRES_SETTLEMENT_OWNER",
+  "evidence": [
+    {
+      "bytes": 2114,
+      "path": "docs/evidence/r2_continuous_daily_20261008/QA_FINAL.json",
+      "sha256": "b847160df0eb3150e4e0972c98aa276f34a471fbea4aae8e2f324cf12a58b61a"
+    },
+    {
+      "bytes": 793,
+      "path": "docs/evidence/r2_continuous_daily_20261008/TWO_DATE_SOURCE_QA.json",
+      "sha256": "2f9b0d2f4ef1acaaa099b414242dc3d11d8dcb803378866a4dffa0a6acd48943"
+    },
+    {
+      "bytes": 966,
+      "path": "docs/evidence/r2_continuous_daily_20261008/TWO_DATE_JOINT_SWITCH.json",
+      "sha256": "2f130d647a7e7f8471595ae2a9299e41a4a231c15564e4a9d540d8cca4b8940a"
+    },
+    {
+      "bytes": 123,
+      "path": "docs/evidence/r2_continuous_daily_20261008/REGRESSION.json",
+      "sha256": "6b6117564c7222f35bbe8d32e92e819acfdbc5c0a33af43992b47b6be9955496"
+    },
+    {
+      "bytes": 21452,
+      "path": "docs/evidence/r2_continuous_daily_20261008/OWNER_CHAIN_STAGING.json",
+      "sha256": "0edb3b82dfa2fc0567d2d7f872b22d7344dfaf428f14ac4665abc8b6446d4aae"
+    },
+    {
+      "bytes": 12859,
+      "path": "docs/evidence/r2_continuous_daily_20261008/CONTINUOUS_REPLAY.json",
+      "sha256": "22405b8d518e1fc63fa2217641719f12a6f73fd56b49d35a3c2d3ebdf6005c27"
+    }
+  ],
+  "full_product_release": false,
+  "historical_membership": "2026-09-29_UNAVAILABLE_NOT_BACKFILLED",
+  "implementations": {
+    "scripts/build_fp05_market.py": {
+      "bytes": 12075,
+      "path": "scripts/build_fp05_market.py",
+      "sha256": "ed5edbc787374f0b604758cc9d70fcfc82416a9247894d113030eeba7e57208a"
+    },
+    "scripts/build_fp06_sector.py": {
+      "bytes": 10603,
+      "path": "scripts/build_fp06_sector.py",
+      "sha256": "00b726e1ce7a635c0653bd6c187d56a4bd7e30e91c9f2d0662545033fba4b4f6"
+    },
+    "scripts/build_fp07_stock.py": {
+      "bytes": 2598,
+      "path": "scripts/build_fp07_stock.py",
+      "sha256": "8cb6c48a3c5b83b22b71d15a9c51c1195c77d95a8fb146c8669677f046b2bb8c"
+    },
+    "scripts/build_fp09_market_center.py": {
+      "bytes": 5228,
+      "path": "scripts/build_fp09_market_center.py",
+      "sha256": "12ef9663d964941e85d33401c069e04c202843b029d1ed683a78204f3a8811ac"
+    },
+    "scripts/build_fp10_forward.py": {
+      "bytes": 3436,
+      "path": "scripts/build_fp10_forward.py",
+      "sha256": "2222b74b4e5acf0d137b88cbc2e88ad5eff98450c382bcbe2c14116cc268ceaa"
+    },
+    "scripts/fp_domain_evidence.py": {
+      "bytes": 2696,
+      "path": "scripts/fp_domain_evidence.py",
+      "sha256": "3590f47c98a4ac4b04e7ee739af79beb32d269d559103a124c721a16d33cbc27"
+    },
+    "scripts/prepare_r2_daily_candidate.py": {
+      "bytes": 5995,
+      "path": "scripts/prepare_r2_daily_candidate.py",
+      "sha256": "082c6d51e0458690954726fbcd6ce87475b8b2c29b006fc136615af846a85ee0"
+    },
+    "scripts/run_fp02_research_snapshot.py": {
+      "bytes": 3992,
+      "path": "scripts/run_fp02_research_snapshot.py",
+      "sha256": "6d007e733612032718c4f0efbb662a4ddaeedd0b1bbbf325e2562a809873b1df"
+    },
+    "src/focus_tracker/v4_daily_driver.py": {
+      "bytes": 5783,
+      "path": "src/focus_tracker/v4_daily_driver.py",
+      "sha256": "ea8c07f191c880db370bb0595be24a3ef0bf642eeae69d730babc743532ab5b3"
+    },
+    "src/workbench_service/continuous_daily_release.py": {
+      "bytes": 4488,
+      "path": "src/workbench_service/continuous_daily_release.py",
+      "sha256": "718cee0ec6887f6f7e4404d1c473243d5e821348e61f37060bdad2fd0b400c6d"
+    },
+    "src/workbench_service/production_v4.py": {
+      "bytes": 38279,
+      "path": "src/workbench_service/production_v4.py",
+      "sha256": "4d1dec3b060ecd1b25ebbfcd98570566e382efa5c17429c8b1ccb74e7d088876"
+    }
+  },
+  "production_publish": "OWNER_RAW_TEMPORAL_QA_THEN_JOINT_CAS_WITH_HTTP_HEALTH",
+  "result": "DEGRADED_PASS",
+  "strict_pit": false,
+  "trading": false,
+  "ui_build_id": "b8fecb4292a8551d911be756efd962acc6831842ca61fcd7665e5a2cf5092b32"
+}

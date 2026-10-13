@@ -1,0 +1,27 @@
+{
+  "allocator": {
+    "bytes": 5994,
+    "path": "config/v4_migration_allocation_registry_r2.json",
+    "sha256": "20f51ca7dca09f0f5be8a55968088873a98d975605bb399f01ad0faa8414efb2"
+  },
+  "clean_receipt": {
+    "bytes": 912170,
+    "path": "reports/next_round_r1/BATCH_CLEAN_CHECKOUT_R1.json",
+    "sha256": "80ee5c3c5d04f39f01bb596bc0f246a89cda9226501da2af6129f74711263ea8"
+  },
+  "configured_or_production_database_migrated": false,
+  "contract_id": "V4_MIGRATION_CANDIDATE_EXECUTION_RECEIPT_R2",
+  "execution": "APPLIED_AND_ROLLBACK_VERIFIED_DISPOSABLE_ENGINEERING_CLUSTER_ONLY",
+  "external_acceptance": false,
+  "migration": {
+    "bytes": 8181,
+    "path": "src/workbench_db/migrations/v4_postgres/026_confirmation_events_candidate_r1.sql",
+    "sha256": "5c2499ed7b606fdb72cc52db0e5af3bd67ed672480ee37840297a448323ea8e4"
+  },
+  "number": 26,
+  "rollback": {
+    "bytes": 518,
+    "path": "src/workbench_db/migrations/v4_postgres_rollbacks/026_confirmation_events_candidate_r1.sql",
+    "sha256": "d4c470f58edc63489a7edba8aa611f87dc85d7d05d246697c438811ef5b47178"
+  }
+}

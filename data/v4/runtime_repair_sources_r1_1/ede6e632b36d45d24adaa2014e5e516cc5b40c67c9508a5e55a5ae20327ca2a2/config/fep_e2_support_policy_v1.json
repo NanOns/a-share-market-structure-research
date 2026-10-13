@@ -1,0 +1,190 @@
+{
+  "policy_id": "FEP_E2_SUPPORT_POLICY_V1",
+  "values": {
+    "rows": "UNSET",
+    "dates": "UNSET",
+    "blocks": "UNSET",
+    "entities": "UNSET",
+    "episodes": "UNSET",
+    "class_min": "UNSET",
+    "max_missing_fraction": "UNSET",
+    "max_total_variation": "UNSET"
+  },
+  "required_classes": [
+    "POS",
+    "NEG"
+  ],
+  "parameters": [
+    {
+      "parameter_id": "rows",
+      "value": "UNSET",
+      "unit": "count",
+      "allowed_range": [
+        1,
+        null
+      ],
+      "owner_stage": "E2",
+      "reason": "0 eligible labels; one expected date/entity. No multi-date historical outcome population exact-bound in E1 acceptance.",
+      "evidence": {
+        "path": "reports/fep_e2_r1/SUPPORT_POLICY_DISCOVERY.json",
+        "bytes": 1168,
+        "sha256": "70a360222ba46a159a4c515c048de72dfd57594a37f91bd2f169e629bd6373f7"
+      },
+      "introduced_at": "2026-10-05T09:49:22.603252+00:00",
+      "supersedes": null,
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "freeze_before_statistics_at": "2026-10-05T09:49:22.603252+00:00",
+      "freeze_input_digest": "964e3d0e2a78831d6937b688f1c949f0f828ea748386fdaa4bd1ae167b1612c8"
+    },
+    {
+      "parameter_id": "dates",
+      "value": "UNSET",
+      "unit": "count",
+      "allowed_range": [
+        1,
+        null
+      ],
+      "owner_stage": "E2",
+      "reason": "0 eligible labels; one expected date/entity. No multi-date historical outcome population exact-bound in E1 acceptance.",
+      "evidence": {
+        "path": "reports/fep_e2_r1/SUPPORT_POLICY_DISCOVERY.json",
+        "bytes": 1168,
+        "sha256": "70a360222ba46a159a4c515c048de72dfd57594a37f91bd2f169e629bd6373f7"
+      },
+      "introduced_at": "2026-10-05T09:49:22.603252+00:00",
+      "supersedes": null,
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "freeze_before_statistics_at": "2026-10-05T09:49:22.603252+00:00",
+      "freeze_input_digest": "964e3d0e2a78831d6937b688f1c949f0f828ea748386fdaa4bd1ae167b1612c8"
+    },
+    {
+      "parameter_id": "blocks",
+      "value": "UNSET",
+      "unit": "count",
+      "allowed_range": [
+        1,
+        null
+      ],
+      "owner_stage": "E2",
+      "reason": "0 eligible labels; one expected date/entity. No multi-date historical outcome population exact-bound in E1 acceptance.",
+      "evidence": {
+        "path": "reports/fep_e2_r1/SUPPORT_POLICY_DISCOVERY.json",
+        "bytes": 1168,
+        "sha256": "70a360222ba46a159a4c515c048de72dfd57594a37f91bd2f169e629bd6373f7"
+      },
+      "introduced_at": "2026-10-05T09:49:22.603252+00:00",
+      "supersedes": null,
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "freeze_before_statistics_at": "2026-10-05T09:49:22.603252+00:00",
+      "freeze_input_digest": "964e3d0e2a78831d6937b688f1c949f0f828ea748386fdaa4bd1ae167b1612c8"
+    },
+    {
+      "parameter_id": "entities",
+      "value": "UNSET",
+      "unit": "count",
+      "allowed_range": [
+        1,
+        null
+      ],
+      "owner_stage": "E2",
+      "reason": "0 eligible labels; one expected date/entity. No multi-date historical outcome population exact-bound in E1 acceptance.",
+      "evidence": {
+        "path": "reports/fep_e2_r1/SUPPORT_POLICY_DISCOVERY.json",
+        "bytes": 1168,
+        "sha256": "70a360222ba46a159a4c515c048de72dfd57594a37f91bd2f169e629bd6373f7"
+      },
+      "introduced_at": "2026-10-05T09:49:22.603252+00:00",
+      "supersedes": null,
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "freeze_before_statistics_at": "2026-10-05T09:49:22.603252+00:00",
+      "freeze_input_digest": "964e3d0e2a78831d6937b688f1c949f0f828ea748386fdaa4bd1ae167b1612c8"
+    },
+    {
+      "parameter_id": "episodes",
+      "value": "UNSET",
+      "unit": "count",
+      "allowed_range": [
+        1,
+        null
+      ],
+      "owner_stage": "E2",
+      "reason": "0 eligible labels; one expected date/entity. No multi-date historical outcome population exact-bound in E1 acceptance.",
+      "evidence": {
+        "path": "reports/fep_e2_r1/SUPPORT_POLICY_DISCOVERY.json",
+        "bytes": 1168,
+        "sha256": "70a360222ba46a159a4c515c048de72dfd57594a37f91bd2f169e629bd6373f7"
+      },
+      "introduced_at": "2026-10-05T09:49:22.603252+00:00",
+      "supersedes": null,
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "freeze_before_statistics_at": "2026-10-05T09:49:22.603252+00:00",
+      "freeze_input_digest": "964e3d0e2a78831d6937b688f1c949f0f828ea748386fdaa4bd1ae167b1612c8"
+    },
+    {
+      "parameter_id": "class_min",
+      "value": "UNSET",
+      "unit": "count",
+      "allowed_range": [
+        1,
+        null
+      ],
+      "owner_stage": "E2",
+      "reason": "0 eligible labels; one expected date/entity. No multi-date historical outcome population exact-bound in E1 acceptance.",
+      "evidence": {
+        "path": "reports/fep_e2_r1/SUPPORT_POLICY_DISCOVERY.json",
+        "bytes": 1168,
+        "sha256": "70a360222ba46a159a4c515c048de72dfd57594a37f91bd2f169e629bd6373f7"
+      },
+      "introduced_at": "2026-10-05T09:49:22.603252+00:00",
+      "supersedes": null,
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "freeze_before_statistics_at": "2026-10-05T09:49:22.603252+00:00",
+      "freeze_input_digest": "964e3d0e2a78831d6937b688f1c949f0f828ea748386fdaa4bd1ae167b1612c8"
+    },
+    {
+      "parameter_id": "max_missing_fraction",
+      "value": "UNSET",
+      "unit": "fraction",
+      "allowed_range": [
+        0,
+        1
+      ],
+      "owner_stage": "E2",
+      "reason": "0 eligible labels; one expected date/entity. No multi-date historical outcome population exact-bound in E1 acceptance.",
+      "evidence": {
+        "path": "reports/fep_e2_r1/SUPPORT_POLICY_DISCOVERY.json",
+        "bytes": 1168,
+        "sha256": "70a360222ba46a159a4c515c048de72dfd57594a37f91bd2f169e629bd6373f7"
+      },
+      "introduced_at": "2026-10-05T09:49:22.603252+00:00",
+      "supersedes": null,
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "freeze_before_statistics_at": "2026-10-05T09:49:22.603252+00:00",
+      "freeze_input_digest": "964e3d0e2a78831d6937b688f1c949f0f828ea748386fdaa4bd1ae167b1612c8"
+    },
+    {
+      "parameter_id": "max_total_variation",
+      "value": "UNSET",
+      "unit": "fraction",
+      "allowed_range": [
+        0,
+        1
+      ],
+      "owner_stage": "E2",
+      "reason": "0 eligible labels; one expected date/entity. No multi-date historical outcome population exact-bound in E1 acceptance.",
+      "evidence": {
+        "path": "reports/fep_e2_r1/SUPPORT_POLICY_DISCOVERY.json",
+        "bytes": 1168,
+        "sha256": "70a360222ba46a159a4c515c048de72dfd57594a37f91bd2f169e629bd6373f7"
+      },
+      "introduced_at": "2026-10-05T09:49:22.603252+00:00",
+      "supersedes": null,
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "freeze_before_statistics_at": "2026-10-05T09:49:22.603252+00:00",
+      "freeze_input_digest": "964e3d0e2a78831d6937b688f1c949f0f828ea748386fdaa4bd1ae167b1612c8"
+    }
+  ],
+  "freeze_before_statistics_at": "2026-10-05T09:49:22.603252+00:00",
+  "freeze_input_digest": "964e3d0e2a78831d6937b688f1c949f0f828ea748386fdaa4bd1ae167b1612c8",
+  "status": "UNSET_DIAGNOSTIC_ONLY"
+}

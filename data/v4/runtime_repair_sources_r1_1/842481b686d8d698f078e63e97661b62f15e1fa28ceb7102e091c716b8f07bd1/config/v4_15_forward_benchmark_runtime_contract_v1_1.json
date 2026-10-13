@@ -1,0 +1,24 @@
+{
+  "affine_policy": "EXACT_ALPHA_BETA_FINITE_ALPHA_POSITIVE_ALL_ACTUAL_ROWS_AND_T0",
+  "contract_id": "V4_15_FORWARD_BENCHMARK_RUNTIME_V1_1",
+  "historical_outputs": "READ_ONLY",
+  "implementation": {
+    "bytes": 4381,
+    "path": "src/workbench_analysis/v4_15_settlement_successor.py",
+    "sha256": "453df721d06ea94cb6593693585ac14bf9171dfb754890bb04b68257143cc2dc"
+  },
+  "marked_permission": false,
+  "predecessors": [
+    {
+      "bytes": 3009,
+      "path": "config/v4_15_forward_market_benchmark_contract_v1.json",
+      "sha256": "df0fe9b9038085a5016cbd63089b4a87186041af25d6739bc8b0fdc66a374f3f"
+    },
+    {
+      "bytes": 1146,
+      "path": "config/v4_15_forward_sector_benchmark_contract_v1.json",
+      "sha256": "109ddfa37f77ef014921c2ee07660ae2654422b181c94b5ed47831b3768ef270"
+    }
+  ],
+  "runtime_authorized": false
+}

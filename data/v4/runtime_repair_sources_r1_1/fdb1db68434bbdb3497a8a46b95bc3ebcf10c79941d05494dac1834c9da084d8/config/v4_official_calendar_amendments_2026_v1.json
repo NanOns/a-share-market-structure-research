@@ -1,0 +1,30 @@
+{
+  "contract_id": "V4_OFFICIAL_CALENDAR_AMENDMENTS_2026_V1",
+  "version": "1.0.0",
+  "status": "KNOWN_SOURCE_SET_CAPTURE_PENDING_ONE_SZSE_URL_UNRESOLVED",
+  "governing_calendar_contract": "V4_OFFICIAL_EXCHANGE_CALENDAR_V1",
+  "as_of_date": "2026-09-26",
+  "purpose": "Capture 2026 single-holiday SSE/SZSE cash-market closure notices posted after the annual schedules and available by the stated cutoff.",
+  "scope_exclusions": ["HK_CONNECT_SERVICE_CALENDAR", "fund_subscription_calendar", "settlement_only_calendar"],
+  "sources": [
+    {"source_id": "sse_2026_spring_festival", "market": "SSE", "published_date": "2026-02-05", "source_url": "https://www.sse.com.cn/disclosure/announcement/general/c/c_20260205_10808618.shtml"},
+    {"source_id": "sse_2026_qingming", "market": "SSE", "published_date": "2026-03-31", "source_url": "https://www.sse.com.cn/disclosure/announcement/general/c/c_20260331_10813622.shtml"},
+    {"source_id": "sse_2026_labor_day", "market": "SSE", "published_date": "2026-04-23", "source_url": "https://www.sse.com.cn/disclosure/announcement/general/c/c_20260423_10816345.shtml"},
+    {"source_id": "sse_2026_dragon_boat", "market": "SSE", "published_date": "2026-06-11", "source_url": "https://www.sse.com.cn/disclosure/announcement/general/c/c_20260611_10821419.shtml"},
+    {"source_id": "sse_2026_mid_autumn_national_day", "market": "SSE", "published_date": "2026-09-17", "source_url": "https://www.sse.com.cn/disclosure/announcement/general/c/c_20260915_10832273.shtml"},
+    {"source_id": "szse_2026_spring_festival", "market": "SZSE", "published_date": "2026-02-06", "source_url": "https://www.szse.cn/disclosure/notice/t20260206_618970.html"},
+    {"source_id": "szse_2026_labor_day", "market": "SZSE", "published_date": "2026-04-23", "source_url": "https://www.szse.cn/disclosure/notice/general/t20260423_620142.html"},
+    {"source_id": "szse_2026_mid_autumn_national_day", "market": "SZSE", "published_date": "2026-09-17", "source_url": "https://www.szse.cn/www/disclosure/notice/general/t20260917_622911.html"}
+  ],
+  "known_uncaptured_notice": {"market": "SZSE", "published_date": "2026-06-11", "title": "关于2026年端午节休市安排的通知", "reason": "Official notice listing confirms the notice exists, but the canonical SZSE page URL has not yet been resolved; the annual SZSE notice already contains the same closure dates."},
+  "source_capture": {
+    "maximum_requests_per_run": 10,
+    "maximum_response_bytes_per_page": 2000000,
+    "maximum_total_response_bytes": 12000000,
+    "timeout_seconds": 20,
+    "allowed_hosts": ["www.sse.com.cn", "www.szse.cn", "investor.szse.cn"],
+    "redirect_hosts": ["www.sse.com.cn", "www.szse.cn", "investor.szse.cn"],
+    "store_under": "data/v4/source_evidence/calendar_amendments_2026/"
+  },
+  "acceptance": "Source capture does not establish closure-date equivalence or formal calendar acceptance."
+}

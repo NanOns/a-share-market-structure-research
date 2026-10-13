@@ -174,7 +174,10 @@ def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,o
         return original_import(name,globals,locals,fromlist,level)
     m=private_scope(market,dict(common,__builtins__=dict(vars(builtins),__import__=imports)))
     market_path=folder/'owner_v3/MARKET_REPLAY.json'
-    markets=load(market_path)['owners'] if market_path.exists() else m['materialize_market'](root)
+    market_bootstrap={}
+    if previous:
+        market_bootstrap=dict(predecessor_profiles=previous['profiles'],predecessor_markets=[dict(trade_date=d,market=bindings['market']) for d,bindings in sorted(predecessor['owners'].items())])
+    markets=load(market_path)['owners'] if market_path.exists() else m['materialize_market'](root,**market_bootstrap)
     report('SECTOR_MARKET','COMPLETED')
     f=private_scope(focus,common)
     focus_path=folder/'owner_v3/FOCUS_FORWARD_REPLAY.json'

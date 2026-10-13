@@ -35,3 +35,13 @@ def connection(schema, *, read_only=False, dsn=None, row_factory=None):
 def create_schema(pg,schema):
     if not re.fullmatch(r'v4_[a-z0-9_]{1,56}',schema): raise ValueError('INVALID_V4_PG_SCHEMA')
     pg.execute(sql.SQL('CREATE SCHEMA IF NOT EXISTS {}').format(sql.Identifier(schema)))
+    reader=os.environ.get('V4_NATIVE_PG_READER_DSN')
+    if reader:
+        from psycopg.conninfo import conninfo_to_dict
+        role=conninfo_to_dict(reader).get('user')
+        if not role or pg.execute('SELECT 1 FROM pg_roles WHERE rolname=%s',(role,)).fetchone() is None:
+            raise ValueError('CONFIGURED_READER_ROLE_REQUIRED')
+        # Producer-owned candidate schemas expose SELECT to the configured
+        # reader. Business writes continue to require the producer role.
+        pg.execute(sql.SQL('GRANT USAGE ON SCHEMA {} TO {}').format(sql.Identifier(schema),sql.Identifier(role)))
+        pg.execute(sql.SQL('ALTER DEFAULT PRIVILEGES IN SCHEMA {} GRANT SELECT ON TABLES TO {}').format(sql.Identifier(schema),sql.Identifier(role)))

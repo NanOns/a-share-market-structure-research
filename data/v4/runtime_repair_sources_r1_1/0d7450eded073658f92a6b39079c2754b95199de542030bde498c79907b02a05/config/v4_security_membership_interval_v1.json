@@ -1,0 +1,33 @@
+{
+  "contract_id": "SECURITY_MEMBERSHIP_INTERVAL_V1",
+  "version": "1.0.0",
+  "source_contract_id": "DATED_ROSTER_MEMBERSHIP_BOUNDARY_V1",
+  "required_fields": [
+    "security_id",
+    "source_security_key",
+    "normalized_effective_from",
+    "normalized_effective_to",
+    "from_boundary_basis",
+    "to_boundary_basis",
+    "provider_ipo_date",
+    "provider_out_date",
+    "first_observed_roster_date",
+    "last_observed_roster_date",
+    "boundary_quality",
+    "source_contract_id",
+    "source_revision_id"
+  ],
+  "membership_window": {
+    "start": "2023-07-04",
+    "end": "2026-09-24",
+    "authority": "Accepted exact dated BaoStock rosters define required-scope membership for every observed session in the window."
+  },
+  "provider_fact_policy": "Preserve provider ipoDate/outDate as immutable source facts. Do not infer uniform membership inclusivity from provider outDate.",
+  "boundary_policy": {
+    "present_on_provider_outdate": "normalized_effective_to equals provider_out_date; inclusive last confirmed membership session.",
+    "absent_on_provider_outdate": "normalized_effective_to equals the last dated-roster membership session before provider_out_date only if no reappearance is observed through the roster window end.",
+    "unresolved": "Fail closed for missing prior membership, post-outDate reappearance, or missing provider lifecycle fact."
+  },
+  "revision_policy": "Append-only. New revisions supersede current revisions; UPDATE and DELETE are prohibited.",
+  "lineage_policy": "Bind accepted roster SHA-256, R6.1 all-day coverage SHA-256, raw provider lifecycle facts SHA-256, resolver script SHA-256, and normalized interval artifact SHA-256."
+}

@@ -1,0 +1,39 @@
+{
+  "contract_id": "v3-p09-topic-sector-mapping-v1.0",
+  "status": "PARTIAL_REVIEWED_RELATED_ONLY",
+  "evidence_basis": "2026-09-11 EXT03/04 source topic names exactly match unique 2026-09-10 fixed-run local sector names; each has three canonical member overlaps. Cross-source member universes differ, so relation is RELATED, not EXACT.",
+  "source_probe": "reports/upgrade_v3/P09-SOURCE-METADATA-PROBE-20260913.json",
+  "source_ext03_sha256": "88f247f10ee1aeb01989ca5b6b0246c07ffa01702a75c3d59af810c17dc83dbf",
+  "source_ext04_sha256": "508d1783b5e2ae37fad928de9960143289b606cc77c0953e20e3d664fe7d1b79",
+  "local_run_id": "research-5369ba9e65074cf599bbea230e24ff7b",
+  "local_trade_date": "2026-09-10",
+  "local_membership_snapshot_id": "f3c7f45b1e3adf05d6bc12163e3ed734766efa3c42c47d657d36028899567534",
+  "entries": [
+    {
+      "publication_id": "m4-8a99c99719061f4f1f166d0b9184506c",
+      "sector_id": "THEME:880670",
+      "source_topic_key": "EXT03:18129294",
+      "source_topic_name": "光通信",
+      "relation": "RELATED",
+      "evidence_id": "P09-MAP-20260911-18129294-880670",
+      "source_member_count": 4,
+      "local_member_count": 152,
+      "overlap_count": 3,
+      "source_trade_date": "2026-09-11",
+      "local_trade_date": "2026-09-10"
+    },
+    {
+      "publication_id": "m4-8a99c99719061f4f1f166d0b9184506c",
+      "sector_id": "THEME:880520",
+      "source_topic_key": "EXT03:87056697",
+      "source_topic_name": "智能电网",
+      "relation": "RELATED",
+      "evidence_id": "P09-MAP-20260911-87056697-880520",
+      "source_member_count": 5,
+      "local_member_count": 277,
+      "overlap_count": 3,
+      "source_trade_date": "2026-09-11",
+      "local_trade_date": "2026-09-10"
+    }
+  ]
+}

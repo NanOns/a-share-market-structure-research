@@ -53,7 +53,7 @@ def test_append_retains_exact_historical_input_and_allows_retention_roll():
 @pytest.mark.parametrize('field,value',[('amount',4999.),('volume',99),('raw_ohlc',[10.,11.,9.,10.51])])
 def test_historical_correction_requires_explicit_repair(field,value):
     cache,saved=sample();saved[0]['bars'][0][field]=value
-    with pytest.raises(ValueError,match='SOURCE_REVISION_REQUIRES_RANGE_REPAIR'):verify_history_overlap(cache,saved)
+    with pytest.raises(ValueError,match='RANGE_REPAIR_REQUIRED:SOURCE_HISTORY_REVISION'):verify_history_overlap(cache,saved)
 
 
 def test_missing_prior_security_history_is_not_claimed_reusable():
@@ -64,3 +64,4 @@ def test_missing_prior_security_history_is_not_claimed_reusable():
 def test_absent_code_keeps_old_owner_without_requiring_today_package_entry():
     _,saved=sample()
     verify_history_overlap({},saved,active_security_ids=set())
+

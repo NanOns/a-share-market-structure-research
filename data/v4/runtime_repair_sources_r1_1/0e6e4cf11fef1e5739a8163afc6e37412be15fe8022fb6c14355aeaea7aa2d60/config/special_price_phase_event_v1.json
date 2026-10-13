@@ -1,0 +1,18 @@
+{
+  "contract_id": "SPECIAL_PRICE_PHASE_EVENT_V1",
+  "version": "1.0.0",
+  "record_path": "data/v4/bootstrap/special_price_phase_events_r4.jsonl",
+  "required_fields": [
+    "event_id", "security_id", "trade_date", "phase", "phase_effective_from", "phase_effective_to",
+    "exchange", "board", "board_scope", "event_type", "official_reference_price", "official_reference_formula",
+    "source_ref", "source_capture_path", "source_capture_sha256", "observed_at", "system_available_at",
+    "quality", "contract_id", "revision"
+  ],
+  "phase_values": [
+    "REGULAR", "IPO_FIRST_5_TRADING_DAYS", "DELISTING_FIRST_DAY", "DELISTING_PERIOD",
+    "RELISTING_FIRST_DAY", "SPECIAL_REFERENCE_RESET", "UNKNOWN_SPECIAL_PHASE"
+  ],
+  "effective_end_inclusive": true,
+  "append_only_revisions": true,
+  "missing_official_reference_policy": "UNKNOWN:SPECIAL_REFERENCE_PRICE_UNAVAILABLE"
+}

@@ -1,0 +1,251 @@
+{
+  "amount_A": {
+    "audit_id": "AUD-AMOUNT-A-06",
+    "diagnostic": "UNKNOWN",
+    "formal_branch": "DISABLED",
+    "staging_read": false,
+    "status": "OPEN"
+  },
+  "authority": {
+    "byte_count": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "contract_id": "V4_11_CONFIRMATION_EVENTS_ENTRY_CONTRACT_R1",
+  "events": {
+    "after": "D2 final state",
+    "contract_id": "STATE_EVENT_V1",
+    "forbidden_predecessor": "same_day_revision_parent",
+    "predecessor": "frozen prior_session_state_head",
+    "same_day_first_confirmation": "NEW_CONFIRMED for r1/r2/r3",
+    "values": [
+      "FIRST_OBSERVED",
+      "CONFIRMATION_INVALIDATED",
+      "RECONFIRMED",
+      "NEW_CONFIRMED",
+      "SCENARIO_UPGRADED",
+      "CONFIRMATION_WEAKENED",
+      "PERSISTENT_CONFIRMED",
+      "SCENARIO_CHANGED",
+      "NONE"
+    ]
+  },
+  "field_registry": {
+    "confirmation_status": {
+      "owner": "V4-11",
+      "status": "DESIGN_REGISTERED",
+      "time_role": "TARGET_SESSION_D0"
+    },
+    "input_digest": {
+      "owner": "V4-11",
+      "status": "DESIGN_REGISTERED",
+      "time_role": "TARGET_SESSION_D0"
+    },
+    "matched_scenarios": {
+      "owner": "V4-11",
+      "status": "DESIGN_REGISTERED",
+      "time_role": "TARGET_SESSION_D0"
+    },
+    "parameter_set_id": {
+      "owner": "V4-11",
+      "status": "DESIGN_REGISTERED",
+      "time_role": "TARGET_SESSION_D0"
+    },
+    "primary_scenario": {
+      "owner": "V4-11",
+      "status": "DESIGN_REGISTERED",
+      "time_role": "TARGET_SESSION_D0"
+    },
+    "producer_contract_id": {
+      "owner": "V4-11",
+      "status": "DESIGN_REGISTERED",
+      "time_role": "TARGET_SESSION_D0"
+    },
+    "raw_predicates": {
+      "owner": "V4-11",
+      "status": "DESIGN_REGISTERED",
+      "time_role": "TARGET_SESSION_D0"
+    },
+    "scenario_evidence": {
+      "owner": "V4-11",
+      "status": "DESIGN_REGISTERED",
+      "time_role": "TARGET_SESSION_D0"
+    },
+    "security_id": {
+      "owner": "V4-11",
+      "status": "DESIGN_REGISTERED",
+      "time_role": "TARGET_SESSION_D0"
+    },
+    "source_publication_ids": {
+      "owner": "V4-11",
+      "status": "DESIGN_REGISTERED",
+      "time_role": "TARGET_SESSION_D0"
+    },
+    "trade_date": {
+      "owner": "V4-11",
+      "status": "DESIGN_REGISTERED",
+      "time_role": "TARGET_SESSION_D0"
+    },
+    "unknown_predicates": {
+      "owner": "V4-11",
+      "status": "DESIGN_REGISTERED",
+      "time_role": "TARGET_SESSION_D0"
+    }
+  },
+  "focus_cutover_permission": false,
+  "golden_vectors": {
+    "coverage_required": [
+      "NONE_TO_CONFIRMED",
+      "SEED_TO_CONFIRMED",
+      "PREWATCH_TO_CONFIRMED",
+      "PERSISTENT_CONFIRMED",
+      "SAME_DAY_R1_R2_R3_NEW_CONFIRMED",
+      "RECONFIRMED",
+      "SCENARIO_UPGRADED",
+      "SCENARIO_CHANGED_NOT_UPGRADED",
+      "CONFIRMATION_WEAKENED",
+      "HARD_INVALIDATION_WINS",
+      "REQUIRED_FACT_UNKNOWN",
+      "AMOUNT_A_DISABLED",
+      "MULTI_SCENARIO_DEDUP",
+      "PRODUCER_MISMATCH",
+      "PARAMETER_MISMATCH",
+      "PUBLICATION_MISMATCH",
+      "FUTURE_TIMESTAMP_REJECTED",
+      "SAME_DAY_FEEDBACK_REJECTED",
+      "NO_SYMBOL"
+    ],
+    "id": "V4_11_INDEPENDENT_GOLDEN_VECTORS_V1",
+    "status": "INVENTORY_ONLY_NO_EXPECTATIONS_OR_RUN"
+  },
+  "implementation_gate": "STOP_PENDING_NEXT_INDEPENDENT_AUDIT",
+  "input_publication_contract": {
+    "future_or_feedback": "REJECT",
+    "required": [
+      "accepted_data_head",
+      "producer_contract_id",
+      "parameter_set_id",
+      "source_publication_ids",
+      "input_digest",
+      "cutoff_timestamp"
+    ],
+    "target_data_requires_actual_accepted_data_head": true
+  },
+  "legacy_inventory": {
+    "call_graph": [
+      "_bool",
+      "_cmp",
+      "_num",
+      "_scenario",
+      "any",
+      "bool",
+      "checks.items",
+      "checks.values",
+      "dict",
+      "float",
+      "list",
+      "math.isfinite",
+      "predicate",
+      "row.get",
+      "sorted",
+      "tri_and",
+      "tri_or",
+      "type",
+      "waiting.append"
+    ],
+    "extraction_status": "INVENTORIED_NOT_EXTRACTED_NOT_ACCEPTED",
+    "forbidden_dependencies": [
+      "Final State",
+      "Focus",
+      "same-day downstream",
+      "online supplemental",
+      "future outcome"
+    ],
+    "parameter_source": "DEFAULT_POLICY and branch-specific checks in the bound source",
+    "required_extraction": [
+      "exact_branch_AST",
+      "parameters",
+      "input_units",
+      "input_time_roles",
+      "output_semantics",
+      "UNKNOWN_semantics"
+    ],
+    "source": {
+      "byte_count": 7011,
+      "path": "src/workbench_analysis/today_research_scanner_v3_3.py",
+      "sha256": "0cf65de4f926f43cce5fcac60f16e2e047b4c5f0f4cc497e1f832f6e3bdc3379"
+    },
+    "symbols": [
+      "_bool",
+      "_num",
+      "_cmp",
+      "tri_and",
+      "tri_or",
+      "_scenario",
+      "scan_today_research"
+    ],
+    "until_extraction_accepted": "DIAGNOSTIC_ONLY"
+  },
+  "machine_AST": {
+    "id": "V4_11_CONFIRMATION_MACHINE_AST_V1",
+    "status": "PENDING_EXACT_LEGACY_EXTRACTION"
+  },
+  "migration_governance": {
+    "allocate_before_schema_work": true,
+    "historical_migrations_immutable": true,
+    "registry": "config/v4_migration_allocation_registry_r1.json"
+  },
+  "output_schema": {
+    "D0_modifies_Final_State": false,
+    "canonical_key": [
+      "publication_id",
+      "security_id"
+    ],
+    "cardinality": "ONE_ROW_PER_KEY",
+    "consumer": "ACCEPTED_V4_10_D2_REDUCER",
+    "id": "CONFIRMATION_FACT_V1",
+    "required_fields": [
+      "security_id",
+      "trade_date",
+      "confirmation_status",
+      "matched_scenarios",
+      "primary_scenario",
+      "scenario_evidence",
+      "raw_predicates",
+      "unknown_predicates",
+      "producer_contract_id",
+      "parameter_set_id",
+      "source_publication_ids",
+      "input_digest"
+    ]
+  },
+  "parameter_set": {
+    "id": "V4_11_CONFIRMATION_PARAMETER_SET_V1",
+    "status": "PENDING_EXACT_LEGACY_EXTRACTION"
+  },
+  "producer_identity": {
+    "contract_id": "CONFIRMATION_DETECTOR_V1",
+    "status": "NOT_IMPLEMENTED_NOT_PUBLISHED"
+  },
+  "production_permission": false,
+  "registered_contracts": [
+    "LEGACY_ADAPTER_V1",
+    "CONFIRMATION_DETECTOR_V1",
+    "STATE_EVENT_V1"
+  ],
+  "scenarios": [
+    "LAUNCH_CONFIRM",
+    "RECOVERY_TURN",
+    "STRONG_PULLBACK",
+    "TREND_CONTINUE"
+  ],
+  "shadow_production_permission": false,
+  "status": "ENTRY_DESIGN_OBLIGATIONS_FROZEN_RUNTIME_NOT_IMPLEMENTED",
+  "task": {
+    "byte_count": 8277,
+    "path": "docs/evidence/V4_10_ACCEPTED_HEAD_PROMOTION_AND_V4_11_ENTRY_TASK_20261001.md",
+    "sha256": "f9e0b9e9067f92f075ad56506f73e45d42e75e3c24deb43e95c50f8befeed351"
+  },
+  "unknown_semantics": "Required missing, unavailable, conflicting or unaccepted facts remain UNKNOWN; no 0/FALSE fallback",
+  "version": "1.0.0"
+}

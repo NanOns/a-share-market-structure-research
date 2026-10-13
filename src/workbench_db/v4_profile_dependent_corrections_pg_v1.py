@@ -44,12 +44,19 @@ def prepare(root,candidate,patches):
 def load(root,candidate):
     authority=json.loads(checked(root,candidate[KEY]).read_bytes())
     expected={d:{k:o[k] for k in ('focus','prewatch')} for d,o in candidate['owners'].items()}
-    if authority.get('contract_id')!=CONTRACT or authority.get('source_owners')!=expected or authority.get('profile_correction')!=candidate['native_profile_semantic_corrections'] or set(authority.get('dates',{}))!=set(expected):raise ValueError('DEPENDENT_CORRECTION_OWNER_CONSERVATION_REQUIRED')
+    from .v4_profile_semantic_corrections_pg_v1 import conserved_dates,load as load_profile
+    dates=conserved_dates(root,candidate,KEY,authority.get('source_owners',{}),expected)
+    load_profile(root,candidate)
+    if authority.get('contract_id')!=CONTRACT or authority.get('profile_correction')!=candidate['native_profile_semantic_corrections'] or set(authority.get('dates',{}))!=dates:raise ValueError('DEPENDENT_CORRECTION_OWNER_CONSERVATION_REQUIRED')
     if any(authority.get(k) is not False for k in ('PIT_ELIGIBLE','AS_RECORDED')):raise ValueError('DEPENDENT_CORRECTION_PIT_ESCALATION')
+    for day,entries in authority['dates'].items():
+        if set(entries)!={'focus','prewatch'} or any(e['original']!=expected[day][k] for k,e in entries.items()):raise ValueError('DEPENDENT_CORRECTION_OWNER_CONSERVATION_REQUIRED')
     return authority
 
 def apply(root,candidate,day,domain,original):
-    entry=load(root,candidate)['dates'][day][domain];kind='reference_profile_dependent_'+domain
+    entry=load(root,candidate)['dates'].get(day)
+    if entry is None:return original
+    entry=entry[domain];kind='reference_profile_dependent_'+domain
     patches=read_fact(root,entry['descriptor'],entry['fact_token'],day,kind,entry['source']);index={r['entity_id']:r for r in patches};seen=set();result=[]
     if len(index)!=len(patches) or set(index)!=set(entry['entity_ids']):raise ValueError('DEPENDENT_CORRECTION_DENOMINATOR')
     for row in original:
@@ -61,5 +68,7 @@ def apply(root,candidate,day,domain,original):
     return result
 
 def attest(root,candidate,day,domain):
-    entry=load(root,candidate)['dates'][day][domain]
+    entry=load(root,candidate)['dates'].get(day)
+    if entry is None:return
+    entry=entry[domain]
     attest_cached(root,entry['descriptor'],'reference_profile_dependent_'+domain,entry['source'])

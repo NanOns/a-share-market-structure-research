@@ -1,0 +1,49 @@
+{
+  "candidate_set_complete": true,
+  "contract_id": "V4_13_OUTPUT_SCHEMA_V1",
+  "field_envelope": [
+    "value",
+    "quality",
+    "reason",
+    "source_identity",
+    "membership_basis",
+    "loo_basis"
+  ],
+  "fields": [
+    "primary_industry",
+    "supporting_concepts",
+    "algorithmic_support_sector",
+    "relative_sector_state",
+    "sector_context_state",
+    "sector_context_quality",
+    "rotation_structure_enrichment",
+    "active_anchor_id",
+    "anchor_view_asof_t",
+    "basic_breakout_state",
+    "basic_pullback_state",
+    "basic_recovery_state",
+    "support_state",
+    "acceptance_state",
+    "retest_count",
+    "structure_events",
+    "structure_health"
+  ],
+  "publication_identity": [
+    "security_id",
+    "trade_date",
+    "revision",
+    "contract_digest",
+    "membership_digest",
+    "loo_history_digest",
+    "structure_source_digest",
+    "prior_session_ref"
+  ],
+  "raw_qualification_mutable": false,
+  "raw_qualification_refs": [
+    "A_BASE_SEED_RAW",
+    "C_STOCK_PREWATCH_RAW"
+  ],
+  "runtime_implemented": false,
+  "status": "CONTRACT_FREEZE_ONLY",
+  "version": "1.0.0"
+}

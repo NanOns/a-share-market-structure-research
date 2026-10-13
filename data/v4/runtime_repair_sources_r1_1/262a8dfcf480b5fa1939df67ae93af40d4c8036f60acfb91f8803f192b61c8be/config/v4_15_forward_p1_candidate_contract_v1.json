@@ -1,0 +1,180 @@
+{
+  "IA03": "OPEN_AUDIT_ONLY_P2_SAME_SOURCE_PENDING_DUE_COLLISION_UNCHANGED",
+  "IA04": "OPEN_AUDIT_ONLY_P2_PRICE_DOMAIN_BEHAVIOR_UNCHANGED",
+  "PIT_OBSERVED_REAL_SAMPLES": 0,
+  "REAL_SHADOW_OBSERVATIONS": 0,
+  "baseline_commit": "0c78051c570bdd68ef98f1cb9fdcfcd315759ec2",
+  "consumer": "SIMULATION_ONLY_CANDIDATE_WORKER; NO_ACCEPTED_DEPENDENCY_SELECTS_IT",
+  "contract_id": "V4_FORWARD_P1_REPAIR_R1_IA09_IA01_IA02",
+  "default_ui": false,
+  "design_contracts": [
+    {
+      "bytes": 3295,
+      "path": "config/v4_15_forward_price_path_contract_v1.json",
+      "sha256": "9c39cdf980aee0c94453441557f80a874c2a847e6c58dc770b5e9d32088cc301"
+    },
+    {
+      "bytes": 1146,
+      "path": "config/v4_15_forward_sector_benchmark_contract_v1.json",
+      "sha256": "109ddfa37f77ef014921c2ee07660ae2654422b181c94b5ed47831b3768ef270"
+    },
+    {
+      "bytes": 3009,
+      "path": "config/v4_15_forward_market_benchmark_contract_v1.json",
+      "sha256": "df0fe9b9038085a5016cbd63089b4a87186041af25d6739bc8b0fdc66a374f3f"
+    }
+  ],
+  "endpoint_policy": "ENDPOINT_RETURN_INDEPENDENT_IF_VERIFIED",
+  "fep": "NO_NEW_OWNER_ALLOCATION; EXACT_REVISION_AND_RECEIPTS_REQUIRED; NO_HISTORICAL_LABEL_REWRITE",
+  "focus": false,
+  "implementation_bindings": [
+    {
+      "bytes": 111,
+      "path": "tests/.gitattributes",
+      "sha256": "fb281207f3368754ca2ee909030e8e28f1298aa4465b7bfe475a73dc21fa18c5"
+    },
+    {
+      "bytes": 121,
+      "path": "docs/audits/.gitattributes",
+      "sha256": "2f69b8ef7d3a7f28f02b7c77915f695e5c628da8c68679758c5aa45d6773112c"
+    },
+    {
+      "bytes": 135,
+      "path": "conftest.py",
+      "sha256": "91bccb1e09ed653e67f3dc83ec936c46a009b7d2c56029f26a0f8ebb9b0cca9c"
+    },
+    {
+      "bytes": 4724,
+      "path": "tests/runtime_isolation_plugin.py",
+      "sha256": "c8c0d571b43cd29590745cf080e328f04a40f81c4e76fce584a8e7829ad9d3ba"
+    },
+    {
+      "bytes": 47,
+      "path": "src/workbench_analysis/.gitattributes",
+      "sha256": "84889318db00e8ec2a23092c2509f9a3509429a8d3083f1062f053efb0f3298d"
+    },
+    {
+      "bytes": 17170,
+      "path": "src/workbench_analysis/v4_15_forward_p1.py",
+      "sha256": "407d9f3990e08c7a5cd9bcad8e687d010a270fdb0d29c2de4d281482477ebffe"
+    },
+    {
+      "bytes": 911,
+      "path": "scripts/v4_16_forward_p1_worker.py",
+      "sha256": "41b6d33f874e24de4ee40075d8d2b45810f6137eef72d58a46919724d6df7439"
+    },
+    {
+      "bytes": 3898,
+      "path": "tests/runtime_isolation.py",
+      "sha256": "64533afcf27fcbb1a19b675c2c9bfa402289aae9d02e21e6dd69d1ad11254cea"
+    },
+    {
+      "bytes": 5837,
+      "path": "tests/upgrade_m12/conftest.py",
+      "sha256": "e83910a8d4cc308f3f7108db6cdb9cb666e8c994745b23a9ecbf8c0e51b1e92a"
+    },
+    {
+      "bytes": 9317,
+      "path": "tests/forward_p1_vectors.py",
+      "sha256": "7993f18746e65a00b7c590b6cd0a878446a18441b7ba9469cf492902e5320875"
+    },
+    {
+      "bytes": 4055,
+      "path": "tests/test_forward_p1_isolation.py",
+      "sha256": "a10eb573a464376db3ef9f5276883f1c4b32d23c9386f41e0f27791738aaaa88"
+    },
+    {
+      "bytes": 178,
+      "path": "tests/test_forward_p1_stock.py",
+      "sha256": "b846407822c682419db8e45718c1207a5e50d45ba8dac16f046248598cbf28d7"
+    },
+    {
+      "bytes": 181,
+      "path": "tests/test_forward_p1_sector.py",
+      "sha256": "ae3155e01bcb79511cfef22f05ddb45206c8138c0f82dc30d8282eaf0b0b1d43"
+    },
+    {
+      "bytes": 6559,
+      "path": "tests/test_forward_p1_regression.py",
+      "sha256": "a2e36f8e94a2522d1e536aeb97b9d8ddad9ea75cfe72bdb682d66cce7d163eb7"
+    },
+    {
+      "bytes": 3934,
+      "path": "scripts/forward_p1_checks.py",
+      "sha256": "3287e4cb78ec1ea1d19e80aeac2098f692ebc369744b1968a85dceeea20fe207"
+    },
+    {
+      "bytes": 1188,
+      "path": "scripts/forward_p1_collection.py",
+      "sha256": "196661fdc8c11908df6626731c1e3906e0dc8ae18f31095725d256450b97c245"
+    },
+    {
+      "bytes": 2608,
+      "path": "scripts/forward_p1_fingerprint.py",
+      "sha256": "f362eb073724ab9e751f8c9c0fc4fbcdb0d90966b4cc3aef91187be2776965e0"
+    },
+    {
+      "bytes": 22515,
+      "path": "scripts/forward_p1_evidence.py",
+      "sha256": "f1c06ab71f60406559071d64094633f0ee53a4205a3d29567dfc38e0f089c3b3"
+    },
+    {
+      "bytes": 4624,
+      "path": "scripts/forward_p1_restore_checkpoint.py",
+      "sha256": "c14edfbf7e8ecde98af0a4512d4c69e8935c818f103c5700d08f0877b84846b2"
+    }
+  ],
+  "next_stage": "INDEPENDENT_EXTERNAL_AUDIT_REQUIRED",
+  "outcome_contract_id": "FORWARD_PRICE_PATH_V1_1",
+  "production": false,
+  "real_shadow_authorized": false,
+  "relative_benchmarks": "INDEPENDENT_EXISTING_CONTRACTS_UNCHANGED",
+  "revision_policy": "APPEND_SUCCESSOR_AND_CORRECTIONS; HISTORICAL_BYTES_IMMUTABLE",
+  "runtime_authorized": false,
+  "sector_contract_id": "SECTOR_BASKET_FORWARD_PATH_V1",
+  "sector_coverage": "ALL_ORIGINAL_WEIGHT_VALUED_OR_UNKNOWN; NO_NEW_THRESHOLD; NO_REWEIGHT",
+  "sector_identity": [
+    "sector_subject_id",
+    "membership_snapshot",
+    "member_security_ids",
+    "initial_weights",
+    "fixed_shares",
+    "T0_evaluation_basis",
+    "member_source_identities",
+    "member_adjustment_identities",
+    "constituent_policy"
+  ],
+  "sector_numeric_fields": [
+    "R_N",
+    "MFE_CLOSE",
+    "MAE_CLOSE"
+  ],
+  "sector_stock_fields": {
+    "MAE_N": null,
+    "MFE_N": null,
+    "PATH_MDD_CLOSE_N": null,
+    "applicability": "NOT_APPLICABLE_SECTOR"
+  },
+  "shadow": false,
+  "source_audits": [
+    {
+      "bytes": 89954,
+      "path": "docs/audits/V4_00_22_FEP_INDEPENDENT_FULL_SCOPE_AUDIT_R1_20261006.md",
+      "sha256": "fb3eb39d163c7018069a5d745887e014512632ef288d22a2397b23d9a5ecaafd"
+    },
+    {
+      "bytes": 88046,
+      "path": "docs/audits/V4_00_22_FEP_COMPREHENSIVE_CROSS_MODEL_AUDIT_R1_20261006.md",
+      "sha256": "6014582e83e5e2a71eaac8bd8e07be04e82e3978f57240e2091903e1bb5ec273"
+    }
+  ],
+  "status": "CANDIDATE_PENDING_INDEPENDENT_EXTERNAL_AUDIT",
+  "stock_endpoint": "STRICT_T0_ENDPOINT_AFFINE_COMMON_BASIS_IDENTITY_AND_TERMINAL_ADMISSION",
+  "stock_path": "EVERY_PARTICIPATING_ACTUAL_COORDINATE_VERIFIED; NO_INTERPOLATION; CONFIRMED_SUSPENSION_OMITTED",
+  "task_document": {
+    "bytes": 16465,
+    "path": "docs/evidence/forward_p1_repair_r1_20261006/V4_FORWARD_P1_REPAIR_R1_IA09_IA01_IA02_TASK_20261006.md",
+    "sha256": "46f3920c358b242724d4972a14197d0c3f91db4e2b691e4d9f30079332c1e7ff"
+  },
+  "version": "1.0.0"
+}

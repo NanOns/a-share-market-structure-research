@@ -1,0 +1,44 @@
+{
+  "contract_id": "V4_02_FULL_MARKET_DATED_ISST_V1",
+  "version": "1.0.0",
+  "stage": "V4-02 / FINAL CLOSURE PACK",
+  "governing_documents": {
+    "external_task": "D:/Users/lps/Desktop/V4_02_PACK_A_EXTERNAL_AUDIT_AND_FINAL_ACCELERATED_CLOSURE_R2_20260926.md",
+    "upgrade_contract": "D:/Users/lps/Desktop/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925_codex修改版.md",
+    "upgrade_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+    "upgrade_sections": ["3B.6", "3C.1", "3C.2", "3C.3", "3C.4", "5.2", "5.3", "6A", "10N", "78"]
+  },
+  "scope": {
+    "source_cutoff": "2026-09-24",
+    "start_date": "2023-07-04",
+    "required_boards": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"],
+    "optional_degraded_boards": ["BSE"],
+    "calendar_receipt": "reports/v4_02/V4_02_FORMAL_MARKET_CALENDAR_ACCEPTANCE_V2.json",
+    "universe": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R6_2_20260926.jsonl.gz"
+  },
+  "provider": {
+    "name": "BaoStock",
+    "sdk_version": "0.9.3",
+    "authentication": "PUBLIC_ANONYMOUS",
+    "api": "query_daily_history_k_AStock(date)",
+    "expected_fields": ["date", "code", "open", "high", "low", "close", "preclose", "volume", "amount", "adjustflag", "turn", "tradestatus", "pctChg", "peTTM", "pbMRQ", "psTTM", "pcfNcfTTM", "isST"],
+    "persisted_provider_fields": ["date", "code", "tradestatus", "isST"],
+    "provider_prices_persisted": false,
+    "one_query_per_session": true,
+    "page_limit": 1,
+    "row_limit": 20000
+  },
+  "binding": {
+    "key": ["source_security_key", "trade_date"],
+    "missing_or_invalid": "UNKNOWN",
+    "fields": ["security_id", "source_security_key", "trade_date", "is_st", "source_provider", "binding_quality", "source_revision"],
+    "source_revision": "SHA256_OF_NORMALIZED_FULL_MARKET_DAILY_STATUS_RESPONSE",
+    "tdx_price_authority_unchanged": true
+  },
+  "persistence": {
+    "output": "data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926.jsonl.gz",
+    "receipt": "reports/v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926.json",
+    "atomic_replace": true,
+    "raw_provider_payload": false
+  }
+}

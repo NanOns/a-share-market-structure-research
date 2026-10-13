@@ -1,0 +1,42 @@
+{
+  "consumer": "V4_13_SCOPED_ENGINEERING_ONLY",
+  "contract_id": "V4_13_ENGINEERING_MEMBERSHIP_CONSUMER_ROUTE_V1",
+  "current_membership_replay_claimed_pit": false,
+  "current_membership_silent_fallback": false,
+  "failure": "BLOCKED_MEMBERSHIP_CONSUMER_SCOPE",
+  "formal_consumers_flag_override": false,
+  "membership_binding_pointer": "/membership_binding",
+  "membership_owner": {
+    "bytes": 2151,
+    "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+    "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+  },
+  "membership_scope": "FORWARD_PIT_MEMBERSHIP_ONLY",
+  "production_permission": false,
+  "provider_direct_read": false,
+  "raw_fallback": false,
+  "required_sector_capability": {
+    "ACCEPTED_CONTEXT_ROUTING": "ENGINEERING_ACCEPTED"
+  },
+  "runtime_implemented": false,
+  "sector_owner": {
+    "bytes": 21493,
+    "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+    "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+  },
+  "snapshot_fields": [
+    "membership_snapshot_id",
+    "source_revision",
+    "trade_date",
+    "available_at",
+    "cutoff",
+    "membership_basis",
+    "membership_quality"
+  ],
+  "stage_binding": {
+    "bytes": 11381,
+    "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+    "sha256": "b0e1c2402efdd71d706a87f45280206a87fbe9e637a4168255b7ff4c036520f7"
+  },
+  "version": "1.0.0"
+}

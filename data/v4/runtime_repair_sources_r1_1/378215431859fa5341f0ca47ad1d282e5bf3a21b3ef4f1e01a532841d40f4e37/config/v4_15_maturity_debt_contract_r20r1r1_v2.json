@@ -1,0 +1,30 @@
+{
+  "contract_id": "V4_15_MATURITY_DEBT_R20R1R1_V2",
+  "execution_baseline": "555409d79c58517761472531404f0ee5cccd81af",
+  "supersedes": "R20R1_FORWARD_DEBT_MECHANISM_ONLY;_R20R1_SCOPE_AND_HISTORICAL_EVIDENCE_PASS_KEEP",
+  "command": "python -m scripts.r20r1_maturity_debt <exact_packet_list.json>",
+  "required_horizons": [1,3,5,10,20],
+  "aggregate_states": ["OPEN", "PARTIAL_MATURITY_EVIDENCE", "FULL_REQUIRED_HORIZONS_PROVEN"],
+  "runtime_maturity_capability": "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME",
+  "T0_OBSERVATION_SCOPE": "RECONSTRUCTED_ASOF",
+  "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+  "endpoint_admission": "EXACT_COMPONENT_ARTIFACTS_IN_ACCEPTED_DATA_SNAPSHOT_ON_CURRENT_DATA_HEAD_ANCESTRY",
+  "calendar_admission": "EXACT_ACCEPTED_DATA_CALENDAR_WITH_FROZEN_T0_PREFIX",
+  "evaluation_basis": "ONE_EXACT_ACCEPTED_ENDPOINT_BASIS;_ACCEPTED_AFFINE_TRANSFORMS;_T0_PRICE_ANCHOR_EXCLUDED_FROM_FUTURE_HIGH_LOW_ROWS",
+  "revision_rule": "FIRST_OBSERVED_IMMUTABLE;_CORRECTION_APPENDS_NEXT_OUTCOME_REVISION_WITH_CHANGED_ACCEPTED_SOURCE",
+  "unqualified_claim_rule": "BLOCKED_UNTIL_ALL_REQUIRED_HORIZONS_PROVEN_BY_CURRENT_REAL_AUTHORITY;_FIXTURES_NEVER_GRANT_CURRENT_REAL_CAPABILITY",
+  "blocks_unrelated_development": false,
+  "stage_promotion_authorized": false,
+  "current_real_maturity_evidence": "NONE",
+  "protected_state": {
+    "V4_15_ACCEPTED_HEAD": "NOT_CREATED",
+    "V4_STAGE_ACCEPTED_HEAD": "V4_00_TO_V4_14_ACCEPTED",
+    "V4_DATA_ACCEPTED_HEAD": "2026-09-30",
+    "Production": false,
+    "Shadow": false,
+    "Focus": false,
+    "V4_16": false,
+    "NEXT": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT"
+  }
+}

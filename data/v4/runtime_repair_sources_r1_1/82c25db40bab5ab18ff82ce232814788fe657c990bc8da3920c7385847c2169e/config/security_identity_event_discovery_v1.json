@@ -1,0 +1,75 @@
+{
+  "contract_id": "SECURITY_IDENTITY_EVENT_DISCOVERY_V1",
+  "version": "1.0.0",
+  "owner_stage": "V4-01-R8.1",
+  "modes": ["HISTORICAL_BACKSCAN", "DAILY_INCREMENTAL"],
+  "required_scope": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"],
+  "optional_scope": {"BSE": "DEGRADED_BSE", "blocks_required_scope": false},
+  "candidate_signal_union": [
+    "OFFICIAL_CODE_CHANGE_EVENT",
+    "DATED_ALIAS_FACT",
+    "ROSTER_EXIT_ENTRY_ADJACENCY",
+    "LIFECYCLE_BOUNDARY_ADJACENCY",
+    "PERSISTENT_RETROSPECTIVE_BAR_ALIAS",
+    "SOURCE_SYMBOL_REASSIGNMENT_OR_CODE_REUSE_CANDIDATE"
+  ],
+  "supporting_weak_signal": "WEAK_NAME_CONTINUITY",
+  "weak_signal_policy": "CANDIDATE_ONLY_NEVER_MERGE",
+  "roster_transition": {
+    "session_source": "VERSIONED_OFFICIAL_EXCHANGE_CALENDAR_OR_ACCEPTED_SESSION_LIST",
+    "active_through_previous_session_then_new_from_session": "ALWAYS_GENERATES_CANDIDATE_WITHIN_EXCHANGE",
+    "shared_bar_sessions_required": false,
+    "different_versioned_listing_anchors": "MAY_RESOLVE_DISTINCT_ENTITY",
+    "missing_or_same_listing_anchor": "UNRESOLVED_UNLESS_STRONGER_ACCEPTED_EVIDENCE"
+  },
+  "same_entity_confirmation": {
+    "requires": [
+      "official_exchange_notice_or_versioned_independently_accepted_identity_evidence",
+      "source_capture_path_and_sha256",
+      "effective_date",
+      "observed_at",
+      "system_available_at",
+      "non_overlapping_dated_source_key_intervals",
+      "canonical_security_id"
+    ],
+    "discovery_does_not_mutate_canonical_identity": true
+  },
+  "code_reuse": {
+    "same_symbol_distinct_non_overlapping_lifecycle": "CONFIRMED_DISTINCT_ENTITY",
+    "stable_identity_uses": ["lifecycle_interval", "listing_anchor", "effective_date", "official_identity_evidence"]
+  },
+  "unresolved_policy": {
+    "candidate_status": "UNRESOLVED",
+    "affected_formal_capability": "identity=UNKNOWN",
+    "required_scope_limit": 0,
+    "fail_closed": true
+  },
+  "inputs": {
+    "historical_backscan": [
+      "accepted_trade_sessions",
+      "dated_roster_snapshots",
+      "versioned_lifecycle_intervals",
+      "official_identity_event_index",
+      "dated_alias_facts",
+      "retrospective_raw_bar_continuity"
+    ],
+    "daily_incremental": [
+      "prior_accepted_session_manifest",
+      "current_session_roster",
+      "current_lifecycle_delta",
+      "current_official_event_delta",
+      "current_dated_alias_delta"
+    ]
+  },
+  "outputs": {
+    "event_receipt": "reports/v4_01/V4_01_IDENTITY_EVENT_DISCOVERY_R8_1.json",
+    "alias_completeness_receipt": "reports/v4_01/V4_01_ALIAS_COMPLETENESS_R8_1.json"
+  },
+  "prohibited": [
+    "specific_security_literals_in_discovery_logic",
+    "identity_merge_from_weak_signal",
+    "automated_trading",
+    "future_data",
+    "probability_claims"
+  ]
+}

@@ -1,0 +1,1411 @@
+{
+  "ALGORITHM_STATE_REPLAY_PASS": "NOT_GRANTED",
+  "acceptance_criteria": "COMPLETE_INDEPENDENT_FROZEN_CONTRACT_BEFORE_RUNTIME; EXTERNAL_AUDIT_STILL_REQUIRED",
+  "accepted_v4_13_authority": {
+    "bytes": 11314,
+    "path": "data/v4/V4_13_ACCEPTED_HEAD_AMENDED_R1.json",
+    "sha256": "98f222ba4d62318ee900a69b8cad7c25359a30bcc7097efe0a55b8ffea09aa65"
+  },
+  "active_family_closure": {
+    "bytes": 7963,
+    "path": "config/v4_13_active_contract_family_closure_r17r1.json",
+    "sha256": "a883aeab9058c017806f62b78d6ea2eac6fab82fdbf4faaace3fdea4c967aea1"
+  },
+  "contract_id": "V4_14_MACHINE_VECTORS_V1",
+  "expected_generation": "LITERAL_BEFORE_RUNTIME",
+  "focus": false,
+  "global_mandatory_adoption": false,
+  "negative_cases": [
+    "same_day_feedback_negative",
+    "state_transition_legality_negative",
+    "hysteresis_negative",
+    "expiry_negative",
+    "direct_prewatch_confirmed_negative",
+    "rotation_pulse_accepted_failed_negative",
+    "support_reclaim_retest_break_negative",
+    "confirmation_persistent_suppression_negative",
+    "multi_sector_dedup_negative",
+    "unknown_propagation_negative",
+    "no_duplicate_event_episode_negative",
+    "same_day_revision_predecessor_negative",
+    "cross_process_previous_session_negative",
+    "future_publication_leakage_negative",
+    "revision_append_only_negative",
+    "deterministic_replay_negative",
+    "historical_pit_evidence_negative"
+  ],
+  "owner_oracle_books": [
+    {
+      "bytes": 4509500,
+      "path": "config/v4_10_machine_vectors_r1_2.json",
+      "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+    },
+    {
+      "bytes": 31822,
+      "path": "config/v4_12_machine_vectors_v1.json",
+      "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+    },
+    {
+      "bytes": 17242,
+      "path": "config/v4_12_time_counter_vectors_r2_1.json",
+      "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+    },
+    {
+      "bytes": 2915,
+      "path": "config/v4_08_rotation_machine_vectors_v2.json",
+      "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+    },
+    {
+      "bytes": 36234,
+      "path": "config/v4_13_machine_vectors_v1_2.json",
+      "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+    }
+  ],
+  "production": false,
+  "required_history": "OWNER_REQUIRED_WINDOWS_PLUS_EXACT_T_MINUS_1_PERSISTED_PUBLICATIONS; NO_SAME_DAY_PREDECESSOR",
+  "runtime_implemented": false,
+  "shadow": false,
+  "source_bindings": [
+    {
+      "bytes": 224998,
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+    },
+    {
+      "bytes": 6837,
+      "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+      "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+    },
+    {
+      "bytes": 8456,
+      "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+      "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+    },
+    {
+      "bytes": 6362,
+      "path": "data/v4/V4_07_ACCEPTED_HEAD.json",
+      "sha256": "b22117b0d14c35167cba86cb7398d878d7112f9cf17c1a427fa92766e78f880f"
+    },
+    {
+      "bytes": 21493,
+      "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+    },
+    {
+      "bytes": 2151,
+      "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+      "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+    },
+    {
+      "bytes": 11474,
+      "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+      "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+    },
+    {
+      "bytes": 5102,
+      "path": "data/v4/V4_10_ACCEPTED_HEAD.json",
+      "sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1"
+    },
+    {
+      "bytes": 14090,
+      "path": "data/v4/V4_11_ACCEPTED_HEAD.json",
+      "sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928"
+    },
+    {
+      "bytes": 796484,
+      "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+      "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+    },
+    {
+      "bytes": 11314,
+      "path": "data/v4/V4_13_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "98f222ba4d62318ee900a69b8cad7c25359a30bcc7097efe0a55b8ffea09aa65"
+    },
+    {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    {
+      "bytes": 4926,
+      "path": "config/v4_10_research_state_contract_r1_2.json",
+      "sha256": "33d50256635161f425f4f34ac805ea2f511362be7d71d35b3a62478de5a59127"
+    },
+    {
+      "bytes": 3709,
+      "path": "config/v4_10_machine_ast_r1_2.json",
+      "sha256": "de127c9566c840a75e7ab5fb1c033f8bbfa04dd88983e88360e94f12b2d99589"
+    },
+    {
+      "bytes": 435,
+      "path": "config/v4_10_parameter_set_r1_2.json",
+      "sha256": "20b66f9f2d2d4fe6ba8c3dd0583d6fa3d5408daebda09fae7ff27548e800ffd7"
+    },
+    {
+      "bytes": 6909,
+      "path": "config/v4_11_entry_contracts_r1.json",
+      "sha256": "460057a74d15b127d58204639a40697d5a6048949c6eba74f2dfeb54b99e9f2f"
+    },
+    {
+      "bytes": 921,
+      "path": "config/v4_11_confirmation_machine_ast_v1.json",
+      "sha256": "b6985ce8ff2498c115370b85690ba13538cdbb3339308fc77b6007e13c943062"
+    },
+    {
+      "bytes": 853,
+      "path": "config/v4_11_confirmation_parameter_set_v1.json",
+      "sha256": "34d61ecb766b523e9cec1c2178be3385968e6a9fc9b273025b35c3646117b1fd"
+    },
+    {
+      "bytes": 2214,
+      "path": "config/v4_12_structure_event_contract_v1.json",
+      "sha256": "b36a6e39a43665d5c07e52ad23fc3226d92cc73df6330a06606758cc38d1d99f"
+    },
+    {
+      "bytes": 41434,
+      "path": "config/v4_12_machine_ast_v1.json",
+      "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
+    },
+    {
+      "bytes": 14895,
+      "path": "config/v4_12_parameter_set_v1.json",
+      "sha256": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024"
+    },
+    {
+      "bytes": 21093,
+      "path": "config/v4_08_rotation_core_contract_r5.json",
+      "sha256": "2fee45359815fd70f489e0c24c29b49eac114628332b77399d6d2f14ea018330"
+    },
+    {
+      "bytes": 22088,
+      "path": "config/v4_13_dag_edge_registry_v1_2.json",
+      "sha256": "94a7e612711bd546ce0e638ea9e9291f664dc7e404f7597e6438405f44e1b024"
+    },
+    {
+      "bytes": 7715,
+      "path": "config/v4_13_projection_v1_2.json",
+      "sha256": "567b498c9e0f828dc041d56ab56e79c8a4d34877fd09eef46a9c1f504396b19c"
+    },
+    {
+      "bytes": 4509500,
+      "path": "config/v4_10_machine_vectors_r1_2.json",
+      "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+    },
+    {
+      "bytes": 31822,
+      "path": "config/v4_12_machine_vectors_v1.json",
+      "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+    },
+    {
+      "bytes": 17242,
+      "path": "config/v4_12_time_counter_vectors_r2_1.json",
+      "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+    },
+    {
+      "bytes": 2915,
+      "path": "config/v4_08_rotation_machine_vectors_v2.json",
+      "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+    },
+    {
+      "bytes": 36234,
+      "path": "config/v4_13_machine_vectors_v1_2.json",
+      "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+    },
+    {
+      "bytes": 2679,
+      "path": "config/v4_13_rotation_structure_enrichment_schema_v1_2.json",
+      "sha256": "bd53db1a842dc97cded4871f834fceec3ec85b6f97aa604937f7aa1eb879ffd9"
+    }
+  ],
+  "status": "CONTRACT_FREEZE_ONLY",
+  "supersedes": {
+    "bytes": 45489,
+    "path": "config/v4_14_machine_vectors_v1.json",
+    "sha256": "4db3c3d3d33049e663f9bb254b5308c3cf604b76aba1f99f63ed5059290c05ff"
+  },
+  "time_role": "FROZEN_TARGET_SESSION_AND_EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION",
+  "unknown_semantics": "UNKNOWN_NEVER_FALSE; COMPONENT_SCOPED_DEGRADED_OR_NOT_VERIFIABLE",
+  "vectors": [
+    {
+      "dimension": "same_day_feedback",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "raw_after": "TRUE"
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "same_day_feedback_positive",
+      "input": {
+        "edges": [
+          [
+            "F0",
+            "A",
+            "T"
+          ],
+          [
+            "D0",
+            "D2",
+            "T"
+          ]
+        ],
+        "raw_before": "TRUE"
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "same_day_feedback",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "SAME_DAY_FEEDBACK_FORBIDDEN",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "same_day_feedback_negative",
+      "input": {
+        "edges": [
+          [
+            "D3",
+            "A",
+            "T"
+          ]
+        ],
+        "raw_before": "TRUE"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "state_transition_legality",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "episode": "E1",
+          "maturity": "CONFIRMED"
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "state_transition_legality_positive",
+      "input": {
+        "confirmed": "TRUE",
+        "entity_type": "STOCK",
+        "prior_maturity": "PREWATCH",
+        "trusted_source": true
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "state_transition_legality",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "ILLEGAL_STOCK_WARM",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "state_transition_legality_negative",
+      "input": {
+        "claimed_maturity": "WARM",
+        "confirmed": "TRUE",
+        "entity_type": "STOCK",
+        "prior_maturity": "PREWATCH",
+        "trusted_source": true
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "hysteresis",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "downgrade_count": 1,
+          "maturity": "PREWATCH"
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "hysteresis_positive",
+      "input": {
+        "adjacent_evaluable_sessions": 1,
+        "prior_maturity": "PREWATCH",
+        "raw_maturity": "NONE",
+        "required_known": true
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "hysteresis",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "PREMATURE_DOWNGRADE",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "hysteresis_negative",
+      "input": {
+        "adjacent_evaluable_sessions": 1,
+        "claimed_maturity": "NONE",
+        "prior_maturity": "PREWATCH",
+        "raw_maturity": "NONE",
+        "required_known": true
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "expiry",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "expiry_count": 10,
+          "maturity": "NONE",
+          "tracking": "FOLLOWUP"
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "expiry_positive",
+      "input": {
+        "evaluable": true,
+        "expiry_count_before": 9,
+        "improvement_pp": 0,
+        "prior_maturity": "PREWATCH"
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "expiry",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "UNKNOWN_OR_SUSPENSION_CANNOT_ADVANCE_EXPIRY",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "expiry_negative",
+      "input": {
+        "claimed_expiry_count": 10,
+        "evaluable": false,
+        "expiry_count_before": 9,
+        "improvement_pp": 0,
+        "prior_maturity": "PREWATCH"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "direct_prewatch_confirmed",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "mandatory_wait_sessions": 0,
+          "maturity": "CONFIRMED"
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "direct_prewatch_confirmed_positive",
+      "input": {
+        "confirmed": "TRUE",
+        "hard_damage": "FALSE",
+        "prior_maturity": "PREWATCH",
+        "required_known": true
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "direct_prewatch_confirmed",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "FORCED_UPGRADE_WAIT_FORBIDDEN",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "direct_prewatch_confirmed_negative",
+      "input": {
+        "claimed_wait_sessions": 1,
+        "confirmed": "TRUE",
+        "hard_damage": "FALSE",
+        "prior_maturity": "PREWATCH",
+        "required_known": true
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "rotation_pulse_accepted_failed",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "accepted_branch": "ROTATION_ACCEPTED",
+          "branches_mutually_exclusive": true,
+          "failed_branch": "ROTATION_FAILED"
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "rotation_pulse_accepted_failed_positive",
+      "input": {
+        "accepted_predicate_oracle": "R1B",
+        "expired_branch": {
+          "accepted": false,
+          "episode_exists": true,
+          "prior_state": "ROTATION_PULSE",
+          "pulse_age_sessions": 6,
+          "required_known": true
+        }
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "rotation_pulse_accepted_failed",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "ROTATION_ACCEPTANCE_REQUIRES_FROZEN_OWNER_PREDICATES",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "rotation_pulse_accepted_failed_negative",
+      "input": {
+        "accepted_predicate_oracle": "R1B",
+        "claimed_accepted_with_failed_breadth": true,
+        "expired_branch": {
+          "accepted": false,
+          "episode_exists": true,
+          "prior_state": "ROTATION_PULSE",
+          "pulse_age_sessions": 6,
+          "required_known": true
+        }
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "support_reclaim_retest_break",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "anchor": "A1",
+          "trace": [
+            "TESTING",
+            "RECLAIMED",
+            "HELD_TENTATIVE",
+            "RETESTING",
+            "HELD_CONFIRMED",
+            "BROKEN"
+          ]
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "support_reclaim_retest_break_positive",
+      "input": {
+        "anchor": "A1",
+        "coordinate": "EXACT_ACCEPTED_AFFINE_BASIS",
+        "owner_trace_refs": [
+          "S05_no_separation",
+          "S01",
+          "S05_hold",
+          "S05_retest",
+          "S05_confirm",
+          "S03"
+        ]
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "support_reclaim_retest_break",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "RETEST_REQUIRES_FROZEN_SEPARATION_RULE",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "support_reclaim_retest_break_negative",
+      "input": {
+        "anchor": "A1",
+        "claimed_retest_without_separation": true,
+        "coordinate": "EXACT_ACCEPTED_AFFINE_BASIS",
+        "owner_trace_refs": [
+          "S05_no_separation",
+          "S01",
+          "S05_hold",
+          "S05_retest",
+          "S05_confirm",
+          "S03"
+        ]
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "confirmation_persistent_suppression",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "event_class": "PERSISTENT_CONFIRMED",
+          "new_actionable_event": false,
+          "new_episode": false
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "confirmation_persistent_suppression_positive",
+      "input": {
+        "current_confirmed": true,
+        "prior_session_confirmed": true,
+        "scenario_changed": false,
+        "weakened": false
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "confirmation_persistent_suppression",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "UNCHANGED_PERSISTENT_CANNOT_CREATE_NEW_ACTIONABLE_EVENT",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "confirmation_persistent_suppression_negative",
+      "input": {
+        "claimed_new_event": true,
+        "current_confirmed": true,
+        "prior_session_confirmed": true,
+        "scenario_changed": false,
+        "weakened": false
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "multi_sector_dedup",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "logical_security_event_count": 1,
+          "sector_context_count": 3
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "multi_sector_dedup_positive",
+      "input": {
+        "publication": "PUB1",
+        "sectors": [
+          "I1",
+          "C1",
+          "C2"
+        ],
+        "security": "S1"
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "multi_sector_dedup",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "SECTOR_MEMBERSHIP_CANNOT_MULTIPLY_SECURITY_EVENTS",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "multi_sector_dedup_negative",
+      "input": {
+        "claimed_security_event_count": 3,
+        "publication": "PUB1",
+        "sectors": [
+          "I1",
+          "C1",
+          "C2"
+        ],
+        "security": "S1"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "unknown_propagation",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "expiry_count": 9,
+          "final_eligibility": "UNKNOWN",
+          "maturity": "PREWATCH",
+          "unaffected_relation_quality": "KNOWN"
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "unknown_propagation_positive",
+      "input": {
+        "prior_expiry_count": 9,
+        "prior_maturity": "PREWATCH",
+        "required_quality": "UNKNOWN",
+        "unaffected_relation_quality": "KNOWN"
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "unknown_propagation",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "UNKNOWN_MUST_NOT_BECOME_FALSE",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "unknown_propagation_negative",
+      "input": {
+        "claimed_required_fact": "FALSE",
+        "prior_expiry_count": 9,
+        "prior_maturity": "PREWATCH",
+        "required_quality": "UNKNOWN",
+        "unaffected_relation_quality": "KNOWN"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "no_duplicate_event_episode",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "episode_count": 1,
+          "episode_id": "E1",
+          "logical_event_count": 1
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "no_duplicate_event_episode_positive",
+      "input": {
+        "logical_event_key": [
+          "V4",
+          "MODEL1",
+          "S1",
+          "E1",
+          "NEW_CONFIRMED",
+          "2026-09-30"
+        ],
+        "runs": 2
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "no_duplicate_event_episode",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "CONTINUATION_CANNOT_CREATE_NEW_EPISODE",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "no_duplicate_event_episode_negative",
+      "input": {
+        "claimed_episode_id_on_continuation": "E2",
+        "logical_event_key": [
+          "V4",
+          "MODEL1",
+          "S1",
+          "E1",
+          "NEW_CONFIRMED",
+          "2026-09-30"
+        ],
+        "runs": 2
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "same_day_revision_predecessor",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "event_classes": [
+            "NEW_CONFIRMED",
+            "NEW_CONFIRMED"
+          ],
+          "previous_dates": [
+            "2026-09-29",
+            "2026-09-29"
+          ],
+          "previous_manifest_digests": [
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          ]
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "same_day_revision_predecessor_positive",
+      "input": {
+        "calendar": [
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30"
+        ],
+        "previous_dates": [
+          "2026-09-29",
+          "2026-09-29"
+        ],
+        "previous_manifest_digests": [
+          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        ],
+        "revisions": [
+          "r1",
+          "r2"
+        ],
+        "target": "2026-09-30"
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "same_day_revision_predecessor",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "SAME_DAY_REVISION_IS_NOT_PREVIOUS_SESSION",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "same_day_revision_predecessor_negative",
+      "input": {
+        "calendar": [
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30"
+        ],
+        "previous_dates": [
+          "2026-09-29",
+          "2026-09-30"
+        ],
+        "previous_manifest_digests": [
+          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        ],
+        "revisions": [
+          "r1",
+          "r2"
+        ],
+        "target": "2026-09-30"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "cross_process_previous_session",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "memory_prior_used": false,
+          "readback": "EXACT_PERSISTED_PREVIOUS_SESSION"
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "cross_process_previous_session_positive",
+      "input": {
+        "consumer_pid": 102,
+        "persisted_manifest_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "previous_date": "2026-09-29",
+        "producer_exited": true,
+        "producer_pid": 101,
+        "readback_manifest_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "target": "2026-09-30"
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "cross_process_previous_session",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "IN_MEMORY_CONTINUITY_DOES_NOT_PROVE_CROSS_PROCESS_REPLAY",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "cross_process_previous_session_negative",
+      "input": {
+        "consumer_pid": 101,
+        "persisted_manifest_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "previous_date": "2026-09-29",
+        "producer_exited": true,
+        "producer_pid": 101,
+        "readback_manifest_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "target": "2026-09-30"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "temporal_admission": "ALLOW"
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "future_publication_leakage_positive",
+      "input": {
+        "available_at": "2026-09-30T15:30:00+08:00",
+        "cutoff": "2026-09-30T16:00:00+08:00",
+        "max_source_trade_date": "2026-09-30",
+        "source_asof": "2026-09-30T15:00:00+08:00",
+        "target": "2026-09-30"
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "FUTURE_AVAILABILITY_FORBIDDEN_AT_T0",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "future_publication_leakage_negative",
+      "input": {
+        "available_at": "2026-10-01T00:00:00+08:00",
+        "cutoff": "2026-09-30T16:00:00+08:00",
+        "max_source_trade_date": "2026-09-30",
+        "source_asof": "2026-09-30T15:00:00+08:00",
+        "target": "2026-09-30"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "revision_append_only",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "new_revision_separate": true,
+          "old_revision_immutable": true
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "revision_append_only_positive",
+      "input": {
+        "new_revision": "r2",
+        "old_revision": "r1",
+        "old_sha_after": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "old_sha_before": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "revision_append_only",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "OLD_REVISION_OVERWRITE_FORBIDDEN",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "revision_append_only_negative",
+      "input": {
+        "new_revision": "r2",
+        "old_revision": "r1",
+        "old_sha_after": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "old_sha_before": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "deterministic_replay",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "duplicate_side_effects": 0,
+          "output_digest_equal": true
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "deterministic_replay_positive",
+      "input": {
+        "frozen_input_digest": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "run1_output_digest": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "run2_output_digest": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "deterministic_replay",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "FROZEN_REPLAY_DIGEST_MISMATCH",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "deterministic_replay_negative",
+      "input": {
+        "frozen_input_digest": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "run1_output_digest": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "run2_output_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "historical_pit_evidence",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "affected_quality": "DEGRADED",
+          "evidence_class": "ENGINEERING_SYNTHETIC",
+          "historical_effectiveness": "NOT_VERIFIABLE"
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "historical_pit_evidence_positive",
+      "input": {
+        "claimed_evidence_class": "ENGINEERING_SYNTHETIC",
+        "current_membership_backfill": true,
+        "historical_source_missing": true
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "historical_pit_evidence",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "CURRENT_MEMBERSHIP_IS_NOT_HISTORICAL_PIT",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_FROZEN_OWNER_SEMANTICS_NOT_FUTURE_RUNTIME",
+      "id": "historical_pit_evidence_negative",
+      "input": {
+        "claimed_evidence_class": "HISTORICAL_PIT_EFFECTIVENESS",
+        "current_membership_backfill": true,
+        "historical_source_missing": true
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "MAX_SOURCE_TRADE_DATE_AFTER_TARGET",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_BASELINE_SECTION_54",
+      "id": "future_price_negative",
+      "input": {
+        "max_source_trade_date": "2026-10-01",
+        "target": "2026-09-30"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "temporal_admission": "ALLOW_WITH_EXACT_OWNER_PROOFS"
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_BASELINE_SECTION_54",
+      "id": "future_price_positive",
+      "input": {
+        "max_source_trade_date": "2026-09-30",
+        "target": "2026-09-30"
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "FUTURE_MEMBERSHIP_FORBIDDEN",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_BASELINE_SECTION_54",
+      "id": "future_membership_negative",
+      "input": {
+        "membership_effective_date": "2026-10-01",
+        "target": "2026-09-30"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "temporal_admission": "ALLOW_WITH_EXACT_OWNER_PROOFS"
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_BASELINE_SECTION_54",
+      "id": "future_membership_positive",
+      "input": {
+        "membership_effective_date": "2026-09-29",
+        "target": "2026-09-30"
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "MEMBERSHIP_AVAILABILITY_AFTER_CUTOFF",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_BASELINE_SECTION_54",
+      "id": "membership_available_late_negative",
+      "input": {
+        "membership_available_at": "2026-10-01T00:00:00+08:00",
+        "membership_effective_date": "2026-09-29",
+        "target": "2026-09-30"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "temporal_admission": "ALLOW_WITH_EXACT_OWNER_PROOFS"
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_BASELINE_SECTION_54",
+      "id": "membership_available_late_positive",
+      "input": {
+        "cutoff": "2026-09-30T16:00:00+08:00",
+        "membership_available_at": "2026-09-30T15:00:00+08:00",
+        "membership_effective_date": "2026-09-29",
+        "target": "2026-09-30"
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "FUTURE_STATE_FORBIDDEN",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_BASELINE_SECTION_54",
+      "id": "future_state_negative",
+      "input": {
+        "prior_state_trade_date": "2026-10-01",
+        "target": "2026-09-30"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "temporal_admission": "ALLOW_WITH_EXACT_OWNER_PROOFS"
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_BASELINE_SECTION_54",
+      "id": "future_state_positive",
+      "input": {
+        "prior_state_trade_date": "2026-09-29",
+        "target": "2026-09-30"
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "FOCUS_OUTCOME_IS_NOT_ALGORITHM_INPUT",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_BASELINE_SECTION_54",
+      "id": "future_focus_outcome_negative",
+      "input": {
+        "source_namespace": "FUTURE_FOCUS_OUTCOME",
+        "target": "2026-09-30"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "temporal_admission": "ALLOW_WITH_EXACT_OWNER_PROOFS"
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_BASELINE_SECTION_54",
+      "id": "future_focus_outcome_positive",
+      "input": {
+        "source_namespace": "ACCEPTED_OWNER_FACTS",
+        "target": "2026-09-30"
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "WEEKLY_ASOF_LEAKAGE",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_BASELINE_SECTION_54",
+      "id": "weekly_friday_on_monday_negative",
+      "input": {
+        "source_asof": "2026-10-02",
+        "target": "2026-09-28"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "temporal_admission": "ALLOW_WITH_EXACT_OWNER_PROOFS"
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_BASELINE_SECTION_54",
+      "id": "weekly_friday_on_monday_positive",
+      "input": {
+        "source_asof": "2026-09-28",
+        "target": "2026-09-28"
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "MONTHLY_ASOF_LEAKAGE",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_BASELINE_SECTION_54",
+      "id": "month_end_on_midmonth_negative",
+      "input": {
+        "source_asof": "2026-09-30",
+        "target": "2026-09-15"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "temporal_admission": "ALLOW_WITH_EXACT_OWNER_PROOFS"
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_BASELINE_SECTION_54",
+      "id": "month_end_on_midmonth_positive",
+      "input": {
+        "source_asof": "2026-09-15",
+        "target": "2026-09-15"
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "AS_RECORDED_ADJUSTMENT_LEAKAGE",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_BASELINE_SECTION_54",
+      "id": "future_adjustment_revision_negative",
+      "input": {
+        "adjustment_available_at": "2026-10-01",
+        "knowledge_lineage": "AS_RECORDED",
+        "target": "2026-09-30"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "temporal_admission": "ALLOW_WITH_EXACT_OWNER_PROOFS"
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_BASELINE_SECTION_54",
+      "id": "future_adjustment_revision_positive",
+      "input": {
+        "adjustment_available_at": "2026-09-29",
+        "adjustment_revision_exact": true,
+        "knowledge_lineage": "AS_RECORDED",
+        "target": "2026-09-30"
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "SUPPLEMENTAL_CANNOT_CHANGE_ACCEPTED_CORE",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_BASELINE_SECTION_54",
+      "id": "supplemental_after_core_cutoff_negative",
+      "input": {
+        "consumer": "CORE",
+        "provider_asof": "2026-10-01",
+        "target": "2026-09-30"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "future_publication_leakage",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "temporal_admission": "ALLOW_WITH_EXACT_OWNER_PROOFS"
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_BASELINE_SECTION_54",
+      "id": "supplemental_after_core_cutoff_positive",
+      "input": {
+        "accepted_core_digest_unchanged": true,
+        "consumer": "SUPPLEMENTAL_ONLY",
+        "provider_asof": "2026-09-30",
+        "target": "2026-09-30"
+      },
+      "polarity": "positive"
+    },
+    {
+      "dimension": "same_day_revision_predecessor",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "PREVIOUS_ACCEPTED_MARKET_SESSION_REQUIRED",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_TEMPORAL_AND_CAPABILITY_CONTRACT",
+      "id": "previous_calendar_day_is_not_market_session_negative",
+      "input": {
+        "calendar": [
+          "2026-09-24",
+          "2026-09-25",
+          "2026-09-28"
+        ],
+        "claimed_previous": "2026-09-27",
+        "target": "2026-09-28"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "same_day_revision_predecessor",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "SAME_DAY_REVISIONS_MUST_SHARE_EXACT_PREVIOUS_MANIFEST",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_TEMPORAL_AND_CAPABILITY_CONTRACT",
+      "id": "revision_previous_manifest_diverges_negative",
+      "input": {
+        "previous_manifest_digests": [
+          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        ],
+        "target": "2026-09-30"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "cross_process_previous_session",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "EXACT_PERSISTED_READBACK_DIGEST_REQUIRED",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_TEMPORAL_AND_CAPABILITY_CONTRACT",
+      "id": "readback_hash_mismatch_negative",
+      "input": {
+        "persisted_manifest_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "readback_manifest_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "cross_process_previous_session",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "PRODUCER_EXIT_BEFORE_FRESH_PROCESS_REQUIRED",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_TEMPORAL_AND_CAPABILITY_CONTRACT",
+      "id": "producer_did_not_exit_negative",
+      "input": {
+        "producer_exited": false
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "cross_process_previous_session",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "CONSUMER_START_MUST_FOLLOW_PRODUCER_EXIT",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_TEMPORAL_AND_CAPABILITY_CONTRACT",
+      "id": "consumer_started_before_exit_negative",
+      "input": {
+        "consumer_start_at": "2026-09-29T16:59:00+08:00",
+        "producer_exit_at": "2026-09-29T17:00:00+08:00"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "cross_process_previous_session",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "PREVIOUS_PUBLICATION_EXACT_DATE_REQUIRED",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_TEMPORAL_AND_CAPABILITY_CONTRACT",
+      "id": "prior_readback_wrong_date_negative",
+      "input": {
+        "previous_market_session": "2026-09-29",
+        "readback_date": "2026-09-28",
+        "target": "2026-09-30"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "unknown_propagation",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "reason": "REAL_CAPABILITY_DEGRADATION_MUST_BE_PRESERVED",
+        "verdict": "REJECT_CONTRACT_VIOLATION"
+      },
+      "expected_origin": "HAND_AUTHORED_TEMPORAL_AND_CAPABILITY_CONTRACT",
+      "id": "real_capability_unknown_promoted_ready_negative",
+      "input": {
+        "accepted_capability": "UNKNOWN",
+        "claimed_capability": "READY"
+      },
+      "polarity": "negative"
+    },
+    {
+      "dimension": "same_day_revision_predecessor",
+      "evidence_class": "ENGINEERING_SYNTHETIC",
+      "expected": {
+        "required_behavior": {
+          "previous_dates": [
+            "2026-09-25",
+            "2026-09-25"
+          ]
+        },
+        "verdict": "ADMIT_CONTRACT_CASE"
+      },
+      "expected_origin": "HAND_AUTHORED_ACCEPTED_MARKET_CALENDAR_RULE",
+      "id": "previous_market_session_weekend_positive",
+      "input": {
+        "calendar": [
+          "2026-09-24",
+          "2026-09-25",
+          "2026-09-28"
+        ],
+        "revisions": [
+          "r1",
+          "r2"
+        ],
+        "target": "2026-09-28"
+      },
+      "polarity": "positive"
+    }
+  ],
+  "version": "1.1.0"
+}

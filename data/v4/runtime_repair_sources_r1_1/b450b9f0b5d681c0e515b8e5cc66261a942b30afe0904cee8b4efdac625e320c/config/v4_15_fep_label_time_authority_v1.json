@@ -1,0 +1,23 @@
+{
+  "contract_id": "V4_15_FEP_LABEL_TIME_AUTHORITY_V1",
+  "version": "1.0.0",
+  "stage": "E1R1_ENGINEERING_CANDIDATE",
+  "accepted_owner_head": {
+    "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+    "bytes": 4778,
+    "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+  },
+  "source_fact_available_at": "MAX actual available_at of ALL exact consumed accepted fact receipts; complete immutable fact inventory required",
+  "label_training_mature_at": "Exact owner maturity receipt requires full N-window and all quality/completeness gates; otherwise NOT_PROVEN",
+  "label_revision_available_at": "Exact revision owner acceptance/readability receipt available_at; must be >= source_fact_available_at",
+  "forbidden_substitutes": [
+    "trade_date",
+    "due_date",
+    "report_cutoff",
+    "mtime",
+    "wall_clock"
+  ],
+  "pending_policy": "NO_TRAINING_BINDING; retain denominator PENDING",
+  "real_maturity_permission": "NOT_GRANTED",
+  "allocations": []
+}

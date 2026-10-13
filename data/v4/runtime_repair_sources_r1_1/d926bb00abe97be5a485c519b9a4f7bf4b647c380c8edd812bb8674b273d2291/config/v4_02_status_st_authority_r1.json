@@ -1,0 +1,21 @@
+{
+  "contract_id":"V4_02_STATUS_ST_AUTHORITY_R1",
+  "contract_version":"1.0.0",
+  "status":"FROZEN_ENGINEERING_CANDIDATE_EXTERNAL_PENDING",
+  "trading_status_contract":"LOCAL_DATED_TRADING_STATUS_V2",
+  "st_contract":"LOCAL_DATED_ST_IDENTITY_V2",
+  "path":"A_CURRENT_MASTER_CONTRACT",
+  "source_roles":{"TDX_ACTUAL_BAR":"FIELD_AUTHORITY","ACCEPTED_LOCAL_OR_OFFICIAL_DATED_NOTICE":"FIELD_AUTHORITY","BAOSTOCK_TRADESTATUS":"SUPPLEMENTAL_CROSSCHECK","BAOSTOCK_ISST":"SUPPLEMENTAL_CROSSCHECK","CURRENT_TNF_NAME":"DIAGNOSTIC_ONLY"},
+  "status_precedence":["LOCAL_ACTUAL_BAR","ACCEPTED_DATED_SUSPENSION","ACCEPTED_EXPLICIT_SHOULD_TRADE","UNKNOWN"],
+  "st_value_mapping":{"NORMAL":"0","ST":"1","STAR_ST":"1","RISK_WARNING":"1","UNKNOWN":null},
+  "accepted_dated_evidence":[],
+  "absence_is_normal":false,
+  "current_name_historical_backfill_allowed":false,
+  "provider_conflict_overwrites_formal":false,
+  "price_limit_requires_known_formal_st":true,
+  "real_source_scope":"Historical required rows and target-date staging; no formal publication before independent acceptance",
+  "historical_lineage":"RECONSTRUCTED_CORRECTED",
+  "first_available_at_target_proven":false,
+  "formal_consumer_authorization":false,
+  "external_acceptance":null
+}

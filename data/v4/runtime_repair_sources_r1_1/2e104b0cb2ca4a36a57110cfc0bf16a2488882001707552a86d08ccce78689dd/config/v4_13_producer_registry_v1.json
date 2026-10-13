@@ -1,0 +1,63 @@
+{
+  "contract_id": "V4_13_PRODUCER_REGISTRY_V1",
+  "producers": [
+    {
+      "outputs": [
+        "primary_industry",
+        "supporting_concepts",
+        "algorithmic_support_sector",
+        "relative_sector_state",
+        "sector_context_state",
+        "sector_context_quality",
+        "rotation_structure_enrichment"
+      ],
+      "producer_contract_id": "LOO_CONTEXT_V1",
+      "publication": "CONTEXT_LOO",
+      "requiredness": "ALL_AUTHORITY_GATED",
+      "runtime": "NOT_IMPLEMENTED",
+      "source_authorities": {
+        "V4_04": {
+          "bytes": 6837,
+          "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+          "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+        },
+        "V4_08": {
+          "bytes": 21493,
+          "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+          "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+        },
+        "V4_12": {
+          "bytes": 796484,
+          "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+          "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+        }
+      }
+    },
+    {
+      "operation": "LOSSLESS_READ_ONLY_PROJECT",
+      "outputs": [
+        "active_anchor_id",
+        "anchor_view_asof_t",
+        "basic_breakout_state",
+        "basic_pullback_state",
+        "basic_recovery_state",
+        "support_state",
+        "acceptance_state",
+        "retest_count",
+        "structure_events",
+        "structure_health"
+      ],
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication": "ADVANCED_PROFILE_PROJECTION",
+      "runtime": "NOT_IMPLEMENTED",
+      "source_authority": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      }
+    }
+  ],
+  "runtime_implemented": false,
+  "status": "CONTRACT_FREEZE_ONLY",
+  "version": "1.0.0"
+}

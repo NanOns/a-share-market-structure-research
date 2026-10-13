@@ -1,0 +1,21 @@
+{
+  "contract_id": "V4_OFFICIAL_CALENDAR_2023_H2_SOURCE_CAPTURE_V1",
+  "version": "1.0.0",
+  "status": "SOURCE_CONTRACT_FROZEN_CAPTURE_PENDING",
+  "scope": {"calendar_start": "2023-07-04", "source_cutoff": "2026-09-24"},
+  "purpose": "Add the official 2023 annual closure notices needed to cover the accepted V4-01 warmup start. This supplement does not broaden the existing calendar beyond the V4-02 source cutoff.",
+  "sources": [
+    {"source_id": "closures_sse_2023", "market": "SSE", "year": 2023, "source_published_date": "2022-12-27", "source_url": "https://www.sse.com.cn/disclosure/announcement/general/c/c_20221227_5714458.shtml"},
+    {"source_id": "closures_szse_2023", "market": "SZSE", "year": 2023, "source_published_date": "2022-12-27", "source_url": "https://www.szse.cn/disclosure/notice/general/t20221227_598022.html"}
+  ],
+  "source_capture": {
+    "maximum_requests_per_run": 2,
+    "maximum_response_bytes_per_page": 2000000,
+    "maximum_total_response_bytes": 4000000,
+    "timeout_seconds": 20,
+    "allowed_hosts": ["www.sse.com.cn", "www.szse.cn"],
+    "redirect_hosts": ["www.sse.com.cn", "www.szse.cn"],
+    "store_under": "data/v4/source_evidence/official_calendar_v2_2023_h2/"
+  },
+  "lineage": "RECONSTRUCTED_FROM_OFFICIAL_NOTICE; RETRIEVAL_IS_NOT_CONTEMPORANEOUS_SYSTEM_CONSUMPTION"
+}

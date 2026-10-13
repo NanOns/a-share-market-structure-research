@@ -1,0 +1,62 @@
+{
+  "append_only": true,
+  "contract_id": "COHORT_REVISION_V1",
+  "daily_ledger_key": [
+    "model_contract_id",
+    "state_lineage_id",
+    "publication_id",
+    "entity_type",
+    "entity_id",
+    "signal_type"
+  ],
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "45A",
+      "46"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "fields": [
+    "logical_event_id",
+    "publication_id",
+    "observation_state",
+    "source_correction",
+    "supersedes_observation"
+  ],
+  "focus": false,
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "logical_event_key": [
+    "model_contract_id",
+    "state_lineage_id",
+    "entity_type",
+    "entity_id",
+    "episode_id",
+    "event_type",
+    "event_trade_date"
+  ],
+  "logical_identity_encoding": "SHA256_OF_UTF8_CANONICAL_JSON_ORDERED_KEY_ARRAY; NULL_KEY_REJECTED; ENTITY_NAMESPACE_INCLUDED",
+  "observation_key": [
+    "logical_event_id",
+    "publication_id"
+  ],
+  "observation_states": [
+    "ASSERTED",
+    "RETRACTED",
+    "CORRECTED"
+  ],
+  "persistent": "LEDGER_ONLY_NO_NEW_LOGICAL_EVENT_OR_ENROLLMENT",
+  "production": false,
+  "revision": "APPEND_OBSERVATION_SAME_EVENT_EPISODE",
+  "runtime_implemented": false,
+  "shadow": false,
+  "source_correction": {
+    "erase_as_recorded": false,
+    "reconstructed_separate": true,
+    "redraw_controls": false,
+    "reset_T0": false
+  },
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "version": "1.0.0"
+}

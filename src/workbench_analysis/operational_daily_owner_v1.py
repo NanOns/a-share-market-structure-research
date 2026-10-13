@@ -55,16 +55,17 @@ def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None)
     before=current_gbbq.stat();blob=current_gbbq.read_bytes();after=current_gbbq.stat()
     if (before.st_size,before.st_mtime_ns)!=(after.st_size,after.st_mtime_ns):raise ValueError('GBBQ_CHANGED_DURING_CAPTURE')
     member_source_hashes={source['address']:sha256_file(Path(source['address'])) for source in snapshot['sources']}
-    previous_owner=load(checked(root,parent['owners'][previous]['diagnostic']))['owner']
-    revisions=[]
-    if hashlib.sha256(blob).hexdigest()!=previous_owner['sources']['gbbq']['sha256']:revisions.append('GBBQ_REVISION')
-    if any(member_source_hashes[s['address']]!=s['sha256'] for s in snapshot['sources']):revisions.append('MEMBERSHIP_REVISION')
+    from .operational_revision_guard_r1 import detect as detect_revisions
+    execution_bindings=load(checked(root,adjustment_contract['policy']))['accepted_algorithm_bindings'] if adjustment_contract else None
+    revision_guard=detect_revisions(root,parent,hashlib.sha256(blob).hexdigest(),member_source_hashes,execution_bindings=execution_bindings)
+    revisions=revision_guard['revisions']
     increment=increment_plan(parent,day,sessions,revisions=revisions,replay_current=replay_current)
     compute_dates=increment['compute_sessions']
     required=sorted(set(compute_dates)|{sessions[sessions.index(d)-k] for d in compute_dates for k in (1,3,4,5)})
     generation=dict(contract_id='DYNAMIC_DAILY_OWNER_GENERATION_SCOPE_V1',source_freeze=freeze_binding['sha256'],
         parent_head=sha256_file(root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'),identity=identity_binding['sha256'],
         gbbq=hashlib.sha256(blob).hexdigest(),member_sources=member_source_hashes,
+        revision_guard=revision_guard,
         increment_scope={k:increment[k] for k in ('contract_id','mode','compute_sessions','history_dependencies','revisions')},
         producer={name:sha256_file(root/'src/workbench_analysis'/name) for name in ('operational_daily_owner_v1.py','operational_owner_adapter_v1.py')})
     generation_key=hashlib.sha256(json.dumps(generation,sort_keys=True,separators=(',',':')).encode()).hexdigest()
@@ -82,7 +83,7 @@ def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None)
     if not scope_path.is_file():atomic_json(root,scope_path,generation)
     atomic_json(root,folder/'INCREMENT_PLAN.json',increment)
     if increment['mode']=='RANGE_REPAIR':
-        raise ValueError('INCREMENT_RANGE_REPAIR_REQUIRES_EXPLICIT_ADMISSION:'+','.join(revisions))
+        raise ValueError('RANGE_REPAIR_REQUIRED:'+','.join(revisions))
     phase_path=root/'reports/v4_phase0/V4_PHASE0_STAGE_RECEIPTS_R5_20260928.json'
     phase=load(phase_path)
     if phase['phase0_status'] not in ('FULL_PASS','DEGRADED_PASS'):raise ValueError('PHASE0_GATE_REQUIRED')
@@ -309,6 +310,8 @@ def seal(root,context):
                      membership_snapshot_id=context['snapshot']['membership_snapshot_id'],
                      membership_observed_at=context['snapshot']['membership_observed_at'],
                      snapshot_membership_asof=context['snapshot']['member_set_asof'])
+    inherited={key:candidate.pop(key) for key in ('sealed_numeric_preparation','component_source_conservation') if key in candidate}
+    if inherited:candidate['predecessor_generation_evidence']=dict(predecessor=candidate['predecessor'],receipts=inherited)
     candidate['owners']=dict(parent['owners'],**{day:owners})
     if context.get('source_quality'):candidate['source_quality']=context['source_quality']
     from .operational_increment_plan_v1 import assert_old_owners_unchanged

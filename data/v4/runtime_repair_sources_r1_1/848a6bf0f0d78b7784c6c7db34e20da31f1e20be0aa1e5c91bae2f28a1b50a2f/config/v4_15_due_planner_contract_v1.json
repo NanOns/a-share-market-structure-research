@@ -1,0 +1,46 @@
+{
+  "backlog": "DUE_BUT_REQUIRED_ACCEPTED_SOURCE_UNAVAILABLE",
+  "calendar": {
+    "bytes": 10739,
+    "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/calendar_union_2e0938120e3b371aa9c84422c06b4c14de0f8894cc8f3caa9dd9c61299239e74.json",
+    "sha256": "629242b5074002dd8e889fdca5da9e1c05f9ae35357662d5c76a554117fc17f5"
+  },
+  "calendar_out_of_accepted_coverage": "DUE_DATE_UNKNOWN_CALENDAR_CAPABILITY_ONLY_NO_WEEKDAY_SYNTHESIS",
+  "contract_id": "DUE_PLANNER_V1",
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "46",
+      "46A",
+      "47"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "endpoint_suspension_shift": false,
+  "fields": [
+    "due_trade_date",
+    "horizon",
+    "due_state",
+    "actual_count"
+  ],
+  "focus": false,
+  "formula": "accepted_sessions[index(T0)+N]",
+  "horizons": [
+    1,
+    3,
+    5,
+    10,
+    20
+  ],
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "pending": "NOT_YET_DUE",
+  "production": false,
+  "runtime_implemented": false,
+  "same_day_revision_resets_T0": false,
+  "selection_inputs": false,
+  "shadow": false,
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "version": "1.0.0",
+  "weekend_holiday_count": false
+}

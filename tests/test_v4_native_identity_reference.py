@@ -7,7 +7,8 @@ def test_identity_extension_preserves_member_fact_and_uses_native_reader(tmp_pat
     members=tmp_path/'members.json';atomic_json(tmp_path,members,dict(rows=[dict(sector_id='S',security_id='FIXTURE')]))
     identities=tmp_path/'identity.json';atomic_json(tmp_path,identities,dict(rows=[dict(security_id='FIXTURE',source_security_key='FIXTURE.CURRENT')]))
     snapshot=tmp_path/'snapshot.json';atomic_json(tmp_path,snapshot,dict(memberships=ref(tmp_path,members),identity_source=ref(tmp_path,identities)))
-    candidate=dict(accepted_trade_date='2026-10-12',membership_snapshot=ref(tmp_path,snapshot));prepare(tmp_path,candidate)
+    lifecycle=tmp_path/'lifecycle.json';atomic_json(tmp_path,lifecycle,dict(trade_date='2026-10-12',identity=ref(tmp_path,identities)))
+    candidate=dict(accepted_trade_date='2026-10-12',membership_snapshot=ref(tmp_path,snapshot),owners={'2026-10-12':dict(lifecycle=ref(tmp_path,lifecycle))});prepare(tmp_path,candidate)
     import json
     previous=json.loads((tmp_path/candidate[KEY]['path']).read_bytes());receipt=prepare_identity(tmp_path,candidate)
     current=json.loads((tmp_path/candidate[KEY]['path']).read_bytes())

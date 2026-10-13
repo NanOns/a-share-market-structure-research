@@ -1,0 +1,48 @@
+{
+  "detector_status": [
+    "IMPLEMENTED",
+    "SYNTHETIC",
+    "NOT_IMPLEMENTED",
+    "NOT_APPLICABLE"
+  ],
+  "facts_domain": [
+    "TRUE",
+    "FALSE",
+    "UNKNOWN"
+  ],
+  "no_implicit_false": true,
+  "prior_state_binding": [
+    "publication_id",
+    "payload_digest"
+  ],
+  "provenance_required": [
+    "contract_id",
+    "parameter_set_id",
+    "publication_id"
+  ],
+  "required": [
+    "entity_id",
+    "entity_type",
+    "trade_date",
+    "session_index",
+    "calendar_publication_id",
+    "mode",
+    "input_publication_ids",
+    "prior_state",
+    "prior_state_binding",
+    "model_boundary",
+    "suspended",
+    "followup_complete",
+    "detectors",
+    "core_price_damage",
+    "frozen_invalidation",
+    "episode_invalidation_contract_id",
+    "delta3",
+    "dq5",
+    "risk",
+    "scenario"
+  ],
+  "schema_id": "V4_10_REDUCER_INPUT_SCHEMA_V1",
+  "session_index": "explicit bound market calendar; nonnegative integer",
+  "type": "object"
+}

@@ -1,0 +1,22 @@
+{
+  "contract_id": "V4_08_INDUSTRY_PARENT_MEMBERSHIP_V1",
+  "version": "1.0.0",
+  "status": "FROZEN_DIAGNOSTIC_ENGINEERING_CONTRACT",
+  "membership_basis": "DERIVED_PARENT_MEMBERSHIP",
+  "source_contract": "V4_08_SECTOR_MEMBERSHIP_SOURCE_V1",
+  "source_files": [
+    "T0002/hq_cache/tdxhy.cfg",
+    "T0002/hq_cache/tdxzs.cfg"
+  ],
+  "parent_child_map": {
+    "map_id": "TDX_INDUSTRY_PREFIX_PARENT_MAP_V1",
+    "rule": "For a source industry code with more than five characters, its parent is the first five characters only when that code is present as an industry name in the frozen tdxzs.cfg bytes.",
+    "mapping_source": "Frozen tdxzs.cfg sector-code/name rows; the exact generated child-to-parent map digest is bound into each candidate snapshot source digest.",
+    "unmapped_child": "Do not derive a parent when the five-character prefix is absent from the frozen industry-name source."
+  },
+  "member_set_rule": "Set union of child member keys for the generated child-to-parent map; de-duplicate each parent/source-security-key pair and preserve every contributing child sector id.",
+  "identity_rule": "Retain a parent row when the accepted security identity is UNKNOWN; never drop an unresolved source key. Unknown identity blocks formal materialization.",
+  "cross_industry_guard": "A child may contribute only to the exact parent in the frozen child-to-parent map. Any mismatch is an error.",
+  "formal_consumer_allowed": false,
+  "separate_acceptance_required_before_production": true
+}

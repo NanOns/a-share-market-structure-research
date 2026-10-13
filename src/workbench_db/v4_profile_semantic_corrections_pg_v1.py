@@ -40,15 +40,42 @@ def prepare(root,candidate,patches):
     target=root/'data/v4/profile_semantic_corrections_pg_v1'/digest(authority)/'AUTHORITY.json';atomic_json(root,target,authority);candidate[KEY]=ref(root,target)
     return dict(rows=sum(len(e['security_ids']) for e in entries.values()),dates=len(entries),publication=False)
 
+def conserved_dates(root,candidate,key,actual,expected):
+    """Follow exact immutable append ancestry back to the fully scoped patch."""
+    original=candidate;current=candidate;visited=set()
+    for _ in range(4096):
+        current_expected={d:expected[d] for d in current['owners'] if d in expected}
+        if actual==current_expected and set(actual)==set(current['owners']):return set(actual)
+        binding=current.get('predecessor')
+        if not binding:raise ValueError('PROFILE_CORRECTION_OWNER_CONSERVATION_REQUIRED')
+        marker=(binding.get('path'),binding.get('sha256'))
+        if marker in visited:raise ValueError('PROFILE_CORRECTION_PREDECESSOR_CYCLE')
+        visited.add(marker)
+        prior=json.loads(checked(root,binding).read_bytes())
+        if current.get(key)!=prior.get(key) or current.get(key)!=original.get(key) or not current.get(key):
+            raise ValueError('PROFILE_CORRECTION_INHERITANCE_BINDING_REQUIRED')
+        old_days=set(prior['owners']);new_days=set(current['owners'])-old_days
+        if len(new_days)!=1 or new_days!={current['accepted_trade_date']} or current['accepted_trade_date']<=prior['accepted_trade_date']:
+            raise ValueError('PROFILE_CORRECTION_SINGLE_APPEND_REQUIRED')
+        if any(current['owners'].get(d)!=o for d,o in prior['owners'].items()):raise ValueError('PROFILE_CORRECTION_PREDECESSOR_OWNER_CHANGED')
+        current=prior
+    raise ValueError('PROFILE_CORRECTION_PREDECESSOR_BOUND_EXCEEDED')
+
+
 def load(root,candidate):
     authority=json.loads(checked(root,candidate[KEY]).read_bytes())
-    if authority.get('contract_id')!=CONTRACT or authority.get('source_profiles')!={d:o['profile'] for d,o in candidate['owners'].items()} or set(authority.get('dates',{}))!=set(candidate['owners']):
+    expected={d:o['profile'] for d,o in candidate['owners'].items()}
+    dates=conserved_dates(root,candidate,KEY,authority.get('source_profiles',{}),expected)
+    if authority.get('contract_id')!=CONTRACT or set(authority.get('dates',{}))!=dates:
         raise ValueError('PROFILE_CORRECTION_OWNER_CONSERVATION_REQUIRED')
     if any(authority.get(k) is not False for k in ('PIT_ELIGIBLE','AS_RECORDED')):raise ValueError('PROFILE_CORRECTION_PIT_ESCALATION')
+    for day,entry in authority['dates'].items():
+        if entry['original_profile']!=expected[day]:raise ValueError('PROFILE_CORRECTION_OWNER_CONSERVATION_REQUIRED')
     return authority
 
 def apply(root,candidate,day,original):
-    entry=load(root,candidate)['dates'][day]
+    entry=load(root,candidate)['dates'].get(day)
+    if entry is None:return original
     patches=read_fact(root,entry['descriptor'],entry['fact_token'],day,'reference_profile_semantic_corrections',entry['source'])
     index={p['security_id']:p for p in patches}
     if len(index)!=len(patches) or set(index)!=set(entry['security_ids']):raise ValueError('PROFILE_CORRECTION_PG_DENOMINATOR')
@@ -64,10 +91,12 @@ def apply(root,candidate,day,original):
     return result
 
 def field_binding(root,candidate,day,security_id):
-    entry=load(root,candidate)['dates'][day]
+    entry=load(root,candidate)['dates'].get(day)
+    if entry is None:return None
     return entry['source'] if security_id in entry['security_ids'] else None
 
 def attest(root,candidate,day):
     from .v4_operational_owner_pg_closeout import attest_cached
-    entry=load(root,candidate)['dates'][day]
+    entry=load(root,candidate)['dates'].get(day)
+    if entry is None:return
     attest_cached(root,entry['descriptor'],'reference_profile_semantic_corrections',entry['source'])

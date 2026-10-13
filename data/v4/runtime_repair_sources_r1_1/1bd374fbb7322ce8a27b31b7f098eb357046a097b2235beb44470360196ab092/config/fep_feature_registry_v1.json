@@ -1,0 +1,1380 @@
+{
+  "contract_id": "FEP_E1_FEATURES_V1",
+  "version": "1.0.0",
+  "fields": [
+    {
+      "field_name": "amount_ratio20",
+      "producer": "CORE_FACTOR_V1.AMOUNT_RATIO",
+      "source_field": "amount_ratio20",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "ratio",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "7901deede71a7713aae5e50b498d336b63fdba7e43beb4469b0f03e732cf7579",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "amount_ratio5",
+      "producer": "CORE_FACTOR_V1.AMOUNT_RATIO",
+      "source_field": "amount_ratio5",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "ratio",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "7e70b0d93ce7cd9513aab9227837ee24ab5247b9f2c95e7d192e6d27daaa06e0",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "atr20",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "source_field": "atr20",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "553665fc2e5a950de78e36fbcfdf8d5c3843de07a5c9f503b56e40e8b2e9faab",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "atr5",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "source_field": "atr5",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "47ae326181aea74b6ca98b08646d944e650396c7570567fdf7652da3eee578f0",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "atr_ratio",
+      "producer": "CORE_FACTOR_V1.ATR_RATIO",
+      "source_field": "atr_ratio",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "ratio",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "6f79c840fdb1a4b205c1020afeb6392b29a0248d1d5315cedb05bd4698ccde66",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "clv",
+      "producer": "CORE_FACTOR_V1.CLV",
+      "source_field": "clv",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "ratio",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "b42b3ac0988110a375c380fe5618ca8e6fe612b506bdcab631673b21667fd482",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "core_price_damage",
+      "producer": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+      "source_field": "core_price_damage",
+      "field_path": null,
+      "data_type": "boolean",
+      "unit": "boolean",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "1f15da47a21fb86dffad644179cbaefa5ea333d6214913c7836ae301a7cf15ca",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "hh_progress",
+      "producer": "CORE_FACTOR_V1.HH_PROGRESS",
+      "source_field": "hh_progress",
+      "field_path": null,
+      "data_type": "boolean",
+      "unit": "boolean",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "313f4410008788c56d5fbfd5a9789fc866b71f65484c08ee6b9b36a608935109",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "hhv20",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "source_field": "hhv20",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "602a5bc8e0b2f362b86c635b117368828adafaac6b8edff82b97af207d40ec9a",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "hhv5",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "source_field": "hhv5",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "9f8e2378670aa312dad21f87f64f1ae5edcb86a4262b2214534ad103e013399d",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "hhv60",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "source_field": "hhv60",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "fa0297bbafdccf8eb4c038a2f85ea53aa410c88af3eb0ae3c08c22f89437e1d9",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "ll_progress",
+      "producer": "CORE_FACTOR_V1.LL_PROGRESS",
+      "source_field": "ll_progress",
+      "field_path": null,
+      "data_type": "boolean",
+      "unit": "boolean",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "2e1707e7bdf1d9ad83381e756aee38da054dfce0226b07eb9e49ea99e72a861b",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "llv20",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "source_field": "llv20",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "106e998d28ea5402800d12f55b9d321cb14a1d889c68a7248032f860bafe2b76",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "llv5",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "source_field": "llv5",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "1478fedfa5dfb2757f36773e7949c49f41a20c9e51042fd676ee2b663b441f3f",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "llv60",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "source_field": "llv60",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "dde832e86734880d96c693c1b3126f0b59cd1f6dd09ba2136731497c8b800da9",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "ma20",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "source_field": "ma20",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "4bce9946e6572b01c8b80025ba3add034ff786dc17401a210cd63448060e7afd",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "ma5",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "source_field": "ma5",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "cd32a8ad86128b4ab6109868d389581ef6e3eb5c638fc44eeb003af0c3828e06",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "ma60",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "source_field": "ma60",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "f18ed76b013db3f56d529e6ad4f5285dfa52523f777d809600b48ba60e6552ee",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "pos60",
+      "producer": "CORE_FACTOR_V1.POS60",
+      "source_field": "pos60",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "ratio",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "341ce2caec0efb1939f05c2acb14137ab3da794eb628921b06d5aa719d46b716",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "prior60_percentile",
+      "producer": "CORE_FACTOR_V1.PRIOR60_PERCENTILE",
+      "source_field": "prior60_percentile",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "percentile_points",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "eeb915a81235eab3f2e4470a959592d690b2f8add3553ab0fb3946fcb54186c3",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "prior_high20",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "source_field": "prior_high20",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "e5492c1b2b5648dcb4c398dd7d7c1144053edcd6cfa1a09b5763463f940a362a",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "prior_high5",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "source_field": "prior_high5",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "dfb4ca25343ab70eb8b352cc230376717af433ff050bb76f137c526e13ca3880",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "prior_high60",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "source_field": "prior_high60",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "92820618385909a80605278e1dd35a80bf039a321a139979c0c202dbd5aa3df3",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "prior_low20",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "source_field": "prior_low20",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "8fe453333ce3d3005564b61be2cf155e2ff0753ee0ed76c33025f2aabaa9c9eb",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "prior_low5",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "source_field": "prior_low5",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "4688c5ae858d7f53019395f7690b9eb0887716abf29dc2bd21b270debe65adec",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "prior_low60",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "source_field": "prior_low60",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "75302dbf4599fa49c0bb955ea4ec93f511cc9ed186b04ef24227e48c6492d7f6",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "range_ratio",
+      "producer": "CORE_FACTOR_V1.RANGE_RATIO",
+      "source_field": "range_ratio",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "ratio",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "910f2a45af7ceedee8a32eb515c18f83cb9a1d285d3100f40a20a60bf45812fc",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "rel_market_1",
+      "producer": "MARKET_RELATIVE_REFERENCE_V1",
+      "source_field": "rel_market_1",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "return_fraction",
+      "nullable": true,
+      "required": true,
+      "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "fixed_market_session_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "69f1ea1c82d8e83694efb2a5c3a29d77c77e9e6619ebdaf1816c4104113cf5c9",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "rel_market_3",
+      "producer": "MARKET_RELATIVE_REFERENCE_V1",
+      "source_field": "rel_market_3",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "return_fraction",
+      "nullable": true,
+      "required": true,
+      "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "fixed_market_session_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "0f66cc9c4e4bf397a99b460de3a9a5565db74f8b7c07528ce331663703e355cc",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "rel_market_5",
+      "producer": "MARKET_RELATIVE_REFERENCE_V1",
+      "source_field": "rel_market_5",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "return_fraction",
+      "nullable": true,
+      "required": true,
+      "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "fixed_market_session_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "635fe9aa376fb015a93a92c12c87aac056695d000ed64cbaeabc608124b8f6d6",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "ret1",
+      "producer": "CORE_FACTOR_V1.RET",
+      "source_field": "ret1",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "return_fraction",
+      "nullable": true,
+      "required": true,
+      "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "fixed_market_session_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "8fcb519af526b84524348cf444f53c7f9174324f04859010b9a2651864ca4e92",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "ret20",
+      "producer": "CORE_FACTOR_V1.RET",
+      "source_field": "ret20",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "return_fraction",
+      "nullable": true,
+      "required": true,
+      "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "fixed_market_session_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "4a8c8553e4f393729a718e996e1e9f38883abf6eb8b44826577ed129d9ca76b3",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "ret3",
+      "producer": "CORE_FACTOR_V1.RET",
+      "source_field": "ret3",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "return_fraction",
+      "nullable": true,
+      "required": true,
+      "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "fixed_market_session_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "3aecfa0db199e429b901963e46155a31045fb0aec60875864bf6d65a46fba75f",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "ret5",
+      "producer": "CORE_FACTOR_V1.RET",
+      "source_field": "ret5",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "return_fraction",
+      "nullable": true,
+      "required": true,
+      "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "fixed_market_session_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "b21ce8581ccba900aa86b8d6486911cacc61d811c9e9a11fbe1f45d6e20d62f3",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "rps20",
+      "producer": "RPS_MIDRANK_V1",
+      "source_field": "rps20",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "percentage_points",
+      "nullable": true,
+      "required": true,
+      "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "fixed_market_session_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "98f9456c69e1433a358a6715011d7661f970f85c68f2d967fc8ad38b4a52d661",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "rps20_delta3",
+      "producer": "RPS_DELTA_V1",
+      "source_field": "rps20_delta3",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "percentage_points",
+      "nullable": true,
+      "required": true,
+      "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "fixed_market_session_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "b912271d2cdf1b376243e603ec879af53dd4a8a4f2d93429bcdf82e653322df7",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "rps5",
+      "producer": "RPS_MIDRANK_V1",
+      "source_field": "rps5",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "percentage_points",
+      "nullable": true,
+      "required": true,
+      "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "fixed_market_session_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "c01b7e64faa080347c20afc745714563b08348a4167140d3a43a4fbecf21c33a",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "rps5_delta1",
+      "producer": "RPS_DELTA_V1",
+      "source_field": "rps5_delta1",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "percentage_points",
+      "nullable": true,
+      "required": true,
+      "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "fixed_market_session_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "dc095f960803d5216b0cd58b8fda877287011b3632499175b631ad5bd7216b99",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "rps5_delta3",
+      "producer": "RPS_DELTA_V1",
+      "source_field": "rps5_delta3",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "percentage_points",
+      "nullable": true,
+      "required": true,
+      "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "fixed_market_session_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "21da3e941c9e7f5457244055be319f0f8791ab4b73c0ab6cad8c9caa19cb9edb",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "slope20",
+      "producer": "CORE_FACTOR_V1.SLOPE",
+      "source_field": "slope20",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "dimensionless",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "8605781af66b3494575138fbc83677e5be577749cf58eafecb8cb0d8979a877c",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "slope60",
+      "producer": "CORE_FACTOR_V1.SLOPE",
+      "source_field": "slope60",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "dimensionless",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "34fa6db8d1c3940d05f21f8df17187e1d743b1fcbbfdc106795919931d89769c",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "tr",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "source_field": "tr",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "8f0d8076ef4c37456b03e36ddfe72b0993afc4e1ee86493b1d20e29c6c487f14",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "vol20",
+      "producer": "CORE_FACTOR_V1.VOL",
+      "source_field": "vol20",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "log_return_std",
+      "nullable": true,
+      "required": true,
+      "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "fixed_market_session_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "1bebb5232ea73f2ec3faa15fd01e2394af8339751bf3dbaacd16d351f5a3cb95",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "vol5",
+      "producer": "CORE_FACTOR_V1.VOL",
+      "source_field": "vol5",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "log_return_std",
+      "nullable": true,
+      "required": true,
+      "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "fixed_market_session_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "c37f72b512d88bf7e6ca63d2893665a6768379c63a98143b567911062269f405",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "vol_ratio",
+      "producer": "CORE_FACTOR_V1.VOL_RATIO",
+      "source_field": "vol_ratio",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "ratio",
+      "nullable": true,
+      "required": true,
+      "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "fixed_market_session_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "690df3477e992d12c05eb2d0a5fa5b18f837eb4457a229834b16fece744c461b",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "volume_ratio20",
+      "producer": "CORE_FACTOR_V1.VOLUME_RATIO",
+      "source_field": "volume_ratio20",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "ratio",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "8bd2678fd81baa860a6fb4e999483f0d5a8c1e9585a64b21a94cefaf5b84ebe6",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    },
+    {
+      "field_name": "volume_ratio5",
+      "producer": "CORE_FACTOR_V1.VOLUME_RATIO",
+      "source_field": "volume_ratio5",
+      "field_path": null,
+      "data_type": "float64",
+      "unit": "ratio",
+      "nullable": true,
+      "required": true,
+      "window_contract": "TECHNICAL_BAR_WINDOW_V1",
+      "quality_allowlist": [],
+      "availability_rule": "actual_bar_asof_t",
+      "allowed_scopes": [
+        "FEP_STOCK_ENTRY_CORE"
+      ],
+      "consumer_contract": "FEP_E1_FEATURES_V1",
+      "status": "NOT_IMPLEMENTED",
+      "reason": "Accepted producer registry verified; current 2026-09-30 ENTRY publication path/quality/UTC availability not verified. Historical 2026-09-24 profile sample exposes primitive quality but does not provide a direct primitive value collection.",
+      "source_registry_binding": {
+        "path": "config/v4_03_field_registry_v1.json",
+        "bytes": 40715,
+        "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+      },
+      "source_row_digest": "ff6e05bad4a8a59c8b16007aa92906905f48b81f44971bc455bec88b03448794",
+      "accepted_profile_sample_presence": {
+        "primitive_quality": true,
+        "primitive_numeric_value_in_root": false
+      }
+    }
+  ],
+  "FEP_E1_DATASET_COMPLETE": false,
+  "status": "FAIL_CLOSED_MAPPING_CANDIDATE",
+  "unresolved_design_families": [
+    "State/Event ENTRY identity",
+    "Profile enums",
+    "market axes",
+    "sector context",
+    "supplemental turnover",
+    "D1 structure"
+  ],
+  "permissions": "UNGRANTED"
+}

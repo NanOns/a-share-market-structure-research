@@ -155,7 +155,7 @@ def run_daily_worker(root,readback_url):
     from .source_adapter import executor
     from workbench_analysis.operational_daily_executor_v1 import probe_source_revision
     jobs=ManagedDailyJobs(root,source_probe=probe_source_revision)
-    execute=executor(root)
+    execute=executor(root,producer_worker=True)
     jobs.original_executor=lambda day,mode:execute(root,day,mode,cancelled=jobs.maintenance_cancelled,
         readback_url=readback_url,progress=jobs.checkpoint)
     stream=sys.stdin

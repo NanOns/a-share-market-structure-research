@@ -1,0 +1,47 @@
+{
+  "contract_id": "FP13_FULL_PRODUCT_QA_V2",
+  "empty_placeholder_counts_as_coverage": false,
+  "engineering_tests_are_product_acceptance": false,
+  "external_acceptance_is_automatic": false,
+  "fault_proxy": "scripts/fp13_fault_proxy.py",
+  "fault_scope": "LOCAL_TEST_PROXY_GET_ONLY_NEVER_A_PRODUCTION_SOURCE",
+  "field_inventory": "scripts/build_fp13_field_matrix.py",
+  "historical_edge_pass_unchanged": true,
+  "no_trading": true,
+  "predecessor": {
+    "bytes": 850,
+    "path": "config/v4_full_product_qa_contract_v1.json",
+    "sha256": "ef46d9ed5bc68ce22177d6e38d47365df3dbeb344df593731b41514bd54bb7ea"
+  },
+  "required_browser": "Codex IAB",
+  "required_evidence": [
+    "HEAD_AND_SOURCE_IDENTITIES",
+    "REAL_BROWSER_PATHS",
+    "FIELD_PRODUCER_API_UI_TEST_MATRIX",
+    "REAL_VALUE_ORACLE",
+    "ALL_PAGINATION",
+    "FAULT_ISOLATION",
+    "TDX_PRE_POST",
+    "REGRESSION",
+    "RUNTIME_LOGS"
+  ],
+  "required_gates": [
+    "iab_browser_pass",
+    "service_disconnect_recovery_pass",
+    "field_scope_coverage_pass"
+  ],
+  "required_product_field_coverage": 1.0,
+  "runner": "scripts/run_r2_qa.py",
+  "source_debt_requires_separate_item": true,
+  "tdx_write": false,
+  "viewport_sizes": [
+    [
+      1366,
+      768
+    ],
+    [
+      1920,
+      1080
+    ]
+  ]
+}

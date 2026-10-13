@@ -1,0 +1,100 @@
+{
+  "contract_id": "V4_R1_1_FULL_TARGET_VALUE_PARITY",
+  "compute_sessions": [
+    "2026-10-13"
+  ],
+  "mode": "APPEND_DAY",
+  "domains": {
+    "raw": {
+      "actual_count": 5212,
+      "reference_count": 5212,
+      "identity_set_equal": true,
+      "business_difference_count": 0,
+      "examples": []
+    },
+    "adjusted": {
+      "actual_count": 5212,
+      "reference_count": 5212,
+      "identity_set_equal": true,
+      "business_difference_count": 0,
+      "examples": []
+    },
+    "core": {
+      "actual_count": 5225,
+      "reference_count": 5225,
+      "identity_set_equal": true,
+      "business_difference_count": 0,
+      "examples": []
+    },
+    "profile": {
+      "actual_count": 5225,
+      "reference_count": 5225,
+      "identity_set_equal": true,
+      "business_difference_count": 0,
+      "examples": []
+    },
+    "status": {
+      "actual_count": 5225,
+      "reference_count": 5225,
+      "identity_set_equal": true,
+      "business_difference_count": 0,
+      "examples": []
+    },
+    "native": {
+      "actual_count": 400,
+      "reference_count": 400,
+      "identity_set_equal": true,
+      "business_difference_count": 0,
+      "examples": []
+    },
+    "rotation": {
+      "actual_count": 400,
+      "reference_count": 400,
+      "identity_set_equal": true,
+      "business_difference_count": 0,
+      "examples": []
+    },
+    "relative_sector": {
+      "actual_count": 5225,
+      "reference_count": 5225,
+      "identity_set_equal": true,
+      "business_difference_count": 0,
+      "examples": []
+    },
+    "seed": {
+      "actual_count": 5225,
+      "reference_count": 5225,
+      "identity_set_equal": true,
+      "business_difference_count": 0,
+      "examples": []
+    }
+  },
+  "acceptance": "PASS",
+  "new_generation": "data/v4/dynamic_daily_owners/2026-10-13/fff118fef56ef5a4993b92496d352e8b977f5be17b9b6e66380e512d91bf5778",
+  "reference_core": {
+    "path": "data/v4/dynamic_daily_owners/2026-10-13/35e5a7c80925e59b640bcc694df1184e8bb850634b10085473cd26f6b9b89b57/owner_v3/CORE_REPLAY.json",
+    "sha256": "4ffbc64510c03759b44ea14000f139ca5de2670eeeb5247618f6790653d1fb26",
+    "bytes": 4745068
+  },
+  "scope": "All raw/adjusted/Core/Profile/status/Sector/rotation/relative/Seed fields; Structure identities, Focus, Period and publication require independent gates",
+  "reference_qualification": {
+    "result_path": "G:\\codex_tmp\\r11_qualified_profile_seed_reference\\RESULT.json",
+    "result_sha256": "6f6fa9bfa3e2701adb7c6c45eb165b9a949c615e23f749f544d9d85af1a6b2f6",
+    "profile_sha256": "0bf2ca62314f79e0b405b2e727ac9cfde6400977d253b08d0473893493da89e9",
+    "seed_sha256": "41df9f4a60574fc238eb795d49120c52fb7c06e1b3743208da27cc9b3260fd20",
+    "changed_entities": [
+      "SEC-17E76DA217E5C1BCC40497E9331DED2E",
+      "SEC-19B69D0E609E7CF7A37FE9B6611A98E1",
+      "SEC-3AF86E6FE8E230C902EDEBCF49B8FB9B",
+      "SEC-8A47636032C3650935607E15AD1C72C8",
+      "SEC-B17169139D0E3492B2CA012774B6B125",
+      "SEC-BD56D2178EF33FD038FB5A12E09D445B"
+    ],
+    "scope": "Only independently generated six current-day Profile/Seed rows; other reference rows/domains unchanged",
+    "original_fail": {
+      "path": "G:\\codex_tmp\\r11_full_values.json",
+      "sha256": "375f81df22b71be1bdacb95150fda74918f9166f1c115dbf0da7fa2b400fa09e",
+      "acceptance": "FAIL"
+    }
+  }
+}

@@ -1,0 +1,1909 @@
+{
+  "contract_id": "RADAR_COHORT_FIELDS_V1",
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "87A"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "fields": [],
+  "focus": false,
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "production": false,
+  "registry": [
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "enrollment_id",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "cohort_namespace",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "T0",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "market_date",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "model_contract_id",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "state_lineage_id",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "entity_type",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "entity_id",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "episode_id",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "signal_type",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "source_publication",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "source_digest",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "parameter_digest",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "contract_digest",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "signal_reference",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "object",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "comparison_reference",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "object",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "benchmark_ids",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "evidence",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "control_assignment_ids",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "evidence",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "calendar_identity",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "adjustment_identity",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "evidence_class",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "observation_slot",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "observation_deadline",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "KNOWLEDGE_TIME",
+      "type": "string",
+      "unit": "UTC_timestamp",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "accepted_at",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "KNOWLEDGE_TIME",
+      "type": "string",
+      "unit": "UTC_timestamp",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "logical_event_id",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_REVISION_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "PUBLICATION_REVISION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "publication_id",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_REVISION_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "PUBLICATION_REVISION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "observation_state",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_REVISION_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "PUBLICATION_REVISION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "source_correction",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_REVISION_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "PUBLICATION_REVISION",
+      "type": "boolean",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "supersedes_observation",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COHORT_REVISION_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "PUBLICATION_REVISION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "event_type",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "RADAR_EVENT_REGISTRY_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "event_trade_date",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "RADAR_EVENT_REGISTRY_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "market_date",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "previous_stage",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "WHY_NOW_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "current_stage",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "WHY_NOW_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "changed_facts",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "WHY_NOW_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "evidence",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "changed_domains",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "WHY_NOW_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "evidence",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "newly_satisfied_rules",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "WHY_NOW_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "evidence",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "new_risk_flags",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "WHY_NOW_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "evidence",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "supporting_evidence",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "HYPOTHESIS_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "evidence",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "opposing_evidence",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "HYPOTHESIS_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "evidence",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "unknown_evidence",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "HYPOTHESIS_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "evidence",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "hypothesis_id",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "HYPOTHESIS_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "statement",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "HYPOTHESIS_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "evidence_for",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "HYPOTHESIS_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "evidence",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "evidence_against",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "HYPOTHESIS_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "evidence",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "next_discriminator",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "HYPOTHESIS_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "evidence",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "expiry_condition",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "HYPOTHESIS_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "evidence",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "quality",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "HYPOTHESIS_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "daily_ledger",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "RADAR_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "object",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "logical_event",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "RADAR_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "object",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "event_observation",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "RADAR_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "object",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "trade_date",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "RADAR_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "market_date",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "eligibility_state",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "RADAR_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "eligibility_rank",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "RADAR_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "integer",
+      "unit": "ordinal_rank",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "priority_bucket",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "RADAR_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "priority_rank",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "RADAR_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "integer",
+      "unit": "ordinal_rank",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "display_rank",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "RADAR_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "integer",
+      "unit": "ordinal_rank",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "focus_activation_state",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "RADAR_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "focus_activation_reason",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "RADAR_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "max_source_trade_date",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "RADAR_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "market_date",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "publication_digest",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "RADAR_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_APPEND_ONLY",
+      "source_binding": {
+        "bytes": 4178,
+        "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+        "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    }
+  ],
+  "runtime_implemented": false,
+  "shadow": false,
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "version": "1.0.0"
+}

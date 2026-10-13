@@ -1,0 +1,499 @@
+{
+  "contract_id": "V4_15_STORAGE_DESIGN_V1",
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "45A",
+      "46",
+      "77B"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "design_only": true,
+  "fields": [],
+  "focus": false,
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "migration_apply": false,
+  "production": false,
+  "readback_indexes": [
+    [
+      "due_items",
+      "due_trade_date",
+      "enrollment_id",
+      "horizon"
+    ],
+    [
+      "settlement_revisions",
+      "enrollment_id",
+      "horizon",
+      "available_at",
+      "evaluation_revision"
+    ],
+    [
+      "event_observations",
+      "logical_event_id",
+      "publication_id"
+    ]
+  ],
+  "referential_rules": [
+    "ENROLLMENT_BENCHMARK_IDS_RESOLVE_EXACT_SNAPSHOT",
+    "ENROLLMENT_CONTROL_ASSIGNMENT_IDS_RESOLVE_EXACT_ASSIGNMENT",
+    "SUPERSEDES_SAME_ENROLLMENT_HORIZON_CONTRACT_ONLY",
+    "PUBLICATION_ID_BINDS_EXACT_DIGEST_DATE",
+    "FIRST_ASSERTED_SLOT_FIRST_OBSERVED_ONLY"
+  ],
+  "runtime_implemented": false,
+  "shadow": false,
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "tables": [
+    {
+      "append_only": true,
+      "columns": [
+        "model_contract_id",
+        "state_lineage_id",
+        "publication_id",
+        "entity_type",
+        "entity_id",
+        "signal_type",
+        "trade_date",
+        "eligibility_state",
+        "priority_bucket",
+        "publication_digest"
+      ],
+      "foreign_keys": [],
+      "immutable_columns": [
+        "model_contract_id",
+        "state_lineage_id",
+        "publication_id",
+        "entity_type",
+        "entity_id",
+        "signal_type",
+        "trade_date",
+        "eligibility_state",
+        "priority_bucket",
+        "publication_digest"
+      ],
+      "primary_key": [
+        "model_contract_id",
+        "state_lineage_id",
+        "publication_id",
+        "entity_type",
+        "entity_id",
+        "signal_type"
+      ],
+      "publication_date_consistency": "PUBLICATION_TRADE_DATE_MATCHES_LEDGER_OR_EVENT; T0_EQUALS_FIRST_ASSERTED_EVENT_MARKET_DATE; EVALUATION_BASIS_EQUALS_DUE_DATE",
+      "revision_rule": "INSERT_ONLY; SAME_SOURCE_IDEMPOTENT; CORRECTIONS_SUPERSEDE_WITHOUT_UPDATE_OR_DELETE",
+      "source_digest_binding": "EXACT_ACCEPTED_PUBLICATION_OR_EVALUATION_DIGEST; NO_LATEST_SCAN",
+      "table": "radar_daily_ledger",
+      "unique_keys": []
+    },
+    {
+      "append_only": true,
+      "columns": [
+        "model_contract_id",
+        "state_lineage_id",
+        "entity_type",
+        "entity_id",
+        "episode_id",
+        "event_type",
+        "event_trade_date",
+        "logical_event_id"
+      ],
+      "foreign_keys": [],
+      "immutable_columns": [
+        "model_contract_id",
+        "state_lineage_id",
+        "entity_type",
+        "entity_id",
+        "episode_id",
+        "event_type",
+        "event_trade_date",
+        "logical_event_id"
+      ],
+      "primary_key": [
+        "model_contract_id",
+        "state_lineage_id",
+        "entity_type",
+        "entity_id",
+        "episode_id",
+        "event_type",
+        "event_trade_date"
+      ],
+      "publication_date_consistency": "PUBLICATION_TRADE_DATE_MATCHES_LEDGER_OR_EVENT; T0_EQUALS_FIRST_ASSERTED_EVENT_MARKET_DATE; EVALUATION_BASIS_EQUALS_DUE_DATE",
+      "revision_rule": "INSERT_ONLY; SAME_SOURCE_IDEMPOTENT; CORRECTIONS_SUPERSEDE_WITHOUT_UPDATE_OR_DELETE",
+      "source_digest_binding": "EXACT_ACCEPTED_PUBLICATION_OR_EVALUATION_DIGEST; NO_LATEST_SCAN",
+      "table": "logical_events",
+      "unique_keys": [
+        [
+          "logical_event_id"
+        ]
+      ]
+    },
+    {
+      "append_only": true,
+      "columns": [
+        "logical_event_id",
+        "publication_id",
+        "observation_state",
+        "source_correction",
+        "supersedes_observation"
+      ],
+      "foreign_keys": [
+        {
+          "columns": [
+            "logical_event_id"
+          ],
+          "target_columns": [
+            "logical_event_id"
+          ],
+          "target_table": "logical_events"
+        }
+      ],
+      "immutable_columns": [
+        "logical_event_id",
+        "publication_id",
+        "observation_state",
+        "source_correction",
+        "supersedes_observation"
+      ],
+      "primary_key": [
+        "logical_event_id",
+        "publication_id"
+      ],
+      "publication_date_consistency": "PUBLICATION_TRADE_DATE_MATCHES_LEDGER_OR_EVENT; T0_EQUALS_FIRST_ASSERTED_EVENT_MARKET_DATE; EVALUATION_BASIS_EQUALS_DUE_DATE",
+      "revision_rule": "INSERT_ONLY; SAME_SOURCE_IDEMPOTENT; CORRECTIONS_SUPERSEDE_WITHOUT_UPDATE_OR_DELETE",
+      "source_digest_binding": "EXACT_ACCEPTED_PUBLICATION_OR_EVALUATION_DIGEST; NO_LATEST_SCAN",
+      "table": "event_observations",
+      "unique_keys": []
+    },
+    {
+      "append_only": true,
+      "columns": [
+        "enrollment_id",
+        "logical_event_id",
+        "cohort_namespace",
+        "T0",
+        "calendar_identity",
+        "adjustment_identity",
+        "source_publication",
+        "source_digest",
+        "parameter_digest",
+        "contract_digest",
+        "signal_reference",
+        "comparison_reference",
+        "benchmark_ids",
+        "control_assignment_ids",
+        "evidence_class",
+        "observation_slot"
+      ],
+      "foreign_keys": [
+        {
+          "columns": [
+            "logical_event_id"
+          ],
+          "target_columns": [
+            "logical_event_id"
+          ],
+          "target_table": "logical_events"
+        }
+      ],
+      "immutable_columns": [
+        "enrollment_id",
+        "logical_event_id",
+        "cohort_namespace",
+        "T0",
+        "calendar_identity",
+        "adjustment_identity",
+        "source_publication",
+        "source_digest",
+        "parameter_digest",
+        "contract_digest",
+        "signal_reference",
+        "comparison_reference",
+        "benchmark_ids",
+        "control_assignment_ids",
+        "evidence_class",
+        "observation_slot"
+      ],
+      "primary_key": [
+        "enrollment_id"
+      ],
+      "publication_date_consistency": "PUBLICATION_TRADE_DATE_MATCHES_LEDGER_OR_EVENT; T0_EQUALS_FIRST_ASSERTED_EVENT_MARKET_DATE; EVALUATION_BASIS_EQUALS_DUE_DATE",
+      "revision_rule": "INSERT_ONLY; SAME_SOURCE_IDEMPOTENT; CORRECTIONS_SUPERSEDE_WITHOUT_UPDATE_OR_DELETE",
+      "source_digest_binding": "EXACT_ACCEPTED_PUBLICATION_OR_EVALUATION_DIGEST; NO_LATEST_SCAN",
+      "table": "enrollment",
+      "unique_keys": [
+        [
+          "logical_event_id",
+          "cohort_namespace"
+        ]
+      ]
+    },
+    {
+      "append_only": true,
+      "columns": [
+        "control_assignment_id",
+        "enrollment_id",
+        "control_type",
+        "control_entity_ids",
+        "control_feature_snapshot",
+        "assignment_digest",
+        "match_scope"
+      ],
+      "foreign_keys": [
+        {
+          "columns": [
+            "enrollment_id"
+          ],
+          "target_columns": [
+            "enrollment_id"
+          ],
+          "target_table": "enrollment"
+        }
+      ],
+      "immutable_columns": [
+        "control_assignment_id",
+        "enrollment_id",
+        "control_type",
+        "control_entity_ids",
+        "control_feature_snapshot",
+        "assignment_digest",
+        "match_scope"
+      ],
+      "primary_key": [
+        "control_assignment_id"
+      ],
+      "publication_date_consistency": "PUBLICATION_TRADE_DATE_MATCHES_LEDGER_OR_EVENT; T0_EQUALS_FIRST_ASSERTED_EVENT_MARKET_DATE; EVALUATION_BASIS_EQUALS_DUE_DATE",
+      "revision_rule": "INSERT_ONLY; SAME_SOURCE_IDEMPOTENT; CORRECTIONS_SUPERSEDE_WITHOUT_UPDATE_OR_DELETE",
+      "source_digest_binding": "EXACT_ACCEPTED_PUBLICATION_OR_EVALUATION_DIGEST; NO_LATEST_SCAN",
+      "table": "controls",
+      "unique_keys": []
+    },
+    {
+      "append_only": true,
+      "columns": [
+        "benchmark_id",
+        "enrollment_id",
+        "benchmark_members",
+        "initial_weights",
+        "fixed_shares",
+        "adjustment_identity",
+        "benchmark_constituent_policy"
+      ],
+      "foreign_keys": [
+        {
+          "columns": [
+            "enrollment_id"
+          ],
+          "target_columns": [
+            "enrollment_id"
+          ],
+          "target_table": "enrollment"
+        }
+      ],
+      "immutable_columns": [
+        "benchmark_id",
+        "enrollment_id",
+        "benchmark_members",
+        "initial_weights",
+        "fixed_shares",
+        "adjustment_identity",
+        "benchmark_constituent_policy"
+      ],
+      "primary_key": [
+        "benchmark_id"
+      ],
+      "publication_date_consistency": "PUBLICATION_TRADE_DATE_MATCHES_LEDGER_OR_EVENT; T0_EQUALS_FIRST_ASSERTED_EVENT_MARKET_DATE; EVALUATION_BASIS_EQUALS_DUE_DATE",
+      "revision_rule": "INSERT_ONLY; SAME_SOURCE_IDEMPOTENT; CORRECTIONS_SUPERSEDE_WITHOUT_UPDATE_OR_DELETE",
+      "source_digest_binding": "EXACT_ACCEPTED_PUBLICATION_OR_EVALUATION_DIGEST; NO_LATEST_SCAN",
+      "table": "benchmark_snapshots",
+      "unique_keys": []
+    },
+    {
+      "append_only": true,
+      "columns": [
+        "enrollment_id",
+        "horizon",
+        "due_trade_date",
+        "calendar_identity"
+      ],
+      "foreign_keys": [
+        {
+          "columns": [
+            "enrollment_id"
+          ],
+          "target_columns": [
+            "enrollment_id"
+          ],
+          "target_table": "enrollment"
+        }
+      ],
+      "immutable_columns": [
+        "enrollment_id",
+        "horizon",
+        "due_trade_date",
+        "calendar_identity"
+      ],
+      "primary_key": [
+        "enrollment_id",
+        "horizon"
+      ],
+      "publication_date_consistency": "PUBLICATION_TRADE_DATE_MATCHES_LEDGER_OR_EVENT; T0_EQUALS_FIRST_ASSERTED_EVENT_MARKET_DATE; EVALUATION_BASIS_EQUALS_DUE_DATE",
+      "revision_rule": "INSERT_ONLY; SAME_SOURCE_IDEMPOTENT; CORRECTIONS_SUPERSEDE_WITHOUT_UPDATE_OR_DELETE",
+      "source_digest_binding": "EXACT_ACCEPTED_PUBLICATION_OR_EVALUATION_DIGEST; NO_LATEST_SCAN",
+      "table": "due_items",
+      "unique_keys": []
+    },
+    {
+      "append_only": true,
+      "columns": [
+        "enrollment_id",
+        "horizon",
+        "outcome_contract_id",
+        "evaluation_source_digest",
+        "outcome_id",
+        "evaluation_revision",
+        "supersedes",
+        "available_at",
+        "evaluation_source_identity",
+        "evidence_class",
+        "reason_codes",
+        "outcome_status",
+        "R_N",
+        "MFE_N",
+        "MAE_N",
+        "PATH_MDD_CLOSE_N",
+        "evaluation_basis_date",
+        "evaluation_comparison_reference",
+        "evaluation_adjustment_identity",
+        "transform_coefficients",
+        "transform_digest",
+        "price_path"
+      ],
+      "foreign_keys": [
+        {
+          "columns": [
+            "enrollment_id",
+            "horizon"
+          ],
+          "target_columns": [
+            "enrollment_id",
+            "horizon"
+          ],
+          "target_table": "due_items"
+        }
+      ],
+      "immutable_columns": [
+        "enrollment_id",
+        "horizon",
+        "outcome_contract_id",
+        "evaluation_source_digest",
+        "outcome_id",
+        "evaluation_revision",
+        "supersedes",
+        "available_at",
+        "evaluation_source_identity",
+        "evidence_class",
+        "reason_codes",
+        "outcome_status",
+        "R_N",
+        "MFE_N",
+        "MAE_N",
+        "PATH_MDD_CLOSE_N",
+        "evaluation_basis_date",
+        "evaluation_comparison_reference",
+        "evaluation_adjustment_identity",
+        "transform_coefficients",
+        "transform_digest",
+        "price_path"
+      ],
+      "primary_key": [
+        "enrollment_id",
+        "horizon",
+        "outcome_contract_id",
+        "evaluation_source_digest"
+      ],
+      "publication_date_consistency": "PUBLICATION_TRADE_DATE_MATCHES_LEDGER_OR_EVENT; T0_EQUALS_FIRST_ASSERTED_EVENT_MARKET_DATE; EVALUATION_BASIS_EQUALS_DUE_DATE",
+      "revision_rule": "INSERT_ONLY; SAME_SOURCE_IDEMPOTENT; CORRECTIONS_SUPERSEDE_WITHOUT_UPDATE_OR_DELETE",
+      "source_digest_binding": "EXACT_ACCEPTED_PUBLICATION_OR_EVALUATION_DIGEST; NO_LATEST_SCAN",
+      "table": "settlement_revisions",
+      "unique_keys": []
+    },
+    {
+      "append_only": true,
+      "columns": [
+        "enrollment_id",
+        "competing_event",
+        "competing_source_publication",
+        "first_event_trade_date",
+        "censoring_state"
+      ],
+      "foreign_keys": [
+        {
+          "columns": [
+            "enrollment_id"
+          ],
+          "target_columns": [
+            "enrollment_id"
+          ],
+          "target_table": "enrollment"
+        }
+      ],
+      "immutable_columns": [
+        "enrollment_id",
+        "competing_event",
+        "competing_source_publication",
+        "first_event_trade_date",
+        "censoring_state"
+      ],
+      "primary_key": [
+        "enrollment_id",
+        "competing_event",
+        "competing_source_publication"
+      ],
+      "publication_date_consistency": "PUBLICATION_TRADE_DATE_MATCHES_LEDGER_OR_EVENT; T0_EQUALS_FIRST_ASSERTED_EVENT_MARKET_DATE; EVALUATION_BASIS_EQUALS_DUE_DATE",
+      "revision_rule": "INSERT_ONLY; SAME_SOURCE_IDEMPOTENT; CORRECTIONS_SUPERSEDE_WITHOUT_UPDATE_OR_DELETE",
+      "source_digest_binding": "EXACT_ACCEPTED_PUBLICATION_OR_EVALUATION_DIGEST; NO_LATEST_SCAN",
+      "table": "competing_outcomes",
+      "unique_keys": []
+    },
+    {
+      "append_only": true,
+      "columns": [
+        "control_assignment_id",
+        "crossed_signal_at",
+        "publication_id",
+        "publication_digest"
+      ],
+      "foreign_keys": [
+        {
+          "columns": [
+            "control_assignment_id"
+          ],
+          "target_columns": [
+            "control_assignment_id"
+          ],
+          "target_table": "controls"
+        }
+      ],
+      "immutable_columns": [
+        "control_assignment_id",
+        "crossed_signal_at",
+        "publication_id",
+        "publication_digest"
+      ],
+      "primary_key": [
+        "control_assignment_id",
+        "crossed_signal_at",
+        "publication_id"
+      ],
+      "publication_date_consistency": "PUBLICATION_TRADE_DATE_MATCHES_LEDGER_OR_EVENT; T0_EQUALS_FIRST_ASSERTED_EVENT_MARKET_DATE; EVALUATION_BASIS_EQUALS_DUE_DATE",
+      "revision_rule": "INSERT_ONLY; SAME_SOURCE_IDEMPOTENT; CORRECTIONS_SUPERSEDE_WITHOUT_UPDATE_OR_DELETE",
+      "source_digest_binding": "EXACT_ACCEPTED_PUBLICATION_OR_EVALUATION_DIGEST; NO_LATEST_SCAN",
+      "table": "control_crossing_observations",
+      "unique_keys": []
+    }
+  ],
+  "version": "1.0.0"
+}

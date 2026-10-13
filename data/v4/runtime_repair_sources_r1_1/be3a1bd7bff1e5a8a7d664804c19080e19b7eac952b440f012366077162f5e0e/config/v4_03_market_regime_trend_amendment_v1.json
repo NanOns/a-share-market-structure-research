@@ -1,0 +1,17 @@
+{
+  "contract_id": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+  "version": "1.0.0",
+  "source": "V4_03_EXTERNAL_ACCEPTANCE_R1_20260928.md section 3 B02 recommendation, adopted under user instruction to execute supplied acceptance documents",
+  "owner_stage": "V4-03",
+  "input_contract": "MARKET_RELATIVE_REFERENCE_PATH_V1",
+  "as_of": "market_session_t",
+  "required_inputs": ["index_close_t", "index_ma20_t", "index_ma20_t_minus_5"],
+  "branches": {
+    "STRONG": "index_close_t > index_ma20_t AND index_ma20_t > index_ma20_t_minus_5",
+    "WEAK": "index_close_t < index_ma20_t AND index_ma20_t < index_ma20_t_minus_5",
+    "NEUTRAL": "all required inputs known AND NOT STRONG AND NOT WEAK",
+    "UNKNOWN": "any required input missing, nonfinite, or unavailable"
+  },
+  "future_offsets_allowed": false,
+  "regime_ui_publication": "NOT_PUBLISHED_V4_03"
+}

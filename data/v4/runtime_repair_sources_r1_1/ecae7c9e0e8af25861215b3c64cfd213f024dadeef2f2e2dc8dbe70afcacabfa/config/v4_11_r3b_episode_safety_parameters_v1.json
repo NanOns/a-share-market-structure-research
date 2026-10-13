@@ -1,0 +1,33 @@
+{
+  "changes_legacy_parameters": false,
+  "common_safety_parameters": {
+    "first_day_damage_close_to_ma20_lt": 0.97,
+    "severe_drop": {
+      "drop_cap_pct": 0.08,
+      "drop_floor_pct": 0.04,
+      "drop_z": 2.0
+    },
+    "stock_signals": {
+      "STRUCTURE_BREAK": {
+        "close_to_ma20_lt": 0.98,
+        "consecutive_valid_sessions": 2
+      },
+      "risk": {
+        "bias20_gte": 0.15,
+        "extension_z20_gte": 1.5,
+        "liquidity20_amount_gte": 20000000
+      }
+    }
+  },
+  "contract_id": "V4_11_EXACT_LEGACY_EPISODE_PARAMETERS_R3B_V1",
+  "legacy_episode_source": {
+    "bytes": 6880,
+    "path": "src/workbench_analysis/pullback_episode_v1.py",
+    "sha256": "f66e1e935743fed0ff0b1ea62ad385409474b482fc4a7b90ae9d371d34316408"
+  },
+  "values": {
+    "max_event_sessions": 20,
+    "max_pullback_sessions": 10
+  },
+  "version": "1.0.0"
+}

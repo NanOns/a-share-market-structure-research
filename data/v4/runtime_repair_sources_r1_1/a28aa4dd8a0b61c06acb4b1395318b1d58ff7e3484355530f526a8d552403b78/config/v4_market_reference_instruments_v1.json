@@ -1,0 +1,12 @@
+{
+  "contract_id": "V4_MARKET_REFERENCE_INSTRUMENTS_V1",
+  "version": "1.0.0",
+  "classification": "REFERENCE_DATA",
+  "runtime_authorized": true,
+  "meaning": "Market benchmark series used only to corroborate market session coverage; never a stock admission, scoring, or signal exception.",
+  "instruments": [
+    {"instrument_id": "SH.000001", "exchange": "SH", "code": "000001", "instrument_type": "MARKET_INDEX", "role": "SSE_SESSION_REFERENCE"},
+    {"instrument_id": "SZ.399001", "exchange": "SZ", "code": "399001", "instrument_type": "MARKET_INDEX", "role": "SZSE_SESSION_REFERENCE"},
+    {"instrument_id": "SZ.399006", "exchange": "SZ", "code": "399006", "instrument_type": "MARKET_INDEX", "role": "MARKET_UNIVERSE_COVERAGE_REFERENCE"}
+  ]
+}

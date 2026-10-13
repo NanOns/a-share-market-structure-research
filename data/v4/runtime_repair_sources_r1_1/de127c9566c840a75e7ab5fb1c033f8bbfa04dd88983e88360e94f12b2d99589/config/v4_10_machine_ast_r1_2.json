@@ -1,0 +1,174 @@
+{
+  "contract_id": "V4_10_REDUCER_MACHINE_AST_V1",
+  "engineering_revision": "R1.2",
+  "parameters": {
+    "downgrade": "downgrade_sessions",
+    "expiry": "expiry_sessions",
+    "health": "health_deadband_pp",
+    "improvement": "expiry_improvement_pp"
+  },
+  "pre_reducer_gates": [
+    "CANONICAL_INPUT_PUBLICATION_MANIFEST",
+    "STRUCTURED_MODEL_BOUNDARY_AUTHORIZATION",
+    "PRIOR_FULL_SCHEMA_CONTENT_ADDRESS_PUBLICATION_EXISTENCE",
+    "FROZEN_CALENDAR_LINEAGE",
+    "UNIFIED_STATE_CHANGING_FIELD_PROVENANCE"
+  ],
+  "predicates": {
+    "downgrade": {
+      "args": [
+        {
+          "args": [
+            "raw_stage_rank",
+            "prior_stage_rank"
+          ],
+          "op": "LT"
+        },
+        {
+          "args": [
+            "consecutive_evaluable_sessions",
+            {
+              "parameter": "downgrade_sessions"
+            }
+          ],
+          "op": "GTE"
+        }
+      ],
+      "op": "AND"
+    },
+    "expiry": {
+      "args": [
+        "maturity_in_SEED_PREWATCH",
+        "no_stage_upgrade",
+        "improvement_below_threshold",
+        {
+          "args": [
+            "expiry_count",
+            {
+              "parameter": "expiry_sessions"
+            }
+          ],
+          "op": "GTE"
+        }
+      ],
+      "op": "AND"
+    },
+    "hard_invalidation": {
+      "args": [
+        "prior_episode_exists",
+        {
+          "args": [
+            "associated_frozen_invalidation_TRUE",
+            "core_price_damage_TRUE"
+          ],
+          "op": "OR"
+        }
+      ],
+      "op": "AND"
+    },
+    "health_improving": {
+      "args": [
+        "delta3_or_dq5",
+        {
+          "parameter": "health_deadband_pp"
+        }
+      ],
+      "op": "GT"
+    },
+    "health_weakening": {
+      "args": [
+        "delta3_or_dq5",
+        {
+          "arg": {
+            "parameter": "health_deadband_pp"
+          },
+          "op": "NEGATE"
+        }
+      ],
+      "op": "LT"
+    },
+    "reentry": {
+      "args": [
+        "prior_formally_exited",
+        "current_qualification_TRUE",
+        {
+          "args": [
+            "session_index",
+            "exit_session_index"
+          ],
+          "op": "GT"
+        }
+      ],
+      "op": "AND"
+    },
+    "required_unknown": {
+      "args": [
+        "any_required_applicable_fact_UNKNOWN",
+        "suspended"
+      ],
+      "op": "OR"
+    },
+    "upgrade": {
+      "args": [
+        "raw_stage_rank",
+        "prior_stage_rank"
+      ],
+      "op": "GT"
+    }
+  },
+  "rule_order": [
+    "R1_MODEL_BOUNDARY",
+    "R2_HARD_INVALIDATION",
+    "R3_REQUIRED_UNKNOWN",
+    "R4_STAGE_SELECTION",
+    "R5_HYSTERESIS",
+    "R6_HEALTH",
+    "R7_TRACKING",
+    "R8_EXPIRY",
+    "R9_REENTRY"
+  ],
+  "rules": [
+    {
+      "id": "R1_MODEL_BOUNDARY",
+      "operation": "SELECT_LEGAL_PRIOR_OR_MODEL_BOUNDARY"
+    },
+    {
+      "id": "R2_HARD_INVALIDATION",
+      "operation": "EPISODE_INVALIDATION_OR_CORE_DAMAGE_FIRST"
+    },
+    {
+      "id": "R3_REQUIRED_UNKNOWN",
+      "operation": "PRESERVE_IF_REQUIRED_UNKNOWN_OR_SUSPENDED"
+    },
+    {
+      "id": "R4_STAGE_SELECTION",
+      "operation": "HIGHEST_LEGAL_TRUE_STAGE"
+    },
+    {
+      "id": "R5_HYSTERESIS",
+      "operation": "IMMEDIATE_UPGRADE_TWO_EVALUABLE_SESSION_DOWNGRADE"
+    },
+    {
+      "id": "R6_HEALTH",
+      "operation": "EXTREME_ELSE_METRIC_DEADBAND"
+    },
+    {
+      "id": "R7_TRACKING",
+      "operation": "ACTIVE_FOLLOWUP_CLOSED"
+    },
+    {
+      "id": "R8_EXPIRY",
+      "operation": "FROZEN_BASELINE_EVALUABLE_SESSION_EXPIRY"
+    },
+    {
+      "id": "R9_REENTRY",
+      "operation": "NEW_CHILD_EPISODE_AFTER_EXIT_SESSION"
+    }
+  ],
+  "stage_precedence": [
+    "CONFIRMED",
+    "WARM",
+    "PREWATCH",
+    "SEED"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "contract_id": "V4_02_DATED_TRADING_STATUS_V1",
+  "version": "1.0.0",
+  "stage": "V4-02 / PACK-A-DATED-TRADING-STATUS",
+  "source": {
+    "universe": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R6_2_20260926.jsonl.gz",
+    "universe_contract_id": "V4_REQUIRED_HISTORICAL_UNIVERSE_R6_2_V1",
+    "calendar_receipt": "reports/v4_02/V4_02_FORMAL_MARKET_CALENDAR_ACCEPTANCE_V2.json",
+    "cutoff": "2026-09-24",
+    "tdx_prices_remain_authoritative": true,
+    "provider": "BaoStock public anonymous route, isolated baostock==0.9.3",
+    "provider_fields": ["date", "code", "tradestatus", "isST"],
+    "provider_price_fields_persisted": false
+  },
+  "status_rules": {
+    "source_bar_present": "ACTUAL_TRADED",
+    "source_bar_missing_and_provider_tradestatus_0": "SUSPENDED",
+    "source_bar_missing_and_provider_tradestatus_1": "DATA_GAP",
+    "provider_fact_absent_or_invalid": "UNKNOWN",
+    "missing_bar_alone_implies_suspension": false
+  },
+  "persistence": {
+    "output": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R6_2_20260926.jsonl.gz",
+    "fields": ["security_id", "source_security_key", "trade_date", "status", "is_st", "provider_tradestatus", "status_source"],
+    "raw_provider_payload": false,
+    "atomic_replace": true
+  },
+  "acceptance": {
+    "requires_all_membership_rows": true,
+    "requires_zero_unknown_gap_status": true,
+    "requires_source_hashes_and_query_receipt": true,
+    "independent_field_semantics_acceptance_required": true,
+    "does_not_accept_v4_01_or_v4_02_stage": true
+  }
+}

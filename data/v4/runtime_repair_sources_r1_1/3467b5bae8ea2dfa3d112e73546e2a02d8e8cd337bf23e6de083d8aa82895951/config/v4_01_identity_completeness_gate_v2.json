@@ -1,0 +1,79 @@
+{
+  "contract_id": "V4_01_IDENTITY_COMPLETENESS_GATE_V2",
+  "version": "2.0.0-candidate",
+  "stage": "V4-01-IDENTITY-COMPLETENESS",
+  "status": "AMENDMENT_CANDIDATE_PENDING_EXTERNAL_ACCEPTANCE",
+  "scope": {
+    "history_start": "2023-07-04",
+    "history_end": "2026-09-24",
+    "required_boards": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"],
+    "optional_scope": {"BSE": "DEGRADED_OPTIONAL_EXCLUDED_FROM_REQUIRED_GATE"}
+  },
+  "completeness_basis": [
+    "FULL_REQUIRED_SCOPE_ATOMIC_BOUNDARY_INVENTORY",
+    "GENERIC_RELATION_CANDIDATE_DISCOVERY",
+    "SOURCE_FINGERPRINT_CANDIDATE_DISCOVERY",
+    "KNOWN_OFFICIAL_EVENT_CROSS_CHECK",
+    "FAIL_CLOSED_UNRESOLVED_RELATIONS",
+    "INDEPENDENT_POSTCHECK"
+  ],
+  "boundary_source": {
+    "accepted_identity_map": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+    "accepted_required_universe": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+    "source_key_entry_exit_rule": "Compare each adjacent accepted official-session source-key set; the first session is a left-censored baseline, not a new entry.",
+    "r8_3_atomic_boundary_inventory": "reports/v4_01/V4_01_IDENTITY_EVENT_DISCOVERY_R8_3.json"
+  },
+  "source_fingerprint": {
+    "contract_id": "V4_01_SOURCE_FINGERPRINT_CANDIDATE_V1",
+    "version": "1.0.0",
+    "contract_path": "config/v4_01_source_fingerprint_candidate_v1.json",
+    "thresholds_mutable_during_scan": false,
+    "new_code_trigger": "TDX .day first_date is earlier than first Required Scope source-key entry date.",
+    "old_code_pairing": "Same exchange only; old source-key exit is the entry session or immediately prior market session; no Cartesian pairing.",
+    "semantic_tdx_fields": ["open", "high", "low", "close", "amount", "volume"],
+    "reserved": "DESCRIPTIVE_ONLY_EXCLUDED_FROM_SEMANTIC_EQUALITY",
+    "amount_tolerance": "NONE",
+    "tdx_volume_exact_ratio_minimum": 0.95,
+    "minimum_shared_sessions": 20
+  },
+  "official_event_index_role": "KNOWN_EVENT_CROSS_CHECK_AND_INDEPENDENT_CONFIRMATION_SOURCE; NOT_SOLE_EXHAUSTIVE_COMPLETENESS_GATE",
+  "resolution_statuses": [
+    "CONFIRMED_SAME_ENTITY_CODE_CHANGE",
+    "CONFIRMED_DISTINCT_MERGER_SUCCESSOR",
+    "CONFIRMED_DISTINCT_CODE_REUSE",
+    "UNRESOLVED_IDENTITY_RELATION"
+  ],
+  "acceptance": {
+    "required_scope_boundaries_scanned": true,
+    "source_fingerprint_triggered_entries_scanned": true,
+    "all_relation_candidates_resolved": true,
+    "unresolved_identity_relations_maximum": 0,
+    "unlinked_boundary_anomalies_maximum": 0,
+    "known_official_events_present_in_resolution_set": true,
+    "independent_postcheck_required": true,
+    "production_identity_mutation_requires_independent_confirmation": true,
+    "external_acceptance_required_before_stage_acceptance": true
+  },
+  "fail_closed": {
+    "missing_tdx_source": "Keep the entry anomaly unresolved.",
+    "missing_or_incomplete_baostock_evidence": "Do not confirm SAME_ENTITY.",
+    "source_fingerprint_without_independent_evidence": "Candidate only; do not mutate canonical identity.",
+    "unresolved_relations_nonzero": "V4-01 remains BLOCKED."
+  },
+  "outputs": {
+    "scan": "reports/v4_01/V4_01_FULL_SCOPE_SOURCE_FINGERPRINT_SCAN_R1.json",
+    "resolution": "reports/v4_01/V4_01_IDENTITY_RELATION_RESOLUTION_R1.json",
+    "postcheck": "reports/v4_01/V4_01_IDENTITY_COMPLETENESS_GATE_V2_POSTCHECK_R1.json",
+    "final_candidate": "reports/v4_01/V4_01_FINAL_STAGE_CANDIDATE_R9.json",
+    "accepted_head_candidate": "data/v4/V4_01_ACCEPTED_HEAD_CANDIDATE.json"
+  },
+  "prohibited": [
+    "automatic_same_entity_confirmation",
+    "canonical_identity_mutation_without_independent_accepted_evidence",
+    "exhaustive_official_registry_claim_from_bounded_search",
+    "all_exits_times_all_entries_pairing",
+    "source_fingerprint_threshold_tuning_on_scanned_cases",
+    "tdx_root_writes",
+    "scanner_or_trading_execution"
+  ]
+}

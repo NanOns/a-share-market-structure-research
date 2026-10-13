@@ -1,0 +1,849 @@
+{
+  "contract_id": "V4_13_FIELD_REGISTRY_V1",
+  "fields": [
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "consumer_route": {
+        "bytes": 1395,
+        "path": "config/v4_13_membership_consumer_route_v1_1.json",
+        "sha256": "5bc1e50c900bd2314a2a9ec602e3d2efc5b0f20f444a55e6500a1f0020303dfc"
+      },
+      "consumer_scope": "CONTRACT_ONLY_SCOPED_ENGINEERING_NOT_PRODUCTION",
+      "data_type": "nullable_sector_id",
+      "dependencies": {
+        "current": [
+          "trade_date_valid_membership",
+          "source_revision",
+          "available_at_le_cutoff",
+          "membership_quality"
+        ],
+        "history": [],
+        "time_role": "T_EXACT_MEMBERSHIP_AT_CUTOFF"
+      },
+      "field": "primary_industry",
+      "loo_history_required": false,
+      "missing": "UNKNOWN_VALUE_NULL_NOT_EMPTY_ARRAY",
+      "not_applicable": "ONLY_KNOWN_COMPLETE_NO_RELATION",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "MEMBERSHIP_RELATION_PROJECTION_V1",
+      "publication_namespace": "CONTEXT_LOO",
+      "quality_propagation": "LOSSLESS_COMPONENT_QUALITY; missing affects actual dependency only",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "semantic": "EXACT_CURRENT_DATE_DETERMINISTIC_RELATION_ONLY",
+      "semantic_definition": "EXACT_CURRENT_DATE_DETERMINISTIC_RELATION_ONLY",
+      "semantic_status": "FROZEN",
+      "source_binding": {
+        "bytes": 2151,
+        "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+        "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+      },
+      "source_field": "date_valid_industry_relations",
+      "source_owner": "V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1",
+      "time_role": "T_EXACT_MEMBERSHIP_AT_CUTOFF",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "consumer_route": {
+        "bytes": 1395,
+        "path": "config/v4_13_membership_consumer_route_v1_1.json",
+        "sha256": "5bc1e50c900bd2314a2a9ec602e3d2efc5b0f20f444a55e6500a1f0020303dfc"
+      },
+      "consumer_scope": "CONTRACT_ONLY_SCOPED_ENGINEERING_NOT_PRODUCTION",
+      "data_type": "nullable_array_sector_id",
+      "dependencies": {
+        "current": [
+          "trade_date_valid_membership",
+          "source_revision",
+          "available_at_le_cutoff",
+          "membership_quality"
+        ],
+        "history": [],
+        "time_role": "T_EXACT_MEMBERSHIP_AT_CUTOFF"
+      },
+      "field": "supporting_concepts",
+      "loo_history_required": false,
+      "missing": "UNKNOWN_VALUE_NULL_NOT_EMPTY_ARRAY",
+      "not_applicable": "ONLY_KNOWN_COMPLETE_NO_RELATION",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "MEMBERSHIP_RELATION_PROJECTION_V1",
+      "publication_namespace": "CONTEXT_LOO",
+      "quality_propagation": "LOSSLESS_COMPONENT_QUALITY; missing affects actual dependency only",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "semantic": "EXACT_CURRENT_DATE_DETERMINISTIC_RELATION_ONLY",
+      "semantic_definition": "EXACT_CURRENT_DATE_DETERMINISTIC_RELATION_ONLY",
+      "semantic_status": "FROZEN",
+      "source_binding": {
+        "bytes": 2151,
+        "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+        "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+      },
+      "source_field": "date_valid_theme_relations",
+      "source_owner": "V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1",
+      "time_role": "T_EXACT_MEMBERSHIP_AT_CUTOFF",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "consumer_scope": "CONTRACT_ONLY_SCOPED_ENGINEERING_NOT_PRODUCTION",
+      "data_type": "enum_or_identity",
+      "dependencies": {
+        "current": [
+          "membership",
+          "loo_b0_raw",
+          "loo_confirmed_raw",
+          "loo_warm_raw",
+          "emergence",
+          "adjusted_seed_width"
+        ],
+        "history": [
+          "ACCEPTED_OWNER_REGISTERED_B0_B2_COMPARE_ENDPOINTS_AND_LOO_LINEAGE"
+        ],
+        "time_role": "T_LOO_SELECTION_WITH_REGISTERED_HISTORY"
+      },
+      "field": "algorithmic_support_sector",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "LOO_CONTEXT_V1",
+      "publication_namespace": "CONTEXT_LOO",
+      "quality_propagation": "LOSSLESS_COMPONENT_QUALITY; missing affects actual dependency only",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "semantic_definition": "loo_candidate_set",
+      "semantic_status": "FROZEN",
+      "source_binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "source_field": "loo_candidate_set",
+      "source_owner": "V4_08_ACCEPTED_MEMBERSHIP_AND_LOO_CONTEXT_V1",
+      "time_role": "T_LOO_SELECTION_WITH_REGISTERED_HISTORY",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "consumer_scope": "CONTRACT_ONLY_SCOPED_ENGINEERING_NOT_PRODUCTION",
+      "data_type": "enum_or_identity",
+      "dependencies": {
+        "current": [
+          "membership",
+          "non_target_ret1_ret5",
+          "accepted_stock_relative_required_fields"
+        ],
+        "history": [],
+        "time_role": "T_CURRENT_LOO_RETURNS_AND_ACCEPTED_CORE"
+      },
+      "field": "relative_sector_state",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "LOO_CONTEXT_V1",
+      "publication_namespace": "CONTEXT_LOO",
+      "quality_propagation": "LOSSLESS_COMPONENT_QUALITY; missing affects actual dependency only",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "semantic_definition": "RELATIVE_STATE_V1_WITH_LOO_SUBSTITUTION",
+      "semantic_status": "FROZEN",
+      "source_binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "source_field": "RELATIVE_STATE_V1_WITH_LOO_SUBSTITUTION",
+      "source_owner": "V4_08_ACCEPTED_MEMBERSHIP_AND_LOO_CONTEXT_V1",
+      "time_role": "T_CURRENT_LOO_RETURNS_AND_ACCEPTED_CORE",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "consumer_scope": "CONTRACT_ONLY_SCOPED_ENGINEERING_NOT_PRODUCTION",
+      "data_type": "object_or_null",
+      "dependencies": {
+        "component_dependencies": "ONLY_EACH_SOURCE_COMPONENT_REGISTERED_DEPENDENCIES",
+        "current": [
+          "selected_context_publication"
+        ],
+        "history": [],
+        "time_role": "T_READ_ONLY_SELECTED_LOO_SNAPSHOT"
+      },
+      "field": "sector_context_state",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "object_schema": {
+        "bytes": 16119,
+        "path": "config/v4_13_sector_context_state_schema_v1_1.json",
+        "sha256": "4824ac2ad267181592bdf826bc1784d3caa39cea0cf7dc822ac0a005be77bb6a"
+      },
+      "owner_stage": "V4-13",
+      "producer_contract_id": "SECTOR_CONTEXT_STATE_V1",
+      "publication_namespace": "CONTEXT_LOO",
+      "quality_propagation": "LOSSLESS_COMPONENT_QUALITY; missing affects actual dependency only",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "semantic_definition": "SELECTED_LOO_CONTEXT_LOSSLESS_SNAPSHOT",
+      "semantic_status": "FROZEN",
+      "source_binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "source_field": "SELECTED_LOO_CONTEXT_LOSSLESS_SNAPSHOT",
+      "source_owner": "V4_08_ACCEPTED_MEMBERSHIP_AND_LOO_CONTEXT_V1",
+      "time_role": "T_READ_ONLY_SELECTED_LOO_SNAPSHOT",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "consumer_scope": "CONTRACT_ONLY_SCOPED_ENGINEERING_NOT_PRODUCTION",
+      "data_type": "enum_or_identity",
+      "dependencies": {
+        "current": [
+          "component_qualities",
+          "membership_basis"
+        ],
+        "history": [],
+        "time_role": "T_COMPONENT_QUALITY_METADATA"
+      },
+      "field": "sector_context_quality",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "SECTOR_CONTEXT_STATE_V1",
+      "publication_namespace": "CONTEXT_LOO",
+      "quality_propagation": "LOSSLESS_COMPONENT_QUALITY; missing affects actual dependency only",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "semantic_definition": "SECTOR_CONTEXT_STATE_V1.context_quality",
+      "semantic_status": "FROZEN",
+      "source_binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "source_field": "SECTOR_CONTEXT_STATE_V1.context_quality",
+      "source_owner": "V4_08_ACCEPTED_MEMBERSHIP_AND_LOO_CONTEXT_V1",
+      "time_role": "T_COMPONENT_QUALITY_METADATA",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "consumer_scope": "CONTRACT_ONLY_SCOPED_ENGINEERING_NOT_PRODUCTION",
+      "data_type": "object",
+      "dependencies": {
+        "component_dependencies": "ROTATION_OWNER_HISTORY_AND_D1_OWNER_PREDECESSOR_STAY_IN_THEIR_OWN_LINEAGE",
+        "current": [
+          "rotation_publication",
+          "structure_publication"
+        ],
+        "history": [],
+        "time_role": "T_ROTATION_AND_READ_ONLY_D1"
+      },
+      "field": "rotation_structure_enrichment",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "object_schema": {
+        "bytes": 2679,
+        "path": "config/v4_13_rotation_structure_enrichment_schema_v1_2.json",
+        "sha256": "bd53db1a842dc97cded4871f834fceec3ec85b6f97aa604937f7aa1eb879ffd9"
+      },
+      "owner_stage": "V4-13",
+      "producer_contract_id": "ROTATION_STRUCTURE_ENRICHMENT_V1",
+      "publication_namespace": "CONTEXT_LOO",
+      "quality_propagation": "LOSSLESS_COMPONENT_QUALITY; missing affects actual dependency only",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "semantic_definition": "DUAL_READ_ONLY_COMPONENTS",
+      "semantic_status": "FROZEN",
+      "source_bindings": [
+        {
+          "binding": {
+            "bytes": 21493,
+            "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+            "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+          },
+          "contract_binding": {
+            "bytes": 21093,
+            "path": "config/v4_08_rotation_core_contract_r5.json",
+            "sha256": "2fee45359815fd70f489e0c24c29b49eac114628332b77399d6d2f14ea018330"
+          },
+          "role": "rotation_source",
+          "source_field": "rotation_core_state"
+        },
+        {
+          "binding": {
+            "bytes": 796484,
+            "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+            "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+          },
+          "publication_authority_pointer": "/publication_authority/authorized_manifests",
+          "role": "structure_source",
+          "source_field": "READ_ONLY_AUTHORIZED_V4_12_STRUCTURE_PUBLICATION"
+        }
+      ],
+      "source_field": "DUAL_READ_ONLY_COMPONENTS",
+      "source_owner": "DUAL_V4_08_ROTATION_AND_V4_12_STRUCTURE",
+      "time_role": "T_ROTATION_AND_READ_ONLY_D1",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "consumer_scope": "CONTRACT_ONLY_SCOPED_ENGINEERING_NOT_PRODUCTION",
+      "data_type": "enum_or_identity",
+      "field": "active_anchor_id",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "quality_propagation": "LOSSLESS_COMPONENT_QUALITY; missing affects actual dependency only",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "semantic_definition": "active_selection.active_anchor_id",
+      "semantic_status": "FROZEN",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "active_selection.active_anchor_id",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "consumer_scope": "CONTRACT_ONLY_SCOPED_ENGINEERING_NOT_PRODUCTION",
+      "data_type": "object",
+      "field": "anchor_view_asof_t",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "quality_propagation": "LOSSLESS_COMPONENT_QUALITY; missing affects actual dependency only",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "semantic_definition": "selected_anchor_state.output_envelope.anchor_view_asof_t",
+      "semantic_status": "FROZEN",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "selected_anchor_state.output_envelope.anchor_view_asof_t",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "consumer_scope": "CONTRACT_ONLY_SCOPED_ENGINEERING_NOT_PRODUCTION",
+      "data_type": "enum_or_identity",
+      "field": "basic_breakout_state",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "quality_propagation": "LOSSLESS_COMPONENT_QUALITY; missing affects actual dependency only",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "semantic_definition": "basic_breakout_state",
+      "semantic_status": "FROZEN",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "basic_breakout_state",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "consumer_scope": "CONTRACT_ONLY_SCOPED_ENGINEERING_NOT_PRODUCTION",
+      "data_type": "enum_or_identity",
+      "field": "basic_pullback_state",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "quality_propagation": "LOSSLESS_COMPONENT_QUALITY; missing affects actual dependency only",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "semantic_definition": "active_projection.basic_pullback_state",
+      "semantic_status": "FROZEN",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "active_projection.basic_pullback_state",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "consumer_scope": "CONTRACT_ONLY_SCOPED_ENGINEERING_NOT_PRODUCTION",
+      "data_type": "enum_or_identity",
+      "field": "basic_recovery_state",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "quality_propagation": "LOSSLESS_COMPONENT_QUALITY; missing affects actual dependency only",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "semantic_definition": "active_projection.basic_recovery_state",
+      "semantic_status": "FROZEN",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "active_projection.basic_recovery_state",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "consumer_scope": "CONTRACT_ONLY_SCOPED_ENGINEERING_NOT_PRODUCTION",
+      "data_type": "enum_or_identity",
+      "field": "support_state",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "quality_propagation": "LOSSLESS_COMPONENT_QUALITY; missing affects actual dependency only",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "semantic_definition": "active_projection.support_state",
+      "semantic_status": "FROZEN",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "active_projection.support_state",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "consumer_scope": "CONTRACT_ONLY_SCOPED_ENGINEERING_NOT_PRODUCTION",
+      "data_type": "enum_or_identity",
+      "field": "acceptance_state",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "quality_propagation": "LOSSLESS_COMPONENT_QUALITY; missing affects actual dependency only",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "semantic_definition": "active_projection.acceptance_state",
+      "semantic_status": "FROZEN",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "active_projection.acceptance_state",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "consumer_scope": "CONTRACT_ONLY_SCOPED_ENGINEERING_NOT_PRODUCTION",
+      "data_type": "integer",
+      "field": "retest_count",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "quality_propagation": "LOSSLESS_COMPONENT_QUALITY; missing affects actual dependency only",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "semantic_definition": "active_projection.retest_count",
+      "semantic_status": "FROZEN",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "active_projection.retest_count",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "count"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "consumer_scope": "CONTRACT_ONLY_SCOPED_ENGINEERING_NOT_PRODUCTION",
+      "data_type": "array",
+      "field": "structure_events",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "quality_propagation": "LOSSLESS_COMPONENT_QUALITY; missing affects actual dependency only",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "semantic_definition": "events",
+      "semantic_status": "FROZEN",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "events",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "consumer_scope": "CONTRACT_ONLY_SCOPED_ENGINEERING_NOT_PRODUCTION",
+      "data_type": "enum_or_identity",
+      "field": "structure_health",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "quality_propagation": "LOSSLESS_COMPONENT_QUALITY; missing affects actual dependency only",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "semantic_definition": "selected_anchor_state.output_envelope.structure_health",
+      "semantic_status": "FROZEN",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "selected_anchor_state.output_envelope.structure_health",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    }
+  ],
+  "input_fields": [
+    {
+      "accepted_owner": "V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1",
+      "consumer_route": {
+        "bytes": 1395,
+        "path": "config/v4_13_membership_consumer_route_v1_1.json",
+        "sha256": "5bc1e50c900bd2314a2a9ec602e3d2efc5b0f20f444a55e6500a1f0020303dfc"
+      },
+      "consumer_scope": "SCOPED_ENGINEERING_ONLY",
+      "field": "membership_snapshot",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 2151,
+        "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+        "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+      },
+      "reconstruction": false,
+      "required": true,
+      "source_field": "membership_snapshot",
+      "time_role": "T_CUTOFF",
+      "unit": "date_valid_relation"
+    },
+    {
+      "accepted_owner": "V4_05",
+      "consumer_scope": "SCOPED_ENGINEERING_ONLY",
+      "field": "member_ret1",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 8456,
+        "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+        "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+      },
+      "reconstruction": false,
+      "required": true,
+      "source_field": "ret1",
+      "time_role": "T_CUTOFF",
+      "unit": "percent"
+    },
+    {
+      "accepted_owner": "V4_05",
+      "consumer_scope": "SCOPED_ENGINEERING_ONLY",
+      "field": "member_ret5",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 8456,
+        "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+        "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+      },
+      "reconstruction": false,
+      "required": true,
+      "source_field": "ret5",
+      "time_role": "T_CUTOFF",
+      "unit": "percent"
+    },
+    {
+      "accepted_owner": "V4_05",
+      "consumer_scope": "SCOPED_ENGINEERING_ONLY",
+      "field": "member_ret20",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 8456,
+        "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+        "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+      },
+      "reconstruction": false,
+      "required": true,
+      "source_field": "ret20",
+      "time_role": "T_CUTOFF",
+      "unit": "percent"
+    },
+    {
+      "accepted_owner": "V4_05",
+      "consumer_scope": "SCOPED_ENGINEERING_ONLY",
+      "field": "member_amount",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 8456,
+        "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+        "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+      },
+      "reconstruction": false,
+      "required": true,
+      "source_field": "amount",
+      "time_role": "T_CUTOFF",
+      "unit": "CNY"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "consumer_scope": "SCOPED_ENGINEERING_ONLY",
+      "field": "member_amount_ratio20",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "source_field": "amount_ratio20",
+      "time_role": "T_CUTOFF",
+      "unit": "ratio"
+    },
+    {
+      "accepted_owner": "V4_05",
+      "consumer_scope": "SCOPED_ENGINEERING_ONLY",
+      "field": "member_close",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 8456,
+        "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+        "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+      },
+      "reconstruction": false,
+      "required": true,
+      "source_field": "close",
+      "time_role": "T_CUTOFF",
+      "unit": "price_basis_units"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "consumer_scope": "SCOPED_ENGINEERING_ONLY",
+      "field": "member_ma20",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "source_field": "ma20",
+      "time_role": "T_CUTOFF",
+      "unit": "price_basis_units"
+    },
+    {
+      "accepted_owner": "V4_07",
+      "consumer_scope": "SCOPED_ENGINEERING_ONLY",
+      "field": "member_base_seed_raw",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6362,
+        "path": "data/v4/V4_07_ACCEPTED_HEAD.json",
+        "sha256": "b22117b0d14c35167cba86cb7398d878d7112f9cf17c1a427fa92766e78f880f"
+      },
+      "reconstruction": false,
+      "required": true,
+      "source_field": "base_seed_raw",
+      "time_role": "T_CUTOFF",
+      "unit": "boolean"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "consumer_scope": "SCOPED_ENGINEERING_ONLY",
+      "field": "member_quality",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "source_field": "quality",
+      "time_role": "T_CUTOFF",
+      "unit": "quality_enum"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "consumer_scope": "SCOPED_ENGINEERING_ONLY",
+      "field": "rps5",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "source_field": "rps5",
+      "time_role": "T_CUTOFF",
+      "unit": "percentile_points"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "consumer_scope": "SCOPED_ENGINEERING_ONLY",
+      "field": "rps20",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "source_field": "rps20",
+      "time_role": "T_CUTOFF",
+      "unit": "percentile_points"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "consumer_scope": "SCOPED_ENGINEERING_ONLY",
+      "field": "rps20_delta3",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "source_field": "rps20_delta3",
+      "time_role": "T_CUTOFF",
+      "unit": "percentile_point_delta"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "consumer_scope": "SCOPED_ENGINEERING_ONLY",
+      "field": "stock_ret1",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "source_field": "stock_ret1",
+      "time_role": "T_CUTOFF",
+      "unit": "percent"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "consumer_scope": "SCOPED_ENGINEERING_ONLY",
+      "field": "stock_ret5",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "source_field": "stock_ret5",
+      "time_role": "T_CUTOFF",
+      "unit": "percent"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "consumer_scope": "SCOPED_ENGINEERING_ONLY",
+      "field": "compression_state",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "source_field": "compression_state",
+      "time_role": "T_CUTOFF",
+      "unit": "enum"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "consumer_scope": "SCOPED_ENGINEERING_ONLY",
+      "field": "ma_structure_state",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "source_field": "ma_structure_state",
+      "time_role": "T_CUTOFF",
+      "unit": "enum"
+    },
+    {
+      "accepted_owner": "V4_08",
+      "consumer_scope": "SCOPED_ENGINEERING_ONLY",
+      "field": "loo_history",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "reconstruction": false,
+      "required": true,
+      "source_field": "loo_history",
+      "time_role": "T_MINUS_K_EXACT_SOURCE",
+      "unit": "immutable_revision_lineage"
+    }
+  ],
+  "reason": "R14_EXTERNAL_AUDIT_C01_C04_REPAIR",
+  "runtime_implemented": false,
+  "status": "CONTRACT_FREEZE_ONLY",
+  "supersedes": {
+    "bytes": 33351,
+    "path": "config/v4_13_field_registry_v1_1.json",
+    "sha256": "59b9f13bd4d7c43e06dd6fda708420823bc1f20cc3ffd30e69893c64470d2d7e"
+  },
+  "version": "1.2.0"
+}

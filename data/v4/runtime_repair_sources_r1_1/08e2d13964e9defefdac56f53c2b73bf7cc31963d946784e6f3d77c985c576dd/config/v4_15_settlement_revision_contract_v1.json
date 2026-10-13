@@ -1,0 +1,52 @@
+{
+  "contract_id": "OUTCOME_REVISION_V1",
+  "corrected_source": "APPEND_NEW_EVALUATION_REVISION",
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "46",
+      "45A"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "fields": [
+    "outcome_id",
+    "outcome_contract_id",
+    "evaluation_source_digest",
+    "evaluation_revision",
+    "supersedes",
+    "revision_reason",
+    "first_observed_id",
+    "latest_corrected_id",
+    "evaluation_source_identity"
+  ],
+  "focus": false,
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "outcome_key": [
+    "enrollment_id",
+    "horizon",
+    "outcome_contract_id",
+    "evaluation_source_digest"
+  ],
+  "overwrite_signal_enrollment": false,
+  "production": false,
+  "required_revision_metadata": [
+    "evaluation_source_identity",
+    "available_at",
+    "evaluation_revision",
+    "supersedes",
+    "evidence_class",
+    "reason_codes"
+  ],
+  "runtime_implemented": false,
+  "same_source": "IDEMPOTENT",
+  "shadow": false,
+  "source_gate": "ACCEPTED_SOURCE_AT_EVALUATION_AVAILABLE_AT; FUTURE_SOURCE_NEVER_T0_DECISION",
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "version": "1.0.0",
+  "views": [
+    "FIRST_OBSERVED",
+    "LATEST_CORRECTED"
+  ]
+}

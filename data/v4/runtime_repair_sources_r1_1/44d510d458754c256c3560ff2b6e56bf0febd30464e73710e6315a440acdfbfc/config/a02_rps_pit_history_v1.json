@@ -1,0 +1,57 @@
+{
+  "AS_RECORDED": false,
+  "consumer_policy": "V4-07 runtime reads bound score artifacts only; no raw-history recalculation; candidate amendment cannot enter formal consumer before independent external acceptance.",
+  "contract_id": "V4_RPS_PIT_HISTORY_V1",
+  "first_availability_proven": false,
+  "focus_cutover": false,
+  "formula": "100 * (less + 0.5 * (equal - 1)) / (N - 1)",
+  "horizons": [
+    5,
+    20
+  ],
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "membership_policy": "Date-effective cross-sections bind separate member digests; same identity authority permits continuing members; new members remain UNKNOWN for missing prior.",
+  "parameters": {
+    "min_evaluable_universe": 2
+  },
+  "price_coordinate_policy": "Endpoint affine coefficients must match; mismatch is UNKNOWN, no adjustment reinterpretation.",
+  "production": false,
+  "publication_policy": "Immutable create-if-absent; externally accepted inputs do not externally accept derived RPS candidates.",
+  "return_contract": "CROSS_SECTION_SESSION_WINDOW_V1",
+  "return_formula": "close[T]/close[T-N]-1; actual endpoints; unknown intermediate states fail closed",
+  "runtime_bindings": [
+    {
+      "bytes": 6292,
+      "path": "src/v4/rps_pit_history_a02_v1.py",
+      "sha256": "052a74e16092108886dfd92bc2c47133513e7a12d53ba555087b14443b194eb6"
+    },
+    {
+      "bytes": 16643,
+      "path": "src/v4/factors/core.py",
+      "sha256": "8986358268a5ae706c6cc46c95937ed381b65b55d3293667f840ff50008217f1"
+    },
+    {
+      "bytes": 37887,
+      "path": "src/v4/base_seed.py",
+      "sha256": "0fa1b11f0d342731cf3658379f6ae14982b3861509daf2e949e197a722aac1d7"
+    },
+    {
+      "bytes": 22817,
+      "path": "src/v4/stock_prewatch.py",
+      "sha256": "a57a4413b56cd81f43a06611f4dec328ef6ac35486f4a4b56e5b5938e2db60ce"
+    }
+  ],
+  "score_contract": "RPS_MIDRANK_V1",
+  "shadow": false,
+  "status": "FROZEN_CANDIDATE",
+  "version": "1.0.0",
+  "warmup": {
+    "T_minus_1": "T_MINUS_1_PUBLICATION_MISSING",
+    "T_minus_3": "T_MINUS_3_PUBLICATION_MISSING",
+    "calendar_gap": "UNEXPLAINED_DATA_GAP",
+    "calendar_revision": "CALENDAR_REVISION",
+    "insufficient_history": "INSUFFICIENT_SESSION_HISTORY",
+    "new_member": "PRIOR_UNIVERSE_MEMBER_MISSING",
+    "universe_revision": "UNIVERSE_AUTHORITY_REVISION"
+  }
+}

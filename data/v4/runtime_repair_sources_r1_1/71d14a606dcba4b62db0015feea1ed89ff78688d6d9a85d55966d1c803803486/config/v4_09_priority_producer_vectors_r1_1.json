@@ -1,0 +1,125 @@
+{
+  "contract_id": "V4_09_PRIORITY_PRODUCER_VECTORS_R1_1",
+  "vectors": [
+    {
+      "expected_axis": "HIGH",
+      "expected_raw": "TRUE",
+      "expected_reason": null,
+      "field": "compression_state",
+      "id": "compression_state_correct",
+      "mode": "correct"
+    },
+    {
+      "expected_axis": "UNKNOWN",
+      "expected_raw": "TRUE",
+      "expected_reason": "STATE_PRODUCER_CONTRACT_MISMATCH",
+      "field": "compression_state",
+      "id": "compression_state_wrong_contract",
+      "mode": "wrong_contract"
+    },
+    {
+      "expected_axis": "UNKNOWN",
+      "expected_raw": "TRUE",
+      "expected_reason": "STATE_PRODUCER_CONTRACT_MISMATCH",
+      "field": "compression_state",
+      "id": "compression_state_missing_contract",
+      "mode": "missing_contract"
+    },
+    {
+      "expected_axis": "UNKNOWN",
+      "expected_raw": "TRUE",
+      "expected_reason": "STATE_PARAMETER_SET_MISMATCH",
+      "field": "compression_state",
+      "id": "compression_state_wrong_parameter",
+      "mode": "wrong_parameter"
+    },
+    {
+      "expected_axis": "UNKNOWN",
+      "expected_raw": "TRUE",
+      "expected_reason": "STATE_PARAMETER_SET_MISMATCH",
+      "field": "compression_state",
+      "id": "compression_state_missing_parameter",
+      "mode": "missing_parameter"
+    },
+    {
+      "expected_axis": "HIGH",
+      "expected_raw": "TRUE",
+      "expected_reason": null,
+      "field": "ma_structure_state",
+      "id": "ma_structure_state_correct",
+      "mode": "correct"
+    },
+    {
+      "expected_axis": "UNKNOWN",
+      "expected_raw": "TRUE",
+      "expected_reason": "STATE_PRODUCER_CONTRACT_MISMATCH",
+      "field": "ma_structure_state",
+      "id": "ma_structure_state_wrong_contract",
+      "mode": "wrong_contract"
+    },
+    {
+      "expected_axis": "UNKNOWN",
+      "expected_raw": "TRUE",
+      "expected_reason": "STATE_PRODUCER_CONTRACT_MISMATCH",
+      "field": "ma_structure_state",
+      "id": "ma_structure_state_missing_contract",
+      "mode": "missing_contract"
+    },
+    {
+      "expected_axis": "UNKNOWN",
+      "expected_raw": "TRUE",
+      "expected_reason": "STATE_PARAMETER_SET_MISMATCH",
+      "field": "ma_structure_state",
+      "id": "ma_structure_state_wrong_parameter",
+      "mode": "wrong_parameter"
+    },
+    {
+      "expected_axis": "UNKNOWN",
+      "expected_raw": "TRUE",
+      "expected_reason": "STATE_PARAMETER_SET_MISMATCH",
+      "field": "ma_structure_state",
+      "id": "ma_structure_state_missing_parameter",
+      "mode": "missing_parameter"
+    },
+    {
+      "expected_axis": "LOW",
+      "expected_raw": "TRUE",
+      "expected_reason": null,
+      "field": "core_extension_risk",
+      "id": "core_extension_risk_correct",
+      "mode": "correct"
+    },
+    {
+      "expected_axis": "UNKNOWN",
+      "expected_raw": "TRUE",
+      "expected_reason": "STATE_PRODUCER_CONTRACT_MISMATCH",
+      "field": "core_extension_risk",
+      "id": "core_extension_risk_wrong_contract",
+      "mode": "wrong_contract"
+    },
+    {
+      "expected_axis": "UNKNOWN",
+      "expected_raw": "TRUE",
+      "expected_reason": "STATE_PRODUCER_CONTRACT_MISMATCH",
+      "field": "core_extension_risk",
+      "id": "core_extension_risk_missing_contract",
+      "mode": "missing_contract"
+    },
+    {
+      "expected_axis": "UNKNOWN",
+      "expected_raw": "TRUE",
+      "expected_reason": "STATE_PARAMETER_SET_MISMATCH",
+      "field": "core_extension_risk",
+      "id": "core_extension_risk_wrong_parameter",
+      "mode": "wrong_parameter"
+    },
+    {
+      "expected_axis": "UNKNOWN",
+      "expected_raw": "TRUE",
+      "expected_reason": "STATE_PARAMETER_SET_MISMATCH",
+      "field": "core_extension_risk",
+      "id": "core_extension_risk_missing_parameter",
+      "mode": "missing_parameter"
+    }
+  ]
+}

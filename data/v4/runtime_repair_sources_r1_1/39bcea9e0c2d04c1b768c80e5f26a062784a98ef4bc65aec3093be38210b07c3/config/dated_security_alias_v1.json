@@ -1,0 +1,11 @@
+{
+  "contract_id": "DATED_SECURITY_ALIAS_V1",
+  "version": "1.0.0",
+  "record_path": "data/v4/bootstrap/dated_security_alias_r7.jsonl",
+  "identity_key": "security_id",
+  "alias_key": "source_security_key",
+  "effective_interval": {"start_field": "effective_from", "end_field": "effective_to", "end_inclusive": true},
+  "ambiguity_policy": "REJECT_OVERLAPPING_ALIAS_OR_BOARD_INTERVALS",
+  "required_evidence_fields": ["source_revision", "evidence_ref", "evidence_hash"],
+  "revision_fields": ["observed_at", "system_available_at", "source_revision", "supersedes_revision_id"]
+}

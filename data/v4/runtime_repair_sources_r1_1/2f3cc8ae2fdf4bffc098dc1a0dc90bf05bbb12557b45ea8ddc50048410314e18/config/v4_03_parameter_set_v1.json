@@ -1,0 +1,16 @@
+{
+  "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+  "version": "1.0.0",
+  "owner_stage": "V4-03",
+  "mathematical_constants": {"rps_midrank_half": 0.5, "population_std_ddof": 0},
+  "contract_literals": {"core_price_damage_atr_multiple": 0.5, "market_reference_max_missing_fraction": 0.2},
+  "engineering_candidate_thresholds": {
+    "market_breadth_axis": 0.05,
+    "market_participation_expanding": 1.2,
+    "market_participation_thin": 0.8,
+    "market_stress_min_limit_coverage": 0.8,
+    "market_stress_elevated": 0.01,
+    "market_stress_high": 0.05
+  },
+  "claims": "Versioned research rules; no probability or market-law claim"
+}

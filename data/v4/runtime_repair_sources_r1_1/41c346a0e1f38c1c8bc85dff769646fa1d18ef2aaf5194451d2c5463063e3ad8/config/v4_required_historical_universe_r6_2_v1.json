@@ -1,0 +1,15 @@
+{
+  "contract_id": "V4_REQUIRED_HISTORICAL_UNIVERSE_R6_2_V1",
+  "version": "1.0.0",
+  "required_scope_contract_id": "REQUIRED_EQUITY_SCOPE_V1",
+  "membership_contract_id": "SECURITY_MEMBERSHIP_INTERVAL_V1",
+  "membership_source_contract_id": "DATED_ROSTER_MEMBERSHIP_BOUNDARY_V1",
+  "sessions": 786,
+  "window_start": "2023-07-04",
+  "window_end": "2026-09-24",
+  "required_boards": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"],
+  "membership_rule": "Intersect current append-only normalized membership intervals with accepted exact dated rosters. Require zero interval-roster mismatch and zero all-day missing required identities.",
+  "bar_rule": "Missing local bars do not infer non-membership or trading status; retain membership and mark bar availability explicitly.",
+  "lineage": "RECONSTRUCTED_CORRECTED",
+  "bse_policy": "Keep BSE separate as DEGRADED_BSE; it is not a Required-scope gate."
+}

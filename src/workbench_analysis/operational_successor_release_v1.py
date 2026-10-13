@@ -7,19 +7,22 @@ from .tdx_official_daily_source import sha256_file,_atomic_write
 from .operational_successor_v1 import validate,digest
 
 
-def verify_policy(root,candidate):
+def verify_policy(root,candidate,*,verify_loaded=True):
     root=Path(root)
     binding=candidate['release_policy'];policy=json.loads(checked(root,binding).read_bytes())
     from .operational_daily_exact_policy_v2 import CONTRACT,KERNEL,verify
     if policy.get('contract_id')==CONTRACT:
-        policy,_=verify(root,binding)
+        policy,_=verify(root,binding,verify_loaded=verify_loaded)
         if candidate.get('accepted_algorithm_bindings')!=policy['accepted_algorithm_bindings']:
             raise ValueError('DAILY_ALGORITHM_BINDING_MISMATCH')
         generation=json.loads(checked(root,candidate['exact_daily_generation_scope']).read_bytes())
         if candidate.get('exact_daily_adjustment_contract')!=KERNEL:
             raise ValueError('DAILY_EXACT_GENERATION_BINDING_REQUIRED')
         from .operational_sealed_preparation_v1 import KEY,verify as verify_preparation
-        if KEY in candidate:
+        from .operational_runtime_acceptance_r1_1 import KEY as R11,verify as verify_runtime_preparation
+        if R11 in candidate:
+            verify_runtime_preparation(root,candidate,policy)
+        elif KEY in candidate:
             verify_preparation(root,candidate,policy)
         elif generation.get('adjustment_contract')!=dict(contract=KERNEL,policy=binding):
             raise ValueError('DAILY_EXACT_GENERATION_BINDING_REQUIRED')
@@ -57,26 +60,33 @@ def promote(root,candidate,expected_sha,readback):
         before=head.read_bytes();archive=head.parent/'predecessors'/(expected_sha+'.json')
         _atomic_write(archive,before,tdx_root=Path('D:/new_tdx'))
         coordination=dict(current_joint=joint_binding,current_joint_predecessor=joint_previous)
-        atomic_json(root,transaction,dict(state='PREPARED',predecessor=ref(root,archive),candidate_token=digest(candidate),**coordination))
-        atomic_json(root,head,candidate)
-        if joint_binding is not None:
-            _atomic_write(current_joint,checked(root,joint_binding).read_bytes(),tdx_root=Path('D:/new_tdx'))
-        current=sha256_file(head)
-        atomic_json(root,transaction,dict(state='CAS_COMPLETE_READBACK_PENDING',predecessor=ref(root,archive),head_sha256=current,candidate_token=digest(candidate),**coordination))
-        try:
-            receipt=readback(candidate)
-            if receipt.get('context_token')!=digest(candidate) or receipt.get('accepted_trade_date')!=candidate['accepted_trade_date'] or receipt.get('status')!='PASS':
-                raise ValueError('HTTP_SAME_TOKEN_READBACK_FAILED')
-        except Exception:
-            if sha256_file(head)!=current:raise ValueError('ROLLBACK_HEAD_MOVED_FAIL_CLOSED')
-            _atomic_write(head,before,tdx_root=Path('D:/new_tdx'))
-            if joint_binding is not None:
-                if joint_before is None:current_joint.unlink()
-                else:_atomic_write(current_joint,joint_before,tdx_root=Path('D:/new_tdx'))
-            atomic_json(root,transaction,dict(state='ROLLED_BACK',predecessor=ref(root,archive),failed_token=digest(candidate),**coordination))
-            raise
-        atomic_json(root,transaction,dict(state='COMMITTED',predecessor=ref(root,archive),head_sha256=current,readback=receipt,**coordination))
-        return dict(status='PUBLISHED',accepted_trade_date=candidate['accepted_trade_date'],context_token=digest(candidate),head_sha256=current)
+        return _commit_pointers(root,head,current_joint,transaction,candidate,before,archive,coordination,joint_before,
+            checked(root,joint_binding).read_bytes() if joint_binding is not None else None,readback)
+
+
+def _commit_pointers(pointer_root,head,current_joint,transaction,candidate,before,archive,coordination,joint_before,joint_bytes,readback):
+    """Shared exact pointer CAS/readback rollback; caller holds publisher lock."""
+    root=Path(pointer_root)
+    atomic_json(root,transaction,dict(state='PREPARED',predecessor=ref(root,archive),candidate_token=digest(candidate),**coordination))
+    atomic_json(root,head,candidate)
+    if joint_bytes is not None:
+        _atomic_write(current_joint,joint_bytes,tdx_root=Path('D:/new_tdx'))
+    current=sha256_file(head)
+    atomic_json(root,transaction,dict(state='CAS_COMPLETE_READBACK_PENDING',predecessor=ref(root,archive),head_sha256=current,candidate_token=digest(candidate),**coordination))
+    try:
+        receipt=readback(candidate)
+        if receipt.get('context_token')!=digest(candidate) or receipt.get('accepted_trade_date')!=candidate['accepted_trade_date'] or receipt.get('status')!='PASS':
+            raise ValueError('HTTP_SAME_TOKEN_READBACK_FAILED')
+    except Exception:
+        if sha256_file(head)!=current:raise ValueError('ROLLBACK_HEAD_MOVED_FAIL_CLOSED')
+        _atomic_write(head,before,tdx_root=Path('D:/new_tdx'))
+        if joint_bytes is not None:
+            if joint_before is None:current_joint.unlink()
+            else:_atomic_write(current_joint,joint_before,tdx_root=Path('D:/new_tdx'))
+        atomic_json(root,transaction,dict(state='ROLLED_BACK',predecessor=ref(root,archive),failed_token=digest(candidate),**coordination))
+        raise
+    atomic_json(root,transaction,dict(state='COMMITTED',predecessor=ref(root,archive),head_sha256=current,readback=receipt,**coordination))
+    return dict(status='PUBLISHED',accepted_trade_date=candidate['accepted_trade_date'],context_token=digest(candidate),head_sha256=current)
 
 
 def recover(root):
@@ -105,3 +115,34 @@ def recover(root):
         restore_joint()
         _atomic_write(head,checked(root,record['predecessor']).read_bytes(),tdx_root=Path('D:/new_tdx'))
         atomic_json(root,transaction,dict(record,state='RECOVERED_EXACT_PREDECESSOR'))
+
+
+def engineering_shadow_promote(root,candidate,expected_sha,readback,*,shadow_root,evidence_binding):
+    """Engineering G4 only: formal source/PG reads, G-local shadow pointers."""
+    import os
+    shadow=Path(shadow_root).resolve();root=Path(root).resolve()
+    if os.environ.get('R4_NATIVE_ISOLATION')!='1' or not shadow.is_relative_to(Path('G:/codex_tmp').resolve()) or shadow==root:
+        raise ValueError('ENGINEERING_SHADOW_SCOPE_REQUIRED')
+    validate(root,candidate)
+    from .operational_daily_exact_policy_v2 import verify
+    policy,_=verify(root,candidate['release_policy'],candidate_only=True)
+    if candidate.get('accepted_algorithm_bindings')!=policy['accepted_algorithm_bindings']:raise ValueError('DAILY_ALGORITHM_BINDING_MISMATCH')
+    evidence=json.loads(checked(root,evidence_binding).read_bytes())
+    if evidence.get('contract_id')!='V4_R1_1_DUAL_REFERENCE_SEMANTIC_AND_IDENTITY_PARITY' or evidence.get('target_trade_date')!=candidate['accepted_trade_date']:
+        raise ValueError('ENGINEERING_G123_CONTEXT_REQUIRED')
+    if evidence.get('scope')!='FULL_ALL_DOMAIN' or evidence.get('sample_count')==30:
+        raise ValueError('ENGINEERING_FULL_DOMAIN_EVIDENCE_REQUIRED')
+    counts=evidence.get('counts',{})
+    if counts.get('stocks')!=5225 or counts.get('sectors')!=400:raise ValueError('ENGINEERING_FULL_DENOMINATOR_REQUIRED')
+    if evidence.get('accepted_algorithm_bindings')!=policy['accepted_algorithm_bindings']:raise ValueError('ENGINEERING_G123_SOURCE_MISMATCH')
+    actual=json.loads(checked(root,evidence['candidate_binding']).read_bytes())
+    if actual!=candidate or any(evidence.get(g,{}).get('status')!='PASS' for g in ('G1','G2','G3')):
+        raise ValueError('ENGINEERING_G123_PASS_REQUIRED')
+    head=shadow/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+    transaction=shadow/'runtime/dynamic_daily/publication_transaction.json'
+    with exclusive_lock(shadow,shadow/'runtime/dynamic_daily/publisher.lock'):
+        if sha256_file(head)!=expected_sha or candidate['predecessor']['sha256']!=expected_sha:raise ValueError('STALE_OPERATIONAL_HEAD_CAS')
+        before=head.read_bytes();archive=shadow/'data/v4/predecessors'/(expected_sha+'.json')
+        _atomic_write(archive,before,tdx_root=Path('D:/new_tdx'))
+        result=_commit_pointers(shadow,head,shadow/'config/v4_current_native_joint_authority_v3.json',transaction,candidate,before,archive,{},None,None,readback)
+    return dict(result,status='ENGINEERING_SHADOW_PUBLISHED',production_accepted=False,formal_head_changed=False)

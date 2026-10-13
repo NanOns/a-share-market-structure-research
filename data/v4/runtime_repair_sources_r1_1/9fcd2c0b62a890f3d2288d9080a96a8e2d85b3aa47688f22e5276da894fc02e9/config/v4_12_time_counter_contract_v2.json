@@ -1,0 +1,77 @@
+{
+  "contract_id": "V4_12_SESSION_COUNTER_V2",
+  "definitions": {
+    "calendar_authority": {
+      "bytes": 10739,
+      "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/calendar_union_2e0938120e3b371aa9c84422c06b4c14de0f8894cc8f3caa9dd9c61299239e74.json",
+      "sha256": "629242b5074002dd8e889fdca5da9e1c05f9ae35357662d5c76a554117fc17f5"
+    },
+    "consecutive_path": {
+      "missing": "Reset held/breach/recovery held chain to zero; prior_adjacent_evaluable false",
+      "same_day_revision": "Same t-1 baseline; replace observation; held and breach never repeatedly increment"
+    },
+    "data_authority": {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "missing_suspension": "Cannot increment actual evaluable count; missing history yields UNKNOWN; breaks consecutive path counters",
+    "pivot_left_count": "Actual evaluable sessions preceding pivot_date, no shortened missing window",
+    "pivot_right_count": "Actual evaluable sessions after pivot_date through confirmation_date",
+    "post_creation_evaluable_sessions": {
+      "consecutive": false,
+      "definition": "Count unique sessions after available_date with a qualifying evaluable D1 observation through observation_trade_date",
+      "increment": "One per qualifying distinct date",
+      "missing": "Suspension/missing/required coordinate unavailable adds zero; unavailable frozen count/history -> UNKNOWN",
+      "reset": "New immutable Anchor only; NOT reset by missing",
+      "same_day_revision": "Recompute date membership against same frozen t-1 baseline; never accumulate revisions; quality correction replaces membership",
+      "unit": "evaluable_sessions",
+      "uses": [
+        "acceptance.PENDING"
+      ]
+    },
+    "post_creation_market_sessions": {
+      "definition": "Count unique accepted calendar session_dates in (anchor.available_date, observation_trade_date]",
+      "increment": "Each market session including security suspension/missing",
+      "missing": "Unavailable calendar -> UNKNOWN",
+      "reset": "New immutable Anchor only",
+      "same_day_revision": "Same date, same count",
+      "unit": "market_sessions_after_available_date",
+      "uses": [
+        "old_anchor",
+        "earliest test",
+        "same-day self-confirmation prevention"
+      ]
+    },
+    "producer": "V4_12_SESSION_COUNTER_V2",
+    "same_day_revision": "Same previous-session counter baseline; not another session",
+    "source_dates": [
+      "anchor.available_date",
+      "pivot_date",
+      "confirmation_date",
+      "observation_trade_date"
+    ]
+  },
+  "identity": [
+    "anchor_id",
+    "anchor.available_date",
+    "observation_trade_date",
+    "observation_revision"
+  ],
+  "permissions": {
+    "focus_cutover_permission": false,
+    "global_mandatory_adoption": false,
+    "production_permission": false,
+    "shadow_production_permission": false
+  },
+  "producer_runtime_available": false,
+  "runtime_authorized": false,
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "source_lineage": "Accepted calendar + frozen prior D1 observations; no raw reconstruction",
+  "unique_count_key": [
+    "anchor_id",
+    "observation_trade_date"
+  ],
+  "unknown_semantics": "Unknown history/calendar/required source remains UNKNOWN; never FALSE or synthesized",
+  "version": "2.0.0"
+}

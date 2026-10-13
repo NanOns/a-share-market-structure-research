@@ -1,0 +1,52 @@
+{
+  "AS_RECORDED": false,
+  "amount_unit": "CNY",
+  "contract_id": "FP07_STOCK_OPERATIONAL_AUTHORITY_V1",
+  "factors": {
+    "bytes": 19460170,
+    "path": "data/v4/fp06_sector/fc1c4411b3bdf36ed148223e02ca58c50e771364cef71fe72e6d8e527444df3f/factors.jsonl.gz",
+    "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+  },
+  "input_data_head": {
+    "bytes": 16890,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+  },
+  "intraday": "NOT_AVAILABLE_NO_FAKE_MINUTE_BARS",
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "price_basis": "TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE",
+  "profiles": {
+    "bytes": 44321756,
+    "path": "data/v4/fp06_sector/fc1c4411b3bdf36ed148223e02ca58c50e771364cef71fe72e6d8e527444df3f/profiles.jsonl.gz",
+    "sha256": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+  },
+  "series": {
+    "bytes": 367886336,
+    "path": "data/v4/fp07_stocks/69bf874b4d7311a1ddd217846e716708d96a26aeea19ec289721ad2564bbb4d3/series.sqlite",
+    "sha256": "6b326dac93aacd63dc289895b1488f224843940154b6f4b89bc0df8af0a4518d"
+  },
+  "sources": {
+    "factors": {
+      "bytes": 19460170,
+      "path": "data/v4/fp06_sector/fc1c4411b3bdf36ed148223e02ca58c50e771364cef71fe72e6d8e527444df3f/factors.jsonl.gz",
+      "sha256": "2ee46c732cbd9a2d9496fe9e4763efb9a1ab85568c9ae6e0d0e121bc4adb4265"
+    },
+    "history": {
+      "bytes": 42168789,
+      "path": "data/v4/fp05_market/e034e70084533be70892fd32d066139cbd273a36a8ada7e511a68f75fe1f1008/history.jsonl.gz",
+      "sha256": "9f7ee99454374db02824b5c9d52e2da89fca30232bc291ddb1f48ef6db84b6c0"
+    },
+    "profiles": {
+      "bytes": 44321756,
+      "path": "data/v4/fp06_sector/fc1c4411b3bdf36ed148223e02ca58c50e771364cef71fe72e6d8e527444df3f/profiles.jsonl.gz",
+      "sha256": "564ad82413a4b08f1f7ef62a748a42bf6f937bc48abde2bce9918f42173a7ee1"
+    },
+    "unit_contract": {
+      "bytes": 22120,
+      "path": "src/tdx/tdx_audit.py",
+      "sha256": "cbb1042ab37c12674d784509000e1da6076e63e86d5faace7ef0e732f79ab06e"
+    }
+  },
+  "trade_date": "2026-09-30",
+  "volume_unit": "SHARES"
+}

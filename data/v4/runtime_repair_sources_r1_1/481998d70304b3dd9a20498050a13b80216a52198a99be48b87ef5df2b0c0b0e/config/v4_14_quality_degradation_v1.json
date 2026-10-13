@@ -1,0 +1,241 @@
+{
+  "ALGORITHM_STATE_REPLAY_PASS": "NOT_GRANTED",
+  "acceptance_criteria": "COMPLETE_INDEPENDENT_FROZEN_CONTRACT_BEFORE_RUNTIME; EXTERNAL_AUDIT_STILL_REQUIRED",
+  "contract_id": "V4_14_QUALITY_DEGRADATION_V1",
+  "evidence_classes": {
+    "ENGINEERING_SYNTHETIC": {
+      "cannot_claim": [
+        "real_signal_READY",
+        "historical_PIT_effectiveness",
+        "ALGORITHM_STATE_REPLAY_PASS"
+      ],
+      "proves": [
+        "topology",
+        "hysteresis",
+        "expiry",
+        "unknown",
+        "dedup",
+        "revision",
+        "cross_process_harness_contract"
+      ]
+    },
+    "HISTORICAL_PIT_EFFECTIVENESS": {
+      "all_prerequisites_must_be_proven": true,
+      "current_membership_backfill_allowed": false,
+      "required": [
+        "price_PIT",
+        "universe_PIT",
+        "membership_PIT",
+        "source_identity",
+        "availability_cutoff",
+        "AS_RECORDED_adjustment_revision"
+      ]
+    },
+    "REAL_ACCEPTED_SOURCE_CAPABILITY_SCOPED": {
+      "historical_effectiveness_implied": false,
+      "required": [
+        "exact_accepted_head",
+        "exact_publication",
+        "source_identity",
+        "target_date",
+        "available_at",
+        "cutoff",
+        "component_capability"
+      ]
+    }
+  },
+  "failure_policy": {
+    "current_membership_historical_claim": "REJECT_NOT_HISTORICAL_PIT",
+    "missing_availability": "NOT_VERIFIABLE",
+    "missing_history": "DEGRADED",
+    "missing_membership": "UNKNOWN",
+    "missing_source": "UNKNOWN",
+    "unaffected_components": "REMAIN_INDEPENDENTLY_TESTABLE",
+    "unknown_to_false": false
+  },
+  "focus": false,
+  "global_mandatory_adoption": false,
+  "negative_cases": [
+    "same_day_feedback_negative",
+    "state_transition_legality_negative",
+    "hysteresis_negative",
+    "expiry_negative",
+    "direct_prewatch_confirmed_negative",
+    "rotation_pulse_accepted_failed_negative",
+    "support_reclaim_retest_break_negative",
+    "confirmation_persistent_suppression_negative",
+    "multi_sector_dedup_negative",
+    "unknown_propagation_negative",
+    "no_duplicate_event_episode_negative",
+    "same_day_revision_predecessor_negative",
+    "cross_process_previous_session_negative",
+    "future_publication_leakage_negative",
+    "revision_append_only_negative",
+    "deterministic_replay_negative",
+    "historical_pit_evidence_negative"
+  ],
+  "production": false,
+  "real_current_scope": {
+    "AS_RECORDED": false,
+    "historical_LOO": "NOT_VERIFIABLE",
+    "historical_pit_effectiveness": "NOT_GRANTED",
+    "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+    "legacy_B2": "NOT_IMPLEMENTED",
+    "real_signal": "DEGRADED_BY_ACCEPTED_UPSTREAM_CAPABILITY",
+    "trade_date": "2026-09-30"
+  },
+  "required_history": "OWNER_REQUIRED_WINDOWS_PLUS_EXACT_T_MINUS_1_PERSISTED_PUBLICATIONS; NO_SAME_DAY_PREDECESSOR",
+  "runtime_implemented": false,
+  "shadow": false,
+  "source_bindings": [
+    {
+      "bytes": 224998,
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+    },
+    {
+      "bytes": 6837,
+      "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+      "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+    },
+    {
+      "bytes": 8456,
+      "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+      "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+    },
+    {
+      "bytes": 6362,
+      "path": "data/v4/V4_07_ACCEPTED_HEAD.json",
+      "sha256": "b22117b0d14c35167cba86cb7398d878d7112f9cf17c1a427fa92766e78f880f"
+    },
+    {
+      "bytes": 21493,
+      "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+    },
+    {
+      "bytes": 2151,
+      "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+      "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+    },
+    {
+      "bytes": 11474,
+      "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+      "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+    },
+    {
+      "bytes": 5102,
+      "path": "data/v4/V4_10_ACCEPTED_HEAD.json",
+      "sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1"
+    },
+    {
+      "bytes": 14090,
+      "path": "data/v4/V4_11_ACCEPTED_HEAD.json",
+      "sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928"
+    },
+    {
+      "bytes": 796484,
+      "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+      "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+    },
+    {
+      "bytes": 8023,
+      "path": "data/v4/V4_13_ACCEPTED_HEAD.json",
+      "sha256": "f9d48096162d6c6de9f353251cc24715fb017243596131e45e6fcbaa5abb373c"
+    },
+    {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    {
+      "bytes": 4926,
+      "path": "config/v4_10_research_state_contract_r1_2.json",
+      "sha256": "33d50256635161f425f4f34ac805ea2f511362be7d71d35b3a62478de5a59127"
+    },
+    {
+      "bytes": 3709,
+      "path": "config/v4_10_machine_ast_r1_2.json",
+      "sha256": "de127c9566c840a75e7ab5fb1c033f8bbfa04dd88983e88360e94f12b2d99589"
+    },
+    {
+      "bytes": 435,
+      "path": "config/v4_10_parameter_set_r1_2.json",
+      "sha256": "20b66f9f2d2d4fe6ba8c3dd0583d6fa3d5408daebda09fae7ff27548e800ffd7"
+    },
+    {
+      "bytes": 6909,
+      "path": "config/v4_11_entry_contracts_r1.json",
+      "sha256": "460057a74d15b127d58204639a40697d5a6048949c6eba74f2dfeb54b99e9f2f"
+    },
+    {
+      "bytes": 921,
+      "path": "config/v4_11_confirmation_machine_ast_v1.json",
+      "sha256": "b6985ce8ff2498c115370b85690ba13538cdbb3339308fc77b6007e13c943062"
+    },
+    {
+      "bytes": 853,
+      "path": "config/v4_11_confirmation_parameter_set_v1.json",
+      "sha256": "34d61ecb766b523e9cec1c2178be3385968e6a9fc9b273025b35c3646117b1fd"
+    },
+    {
+      "bytes": 2214,
+      "path": "config/v4_12_structure_event_contract_v1.json",
+      "sha256": "b36a6e39a43665d5c07e52ad23fc3226d92cc73df6330a06606758cc38d1d99f"
+    },
+    {
+      "bytes": 41434,
+      "path": "config/v4_12_machine_ast_v1.json",
+      "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
+    },
+    {
+      "bytes": 14895,
+      "path": "config/v4_12_parameter_set_v1.json",
+      "sha256": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024"
+    },
+    {
+      "bytes": 21093,
+      "path": "config/v4_08_rotation_core_contract_r5.json",
+      "sha256": "2fee45359815fd70f489e0c24c29b49eac114628332b77399d6d2f14ea018330"
+    },
+    {
+      "bytes": 22084,
+      "path": "config/v4_13_dag_edge_registry_v1_1.json",
+      "sha256": "ae66a8e0cbad18389b9517578603f62961468870e02859b6812f4475e300863a"
+    },
+    {
+      "bytes": 7715,
+      "path": "config/v4_13_projection_v1_2.json",
+      "sha256": "567b498c9e0f828dc041d56ab56e79c8a4d34877fd09eef46a9c1f504396b19c"
+    },
+    {
+      "bytes": 4509500,
+      "path": "config/v4_10_machine_vectors_r1_2.json",
+      "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+    },
+    {
+      "bytes": 31822,
+      "path": "config/v4_12_machine_vectors_v1.json",
+      "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+    },
+    {
+      "bytes": 17242,
+      "path": "config/v4_12_time_counter_vectors_r2_1.json",
+      "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+    },
+    {
+      "bytes": 2915,
+      "path": "config/v4_08_rotation_machine_vectors_v2.json",
+      "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+    },
+    {
+      "bytes": 36191,
+      "path": "config/v4_13_machine_vectors_v1_1.json",
+      "sha256": "ddadf06451bc42c9eb21976f1242567896faaaf8f0f37ed1390426b0bc519048"
+    }
+  ],
+  "status": "CONTRACT_FREEZE_ONLY",
+  "time_role": "FROZEN_TARGET_SESSION_AND_EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION",
+  "unknown_semantics": "UNKNOWN_NEVER_FALSE; COMPONENT_SCOPED_DEGRADED_OR_NOT_VERIFIABLE",
+  "version": "1.0.0"
+}

@@ -1,0 +1,12 @@
+{
+  "contract_id": "A07_GO_FORWARD_ACTUAL_SOURCE_CAPTURE_R2",
+  "version": "2.0.0",
+  "lineage_contract": "config/a07_adjusted_price_lineage_r2.json",
+  "daily_capture_command": "E:/python/python.exe scripts/capture_a07_adjustment_source_r2.py --source D:/new_tdx/T0002/hq_cache/gbbq --source-kind GBBQ --source-identity D:/new_tdx/T0002/hq_cache/gbbq",
+  "observed_at": "BEFORE_READ_ACTUAL_CURRENT_TIMESTAMP",
+  "received_at": "AFTER_READ_ACTUAL_CURRENT_TIMESTAMP",
+  "source_revision": "SHA256_ACTUAL_IMMUTABLE_SOURCE_BYTES",
+  "same_day_revision": "APPEND_NEW_IMMUTABLE_CAPTURE_RECEIPT; OLD_CAPTURE_PRESERVED",
+  "formal_adjusted_price_consumer_enabled": false,
+  "os_scheduled_task_installed": false
+}

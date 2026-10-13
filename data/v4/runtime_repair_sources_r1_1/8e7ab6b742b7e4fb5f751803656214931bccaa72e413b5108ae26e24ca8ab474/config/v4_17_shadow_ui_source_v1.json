@@ -1,0 +1,23 @@
+{
+  "contract_id": "V4_17_EXACT_READBACK_SOURCE_V1",
+  "version": "1.0.0",
+  "accepted_readback": null,
+  "external_acceptance": null,
+  "status": "NO_REAL_SHADOW_DATA",
+  "activation_authority_unchanged": true,
+  "required_manifest_fields": [
+    "context",
+    "database_path",
+    "facts",
+    "components",
+    "source_quality"
+  ],
+  "required_native_facts": [
+    "publication",
+    "slot",
+    "state",
+    "daily_input",
+    "health"
+  ],
+  "policy": "EXACT_BINDING_ONLY; NO_DISCOVERY; FUTURE_REAL_CONFIGURATION_REQUIRES_INDEPENDENT_ACCEPTANCE"
+}

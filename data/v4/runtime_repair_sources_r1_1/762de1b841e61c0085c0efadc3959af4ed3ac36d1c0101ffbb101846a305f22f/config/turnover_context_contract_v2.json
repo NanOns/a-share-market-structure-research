@@ -1,0 +1,60 @@
+{
+  "contract_id": "TURNOVER_CONTEXT_V1",
+  "contract_version": "2.0.0",
+  "provider_scope": ["BAOSTOCK"],
+  "input_unit": "PERCENT_POINTS",
+  "output_unit": "FRACTION",
+  "denominator": "PROVIDER_DEFINED_CIRCULATING_SHARES",
+  "baseline": {
+    "windows": [5, 20, 60],
+    "minimum_prior_strict_bound_actual_samples": 60,
+    "maximum_lookback_market_sessions": 250,
+    "target_session_excluded_from_prior": true,
+    "confirmed_suspensions": "SKIP_USING_LOCAL_DATED_STATUS",
+    "unknown_missing_session": "STOP_HISTORY_DO_NOT_SKIP"
+  },
+  "percentile": {
+    "formula": "100 * (count(prior < current) + 0.5 * count(prior == current)) / N",
+    "unit": "PERCENT",
+    "minimum": 0,
+    "maximum": 100
+  },
+  "turnover_state": {
+    "classification_input": "turnover_pct60",
+    "thresholds": [
+      {"lt": 20, "state": "LOW"},
+      {"lt": 70, "state": "NORMAL"},
+      {"lt": 90, "state": "ELEVATED"},
+      {"lt": 97, "state": "HIGH"},
+      {"gte": 97, "state": "EXTREME"}
+    ],
+    "degradation_states": ["PENDING", "UNAVAILABLE", "UNKNOWN_DATA"],
+    "compatibility_alias": "turnover_context",
+    "compatibility_alias_deprecated": true,
+    "compatibility_alias_equals_canonical": true
+  },
+  "binding_quality": {
+    "field": "binding_quality",
+    "contract": "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1",
+    "states": ["BOUND_STRICT", "BOUND_SOFT", "UNAVAILABLE", "STALE", "MISSING", "UNBOUND", "SOURCE_NOT_READY"],
+    "independent_from_turnover_state": true,
+    "reason_state_map": "V4_06_TURNOVER_REASON_STATE_MAP_V1"
+  },
+  "only_bound_strict_enters_factor": true,
+  "core_effect": "NONE",
+  "core_publication_identity_mutation": false,
+  "fields": [
+    {"name": "turnover_pct5", "type": "number|null", "unit": "PERCENT", "producer": "TURNOVER_CONTEXT_V1", "time": "target t vs prior 5 strict actual-traded samples"},
+    {"name": "turnover_pct20", "type": "number|null", "unit": "PERCENT", "producer": "TURNOVER_CONTEXT_V1", "time": "target t vs prior 20 strict actual-traded samples"},
+    {"name": "turnover_pct60", "type": "number|null", "unit": "PERCENT", "producer": "TURNOVER_CONTEXT_V1", "time": "target t vs prior 60 strict actual-traded samples"},
+    {"name": "turnover_state", "type": "enum", "unit": "NONE", "producer": "TURNOVER_CONTEXT_V1", "time": "target t"},
+    {"name": "binding_quality", "type": "enum", "unit": "NONE", "producer": "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1", "time": "target t source binding"},
+    {"name": "supplemental_extension_note", "type": "object", "unit": "NONE", "producer": "SUPPLEMENTAL_EXTENSION_NOTE_V1", "time": "target t"}
+  ],
+  "explainability": {
+    "retain_sample_dates": true,
+    "retain_binding_quality": true,
+    "retain_reason_codes": true,
+    "no_epsilon_for_nonpositive_denominator": true
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "legacy_source": {
+    "byte_count": 7011,
+    "path": "src/workbench_analysis/today_research_scanner_v3_3.py",
+    "sha256": "0cf65de4f926f43cce5fcac60f16e2e047b4c5f0f4cc497e1f832f6e3bdc3379"
+  },
+  "parameter_set_id": "V4_11_CONFIRMATION_PARAMETER_SET_V1",
+  "status": "CANDIDATE",
+  "threshold_origin": "EXACT_FROZEN_LEGACY_SOURCE_AST",
+  "values": {
+    "launch": {
+      "amr20_mean_prior_gte": 1.2,
+      "clv_gte": 0.6
+    },
+    "recovery_turn": {
+      "amr20_mean_prior_gte": 1.05,
+      "close_to_ma20_gte": 0.98,
+      "clv_gte": 0.55,
+      "prior5_below_ma20_count_gte": 2,
+      "rps5_delta3_gt": 0.0
+    },
+    "support": {
+      "trend_continue_requires_current_loo": true
+    },
+    "trend_continue": {
+      "amr20_mean_prior_max": 2.5,
+      "amr20_mean_prior_min": 0.8,
+      "clv_gte": 0.55,
+      "rps20_gte": 0.7
+    }
+  }
+}

@@ -255,8 +255,9 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 if ident.get('first_seen_date'):
                     row['identity_observation']={k:ident.get(k) for k in
                         ('first_seen_date','confirmed_ipo_date','code_status','metadata_status','alias_status')}
+                    from workbench_db.v4_membership_reference_pg_v1 import identity_source as current_identity_source
                     row['fields']['code_status']=dict(value=ident.get('code_status','NEW_CODE_OBSERVED'),
-                        quality='KNOWN',unit='state',as_of=day,source=self.api.snapshot['identity_source'])
+                        quality='KNOWN',unit='state',as_of=day,source=current_identity_source(self.api.root,self.api.candidate))
                     if ident.get('name'):
                         row.update(display_name=ident['name'],display_name_scope='OBSERVED_METADATA_NOT_PIT')
                 row['search_aliases']=sorted(aliases.get(row['entity_id'],set()))

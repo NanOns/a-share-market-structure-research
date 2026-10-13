@@ -1,0 +1,430 @@
+{
+  "availability_states": [
+    "AVAILABLE",
+    "LOCAL_CAPTURE_MISSING",
+    "LOCAL_ACCEPTED_ARTIFACT_MISSING",
+    "PROVIDER_NOT_QUERIED",
+    "PROVIDER_QUERY_ATTEMPTED_FAILED",
+    "PROVIDER_TARGET_DATE_EMPTY_CONFIRMED",
+    "PROVIDER_SCHEMA_MISMATCH",
+    "PROVIDER_RUNTIME_UNACCEPTED",
+    "SOURCE_NOT_YET_PUBLISHED",
+    "PIT_FIRST_AVAILABILITY_UNPROVEN",
+    "PIT_HISTORICAL_STATE_NOT_RECONSTRUCTABLE",
+    "CAPABILITY_DISABLED_BY_CONTRACT"
+  ],
+  "contract_id": "V4_SOURCE_AUTHORITY_GOVERNANCE_R2",
+  "data_head_promotion_permitted": false,
+  "external_acceptance": null,
+  "failure_taxonomy": [
+    "LOCAL_ACCEPTED_FREEZE_MISSING",
+    "LOCAL_SOURCE_BYTES_MISSING",
+    "PROVIDER_NOT_QUERIED",
+    "PROVIDER_QUERY_FAILED",
+    "PROVIDER_TARGET_EMPTY",
+    "SOURCE_PUBLICATION_PENDING",
+    "RUNTIME_CAPABILITY_UNACCEPTED",
+    "SUPPLEMENTAL_UNAVAILABLE",
+    "CORE_REQUIRED_SOURCE_UNAVAILABLE",
+    "PIT_FIRST_AVAILABILITY_UNPROVEN",
+    "PIT_SOURCE_NOT_FROZEN_AT_TARGET",
+    "HISTORICAL_CATCHUP_NOT_AUTHORIZED",
+    "HISTORICAL_CATCHUP_QUERY_FAILED",
+    "AUTHORITY_OWNER_NOT_EXTERNALLY_ACCEPTED"
+  ],
+  "field_rules": [
+    {
+      "allowed_consumers": [
+        "RAW_DAILY",
+        "ADJUSTED_DAILY",
+        "PERIOD_RAW",
+        "PERIOD_ADJUSTED",
+        "PRICE_LIMIT"
+      ],
+      "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+      "enabled": true,
+      "enabled_for_formal_consumer": false,
+      "field_id": "OHLC_VOLUME_AMOUNT",
+      "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+      "may_block_core": true,
+      "may_change_core_quality": false,
+      "may_change_core_value": true,
+      "owner_contract_id": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+      "role": "CORE_AUTHORITY",
+      "role_binding_id": "SOURCE_AUTHORITY_ROLE_R2:OHLC_VOLUME_AMOUNT",
+      "source_family": "TDX"
+    },
+    {
+      "allowed_consumers": [
+        "IDENTITY_UNIVERSE"
+      ],
+      "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+      "enabled": true,
+      "enabled_for_formal_consumer": false,
+      "field_id": "SECURITY_IDENTITY",
+      "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+      "may_block_core": true,
+      "may_change_core_quality": false,
+      "may_change_core_value": true,
+      "owner_contract_id": "SECURITY_ENTITY_IDENTITY_V1",
+      "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+      "role": "FIELD_AUTHORITY",
+      "role_binding_id": "SOURCE_AUTHORITY_ROLE_R2:SECURITY_IDENTITY",
+      "source_family": "LOCAL_OFFICIAL_DATED_IDENTITY"
+    },
+    {
+      "allowed_consumers": [
+        "TRADING_STATUS",
+        "PERIOD_RAW",
+        "PERIOD_ADJUSTED",
+        "DM01_FINAL_ALL_NINE"
+      ],
+      "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+      "enabled": true,
+      "enabled_for_formal_consumer": false,
+      "field_id": "TRADING_STATUS",
+      "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+      "may_block_core": true,
+      "may_change_core_quality": false,
+      "may_change_core_value": true,
+      "owner_contract_id": "LOCAL_DATED_TRADING_STATUS_V2",
+      "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+      "role": "FIELD_AUTHORITY",
+      "role_binding_id": "SOURCE_AUTHORITY_ROLE_R2:TRADING_STATUS",
+      "source_family": "LOCAL_OFFICIAL_DATED_STATUS"
+    },
+    {
+      "allowed_consumers": [
+        "ISST",
+        "PRICE_LIMIT",
+        "DM01_FINAL_ALL_NINE"
+      ],
+      "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+      "enabled": true,
+      "enabled_for_formal_consumer": false,
+      "field_id": "ISST",
+      "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+      "may_block_core": true,
+      "may_change_core_quality": false,
+      "may_change_core_value": true,
+      "owner_contract_id": "LOCAL_DATED_ST_IDENTITY_V2",
+      "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+      "role": "FIELD_AUTHORITY",
+      "role_binding_id": "SOURCE_AUTHORITY_ROLE_R2:ISST",
+      "source_family": "LOCAL_OFFICIAL_DATED_ST"
+    },
+    {
+      "allowed_consumers": [
+        "ADJUSTED_DAILY",
+        "PERIOD_ADJUSTED"
+      ],
+      "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+      "enabled": true,
+      "enabled_for_formal_consumer": false,
+      "field_id": "QFQ",
+      "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+      "may_block_core": true,
+      "may_change_core_quality": false,
+      "may_change_core_value": true,
+      "owner_contract_id": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+      "role": "CORE_AUTHORITY",
+      "role_binding_id": "SOURCE_AUTHORITY_ROLE_R2:QFQ",
+      "source_family": "GBBQ"
+    },
+    {
+      "allowed_consumers": [
+        "SPECIAL_PHASE",
+        "PRICE_LIMIT"
+      ],
+      "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+      "enabled": true,
+      "enabled_for_formal_consumer": false,
+      "field_id": "SPECIAL_PHASE",
+      "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+      "may_block_core": true,
+      "may_change_core_quality": false,
+      "may_change_core_value": true,
+      "owner_contract_id": "SPECIAL_PRICE_PHASE_POLICY_V2",
+      "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+      "role": "FIELD_AUTHORITY",
+      "role_binding_id": "SOURCE_AUTHORITY_ROLE_R2:SPECIAL_PHASE",
+      "source_family": "OFFICIAL_SPECIAL_PHASE"
+    },
+    {
+      "allowed_consumers": [
+        "SUPPLEMENTAL_DIAGNOSTICS"
+      ],
+      "enabled": true,
+      "field_id": "OHLC_FINGERPRINT",
+      "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+      "may_block_core": false,
+      "may_change_core_quality": false,
+      "may_change_core_value": false,
+      "owner_contract_id": "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1",
+      "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+      "role": "SUPPLEMENTAL_CROSSCHECK",
+      "role_binding_id": "SOURCE_AUTHORITY_ROLE_R2:OHLC_FINGERPRINT",
+      "source_family": "BAOSTOCK"
+    },
+    {
+      "allowed_consumers": [
+        "SUPPLEMENTAL_DIAGNOSTICS"
+      ],
+      "enabled": true,
+      "field_id": "TRADING_STATUS_CROSSCHECK",
+      "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+      "may_block_core": false,
+      "may_change_core_quality": false,
+      "may_change_core_value": false,
+      "owner_contract_id": "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1",
+      "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+      "role": "SUPPLEMENTAL_CROSSCHECK",
+      "role_binding_id": "SOURCE_AUTHORITY_ROLE_R2:TRADING_STATUS_CROSSCHECK",
+      "source_family": "BAOSTOCK"
+    },
+    {
+      "allowed_consumers": [
+        "SUPPLEMENTAL_DIAGNOSTICS"
+      ],
+      "enabled": true,
+      "field_id": "ISST_CROSSCHECK",
+      "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+      "may_block_core": false,
+      "may_change_core_quality": false,
+      "may_change_core_value": false,
+      "owner_contract_id": "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1",
+      "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+      "role": "SUPPLEMENTAL_CROSSCHECK",
+      "role_binding_id": "SOURCE_AUTHORITY_ROLE_R2:ISST_CROSSCHECK",
+      "source_family": "BAOSTOCK"
+    },
+    {
+      "allowed_consumers": [
+        "SUPPLEMENTAL_DIAGNOSTICS"
+      ],
+      "enabled": true,
+      "field_id": "ADJUSTMENT_FACTOR_AUDIT",
+      "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+      "may_block_core": false,
+      "may_change_core_quality": false,
+      "may_change_core_value": false,
+      "owner_contract_id": "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1",
+      "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+      "role": "SUPPLEMENTAL_CROSSCHECK",
+      "role_binding_id": "SOURCE_AUTHORITY_ROLE_R2:ADJUSTMENT_FACTOR_AUDIT",
+      "source_family": "BAOSTOCK"
+    },
+    {
+      "allowed_consumers": [
+        "SUPPLEMENTAL_TURNOVER_VARIANT"
+      ],
+      "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+      "enabled": false,
+      "enabled_for_formal_consumer": false,
+      "field_id": "TURNOVER",
+      "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+      "may_block_core": true,
+      "may_change_core_quality": false,
+      "may_change_core_value": true,
+      "owner_contract_id": "TURNOVER_CONTEXT_V1",
+      "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+      "role": "FIELD_AUTHORITY",
+      "role_binding_id": "SOURCE_AUTHORITY_ROLE_R2:TURNOVER",
+      "source_family": "BAOSTOCK"
+    },
+    {
+      "allowed_consumers": [
+        "SECTOR_CURRENT_PIT"
+      ],
+      "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+      "enabled": true,
+      "enabled_for_formal_consumer": false,
+      "field_id": "SECTOR_MEMBERSHIP",
+      "historical_retrieval_mode": "MUTABLE_CURRENT_SNAPSHOT",
+      "may_block_core": true,
+      "may_change_core_quality": false,
+      "may_change_core_value": true,
+      "owner_contract_id": "V4_08_SECTOR_MEMBERSHIP_SOURCE_V1",
+      "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+      "role": "FIELD_AUTHORITY",
+      "role_binding_id": "SOURCE_AUTHORITY_ROLE_R2:SECTOR_MEMBERSHIP",
+      "source_family": "TDX_CURRENT_MEMBERSHIP"
+    },
+    {
+      "allowed_consumers": [
+        "HISTORICAL_AS_RECORDED_VARIANT"
+      ],
+      "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+      "enabled": false,
+      "enabled_for_formal_consumer": false,
+      "field_id": "AS_RECORDED_PRICE",
+      "historical_retrieval_mode": "AS_RECORDED_PIT_FACT",
+      "may_block_core": true,
+      "may_change_core_quality": false,
+      "may_change_core_value": true,
+      "owner_contract_id": "HISTORICAL_AS_RECORDED_PRICE",
+      "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+      "role": "FIELD_AUTHORITY",
+      "role_binding_id": "SOURCE_AUTHORITY_ROLE_R2:AS_RECORDED_PRICE",
+      "source_family": "FROZEN_FIRST_AVAILABILITY"
+    }
+  ],
+  "formal_use_defaults_to_true": true,
+  "historical_retrieval_modes": [
+    "TARGET_DATE_QUERYABLE_FACT",
+    "AS_RECORDED_PIT_FACT",
+    "MUTABLE_CURRENT_SNAPSHOT"
+  ],
+  "master_contract": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "owner_runtime": {
+    "bytes": 8431,
+    "path": "src/workbench_analysis/source_authority_accepted_owners_v1.py",
+    "sha256": "aa775e70a35506349952bb94ccb1ddf56a3b0ff694580218a3639c0ab9dbd457"
+  },
+  "production_permission": false,
+  "protected_bindings": [
+    {
+      "bytes": 4564,
+      "path": "data/v4/V4_01_ACCEPTED_HEAD.json",
+      "sha256": "b8ea5b8091629d116c860f9bf6a1a398301d75be16af7b08ff526fba9329bf6b"
+    },
+    {
+      "bytes": 3366,
+      "path": "data/v4/V4_01_ACCEPTED_HEAD_CANDIDATE.json",
+      "sha256": "6f84145fa0e2ef2427ec85349dfd4385fb31936e87a03b06a552ec81afb03ad9"
+    },
+    {
+      "bytes": 1099,
+      "path": "data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json",
+      "sha256": "496d537f7c6b9c78cac3a084330f09132814165d2967e8991ffa1d6319092214"
+    },
+    {
+      "bytes": 1602,
+      "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+    },
+    {
+      "bytes": 1176,
+      "path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json",
+      "sha256": "d0d453689261603a6ccd773f6383781178cb74d388087b72c652dc8afcb309f6"
+    },
+    {
+      "bytes": 4142,
+      "path": "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json",
+      "sha256": "83fa37ded40337d69ff0e447a0b6a3bc293d2ca95ea9c8aa009f0f104776c4be"
+    },
+    {
+      "bytes": 1607,
+      "path": "data/v4/V4_03_ACCEPTED_HEAD.json",
+      "sha256": "734bd27a5d53b2f18e3d62aa96ac63c91ccc6d9f848e942bc1efc410c88d4370"
+    },
+    {
+      "bytes": 4924,
+      "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+    },
+    {
+      "bytes": 6837,
+      "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+      "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+    },
+    {
+      "bytes": 8456,
+      "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+      "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+    },
+    {
+      "bytes": 4106,
+      "path": "data/v4/V4_06_ACCEPTED_HEAD.json",
+      "sha256": "5aec962703aed40cab809e798edc5bfbe50c416809984db40bb679a172782f8e"
+    },
+    {
+      "bytes": 6362,
+      "path": "data/v4/V4_07_ACCEPTED_HEAD.json",
+      "sha256": "b22117b0d14c35167cba86cb7398d878d7112f9cf17c1a427fa92766e78f880f"
+    },
+    {
+      "bytes": 20553,
+      "path": "data/v4/V4_08_ACCEPTED_HEAD.json",
+      "sha256": "b9ba34374ce35eefab705469de1e005758b90fa1f58ea5bba96fac08571073bc"
+    },
+    {
+      "bytes": 21493,
+      "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+    },
+    {
+      "bytes": 2151,
+      "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+      "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+    },
+    {
+      "bytes": 11474,
+      "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+      "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+    },
+    {
+      "bytes": 5102,
+      "path": "data/v4/V4_10_ACCEPTED_HEAD.json",
+      "sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1"
+    },
+    {
+      "bytes": 2478,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+    },
+    {
+      "bytes": 8574,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb"
+    },
+    {
+      "bytes": 602,
+      "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+      "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+    },
+    {
+      "bytes": 11877,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+      "sha256": "c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3"
+    }
+  ],
+  "required_owner_registry_contract": "SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_V1",
+  "runtime": {
+    "bytes": 8787,
+    "path": "src/workbench_analysis/source_authority_governance_r1.py",
+    "sha256": "86685822267c003fd4487bfa84aadd4c9e9a8e607d7ccbb856ae2dfefc5024fb"
+  },
+  "runtime_acceptance_is_distinct_from_target_capture": true,
+  "source_roles": [
+    "CORE_AUTHORITY",
+    "FIELD_AUTHORITY",
+    "SUPPLEMENTAL_CROSSCHECK",
+    "DIAGNOSTIC_ONLY",
+    "RESEARCH_ONLY"
+  ],
+  "status": "CANDIDATE_PENDING_EXTERNAL_REAUDIT",
+  "supersedes": {
+    "bytes": 13189,
+    "path": "config/source_authority_governance_r1.json",
+    "sha256": "49318a8d738e5ee055199494c1b6617333cc974ad27c8cb6851bddda01c29de0"
+  },
+  "supplemental_promotion_requires": [
+    "New versioned owner contract",
+    "Independent external acceptance",
+    "Exact accepted owner registry entry",
+    "New accepted role binding"
+  ],
+  "task": {
+    "bytes": 5895,
+    "path": "docs/evidence/source_authority/V4_A10_R2_OWNER_ACCEPTANCE_BINDING_HARDENING_TASK_20261001.md",
+    "sha256": "f4724a87d7d41d2fe4928d85e66dea335510b1c0cb33043726c312bbdab19f02"
+  },
+  "version": "2.0.0"
+}

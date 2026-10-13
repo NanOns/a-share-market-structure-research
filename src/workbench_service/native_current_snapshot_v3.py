@@ -86,12 +86,12 @@ def validate_joint_document(joint,snapshot,candidate):
     return joint
 
 
-def validate_joint(root,joint,candidate):
+def validate_joint(root,joint,candidate,*,verify_loaded=True):
     root=Path(root);snapshot=validate(root,joint['snapshot'],candidate)
     validate_joint_document(joint,snapshot,candidate)
     for asset in joint['ui_assets'].values():checked(root,asset)
     from workbench_analysis.operational_successor_release_v1 import verify_policy
-    verify_policy(root,candidate)
+    verify_policy(root,candidate,verify_loaded=verify_loaded)
     policy=load(checked(root,candidate['release_policy']))
     if joint['admission_evidence']!=policy['admission_evidence']:raise ValueError('CURRENT_JOINT_ADMISSION_SOURCE_MISMATCH')
     checked(root,joint['admission_evidence'])
@@ -121,4 +121,4 @@ def current(root,candidate,*,required=True):
     if not path.exists():
         if required:raise ValueError('CURRENT_JOINT_REQUIRED_NO_HISTORICAL_FALLBACK')
         return None
-    return validate_joint(root,load(path),candidate)
+    return validate_joint(root,load(path),candidate,verify_loaded=False)

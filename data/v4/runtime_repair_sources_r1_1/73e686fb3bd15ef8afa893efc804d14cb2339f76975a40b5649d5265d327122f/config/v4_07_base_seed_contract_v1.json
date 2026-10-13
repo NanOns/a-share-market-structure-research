@@ -1,0 +1,248 @@
+{
+  "accepted_sources": [
+    {
+      "artifact_sha256": "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0",
+      "formal_publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
+      "logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+      "path": "reports/v4_05/staging/V4_05_R4_1_FULL_MARKET_CORE_PROFILE.jsonl.gz",
+      "profile_row_publication_id": "V4_05_R4_T0_CURRENT_COORDINATE",
+      "role": "primary identity and accepted Core state/factor profile",
+      "row_count": 5222,
+      "source_id": "V4_05_ACCEPTED_CORE_PROFILE_R4_1"
+    },
+    {
+      "artifact_sha256": "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48",
+      "logical_digest": "0cfe708567935726f0ad51ae4bb47237ec7aee556db3437c12f21f0c623bd0d2",
+      "path": "reports/v4_05/staging/V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz",
+      "role": "accepted V4-03 rps5_delta3 fact and quality; cross-checked against Core profile primitive_quality",
+      "row_count": 5222,
+      "source_id": "V4_05_ACCEPTED_FULL_SCOPE_FACTORS_R4_1"
+    }
+  ],
+  "authority": {
+    "delta3_definition": "REV2 §10E: delta3 = rps5[t] - rps5[t-3]",
+    "primary": "REV2 §§14.2-14.4, 78, 87A",
+    "stage_task": "V4_06_R2_CONTRACT_REPAIR_AND_V4_07_BASE_SEED_STAGE_TASK_20260929 §§12-32"
+  },
+  "candidate_only": true,
+  "contract_id": "BASE_SEED_V1",
+  "contract_version": "1.0.0",
+  "explainability": {
+    "domain_states": "named three-valued atomic predicates and rule predicates",
+    "invalid_if": "sorted rule or hard-safety predicates proven FALSE",
+    "quality": "COMPLETE only when required evaluated inputs are known; otherwise PARTIAL_UNKNOWN",
+    "quality_codes": "sorted stable codes derived from exact accepted UNKNOWN reasons",
+    "waiting_for": "sorted field_id/reason pairs for required UNKNOWN inputs"
+  },
+  "forbidden_input_families": [
+    "V4-06 turnover_rate / turnover_state / supplemental_participation_context / supplemental_extension_note / binding_quality",
+    "BaoStock fields",
+    "stock or sector PREWATCH",
+    "same-day Sector or Rotation outputs",
+    "Radar",
+    "Focus",
+    "manual pin",
+    "UI state",
+    "Anchor",
+    "breakout",
+    "pullback",
+    "recovery",
+    "support",
+    "future Forward outcomes"
+  ],
+  "output_digest": {
+    "canonicalization": "UTF-8 JSON; ensure_ascii=false; sorted object keys; separators ',' and ':'; allow_nan=false",
+    "created_at": "UTC timestamp recorded per row and excluded from logical digests",
+    "input_digest": "SHA256 canonical JSON of accepted source IDs/digests, target identity, and the explicit accepted fact projection with each value/quality/reason",
+    "logical_artifact_digest": "SHA256 canonical JSON object {contract_id, parameter_set_id, accepted_source_bindings, rows}; rows sorted by trade_date/security_id and omit created_at",
+    "row_fact_digest": "SHA256 canonical JSON of each output row with fact_digest and created_at omitted; includes input_digest",
+    "row_order": [
+      "trade_date",
+      "security_id"
+    ]
+  },
+  "participation_annotation": {
+    "enum_map": {
+      "HIGH_PARTICIPATION_EFFECTIVE_ADVANCE": "SUPPORTED",
+      "HIGH_PARTICIPATION_LOW_EFFICIENCY": "CONFLICTING",
+      "HIGH_PARTICIPATION_REVERSAL": "CONFLICTING",
+      "LOW_PARTICIPATION_ADVANCE": "NEUTRAL",
+      "LOW_PARTICIPATION_DECLINE": "NEUTRAL",
+      "NORMAL_PARTICIPATION": "NEUTRAL",
+      "UNKNOWN": "UNKNOWN"
+    },
+    "forbidden_sources": [
+      "turnover",
+      "V4-06",
+      "BaoStock"
+    ],
+    "qualification_effect": "ANNOTATION_ONLY; no safety, S1, S2, base_seed_state, ranking, or eligibility effect",
+    "source_field": "core_participation_result",
+    "unmapped_or_missing": "UNKNOWN",
+    "versioned_map_id": "BASE_SEED_PARTICIPATION_MAP_V1"
+  },
+  "rule_ast": {
+    "S1": {
+      "args": [
+        {
+          "predicate": "position_ok"
+        },
+        {
+          "predicate": "structure_improving"
+        },
+        {
+          "predicate": "relative_change_improving"
+        }
+      ],
+      "op": "AND"
+    },
+    "S2": {
+      "args": [
+        {
+          "predicate": "position_ok"
+        },
+        {
+          "predicate": "relative_change_strong"
+        },
+        {
+          "predicate": "trend_transition_early"
+        }
+      ],
+      "op": "AND"
+    },
+    "base_seed_state": {
+      "args": [
+        {
+          "predicate": "safety"
+        },
+        {
+          "args": [
+            {
+              "predicate": "S1"
+            },
+            {
+              "predicate": "S2"
+            }
+          ],
+          "op": "OR"
+        }
+      ],
+      "op": "AND"
+    },
+    "position_ok": {
+      "left": {
+        "field": "bias20_atr"
+      },
+      "op": "LT",
+      "right_parameter": "V4_07_POSITION_BIAS20_ATR_MAX"
+    },
+    "relative_change_improving": {
+      "field": "delta3",
+      "op": "GTE",
+      "right_parameter": "V4_07_DELTA3_IMPROVING_MIN_POINTS"
+    },
+    "relative_change_strong": {
+      "field": "delta3",
+      "op": "GTE",
+      "right_parameter": "V4_07_DELTA3_STRONG_MIN_POINTS"
+    },
+    "safety": {
+      "args": [
+        {
+          "field": "research_universe"
+        },
+        {
+          "field": "actual_bar"
+        },
+        {
+          "field": "price_identity_READY"
+        },
+        {
+          "field": "minimum_liquidity"
+        },
+        {
+          "arg": {
+            "field": "core_price_damage"
+          },
+          "op": "NOT"
+        },
+        {
+          "arg": {
+            "field": "severe_extension"
+          },
+          "op": "NOT"
+        }
+      ],
+      "op": "AND"
+    },
+    "structure_improving": {
+      "field": "compression_state",
+      "op": "IN",
+      "values": [
+        "COMPRESSING",
+        "COMPRESSING_STRONG"
+      ]
+    },
+    "trend_transition_early": {
+      "args": [
+        {
+          "field": "ma_structure_state",
+          "op": "EQ",
+          "value": "BULL_TRANSITION"
+        },
+        {
+          "args": [
+            {
+              "left": {
+                "field": "close_t_minus_1"
+              },
+              "op": "LTE",
+              "right": {
+                "field": "ma20_t_minus_1"
+              }
+            },
+            {
+              "left": {
+                "field": "close_t"
+              },
+              "op": "GT",
+              "right": {
+                "field": "ma20_t"
+              }
+            }
+          ],
+          "op": "AND"
+        }
+      ],
+      "op": "OR"
+    }
+  },
+  "stage": "V4-07",
+  "status": "FROZEN_CANDIDATE",
+  "target": {
+    "accepted_core_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+    "accepted_identity_count": 5222,
+    "core_profile_row_publication_id": "V4_05_R4_T0_CURRENT_COORDINATE",
+    "formal_publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
+    "publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
+    "trade_date": "2026-09-28"
+  },
+  "three_valued_logic": {
+    "and": "FALSE if any operand is FALSE; otherwise UNKNOWN if any operand is UNKNOWN; otherwise TRUE",
+    "atomic_missing_or_invalid": "UNKNOWN with source reason; never impute",
+    "not": "TRUE↔FALSE; UNKNOWN remains UNKNOWN",
+    "or": "TRUE if any operand is TRUE; otherwise UNKNOWN if any operand is UNKNOWN; otherwise FALSE",
+    "values": [
+      "TRUE",
+      "FALSE",
+      "UNKNOWN"
+    ]
+  },
+  "unknown_reasons": {
+    "ACCEPTED_T_MINUS_1_CORE_FIELD_UNAVAILABLE": "UNKNOWN",
+    "BOOTSTRAP_INSUFFICIENT_FORWARD_HISTORY": "UNKNOWN",
+    "INVALID_ACCEPTED_VALUE": "UNKNOWN",
+    "MISSING_ACCEPTED_CORE_FIELD": "UNKNOWN",
+    "UPSTREAM_UNKNOWN": "UNKNOWN"
+  }
+}

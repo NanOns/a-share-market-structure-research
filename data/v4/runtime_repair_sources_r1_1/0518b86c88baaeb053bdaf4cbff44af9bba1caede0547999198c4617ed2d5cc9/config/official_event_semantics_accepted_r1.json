@@ -1,0 +1,24 @@
+{
+  "acceptance_scope": "EVIDENCE_GOVERNANCE_NO_BUSINESS_IMPACT",
+  "accepted_semantic_head_path": "data/v4/OFFICIAL_EVENT_SEMANTICS_ACCEPTED_HEAD_R1.json",
+  "candidate": {
+    "bytes": 528760,
+    "path": "data/v4/source_evidence/a13/OFFICIAL_NOTICE_EVENT_SEMANTICS_AMENDMENT_R1.json",
+    "sha256": "10afa470c4ca8d3b8b961ee506e9dca58ec87c6866ece16f0f763ddf47adca01"
+  },
+  "contract_id": "OFFICIAL_EVENT_ACCEPTANCE_V1",
+  "filename_or_capture_id_grants_trading_authority": false,
+  "formal_trading_truth_requires": "EXACT_ACCEPTED_HEAD_SIDECAR_RAW_TEXT_IDENTITY_AND_EFFECTIVE_DATE",
+  "runtime": {
+    "bytes": 5020,
+    "path": "src/workbench_analysis/official_event_acceptance_v1.py",
+    "sha256": "69dc3df03653b4c50d870a889e35b281f90c8e0e3c8882ade8842657ce985dda"
+  },
+  "semantic_runtime": {
+    "bytes": 6197,
+    "path": "src/workbench_analysis/official_event_semantics_v1.py",
+    "sha256": "d26519e469b765c240ec997bbd6679eefe626453805bc69eec885e4b0b487c65"
+  },
+  "unknown_event_may_enter_trading_status": false,
+  "version": "1.0.0"
+}

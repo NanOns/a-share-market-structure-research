@@ -1,0 +1,30 @@
+{
+  "contract_id": "V4_02_RAW_FORMAL_ACCEPTANCE_CONTRACT_V1",
+  "version": "1.0.0",
+  "status": "FROZEN_ACCEPTANCE_CONTRACT",
+  "stage": "V4-02 / PACK A-0 RAW FORMAL SEAL",
+  "run_id": "V4_02_RAW_SELECTED_20260924_062040Z",
+  "source_cutoff": "2026-09-24",
+  "raw_artifact": "data/v4/canonical/V4_02_RAW_SELECTED_20260924_062040Z/canonical_daily_raw_selected.parquet",
+  "expected": {
+    "sha256": "cdbc3e2b49bf16f59a6661d4641a3d9a3b498c5a9843974e934a7ab695f02313",
+    "byte_count": 1988198932,
+    "row_count": 29220910,
+    "source_selection_digest": "79cbd9882b1847f8e5dad01615b75b23d63cecbe2cac966824ee53e0c6e79ff3",
+    "required_boards": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"],
+    "excluded_bse_rows": 469552
+  },
+  "evidence": {
+    "stage_receipt": "data/v4/canonical/V4_02_RAW_SELECTED_20260924_062040Z/stage_receipt.json",
+    "source_manifest": "data/v4/canonical/V4_02_RAW_SELECTED_20260924_062040Z/source_manifest.json",
+    "independent_candidate_postcheck": "reports/v4_02/V4_02_RAW_SELECTED_20260924_062040Z_independent_postcheck.json"
+  },
+  "acceptance_checks": [
+    "artifact_sha256_size_and_parquet_row_count_match_frozen_receipt",
+    "source_selection_digest_bound_and_candidate_postcheck_all_checks_pass",
+    "required_board_consumer_scope_present_and_bse_excluded",
+    "non_pit_unknown_adjustment_and_limit_quality_markers_preserved",
+    "asof_trade_date_does_not_exceed_source_cutoff"
+  ],
+  "capability_boundary": "RAW_CANONICAL_DAILY=PASS_FOR_SOURCE_SELECTED_RAW_ARTIFACT_ONLY; this seal does not grant adjusted, PIT, scanner, factor, trading, period, price-limit, or V4-02 stage acceptance."
+}

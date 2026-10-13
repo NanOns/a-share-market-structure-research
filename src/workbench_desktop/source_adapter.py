@@ -5,11 +5,11 @@ import subprocess
 import sys
 import builtins
 import importlib.util
-from .storage import require_owned
+from .storage import require_owned,require_producer
 
 
-def tdx_capture(root):
-    require_owned(root)
+def tdx_capture(root,*,producer_worker=False):
+    (require_producer if producer_worker else require_owned)(root)
     from workbench_analysis.operational_owner_adapter_v1 import private_scope
     from scripts import capture_dm01_a01_r3_tdx_package as capture
     from scripts import enter_source_authority_remediation_r2 as binding
@@ -19,8 +19,8 @@ def tdx_capture(root):
     return private_scope(capture, dict(ROOT=Path(root), bind=bind))['main']()
 
 
-def executor(root):
-    require_owned(root)
+def executor(root,*,producer_worker=False):
+    (require_producer if producer_worker else require_owned)(root)
     from workbench_analysis.operational_owner_adapter_v1 import private_scope
     from workbench_analysis import tdx_official_daily_source as tdx
     from workbench_analysis import tdx_latest_daily_source_v2 as latest
@@ -32,7 +32,7 @@ def executor(root):
     def run(command, **kwargs):
         if command != [sys.executable, '-X','utf8','-B', expected] or Path(kwargs['cwd']).resolve() != Path(root).resolve():
             raise ValueError('FROZEN_TASK_NOT_WHITELISTED')
-        tdx_capture(root)
+        tdx_capture(root,producer_worker=producer_worker)
         return subprocess.CompletedProcess(command, 0, b'', b'')
     proxy = SimpleNamespace(run=run)
     tdx_scope = private_scope(tdx, dict(__file__=str(Path(root)/'src/workbench_analysis/tdx_official_daily_source.py'), subprocess=proxy))
@@ -54,4 +54,9 @@ def executor(root):
         capture_latest_tdx_package=latest_scope['capture_latest_tdx_package'],
         extract_target_session_bars=latest_scope['extract_target_session_bars'],
         __builtins__=dict(vars(builtins),__import__=imports)))
-    return scope['execute_sources']
+    def execute(root,day,mode,**kwargs):
+        (require_producer if producer_worker else require_owned)(root)
+        from workbench_analysis.operational_sealed_resume_r1 import resume
+        resumed=None if kwargs.get('capture_only') else resume(root,day,mode,**{k:v for k,v in kwargs.items() if k in ('cancelled','readback_url','progress')})
+        return resumed if resumed is not None else scope['execute_sources'](root,day,mode,**kwargs)
+    return execute

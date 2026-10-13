@@ -1,0 +1,129 @@
+{
+  "ast_digest": "9afab6dc8b5e566701b41622f692d2503ea06b9ad41f85ce7301a267c4f3f8a0",
+  "field_registry_digest": "32bb5ca5853e31ad4d15e0b4aba7c92d05fce65e958942eb09415bf3d9f871b0",
+  "field_registry_path": "config/v4_08_sector_field_registry_v2.json",
+  "forbidden_inputs": [
+    "same-day final stock PREWATCH",
+    "Focus",
+    "Radar",
+    "Support",
+    "V4-06 turnover",
+    "future confirmation",
+    "future outcomes"
+  ],
+  "formal_consumer_enabled": false,
+  "machine_vector_set_digest": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906",
+  "machine_vector_set_path": "config/v4_08_rotation_machine_vectors_v2.json",
+  "model_contract_id": "V4_08_SECTOR_PREWATCH_B0_V2",
+  "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_V1",
+  "parameter_set_sha256": "c2506f2644c35fcfb603e49c2e29a3ead3e20852b5a2ab8a270d0de86fc4e4b6",
+  "pending_parameter_ids": [
+    "V4_08_EARLY_SEED_RETENTION_MIN",
+    "V4_08_EARLY_BREADTH_RETENTION_MIN",
+    "V4_08_EARLY_BREADTH_DELTA_MIN",
+    "V4_08_EARLY_TOP1_CONCENTRATION_MAX",
+    "V4_08_MATURE_STRONG_RETENTION_MIN"
+  ],
+  "rules": {
+    "prewatch_raw": {
+      "children": [
+        {
+          "operator": "REF",
+          "rule_id": "sector_safety"
+        },
+        {
+          "field_id": "dq5",
+          "operator": "GTE",
+          "parameter_id": "V4_08_PREWATCH_DQ5_MIN",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "children": [
+            {
+              "constant": 0,
+              "field_id": "breadth_delta3",
+              "operator": "GT",
+              "producer": "V4_08_SECTOR_NATIVE_V1",
+              "quality_requirement": [
+                "ACCEPTED"
+              ],
+              "time_role": "TARGET_CUTOFF",
+              "unknown_behavior": "UNKNOWN"
+            },
+            {
+              "constant": 0,
+              "field_id": "ma20_delta3",
+              "operator": "GT",
+              "producer": "V4_08_SECTOR_NATIVE_V1",
+              "quality_requirement": [
+                "ACCEPTED"
+              ],
+              "time_role": "TARGET_CUTOFF",
+              "unknown_behavior": "UNKNOWN"
+            }
+          ],
+          "operator": "OR"
+        },
+        {
+          "field_id": "base_seed_width_adjusted",
+          "operator": "GTE",
+          "parameter_id": "V4_08_PREWATCH_SEED_WIDTH_MIN",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        }
+      ],
+      "operator": "AND"
+    },
+    "sector_safety": {
+      "children": [
+        {
+          "constant": true,
+          "field_id": "membership_ready",
+          "operator": "EQ",
+          "producer": "V4_08_PIT_MEMBERSHIP",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "field_id": "sector_member_count",
+          "operator": "GTE",
+          "parameter_id": "V4_08_SECTOR_MIN_MEMBERS",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "field_id": "sector_quote_coverage",
+          "operator": "GTE",
+          "parameter_id": "V4_08_SECTOR_MIN_QUOTE_COVERAGE",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        }
+      ],
+      "operator": "AND"
+    }
+  },
+  "scope": "B0 PREWATCH or B1 IN/ACCEPTED/EXPANDING/REACCELERATING qualification primitives; terminal FSM reduction remains V4-10",
+  "status": "STRUCTURED_AST_ENGINEERING_CANDIDATE",
+  "strong_prev_zero": "mature retention NOT_APPLICABLE; early IN/ACCEPTED never depends on mature retention",
+  "version": "2.0.0"
+}

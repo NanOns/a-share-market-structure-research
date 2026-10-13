@@ -1,0 +1,62 @@
+{
+  "contract_id": "FEP_E1_SCOPES_V1",
+  "version": "1.0.0",
+  "scopes": [
+    {
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "status": "ENGINEERING_ENABLED",
+      "entity_type": "STOCK",
+      "observation_kind": "ENTRY",
+      "production": false,
+      "namespace_id": "UNSET_PENDING_EXACT_ACCEPTED_EVENT_NAMESPACE"
+    },
+    {
+      "scope_id": "FEP_STOCK_DAILY_CORE",
+      "status": "NOT_ENABLED",
+      "entity_type": "STOCK",
+      "observation_kind": "DAILY_LANDMARK",
+      "production": false,
+      "namespace_id": "UNSET_PENDING_EXACT_ACCEPTED_EVENT_NAMESPACE"
+    },
+    {
+      "scope_id": "FEP_MARKET_WIDE",
+      "status": "NOT_ENABLED",
+      "entity_type": "STOCK",
+      "observation_kind": "MARKET_WIDE",
+      "production": false,
+      "namespace_id": "UNSET_PENDING_EXACT_ACCEPTED_EVENT_NAMESPACE"
+    },
+    {
+      "scope_id": "FEP_STOCK_SECTOR",
+      "status": "NOT_ENABLED",
+      "entity_type": "STOCK",
+      "observation_kind": "ENTRY",
+      "production": false,
+      "namespace_id": "UNSET_PENDING_EXACT_ACCEPTED_EVENT_NAMESPACE"
+    },
+    {
+      "scope_id": "FEP_SECTOR",
+      "status": "NOT_ENABLED",
+      "entity_type": "SECTOR",
+      "observation_kind": "ENTRY",
+      "production": false,
+      "namespace_id": "UNSET_PENDING_EXACT_ACCEPTED_EVENT_NAMESPACE"
+    },
+    {
+      "scope_id": "FEP_ROTATION",
+      "status": "NOT_ENABLED",
+      "entity_type": "SECTOR",
+      "observation_kind": "ROTATION_ENTRY",
+      "production": false,
+      "namespace_id": "UNSET_PENDING_EXACT_ACCEPTED_EVENT_NAMESPACE"
+    },
+    {
+      "scope_id": "FEP_MARKET",
+      "status": "NOT_ENABLED",
+      "entity_type": "MARKET",
+      "observation_kind": "MARKET_DAY",
+      "production": false,
+      "namespace_id": "UNSET_PENDING_EXACT_ACCEPTED_EVENT_NAMESPACE"
+    }
+  ]
+}

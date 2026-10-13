@@ -1,0 +1,102 @@
+{
+  "schema_version": "m14-source-registry-v1",
+  "contract_id": "M14_SOURCE_VALIDATION_V1_0",
+  "plan_version": "workbench-upgrade-plan-v2.1",
+  "stage": "M14-01",
+  "enabled": false,
+  "network_calls_allowed": true,
+  "network_policy": "M14-01_PROBE_ONLY",
+  "personal_collection_policy": "M14-02_BOUNDED_PERSONAL_ONLY",
+  "production_network_enabled": false,
+  "credential_use_allowed": false,
+  "personal_research_mode": true,
+  "publication_enabled": false,
+  "production_adapters_enabled": false,
+  "collection_policy": {
+    "stage": "M14-02",
+    "mode": "PERSONAL_RESEARCH_ONLY",
+    "source_ids": ["TONGHUASHUN_HOT_RANK", "EASTMONEY_HOT_RANK"],
+    "timeout_seconds": 15,
+    "max_response_bytes": 1000000,
+    "retries": 0,
+    "cache_ttl_seconds": 900,
+    "publication_enabled": false
+  },
+  "source_candidates": [
+    {
+      "source_id": "EASTMONEY_HOT_RANK",
+      "display_name": "东方财富公开热榜候选",
+      "source_class": "ONLINE_B",
+      "candidate_only": true,
+      "enabled": false,
+      "terms_state": "REJECTED",
+      "status": "REJECTED",
+      "datasets": ["HOT_RANKINGS", "QUOTES_LATEST"],
+      "documentation_ref": "docs/WORKBENCH_M7_M15_DETAILED_UPGRADE_PLAN.md#12-m14ab级在线数据源验证与增强",
+      "evidence_status": "REVIEW_REJECTED_PENDING_LICENSE",
+      "review_evidence": "reports/upgrade_m14/m14_01_source_review_evidence_20260911.md",
+      "probe_report": "reports/upgrade_m14/m14_01_source_probe_report_20260911.json",
+      "personal_collection_enabled": true,
+      "personal_collection_basis": "USER_REQUEST_PERSONAL_RESEARCH_ONLY_20260911",
+      "decoder_version": "EASTMONEY_AES_CBC_NODE_CRYPTO_V1"
+    },
+    {
+      "source_id": "TONGHUASHUN_HOT_RANK",
+      "display_name": "同花顺公开热榜候选",
+      "source_class": "ONLINE_B",
+      "candidate_only": true,
+      "enabled": false,
+      "terms_state": "REJECTED",
+      "status": "REJECTED",
+      "datasets": ["HOT_RANKINGS"],
+      "documentation_ref": "docs/WORKBENCH_M7_M15_DETAILED_UPGRADE_PLAN.md#12-m14ab级在线数据源验证与增强",
+      "evidence_status": "REVIEW_REJECTED_PENDING_LICENSE",
+      "review_evidence": "reports/upgrade_m14/m14_01_source_review_evidence_20260911.md",
+      "probe_report": "reports/upgrade_m14/m14_01_source_probe_report_20260911.json",
+      "personal_collection_enabled": true,
+      "personal_collection_basis": "USER_REQUEST_PERSONAL_RESEARCH_ONLY_20260911"
+    }
+  ],
+  "datasets": [
+    {
+      "dataset": "HOT_RANKINGS",
+      "capability": "rank",
+      "status": "REJECTED",
+      "source_ids": ["EASTMONEY_HOT_RANK", "TONGHUASHUN_HOT_RANK"],
+      "supports_history": false,
+      "supports_latest": false,
+      "terms_state": "REJECTED",
+      "required_evidence": ["terms", "field_schema", "source_as_of", "mapping", "rate_budget", "10_session_observation"]
+    },
+    {
+      "dataset": "EXTERNAL_EVIDENCE",
+      "capability": "reason",
+      "status": "UNAVAILABLE",
+      "source_ids": [],
+      "supports_history": false,
+      "supports_latest": false,
+      "terms_state": "NOT_VERIFIED",
+      "required_evidence": ["terms", "published_at", "event_time", "first_seen_at", "raw_text", "source_mapping", "10_session_observation"]
+    },
+    {
+      "dataset": "QUOTES_LATEST",
+      "capability": "quote",
+      "status": "NOT_VERIFIED",
+      "source_ids": ["EASTMONEY_QUOTES_LATEST"],
+      "supports_history": false,
+      "supports_latest": false,
+      "terms_state": "NOT_VERIFIED",
+      "required_evidence": ["terms", "quote_time", "unit", "code_mapping", "cache_policy", "10_session_observation"]
+    },
+    {
+      "dataset": "LH_LIST",
+      "capability": "lh_list",
+      "status": "UNAVAILABLE",
+      "source_ids": [],
+      "supports_history": false,
+      "supports_latest": false,
+      "terms_state": "NOT_VERIFIED",
+      "required_evidence": ["terms", "published_at", "trade_date", "source_mapping", "10_session_observation"]
+    }
+  ]
+}

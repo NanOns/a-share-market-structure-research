@@ -413,3 +413,12 @@ tests/test_followup_semantics_r2.py -text
 scripts/record_identity_admission_repair_contract_r1.py -text
 scripts/record_identity_admission_repair_evidence_r1.py -text
 scripts/finalize_identity_admission_repair_r1.py -text
+
+# R1.1 signed execution/evidence bytes must survive Git unchanged.
+data/v4/runtime_repair_sources_r1_1/** -text
+data/v4/runtime_admission_r11/** -text
+data/v4/exact_daily_policies_v2/** -text
+data/v4/dynamic_daily_owners/** -text
+runtime/r1_1/** -text
+docs/audits/v4_runtime_repair_20261013/*.json -text
+docs/upgrade/V4_INCREMENT_IDENTITY_PARITY_AMENDMENT_R1_1_20261013.md -text

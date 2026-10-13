@@ -1,0 +1,61 @@
+{
+  "V4_16": false,
+  "admission_rule": "ACCEPTED status requires exact accepted authority and independent external scope; implementation or tests alone never grant acceptance.",
+  "alias_rule": "One canonical issue; aliases resolve deterministically and cannot override state or blocking semantics",
+  "automatic_stage_permission": false,
+  "blocking_schema": {
+    "legacy_blocks_engineering_stage": "blocks_v4_16_contract_entry",
+    "legacy_blocks_production_cutover": "blocks_production_cutover_for_scope",
+    "legacy_blocks_shadow_entry": "blocks_v4_16_runtime_activation OR blocks_affected_capability_in_shadow; true does not imply global Shadow block",
+    "permission": "Blocker queries never grant permission; stage_permission remains false",
+    "runtime_activation_dependency": "GOV_PRE16_01 and GOV_PRE16_02 are externally closed and no longer block contract/runtime entry. This authority grants no runtime permission. A04/A08 capability-only limitations remain unchanged; future runtime requires independent external authorization."
+  },
+  "business_runtime_authority": false,
+  "contract_id": "V4_CROSS_STAGE_CURRENT_AUDIT_AUTHORITY_V3",
+  "current_head": {
+    "bytes": 178356,
+    "path": "data/v4/V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V3.json",
+    "sha256": "0e78e72a225d444293c554ed5dc5527c02ae2d8d01ba0cfb3d923bc7696bc9d9"
+  },
+  "declared_global_contract_entry_blockers": [],
+  "descriptive_normalization_predecessor": {
+    "bytes": 2683,
+    "path": "config/v4_cross_stage_current_audit_authority_v2.json",
+    "sha256": "5bbe840d0333da231f8730037ab4a207aaeb004e5c3d6daeeca2d5e27b0cfa27"
+  },
+  "execution_baseline": "b2c3dd81c4bfed2364b6ea2693860114421f990c",
+  "external_acceptance": {
+    "bytes": 1683,
+    "path": "data/v4/V4_PRE16_GOVERNANCE_ACCEPTED_HEAD_R1.json",
+    "sha256": "231961e104782f1347c4a86d996baf743982cf5b97d87cc289b017b63da8ab8b"
+  },
+  "focus": false,
+  "historical_predecessor_semantics": "V1/V2 are immutable historical authorities; V3 is descriptive normalization candidate only; no permission transition",
+  "historical_registry_semantics": "HISTORICAL_GOVERNANCE_SNAPSHOT",
+  "normalization_status": "V3_NORMALIZED_CANDIDATE",
+  "production": false,
+  "requires_explicit_future_stage_binding": true,
+  "shadow": false,
+  "stage_current_authority_unchanged": {
+    "bytes": 4004,
+    "path": "config/v4_current_stage_authority_v2.json",
+    "sha256": "dc57e3957a1301ff3358f5012080027c47550559c4cd5d406065f98e4958a206"
+  },
+  "supersedes_current_config": {
+    "bytes": 2302,
+    "path": "config/v4_cross_stage_current_audit_authority_v1.json",
+    "sha256": "fafb96be45b936a4e955d71e89f4da946c02e18e16d5c9dfadcf4287692d3886"
+  },
+  "taxonomy": [
+    "ACCEPTED_SCOPED",
+    "ACCEPTED_FULL_REQUIRED_SCOPE",
+    "OPEN_ENGINEERING",
+    "OPEN_EXTERNAL_REAUDIT",
+    "ACCUMULATION_CONTINUES",
+    "PERMANENT_CAPABILITY_LIMITATION",
+    "BLOCKED_AFFECTED_SCOPE",
+    "NONBLOCKING_VALIDATION_DEBT",
+    "SUPERSEDED_HISTORICAL_STATUS"
+  ],
+  "version": "3.0.0"
+}

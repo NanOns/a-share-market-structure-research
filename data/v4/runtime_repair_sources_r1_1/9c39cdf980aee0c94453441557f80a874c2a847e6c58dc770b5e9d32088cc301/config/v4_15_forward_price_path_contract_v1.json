@@ -1,0 +1,102 @@
+{
+  "T0": "SIGNAL_CLOSE_NOT_TRADABLE_STRATEGY_ENTRY",
+  "T0_intraday_extrema_included": false,
+  "authority": "ACCEPTED_LOCAL_AFFINE_ADJUSTMENT_ONLY",
+  "basis_mismatch": "ADJUSTMENT_UNKNOWN",
+  "common_basis_required": true,
+  "comparison_reference_semantics": "ENROLLMENT_COMPARISON_REFERENCE_IS_IMMUTABLE_T0_COORDINATE; EACH_HORIZON_APPENDS_EVALUATION_COMPARISON_REFERENCE_ON_T_PLUS_N_BASIS_WITHOUT_OVERWRITE",
+  "confirmed_interior_suspension": "OMIT_ACTUAL_EXTREMA_DISCLOSE_ACTUAL_COUNT_NO_SYNTHETIC_BAR",
+  "contract_id": "FORWARD_PRICE_PATH_V1",
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "46A",
+      "3B.6"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "evaluation_basis_date": "T+N",
+  "fields": [
+    "R_N",
+    "MFE_N",
+    "MAE_N",
+    "PATH_MDD_CLOSE_N",
+    "evaluation_basis_date",
+    "evaluation_comparison_reference",
+    "evaluation_adjustment_identity",
+    "transform_coefficients",
+    "transform_digest",
+    "source_asof",
+    "available_at",
+    "price_path"
+  ],
+  "focus": false,
+  "formulas": {
+    "MAE_N": "min(0,min(Low_j/P_0-1 for j=1..N))",
+    "MFE_N": "max(0,max(High_j/P_0-1 for j=1..N))",
+    "PATH_MDD_CLOSE_N": "min(P_j/max(P_0..P_j)-1 for j=0..N)",
+    "R_N": "P_N/P_0-1"
+  },
+  "horizons": [
+    1,
+    3,
+    5,
+    10,
+    20
+  ],
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "missing_zero_fill": false,
+  "object_schemas": {
+    "price_path": {
+      "OHLC": {
+        "quality": "ACTUAL_ONLY_NO_SYNTHETIC_BAR",
+        "revision": "APPEND_ONLY",
+        "source_binding": "ACCEPTED_CANONICAL_DAILY",
+        "time_role": "FORWARD_SESSION_COMMON_EVALUATION_BASIS",
+        "type": "object_of_numbers",
+        "unit": "CNY_per_share"
+      },
+      "source_identity": {
+        "quality": "EXACT_OR_UNKNOWN",
+        "revision": "APPEND_ONLY",
+        "source_binding": "ACCEPTED_EVALUATION_SOURCE",
+        "time_role": "EVALUATION_AVAILABLE_AT",
+        "type": "digest_binding",
+        "unit": "identity"
+      },
+      "trade_date": {
+        "revision": "APPEND_ONLY",
+        "source_binding": "ACCEPTED_CALENDAR",
+        "type": "date",
+        "unit": "market_date"
+      }
+    },
+    "transform_coefficients": {
+      "alpha": {
+        "quality": "VERIFIED_OR_UNKNOWN",
+        "revision": "APPEND_ONLY",
+        "source_binding": "ACCEPTED_LOCAL_ADJUSTMENT",
+        "time_role": "EVALUATION_BASIS",
+        "type": "number",
+        "unit": "scale"
+      },
+      "beta": {
+        "quality": "VERIFIED_OR_UNKNOWN",
+        "revision": "APPEND_ONLY",
+        "source_binding": "ACCEPTED_LOCAL_ADJUSTMENT",
+        "time_role": "EVALUATION_BASIS",
+        "type": "number",
+        "unit": "CNY_per_share"
+      }
+    }
+  },
+  "original_signal_reference_immutable": true,
+  "production": false,
+  "runtime_implemented": false,
+  "shadow": false,
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "transformation": "P_comparison=alpha*P_original+beta; persist each source basis/coefficient/digest/asof",
+  "unknown_gap": "PATH_METRICS_MATURED_DATA_MISSING; ENDPOINT_RETURN_INDEPENDENT_IF_VERIFIED",
+  "version": "1.0.0"
+}

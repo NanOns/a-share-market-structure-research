@@ -1,0 +1,33 @@
+{
+  "added_display_mode": "V4_ACCEPTED_RESEARCH_READONLY",
+  "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V2",
+  "global_v4_pass": false,
+  "predecessor": {
+    "bytes": 31339,
+    "contract_id": "config/v4_20_default_ui_cutover_contract_v1.json",
+    "owner_stage": "GOVERNANCE",
+    "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+    "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+  },
+  "predecessor_rules_preserved": true,
+  "resolution": [
+    {
+      "accepted_readable": true,
+      "mode": "PRODUCTION_V4_PROVISIONAL",
+      "permission": true
+    },
+    {
+      "accepted_readable": true,
+      "mode": "V4_ACCEPTED_RESEARCH_READONLY",
+      "permission": false
+    },
+    {
+      "accepted_readable": false,
+      "mode": "NO_PERMISSION",
+      "permission": false
+    }
+  ],
+  "shadow_stable_evidence": false,
+  "version": "2.0.0",
+  "writes": "V4-19 exact permission receipts required independently; display never authorizes Focus mutation"
+}

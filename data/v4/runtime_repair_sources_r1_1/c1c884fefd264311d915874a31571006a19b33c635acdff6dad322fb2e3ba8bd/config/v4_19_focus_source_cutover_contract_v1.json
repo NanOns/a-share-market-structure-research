@@ -1,0 +1,825 @@
+{
+  "baseline": "94635fa369c60b3f8182cb4d813751a453682d88",
+  "capability_registry": {
+    "ROTATION": {
+      "accepted_receipts": {
+        "dependencies": null,
+        "forward": null,
+        "migration": null,
+        "shadow": null
+      },
+      "fallback_mode": "LEGACY_PRODUCTION_FOR_EXISTING_FOCUS; SHADOW_V4_READ_ONLY_DIAGNOSTICS",
+      "focus_eligibility": "V4_ACCEPTED_PUBLICATION_ONLY_AFTER_ALL_CAPABILITY_GATES_AND_ATOMIC_ROUTE_CAS",
+      "forward_gate": "ROTATION_SEPARATELY_FROZEN_FORWARD_GATE",
+      "migration_gate": "EXTERNALLY_ACCEPTED_V4_18_RUNTIME_REPLAY_EXACT_CAPABILITY",
+      "production_permission": false,
+      "required_dependencies": [
+        "SECTOR_STAGE"
+      ],
+      "rollback_scope": {
+        "affected_consumers": "TRANSITIVE_DEPENDENTS_FAIL_CLOSED; INDEPENDENT_CAPABILITIES_REMAIN_VALID",
+        "primary": "ROTATION"
+      },
+      "shadow_gate": "SHADOW_STABLE_PASS_EXACT_CAPABILITY_MODEL_PARAMETER_LINEAGE",
+      "ui_label": "SHADOW / NOT_GRANTED"
+    },
+    "SECTOR_RISK_CHANGE": {
+      "accepted_receipts": {
+        "dependencies": null,
+        "forward": null,
+        "migration": null,
+        "shadow": null
+      },
+      "fallback_mode": "LEGACY_PRODUCTION_FOR_EXISTING_FOCUS; SHADOW_V4_READ_ONLY_DIAGNOSTICS",
+      "focus_eligibility": "V4_ACCEPTED_PUBLICATION_ONLY_AFTER_ALL_CAPABILITY_GATES_AND_ATOMIC_ROUTE_CAS",
+      "forward_gate": "SECTOR_RISK_CHANGE_SEPARATELY_FROZEN_FORWARD_GATE",
+      "migration_gate": "EXTERNALLY_ACCEPTED_V4_18_RUNTIME_REPLAY_EXACT_CAPABILITY",
+      "production_permission": false,
+      "required_dependencies": [
+        "SECTOR_STAGE"
+      ],
+      "rollback_scope": {
+        "affected_consumers": "TRANSITIVE_DEPENDENTS_FAIL_CLOSED; INDEPENDENT_CAPABILITIES_REMAIN_VALID",
+        "primary": "SECTOR_RISK_CHANGE"
+      },
+      "shadow_gate": "SHADOW_STABLE_PASS_EXACT_CAPABILITY_MODEL_PARAMETER_LINEAGE",
+      "ui_label": "SHADOW / NOT_GRANTED"
+    },
+    "SECTOR_STAGE": {
+      "accepted_receipts": {
+        "dependencies": null,
+        "forward": null,
+        "migration": null,
+        "shadow": null
+      },
+      "fallback_mode": "LEGACY_PRODUCTION_FOR_EXISTING_FOCUS; SHADOW_V4_READ_ONLY_DIAGNOSTICS",
+      "focus_eligibility": "V4_ACCEPTED_PUBLICATION_ONLY_AFTER_ALL_CAPABILITY_GATES_AND_ATOMIC_ROUTE_CAS",
+      "forward_gate": "SECTOR_STAGE_SEPARATELY_FROZEN_FORWARD_GATE",
+      "migration_gate": "EXTERNALLY_ACCEPTED_V4_18_RUNTIME_REPLAY_EXACT_CAPABILITY",
+      "production_permission": false,
+      "required_dependencies": [],
+      "rollback_scope": {
+        "affected_consumers": "TRANSITIVE_DEPENDENTS_FAIL_CLOSED; INDEPENDENT_CAPABILITIES_REMAIN_VALID",
+        "primary": "SECTOR_STAGE"
+      },
+      "shadow_gate": "SHADOW_STABLE_PASS_EXACT_CAPABILITY_MODEL_PARAMETER_LINEAGE",
+      "ui_label": "SHADOW / NOT_GRANTED"
+    },
+    "STOCK_CORE": {
+      "accepted_receipts": {
+        "dependencies": null,
+        "forward": null,
+        "migration": null,
+        "shadow": null
+      },
+      "fallback_mode": "LEGACY_PRODUCTION_FOR_EXISTING_FOCUS; SHADOW_V4_READ_ONLY_DIAGNOSTICS",
+      "focus_eligibility": "V4_ACCEPTED_PUBLICATION_ONLY_AFTER_ALL_CAPABILITY_GATES_AND_ATOMIC_ROUTE_CAS",
+      "forward_gate": "STOCK_PROVISIONAL_FORWARD_GATE",
+      "migration_gate": "EXTERNALLY_ACCEPTED_V4_18_RUNTIME_REPLAY_EXACT_CAPABILITY",
+      "production_permission": false,
+      "required_dependencies": [],
+      "rollback_scope": {
+        "affected_consumers": "TRANSITIVE_DEPENDENTS_FAIL_CLOSED; INDEPENDENT_CAPABILITIES_REMAIN_VALID",
+        "primary": "STOCK_CORE"
+      },
+      "shadow_gate": "SHADOW_STABLE_PASS_EXACT_CAPABILITY_MODEL_PARAMETER_LINEAGE",
+      "ui_label": "SHADOW / NOT_GRANTED"
+    },
+    "STOCK_SECTOR_DEPENDENT": {
+      "accepted_receipts": {
+        "dependencies": null,
+        "forward": null,
+        "migration": null,
+        "shadow": null
+      },
+      "fallback_mode": "LEGACY_PRODUCTION_FOR_EXISTING_FOCUS; SHADOW_V4_READ_ONLY_DIAGNOSTICS",
+      "focus_eligibility": "V4_ACCEPTED_PUBLICATION_ONLY_AFTER_ALL_CAPABILITY_GATES_AND_ATOMIC_ROUTE_CAS",
+      "forward_gate": "STOCK_PROVISIONAL_FORWARD_GATE",
+      "migration_gate": "EXTERNALLY_ACCEPTED_V4_18_RUNTIME_REPLAY_EXACT_CAPABILITY",
+      "production_permission": false,
+      "required_dependencies": [
+        "STOCK_CORE",
+        "SECTOR_STAGE"
+      ],
+      "rollback_scope": {
+        "affected_consumers": "TRANSITIVE_DEPENDENTS_FAIL_CLOSED; INDEPENDENT_CAPABILITIES_REMAIN_VALID",
+        "primary": "STOCK_SECTOR_DEPENDENT"
+      },
+      "shadow_gate": "SHADOW_STABLE_PASS_EXACT_CAPABILITY_MODEL_PARAMETER_LINEAGE",
+      "ui_label": "SHADOW / NOT_GRANTED"
+    }
+  },
+  "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+  "current_state": {
+    "MIGRATION_REPLAY_PASS": "NOT_GRANTED",
+    "R25": "WAIT_ACCEPTED_DAILY_INPUT",
+    "REAL_SHADOW_OBSERVATIONS": 0,
+    "V4_17G": "NOT_GRANTED",
+    "V4_17_FINAL_ACCEPTANCE": "NOT_GRANTED",
+    "V4_18_CONTRACT_DESIGN": "EXTERNALLY_ACCEPTED",
+    "V4_18_IMPLEMENTATION_ENTRY": "BLOCKED_WAIT_REAL_SHADOW_GATE",
+    "V4_19_ACCEPTED_HEAD": "NOT_CREATED",
+    "focus_source_cutover": false,
+    "production_permission": {
+      "ROTATION": false,
+      "SECTOR_RISK_CHANGE": false,
+      "SECTOR_STAGE": false,
+      "STOCK_CORE": false,
+      "STOCK_SECTOR_DEPENDENT": false
+    }
+  },
+  "cutover_cas": {
+    "additional_checks": [
+      "all receipt identities and active digests",
+      "source publication capability identity",
+      "transitive dependency permission heads",
+      "exact previous accepted route",
+      "cutover gap and pending settlement ownership manifest"
+    ],
+    "atomicity": "APPEND_CUTOVER_RECEIPT_AND_CHANGE_EXACT_CAPABILITY_ROUTE_HEAD_IN_ONE_FUTURE_TRANSACTION; VERIFY_ALL_READ_HEADS_AT_CAS",
+    "idempotency": "SAME_REQUEST_ID_SAME_CANONICAL_PAYLOAD_RETURNS_SAME_RECEIPT; CHANGED_PAYLOAD_IDEMPOTENCY_CONFLICT",
+    "implemented": false,
+    "inputs": [
+      "expected_route_head",
+      "new_route",
+      "accepted_permission_receipts",
+      "cutover_authority"
+    ],
+    "mismatch": [
+      "NO_CUTOVER",
+      "NO_PARTIAL_ROUTE_CHANGE"
+    ]
+  },
+  "focus_routing": {
+    "authority": "EXPLICIT_EXTERNALLY_ACCEPTED_CUTOVER_AUTHORITY_AND_ATOMIC_CAS; NO_UI_OR_PAGE_AUTHORITY",
+    "current": "LEGACY_PRODUCTION_UNCHANGED",
+    "eligible_publication": "EXACT_ACCEPTED_V4_PUBLICATION_CAPABILITY_MODEL_PARAMETER_LINEAGE_AND_DIGEST_MATCH_ACTIVE_PERMISSION_RECEIPTS",
+    "shadow": "READ_ONLY; NEVER_PRODUCTION_FOCUS_SOURCE",
+    "states": [
+      "LEGACY_PRODUCTION",
+      "V4_PRODUCTION[capability]",
+      "SHADOW_V4"
+    ],
+    "user_pin": "PRODUCT_STATE_ONLY; NEVER_ALGORITHM_EVIDENCE_OR_PERMISSION"
+  },
+  "forward_gates": {
+    "rotation": {
+      "event_types": [
+        "ROTATION_PULSE",
+        "ROTATION_ACCEPTED",
+        "ROTATION_FAILED"
+      ],
+      "policy": "FAILED_INCLUDED_AS_FAILURE_OBSERVATION_NOT_POSITIVE_ACCEPTED; PULSE_CANNOT_SUBSTITUTE_ACCEPTED",
+      "required_parameters": [
+        "rotation_min_accepted_episodes",
+        "sector_min_unique_signal_dates",
+        "sector_min_unique_episodes",
+        "sector_min_matured_events_by_type",
+        "required_forward_quality"
+      ],
+      "threshold_receipt": null
+    },
+    "sector_common": "PER_TYPE_UNIQUE_EPISODES_SIGNAL_DATES_MATURED_EVENTS_T5_PRICE_PATH_QUALITY_STATE_RESULTS; SAME_EPISODE_MULTIPLE_TYPES_NOT_DISTINCT_EPISODES; UNFROZEN_POLICY_OR_MISSING_SAMPLE_IS_SHADOW_ONLY",
+    "sector_risk_change": {
+      "policy": "SEPARATE_ACCEPTED_EVENT_COMPLETENESS_RISK_CORRECTNESS_AND_SECTOR_PATH_POLICY; NO_STOCK_COUNT_BORROWING",
+      "threshold_receipt": null
+    },
+    "sector_stage": {
+      "event_types": [
+        "SECTOR_FIRST_PREWATCH",
+        "SECTOR_NEW_WARM",
+        "SECTOR_NEW_CONFIRMED"
+      ],
+      "policy": "EXACT_ACCEPTED_V4_00H_SEPARATELY_FROZEN_THRESHOLDS_REQUIRED; NO_STOCK_COUNTS",
+      "required_parameters": [
+        "sector_min_unique_signal_dates",
+        "sector_min_unique_episodes",
+        "sector_min_matured_events_by_type",
+        "required_forward_quality"
+      ],
+      "threshold_receipt": null
+    },
+    "stock": {
+      "counts": "DISTINCT_ACCEPTED_LOGICAL_EVENTS_AT_T5; DISTINCT_STOCK_IDS; DISTINCT_SIGNAL_DATES",
+      "dedup_key": "logical_event_id; revisions never add logical events or distinct stocks",
+      "excluded": [
+        "INVALIDATION",
+        "ESTIMATED",
+        "RECONSTRUCTED_ASOF",
+        "REPLAY"
+      ],
+      "horizon": 5,
+      "min_distinct_signal_dates": 5,
+      "min_distinct_stocks": 30,
+      "positive_event_types": [
+        "FIRST_PREWATCH",
+        "REENTRY_PREWATCH",
+        "NEW_CONFIRMED"
+      ],
+      "quality_receipts": [
+        "controls coverage and quality strata",
+        "benchmark coverage and quality strata"
+      ],
+      "same_model": true,
+      "settlement_p0": 0,
+      "status": "OBSERVED"
+    }
+  },
+  "implementation_entry": {
+    "receipts": [
+      null,
+      null,
+      null,
+      null
+    ],
+    "required_all": [
+      "externally accepted V4_17 real readback and V4_17G capability stability/forward receipts",
+      "externally accepted V4_18 runtime replay capability receipts",
+      "accepted exact source publication and target routing storage contract",
+      "accepted capability cutover/rollback authority"
+    ],
+    "status": "BLOCKED_WAIT_REAL_GATES"
+  },
+  "migration_gate": {
+    "authority": "EXTERNALLY_ACCEPTED_V4_18_RUNTIME_REPLAY",
+    "current": "NOT_GRANTED",
+    "design_pass_satisfies": false,
+    "r27_contract_sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02",
+    "required": "MIGRATION_REPLAY_PASS[capability]"
+  },
+  "mixed_ui": {
+    "context": "ONE_EXACT_IMMUTABLE_CONTEXT_MANIFEST_PINNING_EACH_MODULE_NATIVE_PUBLICATION_ID_REVISION_NAMESPACE_MODEL_PARAMETER_LINEAGE_DIGEST_AND_MODE; HASHED_MANIFEST_TOKEN; NO_LATEST_FALLBACK",
+    "context_mismatch": "FAIL_CLOSED_AFFECTED_MODULE; NEVER_SILENTLY_MIX_PUBLICATION_REVISIONS",
+    "cross_module": "SHARED_CONTEXT_MANIFEST_DOES_NOT_RELABEL_SHADOW_NATIVE_NAMESPACE_OR_GRANT_DEPENDENCY_PERMISSION",
+    "global_v4_production_label": false,
+    "module_mode_labels": [
+      "PRODUCTION",
+      "SHADOW",
+      "LEGACY"
+    ],
+    "shadow_native_identity_fields": [
+      "namespace",
+      "trade_date",
+      "publication_id",
+      "publication_revision",
+      "model_contract_id",
+      "parameter_set_id",
+      "state_lineage_id",
+      "daily_input_digest",
+      "source_manifest_digest",
+      "evidence_origin",
+      "readback_manifest_digest"
+    ]
+  },
+  "mode": "CONTRACT_DESIGN_ONLY",
+  "next_stage": "STOP_WAIT_R28_INDEPENDENT_EXTERNAL_AUDIT",
+  "permission_formula": {
+    "dependency_graph": {
+      "ROTATION": [
+        "SECTOR_STAGE"
+      ],
+      "SECTOR_RISK_CHANGE": [
+        "SECTOR_STAGE"
+      ],
+      "SECTOR_STAGE": [],
+      "STOCK_CORE": [],
+      "STOCK_SECTOR_DEPENDENT": [
+        "STOCK_CORE",
+        "SECTOR_STAGE"
+      ]
+    },
+    "global_permission": "FORBIDDEN",
+    "missing_unknown_stale_or_conflicting": "FALSE_NO_CUTOVER",
+    "operator": "AND",
+    "shared_raw_source": "READ_CAPABILITY_ONLY_NEVER_PERMISSION_INHERITANCE",
+    "terms": [
+      "SHADOW_STABLE_PASS[capability]",
+      "FORWARD_GATE[capability]",
+      "MIGRATION_REPLAY_PASS[capability]",
+      "ALL(required_dependency_permissions)"
+    ],
+    "topological_order": [
+      "STOCK_CORE",
+      "SECTOR_STAGE",
+      "STOCK_SECTOR_DEPENDENT",
+      "ROTATION",
+      "SECTOR_RISK_CHANGE"
+    ]
+  },
+  "policy_id": "CUTOVER_V2",
+  "prohibited": [
+    "GLOBAL_V4_PASS",
+    "GLOBAL_FOCUS_CUTOVER",
+    "cross-capability sample borrowing",
+    "historical replay counted as SHADOW_STABLE",
+    "RECONSTRUCTED_ASOF counted as PIT_OBSERVED",
+    "user pin counted as algorithm evidence",
+    "UI display counted as production permission"
+  ],
+  "receipt_schema": {
+    "additional_required": [
+      "receipt_id",
+      "request_id",
+      "contract_digest",
+      "gate_receipt_digests",
+      "dependency_receipt_digests",
+      "previous_receipt_digest",
+      "accepted_at",
+      "external_authority_receipt",
+      "evidence_class"
+    ],
+    "digest": "SHA256_UTF8_SORTED_COMPACT_JSON_ALL_FIELDS_EXCEPT_receipt_digest; NO_NAN; TYPES_AND_NULL_EXPLICIT",
+    "evidence_class": "PROVISIONAL_AFTER_VALID_FUTURE_CUTOVER; NOT_LONG_TERM_ADVANTAGE_PROOF",
+    "freshness": "VERIFY_NOT_SUPERSEDED_NOT_REVOKED_AND_EXACT_ACTIVE_RECEIPT_HEAD_AT_CAS; NO_ARBITRARY_AGE_THRESHOLD",
+    "identity_binding": [
+      "capability",
+      "model_contract_id",
+      "parameter_digest",
+      "state_lineage_id",
+      "source_publication",
+      "contract_digest"
+    ],
+    "r28_receipt": "NO_REAL_CUTOVER_RECEIPT_CREATED",
+    "required": [
+      "capability",
+      "status",
+      "shadow_sessions",
+      "unique_signal_dates",
+      "matured_events",
+      "forward_quality",
+      "migration_gate",
+      "production_permission",
+      "dependency_scope",
+      "parameter_digest",
+      "model_contract_id",
+      "state_lineage_id",
+      "source_publication",
+      "cutover_authority_id",
+      "previous_route",
+      "new_route",
+      "expected_route_head",
+      "receipt_digest"
+    ],
+    "types": {
+      "capability": "string",
+      "cutover_authority_id": "string",
+      "dependency_scope": "exact_capability_dependency_receipt_map",
+      "expected_route_head": "exact_bound_accepted_reference",
+      "forward_quality": "exact_bound_accepted_reference",
+      "matured_events": "object_per_event_type",
+      "migration_gate": "exact_bound_accepted_reference",
+      "model_contract_id": "string",
+      "new_route": "string",
+      "parameter_digest": "string",
+      "previous_route": "string",
+      "production_permission": "boolean",
+      "receipt_digest": "string",
+      "shadow_sessions": "integer",
+      "source_publication": "exact_bound_accepted_reference",
+      "state_lineage_id": "string",
+      "status": "string",
+      "unique_signal_dates": "integer"
+    }
+  },
+  "rollback": {
+    "authority": "EXACT_ACCEPTED_CAPABILITY_ROLLBACK_AUTHORITY; ALL_DEPENDENT_ROUTE_HEADS_CAS_ATOMIC_OR_NO_PARTIAL_CHANGE",
+    "implemented": false,
+    "migration_binding": "R27_EXACTLY_ONE_AUTHORIZED_WORKER_PER_EXISTING_DUE_ID; RETAIN_GAP_ACTIVITY; NO_BACKUP_ONLY_RESTORE",
+    "order": [
+      "fence new V4 Focus writes for affected capability",
+      "capture final cutover gap watermarks and ownership",
+      "restore exact previous accepted route with CAS",
+      "append rollback receipt and gap reconciliation manifest"
+    ],
+    "preserve": [
+      "accepted V4 facts",
+      "historical Shadow context",
+      "user pins/manual work",
+      "pending settlement ownership and frozen identities",
+      "outbox and receipts"
+    ],
+    "scope": "AFFECTED_CAPABILITY_AND_TRANSITIVE_DEPENDENT_CONSUMERS_ONLY; INDEPENDENT_VALID_CAPABILITIES_UNCHANGED"
+  },
+  "shadow_gate": {
+    "current_status": "NOT_GRANTED",
+    "execution_mode": "SHADOW",
+    "minimum_consecutive_accepted_market_sessions": 20,
+    "missed_non_evaluable": "DO_NOT_COUNT_AND_BREAK_CONSECUTIVE_ACCEPTED_MARKET_SESSION_WINDOW; KEEP_COMPLETE_SLOT_DENOMINATOR",
+    "origin": "PIT_OBSERVED",
+    "receipt_fields": [
+      "capability",
+      "model_contract_id",
+      "parameter_digest",
+      "state_lineage_id",
+      "accepted_session_ids",
+      "calendar_digest",
+      "slot_receipt_digests",
+      "leakage_count",
+      "duplicate_episode_corruption_count",
+      "core_identity_violation_count",
+      "p0_count",
+      "rollback_drill_receipt",
+      "available_at",
+      "external_acceptance_receipt"
+    ],
+    "required_zero": [
+      "temporal_leakage",
+      "duplicate_episode_corruption",
+      "core_identity_violation",
+      "P0_state_violation"
+    ],
+    "reset": [
+      "P0",
+      "affected capability model change",
+      "affected capability parameter change",
+      "shared dependency change resets all affected consumers"
+    ],
+    "rollback_drill": "PASS_REQUIRED",
+    "same_model": true
+  },
+  "stage": "V4-19",
+  "status": "LOCAL_DESIGN_PENDING_EXTERNAL_AUDIT",
+  "vectors": [
+    {
+      "description": "STOCK_CORE all gates pass -> hypothetical true",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "ELIGIBLE_DESIGN_PROPOSAL",
+        "reason": null,
+        "stock_core_permission": true
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C01",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "stock gate pass, sector insufficient -> sector false",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "ELIGIBLE_DESIGN_PROPOSAL",
+        "reason": null,
+        "stock_core_permission": true
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C02",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "sector pass, stock insufficient -> sector scope true if dependencies permit",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C03",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "STOCK_SECTOR_DEPENDENT blocked by Sector dependency",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "ELIGIBLE_DESIGN_PROPOSAL",
+        "reason": null,
+        "stock_core_permission": true
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C04",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "migration missing -> false",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C05",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "shadow stable missing -> false",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C06",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "forward missing -> false",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C07",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "model/parameter digest mismatch",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C08",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "source publication capability mismatch",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "SOURCE_PUBLICATION_IDENTITY_MISMATCH",
+        "stock_core_permission": true
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C09",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "route-head CAS conflict",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "ROUTE_CAS_CONFLICT",
+        "stock_core_permission": true
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C10",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "mixed UI labels production/shadow correctly",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "ELIGIBLE_DESIGN_PROPOSAL",
+        "reason": null,
+        "stock_core_permission": true
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C11",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "user pin creates no permission",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C12",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "historical replay cannot satisfy Shadow sessions",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C13",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "RECONSTRUCTED_ASOF cannot satisfy real gate",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C14",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "rollback one capability only",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "ELIGIBLE_DESIGN_PROPOSAL",
+        "reason": null,
+        "stock_core_permission": true
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C15",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "global-pass attempt rejected",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "GLOBAL_PROMOTION_FORBIDDEN",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C16",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "receipt missing dependency scope",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "RECEIPT_SCHEMA_INCOMPLETE",
+        "stock_core_permission": true
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C17",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "stale permission receipt",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C18",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "corrected outcome does not double-count event",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C19",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "shared source implies no permission inheritance",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "ELIGIBLE_DESIGN_PROPOSAL",
+        "reason": null,
+        "stock_core_permission": true
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C20",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    }
+  ],
+  "version": "1.0.0"
+}

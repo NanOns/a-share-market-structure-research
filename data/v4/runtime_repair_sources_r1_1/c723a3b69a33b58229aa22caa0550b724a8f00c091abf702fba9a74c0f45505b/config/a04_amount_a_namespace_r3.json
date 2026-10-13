@@ -1,0 +1,14 @@
+{
+  "contract_id": "A04_SECTOR_AMOUNT_A_NAMESPACE_R3",
+  "version": "3.0.0",
+  "audit_id": "AUD-AMOUNT-A-06",
+  "canonical_namespace": "SECTOR.amount_a_value",
+  "entity_level": "SECTOR",
+  "included_legacy_fields": ["sector_amount_vs_prior20", "amount_A", "current_sector_amount_vs_prior20"],
+  "excluded_namespaces": ["STOCK.amount_ratio20", "STOCK.amr20_mean_prior", "AMOUNT_VOLUME_STATE_V1", "SOURCE.RAW_AMOUNT", "OWNER.AMOUNT", "member_amount_ratio_median_vs_prior20"],
+  "stock_confirmation_dependency": false,
+  "ordinary_raw_amount_is_input_not_amount_a": true,
+  "stock_amr20_audit_owner": "STOCK_AMOUNT_RATIO20_PRIOR_WINDOW_CONTRACT; NOT AUD-AMOUNT-A-06",
+  "formal_consumer_enabled": false,
+  "external_acceptance": null
+}

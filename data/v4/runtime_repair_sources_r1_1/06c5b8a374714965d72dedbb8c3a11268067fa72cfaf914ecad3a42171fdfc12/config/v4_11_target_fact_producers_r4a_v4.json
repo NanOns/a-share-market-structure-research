@@ -1,0 +1,77 @@
+{
+  "accepted": false,
+  "authority": {
+    "bytes": 9057,
+    "path": "docs/evidence/next_round_r4/V4_R3_INDEPENDENT_EXTERNAL_AUDIT_R1_20261002.md",
+    "sha256": "b36e0f42e05090495e86bafb28d330a6b4a31a828de4f34a3abeaa4c7ca53413"
+  },
+  "basis_compatible": "Accepted READY price and same nonmissing basis/revision; coefficients may differ",
+  "builder": {
+    "bytes": 12126,
+    "path": "scripts/build_v4_11_target_facts_r4a.py",
+    "sha256": "24d2120db98dfebb87e376ff9d68633ccf05fd5a9200d7855884bffa5988b9ed"
+  },
+  "coefficient_role": "AFFINE_CALCULATION_REPRODUCIBILITY_DIAGNOSTIC_ONLY",
+  "contract_id": "V4_11_TARGET_FACT_PRODUCERS_R4A_V1",
+  "feature_basis_projection": "Accepted TDX_NATIVE_AFFINE_QFQ maps to legacy TDX_NATIVE_QFQ label only; full accepted basis id retained in adjustment_version and slot evidence",
+  "historical_status": {
+    "bytes": 100075252,
+    "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+    "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+  },
+  "initial_runtime_archive": {
+    "bytes": 6429,
+    "path": "reports/v4_11_r4/superseded/TARGET_RUNTIME_INITIAL_R4.py",
+    "sha256": "5657efeb8d526edd4ea4b94d081a1ab3de8bc56da59d91227d2e2b540c620267"
+  },
+  "legacy_thresholds": "KEEP_EXACT",
+  "master": {
+    "bytes": 1478,
+    "path": "docs/evidence/next_round_r4/V4_NEXT_ROUND_EXECUTION_MASTER_R4_20261002.md",
+    "sha256": "bfc1f47bc274ff7e06480e55211c00670345d4e1144bb54366780641fa3eb106"
+  },
+  "missing_revision_reason": "ADJUSTMENT_UNKNOWN",
+  "mixed_basis_reason": "MIXED_ADJUSTMENT_IDENTITY",
+  "parameter_set_id": "V4_11_TARGET_FACT_PARAMETERS_R4A_V1",
+  "parameters": {
+    "bytes": 6277,
+    "path": "config/research_attention_v3.yaml",
+    "sha256": "559e026897c5fd03d451af409438e90d1c535b69aecb1c2b336209e3ac9c96ec"
+  },
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "previous_contract": {
+    "bytes": 3268,
+    "path": "config/v4_11_target_fact_producers_r4a_v3.json",
+    "sha256": "e3af31448c9a2d03340fd0def283a9b437f1446d5ff3b34c6d19e632c8956edf"
+  },
+  "price_identity": "price_basis + adjustment_source_revision",
+  "revision": "R4_EXPLICIT_RPS_AND_ZERO_DENOMINATOR_ATTRIBUTION",
+  "runtime": {
+    "bytes": 6426,
+    "path": "src/v4/target_fact_producers_r4.py",
+    "sha256": "e37ea78452a50c368a2b39e2d2cfe78ba1be4dda9127fef232ac871326209258"
+  },
+  "scenario_priority": "KEEP_EXACT",
+  "source_adapter": {
+    "bytes": 2684,
+    "path": "src/v4/adjustment_basis_r4.py",
+    "sha256": "6668f50dfd1a43069615cc174ccf628c33d158f6f1e8988cd8dafc74260fc1c2"
+  },
+  "stage_task": {
+    "bytes": 3679,
+    "path": "docs/evidence/next_round_r4/V4_11_R4A_ADJUSTMENT_BASIS_PARITY_REPAIR_TASK_20261002.md",
+    "sha256": "95bb989a538fa83e96dc33b5994eb37c6df16844973c891a86bbe435cf0552e5"
+  },
+  "unknown_reason_semantics": "Field dependency-specific accepted RPS/suspension/gap/adjustment/history/zero denominator; no coefficient gate",
+  "upgrade": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "window_roles": "Legacy master-session windows unchanged; accepted V4-03 Core technical windows skip confirmed suspension, unexplained gaps fail closed"
+}

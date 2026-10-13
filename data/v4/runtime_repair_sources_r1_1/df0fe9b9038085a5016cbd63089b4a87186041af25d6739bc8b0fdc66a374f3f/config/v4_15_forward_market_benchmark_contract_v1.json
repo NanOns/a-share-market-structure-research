@@ -1,0 +1,93 @@
+{
+  "T0_universe": "ACCEPTED_ELIGIBLE_RESEARCH_UNIVERSE",
+  "accepted_policy": {
+    "bytes": 7288,
+    "path": "config/v4_capability_cutover_policy_v1.json",
+    "sha256": "c23ed67c712f03b32b926a9553db88a99b0dcefd0ce338629b59a022611acdea"
+  },
+  "carry_unknown": false,
+  "constituent_states": [
+    "IDENTITY_UNKNOWN",
+    "ADJUSTMENT_UNKNOWN",
+    "DELISTED",
+    "CONFIRMED_SUSPENSION",
+    "DATA_MISSING",
+    "ACTUAL_ENDPOINT"
+  ],
+  "consumer_isolation": true,
+  "contract_id": "FORWARD_MARKET_BENCHMARK_V1",
+  "core_market_reference_shared_identity": false,
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "49A.2"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "endpoint_coverage": "SUM_ORIGINAL_WEIGHT_ACTUAL_OR_VERIFIED_TERMINAL",
+  "fields": [
+    "benchmark_id",
+    "benchmark_members",
+    "initial_weights",
+    "fixed_shares",
+    "benchmark_constituent_policy",
+    "benchmark_endpoint_coverage",
+    "benchmark_missing_weight",
+    "benchmark_suspended_weight",
+    "benchmark_delisted_weight",
+    "benchmark_unknown_weight",
+    "benchmark_valuation_coverage",
+    "benchmark_marked_weight",
+    "benchmark_quality",
+    "observed_contribution",
+    "relative_market_return",
+    "relative_market_return_marked",
+    "quote_age",
+    "quote_trade_date"
+  ],
+  "fixed_shares": true,
+  "focus": false,
+  "formula": "B_j=sum(w_i*P_i,j/P_i,0); R_B=B_N-1; relative_market_return=R_N-R_B",
+  "identity_fields": [
+    "T0",
+    "members",
+    "initial_weights",
+    "adjustment_identity",
+    "constituent_policy",
+    "parameter_digest",
+    "source_digest"
+  ],
+  "initial_weights": "EQUAL_INITIAL_CAPITAL_SUM_1",
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "marked_estimate": {
+    "coverage_gate_value": null,
+    "permission": false,
+    "status": "CONTRACT_DEFINED_BUT_PERMISSION_BLOCKED_IF_REQUIRED_NUMERIC_GATES_UNSET",
+    "suspension_quote_age_gate_value": null
+  },
+  "missing_weight": "1-endpoint_coverage; includes suspended/delisted/unknown without double-count",
+  "partial": "KNOWN_WEIGHTED_RATIO_CONTRIBUTION_DIAGNOSTIC_ONLY_NOT_FULL_RETURN",
+  "path_quality": "EACH_SESSION_INDEPENDENT_ENDPOINT_PASS_NOT_PATH_PASS",
+  "primary_state_precedence": [
+    "IDENTITY_UNKNOWN",
+    "ADJUSTMENT_UNKNOWN",
+    "DELISTED",
+    "CONFIRMED_SUSPENSION",
+    "DATA_MISSING",
+    "ACTUAL_ENDPOINT"
+  ],
+  "production": false,
+  "quality_states": [
+    "OBSERVED",
+    "MARKED_ESTIMATE",
+    "PARTIAL_UNVALUED"
+  ],
+  "reweight": false,
+  "runtime_implemented": false,
+  "shadow": false,
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "suspension_mark": "VERIFIED_LAST_ACTUAL_CLOSE_TRANSFORMED_TO_EVALUATION_BASIS; QUOTE_DATE_AGE_REQUIRED; NOT_TRADABLE_OR_OBSERVED",
+  "unknown_weight": "DATA_MISSING+IDENTITY_UNKNOWN+ADJUSTMENT_UNKNOWN original weights",
+  "version": "1.0.0"
+}

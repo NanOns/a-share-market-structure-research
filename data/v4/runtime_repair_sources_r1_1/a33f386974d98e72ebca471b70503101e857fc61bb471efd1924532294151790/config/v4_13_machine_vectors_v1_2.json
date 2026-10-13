@@ -1,0 +1,1022 @@
+{
+  "contract_id": "V4_13_INDEPENDENT_MACHINE_VECTORS_V1",
+  "historical_lineage": {
+    "retained_R1_vectors": {
+      "bytes": 5203,
+      "path": "config/v4_13_machine_vectors_v1.json",
+      "sha256": "d07eff297634e09b3c33efeca63698619d9b02604e3b4b50287ed1306c09df74"
+    }
+  },
+  "oracle": "HAND_WRITTEN_R15_INDEPENDENT_CONTRACT_VECTORS",
+  "reason": "R14_EXTERNAL_AUDIT_C01_C04_REPAIR",
+  "runtime_implemented": false,
+  "status": "CONTRACT_FREEZE_ONLY",
+  "supersedes": {
+    "bytes": 36191,
+    "path": "config/v4_13_machine_vectors_v1_1.json",
+    "sha256": "ddadf06451bc42c9eb21976f1242567896faaaf8f0f37ed1390426b0bc519048"
+  },
+  "vectors": [
+    {
+      "alias": "T01",
+      "expected": {
+        "primary_industry": {
+          "quality": "KNOWN",
+          "value": "I1"
+        },
+        "supporting_concepts": {
+          "quality": "KNOWN",
+          "value": [
+            "C1",
+            "C2"
+          ]
+        }
+      },
+      "id": "R15-01",
+      "input": {
+        "concepts": [
+          "C1",
+          "C2"
+        ],
+        "industry": "I1",
+        "loo_history": null,
+        "membership_quality": "KNOWN"
+      },
+      "kind": "relationships"
+    },
+    {
+      "alias": "T02",
+      "expected": {
+        "primary_industry": {
+          "quality": "UNKNOWN",
+          "value": null
+        },
+        "supporting_concepts": {
+          "quality": "UNKNOWN",
+          "value": null
+        }
+      },
+      "id": "R15-02",
+      "input": {
+        "concepts": null,
+        "industry": null,
+        "loo_history": null,
+        "membership_quality": "UNKNOWN"
+      },
+      "kind": "relationships"
+    },
+    {
+      "expected": {
+        "algorithmic_support_sector": "UNKNOWN",
+        "primary_industry": "KNOWN",
+        "relative_sector_state": "KNOWN",
+        "supporting_concepts": "KNOWN"
+      },
+      "id": "R15-03",
+      "input": {
+        "all_current_sources_known": true,
+        "loo_history": null
+      },
+      "kind": "dependencies"
+    },
+    {
+      "alias": "S01",
+      "expected": {
+        "adjusted_seed_width": {
+          "quality": "KNOWN",
+          "reasons": [],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/V4_07_SEED_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": 0.3
+        },
+        "context_quality": "DEGRADED",
+        "emergence": {
+          "quality": "KNOWN",
+          "reasons": [],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_NATIVE_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": "HIGH"
+        },
+        "loo_b0_raw": {
+          "quality": "KNOWN",
+          "reasons": [],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_B0_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": true
+        },
+        "loo_confirmed_raw": {
+          "quality": "NOT_IMPLEMENTED",
+          "reasons": [
+            "B2_LEGACY_NOT_IMPLEMENTED"
+          ],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_B2_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": null
+        },
+        "loo_warm_raw": {
+          "quality": "NOT_IMPLEMENTED",
+          "reasons": [
+            "B2_LEGACY_NOT_IMPLEMENTED"
+          ],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_B2_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": null
+        },
+        "membership_basis": "PIT_OBSERVED",
+        "reasons": [
+          "B2_LEGACY_NOT_IMPLEMENTED"
+        ],
+        "relative_sector_state": {
+          "quality": "KNOWN",
+          "reasons": [],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_RELATIVE_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": "NEUTRAL"
+        },
+        "rotation_core_state": {
+          "quality": "KNOWN",
+          "reasons": [],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_ROTATION_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": "STABLE"
+        },
+        "sector_type": "INDUSTRY",
+        "selected_sector_id": "I1",
+        "source_refs": [
+          {
+            "available_at": "2026-09-30T23:00:00+08:00",
+            "bytes": 0,
+            "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+            "path": "SYNTHETIC_ENGINEERING_ONLY/MEMBERSHIP_REF.json",
+            "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+            "sector_id": "I1",
+            "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "source_revision": "SYNTHETIC_R1",
+            "target_security_id": "s",
+            "trade_date": "2026-09-30"
+          },
+          {
+            "available_at": "2026-09-30T23:00:00+08:00",
+            "bytes": 0,
+            "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+            "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_CONTEXT_REF.json",
+            "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+            "sector_id": "I1",
+            "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "source_revision": "SYNTHETIC_R1",
+            "target_security_id": "s",
+            "trade_date": "2026-09-30"
+          }
+        ]
+      },
+      "id": "R15-04",
+      "input": {
+        "adjusted_seed_width": {
+          "quality": "KNOWN",
+          "reasons": [],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/V4_07_SEED_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": 0.3
+        },
+        "context_quality": "DEGRADED",
+        "emergence": {
+          "quality": "KNOWN",
+          "reasons": [],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_NATIVE_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": "HIGH"
+        },
+        "loo_b0_raw": {
+          "quality": "KNOWN",
+          "reasons": [],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_B0_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": true
+        },
+        "loo_confirmed_raw": {
+          "quality": "NOT_IMPLEMENTED",
+          "reasons": [
+            "B2_LEGACY_NOT_IMPLEMENTED"
+          ],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_B2_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": null
+        },
+        "loo_warm_raw": {
+          "quality": "NOT_IMPLEMENTED",
+          "reasons": [
+            "B2_LEGACY_NOT_IMPLEMENTED"
+          ],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_B2_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": null
+        },
+        "membership_basis": "PIT_OBSERVED",
+        "reasons": [
+          "B2_LEGACY_NOT_IMPLEMENTED"
+        ],
+        "relative_sector_state": {
+          "quality": "KNOWN",
+          "reasons": [],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_RELATIVE_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": "NEUTRAL"
+        },
+        "rotation_core_state": {
+          "quality": "KNOWN",
+          "reasons": [],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_ROTATION_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": "STABLE"
+        },
+        "sector_type": "INDUSTRY",
+        "selected_sector_id": "I1",
+        "source_refs": [
+          {
+            "available_at": "2026-09-30T23:00:00+08:00",
+            "bytes": 0,
+            "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+            "path": "SYNTHETIC_ENGINEERING_ONLY/MEMBERSHIP_REF.json",
+            "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+            "sector_id": "I1",
+            "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "source_revision": "SYNTHETIC_R1",
+            "target_security_id": "s",
+            "trade_date": "2026-09-30"
+          },
+          {
+            "available_at": "2026-09-30T23:00:00+08:00",
+            "bytes": 0,
+            "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+            "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_CONTEXT_REF.json",
+            "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+            "sector_id": "I1",
+            "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "source_revision": "SYNTHETIC_R1",
+            "target_security_id": "s",
+            "trade_date": "2026-09-30"
+          }
+        ]
+      },
+      "kind": "sector_snapshot"
+    },
+    {
+      "expected": {
+        "membership_owner": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+        "production": false,
+        "scope": "ENGINEERING_CONSUMER_SCOPE_PROVEN"
+      },
+      "id": "R15-05",
+      "input": {},
+      "kind": "membership_authority"
+    },
+    {
+      "expected": {
+        "non_target_core_facts": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "non_target_native_facts": "data/v4/V4_05_ACCEPTED_HEAD.json"
+      },
+      "id": "R15-06",
+      "input": {},
+      "kind": "core_authority"
+    },
+    {
+      "expected": {
+        "non_target_base_seed_raw": "data/v4/V4_07_ACCEPTED_HEAD.json"
+      },
+      "id": "R15-07",
+      "input": {},
+      "kind": "seed_authority"
+    },
+    {
+      "expected": {
+        "rotation_source": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "structure_source": "data/v4/V4_12_ACCEPTED_HEAD.json"
+      },
+      "id": "R15-08",
+      "input": {},
+      "kind": "dual_binding"
+    },
+    {
+      "expected": {
+        "combined_quality": "DEGRADED",
+        "reasons": [
+          "D1_UNAVAILABLE"
+        ],
+        "rotation_core_state": "STABLE",
+        "rotation_quality": "KNOWN",
+        "rotation_source_ref": {
+          "available_at": "2026-09-30T23:00:00+08:00",
+          "bytes": 0,
+          "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+          "path": "SYNTHETIC_ENGINEERING_ONLY/V4_08_ROTATION.json",
+          "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+          "sector_id": "I1",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "source_revision": "SYNTHETIC_R1",
+          "target_security_id": "s",
+          "trade_date": "2026-09-30"
+        },
+        "structure_component": null,
+        "structure_quality": "NOT_IMPLEMENTED",
+        "structure_source_ref": {
+          "available_at": "2026-09-30T23:00:00+08:00",
+          "bytes": 0,
+          "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+          "path": "SYNTHETIC_ENGINEERING_ONLY/V4_12_STRUCTURE.json",
+          "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+          "sector_id": "I1",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "source_revision": "SYNTHETIC_R1",
+          "target_security_id": "s",
+          "trade_date": "2026-09-30"
+        }
+      },
+      "id": "R15-09",
+      "input": {
+        "reasons": [
+          "D1_UNAVAILABLE"
+        ],
+        "rotation_core_state": "STABLE",
+        "rotation_quality": "KNOWN",
+        "rotation_source_ref": {
+          "available_at": "2026-09-30T23:00:00+08:00",
+          "bytes": 0,
+          "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+          "path": "SYNTHETIC_ENGINEERING_ONLY/V4_08_ROTATION.json",
+          "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+          "sector_id": "I1",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "source_revision": "SYNTHETIC_R1",
+          "target_security_id": "s",
+          "trade_date": "2026-09-30"
+        },
+        "structure_component": null,
+        "structure_quality": "NOT_IMPLEMENTED",
+        "structure_source_ref": {
+          "available_at": "2026-09-30T23:00:00+08:00",
+          "bytes": 0,
+          "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+          "path": "SYNTHETIC_ENGINEERING_ONLY/V4_12_STRUCTURE.json",
+          "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+          "sector_id": "I1",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "source_revision": "SYNTHETIC_R1",
+          "target_security_id": "s",
+          "trade_date": "2026-09-30"
+        }
+      },
+      "kind": "enrichment"
+    },
+    {
+      "expected": {
+        "B1_after": "STABLE",
+        "B1_before": "STABLE"
+      },
+      "id": "R15-10",
+      "input": {
+        "B1": "STABLE",
+        "D1_after": "HELD_CONFIRMED",
+        "D1_before": "IDLE"
+      },
+      "kind": "D1_perturbation"
+    },
+    {
+      "expected": {
+        "A": true,
+        "C": false
+      },
+      "id": "R15-11",
+      "input": {
+        "A": true,
+        "C": false,
+        "context_after": "READY",
+        "context_before": "UNKNOWN"
+      },
+      "kind": "context_perturbation"
+    },
+    {
+      "expected": {
+        "predecessors": [
+          "2026-09-29",
+          "2026-09-29",
+          "2026-09-29"
+        ]
+      },
+      "id": "R15-12",
+      "input": {
+        "calendar": [
+          "2026-09-24",
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30"
+        ],
+        "revisions": [
+          "r1",
+          "r2",
+          "r3"
+        ],
+        "target": "2026-09-30"
+      },
+      "kind": "predecessor"
+    },
+    {
+      "alias": "S02",
+      "expected": {
+        "adjusted_seed_width": {
+          "quality": "KNOWN",
+          "reasons": [],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/V4_07_SEED_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": 0.3
+        },
+        "context_quality": "DEGRADED",
+        "emergence": {
+          "quality": "KNOWN",
+          "reasons": [],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_NATIVE_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": "HIGH"
+        },
+        "loo_b0_raw": {
+          "quality": "KNOWN",
+          "reasons": [],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_B0_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": true
+        },
+        "loo_confirmed_raw": {
+          "quality": "NOT_IMPLEMENTED",
+          "reasons": [
+            "B2_LEGACY_NOT_IMPLEMENTED"
+          ],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_B2_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": null
+        },
+        "loo_warm_raw": {
+          "quality": "NOT_IMPLEMENTED",
+          "reasons": [
+            "B2_LEGACY_NOT_IMPLEMENTED"
+          ],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_B2_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": null
+        },
+        "membership_basis": "PIT_OBSERVED",
+        "reasons": [
+          "B2_LEGACY_NOT_IMPLEMENTED",
+          "RELATIVE_MISSING"
+        ],
+        "relative_sector_state": {
+          "quality": "UNKNOWN",
+          "reasons": [
+            "RELATIVE_MISSING"
+          ],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_RELATIVE_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": null
+        },
+        "rotation_core_state": {
+          "quality": "KNOWN",
+          "reasons": [],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_ROTATION_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": "STABLE"
+        },
+        "sector_type": "INDUSTRY",
+        "selected_sector_id": "I1",
+        "source_refs": [
+          {
+            "available_at": "2026-09-30T23:00:00+08:00",
+            "bytes": 0,
+            "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+            "path": "SYNTHETIC_ENGINEERING_ONLY/MEMBERSHIP_REF.json",
+            "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+            "sector_id": "I1",
+            "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "source_revision": "SYNTHETIC_R1",
+            "target_security_id": "s",
+            "trade_date": "2026-09-30"
+          },
+          {
+            "available_at": "2026-09-30T23:00:00+08:00",
+            "bytes": 0,
+            "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+            "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_CONTEXT_REF.json",
+            "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+            "sector_id": "I1",
+            "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "source_revision": "SYNTHETIC_R1",
+            "target_security_id": "s",
+            "trade_date": "2026-09-30"
+          }
+        ]
+      },
+      "id": "R15-13",
+      "input": {
+        "adjusted_seed_width": {
+          "quality": "KNOWN",
+          "reasons": [],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/V4_07_SEED_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": 0.3
+        },
+        "context_quality": "DEGRADED",
+        "emergence": {
+          "quality": "KNOWN",
+          "reasons": [],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_NATIVE_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": "HIGH"
+        },
+        "loo_b0_raw": {
+          "quality": "KNOWN",
+          "reasons": [],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_B0_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": true
+        },
+        "loo_confirmed_raw": {
+          "quality": "NOT_IMPLEMENTED",
+          "reasons": [
+            "B2_LEGACY_NOT_IMPLEMENTED"
+          ],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_B2_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": null
+        },
+        "loo_warm_raw": {
+          "quality": "NOT_IMPLEMENTED",
+          "reasons": [
+            "B2_LEGACY_NOT_IMPLEMENTED"
+          ],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_B2_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": null
+        },
+        "membership_basis": "PIT_OBSERVED",
+        "reasons": [
+          "B2_LEGACY_NOT_IMPLEMENTED",
+          "RELATIVE_MISSING"
+        ],
+        "relative_sector_state": {
+          "quality": "UNKNOWN",
+          "reasons": [
+            "RELATIVE_MISSING"
+          ],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_RELATIVE_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": null
+        },
+        "rotation_core_state": {
+          "quality": "KNOWN",
+          "reasons": [],
+          "source_refs": [
+            {
+              "available_at": "2026-09-30T23:00:00+08:00",
+              "bytes": 0,
+              "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+              "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_ROTATION_REF.json",
+              "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+              "sector_id": "I1",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "source_revision": "SYNTHETIC_R1",
+              "target_security_id": "s",
+              "trade_date": "2026-09-30"
+            }
+          ],
+          "value": "STABLE"
+        },
+        "sector_type": "INDUSTRY",
+        "selected_sector_id": "I1",
+        "source_refs": [
+          {
+            "available_at": "2026-09-30T23:00:00+08:00",
+            "bytes": 0,
+            "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+            "path": "SYNTHETIC_ENGINEERING_ONLY/MEMBERSHIP_REF.json",
+            "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+            "sector_id": "I1",
+            "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "source_revision": "SYNTHETIC_R1",
+            "target_security_id": "s",
+            "trade_date": "2026-09-30"
+          },
+          {
+            "available_at": "2026-09-30T23:00:00+08:00",
+            "bytes": 0,
+            "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+            "path": "SYNTHETIC_ENGINEERING_ONLY/LOO_CONTEXT_REF.json",
+            "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+            "sector_id": "I1",
+            "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "source_revision": "SYNTHETIC_R1",
+            "target_security_id": "s",
+            "trade_date": "2026-09-30"
+          }
+        ]
+      },
+      "kind": "sector_snapshot"
+    },
+    {
+      "expected": {
+        "combined_quality": "DEGRADED",
+        "reasons": [
+          "ROTATION_MISSING"
+        ],
+        "rotation_core_state": null,
+        "rotation_quality": "UNKNOWN",
+        "rotation_source_ref": {
+          "available_at": "2026-09-30T23:00:00+08:00",
+          "bytes": 0,
+          "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+          "path": "SYNTHETIC_ENGINEERING_ONLY/V4_08_ROTATION.json",
+          "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+          "sector_id": "I1",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "source_revision": "SYNTHETIC_R1",
+          "target_security_id": "s",
+          "trade_date": "2026-09-30"
+        },
+        "structure_component": {
+          "support_state": "TESTING"
+        },
+        "structure_quality": "KNOWN",
+        "structure_source_ref": {
+          "available_at": "2026-09-30T23:00:00+08:00",
+          "bytes": 0,
+          "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+          "path": "SYNTHETIC_ENGINEERING_ONLY/V4_12_STRUCTURE.json",
+          "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+          "sector_id": "I1",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "source_revision": "SYNTHETIC_R1",
+          "target_security_id": "s",
+          "trade_date": "2026-09-30"
+        }
+      },
+      "id": "R15-14",
+      "input": {
+        "reasons": [
+          "ROTATION_MISSING"
+        ],
+        "rotation_core_state": null,
+        "rotation_quality": "UNKNOWN",
+        "rotation_source_ref": {
+          "available_at": "2026-09-30T23:00:00+08:00",
+          "bytes": 0,
+          "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+          "path": "SYNTHETIC_ENGINEERING_ONLY/V4_08_ROTATION.json",
+          "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+          "sector_id": "I1",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "source_revision": "SYNTHETIC_R1",
+          "target_security_id": "s",
+          "trade_date": "2026-09-30"
+        },
+        "structure_component": {
+          "support_state": "TESTING"
+        },
+        "structure_quality": "KNOWN",
+        "structure_source_ref": {
+          "available_at": "2026-09-30T23:00:00+08:00",
+          "bytes": 0,
+          "loo_lineage_id": "SYNTHETIC_LOO_LINEAGE",
+          "path": "SYNTHETIC_ENGINEERING_ONLY/V4_12_STRUCTURE.json",
+          "producer_contract_id": "SYNTHETIC_CONTRACT_WITNESS",
+          "sector_id": "I1",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "source_revision": "SYNTHETIC_R1",
+          "target_security_id": "s",
+          "trade_date": "2026-09-30"
+        }
+      },
+      "kind": "enrichment"
+    }
+  ],
+  "version": "1.2.0"
+}

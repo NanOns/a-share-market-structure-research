@@ -1,0 +1,536 @@
+{
+  "cases": [
+    {
+      "case_id": "TECH_EXACT_5",
+      "category": "technical_exact_n_actual",
+      "expected": 113.741259204525,
+      "field_id": "ma5",
+      "operations": [
+        [
+          "tail",
+          5
+        ]
+      ]
+    },
+    {
+      "case_id": "TECH_ONE_SHORT",
+      "category": "technical_one_short",
+      "expected": null,
+      "field_id": "ma5",
+      "operations": [
+        [
+          "tail",
+          4
+        ]
+      ]
+    },
+    {
+      "case_id": "TECH_CONFIRMED_SUSPENSION",
+      "category": "technical_confirmed_suspension",
+      "expected": 113.741259204525,
+      "field_id": "ma5",
+      "operations": [
+        [
+          "tail",
+          5
+        ],
+        [
+          "insert_state",
+          2,
+          "CONFIRMED_SUSPENSION"
+        ]
+      ]
+    },
+    {
+      "case_id": "TECH_RESUME_AFTER_SUSPENSION",
+      "category": "technical_resume",
+      "expected": 113.741259204525,
+      "field_id": "ma5",
+      "operations": [
+        [
+          "tail",
+          5
+        ],
+        [
+          "insert_state",
+          4,
+          "CONFIRMED_SUSPENSION"
+        ]
+      ]
+    },
+    {
+      "case_id": "TECH_T0_SUSPENDED_CURRENT",
+      "category": "technical_t0_suspension",
+      "expected": null,
+      "field_id": "ma5",
+      "operations": [
+        [
+          "set_state",
+          -1,
+          "CONFIRMED_SUSPENSION"
+        ]
+      ]
+    },
+    {
+      "case_id": "TECH_T0_SUSPENDED_PRIOR",
+      "category": "technical_t0_prior_only",
+      "expected": 115.20627105229008,
+      "field_id": "prior_high5",
+      "operations": [
+        [
+          "set_state",
+          -1,
+          "CONFIRMED_SUSPENSION"
+        ]
+      ]
+    },
+    {
+      "case_id": "TECH_UNEXPLAINED_GAP",
+      "category": "technical_unexplained_gap",
+      "expected": null,
+      "field_id": "ma5",
+      "operations": [
+        [
+          "tail",
+          5
+        ],
+        [
+          "insert_state",
+          2,
+          "UNEXPLAINED_GAP"
+        ]
+      ]
+    },
+    {
+      "case_id": "TECH_MIXED_ADJUSTMENT",
+      "category": "adjustment_basis_mismatch",
+      "expected": null,
+      "field_id": "ma5",
+      "operations": [
+        [
+          "set_bar",
+          -2,
+          "basis",
+          "OTHER_QFQ"
+        ]
+      ]
+    },
+    {
+      "case_id": "TECH_SOURCE_REVISION_MISMATCH",
+      "category": "source_revision_mismatch",
+      "expected": null,
+      "field_id": "ma5",
+      "operations": [
+        [
+          "set_bar",
+          -2,
+          "source",
+          "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+        ]
+      ]
+    },
+    {
+      "case_id": "TECH_NONPOSITIVE_REQUIRED_PRICE",
+      "category": "nonpositive_required_price",
+      "expected": null,
+      "field_id": "ret1",
+      "operations": [
+        [
+          "set_bar",
+          -2,
+          "close",
+          0
+        ]
+      ]
+    },
+    {
+      "case_id": "TECH_ZERO_DENOMINATOR",
+      "category": "zero_denominator",
+      "expected": null,
+      "field_id": "ret1",
+      "operations": [
+        [
+          "set_bar",
+          -2,
+          "close",
+          0
+        ]
+      ]
+    },
+    {
+      "case_id": "TECH_FLAT_RANGE",
+      "category": "flat_range",
+      "expected": null,
+      "field_id": "clv",
+      "operations": [
+        [
+          "set_bar",
+          -1,
+          "high",
+          100
+        ],
+        [
+          "set_bar",
+          -1,
+          "low",
+          100
+        ]
+      ]
+    },
+    {
+      "case_id": "TECH_AMOUNT_DENOMINATOR_ZERO",
+      "category": "amount_volume_zero_denominator",
+      "expected": null,
+      "field_id": "amount_ratio5",
+      "operations": [
+        [
+          "set_bar",
+          -6,
+          "amount",
+          0
+        ],
+        [
+          "set_bar",
+          -5,
+          "amount",
+          0
+        ],
+        [
+          "set_bar",
+          -4,
+          "amount",
+          0
+        ],
+        [
+          "set_bar",
+          -3,
+          "amount",
+          0
+        ],
+        [
+          "set_bar",
+          -2,
+          "amount",
+          0
+        ]
+      ]
+    },
+    {
+      "case_id": "TECH_VOLUME_DENOMINATOR_ZERO",
+      "category": "volume_zero_denominator",
+      "expected": null,
+      "field_id": "volume_ratio5",
+      "operations": [
+        [
+          "set_bar",
+          -6,
+          "volume",
+          0
+        ],
+        [
+          "set_bar",
+          -5,
+          "volume",
+          0
+        ],
+        [
+          "set_bar",
+          -4,
+          "volume",
+          0
+        ],
+        [
+          "set_bar",
+          -3,
+          "volume",
+          0
+        ],
+        [
+          "set_bar",
+          -2,
+          "volume",
+          0
+        ]
+      ]
+    },
+    {
+      "case_id": "AST_LOG_NONPOSITIVE",
+      "category": "log_invalid_input",
+      "expected": null,
+      "field_id": "__LOG_OPERATOR__",
+      "operations": [
+        [
+          "set_bar",
+          -1,
+          "close",
+          0
+        ]
+      ]
+    },
+    {
+      "case_id": "CROSS_EXACT_PRIOR_SESSION",
+      "category": "cross_section_exact_session_endpoint",
+      "expected": -16.666666666666664,
+      "field_id": "rps5_delta1",
+      "operations": []
+    },
+    {
+      "case_id": "CROSS_INTERMEDIATE_CONFIRMED_SUSPENSION",
+      "category": "cross_section_intermediate_suspension",
+      "expected": 0.004204142615630291,
+      "field_id": "ret3",
+      "operations": [
+        [
+          "tail",
+          4
+        ],
+        [
+          "insert_state",
+          2,
+          "CONFIRMED_SUSPENSION"
+        ]
+      ]
+    },
+    {
+      "case_id": "CROSS_INTERMEDIATE_GAP",
+      "category": "cross_section_intermediate_gap",
+      "expected": null,
+      "field_id": "ret3",
+      "operations": [
+        [
+          "tail",
+          4
+        ],
+        [
+          "insert_state",
+          2,
+          "UNEXPLAINED_GAP"
+        ]
+      ]
+    },
+    {
+      "case_id": "REL_ENDPOINT_MISSING",
+      "category": "cross_section_endpoint_missing",
+      "expected": null,
+      "field_id": "rel_market_1",
+      "operations": [
+        [
+          "set_scalar",
+          "market_reference_return_1",
+          null
+        ]
+      ]
+    },
+    {
+      "case_id": "REL_INPUT_LOCAL_UNKNOWN",
+      "category": "unknown_node_propagation",
+      "expected": null,
+      "field_id": "rel_market_1",
+      "operations": [
+        [
+          "set_scalar",
+          "ret1",
+          null
+        ]
+      ]
+    },
+    {
+      "case_id": "RANK_STRICT_ORDER",
+      "category": "ranking_strict_order",
+      "expected": 33.333333333333336,
+      "field_id": "rps5",
+      "operations": [
+        [
+          "set_cross",
+          "ret5",
+          {
+            "SEC-A": 2,
+            "SEC-B": 1,
+            "SEC-C": 3,
+            "SEC-D": 4
+          }
+        ]
+      ]
+    },
+    {
+      "case_id": "RANK_FULL_TIE",
+      "category": "ranking_full_tie",
+      "expected": 50,
+      "field_id": "rps5",
+      "operations": [
+        [
+          "set_cross",
+          "ret5",
+          {
+            "SEC-A": 1,
+            "SEC-B": 1,
+            "SEC-C": 1,
+            "SEC-D": 1
+          }
+        ]
+      ]
+    },
+    {
+      "case_id": "RANK_PARTIAL_TIE",
+      "category": "ranking_partial_tie",
+      "expected": 50,
+      "field_id": "rps5",
+      "operations": [
+        [
+          "set_cross",
+          "ret5",
+          {
+            "SEC-A": 2,
+            "SEC-B": 1,
+            "SEC-C": 2,
+            "SEC-D": 3
+          }
+        ]
+      ]
+    },
+    {
+      "case_id": "RANK_MISSING_MEMBER",
+      "category": "ranking_missing_member",
+      "expected": 0,
+      "field_id": "rps5",
+      "operations": [
+        [
+          "set_cross",
+          "ret5",
+          {
+            "SEC-A": 2,
+            "SEC-B": null,
+            "SEC-C": 3,
+            "SEC-D": 4
+          }
+        ]
+      ]
+    },
+    {
+      "case_id": "RANK_TARGET_MISSING",
+      "category": "ranking_target_missing",
+      "expected": null,
+      "field_id": "rps5",
+      "operations": [
+        [
+          "set_cross",
+          "ret5",
+          {
+            "SEC-A": null,
+            "SEC-B": 1,
+            "SEC-C": 2,
+            "SEC-D": 3
+          }
+        ]
+      ]
+    },
+    {
+      "case_id": "RANK_N_LT_2",
+      "category": "ranking_n_lt_2",
+      "expected": null,
+      "field_id": "rps5",
+      "operations": [
+        [
+          "set_members",
+          [
+            "SEC-A"
+          ]
+        ],
+        [
+          "set_cross",
+          "ret5",
+          {
+            "SEC-A": 1
+          }
+        ]
+      ]
+    },
+    {
+      "case_id": "RANK_MEMBER_CHANGED",
+      "category": "ranking_membership_change",
+      "expected": 100,
+      "field_id": "rps5",
+      "operations": [
+        [
+          "set_members",
+          [
+            "SEC-A",
+            "SEC-B"
+          ]
+        ],
+        [
+          "set_cross",
+          "ret5",
+          {
+            "SEC-A": 2,
+            "SEC-B": 1
+          }
+        ]
+      ]
+    },
+    {
+      "case_id": "RANK_REORDER_INVARIANT",
+      "category": "ranking_reorder_invariance",
+      "expected": 33.333333333333336,
+      "field_id": "rps5",
+      "operations": [
+        [
+          "set_members",
+          [
+            "SEC-D",
+            "SEC-C",
+            "SEC-B",
+            "SEC-A"
+          ]
+        ],
+        [
+          "set_cross",
+          "ret5",
+          {
+            "SEC-A": 2,
+            "SEC-B": 1,
+            "SEC-C": 3,
+            "SEC-D": 4
+          }
+        ]
+      ]
+    },
+    {
+      "case_id": "RANK_PARTIAL_EVALUABLE",
+      "category": "cross_section_partial_evaluable",
+      "expected": 0,
+      "field_id": "rps5",
+      "operations": [
+        [
+          "set_cross",
+          "ret5",
+          {
+            "SEC-A": 1,
+            "SEC-B": null,
+            "SEC-C": null,
+            "SEC-D": 2
+          }
+        ]
+      ]
+    },
+    {
+      "case_id": "DELTA_PRIOR_ENDPOINT_MISSING",
+      "category": "cross_section_prior_endpoint_missing",
+      "expected": null,
+      "field_id": "rps5_delta1",
+      "operations": [
+        [
+          "set_series",
+          "rps5",
+          [
+            null
+          ]
+        ]
+      ]
+    }
+  ],
+  "contract_id": "V4_03_AST_GOLDEN_CASES_R3",
+  "governing_task": "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md",
+  "reference_method": "independent arithmetic from fixed fixture; no AST interpreter used to derive expected values",
+  "version": "1.0.0"
+}

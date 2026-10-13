@@ -1,0 +1,53 @@
+{
+  "contract_id": "SECURITY_IDENTITY_EVENT_LINKAGE_V1",
+  "version": "1.0.0",
+  "owner_stage": "V4-01-R8.3",
+  "boundary_event_types": [
+    "SECURITY_EXIT",
+    "SECURITY_ENTRY",
+    "LISTING_START",
+    "LISTING_END",
+    "SYMBOL_REASSIGNMENT"
+  ],
+  "boundary_event_policy": {
+    "roster_exit_entry_adjacency": "ATOMIC_EVENTS_ONLY",
+    "lifecycle_end_start_adjacency": "ATOMIC_EVENTS_ONLY",
+    "ordinary_listing_or_delisting_is_relation_candidate": false,
+    "atomic_boundary_event_requires_relation_candidate": false
+  },
+  "accepted_candidate_linkage_signals": [
+    "OFFICIAL_CODE_CHANGE_EVENT",
+    "DATED_ALIAS_FACT",
+    "ACCEPTED_PROVIDER_PREDECESSOR_SUCCESSOR_LINK",
+    "VERSIONED_SAME_ISSUER_ID",
+    "VERSIONED_SAME_COMPANY_ENTITY_ID",
+    "PERSISTENT_RETROSPECTIVE_BAR_ALIAS",
+    "WEAK_NAME_CONTINUITY"
+  ],
+  "weak_linkage_rules": {
+    "exact_normalized_name": true,
+    "adjacent_effective_dates_required": true,
+    "one_old_and_one_new_key_per_name_group": true,
+    "same_exchange_required": true,
+    "candidate_only_never_confirms_relation": true
+  },
+  "versioned_identifier_rules": {
+    "issuer_fields": ["issuer_id", "issuer_identifier"],
+    "company_entity_fields": ["company_entity_id", "entity_id"],
+    "source_revision_required": true,
+    "one_old_and_one_new_key_per_identifier_group": true,
+    "same_exchange_required": true,
+    "candidate_only_never_confirms_relation": true
+  },
+  "resolution_policy": {
+    "contract_id": "IDENTITY_RELATION_EVIDENCE_POLICY_V1",
+    "version": "1.0.0",
+    "weak_signal_confirmation_allowed": false
+  },
+  "required_scope": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"],
+  "prohibited": [
+    "cartesian_exit_entry_candidate_generation",
+    "security_specific_runtime_branches",
+    "canonical_identity_mutation"
+  ]
+}

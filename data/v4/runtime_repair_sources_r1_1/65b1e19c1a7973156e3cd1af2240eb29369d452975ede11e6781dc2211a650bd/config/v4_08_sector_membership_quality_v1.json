@@ -1,0 +1,20 @@
+{
+  "contract_id": "V4_08_SECTOR_MEMBERSHIP_QUALITY_V1",
+  "version": "1.0.0",
+  "status": "FROZEN_ENGINEERING_CONTRACT",
+  "quality_values": [
+    {"quality": "PIT_OBSERVED_ACCEPTED", "formal_allowed": true, "required_basis": "PIT_OBSERVED", "required_conditions": ["provider_available_at <= cutoff", "system_available_at <= cutoff", "source bytes frozen", "security identities resolved", "no active duplicates", "source revision chain valid"]},
+    {"quality": "CURRENT_TDX_DIAGNOSTIC", "formal_allowed": false, "required_basis": "CURRENT_TDX_MEMBERSHIP", "reason": "Current source membership without accepted point-in-time history."},
+    {"quality": "CURRENT_REPLAY_DIAGNOSTIC", "formal_allowed": false, "required_basis": "CURRENT_MEMBERSHIP_REPLAY", "reason": "Current membership projected onto historical target date."},
+    {"quality": "DERIVED_PARENT_DIAGNOSTIC", "formal_allowed": false, "required_basis": "DERIVED_PARENT_MEMBERSHIP", "reason": "Parent union semantics require independent acceptance before production."},
+    {"quality": "UNKNOWN_IDENTITY", "formal_allowed": false, "required_basis": "ANY", "reason": "Source security key has no accepted V4-01 canonical identity."},
+    {"quality": "UNKNOWN_SECTOR_TYPE", "formal_allowed": false, "required_basis": "ANY", "reason": "Source type is not registered for formal membership."},
+    {"quality": "SOURCE_TIME_UNVERIFIED", "formal_allowed": false, "required_basis": "CURRENT_TDX_MEMBERSHIP", "reason": "Provider availability/effective date is not independently evidenced."}
+  ],
+  "failure_semantics": {
+    "missing_fact": "UNKNOWN",
+    "zero_members": "ZERO_ONLY_WHEN_COMPLETE_AND_VERIFIED",
+    "incomplete_or_unmapped_membership": "UNKNOWN / BLOCKED",
+    "base_seed_signal_degraded": "UNKNOWN / DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL"
+  }
+}

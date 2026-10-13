@@ -1,0 +1,42 @@
+{
+  "accepted_core_unit_contract": {
+    "byte_count": 40715,
+    "path": "config/v4_03_field_registry_v1.json",
+    "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+  },
+  "authority": {
+    "master": {
+      "byte_count": 224998,
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+    },
+    "sections": [
+      "22",
+      "23",
+      "24",
+      "78"
+    ],
+    "task": {
+      "byte_count": 12598,
+      "path": "docs/evidence/V4_08_ACCEPTED_HEAD_PROMOTION_AND_V4_09_STOCK_PREWATCH_ENTRY_TASK_20260930.md",
+      "sha256": "611e120cc9bce1c4fcfea5bd8f41e305beaaee11204f0174b749cc7920b3ed66"
+    }
+  },
+  "parameter_set_id": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+  "parameters": [
+    {
+      "comparison": "GTE",
+      "parameter_id": "delta3_medium",
+      "unit": "percentage_points",
+      "value": 3
+    },
+    {
+      "comparison": "GTE",
+      "parameter_id": "delta3_high",
+      "unit": "percentage_points",
+      "value": 10
+    }
+  ],
+  "status": "FROZEN_CANDIDATE",
+  "version": "1.0.0"
+}

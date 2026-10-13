@@ -1,0 +1,41 @@
+{
+  "contract_id": "V4_DATA_ACCEPTED_HEAD_V1",
+  "version": "1.0.0",
+  "head_path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+  "dev_baseline_head_path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+  "stage_accepted_head_path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+  "initial_bootstrap_cutoff": "2026-09-24",
+  "head_fields": [
+    "accepted_trade_date",
+    "source_revision",
+    "canonical_data_revision",
+    "component_permissions",
+    "manifest_path",
+    "manifest_sha256",
+    "parent_head_sha256",
+    "stage_accepted_head_sha256",
+    "dev_baseline_sha256"
+  ],
+  "capabilities": [
+    "RAW_DAILY",
+    "IDENTITY_UNIVERSE",
+    "TRADING_STATUS",
+    "ISST",
+    "ADJUSTED_DAILY",
+    "PERIOD_RAW",
+    "PERIOD_ADJUSTED",
+    "PRICE_LIMIT",
+    "SPECIAL_PHASE"
+  ],
+  "capability_statuses": ["FULL_PASS", "DEGRADED_PASS", "BLOCKED", "NOT_APPLICABLE"],
+  "promotion_requires": ["source_freeze_complete", "all_required_capabilities_not_blocked", "independent_postcheck_pass"],
+  "atomicity": {
+    "write_temp_in_same_directory": true,
+    "fsync_before_replace": true,
+    "previous_head_survives_pre_swap_failure": true
+  },
+  "immutability": {
+    "data_head_must_not_mutate_stage_accepted_head": true,
+    "data_head_must_not_mutate_dev_baseline_head": true
+  }
+}

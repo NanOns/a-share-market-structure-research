@@ -1,0 +1,212 @@
+{
+  "AS_RECORDED": false,
+  "V4_12_RUNTIME": false,
+  "accepted": false,
+  "accepted_calendar_source": {
+    "bytes": 10739,
+    "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/calendar_union_2e0938120e3b371aa9c84422c06b4c14de0f8894cc8f3caa9dd9c61299239e74.json",
+    "sha256": "629242b5074002dd8e889fdca5da9e1c05f9ae35357662d5c76a554117fc17f5"
+  },
+  "accepted_provenance_source": {
+    "bytes": 24944,
+    "path": "src/v4/state_provenance.py",
+    "sha256": "f4a5f0683a2735488d285f74f91d1c0dc3ff25112060c485debf22615f811a77"
+  },
+  "accepted_reducer_source": {
+    "bytes": 13989,
+    "path": "src/v4/research_state.py",
+    "sha256": "58fde91734f5d1192a43174052c3c10ce6a41a65facce2076b9bf0798d0e5bfb"
+  },
+  "admission_changes_only": [
+    "CANDIDATE_NAMESPACE",
+    "SEALED_OWNER_PUBLICATION_WIRING",
+    "ACTUAL_RECONSTRUCTED_KNOWLEDGE_TIME",
+    "FROZEN_R4_D0_CANDIDATE_CAPABILITY"
+  ],
+  "allowed_source_bindings": [
+    {
+      "bytes": 882246,
+      "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+      "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+    },
+    {
+      "bytes": 409222,
+      "path": "data/v4/confirmation_candidates_r4/D0_2026-09-29_R4.json.gz",
+      "sha256": "ff53ca271f13d64ed06fa8f18bbaa714928333711511c2d4036919058f5a757d"
+    },
+    {
+      "bytes": 2470350,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/TRADING_STATUS/artifact.json",
+      "sha256": "1024bfcad1052635317351b9c3c730f9c09294de72b3f1358e45bbe0aac6dde4"
+    },
+    {
+      "bytes": 2964,
+      "path": "reports/v4_11_r5a/R5A_SEALED_OWNER_PRODUCER_SET.json",
+      "sha256": "5baddc4a3ff00545c7ae89bf166639d07383727f38cef84bd7899531256fbecb"
+    },
+    {
+      "bytes": 1902,
+      "path": "reports/v4_11_r4a/R4A_SEALED_PRODUCER_SET.json",
+      "sha256": "9dbce1b7dff7ddf18acd766787068137f10839c9cfd5af9fec6e94f1dc3192d1"
+    },
+    {
+      "bytes": 2217,
+      "path": "reports/v4_11_r3b/R3B_SEALED_PRODUCER_SET.json",
+      "sha256": "4ccaba49200174c6d38138dcae8c093c16264f69bc2e19f24b507d05472144ec"
+    },
+    {
+      "bytes": 2776,
+      "path": "data/v4/V4_RPS_PIT_HISTORY_ACCEPTED_HEAD_R1.json",
+      "sha256": "4025dd5d3eb27c9086bca8e4861ad33842db8938dda370fb3d7f78b8d783398b"
+    },
+    {
+      "bytes": 880494,
+      "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+      "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+    },
+    {
+      "bytes": 409886,
+      "path": "data/v4/confirmation_candidates_r4/D0_2026-09-30_R4.json.gz",
+      "sha256": "c6056a733268957acd513e5f5770a691e4c3cd5d83e9caf55723077596e46797"
+    },
+    {
+      "bytes": 2470841,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/TRADING_STATUS/artifact.json",
+      "sha256": "20798999bb3309aa93f42ebd075bc53cffb5337117f6fbccd7eafd14986f51bb"
+    }
+  ],
+  "authoritative_by_date": {
+    "2026-09-29": {
+      "confirmation": {
+        "bytes": 409222,
+        "path": "data/v4/confirmation_candidates_r4/D0_2026-09-29_R4.json.gz",
+        "sha256": "ff53ca271f13d64ed06fa8f18bbaa714928333711511c2d4036919058f5a757d"
+      },
+      "owners": {
+        "bytes": 882246,
+        "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+        "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+      },
+      "status": {
+        "bytes": 2470350,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/TRADING_STATUS/artifact.json",
+        "sha256": "1024bfcad1052635317351b9c3c730f9c09294de72b3f1358e45bbe0aac6dde4"
+      }
+    },
+    "2026-09-30": {
+      "confirmation": {
+        "bytes": 409886,
+        "path": "data/v4/confirmation_candidates_r4/D0_2026-09-30_R4.json.gz",
+        "sha256": "c6056a733268957acd513e5f5770a691e4c3cd5d83e9caf55723077596e46797"
+      },
+      "owners": {
+        "bytes": 880494,
+        "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+        "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+      },
+      "status": {
+        "bytes": 2470841,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/TRADING_STATUS/artifact.json",
+        "sha256": "20798999bb3309aa93f42ebd075bc53cffb5337117f6fbccd7eafd14986f51bb"
+      }
+    }
+  },
+  "authorized_source_sets": [
+    {
+      "bytes": 1445,
+      "path": "data/v4/confirmation_candidates_r5/D2_SEALED_SOURCE_SET_R5.json",
+      "sha256": "ab8d2001ee0e492204a4a138ac55f3492967b4d49a9c804f665bc1435aa29ad8"
+    }
+  ],
+  "business_rules": "EXACT_ACCEPTED_V4_10_AST; PARAMETERS_THRESHOLDS_RULE_ORDER_UNCHANGED",
+  "contract_id": "V4_11_R5B_CANDIDATE_D2_BRIDGE_V1",
+  "exact_owner_parameters": [
+    {
+      "bytes": 1252,
+      "path": "config/v4_07_parameter_set_v1.json",
+      "sha256": "241785e1a97dd2283eb8b361eb791f4e5c8f6ca67579a06f2a2d38c0c7586a1a"
+    },
+    {
+      "bytes": 1179,
+      "path": "config/v4_09_parameter_set_v1.json",
+      "sha256": "3c9b0d658c6e8212c5a6239eecdeece99d54791b97cee45fe4df98de71086c24"
+    },
+    {
+      "bytes": 17586,
+      "path": "config/v4_04_parameter_set_v1.json",
+      "sha256": "5b19a23dfbf6b214f5ee7c7cce5df5674db69d099386038c082317819812ced5"
+    }
+  ],
+  "exact_owner_runtime": [
+    {
+      "bytes": 37887,
+      "path": "src/v4/base_seed.py",
+      "sha256": "0fa1b11f0d342731cf3658379f6ae14982b3861509daf2e949e197a722aac1d7"
+    },
+    {
+      "bytes": 22817,
+      "path": "src/v4/stock_prewatch.py",
+      "sha256": "a57a4413b56cd81f43a06611f4dec328ef6ac35486f4a4b56e5b5938e2db60ce"
+    },
+    {
+      "bytes": 16643,
+      "path": "src/v4/factors/core.py",
+      "sha256": "8986358268a5ae706c6cc46c95937ed381b65b55d3293667f840ff50008217f1"
+    },
+    {
+      "bytes": 9355,
+      "path": "src/v4/profile_primitives.py",
+      "sha256": "082f68ffebdba5338bab3a4679c08ab48fbc8762db34f63382c81ccb6e224432"
+    },
+    {
+      "bytes": 12281,
+      "path": "src/v4/profile_core.py",
+      "sha256": "75333ae3accf09edf9a8530984f86e93c7e36c9dcd3f9afbf0a6f9bfa1072116"
+    },
+    {
+      "bytes": 4903,
+      "path": "src/v4/sealed_owner_authority_r5.py",
+      "sha256": "fcc5c86f62d7cd77d3bc4e9e1baae8568674e89c7f61fc72773749598cab5010"
+    }
+  ],
+  "formal_consumer_enabled": false,
+  "frozen_R4_D0_publications": {
+    "2026-09-29": {
+      "bytes": 409222,
+      "path": "data/v4/confirmation_candidates_r4/D0_2026-09-29_R4.json.gz",
+      "sha256": "ff53ca271f13d64ed06fa8f18bbaa714928333711511c2d4036919058f5a757d"
+    },
+    "2026-09-30": {
+      "bytes": 409886,
+      "path": "data/v4/confirmation_candidates_r4/D0_2026-09-30_R4.json.gz",
+      "sha256": "c6056a733268957acd513e5f5770a691e4c3cd5d83e9caf55723077596e46797"
+    }
+  },
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "r3b_seal": {
+    "bytes": 2217,
+    "path": "reports/v4_11_r3b/R3B_SEALED_PRODUCER_SET.json",
+    "sha256": "4ccaba49200174c6d38138dcae8c093c16264f69bc2e19f24b507d05472144ec"
+  },
+  "r4a_seal": {
+    "bytes": 1902,
+    "path": "reports/v4_11_r4a/R4A_SEALED_PRODUCER_SET.json",
+    "sha256": "9dbce1b7dff7ddf18acd766787068137f10839c9cfd5af9fec6e94f1dc3192d1"
+  },
+  "r5a_seal": {
+    "bytes": 2964,
+    "path": "reports/v4_11_r5a/R5A_SEALED_OWNER_PRODUCER_SET.json",
+    "sha256": "5baddc4a3ff00545c7ae89bf166639d07383727f38cef84bd7899531256fbecb"
+  },
+  "scope": "SEALED_OWNER_CANDIDATE_INTERFACE_ONLY",
+  "stage": {
+    "bytes": 1651,
+    "path": "reports/v4_11_r5/R5B_STAGE_CONTRACT.json",
+    "sha256": "cbe20e86cf0553e699b303e0d2f2b149cd7b37cbda540a160352f41f069a31bf"
+  }
+}

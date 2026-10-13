@@ -1,0 +1,31 @@
+{
+  "consumer_migration": "External acceptance of exact dated producer observation required; V4-08 unchanged.",
+  "contract_id": "LEGACY_VALID_MEMBER_EXACT_PRODUCER_V1",
+  "exact_ast": "Assign(targets=[Subscript(value=Name(id='f', ctx=Load()), slice=Constant(value='valid_member'), ctx=Store())], value=BinOp(left=BinOp(left=Call(func=Attribute(value=Attribute(value=Attribute(value=Name(id='f', ctx=Load()), attr='security_id', ctx=Load()), attr='str', ctx=Load()), attr='fullmatch', ctx=Load()), args=[Constant(value='(SH|SZ|BJ)\\\\.\\\\d{6}')]), op=BitAnd(), right=Call(func=Attribute(value=Attribute(value=Name(id='f', ctx=Load()), attr='missing_state', ctx=Load()), attr='notna', ctx=Load()))), op=BitAnd(), right=UnaryOp(op=Invert(), operand=Call(func=Attribute(value=Attribute(value=Name(id='f', ctx=Load()), attr='missing_state', ctx=Load()), attr='isin', ctx=Load()), args=[List(elts=[Constant(value='FILE_MISSING'), Constant(value='DELISTED_OR_INACTIVE')], ctx=Load())]))))",
+  "exact_ast_digest": "22ab9ce395588edb77cd21670bfd3e72e03b7189d671c574ec1e7e6d243ad49a",
+  "focus_cutover": false,
+  "legacy_equivalent": true,
+  "new_listing_with_NOT_LISTED_YET": true,
+  "parameters": {
+    "excluded_missing_states": [
+      "FILE_MISSING",
+      "DELISTED_OR_INACTIVE"
+    ],
+    "identifier_regex": "(SH|SZ|BJ)\\.\\d{6}"
+  },
+  "production": false,
+  "scalar_expression": "fullmatch('(SH|SZ|BJ)\\.\\d{6}') AND missing_state IS NOT NULL AND missing_state NOT IN ('FILE_MISSING','DELISTED_OR_INACTIVE')",
+  "shadow": false,
+  "source": {
+    "bytes": 8217,
+    "path": "src/sector/phase2.py",
+    "sha256": "9455bae1578c4a785e034eb0ff852dcd98d7218a66027e0ea3f11489fd3727a1"
+  },
+  "source_symbol": "sector.phase2.prepare",
+  "status": "FROZEN_CANDIDATE",
+  "suspended": true,
+  "time_role": "CURRENT_SNAPSHOT_ONLY",
+  "units": "BOOLEAN",
+  "unknown_semantics": "Missing normalized state => false in legacy rule; unaccepted observation => CANDIDATE, never admitted by accepted consumer.",
+  "version": "1.0.0"
+}

@@ -1,0 +1,13 @@
+{
+  "contract_id": "V4_PRIMARY_SECTOR_TAXONOMY_V2",
+  "V4_PRIMARY_SECTOR_TAXONOMY": "TDX_INDUSTRY_CONCEPT",
+  "producer_registry": {
+    "TDX_PRIMARY_V2": {"adapter": "workbench_analysis.sector_taxonomy_v2.primary_projection", "namespace": ["INDUSTRY:", "THEME:"], "membership": "PIT_OBSERVED_ACCEPTED_EXACT_DATE"},
+    "CSRC_AUXILIARY_V2": {"adapter": "workbench_analysis.sector_taxonomy_v2.auxiliary_projection", "namespace": ["BAO_CSRC:"], "field_prefix": "csrc_", "primary_admission": false}
+  },
+  "consumer_adapter": "workbench_analysis.sector_taxonomy_v2.validate_primary_memberships",
+  "missing_membership": "UNKNOWN/NO_ACCEPTED_TDX_DATED_MEMBERSHIP",
+  "prior_cross_taxonomy": "REJECT",
+  "stock_only_seed_prewatch": "PRESERVE_WITH_DEPENDENCY_EVIDENCE",
+  "production_authority": false
+}

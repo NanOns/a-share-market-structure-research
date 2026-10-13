@@ -1,0 +1,2745 @@
+{
+  "contract_id": "FEP_FEATURE_OWNER_V1",
+  "version": "1.0.0",
+  "engineering_path": "A_ACCEPTED_HISTORICAL_OWNER",
+  "owner_head": {
+    "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+    "bytes": 4924,
+    "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+  },
+  "owner_receipt": {
+    "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+    "bytes": 6714,
+    "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+  },
+  "owner_artifact": {
+    "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+    "bytes": 24462765,
+    "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+  },
+  "field_registry": {
+    "path": "config/v4_03_field_registry_v1.json",
+    "bytes": 40715,
+    "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+  },
+  "output_schema": {
+    "path": "config/v4_03_output_schema_v1.json",
+    "bytes": 25382,
+    "sha256": "5f30b49db45fb2b4783fff14ec08f026c6aa0f2728656107ec2d8e3a50204d25"
+  },
+  "algorithm_contract": {
+    "path": "config/v4_03_algorithm_contracts_v1.json",
+    "bytes": 238576,
+    "sha256": "b36d3058ae9e557642389ef264f8451076a0b9876ec423299d64d1a890e054d2"
+  },
+  "parameter_contract": {
+    "path": "config/v4_03_parameter_set_v1.json",
+    "bytes": 649,
+    "sha256": "2f3cc8ae2fdf4bffc098dc1a0dc90bf05bbb12557b45ea8ddc50048410314e18"
+  },
+  "calendar": {
+    "path": "data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/calendar_sse_20230704_20260924.json",
+    "bytes": 17888,
+    "sha256": "09285bb116db5e7ab644e4942c331ceb9bc715b47f0369b9f228ef9d17df2d53"
+  },
+  "universe": {
+    "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+    "bytes": 239298684,
+    "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+  },
+  "adjustment_identity": {
+    "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+    "bytes": 112302935,
+    "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+  },
+  "trade_date": "2026-09-24",
+  "evidence_origin": "RECONSTRUCTED_ASOF",
+  "AS_RECORDED": false,
+  "FIRST_OBSERVED": false,
+  "production": false,
+  "shadow": false,
+  "registry_acceptance_basis": "Exact registry plus field/type/unit parity with accepted V4-03 output schema; no formula implementation",
+  "historical_source_available_at": "NOT_PROVEN",
+  "real_first_observed": "NOT_GRANTED_WAIT_REAL_SESSION",
+  "fields": [
+    {
+      "field_name": "amount_ratio20",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "amount_ratio20",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "amount_ratio20",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "amount_ratio20",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "amount_ratio20",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "ratio",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "amount_ratio5",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "amount_ratio5",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "amount_ratio5",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "amount_ratio5",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "amount_ratio5",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "ratio",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "atr20",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "atr20",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "atr20",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "atr20",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "atr20",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "atr5",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "atr5",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "atr5",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "atr5",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "atr5",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "atr_ratio",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "atr_ratio",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "atr_ratio",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "atr_ratio",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "atr_ratio",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "ratio",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "clv",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "clv",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "clv",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "clv",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "clv",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "ratio",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "core_price_damage",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "core_price_damage",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "core_price_damage",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "core_price_damage",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "core_price_damage",
+        "window_identity"
+      ],
+      "data_type": "boolean",
+      "unit": "boolean",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "hh_progress",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "hh_progress",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "hh_progress",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "hh_progress",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "hh_progress",
+        "window_identity"
+      ],
+      "data_type": "boolean",
+      "unit": "boolean",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "hhv20",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "hhv20",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "hhv20",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "hhv20",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "hhv20",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "hhv5",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "hhv5",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "hhv5",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "hhv5",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "hhv5",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "hhv60",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "hhv60",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "hhv60",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "hhv60",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "hhv60",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "ll_progress",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "ll_progress",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "ll_progress",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "ll_progress",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "ll_progress",
+        "window_identity"
+      ],
+      "data_type": "boolean",
+      "unit": "boolean",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "llv20",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "llv20",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "llv20",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "llv20",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "llv20",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "llv5",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "llv5",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "llv5",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "llv5",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "llv5",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "llv60",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "llv60",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "llv60",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "llv60",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "llv60",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "ma20",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "ma20",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "ma20",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "ma20",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "ma20",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "ma5",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "ma5",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "ma5",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "ma5",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "ma5",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "ma60",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "ma60",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "ma60",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "ma60",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "ma60",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "pos60",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "pos60",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "pos60",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "pos60",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "pos60",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "ratio",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "prior60_percentile",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "prior60_percentile",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "prior60_percentile",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "prior60_percentile",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "prior60_percentile",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "percentile_points",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "prior_high20",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "prior_high20",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "prior_high20",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "prior_high20",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "prior_high20",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "prior_high5",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "prior_high5",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "prior_high5",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "prior_high5",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "prior_high5",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "prior_high60",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "prior_high60",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "prior_high60",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "prior_high60",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "prior_high60",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "prior_low20",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "prior_low20",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "prior_low20",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "prior_low20",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "prior_low20",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "prior_low5",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "prior_low5",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "prior_low5",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "prior_low5",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "prior_low5",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "prior_low60",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "prior_low60",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "prior_low60",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "prior_low60",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "prior_low60",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "range_ratio",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "range_ratio",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "range_ratio",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "range_ratio",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "range_ratio",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "ratio",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "rel_market_1",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "rel_market_1",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "rel_market_1",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "rel_market_1",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "rel_market_1",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "return_fraction",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "rel_market_3",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "rel_market_3",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "rel_market_3",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "rel_market_3",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "rel_market_3",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "return_fraction",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "rel_market_5",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "rel_market_5",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "rel_market_5",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "rel_market_5",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "rel_market_5",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "return_fraction",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "ret1",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "ret1",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "ret1",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "ret1",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "ret1",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "return_fraction",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "ret20",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "ret20",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "ret20",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "ret20",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "ret20",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "return_fraction",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "ret3",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "ret3",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "ret3",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "ret3",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "ret3",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "return_fraction",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "ret5",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "ret5",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "ret5",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "ret5",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "ret5",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "return_fraction",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "rps20",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "rps20",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "rps20",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "rps20",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "rps20",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "percentage_points",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "rps20_delta3",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "rps20_delta3",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "rps20_delta3",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "rps20_delta3",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "rps20_delta3",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "percentage_points",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "rps5",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "rps5",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "rps5",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "rps5",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "rps5",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "percentage_points",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "rps5_delta1",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "rps5_delta1",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "rps5_delta1",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "rps5_delta1",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "rps5_delta1",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "percentage_points",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "rps5_delta3",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "rps5_delta3",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "rps5_delta3",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "rps5_delta3",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "rps5_delta3",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "percentage_points",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "slope20",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "slope20",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "slope20",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "slope20",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "slope20",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "dimensionless",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "slope60",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "slope60",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "slope60",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "slope60",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "slope60",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "dimensionless",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "tr",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "tr",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "tr",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "tr",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "tr",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "adjusted_price",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "vol20",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "vol20",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "vol20",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "vol20",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "vol20",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "log_return_std",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "vol5",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "vol5",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "vol5",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "vol5",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "vol5",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "log_return_std",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "vol_ratio",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "vol_ratio",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "vol_ratio",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "vol_ratio",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "vol_ratio",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "ratio",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "volume_ratio20",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "volume_ratio20",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "volume_ratio20",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "volume_ratio20",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "volume_ratio20",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "ratio",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    },
+    {
+      "field_name": "volume_ratio5",
+      "owner_stage": "V4-03",
+      "value_path": [
+        "fields",
+        "volume_ratio5",
+        "value"
+      ],
+      "quality_path": [
+        "fields",
+        "volume_ratio5",
+        "quality_state"
+      ],
+      "source_digest_path": [
+        "fields",
+        "volume_ratio5",
+        "output_digest"
+      ],
+      "window_identity_path": [
+        "fields",
+        "volume_ratio5",
+        "window_identity"
+      ],
+      "data_type": "float64",
+      "unit": "ratio",
+      "nullable": true,
+      "required": true,
+      "entity_key_path": [
+        "security_id"
+      ],
+      "trade_date_path": [
+        "trade_date"
+      ],
+      "mapping_status": "IMPLEMENTED_EXACT_MAPPING_ENGINEERING",
+      "unit_transform": "IDENTITY",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "availability": "Exact engineering read receipt only; historical first availability NOT_PROVEN",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "owner_artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "owner_publication_identity": {
+        "receipt": {
+          "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+          "bytes": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd"
+      },
+      "trade_date": "2026-09-24"
+    }
+  ]
+}

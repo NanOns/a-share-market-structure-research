@@ -1,0 +1,2623 @@
+{
+  "contract_id": "SETTLEMENT_FIELDS_V1",
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "87A"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "fields": [],
+  "focus": false,
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "production": false,
+  "registry": [
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "due_trade_date",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "DUE_PLANNER_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "market_date",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "horizon",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "DUE_PLANNER_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "integer",
+      "unit": "market_sessions",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "due_state",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "DUE_PLANNER_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "actual_count",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "DUE_PLANNER_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "integer",
+      "unit": "market_sessions",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "R_N",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_PRICE_PATH_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "fraction",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "MFE_N",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_PRICE_PATH_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "fraction",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "MAE_N",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_PRICE_PATH_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "fraction",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "PATH_MDD_CLOSE_N",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_PRICE_PATH_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "fraction",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "evaluation_basis_date",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_PRICE_PATH_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "market_date",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "evaluation_comparison_reference",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_PRICE_PATH_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "CNY_per_share",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "evaluation_adjustment_identity",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_PRICE_PATH_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "object",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "transform_coefficients",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "object_schema": {
+        "alpha": {
+          "quality": "VERIFIED_OR_UNKNOWN",
+          "revision": "APPEND_ONLY",
+          "source_binding": "ACCEPTED_LOCAL_ADJUSTMENT",
+          "time_role": "EVALUATION_BASIS",
+          "type": "number",
+          "unit": "scale"
+        },
+        "beta": {
+          "quality": "VERIFIED_OR_UNKNOWN",
+          "revision": "APPEND_ONLY",
+          "source_binding": "ACCEPTED_LOCAL_ADJUSTMENT",
+          "time_role": "EVALUATION_BASIS",
+          "type": "number",
+          "unit": "CNY_per_share"
+        }
+      },
+      "producer": "FORWARD_PRICE_PATH_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "object",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "transform_digest",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_PRICE_PATH_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "source_asof",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_PRICE_PATH_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "EVALUATION_SOURCE_ASOF",
+      "type": "string",
+      "unit": "UTC_timestamp",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "available_at",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_PRICE_PATH_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "EVALUATION_AVAILABLE_AT",
+      "type": "string",
+      "unit": "UTC_timestamp",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "price_path",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "object_schema": {
+        "OHLC": {
+          "quality": "ACTUAL_ONLY_NO_SYNTHETIC_BAR",
+          "revision": "APPEND_ONLY",
+          "source_binding": "ACCEPTED_CANONICAL_DAILY",
+          "time_role": "FORWARD_SESSION_COMMON_EVALUATION_BASIS",
+          "type": "object_of_numbers",
+          "unit": "CNY_per_share"
+        },
+        "source_identity": {
+          "quality": "EXACT_OR_UNKNOWN",
+          "revision": "APPEND_ONLY",
+          "source_binding": "ACCEPTED_EVALUATION_SOURCE",
+          "time_role": "EVALUATION_AVAILABLE_AT",
+          "type": "digest_binding",
+          "unit": "identity"
+        },
+        "trade_date": {
+          "revision": "APPEND_ONLY",
+          "source_binding": "ACCEPTED_CALENDAR",
+          "type": "date",
+          "unit": "market_date"
+        }
+      },
+      "producer": "FORWARD_PRICE_PATH_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "array",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "outcome_status",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "OUTCOME_STATUS_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "path_quality",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "OUTCOME_STATUS_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "endpoint_quality",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "OUTCOME_STATUS_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "reason_codes",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "OUTCOME_STATUS_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "array",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "terminal_value",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "OUTCOME_STATUS_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "CNY_per_share",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "terminal_evidence",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "OUTCOME_STATUS_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "object",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "report_cutoff",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "OUTCOME_STATUS_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "competing_event",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COMPETING_OUTCOME_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "first_event_trade_date",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COMPETING_OUTCOME_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "market_date",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "competing_source_publication",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COMPETING_OUTCOME_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "censoring_state",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "COMPETING_OUTCOME_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "benchmark_id",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_MARKET_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_T0_SNAPSHOT",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "benchmark_members",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_MARKET_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_T0_SNAPSHOT",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "initial_weights",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_MARKET_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_T0_SNAPSHOT",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "fraction",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "fixed_shares",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_MARKET_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_T0_SNAPSHOT",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "shares",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "benchmark_constituent_policy",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_MARKET_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_T0_SNAPSHOT",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "benchmark_endpoint_coverage",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_MARKET_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "fraction",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "benchmark_missing_weight",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_MARKET_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "fraction",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "benchmark_suspended_weight",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_MARKET_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "fraction",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "benchmark_delisted_weight",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_MARKET_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "fraction",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "benchmark_unknown_weight",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_MARKET_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "fraction",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "benchmark_valuation_coverage",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_MARKET_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "fraction",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "benchmark_marked_weight",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_MARKET_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "fraction",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "benchmark_quality",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_MARKET_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "observed_contribution",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_MARKET_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "fraction",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "relative_market_return",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_MARKET_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "fraction",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "relative_market_return_marked",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_MARKET_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "fraction",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "quote_age",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_MARKET_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "integer",
+      "unit": "market_sessions",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "quote_trade_date",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_MARKET_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "market_date",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "sector_benchmark_id",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_SECTOR_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_T0_SNAPSHOT",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "sector_members",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_SECTOR_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_T0_SNAPSHOT",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "relative_sector_return",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_SECTOR_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "fraction",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "relative_sector_return_marked",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_SECTOR_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "fraction",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "MFE_CLOSE",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_SECTOR_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "fraction",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "MAE_CLOSE",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "FORWARD_SECTOR_BENCHMARK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "number",
+      "unit": "fraction",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "rotation_basket_id",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "ROTATION_PULSE_BASKET_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_T0_SNAPSHOT",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "pulse_trade_date",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "ROTATION_PULSE_BASKET_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_T0_SNAPSHOT",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "market_date",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "pulse_members",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "ROTATION_PULSE_BASKET_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_T0_SNAPSHOT",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "pulse_reference",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "ROTATION_PULSE_BASKET_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_T0_SNAPSHOT",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "control_assignment_id",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "CONTROL_ASSIGNMENT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_ASSIGNMENT_APPEND_CROSSING",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "control_type",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "CONTROL_ASSIGNMENT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_ASSIGNMENT_APPEND_CROSSING",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "control_entity_ids",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "CONTROL_ASSIGNMENT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_ASSIGNMENT_APPEND_CROSSING",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "match_scope",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "CONTROL_ASSIGNMENT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_ASSIGNMENT_APPEND_CROSSING",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "control_feature_snapshot",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "CONTROL_ASSIGNMENT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_ASSIGNMENT_APPEND_CROSSING",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "assignment_digest",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "CONTROL_ASSIGNMENT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_ASSIGNMENT_APPEND_CROSSING",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "crossed_signal_at",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "CONTROL_ASSIGNMENT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_ASSIGNMENT_APPEND_CROSSING",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "control_count",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "CONTROL_ASSIGNMENT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_ASSIGNMENT_APPEND_CROSSING",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "integer",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "control_distance",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "CONTROL_ASSIGNMENT_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "IMMUTABLE_ASSIGNMENT_APPEND_CROSSING",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "T0_FROZEN",
+      "type": "array",
+      "unit": "rank_distance",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "outcome_id",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "OUTCOME_REVISION_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "outcome_contract_id",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "OUTCOME_REVISION_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "evaluation_source_digest",
+      "identity_participation": true,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "OUTCOME_REVISION_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "evaluation_revision",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "OUTCOME_REVISION_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "integer",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "supersedes",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "OUTCOME_REVISION_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "revision_reason",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "OUTCOME_REVISION_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "first_observed_id",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "OUTCOME_REVISION_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "latest_corrected_id",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "OUTCOME_REVISION_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "evaluation_source_identity",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "OUTCOME_REVISION_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "object",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "readback_view",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "SETTLEMENT_READBACK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "readback_asof",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "SETTLEMENT_READBACK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "string",
+      "unit": "UTC_timestamp",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "due_items",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "SETTLEMENT_READBACK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "array",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "pending_items",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "SETTLEMENT_READBACK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "array",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "matured_items",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "SETTLEMENT_READBACK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "array",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "benchmark_control_bindings",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "SETTLEMENT_READBACK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "object",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    },
+    {
+      "consumer": [
+        "V4_15_READBACK",
+        "V4_15_CONTRACT_CONSUMERS"
+      ],
+      "evidence_class": [
+        "PIT_OBSERVED",
+        "RECONSTRUCTED_ASOF",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "field_id": "degradation_reasons",
+      "identity_participation": false,
+      "not_applicable_behavior": "NULL_WITH_NOT_APPLICABLE_REASON",
+      "producer": "SETTLEMENT_READBACK_V1",
+      "quality_states": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_APPLICABLE",
+        "NOT_IMPLEMENTED",
+        "DEGRADED"
+      ],
+      "revision_behavior": "APPEND_EVALUATION_REVISION",
+      "source_binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "time_role": "FORWARD_EVALUATION",
+      "type": "array",
+      "unit": "identity",
+      "unknown_behavior": "NULL_WITH_REASON_NEVER_ZERO_OR_FALSE"
+    }
+  ],
+  "runtime_implemented": false,
+  "shadow": false,
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "version": "1.0.0"
+}

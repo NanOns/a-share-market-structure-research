@@ -1,0 +1,41 @@
+{
+  "contract_id": "V4_15_CAPABILITY_SCOPE_R20R1_V1",
+  "version": "1.0.0",
+  "execution_baseline": "7f97f4487e2c8aaccb7e7701af4ccfddfa7ddec9",
+  "authority": "data/v4/V4_14_ACCEPTED_HEAD.json",
+  "promotion_semantics": "R20R1_NARROW_SCOPE_SUPERSEDES_R20_GENERIC_LABELS_ONLY",
+  "historical_R20_evidence": "IMMUTABLE_KEEP",
+  "capabilities": {
+    "V4_15_RUNTIME_ENGINEERING": "PASS",
+    "REAL_ACCEPTED_SOURCE_T0_INTEGRATION": "PASS_CAPABILITY_SCOPED",
+    "REAL_ACCEPTED_SOURCE_PENDING_DUE_READBACK": "PASS_CAPABILITY_SCOPED",
+    "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE",
+    "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED"
+  },
+  "current_T0_scope": "ACCEPTED_SEPT30_SOURCE_RECONSTRUCTED_ASOF_PROJECTION_NOT_HISTORICAL_PIT",
+  "mature_numerical_runtime_scope": "ENGINEERING_VECTORS_ONLY",
+  "prohibited_evidence_upgrades": ["ENGINEERING_SYNTHETIC", "MACHINE_VECTOR", "HISTORICAL_PRICES_ONLY", "RECONSTRUCTED_ASOF", "RAW_PROVIDER_FALLBACK"],
+  "fail_closed": "ALL_REAL_PENDING_OR_ZERO_ACCEPTED_FUTURE_ENDPOINT_READS_IMPLIES_NO_MATURED_REAL_PASS",
+  "future_real_maturity": "SEPARATE_EXACT_ACCEPTED_PUBLICATION_ENROLLMENT_FREEZE_ENDPOINT_OUTCOME_AND_INDEPENDENT_PROOF_REQUIRED",
+  "validation_debt": {
+    "capability": "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT",
+    "blocks_unrelated_development": false,
+    "blocks_dependent_claims": true,
+    "does_not_authorize_next_stage": true,
+    "trigger": "ACCEPTED_FUTURE_SESSION_INCREMENT",
+    "incremental_evidence_command": "python -m scripts.r20r1_maturity_debt <exact_packet_list.json>",
+    "minimum_closure_scope": "ONE_OR_MORE_INDEPENDENTLY_VERIFIED_REAL_MATURED_HORIZONS;_REMAINING_HORIZONS_RESTRICTED",
+    "accumulation": "APPEND_ONLY_EXACT_INDEPENDENT_MATURITY_RECEIPTS_WITH_EXPLICIT_HORIZON_COVERAGE",
+    "closure": "AUTOMATIC_ONLY_AFTER_INDEPENDENT_EXACT_REAL_MATURITY_PROOF;_NO_IMPLICIT_ALL_HORIZONS_OR_PIT_GRANT"
+  },
+  "protected_state": {
+    "V4_15_ACCEPTED_HEAD": "NOT_CREATED",
+    "V4_STAGE_ACCEPTED_HEAD": "V4_00_TO_V4_14_ACCEPTED",
+    "V4_DATA_ACCEPTED_HEAD": "2026-09-30",
+    "Production": false,
+    "Shadow": false,
+    "Focus": false,
+    "V4_16": false,
+    "NEXT": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT"
+  }
+}

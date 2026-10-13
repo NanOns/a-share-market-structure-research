@@ -1,0 +1,27 @@
+{
+  "contract_id": "ROTATION_CORE_V1",
+  "version": "1.0.0",
+  "owner_stage": "V4-08",
+  "status": "FROZEN_ENGINEERING_CANDIDATE",
+  "authority": {"governing_contract": "DA-MSR-V4.2.2-CODEX-REV2", "sections": ["15", "16", "18", "21A.4", "21A.4A", "78"]},
+  "inputs": {
+    "allowed": ["B0[t]", "accepted Base Seed[t]", "accepted PIT membership[t]", "frozen history[t-1]", "same-cutoff Core facts", "pulse-frozen basket path"],
+    "forbidden": ["same-day final stock PREWATCH", "same-day final sector maturity", "Focus", "Radar", "Support", "turnover", "V4-06", "future confirmation", "future outcomes"],
+    "prior_rps_degraded": "all Base-Seed dependent fields UNKNOWN / DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL; never substitute zero"
+  },
+  "pulse": "dq5>=V4_08_ROTATION_PULSE_DQ5_MIN AND breadth_delta1>=V4_08_ROTATION_PULSE_BREADTH_DELTA1_MIN",
+  "episode_freeze": ["rotation_episode_id", "pulse_date", "pulse-qualified Base Seed set", "positive breadth set", "basket identity", "pulse-preceding price basis"],
+  "retention": {
+    "price": "equal-weight frozen pulse basket path from pulse-preceding common basis; not daily member median chaining",
+    "seed": "pulse-frozen seed members still satisfying A[pulse] / frozen seed count; zero denominator NOT_APPLICABLE; missing member evaluation UNKNOWN",
+    "breadth": "pulse-frozen positive members at same-basis close >= pulse close / frozen positive count; zero denominator NOT_APPLICABLE; missing price UNKNOWN",
+    "early_retained": "basket cumulative return>0 AND (seed_retention>=early_seed_min OR breadth_retention>=early_breadth_min) AND breadth_delta1>=early_breadth_delta_min AND top1_concentration<=early_top1_max",
+    "mature_retained": "early_retained AND strong_member_retention_1>=mature_strong_min; strong_prev=0 => NOT_APPLICABLE, does not block IN/ACCEPTED and cannot qualify EXPANDING/REACCELERATING"
+  },
+  "state_priority": ["UNKNOWN_PAUSE", "ROTATION_FAILED", "ROTATION_OUT", "ROTATION_REACCELERATING", "ROTATION_EXPANDING", "ROTATION_ACCEPTED", "ROTATION_IN", "ROTATION_PULSE", "HOLD_OR_EXPIRE"],
+  "diffusion": "entered_count>exited_count AND breadth_delta1>0 AND top1_concentration<=0.5; member set changes are not strength entered/exited",
+  "parameter_set": "V4_08_ALGORITHM_PARAMETER_SET_V1",
+  "machine_vectors": "config/v4_08_algorithm_machine_vectors_v1.json",
+  "formal_consumer_enabled": false,
+  "stage_record": {"acceptance_result": "VECTOR_ENGINEERING_ONLY; no real episode or full-market materialization", "next_stage": "freeze missing V4-00G parameters and obtain accepted PIT membership before production"}
+}

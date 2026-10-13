@@ -7,7 +7,7 @@ from .operational_daily_storage_v1 import atomic_json
 
 CONTRACT='DYNAMIC_DAILY_READY_OWNER_ADAPTER_V2'
 
-def build(root,freeze_binding,*,source_readiness,engineering_replay_current=False,candidate_only_exact=False,resume_checkpoint=None,progress=None):
+def build(root,freeze_binding,*,source_readiness,engineering_replay_current=False,candidate_only_exact=False,resume_checkpoint=None,progress=None,exact_policy_binding=None):
     root=Path(root)
     if engineering_replay_current:
         import os
@@ -27,7 +27,7 @@ def build(root,freeze_binding,*,source_readiness,engineering_replay_current=Fals
     exact_policy=None
     if not engineering_replay_current:
         from .operational_daily_exact_policy_v2 import verify,KERNEL
-        _,exact_policy=verify(root,candidate_only=candidate_only_exact)
+        _,exact_policy=verify(root,exact_policy_binding,candidate_only=candidate_only_exact)
     context=owner.prepare(root,freeze_binding,replay_current=engineering_replay_current,
         adjustment_contract=dict(contract=KERNEL,policy=exact_policy) if exact_policy else None)
     if exact_policy:context['exact_daily_policy']=exact_policy

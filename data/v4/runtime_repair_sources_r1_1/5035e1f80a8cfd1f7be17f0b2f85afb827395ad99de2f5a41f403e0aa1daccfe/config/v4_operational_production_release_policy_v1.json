@@ -1,0 +1,160 @@
+{
+  "authorization": {
+    "bytes": 5572,
+    "path": "docs/evidence/fp01_20261008/tasks/01_生产语义与版本化发布合同_R1_20261008.md",
+    "sha256": "e032c7073872fefa85ce9fe584277489bdc5ef94e36cc249a4729a9508f2cd24"
+  },
+  "contract_id": "V4_OPERATIONAL_PRODUCTION_RELEASE_POLICY_V1",
+  "dependencies": {
+    "Rotation": [
+      "V4-08"
+    ],
+    "STOCK_SECTOR_DEPENDENT": [
+      "STOCK_CORE",
+      "SECTOR_STAGE"
+    ],
+    "V4_11_STATE_EVENTS": [],
+    "V4_13_PROFILE_ADVANCED": [],
+    "V4_15_RADAR_PUBLICATION": []
+  },
+  "feature_ids": [
+    "V4-03",
+    "V4-04",
+    "V4-05",
+    "V4-06",
+    "V4-07",
+    "V4-08",
+    "V4-09",
+    "V4-10",
+    "V4-11",
+    "V4-12",
+    "V4-13",
+    "V4-14",
+    "V4-15",
+    "V4-16",
+    "V4-17",
+    "V4-18",
+    "V4-19",
+    "V4-20",
+    "V4-21",
+    "V4-22",
+    "A02",
+    "A03",
+    "A04",
+    "A05",
+    "A06",
+    "A07",
+    "A08",
+    "A09",
+    "A10",
+    "A11",
+    "A12",
+    "A13",
+    "Focus",
+    "M14",
+    "MarketRegime",
+    "Rotation",
+    "Forward",
+    "FEP-E1",
+    "FEP-E2",
+    "FEP-E3",
+    "FEP-E4",
+    "FEP-E5",
+    "STOCK_CORE",
+    "SECTOR_STAGE",
+    "STOCK_SECTOR_DEPENDENT",
+    "SECTOR_RISK_CHANGE",
+    "V4_13_PROFILE_ADVANCED",
+    "V4_11_STATE_EVENTS",
+    "V4_15_RADAR_PUBLICATION"
+  ],
+  "field_rule": "Missing/unimplemented values cannot become KNOWN; preserve original value, quality, reason, source, unit and window.",
+  "global_full_product_pass": false,
+  "independent_verifier": {
+    "bytes": 7026,
+    "path": "docs/evidence/fp01_20261008/source_versions/7c668d589ee3a17770508be2a9b15f0e7a5eceb0f8950554b57b9e6612e55f62/verify_fp01_real_admission.py",
+    "sha256": "7c668d589ee3a17770508be2a9b15f0e7a5eceb0f8950554b57b9e6612e55f62"
+  },
+  "leverage_authorized": false,
+  "m14_hot_rank": "REQUEST_TIME_ONLY_NO_RAW_ROW_BATCH_HISTORY_PERSISTENCE",
+  "migration": {
+    "active_http_service": "FP01 scopes operational release registry; FP02/03 consume it, FP14 atomically activates full-product service. No silent modification of v1 UI or data heads.",
+    "focus": "History preserved; V4 source routing/writes require a distinct engineering admission and transactional route CAS in FP08/FP14; historical V4-19 facts unchanged.",
+    "historical_source_integrity": "Retain all input/PIT/identity/adjustment and field-consumer quality gates; no extrapolated permissions",
+    "immature_forward": "PENDING or RIGHT_CENSORED remains valid lifecycle; no maturity/profit claim",
+    "old_production_permission": "Historical shadow/forward/migration proof only; retained byte-for-byte, never set TRUE by this policy.",
+    "operational_admission": "Exact real source/output/code/contract/context; independent schema/quality/no-future/readback QA; dependency scope and reversible release receipt.",
+    "shadow_20_sessions": "VALIDATION_ONGOING debt; not an operational admission prerequisite"
+  },
+  "next_stage": "FP02_FP03_FP04_AFTER_FP01_LOCAL_ACCEPTANCE_AND_SEPARATE_STAGE_DISPATCH",
+  "probability_claims_authorized": false,
+  "required_metadata": [
+    "owner",
+    "release_id",
+    "source_snapshot",
+    "contract_version",
+    "source_as_of",
+    "trading_date",
+    "input_digest",
+    "published_at",
+    "evidence_origin",
+    "evidence_state",
+    "data_quality_state",
+    "knowledge_lineage"
+  ],
+  "rollback": {
+    "legacy_fallback": "config/v4_production_runtime_authority_v1.json unchanged; Shadow and Focus history retained",
+    "strategy": "Immutable blue/green release + serialized CAS + post-swap exact readback; restore exact retained predecessor on failure"
+  },
+  "states": {
+    "data_quality_state": [
+      "KNOWN",
+      "QUALITY_DEGRADED",
+      "SOURCE_INCOMPLETE",
+      "PENDING",
+      "RIGHT_CENSORED"
+    ],
+    "evidence_state": [
+      "VALIDATION_ONGOING",
+      "HISTORICALLY_ACCEPTED_SCOPED",
+      "STATISTICALLY_VALIDATED_SCOPED"
+    ],
+    "operational_state": [
+      "OPERATIONAL_PRODUCTION_ACTIVE",
+      "DATA_PENDING",
+      "SOURCE_INCOMPLETE",
+      "QUALITY_DEGRADED",
+      "ENGINEERING_NOT_READY"
+    ]
+  },
+  "successor_of": [
+    {
+      "bytes": 7288,
+      "path": "config/v4_capability_cutover_policy_v1.json",
+      "sha256": "c23ed67c712f03b32b926a9553db88a99b0dcefd0ce338629b59a022611acdea"
+    },
+    {
+      "bytes": 30858,
+      "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+      "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+    },
+    {
+      "bytes": 31339,
+      "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+      "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+    },
+    {
+      "bytes": 1003,
+      "path": "config/v4_20_default_ui_cutover_contract_v2.json",
+      "sha256": "db5eef2dc08aed21d96a13e4ff2adea85b89cd81ef13e084481b7204a9aabc63"
+    },
+    {
+      "bytes": 3070,
+      "path": "config/v4_production_runtime_authority_v1.json",
+      "sha256": "f0187a8a1b0ed4f21d342c44104d1c3f0a2a4b14ad110625f139ee62aaff7f2d"
+    }
+  ],
+  "tdx_write_authorized": false,
+  "trading_action_authorized": false,
+  "version": "1.0.0"
+}

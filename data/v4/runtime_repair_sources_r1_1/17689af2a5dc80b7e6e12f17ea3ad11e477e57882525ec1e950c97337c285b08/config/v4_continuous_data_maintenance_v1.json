@@ -1,0 +1,126 @@
+{
+  "contract_id": "V4_CONTINUOUS_DATA_MAINTENANCE_V1",
+  "version": "1.0.0",
+  "owner_stage": "V4-DM-01",
+  "base_cutoff": "2026-09-24",
+  "heads": {
+    "stage_accepted_head": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+    "data_accepted_head": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "dev_baseline_head": "data/v4/V4_DEV_BASELINE_HEAD.json",
+    "data_head_moves_dev_baseline": false,
+    "data_head_moves_stage_accepted_head": false
+  },
+  "bootstrap": {
+    "mode": "BOOTSTRAP_FROM_2026_09_24_ACCEPTED_HEAD",
+    "identity_universe": "V4-01 R8.1 accepted identity and R7 canonical universe",
+    "v4_02": "externally accepted R6 canonical artifacts",
+    "copy_large_historical_files": false,
+    "write_only": ["bootstrap manifest", "parent hashes", "component cutoffs", "small head pointers"]
+  },
+  "catch_up": {
+    "automatic_session_discovery": true,
+    "calendar_authority": "official versioned exchange session notices and accepted session list",
+    "strictly_sequential": true,
+    "blocked_session_prevents_later_promotion": true,
+    "session_inference_from_bar_absence": false,
+    "latest_session_must_be_completed": true,
+    "market_timezone": "Asia/Shanghai",
+    "market_close_local": "15:00:00"
+  },
+  "source_freeze": {
+    "contract_id": "V4_DAILY_SOURCE_FREEZE_V1",
+    "before_canonical_build": true,
+    "required_source_families": [
+      "TDX",
+      "EXCHANGE_CALENDAR",
+      "BAOSTOCK_DAILY",
+      "GBBQ",
+      "IDENTITY_LIFECYCLE",
+      "SPECIAL_PRICE_PHASE"
+    ],
+    "timestamps": ["observed_at", "ingested_at", "system_available_at"],
+    "incremental_source_identity": "previous source manifest + changed-file manifest + consumed source file hashes",
+    "full_historical_rehash_each_day": false
+  },
+  "tdx": {
+    "priority": ["accepted local TDX chain", "validated accepted package overlap"],
+    "local_wins_conflict": true,
+    "package_fills_local_missing_only": true,
+    "write_to_configured_tdx_root": false,
+    "source_not_ready_policy": "BLOCKED; never replace TDX OHLC with BaoStock OHLC"
+  },
+  "components": {
+    "required_capabilities": [
+      "RAW_DAILY",
+      "IDENTITY_UNIVERSE",
+      "TRADING_STATUS",
+      "ISST",
+      "ADJUSTED_DAILY",
+      "PERIOD_RAW",
+      "PERIOD_ADJUSTED",
+      "PRICE_LIMIT",
+      "SPECIAL_PHASE"
+    ],
+    "statuses": ["FULL_PASS", "DEGRADED_PASS", "BLOCKED", "NOT_APPLICABLE"],
+    "turnover": "V4-06; not implemented here"
+  },
+  "publication": {
+    "sequence": [
+      "STAGING",
+      "SOURCE_FREEZE_COMPLETE",
+      "COMPONENT_BUILD",
+      "INDEPENDENT_POSTCHECK",
+      "CANDIDATE_MANIFEST",
+      "ATOMIC_HEAD_SWAP"
+    ],
+    "failed_gate_keeps_previous_data_head": true,
+    "idempotency_key": ["trade_date", "source_manifest_digest", "contract_digest"],
+    "same_key_result": "NOOP_ALREADY_ACCEPTED",
+    "changed_source_revision": "APPEND_NEW_REVISION_AND_SUPERSEDE"
+  },
+  "adjustments": {
+    "ordinary_day": "append target trade date only",
+    "new_source_revision_changes_qfq_history": "recompute only affected security and affected history",
+    "affected_revision_fields": [
+      "security_id",
+      "affected_from",
+      "affected_to",
+      "source_snapshot_id",
+      "old_adjustment_revision",
+      "new_adjustment_revision",
+      "row_count_changed",
+      "old_digest",
+      "new_digest",
+      "reason"
+    ],
+    "unsupported_event": "BLOCKED"
+  },
+  "periods": {
+    "current_open_week_or_month": "AS_OF_PARTIAL",
+    "period_last_session": "CLOSED_ONLY",
+    "closed_raw_period_immutable": true,
+    "adjusted_revision_scope": "affected security and affected period only"
+  },
+  "lineage": {
+    "origins": ["PIT_OBSERVED", "RECONSTRUCTED_ASOF", "RECONSTRUCTED_CORRECTED", "DIAGNOSTIC_NON_PIT"],
+    "bridge_cutoff": "2026-09-24",
+    "first_go_forward_pit_eligible_session": "2026-09-28",
+    "bridge_without_frozen_source_set": "RECONSTRUCTED_ASOF_OR_DIAGNOSTIC_NON_PIT"
+  },
+  "prohibited": [
+    "V4-03 factor implementation",
+    "V4-04 profile implementation",
+    "V4-08 sector implementation",
+    "V4-10 state implementation",
+    "V4-15 radar implementation",
+    "automated trading",
+    "probability claims",
+    "write to configured TDX root"
+  ],
+  "outputs": {
+    "data_head": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "bootstrap_manifest": "data/v4/bootstrap/V4_DM01_BOOTSTRAP_MANIFEST_R1.json",
+    "daily_receipts": "reports/v4_dm01/YYYYMMDD/",
+    "final_receipt": "reports/v4_dm01/V4_DM01_FINAL_RECEIPT_R1_20260928.json"
+  }
+}

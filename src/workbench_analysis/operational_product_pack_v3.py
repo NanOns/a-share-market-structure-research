@@ -1,5 +1,7 @@
 """Prepare dated native PG read packs before atomic operational publication."""
 import json,gzip,hashlib,zipfile,struct
+import sqlite3,tempfile
+from contextlib import closing
 from pathlib import Path
 from collections import Counter
 from .r43_owner_replay import checked,ref
@@ -7,6 +9,22 @@ from .r43_operational_publication import rows
 from .operational_daily_storage_v1 import atomic_json
 from workbench_db.v4_forward_pg_r1 import canonical,digest
 from workbench_service.native_product_catalog_v3 import KEY,CONTRACT,load as load_catalog
+
+def canonical_history_rows(path,logical):
+    """Order immutable source rows on G disk without holding full history in RAM."""
+    temporary=Path('G:/codex_tmp');temporary.mkdir(parents=True,exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix='v4-history-order-',dir=temporary) as folder:
+        with closing(sqlite3.connect(str(Path(folder)/'rows.sqlite'))) as db:
+            db.execute('CREATE TABLE rows(security TEXT PRIMARY KEY,payload BLOB NOT NULL)')
+            with gzip.open(path,'rt',encoding='utf8') as stream:
+                for line in stream:
+                    row=json.loads(line)
+                    value=dict(security_id=row['security_id'],bars=[{key:bar[key] for key in ('trade_date','raw_ohlc','qfq_ohlc','amount','volume')} for bar in row['bars']])
+                    try:db.execute('INSERT INTO rows VALUES(?,?)',(row['security_id'],canonical(value)))
+                    except sqlite3.IntegrityError as error:raise ValueError('PRODUCT_HISTORY_DUPLICATE_SECURITY') from error
+            db.commit()
+            for (payload,) in db.execute('SELECT payload FROM rows ORDER BY security'):
+                logical.update(payload+b'\n');yield json.loads(payload)
 
 def market_facts(root,candidate,day,owner):
     bindings=dict(history=owner['history'],package=owner['sources']['package'],**{name:candidate['owners'][day][name] for name in ('raw','core','market')})
@@ -67,17 +85,9 @@ def prepare(root,candidate,owner,*,historical_indices=None):
     facts,bindings=market_facts(root,candidate,day,owner)
     scope=folder/day/'SOURCE_SCOPE.json'
     atomic_json(root,scope,dict(contract_id='V4_NATIVE_DATED_PRODUCT_SOURCE_SCOPE_V3',T0=day,source_bindings=bindings,source_owners=candidate['owners'][day],AS_RECORDED=False,PIT_ELIGIBLE=False))
-    scope_binding=ref(root,scope);logical=hashlib.sha256();last=['']
-    def history_rows():
-        with gzip.open(checked(root,owner['history']),'rt',encoding='utf8') as stream:
-            for line in stream:
-                row=json.loads(line)
-                if row['security_id']<=last[0]:raise ValueError('PRODUCT_HISTORY_CANONICAL_SECURITY_ORDER')
-                last[0]=row['security_id']
-                value=dict(security_id=row['security_id'],bars=[{key:bar[key] for key in ('trade_date','raw_ohlc','qfq_ohlc','amount','volume')} for bar in row['bars']])
-                logical.update(canonical(value)+b'\n');yield value
+    scope_binding=ref(root,scope);logical=hashlib.sha256()
     from workbench_db.v4_history_pg_r1 import build
-    history=build(root,history_rows(),head_token=scope_binding['sha256'],t0=day,source_digest=owner['history']['sha256'])
+    history=build(root,canonical_history_rows(checked(root,owner['history']),logical),head_token=scope_binding['sha256'],t0=day,source_digest=owner['history']['sha256'])
     if history['logical_digest']!=logical.hexdigest():raise ValueError('PRODUCT_HISTORY_FULL_PG_PAYLOAD_DIFFERENCE')
     from workbench_db.v4_market_fact_pg_r1 import prepare as prepare_market,read as read_market
     market=prepare_market(root,facts,scope_binding['sha256'])

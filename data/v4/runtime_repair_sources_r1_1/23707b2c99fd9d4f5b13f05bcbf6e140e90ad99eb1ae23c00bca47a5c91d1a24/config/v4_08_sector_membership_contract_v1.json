@@ -1,0 +1,93 @@
+{
+  "contract_id": "V4_08_SECTOR_MEMBERSHIP_V1",
+  "version": "1.0.0",
+  "status": "FROZEN_ENGINEERING_CONTRACT",
+  "owner_stage": "V4_08_PIT_SECTOR_MEMBERSHIP_BASELINE_R1",
+  "source_contract": "V4_08_SECTOR_MEMBERSHIP_SOURCE_V1",
+  "identity_contract": "V4_01_SECURITY_ENTITY_MAP_R7",
+  "snapshot_identity": {
+    "algorithm": "sha256",
+    "canonicalization": "UTF-8 JSON, sorted object keys, compact separators, Unicode preserved; membership facts sorted by sector_type, sector_id, security_id, source_security_key",
+    "digest_fields": [
+      "target_trade_date",
+      "cutoff",
+      "sector_type_registry_digest",
+      "source_revision_ids",
+      "source_digest",
+      "source_file_digests",
+      "membership_rows",
+      "membership_basis",
+      "membership_quality"
+    ],
+    "created_at_excluded": true
+  },
+  "required_snapshot_fields": [
+    "snapshot_id",
+    "sector_id",
+    "sector_code",
+    "sector_name",
+    "sector_type",
+    "security_id",
+    "target_trade_date",
+    "membership_asof_date",
+    "observed_at",
+    "ingested_at",
+    "system_available_at",
+    "provider_available_at",
+    "source_revision_id",
+    "source_digest",
+    "source_file_digests",
+    "membership_basis",
+    "membership_quality",
+    "pit_observed",
+    "historical_backtest_safe",
+    "supersedes_revision_id",
+    "created_at"
+  ],
+  "field_rules": {
+    "membership_asof_date": "Required for PIT_OBSERVED. May be null only in diagnostic records with an explicit effective-date-unknown quality reason.",
+    "provider_available_at": "Required for PIT_OBSERVED and must be no later than the snapshot cutoff.",
+    "observed_at": "Time the exact source bytes were observed by the project.",
+    "ingested_at": "Time those bytes entered the V4-owned snapshot workflow.",
+    "system_available_at": "Earliest time the fact could be consumed by a V4 publication; must be no earlier than observed_at and no later than cutoff for a selected fact.",
+    "source_file_digests": "Map of source-relative file identifiers to lowercase SHA-256 values; files under TDX source roots are read-only inputs."
+  },
+  "membership_bases": {
+    "PIT_OBSERVED": {"formal_consumer_allowed": true, "requires_provider_available_at": true, "historical_backtest_safe": true},
+    "CURRENT_TDX_MEMBERSHIP": {"formal_consumer_allowed": false, "requires_provider_available_at": false, "historical_backtest_safe": false},
+    "CURRENT_MEMBERSHIP_REPLAY": {"formal_consumer_allowed": false, "requires_provider_available_at": false, "historical_backtest_safe": false},
+    "DERIVED_PARENT_MEMBERSHIP": {"formal_consumer_allowed": false, "requires_provider_available_at": false, "historical_backtest_safe": false, "requires_separate_parent_acceptance": true}
+  },
+  "revision_policy": {
+    "append_only": true,
+    "updates_or_deletes": "REJECT",
+    "correction": "Create a new source_revision_id and snapshot revision; supersedes_revision_id points to the previous revision.",
+    "revision_forks": "REJECT; one revision may have at most one direct successor.",
+    "same_day_revisions": "Allowed only as a single non-forking supersession chain.",
+    "duplicate_active_fact_key": ["snapshot_id", "sector_id", "security_id"],
+    "unknown_security_identity": "Retain diagnostic source key and UNKNOWN quality; block formal snapshot and never silently drop the row.",
+    "temporal_selection": "Only source revisions with system_available_at <= requested cutoff may be selected."
+  },
+  "parent_industry_policy": {
+    "rule": "DERIVED_PARENT_MEMBERSHIP",
+    "derivation": "Set union of accepted child industry memberships under a versioned parent-child map; de-duplicate parent/security pairs and retain all child provenance.",
+    "formal_consumer_allowed": false,
+    "acceptance_required_before_production": true
+  },
+  "quality_propagation": {
+    "unknown_sector_type": "EXCLUDE_FROM_FORMAL_RADAR_AND_SECTOR_ROTATION; RETAIN_IN_RAW_DIAGNOSTIC_SOURCE",
+    "style": "EXCLUDE_FROM_FORMAL_SECTOR_AND_ROTATION_HOMEPAGE_QUALIFICATION",
+    "unknown_security_id": "UNKNOWN; fail closed for formal materialization",
+    "base_seed_dependent_fields": "UNKNOWN / DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL until the accepted prior-RPS bootstrap audit closes; never coerce to zero."
+  },
+  "source_classification": {
+    "current_tdx_membership": "CURRENT_TDX_MEMBERSHIP",
+    "historical_replay_before_first_accepted_pit_baseline": "CURRENT_MEMBERSHIP_REPLAY",
+    "mtime_is_provider_availability": false,
+    "historical_backfill_from_current_members": false
+  },
+  "stage_record": {
+    "acceptance_result": "CONTRACT_AND_SCHEMA_ENGINEERING_ONLY; GO_FORWARD_PIT_BASELINE_REMAINS_BLOCKED_PENDING_OBSERVED_SOURCE_AVAILABILITY",
+    "next_stage": "INDEPENDENT_MEMBERSHIP_BASELINE_AUDIT_AFTER_SOURCE_TIMELINE_AND_IDENTITY_GAPS_CLOSE"
+  }
+}

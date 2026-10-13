@@ -156,7 +156,7 @@ def accepted_api(root):
     candidate=json.loads(head.read_bytes())
     if candidate.get('contract_id')!=CONTRACT:return frozen_api(root)
     from .operational_successor_release_v1 import verify_policy
-    verify_policy(root,candidate)
+    verify_policy(root,candidate,verify_loaded=False)
     if candidate.get('exact_daily_adjustment_contract'):
         from workbench_service.native_current_snapshot_v3 import current
         current(root,candidate)

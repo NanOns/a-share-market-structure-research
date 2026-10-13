@@ -1,0 +1,718 @@
+{
+  "ast_digest": "7026548298a57b0caaf2aadeb5ecabf72ca043e33d1a34e43080cd9cbb5f5cb5",
+  "fallback_outputs": {
+    "HOLD_PREVIOUS_ELIGIBLE": "PRIOR_ROTATION_STATE",
+    "NO_ACTIVE_EPISODE": "NONE",
+    "UNACCEPTED_EPISODE_EXPIRED": "ROTATION_FAILED"
+  },
+  "field_registry_digest": "7782dd3b17b990c851e7f0920fbd697f06cea82b853d6de8472f32a1f9154739",
+  "field_registry_path": "config/v4_08_sector_field_registry_r5.json",
+  "forbidden_inputs": [
+    "same-day final stock PREWATCH",
+    "Focus",
+    "Radar",
+    "Support",
+    "V4-06 turnover",
+    "future confirmation",
+    "future outcomes"
+  ],
+  "formal_consumer_enabled": false,
+  "machine_vector_set_digest": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906",
+  "machine_vector_set_path": "config/v4_08_rotation_machine_vectors_v2.json",
+  "model_contract_id": "ROTATION_CORE_V1_R3",
+  "not_applicable_semantics": {
+    "AND": "FALSE dominates; otherwise UNKNOWN propagates; N/A branches are skipped; all N/A yields N/A; TRUE with N/A yields TRUE.",
+    "OR": "TRUE dominates; otherwise UNKNOWN propagates; N/A branches are skipped; FALSE with N/A yields FALSE; all N/A yields UNKNOWN with NO_USABLE_RETENTION_BRANCH.",
+    "early_retention_or": "One N/A and one TRUE yields TRUE; one N/A and one FALSE yields FALSE; both N/A yields UNKNOWN / NO_USABLE_RETENTION_BRANCH.",
+    "mature_retained": "strong_prev <= 0 yields NOT_APPLICABLE with STRONG_PREV_EMPTY; it is not a failed retention reason.",
+    "rotation_expanding_and_reaccelerating": "A branch-local strong_prev <= 0 guard returns NOT_APPLICABLE at each output; this cannot qualify either state. ROTATION_IN and ROTATION_ACCEPTED remain independent of mature retention."
+  },
+  "ordered_reduction": [
+    "BRANCH_REQUIRED_UNKNOWN_PAUSE",
+    "ROTATION_FAILED",
+    "ROTATION_OUT",
+    "ROTATION_REACCELERATING",
+    "ROTATION_EXPANDING",
+    "ROTATION_ACCEPTED",
+    "ROTATION_IN",
+    "ROTATION_PULSE",
+    "HOLD_PREVIOUS_ELIGIBLE",
+    "UNACCEPTED_EPISODE_EXPIRED",
+    "NO_ACTIVE_EPISODE"
+  ],
+  "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+  "parameter_set_sha256": "0204d7c4fadf86871b6a079f755593b1a3f8ad18bb718f73ba33db0b70f67548",
+  "pending_parameter_ids": [],
+  "rules": {
+    "HOLD_PREVIOUS_ELIGIBLE": {
+      "children": [
+        {
+          "operator": "REF",
+          "rule_id": "sector_safety"
+        },
+        {
+          "constant": true,
+          "field_id": "pulse_active",
+          "operator": "EQ",
+          "producer": "ROTATION_CORE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "PULSE_FROZEN_EPISODE",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": false,
+          "field_id": "episode_terminated",
+          "operator": "EQ",
+          "producer": "ROTATION_CORE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "PULSE_FROZEN_EPISODE",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "children": [
+            {
+              "constant": 5,
+              "field_id": "pulse_age_sessions",
+              "operator": "LTE",
+              "producer": "ROTATION_CORE_V1",
+              "quality_requirement": [
+                "ACCEPTED"
+              ],
+              "time_role": "ACCEPTED_CALENDAR_SESSION_DISTANCE",
+              "unknown_behavior": "UNKNOWN"
+            },
+            {
+              "constant": true,
+              "field_id": "episode_accepted",
+              "operator": "EQ",
+              "producer": "ROTATION_CORE_V1",
+              "quality_requirement": [
+                "ACCEPTED"
+              ],
+              "time_role": "PULSE_FROZEN_EPISODE",
+              "unknown_behavior": "UNKNOWN"
+            }
+          ],
+          "operator": "OR"
+        }
+      ],
+      "operator": "AND"
+    },
+    "NO_ACTIVE_EPISODE": {
+      "children": [
+        {
+          "operator": "REF",
+          "rule_id": "sector_safety"
+        },
+        {
+          "constant": false,
+          "field_id": "pulse_active",
+          "operator": "EQ",
+          "producer": "ROTATION_CORE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "PULSE_FROZEN_EPISODE",
+          "unknown_behavior": "UNKNOWN"
+        }
+      ],
+      "operator": "AND"
+    },
+    "ROTATION_ACCEPTED": {
+      "children": [
+        {
+          "operator": "REF",
+          "rule_id": "sector_safety"
+        },
+        {
+          "constant": true,
+          "field_id": "pulse_active",
+          "operator": "EQ",
+          "producer": "ROTATION_CORE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "PULSE_FROZEN_EPISODE",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 2,
+          "field_id": "pulse_age_sessions",
+          "operator": "GTE",
+          "producer": "ROTATION_CORE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "ACCEPTED_CALENDAR_SESSION_DISTANCE",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "operator": "REF",
+          "rule_id": "early_retained"
+        },
+        {
+          "constant": -0.05,
+          "field_id": "breadth_delta1",
+          "operator": "GTE",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        }
+      ],
+      "operator": "AND"
+    },
+    "ROTATION_EXPANDING": {
+      "condition": {
+        "constant": 0,
+        "field_id": "strong_prev",
+        "operator": "LTE",
+        "producer": "ROTATION_CORE_V1",
+        "quality_requirement": [
+          "ACCEPTED"
+        ],
+        "time_role": "PRIOR_FROZEN_SESSION",
+        "unknown_behavior": "UNKNOWN"
+      },
+      "else": {
+        "children": [
+          {
+            "operator": "REF",
+            "rule_id": "sector_safety"
+          },
+          {
+            "operator": "REF",
+            "rule_id": "mature_retained"
+          },
+          {
+            "operator": "REF",
+            "rule_id": "diffusion"
+          },
+          {
+            "constant": [
+              "ROTATION_ACCEPTED",
+              "ROTATION_EXPANDING"
+            ],
+            "field_id": "prior_rotation_state",
+            "operator": "IN",
+            "producer": "ROTATION_CORE_V1",
+            "quality_requirement": [
+              "ACCEPTED"
+            ],
+            "time_role": "PRIOR_FROZEN_SESSION",
+            "unknown_behavior": "UNKNOWN"
+          },
+          {
+            "constant": 2,
+            "field_id": "pulse_age_sessions",
+            "operator": "GTE",
+            "producer": "ROTATION_CORE_V1",
+            "quality_requirement": [
+              "ACCEPTED"
+            ],
+            "time_role": "ACCEPTED_CALENDAR_SESSION_DISTANCE",
+            "unknown_behavior": "UNKNOWN"
+          }
+        ],
+        "operator": "AND"
+      },
+      "operator": "NOT_APPLICABLE_IF",
+      "then_state": "NOT_APPLICABLE"
+    },
+    "ROTATION_FAILED": {
+      "children": [
+        {
+          "operator": "REF",
+          "rule_id": "sector_safety"
+        },
+        {
+          "constant": true,
+          "field_id": "pulse_active",
+          "operator": "EQ",
+          "producer": "ROTATION_CORE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "PULSE_FROZEN_EPISODE",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 1,
+          "field_id": "pulse_age_sessions",
+          "operator": "GTE",
+          "producer": "ROTATION_CORE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "ACCEPTED_CALENDAR_SESSION_DISTANCE",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 5,
+          "field_id": "pulse_age_sessions",
+          "operator": "LTE",
+          "producer": "ROTATION_CORE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "ACCEPTED_CALENDAR_SESSION_DISTANCE",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0,
+          "field_id": "basket_cumulative_return",
+          "operator": "LTE",
+          "producer": "ROTATION_CORE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "PULSE_FROZEN_PATH",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": -0.05,
+          "field_id": "breadth_delta1",
+          "operator": "LTE",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        }
+      ],
+      "operator": "AND"
+    },
+    "ROTATION_IN": {
+      "children": [
+        {
+          "operator": "REF",
+          "rule_id": "sector_safety"
+        },
+        {
+          "constant": true,
+          "field_id": "pulse_active",
+          "operator": "EQ",
+          "producer": "ROTATION_CORE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "PULSE_FROZEN_EPISODE",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 1,
+          "field_id": "pulse_age_sessions",
+          "operator": "GTE",
+          "producer": "ROTATION_CORE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "ACCEPTED_CALENDAR_SESSION_DISTANCE",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "operator": "REF",
+          "rule_id": "early_retained"
+        }
+      ],
+      "operator": "AND"
+    },
+    "ROTATION_OUT": {
+      "children": [
+        {
+          "operator": "REF",
+          "rule_id": "sector_safety"
+        },
+        {
+          "constant": [
+            "WARM",
+            "CONFIRMED"
+          ],
+          "field_id": "prior_maturity_state",
+          "operator": "IN",
+          "producer": "ROTATION_CORE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "PRIOR_FROZEN_SESSION",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 2,
+          "field_id": "negative_out_consecutive_evaluable_sessions",
+          "operator": "GTE",
+          "producer": "ROTATION_CORE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "ACCEPTED_CALENDAR_EVALUABLE_SESSION_SEQUENCE",
+          "unknown_behavior": "UNKNOWN"
+        }
+      ],
+      "operator": "AND"
+    },
+    "ROTATION_PULSE": {
+      "children": [
+        {
+          "operator": "REF",
+          "rule_id": "sector_safety"
+        },
+        {
+          "constant": false,
+          "field_id": "pulse_active",
+          "operator": "EQ",
+          "producer": "ROTATION_CORE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "PULSE_FROZEN_EPISODE",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "operator": "REF",
+          "rule_id": "pulse"
+        }
+      ],
+      "operator": "AND"
+    },
+    "ROTATION_REACCELERATING": {
+      "condition": {
+        "constant": 0,
+        "field_id": "strong_prev",
+        "operator": "LTE",
+        "producer": "ROTATION_CORE_V1",
+        "quality_requirement": [
+          "ACCEPTED"
+        ],
+        "time_role": "PRIOR_FROZEN_SESSION",
+        "unknown_behavior": "UNKNOWN"
+      },
+      "else": {
+        "children": [
+          {
+            "operator": "REF",
+            "rule_id": "sector_safety"
+          },
+          {
+            "operator": "REF",
+            "rule_id": "mature_retained"
+          },
+          {
+            "operator": "REF",
+            "rule_id": "pulse"
+          },
+          {
+            "constant": [
+              "WARM",
+              "CONFIRMED"
+            ],
+            "field_id": "prior_maturity_state",
+            "operator": "IN",
+            "producer": "ROTATION_CORE_V1",
+            "quality_requirement": [
+              "ACCEPTED"
+            ],
+            "time_role": "PRIOR_FROZEN_SESSION",
+            "unknown_behavior": "UNKNOWN"
+          },
+          {
+            "constant": 0,
+            "field_id": "yesterday_dq5",
+            "operator": "LTE",
+            "producer": "V4_08_SECTOR_NATIVE_V1",
+            "quality_requirement": [
+              "ACCEPTED"
+            ],
+            "time_role": "PRIOR_FROZEN_SESSION",
+            "unknown_behavior": "UNKNOWN"
+          }
+        ],
+        "operator": "AND"
+      },
+      "operator": "NOT_APPLICABLE_IF",
+      "then_state": "NOT_APPLICABLE"
+    },
+    "UNACCEPTED_EPISODE_EXPIRED": {
+      "children": [
+        {
+          "operator": "REF",
+          "rule_id": "sector_safety"
+        },
+        {
+          "constant": true,
+          "field_id": "pulse_active",
+          "operator": "EQ",
+          "producer": "ROTATION_CORE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "PULSE_FROZEN_EPISODE",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": false,
+          "field_id": "episode_accepted",
+          "operator": "EQ",
+          "producer": "ROTATION_CORE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "PULSE_FROZEN_EPISODE",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 5,
+          "field_id": "pulse_age_sessions",
+          "operator": "GT",
+          "producer": "ROTATION_CORE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "ACCEPTED_CALENDAR_SESSION_DISTANCE",
+          "unknown_behavior": "UNKNOWN"
+        }
+      ],
+      "operator": "AND"
+    },
+    "diffusion": {
+      "children": [
+        {
+          "constant": 0,
+          "field_id": "net_entered_count",
+          "operator": "GT",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "COMMON_EVALUABLE_MEMBER_SET",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "constant": 0,
+          "field_id": "breadth_delta1",
+          "operator": "GT",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "field_id": "top1_concentration",
+          "operator": "LTE",
+          "parameter_id": "V4_08_ROTATION_DIFFUSION_TOP1_MAX",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        }
+      ],
+      "operator": "AND"
+    },
+    "early_retained": {
+      "children": [
+        {
+          "constant": 0,
+          "field_id": "basket_cumulative_return",
+          "operator": "GT",
+          "producer": "ROTATION_CORE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "PULSE_FROZEN_PATH",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "children": [
+            {
+              "field_id": "base_seed_retention",
+              "operator": "GTE",
+              "parameter_id": "V4_08_EARLY_SEED_RETENTION_MIN",
+              "producer": "ROTATION_CORE_V1",
+              "quality_requirement": [
+                "ACCEPTED"
+              ],
+              "time_role": "PULSE_FROZEN_PATH",
+              "unknown_behavior": "UNKNOWN"
+            },
+            {
+              "field_id": "breadth_retention",
+              "operator": "GTE",
+              "parameter_id": "V4_08_EARLY_BREADTH_RETENTION_MIN",
+              "producer": "ROTATION_CORE_V1",
+              "quality_requirement": [
+                "ACCEPTED"
+              ],
+              "time_role": "PULSE_FROZEN_PATH",
+              "unknown_behavior": "UNKNOWN"
+            }
+          ],
+          "operator": "OR"
+        },
+        {
+          "field_id": "breadth_delta1",
+          "operator": "GTE",
+          "parameter_id": "V4_08_EARLY_BREADTH_DELTA_MIN",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "field_id": "top1_concentration",
+          "operator": "LTE",
+          "parameter_id": "V4_08_EARLY_TOP1_CONCENTRATION_MAX",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        }
+      ],
+      "operator": "AND"
+    },
+    "mature_retained": {
+      "condition": {
+        "constant": 0,
+        "field_id": "strong_prev",
+        "operator": "LTE",
+        "producer": "ROTATION_CORE_V1",
+        "quality_requirement": [
+          "ACCEPTED"
+        ],
+        "time_role": "PRIOR_FROZEN_SESSION",
+        "unknown_behavior": "UNKNOWN"
+      },
+      "else": {
+        "children": [
+          {
+            "operator": "REF",
+            "rule_id": "early_retained"
+          },
+          {
+            "field_id": "strong_member_retention_1",
+            "operator": "GTE",
+            "parameter_id": "V4_08_MATURE_STRONG_RETENTION_MIN",
+            "producer": "ROTATION_CORE_V1",
+            "quality_requirement": [
+              "ACCEPTED"
+            ],
+            "time_role": "PULSE_FROZEN_PATH",
+            "unknown_behavior": "UNKNOWN"
+          }
+        ],
+        "operator": "AND"
+      },
+      "operator": "NOT_APPLICABLE_IF",
+      "then_state": "NOT_APPLICABLE"
+    },
+    "pulse": {
+      "children": [
+        {
+          "operator": "REF",
+          "rule_id": "sector_safety"
+        },
+        {
+          "field_id": "dq5",
+          "operator": "GTE",
+          "parameter_id": "V4_08_ROTATION_PULSE_DQ5_MIN",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "field_id": "breadth_delta1",
+          "operator": "GTE",
+          "parameter_id": "V4_08_ROTATION_PULSE_BREADTH_DELTA1_MIN",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        }
+      ],
+      "operator": "AND"
+    },
+    "sector_safety": {
+      "children": [
+        {
+          "constant": true,
+          "field_id": "membership_ready",
+          "operator": "EQ",
+          "producer": "V4_08_PIT_MEMBERSHIP",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "field_id": "sector_member_count",
+          "operator": "GTE",
+          "parameter_id": "V4_08_SECTOR_MIN_MEMBERS",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        },
+        {
+          "field_id": "sector_quote_coverage",
+          "operator": "GTE",
+          "parameter_id": "V4_08_SECTOR_MIN_QUOTE_COVERAGE",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "quality_requirement": [
+            "ACCEPTED"
+          ],
+          "time_role": "TARGET_CUTOFF",
+          "unknown_behavior": "UNKNOWN"
+        }
+      ],
+      "operator": "AND"
+    }
+  },
+  "runtime_implementation": "src/sector/rotation_r5.py",
+  "scope": "Complete B1 qualification and terminal/fallback predicates; production FSM integration remains V4-10",
+  "sequence_field_contract": {
+    "negative_out_consecutive_evaluable_sessions": {
+      "constants": [
+        0,
+        0
+      ],
+      "membership_changes_count_as_entered_or_exited": false,
+      "operators": [
+        "LT",
+        "LT"
+      ],
+      "predicate_fields": [
+        "dq5",
+        "breadth_delta1"
+      ],
+      "producer": "ROTATION_CORE_V1",
+      "time_role": "ACCEPTED_CALENDAR_EVALUABLE_SESSION_SEQUENCE",
+      "unknown_behavior": "PAUSE_COUNT"
+    }
+  },
+  "status": "STRUCTURED_AST_ENGINEERING_CANDIDATE",
+  "strong_prev_zero": "mature retention NOT_APPLICABLE; early IN/ACCEPTED never depends on mature retention",
+  "unknown_reduction": "Unknown necessary inputs pause only the current applicable branch and episode evaluation count; mature-only unknown does not poison early; strong_prev=0 makes mature_retained NOT_APPLICABLE and cannot qualify expansion/reacceleration.",
+  "version": "2.0.0"
+}

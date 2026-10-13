@@ -1,0 +1,37 @@
+{
+  "vector_set_id": "V4_08_ALGORITHM_MACHINE_VECTORS_V1",
+  "version": "1.0.0",
+  "owner_stage": "V4-08",
+  "status": "FROZEN_ENGINEERING_CANDIDATE",
+  "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_V1",
+  "parameters": {
+    "early_seed_retention_min": null,
+    "early_breadth_retention_min": null,
+    "early_breadth_delta_min": null,
+    "early_top1_concentration_max": null,
+    "mature_strong_retention_min": null,
+    "reason": "REV2 §72 requires V4-00G registration; vectors supply independent predicate truth values and do not invent thresholds."
+  },
+  "vectors": [
+    {
+      "vector_id": "R1_STRONG_PREV_ZERO_EARLY_PATH",
+      "scenario": {"pulse":true,"strong_prev":0,"basket_return_positive":true,"seed_retention_pass":true,"breadth_retention_pass":true,"breadth_delta_pass":true,"top1_concentration_pass":true,"pulse_age_sessions":1,"diffusion_pass":false},
+      "predicate_truth": {"pulse":true,"early_price":true,"early_retention_or":true,"early_breadth":true,"early_concentration":true,"mature_strong_retention":"NOT_APPLICABLE"},
+      "independent_expected": {"allowed_states":["ROTATION_IN","ROTATION_ACCEPTED"],"strong_prev_zero_blocks_early":false,"production_authorized":false}
+    },
+    {
+      "vector_id": "R2_WEAKENING_OLD_STRONG_SECTOR",
+      "scenario": {"pulse":false,"strong_prev":12,"basket_return_positive":true,"seed_retention_pass":false,"breadth_retention_pass":false,"breadth_delta_pass":false,"top1_concentration_pass":true,"pulse_age_sessions":3,"diffusion_pass":false,"prior_state":"ROTATION_ACCEPTED"},
+      "predicate_truth": {"strong_member_retention_pass":false,"breadth_retention_pass":false,"breadth_direction_pass":false,"mature_retained":false,"diffusion":false},
+      "independent_expected": {"forbidden_states":["ROTATION_EXPANDING","ROTATION_REACCELERATING"],"production_authorized":false}
+    },
+    {
+      "vector_id": "R3_SINGLE_LEADER_NO_DIFFUSION",
+      "scenario": {"pulse":true,"strong_prev":5,"basket_return_positive":true,"seed_retention_pass":true,"breadth_retention_pass":true,"breadth_delta_pass":true,"top1_concentration_pass":false,"pulse_age_sessions":3,"diffusion_pass":false,"prior_state":"ROTATION_IN"},
+      "predicate_truth": {"early_price":true,"early_retention_or":true,"early_breadth":true,"early_concentration":false,"diffusion":false,"early_retained":false},
+      "independent_expected": {"forbidden_states":["ROTATION_ACCEPTED","ROTATION_EXPANDING"],"production_authorized":false}
+    }
+  ],
+  "input_invariance": {"mutations_that_must_not_change_b0_b1": ["same-day final stock PREWATCH", "Focus", "Radar", "Support", "V4-06 turnover", "future confirmation", "future outcomes"]},
+  "formal_consumer_enabled": false
+}

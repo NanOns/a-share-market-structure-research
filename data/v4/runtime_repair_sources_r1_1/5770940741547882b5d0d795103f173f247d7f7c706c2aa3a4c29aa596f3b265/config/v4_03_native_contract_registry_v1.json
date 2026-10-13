@@ -1,0 +1,844 @@
+{
+  "contract_count": 4,
+  "contract_id": "V4_03_NATIVE_CONTRACT_REGISTRY_V1",
+  "contracts": [
+    {
+      "algorithm": {
+        "endpoint_reference_is_daily_path": false,
+        "expression": "equal_weight_mean(endpoint_return for evaluable members in the PIT universe at start_session)",
+        "missing_gate_parameter_id": "V4_03_MARKET_REFERENCE_MAX_MISSING_FRACTION"
+      },
+      "consumer_stage": "V4-04",
+      "contract_id": "MARKET_RELATIVE_REFERENCE_V1",
+      "contract_version": "1.0.0",
+      "identity_fields": [
+        "market_calendar_id",
+        "start_session",
+        "end_session",
+        "start_universe_snapshot_id",
+        "evaluable_set_identity",
+        "adjustment_basis_id",
+        "input_source_digest"
+      ],
+      "input_digest_semantics": "SHA256 of canonical sorted input identities, values, source artifact digests, and contract version",
+      "inputs": [
+        {
+          "field_id": "endpoint_return",
+          "required": true,
+          "source": "V4_02_ACCEPTED_ADJUSTED_DAILY",
+          "type": "float64",
+          "unit": "return_fraction"
+        },
+        {
+          "field_id": "pit_start_universe",
+          "required": true,
+          "source": "V4_01_ACCEPTED_HISTORICAL_UNIVERSE",
+          "type": "member_set",
+          "unit": "security_ids"
+        }
+      ],
+      "outputs": [
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "reference_return",
+          "field_id": "reference_return",
+          "missing_policy": "UNKNOWN_if_missing_fraction_exceeds_registered_limit",
+          "nullable": true,
+          "output_digest": "504dc79e4445a74ddf882d6376185dcc74daf8f9d6e35f787250dd19df877a2b",
+          "producer_contract_id": "MARKET_RELATIVE_REFERENCE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "float64",
+          "unit": "return_fraction"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "universe_count",
+          "field_id": "universe_count",
+          "missing_policy": "retain_zero_count_and_quality",
+          "nullable": true,
+          "output_digest": "f6aba0b060d18643118c56a5d3e83e8c7daf9fde59c06d17418fbf257b36b7bf",
+          "producer_contract_id": "MARKET_RELATIVE_REFERENCE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "integer",
+          "unit": "members"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "evaluable_count",
+          "field_id": "evaluable_count",
+          "missing_policy": "retain_zero_count_and_quality",
+          "nullable": true,
+          "output_digest": "9631783557828613b59c31a5a2bd8ff0a507f7adee404cb02529eaa156c549c6",
+          "producer_contract_id": "MARKET_RELATIVE_REFERENCE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "integer",
+          "unit": "members"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "missing_count",
+          "field_id": "missing_count",
+          "missing_policy": "retain_zero_count_and_quality",
+          "nullable": true,
+          "output_digest": "6e592e3820192ab413361d0e154f153479e92e615b40ed7603e168d0c033d874",
+          "producer_contract_id": "MARKET_RELATIVE_REFERENCE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "integer",
+          "unit": "members"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "coverage",
+          "field_id": "coverage",
+          "missing_policy": "null_only_when_universe_empty",
+          "nullable": true,
+          "output_digest": "f009b80cffba594b323c55acfe9715d893a920b8f6bdd27b859f2523fd8fa6e2",
+          "producer_contract_id": "MARKET_RELATIVE_REFERENCE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "float64",
+          "unit": "fraction"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "evaluable_set_identity",
+          "field_id": "evaluable_set_identity",
+          "missing_policy": "required_identity",
+          "nullable": true,
+          "output_digest": "74eecc8fd503d7c98b86f1c6dacb7abf211d3e79264b0f05aa77c818ea67ff30",
+          "producer_contract_id": "MARKET_RELATIVE_REFERENCE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "string",
+          "unit": "sha256"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "window_identity",
+          "field_id": "window_identity",
+          "missing_policy": "required_identity",
+          "nullable": true,
+          "output_digest": "67cd042b7bc9ef6ce52e488b65c67bc647fe5670515ec5759930da0bb5a9cafd",
+          "producer_contract_id": "MARKET_RELATIVE_REFERENCE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "string",
+          "unit": "sha256"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "adjustment_basis_id",
+          "field_id": "adjustment_basis_id",
+          "missing_policy": "required_identity",
+          "nullable": true,
+          "output_digest": "f1130e0fa5a24586be452f5380074859c4f38a638ea2a263e287b8feb2ba80df",
+          "producer_contract_id": "MARKET_RELATIVE_REFERENCE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "string",
+          "unit": "sha256_or_versioned_set_id"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "input_source_digest",
+          "field_id": "input_source_digest",
+          "missing_policy": "required_identity",
+          "nullable": true,
+          "output_digest": "41d14b88d3597c9f883c050e75fc50a25c91e81192b58515703eb38dbf968ada",
+          "producer_contract_id": "MARKET_RELATIVE_REFERENCE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "string",
+          "unit": "sha256"
+        }
+      ],
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+      "producer": {
+        "producer_contract_id": "MARKET_RELATIVE_REFERENCE_V1",
+        "version": "1.0.0"
+      },
+      "publication_permission": "V4_03_PRIMITIVE_ONLY",
+      "quality_contract": {
+        "do_not_substitute_current_survivors": true,
+        "evaluable_rule": "finite return and verified same-security adjustment identity at both fixed endpoints",
+        "unknown_reason": "EMPTY_START_UNIVERSE or MISSING_COVERAGE_EXCEEDED when missing_fraction > registered threshold"
+      },
+      "source_digest": "22610868d6ed93de0a27df991ebab33d60e985cfe3fca4fd56ff9b8df5f30014",
+      "source_ids": {
+        "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
+        "native_sha256": "6f20038294c97228a50e6bd003c62bf5cfada4175171a8faa4644b956eed30a9",
+        "parameter_registry_sha256": "c3cda61e604948935061b077f0f57777ac9dc9917263cab2217ca3c2ac9f28e3",
+        "relative_sha256": "74034b819cd845e8177eee24b30cd441e94b1619f393b67c24c5397076af82ab",
+        "scope_map_sha256": "7f6f2e15de01c28ca2b35420b0ce12e171e13c9c954a0924ac91aea3990e4e81"
+      },
+      "time_semantics": "fixed start_session=t-N and end_session=t; endpoint does not shift",
+      "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1"
+    },
+    {
+      "algorithm": {
+        "base_level": 1.0,
+        "expression": "level[t] = level[t-1] * (1 + equal_weight_mean(ret1[t]))",
+        "path_identity": "DAILY_REBALANCED_RESEARCH_INDEX",
+        "rebase_policy": "UNKNOWN_SUFFIX_UNTIL_NEW_SERIES_VERSION"
+      },
+      "consumer_stage": "V4-04",
+      "contract_id": "V4_03_MARKET_REFERENCE_PATH_V1",
+      "contract_version": "1.0.0",
+      "identity_fields": [
+        "market_calendar_id",
+        "start_session",
+        "end_session",
+        "start_universe_snapshot_id",
+        "evaluable_set_identity",
+        "adjustment_basis_id",
+        "input_source_digest",
+        "series_version"
+      ],
+      "input_digest_semantics": "SHA256 of canonical sorted input identities, values, source artifact digests, and contract version",
+      "inputs": [
+        {
+          "field_id": "endpoint_return_1",
+          "required": true,
+          "source": "MARKET_RELATIVE_REFERENCE_V1",
+          "type": "float64",
+          "unit": "return_fraction"
+        },
+        {
+          "field_id": "pit_start_universe",
+          "required": true,
+          "source": "V4_01_ACCEPTED_HISTORICAL_UNIVERSE",
+          "type": "member_set",
+          "unit": "security_ids"
+        }
+      ],
+      "outputs": [
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "market_return_1",
+          "field_id": "market_return_1",
+          "missing_policy": "UNKNOWN_suffix_after_missing_daily_return",
+          "nullable": true,
+          "output_digest": "3390274834d3b8a7c7824d9bc9d0e1f44d568fcc2da127ee96c36bb130284650",
+          "producer_contract_id": "V4_03_MARKET_REFERENCE_PATH_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "float64",
+          "unit": "return_fraction"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "path_level",
+          "field_id": "path_level",
+          "missing_policy": "UNKNOWN_suffix_after_missing_daily_return",
+          "nullable": true,
+          "output_digest": "0abdc3db5e6a94013b09fcac52db70a7b3165ad077cd0ccdf02275f34f8626bd",
+          "producer_contract_id": "V4_03_MARKET_REFERENCE_PATH_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "float64",
+          "unit": "index_level"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "universe_count",
+          "field_id": "universe_count",
+          "missing_policy": "retain_zero_count_and_quality",
+          "nullable": true,
+          "output_digest": "b6cfbfd40831a57ccc6d4a8635458bfe6e0810370f8db2371d24054afe40e660",
+          "producer_contract_id": "V4_03_MARKET_REFERENCE_PATH_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "integer",
+          "unit": "members"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "evaluable_count",
+          "field_id": "evaluable_count",
+          "missing_policy": "retain_zero_count_and_quality",
+          "nullable": true,
+          "output_digest": "efed05d9fe79e946bb9939e2fca3b64f3ce962698daf0fc5a0f93926b692b1da",
+          "producer_contract_id": "V4_03_MARKET_REFERENCE_PATH_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "integer",
+          "unit": "members"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "coverage",
+          "field_id": "coverage",
+          "missing_policy": "null_only_when_universe_empty",
+          "nullable": true,
+          "output_digest": "9fd8ff44dea9c824599d006a27c15dbddddc21858840de1ad2ae03d83944b1b4",
+          "producer_contract_id": "V4_03_MARKET_REFERENCE_PATH_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "float64",
+          "unit": "fraction"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "start_universe_snapshot_id",
+          "field_id": "start_universe_snapshot_id",
+          "missing_policy": "required_identity",
+          "nullable": true,
+          "output_digest": "795bebea0565a0dab915d2ee47cafd4f67700dd2052e8913b265cbc8f7ee21b5",
+          "producer_contract_id": "V4_03_MARKET_REFERENCE_PATH_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "string",
+          "unit": "sha256"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "window_identity",
+          "field_id": "window_identity",
+          "missing_policy": "required_identity",
+          "nullable": true,
+          "output_digest": "77998b9e9c2bc28adf156d958fc820d47473261d8e6f521a26f2e25ea546ab06",
+          "producer_contract_id": "V4_03_MARKET_REFERENCE_PATH_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "string",
+          "unit": "sha256"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "input_source_digest",
+          "field_id": "input_source_digest",
+          "missing_policy": "required_identity",
+          "nullable": true,
+          "output_digest": "a5f07586fe14b984fcde40a131f28a8a2cd073e0a6be1dcfb319a4fad6e44008",
+          "producer_contract_id": "V4_03_MARKET_REFERENCE_PATH_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "string",
+          "unit": "sha256"
+        }
+      ],
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+      "producer": {
+        "producer_contract_id": "V4_03_MARKET_REFERENCE_PATH_V1",
+        "version": "1.0.0"
+      },
+      "publication_permission": "V4_03_HISTORICAL_PATH_ONLY",
+      "quality_contract": {
+        "daily_return_universe": "PIT universe at the interval start",
+        "missing_gate_parameter_id": "V4_03_MARKET_REFERENCE_MAX_MISSING_FRACTION",
+        "unknown_reason": "unknown daily return breaks all later path rows in this series version"
+      },
+      "source_digest": "1ff29398eeb8a7823c8d92806ac34fda97bf565b38753d01bb17c46729fac178",
+      "source_ids": {
+        "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
+        "native_sha256": "6f20038294c97228a50e6bd003c62bf5cfada4175171a8faa4644b956eed30a9",
+        "parameter_registry_sha256": "c3cda61e604948935061b077f0f57777ac9dc9917263cab2217ca3c2ac9f28e3",
+        "relative_sha256": "74034b819cd845e8177eee24b30cd441e94b1619f393b67c24c5397076af82ab",
+        "scope_map_sha256": "7f6f2e15de01c28ca2b35420b0ce12e171e13c9c954a0924ac91aea3990e4e81"
+      },
+      "time_semantics": "one row per fixed market session, daily rebalanced equal-weight research index",
+      "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1"
+    },
+    {
+      "algorithm": {
+        "formal_regime_ui_published": false,
+        "rule_table": {
+          "breadth_axis": {
+            "gt_positive_threshold": "IMPROVING",
+            "lt_negative_threshold": "DETERIORATING",
+            "otherwise": "STABLE"
+          },
+          "participation_axis": {
+            "gte_expanding_threshold": "EXPANDING",
+            "lt_thin_threshold": "THIN",
+            "otherwise": "NORMAL"
+          },
+          "stress_change": {
+            "equal": "STABLE",
+            "gt_prior": "RISING",
+            "lt_prior": "DECLINING"
+          },
+          "stress_level": {
+            "gte_elevated_threshold": "ELEVATED",
+            "gte_high_threshold": "HIGH",
+            "minimum_limit_coverage_parameter_id": "V4_03_MARKET_LIMIT_COVERAGE_MINIMUM",
+            "otherwise": "LOW"
+          },
+          "trend_axis": {
+            "amendment_contract_id": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+            "amendment_sha256": "be3a1bd7bff1e5a8a7d664804c19080e19b7eac952b440f012366077162f5e0e",
+            "amendment_version": "1.0.0"
+          }
+        }
+      },
+      "consumer_stage": "V4-04",
+      "contract_id": "MARKET_REGIME_V1_PRIMITIVES",
+      "contract_version": "1.0.0",
+      "identity_fields": [
+        "trade_date",
+        "market_calendar_id",
+        "market_snapshot_id",
+        "adjustment_basis_id",
+        "input_source_digest",
+        "parameter_set_id"
+      ],
+      "input_digest_semantics": "SHA256 of canonical sorted input identities, values, source artifact digests, and contract version",
+      "inputs": [
+        {
+          "field_id": "breadth",
+          "required": true,
+          "source": "V4_03_MARKET_NATIVE_INPUTS",
+          "type": "float64",
+          "unit": "fraction"
+        },
+        {
+          "field_id": "participation",
+          "required": true,
+          "source": "V4_03_MARKET_NATIVE_INPUTS",
+          "type": "float64",
+          "unit": "ratio"
+        },
+        {
+          "field_id": "limit_coverage",
+          "required": true,
+          "source": "V4_02_ACCEPTED_PRICE_LIMIT_FACTS",
+          "type": "float64",
+          "unit": "fraction"
+        },
+        {
+          "field_id": "stress_ratio",
+          "required": true,
+          "source": "V4_03_MARKET_NATIVE_INPUTS",
+          "type": "float64",
+          "unit": "fraction"
+        },
+        {
+          "field_id": "prior_stress_ratio",
+          "required": true,
+          "source": "V4_03_MARKET_NATIVE_INPUTS",
+          "type": "float64",
+          "unit": "fraction"
+        }
+      ],
+      "outputs": [
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "breadth_axis",
+          "field_id": "breadth_axis",
+          "missing_policy": "UNKNOWN_when_required_input_unknown",
+          "nullable": true,
+          "output_digest": "e735e63a9d0a0a7beb47c40f3d373f863f4565bd9ca81918b5e14f62b8f9f6db",
+          "producer_contract_id": "MARKET_REGIME_V1_PRIMITIVES",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "enum",
+          "unit": "axis_state"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "participation_axis",
+          "field_id": "participation_axis",
+          "missing_policy": "UNKNOWN_when_required_input_unknown",
+          "nullable": true,
+          "output_digest": "c00ee1fb0790e7127cdfce7b54cfcdff433f389bc383920daaf495bd58a2d26c",
+          "producer_contract_id": "MARKET_REGIME_V1_PRIMITIVES",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "enum",
+          "unit": "axis_state"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "stress_level",
+          "field_id": "stress_level",
+          "missing_policy": "UNKNOWN_when_required_input_unknown",
+          "nullable": true,
+          "output_digest": "9c765082e72dbdb6a1c59fcaecf0e8781ba2ece05a7937ffd2bb160ac76e34d8",
+          "producer_contract_id": "MARKET_REGIME_V1_PRIMITIVES",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "enum",
+          "unit": "axis_state"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "stress_change",
+          "field_id": "stress_change",
+          "missing_policy": "UNKNOWN_when_required_input_unknown",
+          "nullable": true,
+          "output_digest": "925e7fbfc53d1e70d2f6d105ce33467997ceec660c94c41236e8543687fa4d1b",
+          "producer_contract_id": "MARKET_REGIME_V1_PRIMITIVES",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "enum",
+          "unit": "axis_state"
+        }
+      ],
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+      "producer": {
+        "producer_contract_id": "MARKET_REGIME_V1_PRIMITIVES",
+        "version": "1.0.0"
+      },
+      "publication_permission": "V4_03_PRIMITIVE_ONLY",
+      "quality_contract": {
+        "field_local_unknown": true,
+        "regime_ui_publication": "NOT_PUBLISHED_V4_03"
+      },
+      "source_digest": "8b2f83bcfde788d94ab8fe7485c958049dcca74d432a1373ddb296e6043ee927",
+      "source_ids": {
+        "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
+        "native_sha256": "6f20038294c97228a50e6bd003c62bf5cfada4175171a8faa4644b956eed30a9",
+        "parameter_registry_sha256": "c3cda61e604948935061b077f0f57777ac9dc9917263cab2217ca3c2ac9f28e3",
+        "relative_sha256": "74034b819cd845e8177eee24b30cd441e94b1619f393b67c24c5397076af82ab",
+        "scope_map_sha256": "7f6f2e15de01c28ca2b35420b0ce12e171e13c9c954a0924ac91aea3990e4e81"
+      },
+      "time_semantics": "fixed market session t; trend produced by separate erratum contract",
+      "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1"
+    },
+    {
+      "algorithm": {
+        "field_quality_rules": {
+          "amount_metrics": "amount_quality_state == OBSERVED and finite numeric amount",
+          "ma20_width": "ma20_quality_state == OBSERVED and above_ma20 is bool",
+          "positive_breadth": "ret1_quality_state == OBSERVED and finite numeric ret1",
+          "raw_quote_coverage": "quote_quality_state == OBSERVED",
+          "row_level_quality_gate": "PROHIBITED"
+        },
+        "member_set_normalization": "sorted unique security IDs",
+        "qualification_or_rank_operations": "NONE",
+        "row_level_quality_gate": "PROHIBITED"
+      },
+      "consumer_stage": "V4-08",
+      "contract_id": "V4_03_SECTOR_NATIVE_PRIMITIVE_V1",
+      "contract_version": "1.0.0",
+      "identity_fields": [
+        "trade_date",
+        "market_calendar_id",
+        "sector_membership_snapshot_id",
+        "member_set_identity",
+        "adjustment_basis_id",
+        "input_source_digest"
+      ],
+      "input_digest_semantics": "SHA256 of canonical sorted input identities, values, source artifact digests, and contract version",
+      "inputs": [
+        {
+          "field_id": "pit_sector_members",
+          "required": true,
+          "source": "EXPLICIT_ACCEPTED_SECTOR_MEMBERSHIP_INPUT_REQUIRED",
+          "type": "member_set",
+          "unit": "security_ids"
+        },
+        {
+          "field_id": "quote_quality_state",
+          "required": true,
+          "source": "FIELD_LOCAL_INPUT",
+          "type": "quality_enum",
+          "unit": "quality"
+        },
+        {
+          "field_id": "amount_quality_state",
+          "required": true,
+          "source": "FIELD_LOCAL_INPUT",
+          "type": "quality_enum",
+          "unit": "quality"
+        },
+        {
+          "field_id": "ret1_quality_state",
+          "required": true,
+          "source": "FIELD_LOCAL_INPUT",
+          "type": "quality_enum",
+          "unit": "quality"
+        },
+        {
+          "field_id": "ma20_quality_state",
+          "required": true,
+          "source": "FIELD_LOCAL_INPUT",
+          "type": "quality_enum",
+          "unit": "quality"
+        },
+        {
+          "field_id": "amount",
+          "required": true,
+          "source": "V4_02_ACCEPTED_RAW_DAILY",
+          "type": "float64",
+          "unit": "raw_CNY"
+        },
+        {
+          "field_id": "ret1",
+          "required": true,
+          "source": "V4_03_CORE_FACTOR_DAILY_V1",
+          "type": "float64",
+          "unit": "return_fraction"
+        },
+        {
+          "field_id": "above_ma20",
+          "required": true,
+          "source": "V4_03_CORE_FACTOR_DAILY_V1",
+          "type": "boolean",
+          "unit": "boolean"
+        }
+      ],
+      "outputs": [
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "member_set_identity",
+          "field_id": "member_set_identity",
+          "missing_policy": "metric_specific_field_local_unknown_policy",
+          "nullable": true,
+          "output_digest": "5e4584fb9009558cc0aa8ad50db8c84a09e2503ba55307e392f61d0a344596fa",
+          "producer_contract_id": "V4_03_SECTOR_NATIVE_PRIMITIVE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "string",
+          "unit": "sha256"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "member_count",
+          "field_id": "member_count",
+          "missing_policy": "metric_specific_field_local_unknown_policy",
+          "nullable": true,
+          "output_digest": "d4387ddfcc47802ff8832b965b19396e26cc40f0ab2a25cd3d548ca4769964f9",
+          "producer_contract_id": "V4_03_SECTOR_NATIVE_PRIMITIVE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "integer",
+          "unit": "members"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "input_row_count",
+          "field_id": "input_row_count",
+          "missing_policy": "metric_specific_field_local_unknown_policy",
+          "nullable": true,
+          "output_digest": "071cf2a11a7594e70ff8da70255d3056e821a2521e74688575fc8b99f93985c1",
+          "producer_contract_id": "V4_03_SECTOR_NATIVE_PRIMITIVE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "integer",
+          "unit": "rows"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "raw_quote_evaluable_count",
+          "field_id": "raw_quote_evaluable_count",
+          "missing_policy": "metric_specific_field_local_unknown_policy",
+          "nullable": true,
+          "output_digest": "7c08425116d3dd1364716614088c10e570d36945043a2ac33dd563728f6c3c39",
+          "producer_contract_id": "V4_03_SECTOR_NATIVE_PRIMITIVE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "integer",
+          "unit": "members"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "raw_quote_coverage",
+          "field_id": "raw_quote_coverage",
+          "missing_policy": "metric_specific_field_local_unknown_policy",
+          "nullable": true,
+          "output_digest": "7f527a61ad15da3714fe722d1f51a78afa23aeec83bc5bb403c5a45af3893fae",
+          "producer_contract_id": "V4_03_SECTOR_NATIVE_PRIMITIVE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "float64",
+          "unit": "fraction"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "amount_evaluable_count",
+          "field_id": "amount_evaluable_count",
+          "missing_policy": "metric_specific_field_local_unknown_policy",
+          "nullable": true,
+          "output_digest": "5214f4b5487b4aca8bfc2343a906caab750b0bf6d36e74588ad8db2b9e90f2cb",
+          "producer_contract_id": "V4_03_SECTOR_NATIVE_PRIMITIVE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "integer",
+          "unit": "members"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "amount_median_primitive",
+          "field_id": "amount_median_primitive",
+          "missing_policy": "metric_specific_field_local_unknown_policy",
+          "nullable": true,
+          "output_digest": "fac93dd0929444d094da54ad987193efa6a4edf6eae5dd98b387f30a99857e9c",
+          "producer_contract_id": "V4_03_SECTOR_NATIVE_PRIMITIVE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "float64",
+          "unit": "raw_CNY"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "positive_breadth_numerator",
+          "field_id": "positive_breadth_numerator",
+          "missing_policy": "metric_specific_field_local_unknown_policy",
+          "nullable": true,
+          "output_digest": "29cbba70c8d31298b53fae0114f7d214a3edae738288e0aed7cdb58127d60404",
+          "producer_contract_id": "V4_03_SECTOR_NATIVE_PRIMITIVE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "integer",
+          "unit": "members"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "positive_breadth_denominator",
+          "field_id": "positive_breadth_denominator",
+          "missing_policy": "metric_specific_field_local_unknown_policy",
+          "nullable": true,
+          "output_digest": "4f74d715506f539eb3e4f3219ba00035dc79860152fb931d51b333cf9da5c850",
+          "producer_contract_id": "V4_03_SECTOR_NATIVE_PRIMITIVE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "integer",
+          "unit": "members"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "ma20_width_numerator",
+          "field_id": "ma20_width_numerator",
+          "missing_policy": "metric_specific_field_local_unknown_policy",
+          "nullable": true,
+          "output_digest": "fb9574efd9b962e4f835b5296a314cf1484241573a31ba30934ab0627f3fdd52",
+          "producer_contract_id": "V4_03_SECTOR_NATIVE_PRIMITIVE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "integer",
+          "unit": "members"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "ma20_width_denominator",
+          "field_id": "ma20_width_denominator",
+          "missing_policy": "metric_specific_field_local_unknown_policy",
+          "nullable": true,
+          "output_digest": "b92def784f373dbdfa265eaf71a89b22f9f9b81106b44647756a98dbe0588708",
+          "producer_contract_id": "V4_03_SECTOR_NATIVE_PRIMITIVE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "integer",
+          "unit": "members"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "amount_concentration_evaluable_count",
+          "field_id": "amount_concentration_evaluable_count",
+          "missing_policy": "metric_specific_field_local_unknown_policy",
+          "nullable": true,
+          "output_digest": "5eaa756cf97cdfd35699563647c5b1cc4a817e357694765a3334e10fb0799452",
+          "producer_contract_id": "V4_03_SECTOR_NATIVE_PRIMITIVE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "integer",
+          "unit": "members"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "amount_concentration_numerator",
+          "field_id": "amount_concentration_numerator",
+          "missing_policy": "metric_specific_field_local_unknown_policy",
+          "nullable": true,
+          "output_digest": "a01d4f1c67b7b9bf08454e28b27eaee661b0859fcb485e565a72e0edeb3d8528",
+          "producer_contract_id": "V4_03_SECTOR_NATIVE_PRIMITIVE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "float64",
+          "unit": "raw_CNY"
+        },
+        {
+          "as_of": "fixed_market_session_t",
+          "display_label": "amount_concentration_denominator",
+          "field_id": "amount_concentration_denominator",
+          "missing_policy": "metric_specific_field_local_unknown_policy",
+          "nullable": true,
+          "output_digest": "69b9448e983623f3fab63c0cae62ae47639c3a0ed7b1afc9c449e85fd4c567b7",
+          "producer_contract_id": "V4_03_SECTOR_NATIVE_PRIMITIVE_V1",
+          "producer_version": "1.0.0",
+          "quality_state": "OBSERVED|UNKNOWN",
+          "requiredness": "REQUIRED",
+          "type": "float64",
+          "unit": "raw_CNY"
+        }
+      ],
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+      "producer": {
+        "producer_contract_id": "V4_03_SECTOR_NATIVE_PRIMITIVE_V1",
+        "version": "1.0.0"
+      },
+      "publication_permission": "NOT_V4_08_SECTOR_FACTORS",
+      "quality_contract": {
+        "empty_field_set": "UNKNOWN with explicit reason; count outputs remain zero",
+        "publication_permission": "NOT_V4_08_SECTOR_FACTORS",
+        "quality_is_field_local": true
+      },
+      "source_digest": "8863520d7fb105ddd9c48921d2bde073f00d519cb05c2779b1d2d4eafeae1790",
+      "source_ids": {
+        "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
+        "native_sha256": "6f20038294c97228a50e6bd003c62bf5cfada4175171a8faa4644b956eed30a9",
+        "parameter_registry_sha256": "c3cda61e604948935061b077f0f57777ac9dc9917263cab2217ca3c2ac9f28e3",
+        "relative_sha256": "74034b819cd845e8177eee24b30cd441e94b1619f393b67c24c5397076af82ab",
+        "scope_map_sha256": "7f6f2e15de01c28ca2b35420b0ce12e171e13c9c954a0924ac91aea3990e4e81"
+      },
+      "time_semantics": "fixed market session t with historical accepted sector membership snapshot",
+      "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1"
+    }
+  ],
+  "framework_extension": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1@1.2.0",
+  "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
+  "scope_map_sha256": "7f6f2e15de01c28ca2b35420b0ce12e171e13c9c954a0924ac91aea3990e4e81",
+  "sector_full_market_materialization": {
+    "amount_a_calls": 0,
+    "consumer_stage": "V4-08",
+    "full_market_sector_artifact": "NOT_PRODUCED",
+    "library_contract_tests": "ALLOWED",
+    "qualification_calls": 0,
+    "rotation_calls": 0,
+    "seed_calls": 0,
+    "status": "BLOCKED_ACCEPTED_SECTOR_MEMBERSHIP_INPUT_NOT_PRESENT_IN_V4_01_V4_02_BASELINE_MANIFEST",
+    "turnover_or_baostock_calls": 0,
+    "v4_08_formal_fields_published": 0
+  },
+  "status": "CONTRACTS_BOUND_SECTOR_FULL_MARKET_INPUT_BLOCKED",
+  "version": "1.0.0"
+}

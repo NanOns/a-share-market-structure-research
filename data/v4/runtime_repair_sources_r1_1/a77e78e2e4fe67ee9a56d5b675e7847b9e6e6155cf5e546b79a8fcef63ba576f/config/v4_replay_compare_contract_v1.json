@@ -1,0 +1,36 @@
+{
+  "automatic_trading": false,
+  "comparison_basis": "FP07_NATIVE_LOCAL_AFFINE_QFQ_TARGET_COORDINATE_ONLY_CORRECTED_VIEW",
+  "contract_id": "FP12_REPLAY_COMPARE_V1",
+  "diagnostic_view": "corrected",
+  "followup": "EXPLICIT_OPT_IN_SEPARATE_PAYLOAD_EXCLUDED_FROM_T0_HASH",
+  "forbidden": [
+    "CURRENT_MEMBERS_AS_HISTORICAL_PIT",
+    "FUTURE_OUTCOMES_IN_T0",
+    "FUTURE_STATES_IN_T0",
+    "RECONSTRUCTED_AS_RECORDED",
+    "CROSS_DATE_SNAPSHOT_TOKEN"
+  ],
+  "missing_behavior": "PIT_NOT_AVAILABLE_EMPTY_NO_CURRENT_FALLBACK",
+  "models": "SOURCE_NAMESPACE_PER_FIELD_WITH_UNPROVEN_TIME_FAIL_CLOSED",
+  "request_limits": {
+    "entity": 120,
+    "limit": 200,
+    "offset": 1000000,
+    "q": 80
+  },
+  "strict_view": "frozen",
+  "task": {
+    "bytes": 4724,
+    "path": "docs/evidence/fp01_20261008/tasks/12_PIT冻结回放与跨对象比较_R1_20261008.md",
+    "sha256": "75980410fbc2c770b0aed1eaabff6cfa89752ed9c674a65a7ad41c4f0637db7c"
+  },
+  "time_locks": [
+    "AS_RECORDED_TRUE",
+    "FIRST_AVAILABILITY_PROVEN",
+    "MODEL_KNOWN_AT_LTE_T0",
+    "EFFECTIVE_DATE_LTE_T0",
+    "KNOWN_AT_LTE_T0_SHANGHAI_CLOSE_OF_DAY",
+    "PUBLICATION_DATE_LTE_T0"
+  ]
+}

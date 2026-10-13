@@ -1,0 +1,97 @@
+{
+  "contract_id": "V4_OFFICIAL_EXCHANGE_CALENDAR_V1",
+  "version": "1.0.0",
+  "status": "SOURCE_CONTRACT_FROZEN_EVIDENCE_CAPTURE_PENDING",
+  "purpose": "Derive candidate weekday sessions and official exchange closure dates for the explicitly bounded 2024-2026 interval.",
+  "governing_v4_contract": {
+    "id": "DA-MSR-V4.2.2-CODEX-REV2",
+    "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+    "sections": ["3C.1", "3C.2", "3C.3", "3C.4", "5.2", "5.3", "6A", "78"]
+  },
+  "coverage": {
+    "start_date": "2024-01-01",
+    "end_date": "2026-12-31",
+    "SSE_boards": ["SH_MAIN", "STAR"],
+    "SZSE_boards": ["SZ_MAIN", "CHINEXT"],
+    "BSE": "EXCLUDED_OPTIONAL_DEGRADED"
+  },
+  "session_rule": {
+    "base_weekdays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"],
+    "closed_on_national_statutory_holidays": true,
+    "closed_on_exchange_announced_dates_or_ranges": true,
+    "must_not_infer_trading_from_stock_bar_presence": true,
+    "one_off_exchange_notices_override_annual_schedule": true,
+    "unresolved_or_conflicting_notice": "FAIL_CLOSED_UNKNOWN"
+  },
+  "rules": [
+    {
+      "market": "SSE",
+      "source_url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/repeal/rules/c/c_20250612_10824490.shtml",
+      "source_rule": "Shanghai Stock Exchange Trading Rules (2023 Revision)",
+      "effective_from": "2024-01-01",
+      "effective_to": "2026-07-05",
+      "required_clause": "2.4.1"
+    },
+    {
+      "market": "SSE",
+      "source_url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/c_20260424_10816482.shtml",
+      "source_rule": "Shanghai Stock Exchange Trading Rules (2026 Revision)",
+      "effective_from": "2026-07-06",
+      "effective_to": "2026-12-31",
+      "required_clause": "2.4.1"
+    },
+    {
+      "market": "SZSE",
+      "source_url": "https://www.szse.cn/lawrules/rule/repeal/rules/t20230217_598773.html",
+      "source_rule": "Shenzhen Stock Exchange Trading Rules (2023 Revision)",
+      "effective_from": "2024-01-01",
+      "effective_to": "2026-07-05",
+      "required_clause": "2.4.1"
+    },
+    {
+      "market": "SZSE",
+      "source_url": "https://investor.szse.cn/lawrules/rule/trade/t20260424_620190.html",
+      "source_rule": "Shenzhen Stock Exchange Trading Rules (2026 Revision)",
+      "effective_from": "2026-07-06",
+      "effective_to": "2026-12-31",
+      "required_clause": "2.4.1"
+    }
+  ],
+  "annual_closure_notices": [
+    {"market": "SSE", "year": 2024, "source_url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/c/c_20231226_5733941.shtml", "notice_date": "2023-12-26"},
+    {"market": "SSE", "year": 2025, "source_url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/c/c_20241223_10767110.shtml", "notice_date": "2024-12-23"},
+    {"market": "SSE", "year": 2026, "source_url": "https://www.sse.com.cn/disclosure/announcement/general/c/c_20251222_10802507.shtml", "notice_date": "2025-12-22"},
+    {"market": "SZSE", "year": 2024, "source_url": "https://www.szse.cn/disclosure/notice/t20231226_605108.html", "notice_date": "2023-12-26"},
+    {"market": "SZSE", "year": 2025, "source_url": "https://investor.szse.cn/disclosure/notice/general/t20241223_611283.html", "notice_date": "2024-12-23"},
+    {"market": "SZSE", "year": 2026, "source_url": "https://investor.szse.cn/disclosure/notice/general/t20251222_618087.html", "notice_date": "2025-12-22"}
+  ],
+  "source_capture": {
+    "maximum_requests_per_run": 10,
+    "maximum_response_bytes_per_page": 2000000,
+    "maximum_total_response_bytes": 12000000,
+    "timeout_seconds": 20,
+    "redirect_hosts": ["www.sse.com.cn", "investor.szse.cn", "www.szse.cn"],
+    "allowed_hosts": ["www.sse.com.cn", "investor.szse.cn", "www.szse.cn"],
+    "raw_page_bytes_are_immutable_evidence": true,
+    "store_under": "data/v4/source_evidence/official_calendar_v1/",
+    "record_observed_at_and_source_published_date": true
+  },
+  "lineage": {
+    "historical_notice_capture": "RECONSTRUCTED_FROM_OFFICIAL_NOTICE; retrieval is not evidence the running system consumed the notice at its publication time",
+    "calendar_revision_selection": "Bind the exact captured notice hashes and all later applicable amendments through the requested as-of date",
+    "pit_observed_claim": "PROHIBITED_WITHOUT_CONTEMPORANEOUS_SYSTEM_CONSUMPTION_RECEIPT"
+  },
+  "acceptance": {
+    "pass_requires": [
+      "all_rule_and_annual_notice_pages_hash_bound",
+      "all_applicable_one_off_amendments_reviewed_through_cutoff",
+      "closed_dates_parsed_with_independent_manual_expected_values",
+      "SSE_and_SZSE_2024_2026_calendar_digests_separately_bound",
+      "official_index_session_crosscheck_has_zero_unexplained_mismatch",
+      "multi_boundary_asof_and_future_notice_exclusion_pass",
+      "independent_postcheck_pass"
+    ],
+    "current_capability": "OFFICIAL_SOURCE_CANDIDATE_2024_2026_ONLY_NOT_FORMAL_ACCEPTED",
+    "prohibited_claims": ["full_historical_calendar_before_2024", "PIT_OBSERVED_FROM_LATER_CAPTURE", "calendar_coverage_inferred_from_stock_bars"]
+  }
+}

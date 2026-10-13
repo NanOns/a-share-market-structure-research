@@ -1,0 +1,28 @@
+{
+  "field_registry_id": "V4_08_SECTOR_FIELD_REGISTRY_V1",
+  "version": "1.0.0",
+  "owner_stage": "V4-08",
+  "status": "FROZEN_ENGINEERING_CANDIDATE",
+  "fields": [
+    {"field_id":"sector_member_count","producer":"V4_08_SECTOR_NATIVE_V1","unit":"members","availability":"accepted PIT membership"},
+    {"field_id":"sector_quote_coverage","producer":"V4_08_SECTOR_NATIVE_V1","unit":"ratio","availability":"Core quote facts"},
+    {"field_id":"sector_rs5","producer":"V4_08_SECTOR_NATIVE_V1","unit":"return ratio median","availability":"Core ret5"},
+    {"field_id":"sector_rs20","producer":"V4_08_SECTOR_NATIVE_V1","unit":"return ratio median","availability":"Core ret20"},
+    {"field_id":"sector_rs5_pct","producer":"V4_08_SECTOR_NATIVE_V1","unit":"percentile points","availability":"qualified same-day sector cross-section"},
+    {"field_id":"rank_velocity3","producer":"V4_08_SECTOR_NATIVE_V1","unit":"percentile points","availability":"two frozen qualified sector snapshots"},
+    {"field_id":"dq5","producer":"V4_08_SECTOR_NATIVE_V1","unit":"percentile points","availability":"sector_rs5_pct at t and t-3"},
+    {"field_id":"breadth_ret1","producer":"V4_08_SECTOR_NATIVE_V1","unit":"ratio","availability":"known Core ret1 members"},
+    {"field_id":"breadth_delta1","producer":"V4_08_SECTOR_NATIVE_V1","unit":"ratio","availability":"common evaluable member set"},
+    {"field_id":"breadth_delta3","producer":"V4_08_SECTOR_NATIVE_V1","unit":"ratio","availability":"common evaluable member set"},
+    {"field_id":"ma20_width","producer":"V4_08_SECTOR_NATIVE_V1","unit":"ratio","availability":"known Core MA20 members"},
+    {"field_id":"ma20_delta3","producer":"V4_08_SECTOR_NATIVE_V1","unit":"ratio","availability":"common evaluable member set"},
+    {"field_id":"base_seed_width_raw","producer":"V4_08_SECTOR_NATIVE_V1","unit":"ratio","availability":"accepted Base Seed; UNKNOWN while Prior-RPS degraded"},
+    {"field_id":"base_seed_width_adjusted","producer":"V4_08_SECTOR_NATIVE_V1","unit":"ratio","availability":"accepted Base Seed; UNKNOWN while Prior-RPS degraded"},
+    {"field_id":"base_seed_retention","producer":"ROTATION_CORE_V1","unit":"ratio","availability":"frozen pulse seed set"},
+    {"field_id":"breadth_retention","producer":"ROTATION_CORE_V1","unit":"ratio","availability":"frozen pulse positive set and same-basis close"},
+    {"field_id":"top1_concentration","producer":"V4_08_SECTOR_NATIVE_V1","unit":"ratio","availability":"same-cutoff member amount; zero denominator UNKNOWN"},
+    {"field_id":"rotation_core_state","producer":"ROTATION_CORE_V1","unit":"enum","availability":"accepted PIT membership plus frozen history"}
+  ],
+  "unknown_policy": "Missing, invalid, partial, or upstream-degraded facts remain UNKNOWN with reason; no zero coercion.",
+  "formal_consumer_enabled": false
+}

@@ -1,0 +1,11 @@
+{
+  "contract_id": "SECURITY_ENTITY_IDENTITY_V1",
+  "version": "1.0.0",
+  "status": "IMPLEMENTED_ACCEPTANCE_PENDING",
+  "security_id": "opaque deterministic ID derived from exchange, immutable lifecycle anchor and original listing date; never a source symbol",
+  "identity_anchor": "first independently documented exchange symbol paired with provider or official listing date",
+  "symbol_aliases": "one stable security_id may have multiple date-effective symbols; aliases must come from a versioned source contract",
+  "code_reuse": "the same exchange symbol on distinct non-overlapping lifecycle listing dates receives distinct security_id values",
+  "unknown_policy": "missing or conflicting lifecycle identity yields null security_id and an explicit unresolved reason",
+  "source_contracts": ["BAOSTOCK_LIFECYCLE_FACTS_R5_V1", "BSE_SECURITY_LIFECYCLE_SOURCE_V1"]
+}

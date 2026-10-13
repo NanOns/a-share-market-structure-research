@@ -1,0 +1,14 @@
+{
+  "contract_id": "REQUIRED_EQUITY_SCOPE_V1",
+  "version": "1.0.0",
+  "required_boards": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"],
+  "optional_scopes": ["BSE"],
+  "identity_admission": {
+    "required_security_type": "A_STOCK",
+    "required_fields": ["security_id", "exchange", "board", "list_date", "source_revision_id"],
+    "code_prefix_alone_is_not_identity_evidence": true
+  },
+  "unknown_roster_policy": "OUT_OF_REQUIRED_SCOPE_PENDING_CLASSIFICATION",
+  "unknown_traded_a_stock_policy": "BLOCK_REQUIRED_SCOPE_UNTIL_IDENTITY_CLOSED",
+  "source_contract_id": "BAOSTOCK_LIFECYCLE_FACTS_R5_V1"
+}

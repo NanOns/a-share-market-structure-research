@@ -68,8 +68,8 @@ class OperationalResearchBFF:
         if domain=='stocks':
             from workbench_db.v4_profile_semantic_corrections_pg_v1 import KEY,load as load_correction
             if KEY in self.api.candidate:
-                entry=load_correction(self.api.root,self.api.candidate)['dates'][day]
-                correction=entry['source'];correction_ids=set(entry['security_ids'])
+                entry=load_correction(self.api.root,self.api.candidate)['dates'].get(day)
+                if entry is not None:correction=entry['source'];correction_ids=set(entry['security_ids'])
         for r in raw:
             identity=r.get('security_id',r.get('sector_id',r.get('entity_id')))
             if not identity:continue

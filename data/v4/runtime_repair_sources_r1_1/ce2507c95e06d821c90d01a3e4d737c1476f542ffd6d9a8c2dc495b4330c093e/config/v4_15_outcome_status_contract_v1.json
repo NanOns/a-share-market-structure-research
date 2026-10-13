@@ -1,0 +1,51 @@
+{
+  "contract_id": "OUTCOME_STATUS_V1",
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "47",
+      "46A"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "fields": [
+    "outcome_status",
+    "path_quality",
+    "endpoint_quality",
+    "reason_codes",
+    "terminal_value",
+    "terminal_evidence",
+    "report_cutoff"
+  ],
+  "focus": false,
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "metric_quality_independent": true,
+  "no_terminal_return": null,
+  "null_never_zero": true,
+  "production": false,
+  "rules": {
+    "ADJUSTMENT_UNKNOWN": "COMMON_BASIS_UNPROVEN",
+    "DELISTED_BEFORE_HORIZON": "RETURN_NULL_UNLESS_CONTRACT_QUALIFIED_VERIFIED_TERMINAL_VALUE",
+    "IDENTITY_UNKNOWN": "IDENTITY_UNPROVEN",
+    "MATURED_DATA_MISSING": "DUE_REQUIRED_PRICE_UNKNOWN_NOT_CENSORED",
+    "OBSERVED": "ACCEPTED_VERIFIED_ENDPOINT_COMMON_BASIS",
+    "PENDING": "HORIZON_NOT_DUE",
+    "RIGHT_CENSORED": "REPORT_CUTOFF_UNFINISHED_TIME_TO_EVENT_ONLY",
+    "SUSPENDED_AT_HORIZON": "NO_ACTUAL_ENDPOINT_RETURN_NO_RESUME_SHIFT"
+  },
+  "runtime_implemented": false,
+  "shadow": false,
+  "states": [
+    "PENDING",
+    "RIGHT_CENSORED",
+    "OBSERVED",
+    "SUSPENDED_AT_HORIZON",
+    "MATURED_DATA_MISSING",
+    "DELISTED_BEFORE_HORIZON",
+    "IDENTITY_UNKNOWN",
+    "ADJUSTMENT_UNKNOWN"
+  ],
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "version": "1.0.0"
+}

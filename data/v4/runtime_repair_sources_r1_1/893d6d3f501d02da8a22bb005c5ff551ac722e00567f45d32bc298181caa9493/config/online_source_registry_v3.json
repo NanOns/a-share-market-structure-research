@@ -1,0 +1,298 @@
+{
+  "schema_version": "v3-online-source-registry-v1",
+  "contract_id": "V3_ONLINE_SOURCE_REGISTRY_1",
+  "stage": "P09-01-A",
+  "stage_status": "STATIC_ONLY",
+  "enabled": false,
+  "network_calls_allowed": false,
+  "credential_use_allowed": false,
+  "production_network_enabled": false,
+  "raw_payloads_persisted": false,
+  "tdx_inputs_modified": false,
+  "shared_request_policy": {
+    "policy_id": "P09_ONLINE_BOUNDED_V1",
+    "current_probe_required_before_enable": true,
+    "max_total_seconds": 12,
+    "max_source_seconds": 8,
+    "max_response_bytes": 2097152,
+    "max_concurrent_sources": 4,
+    "max_event_page_size": 20,
+    "max_quote_batch_size": 50,
+    "credentials_allowed": false,
+    "future_data_allowed": false,
+    "automated_trading_allowed": false,
+    "probability_claims_allowed": false
+  },
+  "sources": [
+    {
+      "source_id": "EXT01",
+      "dataset": "LIMIT_POOL_UP",
+      "source_name": "THS_LIMIT_UP",
+      "method": "GET",
+      "endpoint_template": "https://data.10jqka.com.cn/dataapi/limit_up/limit_up_pool?page={page}&limit={limit}&field={fields}&filter=HS,GEM2STAR&order_field=330323&order_type=0&date={YYYYMMDD}",
+      "evidence_level": "STATIC",
+      "capability_status": "NOT_VERIFIED",
+      "enabled": false,
+      "history_support": "UNKNOWN",
+      "request_contract": {
+        "page_default": 1,
+        "limit_default": 50,
+        "field_codes_status": "UNRESOLVED",
+        "field_codes": null,
+        "filter": "HS,GEM2STAR",
+        "order_field": "330323",
+        "order_type": 0,
+        "date_semantics": "YYYYMMDD_ASIA_SHANGHAI"
+      },
+      "field_contract": {
+        "source_fields": ["code", "name", "latest", "change_rate", "amount", "order_amount", "currency_value", "turnover_rate", "open_num", "reason_type", "first_limit_up_time", "last_limit_up_time"],
+        "normalized_fields": {
+          "code": "security_id",
+          "name": "security_name",
+          "latest": "price",
+          "change_rate": "ret1",
+          "amount": "amount",
+          "order_amount": "seal_amount",
+          "currency_value": "float_market_cap",
+          "turnover_rate": "turnover",
+          "open_num": "open_count",
+          "reason_type": "source_reason",
+          "first_limit_up_time": "first_limit_up_time",
+          "last_limit_up_time": "last_limit_up_time"
+        },
+        "conversion_status": "UNRESOLVED_UNTIL_CURRENT_PROBE",
+        "conversion_rules": ["change_rate scale requires sample confirmation", "Unix second zero maps to NULL, not 1970-01-01", "amount, seal_amount and float_market_cap remain separate facts"]
+      },
+      "storage_policy": "NORMALIZED_EVENT_CONTRACT_REQUIRED; RAW_PAYLOAD_FORBIDDEN"
+    },
+    {
+      "source_id": "EXT02",
+      "dataset": "LIMIT_POOL_DOWN",
+      "source_name": "THS_LIMIT_DOWN",
+      "method": "GET",
+      "endpoint_template": "https://data.10jqka.com.cn/dataapi/limit_up/lower_limit_pool?page={page}&limit={limit}&field={fields}&filter=HS,GEM2STAR&order_field=330334&order_type=0&date={YYYYMMDD}",
+      "evidence_level": "STATIC",
+      "capability_status": "NOT_VERIFIED",
+      "enabled": false,
+      "history_support": "UNKNOWN",
+      "request_contract": {
+        "page_default": 1,
+        "limit_default": 50,
+        "field_codes_status": "UNRESOLVED",
+        "field_codes": null,
+        "filter": "HS,GEM2STAR",
+        "order_field": "330334",
+        "order_type": 0,
+        "date_semantics": "YYYYMMDD_ASIA_SHANGHAI"
+      },
+      "field_contract": {
+        "source_fields": ["code", "name", "latest", "change_rate", "amount", "first_limit_down_time", "last_limit_down_time"],
+        "normalized_fields": {
+          "code": "security_id",
+          "name": "security_name",
+          "latest": "price",
+          "change_rate": "ret1",
+          "amount": "amount",
+          "first_limit_down_time": "first_limit_down_time",
+          "last_limit_down_time": "last_limit_down_time"
+        },
+        "conversion_status": "UNRESOLVED_UNTIL_CURRENT_PROBE",
+        "conversion_rules": ["change_rate scale requires sample confirmation", "do not derive down-limit members from the up-limit pool", "Unix second zero maps to NULL, not 1970-01-01"]
+      },
+      "storage_policy": "NORMALIZED_EVENT_CONTRACT_REQUIRED; RAW_PAYLOAD_FORBIDDEN"
+    },
+    {
+      "source_id": "EXT03",
+      "dataset": "SOURCE_TOPICS",
+      "source_name": "XGT_PLATES",
+      "method": "GET",
+      "endpoint_template": "https://flash-api.xuangubao.cn/api/surge_stock/plates?date={BEIJING_MIDNIGHT_UNIX_SECONDS}",
+      "evidence_level": "STATIC",
+      "capability_status": "NOT_VERIFIED",
+      "enabled": false,
+      "history_support": "UNKNOWN",
+      "request_contract": {
+        "date_semantics": "BEIJING_MIDNIGHT_UNIX_SECONDS",
+        "join_key": "source_topic_id",
+        "same_day_join_required_with": "EXT04"
+      },
+      "field_contract": {
+        "source_fields": ["id", "name", "description"],
+        "normalized_fields": {"id": "source_topic_id", "name": "topic_name", "description": "source_description"},
+        "conversion_status": "STATIC_SEMANTICS_ONLY",
+        "conversion_rules": ["preserve source order", "missing description remains NULL; do not generate a reason"]
+      },
+      "storage_policy": "NORMALIZED_TOPIC_CONTRACT_REQUIRED; RAW_PAYLOAD_FORBIDDEN"
+    },
+    {
+      "source_id": "EXT04",
+      "dataset": "TOPIC_MEMBERS",
+      "source_name": "XGT_TOPIC_STOCKS",
+      "method": "GET",
+      "endpoint_template": "https://flash-api.xuangubao.cn/api/surge_stock/stocks?date={YYYYMMDD}&normal=true&uplimit=true",
+      "evidence_level": "STATIC",
+      "capability_status": "NOT_VERIFIED",
+      "enabled": false,
+      "history_support": "UNKNOWN",
+      "request_contract": {
+        "date_semantics": "YYYYMMDD_ASIA_SHANGHAI",
+        "join_key": "source_topic_id",
+        "same_day_join_required_with": "EXT03"
+      },
+      "field_contract": {
+        "source_fields": ["plates", "items", "fields", "stock_array"],
+        "normalized_fields": {"topic_id": "source_topic_id", "stock_code": "source_code", "uplimit": "is_limit_up"},
+        "conversion_status": "ARRAY_SCHEMA_UNRESOLVED_UNTIL_CURRENT_PROBE",
+        "conversion_rules": ["map arrays by returned field names", "reject unequal array lengths", "do not assume array position is code or return rate", "only explicit is_limit_up=true enters limit-up distribution"]
+      },
+      "storage_policy": "NORMALIZED_TOPIC_MEMBER_CONTRACT_REQUIRED; RAW_PAYLOAD_FORBIDDEN"
+    },
+    {
+      "source_id": "EXT05",
+      "dataset": "EVENT_POOLS",
+      "source_name": "XGT_EVENT_POOL",
+      "method": "GET",
+      "endpoint_template": "https://flash-api.xuangubao.cn/api/pool/detail?pool_name={pool_name}&date={YYYYMMDD}",
+      "evidence_level": "STATIC",
+      "capability_status": "NOT_VERIFIED",
+      "enabled": false,
+      "history_support": "UNKNOWN",
+      "request_contract": {
+        "date_semantics": "YYYYMMDD_ASIA_SHANGHAI",
+        "pool_name_source": "event_pools",
+        "source_symbol_deduplication": true
+      },
+      "field_contract": {
+        "source_fields": ["symbol", "stock_chi_name", "price", "change_percent", "turnover_ratio", "non_restricted_capital", "first_limit_up", "last_limit_up", "last_break_limit_up", "break_limit_up_times", "m_days_n_boards_days", "m_days_n_boards_boards", "limit_up_days", "yesterday_limit_up_days", "surge_reason.related_plates", "plate_name"],
+        "normalized_fields": {"symbol": "security_id", "stock_chi_name": "security_name", "price": "price", "change_percent": "ret1", "turnover_ratio": "turnover", "non_restricted_capital": "float_market_cap", "first_limit_up": "first_limit_up_time", "last_limit_up": "last_limit_up_time", "last_break_limit_up": "last_break_time", "break_limit_up_times": "open_count", "m_days_n_boards_days": "m_days", "m_days_n_boards_boards": "n_boards", "limit_up_days": "source_limit_days", "yesterday_limit_up_days": "previous_source_limit_days", "surge_reason.related_plates": "related_plates", "plate_name": "source_topic_name"},
+        "conversion_status": "UNRESOLVED_UNTIL_CURRENT_PROBE",
+        "conversion_rules": ["confirm percentage scale with one known quote", "retain pool-limited meanings", "do not rename source_limit_days as consecutive_limit_days before semantic confirmation"]
+      },
+      "storage_policy": "NORMALIZED_EVENT_CONTRACT_REQUIRED; RAW_PAYLOAD_FORBIDDEN"
+    },
+    {
+      "source_id": "EXT06",
+      "dataset": "MARKET_OVERVIEW",
+      "source_name": "THS_MARKET_OVERVIEW",
+      "method": "GET",
+      "endpoint_template": "https://data.10jqka.com.cn/mobileapi/hotspot_focus/market_state/v1/overview",
+      "evidence_level": "STATIC",
+      "capability_status": "NOT_VERIFIED",
+      "enabled": false,
+      "history_support": "UNKNOWN",
+      "request_contract": {"date_parameter": "NOT_DECLARED", "historical_query_supported": false},
+      "field_contract": {
+        "source_fields": ["all_strings"],
+        "normalized_fields": {"source_fields": "source_fields"},
+        "conversion_status": "SCHEMA_UNRESOLVED_UNTIL_CURRENT_PROBE",
+        "conversion_rules": ["do not add a date parameter and claim historical support", "source failure must degrade the overview card without blanking local research"]
+      },
+      "storage_policy": "RESPONSE_CONTRACT_REQUIRED; RAW_PAYLOAD_FORBIDDEN"
+    },
+    {
+      "source_id": "EXT07",
+      "dataset": "HOT_STOCK_RANKINGS",
+      "source_name": "THS_HOT_STOCK",
+      "method": "GET",
+      "endpoint_template": "https://dq.10jqka.com.cn/fuyao/hot_list_data/out/hot_list/v1/stock?stock_type=a&type={hour|day}&list_type={normal|skyrocket}",
+      "evidence_level": "STATIC",
+      "capability_status": "NOT_VERIFIED",
+      "enabled": false,
+      "history_support": "LATEST_ONLY_UNTIL_PROBED",
+      "request_contract": {"modes": ["hour/normal", "hour/skyrocket", "day/normal", "day/skyrocket"], "platform_order_preserved": true},
+      "field_contract": {
+        "source_fields": ["stock_list", "order", "hot_rank_chg", "rise_and_fall", "rate", "tag"],
+        "normalized_fields": {"order": "platform_rank", "hot_rank_chg": "rank_change", "rise_and_fall": "rise_and_fall", "rate": "source_rate", "tag": "source_tag"},
+        "conversion_status": "STATIC_SEMANTICS_ONLY",
+        "conversion_rules": ["do not rank again locally", "rate is not normalized to return without evidence", "market mapping must be explicit"]
+      },
+      "storage_policy": "REQUEST_TIME_ONLY; RAW_PAYLOAD_AND_ROWS_FORBIDDEN"
+    },
+    {
+      "source_id": "EXT08",
+      "dataset": "HOT_PLATE_RANKINGS",
+      "source_name": "THS_HOT_PLATE",
+      "method": "GET",
+      "endpoint_template": "https://dq.10jqka.com.cn/fuyao/hot_list_data/out/hot_list/v1/plate?type={concept|industry}",
+      "evidence_level": "STATIC",
+      "capability_status": "NOT_VERIFIED",
+      "enabled": false,
+      "history_support": "LATEST_ONLY_UNTIL_PROBED",
+      "request_contract": {"modes": ["concept", "industry"], "platform_order_preserved": true},
+      "field_contract": {
+        "source_fields": ["plate_list", "code", "name", "hot_value", "hot_tag", "etf_fields"],
+        "normalized_fields": {"code": "source_plate_id", "name": "plate_name", "hot_value": "hot_value", "hot_tag": "source_tag"},
+        "conversion_status": "STATIC_SEMANTICS_ONLY",
+        "conversion_rules": ["ETF association is metadata only", "do not insert ETF rows as A-share members", "mapping to local sector is optional and non-blocking"]
+      },
+      "storage_policy": "REQUEST_TIME_ONLY; RAW_PAYLOAD_AND_ROWS_FORBIDDEN"
+    },
+    {
+      "source_id": "EXT09",
+      "dataset": "HOT_TOPIC_RANKINGS",
+      "source_name": "THS_HOT_TOPIC",
+      "method": "GET",
+      "endpoint_template": "https://dq.10jqka.com.cn/fuyao/hot_list_data/out/hot_list/v1/topic?page={page}&page_size=30",
+      "evidence_level": "STATIC",
+      "capability_status": "NOT_VERIFIED",
+      "enabled": false,
+      "history_support": "LATEST_ONLY_UNTIL_PROBED",
+      "request_contract": {"page_default": 1, "page_size_default": 30, "more_pages_status": "NOT_VERIFIED", "platform_order_preserved": true},
+      "field_contract": {
+        "source_fields": ["topic_list", "title", "subtitle", "description", "jump_url"],
+        "normalized_fields": {"title": "topic_title", "subtitle": "topic_subtitle", "description": "source_description", "jump_url": "safe_external_url"},
+        "conversion_status": "STATIC_SEMANTICS_ONLY",
+        "conversion_rules": ["do not use the stock endpoint as a topic response", "external link is displayed only after safe URL validation", "missing stock membership is not fabricated"]
+      },
+      "storage_policy": "REQUEST_TIME_ONLY; RAW_PAYLOAD_AND_ROWS_FORBIDDEN"
+    },
+    {
+      "source_id": "EXT10",
+      "dataset": "EM_HOT_STOCK_RANKING",
+      "source_name": "EM_HOT_STOCK",
+      "method": "GET",
+      "endpoint_template": "https://gbcdn.dfcfw.com/rank/popularityList.js",
+      "public_entrypoint": "https://guba.eastmoney.com/rank/",
+      "evidence_level": "STATIC",
+      "capability_status": "NOT_VERIFIED",
+      "enabled": false,
+      "history_support": "LATEST_ONLY_UNTIL_PROBED",
+      "request_contract": {"request_builder": "reuse_workbench_online.eastmoney_hot_rank", "platform_order_preserved": true, "decoder_status": "EXISTING_DECODER_REQUIRES_CURRENT_PROBE"},
+      "field_contract": {
+        "source_fields": ["code", "rankNumber", "changeNumber", "exactTime", "history"],
+        "normalized_fields": {"code": "source_code", "rankNumber": "platform_rank", "changeNumber": "rank_change", "exactTime": "source_exact_time"},
+        "conversion_status": "STATIC_SEMANTICS_ONLY",
+        "conversion_rules": ["reuse existing public decoder", "do not change platform ranking", "if source time is missing or mixed, expose that limitation"]
+      },
+      "storage_policy": "REQUEST_TIME_ONLY; RAW_PAYLOAD_AND_ROWS_FORBIDDEN"
+    },
+    {
+      "source_id": "EXT11",
+      "dataset": "LIVE_QUOTES",
+      "source_name": "EASTMONEY_QUOTES",
+      "method": "GET",
+      "endpoint_template": "https://push2.eastmoney.com/api/qt/ulist.np/get?fltt=2&invt=2&fields=f2,f3,f6,f12,f13,f14,f47,f168,f170&secids={comma_separated_ids}",
+      "evidence_level": "STATIC",
+      "capability_status": "NOT_VERIFIED",
+      "enabled": false,
+      "history_support": "LATEST_ONLY",
+      "request_contract": {"request_builder": "reuse_workbench_online.eastmoney_quotes", "batch_size": 50, "supported_markets": ["SH", "SZ"], "unsupported_markets": ["BJ"], "max_concurrent_batches": 4},
+      "field_contract": {
+        "source_fields": ["f2", "f3", "f6", "f12", "f13", "f14", "f47", "f168", "f170"],
+        "normalized_fields": {"f2": "price", "f3": "ret1_percent_then_divide_100", "f6": "amount", "f12": "source_code", "f13": "market", "f14": "security_name", "f47": "volume", "f168": "turnover_percent_then_divide_100", "f170": "source_field_unresolved"},
+        "conversion_status": "SOURCE_CODE_STATIC; UNITS_REQUIRE_CURRENT_PROBE",
+        "conversion_rules": ["SH maps to 1.code and SZ maps to 0.code", "do not treat f170 as quote_time", "no reliable source quote_time is claimed", "unsupported BJ rows remain uncovered rather than blocking SH/SZ"]
+      },
+      "storage_policy": "REQUEST_TIME_ONLY; RAW_PAYLOAD_AND_ROWS_FORBIDDEN"
+    }
+  ],
+  "event_pools": [
+    {"pool_name": "super_stock", "pool_type": "SUPER", "meaning": "强势股池", "forbidden_inference": "not automatically limit-up"},
+    {"pool_name": "limit_up", "pool_type": "LIMIT_UP", "meaning": "涨停池", "forbidden_inference": "count as sealed only when source state is explicit"},
+    {"pool_name": "limit_up_broken", "pool_type": "BROKEN", "meaning": "炸板池", "forbidden_inference": "not all non-limit-up stocks"},
+    {"pool_name": "yesterday_limit_up", "pool_type": "YESTERDAY_LIMIT_UP", "meaning": "昨日涨停今日表现", "forbidden_inference": "not today's limit-up or promotion failure"},
+    {"pool_name": "limit_down", "pool_type": "LIMIT_DOWN", "meaning": "跌停池", "forbidden_inference": "not exact down-limit from negative return alone"},
+    {"pool_name": "new_stock", "pool_type": "NEW_STOCK", "meaning": "新股池", "forbidden_inference": "not every new stock is limit-up"},
+    {"pool_name": "nearly_new", "pool_type": "NEARLY_NEW", "meaning": "次新股池", "forbidden_inference": "do not invent listing-day boundary"}
+  ]
+}

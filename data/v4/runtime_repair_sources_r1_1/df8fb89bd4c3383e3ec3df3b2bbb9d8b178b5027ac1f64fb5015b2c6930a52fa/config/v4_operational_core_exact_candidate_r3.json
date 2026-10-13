@@ -1,0 +1,19 @@
+{
+  "contract_id": "V4_OPERATIONAL_CORE_EXACT_AFFINE_CANDIDATE_R3",
+  "version": "1.0.0",
+  "scope": "ISOLATED_CURRENT_V4_OPERATIONAL_CORE_ENGINEERING_CANDIDATE",
+  "kernel": "src/adjustment/tdx_adjustment_v0_3.py",
+  "adapter": "src/workbench_analysis/exact_operational_core_candidate_r3.py",
+  "price_basis": "TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE",
+  "source_prices": "INTEGER_NATIVE_CENTS",
+  "composition": "EXACT_RATIONAL_AFFINE",
+  "event_interval": "bar_date < event_date <= coordinate_target",
+  "same_day_order": "source_record_index",
+  "rounding": "FINAL_EXACT_RATIONAL_HALF_UP_CENT",
+  "unsupported_events": "UNKNOWN_ONLY_WHEN_BAR_CROSSES_EVENT",
+  "history_scope": "ALL_ACTUAL_DECLARED_420_BAR_OWNER_WINDOWS",
+  "acceptance": "FULL_WINDOW_INDEPENDENT_RAW_AND_RATIONAL_ORACLE_REQUIRED",
+  "original_56_consumer_denominator": "PRESERVED_OPEN",
+  "permissions": {"production": false, "shadow": false, "focus_cutover": false},
+  "PIT_ELIGIBLE": false
+}

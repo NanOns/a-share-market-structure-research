@@ -1,0 +1,45 @@
+{
+  "contract_id": "V4_02_ADJUSTMENT_EMPIRICAL_SAMPLE_CONTRACT_V1",
+  "version": "1.0.0",
+  "status": "DIAGNOSTIC_SAMPLE_CONSTRUCTION_ONLY",
+  "stage": "V4-02 / ADJUSTED_CANONICAL_DAILY_REAL_ACTION_ACCEPTANCE",
+  "independent_audit_id": "V4-00E-REAL-ADJUSTMENT-ACCEPTANCE-01",
+  "purpose": "Construct hash-bound empirical XRXD action-type samples and a no-action control from the A-stock-accepted V4-00D package scope. This is diagnostic evidence and does not accept adjusted canonical output.",
+  "source_scope": {
+    "package_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+    "v4_00d_asset_report": "reports/v4_00d/v4_00d_asset_stratified_postcheck_20260925.json",
+    "v4_00d_asset_scope": "A_STOCK",
+    "metadata_snapshot": "data/input_staging/metadata/20260924/4835127dd77534be17d8aeba65d91ebf0ec5bbf6b5348bc1aff4612272acafdc/T0002/hq_cache/",
+    "source_cutoff": "2026-09-24",
+    "required_boards": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"],
+    "bse": "EXCLUDED_OPTIONAL_DEGRADED"
+  },
+  "sample_classes": [
+    "CASH_DIVIDEND_ONLY",
+    "SHARE_BONUS_OR_TRANSFER_ONLY",
+    "RIGHTS_ISSUE_ONLY",
+    "COMBINED_ACTION",
+    "NO_ACTION_CONTROL"
+  ],
+  "method": {
+    "price_basis": "TDX_NATIVE_AFFINE_QFQ",
+    "price_scale": 100,
+    "event_parameters": "category-1 XRXD C1-C4, decimal cents",
+    "raw_record_format": "TDX .day <IIIII f II, first uint32 is YYYYMMDD",
+    "independent_expected_value": "separate Decimal transform: m=(10+C3+C4)/10; c=(C1-C4*C2)/10; compose only ex_day > bar_date through cutoff; ROUND_HALF_UP to CNY 0.01",
+    "lineage": "DIAGNOSTIC_NON_PIT_CURRENT_METADATA_SNAPSHOT",
+    "unresolved_other_categories": "Recorded per security; any potentially price-affecting unsupported category keeps adjusted quality UNAVAILABLE."
+  },
+  "acceptance": {
+    "sample_report_status": "DIAGNOSTIC_SAMPLE_EVIDENCE_ONLY",
+    "does_not_accept": ["V4-00E audit", "ADJUSTED_CANONICAL_DAILY", "PIT_OBSERVED", "V4-02 overall stage"],
+    "remaining_independent_gates": [
+      "formal V4-00D source package overlap acceptance for scope and metadata identity",
+      "independent issuer/security identity and source visibility review",
+      "supported and unsupported category price-impact adjudication, including category 15",
+      "long suspension/resumption and recent-listing samples",
+      "multi-cutoff determinism and future/late-revision leakage proof",
+      "per-security fail-closed quality receipt and independent audit closure"
+    ]
+  }
+}

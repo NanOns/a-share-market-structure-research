@@ -1,0 +1,1717 @@
+{
+  "ast_version": "V4_04_RULE_AST_V1",
+  "contract_id": "V4_04_ALGORITHM_CONTRACTS_V1",
+  "frozen_literals": {
+    "minimum_liquidity_prior20_cny": {
+      "source": "REV2 §10F/§72",
+      "value": 20000000
+    },
+    "minimum_liquidity_window": {
+      "source": "REV2 §10F/§72",
+      "value": 20
+    },
+    "monthly_ma_window": {
+      "source": "REV2 §10B",
+      "value": 3
+    },
+    "slope_deadband_atr": {
+      "source": "REV2 §10B/§72",
+      "value": 0.1
+    },
+    "weekly_ma_window": {
+      "source": "REV2 §10B",
+      "value": 5
+    }
+  },
+  "governing_document": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV2_20260925.md",
+  "implementation": "src/v4/profile_core.py",
+  "parameter_registry": "config/v4_04_parameter_set_v1.json",
+  "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+  "rules": {
+    "AMOUNT_VOLUME_STATE_V1.participation": {
+      "branches": [
+        {
+          "value": "HIGH_PARTICIPATION_REVERSAL",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "amount_ratio20"
+                  },
+                  {
+                    "parameter_id": "V4_04_PARTICIPATION_HIGH"
+                  }
+                ],
+                "operator": "GE"
+              },
+              {
+                "args": [
+                  {
+                    "field": "ret1"
+                  },
+                  {
+                    "constant": 0
+                  }
+                ],
+                "operator": "LT"
+              }
+            ],
+            "operator": "AND"
+          }
+        },
+        {
+          "value": "HIGH_PARTICIPATION_EFFECTIVE_ADVANCE",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "amount_ratio20"
+                  },
+                  {
+                    "parameter_id": "V4_04_PARTICIPATION_HIGH"
+                  }
+                ],
+                "operator": "GE"
+              },
+              {
+                "args": [
+                  {
+                    "field": "ret1"
+                  },
+                  {
+                    "constant": 0
+                  }
+                ],
+                "operator": "GT"
+              },
+              {
+                "args": [
+                  {
+                    "field": "clv"
+                  },
+                  {
+                    "parameter_id": "V4_04_PARTICIPATION_CLV"
+                  }
+                ],
+                "operator": "GE"
+              }
+            ],
+            "operator": "AND"
+          }
+        },
+        {
+          "value": "HIGH_PARTICIPATION_LOW_EFFICIENCY",
+          "when": {
+            "args": [
+              {
+                "field": "amount_ratio20"
+              },
+              {
+                "parameter_id": "V4_04_PARTICIPATION_HIGH"
+              }
+            ],
+            "operator": "GE"
+          }
+        },
+        {
+          "value": "LOW_PARTICIPATION_ADVANCE",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "amount_ratio20"
+                  },
+                  {
+                    "parameter_id": "V4_04_PARTICIPATION_LOW"
+                  }
+                ],
+                "operator": "LT"
+              },
+              {
+                "args": [
+                  {
+                    "field": "ret1"
+                  },
+                  {
+                    "constant": 0
+                  }
+                ],
+                "operator": "GT"
+              }
+            ],
+            "operator": "AND"
+          }
+        },
+        {
+          "value": "LOW_PARTICIPATION_DECLINE",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "amount_ratio20"
+                  },
+                  {
+                    "parameter_id": "V4_04_PARTICIPATION_LOW"
+                  }
+                ],
+                "operator": "LT"
+              },
+              {
+                "args": [
+                  {
+                    "field": "ret1"
+                  },
+                  {
+                    "constant": 0
+                  }
+                ],
+                "operator": "LT"
+              }
+            ],
+            "operator": "AND"
+          }
+        },
+        {
+          "value": "NORMAL_PARTICIPATION",
+          "when": {
+            "constant": true
+          }
+        }
+      ],
+      "else": "UNKNOWN_IF_REQUIRED_INPUT_MISSING_ELSE_FINAL_BRANCH",
+      "operator": "FIRST_TRUE"
+    },
+    "AMOUNT_VOLUME_STATE_V1.ratio": {
+      "branches": [
+        {
+          "value": "VERY_DRY",
+          "when": {
+            "args": [
+              {
+                "field": "ratio20"
+              },
+              {
+                "parameter_id": "V4_04_RATIO_VERY_DRY"
+              }
+            ],
+            "operator": "LT"
+          }
+        },
+        {
+          "value": "CONTRACTED",
+          "when": {
+            "args": [
+              {
+                "field": "ratio20"
+              },
+              {
+                "parameter_id": "V4_04_RATIO_CONTRACTED"
+              }
+            ],
+            "operator": "LT"
+          }
+        },
+        {
+          "value": "NORMAL",
+          "when": {
+            "args": [
+              {
+                "field": "ratio20"
+              },
+              {
+                "parameter_id": "V4_04_RATIO_NORMAL"
+              }
+            ],
+            "operator": "LT"
+          }
+        },
+        {
+          "value": "EXPANDED",
+          "when": {
+            "args": [
+              {
+                "field": "ratio20"
+              },
+              {
+                "parameter_id": "V4_04_RATIO_EXPANDED"
+              }
+            ],
+            "operator": "LT"
+          }
+        },
+        {
+          "value": "VERY_EXPANDED",
+          "when": {
+            "constant": true
+          }
+        }
+      ],
+      "else": "UNKNOWN_IF_REQUIRED_INPUT_MISSING_ELSE_FINAL_BRANCH",
+      "operator": "FIRST_TRUE"
+    },
+    "COMPRESSION_STATE_V1": {
+      "branches": [
+        {
+          "value": "EXPANDING_EXTREME",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "atr_ratio"
+                  },
+                  {
+                    "parameter_id": "V4_04_COMPRESS_EXTREME"
+                  }
+                ],
+                "operator": "GE"
+              },
+              {
+                "args": [
+                  {
+                    "field": "vol_ratio"
+                  },
+                  {
+                    "parameter_id": "V4_04_COMPRESS_EXTREME"
+                  }
+                ],
+                "operator": "GE"
+              }
+            ],
+            "operator": "OR"
+          }
+        },
+        {
+          "value": "EXPANDING",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "atr_ratio"
+                  },
+                  {
+                    "parameter_id": "V4_04_COMPRESS_EXPAND"
+                  }
+                ],
+                "operator": "GE"
+              },
+              {
+                "args": [
+                  {
+                    "field": "vol_ratio"
+                  },
+                  {
+                    "parameter_id": "V4_04_COMPRESS_EXPAND"
+                  }
+                ],
+                "operator": "GE"
+              }
+            ],
+            "operator": "OR"
+          }
+        },
+        {
+          "value": "COMPRESSING_STRONG",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "range_ratio"
+                  },
+                  {
+                    "parameter_id": "V4_04_COMPRESS_STRONG_RANGE"
+                  }
+                ],
+                "operator": "LE"
+              },
+              {
+                "args": [
+                  {
+                    "field": "atr_ratio"
+                  },
+                  {
+                    "parameter_id": "V4_04_COMPRESS_STRONG_ATR_VOL"
+                  }
+                ],
+                "operator": "LE"
+              },
+              {
+                "args": [
+                  {
+                    "field": "vol_ratio"
+                  },
+                  {
+                    "parameter_id": "V4_04_COMPRESS_STRONG_ATR_VOL"
+                  }
+                ],
+                "operator": "LE"
+              },
+              {
+                "args": [
+                  {
+                    "field": "amount_ratio20"
+                  },
+                  {
+                    "parameter_id": "V4_04_COMPRESS_STRONG_AMOUNT"
+                  }
+                ],
+                "operator": "LE"
+              },
+              {
+                "field": "minimum_liquidity"
+              }
+            ],
+            "operator": "AND"
+          }
+        },
+        {
+          "value": "COMPRESSING",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "range_ratio"
+                  },
+                  {
+                    "parameter_id": "V4_04_COMPRESS_RANGE"
+                  }
+                ],
+                "operator": "LE"
+              },
+              {
+                "args": [
+                  {
+                    "field": "atr_ratio"
+                  },
+                  {
+                    "parameter_id": "V4_04_COMPRESS_ATR_VOL"
+                  }
+                ],
+                "operator": "LE"
+              },
+              {
+                "args": [
+                  {
+                    "field": "vol_ratio"
+                  },
+                  {
+                    "parameter_id": "V4_04_COMPRESS_ATR_VOL"
+                  }
+                ],
+                "operator": "LE"
+              },
+              {
+                "field": "minimum_liquidity"
+              }
+            ],
+            "operator": "AND"
+          }
+        },
+        {
+          "value": "NORMAL",
+          "when": {
+            "constant": true
+          }
+        }
+      ],
+      "else": "UNKNOWN_IF_REQUIRED_INPUT_MISSING_ELSE_FINAL_BRANCH",
+      "operator": "FIRST_TRUE"
+    },
+    "EXTENSION_RISK_V1": {
+      "branches": [
+        {
+          "value": "EXTREME",
+          "when": {
+            "args": [
+              {
+                "field": "bias20_atr"
+              },
+              {
+                "parameter_id": "V4_04_EXTENSION_EXTREME"
+              }
+            ],
+            "operator": "GE"
+          }
+        },
+        {
+          "value": "HIGH",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "bias20_atr"
+                  },
+                  {
+                    "parameter_id": "V4_04_EXTENSION_HIGH"
+                  }
+                ],
+                "operator": "GE"
+              },
+              {
+                "args": [
+                  {
+                    "args": [
+                      {
+                        "field": "ret5"
+                      },
+                      {
+                        "args": [
+                          {
+                            "args": [
+                              {
+                                "parameter_id": "V4_04_EXTENSION_RET5_ATR"
+                              },
+                              {
+                                "field": "atr20"
+                              }
+                            ],
+                            "operator": "MUL"
+                          },
+                          {
+                            "field": "close"
+                          }
+                        ],
+                        "operator": "DIV"
+                      }
+                    ],
+                    "operator": "GE"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "amount_ratio20"
+                      },
+                      {
+                        "parameter_id": "V4_04_EXTENSION_AMOUNT"
+                      }
+                    ],
+                    "operator": "GE"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "ret1"
+                      },
+                      {
+                        "constant": 0
+                      }
+                    ],
+                    "operator": "LE"
+                  }
+                ],
+                "operator": "AND"
+              }
+            ],
+            "operator": "OR"
+          }
+        },
+        {
+          "value": "MEDIUM",
+          "when": {
+            "args": [
+              {
+                "field": "bias20_atr"
+              },
+              {
+                "parameter_id": "V4_04_EXTENSION_MEDIUM"
+              }
+            ],
+            "operator": "GE"
+          }
+        },
+        {
+          "value": "LOW",
+          "when": {
+            "constant": true
+          }
+        }
+      ],
+      "else": "UNKNOWN_IF_REQUIRED_INPUT_MISSING_ELSE_FINAL_BRANCH",
+      "operator": "FIRST_TRUE"
+    },
+    "EXTENSION_RISK_V1.severe": {
+      "args": [
+        {
+          "field": "core_extension_risk"
+        },
+        {
+          "constant": "EXTREME"
+        }
+      ],
+      "operator": "EQ",
+      "unknown_policy": "UNKNOWN_IF_RISK_UNKNOWN"
+    },
+    "MARKET_REGIME_V1.regime_ui": {
+      "candidate": {
+        "branches": [
+          {
+            "value": "CAPITULATION",
+            "when": {
+              "args": [
+                {
+                  "args": [
+                    {
+                      "field": "trend_axis"
+                    },
+                    {
+                      "constant": "WEAK"
+                    }
+                  ],
+                  "operator": "EQ"
+                },
+                {
+                  "args": [
+                    {
+                      "field": "stress_level"
+                    },
+                    {
+                      "constant": "HIGH"
+                    }
+                  ],
+                  "operator": "EQ"
+                }
+              ],
+              "operator": "AND"
+            }
+          },
+          {
+            "value": "RECOVERY_ATTEMPT",
+            "when": {
+              "args": [
+                {
+                  "args": [
+                    {
+                      "field": "trend_axis"
+                    },
+                    {
+                      "constant": "WEAK"
+                    }
+                  ],
+                  "operator": "EQ"
+                },
+                {
+                  "args": [
+                    {
+                      "field": "breadth_axis"
+                    },
+                    {
+                      "constant": "IMPROVING"
+                    }
+                  ],
+                  "operator": "EQ"
+                },
+                {
+                  "args": [
+                    {
+                      "field": "stress_change"
+                    },
+                    {
+                      "constant": "DECLINING"
+                    }
+                  ],
+                  "operator": "EQ"
+                }
+              ],
+              "operator": "AND"
+            }
+          },
+          {
+            "value": "RISK_ON",
+            "when": {
+              "args": [
+                {
+                  "args": [
+                    {
+                      "field": "trend_axis"
+                    },
+                    {
+                      "constant": "STRONG"
+                    }
+                  ],
+                  "operator": "EQ"
+                },
+                {
+                  "args": [
+                    {
+                      "args": [
+                        {
+                          "field": "breadth_axis"
+                        },
+                        {
+                          "constant": "DETERIORATING"
+                        }
+                      ],
+                      "operator": "EQ"
+                    }
+                  ],
+                  "operator": "NOT"
+                },
+                {
+                  "args": [
+                    {
+                      "field": "stress_level"
+                    },
+                    {
+                      "constant": "LOW"
+                    }
+                  ],
+                  "operator": "EQ"
+                }
+              ],
+              "operator": "AND"
+            }
+          },
+          {
+            "value": "RISK_OFF",
+            "when": {
+              "args": [
+                {
+                  "args": [
+                    {
+                      "field": "trend_axis"
+                    },
+                    {
+                      "constant": "WEAK"
+                    }
+                  ],
+                  "operator": "EQ"
+                },
+                {
+                  "args": [
+                    {
+                      "field": "stress_level"
+                    },
+                    {
+                      "constant": "HIGH"
+                    }
+                  ],
+                  "operator": "EQ"
+                }
+              ],
+              "operator": "OR"
+            }
+          },
+          {
+            "value": "NEUTRAL",
+            "when": {
+              "constant": true
+            }
+          }
+        ],
+        "else": "UNKNOWN_IF_REQUIRED_INPUT_MISSING_ELSE_FINAL_BRANCH",
+        "operator": "FIRST_TRUE"
+      },
+      "immediate_labels": [
+        "CAPITULATION"
+      ],
+      "operator": "HYSTERETIC_FIRST_TRUE",
+      "required_axes": [
+        "trend_axis",
+        "breadth_axis",
+        "participation_axis",
+        "stress_level",
+        "stress_change"
+      ],
+      "switch_sessions_parameter_id": {
+        "parameter_id": "V4_04_REGIME_SWITCH_SESSIONS"
+      },
+      "unknown_output": "UNKNOWN_WITH_LAST_KNOWN"
+    },
+    "MA_STRUCTURE_V1": {
+      "branches": [
+        {
+          "value": "BULL_ALIGNED",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "ma5"
+                  },
+                  {
+                    "field": "ma10"
+                  }
+                ],
+                "operator": "GT"
+              },
+              {
+                "args": [
+                  {
+                    "field": "ma10"
+                  },
+                  {
+                    "field": "ma20"
+                  }
+                ],
+                "operator": "GT"
+              },
+              {
+                "args": [
+                  {
+                    "field": "slope20"
+                  },
+                  {
+                    "constant": 0
+                  }
+                ],
+                "operator": "GT"
+              }
+            ],
+            "operator": "AND"
+          }
+        },
+        {
+          "value": "BEAR_ALIGNED",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "ma5"
+                  },
+                  {
+                    "field": "ma10"
+                  }
+                ],
+                "operator": "LT"
+              },
+              {
+                "args": [
+                  {
+                    "field": "ma10"
+                  },
+                  {
+                    "field": "ma20"
+                  }
+                ],
+                "operator": "LT"
+              },
+              {
+                "args": [
+                  {
+                    "field": "slope20"
+                  },
+                  {
+                    "constant": 0
+                  }
+                ],
+                "operator": "LT"
+              }
+            ],
+            "operator": "AND"
+          }
+        },
+        {
+          "value": "BULL_TRANSITION",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "ma5"
+                  },
+                  {
+                    "field": "ma20"
+                  }
+                ],
+                "operator": "GT"
+              },
+              {
+                "args": [
+                  {
+                    "field": "slope20"
+                  },
+                  {
+                    "constant": 0
+                  }
+                ],
+                "operator": "GE"
+              }
+            ],
+            "operator": "AND"
+          }
+        },
+        {
+          "value": "BEAR_TRANSITION",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "ma5"
+                  },
+                  {
+                    "field": "ma20"
+                  }
+                ],
+                "operator": "LT"
+              },
+              {
+                "args": [
+                  {
+                    "field": "slope20"
+                  },
+                  {
+                    "constant": 0
+                  }
+                ],
+                "operator": "LE"
+              }
+            ],
+            "operator": "AND"
+          }
+        },
+        {
+          "value": "MIXED",
+          "when": {
+            "constant": true
+          }
+        }
+      ],
+      "else": "UNKNOWN_IF_REQUIRED_INPUT_MISSING_ELSE_FINAL_BRANCH",
+      "operator": "FIRST_TRUE"
+    },
+    "POSITION_STATE_V1": {
+      "branches": [
+        {
+          "value": "EXTENDED",
+          "when": {
+            "args": [
+              {
+                "field": "bias20_atr"
+              },
+              {
+                "parameter_id": "V4_04_POSITION_EXTENDED_BIAS"
+              }
+            ],
+            "operator": "GE"
+          }
+        },
+        {
+          "value": "HIGH_ZONE",
+          "when": {
+            "args": [
+              {
+                "field": "pos60"
+              },
+              {
+                "parameter_id": "V4_04_POSITION_HIGH"
+              }
+            ],
+            "operator": "GE"
+          }
+        },
+        {
+          "value": "MID_HIGH",
+          "when": {
+            "args": [
+              {
+                "field": "pos60"
+              },
+              {
+                "parameter_id": "V4_04_POSITION_MID_HIGH"
+              }
+            ],
+            "operator": "GE"
+          }
+        },
+        {
+          "value": "MID_ZONE",
+          "when": {
+            "args": [
+              {
+                "field": "pos60"
+              },
+              {
+                "parameter_id": "V4_04_POSITION_MID"
+              }
+            ],
+            "operator": "GE"
+          }
+        },
+        {
+          "value": "MID_LOW",
+          "when": {
+            "args": [
+              {
+                "field": "pos60"
+              },
+              {
+                "parameter_id": "V4_04_POSITION_MID_LOW"
+              }
+            ],
+            "operator": "GE"
+          }
+        },
+        {
+          "value": "LOW_ZONE",
+          "when": {
+            "constant": true
+          }
+        }
+      ],
+      "else": "UNKNOWN_IF_REQUIRED_INPUT_MISSING_ELSE_FINAL_BRANCH",
+      "operator": "FIRST_TRUE"
+    },
+    "POSITION_STATE_V1.drawdown": {
+      "branches": {
+        "branches": [
+          {
+            "value": "SHALLOW",
+            "when": {
+              "args": [
+                {
+                  "field": "drawdown"
+                },
+                {
+                  "parameter_id": "V4_04_DRAWDOWN_SHALLOW"
+                }
+              ],
+              "operator": "GE"
+            }
+          },
+          {
+            "value": "MODERATE",
+            "when": {
+              "args": [
+                {
+                  "field": "drawdown"
+                },
+                {
+                  "parameter_id": "V4_04_DRAWDOWN_MODERATE"
+                }
+              ],
+              "operator": "GE"
+            }
+          },
+          {
+            "value": "DEEP",
+            "when": {
+              "constant": true
+            }
+          }
+        ],
+        "else": "UNKNOWN_IF_REQUIRED_INPUT_MISSING_ELSE_FINAL_BRANCH",
+        "operator": "FIRST_TRUE"
+      },
+      "drawdown_ast": {
+        "args": [
+          {
+            "args": [
+              {
+                "field": "close"
+              },
+              {
+                "field": "hhvN"
+              }
+            ],
+            "operator": "DIV"
+          },
+          {
+            "constant": 1
+          }
+        ],
+        "operator": "SUB"
+      },
+      "horizons": [
+        20,
+        60
+      ],
+      "operator": "CLASSIFY_DRAWDOWN"
+    },
+    "POSITION_STATE_V1.near_high": {
+      "branches": {
+        "branches": [
+          {
+            "value": "ABOVE_PRIOR_HIGH",
+            "when": {
+              "args": [
+                {
+                  "field": "distance"
+                },
+                {
+                  "constant": 0
+                }
+              ],
+              "operator": "LT"
+            }
+          },
+          {
+            "value": "NEAR",
+            "when": {
+              "args": [
+                {
+                  "field": "distance"
+                },
+                {
+                  "parameter_id": "V4_04_NEAR_HIGH_ATR"
+                }
+              ],
+              "operator": "LE"
+            }
+          },
+          {
+            "value": "BELOW",
+            "when": {
+              "constant": true
+            }
+          }
+        ],
+        "else": "UNKNOWN_IF_REQUIRED_INPUT_MISSING_ELSE_FINAL_BRANCH",
+        "operator": "FIRST_TRUE"
+      },
+      "distance_ast": {
+        "args": [
+          {
+            "args": [
+              {
+                "field": "prior_highN"
+              },
+              {
+                "field": "close"
+              }
+            ],
+            "operator": "SUB"
+          },
+          {
+            "field": "atr20"
+          }
+        ],
+        "operator": "DIV"
+      },
+      "horizons": [
+        20,
+        60
+      ],
+      "operator": "CLASSIFY_DISTANCE"
+    },
+    "RELATIVE_STATE_V1": {
+      "branches": [
+        {
+          "value": "ACTIVE_EMERGENCE",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "rps20_delta3"
+                  },
+                  {
+                    "parameter_id": "V4_04_RELATIVE_ACTIVE_DELTA"
+                  }
+                ],
+                "operator": "GE"
+              },
+              {
+                "args": [
+                  {
+                    "args": [
+                      {
+                        "field": "compression_state"
+                      },
+                      {
+                        "set": [
+                          "COMPRESSING",
+                          "COMPRESSING_STRONG"
+                        ]
+                      }
+                    ],
+                    "operator": "IN"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "ma_structure_state"
+                      },
+                      {
+                        "set": [
+                          "BULL_TRANSITION",
+                          "BULL_ALIGNED"
+                        ]
+                      }
+                    ],
+                    "operator": "IN"
+                  }
+                ],
+                "operator": "OR"
+              }
+            ],
+            "operator": "AND"
+          }
+        },
+        {
+          "value": "PASSIVE_RESILIENCE",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "rel_market_1"
+                  },
+                  {
+                    "constant": 0
+                  }
+                ],
+                "operator": "GT"
+              },
+              {
+                "args": [
+                  {
+                    "field": "rps20_delta3"
+                  },
+                  {
+                    "constant": 0
+                  }
+                ],
+                "operator": "LE"
+              }
+            ],
+            "operator": "AND"
+          }
+        },
+        {
+          "value": "LEADING_ACCELERATING",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "rps20"
+                  },
+                  {
+                    "parameter_id": "V4_04_RELATIVE_LEADING_RPS"
+                  }
+                ],
+                "operator": "GE"
+              },
+              {
+                "args": [
+                  {
+                    "field": "rps20_delta3"
+                  },
+                  {
+                    "constant": 0
+                  }
+                ],
+                "operator": "GT"
+              }
+            ],
+            "operator": "AND"
+          }
+        },
+        {
+          "value": "LEADING_STABLE",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "rps20"
+                  },
+                  {
+                    "parameter_id": "V4_04_RELATIVE_LEADING_RPS"
+                  }
+                ],
+                "operator": "GE"
+              },
+              {
+                "args": [
+                  {
+                    "field": "rps20_delta3"
+                  },
+                  {
+                    "args": [
+                      {
+                        "parameter_id": "V4_04_RELATIVE_IMPROVING_DELTA"
+                      }
+                    ],
+                    "operator": "NEG"
+                  }
+                ],
+                "operator": "GE"
+              }
+            ],
+            "operator": "AND"
+          }
+        },
+        {
+          "value": "IMPROVING",
+          "when": {
+            "args": [
+              {
+                "field": "rps20_delta3"
+              },
+              {
+                "parameter_id": "V4_04_RELATIVE_IMPROVING_DELTA"
+              }
+            ],
+            "operator": "GT"
+          }
+        },
+        {
+          "value": "WEAKENING",
+          "when": {
+            "args": [
+              {
+                "field": "rps20_delta3"
+              },
+              {
+                "args": [
+                  {
+                    "parameter_id": "V4_04_RELATIVE_IMPROVING_DELTA"
+                  }
+                ],
+                "operator": "NEG"
+              }
+            ],
+            "operator": "LT"
+          }
+        },
+        {
+          "value": "LAGGING",
+          "when": {
+            "args": [
+              {
+                "field": "rps20"
+              },
+              {
+                "parameter_id": "V4_04_RELATIVE_LAGGING_RPS"
+              }
+            ],
+            "operator": "LT"
+          }
+        },
+        {
+          "value": "NEUTRAL",
+          "when": {
+            "constant": true
+          }
+        }
+      ],
+      "else": "UNKNOWN_IF_REQUIRED_INPUT_MISSING_ELSE_FINAL_BRANCH",
+      "operator": "FIRST_TRUE"
+    },
+    "TREND_STATE_V1.closed_period": {
+      "down": {
+        "args": [
+          {
+            "args": [
+              {
+                "field": "close"
+              },
+              {
+                "field": "ma_current"
+              }
+            ],
+            "operator": "LT"
+          },
+          {
+            "args": [
+              {
+                "field": "ma_current"
+              },
+              {
+                "field": "ma_previous"
+              }
+            ],
+            "operator": "LT"
+          }
+        ],
+        "operator": "AND"
+      },
+      "else": "FLAT",
+      "monthly_window_parameter_id": {
+        "parameter_id": "V4_04_MONTHLY_MA_WINDOW"
+      },
+      "operator": "CLOSED_PERIOD_TREND",
+      "required_period_view": "CLOSED_ONLY",
+      "up": {
+        "args": [
+          {
+            "args": [
+              {
+                "field": "close"
+              },
+              {
+                "field": "ma_current"
+              }
+            ],
+            "operator": "GT"
+          },
+          {
+            "args": [
+              {
+                "field": "ma_current"
+              },
+              {
+                "field": "ma_previous"
+              }
+            ],
+            "operator": "GT"
+          }
+        ],
+        "operator": "AND"
+      },
+      "weekly_window_parameter_id": {
+        "parameter_id": "V4_04_WEEKLY_MA_WINDOW"
+      }
+    },
+    "TREND_STATE_V1.daily": {
+      "branches": [
+        {
+          "value": "DOWNTREND_STRONG",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "close"
+                  },
+                  {
+                    "field": "ma20"
+                  }
+                ],
+                "operator": "LT"
+              },
+              {
+                "args": [
+                  {
+                    "field": "slope20"
+                  },
+                  {
+                    "args": [
+                      {
+                        "parameter_id": "V4_04_SLOPE_DEADBAND_ATR"
+                      }
+                    ],
+                    "operator": "NEG"
+                  }
+                ],
+                "operator": "LT"
+              },
+              {
+                "args": [
+                  {
+                    "field": "slope60"
+                  },
+                  {
+                    "args": [
+                      {
+                        "parameter_id": "V4_04_SLOPE_DEADBAND_ATR"
+                      }
+                    ],
+                    "operator": "NEG"
+                  }
+                ],
+                "operator": "LT"
+              },
+              {
+                "field": "ll_progress"
+              }
+            ],
+            "operator": "AND"
+          }
+        },
+        {
+          "value": "UPTREND_STRONG",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "close"
+                  },
+                  {
+                    "field": "ma20"
+                  }
+                ],
+                "operator": "GT"
+              },
+              {
+                "args": [
+                  {
+                    "field": "slope20"
+                  },
+                  {
+                    "parameter_id": "V4_04_SLOPE_DEADBAND_ATR"
+                  }
+                ],
+                "operator": "GT"
+              },
+              {
+                "args": [
+                  {
+                    "args": [
+                      {
+                        "field": "close"
+                      },
+                      {
+                        "field": "ma60"
+                      }
+                    ],
+                    "operator": "GT"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "slope60"
+                      },
+                      {
+                        "parameter_id": "V4_04_SLOPE_DEADBAND_ATR"
+                      }
+                    ],
+                    "operator": "GT"
+                  }
+                ],
+                "operator": "OR"
+              },
+              {
+                "field": "hh_progress"
+              },
+              {
+                "args": [
+                  {
+                    "field": "core_price_damage"
+                  }
+                ],
+                "operator": "NOT"
+              }
+            ],
+            "operator": "AND"
+          }
+        },
+        {
+          "value": "DOWNTREND",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "close"
+                  },
+                  {
+                    "field": "ma20"
+                  }
+                ],
+                "operator": "LT"
+              },
+              {
+                "args": [
+                  {
+                    "field": "slope20"
+                  },
+                  {
+                    "args": [
+                      {
+                        "parameter_id": "V4_04_SLOPE_DEADBAND_ATR"
+                      }
+                    ],
+                    "operator": "NEG"
+                  }
+                ],
+                "operator": "LT"
+              }
+            ],
+            "operator": "AND"
+          }
+        },
+        {
+          "value": "UPTREND",
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "close"
+                  },
+                  {
+                    "field": "ma20"
+                  }
+                ],
+                "operator": "GT"
+              },
+              {
+                "args": [
+                  {
+                    "field": "slope20"
+                  },
+                  {
+                    "parameter_id": "V4_04_SLOPE_DEADBAND_ATR"
+                  }
+                ],
+                "operator": "GT"
+              },
+              {
+                "args": [
+                  {
+                    "field": "core_price_damage"
+                  }
+                ],
+                "operator": "NOT"
+              }
+            ],
+            "operator": "AND"
+          }
+        },
+        {
+          "value": "SIDEWAYS_WEAK",
+          "when": {
+            "args": [
+              {
+                "field": "close"
+              },
+              {
+                "field": "ma20"
+              }
+            ],
+            "operator": "LT"
+          }
+        },
+        {
+          "value": "SIDEWAYS_STRONG",
+          "when": {
+            "args": [
+              {
+                "field": "close"
+              },
+              {
+                "field": "ma20"
+              }
+            ],
+            "operator": "GT"
+          }
+        },
+        {
+          "value": "SIDEWAYS",
+          "when": {
+            "constant": true
+          }
+        }
+      ],
+      "else": "UNKNOWN_IF_REQUIRED_INPUT_MISSING_ELSE_FINAL_BRANCH",
+      "operator": "FIRST_TRUE"
+    },
+    "V4_04_DERIVED_PRIMITIVES_V1": {
+      "bias20_atr": {
+        "args": [
+          {
+            "args": [
+              {
+                "field": "close"
+              },
+              {
+                "field": "ma20"
+              }
+            ],
+            "operator": "SUB"
+          },
+          {
+            "field": "atr20"
+          }
+        ],
+        "operator": "DIV",
+        "zero_denominator": "UNKNOWN"
+      },
+      "dist_high20_atr": {
+        "args": [
+          {
+            "args": [
+              {
+                "field": "prior_high20"
+              },
+              {
+                "field": "close"
+              }
+            ],
+            "operator": "SUB"
+          },
+          {
+            "field": "atr20"
+          }
+        ],
+        "operator": "DIV",
+        "zero_denominator": "UNKNOWN"
+      },
+      "ma10": {
+        "include_current": true,
+        "operator": "MEAN",
+        "source": "accepted_QFQ_close",
+        "window_contract_id": "TECHNICAL_BAR_WINDOW_V1",
+        "window_parameter_id": {
+          "parameter_id": "V4_04_MA10_WINDOW"
+        }
+      },
+      "minimum_liquidity": {
+        "args": [
+          {
+            "include_current": false,
+            "operator": "MEAN",
+            "source": "accepted_raw_CNY_amount",
+            "window_parameter_id": {
+              "parameter_id": "V4_04_PRIOR_AMOUNT_WINDOW"
+            }
+          },
+          {
+            "parameter_id": "V4_04_MINIMUM_LIQUIDITY_CNY"
+          }
+        ],
+        "operator": "GE"
+      },
+      "pos250": {
+        "args": [
+          {
+            "args": [
+              {
+                "field": "close"
+              },
+              {
+                "field": "LLV250"
+              }
+            ],
+            "operator": "SUB"
+          },
+          {
+            "args": [
+              {
+                "field": "HHV250"
+              },
+              {
+                "field": "LLV250"
+              }
+            ],
+            "operator": "SUB"
+          }
+        ],
+        "operator": "DIV",
+        "window_parameter_id": {
+          "parameter_id": "V4_04_POS250_WINDOW"
+        },
+        "zero_denominator": "UNKNOWN"
+      }
+    }
+  },
+  "sections": [
+    "10B",
+    "10C",
+    "10D",
+    "10E",
+    "10F",
+    "10G",
+    "10I",
+    "72",
+    "73",
+    "78",
+    "81.4",
+    "87A"
+  ],
+  "unknown_policy": "three_valued_branch_required; UNKNOWN_if_required_input_unavailable",
+  "version": "1.0.0"
+}

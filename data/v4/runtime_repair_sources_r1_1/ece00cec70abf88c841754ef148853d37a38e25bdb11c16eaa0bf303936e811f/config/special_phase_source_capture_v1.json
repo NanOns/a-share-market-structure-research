@@ -1,0 +1,16 @@
+{
+  "contract_id": "SPECIAL_PHASE_SOURCE_CAPTURE_V1",
+  "version": "1.0.0",
+  "allowed_schemes": ["https"],
+  "allowed_hosts": [
+    "big5.sse.com.cn",
+    "disc.static.szse.cn",
+    "static.cninfo.com.cn",
+    "static.sse.com.cn"
+  ],
+  "expected_content_type": "application/pdf",
+  "maximum_request_bytes": 8388608,
+  "timeout_seconds": 20,
+  "redirect_policy": "HTTPS_HOST_MUST_REMAIN_ALLOWLISTED",
+  "path_policy": "PROJECT_ROOT_ONLY_ATOMIC_IMMUTABLE_CAPTURE"
+}

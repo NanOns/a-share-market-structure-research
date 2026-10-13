@@ -1,0 +1,22 @@
+{
+  "contract_id": "BAOSTOCK_DATED_ROSTER_COMPLETENESS_V1",
+  "version": "1.0.0",
+  "session_count_required": 786,
+  "suspicion_triggers": {
+    "exact_provider_page_multiple": 2000,
+    "absolute_day_over_day_drop": 500,
+    "large_lifecycle_count_gap": 500
+  },
+  "revalidation": {
+    "fresh_sessions_per_suspicious_day": 2,
+    "requery_digest_must_match": true,
+    "full_market_daily_method": "query_daily_history_k_AStock",
+    "required_traded_scope_must_be_subset_of_roster": true,
+    "roster_must_cover_active_required_lifecycle_count": true
+  },
+  "limitations": [
+    "Provider page count is diagnostic metadata and is not completeness evidence.",
+    "A row count not divisible by 2000 is not completeness evidence by itself.",
+    "Daily bar missingness is not a V4-01 membership rejection criterion."
+  ]
+}

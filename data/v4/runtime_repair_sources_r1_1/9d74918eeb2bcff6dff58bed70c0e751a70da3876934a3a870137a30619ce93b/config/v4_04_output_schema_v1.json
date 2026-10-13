@@ -1,0 +1,65 @@
+{
+  "allowed_component_status": [
+    "READY",
+    "PARTIAL",
+    "UNKNOWN_DATA",
+    "NOT_IMPLEMENTED",
+    "NOT_APPLICABLE",
+    "PENDING_SOURCE",
+    "DEGRADED"
+  ],
+  "contract_id": "V4_04_OUTPUT_SCHEMA_V1",
+  "cutoff": "2026-09-24",
+  "derived_envelope": [
+    "value",
+    "quality",
+    "unknown_reason",
+    "contract_id",
+    "parameter_set_id",
+    "input_digest",
+    "window_identity",
+    "source_digest",
+    "contract_digest",
+    "output_digest",
+    "actual_count",
+    "calendar_span"
+  ],
+  "field_registry": "config/v4_04_field_registry_v1.json",
+  "required_boards": [
+    "SH_MAIN",
+    "SZ_MAIN",
+    "CHINEXT",
+    "STAR"
+  ],
+  "required_envelopes": [
+    "states",
+    "derived_fields",
+    "primitive_quality",
+    "profile_component_status",
+    "profile_quality",
+    "source_asof",
+    "technical_window_identity",
+    "source_digest",
+    "output_digest"
+  ],
+  "required_row_identity": [
+    "security_id",
+    "symbol",
+    "trade_date",
+    "board",
+    "source_cutoff",
+    "publication_id"
+  ],
+  "state_envelope": [
+    "value",
+    "contract_id",
+    "parameter_set_id",
+    "evidence",
+    "input_digest",
+    "source_digest",
+    "contract_digest",
+    "output_digest",
+    "unknown_reason"
+  ],
+  "version": "1.0.0"
+}

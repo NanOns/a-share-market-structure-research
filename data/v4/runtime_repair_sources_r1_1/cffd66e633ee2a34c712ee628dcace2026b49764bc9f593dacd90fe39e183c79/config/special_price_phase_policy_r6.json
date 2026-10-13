@@ -1,0 +1,132 @@
+{
+  "contract_id": "SPECIAL_PRICE_PHASE_POLICY_V2",
+  "version": "2.0.0",
+  "effective_date_semantics": "inclusive",
+  "policies": [
+    {
+      "policy_id": "REGULAR_EFFECTIVE_BOARD_RULE_R1",
+      "phase": "REGULAR",
+      "valid_from": "2023-07-04",
+      "valid_to": null,
+      "action": "DELEGATE_TO_EFFECTIVE_STANDARD_BOARD_RULE"
+    },
+    {
+      "policy_id": "IPO_FIRST_5_TRADING_DAYS_R1",
+      "phase": "IPO_FIRST_5_TRADING_DAYS",
+      "valid_from": "2023-07-04",
+      "valid_to": null,
+      "action": "NO_LIMIT",
+      "trading_sessions_including_first_day": 5,
+      "reason": "IPO_FIRST_5_TRADING_DAYS",
+      "reference_basis": "LISTING_PHASE",
+      "rule_id": null
+    },
+    {
+      "policy_id": "DELISTING_FIRST_DAY_R1",
+      "phase": "DELISTING_FIRST_DAY",
+      "valid_from": "2023-07-04",
+      "valid_to": null,
+      "action": "NO_LIMIT",
+      "trading_sessions_including_first_day": 15,
+      "reason": "DELISTING_FIRST_DAY_NO_LIMIT",
+      "reference_basis": "OFFICIAL_DELISTING_PHASE",
+      "rule_id": "SPECIAL_PRICE_PHASE_V1_DELISTING_FIRST_DAY"
+    },
+    {
+      "policy_id": "DELISTING_PERIOD_SH_MAIN_R1",
+      "phase": "DELISTING_PERIOD",
+      "board_scope": "SH_MAIN",
+      "valid_from": "2023-07-04",
+      "valid_to": null,
+      "trading_sessions_including_first_day": 15,
+      "limit_ratio": "0.10",
+      "risk_status_override": "NORMAL",
+      "tick": "0.01",
+      "rounding_mode": "HALF_UP",
+      "minimum_price_movement_ticks": 1,
+      "rule_id": "SSE_MAIN_NORMAL_20230704_V1",
+      "action": "APPLY_LIMIT"
+    },
+    {
+      "policy_id": "DELISTING_PERIOD_SZ_MAIN_R1",
+      "phase": "DELISTING_PERIOD",
+      "board_scope": "SZ_MAIN",
+      "valid_from": "2023-07-04",
+      "valid_to": null,
+      "trading_sessions_including_first_day": 15,
+      "limit_ratio": "0.10",
+      "risk_status_override": "NORMAL",
+      "tick": "0.01",
+      "rounding_mode": "HALF_UP",
+      "minimum_price_movement_ticks": 1,
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "action": "APPLY_LIMIT"
+    },
+    {
+      "policy_id": "DELISTING_PERIOD_CHINEXT_R1",
+      "phase": "DELISTING_PERIOD",
+      "board_scope": "CHINEXT",
+      "valid_from": "2023-07-04",
+      "valid_to": null,
+      "trading_sessions_including_first_day": 15,
+      "limit_ratio": "0.20",
+      "risk_status_override": "NORMAL",
+      "tick": "0.01",
+      "rounding_mode": "HALF_UP",
+      "minimum_price_movement_ticks": 1,
+      "rule_id": "SZSE_GROWTH_NORMAL_20230704_V1",
+      "action": "APPLY_LIMIT"
+    },
+    {
+      "policy_id": "DELISTING_PERIOD_STAR_R1",
+      "phase": "DELISTING_PERIOD",
+      "board_scope": "STAR",
+      "valid_from": "2023-07-04",
+      "valid_to": null,
+      "trading_sessions_including_first_day": 15,
+      "limit_ratio": "0.20",
+      "risk_status_override": "NORMAL",
+      "tick": "0.01",
+      "rounding_mode": "HALF_UP",
+      "minimum_price_movement_ticks": 1,
+      "rule_id": "SSE_STAR_NORMAL_20230704_V1",
+      "action": "APPLY_LIMIT"
+    },
+    {
+      "policy_id": "RELISTING_FIRST_DAY_R1",
+      "phase": "RELISTING_FIRST_DAY",
+      "valid_from": "2023-07-04",
+      "valid_to": null,
+      "action": "NO_LIMIT"
+    },
+    {
+      "policy_id": "SPECIAL_REFERENCE_RESET_R1",
+      "phase": "SPECIAL_REFERENCE_RESET",
+      "valid_from": "2023-07-04",
+      "valid_to": null,
+      "action": "USE_OFFICIAL_REFERENCE_WITH_STANDARD_BOARD_RULE",
+      "missing_reference_reason": "SPECIAL_REFERENCE_PRICE_UNAVAILABLE"
+    },
+    {
+      "policy_id": "UNKNOWN_SPECIAL_PHASE_R1",
+      "phase": "UNKNOWN_SPECIAL_PHASE",
+      "valid_from": "2023-07-04",
+      "valid_to": null,
+      "action": "FAIL_CLOSED",
+      "reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    }
+  ],
+  "standard_rule_scope_map": [
+    {"board_scope": "SH_MAIN", "exchange": "SH", "board": "MAIN", "valid_from": "2023-07-04", "valid_to": null},
+    {"board_scope": "SZ_MAIN", "exchange": "SZ", "board": "MAIN", "valid_from": "2023-07-04", "valid_to": null},
+    {"board_scope": "CHINEXT", "exchange": "SZ", "board": "GROWTH", "valid_from": "2023-07-04", "valid_to": null},
+    {"board_scope": "STAR", "exchange": "SH", "board": "STAR", "valid_from": "2023-07-04", "valid_to": null}
+  ],
+  "formula_contract": {
+    "contract_id": "SAFE_DECIMAL_FORMULA_V1",
+    "operators": ["CONST", "ADD", "SUB", "MUL", "DIV"],
+    "maximum_depth": 32,
+    "maximum_nodes": 128
+  },
+  "prohibitions": ["NO_SECURITY_SPECIFIC_BRANCHES", "NO_TDX_WRITES", "NO_EXTERNAL_ADJUSTMENT_SERVICE", "NO_FUTURE_DATA"]
+}

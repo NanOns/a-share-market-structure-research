@@ -1,0 +1,58 @@
+{
+  "accepted_sources": [
+    "V4-05 Core Profile/factors",
+    "V4-07 Base Seed",
+    "accepted identity/universe",
+    "accepted target publication context"
+  ],
+  "authority": {
+    "master": {
+      "byte_count": 224998,
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+    },
+    "sections": [
+      "22",
+      "23",
+      "24",
+      "78"
+    ],
+    "task": {
+      "byte_count": 12598,
+      "path": "docs/evidence/V4_08_ACCEPTED_HEAD_PROMOTION_AND_V4_09_STOCK_PREWATCH_ENTRY_TASK_20260930.md",
+      "sha256": "611e120cc9bce1c4fcfea5bd8f41e305beaaee11204f0174b749cc7920b3ed66"
+    }
+  },
+  "context_policy": "Accepted V4-08 sequencing only; context never gates Stock raw.",
+  "contract_id": "STOCK_PREWATCH_V1",
+  "forbidden_inputs": [
+    "same-day Sector",
+    "Rotation",
+    "B2",
+    "D2",
+    "State Reducer",
+    "Confirmation",
+    "Anchor",
+    "Support",
+    "Radar",
+    "Focus",
+    "UI",
+    "future outcome",
+    "forward return"
+  ],
+  "formula": "base_seed_state AND mandatory_core_quality_READY",
+  "mandatory_quality_contract": "MANDATORY_CORE_QUALITY_V1",
+  "next_stage": "Independent external reaudit; no V4-09 Accepted Head",
+  "priority_contract": "PRIORITY_V1",
+  "production_permission": false,
+  "raw_logic": {
+    "fields": [
+      "base_seed_state",
+      "mandatory_core_quality_ready"
+    ],
+    "op": "UNKNOWN_DOMINANT_AND"
+  },
+  "status": "FROZEN_CANDIDATE",
+  "unknown_priority": "UNKNOWN_BUCKET for unresolved raw or eligible with unresolved axis; FALSE is NOT_ELIGIBLE; never alter raw.",
+  "version": "1.0.0"
+}

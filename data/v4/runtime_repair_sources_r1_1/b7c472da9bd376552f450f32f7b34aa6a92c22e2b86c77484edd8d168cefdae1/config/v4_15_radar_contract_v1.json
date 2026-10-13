@@ -1,0 +1,53 @@
+{
+  "complete_ledger": true,
+  "contract_id": "RADAR_V1",
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "36",
+      "39",
+      "41G",
+      "45",
+      "45A"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "display_focus_annotations": "DOWNSTREAM_NULL_NOT_IMPLEMENTED_NO_FEEDBACK_OR_PERMISSION",
+  "display_priority": "RISK_INVALIDATION_THEN_CONFIRMATION_UPGRADE_THEN_NEW_PREWATCH_THEN_OTHER; ACCEPTED_PRIORITY_V1; STABLE_ENTITY_ID",
+  "fields": [
+    "daily_ledger",
+    "logical_event",
+    "event_observation",
+    "trade_date",
+    "eligibility_state",
+    "eligibility_rank",
+    "priority_bucket",
+    "priority_rank",
+    "display_rank",
+    "focus_activation_state",
+    "focus_activation_reason",
+    "max_source_trade_date",
+    "publication_digest"
+  ],
+  "focus": false,
+  "forbidden_inputs": [
+    "Focus",
+    "UI Top-K",
+    "Forward outcome",
+    "FEP prediction"
+  ],
+  "input_authority": [
+    "V4_14_ACCEPTED_PUBLICATION",
+    "V4_13_ACCEPTED_PROFILE"
+  ],
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "owner_recomputation": false,
+  "production": false,
+  "projection": "READ_ONLY_EXACT_OWNER_COPY",
+  "risk_events": "PRESERVE_WHEN_FINAL_ELIGIBILITY_FALSE",
+  "runtime_implemented": false,
+  "shadow": false,
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "version": "1.0.0"
+}

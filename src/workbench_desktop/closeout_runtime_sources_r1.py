@@ -33,3 +33,16 @@ def admitted(root):
         if row['runtime']['sha256']==row['upstream']['sha256']:raise ValueError('CLOSEOUT_DISTINCT_RUNTIME_VERSION_REQUIRED')
         result[row['module_path']]=row
     return result
+
+
+def packaging_versions(root):
+    """Prefer separately admitted exact V2 versions, preserving the old R1 gate."""
+    root=Path(root).resolve()
+    from workbench_analysis.operational_daily_exact_policy_v2 import PATH,verify
+    if not (root/PATH).is_file():return admitted(root),{}
+    # No old repair-set expansion. A new producer has its own immutable policy,
+    # task card, archive hashes and (at runtime) publication admission evidence.
+    policy,_=verify(root,candidate_only=True,verify_loaded=False)
+    versions={b.get('module_path',b['path']):b for b in policy['accepted_algorithm_bindings']}
+    for b in versions.values():checked(root,b)
+    return {},versions

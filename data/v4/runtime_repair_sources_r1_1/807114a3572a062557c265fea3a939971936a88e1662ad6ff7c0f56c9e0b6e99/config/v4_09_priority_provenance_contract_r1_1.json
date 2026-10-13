@@ -1,0 +1,28 @@
+{
+  "authority": {
+    "byte_count": 7295,
+    "path": "docs/evidence/V4_08_PROMOTION_LINEAGE_REPAIR_AND_V4_09_R1_1_PROVENANCE_IMMUTABILITY_TASK_20260930.md",
+    "sha256": "4486530930527e7956bfbb1b133cc1d7ab96b744de519be621de064d7549b48a"
+  },
+  "contract_id": "V4_09_PRIORITY_PROVENANCE_GATE_R1_1",
+  "contract_mismatch_reason": "STATE_PRODUCER_CONTRACT_MISMATCH",
+  "parameter_mismatch_reason": "STATE_PARAMETER_SET_MISMATCH",
+  "priority_only": true,
+  "raw_formula_scope_unchanged": true,
+  "states": {
+    "compression_state": {
+      "contract_id": "COMPRESSION_STATE_V1",
+      "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1"
+    },
+    "core_extension_risk": {
+      "contract_id": "EXTENSION_RISK_V1",
+      "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1"
+    },
+    "ma_structure_state": {
+      "contract_id": "MA_STRUCTURE_V1",
+      "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1"
+    }
+  },
+  "structure_lineage_rule": "Producer identity mismatch in either structure input makes the structure axis UNKNOWN; valid producer with unknown value keeps existing short-circuit axis rules.",
+  "version": "1.0.0"
+}

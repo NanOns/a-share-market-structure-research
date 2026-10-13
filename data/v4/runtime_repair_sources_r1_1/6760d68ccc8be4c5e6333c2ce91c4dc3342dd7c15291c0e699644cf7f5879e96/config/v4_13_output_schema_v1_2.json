@@ -1,0 +1,138 @@
+{
+  "candidate_set_complete": true,
+  "contract_id": "V4_13_OUTPUT_SCHEMA_V1",
+  "current_membership_unknown": "primary_industry=null/UNKNOWN; supporting_concepts=null/UNKNOWN, not []",
+  "field_dependencies": {
+    "algorithmic_support_sector": {
+      "current": [
+        "membership",
+        "loo_b0_raw",
+        "loo_confirmed_raw",
+        "loo_warm_raw",
+        "emergence",
+        "adjusted_seed_width"
+      ],
+      "history": [
+        "ACCEPTED_OWNER_REGISTERED_B0_B2_COMPARE_ENDPOINTS_AND_LOO_LINEAGE"
+      ],
+      "time_role": "T_LOO_SELECTION_WITH_REGISTERED_HISTORY"
+    },
+    "primary_industry": {
+      "current": [
+        "trade_date_valid_membership",
+        "source_revision",
+        "available_at_le_cutoff",
+        "membership_quality"
+      ],
+      "history": [],
+      "time_role": "T_EXACT_MEMBERSHIP_AT_CUTOFF"
+    },
+    "relative_sector_state": {
+      "current": [
+        "membership",
+        "non_target_ret1_ret5",
+        "accepted_stock_relative_required_fields"
+      ],
+      "history": [],
+      "time_role": "T_CURRENT_LOO_RETURNS_AND_ACCEPTED_CORE"
+    },
+    "rotation_structure_enrichment": {
+      "component_dependencies": "ROTATION_OWNER_HISTORY_AND_D1_OWNER_PREDECESSOR_STAY_IN_THEIR_OWN_LINEAGE",
+      "current": [
+        "rotation_publication",
+        "structure_publication"
+      ],
+      "history": [],
+      "time_role": "T_ROTATION_AND_READ_ONLY_D1"
+    },
+    "sector_context_quality": {
+      "current": [
+        "component_qualities",
+        "membership_basis"
+      ],
+      "history": [],
+      "time_role": "T_COMPONENT_QUALITY_METADATA"
+    },
+    "sector_context_state": {
+      "component_dependencies": "ONLY_EACH_SOURCE_COMPONENT_REGISTERED_DEPENDENCIES",
+      "current": [
+        "selected_context_publication"
+      ],
+      "history": [],
+      "time_role": "T_READ_ONLY_SELECTED_LOO_SNAPSHOT"
+    },
+    "supporting_concepts": {
+      "current": [
+        "trade_date_valid_membership",
+        "source_revision",
+        "available_at_le_cutoff",
+        "membership_quality"
+      ],
+      "history": [],
+      "time_role": "T_EXACT_MEMBERSHIP_AT_CUTOFF"
+    }
+  },
+  "field_envelope": [
+    "value",
+    "quality",
+    "reason",
+    "source_identity",
+    "membership_basis",
+    "loo_basis"
+  ],
+  "fields": [
+    "primary_industry",
+    "supporting_concepts",
+    "algorithmic_support_sector",
+    "relative_sector_state",
+    "sector_context_state",
+    "sector_context_quality",
+    "rotation_structure_enrichment",
+    "active_anchor_id",
+    "anchor_view_asof_t",
+    "basic_breakout_state",
+    "basic_pullback_state",
+    "basic_recovery_state",
+    "support_state",
+    "acceptance_state",
+    "retest_count",
+    "structure_events",
+    "structure_health"
+  ],
+  "object_schemas": {
+    "rotation_structure_enrichment": {
+      "bytes": 2679,
+      "path": "config/v4_13_rotation_structure_enrichment_schema_v1_2.json",
+      "sha256": "bd53db1a842dc97cded4871f834fceec3ec85b6f97aa604937f7aa1eb879ffd9"
+    },
+    "sector_context_state": {
+      "bytes": 16119,
+      "path": "config/v4_13_sector_context_state_schema_v1_1.json",
+      "sha256": "4824ac2ad267181592bdf826bc1784d3caa39cea0cf7dc822ac0a005be77bb6a"
+    }
+  },
+  "publication_identity": [
+    "security_id",
+    "trade_date",
+    "revision",
+    "contract_digest",
+    "membership_digest",
+    "loo_history_digest",
+    "structure_source_digest",
+    "prior_session_ref"
+  ],
+  "raw_qualification_mutable": false,
+  "raw_qualification_refs": [
+    "A_BASE_SEED_RAW",
+    "C_STOCK_PREWATCH_RAW"
+  ],
+  "reason": "R14_EXTERNAL_AUDIT_C01_C04_REPAIR",
+  "runtime_implemented": false,
+  "status": "CONTRACT_FREEZE_ONLY",
+  "supersedes": {
+    "bytes": 3876,
+    "path": "config/v4_13_output_schema_v1_1.json",
+    "sha256": "72f5980f525ed4666234a6887ee3321a1d8b742a225c4b6681f7d877a9991427"
+  },
+  "version": "1.2.0"
+}

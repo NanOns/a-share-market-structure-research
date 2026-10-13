@@ -1,0 +1,52 @@
+{
+  "contract_id": "HISTORICAL_CODE_CHANGE_ALIAS_COMPLETENESS_V1",
+  "version": "1.0.0",
+  "stage": "V4-01-R8",
+  "required_scope": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"],
+  "optional_scope": {
+    "BSE": "DEGRADED_BSE",
+    "blocks_required_scope": false
+  },
+  "candidate_discovery": {
+    "scan_inputs": [
+      "V4_01_REQUIRED_HISTORICAL_UNIVERSE_R6_2",
+      "V4_02_ADJUSTED_CANONICAL_DAILY_R6_2",
+      "V4_01_SECURITY_ENTITY_MAP_R5",
+      "DATED_SECURITY_ALIAS_V1"
+    ],
+    "formal_history_window": {
+      "start": "2023-07-04",
+      "end": "2026-09-24",
+      "accepted_sessions": 786
+    },
+    "candidate_signals": [
+      "persistent identical raw OHLCV and amount series assigned to different stable identities",
+      "versioned dated alias fact linking different source keys",
+      "effective lifecycle and roster boundary continuity, when independently supported"
+    ],
+    "minimum_shared_raw_bar_sessions": 20,
+    "single_session_coincidence_is_candidate": false,
+    "appearance_or_disappearance_alone_establishes_identity": false,
+    "board_prefix_is_identity_evidence": false
+  },
+  "resolution": {
+    "identity_merge_requires": [
+      "official or versioned independently acceptable evidence",
+      "non-overlapping dated source-key intervals",
+      "one resolved stable security_id",
+      "dated board facts"
+    ],
+    "allowed_statuses": [
+      "CONFIRMED_SAME_ENTITY_CODE_CHANGE",
+      "CONFIRMED_DISTINCT_ENTITY",
+      "UNRESOLVED",
+      "NOT_APPLICABLE"
+    ],
+    "unresolved_policy": "FAIL_CLOSED; identity=UNKNOWN for affected formal capability",
+    "required_scope_unresolved_candidate_limit": 0
+  },
+  "outputs": {
+    "candidate_receipt": "reports/v4_01/V4_01_HISTORICAL_CODE_CHANGE_ALIAS_COMPLETENESS_R8.json",
+    "final_receipt": "reports/v4_01/v4_01_final_stage_receipt_R8_20260928.json"
+  }
+}

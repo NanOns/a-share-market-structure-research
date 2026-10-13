@@ -1,0 +1,17 @@
+{
+  "contract_id": "V4_16_R23R1_SLOT_RUNTIME_POLICY_V1",
+  "version": "1.0.0",
+  "slot_contract": {
+    "bytes": 8464,
+    "path": "config/v4_16_observation_slot_contract_v2.json",
+    "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+  },
+  "core_revision": "publication_id = SHA256(canonical JSON [model_contract_id,state_lineage_id,trade_date,revision])",
+  "capability_scope": "sorted unique request capabilities, excluding blocked capabilities; persisted request evidence binds exact evaluated scope",
+  "null_quality": "All V2 fields present; null = NOT_YET_AVAILABLE, populated = KNOWN. No null accepted fields. Partial receipt aggregates explicitly visibility_complete=false; missed preserves available timing facts.",
+  "receipt_chronology": "first_observed_at <= integrity_passed_at <= system_available_at <= created_at",
+  "observation_chain": "Correction supersedes greatest preceding revision for same event and slot. First observation null. Increasing revisions prohibit cycles.",
+  "evidence_origin": "ENGINEERING_FIXTURE",
+  "runtime_authorized": false,
+  "real_shadow_authorized": false
+}

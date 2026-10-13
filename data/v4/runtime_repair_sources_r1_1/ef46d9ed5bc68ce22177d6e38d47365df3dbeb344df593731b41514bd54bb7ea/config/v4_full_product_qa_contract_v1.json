@@ -1,0 +1,17 @@
+{
+  "contract_id": "FP13_FULL_PRODUCT_QA_V1",
+  "required_browser": "Microsoft Edge",
+  "viewport_sizes": [[1366, 768], [1920, 1080]],
+  "required_product_field_coverage": 1.0,
+  "empty_placeholder_counts_as_coverage": false,
+  "source_debt_requires_separate_item": true,
+  "required_evidence": ["HEAD_AND_SOURCE_IDENTITIES", "REAL_BROWSER_PATHS", "FIELD_PRODUCER_API_UI_TEST_MATRIX", "REAL_VALUE_ORACLE", "ALL_PAGINATION", "FAULT_ISOLATION", "TDX_PRE_POST", "REGRESSION", "RUNTIME_LOGS"],
+  "engineering_tests_are_product_acceptance": false,
+  "external_acceptance_is_automatic": false,
+  "runner": "scripts/run_fp13_qa.py",
+  "field_inventory": "scripts/build_fp13_field_matrix.py",
+  "fault_proxy": "scripts/fp13_fault_proxy.py",
+  "fault_scope": "LOCAL_TEST_PROXY_GET_ONLY_NEVER_A_PRODUCTION_SOURCE",
+  "no_trading": true,
+  "tdx_write": false
+}

@@ -1,0 +1,79 @@
+{
+  "as_of": "ACCEPTED_TRADE_DATE",
+  "chart": {
+    "limit_max": 200,
+    "period": [
+      "D",
+      "W",
+      "M"
+    ],
+    "price_basis": [
+      "RAW",
+      "QFQ"
+    ]
+  },
+  "context_keys": [
+    "context_token",
+    "trade_date",
+    "release_id",
+    "model_namespace"
+  ],
+  "contract_id": "V4_RESEARCH_DOMAIN_BFF_V2",
+  "lineage": "RECONSTRUCTED_CORRECTED_NOT_AS_RECORDED",
+  "routes": {
+    "diagnostics": [
+      "health",
+      "sources",
+      "contracts",
+      "jobs",
+      "legacy",
+      "shadow",
+      "fields",
+      "rules",
+      "parameters"
+    ],
+    "focus": [
+      "events",
+      "{entity}/episodes",
+      "{entity}/timeline",
+      "{entity}/anchors",
+      "{entity}/observations",
+      "{entity}/outcomes"
+    ],
+    "forward": [
+      "statistics",
+      "plans",
+      "settlement",
+      "outcomes",
+      "fep",
+      "risk"
+    ],
+    "market": [
+      "indices",
+      "breadth",
+      "limits",
+      "ladders",
+      "facts-events"
+    ],
+    "sectors": [
+      "members",
+      "timeline",
+      "rotation-timeline",
+      "overlap"
+    ],
+    "stocks": [
+      "profile",
+      "chart",
+      "anchors",
+      "structure-events",
+      "why-not-prewatch"
+    ]
+  },
+  "source_dates": "NO_CURRENT_MEMBER_BACKFILL_NO_FUTURE_BARS",
+  "supersedes": {
+    "bytes": 47163,
+    "path": "config/v4_research_bff_contract_v1.json",
+    "sha256": "43fb3cf5abe07b2279f22eff194b269fe58be5c2739db86a820fb1d3a7e8de86"
+  },
+  "write_endpoints": []
+}

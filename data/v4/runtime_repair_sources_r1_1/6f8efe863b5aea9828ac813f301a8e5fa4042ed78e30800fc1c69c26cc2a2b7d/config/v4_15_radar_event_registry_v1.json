@@ -1,0 +1,50 @@
+{
+  "contract_id": "RADAR_EVENT_REGISTRY_V1",
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "34A.5",
+      "45A"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "event_types": [
+    "FIRST_PREWATCH",
+    "REENTRY_PREWATCH",
+    "UPGRADE_TO_WARM",
+    "NEW_CONFIRMED",
+    "REACCELERATION_EVENT",
+    "INVALIDATION"
+  ],
+  "fields": [
+    "event_type",
+    "event_trade_date",
+    "episode_id"
+  ],
+  "focus": false,
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "mapping": {
+    "FIRST_PREWATCH": "ACCEPTED_OWNER_FIRST_PREWATCH",
+    "INVALIDATION": "ACCEPTED_OWNER_HARD_INVALIDATION",
+    "NEW_CONFIRMED": "ACCEPTED_STATE_EVENT_V1_NEW_CONFIRMED",
+    "REACCELERATION_EVENT": "ACCEPTED_OWNER_EXPLICIT_REACCELERATION_EVENT_ONLY",
+    "REENTRY_PREWATCH": "ACCEPTED_OWNER_REENTRY_NEW_EPISODE",
+    "UPGRADE_TO_WARM": "ACCEPTED_SECTOR_OWNER_ONLY"
+  },
+  "missing_owner_event": "NOT_APPLICABLE_NEVER_SYNTHESIZE",
+  "multi_sector": "CONTEXT_ONLY_ONE_STOCK_LOGICAL_EVENT",
+  "namespaces": [
+    "STOCK",
+    "SECTOR"
+  ],
+  "new_episode": "ONLY_FORMAL_OWNER_EXIT_AND_REENTRY_OR_AUTHORIZED_MODEL_BOUNDARY",
+  "persistent_creates_event": false,
+  "production": false,
+  "runtime_implemented": false,
+  "same_day_revision": "SAME_LOGICAL_EVENT_COMPARE_FROZEN_PRIOR_SESSION",
+  "shadow": false,
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "stock_warm": "NOT_APPLICABLE_NO_ACCEPTED_OWNER",
+  "version": "1.0.0"
+}

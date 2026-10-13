@@ -1,0 +1,59 @@
+{
+  "contract_id": "V4_DAILY_SOURCE_FREEZE_V2",
+  "version": "2.0.0",
+  "owner_stage": "V4-DM-01",
+  "target_date_is_exact": true,
+  "required_source_families": [
+    "TDX_PAGE_CAPTURE",
+    "TDX_FULL_PACKAGE",
+    "TDX_PACKAGE_DELTA",
+    "OFFICIAL_CALENDAR",
+    "BAOSTOCK_DAILY_UPDATE",
+    "BAOSTOCK_ADJUSTMENT_FACTOR",
+    "GBBQ",
+    "IDENTITY_LIFECYCLE",
+    "SPECIAL_PRICE_PHASE"
+  ],
+  "timestamps": ["observed_at", "ingested_at", "system_available_at"],
+  "source_revision_policy": "append_only_new_digest_supersedes_without_overwrite",
+  "tdx": {
+    "authority": "CANONICAL_RAW_DAILY",
+    "readiness_requires": ["official_page_update_date_equals_target", "zip_downloaded", "zip_integrity_pass", "required_market_entries_present", "target_date_delta_parsed"],
+    "package_mode": "FULL_SNAPSHOT_INCREMENTAL_CONSUME",
+    "daily_entry_diff": ["path", "crc32", "uncompressed_size", "compressed_size"],
+    "local_client_vipdoc_role": "DIAGNOSTIC_ONLY",
+    "write_to_configured_tdx_root": false,
+    "removed_entry_or_truncation": "BLOCKED_SOURCE_REVISION_ANOMALY",
+    "historical_correction": "APPEND_REVISION_EVENT_AND_REBUILD_AFFECTED_SCOPE"
+  },
+  "baostock": {
+    "role": "SUPPLEMENTAL_DAILY_FINGERPRINT_STATUS_AND_ADJUSTMENT_AUDIT",
+    "daily_api": "query_daily_history_k_AStock(date)",
+    "adjustment_factor_api": "query_daily_adjust_factor(date)",
+    "date_batch_only": true,
+    "row_limit_per_api": 20000,
+    "ohlc_substitution_for_tdx": false,
+    "adjustment_factor_is_qfq_authority": false,
+    "reuse_request_ledger_and_client_bounds": true,
+    "sdk_runtime_pin_required": true
+  },
+  "required_component_capabilities": [
+    "RAW_DAILY",
+    "IDENTITY_UNIVERSE",
+    "TRADING_STATUS",
+    "ISST",
+    "ADJUSTED_DAILY",
+    "PERIOD_RAW",
+    "PERIOD_ADJUSTED",
+    "PRICE_LIMIT",
+    "SPECIAL_PHASE"
+  ],
+  "publication": {
+    "sequence": ["SOURCE_FREEZE_READY", "INCREMENT_BUILD", "INDEPENDENT_POSTCHECK_PASS", "CANDIDATE_MANIFEST_READY", "ATOMIC_DATA_HEAD_SWAP"],
+    "stage_and_dev_heads_immutable": true,
+    "failed_gate_keeps_previous_data_head": true,
+    "strictly_sequential_sessions": true,
+    "bao_stock_never_substitutes_tdx_raw": true
+  },
+  "prohibited": ["write_to_tdx_root", "V4-03_implementation", "automated_trading", "probability_claims"]
+}

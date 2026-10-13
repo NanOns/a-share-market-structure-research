@@ -1,0 +1,145 @@
+{
+  "authority": {
+    "master": {
+      "byte_count": 224998,
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+    },
+    "sections": [
+      "22",
+      "23",
+      "24",
+      "78"
+    ],
+    "task": {
+      "byte_count": 12598,
+      "path": "docs/evidence/V4_08_ACCEPTED_HEAD_PROMOTION_AND_V4_09_STOCK_PREWATCH_ENTRY_TASK_20260930.md",
+      "sha256": "611e120cc9bce1c4fcfea5bd8f41e305beaaee11204f0174b749cc7920b3ed66"
+    }
+  },
+  "bucket_rules": [
+    {
+      "all": [
+        [
+          "emergence_axis",
+          "EQ",
+          "HIGH"
+        ],
+        [
+          "structure_quality_axis",
+          "EQ",
+          "HIGH"
+        ],
+        [
+          "risk_axis",
+          "EQ",
+          "LOW"
+        ]
+      ],
+      "bucket": "A"
+    },
+    {
+      "all": [
+        [
+          "emergence_axis",
+          "EQ",
+          "HIGH"
+        ],
+        [
+          "structure_quality_axis",
+          "GE",
+          "MEDIUM"
+        ],
+        [
+          "risk_axis",
+          "LE",
+          "MEDIUM"
+        ]
+      ],
+      "bucket": "B"
+    },
+    {
+      "all": [
+        [
+          "emergence_axis",
+          "EQ",
+          "MEDIUM"
+        ],
+        [
+          "structure_quality_axis",
+          "EQ",
+          "HIGH"
+        ],
+        [
+          "risk_axis",
+          "EQ",
+          "LOW"
+        ]
+      ],
+      "bucket": "C"
+    }
+  ],
+  "contract_id": "V4_09_MACHINE_AST_V1",
+  "emergence": [
+    {
+      "parameter": "delta3_high",
+      "result": "HIGH"
+    },
+    {
+      "parameter": "delta3_medium",
+      "result": "MEDIUM"
+    }
+  ],
+  "enum_order": {
+    "bucket": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "emergence_axis": [
+      "LOW",
+      "MEDIUM",
+      "HIGH"
+    ],
+    "risk_axis": [
+      "LOW",
+      "MEDIUM",
+      "HIGH",
+      "EXTREME"
+    ],
+    "structure_quality_axis": [
+      "LOW",
+      "MEDIUM",
+      "HIGH"
+    ]
+  },
+  "fallback_bucket": "D",
+  "raw": {
+    "fields": [
+      "base_seed_state",
+      "mandatory_core_quality_ready"
+    ],
+    "op": "UNKNOWN_DOMINANT_AND"
+  },
+  "status": "FROZEN_CANDIDATE",
+  "structure": [
+    {
+      "equals": "COMPRESSING_STRONG",
+      "field": "compression_state",
+      "result": "HIGH"
+    },
+    {
+      "equals": "COMPRESSING",
+      "field": "compression_state",
+      "result": "MEDIUM"
+    },
+    {
+      "equals": "BULL_TRANSITION",
+      "field": "ma_structure_state",
+      "result": "MEDIUM"
+    }
+  ],
+  "unknown_priority": "UNKNOWN_BUCKET for unresolved raw or eligible with unresolved axis; FALSE is NOT_ELIGIBLE; never alter raw.",
+  "version": "1.0.0"
+}

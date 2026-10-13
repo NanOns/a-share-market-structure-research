@@ -1,0 +1,48 @@
+{
+  "ALGORITHM_STATE_REPLAY_PASS": "NOT_GRANTED_PENDING_EXTERNAL_AUDIT",
+  "authority": {
+    "bytes": 3583,
+    "path": "docs/evidence/r18/V4_R17R1_INDEPENDENT_EXTERNAL_AUDIT_R1_20261003.md",
+    "sha256": "9a8cc8c92599d6aa843e1fdb9eefe498361ba37b55dd2091c13c6eb75f403d43"
+  },
+  "contract_id": "V4_14_REPLAY_INPUT_ENVELOPE_V1",
+  "event_logical_key": [
+    "model_namespace",
+    "model_contract_id",
+    "parameter_set_id",
+    "entity_type",
+    "entity_id",
+    "episode_id",
+    "event_type",
+    "signal_market_date"
+  ],
+  "evidence_classes": [
+    "ENGINEERING_SYNTHETIC",
+    "REAL_ACCEPTED_SOURCE_CAPABILITY_SCOPED",
+    "HISTORICAL_PIT_EFFECTIVENESS"
+  ],
+  "implicit_state": false,
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "publication_namespace": "reports/v4_14_replay_r18",
+  "raw_provider_fallback": false,
+  "required": [
+    "target_trade_date",
+    "previous_market_session",
+    "target_revision",
+    "cutoff",
+    "authority_bindings",
+    "contract_package_digest",
+    "previous_state_publication",
+    "source_refs",
+    "source_availability",
+    "evidence_class",
+    "owner_inputs"
+  ],
+  "scan_latest": false,
+  "version": "1.0.0"
+}

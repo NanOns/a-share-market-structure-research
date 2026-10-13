@@ -1,0 +1,18 @@
+{
+  "contract_id": "V4_12_BREAKOUT_EPISODE_BOUNDARY_VECTORS_V1",
+  "oracle": "INDEPENDENT_LITERAL_CONTRACT_BOUNDARIES",
+  "vectors": [
+    {"id":"C01","existing":false,"create":false,"absence_quality":"KNOWN","state":"NO_BREAKOUT"},
+    {"id":"C02","existing":false,"create":false,"absence_quality":"KNOWN","state":"APPROACHING"},
+    {"id":"C03","existing":false,"create":true,"absence_quality":"KNOWN","creation_day":true,"state":"BREAKOUT_TENTATIVE","owner_type":"PRIOR_HIGH"},
+    {"id":"C04","existing":true,"prior_ref":"t-1","create":false,"state":"BREAKOUT_TENTATIVE"},
+    {"id":"C05","existing":true,"prior_ref":"t-1","create":false,"state":"TESTING"},
+    {"id":"C06","existing":true,"prior_ref":"t-1","create":false,"state":"BREAKOUT_ACCEPTED","evaluable_holds":"FROZEN_PARAMETER_acceptance_consecutive_sessions"},
+    {"id":"C07","existing":true,"prior_ref":"t-1","create":false,"state":"FAILED_BREAKOUT","prior_owner_support":"BROKEN"},
+    {"id":"C08","existing":false,"prior_terminal_history":"RETAINED","create":true,"absence_quality":"KNOWN","creation_day":true,"state":"BREAKOUT_TENTATIVE","new_identity_required":true},
+    {"id":"C09","existing":true,"prior_ref":"t-1","trigger":true,"create":false,"state":"BREAKOUT_TENTATIVE"},
+    {"id":"C10","existing":true,"prior_ref":"t-1","create":false,"owner_type":"PRIOR_HIGH","display_type":"BULLISH_IMPULSE_BODY","owning_identity":"UNCHANGED"},
+    {"id":"C11","existing":true,"prior_ref":"t-1","date":"t","prior_date":"t-1","create":false,"revisions":["r1","r2","r3"]},
+    {"id":"C12","existing":false,"absence_quality":"UNKNOWN","evaluable":"UNKNOWN","trigger":true,"create":false,"state":"UNKNOWN"}
+  ]
+}

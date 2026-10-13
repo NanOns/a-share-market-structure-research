@@ -1,0 +1,138 @@
+{
+  "claims": "REV2 candidate thresholds only; no optimization, expected-return, probability, or production-validity claim.",
+  "formal_consumer_enabled": false,
+  "owner_stage": "V4-08",
+  "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+  "parameters": [
+    {
+      "authority": "REV2 §15",
+      "comparison": "GTE",
+      "parameter_id": "V4_08_SECTOR_MIN_MEMBERS",
+      "status": "FROZEN_CANDIDATE",
+      "unit": "members",
+      "value": 5
+    },
+    {
+      "authority": "REV2 §15",
+      "comparison": "GTE",
+      "parameter_id": "V4_08_SECTOR_MIN_QUOTE_COVERAGE",
+      "status": "FROZEN_CANDIDATE",
+      "unit": "ratio",
+      "value": 0.8
+    },
+    {
+      "authority": "REV2 §16",
+      "comparison": "Wilson lower-bound constant",
+      "parameter_id": "V4_08_SEED_WILSON_Z",
+      "status": "FROZEN_CANDIDATE; not a probability claim",
+      "unit": "dimensionless",
+      "value": 1.96
+    },
+    {
+      "authority": "REV2 §17",
+      "comparison": "GTE",
+      "parameter_id": "V4_08_PREWATCH_DQ5_MIN",
+      "status": "FROZEN_CANDIDATE",
+      "unit": "RPS percentile points",
+      "value": 3
+    },
+    {
+      "authority": "REV2 §17",
+      "comparison": "GTE",
+      "parameter_id": "V4_08_PREWATCH_SEED_WIDTH_MIN",
+      "status": "FROZEN_CANDIDATE",
+      "unit": "ratio",
+      "value": 0.05
+    },
+    {
+      "authority": "REV2 §18",
+      "comparison": "GTE",
+      "parameter_id": "V4_08_EMERGENCE_HIGH_DQ5_MIN",
+      "status": "FROZEN_CANDIDATE",
+      "unit": "RPS percentile points",
+      "value": 10
+    },
+    {
+      "authority": "REV2 §18",
+      "comparison": "GTE",
+      "parameter_id": "V4_08_EMERGENCE_HIGH_BREADTH_DELTA3_MIN",
+      "status": "FROZEN_CANDIDATE",
+      "unit": "ratio",
+      "value": 0.05
+    },
+    {
+      "authority": "REV2 §18",
+      "comparison": "GTE",
+      "parameter_id": "V4_08_EMERGENCE_HIGH_SEED_WIDTH_MIN",
+      "status": "FROZEN_CANDIDATE",
+      "unit": "ratio",
+      "value": 0.1
+    },
+    {
+      "authority": "REV2 §21A.4",
+      "comparison": "GTE",
+      "parameter_id": "V4_08_ROTATION_PULSE_DQ5_MIN",
+      "status": "FROZEN_CANDIDATE",
+      "unit": "RPS percentile points",
+      "value": 10
+    },
+    {
+      "authority": "REV2 §21A.4",
+      "comparison": "GTE",
+      "parameter_id": "V4_08_ROTATION_PULSE_BREADTH_DELTA1_MIN",
+      "status": "FROZEN_CANDIDATE",
+      "unit": "ratio",
+      "value": 0.05
+    },
+    {
+      "authority": "REV2 §21A.4 diffusion predicate only",
+      "comparison": "LTE",
+      "parameter_id": "V4_08_ROTATION_DIFFUSION_TOP1_MAX",
+      "status": "FROZEN_CANDIDATE",
+      "unit": "ratio",
+      "value": 0.5
+    },
+    {
+      "authority": "R5 semantic decision package; external validation pending",
+      "comparison": "GTE",
+      "parameter_id": "V4_08_EARLY_SEED_RETENTION_MIN",
+      "status": "FROZEN_CANDIDATE",
+      "unit": "ratio",
+      "value": 0.6666666666666666
+    },
+    {
+      "authority": "R5 semantic decision package; external validation pending",
+      "comparison": "GTE",
+      "parameter_id": "V4_08_EARLY_BREADTH_RETENTION_MIN",
+      "status": "FROZEN_CANDIDATE",
+      "unit": "ratio",
+      "value": 0.6
+    },
+    {
+      "authority": "R5 semantic decision package; external validation pending",
+      "comparison": "GTE",
+      "parameter_id": "V4_08_EARLY_BREADTH_DELTA_MIN",
+      "status": "FROZEN_CANDIDATE",
+      "unit": "ratio",
+      "value": 0
+    },
+    {
+      "authority": "R5 semantic decision package; external validation pending",
+      "comparison": "LTE",
+      "parameter_id": "V4_08_EARLY_TOP1_CONCENTRATION_MAX",
+      "status": "FROZEN_CANDIDATE",
+      "unit": "ratio",
+      "value": 0.3333333333333333
+    },
+    {
+      "authority": "R5 semantic decision package; external validation pending",
+      "comparison": "GTE",
+      "parameter_id": "V4_08_MATURE_STRONG_RETENTION_MIN",
+      "status": "FROZEN_CANDIDATE",
+      "unit": "ratio",
+      "value": 0.75
+    }
+  ],
+  "status": "FROZEN_ENGINEERING_CANDIDATE",
+  "version": "5.0.0"
+}

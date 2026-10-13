@@ -1,0 +1,39 @@
+{
+  "adapter_source_bindings": {
+    "bytes": 2501,
+    "path": "docs/evidence/fp02_20261008/SOURCE_BINDINGS.json",
+    "sha256": "626db4eaa1b6b5cc4461e1a783708f1a3837535f39eed588bf2f063445a52edc"
+  },
+  "admission_evidence": {
+    "bytes": 4959,
+    "path": "docs/evidence/fp02_20261008/REAL_READBACK_AND_ROLLBACK.json",
+    "sha256": "23a3b181d77813a4aa6733c2a5c13ccfd204b558ad507791180f2d842082522c"
+  },
+  "contract_id": "V4_RESEARCH_SNAPSHOT_RELEASE_POLICY_V1",
+  "full_product_release": false,
+  "legacy_permissions": "UNCHANGED_HISTORICAL_FACTS",
+  "no_trading": true,
+  "parent_policy": {
+    "bytes": 5087,
+    "path": "config/v4_operational_production_release_policy_v1.json",
+    "sha256": "5035e1f80a8cfd1f7be17f0b2f85afb827395ad99de2f5a41f403e0aa1daccfe"
+  },
+  "quality_policy": "PRESERVE_EACH_OWNER_FIELD_VALUE_QUALITY_REASON; SOURCE_GAPS_ISOLATED",
+  "required_gates": [
+    "EXACT_OWNER_HASH",
+    "EXACT_SOURCE_HASH",
+    "MATCHED_TRADE_DATE",
+    "NO_FIXTURE_SOURCE",
+    "UNIVERSE_COUNT",
+    "INDEPENDENT_REAL_ORACLE",
+    "STABLE_CONTEXT_PAGINATION",
+    "ATOMIC_CAS_READBACK_ROLLBACK"
+  ],
+  "scope": "FP02_INDEXED_EXISTING_REAL_OUTPUTS_NOT_FULL_PRODUCT_RELEASE",
+  "tdx_write": false,
+  "value_oracle": {
+    "bytes": 8013,
+    "path": "docs/evidence/fp02_20261008/REAL_VALUE_ORACLE.json",
+    "sha256": "ba1eb513ea25ff638c7229414afc1d09de91f832f7a2d01a14d83e66d87e39f0"
+  }
+}

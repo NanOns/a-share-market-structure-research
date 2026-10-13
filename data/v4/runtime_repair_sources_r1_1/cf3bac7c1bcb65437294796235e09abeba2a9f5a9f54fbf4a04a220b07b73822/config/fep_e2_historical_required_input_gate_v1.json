@@ -1,0 +1,16 @@
+{
+  "contract_id": "FEP_E2_HISTORICAL_REQUIRED_EPISODE_INPUT_GATE_V1",
+  "version": "1.0.0",
+  "scope": "ENGINEERING_HISTORICAL_REPLAY_ONLY",
+  "required_field": "frozen_invalidation",
+  "accepted_field_contract": {
+    "path": "config/v4_10_input_provenance_r1_2.json",
+    "bytes": 7099,
+    "sha256": "e7e6cf40ffc7159d4777a01e21f475af08884146291cdb124f277e19be29ce93"
+  },
+  "rule": "If a prior owner episode exists and the accepted required frozen_invalidation producer is NOT_IMPLEMENTED, do not evaluate non-authoritative D0/Seed/PREWATCH again; publish explicit UNKNOWN inputs and invoke the unchanged reducer. Preserve actual Core damage so hard invalidation keeps precedence.",
+  "raw_qualification_scope": "NOT_EVALUATED_REQUIRED_UPSTREAM_INCOMPLETE",
+  "numerical_business_rules_changed": false,
+  "production": false,
+  "shadow": false
+}

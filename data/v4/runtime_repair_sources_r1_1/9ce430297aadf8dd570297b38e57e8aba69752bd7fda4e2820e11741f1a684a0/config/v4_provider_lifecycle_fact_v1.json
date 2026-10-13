@@ -1,0 +1,26 @@
+{
+  "contract_id": "PROVIDER_LIFECYCLE_FACT_V1",
+  "version": "1.0.0",
+  "provider": "BAOSTOCK",
+  "table": "v4.provider_lifecycle_fact_history",
+  "required_fields": [
+    "provider",
+    "source_security_key",
+    "provider_ipo_date",
+    "provider_out_date",
+    "provider_status",
+    "observed_at",
+    "system_available_at",
+    "source_revision_id"
+  ],
+  "raw_mapping": {
+    "provider_ipo_date": "BaoStock query_stock_basic ipoDate / immutable extracted listed_from",
+    "provider_out_date": "BaoStock query_stock_basic outDate / immutable extracted listed_to_provider_reported",
+    "provider_status": "BaoStock query_stock_basic status / immutable extracted provider_status_observed"
+  },
+  "timestamp_policy": "observed_at records when the immutable provider-facts artifact was materialized into the database; exact remote response time is not asserted where the source artifact does not expose it.",
+  "source_artifact": "reports/v4_01/baostock_lifecycle_facts_R4_20260925.json",
+  "lineage": "RECONSTRUCTED_CORRECTED; never label source rows AS_RECORDED without original provider response bytes and observation timestamps.",
+  "revision_policy": "Append-only revisions; preserve provider values exactly. UPDATE and DELETE are prohibited.",
+  "normalization_policy": "This table stores provider source facts only. Normalized membership intervals are separately governed by SECURITY_MEMBERSHIP_INTERVAL_V1."
+}

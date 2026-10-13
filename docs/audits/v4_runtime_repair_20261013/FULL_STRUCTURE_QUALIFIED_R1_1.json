@@ -1,0 +1,93 @@
+{
+  "contract_id": "V4_R1_1_FULL_STRUCTURE_SEMANTIC_IDENTITY",
+  "scope": "FULL_STRUCTURE_ALL_SECURITIES",
+  "counts": {
+    "securities": 5225
+  },
+  "G1": {
+    "status": "PASS",
+    "different_security_count": 0,
+    "examples": []
+  },
+  "G2": {
+    "status": "PASS",
+    "errors": [],
+    "error_count": 0
+  },
+  "G3": {
+    "status": "PASS",
+    "errors": [],
+    "error_count": 0,
+    "verified_binding_count": 22,
+    "note": "Every creation and continuing/fresh-anchor actual input_digest independently reconstructed from bound F0 sources and accepted prior state; recursive source, counter and output hashes verified"
+  },
+  "reference_qualification": {
+    "kind": "B_PRIME_ACCEPTED_ID_INPUT_SELECTOR",
+    "old_anchor_semantic_mappings": 2630,
+    "new_anchor_id_hash_checks": 560,
+    "corrected_selector_count": 1225,
+    "selector_examples": [
+      "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+      "SEC-0051683845B17D59641B7D1DC261FE2A",
+      "SEC-005EA670068174623A3C365FCA9A8B2D",
+      "SEC-0133C24DA4D131FD193B382B8FF9E57C",
+      "SEC-01759C0DD3567723A74069E26F961A95",
+      "SEC-01A43DE232AC7DE094EC000A597C049A",
+      "SEC-01AE565AAB38D6DBE68548A166DA9001",
+      "SEC-01AEABA52190D2FADA47F333541450C9",
+      "SEC-01B23170BD2BAB91112C46FC904EB613",
+      "SEC-01EBCDF66D7972914DC16BEEFD189612",
+      "SEC-01F4EBB7DD4BA8C14775F1E02DD95461",
+      "SEC-020789B1F4101B76691771251CDFC9B9",
+      "SEC-034859D90211A3130FCE83B40DF01E8A",
+      "SEC-0349FAF61730C6CED5C518B245BDA5F8",
+      "SEC-0374035D22E21406707583D88F2742DA",
+      "SEC-03A54CA77932F23F9DEC40DB14535DF1",
+      "SEC-042D1472E7BDE7BAF61718579A7DC796",
+      "SEC-043473D20167BBE2EB87A5F8CA618EA4",
+      "SEC-0462B378DC21FDEDF332260276AF2073",
+      "SEC-04CCDCBE8CA51C23C1E2D0E623BF515A",
+      "SEC-04E1960B1DA19FAEF77ECB23F6785071",
+      "SEC-05526F6F8CD9814DDB1A8BEB69D84564",
+      "SEC-055860A387692247DB72D582F92DA024",
+      "SEC-0578BF047D50046CD6D5A5A22BAF9981",
+      "SEC-05AE635158186C8506EB3133A0E94B5C",
+      "SEC-05D17AC0C8FF45DCA23BC336F6920412",
+      "SEC-0642DBA1762D24401BFD88068AB919A9",
+      "SEC-068A3602810F6E6DCFF02F109B7BA9D4",
+      "SEC-068D7951AEFB36E755ED88D1E5395501",
+      "SEC-06B265774D1097539C6752C646E0EB5C"
+    ]
+  },
+  "classified_exception_counts": {
+    "source_digest": 2276972,
+    "source_namespace": 2276972,
+    "source_publication_id": 2276972,
+    "adjustment_asof": 34780,
+    "available_at": 43400,
+    "source_fact_digest": 43400,
+    "output_digest": 20970,
+    "source_publication_bindings": 20970,
+    "input_digest": 190182,
+    "prior_state_ref": 193920,
+    "independently_verified_provenance_binding": 215326,
+    "original_anchor_digest": 14090,
+    "counter_state_digest": 6380,
+    "overlay_digest": 6380,
+    "observation_digest": 26300,
+    "current_observation_ref": 6712,
+    "logical_transition_id": 6712,
+    "prior_session_state_ref": 6712
+  },
+  "actual": {
+    "path": "data/v4/dynamic_daily_owners/2026-10-13/fff118fef56ef5a4993b92496d352e8b977f5be17b9b6e66380e512d91bf5778/owner_v3/owners/2026-10-13/structure/runtime_security.jsonl.gz",
+    "sha256": "4a65643e86ac807d537da114e9d601f5efff12fe476f37b97f8292a084e91df9",
+    "bytes": 43949313
+  },
+  "reference": {
+    "path": "data/v4/dynamic_daily_owners/2026-10-13/35e5a7c80925e59b640bcc694df1184e8bb850634b10085473cd26f6b9b89b57/owner_v3/owners/2026-10-13/structure/runtime_security.jsonl.gz",
+    "sha256": "b9f6d9f08feb3deeecb08d5539ec8e12fccb3838a391577932b63f9c92aa055f",
+    "bytes": 43640884
+  },
+  "acceptance": "BLOCKED_PENDING_COMPLETE_HASH_AND_OTHER_DOMAINS"
+}

@@ -1,0 +1,77 @@
+{
+  "schema_version": "v3-longzijue-source-contract-v1",
+  "contract_id": "V3_LZ_EXT01_LIMIT_UP_1",
+  "contract_version": "v3-lz-ext01-limit-up-v1.0",
+  "stage": "P09-01-B-LZ-EXT01",
+  "source_id": "EXT01",
+  "source_name": "THS_LIMIT_UP",
+  "origin": "LONGZIJUE_PARSED",
+  "capability_status": "NOT_VERIFIED",
+  "enabled": false,
+  "activation_requires": [
+    "HTTP 200 JSON response",
+    "row path and top-stat paths fixed from current response",
+    "field scale and time semantics fixed from sample",
+    "complete-page or explicit pagination coverage evidence",
+    "source failure and empty response fail closed"
+  ],
+  "request": {
+    "method": "GET",
+    "endpoint_template": "https://data.10jqka.com.cn/dataapi/limit_up/limit_up_pool?page={page}&limit={limit}&field={fields}&filter=HS,GEM2STAR&order_field=330323&order_type=0&date={YYYYMMDD}",
+    "probe_page": 1,
+    "probe_limit": 50,
+    "probe_trade_date": "20260911",
+    "field_parameter_mode": "NAMED_FIELD_CANDIDATE_ONLY",
+    "field_codes": null,
+    "field_codes_status": "UNRESOLVED",
+    "field_candidates": ["code", "name", "latest", "change_rate", "amount", "order_amount", "currency_value", "turnover_rate", "open_num", "reason_type", "first_limit_up_time", "last_limit_up_time"],
+    "filter": "HS,GEM2STAR",
+    "order_field": "330323",
+    "order_type": 0,
+    "date_semantics": "YYYYMMDD_ASIA_SHANGHAI",
+    "timeout_seconds": 8,
+    "max_response_bytes": 2000000,
+    "retries": 0,
+    "credentials_used": false
+  },
+  "normalization": {
+    "source_fields": ["code", "name", "latest", "change_rate", "amount", "order_amount", "currency_value", "turnover_rate", "open_num", "reason_type", "first_limit_up_time", "last_limit_up_time"],
+    "normalized_fields": {
+      "code": "security_id",
+      "name": "security_name",
+      "latest": "price",
+      "change_rate": "ret1",
+      "amount": "amount",
+      "order_amount": "seal_amount",
+      "currency_value": "float_market_cap",
+      "turnover_rate": "turnover",
+      "open_num": "open_count",
+      "reason_type": "source_reason",
+      "first_limit_up_time": "first_limit_up_time",
+      "last_limit_up_time": "last_limit_up_time"
+    },
+    "conversion_status": "UNRESOLVED_UNTIL_CURRENT_PROBE",
+    "rules": [
+      "change_rate scale must be confirmed from a current sample",
+      "Unix second zero maps to NULL, not 1970-01-01",
+      "seal_amount is not amount and float_market_cap is not amount",
+      "reason_type is source topic/reason text, not an exchange-official reason",
+      "height sorting uses source height when present; no local synthetic height"
+    ]
+  },
+  "probe_persistence": {
+    "raw_payload_persisted": false,
+    "normalized_rows_persisted": false,
+    "metadata_receipt_allowed": true,
+    "production_tables_written": false,
+    "local_run_identity_changed": false,
+    "tdx_inputs_modified": false
+  },
+  "failure_policy": {
+    "http_or_json_failure": "UNAVAILABLE",
+    "empty_list_without_explicit_source_status": "UNAVAILABLE",
+    "unknown_field_path_or_scale": "NOT_VERIFIED",
+    "partial_page": "DEGRADED_WITH_COVERAGE",
+    "local_core_flow": "NON_BLOCKING"
+  }
+}

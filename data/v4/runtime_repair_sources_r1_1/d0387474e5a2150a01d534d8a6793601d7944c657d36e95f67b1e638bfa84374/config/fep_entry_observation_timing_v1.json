@@ -1,0 +1,22 @@
+{
+  "contract_id": "FEP_ENTRY_OBSERVATION_TIMING_V1",
+  "status": "ENGINEERING_RECONSTRUCTED_ONLY; CURRENT_ENTRY_ADMISSION_BLOCKED",
+  "owner_head": {
+    "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+    "bytes": 796484,
+    "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+  },
+  "publication_manifest": {
+    "path": "reports/v4_12_runtime_r13/real/2026-09-30/r1/runtime_manifest.json",
+    "bytes": 2066,
+    "sha256": "0ae1fd6f7e90b520e691820df883e995c77ca39af591b28d769eef6e0a7a7ab1"
+  },
+  "publication_available_at": "2026-10-02T06:00:00+00:00",
+  "source_lineage": "RECONSTRUCTED_CORRECTED",
+  "observation_time_rule": "Exact accepted publication available_at is the earliest engineering read boundary; observed_at/feature_cutoff cannot precede consumed owner receipts",
+  "current_trade_date": "2026-09-30",
+  "FIRST_OBSERVED": "NOT_PROVEN",
+  "prediction_deadline": "NOT_ENABLED",
+  "model_deadline": "NOT_ENABLED",
+  "missing_47_field_admission": "BLOCKED; no real ENTRY observation inserted"
+}

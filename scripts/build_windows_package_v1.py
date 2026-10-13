@@ -78,6 +78,54 @@ def inventory():
                 historical_daily_launcher_reachable='scripts.run_v4_current_daily' in seen)
 
 
+
+def exact_metadata_resources(root,policy_binding,policy,max_json_bytes=2*1024*1024):
+    """Exact current admission resources; ancestral inputs stay in workspace."""
+    root=Path(root).resolve();pending=[(policy_binding,'policy')];seen=set();files=[];skipped=[]
+    from workbench_analysis.r43_owner_replay import checked
+    def add(binding,kind='leaf'):
+        if isinstance(binding,dict) and binding.get('path') and binding.get('sha256'):pending.append((binding,kind))
+    def seed_policy(document):
+        for binding in document.get('accepted_algorithm_bindings',[])+document.get('component_source_bindings',[]):add(binding)
+        for key in ('task_contract','predecessor_policy'):add(document.get(key))
+    seed_policy(policy);add(policy.get('admission_evidence'),'acceptance')
+    while pending:
+        binding,kind=pending.pop();name=binding['path'];marker=(name,binding['sha256'])
+        if marker in seen:continue
+        seen.add(marker)
+        if Path(name).is_absolute():skipped.append(dict(path=name,reason='EXTERNAL_READ_ONLY_INPUT'));continue
+        path=(root/name).resolve()
+        if not path.is_relative_to(root):raise ValueError('PACKAGE_METADATA_PATH_ESCAPE:'+name)
+        if path.suffix.lower() not in ('.json','.md','.py'):
+            skipped.append(dict(path=name,reason='BULK_WORKSPACE_INPUT'));continue
+        if path.suffix.lower()=='.json' and path.stat().st_size>max_json_bytes:
+            skipped.append(dict(path=name,reason='BULK_JSON_WORKSPACE_INPUT'));continue
+        verified=checked(root,binding)
+        if binding.get('bytes',verified.stat().st_size)!=verified.stat().st_size:raise ValueError('PACKAGE_METADATA_BYTES_MISMATCH:'+name)
+        files.append(verified)
+        if path.suffix.lower()!='.json':continue
+        document=json.loads(verified.read_bytes())
+        if kind=='policy':seed_policy(document)
+        elif kind=='acceptance':
+            for value in document.get('gates',{}).values():add(value,'gate')
+            add(document.get('revision_check'))
+        elif kind=='gate':
+            add(document.get('generation_receipt'),'report');add(document.get('metadata_conservation'),'conservation');add(document.get('actual_shadow_g4'))
+        elif kind=='report':
+            for value in document.get('evidence',{}).values():add(value)
+            add(document.get('candidate_binding'),'candidate')
+        elif kind=='conservation':add(document.get('generation_candidate'),'candidate')
+        elif kind=='candidate':
+            add(document.get('release_policy'),'policy')
+            add(document.get('market_context_correction_preparation_r1'),'market')
+        elif kind=='market':
+            add(document.get('patch_result'))
+            for value in document.get('driver_bindings',{}).values():add(value)
+        # Leaf witness JSON is copied exactly; its past Owner/source graph is
+        # existing verified workspace data, not another package dependency.
+    return sorted(set(files)),skipped
+
+
 def prepare():
     for key in ('TMP','TEMP','TMPDIR'):
         os.environ[key] = 'G:/codex_tmp'
@@ -110,15 +158,22 @@ def prepare():
     module_locations=list(graph['modules'])
     known_modules={row['module'] for row in module_locations}
     policy=json.loads((ROOT/'config/read_only_operational_daily_release_policy_v1_1.json').read_bytes())
-    from workbench_desktop.closeout_runtime_sources_r1 import admitted,AUTHORITY
-    runtime_repairs=admitted(ROOT)
+    from workbench_desktop.closeout_runtime_sources_r1 import packaging_versions,AUTHORITY
+    runtime_repairs,_=packaging_versions(ROOT)
     if runtime_repairs:files.append(ROOT/AUTHORITY)
     from workbench_analysis.operational_daily_exact_policy_v2 import PATH as exact_path,verify as verify_exact
     exact_versions={}
     if (ROOT/exact_path).is_file():
-        exact_policy,_=verify_exact(ROOT,candidate_only=True)
+        exact_policy,policy_binding=verify_exact(ROOT,candidate_only=True)
         exact_versions={b.get('module_path',b['path']):b for b in exact_policy['accepted_algorithm_bindings']}
         files.extend(ROOT/b['path'] for b in exact_versions.values())
+        # Complete original component archives are policy-bound even if an AST
+        # branch does not import every component in this specific runtime.
+        from workbench_analysis.r43_owner_replay import checked
+        files.extend(checked(ROOT,b) for b in exact_policy['component_source_bindings'])
+        metadata,skipped=exact_metadata_resources(ROOT,policy_binding,exact_policy)
+        files.extend(metadata)
+        (BUILD/'EXACT_METADATA_RESOURCE_SCOPE.json').write_text(json.dumps(dict(included=[str(p.relative_to(ROOT)) for p in metadata],skipped=skipped),ensure_ascii=False,indent=2),encoding='utf-8')
     for binding in policy['accepted_algorithm_bindings']:
         source=ROOT/binding['path']
         if sha(source)!=binding['sha256']:

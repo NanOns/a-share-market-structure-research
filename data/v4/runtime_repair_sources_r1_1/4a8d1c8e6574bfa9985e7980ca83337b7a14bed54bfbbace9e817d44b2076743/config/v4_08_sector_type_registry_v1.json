@@ -1,0 +1,19 @@
+{
+  "contract_id": "V4_08_SECTOR_TYPE_REGISTRY_V1",
+  "version": "1.0.0",
+  "status": "FROZEN_ENGINEERING_CONTRACT",
+  "source_mapping": {
+    "industry": "INDUSTRY",
+    "concept": "THEME",
+    "style": "STYLE",
+    "all_unregistered_source_types": "UNKNOWN"
+  },
+  "types": [
+    {"sector_type": "INDUSTRY", "formal_radar_allowed": true, "formal_sector_qualification_allowed": true, "formal_rotation_qualification_allowed": true, "homepage_qualification_allowed": true},
+    {"sector_type": "THEME", "formal_radar_allowed": true, "formal_sector_qualification_allowed": true, "formal_rotation_qualification_allowed": true, "homepage_qualification_allowed": true},
+    {"sector_type": "STYLE", "formal_radar_allowed": false, "formal_sector_qualification_allowed": false, "formal_rotation_qualification_allowed": false, "homepage_qualification_allowed": false},
+    {"sector_type": "UNKNOWN", "formal_radar_allowed": false, "formal_sector_qualification_allowed": false, "formal_rotation_qualification_allowed": false, "homepage_qualification_allowed": false}
+  ],
+  "known_non_formal_source_types": ["index_group"],
+  "unknown_source_type_policy": "Preserve the unmodified source type and facts in diagnostic evidence; map only the formal sector_type dimension to UNKNOWN. Never drop unknown type rows."
+}

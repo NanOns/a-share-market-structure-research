@@ -1,0 +1,40 @@
+{
+  "contract_id": "SETTLEMENT_READBACK_V1",
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "46",
+      "47"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "fields": [
+    "readback_view",
+    "readback_asof",
+    "due_items",
+    "pending_items",
+    "matured_items",
+    "benchmark_control_bindings",
+    "degradation_reasons"
+  ],
+  "focus": false,
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "knowledge_time": "AVAILABLE_AT_LE_READBACK_ASOF",
+  "production": false,
+  "queries": [
+    "DUE_TODAY",
+    "PENDING",
+    "MATURED",
+    "FIRST_OBSERVED",
+    "LATEST_CORRECTED",
+    "FROZEN_T0_BENCHMARK_CONTROLS",
+    "UNAVAILABLE_DEGRADED_REASONS"
+  ],
+  "rewrite_T0": false,
+  "runtime_implemented": false,
+  "selection_independent": true,
+  "shadow": false,
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "version": "1.0.0"
+}

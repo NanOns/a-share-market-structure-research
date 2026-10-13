@@ -1,0 +1,61 @@
+{
+  "contract_id": "P12_14_EASTMONEY_CANDIDATE_TURNOVER_V1",
+  "stage": "P12-14",
+  "source_id": "EASTMONEY_QUOTES_LATEST",
+  "fallback_source_contract": "P12_14_TENCENT_TURNOVER_FALLBACK_V1",
+  "public_entrypoint": "https://quote.eastmoney.com/",
+  "endpoint": "https://push2.eastmoney.com/api/qt/ulist.np/get",
+  "required_request_parameters": {
+    "ut": "fa5fd1943c7b386f172d6893dbbd1d0c",
+    "fltt": "2",
+    "invt": "2",
+    "referer": "https://quote.eastmoney.com/"
+  },
+  "scope": "POST_LOCAL_FILTER_CANDIDATE_ENRICHMENT_ONLY",
+  "enabled_by_default": false,
+  "shadow_observation_enabled": true,
+  "supported_markets": ["SH", "SZ"],
+  "request_policy": {
+    "candidate_scope": "ALL_SUPPORTED_ROWS_IN_ACTIVE_V3_3_BUNDLE",
+    "max_candidates": "ACTIVE_BUNDLE_RESULT_COUNT",
+    "max_batches": "CEIL(SUPPORTED_CANDIDATE_COUNT/50)",
+    "max_batch_size": 50,
+    "batch_execution": "SEQUENTIAL_STOP_AFTER_FIRST_SOURCE_FAILURE",
+    "timeout_seconds": 8,
+    "retries": 0,
+    "max_response_bytes": 200000,
+    "raw_payload_persisted": false
+  },
+  "field_contract": {
+    "turnover_source_field": "f168",
+    "turnover_source_unit": "PERCENT",
+    "turnover_normalized_unit": "FRACTION",
+    "turnover_basis": "EASTMONEY_FLOAT_SHARE_BASIS",
+    "volume_source_field": "f47",
+    "volume_source_unit": "LOTS_100_SHARES",
+    "volume_normalized_unit": "SHARES"
+  },
+  "date_binding": {
+    "source_quote_date_available": false,
+    "required_target": "FROZEN_LOCAL_RESEARCH_TRADE_DATE",
+    "binding_method": "LOCAL_CLOSE_AMOUNT_VOLUME_FINGERPRINT",
+    "on_mismatch": "UNAVAILABLE"
+  },
+  "capability_states": ["BOUND", "UNAVAILABLE", "UNSUPPORTED_MARKET", "SOURCE_FAILED"],
+  "allowed_uses": [
+    "CANDIDATE_DETAIL_DISPLAY",
+    "EVIDENCE_DRAWER",
+    "POST_SELECTION_DIAGNOSTIC_TAG",
+    "SECONDARY_ORDER_FOR_QUALIFIED_UNRANKED",
+    "FUTURE_SHADOW_ANALYSIS"
+  ],
+  "forbidden_uses": [
+    "LOCAL_CANDIDATE_ADMISSION",
+    "CORE_V3_3_SCORE_OR_CATEGORY_RANK",
+    "PUBLICATION_READINESS_GATE",
+    "HISTORICAL_BACKFILL",
+    "MISSING_VALUE_ZERO_FILL",
+    "AUTOMATED_TRADING"
+  ],
+  "failure_policy": "FAIL_CLOSED_WITHOUT_BLOCKING_LOCAL_PIPELINE"
+}

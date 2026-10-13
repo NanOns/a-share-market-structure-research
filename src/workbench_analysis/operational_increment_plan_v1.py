@@ -54,10 +54,10 @@ def verify_history_overlap(cache, saved_rows, *, active_security_ids=None):
         for bar in saved['bars']:
             raw=dated.get(bar['trade_date'])
             if raw is None:
-                if dated and bar['trade_date']>=min(dated):raise ValueError('INCREMENT_SOURCE_REVISION_REQUIRES_RANGE_REPAIR:'+sid+':'+bar['trade_date'])
+                if dated and bar['trade_date']>=min(dated):raise ValueError('RANGE_REPAIR_REQUIRED:SOURCE_HISTORY_REVISION:'+sid+':'+bar['trade_date'])
                 continue
             if ([v/100 for v in raw[1:5]]!=bar['raw_ohlc'] or raw[5]!=bar['amount'] or raw[6]!=bar['volume']):
-                raise ValueError('INCREMENT_SOURCE_REVISION_REQUIRES_RANGE_REPAIR:'+sid+':'+bar['trade_date'])
+                raise ValueError('RANGE_REPAIR_REQUIRED:SOURCE_HISTORY_REVISION:'+sid+':'+bar['trade_date'])
 
 
 def predecessor_documents(root, parent):

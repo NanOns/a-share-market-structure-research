@@ -1,0 +1,38 @@
+{
+  "authority": {
+    "bytes": 4178,
+    "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+    "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+  },
+  "evidence_class": "ENGINEERING_SYNTHETIC",
+  "observation_metadata": {
+    "observation_state": "CORRECTED",
+    "source_correction": true
+  },
+  "publication_id": "R23_OWNER_FIXTURE_2",
+  "rows": [
+    {
+      "adjustment_identity": "R23_FIXTURE_IDENTITY",
+      "comparison_reference": 10,
+      "cutoff": "2026-09-28",
+      "entity_id": "S",
+      "entity_type": "STOCK",
+      "episode_id": "R23_EP_S",
+      "final_eligibility": "TRUE",
+      "matched_predicates": [
+        "ACCEPTED_OWNER_EVENT"
+      ],
+      "maturity": "PREWATCH",
+      "model_contract_id": "RESEARCH_STATE_V1",
+      "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+      "primary_industry": "I",
+      "radar_owner_events": [
+        "FIRST_PREWATCH"
+      ],
+      "signal_reference": 10,
+      "state_lineage_id": "R23_ENGINEERING_LINEAGE",
+      "transition_reasons": []
+    }
+  ],
+  "trade_date": "2026-09-28"
+}

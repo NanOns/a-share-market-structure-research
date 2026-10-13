@@ -1,0 +1,22 @@
+{
+  "contract_id": "V4_02_DATED_ISST_BOUNDED_RECOVERY_V1",
+  "version": "1.0.0",
+  "stage": "V4-02 / FINAL CLOSURE PACK",
+  "purpose": "One bounded recovery attempt for primary full-market dates that returned the explicit BaoStock provider error code 10001001.",
+  "scope": {
+    "max_failed_dates": 10,
+    "max_retries_per_failed_date": 1,
+    "allowed_primary_error": "BAOSTOCK_QUERY_DAILY_HISTORY_K_ASTOCK_FAILED_CODE_10001001",
+    "api": "query_daily_history_k_AStock(date)",
+    "max_rows": 20000,
+    "max_pages": 1
+  },
+  "persistence": {
+    "persist_raw_provider_payload": false,
+    "persist_only": ["date-bound membership status", "query metadata", "normalized response digest"],
+    "missing_after_retry": "UNKNOWN_NO_VALID_PROVIDER_ROW",
+    "retry_failure": "retain UNKNOWN_QUERY_FAILURE"
+  },
+  "source_cutoff": "2026-09-24",
+  "governing_upgrade_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd"
+}

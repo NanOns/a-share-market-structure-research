@@ -1,0 +1,42 @@
+{
+  "contract_id": "V4_R43_CORRECTED_OWNER_REPLAY_V3",
+  "version": "3.0.0",
+  "task_contract": "R4.3",
+  "target_sessions": [
+    "2026-09-28",
+    "2026-09-29",
+    "2026-09-30",
+    "2026-10-08"
+  ],
+  "lineage": "RECONSTRUCTED_CORRECTED",
+  "AS_RECORDED": false,
+  "source_policy": "config/v4_market_source_fallback_policy_v1.json",
+  "raw_authority": "HASH_VERIFIED_OFFICIAL_TDX",
+  "identity_authority": "ACCEPTED_SECURITY_IDENTITY_WITH_DATE_SPECIFIC_PROVIDER_STATUS",
+  "unknown_identity": "OBSERVE_RAW_WITHOUT_INVENTING_CANONICAL_ID",
+  "adjustment": {
+    "price_basis": "TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE",
+    "kernel": "src/adjustment/tdx_adjustment.py",
+    "classification": "config/v4_02_gbbq_price_impact_classification_v1.json",
+    "event_scope": "bar_date < event_date <= coordinate_target",
+    "unsupported_event": "BLOCK_ONLY_BARS_WHOSE_TRANSFORM_CROSSES_EVENT",
+    "future_events": "EXCLUDED",
+    "rounding": "ORIGINAL_TDX_HALF_UP_CENT",
+    "baostock_adjusted_as_native": false
+  },
+  "core": "CORE_FACTOR_V1",
+  "profile": "V4_04_CORE_PROFILE_RULES_V1",
+  "structure": "ORIGINAL_V4_12_FROZEN_AST_AND_EPISODE_CONTRACTS",
+  "parameter_changes": false,
+  "rps": "EXACT_CALENDAR_T_MINUS_3_DATED_UNIVERSE_ENDPOINTS",
+  "missing_membership": "FIELD_LOCAL_UNKNOWN_NEVER_FORWARD_OR_BACKWARD_FILLED",
+  "prior_structure_bootstrap": "UNKNOWN_EPISODE_ABSENCE_NEVER_SYNTHETIC_EMPTY",
+  "production_admission": "INDEPENDENT_NUMERIC_QA_AND_SCOPED_SUCCESSOR_GATE_REQUIRED",
+  "permissions": {
+    "production": false,
+    "shadow": false,
+    "focus_cutover": false
+  },
+  "membership_input": "HASH_BOUND_MEMBER_SNAPSHOT_S_OPERATIONAL_ONLY",
+  "PIT_ELIGIBLE": false
+}

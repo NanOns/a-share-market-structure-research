@@ -35,6 +35,25 @@ def read(root,candidate):
     if len(content)!=authority['rows']:raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_ROW_DENOMINATOR')
     return content
 
+
+def current_identity_binding(root,candidate):
+    day=candidate['accepted_trade_date'];lifecycle=candidate['owners'][day]['lifecycle']
+    document=json.loads(checked(root,lifecycle).read_bytes())
+    if document.get('trade_date',document.get('target_session',day))!=day:raise ValueError('CURRENT_IDENTITY_LIFECYCLE_DATE_MISMATCH')
+    source=document['identity'];checked(root,source)
+    return source,lifecycle
+
+
+def identity_source(root,candidate):
+    authority=json.loads(checked(root,candidate[KEY]).read_bytes())
+    entry=authority.get('current_identity')
+    if entry:
+        source,lifecycle=current_identity_binding(root,candidate)
+        if entry.get('source_type')!='CURRENT_LIFECYCLE_IDENTITY_R1' or entry['source']!=source or entry['lifecycle']!=lifecycle:
+            raise ValueError('CURRENT_IDENTITY_REFERENCE_SOURCE_MISMATCH')
+        return source
+    return json.loads(checked(root,candidate['membership_snapshot']).read_bytes())['identity_source']
+
 def prepare_identity(root,candidate):
     """Extend an existing immutable reference without rebuilding memberships."""
     root=Path(root).resolve();authority=json.loads(checked(root,candidate[KEY]).read_bytes())
@@ -46,6 +65,14 @@ def prepare_identity(root,candidate):
     content=rows(root,source);descriptor=append(root,token,day,'reference_identity',source,content)
     if canonical(read_fact(root,descriptor,token,day,'reference_identity',source))!=canonical(content):raise ValueError('IDENTITY_REFERENCE_FULL_PG_PAYLOAD_DIFFERENCE')
     authority['identity']=dict(source=source,descriptor=descriptor,fact_token=token,rows=len(content))
+    current,lifecycle=current_identity_binding(root,candidate)
+    current_content=rows(root,current)
+    prior={r['security_id']:r for r in content};now={r['security_id']:r for r in current_content}
+    if len(now)!=len(current_content) or any(now.get(sid)!=row for sid,row in prior.items()):raise ValueError('CURRENT_IDENTITY_PREDECESSOR_CHANGED')
+    current_token=digest(canonical(dict(contract_id=CONTRACT,domain='current_identity',T0=day,source=current,lifecycle=lifecycle)))
+    current_descriptor=append(root,current_token,day,'reference_current_identity',current,current_content)
+    if canonical(read_fact(root,current_descriptor,current_token,day,'reference_current_identity',current))!=canonical(current_content):raise ValueError('CURRENT_IDENTITY_FULL_PG_PAYLOAD_DIFFERENCE')
+    authority['current_identity']=dict(source_type='CURRENT_LIFECYCLE_IDENTITY_R1',source=current,lifecycle=lifecycle,descriptor=current_descriptor,fact_token=current_token,rows=len(current_content))
     path=root/'data/v4/membership_reference_pg_v1'/digest(canonical(authority))/'AUTHORITY.json';atomic_json(root,path,authority);candidate[KEY]=ref(root,path)
     return dict(contract_id=CONTRACT,domain='identity',rows=len(content),membership_fact_recomputed=False,publication=False)
 
@@ -62,6 +89,13 @@ def read_identity(root,candidate):
     if entry['source']!=snapshot['identity_source']:raise ValueError('NATIVE_IDENTITY_REFERENCE_SOURCE_MISMATCH')
     content=read_fact(root,entry['descriptor'],entry['fact_token'],authority['T0'],'reference_identity',entry['source'])
     if len(content)!=entry['rows']:raise ValueError('NATIVE_IDENTITY_REFERENCE_ROW_DENOMINATOR')
+    current=authority.get('current_identity')
+    if current:
+        source=identity_source(root,candidate)
+        current_content=read_fact(root,current['descriptor'],current['fact_token'],authority['T0'],'reference_current_identity',source)
+        now={r['security_id']:r for r in current_content}
+        if len(current_content)!=current['rows'] or len(now)!=len(current_content) or any(now.get(r['security_id'])!=r for r in content):raise ValueError('CURRENT_IDENTITY_PREDECESSOR_CHANGED')
+        return current_content
     return content
 
 def prepare_search_identity(root,candidate):

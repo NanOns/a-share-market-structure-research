@@ -1,0 +1,24 @@
+{
+  "contract_id": "V4_01_SOURCE_FINGERPRINT_BLIND_CASES_V1",
+  "version": "1.0.0",
+  "purpose": "Frozen detector inputs only; expected outcomes are held in a separate validation-label file.",
+  "cases": [
+    {
+      "case_id": "BLIND-01",
+      "diagnostic_report": "reports/v4_01/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_300114_302132_R1.json.gz"
+    },
+    {
+      "case_id": "BLIND-02",
+      "diagnostic_report": "reports/v4_01/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_000022_001872_R1.json.gz"
+    },
+    {
+      "case_id": "BLIND-03",
+      "diagnostic_report": "reports/v4_01/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_000024_001979_R1.json.gz"
+    },
+    {
+      "case_id": "BLIND-04",
+      "diagnostic_report": "reports/v4_01/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_000562_000166_R1.json.gz"
+    }
+  ],
+  "label_blinding": "Detector predictions are computed from diagnostic reports before the evaluator loads config/v4_01_source_fingerprint_blind_labels_v1.json."
+}

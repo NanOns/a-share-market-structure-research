@@ -1,0 +1,16 @@
+{
+  "contract_id": "V4_08_SECTOR_MEMBERSHIP_QUALITY_V2",
+  "version": "2.0.0",
+  "status": "R2_ENGINEERING_CANDIDATE",
+  "quality_values": [
+    {"quality":"PIT_OBSERVED_ACCEPTED","formal_allowed":true,"required_basis":"PIT_OBSERVED","required_conditions":["provider availability basis independently accepted","system_available_at <= cutoff","membership_asof_date == target_trade_date","source bytes frozen","identity mapped","revision chain valid"]},
+    {"quality":"SOURCE_TIME_UNVERIFIED","formal_allowed":false,"required_basis":"PIT_OBSERVED or CURRENT_TDX_MEMBERSHIP","reason":"Source state may be observed, but source-specific provider/effective-date policy is not yet accepted."},
+    {"quality":"CURRENT_TDX_DIAGNOSTIC","formal_allowed":false,"required_basis":"CURRENT_TDX_MEMBERSHIP"},
+    {"quality":"CURRENT_REPLAY_DIAGNOSTIC","formal_allowed":false,"required_basis":"CURRENT_MEMBERSHIP_REPLAY"},
+    {"quality":"DERIVED_PARENT_DIAGNOSTIC","formal_allowed":false,"required_basis":"DERIVED_PARENT_MEMBERSHIP","requires_independent_acceptance":true},
+    {"quality":"UNKNOWN_IDENTITY","formal_allowed":false,"required_basis":"ANY","raw_diagnostic_retained":true},
+    {"quality":"UNKNOWN_SECTOR_TYPE","formal_allowed":false,"required_basis":"ANY","raw_diagnostic_retained":true}
+  ],
+  "historical_safety_rule": "PIT_OBSERVED with any degraded quality may remain pit_observed=true and historical_backtest_safe=false; the formal SQL view excludes it.",
+  "base_seed_degradation": "UNKNOWN / DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL; never zero"
+}

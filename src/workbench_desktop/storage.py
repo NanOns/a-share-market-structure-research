@@ -9,6 +9,7 @@ import uuid
 
 _OWNED = set()
 _OWNERS = {}
+_PRODUCERS = {}
 
 
 def legacy_workspace_writers(root):
@@ -42,23 +43,45 @@ def require_owned(root):
         raise ValueError('WORKSPACE_LEASE_REQUIRED')
 
 
-def activate_workspace_sources(root):
+
+def require_producer(root):
+    """Separate process-local verified admission; never impersonates a lease."""
+    key=str(Path(root).resolve());admission=_PRODUCERS.get(key)
+    if not admission or admission['pid']!=os.getpid():raise ValueError('VERIFIED_PRODUCER_ADMISSION_REQUIRED')
+    from workbench_analysis.r43_owner_replay import checked
+    checked(root,admission['policy'])
+    canonical=Path(root)/'config/operational_daily_exact_release_policy_v2.json'
+    if hashlib.sha256(canonical.read_bytes()).hexdigest()!=admission['policy']['sha256']:raise ValueError('VERIFIED_PRODUCER_POLICY_CHANGED')
+
+def activate_workspace_sources(root, *, producer_worker=False):
     """Compiled code stays in the EXE; provenance points to exact workspace originals."""
     import sys
-    if not getattr(sys,'frozen',False):return
-    require_owned(root)
+    key=str(Path(root).resolve())
+    if producer_worker:_PRODUCERS.pop(key,None)
+    if not getattr(sys,'frozen',False):
+        if not producer_worker:return
+        g_path(root)
+        from workbench_analysis.operational_daily_exact_policy_v2 import verify
+        _,binding=verify(root,verify_loaded=True)
+        _PRODUCERS[key]=dict(pid=os.getpid(),policy=binding,mode='VERIFIED_DEVELOPMENT')
+        return
+    if not producer_worker:require_owned(root)
+    else:
+        # Worker owns no tray/HTTP lease. Admission is exact package/policy
+        # provenance; the session PG advisory lock owns all computation writes.
+        g_path(root)
     manifest=verify_resources()
     identities={row['path']:row['sha256'] for row in manifest['resources']}
-    from .closeout_runtime_sources_r1 import admitted,AUTHORITY
-    repairs=admitted(root)
+    from .closeout_runtime_sources_r1 import packaging_versions,AUTHORITY
+    repairs,_=packaging_versions(root)
     if repairs and identities.get(AUTHORITY)!=hashlib.sha256((Path(root)/AUTHORITY).read_bytes()).hexdigest():
         raise ValueError('WORKSPACE_PACKAGE_RUNTIME_SOURCE_AUTHORITY_MISMATCH')
     policy=Path(root)/'config/read_only_operational_daily_release_policy_v1_1.json'
     from workbench_analysis.operational_daily_exact_policy_v2 import PATH as exact_path,verify as verify_exact
     exact_policy=Path(root)/exact_path
-    runtime_versions={}
+    runtime_versions={};verified_policy_binding=None
     if exact_policy.is_file():
-        current,_=verify_exact(root)
+        current,verified_policy_binding=verify_exact(root)
         if identities.get(exact_path)!=hashlib.sha256(exact_policy.read_bytes()).hexdigest():
             raise ValueError('WORKSPACE_PACKAGE_EXACT_DAILY_POLICY_MISMATCH')
         for row in current['accepted_algorithm_bindings']:
@@ -94,6 +117,12 @@ def activate_workspace_sources(root):
             for name,value in list(vars(module).items()):
                 if isinstance(value,Path) and value.is_absolute() and value.is_relative_to(resource_root()):
                     setattr(module,name,Path(root)/value.relative_to(resource_root()))
+
+    if producer_worker:
+        if verified_policy_binding is None:raise ValueError('VERIFIED_PRODUCER_EXACT_POLICY_REQUIRED')
+        from workbench_analysis.operational_daily_exact_policy_v2 import verify_loaded_versions
+        verify_loaded_versions(current['accepted_algorithm_bindings'])
+        _PRODUCERS[key]=dict(pid=os.getpid(),policy=verified_policy_binding,mode='VERIFIED_PACKAGE')
 
 
 def frozen_module_evidence():

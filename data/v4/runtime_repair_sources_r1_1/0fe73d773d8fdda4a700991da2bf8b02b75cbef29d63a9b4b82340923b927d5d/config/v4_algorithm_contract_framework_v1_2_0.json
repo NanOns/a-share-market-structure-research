@@ -1,0 +1,27 @@
+{
+  "contract_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
+  "version": "1.2.0",
+  "stage_id": "V4-00G-SCOPED-CORRECTIVE-REVISION-R1",
+  "compatibility": {
+    "base_contract_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
+    "base_version": "1.1.0",
+    "base_path": "config/v4_algorithm_contract_framework_v1.json",
+    "base_is_immutable": true,
+    "existing_contract_validation": "must continue through the 1.1.0 validator unchanged"
+  },
+  "algorithm_ast": {
+    "version": "RULE_AST_V2",
+    "node_types": ["FIELD_REF", "PARAM_REF", "MATH_LITERAL", "ARITHMETIC", "COMPARE", "AND", "OR", "NOT", "LAG", "WINDOW_AGGREGATE", "WINDOW_RANK", "TRANSFORM", "CROSS_SECTION"],
+    "aggregate_operators": ["MEAN", "SUM", "MIN", "MAX", "COUNT", "POP_STDDEV"],
+    "transform_operators": ["LOG", "SIMPLE_RETURN", "ABS", "DIFFERENCE"],
+    "cross_section_operators": ["MIDRANK", "MEAN", "MEDIAN", "COUNT", "COUNT_TRUE", "SUM", "MIN", "MAX"],
+    "cross_section_quality_binding": "FIELD_LOCAL_QUALITY_OBSERVED_EXCLUDE_UNKNOWN_RETAIN_COUNTS; each field declares its own quality_ref",
+    "window_rank_operators": ["MIDRANK_PERCENTILE"],
+    "lag_policy": "PRIOR_ONLY_POSITIVE_OFFSET; future offsets prohibited",
+    "window_binding": "Every WINDOW_AGGREGATE must reference a frozen window contract and explicit endpoint policy.",
+    "cross_section_binding": "Every CROSS_SECTION must reference a PIT universe input and same-date evaluable quality policy.",
+    "unknown_policy": "propagate UNKNOWN; no drop-missing or implicit window shortening"
+  },
+  "required_additional_vectors": ["rolling_exact_window", "one_short", "population_stddev_ddof0", "midrank_ties", "cross_section_unknown_member", "future_offset_rejected", "window_contract_mismatch_rejected"],
+  "formal_status": "V4_03_SCOPED_EXTENSION_PENDING_EXTERNAL_AUDIT"
+}

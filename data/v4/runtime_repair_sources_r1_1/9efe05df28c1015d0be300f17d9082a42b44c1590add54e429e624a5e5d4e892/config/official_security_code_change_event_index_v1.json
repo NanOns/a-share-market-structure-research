@@ -1,0 +1,41 @@
+{
+  "contract_id": "OFFICIAL_SECURITY_CODE_CHANGE_EVENT_INDEX_V1",
+  "version": "1.0.0",
+  "owner_stage": "V4-01-R8.3",
+  "required_exchanges": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"],
+  "required_history_window": {
+    "start": "2023-07-04",
+    "end": "2026-09-24"
+  },
+  "event_fields": [
+    "exchange",
+    "old_source_security_key",
+    "new_source_security_key",
+    "effective_date",
+    "entity_identifier",
+    "source_ref",
+    "source_capture_path",
+    "source_capture_sha256",
+    "published_at",
+    "observed_at",
+    "system_available_at"
+  ],
+  "coverage_receipt_fields": [
+    "exchange",
+    "window_start",
+    "window_end",
+    "query_or_index_method",
+    "source_revision",
+    "event_count",
+    "failed_query_count",
+    "unresolved_source_windows"
+  ],
+  "coverage_policy": {
+    "all_required_exchanges_must_be_covered": true,
+    "full_window_required": true,
+    "failed_query_count_limit": 0,
+    "unresolved_source_windows_limit": 0,
+    "empty_event_list_proves_coverage": false
+  },
+  "incomplete_coverage_result": "BLOCKED"
+}

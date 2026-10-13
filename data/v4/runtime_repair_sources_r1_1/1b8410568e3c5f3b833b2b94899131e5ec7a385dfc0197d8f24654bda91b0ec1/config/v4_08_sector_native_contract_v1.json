@@ -1,0 +1,55 @@
+{
+  "contract_id": "V4_08_SECTOR_NATIVE_V1",
+  "version": "1.0.0",
+  "owner_stage": "V4-08",
+  "status": "FROZEN_ENGINEERING_CANDIDATE",
+  "formal_consumer_enabled": false,
+  "full_market_materialization_enabled": false,
+  "authority": {
+    "governing_contract": "DA-MSR-V4.2.2-CODEX-REV2",
+    "sections": ["15", "16", "18", "78"],
+    "membership_prerequisite": "V4_08_PIT_MEMBERSHIP_BASELINE_ACCEPTED"
+  },
+  "scope": {
+    "sector_types": ["INDUSTRY", "THEME"],
+    "formal_consumer_enabled": false,
+    "full_market_materialization": false,
+    "historical_replay": "CURRENT_MEMBERSHIP_REPLAY / DIAGNOSTIC_ONLY"
+  },
+  "inputs": {
+    "membership": "accepted PIT membership snapshot and common-member snapshots only",
+    "core": "accepted same-session Core primitives with source identity and quality",
+    "base_seed": "accepted BASE_SEED_V1 output; current capability degraded by open Prior-RPS audit",
+    "forbidden": ["same-day final stock PREWATCH", "Focus", "Radar", "V4-06 turnover", "future confirmation", "future outcomes", "STYLE", "UNKNOWN"]
+  },
+  "parameters": "config/v4_08_algorithm_parameter_set_v1.json",
+  "field_registry": "config/v4_08_sector_field_registry_v1.json",
+  "membership_gate": {
+    "minimum_members": "V4_08_SECTOR_MIN_MEMBERS",
+    "minimum_quote_coverage": "V4_08_SECTOR_MIN_QUOTE_COVERAGE",
+    "failure": "membership/identity/coverage uncertainty remains UNKNOWN or DEGRADED; never zero-imputed"
+  },
+  "primitives": {
+    "sector_rsN": "median of eligible member retN",
+    "sector_rsN_pct": "same-day midrank across all type/source/member/coverage-qualified sectors, not preselected sectors",
+    "rank_velocityK": "sector_rsN_pct[t] - sector_rsN_pct[t-K]; persist both universe snapshots",
+    "dq5": "sector_rs5_pct[t] - sector_rs5_pct[t-3]",
+    "breadth_ret1": "count(ret1 > 0) / count(ret1 known)",
+    "ma20_width": "count(close > MA20) / count(MA20 known)",
+    "deltaK": "recompute endpoints on M_t intersect M_(t-K) with both endpoints evaluable; preserve common_count and coverage",
+    "strong_member": "RPS20 >= 80 and evaluable",
+    "strong_member_retention": "intersection(strong_prev,strong_now) / |strong_prev|; zero denominator NOT_APPLICABLE; incomplete denominator UNKNOWN",
+    "seed_width": "Wilson lower-bound ordering heuristic from BASE_SEED_V1; retain k,n,unknown_count,raw,adjusted; n=0 UNKNOWN; no probability claim",
+    "participation_proxy": "median member amount_ratio20; distinct from Amount A; not eligibility",
+    "concentration": "member amount share; zero denominator UNKNOWN"
+  },
+  "quality": {
+    "unknown": "three-valued logic; missing/invalid input UNKNOWN, not FALSE or zero",
+    "base_seed_dependent_fields": "UNKNOWN / DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL",
+    "unknown_sector_type": "retain raw diagnostic; exclude formal qualification"
+  },
+  "stage_record": {
+    "acceptance_result": "CONTRACT_CANDIDATE_ONLY; membership acceptance and formal production are not granted",
+    "next_stage": "INDEPENDENT_V4_08_MEMBERSHIP_AUDIT_THEN_SECTOR_ROTATION_INTEGRATION"
+  }
+}

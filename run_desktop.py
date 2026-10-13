@@ -39,6 +39,8 @@ def main():
         parsed=urlparse(args.readback_url or '')
         if parsed.scheme!='http' or parsed.hostname not in ('127.0.0.1','localhost') or not parsed.port:
             raise ValueError('LOCAL_WORKER_READBACK_REQUIRED')
+        from workbench_desktop.storage import activate_workspace_sources
+        activate_workspace_sources(selected_root,producer_worker=True)
         from workbench_desktop.jobs import run_daily_worker
         return run_daily_worker(selected_root,args.readback_url)
     from workbench_desktop.storage import atomic, verify_resources, WorkspaceLease, g_path

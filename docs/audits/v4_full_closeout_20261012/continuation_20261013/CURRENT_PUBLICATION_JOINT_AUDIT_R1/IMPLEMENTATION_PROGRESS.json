@@ -1,0 +1,43 @@
+{
+  "contract_id": "V4_STAGE4_CURRENT_NATIVE_PUBLICATION_IMPLEMENTATION_PROGRESS_R1",
+  "stage": "4/6",
+  "acceptance": "IN_PROGRESS_NOT_RELEASE_ACCEPTED",
+  "controls_new_pass": 17,
+  "unchanged_controls_reexecuted": false,
+  "actual_native_candidate_snapshot_prepared": true,
+  "current_joint_integration_implemented": true,
+  "coordinated_publication_executed": false,
+  "immutable_four_gate_admission_completed": false,
+  "frozen_full_regression_completed": false,
+  "production_cutover": false,
+  "normal_exact_read_rejects_missing_current_joint": true,
+  "publication_recovery_preserves_joint_predecessor": true,
+  "sources": [
+    {
+      "path": "src/workbench_service/native_current_snapshot_v3.py",
+      "sha256": "c9a30f51a95e9bd3179d5f865009a0712f606bc6a55c2cf05c0e233a2d0a0cbe"
+    },
+    {
+      "path": "src/workbench_service/core_product_server_r1.py",
+      "sha256": "fbbfda8657983ac7069deed4797904594dc897d26042cc3c7cae838e960fe923"
+    },
+    {
+      "path": "src/workbench_analysis/operational_successor_release_v1.py",
+      "sha256": "08feb74806573a2f777cd654926fb0e55ec24c6144a54ae74cc13cf9f14a0241"
+    },
+    {
+      "path": "src/workbench_analysis/operational_successor_v1.py",
+      "sha256": "b86821fdd2187580d80469504e36e29e1837d90fa1ecd5dd5b675bc94d856ad3"
+    },
+    {
+      "path": "src/workbench_analysis/operational_daily_exact_policy_v2.py",
+      "sha256": "b6526c18eeb599abe0f5e6f6fdc86bf936d58c34c52eef224c547126e16a02a7"
+    },
+    {
+      "path": "src/workbench_analysis/operational_sealed_preparation_v1.py",
+      "sha256": "7daffd5496ce49fda473c5cc73eed1231932fe8a31bc7d1850b52a9c33bc61d5"
+    }
+  ],
+  "next": "Refresh immutable publication source binding after final integration edits; verify transaction/current-reader integration and source conservation, then complete real four-gate admission/CAS, frozen regression and Windows cutover.",
+  "remaining_required_verification": "New transaction/current-reader integration is not accepted by the 17 pure snapshot/joint invariant controls alone."
+}

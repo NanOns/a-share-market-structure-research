@@ -1,0 +1,42 @@
+{
+  "audit_id": "V4-CURRENT-NATIVE-SNAPSHOT-JOINT-20261013",
+  "contract_id": "V4_CURRENT_PUBLICATION_CROSS_AUTHORITY_AUDIT_R1",
+  "status": "TRUE_BLOCKER_CURRENT_STAGE4_PUBLICATION",
+  "stage": "4/6",
+  "scope": "Normal exact daily Operational Head publication and current product Snapshot/Joint atomically agree on T0 and business token; historical accepted Data Head and original historical read remain separately bound.",
+  "task_contract": {
+    "path": "G:\\codex work\\v4-full-closeout-20261012\\docs\\upgrade\\V4_FULL_CLOSEOUT_CONTINUATION_TASK_R2_20261013.md",
+    "sha256": "b51a1fbb50e19597ec98c12c22fc28f2a15a501a1645c77f7ca4b6e5ea22d4ce",
+    "bytes": 20630
+  },
+  "current_joint": {
+    "path": "G:\\codex work\\v4-production-20261012\\config\\v4_joint_release_authority_v1.json",
+    "sha256": "1d6e5b554c051aa48a4151f5d88db2a7f1d32518a17ae5ad516204989cb52ed8",
+    "bytes": 30958
+  },
+  "joint_trade_date": "2026-09-30",
+  "snapshot_trade_date": "2026-09-30",
+  "candidate_trade_date": "2026-10-12",
+  "evidence": [
+    {
+      "path": "G:\\codex work\\v4-full-closeout-20261012\\src\\workbench_analysis\\operational_daily_executor_v1.py",
+      "sha256": "ba561b34cc20784315ac37bd3865acf7b69aba0a2dbafa757016b1cc948e062d",
+      "bytes": 24719
+    },
+    {
+      "path": "G:\\codex work\\v4-full-closeout-20261012\\src\\workbench_analysis\\operational_successor_release_v1.py",
+      "sha256": "3b716cdfa4e83ca52cb91751c5c7d02e6777d400df939ab3ea35171f36a66998",
+      "bytes": 5021
+    },
+    {
+      "path": "G:\\codex work\\v4-full-closeout-20261012\\src\\workbench_service\\production_v4.py",
+      "sha256": "9500acbaf02b1efb7e5add3943e675ae108caf7499a9178b8d9ed8a5d9507c13",
+      "bytes": 45142
+    }
+  ],
+  "finding": "derive_ready_sources calls operational_successor_release_v1.promote; its CAS updates only V4_OPERATIONAL_RESEARCH_HEAD. Existing production_v4 snapshot builder is anchored to the separately accepted historical reader. No current native product snapshot/joint publication is integrated.",
+  "acceptance": "NOT_ESTABLISHED",
+  "required_fix": "Versioned current native content snapshot and Joint, mandatory date/token/PG/source/capability gates, coordinated normal daily publication and failure-safe exact predecessor preservation; no reexecution of unchanged numeric producers.",
+  "production_cutover": false,
+  "next_stage": "Implement and independently verify current native Snapshot/Joint integration, then complete stage4 immutable admission/publication and frozen regression."
+}

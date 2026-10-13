@@ -15,6 +15,7 @@ IO_MODULES={
     'src/workbench_analysis/operational_daily_executor_v1.py':frozenset(('operational_product_pack_v3','workbench_db.v4_membership_reference_pg_v1')),
 }
 ADDED_MODULES=frozenset((
+    'src/workbench_service/native_current_snapshot_v3.py',
     'src/workbench_analysis/operational_product_pack_v3.py','src/workbench_analysis/operational_successor_v1.py',
     'src/workbench_db/v4_history_corrections_pg_v2.py','src/workbench_db/v4_history_pg_r1.py',
     'src/workbench_db/v4_membership_reference_pg_v1.py','src/workbench_db/v4_operational_owner_authority_v2.py',
@@ -35,8 +36,10 @@ def source_conservation(root,original,current):
     for name,binding in old.items():
         old_path=checked(root,binding);new_path=checked(root,new[name])
         if binding['sha256']==new[name]['sha256']:continue
-        if name in (POLICY_MODULE,'src/workbench_analysis/operational_successor_release_v1.py'):
+        if name==POLICY_MODULE:
             proof.append(dict(module_path=name,scope='ADMISSION_POLICY_ONLY'));continue
+        if name=='src/workbench_analysis/operational_successor_release_v1.py':
+            proof.append(dict(module_path=name,scope='PUBLICATION_COORDINATION_IO_ONLY'));continue
         if name not in IO_MODULES:raise ValueError('SEALED_NUMERIC_PRODUCER_SOURCE_CHANGED:'+name)
         before=ast.parse(old_path.read_text('utf8'));after=ast.parse(new_path.read_text('utf8'));removed=[]
         class StripPreparedIO(ast.NodeTransformer):

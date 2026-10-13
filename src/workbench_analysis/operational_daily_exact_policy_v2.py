@@ -27,6 +27,7 @@ REQUIRED_SOURCES.update(('src/workbench_service/native_product_catalog_v3.py',
     'src/workbench_service/core_product_bff_r1.py',
     'src/workbench_db/v4_history_pg_r1.py','src/workbench_db/v4_history_corrections_pg_v2.py'))
 REQUIRED_SOURCES.add('src/workbench_analysis/operational_product_pack_v3.py')
+REQUIRED_SOURCES.add('src/workbench_service/native_current_snapshot_v3.py')
 REQUIRED_SOURCES.update(('src/workbench_db/v4_membership_reference_pg_v1.py','src/workbench_service/r43_operational_bff.py'))
 REQUIRED_SOURCES.add('src/workbench_analysis/operational_sealed_preparation_v1.py')
 REQUIRED_SOURCES.update(('src/workbench_analysis/producer_bootstrap_v1.py','src/workbench_service/candidate_research_read_v2.py'))
@@ -79,7 +80,8 @@ def verify(root,binding=None,*,candidate_only=False):
         raise ValueError('EXACT_V2_DAILY_PREDECESSOR_REQUIRED')
     bindings=policy['accepted_algorithm_bindings']
     paths=[b.get('module_path',b['path']) for b in bindings]
-    if len(paths)!=len(set(paths)) or not REQUIRED_SOURCES<=set(paths):
+    required=REQUIRED_SOURCES if not candidate_only else REQUIRED_SOURCES-{'src/workbench_service/native_current_snapshot_v3.py'}
+    if len(paths)!=len(set(paths)) or not required<=set(paths):
         raise ValueError('EXACT_V2_DAILY_SOURCE_BINDINGS_REQUIRED')
     for item in bindings:checked(root,item)
     components=policy.get('component_source_bindings',[])

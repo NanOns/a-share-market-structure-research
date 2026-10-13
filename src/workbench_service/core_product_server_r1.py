@@ -93,7 +93,13 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None):
                         # immutable Head and its verified source closure. Every
                         # request still passes the signature/change gate above.
                         # Cache bounded encoded variants, never mutable API state.
-                        response_key=(signature,path,tuple(sorted((k,v[0]) for k,v in params.items())),self.headers.get('Accept-Encoding',''))
+                        api=cache['bff'].api
+                        current_joint=None
+                        if api.candidate.get('exact_daily_adjustment_contract') and api.token==hashlib.sha256((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes()).hexdigest():
+                            from .native_current_snapshot_v3 import current
+                            current_joint=current(root,api.candidate)
+                        joint_token=hashlib.sha256(json.dumps(current_joint,sort_keys=True).encode()).hexdigest() if current_joint else None
+                        response_key=(signature,joint_token,path,tuple(sorted((k,v[0]) for k,v in params.items())),self.headers.get('Accept-Encoding',''))
                         responses=cache.setdefault('home_encoded',{})
                         encoded=responses.get(response_key) if path=='/api/v4/home' else None
                         if encoded is not None:
@@ -107,6 +113,8 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None):
                                     raise RuntimeError('PG_HOME_DATABASE_IDENTITY_MISMATCH')
                         if encoded is None:
                             code,data=cache['bff'].get(path,{k:v[0] for k,v in params.items()})
+                            if current_joint is not None and code==200:
+                                data['current_native_joint']=dict(contract_id=current_joint['contract_id'],T0=current_joint['T0'],business_token=current_joint['business_token'],snapshot=current_joint['snapshot'],full_product_release=current_joint['full_product_release'])
                             if path=='/api/v4/home' and code==200:
                                 from workbench_db.v4_native import configured_dsn
                                 from workbench_db.v4_forward_pg_r1 import ForwardFactStore

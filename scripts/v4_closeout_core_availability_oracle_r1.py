@@ -22,10 +22,7 @@ def rows(path):
             yield json.loads(line)
 
 
-def main():
-    target = OUT / 'RESULT.json'
-    if target.exists():
-        raise ValueError('PRESERVE_CORE_AVAILABILITY_ORACLE')
+def inputs():
     prep = load(WORK / 'SEALED_METADATA_CONSERVATION_R6_R3.json')
     candidate = load(ROOT / prep['candidate']['path'])
     day = candidate['accepted_trade_date']
@@ -62,6 +59,14 @@ def main():
                 if row.get('tradestatus') == '0': suspended.add(key)
                 else: suspended.discard(key)
     print('INDEPENDENT_CORE_STATUS_LEDGER_READY', flush=True)
+    return prep, candidate, day, owner, dates, histories, suspended, status_refs
+
+
+def main():
+    target = OUT / 'RESULT.json'
+    if target.exists():
+        raise ValueError('PRESERVE_CORE_AVAILABILITY_ORACLE')
+    prep, candidate, day, owner, dates, histories, suspended, status_refs = inputs()
     counts, reasons, errors = Counter(), Counter(), []
     error_count = 0
     for row in rows(ROOT / owner['core']['path']):

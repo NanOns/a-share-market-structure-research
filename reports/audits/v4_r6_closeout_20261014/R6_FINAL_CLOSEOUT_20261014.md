@@ -65,7 +65,7 @@
 
 ## 视觉检查说明
 
-已取得真实 28765 页面 HTML、JS/CSS 资源和数据接口读回；未保存本轮新增页面的浏览器 DOM/图像抽查。Windows Computer Use 无法可靠确认活动浏览器 URL 后停止了该工具调用，因此没有把 API/静态资源证据写成视觉 PASS。该限制不影响已完成的真实服务切换、生产路由或当前业务读数。
+已改用 Codex 内置浏览器完成本轮定点 DOM/可访问性树抽查，记录见同目录 `PRODUCTION_BROWSER_ACCEPTANCE_20261014.json`。真实 28765 首页显示三族风险及独立分母/覆盖率（板块 249/400、市场 1/1、个股 5201/5225）；Sector `INDUSTRY:T050101` 详情显示成熟度“发展中”、健康度“已评估：无当前匹配”及 `CURRENT_RECONSTRUCTED_RESEARCH_ONLY` 边界；Radar 优先级显示板块 191/400、个股 1410/5225 且与 177 条事件分开；Focus/Forward 页面明确显示首捕未取得、正式 Cohort 来源/授权/结算 Owner/FEP 准入未发布，未显示伪造样本数。浏览器子页状态条显示包 `V4_PACKAGE_1.1.6_44d446ed72bd`、引擎 `RUNNING`。`/api/v4/context` 另以真实本机 HTTP 200 读回 token 与 T0 `2026-10-13`，与首页日期一致；该 token 来自 API 读回，不称为页面可见 DOM。此次是 DOM/可访问性树检查，不是像素截图。此前“未做视觉抽查”的记录现已由本次验收补正；未来真实首捕、正式 Cohort 准入与结算等 `WAIT_REAL_SESSION` 边界保持不变。
 
 ## 阶段合同与后续阶段
 

@@ -1,0 +1,78 @@
+{
+  "contract": "V4-R6-PRODUCT-CLOSEOUT-CUTOVER-20261014",
+  "acceptance": "PRODUCTION_BROWSER_DOM_SPOT_CHECK_PASS",
+  "inspected_at_local": "2026-10-14T22:59:00+08:00/2026-10-14T23:01:00+08:00",
+  "browser": "Codex In-app Browser",
+  "production_origin": "http://127.0.0.1:28765",
+  "package": "V4_PACKAGE_1.1.6_44d446ed72bd",
+  "visible_package_evidence": "Capture status on Radar, Sector, and Focus pages displayed engine RUNNING and package V4_PACKAGE_1.1.6_44d446ed72bd.",
+  "context_http": {
+    "url": "http://127.0.0.1:28765/api/v4/context",
+    "status": 200,
+    "trade_date": "2026-10-13",
+    "context_token": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+    "release_id": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+    "production_accepted": true,
+    "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+    "AS_RECORDED": false,
+    "PIT_ELIGIBLE": false
+  },
+  "pages": [
+    {
+      "url": "http://127.0.0.1:28765/",
+      "title": "大 A · V4 研究工作台",
+      "result": "PASS",
+      "dom_observations": [
+        "Today's overview rendered with navigation and research date 2026-10-13.",
+        "Denominators rendered: stocks 5225, sectors 400, Focus 3151, event Radar 177.",
+        "Independent risk families rendered separately: sector ecology 249/400 (62.3%, 182 changes), market pressure 1/1 (100%, 1 change), stock structure 5201/5225 (99.5%, 87 changes).",
+        "Market four-axis facts were labeled as observed facts; composite environment remained an unaccepted candidate."
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:28765/v4/research/radar/priority?trade_date=2026-10-13&ui_rev=r6b",
+      "title": "大 A · V4 研究工作台",
+      "result": "PASS",
+      "dom_observations": [
+        "Formal research-priority tab and today's state-change-event tab were separate.",
+        "Priority disclaimer stated the order is for research review and not probability, return, or trading authorization.",
+        "Rendered priority counts: sectors 191 sortable / 400; stocks 1410 sortable / 5225."
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:28765/v4/research/sectors/INDUSTRY%3AT050101?trade_date=2026-10-13",
+      "title": "大 A · V4 研究工作台",
+      "result": "PASS",
+      "dom_observations": [
+        "Sector detail rendered for 百货 INDUSTRY:T050101.",
+        "Maturity rendered as 发展中; health rendered as 已评估：无当前匹配.",
+        "Evidence scope rendered as CURRENT_RECONSTRUCTED_RESEARCH_ONLY; metrics marked 代理重建（仅研究） where applicable.",
+        "Candidate observer explicitly stated historical candidate was not captured, was not a formal source, and was not authorized for formal consumption."
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:28765/v4/research/focus?trade_date=2026-10-13",
+      "title": "大 A · V4 研究工作台",
+      "result": "PASS",
+      "dom_observations": [
+        "Focus rendered 3151 rows with observed-versus-source-insufficient distinction.",
+        "Formal Forward cohort showed source unpublished and no approved validation-cohort owner; first-capture section stated T0 first observation was not obtained and must not be backfilled.",
+        "Forward settlement owner was unpublished; FEP model result/display permission was not admitted; no fabricated cohort or settlement value was shown."
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:28765/v4/research/market?trade_date=2026-10-13",
+      "title": "大 A · V4 研究工作台",
+      "result": "PASS",
+      "dom_observations": [
+        "Market page rendered accepted after-close snapshot and stated last-good was retained, not live market data.",
+        "Composite market environment remained unpublished candidate."
+      ]
+    }
+  ],
+  "limitations": [
+    "These are production-browser DOM/accessibility-tree observations, not pixel-level screenshot evidence.",
+    "The in-app browser direct-open action blocked the JSON context URL, so the context token and HTTP 200 were read separately from the local production endpoint; they were not claimed as visible page text.",
+    "DOM inspection verifies rendered content and route behavior, not independent algorithm acceptance or completion of future-real-session requirements."
+  ]
+}

@@ -53,11 +53,12 @@ def load(root,candidate):
         if set(entries)!={'focus','prewatch'} or any(e['original']!=expected[day][k] for k,e in entries.items()):raise ValueError('DEPENDENT_CORRECTION_OWNER_CONSERVATION_REQUIRED')
     return authority
 
-def apply(root,candidate,day,domain,original):
+def apply(root,candidate,day,domain,original,*,workspace_root=None):
     entry=load(root,candidate)['dates'].get(day)
     if entry is None:return original
     entry=entry[domain];kind='reference_profile_dependent_'+domain
-    patches=read_fact(root,entry['descriptor'],entry['fact_token'],day,kind,entry['source']);index={r['entity_id']:r for r in patches};seen=set();result=[]
+    patches=read_fact(root,entry['descriptor'],entry['fact_token'],day,kind,entry['source'],
+                      workspace_root=workspace_root);index={r['entity_id']:r for r in patches};seen=set();result=[]
     if len(index)!=len(patches) or set(index)!=set(entry['entity_ids']):raise ValueError('DEPENDENT_CORRECTION_DENOMINATOR')
     for row in original:
         entity=row['entity_id'] if domain=='focus' else row['security_id'];patch=index.get(entity)
@@ -67,8 +68,9 @@ def apply(root,candidate,day,domain,original):
     if seen!=set(index):raise ValueError('DEPENDENT_CORRECTION_ORIGINAL_ROW_MISSING')
     return result
 
-def attest(root,candidate,day,domain):
+def attest(root,candidate,day,domain,*,workspace_root=None):
     entry=load(root,candidate)['dates'].get(day)
     if entry is None:return
     entry=entry[domain]
-    attest_cached(root,entry['descriptor'],'reference_profile_dependent_'+domain,entry['source'])
+    attest_cached(root,entry['descriptor'],'reference_profile_dependent_'+domain,entry['source'],
+                  workspace_root=workspace_root)

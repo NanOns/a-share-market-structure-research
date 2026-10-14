@@ -84,6 +84,27 @@ class UXR2RouteContractTests(unittest.TestCase):
         self.assertNotIn('primary_industry_id', sector)
         self.assertEqual(sector['display_name'], '电气设备')
 
+    def test_thin_pg_corrections_forward_external_workspace_root(self):
+        from workbench_db import v4_profile_dependent_corrections_pg_v1 as dependent
+        from workbench_db import v4_profile_semantic_corrections_pg_v1 as semantic
+        workspace = Path('G:/codex work/v4-production-20261012')
+        dependent_entry = {'descriptor': {'path': 'descriptor.json'}, 'fact_token': 'a' * 64,
+                           'source': {'path': 'source.json'}, 'entity_ids': []}
+        dependent_authority = {'dates': {self.day: {'focus': dependent_entry}}}
+        with patch.object(dependent, 'load', return_value=dependent_authority), \
+             patch.object(dependent, 'read_fact', return_value=[]) as read_dependent:
+            self.assertEqual(dependent.apply(Path('.'), {}, self.day, 'focus', [],
+                                             workspace_root=workspace), [])
+        self.assertEqual(read_dependent.call_args.kwargs['workspace_root'], workspace)
+        semantic_entry = {'descriptor': {'path': 'descriptor.json'}, 'fact_token': 'b' * 64,
+                          'source': {'path': 'source.json'}, 'security_ids': []}
+        semantic_authority = {'dates': {self.day: semantic_entry}}
+        with patch.object(semantic, 'load', return_value=semantic_authority), \
+             patch.object(semantic, 'read_fact', return_value=[]) as read_semantic:
+            self.assertEqual(semantic.apply(Path('.'), {}, self.day, [],
+                                            workspace_root=workspace), [])
+        self.assertEqual(read_semantic.call_args.kwargs['workspace_root'], workspace)
+
     def test_radar_filters_are_applied_before_sql_paging(self):
         where, args, order, offset, limit = query_parts(
             'radar', {'q': '600000', 'event': 'UPGRADED', 'validity': 'VALID', 'offset': '30', 'limit': '30'}

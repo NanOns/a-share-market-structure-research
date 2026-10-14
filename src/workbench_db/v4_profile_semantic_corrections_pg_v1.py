@@ -73,10 +73,11 @@ def load(root,candidate):
         if entry['original_profile']!=expected[day]:raise ValueError('PROFILE_CORRECTION_OWNER_CONSERVATION_REQUIRED')
     return authority
 
-def apply(root,candidate,day,original):
+def apply(root,candidate,day,original,*,workspace_root=None):
     entry=load(root,candidate)['dates'].get(day)
     if entry is None:return original
-    patches=read_fact(root,entry['descriptor'],entry['fact_token'],day,'reference_profile_semantic_corrections',entry['source'])
+    patches=read_fact(root,entry['descriptor'],entry['fact_token'],day,'reference_profile_semantic_corrections',
+                      entry['source'],workspace_root=workspace_root)
     index={p['security_id']:p for p in patches}
     if len(index)!=len(patches) or set(index)!=set(entry['security_ids']):raise ValueError('PROFILE_CORRECTION_PG_DENOMINATOR')
     result=[];seen=set()
@@ -95,8 +96,9 @@ def field_binding(root,candidate,day,security_id):
     if entry is None:return None
     return entry['source'] if security_id in entry['security_ids'] else None
 
-def attest(root,candidate,day):
+def attest(root,candidate,day,*,workspace_root=None):
     from .v4_operational_owner_pg_closeout import attest_cached
     entry=load(root,candidate)['dates'].get(day)
     if entry is None:return
-    attest_cached(root,entry['descriptor'],'reference_profile_semantic_corrections',entry['source'])
+    attest_cached(root,entry['descriptor'],'reference_profile_semantic_corrections',entry['source'],
+                  workspace_root=workspace_root)

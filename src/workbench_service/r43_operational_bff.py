@@ -26,12 +26,14 @@ class OperationalResearchBFF:
     def membership_rows(self):
         from workbench_db.v4_membership_reference_pg_v1 import KEY,read
         if KEY in self.api.candidate or self.api.candidate.get('exact_daily_adjustment_contract'):
-            return normalized_frozen_rows(read(self.api.root,self.api.candidate))
+            return normalized_frozen_rows(read(self.api.root,self.api.candidate,
+                workspace_root=getattr(self.api,'pg_owner_workspace_root',None)))
         return normalized_frozen_rows(rows(self.api.root,self.api.snapshot['memberships']))
     def identity_rows(self):
         from workbench_db.v4_membership_reference_pg_v1 import KEY,read_identity
         if KEY in self.api.candidate or self.api.candidate.get('exact_daily_adjustment_contract'):
-            return read_identity(self.api.root,self.api.candidate)
+            return read_identity(self.api.root,self.api.candidate,
+                workspace_root=getattr(self.api,'pg_owner_workspace_root',None))
         return rows(self.api.root,self.api.snapshot['identity_source'])
     def envelope(self,day,**payload):
         c=self.api.context();c.update(trade_date=day,accepted_trade_date='2026-10-08',release_id=self.api.token,model_namespace='TDX_INDUSTRY_CONCEPT',data_updated_at=self.api.candidate['membership_observed_at'],scoped_release=True,operational_release_scope=['stocks_daily','sectors_current_facts','market_current','focus_read_corrected','diagnostics'],domain_readiness={'focus':{'earliest_valid_date':'2026-09-28'}},read_source_label='通达信最新成员回算；非历史当日成员',bff_contract_id=CONTRACT)

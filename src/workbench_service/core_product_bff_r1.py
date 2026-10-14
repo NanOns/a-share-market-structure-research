@@ -103,6 +103,7 @@ def d2_selection_explanation(fields,source):
     if scenario=='NONE' and scenario_status!='KNOWN':interpretation='NONE_RESULT_NOT_FULLY_EVALUATED'
     elif scenario=='NONE':interpretation='NONE_FULLY_EVALUATED_NO_MATCH'
     elif scenario is None:interpretation='SCENARIO_RESULT_NOT_PUBLISHED'
+    elif scenario_status!='KNOWN':interpretation='SCENARIO_REPORTED_BUT_UNVERIFIED'
     else:interpretation='SCENARIO_REPORTED_WITH_D2_STATUS'
     names=('scenario_status','raw_qualification','final_eligibility','detector_statuses',
            'matched_predicates','unknown_predicates','transition_reasons','input_provenance','identity_status')
@@ -118,9 +119,11 @@ def current_identity_presentation(identity,source,day):
 
 class CoreProductBFFR1(OperationalSuccessorBFFV1):
     isolated_history=None
-    def __init__(self,api,legacy,*,isolated_history_authority=None):
+    def __init__(self,api,legacy,*,isolated_history_authority=None,chart_history_index_root=None,market_fact_index_root=None):
         super().__init__(api,legacy)
         self.isolated_history=None
+        self.chart_history_index_root=Path(chart_history_index_root).resolve() if chart_history_index_root is not None else None
+        self.market_fact_index_root=Path(market_fact_index_root).resolve() if market_fact_index_root is not None else None
         if isolated_history_authority is not None:
             from .isolated_history_read_r4 import load
             self.isolated_history=load(api,isolated_history_authority)
@@ -235,6 +238,43 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             self.api.cache[key]=projection
         return self.api.cache[key]
 
+    def _r2_stock_profile(self,index,day,key):
+        """Build stock detail from the immutable R2 row without reopening PG owners."""
+        context=index.response('/api/v4/context')
+        item=self.resolve_dated_object('stocks',day,str(key).strip().upper())
+        if context is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
+        base={k:context[k] for k in ('context','context_token','production_accepted','source_quality') if k in context}
+        if item is None:
+            return 404,{**base,'status':'NOT_FOUND','code':'ENTITY_NOT_FOUND','item':None}
+        fields=item.get('fields',{});eligibility=fields.get('final_eligibility',{}).get('value')
+        classified=('NOT_ELIGIBLE' if eligibility=='FALSE' else 'ELIGIBLE' if eligibility=='TRUE'
+                    else 'NOT_IMPLEMENTED' if 'NOT_IMPLEMENTED' in str(fields.get('detector_statuses',{})) else 'UNKNOWN')
+        selection=dict(status=classified,d2=d2_selection_explanation(fields,self.api.candidate['owners'][day]['focus']),
+                       meaning='资格状态来自真实 reducer；不在列表不代表无画像；未知不等于未满足')
+        owner_explanations={}
+        for key_name,field,basis in (
+            ('why_now','transition_reasons','OWNER_TRANSITION_REASONS'),
+            ('waiting_for','unknown_predicates','MISSING_PREDICATE_EVIDENCE_ONLY')):
+            if field in fields:
+                owner_explanations[key_name]=dict(value=fields[field].get('value'),source=fields[field],basis=basis)
+        for key_name in ('invalid_if','hypothesis'):
+            owner_explanations[key_name]=dict(value=None,source=dict(quality='UNKNOWN',
+                reason='DATED_D2_OWNER_FIELD_NOT_PRESENT',source=self.api.candidate['owners'][day]['focus']),basis='MISSING_OWNER')
+        missing_relations=[]
+        if fields.get('primary_industry',{}).get('value') is None:missing_relations.append('primary_industry')
+        missing_relations.append('supporting_concepts')
+        return 200,{**base,'status':'READY','item':item,
+            'F':{k:v for k,v in fields.items() if k in {'open','high','low','close','amount','volume'}},
+            'R':{k:v for k,v in fields.items() if k not in {'open','high','low','close','amount','volume'}},
+            'selection_explanation':selection,
+            'membership_relations':dict(items=[],owner_gap=missing_relations,source=None,
+                membership_mode='NOT_RELOADED_FROM_OPERATIONAL_OWNER',PIT_ELIGIBLE=False),
+            'owner_explanations':owner_explanations,
+            'owner_specific_debt':[dict(field=k,reason='DATED_D2_OWNER_FIELD_NOT_PRESENT') for k in ('invalid_if','hypothesis')],
+            'key_prices':{k:fields[k] for k in ('ma20','prior_high20','prior_low20','atr20') if k in fields},
+            'hypothesis_scope':'情景解释不证明洗盘、吸筹、出货或账户资金行为',
+            'competitive_hypotheses':competing_explanations(deepcopy(fields))}
+
     def get(self,path,query):
         from workbench_db.v4_read_index_r2 import validate_query
         from workbench_db.v4_read_index_r1 import load as load_index_r1
@@ -243,6 +283,10 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         index_route=(path in ('/api/v4/context','/api/v4/home','/api/v4/stocks','/api/v4/sectors','/api/v4/focus','/api/v4/radar') or
                      path.startswith('/api/v4/stocks/') or path.startswith('/api/v4/sectors/') or path.startswith('/api/v4/focus/'))
         index_r2=self._read_index_r2(day) if index_route else None
+        if (index_r2 is not None and path.startswith('/api/v4/stocks/') and
+                path.endswith(('/profile','/evidence','/why-not','/why-not-prewatch'))):
+            parts=[unquote(part) for part in path.split('/') if part]
+            if len(parts)==5:return self._r2_stock_profile(index_r2,day,parts[3])
         if path=='/api/v4/radar' and not getattr(self,'building_read_index',False):
             if index_r2 is None:raise ValueError('READ_INDEX_R2_RADAR_NOT_PREPARED')
             context=index_r2.response('/api/v4/context')
@@ -320,7 +364,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         if key not in self.api.cache:
             from workbench_db.v4_membership_reference_pg_v1 import KEY,read_search_identity
             if KEY in self.api.candidate or self.api.candidate.get('exact_daily_adjustment_contract'):
-                self.api.cache[key]=read_search_identity(self.api.root,self.api.candidate)
+                self.api.cache[key]=read_search_identity(self.api.root,self.api.candidate,
+                    workspace_root=getattr(self.api,'pg_owner_workspace_root',None))
                 return self.api.cache[key]
             head=json.loads((self.api.root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
             ref=head['identity'];data=json.loads(checked(self.api.root,ref).read_bytes())
@@ -334,6 +379,48 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             if entry is None:return None
             return dict(T0=day,history_index=entry['history_index'],source_bindings={'history':entry['source_binding']},isolated_authority_sha256=digest),{}
         return self.pack(day)
+
+    def chart_history_pack(self, day):
+        if self.isolated_history is not None:
+            authority,index_root,digest=self.isolated_history
+            entry=authority['dates'].get(day)
+            if entry is None:return None
+            return dict(T0=day,history_index=entry['history_index'],source_bindings={'history':entry['source_binding']},isolated_authority_sha256=digest),{}
+        key=('product-history-only-pack',day)
+        if key not in self.api.cache:
+            from .native_product_catalog_v3 import KEY,load
+            if KEY in self.api.candidate or self.api.candidate.get('exact_daily_adjustment_contract'):
+                authority=load(self.api.root,self.api.candidate)
+                binding=authority['dates'].get(day)
+                manifest=json.loads(checked(self.api.root,binding).read_bytes()) if binding else None
+            else:
+                authority=self.api.root/'config/core_product_read_authority_r1.json'
+                if not authority.exists():return None
+                manifest=dated_product_manifest(self.api.root,json.loads(authority.read_bytes()),day)
+            if manifest is None:return None
+            if manifest.get('contract_id') not in ('CORE_PRODUCT_DATED_HISTORY_ONLY_PACK_R1','CORE_PRODUCT_DATED_READ_PACK_PG_MARKET_R2'):
+                raise ValueError('PRODUCT_HISTORY_PACK_CONTRACT_UNSUPPORTED')
+            if manifest.get('contract_id')=='CORE_PRODUCT_DATED_HISTORY_ONLY_PACK_R1' and manifest.get('capabilities')!=['CHART_HISTORY']:
+                raise ValueError('PRODUCT_HISTORY_ONLY_SCOPE_MISMATCH')
+            head=manifest.get('head') or {}
+            if manifest.get('T0')!=day or (self.api.root/head.get('path','')).read_bytes()!=checked(self.api.root,head).read_bytes():
+                raise ValueError('PRODUCT_HISTORY_MANIFEST_CONTEXT_MISMATCH')
+            history=manifest.get('history_index') or {}
+            expected_token=manifest.get('fact_token',head.get('sha256'))
+            if history.get('engine')!='postgresql':raise ValueError('PG_HISTORY_BINDING_REQUIRED_NO_FALLBACK')
+            if (history.get('T0'),history.get('head_token'))!=(day,expected_token):
+                raise ValueError('PG_HISTORY_MANIFEST_CONTEXT_MISMATCH')
+            source=manifest.get('source_bindings',{}).get('history')
+            if not source:raise ValueError('PG_HISTORY_SOURCE_BINDING_REQUIRED')
+            checked(self.api.root,source)
+            if history.get('source_digest')!=source.get('sha256'):
+                raise ValueError('PG_HISTORY_SOURCE_DIGEST_MISMATCH')
+            from workbench_db.v4_native import workspace_schema
+            index_root=self.chart_history_index_root or self.api.root
+            if history.get('schema')!=workspace_schema(index_root,'history'):
+                raise ValueError('PG_HISTORY_CONTEXT_MISMATCH')
+            self.api.cache[key]=(manifest,None)
+        return self.api.cache[key]
 
     def pack(self, day):
         key=('product-pack',day)
@@ -362,7 +449,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             else:
                 if manifest.get('contract_id')=='CORE_PRODUCT_DATED_READ_PACK_PG_MARKET_R2':
                     from workbench_db.v4_market_fact_pg_r1 import read
-                    facts=read(self.api.root,manifest['market_facts'],day)
+                    facts=read(self.market_fact_index_root or self.api.root,manifest['market_facts'],day)
                 else:
                     facts=json.loads(checked(self.api.root,manifest['market_facts']).read_bytes())
             self.api.cache[key]=(manifest,facts)
@@ -471,9 +558,12 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
 
     def page(self,domain,day,q,entity=None,sector=None):
         """Filter the full dated collection; missing sort values always remain last."""
-        if not getattr(self,'building_read_index',False):
+        # R1/R2 read indexes contain only stocks, sectors and focus rows.
+        # Loading them for other projectors (notably dated structural events)
+        # can reject a valid non-indexed route on an unrelated stale binding.
+        if not getattr(self,'building_read_index',False) and domain in ('stocks','sectors','focus'):
             index=self._read_index_r2(day)
-            if index is not None and domain in ('stocks','sectors','focus'):
+            if index is not None:
                 if entity is not None:
                     context,item=index.response_and_detail(
                         '/api/v4/context',domain,str(entity).strip().upper())
@@ -487,7 +577,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 return {**base,**index.page(domain,q,entity=entity,sector=sector)}
             from workbench_db.v4_read_index_r1 import load as load_index
             index=load_index(self.api.root,self.api.token,day,allow_missing=day!=self.api.candidate['accepted_trade_date'])
-            if index is not None and domain in ('stocks','sectors','focus'):
+            if index is not None:
                 context=index.response('/api/v4/context')
                 return {**{k:v for k,v in context.items() if k in ('context','context_token','production_accepted','source_quality')},
                         **index.page(domain,q,entity=entity,sector=sector),
@@ -526,11 +616,11 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
     def chart(self,day,sid,q):
         period=q.get('period','D');basis=q.get('price_basis','QFQ')
         if period not in ('D','W','M') or basis not in ('RAW','QFQ'):raise ValueError('INVALID_CHART_QUERY')
-        pack=self.history_pack(day)
+        pack=self.chart_history_pack(day)
         if not pack:return self.missing(day,'stocks/'+sid+'/chart','DATED_HISTORY_INDEX_NOT_BOUND')
         manifest,_=pack
         from workbench_db.v4_history_pg_r1 import read
-        index_root=self.isolated_history[1] if self.isolated_history is not None else self.api.root
+        index_root=self.isolated_history[1] if self.isolated_history is not None else (self.chart_history_index_root or self.api.root)
         value=read(index_root,manifest['history_index'],day,sid)
         if value is None:return 404,self.envelope(day,status='NOT_FOUND',code='ENTITY_NOT_FOUND')
         bars=[]

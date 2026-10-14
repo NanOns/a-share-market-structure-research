@@ -9,10 +9,11 @@ from urllib.error import HTTPError
 from urllib.request import urlopen
 from unittest.mock import patch
 
-from workbench_service.core_product_bff_r1 import CoreProductBFFR1
+from workbench_service.core_product_bff_r1 import CoreProductBFFR1, d2_selection_explanation
 from workbench_service.operational_successor_bff_v1 import OperationalSuccessorBFFV1
 from workbench_db.v4_read_index_r2 import AUTHORITY, CONTRACT, ReadIndex, load
 from workbench_service.core_product_server_r1 import make_product_handler
+from workbench_service.candidate_research_read_v2 import first_capture_readiness
 
 
 DAY = '2026-10-13'
@@ -69,6 +70,39 @@ class UXR3RouteTests(unittest.TestCase):
 
     def tearDown(self):
         self.temp.cleanup()
+
+    def test_first_capture_readiness_is_read_only_and_explains_next_gate(self):
+        head={'accepted_trade_date':DAY,'owners':{DAY:{}},'cohort_signal_producers':{},
+              'cohort_capture_receipts':{},'cohort_write_grants':{}}
+        gate=first_capture_readiness(head,DAY,['2026-10-12',DAY,'2026-10-14'])
+        self.assertEqual(gate['status'],'NOT_DUE')
+        self.assertEqual(gate['next_capture_session'],'2026-10-14')
+        self.assertEqual(gate['missing_inputs'],[
+            'FULL_AS_RECORDED_SIGNAL_PRODUCER','INDEPENDENT_VALIDATION_COHORT_OWNER',
+            'COMPLETE_FIRST_CAPTURE_RECEIPT','SEPARATE_FIRST_CAPTURE_WRITE_GRANT'])
+        self.assertFalse(gate['production_write_authorized'])
+        self.assertFalse(gate['formal_cohort_enrollment_enabled'])
+        self.assertIsNone(gate['observed_count'])
+        self.assertFalse(gate['historical_backfill_permitted'])
+        historical=first_capture_readiness(head,'2026-10-12',['2026-10-12',DAY,'2026-10-14'])
+        self.assertEqual(historical['accepted_trade_date'],DAY)
+        self.assertEqual(historical['next_capture_session'],'2026-10-14')
+        self.assertEqual(historical['missing_inputs'],gate['missing_inputs'])
+
+    def test_preview_serves_checkout_assets_separately_from_data_root(self):
+        static_root=Path(__file__).resolve().parents[1]/'src/workbench_service/static'
+        with patch('workbench_service.core_product_server_r1.make_daily_handler', return_value=BaseHTTPRequestHandler):
+            server=ThreadingHTTPServer(('127.0.0.1',0),make_product_handler(
+                self.root,None,static_root=static_root))
+        worker=threading.Thread(target=server.serve_forever,daemon=True);worker.start()
+        try:
+            with urlopen(f'http://127.0.0.1:{server.server_port}/v4/assets/components.js',timeout=5) as response:
+                source=response.read().decode('utf-8')
+            self.assertEqual(response.status,200)
+            self.assertIn('首次捕获就绪',source)
+            self.assertIn('function firstCapturePanel',source)
+        finally:
+            server.shutdown();server.server_close();worker.join()
 
     def test_radar_default_and_empty_event_reach_r2_page(self):
         index = FakeR2()
@@ -128,6 +162,16 @@ class UXR3RouteTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'UNKNOWN_PARAMETER'):
                 self.bff.get(path, {'context_token': TOKEN, 'limit_state': 'UNKNOWN'})
 
+    def test_non_indexed_event_page_does_not_open_unrelated_read_index(self):
+        self.bff._read_index_r2 = lambda day: self.fail('events are outside the R2 index domains')
+        self.bff.project = lambda domain, day: [{'entity_id': 'EVT-1', 'display_name': '事件',
+            'symbol': 'EVT-1', 'search_aliases': [], 'fields': {'event_type': {'value': 'NEW'}}}]
+        self.bff.paged = lambda day, items, query, **kwargs: (200, {'items': items, 'total': len(items), **kwargs})
+        with patch('workbench_db.v4_read_index_r1.load', side_effect=AssertionError('events must not load the R1 index')):
+            response = self.bff.page('events', DAY, {'limit': '30', 'sort': 'id'})
+        self.assertEqual(response['total'], 1)
+        self.assertEqual(response['items'][0]['entity_id'], 'EVT-1')
+
     def test_profile_route_reads_full_r2_detail_and_keeps_missing_quality(self):
         fields = {'scenario': {'value': 'NONE', 'quality': 'KNOWN'},
                   'scenario_status': {'value': 'UNKNOWN', 'quality': 'SOURCE_INCOMPLETE', 'reason': 'DETECTOR_NOT_RUN'},
@@ -137,7 +181,6 @@ class UXR3RouteTests(unittest.TestCase):
         detail = {'entity_id': 'SEC-1', 'symbol': 'SZ.301660', 'fields': fields}
         index = FakeR2(detail)
         self.bff._read_index_r2 = lambda day: index
-        self.bff.resolve_dated_object = lambda domain, day, key: detail
 
         def base_get(instance, path, query):
             payload = instance.page('stocks', DAY, query, entity='SEC-1')
@@ -149,11 +192,34 @@ class UXR3RouteTests(unittest.TestCase):
         with patch.object(OperationalSuccessorBFFV1, 'get', base_get):
             code, response = self.bff.get('/api/v4/stocks/SZ.301660/profile', {'context_token': TOKEN})
         self.assertEqual(code, 200)
-        self.assertEqual(index.detail_calls, [('stocks', 'SEC-1')])
+        self.assertEqual(index.detail_calls, [('stocks', 'SZ.301660')])
         self.assertEqual(response['selection_explanation']['d2']['scenario'], 'NONE')
         self.assertEqual(response['selection_explanation']['d2']['scenario_status']['reason'], 'DETECTOR_NOT_RUN')
+        self.assertEqual(response['selection_explanation']['d2']['scenario_interpretation'], 'NONE_RESULT_NOT_FULLY_EVALUATED')
+        self.assertIsNone(response['selection_explanation']['d2']['unknown_predicates']['value'])
         self.assertEqual(response['item']['fields']['identity_status']['value'], 'CONFIRMED_CURRENT_IDENTITY')
+        self.assertEqual(response['membership_relations']['owner_gap'], ['primary_industry', 'supporting_concepts'])
         self.assertNotIn(('stocks', {'context_token': TOKEN}), index.page_calls)
+
+        # The browser must read the nested D2 contract, not selection_explanation's
+        # outer status wrapper; otherwise NONE/UNKNOWN evidence renders as undefined.
+        stock_js = Path(__file__).resolve().parents[1] / 'src/workbench_service/static/core-product-r1/stock.js'
+        ui = stock_js.read_text(encoding='utf-8')
+        self.assertIn('d2=selection.d2||{}', ui)
+        self.assertIn('d2.scenario_status?.value', ui)
+        self.assertIn('d2.unknown_predicates?.value', ui)
+        self.assertIn('D2 报告了该场景，但评估状态未知；不能视为已确认。', ui)
+        api_js = stock_js.with_name('api.js').read_text(encoding='utf-8')
+        self.assertIn('数据来源读取校验未通过：', api_js)
+        self.assertIn('未回退到其他日期', api_js)
+        reported = d2_selection_explanation({
+            'scenario': {'value': 'LAUNCH_CONFIRM', 'quality': 'KNOWN'},
+            'scenario_status': {'value': None, 'quality': 'SOURCE_INCOMPLETE'},
+        }, {'path': 'focus.json', 'sha256': 'c' * 64})
+        self.assertEqual(reported['scenario_interpretation'], 'SCENARIO_REPORTED_BUT_UNVERIFIED')
+        components_js = stock_js.with_name('components.js').read_text(encoding='utf-8')
+        self.assertIn('首次捕获就绪', components_js)
+        self.assertIn('下一候选交易日', components_js)
 
     def test_sector_detail_does_not_load_unrelated_focus_projection(self):
         self.bff._read_index_r2 = lambda day: None

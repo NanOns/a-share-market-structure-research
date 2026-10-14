@@ -9,8 +9,11 @@ from .operational_daily_server_v1 import make_daily_handler, PREFIX
 from .core_product_bff_r1 import CoreProductBFFR1, product_manifest_bindings
 from workbench_analysis.operational_successor_v1 import accepted_api
 
-def make_product_handler(root,jobs,*,isolated_history_authority=None):
-    root=Path(root);base=make_daily_handler(root,jobs);lock=threading.RLock();published={}
+def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_history_index_root=None,market_fact_index_root=None,operational_owner_index_root=None,static_root=None):
+    root=Path(root);static=Path(static_root) if static_root is not None else root/'src/workbench_service/static';base=make_daily_handler(root,jobs,static_root=static) if static_root is not None else make_daily_handler(root,jobs);lock=threading.RLock();published={}
+    chart_history_index_root=Path(chart_history_index_root).resolve() if chart_history_index_root is not None else None
+    market_fact_index_root=Path(market_fact_index_root).resolve() if market_fact_index_root is not None else None
+    operational_owner_index_root=Path(operational_owner_index_root).resolve() if operational_owner_index_root is not None else None
     logger=logging.getLogger("v4.http.timing")
     flights={}
     def build(signature):
@@ -18,16 +21,34 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None):
         read_index_r2_authority=root/'config/v4_read_index_authority_r2.json'
         focus_authority=root/'config/core_product_focus_read_authority_r2.json'
         owner_authority=root/'config/v4_operational_owner_pg_closeout_r1.json'
-        api=accepted_api(root);paths=set()
+        api=accepted_api(root);paths=set();external_paths=set()
+        if operational_owner_index_root is not None:
+            api.pg_owner_workspace_root=operational_owner_index_root
         def collect(x):
             if isinstance(x,dict):
                 if x.get('path') and x.get('sha256'):paths.add(root/x['path'])
                 for v in x.values():collect(v)
             elif isinstance(x,list):
                 for v in x:collect(v)
+        def collect_external(base_root,x):
+            if isinstance(x,dict):
+                if x.get('path') and x.get('sha256'):
+                    from workbench_analysis.r43_owner_replay import checked
+                    external_paths.add(checked(base_root,x))
+                for v in x.values():collect_external(base_root,v)
+            elif isinstance(x,list):
+                for v in x:collect_external(base_root,v)
         collect(api.candidate);collect(api.snapshot)
+        if operational_owner_index_root is not None:
+            native_owner=getattr(api,'pg_owner_authority',None)
+            if native_owner is not None:
+                collect_external(operational_owner_index_root,native_owner)
+                collect_external(operational_owner_index_root,api.candidate.get('owners'))
         if api.candidate.get('native_membership_reference'):
-            collect(json.loads((root/api.candidate['native_membership_reference']['path']).read_bytes()))
+            membership_authority=json.loads((root/api.candidate['native_membership_reference']['path']).read_bytes())
+            collect(membership_authority)
+            if operational_owner_index_root is not None:
+                collect_external(operational_owner_index_root,membership_authority)
         from .native_product_catalog_v3 import KEY,load as load_catalog
         if KEY in api.candidate:
             catalog=load_catalog(root,api.candidate);collect(catalog)
@@ -40,11 +61,18 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None):
         if authority.exists():
             a=json.loads(authority.read_bytes());collect(a)
             for binding in product_manifest_bindings(a):
-                collect(json.loads((root/binding['path']).read_bytes()))
+                manifest=json.loads((root/binding['path']).read_bytes());collect(manifest)
+                if (market_fact_index_root is not None and
+                        manifest.get('contract_id')=='CORE_PRODUCT_DATED_READ_PACK_PG_MARKET_R2'):
+                    collect_external(market_fact_index_root,manifest.get('market_facts'))
+                    collect_external(market_fact_index_root,manifest.get('source_bindings'))
         if read_index_r2_authority.exists():collect(json.loads(read_index_r2_authority.read_bytes()))
         if focus_authority.exists():
             a=json.loads(focus_authority.read_bytes());collect(a);collect(json.loads((root/a['manifest']['path']).read_bytes()))
-        cache=dict(signature=signature,bff=CoreProductBFFR1(api,jobs,isolated_history_authority=isolated_history_authority),sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
+        cache=dict(signature=signature,bff=CoreProductBFFR1(api,jobs,isolated_history_authority=isolated_history_authority,
+            chart_history_index_root=chart_history_index_root,market_fact_index_root=market_fact_index_root),
+            sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
+        cache['sources'].update({p:(p.stat().st_size,p.stat().st_mtime_ns) for p in external_paths})
         native=getattr(api,'pg_owner_authority',None)
         if native is not None:
             collect(native)
@@ -80,7 +108,8 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None):
                 root/'config/v4_current_native_joint_authority_v3.json']
         if isolated_history_authority is not None:signed.append(Path(isolated_history_authority))
         def signature():
-            return hashlib.sha256(b''.join(p.read_bytes() if p.exists() else b'' for p in signed)).hexdigest()
+            external_roots='\0'.join(str(path or '') for path in (chart_history_index_root,market_fact_index_root,operational_owner_index_root)).encode()
+            return hashlib.sha256(external_roots+b'\0'+b''.join(p.read_bytes() if p.exists() else b'' for p in signed)).hexdigest()
         while True:
             token=signature();prior=published
             changed=any(not p.exists() or (p.stat().st_size,p.stat().st_mtime_ns)!=stat
@@ -125,7 +154,7 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None):
             if path.startswith('/v4/assets/'):
                 name=path.rsplit('/',1)[-1]
                 if name in ('app.js','api.js','components.js','stock.js','replay.js','labels.js'):
-                    asset=root/'src/workbench_service/static/core-product-r1'/name
+                    asset=static/'core-product-r1'/name
                     return self.send(200,asset.read_bytes(),'application/javascript; charset=utf-8')
             if path.startswith('/api/v4/') and not path.startswith((PREFIX,'/api/v4/original-0930/','/api/v4/shadow/')):
                 try:

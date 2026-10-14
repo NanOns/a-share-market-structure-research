@@ -20,8 +20,8 @@ def successor_control(api,legacy):
     return dict(control,context=current)
 
 
-def make_daily_handler(root,jobs):
-    root=Path(root);base=make_v4_handler(root);writes={};mutex=threading.Lock()
+def make_daily_handler(root,jobs,*,static_root=None):
+    root=Path(root);static=Path(static_root) if static_root is not None else root/'src/workbench_service/static';base=make_v4_handler(root,static_root=static) if static_root is not None else make_v4_handler(root);writes={};mutex=threading.Lock()
     from .current_v4_context import CurrentAcceptedV4Reader
     strict_reader=CurrentAcceptedV4Reader(root,require_runtime=True)
     successor_cache={};successor_lock=threading.RLock()
@@ -73,14 +73,14 @@ def make_daily_handler(root,jobs):
                     except (ValueError,KeyError,OSError) as exc:
                         return self.send(409 if str(exc)=='CONTEXT_TOKEN_MISMATCH' else 503,dict(code='SUCCESSOR_READ_FAILED',reason=str(exc)[:180]))
             if path=='/v4/research/data-update':
-                return self.send(200,(root/'src/workbench_service/static/daily-update/index.html').read_bytes(),'text/html; charset=utf-8')
+                return self.send(200,(static/'daily-update/index.html').read_bytes(),'text/html; charset=utf-8')
             if path=='/v4/daily-update.js':
-                return self.send(200,(root/'src/workbench_service/static/daily-update/app.js').read_bytes(),'application/javascript; charset=utf-8')
+                return self.send(200,(static/'daily-update/app.js').read_bytes(),'application/javascript; charset=utf-8')
             if path=='/v4/assets/app.js':
                 from workbench_analysis.r43_operational_sources import checked
                 adapter=json.loads((root/'config/v4_control_adapter_v2.json').read_bytes())
                 raw=checked(root,adapter['ui_assets']['app.js']).read_bytes()
-                enhancement=(root/'src/workbench_service/static/daily-update/entry.js').read_bytes()
+                enhancement=(static/'daily-update/entry.js').read_bytes()
                 return self.send(200,raw+b'\n'+enhancement,'application/javascript; charset=utf-8')
             if path in ('/v4/assets/api.js','/v4/assets/components.js'):
                 from workbench_analysis.operational_successor_v1 import CONTRACT

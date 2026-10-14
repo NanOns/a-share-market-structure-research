@@ -115,7 +115,8 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
                 if selected is None:raise ValueError('PG_OPERATIONAL_OWNER_AMBIGUOUS_BINDING')
                 if self.embedded_pg_owner_authority:
                     from workbench_db.v4_operational_owner_authority_v2 import read
-                    content=read(root,self.pg_owner_authority,day,selected,binding)
+                    content=read(root,self.pg_owner_authority,day,selected,binding,
+                        workspace_root=getattr(self,'pg_owner_workspace_root',None))
                     from workbench_db.v4_profile_semantic_corrections_pg_v1 import KEY,apply
                     if selected=='profile' and KEY in self.candidate:
                         content=apply(root,self.candidate,day,content)
@@ -123,7 +124,8 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
                     if selected in ('focus','prewatch') and DEPENDENT in self.candidate:
                         content=apply_dependent(root,self.candidate,day,selected,content)
                     return content
-                return pg_read(root,self.pg_owner_authority['owners'][day][selected],self.token,day,selected,binding)
+                return pg_read(root,self.pg_owner_authority['owners'][day][selected],self.token,day,selected,binding,
+                    workspace_root=getattr(self,'pg_owner_workspace_root',None))
             scope['rows']=pg_rows
             # Cached owners were fully verified by pg_rows on first access.
             # Rehash their actual live PG bytes without retransferring and
@@ -138,9 +140,11 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
                         if KEY in self.candidate:attest_correction(self.root,self.candidate,day)
                     if self.embedded_pg_owner_authority:
                         from workbench_db.v4_operational_owner_authority_v2 import attest
-                        attest(self.root,self.pg_owner_authority,day,name,self.candidate['owners'][day][name])
+                        attest(self.root,self.pg_owner_authority,day,name,self.candidate['owners'][day][name],
+                            workspace_root=getattr(self,'pg_owner_workspace_root',None))
                     else:
-                        attest_cached(self.root,self.pg_owner_authority['owners'][day][name],name,self.candidate['owners'][day][name])
+                        attest_cached(self.root,self.pg_owner_authority['owners'][day][name],name,self.candidate['owners'][day][name],
+                            workspace_root=getattr(self,'pg_owner_workspace_root',None))
         return FunctionType(original.__code__,scope)(self,domain,day,token)
 
     def dispatch(self,url,token=None):

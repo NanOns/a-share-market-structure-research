@@ -50,16 +50,18 @@ def load(root,candidate):
         for entry in domains.values():checked(root,entry['descriptor'])
     return authority
 
-def read(root,authority,day,domain,source_binding):
+def read(root,authority,day,domain,source_binding,*,workspace_root=None):
     if authority['source_owners'].get(day,{}).get(domain)!=source_binding:
         raise ValueError('PG_OWNER_EMBEDDED_READ_SOURCE_MISMATCH')
     entry=authority['owners'][day][domain]
-    return read_fact(root,entry['descriptor'],entry['fact_token'],day,domain,source_binding)
+    return read_fact(root,entry['descriptor'],entry['fact_token'],day,domain,source_binding,
+        workspace_root=workspace_root)
 
-def attest(root,authority,day,domain,source_binding):
+def attest(root,authority,day,domain,source_binding,*,workspace_root=None):
     if authority['source_owners'].get(day,{}).get(domain)!=source_binding:
         raise ValueError('PG_OWNER_EMBEDDED_READ_SOURCE_MISMATCH')
-    attest_cached(root,authority['owners'][day][domain]['descriptor'],domain,source_binding)
+    attest_cached(root,authority['owners'][day][domain]['descriptor'],domain,source_binding,
+        workspace_root=workspace_root)
 
 def prepare(root,candidate,predecessor=None):
     root=Path(root).resolve();owners={};counts=dict(reused=0,created=0)

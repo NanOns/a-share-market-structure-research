@@ -8,6 +8,32 @@ from workbench_analysis.r43_operational_publication import digest
 CONTRACT='OPERATIONAL_CANDIDATE_DISPLAY_READ_V2'
 
 
+def first_capture_readiness(head, day, sessions):
+    """Pure status for the next first-capture gate; performs no extraction or writes."""
+    accepted=head.get('accepted_trade_date')
+    gate_day=accepted or day
+    owners=head.get('owners',{}).get(gate_day,{})
+    producer=head.get('cohort_signal_producers',{}).get(gate_day)
+    required={
+        'FULL_AS_RECORDED_SIGNAL_PRODUCER':producer,
+        'INDEPENDENT_VALIDATION_COHORT_OWNER':owners.get('validation_cohort'),
+        'COMPLETE_FIRST_CAPTURE_RECEIPT':head.get('cohort_capture_receipts',{}).get(gate_day),
+        'SEPARATE_FIRST_CAPTURE_WRITE_GRANT':head.get('cohort_write_grants',{}).get(gate_day),
+    }
+    missing=[name for name,binding in required.items() if not binding]
+    next_session=None
+    if accepted in sessions:
+        index=sessions.index(accepted)
+        if index+1<len(sessions):next_session=sessions[index+1]
+    status='NOT_DUE' if accepted in sessions and next_session else 'SOURCE_INCOMPLETE' if missing else 'CAPTURE_CANDIDATE_READY'
+    return dict(contract_id='COHORT_FIRST_CAPTURE_READINESS_VIEW_R1',status=status,
+        trade_date=day,accepted_trade_date=accepted,next_capture_session=next_session,
+        capture_condition='NEXT_SESSION_ACCEPTED_WITH_FULL_AS_RECORDED_SIGNAL_LEDGER_AND_INDEPENDENT_OWNER_AND_GRANT',
+        missing_inputs=missing,production_write_authorized=False,formal_cohort_enrollment_enabled=False,
+        observed_count=None,matured_count=None,settled_count=None,
+        historical_backfill_permitted=False)
+
+
 def checked_dependency(root,binding):
     """Verify original computation bytes after a source-code revision.
 
@@ -77,6 +103,15 @@ def read_candidates(root, *, head, token, day, sector_id=None):
     result=dict(contract_id=CONTRACT,candidate_status='NOT_CAPTURED',production=False,
         formal_consumer_enabled=False,observed_count=None,matured_count=None,
         cohort_enrollment_enabled=False,trade_date=day)
+    try:
+        from workbench_analysis.market_source_acquisition import official_sessions
+        result['first_capture_readiness']=first_capture_readiness(head,day,official_sessions(root))
+    except (ValueError,KeyError,TypeError,OSError) as exc:
+        result['first_capture_readiness']=dict(contract_id='COHORT_FIRST_CAPTURE_READINESS_VIEW_R1',
+            status='NOT_VERIFIABLE',trade_date=day,next_capture_session=None,
+            missing_inputs=['OFFICIAL_SESSION_CALENDAR'],reason=str(exc),
+            production_write_authorized=False,formal_cohort_enrollment_enabled=False,
+            observed_count=None,matured_count=None,settled_count=None,historical_backfill_permitted=False)
     try:
         pointer=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
         if digest(head)!=token or not pointer.is_file() or json.loads(pointer.read_bytes())!=head:

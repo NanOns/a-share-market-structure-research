@@ -12,8 +12,9 @@ from .research_bff import ResearchBFF
 from .joint_release import load as joint_load,checked_path,recover
 
 
-def make_v4_handler(root):
+def make_v4_handler(root, *, static_root=None):
     root=Path(root)
+    static=Path(static_root) if static_root is not None else root/'src/workbench_service/static'
     from workbench_analysis.r43_operational_sources import checked
     adapter=json.loads((root/'config/v4_control_adapter_v2.json').read_bytes())
     for binding in adapter['source_bindings']:
@@ -21,7 +22,6 @@ def make_v4_handler(root):
     recover(root)
     reader=CurrentAcceptedV4Reader(root,require_runtime=True)
     base=make_shadow_handler(root)
-    static=root/'src/workbench_service/static'
     bff=ResearchBFF(root)
     operational_cache={};operational_lock=threading.RLock()
 

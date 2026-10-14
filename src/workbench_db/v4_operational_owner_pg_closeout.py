@@ -14,10 +14,10 @@ def prepare(root,head_token,day,domain,source_binding,rows):
                  source_binding=source_binding,rows=rows,PIT_ELIGIBLE=False,AS_RECORDED=False)
     return ForwardFactStore(root,FOLDER).append(domain,head_token+'_'+day+'_'+domain,payload,migration_timeout_seconds=120)
 
-def read(root,binding,head_token,day,domain,source_binding):
+def read(root,binding,head_token,day,domain,source_binding,*,workspace_root=None):
     from workbench_analysis.r43_owner_replay import checked
     path=checked(root,binding);descriptor=json.loads(path.read_bytes())
-    schema=workspace_schema(Path(root)/FOLDER,'forward')
+    schema=workspace_schema(Path(workspace_root or root)/FOLDER,'forward')
     if (descriptor.get('contract_id'),descriptor.get('engine'),descriptor.get('schema'),descriptor.get('kind'))!=(CONTRACT,'postgresql',schema,domain):
         raise ValueError('PG_OPERATIONAL_OWNER_DESCRIPTOR_REQUIRED_NO_FALLBACK')
     checked(root,source_binding)
@@ -53,11 +53,11 @@ def load_authority(root,candidate,head_token):
         for binding in authority['owners'][day].values():checked(root,binding)
     return authority
 
-def attest_cached(root,binding,domain,source_binding):
+def attest_cached(root,binding,domain,source_binding,*,workspace_root=None):
     """Rehash live PG bytes before reusing a previously fully verified owner."""
     from workbench_analysis.r43_owner_replay import checked
     path=checked(root,binding);descriptor=json.loads(path.read_bytes())
-    schema=workspace_schema(Path(root)/FOLDER,'forward')
+    schema=workspace_schema(Path(workspace_root or root)/FOLDER,'forward')
     if (descriptor.get('contract_id'),descriptor.get('engine'),descriptor.get('schema'),descriptor.get('kind'))!=(CONTRACT,'postgresql',schema,domain):
         raise ValueError('PG_OPERATIONAL_OWNER_DESCRIPTOR_REQUIRED_NO_FALLBACK')
     checked(root,source_binding)

@@ -1,0 +1,77 @@
+{
+  "contract_id": "R5_BUILTIN_BROWSER_SMOKE_EVIDENCE_R1",
+  "date": "2026-10-14",
+  "environment": "28768 read-only candidate preview",
+  "browser": "Codex In-app Browser",
+  "trade_date": "2026-10-13",
+  "viewport_rechecked_px": {
+    "width": 375,
+    "height": 844
+  },
+  "six_entry_narrow_smoke": [
+    {"route": "home", "heading": "今日总览", "loaded": true, "source_error": false, "scroll_width": 375},
+    {"route": "sectors", "heading": "板块研究", "loaded": true, "source_error": false, "scroll_width": 375},
+    {"route": "stocks", "heading": "个股研究", "loaded": true, "source_error": false, "scroll_width": 375},
+    {"route": "focus", "heading": "关注跟踪", "loaded": true, "source_error": false, "scroll_width": 375},
+    {"route": "market", "heading": "市场与事件", "loaded": true, "source_error": false, "scroll_width": 375},
+    {"route": "diagnostics", "heading": "数据与诊断", "loaded": true, "source_error": false, "scroll_width": 375}
+  ],
+  "radar": {
+    "route": "/v4/research/radar?trade_date=2026-10-13",
+    "event_total": 177,
+    "second_page_offset": 30,
+    "new_filter_total": 110,
+    "console_errors": 0
+  },
+  "focus_events": {
+    "first_page_observations": 30,
+    "second_page_offset": 30,
+    "new_filter_page_observations": 30,
+    "source_unavailable_is_not_counted_as_transition": true
+  },
+  "stock_detail": {
+    "symbol": "SZ.301660",
+    "display_name": "粤芯半导体",
+    "scenario": "NONE",
+    "scenario_status": "UNKNOWN",
+    "unknown_predicate_count": 10,
+    "code_status": "NEW_CODE_OBSERVED"
+  },
+  "historical_date_switch": {
+    "selected_trade_date": "2026-10-12",
+    "result": "SOURCE_INCOMPLETE",
+    "reason": "PG_OPERATIONAL_OWNER_DESCRIPTOR_REQUIRED_NO_FALLBACK",
+    "visible_message": "未回退到其他日期，请查看诊断"
+  },
+  "market": {
+    "indices": [
+      "上证指数", "深证成指", "创业板指", "沪深300", "中证1000"
+    ],
+    "rule_unknown_count": 21,
+    "rule_unknown_reason_sample": [
+      "REFERENCE_PRICE_UNKNOWN", "NO_PRICE_LIMIT_SPECIAL_PERIOD"
+    ],
+    "limit_up_count": 69,
+    "exact_first_board_count": 57,
+    "exact_streak_unknown_count": 12,
+    "index_volume_unit": "UNVERIFIED"
+  },
+  "forward_first_capture": {
+    "status": "NOT_DUE",
+    "next_candidate_session": "2026-10-14",
+    "missing_inputs": [
+      "FULL_AS_RECORDED_SIGNAL_PRODUCER",
+      "INDEPENDENT_VALIDATION_COHORT_OWNER",
+      "COMPLETE_FIRST_CAPTURE_RECEIPT",
+      "SEPARATE_FIRST_CAPTURE_WRITE_GRANT"
+    ],
+    "production_write_authorized": false,
+    "formal_cohort_enrollment_enabled": false,
+    "observed_count": null,
+    "matured_count": null,
+    "historical_backfill_permitted": false
+  },
+  "desktop_viewport_rechecked_after_static_root_fix": false,
+  "screenshot_files_saved": 0,
+  "production_cutover": false
+}

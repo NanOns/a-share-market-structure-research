@@ -22,7 +22,7 @@ def prepare(root,candidate):
     candidate[KEY]=ref(root,path)
     return dict(contract_id=CONTRACT,T0=day,rows=len(content),publication=False)
 
-def read(root,candidate):
+def read(root,candidate,*,workspace_root=None):
     binding=candidate.get(KEY)
     if binding is None:raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_REQUIRED_NO_FALLBACK')
     authority=json.loads(checked(root,binding).read_bytes())
@@ -31,7 +31,8 @@ def read(root,candidate):
     if any(authority.get(k) is not False for k in ('PIT_ELIGIBLE','AS_RECORDED')):raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_PIT_ESCALATION')
     snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
     if snapshot['memberships']!=authority['source']:raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_SOURCE_MISMATCH')
-    content=read_fact(root,authority['descriptor'],authority['fact_token'],authority['T0'],'reference_memberships',authority['source'])
+    content=read_fact(root,authority['descriptor'],authority['fact_token'],authority['T0'],'reference_memberships',authority['source'],
+        workspace_root=workspace_root)
     if len(content)!=authority['rows']:raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_ROW_DENOMINATOR')
     return content
 
@@ -76,7 +77,7 @@ def prepare_identity(root,candidate):
     path=root/'data/v4/membership_reference_pg_v1'/digest(canonical(authority))/'AUTHORITY.json';atomic_json(root,path,authority);candidate[KEY]=ref(root,path)
     return dict(contract_id=CONTRACT,domain='identity',rows=len(content),membership_fact_recomputed=False,publication=False)
 
-def read_identity(root,candidate):
+def read_identity(root,candidate,*,workspace_root=None):
     binding=candidate.get(KEY)
     if binding is None:raise ValueError('NATIVE_IDENTITY_REFERENCE_REQUIRED_NO_FALLBACK')
     authority=json.loads(checked(root,binding).read_bytes())
@@ -87,12 +88,14 @@ def read_identity(root,candidate):
     if entry is None:raise ValueError('NATIVE_IDENTITY_REFERENCE_REQUIRED_NO_FALLBACK')
     snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
     if entry['source']!=snapshot['identity_source']:raise ValueError('NATIVE_IDENTITY_REFERENCE_SOURCE_MISMATCH')
-    content=read_fact(root,entry['descriptor'],entry['fact_token'],authority['T0'],'reference_identity',entry['source'])
+    content=read_fact(root,entry['descriptor'],entry['fact_token'],authority['T0'],'reference_identity',entry['source'],
+        workspace_root=workspace_root)
     if len(content)!=entry['rows']:raise ValueError('NATIVE_IDENTITY_REFERENCE_ROW_DENOMINATOR')
     current=authority.get('current_identity')
     if current:
         source=identity_source(root,candidate)
-        current_content=read_fact(root,current['descriptor'],current['fact_token'],authority['T0'],'reference_current_identity',source)
+        current_content=read_fact(root,current['descriptor'],current['fact_token'],authority['T0'],'reference_current_identity',source,
+            workspace_root=workspace_root)
         now={r['security_id']:r for r in current_content}
         if len(current_content)!=current['rows'] or len(now)!=len(current_content) or any(now.get(r['security_id'])!=r for r in content):raise ValueError('CURRENT_IDENTITY_PREDECESSOR_CHANGED')
         return current_content
@@ -110,7 +113,7 @@ def prepare_search_identity(root,candidate):
     path=root/'data/v4/membership_reference_pg_v1'/digest(canonical(authority))/'AUTHORITY.json';atomic_json(root,path,authority);candidate[KEY]=ref(root,path)
     return dict(contract_id=CONTRACT,domain='search_identity',rows=len(content),prior_reference_facts_recomputed=False,publication=False)
 
-def read_search_identity(root,candidate):
+def read_search_identity(root,candidate,*,workspace_root=None):
     binding=candidate.get(KEY)
     if binding is None:raise ValueError('NATIVE_SEARCH_IDENTITY_REQUIRED_NO_FALLBACK')
     authority=json.loads(checked(root,binding).read_bytes())
@@ -119,7 +122,8 @@ def read_search_identity(root,candidate):
     if any(authority.get(k) is not False for k in ('PIT_ELIGIBLE','AS_RECORDED')):raise ValueError('NATIVE_REFERENCE_PIT_ESCALATION')
     entry=authority.get('search_identity')
     if entry is None:raise ValueError('NATIVE_SEARCH_IDENTITY_REQUIRED_NO_FALLBACK')
-    content=read_fact(root,entry['descriptor'],entry['fact_token'],authority['T0'],'reference_search_identity',entry['source'])
+    content=read_fact(root,entry['descriptor'],entry['fact_token'],authority['T0'],'reference_search_identity',entry['source'],
+        workspace_root=workspace_root)
     if len(content)!=entry['rows']:raise ValueError('NATIVE_SEARCH_IDENTITY_ROW_DENOMINATOR')
     return content,entry['source']
 

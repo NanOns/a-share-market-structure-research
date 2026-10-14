@@ -6,6 +6,7 @@ from types import SimpleNamespace
 import pytest
 
 from workbench_db.v4_history_pg_r1 import build, read
+from workbench_db.v4_native import workspace_schema
 from workbench_service.core_product_bff_r1 import CoreProductBFFR1
 
 
@@ -56,3 +57,26 @@ def test_default_manifest_tamper_fails_before_pg(tmp_path):
     (tmp_path / 'data/manifest.json').write_text('{}')
     with pytest.raises(ValueError, match='DIGEST_MISMATCH'):
         bff.history_pack('2026-10-09')
+
+
+def test_chart_history_pack_does_not_require_unrelated_market_facts_owner(tmp_path):
+    day='2026-10-09'
+    index_root=tmp_path/'upstream-history-root'
+    index_root.mkdir()
+    head=save(tmp_path,'data/v4/head.json',{'T0':day})
+    source=save(tmp_path,'data/history-source.json',{'scope':'accepted chart history'})
+    history=dict(contract_id='V4_PG_DATED_HISTORY_INDEX_R1',engine='postgresql',
+        schema=workspace_schema(index_root,'history'),version='v1',head_token=head['sha256'],
+        T0=day,source_digest=source['sha256'],logical_digest='c'*64,symbol_count=1,bar_count=1)
+    manifest=save(tmp_path,'data/manifest.json',dict(contract_id='CORE_PRODUCT_DATED_READ_PACK_PG_MARKET_R2',
+        T0=day,head=head,history_index=history,source_bindings={'history':source},
+        market_facts={'contract_id':'MISSING_MARKET_DESCRIPTOR'}))
+    save(tmp_path,'config/core_product_read_authority_r1.json',
+        {'contract_id':'CORE_PRODUCT_READ_AUTHORITY_R1','manifest':manifest})
+    bff=object.__new__(CoreProductBFFR1)
+    bff.api=SimpleNamespace(root=tmp_path,cache={},candidate={})
+    bff.isolated_history=None
+    bff.chart_history_index_root=index_root
+    loaded,facts=bff.chart_history_pack(day)
+    assert facts is None
+    assert loaded['history_index']==history

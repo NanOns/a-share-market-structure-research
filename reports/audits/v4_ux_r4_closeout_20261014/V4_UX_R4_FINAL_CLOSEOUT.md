@@ -46,6 +46,14 @@
 - 修复属于读域呈现与路由行为，不补造业务字段，不打开 Formal D2、正式风险、Radar priority、验证队列、结算或 FEP 权限。浏览器预览 28768 运行新源码；28765 仍为旧包，无切换。
 - 受影响合同回归：`python -B -m unittest -q test_v4_ux_r2_contract test_v4_ux_r3_routes`，26/26 通过；`git diff --check` 通过。仅为定向合同测试，不是全量回归。
 - 下个独立工作项：继续实现/接通有版本合同的 Sector D2 生命周期与 20 个真例重算、三族独立风险事实、正式 Radar 优先级和当前首次捕获读链；同轮继续 U03/U06/U07/U08/U09/U11–U16 的真实字段抽样。外部正式 Owner/准入事实缺失时保持 unknown，不虚构。
+
+### R5 后续复验发现与修复（2026-10-14）
+
+- 内置浏览器对比隔离 R2 首页后发现：`/api/v4/home` 命中预物化索引时提前返回，跳过旧 R1 路径的未发布环境/风险来源状态覆盖；页面因此把候选四轴显示成正式状态，并把 Focus 风险变化显示成完整风险变化。
+- 修复 `CoreProductBFFR1.get()` 的 R2 提前返回分支和在线首页分支：统一将市场四轴标记 `NOT_PUBLISHED_V4_03`；Formal risk 保持 `SOURCE_INCOMPLETE`，三类风险计数为 null；原 Focus 风险事件保留在独立 `focus_risk_events` 区域，不能占用完整风险列表；无授权 Cohort Owner 时 Forward 计数强制 null。首页新增“完整风险变化”与“Focus Owner 风险事件（部分来源）”分栏。
+- 隔离 R2 真 HTTP 响应核对：`regime=NOT_PUBLISHED_V4_03`、`formalRisk=SOURCE_INCOMPLETE`、`risks=0`、`focusRiskEvents=14`、`forwardValue=null`、`radarValue=177`。内置浏览器 DOM 复验显示四轴均为“未发布”，风险完整源缺失说明及 Focus 事件分栏均可见。
+- 定向合同测试更新为 `test_v4_ux_r2_contract` + `test_v4_ux_r3_routes`，28/28 通过；`git diff --check` 通过。该验证不补齐三族风险 Owner，也不等于生产切换。
+- 为复用临时 G 盘隔离数据根，预览启动脚本增加显式 `--root` 参数；R2 预览只读取该临时根，读连接凭据在独立进程内从 DPAPI 装载且没有写入日志。生产 28765 与生产 Authority 未变。
 ## 内置浏览器验收
 
 - 28765 生产页：旧首页读取 stocks 5,225/sectors 400、Focus 变化 177/展示 30、风险 14；Radar/Forward 首页仍显示来源未接入，直达 `/v4/research/radar` 提示“没有找到该入口”。生产包版本仍为旧 `1.0.0_88cc19deae3b`。

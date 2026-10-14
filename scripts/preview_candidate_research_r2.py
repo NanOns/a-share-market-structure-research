@@ -17,9 +17,11 @@ class ReadOnlyJobs:
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--port',type=int,default=28766)
+    parser.add_argument('--root',type=Path,default=ROOT,
+                        help='Read-only product data root; source code and static assets remain this checkout')
     args=parser.parse_args()
     if args.port==28765:raise ValueError('PROTECTED_PRODUCTION_PORT')
-    base=make_product_handler(ROOT,ReadOnlyJobs())
+    base=make_product_handler(args.root.resolve(),ReadOnlyJobs())
     class Handler(base):
         def do_POST(self):self.send(405,dict(reason='READ_ONLY_PREVIEW'))
         def do_PUT(self):self.send(405,dict(reason='READ_ONLY_PREVIEW'))

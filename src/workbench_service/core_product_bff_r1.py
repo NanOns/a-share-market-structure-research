@@ -28,6 +28,28 @@ def is_legacy_r1_home_fallback(payload):
             ('LEGACY_R1_AUTHORITY_ONLY','R2_TOKEN_NOT_PREPARED','R2_DATE_NOT_PREPARED') and
             payload.get('read_index_capability') == LEGACY_R1_READ_CAPABILITY)
 
+def annotate_home_readiness(payload, *, cohort_authorized=False):
+    """Keep prebuilt and live Home responses honest about unpublished producers."""
+    result=deepcopy(payload)
+    market=result.get('market')
+    if isinstance(market,dict):
+        market['regime_publication_status']='NOT_PUBLISHED_V4_03'
+        market['formal_risk_status']='SOURCE_INCOMPLETE'
+        market['formal_risk_reason']='DATED_OPERATIONAL_RISK_CHANGE_OWNER_NOT_PRESENT'
+    # Focus weakens remain useful evidence, but they do not establish the
+    # independent stock-structure, sector-ecology and market-pressure families.
+    result['focus_risk_events']=result.get('risks') or []
+    result['focus_risk_scope']='FOCUS_OWNER_RISK_EVENTS_ONLY; NOT_COMPLETE_RISK_FAMILIES'
+    result['risks']=[]
+    result['risk_families']={key:dict(status='SOURCE_INCOMPLETE',value=None,
+        reason='DATED_OPERATIONAL_RISK_CHANGE_OWNER_NOT_PRESENT')
+        for key in ('stock_structure','sector_ecology','market_pressure')}
+    if not cohort_authorized:
+        result.setdefault('counts',{})['forward']=dict(value=None,quality='SOURCE_INCOMPLETE',
+            status='NOT_GRANTED',scope='FORMAL_VALIDATION_COHORT',
+            reason='NO_AUTHORIZED_COHORT_OWNER',href='/v4/research/focus#forward-cohort')
+    return result
+
 def home_summary(row, fields):
     """Keep only the identity and explicitly rendered evidence needed by home cards."""
     result={key:row[key] for key in HOME_IDENTITY_FIELDS if key in row}
@@ -236,6 +258,9 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 if response is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
                 if index_r2 is None:response=dict(response,read_index_status=self._read_index_r2_state(day),
                     read_index_capability=LEGACY_R1_READ_CAPABILITY)
+                if path=='/api/v4/home':
+                    cohort_ref=self.api.candidate['owners'][day].get('validation_cohort')
+                    response=annotate_home_readiness(response,cohort_authorized=bool(cohort_ref))
                 return 200,response
             response=index.response('/api/v4/context')
             if response is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
@@ -706,7 +731,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             data['counts']['radar']=dict(value=len(independent),quality='KNOWN',status='PARTIAL',scope='ACCEPTED_FOCUS_CHANGE_EVENTS_WITHOUT_TOP_ROTATION_COVERAGE',source=self.api.candidate['owners'][day].get('forward'),reason='FORMAL_RADAR_PRIORITY_NOT_PUBLISHED',href='/v4/research/radar')
             data['counts']['forward']=dict(value=None,quality='SOURCE_INCOMPLETE',status='NOT_GRANTED',scope='FORMAL_VALIDATION_COHORT',source=self.api.candidate['owners'][day].get('validation_cohort'),reason='NO_AUTHORIZED_COHORT_OWNER',href='/v4/research/focus#forward-cohort')
             data['gaps']=[g for g in data['gaps'] if g['domain'] not in ('home/changes','home/risks','home/net-information')]
-            return code,data
+            return code,annotate_home_readiness(data,
+                cohort_authorized=bool(self.api.candidate['owners'][day].get('validation_cohort')))
         if p[0]=='diagnostics' and len(p)==2 and p[1] in ('sources','health','contracts','fep'):
             if p[1]=='fep':return self.missing(day,'/'.join(p),'DATED_FEP_MODEL_RESULT_NOT_PRESENT')
             health=[]

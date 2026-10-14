@@ -1,11 +1,13 @@
 import unittest
+from pathlib import Path
+from types import SimpleNamespace
 
 from workbench_db.v4_read_index_r2 import (
     materialize_radar_rows, query_parts, schema_binding_matches,
     schema_for_revision, summary, detail_payload, validate_home_response, validate_query,
 )
 from workbench_service.core_product_bff_r1 import (
-    current_identity_presentation, home_summary, is_legacy_r1_home_fallback,
+    annotate_home_readiness, current_identity_presentation, home_summary, is_legacy_r1_home_fallback,
 )
 
 
@@ -107,6 +109,43 @@ class UXR2RouteContractTests(unittest.TestCase):
                      'diagnostic': 'x' * (512 * 1024)}
         with self.assertRaisesRegex(ValueError, 'HOME_RESPONSE_SIZE_LIMIT_EXCEEDED'):
             validate_home_response(oversized)
+
+    def test_home_readiness_overlays_prebuilt_responses_without_promoting_partial_risk(self):
+        source = {'market': {'regime_publication_status': 'ACCEPTED', 'row': {'stress_level': 'LOW'}},
+                  'risks': [{'entity_id': 'SEC-1', 'fields': {'effective_event': {'value': 'WEAKENED'}}}],
+                  'counts': {'forward': {'value': 15}}}
+        result = annotate_home_readiness(source)
+        self.assertEqual(result['market']['regime_publication_status'], 'NOT_PUBLISHED_V4_03')
+        self.assertEqual(result['market']['formal_risk_status'], 'SOURCE_INCOMPLETE')
+        self.assertEqual(result['risks'], [])
+        self.assertEqual(result['focus_risk_events'], source['risks'])
+        self.assertEqual(result['risk_families']['sector_ecology']['value'], None)
+        self.assertIsNone(result['counts']['forward']['value'])
+        self.assertEqual(source['market']['regime_publication_status'], 'ACCEPTED')
+        self.assertEqual(source['risks'], result['focus_risk_events'])
+
+    def test_r2_prebuilt_home_uses_readiness_overlay_before_early_return(self):
+        from workbench_service.core_product_bff_r1 import CoreProductBFFR1
+        token='a'*64;day='2026-10-13'
+        row={'entity_id':'SEC-1','symbol':'SZ.000001','display_name':'测试','fields':
+             {'effective_event':{'value':'WEAKENED','quality':'KNOWN'}}}
+        payload={'context':{},'context_token':token,'production_accepted':True,
+            'market':{'regime_publication_status':'ACCEPTED','row':{'stress_level':'LOW'}},
+            'risks':[row],'counts':{'forward':{'value':12},'radar':{'value':1}},
+            'changes':[],'rotations':[],'sector_changes':[]}
+        class Index:
+            def response(self,path):return payload
+        api=SimpleNamespace(root=Path('G:/codex_tmp/test_temp'),token=token,cache={},
+            candidate={'published_sessions':[day],'accepted_trade_date':day,'owners':{day:{'validation_cohort':None}}})
+        bff=CoreProductBFFR1(api,None)
+        bff._read_index_r2=lambda _:Index()
+        code,result=bff.get('/api/v4/home',{'trade_date':day,'context_token':token})
+        self.assertEqual(code,200)
+        self.assertEqual(result['market']['regime_publication_status'],'NOT_PUBLISHED_V4_03')
+        self.assertEqual(result['risks'],[])
+        self.assertEqual(len(result['focus_risk_events']),1)
+        self.assertIsNone(result['counts']['forward']['value'])
+        self.assertGreater(validate_home_response(result),0)
 
     def test_legacy_r1_home_is_explicitly_marked_for_compatibility(self):
         legacy = {

@@ -210,6 +210,25 @@ class ReadIndex:
         if hashlib.sha256(canonical(row[0])).hexdigest()!=row[1]: raise ValueError('READ_INDEX_DETAIL_DIGEST_MISMATCH')
         return row[0]
 
+    def display_identities(self, domain, entity_ids):
+        """Bounded batch identity/name lookup for rows already selected by an endpoint."""
+        keys=sorted({str(v) for v in entity_ids if v})
+        if not keys:return {}
+        with connection(self.binding['schema'],read_only=True) as pg:
+            self.attest(pg)
+            rows=pg.execute('''SELECT entity_id,symbol,display_name,detail,detail_sha256
+                FROM read_items WHERE token=%s AND day=%s AND domain='stocks' AND entity_id=ANY(%s)''',
+                (self.token,self.day,keys)).fetchall()
+        result={}
+        for entity_id,symbol,name,detail,digest in rows:
+            if hashlib.sha256(canonical(detail)).hexdigest()!=digest:raise ValueError('READ_INDEX_DETAIL_DIGEST_MISMATCH')
+            result[entity_id]=dict(entity_id=entity_id,symbol=symbol,display_name=name,
+                display_name_scope=detail.get('display_name_scope'),display_name_source=detail.get('display_name_source'),
+                display_name_observed_at=detail.get('display_name_observed_at'),
+                name_quality='KNOWN' if name else 'UNKNOWN',
+                name_reason=None if name else 'ACCEPTED_STOCK_DISPLAY_NAME_NOT_PRESENT')
+        return result
+
 
 def load(root, token, day, *, allow_missing=False):
     path=Path(root)/AUTHORITY

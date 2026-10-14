@@ -57,7 +57,7 @@ def validate_query(query, token, dates, default_day, path):
     if 'limit_state' in query:
         if path!='/api/v4/market/limits': raise ValueError('UNKNOWN_PARAMETER')
         if query['limit_state'] not in ('LIMIT_UP','LIMIT_DOWN','SUSPENDED','UNKNOWN','NOT_LIMIT'): raise ValueError('INVALID_LIMIT_STATE')
-    if 'event' in query:
+    if 'event' in query and query['event'] != '':
         if path not in ('/api/v4/radar','/api/v4/focus/events'): raise ValueError('UNKNOWN_PARAMETER')
         if query['event'] not in ('INVALIDATED','EXITED','WEAKENED','UPGRADED','REENTERED','NEW','PERSISTENT','DATA_UNAVAILABLE'): raise ValueError('INVALID_EVENT')
     day=query.get('trade_date', default_day)
@@ -246,15 +246,38 @@ class ReadIndex:
         if hashlib.sha256(canonical(row[0])).hexdigest()!=row[1]: raise ValueError('READ_INDEX_DETAIL_DIGEST_MISMATCH')
         return row[0]
 
+    def display_identities(self, domain, entity_ids):
+        """Bounded identity/name join for already selected event or ladder rows."""
+        keys=sorted({str(v) for v in entity_ids if v})
+        if not keys:return {}
+        with connection(self.binding['schema'],read_only=True) as pg:
+            self.attest(pg)
+            rows=pg.execute('''SELECT entity_id,symbol,display_name,detail,detail_sha256
+                FROM read_items WHERE token=%s AND day=%s AND domain='stocks' AND entity_id=ANY(%s)''',
+                (self.token,self.day,keys)).fetchall()
+        result={}
+        for entity_id,symbol,name,detail,digest in rows:
+            if hashlib.sha256(canonical(detail)).hexdigest()!=digest:raise ValueError('READ_INDEX_DETAIL_DIGEST_MISMATCH')
+            result[entity_id]=dict(entity_id=entity_id,symbol=symbol,display_name=name,
+                display_name_scope=detail.get('display_name_scope'),display_name_source=detail.get('display_name_source'),
+                display_name_observed_at=detail.get('display_name_observed_at'),
+                name_quality='KNOWN' if name else 'UNKNOWN',
+                name_reason=None if name else 'ACCEPTED_STOCK_DISPLAY_NAME_NOT_PRESENT')
+        return result
+
 
 def load(root, token, day, *, allow_missing=False):
     path=Path(root)/AUTHORITY
     if not path.exists(): return None
-    authority=json.loads(path.read_bytes())
-    if authority.get('contract_id')!=CONTRACT: raise ValueError('READ_INDEX_AUTHORITY_CONTRACT_MISMATCH')
+    try:authority=json.loads(path.read_bytes())
+    except (OSError,UnicodeDecodeError,json.JSONDecodeError) as exc:raise ValueError('READ_INDEX_AUTHORITY_INVALID_JSON') from exc
+    if not isinstance(authority,dict) or authority.get('contract_id')!=CONTRACT: raise ValueError('READ_INDEX_AUTHORITY_CONTRACT_MISMATCH')
+    if not isinstance(authority.get('versions'),dict):raise ValueError('READ_INDEX_AUTHORITY_SCHEMA_INVALID')
+    if any(not isinstance(days,dict) for days in authority['versions'].values()):raise ValueError('READ_INDEX_AUTHORITY_SCHEMA_INVALID')
     binding=authority.get('versions',{}).get(token,{}).get(day)
     if binding is None:
         if allow_missing:return None
+        if token not in authority.get('versions',{}):raise ValueError('READ_INDEX_TOKEN_NOT_PREPARED')
         raise ValueError('READ_INDEX_DATE_NOT_PREPARED')
     return ReadIndex(root,binding,token,day)
 

@@ -47,16 +47,20 @@ def prioritize_home_changes(changes):
     return list(selected.values())
 
 def d2_selection_explanation(fields,source):
-    fields=fields or {};scenario=fields.get('scenario',{}).get('value')
-    scenario_status=fields.get('scenario_status',{}).get('value')
+    fields=fields or {}
+    def owner_field(name):
+        return fields.get(name) or dict(value=None,quality='SOURCE_INCOMPLETE',unit='state',
+            reason='D2_OWNER_FIELD_NOT_PRESENT_IN_DATED_DETAIL',source=source,field=name)
+    scenario=owner_field('scenario').get('value')
+    scenario_status=owner_field('scenario_status').get('value')
     if scenario=='NONE' and scenario_status!='KNOWN':interpretation='NONE_RESULT_NOT_FULLY_EVALUATED'
     elif scenario=='NONE':interpretation='NONE_FULLY_EVALUATED_NO_MATCH'
     elif scenario is None:interpretation='SCENARIO_RESULT_NOT_PUBLISHED'
     else:interpretation='SCENARIO_REPORTED_WITH_D2_STATUS'
-    return dict(scenario=scenario,scenario_status=fields.get('scenario_status'),scenario_interpretation=interpretation,
-        final_eligibility=fields.get('final_eligibility'),detector_statuses=fields.get('detector_statuses'),
-        matched_predicates=fields.get('matched_predicates'),unknown_predicates=fields.get('unknown_predicates'),
-        transition_reasons=fields.get('transition_reasons'),input_provenance=fields.get('input_provenance'),source=source)
+    names=('scenario_status','raw_qualification','final_eligibility','detector_statuses',
+           'matched_predicates','unknown_predicates','transition_reasons','input_provenance','identity_status')
+    return dict(scenario=scenario,**{name:owner_field(name) for name in names},
+        scenario_interpretation=interpretation,source=source)
 
 def current_identity_presentation(identity,source,day):
     identity=identity or {}
@@ -73,10 +77,64 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         if isolated_history_authority is not None:
             from .isolated_history_read_r4 import load
             self.isolated_history=load(api,isolated_history_authority)
+
+    def _read_index_r2(self,day):
+        """Cache only the immutable binding; each PG read still attests its digest and database."""
+        if getattr(self,'building_read_index',False):return None
+        from workbench_db.v4_read_index_r2 import AUTHORITY,load
+        path=self.api.root/AUTHORITY
+        try:stat=path.stat();signature=(stat.st_mtime_ns,stat.st_size)
+        except FileNotFoundError:signature=None
+        key=('product-read-index-r2',self.api.token,day,signature)
+        if key not in self.api.cache:
+            self.api.cache[key]=load(self.api.root,self.api.token,day,
+                allow_missing=day!=self.api.candidate['accepted_trade_date'])
+        return self.api.cache[key]
+
+    def _read_index_r2_state(self,day):
+        from workbench_db.v4_read_index_r2 import AUTHORITY
+        path=self.api.root/AUTHORITY
+        if not path.exists():return 'LEGACY_R1_AUTHORITY_ONLY'
+        authority=json.loads(path.read_bytes());versions=authority.get('versions',{})
+        if self.api.token not in versions:return 'R2_TOKEN_NOT_PREPARED'
+        if day not in versions[self.api.token]:return 'R2_DATE_NOT_PREPARED'
+        return 'R2_AUTHORITY_BOUND'
+
+    @staticmethod
+    def _base_query(query):
+        # These filters are validated and consumed by their product routes. The
+        # legacy Context allowlist is intentionally kept narrow.
+        return {k:v for k,v in query.items() if k not in ('event','validity','limit_state')}
+
+    def _display_identity_map(self,day,rows,*,key_fields=('entity_id','security_id')):
+        keys=[next((row.get(k) for k in key_fields if row.get(k)),None) for row in rows]
+        index=self._read_index_r2(day)
+        if index is not None:return index.display_identities('stocks',keys)
+        from workbench_db.v4_read_index_r1 import load as load_index_r1
+        legacy=load_index_r1(self.api.root,self.api.token,day,
+            allow_missing=day!=self.api.candidate['accepted_trade_date'])
+        if legacy is None:return {}
+        return legacy.display_identities('stocks',keys)
+
+    def _enrich_display_names(self,day,rows,*,key_fields=('entity_id','security_id')):
+        identities=self._display_identity_map(day,rows,key_fields=key_fields)
+        for row in rows:
+            key=next((row.get(k) for k in key_fields if row.get(k)),None)
+            identity=identities.get(key) or identities.get(str(key))
+            row['symbol']=row.get('symbol') or (identity or {}).get('symbol')
+            row['display_name']=(identity or {}).get('display_name')
+            row['display_name_source']=(identity or {}).get('display_name_source')
+            row['display_name_scope']=(identity or {}).get('display_name_scope')
+            row['name_quality']=(identity or {}).get('name_quality','UNKNOWN')
+            row['name_reason']=(identity or {}).get('name_reason','ACCEPTED_STOCK_IDENTITY_NOT_FOUND')
+        return rows
     def resolve_dated_object(self,domain,day,key):
         """Same dated identity aliases for detail and compare; ambiguity fails closed."""
         if not key:return None
         if not getattr(self,'building_read_index',False):
+            index=self._read_index_r2(day)
+            if index is not None and domain in ('stocks','sectors','focus'):
+                return index.detail(domain,str(key).strip().upper())
             from workbench_db.v4_read_index_r1 import load as load_index
             index=load_index(self.api.root,self.api.token,day,allow_missing=day!=self.api.candidate['accepted_trade_date'])
             if index is not None and domain in ('stocks','sectors','focus'):
@@ -131,11 +189,13 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         return self.api.cache[key]
 
     def get(self,path,query):
-        from workbench_db.v4_read_index_r2 import load as load_index_r2, validate_query
+        from workbench_db.v4_read_index_r2 import validate_query
         from workbench_db.v4_read_index_r1 import load as load_index_r1
         day=validate_query(query,self.api.token,self.api.candidate['published_sessions'],
                            self.api.candidate['accepted_trade_date'],path)
-        index_r2=None if getattr(self,'building_read_index',False) or path not in ('/api/v4/context','/api/v4/home','/api/v4/stocks','/api/v4/sectors','/api/v4/focus','/api/v4/radar') else load_index_r2(self.api.root,self.api.token,day,allow_missing=True)
+        index_route=(path in ('/api/v4/context','/api/v4/home','/api/v4/stocks','/api/v4/sectors','/api/v4/focus','/api/v4/radar') or
+                     path.startswith('/api/v4/stocks/') or path.startswith('/api/v4/sectors/') or path.startswith('/api/v4/focus/'))
+        index_r2=self._read_index_r2(day) if index_route else None
         if path=='/api/v4/radar' and not getattr(self,'building_read_index',False):
             if index_r2 is None:raise ValueError('READ_INDEX_R2_RADAR_NOT_PREPARED')
             context=index_r2.response('/api/v4/context')
@@ -144,16 +204,20 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             return 200,{k:context[k] for k in ('context','context_token','production_accepted','source_quality') if k in context}|page|{
                 'contract_id':'V4_ACCEPTED_FOCUS_RADAR_PAGE_R1','source':self.api.candidate['owners'][day].get('forward'),
                 'scope':'ACCEPTED_FOCUS_EVENTS_WITHOUT_TOP_ROTATION_COVERAGE','producer_status':'FORMAL_RADAR_PRIORITY_NOT_PUBLISHED'}
-        index=index_r2 if index_r2 is not None else None if getattr(self,'building_read_index',False) or path not in ('/api/v4/context','/api/v4/home','/api/v4/stocks','/api/v4/sectors','/api/v4/focus') else load_index_r1(self.api.root,self.api.token,day,allow_missing=day!=self.api.candidate['accepted_trade_date'])
+        index=index_r2 if index_r2 is not None else None if getattr(self,'building_read_index',False) or not index_route or path=='/api/v4/radar' else load_index_r1(self.api.root,self.api.token,day,allow_missing=day!=self.api.candidate['accepted_trade_date'])
         if index is not None and path in ('/api/v4/context','/api/v4/home','/api/v4/stocks','/api/v4/sectors','/api/v4/focus'):
             if path in ('/api/v4/context','/api/v4/home'):
                 response=index.response(path)
                 if response is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
+                if index_r2 is None:response=dict(response,read_index_status=self._read_index_r2_state(day),
+                    read_index_capability='R1 legacy summary; D2 detail fields may be unavailable')
                 return 200,response
             response=index.response('/api/v4/context')
             if response is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
             response={k:v for k,v in response.items() if k in ('context','context_token','production_accepted','source_quality')}
             response.update(index.page(path.rsplit('/',1)[-1],query))
+            if index_r2 is None:response.update(read_index_status=self._read_index_r2_state(day),
+                read_index_capability='R1 legacy summary; D2 detail fields may be unavailable')
             if path=='/api/v4/focus':
                 extra=index.response('/api/v4/focus-meta')
                 if extra is None:raise ValueError('READ_INDEX_FOCUS_NOT_PREPARED')
@@ -298,7 +362,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     row['fields']['code_status']=dict(value=ident.get('code_status','NEW_CODE_OBSERVED'),
                         quality='KNOWN',unit='state',as_of=day,source=identity_ref_current)
                     if ident.get('name'):
-                        row.update(display_name=ident['name'],display_name_scope='OBSERVED_METADATA_NOT_PIT')
+                        row.update(display_name=ident['name'],display_name_scope='OBSERVED_METADATA_NOT_PIT',
+                                   display_name_source=identity_ref_current,display_name_quality='KNOWN')
                 row['fields']['identity_status']=current_identity_presentation(ident,identity_ref_current,day)
                 row['search_aliases']=sorted(aliases.get(row['entity_id'],set()))
                 row['alias_source']=identity_ref
@@ -345,12 +410,24 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
     def page(self,domain,day,q,entity=None,sector=None):
         """Filter the full dated collection; missing sort values always remain last."""
         if not getattr(self,'building_read_index',False):
+            index=self._read_index_r2(day)
+            if index is not None and domain in ('stocks','sectors','focus'):
+                context=index.response('/api/v4/context')
+                if context is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
+                base={k:v for k,v in context.items() if k in ('context','context_token','production_accepted','source_quality')}
+                if entity is not None:
+                    item=index.detail(domain,str(entity).strip().upper())
+                    if item is None:return {**base,'status':'NOT_FOUND','items':[],'total':0,'offset':int(q.get('offset',0)),'limit':int(q.get('limit',30)),'has_next':False,'domain':domain,'gap':None}
+                    return {**base,'status':'READY','items':[item],'item':item,'total':1,'offset':int(q.get('offset',0)),'limit':int(q.get('limit',30)),'has_next':False,'domain':domain,'gap':None}
+                return {**base,**index.page(domain,q,entity=entity,sector=sector)}
             from workbench_db.v4_read_index_r1 import load as load_index
             index=load_index(self.api.root,self.api.token,day,allow_missing=day!=self.api.candidate['accepted_trade_date'])
             if index is not None and domain in ('stocks','sectors','focus'):
                 context=index.response('/api/v4/context')
                 return {**{k:v for k,v in context.items() if k in ('context','context_token','production_accepted','source_quality')},
-                        **index.page(domain,q,entity=entity,sector=sector)}
+                        **index.page(domain,q,entity=entity,sector=sector),
+                        'read_index_status':self._read_index_r2_state(day),
+                        'read_index_capability':'R1 legacy summary; D2 detail fields may be unavailable'}
         data=self.project(domain,day)
         if entity:data=[r for r in data if entity in (r['entity_id'],r['symbol']) or entity in r.get('search_aliases',[])]
         if sector:
@@ -438,7 +515,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 p[1]=match['entity_id'];path='/api/v4/'+'/'.join(p)
         if p[0]=='stocks' and len(p)==3 and p[2]=='chart':return self.chart(day,p[1],q)
         if p[0]=='stocks' and len(p)==3 and p[2] in ('profile','why-not','why-not-prewatch','evidence'):
-            code,data=super().get(path,q)
+            code,data=super().get(path,self._base_query(q))
             if code!=200:return code,data
             item=data['item'];fields=item['fields'];eligibility=fields.get('final_eligibility',{}).get('value')
             classified='NOT_ELIGIBLE' if eligibility=='FALSE' else 'ELIGIBLE' if eligibility=='TRUE' else 'NOT_IMPLEMENTED' if 'NOT_IMPLEMENTED' in str(fields.get('detector_statuses',{})) else 'UNKNOWN'
@@ -466,7 +543,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             history=sorted(unique.values(),key=lambda r:(r['created_trade_date'],r.get('event_id',''),r.get('observation_revision','')))
             return self.paged(day,history,q,contract_id='STRUCTURE_OWNER_TIMELINE_READ_R2',dedup_key=['event_id','observation_revision'],PIT_ELIGIBLE=False)
         if p[0]=='sectors' and len(p)==2:
-            code,data=super().get(path,q)
+            code,data=super().get(path,self._base_query(q))
             if code!=200:return code,data
             row=next((r for r in self.source('rotation',day) if r['sector_id']==p[1]),None)
             rotation=row.get('rotation',{}) if row else {}
@@ -484,7 +561,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 if row:data.append(dict(trade_date=d,fields=row['fields'],rotation=rot.get('rotation') if rot else None,source=self.api.candidate['owners'][d]['sector'],rotation_source=self.api.candidate['owners'][d]['rotation'],member_set_asof=row['member_set_asof'],PIT_ELIGIBLE=False))
             return self.paged(day,data,q,contract_id='DATED_CORRECTED_SECTOR_TIMELINE_READ_R1',historical_membership='LATEST_RECONSTRUCTED_NOT_STRICT_PIT',earliest_valid_date=data[0]['trade_date'] if data else None,full_rotation_validation='NOT_GRANTED')
         if p[0]=='sectors' and len(p)==3 and p[2]=='members':
-            code,data=super().get(path,q);native=next((r for r in self.source('sector',day) if r['sector_id']==p[1]),None)
+            code,data=super().get(path,self._base_query(q));native=next((r for r in self.source('sector',day) if r['sector_id']==p[1]),None)
             if native:data['membership_coverage']=dict(source_member_count=native['current_member_count'],mapped_member_count=len(set(native['member_ids'])),unmapped_count=native['unmapped_count'],quoted_count=native['quoted_count'],source=self.api.candidate['owners'][day]['sector'],meaning='完整已映射研究成员；未映射来源记录不冒造证券身份')
             return code,data
         if p[0]=='sectors' and len(p)==3 and p[2]=='overlap':
@@ -505,15 +582,23 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             elif kind=='timeline':data=[dict(o,episode_id=e['episode_id'],entity_id=e['entity_id']) for e in episodes for o in e['observations']]
             elif kind in ('anchors','observations','outcomes'):data=[dict(o,episode_id=e['episode_id'],entity_id=e['entity_id']) for e in episodes for o in e.get(kind,[])]
             else:return self.missing(day,'/'.join(p),'FOCUS_RESOURCE_NOT_IMPLEMENTED')
-            return self.paged(day,data,q,source=self.api.candidate['owners'][day]['forward'],contract_id='FOCUS_LAYERED_DATED_READ_R1',focus_scope='RECONSTRUCTED_READ_ONLY_NOT_VALIDATION_COHORT',write_authorized=False,PIT_ELIGIBLE=False)
+            code,response=self.paged(day,data,q,source=self.api.candidate['owners'][day]['forward'],contract_id='FOCUS_LAYERED_DATED_READ_R1',focus_scope='RECONSTRUCTED_READ_ONLY_NOT_VALIDATION_COHORT',write_authorized=False,PIT_ELIGIBLE=False)
+            index=self._read_index_r2(day)
+            if index is not None:
+                response['focus_item']=index.detail('focus',p[1])
+                if response['focus_item'] is None:response['focus_item_quality']={'quality':'SOURCE_INCOMPLETE','reason':'FOCUS_DETAIL_NOT_PRESENT_IN_R2_INDEX'}
+            else:response['focus_detail_capability']=self._read_index_r2_state(day)
+            return code,response
         if p==['focus','events']:
             rows=list(self.source('forward',day).get('events',[]));event=q.get('event');validity=q.get('validity');needle=q.get('q','').strip().casefold()
-            stocks={r['entity_id']:r for r in self.project('stocks',day)} if needle else {}
+            identities=self._display_identity_map(day,rows) if needle else {}
             if event:rows=[r for r in rows if r.get('event')==event]
             if validity:rows=[r for r in rows if r.get('validity')==validity]
-            if needle:rows=[r for r in rows if needle in str(r.get('entity_id','')).casefold() or needle in str(stocks.get(r.get('entity_id'),{}).get('symbol','')).casefold()]
+            if needle:rows=[r for r in rows if needle in str(r.get('entity_id','')).casefold() or needle in str(identities.get(r.get('entity_id'),{}).get('symbol') or '').casefold() or needle in str(identities.get(r.get('entity_id'),{}).get('display_name') or '').casefold()]
             rows.sort(key=lambda r:(r.get('trade_date',''),r.get('entity_id',''),r.get('event','')))
-            return self.paged(day,rows,q,source=self.api.candidate['owners'][day]['forward'],contract_id='FOCUS_EVENT_PAGE_R1',focus_scope='READ_ONLY_NOT_VALIDATION_COHORT',PIT_ELIGIBLE=False)
+            code,data=self.paged(day,rows,q,source=self.api.candidate['owners'][day]['forward'],contract_id='FOCUS_EVENT_PAGE_R1',focus_scope='READ_ONLY_NOT_VALIDATION_COHORT',PIT_ELIGIBLE=False)
+            data['items']=self._enrich_display_names(day,data['items'])
+            return code,data
         if p[0]=='market' and len(p)==2:
             pack=self.pack(day)
             if not pack:return self.missing(day,'/'.join(p),'DATED_MARKET_FACT_PACK_NOT_BOUND')
@@ -529,9 +614,12 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     classifiable_denominator=sum(v for k,v in counts.items() if k!='UNKNOWN'),
                     tradable_rule_evaluable_denominator=counts.get('LIMIT_UP',0)+counts.get('LIMIT_DOWN',0)+counts.get('NOT_LIMIT',0),
                     source=facts['sources']['limits_0'])
-            if kind=='ladders':return self.paged(day,facts['ladders'],q,source={k:v for k,v in facts['sources'].items() if k.startswith('limits_')},intraday_touch='NOT_OBSERVABLE_FROM_DAILY')
+            if kind=='ladders':
+                code,data=self.paged(day,facts['ladders'],q,source={k:v for k,v in facts['sources'].items() if k.startswith('limits_')},intraday_touch='NOT_OBSERVABLE_FROM_DAILY')
+                data['items']=self._enrich_display_names(day,data['items'])
+                return code,data
         if path=='/api/v4/home':
-            code,data=super().get(path,q);fw=self.source('forward',day);events=fw['events'];stocks={r['entity_id']:r for r in self.project('stocks',day)}
+            code,data=super().get(path,self._base_query(q));fw=self.source('forward',day);events=fw['events'];stocks={r['entity_id']:r for r in self.project('stocks',day)}
             # Explicit owner events only. NEW maps to Focus NEW, not PREWATCH/confirmation.
             # Select before copying the large stock field projection. This is the
             # same stable priority/entity order as prioritize_home_changes.
@@ -619,4 +707,4 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 contract_id='COHORT_SETTLEMENT_NOT_READY_READ_R3_V1',source=None,
                 data=dict(observed_count=None,matured_count=None,outcomes=None,write_authorized=False),items=[],
                 total=None,offset=0,limit=30,has_next=False,focus_is_validation_cohort=False)
-        return super().get(path,q)
+        return super().get(path,self._base_query(q))

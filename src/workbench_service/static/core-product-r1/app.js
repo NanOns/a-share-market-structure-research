@@ -38,7 +38,7 @@ async function render(){controller?.abort();controller=new AbortController();con
   const eventFilter=C.el('select');eventFilter.setAttribute('aria-label','Focus 事件类型筛选');
   for(const [value,title] of [['','全部观察类型'],['NEW','新进入'],['UPGRADED','状态升级'],['WEAKENED','状态转弱'],['INVALIDATED','失效'],['EXITED','退出'],['REENTERED','重新进入'],['PERSISTENT','持续观察'],['DATA_UNAVAILABLE','来源不足观察']]){const option=C.el('option',title);option.value=value;eventFilter.append(option);}
   eventFilter.value=eventState;eventFilter.onchange=()=>{if(eventFilter.value)eventParams.set('event_state',eventFilter.value);else eventParams.delete('event_state');eventParams.set('events_offset','0');history.replaceState(history.state||{},'','?'+eventParams);render();};box.append(eventFilter);
-  const d=await read('focus/events',{limit:30,offset:eventOffset,event:eventState},signal);
+  const d=await read('focus/events',{limit:30,offset:eventOffset,...(eventState?{event:eventState}:{})},signal);
   let unavailableCount=0,transitionCount=0;
   for(const event of d.items){
    const unavailable=event.event==='DATA_UNAVAILABLE';if(unavailable)unavailableCount++;else transitionCount++;

@@ -1,0 +1,47 @@
+{
+  "contract_id": "V4_UX_R3_FIX_THEN_VERIFY_EVIDENCE_R1",
+  "date": "2026-10-14",
+  "task_card_sha256": "c2261a59c9db4469cf89e0a3e213b601e6b6866c37c3dc170c58458ced7592ed",
+  "baseline_commit": "6cf1464d00873537c0aa9c017f351aeec9d326f7",
+  "phase0": {
+    "status": "FULL_PASS",
+    "receipt": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
+    "sha256": "313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59"
+  },
+  "code_acceptance": {
+    "status": "PASS",
+    "pytest": "15 passed: tests/test_v4_ux_r3_routes.py and tests/test_v4_ux_r2_contract.py",
+    "python_compile": "PASS",
+    "javascript_syntax": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "source_sha256": {
+    "src/workbench_db/v4_read_index_r1.py": "9c96ba840e08245275557b85fd99d3640f63081313e2236461a314a6427a1531",
+    "src/workbench_db/v4_read_index_r2.py": "c95725c7c751383ff8b2defebca908d90a5d147d738b84ed363661f825bd7aa6",
+    "src/workbench_service/core_product_bff_r1.py": "72f9dbd9153079b8774ba03e97f8faa304bd43f2ae068ce17d606ff4bf9e5836",
+    "src/workbench_service/core_product_server_r1.py": "c0832c7c0a1b7e76cf0b2a69b75e516d2572449904ffce2720caf853ba687e7d",
+    "src/workbench_service/static/core-product-r1/api.js": "2d4f7a354cededd7acc64461031b5f4e05c8714f3e7642816af55652bffb245c",
+    "src/workbench_service/static/core-product-r1/app.js": "0224b30d228ca0cc6417cab2cf3c9659f3ddcca90ba2a362faec1fd5eb018c7b",
+    "tests/test_v4_ux_r3_routes.py": "9e8d9b66d60b7d8722645b11d94fa161e16970a068f99e3b8f07191cd6c68628"
+  },
+  "runtime_acceptance": {
+    "status": "BLOCKED_NOT_RUN",
+    "r1_authority_in_candidate_root": false,
+    "r2_authority_in_candidate_root": false,
+    "isolated_pg_schema_read_write": "NOT_PERFORMED",
+    "real_owner_20_row_comparison": "NOT_PERFORMED",
+    "http_requests": 0,
+    "browser_screenshots": 0,
+    "p50_p95": "NOT_MEASURED",
+    "prior_gate_error": "EXACT_DAILY_POLICY_REQUIRED",
+    "policy_bypass": false
+  },
+  "production": {
+    "deployed": false,
+    "head_write_attempted": false,
+    "port_28765_write_or_restart_attempted": false,
+    "tdx_source_write_attempted": false,
+    "auto_daily_changed": false
+  },
+  "acceptance": "CODE_PASS__REAL_RUNTIME_BLOCKED__PRODUCT_ACCEPTANCE_OPEN"
+}

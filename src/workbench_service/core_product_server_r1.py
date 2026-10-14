@@ -15,6 +15,7 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None):
     flights={}
     def build(signature):
         authority=root/'config/core_product_read_authority_r1.json'
+        read_index_r2_authority=root/'config/v4_read_index_authority_r2.json'
         focus_authority=root/'config/core_product_focus_read_authority_r2.json'
         owner_authority=root/'config/v4_operational_owner_pg_closeout_r1.json'
         api=accepted_api(root);paths=set()
@@ -40,6 +41,7 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None):
             a=json.loads(authority.read_bytes());collect(a)
             for binding in product_manifest_bindings(a):
                 collect(json.loads((root/binding['path']).read_bytes()))
+        if read_index_r2_authority.exists():collect(json.loads(read_index_r2_authority.read_bytes()))
         if focus_authority.exists():
             a=json.loads(focus_authority.read_bytes());collect(a);collect(json.loads((root/a['manifest']['path']).read_bytes()))
         cache=dict(signature=signature,bff=CoreProductBFFR1(api,jobs,isolated_history_authority=isolated_history_authority),sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
@@ -74,6 +76,7 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None):
                 root/'config/core_product_focus_read_authority_r2.json',
                 root/'config/v4_operational_owner_pg_closeout_r1.json',
                 root/'config/v4_read_index_authority_r1.json',
+                root/'config/v4_read_index_authority_r2.json',
                 root/'config/v4_current_native_joint_authority_v3.json']
         if isolated_history_authority is not None:signed.append(Path(isolated_history_authority))
         def signature():
@@ -153,7 +156,7 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None):
                     joint_token=hashlib.sha256(json.dumps(current_joint,sort_keys=True).encode()).hexdigest() if current_joint else None
                     response_key=(signature,joint_token,path,tuple(sorted((k,v[0]) for k,v in params.items())),self.headers.get('Accept-Encoding',''))
                     responses=cache.setdefault('home_encoded',{})
-                    indexed=(root/'config/v4_read_index_authority_r1.json').is_file()
+                    indexed=(root/'config/v4_read_index_authority_r1.json').is_file() or (root/'config/v4_read_index_authority_r2.json').is_file()
                     with lock:encoded=responses.get(response_key) if path=='/api/v4/home' and not indexed else None
                     if encoded is not None:
                         # A disconnected/missing native database must not

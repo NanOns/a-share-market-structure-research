@@ -430,6 +430,110 @@ class UXR3RouteTests(unittest.TestCase):
             for item in reversed(patches):
                 item.stop()
 
+    def test_home_http_legacy_missing_invalid_new_and_switched_r2(self):
+        from urllib.error import HTTPError
+        from workbench_db.v4_read_index_r2 import AUTHORITY as R2_AUTHORITY
+
+        class FakePG:
+            def __enter__(self): return self
+            def __exit__(self, *_args): return False
+            def execute(self, *_args): return self
+
+        class LegacyIndex:
+            def __init__(self, payload): self.payload = payload
+            def response(self, _path): return self.payload
+
+        class R2Index:
+            def __init__(self, token): self.token = token
+            def response(self, _path):
+                return {'context': {'trade_date': DAY}, 'context_token': self.token,
+                    'production_accepted': True, 'source_quality': 'TEST_ONLY',
+                    'changes': [], 'risks': [], 'rotations': [], 'sector_changes': [],
+                    'counts': {'radar': {'value': 1}}}
+
+        def bind_file(root, relative, payload):
+            path = root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            raw = json.dumps(payload).encode('utf-8')
+            path.write_bytes(raw)
+            return {'path': relative, 'sha256': hashlib.sha256(raw).hexdigest()}
+
+        def get_home(name, token, authority_state):
+            root = self.root / name
+            root.mkdir(parents=True, exist_ok=True)
+            registry = bind_file(root, 'config/registry.json', {'fields': []})
+            identity = bind_file(root, 'data/identity.json', {'records': []})
+            forward = bind_file(root, 'data/forward.json', {'events': []})
+            focus = bind_file(root, 'data/focus.json', {'items': []})
+            bind_file(root, 'data/v4/V4_DATA_ACCEPTED_HEAD.json', {'identity': identity})
+            if authority_state == 'invalid':
+                path = root / R2_AUTHORITY
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text('{', encoding='utf-8')
+            elif authority_state == 'ready':
+                bind_file(root, R2_AUTHORITY, {'contract_id': CONTRACT,
+                    'versions': {token: {DAY: {'schema': 'v4_test', 'digest': 'd' * 64}}}})
+
+            api = FakeAPI(root)
+            api.token = token
+            api.cache = {}
+            api.snapshot = {}
+            api.candidate['registry'] = registry
+            api.candidate['owners'][DAY]['forward'] = forward
+            api.candidate['owners'][DAY]['focus'] = focus
+
+            legacy = {'read_index_status': 'LEGACY_R1_AUTHORITY_ONLY',
+                'read_index_capability': 'R1 legacy summary; D2 detail fields may be unavailable',
+                'changes': [], 'risks': [], 'rotations': [], 'sector_changes': [],
+                'diagnostic': 'x' * (512 * 1024 + 1)}
+            patches = [
+                patch('workbench_service.core_product_server_r1.make_daily_handler', return_value=BaseHTTPRequestHandler),
+                patch('workbench_service.core_product_server_r1.accepted_api', return_value=api),
+                patch('workbench_db.v4_native.configured_reader_dsn', return_value='dbname=test'),
+                patch('workbench_service.core_product_server_r1.psycopg.connect', return_value=FakePG()),
+                patch('workbench_db.v4_forward_pg_r1.ForwardFactStore._database_identity', return_value={'system_identifier': 'TEST'}),
+            ]
+            if authority_state == 'missing':
+                patches.append(patch('workbench_db.v4_read_index_r1.load', return_value=LegacyIndex(legacy)))
+            elif authority_state == 'ready':
+                def load_r2(_root, observed_token, observed_day, **_kwargs):
+                    if (observed_token, observed_day) != (token, DAY):
+                        raise AssertionError('R2_BINDING_DID_NOT_FOLLOW_ACTIVE_TOKEN_AND_DATE')
+                    return R2Index(token)
+                patches.append(patch('workbench_db.v4_read_index_r2.load', side_effect=load_r2))
+            for item in patches: item.start()
+            server = ThreadingHTTPServer(('127.0.0.1', 0), make_product_handler(root, None))
+            worker = threading.Thread(target=server.serve_forever, daemon=True)
+            worker.start()
+            try:
+                try:
+                    with urlopen(f'http://127.0.0.1:{server.server_address[1]}/api/v4/home?trade_date={DAY}&context_token={token}', timeout=5) as response:
+                        return response.status, response.read()
+                except HTTPError as exc:
+                    return exc.code, exc.read()
+            finally:
+                server.shutdown(); server.server_close(); worker.join(timeout=5)
+                for item in reversed(patches): item.stop()
+
+        status, body = get_home('r1_legacy', TOKEN, 'missing')
+        self.assertEqual(status, 200, body[:1000].decode('utf-8', errors='replace'))
+        self.assertGreater(len(body), 512 * 1024)
+        self.assertIn(b'LEGACY_R1_AUTHORITY_ONLY', body)
+
+        status, body = get_home('broken_r2', TOKEN, 'invalid')
+        self.assertEqual(status, 400)
+        self.assertIn(b'PRODUCT_READ_FAILED', body)
+
+        status, body = get_home('new_r2', TOKEN, 'ready')
+        self.assertEqual(status, 200)
+        self.assertLess(len(body), 512 * 1024)
+        self.assertIn(TOKEN.encode(), body)
+
+        switched_token = 'b' * 64
+        status, body = get_home('switched_r2', switched_token, 'ready')
+        self.assertEqual(status, 200)
+        self.assertIn(switched_token.encode(), body)
+
 
 if __name__ == '__main__':
     unittest.main()

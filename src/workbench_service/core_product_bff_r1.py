@@ -193,8 +193,12 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
     @staticmethod
     def _base_query(query):
         # These filters are validated and consumed by their product routes. The
-        # legacy Context allowlist is intentionally kept narrow.
-        return {k:v for k,v in query.items() if k not in ('event','validity','limit_state')}
+        # legacy Context allowlist is intentionally kept narrow. Focus page
+        # controls also carry their event filter and event-page offset in the
+        # URL; those parameters belong only to /focus/events and must not make
+        # the independent Focus list request fail validation.
+        return {k:v for k,v in query.items() if k not in
+                ('event','validity','limit_state','event_state','events_offset')}
 
     def _display_identity_map(self,day,rows,*,key_fields=('entity_id','security_id')):
         keys=[next((row.get(k) for k in key_fields if row.get(k)),None) for row in rows]
@@ -321,7 +325,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
     def get(self,path,query):
         from workbench_db.v4_read_index_r2 import validate_query
         from workbench_db.v4_read_index_r1 import load as load_index_r1
-        day=validate_query(query,self.api.token,self.api.candidate['published_sessions'],
+        day=validate_query({k:v for k,v in query.items() if k not in ('event_state','events_offset')},
+                           self.api.token,self.api.candidate['published_sessions'],
                            self.api.candidate['accepted_trade_date'],path)
         index_route=(path in ('/api/v4/context','/api/v4/home','/api/v4/stocks','/api/v4/sectors','/api/v4/focus','/api/v4/radar') or
                      path.startswith('/api/v4/stocks/') or path.startswith('/api/v4/sectors/') or path.startswith('/api/v4/focus/'))
@@ -699,7 +704,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         q=dict(query);q.setdefault('trade_date',self.api.candidate['accepted_trade_date']);day=q['trade_date']
         # Base route validation applies before any product-specific read.
         from workbench_db.v4_read_index_r2 import validate_query
-        validate_query(q,self.api.token,self.api.candidate['published_sessions'],
+        validate_query({k:v for k,v in q.items() if k not in ('event_state','events_offset')},
+                       self.api.token,self.api.candidate['published_sessions'],
                        self.api.candidate['accepted_trade_date'],path)
         if path!='/api/v4/context' and q.get('context_token')!=self.api.token:raise ValueError('CONTEXT_TOKEN_MISMATCH')
         p=[unquote(x) for x in path.removeprefix('/api/v4/').split('/')]

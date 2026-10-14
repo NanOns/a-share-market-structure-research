@@ -43,6 +43,17 @@ class UXR2RouteContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'UNKNOWN_PARAMETER'):
             validate_query(query, self.token, [self.day], self.day, '/api/v4/stocks')
 
+    def test_focus_ui_event_filter_does_not_leak_into_focus_list_request(self):
+        from workbench_service.core_product_bff_r1 import CoreProductBFFR1
+        query = {'trade_date': self.day, 'context_token': self.token, 'event_state': 'INVALIDATED',
+                 'events_offset': '30', 'offset': '0', 'limit': '30'}
+        self.assertEqual(CoreProductBFFR1._base_query(query),
+                         {'trade_date': self.day, 'context_token': self.token,
+                          'offset': '0', 'limit': '30'})
+        base_route_query = {k: v for k, v in query.items() if k not in ('event_state', 'events_offset')}
+        self.assertEqual(validate_query(base_route_query, self.token, [self.day], self.day,
+                                        '/api/v4/focus'), self.day)
+
     def test_radar_filters_are_applied_before_sql_paging(self):
         where, args, order, offset, limit = query_parts(
             'radar', {'q': '600000', 'event': 'UPGRADED', 'validity': 'VALID', 'offset': '30', 'limit': '30'}

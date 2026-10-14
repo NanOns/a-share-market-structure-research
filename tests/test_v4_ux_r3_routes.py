@@ -13,6 +13,7 @@ from workbench_service.core_product_bff_r1 import CoreProductBFFR1, d2_selection
 from workbench_service.operational_successor_bff_v1 import OperationalSuccessorBFFV1
 from workbench_db.v4_read_index_r2 import AUTHORITY, CONTRACT, ReadIndex, load
 from workbench_service.core_product_server_r1 import make_product_handler
+from workbench_service.v4_control_server_v2 import _ui_asset
 from workbench_service.candidate_research_read_v2 import first_capture_readiness
 
 
@@ -103,6 +104,23 @@ class UXR3RouteTests(unittest.TestCase):
             self.assertIn('function firstCapturePanel',source)
         finally:
             server.shutdown();server.server_close();worker.join()
+
+    def test_explicit_preview_static_root_overrides_prior_joint_asset_binding(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)/'root';static=Path(temp)/'checkout'
+            old=root/'data/v4/ui_releases/old/style.css'
+            new=static/'research/style.css'
+            old.parent.mkdir(parents=True);new.parent.mkdir(parents=True)
+            old.write_text('old authority bytes',encoding='utf-8')
+            new.write_text('new checkout bytes',encoding='utf-8')
+            binding=dict(path=old.relative_to(root).as_posix(),
+                         sha256=hashlib.sha256(old.read_bytes()).hexdigest())
+            joint={'ui_assets':{'style.css':binding}}
+            self.assertEqual(_ui_asset(root,static,'style.css',joint).read_text(encoding='utf-8'),
+                             'old authority bytes')
+            self.assertEqual(_ui_asset(root,static,'style.css',joint,
+                                       source_override=True).read_text(encoding='utf-8'),
+                             'new checkout bytes')
 
     def test_radar_default_and_empty_event_reach_r2_page(self):
         index = FakeR2()

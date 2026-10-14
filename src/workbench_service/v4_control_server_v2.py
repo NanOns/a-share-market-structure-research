@@ -12,9 +12,17 @@ from .research_bff import ResearchBFF
 from .joint_release import load as joint_load,checked_path,recover
 
 
+def _ui_asset(root, static, name, joint, *, source_override=False):
+    """Use checkout assets in an explicit isolated preview; production stays bound."""
+    if source_override or not joint:
+        return Path(static)/'research'/name
+    return checked_path(root,joint['ui_assets'][name])
+
+
 def make_v4_handler(root, *, static_root=None):
     root=Path(root)
     static=Path(static_root) if static_root is not None else root/'src/workbench_service/static'
+    source_override=static_root is not None
     from workbench_analysis.r43_operational_sources import checked
     adapter=json.loads((root/'config/v4_control_adapter_v2.json').read_bytes())
     for binding in adapter['source_bindings']:
@@ -84,7 +92,7 @@ def make_v4_handler(root, *, static_root=None):
                 if mode not in ('SIX_ENTRY','LEGACY_SUMMARY'):return self.send(503,dict(code='UI_AUTHORITY_INVALID'))
                 page=static/('research/index.html' if mode=='SIX_ENTRY' else 'v4-workbench.html')
                 joint=joint_load(root)
-                if joint:page=checked_path(root,joint['ui_assets']['index.html'])
+                if joint and not source_override:page=checked_path(root,joint['ui_assets']['index.html'])
                 return self.send(200,page.read_bytes(),'text/html; charset=utf-8')
             if parsed.path=='/v4/legacy-summary':
                 return self.send(200,(static/'v4-workbench.html').read_bytes(),'text/html; charset=utf-8')
@@ -97,8 +105,8 @@ def make_v4_handler(root, *, static_root=None):
                     asset=checked(root,adapter['ui_assets'][name])
                     return self.send(200,asset.read_bytes(),'application/javascript; charset=utf-8')
                 joint=joint_load(root)
-                asset=checked_path(root,joint['ui_assets'][name]) if joint else static/'research'/name
-                if name in ('api.js','components.js','app.js'):
+                asset=_ui_asset(root,static,name,joint,source_override=source_override)
+                if not source_override and name in ('api.js','components.js','app.js'):
                     try:operational=operational_reader()
                     except (ValueError,KeyError,OSError) as error:return self.send(503,dict(code='OPERATIONAL_ACCEPTED_SOURCE_INVALID',reason=str(error)))
                     if operational is not None:

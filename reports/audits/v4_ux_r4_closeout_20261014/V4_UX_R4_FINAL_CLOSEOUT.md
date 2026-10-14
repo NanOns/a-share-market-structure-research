@@ -134,3 +134,11 @@
 - 候选当前 joint 的 UI 静态资源仍绑定旧文件。尝试用既有候选刷新器生成版本资源时，其完整来源校验因 `JOINT_SOURCE_DIGEST_MISMATCH:data/v4/engineering_series_r3/series.pg.json` 失败；没有绕过校验，也未改变 Head。为验证当前 CSS，在 28769 启动了只读隔离预览，单独覆盖 style.css，其余页面与数据仍走候选源码/Owner/PG。
 - 使用 Codex 内置浏览器在 1280×800 与 375×812 检查 home、stocks、sectors、focus、market、diagnostics、radar、Forward 子路由、个股详情、板块详情，共 20 个 route/viewport 组合。每个页面均完成加载且标题正确；宽屏文档 scrollWidth=1265、窄屏=360，均小于 viewport；窄屏导航 scrollWidth/clientWidth=330、flex-wrap=wrap，横向滚动消失。另在内置浏览器捕获首页宽屏和窄屏视觉画面各 1 张，但没有导出为报告目录内的截图文件，故文件数仍为 0。
 - 该项通过隔离页面布局检查，不代表候选 Authority 已接受新 UI 版本；U14 仍为 `NOT_VERIFIABLE`，五指数成交量来源单位未核验。R5 总体验收仍为 `V4_PRODUCTION_CUTOVER_BLOCKED`。详细测量在 JSON `responsive_route_reconciliation`。
+
+
+### R5 隔离预览静态资源路径补全（2026-10-14）
+
+- 继续核对发现，传入显式 `static_root` 时，`v4_control_server_v2.py` 仍优先从旧 Joint 读取 HTML/CSS/JS，因此只修改 checkout 的静态资源并不会进入普通候选预览。现已改为：仅显式传入 `static_root` 的隔离预览使用 checkout 资源；默认服务仍校验并使用封存 Joint 资产。新增单测覆盖新旧绑定选择。
+- Codex 内置浏览器在修正后的普通只读预览 28770 上重做 10 个路由 × 2 视口（1280×800、375×812）：home、stocks、sectors、focus、market、diagnostics、Radar、Forward 子路由、股票详情、板块详情。所有最终页面均完成渲染；宽/窄文档宽 1265/360 px；窄屏主导航 scrollWidth=clientWidth=330 px 且自动换行。股票详情在 6.5 秒内完成冷图加载，显示 QFQ 120/420 根、成交量股/成交额元。内置浏览器共捕获 8 张视觉画面，但未导出报告目录，故 `screenshot_files_saved=0`。
+- 当前 R2 静态 Joint 不可安全刷新：首个校验差异为 `FORMAL_MANIFEST.sources` 的 `data/v4/engineering_series_r3/series.pg.json`，封存引用 2,020 B / SHA `1d523251168a8ba366e81a04332e30770cf624c7cc62a6964bf055b592624f2c`，现存候选及生产根字节为 2,032 B / SHA `839f28521d3e661bd8810c785b0b983ad5e549285e81c4283335cea4194cbe3e`。刷新在 authority activation 前失败；未更改 Head、快照、封存对象或生产 UI Authority。显式源码资源只用于隔离验收。详见 JSON `source_bound_ui_refresh_failure`。
+- 定向回归 `python -m unittest tests.test_v4_ux_r2_contract tests.test_v4_ux_r3_routes -q`：38/38 通过。

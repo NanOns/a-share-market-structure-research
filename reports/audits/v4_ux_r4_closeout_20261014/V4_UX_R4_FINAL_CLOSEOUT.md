@@ -159,3 +159,8 @@
 - 扩展 D2/PG/Forward/FEP 隔离用例再通过 84/84；4 个需要真实 PG DSN 的写入型用例因本次没有独立隔离 PG 身份而未运行。FEP 一项初次失败是稀疏检出遗漏 `reports/fep_e5_r1/MODEL_CATALOG.json`；将 Git 中原文件按 HEAD 内容检出后单项通过，没有改写模型目录内容。扩展回归执行时 HEAD 为 `947cf198d9aa6a0944dbee83d14ad4077d4faa07`。
 - Codex 内置浏览器对 28770 Focus/Forward 锚点完成 DOM 和截图复核：下一候选日 2026-10-14、四项捕获输入缺失、期限结算 Owner 缺失、FEP 未准入均可见；正式样本计数没有被重建候选替代。截图由浏览器捕获并目视检查，未作为仓库文件导出，因此任务卡“截图附件”仍未通过。
 - 该证据只覆盖隔离代码合同，不构成当日全量 AS_RECORDED producer、正式队列/结算/FEP Owner、真实日更或生产权限验收；U02/U13 与总切换门状态不变。
+
+### R5 B-01 首页 R1/R2 HTTP 分支回归（2026-10-14）
+
+- 新增真实 HTTP handler 隔离合同测试，覆盖任务卡指定四种情况：R2 authority 缺失时由明确标记的 R1 旧索引返回大于 512 KiB 的首页仍为 HTTP 200；损坏 R2 authority 返回 HTTP 400 且不回退；新建 R2 返回受 512 KiB/摘要字段 guard 约束的 HTTP 200；切换至新 token 后只按新 token/date 读取 R2、返回体携带新 token。测试 PG 连接和身份读取由只读断言 stub 代替，因此是 HTTP 分支回归，不计为真实 PG/生产请求验收。
+- 修复相关 R2/R3 unittest 合计 **39/39 PASS**；包含上述四分支测试的精确代码 HEAD：`6661d3732dc3e80a863489310dfa9fedb7c7f114`。真实生产 PG、28765 新包、重启读回仍未验收。

@@ -155,4 +155,5 @@
 
 - 修正五个合成日更执行器边界用例：将 R1/R2 read-index 构建设为测试隔离依赖，避免不完整的 synthetic successor candidate 误入真实 authority 校验；首捕获缺源、继续本地流程、到达 `DERIVED_READY`、拒绝真实 CAS 等原断言保留。没有改生产 executor、Owner、Head 或权限。
 - 首捕获与资格读取测试集（`test_cohort_first_capture_producer_r1.py`、`test_cohort_capture_readiness_r1.py`、`test_cohort_daily_capture_boundary_r1.py`、`test_cohort_admission_r4.py`、`test_validation_cohort_read_contract_r3.py`）在仓库隔离 pytest 配置下 **116/116 PASS**；R2/R3 路由合同 unittest **38/38 PASS**。测试临时目录在 `G:/codex_tmp/test_temp`；缺失的 `market_calendar` 只从 G 盘现有只读源码副本加入测试进程 `PYTHONPATH`，没有复制或改写来源。
+- 上述代码及测试的精确验证 HEAD：`4450b8809fcf5088436820671fcb80829653d75d`；本报告本次追加记录发生在该验证 HEAD 之后。
 - 该证据只覆盖隔离代码合同，不构成当日全量 AS_RECORDED producer、正式队列/结算/FEP Owner、真实日更或生产权限验收；U02/U13 与总切换门状态不变。

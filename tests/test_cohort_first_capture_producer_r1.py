@@ -188,6 +188,7 @@ def test_actual_daily_executor_continues_after_missing_cohort_source(tmp_path, m
     from workbench_analysis import operational_daily_executor_v1 as executor
     from workbench_analysis import operational_daily_ready_owner_v2 as adapter
     from workbench_analysis import operational_successor_release_v1 as release
+    from workbench_db import v4_read_index_r1, v4_read_index_r2
     from scripts import audit_dynamic_daily_period_numbers_v1 as oracle
     from workbench_analysis.operational_daily_storage_v1 import atomic_json
     from workbench_analysis.r43_owner_replay import ref
@@ -210,6 +211,8 @@ def test_actual_daily_executor_continues_after_missing_cohort_source(tmp_path, m
     atomic_json(tmp_path, tmp_path/'PERIOD_NUMERIC_ORACLE.json', {'synthetic_only':True})
     monkeypatch.setattr(oracle,'audit',lambda *a:{'acceptance':'PASS'})
     monkeypatch.setattr(release,'promote',lambda *a:pytest.fail('UNAUTHORIZED_REAL_CAS'))
+    monkeypatch.setattr(v4_read_index_r1, 'prepare_bff', lambda *a, **k: {'synthetic_only': True})
+    monkeypatch.setattr(v4_read_index_r2, 'prepare_bff', lambda *a, **k: {'synthetic_only': True})
     progress = []
     result = executor.derive_ready_sources(tmp_path,day,{'source_freeze':binding},
         progress=lambda d,s,r:progress.append(s))

@@ -376,5 +376,126 @@
     "sample_scope": "Owner-backed reconstructed rule facts; membership mode TDX_LATEST_MEMBER_RETRO_V1; not strict PIT and not an independently accepted full episode reduction",
     "acceptance": "PASS",
     "caveat": "PASS covers cross-date read/explainability and correct NONE-vs-UNKNOWN labeling only. It does not certify formal production rotation, historical first availability, or recursive episode acceptance."
+  },
+  "sector_rotation_filter_reconciliation": {
+    "contract_id": "R5_U06_ROTATION_FILTER_RECONCILIATION_R1",
+    "environment": "28768 read-only candidate preview",
+    "browser": "Codex In-app Browser",
+    "trade_date": "2026-10-12",
+    "filters": [
+      {
+        "rotation": "NONE",
+        "label": "未进入轮动",
+        "url": "/v4/research/sectors?trade_date=2026-10-12&q=&sort=id&offset=0&rotation=NONE",
+        "total": 248,
+        "visible_rows": 30,
+        "visible_state_counts": {
+          "NONE": 30
+        }
+      },
+      {
+        "rotation": "UNKNOWN",
+        "label": "来源能力不足",
+        "url": "/v4/research/sectors?trade_date=2026-10-12&q=&sort=id&offset=0&rotation=UNKNOWN",
+        "total": 73,
+        "visible_rows": 30,
+        "visible_state_counts": {
+          "UNKNOWN": 30
+        }
+      }
+    ],
+    "query_param": "rotation",
+    "stale_generic_state_param_removed": true,
+    "current_prior_predicates_sources_timeline": "coal sector detail exposes prior/current state, predicates, quality reasons, owner path/SHA; 2026-10-12 and 2026-10-13 comparison is recorded in rotation_cross_date",
+    "none_distinct_from_unknown": true,
+    "browser_acceptance": "PASS",
+    "limitation": "Dated reconstructed read-domain behavior only; does not certify strict PIT or formal recursive rotation production."
+  },
+  "rotation_filter_regression": {
+    "target_tests": "tests.test_v4_ux_r2_contract + tests.test_v4_ux_r3_routes",
+    "result": "37/37 passed using unittest",
+    "pytest_note": "pytest startup hooks require sparse-excluded project modules; direct unittest execution of the same suites passed"
+  },
+  "index_chart_ui_reconciliation": {
+    "contract_id": "R5_U14_INDEX_CHART_UNIT_RECONCILIATION_R1",
+    "environment": "28768 read-only candidate preview",
+    "browser": "Codex In-app Browser",
+    "trade_date": "2026-10-13",
+    "indices": [
+      {
+        "name": "上证指数",
+        "symbol": "sh000001",
+        "daily_change": "3.62 / 0.10%",
+        "return_5_sessions": "-0.77%",
+        "return_20_sessions": "-3.35%",
+        "chart_range": "2026-04-15—2026-10-13",
+        "volume_unit": "SOURCE_NATIVE_UNVERIFIED",
+        "volume_display": "hidden"
+      },
+      {
+        "name": "深证成指",
+        "symbol": "sz399001",
+        "daily_change": "-31.17 / -0.25%",
+        "return_5_sessions": "-4.25%",
+        "return_20_sessions": "-10.32%",
+        "chart_range": "2026-04-15—2026-10-13",
+        "volume_unit": "SOURCE_NATIVE_UNVERIFIED",
+        "volume_display": "hidden"
+      },
+      {
+        "name": "创业板指",
+        "symbol": "sz399006",
+        "daily_change": "-5.48 / -0.18%",
+        "return_5_sessions": "-5.86%",
+        "return_20_sessions": "-12.96%",
+        "chart_range": "2026-04-15—2026-10-13",
+        "volume_unit": "SOURCE_NATIVE_UNVERIFIED",
+        "volume_display": "hidden"
+      },
+      {
+        "name": "沪深300",
+        "symbol": "sh000300",
+        "daily_change": "-12.30 / -0.29%",
+        "return_5_sessions": "-1.60%",
+        "return_20_sessions": "-6.54%",
+        "chart_range": "2026-04-15—2026-10-13",
+        "volume_unit": "SOURCE_NATIVE_UNVERIFIED",
+        "volume_display": "hidden"
+      },
+      {
+        "name": "中证1000",
+        "symbol": "sh000852",
+        "daily_change": "1.75 / 0.02%",
+        "return_5_sessions": "-4.12%",
+        "return_20_sessions": "-8.07%",
+        "chart_range": "2026-04-15—2026-10-13",
+        "volume_unit": "SOURCE_NATIVE_UNVERIFIED",
+        "volume_display": "hidden"
+      }
+    ],
+    "source": {
+      "path": "data/v4/dynamic_daily_sources/tdx/20261013/sha256-fe1de8b8dd28179f5da555159c03ddd1f8f60a88441694523f27d06be3ae53b5/hsjday.zip",
+      "sha256": "fe1de8b8dd28179f5da555159c03ddd1f8f60a88441694523f27d06be3ae53b5"
+    },
+    "page_dimensions_css_px": {
+      "width": 1265,
+      "height": 720,
+      "scroll_width": 1265
+    },
+    "browser_acceptance": "PARTIAL",
+    "remaining": "Source explicitly labels index volume SOURCE_NATIVE_UNVERIFIED, so the UI hides volume. Narrow-viewport recheck and deliverable screenshot files remain outstanding."
+  },
+  "stock_detail_chart_cold_load": {
+    "browser": "Codex In-app Browser",
+    "environment": "28768 read-only candidate preview",
+    "trade_date": "2026-10-13",
+    "symbol": "SH.688349",
+    "cold_reload": "PASS",
+    "price_basis": "QFQ",
+    "displayed_bars": 120,
+    "available_bars": 420,
+    "final_close": 13.54,
+    "units": "volume shares; amount yuan",
+    "note": "A prior retained tab showed a generic 400 error before reload; clean reload rendered the chart successfully, and the error was not reproducible."
   }
 }

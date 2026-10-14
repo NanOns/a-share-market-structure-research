@@ -82,7 +82,7 @@
 | U03 | `PASS` | 同一煤炭行业、同一成员快照，在已接受 Head 索引的 10/12 与 10/13 Owner 逐日对比：均为 NONE→NONE；10/12 diffusion=false/early_retained=false，10/13 diffusion=true、early_retained 与 mature_retained 因质量缺失为 UNKNOWN；逐日字段、谓词、source hash 与“验证中/待核”标记在抽屉可见。PASS 仅覆盖读域解释性，不认证严格 PIT 或正式递归 episode。证据见 JSON `rotation_cross_date`。 |
 | U04 | `FAIL` | 四轴仍为正式环境未发布；个股/板块/市场三族独立风险事件与分母、四态生产证据缺失。 |
 | U05 | `FAIL` | 400 板块列表明确缺正式 maturity/health Owner；独立 Sector D2 生命周期生产者和 20 个真例重算未交付。 |
-| U06 | `NOT_VERIFIABLE` | 煤炭详情显示前态与当前态 `NONE` 均待核；完整规则来源及跨日时间序列还未验收。 |
+| U06 | `PASS` | 28768 内置浏览器验证轮动筛选：`rotation=NONE` 共 248 条，首 30 条全为 NONE；`rotation=UNKNOWN` 共 73 条，首 30 条全为 UNKNOWN。煤炭详情显示当前/前序状态、谓词、质量原因和 Owner 来源；10/12 与 10/13 对比见 `rotation_cross_date`。仅覆盖隔离读域解释性，不代表严格 PIT 或正式生产轮动。 |
 | U07 | `NOT_VERIFIABLE` | `SZ.301660` 真实详情呈现 `NONE + UNKNOWN`、检测器状态、10 项不可判定条件；跨字段 D2 Owner 复算仍不全。 |
 | U08 | `NOT_VERIFIABLE` | 真实详情明确显示资格 UNKNOWN 与不可判定项；TRUE/FALSE/UNKNOWN/NOT_IMPLEMENTED 全状态及 D2 Owner 对账尚未齐。 |
 | U09 | `PASS` | 28768 内置浏览器与同日正式身份来源对账：`SZ.301660` 列表/详情均为 `NEW_CODE_OBSERVED`；`SH.600703` 均为 `EXISTING_VERIFIED_IDENTITY`；搜索旧代码 `SZ.300114` 解析到当前身份 `SZ.302132`，列表/详情均为存量身份且不声称旧代码有 T0 报价。详见 `code_status_reconciliation`。仅通过隔离读域验收，不表示 28765 部署。 |
@@ -90,7 +90,7 @@
 | U11 | `NOT_VERIFIABLE` | Focus 第 1/2 页和 NEW 过滤可读；未知 membership/validity/path 被保留，但逐字段 observation/episode Owner 对账不全。 |
 | U12 | `NOT_VERIFIABLE` | Focus 事件分页（offset 30）与 NEW 筛选已实测；修复 `INVALIDATED`/`EXITED` 控件污染主列表查询的问题，两个真实筛选结果均为空且页面无路由错误；缺少失效/退出真样本与同日多事件反例，未闭环。 |
 | U13 | `FAIL` | 首捕就绪只读展示和隔离合同测试通过；日版全量 AS_RECORDED producer、独立队列 Owner、准入/结算/FEP 权限仍缺。 |
-| U14 | `NOT_VERIFIABLE` | 五指数 5/20 会话收益和 OHLC 图可读；volume 单位未核验，最新静态修正后桌面视口和截图文件未复验。 |
+| U14 | `NOT_VERIFIABLE` | 内置浏览器 28768 展开五指数均显示日变动、5/20 会话收益和 2026-04-15—10-13 OHLC 图；来源将五指数 volume_unit 均标为 `SOURCE_NATIVE_UNVERIFIED`，UI 已隐藏成交量。窄视口和可交付截图未完成，故保留未验收。详见 JSON `index_chart_ui_reconciliation`。 |
 | U15 | `PASS` | 真实可评价分母 5,191、UNKNOWN 21；内置浏览器展开 21 条，含参考价缺失/特殊规则期原因，错误参数合同测试有负例。 |
 | U16 | `PASS` | 28768 内置浏览器同日真实接受截面完整展开 57 条精确首板与 12 条前缀未绑定对象，69/69 显示中文名、代码、所属行业及精确值或下界；size=200 单页容纳全部对象，无下一页截断。未知连板未猜测，分钟级过程未声称。仅为 2026-10-13 隔离读域验收，生产部署门另计。 |
 
@@ -110,3 +110,19 @@
 - 验收：`V4_PRODUCTION_CUTOVER_BLOCKED`。生产 R2 authority 保持缺失；28765 上 Radar 仍失败。源码预览成功不替代生产部署；D2、风险、Cohort/FEP、20 真样本、六入口宽/窄截图及板块详情性能门均未通过。
 - 生产保护：28765 与旧 EXE 保持运行；未部署、未回滚、未更改旧包；`auto_daily` 仍暂停；正式 Head/T0/token 未变。
 - 下一步继续在该已授权阶段任务内修复并验收缺口；只有任务卡核心门通过后才切换 28765。该报告不是外部接受或进入下一阶段授权。
+
+
+### R5 U06 轮动筛选修复（2026-10-14）
+
+- 修复 `app.js` 板块研究状态筛选参数：板块使用 `rotation`，其他领域继续使用 `state`；提交板块筛选时清除遗留的 `state` 参数，避免 URL/UI 状态不一致。
+- Codex 内置浏览器 28768、2026-10-12：选择“未进入轮动”后 URL 为 `rotation=NONE`，返回 248 条，首屏 30/30 状态为 NONE；选择“来源能力不足”后 URL 为 `rotation=UNKNOWN`，返回 73 条，首屏 30/30 状态为 UNKNOWN。列表与详情均区分 NONE 和 UNKNOWN。
+- 回归：`python -m unittest tests.test_v4_ux_r2_contract tests.test_v4_ux_r3_routes -q`，37/37 通过。pytest 的全局 hook 在本稀疏检出中导入未展开的项目模块，启动失败；不将其计为回归通过。
+- 详情字段、跨日期 Owner、哈希和限制已记录在 JSON `rotation_cross_date` 与 `sector_rotation_filter_reconciliation`。本项 PASS 仅覆盖隔离的日期读域筛选及解释性；完整递归轮动/严格 PIT 仍未接受。
+
+
+### R5 U14 五指数单位复核（2026-10-14）
+
+- Codex 内置浏览器逐一展开上证、深证、创业板、沪深300、中证1000：均显示当日点数/涨跌幅、5会话与20会话收益，以及 2026-04-15 至 2026-10-13 的 OHLC 图（MA5/20/60）。
+- 五指数源数据来自 `data/v4/dynamic_daily_sources/tdx/20261013/.../hsjday.zip`，SHA-256 `fe1de8b8dd28179f5da555159c03ddd1f8f60a88441694523f27d06be3ae53b5`；Owner 将每个 `volume_unit` 标为 `SOURCE_NATIVE_UNVERIFIED`。页面明确隐藏成交量并提示来源单位未核验，没有把单位猜成股或手。
+- 本轮显示 viewport 为 1265×720 CSS px，页面 `scrollWidth=1265`；内置 viewport override 未改变实际 viewport，无法据此完成窄屏验收。截图文件仍为 0。U14 状态保持 `NOT_VERIFIABLE`。数据和五个指数的逐项结果见 JSON `index_chart_ui_reconciliation`。
+- 另对 `SH.688349` 个股详情执行冷启动重载，QFQ 图表 120/420 根、成交量股/成交额元、末收 13.54 正常显示；此前保留标签中的一次错误未在冷加载中复现，不记录为已确认代码缺陷。

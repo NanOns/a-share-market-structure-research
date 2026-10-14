@@ -405,6 +405,19 @@ class UXR2RouteContractTests(unittest.TestCase):
         self.assertEqual(result_detail, row)
         self.assertEqual(connect.call_count, 1)
 
+    def test_sector_rotation_filter_uses_dedicated_query_and_preserves_unknown(self):
+        where_none, args_none, *_ = query_parts('sectors', {'rotation': 'NONE'})
+        where_unknown, args_unknown, *_ = query_parts('sectors', {'rotation': 'UNKNOWN'})
+        self.assertEqual(args_none, ['NONE'])
+        self.assertEqual(args_unknown, ['UNKNOWN'])
+        self.assertIn("output_state", str(where_none))
+        self.assertIn("output_state", str(where_unknown))
+        app = Path(__file__).resolve().parents[1] / 'src/workbench_service/static/core-product-r1/app.js'
+        ui = app.read_text(encoding='utf-8')
+        self.assertIn("const stateFilterParam=domain==='sectors'?'rotation':'state'", ui)
+        self.assertIn("params.get(stateFilterParam)", ui)
+        self.assertIn("if(domain==='sectors')params.delete('state')", ui)
+
 
 if __name__ == '__main__':
     unittest.main()

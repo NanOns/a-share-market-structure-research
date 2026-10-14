@@ -59,6 +59,19 @@
     "new_filter_total": 110,
     "console_errors": 0
   },
+  "home_radar_semantics": {
+    "browser": "Codex In-app Browser",
+    "route": "/v4/research/home?trade_date=2026-10-13",
+    "card_label": "研究雷达",
+    "card_value": 177,
+    "scope_label": "事件雷达（非正式优先级）",
+    "scope_note": "数字仅为已接受变化事件数；正式 Radar 优先级尚未生产",
+    "card_target": "/v4/research/radar?trade_date=2026-10-13",
+    "target_heading": "事件 Radar",
+    "target_scope_note": "不是正式 Radar 优先级或全市场扫描",
+    "formal_priority_producer": "NOT_PRESENT",
+    "acceptance": "EVENT_AND_FORMAL_PRIORITY_SEMANTICS_DISTINCT"
+  },
   "focus_events": {
     "first_page_observations": 30,
     "second_page_offset": 30,

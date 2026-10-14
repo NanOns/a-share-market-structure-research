@@ -77,7 +77,7 @@
 
 | ID | 状态 | 最新证据与未闭合项 |
 |---|---|---|
-| U01 | `FAIL` | 内置浏览器确认事件 Radar 177 条、第二页可读且 `NEW` 筛选 110 条；Formal Radar 全市场 priority producer 仍缺。 |
+| U01 | `FAIL` | 内置浏览器核对首页卡片标为“事件雷达（非正式优先级）”、177 仅为已接受变化事件数；点击进入标题“事件 Radar”的页面，说明不是正式优先级/全市场扫描。第二页可读、`NEW` 筛选 110 条；Formal Radar 全市场 priority producer 仍缺。语义核对见 JSON `home_radar_semantics`。 |
 | U02 | `FAIL` | 正式 Forward 样本仍无授权 Owner；首次捕获面板显示 `NOT_DUE`、2026-10-14 候选日及四项缺失输入，计数仍为 null。 |
 | U03 | `PASS` | 同一煤炭行业、同一成员快照，在已接受 Head 索引的 10/12 与 10/13 Owner 逐日对比：均为 NONE→NONE；10/12 diffusion=false/early_retained=false，10/13 diffusion=true、early_retained 与 mature_retained 因质量缺失为 UNKNOWN；逐日字段、谓词、source hash 与“验证中/待核”标记在抽屉可见。PASS 仅覆盖读域解释性，不认证严格 PIT 或正式递归 episode。证据见 JSON `rotation_cross_date`。 |
 | U04 | `FAIL` | 四轴仍为正式环境未发布；个股/板块/市场三族独立风险事件与分母、四态生产证据缺失。 |

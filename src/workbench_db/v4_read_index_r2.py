@@ -207,13 +207,19 @@ def prepare(root, token, day, collections, responses, memberships):
 class ReadIndex:
     def __init__(self, root, binding, token, day):
         self.root=Path(root);self.binding=binding;self.token=token;self.day=day
-        if (binding.get('contract_id'),binding.get('engine'),binding.get('schema'),binding.get('head_token'),binding.get('T0'))!=(CONTRACT,'postgresql',workspace_schema(root,'read_index_r2'),token,day):
-            raise ValueError('READ_INDEX_CONTEXT_MISMATCH')
+        if not isinstance(binding,dict) or not {'contract_id','engine','schema','head_token','T0','digest','counts','database_identity'}<=set(binding):
+            raise ValueError('READ_INDEX_BINDING_SCHEMA_INVALID')
+        if binding['contract_id']!=CONTRACT:raise ValueError('READ_INDEX_BINDING_CONTRACT_MISMATCH')
+        if binding['engine']!='postgresql' or binding['schema']!=workspace_schema(root,'read_index_r2'):
+            raise ValueError('READ_INDEX_SCHEMA_MISMATCH')
+        if (binding['head_token'],binding['T0'])!=(token,day):raise ValueError('READ_INDEX_CONTEXT_MISMATCH')
 
     def attest(self, pg):
         if ForwardFactStore._database_identity(pg)!=self.binding['database_identity']: raise ValueError('READ_INDEX_DATABASE_MISMATCH')
         row=pg.execute('SELECT digest,contract,sealed FROM read_versions WHERE token=%s AND day=%s',(self.token,self.day)).fetchone()
-        if row!=(self.binding['digest'],CONTRACT,True): raise ValueError('READ_INDEX_VERSION_UNAVAILABLE')
+        if row is None or row[2] is not True:raise ValueError('READ_INDEX_VERSION_UNAVAILABLE')
+        if row[1]!=CONTRACT:raise ValueError('READ_INDEX_VERSION_CONTRACT_MISMATCH')
+        if row[0]!=self.binding['digest']:raise ValueError('READ_INDEX_VERSION_DIGEST_MISMATCH')
 
     def response(self, path):
         with connection(self.binding['schema'],read_only=True) as pg:
@@ -279,6 +285,7 @@ def load(root, token, day, *, allow_missing=False):
         if allow_missing:return None
         if token not in authority.get('versions',{}):raise ValueError('READ_INDEX_TOKEN_NOT_PREPARED')
         raise ValueError('READ_INDEX_DATE_NOT_PREPARED')
+    if not isinstance(binding,dict):raise ValueError('READ_INDEX_BINDING_SCHEMA_INVALID')
     return ReadIndex(root,binding,token,day)
 
 

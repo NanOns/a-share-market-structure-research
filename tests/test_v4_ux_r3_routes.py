@@ -210,8 +210,13 @@ class UXR3RouteTests(unittest.TestCase):
 
         with patch('workbench_db.v4_read_index_r2.ForwardFactStore._database_identity',
                    return_value={'system_identifier': 'test'}):
-            with self.assertRaisesRegex(ValueError, 'READ_INDEX_VERSION_UNAVAILABLE'):
+            with self.assertRaisesRegex(ValueError, 'READ_INDEX_VERSION_DIGEST_MISMATCH'):
                 index.attest(FakePG())
+
+        with self.assertRaisesRegex(ValueError, 'READ_INDEX_SCHEMA_MISMATCH'):
+            ReadIndex(self.root, {'contract_id': CONTRACT, 'engine': 'postgresql', 'schema': 'wrong',
+                'head_token': TOKEN, 'T0': DAY, 'digest': 'd', 'counts': {},
+                'database_identity': {}}, TOKEN, DAY)
 
     def test_http_handler_routes_through_bff_without_blank_filter_failure(self):
         def bind_file(relative, payload):
@@ -236,19 +241,24 @@ class UXR3RouteTests(unittest.TestCase):
         class HTTPR2(FakeR2):
             def page(self, domain, query, **kwargs):
                 self.page_calls.append((domain, dict(query)))
-                return {'status': 'READY', 'items': [], 'total': 0, 'offset': int(query.get('offset', 0)),
-                    'limit': int(query.get('limit', 30)), 'has_next': False, 'domain': domain}
+                offset = int(query.get('offset', 0)); limit = int(query.get('limit', 30))
+                return {'status': 'READY', 'items': [], 'total': 63, 'offset': offset,
+                    'limit': limit, 'has_next': offset + limit < 63, 'domain': domain}
 
         index = HTTPR2()
         forward = {'events': [
             {'entity_id': 'SEC-1', 'event': 'NEW', 'validity': 'VALID', 'trade_date': DAY},
             {'entity_id': 'SEC-2', 'event': 'PERSISTENT', 'validity': 'UNKNOWN', 'trade_date': DAY},
         ]}
+        limit_rows = [{'security_id': f'SEC-{i}', 'limit_state': 'UNKNOWN'} for i in range(21)]
         patches = [
             patch('workbench_service.core_product_server_r1.make_daily_handler', return_value=BaseHTTPRequestHandler),
             patch('workbench_service.core_product_server_r1.accepted_api', return_value=api),
             patch.object(CoreProductBFFR1, '_read_index_r2', lambda _self, day: index),
             patch.object(CoreProductBFFR1, 'source', lambda _self, domain, day: forward),
+            patch.object(CoreProductBFFR1, 'pack', lambda _self, day: ({}, {'limits': {
+                'rows': limit_rows, 'counts': {'UNKNOWN': 21}}, 'sources': {
+                'limits_0': {'path': 'data/limits.json', 'sha256': 'f' * 64}}})),
             patch.object(CoreProductBFFR1, '_display_identity_map', lambda _self, day, rows, **kwargs: {}),
             patch.object(CoreProductBFFR1, 'paged', lambda _self, day, rows, query, **kw: (200, {
                 'items': rows[int(query.get('offset', 0)):int(query.get('offset', 0))+int(query.get('limit', 30))],
@@ -267,7 +277,12 @@ class UXR3RouteTests(unittest.TestCase):
                     radar = json.loads(response.read())
             except HTTPError as exc:
                 raise AssertionError(exc.read().decode('utf-8')) from exc
-            self.assertEqual(radar['domain'], 'radar')
+            self.assertEqual((radar['domain'], radar['total']), ('radar', 63))
+
+            with urlopen(base + f'/api/v4/radar?context_token={TOKEN}&offset=30&event=UPGRADED&validity=VALID', timeout=5) as response:
+                radar_page_two = json.loads(response.read())
+            self.assertEqual((radar_page_two['domain'], radar_page_two['offset'], radar_page_two['total']), ('radar', 30, 63))
+            self.assertEqual(index.page_calls[-1][1]['event'], 'UPGRADED')
 
             with urlopen(base + f'/api/v4/focus/events?context_token={TOKEN}&event=', timeout=5) as response:
                 events = json.loads(response.read())
@@ -276,6 +291,10 @@ class UXR3RouteTests(unittest.TestCase):
             with urlopen(base + f'/api/v4/focus/events?context_token={TOKEN}&event=NEW&validity=VALID', timeout=5) as response:
                 selected = json.loads(response.read())
             self.assertEqual((selected['total'], selected['items'][0]['event']), (1, 'NEW'))
+
+            with urlopen(base + f'/api/v4/market/limits?context_token={TOKEN}&limit_state=UNKNOWN&limit=10', timeout=5) as response:
+                unknown_limits = json.loads(response.read())
+            self.assertEqual((unknown_limits['total'], len(unknown_limits['items']), unknown_limits['filter_state']), (21, 10, 'UNKNOWN'))
 
             try:
                 urlopen(base + f'/api/v4/focus/events?context_token={TOKEN}&event=INVALID', timeout=5)

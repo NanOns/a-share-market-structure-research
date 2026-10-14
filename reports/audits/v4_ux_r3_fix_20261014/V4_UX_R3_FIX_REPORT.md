@@ -19,7 +19,7 @@
 ## 代码验收
 
 - 定向测试：`16 passed`（新增 9 个 R3 用例 + 原有 7 个 R2 合同用例）。覆盖 Radar 默认/空/NEW/无效事件，Focus Events 空/NEW/PERSISTENT/validity/第二页，UNKNOWN 21 行分页和跨路由拒绝，个股详情经 `CoreProductBFFR1.get()` 读取完整 R2 detail，Focus detail，名称/source 与缺名原因，Authority 缺 token/date/schema、PG digest 冲突。
-- 新增隔离的 `make_product_handler` HTTP 测试：临时环回端口发出 5 个 HTTP 请求，实际经过 server handler 与 `CoreProductBFFR1.get()`，覆盖 Radar 默认页、Focus 空筛选/有效筛选、无效枚举、跨路由拒绝。API、Owner 与 PG 索引是确定性测试替身，不是现场服务/真实 PG。
+- 新增隔离的 `make_product_handler` HTTP 测试：临时环回端口发出 7 个 HTTP 请求，实际经过 server handler 与 `CoreProductBFFR1.get()`，覆盖 Radar 默认页/第二页及筛选、Focus 空筛选/有效筛选、UNKNOWN 21 行正向分页、无效枚举、跨路由拒绝。API、Owner 与 PG 索引是确定性测试替身，不是现场服务/真实 PG。
 - Python：四个变更运行模块 `py_compile` 通过。
 - JavaScript：`api.js`、`app.js` 的 `node --check` 通过。
 - `git diff --check`：通过。
@@ -27,7 +27,7 @@
 
 ## 真实验收与阻塞
 
-本候选工作区中没有 R1/R2 read-index Authority 文件或可复核的隔离 PG schema receipt；本轮没有真实 PG 连接、真实 Owner 数据或用户 28765 请求。5 个 HTTP 请求仅针对隔离临时 handler。因此以下 R3 条件仍未验收：
+本候选工作区中没有 R1/R2 read-index Authority 文件或可复核的隔离 PG schema receipt；本轮没有真实 PG 连接、真实 Owner 数据或用户 28765 请求。7 个 HTTP 请求仅针对隔离临时 handler。因此以下 R3 条件仍未验收：
 
 - D2/identity 至少 20 条真实 Owner 行逐字段对账（需要包含 `NONE+UNKNOWN`、真实情景、未观测、旧股、`SZ.301660`）。
 - Focus 的 3,151 唯一分母、行业 Top 5 和真实事件、梯队中文名称逐项源对账。

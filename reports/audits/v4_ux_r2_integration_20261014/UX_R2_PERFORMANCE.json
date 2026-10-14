@@ -1,0 +1,17 @@
+{
+  "contract_id": "V4_UX_R2_PERFORMANCE_R1",
+  "status": "NOT_VERIFIABLE",
+  "same_version_candidate_runtime": false,
+  "endpoint_samples": 0,
+  "home_p95_ms": null,
+  "stock_list_p95_ms": null,
+  "radar_page_1_p95_ms": null,
+  "radar_page_2_p95_ms": null,
+  "frozen_baseline_reference": "not available in this run",
+  "acceptance": "No claim that latency is unchanged or improved. Candidate runtime was not started due the exact-policy preflight blocker.",
+  "request_path_design": {
+    "home": "producer-materialized compact response with status counts",
+    "radar": "PostgreSQL filtered count and bounded page query",
+    "repeated_5225_projection_per_request": false
+  }
+}

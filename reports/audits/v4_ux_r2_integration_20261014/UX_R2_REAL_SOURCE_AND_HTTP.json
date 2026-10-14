@@ -1,0 +1,42 @@
+{
+  "contract_id": "V4_UX_R2_REAL_SOURCE_AND_HTTP_R1",
+  "status": "PARTIAL_SOURCE_REFERENCE__HTTP_NOT_VERIFIABLE",
+  "phase0": {
+    "status": "FULL_PASS",
+    "receipt": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
+    "sha256": "313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59"
+  },
+  "reused_audit_facts_not_re_read": {
+    "source": "user-provided independent audit task card dated 2026-10-14, sections 1-2",
+    "counts": {"stocks": 5225, "sectors": 400, "focus_unique_objects": 3151},
+    "d2": {"scenario_and_final_eligibility_same_as_owner": true, "scenario_none_but_status_unknown": 4350},
+    "focus_industry_top_five_counts": [197, 149, 149, 133, 124],
+    "market_limits": {"limit_up": 69, "limit_down": 10, "not_limit": 5112, "suspended": 13, "unknown": 21, "pool": 5225},
+    "market_ladder": {"exact_first_limit_up": 57, "prefix_unknown": 12}
+  },
+  "current_branch_evidence": {
+    "new_listing_fact": "docs/audits/v4_new_listing_daily_20261013_r1/REAL_LISTING_FACT_R1.json",
+    "new_listing_fact_sha256": "a913025e7b35d20d32f9cafd84f81b07f8588ba1595e125bc2f1ae6355ff9168",
+    "daily_result": "docs/audits/v4_new_listing_daily_20261013_r1/RESULT.json",
+    "daily_result_sha256": "c656a65ad4a51be4bbff38f4be8ddf48807a522946c4da77a09444d095376e05",
+    "daily_state_in_that_record": "DERIVING; not a published same-version UX readback"
+  },
+  "source_layer": {
+    "current_owner_bytes_and_digest_read": "NOT_RUN",
+    "count_and_unknown_distribution_reconciled_to_current_PG": false,
+    "focus_name_join_reconciled_to_current_PG": false,
+    "301660_reconciled_to_current_identity_rows": false,
+    "quality": "PARTIAL_REFERENCE_ONLY"
+  },
+  "http_pg_layer": {
+    "same-version_policy_role_head_admission": "BLOCKED_NOT_VERIFIABLE",
+    "blocker": "the supplied R2 audit says the mismatched checkout/installed root preflight was EXACT_DAILY_POLICY_REQUIRED; policy was not disabled or bypassed",
+    "requests_performed": 0,
+    "pg_connections_or_writes_performed": 0,
+    "head_mutation": false,
+    "read_index_authority_mutation": false,
+    "duckdb_or_sqlite_business_fallback": false,
+    "required_next": ["policy-valid frozen read-only candidate", "same-token home and Radar page 2", "limit_state UNKNOWN positive and unrelated-route negative", "stock identity and Forward NOT_GRANTED readbacks"]
+  },
+  "scope": "No live service, daily job, accepted Head, production package, or user TDX source was changed."
+}

@@ -1,0 +1,29 @@
+{
+  "contract_id": "V4_UX_R2_REAL_BROWSER_MATRIX_R1",
+  "status": "BLOCKED_NOT_VERIFIABLE",
+  "candidate_code": "3bacbf12222bb6f80c1f133692d3da29c0878d54",
+  "real_runtime_version": "NOT_STARTED",
+  "viewport_widths": ["desktop narrow", "desktop wide"],
+  "screenshots": 0,
+  "entries": [
+    {"route":"/v4/research/home","static_code":"UPDATED","runtime":"NOT_VERIFIED","expected":"same-token status cards; Radar count has source/scope; Forward remains NOT_GRANTED"},
+    {"route":"/v4/research/stocks","static_code":"UPDATED","runtime":"NOT_VERIFIED","expected":"code_status plus identity_status; D2 NONE/UNKNOWN wording"},
+    {"route":"/v4/research/sectors","static_code":"UPDATED","runtime":"NOT_VERIFIED","expected":"health/maturity remain source-incomplete; name and membership evidence"},
+    {"route":"/v4/research/focus","static_code":"UPDATED","runtime":"NOT_VERIFIED","expected":"Chinese top-five industry names and explicit denominator; typed event filters, pagination, validity/path/evidence links"},
+    {"route":"/v4/research/radar","static_code":"UPDATED_TO_DEDICATED_ENDPOINT","runtime":"NOT_VERIFIED","expected":"query token/date held stable; filter before SQL pagination; second page is distinct"},
+    {"route":"/v4/research/market","static_code":"UPDATED","runtime":"NOT_VERIFIED","expected":"limit UNKNOWN filter; separate classifiable and tradable denominators; exact 57 and unknown 12 ladder groups"},
+    {"route":"/v4/research/diagnostics","static_code":"UPDATED","runtime":"NOT_VERIFIED","expected":"owner and quality evidence; no producer capability inferred"}
+  ],
+  "subroutes": [
+    {"route":"/v4/research/radar","runtime":"NOT_VERIFIED","expected":"second page and filter navigation"},
+    {"route":"/v4/research/focus#forward-cohort","runtime":"NOT_VERIFIED","expected":"Forward authorization status stays NOT_GRANTED"}
+  ],
+  "rendering_checks": {
+    "one_viewport_screenshot": "BLOCKED",
+    "two_viewport_screenshots": "BLOCKED",
+    "truth_and_empty_states": "BLOCKED",
+    "date_navigation": "BLOCKED",
+    "same_day_multi_event_cases": "BLOCKED"
+  },
+  "reason": "No policy-valid same-version read-only runtime was started; source code inspection and syntax checks are not browser acceptance."
+}

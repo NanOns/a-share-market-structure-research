@@ -1,0 +1,51 @@
+{
+  "contract_id": "V4_UX_R2_MERGE_BASE_AUTHORITY_DIFF_R1",
+  "stage": "R2-00 candidate integration",
+  "current_remote_branch": "origin/codex/v4-full-closeout-20261012",
+  "current_remote_head": "15876b4ef289dfe0c552a6f148e5a642c7271118",
+  "ux_branch": "origin/codex/v4-fp14-r2-repair",
+  "ux_head": "c9e49df720da58ecb3e90eae53b9fdd8e11aab07",
+  "merge_base": "fbd23a6ba08d0948fe7ad421d1765fe363648522",
+  "compare_counts_left_behind_right_ahead": [142, 4],
+  "integration_branch": "codex/v4-ux-r2-integration-20261014",
+  "integration_code_commit": "3bacbf12222bb6f80c1f133692d3da29c0878d54",
+  "integration_method": "new branch from exact current remote HEAD; no merge, reset, or whole-file replacement from UX branch",
+  "authority_preserved": [
+    "PG read-index R1 source bytes and authority contract",
+    "SQL paging for stocks/sectors/focus",
+    "HEAD token and accepted T0 identity",
+    "accepted current_identity_rows and code_status",
+    "Worker and APPEND-only daily lifecycle",
+    "owner IDs and digests",
+    "28765 active package and auto_daily state"
+  ],
+  "selective_hunks": [
+    "D2 NONE versus scenario_status explanation",
+    "Focus active-unique sector name join and display",
+    "Focus event table filtering and layered source/evidence navigation",
+    "market limit grouping and unknown state presentation",
+    "stock identity_status alongside preserved code_status",
+    "Radar page pointed at a dedicated R2 PG index endpoint"
+  ],
+  "file_sha256": [
+    {"path":"src/workbench_db/v4_read_index_r1.py","sha256":"d15d09e111014c78568fee2265234307bdd99e2f8960722d0271df83d3df3c03","status":"unchanged"},
+    {"path":"src/workbench_db/v4_read_index_r2.py","sha256":"d4109d5b38c6cd04440eb77bdc5bff9b5a03631245093201b544a6a984d107e8","status":"new versioned candidate"},
+    {"path":"src/workbench_service/core_product_bff_r1.py","sha256":"b84b1c614a90a1cbc1cf72d5a31a3c33e25e4acf2a0cd6462f2e1675fbabf157","status":"selective edits"},
+    {"path":"src/workbench_analysis/operational_daily_executor_v1.py","sha256":"7747a28da2c6ea01ee13679653567bdafb08306f99b2c670cc1899c3ea996b01","status":"R1 then R2 producer candidate"},
+    {"path":"src/workbench_service/static/core-product-r1/app.js","sha256":"15abce6ce7035a11a1e1d254d20fa85ac791bea862e9350642950a12d88e8e86","status":"selected UI changes; Radar calls /api/v4/radar"},
+    {"path":"config/v4_read_index_r2_contract.json","sha256":"3a0df5c8f5e26b94989bee24ccea67e28dca9788c82c5dfb0761ec368f9b28f8","status":"new versioned candidate contract"}
+  ],
+  "phase0": {
+    "status": "FULL_PASS",
+    "receipt": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
+    "receipt_sha256": "313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59",
+    "scope_note": "scoped V4-00 obligations; does not assert later feature completion"
+  },
+  "stage_contract_sources": [
+    "user-provided V4 six-entry research usability R2 task card dated 2026-10-14",
+    "docs/upgrade/V4_FULL_CLOSEOUT_CONTINUATION_TASK_R2_20261013.md",
+    "docs/upgrade/V4_RUNTIME_PERFORMANCE_REPAIR_R1_20261013.md"
+  ],
+  "acceptance": "PARTIAL: candidate source work complete; current PG/HTTP/UI release acceptance remains open",
+  "next_stage": "policy-valid current-source and PostgreSQL/HTTP candidate verification; production cutover remains outside this task"
+}

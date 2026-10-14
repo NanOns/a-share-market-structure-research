@@ -80,10 +80,13 @@ def resume(root,day,mode,*,cancelled=lambda:False,readback_url=None,progress=lam
     prepare(root,candidate,owner)
     # Metadata producers must leave the fully admitted candidate token unchanged.
     if candidate!=load(checked(root,manifest['candidate'])):raise ValueError('SEALED_RESUME_CANDIDATE_MUTATED')
-    progress(day,'READ_INDEX',dict(processed=0,total=1,unit='versions'))
-    from workbench_db.v4_read_index_r1 import prepare_bff
-    prepare_bff(root,candidate)
-    progress(day,'READ_INDEX',dict(processed=1,total=1,unit='versions'))
+    progress(day,'READ_INDEX',dict(processed=0,total=2,unit='versions'))
+    from workbench_db.v4_read_index_r1 import prepare_bff as prepare_read_index_r1
+    from workbench_db.v4_read_index_r2 import prepare_bff as prepare_read_index_r2
+    prepare_read_index_r1(root,candidate)
+    progress(day,'READ_INDEX',dict(processed=1,total=2,unit='versions'))
+    prepare_read_index_r2(root,candidate)
+    progress(day,'READ_INDEX',dict(processed=2,total=2,unit='versions'))
     if cancelled():return dict(status='CANCELLED',reason='CANCELLED_BEFORE_CAS')
     if not readback_url:return dict(status='QA_BLOCKED',reason='LIVE_SERVICE_READBACK_ENDPOINT_REQUIRED',candidate=manifest['candidate'])
     from .operational_successor_release_v1 import promote

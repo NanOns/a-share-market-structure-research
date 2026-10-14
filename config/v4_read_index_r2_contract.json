@@ -1,0 +1,25 @@
+{
+  "contract_id": "V4_READ_INDEX_R2",
+  "status": "ENGINEERING_CANDIDATE_NOT_ACTIVATED",
+  "database": "postgresql",
+  "authority_file": "config/v4_read_index_authority_r2.json",
+  "workspace_schema_suffix": "read_index_r2",
+  "source_token": "accepted_head_token",
+  "source_trade_date": "accepted_trade_date",
+  "objects": {
+    "radar": {
+      "endpoint": "/api/v4/radar",
+      "producer": "accepted Focus events joined to current stock summaries",
+      "coverage": "exclude top ten accepted rotation coverage before paging",
+      "filters": ["q", "event", "validity"],
+      "pagination": "SQL filter, total, stable entity ordering, then limit/offset",
+      "write_mode": "immutable versioned candidate"
+    }
+  },
+  "compatibility": {
+    "read_index_r1_mutated": false,
+    "home_full_payload_fallback": false,
+    "local_snapshot_identity_changed": false,
+    "head_mutation": false
+  }
+}

@@ -22,6 +22,7 @@ IO_ONLY={
     'src/workbench_db/v4_profile_semantic_corrections_pg_v1.py',
     'src/workbench_db/v4_profile_dependent_corrections_pg_v1.py',
     'src/workbench_db/v4_read_index_r1.py',
+    'src/workbench_db/v4_read_index_r2.py',
     'src/workbench_service/core_product_bff_r1.py',
     'src/workbench_service/core_product_server_r1.py',
     'src/workbench_service/r43_operational_bff.py',

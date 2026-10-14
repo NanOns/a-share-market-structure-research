@@ -197,11 +197,15 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
     capture_readiness=inspect_daily_candidate(root,candidate_binding=binding,
         trade_date=day,cutoff=datetime.now(timezone.utc).isoformat())
     result=dict(result,cohort_capture_readiness=capture_readiness)
-    from workbench_db.v4_read_index_r1 import prepare_bff
-    progress(day,'READ_INDEX',dict(result,processed=0,total=1,unit='versions'))
-    read_index=prepare_bff(root,candidate)
+    from workbench_db.v4_read_index_r1 import prepare_bff as prepare_read_index_r1
+    from workbench_db.v4_read_index_r2 import prepare_bff as prepare_read_index_r2
+    progress(day,'READ_INDEX',dict(result,processed=0,total=2,unit='versions'))
+    read_index=prepare_read_index_r1(root,candidate)
     result=dict(result,read_index=read_index)
-    progress(day,'READ_INDEX',dict(result,processed=1,total=1,unit='versions'))
+    progress(day,'READ_INDEX',dict(result,processed=1,total=2,unit='versions'))
+    read_index_r2=prepare_read_index_r2(root,candidate)
+    result=dict(result,read_index_r2=read_index_r2)
+    progress(day,'READ_INDEX',dict(result,processed=2,total=2,unit='versions'))
     progress(day,'DERIVED_READY',dict(result,candidate=binding,derived_ready=True,source_ready=True))
     if cancelled():return dict(result,status='CANCELLED',reason='CANCELLED_BEFORE_CAS')
     if not readback_url:return dict(result,status='QA_BLOCKED',reason='LIVE_SERVICE_READBACK_ENDPOINT_REQUIRED',candidate=binding)

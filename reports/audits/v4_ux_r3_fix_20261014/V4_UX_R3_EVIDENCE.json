@@ -10,7 +10,8 @@
   },
   "code_acceptance": {
     "status": "PASS",
-    "pytest": "15 passed: tests/test_v4_ux_r3_routes.py and tests/test_v4_ux_r2_contract.py",
+    "pytest": "16 passed: 9 R3 tests and 7 R2 contract tests",
+    "isolated_http_handler_requests": 5,
     "python_compile": "PASS",
     "javascript_syntax": "PASS",
     "git_diff_check": "PASS"
@@ -22,7 +23,7 @@
     "src/workbench_service/core_product_server_r1.py": "c0832c7c0a1b7e76cf0b2a69b75e516d2572449904ffce2720caf853ba687e7d",
     "src/workbench_service/static/core-product-r1/api.js": "2d4f7a354cededd7acc64461031b5f4e05c8714f3e7642816af55652bffb245c",
     "src/workbench_service/static/core-product-r1/app.js": "0224b30d228ca0cc6417cab2cf3c9659f3ddcca90ba2a362faec1fd5eb018c7b",
-    "tests/test_v4_ux_r3_routes.py": "9e8d9b66d60b7d8722645b11d94fa161e16970a068f99e3b8f07191cd6c68628"
+    "tests/test_v4_ux_r3_routes.py": "b097900a9ee9a04487a5770e686dcdb79644be28df546467b584c34a345475ed"
   },
   "runtime_acceptance": {
     "status": "BLOCKED_NOT_RUN",
@@ -30,7 +31,7 @@
     "r2_authority_in_candidate_root": false,
     "isolated_pg_schema_read_write": "NOT_PERFORMED",
     "real_owner_20_row_comparison": "NOT_PERFORMED",
-    "http_requests": 0,
+    "production_http_requests": 0,
     "browser_screenshots": 0,
     "p50_p95": "NOT_MEASURED",
     "prior_gate_error": "EXACT_DAILY_POLICY_REQUIRED",

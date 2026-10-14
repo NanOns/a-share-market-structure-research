@@ -1,12 +1,18 @@
 import json
+import hashlib
+import threading
 import tempfile
 import unittest
 from pathlib import Path
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from urllib.error import HTTPError
+from urllib.request import urlopen
 from unittest.mock import patch
 
 from workbench_service.core_product_bff_r1 import CoreProductBFFR1
 from workbench_service.operational_successor_bff_v1 import OperationalSuccessorBFFV1
 from workbench_db.v4_read_index_r2 import AUTHORITY, CONTRACT, ReadIndex, load
+from workbench_service.core_product_server_r1 import make_product_handler
 
 
 DAY = '2026-10-13'
@@ -206,6 +212,92 @@ class UXR3RouteTests(unittest.TestCase):
                    return_value={'system_identifier': 'test'}):
             with self.assertRaisesRegex(ValueError, 'READ_INDEX_VERSION_UNAVAILABLE'):
                 index.attest(FakePG())
+
+    def test_http_handler_routes_through_bff_without_blank_filter_failure(self):
+        def bind_file(relative, payload):
+            path = self.root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            raw = json.dumps(payload).encode('utf-8')
+            path.write_bytes(raw)
+            return {'path': relative, 'sha256': hashlib.sha256(raw).hexdigest()}
+
+        identity_ref = bind_file('data/identity.json', {'records': []})
+        registry_ref = bind_file('config/registry.json', {'fields': []})
+        forward_ref = bind_file('data/forward.json', {'events': []})
+        focus_ref = bind_file('data/focus.json', {'items': []})
+        bind_file('data/v4/V4_DATA_ACCEPTED_HEAD.json', {'identity': identity_ref})
+        bind_file(AUTHORITY, {'contract_id': CONTRACT, 'versions': {}})
+        api = FakeAPI(self.root)
+        api.snapshot = {}
+        api.candidate['registry'] = registry_ref
+        api.candidate['owners'][DAY]['forward'] = forward_ref
+        api.candidate['owners'][DAY]['focus'] = focus_ref
+
+        class HTTPR2(FakeR2):
+            def page(self, domain, query, **kwargs):
+                self.page_calls.append((domain, dict(query)))
+                return {'status': 'READY', 'items': [], 'total': 0, 'offset': int(query.get('offset', 0)),
+                    'limit': int(query.get('limit', 30)), 'has_next': False, 'domain': domain}
+
+        index = HTTPR2()
+        forward = {'events': [
+            {'entity_id': 'SEC-1', 'event': 'NEW', 'validity': 'VALID', 'trade_date': DAY},
+            {'entity_id': 'SEC-2', 'event': 'PERSISTENT', 'validity': 'UNKNOWN', 'trade_date': DAY},
+        ]}
+        patches = [
+            patch('workbench_service.core_product_server_r1.make_daily_handler', return_value=BaseHTTPRequestHandler),
+            patch('workbench_service.core_product_server_r1.accepted_api', return_value=api),
+            patch.object(CoreProductBFFR1, '_read_index_r2', lambda _self, day: index),
+            patch.object(CoreProductBFFR1, 'source', lambda _self, domain, day: forward),
+            patch.object(CoreProductBFFR1, '_display_identity_map', lambda _self, day, rows, **kwargs: {}),
+            patch.object(CoreProductBFFR1, 'paged', lambda _self, day, rows, query, **kw: (200, {
+                'items': rows[int(query.get('offset', 0)):int(query.get('offset', 0))+int(query.get('limit', 30))],
+                'total': len(rows), 'offset': int(query.get('offset', 0)), 'limit': int(query.get('limit', 30)),
+                'has_next': int(query.get('offset', 0))+int(query.get('limit', 30)) < len(rows), **kw})),
+        ]
+        for item in patches:
+            item.start()
+        server = ThreadingHTTPServer(('127.0.0.1', 0), make_product_handler(self.root, None))
+        worker = threading.Thread(target=server.serve_forever, daemon=True)
+        worker.start()
+        base = f'http://127.0.0.1:{server.server_address[1]}'
+        try:
+            try:
+                with urlopen(base + f'/api/v4/radar?context_token={TOKEN}', timeout=5) as response:
+                    radar = json.loads(response.read())
+            except HTTPError as exc:
+                raise AssertionError(exc.read().decode('utf-8')) from exc
+            self.assertEqual(radar['domain'], 'radar')
+
+            with urlopen(base + f'/api/v4/focus/events?context_token={TOKEN}&event=', timeout=5) as response:
+                events = json.loads(response.read())
+            self.assertEqual(events['total'], 2)
+
+            with urlopen(base + f'/api/v4/focus/events?context_token={TOKEN}&event=NEW&validity=VALID', timeout=5) as response:
+                selected = json.loads(response.read())
+            self.assertEqual((selected['total'], selected['items'][0]['event']), (1, 'NEW'))
+
+            try:
+                urlopen(base + f'/api/v4/focus/events?context_token={TOKEN}&event=INVALID', timeout=5)
+            except HTTPError as exc:
+                self.assertEqual(exc.code, 400)
+                self.assertEqual(json.loads(exc.read())['reason'], 'INVALID_EVENT')
+            else:
+                self.fail('invalid event filter unexpectedly passed HTTP validation')
+
+            try:
+                urlopen(base + f'/api/v4/stocks?context_token={TOKEN}&limit_state=UNKNOWN', timeout=5)
+            except HTTPError as exc:
+                self.assertEqual(exc.code, 400)
+                self.assertEqual(json.loads(exc.read())['reason'], 'UNKNOWN_PARAMETER')
+            else:
+                self.fail('cross-route limit_state unexpectedly passed HTTP validation')
+        finally:
+            server.shutdown()
+            server.server_close()
+            worker.join(timeout=5)
+            for item in reversed(patches):
+                item.stop()
 
 
 if __name__ == '__main__':

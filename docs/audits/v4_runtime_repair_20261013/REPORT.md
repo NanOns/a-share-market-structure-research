@@ -95,7 +95,7 @@ T1真实引用链检查继续：正式12 D2的episode早期前态可能指向自
 
 ### T4 最终交付证据与界面范围
 
-正式7路HTTP同T0/token、完整native joint与PG读回PASS；已通过真实浏览器首页、股票、板块、Focus、市场、诊断六页面渲染。板块首屏30行，新股SZ.301660可搜索、独立SEC-7C8816903D4BA9B6267531D5705888B9，仅13日1根真实K线、关闭更早行情；不足5/20窗口保持UNKNOWN，不伪造历史。Focus读域3151个未结束对象；Market趋势WEAK、宽度IMPROVING、压力LOW，真实宽度分母5225/行情5212。实际frozen Win32托盘QA PASS（启动/安全停止/重启、worker重建、暂停保持、退出；模拟HTTP执行器范围明确，非真实Windows重启）。生产原实例安全退出、未强杀；新实例健康LIVE。
+正式六条严格同T0/token读回（context、operations/status、stocks、sectors、market、focus），另七条性能与状态接口采样；完整native joint与PG读回PASS；已通过真实浏览器首页、股票、板块、Focus、市场、诊断六页面渲染。板块首屏30行，新股SZ.301660可搜索、独立SEC-7C8816903D4BA9B6267531D5705888B9，仅13日1根真实K线、关闭更早行情；不足5/20窗口保持UNKNOWN，不伪造历史。Focus读域3151个未结束对象；Market趋势WEAK、宽度IMPROVING、压力LOW，真实宽度分母5225/行情5212。实际frozen Win32托盘QA PASS（启动/安全停止/重启、worker重建、暂停保持、退出；模拟HTTP执行器范围明确，非真实Windows重启）。生产原实例安全退出、未强杀；新实例健康LIVE。
 
 已知界面披露：可选代码状态字段仍显示“字段未接入”（首日行情/身份/数值来源已接入）；已终态进度横幅仍按最后进展年龄显示提醒；首页雷达/Forward统计摘要仍标来源未接入，真实Focus读域单独可读。这些不冒称全产品字段已接通，也不伪造元数据或高级能力。RI-02后续真正修订范围引擎按R1.1单列，不阻塞本次无修订APPEND。
 
@@ -112,3 +112,16 @@ T1真实引用链检查继续：正式12 D2的episode早期前态可能指向自
 | /api/v4/desktop/status | 0.154 | 0.153 |
 
 主要证据：FORMAL_DELIVERY_R1_1.json、FORMAL_WORKER_HTTP_R1_1.json、FORMAL_POST_PUBLISH_HTTP_R1_1.json、FROZEN_TRAY_QA_R1_1.json；源码/准入提交007e9605b（前序1cbaaa7f3、1b4a680a4）。最终证据提交以本报告所在Git提交为准。未重跑7288回归、未重复采集、未上传Drive，所有新临时及交付在G，TDX只读。
+
+
+### V4-R1.1-POST-CUTOVER-LIGHT-FOLLOWUP（2026-10-14）
+
+阶段合同：外部 R2 审计的第四节为本次轻量工作包；已查阅最新 R1.1 身份修订与 R1 性能整改升级文档。本次只修显示语义，不重新授予生产验收，不覆盖此前 A/B/D、G1—G4 或失败证据。
+
+F-01 工程修复：startup_snapshot 与 shutdown_snapshot 分开。兼容 cached_snapshot 只指启动快照，快照自带 captured_at/startup_only，顶层 cached_snapshot_semantics 明确 startup_only=true 和 current_context_endpoint=/api/v4/context；状态查询不额外读取/重算正式业务上下文。启动前清除上一轮启动值，停机不再覆盖启动快照。页面现有数据日期来源仍是原研究上下文，托盘不消费 cached_snapshot。
+
+F-02 工程修复：只有 stage_state=RUNNING、没有 finished_at 且最后进展超过120秒才提醒；终态展示完成时间和接口给出的已冻结总耗时。F-05 已订正本报告六条严格版本检查与七条性能采样的口径；既有原始收据不改写。
+
+验收：10项定向测试 PASS，包括实际 JS 组件的运行/完成/失败/取消/空闲，以及隔离 HTTP 的启动→新上下文发布→停机快照语义。额外尝试既有 PG 生命周期测试未到 HTTP 预检（entered.wait 超时），底层异常尚未确立，不声称真实 PG 集成通过。证据 POST_CUTOVER_LIGHT_FOLLOWUP_R1.json 保留范围与生产只读采样。阶段结果 ENGINEERING_ACCEPTED_NOT_DEPLOYED：源码变更等待下次确需部署统一打包，本次未构建/安装/切换，也未写调度设置或生产 Head。
+
+独立开放项：F-03 范围是下个真实收盘日常规无修订 APPEND 全链及正式 EXE 冷启动；证据必须覆盖采集、Core、Profile、Sector、Market、Focus/Forward、Period、PG、CAS分段耗时、旧Owner、真实New Code、全量证券/板块、同T0/token及正式端口浏览。验收不能复用sealed-resume代替。下一阶段等待用户明确允许的收盘后维护/手动日更窗口，保持自动日更暂停。F-04 分为有源可接线/真实无源/尚未允许，现有代码状态及首页雷达/Forward摘要仍披露未接入，未伪造数据。RI-02 RANGE_REPAIR 继续独立backlog，修订检测fail-closed保留。以上开放项不扩大本次显示修复门。

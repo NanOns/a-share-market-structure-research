@@ -47,7 +47,7 @@
         const count=Number.isInteger(p.processed)&&Number.isInteger(p.total)&&p.total>0;
         bar.hidden=!count; if(count){bar.max=p.total;bar.value=p.processed;}
         const elapsed=p.elapsed_seconds==null?'未知':Math.floor(p.elapsed_seconds)+'秒';
-        progress.textContent=`页面已发布日 ${p.last_published_trade_date||'待确认'} · 生成目标 ${p.target_trade_date||'无'} · 模式 ${p.mode||'待确认'} · ${p.stage||p.stage_state} ${count?p.processed+'/'+p.total+' '+(p.unit||''):''} · ${p.recent_message||''} · 耗时 ${elapsed} · 最近进展 ${p.last_progress_at||'未开始'} · 心跳 ${p.heartbeat_at||'未确认'}${p.error_code?' · 错误 '+p.error_code:''}${p.seconds_since_progress>120?' · 近期无进展，请查看阶段详情':''}`;
+        progress.textContent=`页面已发布日 ${p.last_published_trade_date||'待确认'} · 生成目标 ${p.target_trade_date||'无'} · 模式 ${p.mode||'待确认'} · ${p.stage||p.stage_state} ${count?p.processed+'/'+p.total+' '+(p.unit||''):''} · ${p.recent_message||''} · 耗时 ${elapsed} · ${p.finished_at?'完成时间 '+p.finished_at:'最近进展 '+(p.last_progress_at||'未开始')+' · 心跳 '+(p.heartbeat_at||'未确认')}${p.error_code?' · 错误 '+p.error_code:''}${p.stage_state==='RUNNING'&&!p.finished_at&&p.seconds_since_progress>120?' · 近期无进展，请查看阶段详情':''}`;
       }catch(_){progress.textContent='日更进度暂不可用';bar.hidden=true;}
       finally{clearTimeout(timer);}
     };

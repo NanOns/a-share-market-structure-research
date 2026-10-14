@@ -29,6 +29,8 @@ class EngineController:
         self.instance_id = owner['instance_id'] if owner else uuid.uuid4().hex
         self.manifest = verify_resources()
         self.last_snapshot = None
+        self.startup_snapshot = None
+        self.shutdown_snapshot = None
         self.cancel_stop = threading.Event()
         self.health_snapshot = dict(status='UNCONFIRMED', consecutive_failures=0, observed_at=None)
 
@@ -58,7 +60,12 @@ class EngineController:
                         auto_daily_enabled=auto,
                         scheduler_backend='POSTGRESQL',scheduler_settings_state=pg_settings_state,
                         first_capture_state='UNCONFIRMED' if self.state != 'RUNNING' else 'CHECK_SOURCE_AND_SCHEDULER',
-                        cached_snapshot=self.last_snapshot, engine_health=self.health_snapshot,
+                        startup_snapshot=self.startup_snapshot, shutdown_snapshot=self.shutdown_snapshot,
+                        cached_snapshot=self.startup_snapshot,
+                        cached_snapshot_semantics=dict(startup_only=True,
+                            captured_at=(self.startup_snapshot or {}).get("captured_at"),
+                            current_context_endpoint="/api/v4/context"),
+                        engine_health=self.health_snapshot,
                         data_freshness='CHECK_ORIGINAL_V4_CONTEXT', external_acceptance='NOT_GRANTED')
 
     def poll_health(self):
@@ -146,6 +153,7 @@ class EngineController:
                 return
             if self.state not in ('STOPPED','FAILED') or self.server or self.jobs:
                 raise ValueError('ENGINE_RESOURCES_NOT_RELEASED')
+        self.startup_snapshot = self.last_snapshot = None
         self.transition('STARTING')
         try:
             server, jobs = self.factory()
@@ -162,7 +170,9 @@ class EngineController:
                     product=json.loads(response.read())
                 if response.status!=200 or not product.get('context_token') or not product.get('context',{}).get('trade_date'):
                     raise ValueError('PRODUCT_CONTEXT_PREFLIGHT_FAILED')
-                self.last_snapshot=dict(context_token=product['context_token'],context=product['context'])
+                self.startup_snapshot=dict(context_token=product['context_token'],context=product['context'],
+                    captured_at=datetime.now(timezone.utc).isoformat(), startup_only=True)
+                self.last_snapshot=self.startup_snapshot
             self.transition('RUNNING')
         except Exception as exc:
             if self.jobs:
@@ -203,9 +213,9 @@ class EngineController:
                     return False
                 self.transition('STOPPING')
             try:
-                self.last_snapshot = self.jobs.status()
+                self.shutdown_snapshot = self.jobs.status()
             except (ValueError, OSError, KeyError):
-                self.last_snapshot = dict(observed_at=datetime.now(timezone.utc).isoformat(), status='UNCONFIRMED')
+                self.shutdown_snapshot = dict(observed_at=datetime.now(timezone.utc).isoformat(), status='UNCONFIRMED')
             self.server.shutdown()
             self.http_thread.join()
             self.server.server_close()

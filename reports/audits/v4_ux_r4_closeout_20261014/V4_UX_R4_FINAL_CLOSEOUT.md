@@ -124,5 +124,13 @@
 
 - Codex 内置浏览器逐一展开上证、深证、创业板、沪深300、中证1000：均显示当日点数/涨跌幅、5会话与20会话收益，以及 2026-04-15 至 2026-10-13 的 OHLC 图（MA5/20/60）。
 - 五指数源数据来自 `data/v4/dynamic_daily_sources/tdx/20261013/.../hsjday.zip`，SHA-256 `fe1de8b8dd28179f5da555159c03ddd1f8f60a88441694523f27d06be3ae53b5`；Owner 将每个 `volume_unit` 标为 `SOURCE_NATIVE_UNVERIFIED`。页面明确隐藏成交量并提示来源单位未核验，没有把单位猜成股或手。
-- 本轮显示 viewport 为 1265×720 CSS px，页面 `scrollWidth=1265`；内置 viewport override 未改变实际 viewport，无法据此完成窄屏验收。截图文件仍为 0。U14 状态保持 `NOT_VERIFIABLE`。数据和五个指数的逐项结果见 JSON `index_chart_ui_reconciliation`。
+- 首次窄屏尝试因该旧标签未应用 viewport override 而未形成验收。随后在 Codex 内置浏览器新标签上成功设置 1280×800 与 375×812，并完成 10 条相关路由的双视口 DOM 检查。
 - 另对 `SH.688349` 个股详情执行冷启动重载，QFQ 图表 120/420 根、成交量股/成交额元、末收 13.54 正常显示；此前保留标签中的一次错误未在冷加载中复现，不记录为已确认代码缺陷。
+
+
+### R5 全入口宽窄屏复验及主导航修复（2026-10-14）
+
+- 窄屏截图发现研究主导航在 375 px 下横向滚动且出现滚动条。已将 `src/workbench_service/static/research/style.css` 的移动端导航改为自动换行；宽屏规则不变。
+- 候选当前 joint 的 UI 静态资源仍绑定旧文件。尝试用既有候选刷新器生成版本资源时，其完整来源校验因 `JOINT_SOURCE_DIGEST_MISMATCH:data/v4/engineering_series_r3/series.pg.json` 失败；没有绕过校验，也未改变 Head。为验证当前 CSS，在 28769 启动了只读隔离预览，单独覆盖 style.css，其余页面与数据仍走候选源码/Owner/PG。
+- 使用 Codex 内置浏览器在 1280×800 与 375×812 检查 home、stocks、sectors、focus、market、diagnostics、radar、Forward 子路由、个股详情、板块详情，共 20 个 route/viewport 组合。每个页面均完成加载且标题正确；宽屏文档 scrollWidth=1265、窄屏=360，均小于 viewport；窄屏导航 scrollWidth/clientWidth=330、flex-wrap=wrap，横向滚动消失。另在内置浏览器捕获首页宽屏和窄屏视觉画面各 1 张，但没有导出为报告目录内的截图文件，故文件数仍为 0。
+- 该项通过隔离页面布局检查，不代表候选 Authority 已接受新 UI 版本；U14 仍为 `NOT_VERIFIABLE`，五指数成交量来源单位未核验。R5 总体验收仍为 `V4_PRODUCTION_CUTOVER_BLOCKED`。详细测量在 JSON `responsive_route_reconciliation`。

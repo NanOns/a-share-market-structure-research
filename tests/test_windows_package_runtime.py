@@ -82,34 +82,95 @@ def factory(root, executor=None):
     worker.settings(False)
     return ThreadingHTTPServer(('127.0.0.1', 0), Handler), worker
 
-def test_product_stays_starting_until_real_context_readback(tmp_path,plan):
-    entered=threading.Event();release=threading.Event();errors=[]
+@pytest.mark.parametrize("worker_kind", ["managed", "process"])
+def test_product_stays_starting_until_real_context_readback(tmp_path,plan,monkeypatch,worker_kind):
+    """Real isolated PG and HTTP; controlled child body for the process facade."""
+    import os
+    import traceback
+    entered=threading.Event();release=threading.Event();errors=[];trace=[]
+    started=time.perf_counter()
+    def mark(stage, **detail):
+        trace.append(dict(stage=stage,elapsed_seconds=time.perf_counter()-started,**detail))
     class Handler(BaseHTTPRequestHandler):
         PREFLIGHT_PRODUCT_CONTEXT=True
         def do_GET(self):
             assert self.path=='/api/v4/context'
+            mark('HTTP_CONTEXT_ENTERED')
             entered.set();release.wait(5)
             raw=json.dumps({'context_token':'engineering-token','context':{'trade_date':'2026-10-09'}}).encode()
             self.send_response(200);self.send_header('Content-Length',str(len(raw)));self.end_headers();self.wfile.write(raw)
+            mark('HTTP_CONTEXT_SENT')
         def log_message(self,*args):pass
     def create():
-        worker=jobs(tmp_path);worker.settings(False)
-        return ThreadingHTTPServer(('127.0.0.1',0),Handler),worker
+        mark('FACTORY_ENTERED')
+        mark('PG_INITIALIZATION_STARTED')
+        if worker_kind=='managed':
+            worker=jobs(tmp_path)
+        else:
+            import sys
+            from workbench_desktop.jobs import ProcessDailyJobs
+            worker=ProcessDailyJobs(tmp_path,readback_url='http://127.0.0.1:0')
+            # Exercise the real facade/monitor/control with a bounded child.
+            # Full source capture/derivation belongs to the later APPEND gate.
+            marker=tmp_path/'child_pg_readback.json'
+            child="""import json,os,sys
+from pathlib import Path
+import psycopg
+from psycopg import sql
+assert os.environ['TMP']=='G:/codex_tmp'
+with psycopg.connect(os.environ['V4_NATIVE_PG_DSN']) as pg:
+    pg.execute('SET TRANSACTION READ ONLY')
+    enabled=pg.execute(sql.SQL('SELECT enabled FROM {}.scheduler_policy WHERE id=1').format(sql.Identifier(sys.argv[1]))).fetchone()[0]
+    assert enabled==0
+Path(sys.argv[2]).write_text(json.dumps(dict(paused=True,pid=os.getpid())),encoding='utf-8')
+assert sys.stdin.readline().strip()=='QUIESCE'
+"""
+            monkeypatch.setattr(worker,'command',lambda:[sys.executable,'-c',child,worker.schema,str(marker)])
+        mark('PG_INITIALIZATION_FINISHED')
+        worker.settings(False)
+        mark('PG_PAUSE_PERSISTED')
+        server=ThreadingHTTPServer(('127.0.0.1',0),Handler)
+        mark('HTTP_SOCKET_BOUND')
+        return server,worker
     controller=EngineController(tmp_path,factory=create)
     def start():
-        try:controller.perform('start')
-        except Exception as error:errors.append(error)
+        mark('START_THREAD_ENTERED')
+        try:
+            controller.perform('start')
+            mark('START_COMPLETED')
+        except Exception:
+            errors.append(traceback.format_exc())
+            mark('START_FAILED')
     with WorkspaceLease(tmp_path):
         thread=threading.Thread(target=start);thread.start()
         try:
-            assert entered.wait(5)
+            assert entered.wait(5), json.dumps(dict(errors=errors,trace=trace),ensure_ascii=False)
             assert controller.state=='STARTING'
             release.set();thread.join(5)
-            assert not thread.is_alive() and not errors
+            assert not thread.is_alive() and not errors, json.dumps(dict(errors=errors,trace=trace))
             assert controller.state=='RUNNING'
             assert controller.last_snapshot['context_token']=='engineering-token'
+            if worker_kind=='process':
+                marker=tmp_path/'child_pg_readback.json'
+                deadline=time.monotonic()+5
+                while not marker.exists() and time.monotonic()<deadline: time.sleep(.01)
+                assert marker.exists(), 'CHILD_PG_READBACK_NOT_REACHED'
+                assert json.loads(marker.read_text(encoding='utf-8'))['paused'] is True
+                assert controller.jobs.process.pid != __import__('os').getpid()
+                assert controller.jobs.thread.is_alive()
+                mark('CHILD_REAL_PG_READBACK_CONFIRMED')
         finally:
             release.set();thread.join(5);controller.perform('stop')
+            mark('STOP_COMPLETED')
+            evidence=dict(contract_id='F_PG_01_MANAGED_START_DIAGNOSTIC_R1',
+                worker_kind=worker_kind,pg_dsn_configured=bool(os.environ.get('V4_NATIVE_PG_DSN')),
+                workspace=str(tmp_path),http_preflight_entered=entered.is_set(),errors=errors,trace=trace)
+            if os.environ.get('F_PG_01_EVIDENCE_PATH'):
+                path=__import__('pathlib').Path(os.environ['F_PG_01_EVIDENCE_PATH'])
+                temporary=path.with_suffix('.tmp')
+                temporary.write_text(json.dumps(evidence,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+                temporary.replace(path)
+
 
 def test_rejected_context_releases_resources_and_never_reports_running(tmp_path,plan):
     from urllib.error import HTTPError

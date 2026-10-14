@@ -125,3 +125,18 @@ F-02 工程修复：只有 stage_state=RUNNING、没有 finished_at 且最后进
 验收：10项定向测试 PASS，包括实际 JS 组件的运行/完成/失败/取消/空闲，以及隔离 HTTP 的启动→新上下文发布→停机快照语义。额外尝试既有 PG 生命周期测试未到 HTTP 预检（entered.wait 超时），底层异常尚未确立，不声称真实 PG 集成通过。证据 POST_CUTOVER_LIGHT_FOLLOWUP_R1.json 保留范围与生产只读采样。阶段结果 ENGINEERING_ACCEPTED_NOT_DEPLOYED：源码变更等待下次确需部署统一打包，本次未构建/安装/切换，也未写调度设置或生产 Head。
 
 独立开放项：F-03 范围是下个真实收盘日常规无修订 APPEND 全链及正式 EXE 冷启动；证据必须覆盖采集、Core、Profile、Sector、Market、Focus/Forward、Period、PG、CAS分段耗时、旧Owner、真实New Code、全量证券/板块、同T0/token及正式端口浏览。验收不能复用sealed-resume代替。下一阶段等待用户明确允许的收盘后维护/手动日更窗口，保持自动日更暂停。F-04 分为有源可接线/真实无源/尚未允许，现有代码状态及首页雷达/Forward摘要仍披露未接入，未伪造数据。RI-02 RANGE_REPAIR 继续独立backlog，修订检测fail-closed保留。以上开放项不扩大本次显示修复门。
+
+
+### R3 / F-PG-01 定点测试消歧（2026-10-14）
+
+阶段合同：按用户提供R3文档第4节，本轮仅处理F-PG-01，基线fbf3a395，保留10-13原生产验收和F-01/F-02源码PASS。执行前已查阅R1性能整改升级文档，不进入APPEND、冷启动或部署阶段。
+
+原超时复现并记录完整启动线程traceback：未设置V4_NATIVE_PG_DSN，ManagedDailyJobs→DailyJobs→configured_dsn报V4_NATIVE_PG_DSN_REQUIRED_NO_FALLBACK。线程约0.195秒退出，HTTP未绑定/预检，随后entered.wait(5)超时。该信号来自测试配置缺失，没有PG慢查询或显示修复故障的证据；未加大wait，原失败证据不覆盖。
+
+环境补配过程：默认旧remainder隔离profile缺少该端口准入manifest，仍拒绝DISPOSABLE_PG_CLUSTER_REQUIRED；使用现役R4 native profile初次缺data_directory、随后缺connection ledger，两次内部配置错误均不计PASS。只读SHOW data_directory核验55791为G:/codex_tmp/full_system_r4_fbd23a6b/pg_data后补齐R4_NATIVE_ISOLATION、R4_PG_DATA_DIRECTORY、R4_CONNECTION_LEDGER；保留连接审计及数据库隔离保护，只写G盘测试root派生的独立schema，不使用生产schema。
+
+原测试新增后台异常栈和factory/PG初始化/暂停持久化/HTTP绑定/预检/启动完成/停机分段时间；参数化managed旧兼容路径和process现役控制门面。最终Managed 1 passed in 1.60s，PG初始化约0.292秒、启动线程到RUNNING约0.732秒；Process 1 passed in 2.04s，PG初始化约0.161秒、启动线程到RUNNING约0.392秒。这些是隔离PG和模拟上下文的测试时间，不是正式EXE冷启动成绩。
+
+Process专项使用真实ProcessDailyJobs、真实PG、真实子进程/monitor；子进程只读确认暂停，父子PID不同，监控线程存活，QUIESCE退出。仅替换完整任务体为受控读取体，不验run_daily_worker采集/Core/CAS，不能替代F-03。本轮只改测试和证据；未改生产源码、未全量回归、未构建/安装/切换、未开启调度。
+
+独立审计项F-PG-01：范围为原等待超时消歧，验收F_PG_01_CLOSED_TEST_CONFIGURATION_WITH_SCOPED_RUNTIME_PASS。F_PG_01_R3_DIAGNOSTIC.json留存负例traceback、各阶段耗时、两条路径连接ledger、复现环境和生产只读状态。旧POST_CUTOVER_LIGHT_FOLLOWUP_R1.json不覆写，本节为后续闭环。F-01/F-02仍ENGINEERING_ACCEPTED_NOT_DEPLOYED；F-03普通APPEND/正式冷启动、F-04逐字段分类/接线、RI-02 RANGE_REPAIR、shutdown_snapshot历次时间语义P2仍开放。下一阶段等待真实收盘数据及明确手动维护授权，保持自动暂停；推送不是下一阶段准入。

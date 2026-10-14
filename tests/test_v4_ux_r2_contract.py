@@ -1,7 +1,12 @@
 import unittest
 
-from workbench_db.v4_read_index_r2 import materialize_radar_rows, query_parts, summary, validate_home_response, validate_query
-from workbench_service.core_product_bff_r1 import current_identity_presentation, home_summary
+from workbench_db.v4_read_index_r2 import (
+    materialize_radar_rows, query_parts, schema_binding_matches,
+    schema_for_revision, summary, validate_home_response, validate_query,
+)
+from workbench_service.core_product_bff_r1 import (
+    current_identity_presentation, home_summary, is_legacy_r1_home_fallback,
+)
 
 
 class UXR2RouteContractTests(unittest.TestCase):
@@ -89,6 +94,42 @@ class UXR2RouteContractTests(unittest.TestCase):
         payload['changes'][0]['fields']['knowledge_lineage'] = {'value': 'large'}
         with self.assertRaisesRegex(ValueError, 'HOME_FULL_DETAIL_REGRESSION'):
             validate_home_response(payload)
+        oversized = {'changes': [], 'risks': [], 'rotations': [], 'sector_changes': [],
+                     'diagnostic': 'x' * (512 * 1024)}
+        with self.assertRaisesRegex(ValueError, 'HOME_RESPONSE_SIZE_LIMIT_EXCEEDED'):
+            validate_home_response(oversized)
+
+    def test_legacy_r1_home_is_explicitly_marked_for_compatibility(self):
+        legacy = {
+            'read_index_status': 'LEGACY_R1_AUTHORITY_ONLY',
+            'read_index_capability': 'R1 legacy summary; D2 detail fields may be unavailable',
+        }
+        self.assertTrue(is_legacy_r1_home_fallback(legacy))
+        # R2 and unmarked responses must continue to meet the R2 size/shape guard.
+        self.assertFalse(is_legacy_r1_home_fallback({
+            **legacy, 'read_index_status': 'R2_AUTHORITY_BOUND',
+        }))
+        self.assertFalse(is_legacy_r1_home_fallback({'read_index_status': 'LEGACY_R1_AUTHORITY_ONLY'}))
+
+    def test_read_index_digest_revision_uses_additive_schema(self):
+        from pathlib import Path
+        root = Path('G:/codex_tmp/test_temp/r4-index-root')
+        digest_a = 'a' * 64
+        digest_b = 'b' * 64
+        schema_a = schema_for_revision(root, digest_a)
+        schema_b = schema_for_revision(root, digest_b)
+        self.assertNotEqual(schema_a, schema_b)
+        self.assertTrue(schema_binding_matches(root, {
+            'schema': schema_a, 'digest': digest_a,
+        }))
+        self.assertFalse(schema_binding_matches(root, {
+            'schema': schema_a, 'digest': digest_b,
+        }))
+        # The old R2 schema remains readable; the producer never writes there.
+        from workbench_db.v4_native import workspace_schema
+        self.assertTrue(schema_binding_matches(root, {
+            'schema': workspace_schema(root, 'read_index_r2'),
+        }))
 
 
 if __name__ == '__main__':

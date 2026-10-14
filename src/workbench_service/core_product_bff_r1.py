@@ -20,6 +20,13 @@ HOME_STOCK_SUMMARY_FIELDS={'effective_event','trade_date'}
 HOME_SECTOR_SUMMARY_FIELDS={'output_state','prior_rotation_state','sector_rs5','member_count'}
 HOME_IDENTITY_FIELDS={'entity_id','security_id','symbol','display_name','display_name_scope','trade_date'}
 HOME_CELL_FIELDS={'value','quality','unit','reason','as_of','source','actual_count','required_count'}
+LEGACY_R1_READ_CAPABILITY='R1 legacy summary; D2 detail fields may be unavailable'
+
+def is_legacy_r1_home_fallback(payload):
+    """True only for an explicitly marked legacy read-index response."""
+    return (payload.get('read_index_status') in
+            ('LEGACY_R1_AUTHORITY_ONLY','R2_TOKEN_NOT_PREPARED','R2_DATE_NOT_PREPARED') and
+            payload.get('read_index_capability') == LEGACY_R1_READ_CAPABILITY)
 
 def home_summary(row, fields):
     """Keep only the identity and explicitly rendered evidence needed by home cards."""
@@ -228,14 +235,14 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 response=index.response(path)
                 if response is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
                 if index_r2 is None:response=dict(response,read_index_status=self._read_index_r2_state(day),
-                    read_index_capability='R1 legacy summary; D2 detail fields may be unavailable')
+                    read_index_capability=LEGACY_R1_READ_CAPABILITY)
                 return 200,response
             response=index.response('/api/v4/context')
             if response is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
             response={k:v for k,v in response.items() if k in ('context','context_token','production_accepted','source_quality')}
             response.update(index.page(path.rsplit('/',1)[-1],query))
             if index_r2 is None:response.update(read_index_status=self._read_index_r2_state(day),
-                read_index_capability='R1 legacy summary; D2 detail fields may be unavailable')
+                read_index_capability=LEGACY_R1_READ_CAPABILITY)
             if path=='/api/v4/focus':
                 extra=index.response('/api/v4/focus-meta')
                 if extra is None:raise ValueError('READ_INDEX_FOCUS_NOT_PREPARED')

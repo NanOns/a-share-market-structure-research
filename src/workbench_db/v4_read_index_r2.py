@@ -36,6 +36,40 @@ HOME_EVENT_PRIORITY={'INVALIDATED':0,'EXITED':1,'WEAKENED':2,'UPGRADED':3,'REENT
 HOME_RESPONSE_MAX_BYTES=512*1024
 
 
+def producer_sha256():
+    return hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+
+
+def schema_for_revision(root, revision_sha256):
+    """Keep a new immutable index digest in its own schema.
+
+    The unsuffixed schema remains readable as the R2 predecessor. A rebuild
+    after producer code changes must never rewrite its sealed token/day rows.
+    """
+    from .v4_native import workspace_schema
+    if not isinstance(revision_sha256,str) or len(revision_sha256)!=64 or any(c not in '0123456789abcdef' for c in revision_sha256):
+        raise ValueError('READ_INDEX_REVISION_DIGEST_INVALID')
+    base=workspace_schema(root,'read_index_r2')
+    # The schema identifier limit is shorter than base + a full SHA256. Hash
+    # both the workspace identity and content digest to a 224-bit suffix.
+    # This avoids short-prefix collisions while staying within v4_native's
+    # conservative 59-character identifier limit.
+    revision_key=hashlib.sha256((base+'\0'+revision_sha256).encode()).hexdigest()[:56]
+    return 'v4_'+revision_key
+
+
+def schema_binding_matches(root, binding):
+    from .v4_native import workspace_schema
+    schema=binding.get('schema') if isinstance(binding,dict) else None
+    base=workspace_schema(root,'read_index_r2')
+    if schema==base:return True  # immutable pre-revision R2 rows
+    revision=binding.get('digest') if isinstance(binding,dict) else None
+    if not isinstance(revision,str) or len(revision)!=64 or any(c not in '0123456789abcdef' for c in revision):
+        return False
+    revision_key=hashlib.sha256((base+'\0'+revision).encode()).hexdigest()[:56]
+    return schema=='v4_'+revision_key
+
+
 def canonical(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',',':')).encode()
 
@@ -148,11 +182,12 @@ def materialize_radar_rows(stocks, focus_rows, sector_memberships, rotations, ev
 
 def prepare(root, token, day, collections, responses, memberships):
     """One producer transaction; existing version content can only be verified."""
-    root=Path(root);schema=workspace_schema(root,'read_index_r2')
+    root=Path(root);source_sha=producer_sha256()
     material=dict(contract_id=CONTRACT,head_token=token,T0=day,collections=collections,
-                  producer_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                  producer_sha256=source_sha,
                   responses=responses,memberships=memberships)
     digest=hashlib.sha256(canonical(material)).hexdigest()
+    schema=schema_for_revision(root,digest)
     with connection(schema) as pg:
         create_schema(pg,schema)
         pg.execute('''CREATE TABLE IF NOT EXISTS read_versions(
@@ -217,7 +252,8 @@ def prepare(root, token, day, collections, responses, memberships):
             actual=pg.execute('SELECT detail FROM read_items WHERE token=%s AND day=%s AND domain=%s ORDER BY entity_id COLLATE "C"',(token,day,domain)).fetchall()
             if [r[0] for r in actual]!=sorted(rows,key=lambda r:r['entity_id']): raise ValueError('READ_INDEX_ROW_PARITY_FAILED')
         identity=ForwardFactStore._database_identity(pg)
-    return dict(contract_id=CONTRACT,engine='postgresql',schema=schema,head_token=token,T0=day,
+    return dict(contract_id=CONTRACT,engine='postgresql',schema=schema,producer_sha256=source_sha,
+                head_token=token,T0=day,
                 digest=digest,counts=counts,database_identity=identity)
 
 
@@ -227,7 +263,7 @@ class ReadIndex:
         if not isinstance(binding,dict) or not {'contract_id','engine','schema','head_token','T0','digest','counts','database_identity'}<=set(binding):
             raise ValueError('READ_INDEX_BINDING_SCHEMA_INVALID')
         if binding['contract_id']!=CONTRACT:raise ValueError('READ_INDEX_BINDING_CONTRACT_MISMATCH')
-        if binding['engine']!='postgresql' or binding['schema']!=workspace_schema(root,'read_index_r2'):
+        if binding['engine']!='postgresql' or not schema_binding_matches(root,binding):
             raise ValueError('READ_INDEX_SCHEMA_MISMATCH')
         if (binding['head_token'],binding['T0'])!=(token,day):raise ValueError('READ_INDEX_CONTEXT_MISMATCH')
 
@@ -338,7 +374,15 @@ def prepare_bff(root, candidate, *, days=None, jobs=None):
     path=root/AUTHORITY
     authority=json.loads(path.read_bytes()) if path.exists() else dict(contract_id=CONTRACT,versions={})
     if authority.get('contract_id')!=CONTRACT: raise ValueError('READ_INDEX_AUTHORITY_CONTRACT_MISMATCH')
-    authority['versions'].setdefault(api.token,{}).update(prepared)
+    versions=authority['versions'].setdefault(api.token,{})
+    history=authority.setdefault('revision_history',{}).setdefault(api.token,{})
+    for day,binding in prepared.items():
+        prior=versions.get(day)
+        if prior is not None and prior!=binding:
+            revisions=history.setdefault(day,[])
+            if prior not in revisions:revisions.append(prior)
+            if binding not in revisions:revisions.append(binding)
+        versions[day]=binding
     # An old Head is a read-only migration input; the index is an additive artifact.
     atomic_json(root,path,authority)
     return dict(contract_id=CONTRACT,head_token=api.token,dates=prepared,head_changed=False)

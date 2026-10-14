@@ -123,6 +123,35 @@
     "exact_streak_unknown_count": 12,
     "index_volume_unit": "UNVERIFIED"
   },
+  "limit_up_ladder": {
+    "contract_id": "R5_U16_LIMIT_UP_LADDER_READ_R1",
+    "environment": "28768 read-only candidate preview",
+    "browser": "Codex In-app Browser",
+    "trade_date": "2026-10-13",
+    "accepted_total": 69,
+    "classes": [
+      {
+        "class": "exact_first_board",
+        "count": 57,
+        "expanded_in_browser": true,
+        "name_code_industry_and_streak_visible": true
+      },
+      {
+        "class": "prefix_not_bound",
+        "count": 12,
+        "expanded_in_browser": true,
+        "name_code_industry_and_lower_bound_visible": true,
+        "exact_streak_claimed": false
+      }
+    ],
+    "industry_name_mapped_count": 69,
+    "page_size": 200,
+    "pages_required": 1,
+    "all_rows_fit_one_page": true,
+    "intraday_touch_claimed": false,
+    "acceptance": "PASS",
+    "caveat": "The 57/12 split is the 2026-10-13 accepted-snapshot example only. It does not infer intraday first-seal time, broken-board path, or order-book strength."
+  },
   "forward_first_capture": {
     "status": "NOT_DUE",
     "next_candidate_session": "2026-10-14",

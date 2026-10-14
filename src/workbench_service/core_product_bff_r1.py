@@ -200,15 +200,15 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         return {k:v for k,v in query.items() if k not in
                 ('event','validity','limit_state','event_state','events_offset')}
 
-    def _display_identity_map(self,day,rows,*,key_fields=('entity_id','security_id')):
+    def _display_identity_map(self,day,rows,*,key_fields=('entity_id','security_id'),domain='stocks'):
         keys=[next((row.get(k) for k in key_fields if row.get(k)),None) for row in rows]
         index=self._read_index_r2(day)
-        if index is not None:return index.display_identities('stocks',keys)
+        if index is not None:return index.display_identities(domain,keys)
         from workbench_db.v4_read_index_r1 import load as load_index_r1
         legacy=load_index_r1(self.api.root,self.api.token,day,
             allow_missing=day!=self.api.candidate['accepted_trade_date'])
         if legacy is None:return {}
-        return legacy.display_identities('stocks',keys)
+        return legacy.display_identities(domain,keys)
 
     def _enrich_display_names(self,day,rows,*,key_fields=('entity_id','security_id')):
         identities=self._display_identity_map(day,rows,key_fields=key_fields)
@@ -827,6 +827,17 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             if kind=='ladders':
                 code,data=self.paged(day,facts['ladders'],q,source={k:v for k,v in facts['sources'].items() if k.startswith('limits_')},intraday_touch='NOT_OBSERVABLE_FROM_DAILY')
                 data['items']=self._enrich_display_names(day,data['items'])
+                stock_identities=self._display_identity_map(day,data['items'])
+                industry_ids=sorted({identity.get('primary_industry_id') for identity in stock_identities.values() if identity.get('primary_industry_id')})
+                industry_identities=self._display_identity_map(day,[{'entity_id':value} for value in industry_ids],
+                                                               key_fields=('entity_id',),domain='sectors')
+                for item in data['items']:
+                    identity=stock_identities.get(item.get('entity_id'),{})
+                    industry_id=identity.get('primary_industry_id')
+                    industry=industry_identities.get(industry_id,{}) if industry_id else {}
+                    item['primary_industry_id']=industry_id
+                    item['primary_industry_name']=industry.get('display_name')
+                    item['primary_industry_status']='KNOWN' if industry.get('display_name') else 'UNKNOWN'
                 return code,data
         if path=='/api/v4/home':
             code,data=super().get(path,self._base_query(q));fw=self.source('forward',day);events=fw['events'];stocks={r['entity_id']:r for r in self.project('stocks',day)}

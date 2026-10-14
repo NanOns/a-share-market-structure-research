@@ -1,10 +1,13 @@
 import unittest
+import hashlib
+from contextlib import contextmanager
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import patch
 
 from workbench_db.v4_read_index_r2 import (
     materialize_radar_rows, query_parts, schema_binding_matches,
-    schema_for_revision, summary, detail_payload, validate_home_response, validate_query,
+    schema_for_revision, summary, detail_payload, validate_home_response, validate_query, ReadIndex, canonical,
 )
 from workbench_service.core_product_bff_r1 import (
     annotate_home_readiness, code_status_presentation, current_identity_presentation, home_summary,
@@ -53,6 +56,33 @@ class UXR2RouteContractTests(unittest.TestCase):
         base_route_query = {k: v for k, v in query.items() if k not in ('event_state', 'events_offset')}
         self.assertEqual(validate_query(base_route_query, self.token, [self.day], self.day,
                                         '/api/v4/focus'), self.day)
+
+    def test_read_index_identity_join_is_domain_scoped_and_exposes_stock_industry_id(self):
+        details = {
+            'SEC-1': {'fields': {'primary_industry': {'value': 'INDUSTRY:T0101'}}},
+            'INDUSTRY:T0101': {'fields': {'sector_type': {'value': 'INDUSTRY'}}},
+        }
+        class FakePG:
+            def execute(self, query, args):
+                domain = args[2]
+                entity_id = args[3][0]
+                detail = details[entity_id]
+                row = (entity_id, entity_id, '电气设备' if domain == 'sectors' else '示例证券',
+                       detail, hashlib.sha256(canonical(detail)).hexdigest())
+                return SimpleNamespace(fetchall=lambda: [row])
+        @contextmanager
+        def fake_connection(*args, **kwargs):
+            yield FakePG()
+        index = ReadIndex.__new__(ReadIndex)
+        index.binding = {'schema': 'isolated_schema'}
+        index.token, index.day = self.token, self.day
+        with patch('workbench_db.v4_read_index_r2.connection', fake_connection), \
+             patch.object(index, 'attest'):
+            stock = index.display_identities('stocks', ['SEC-1'])['SEC-1']
+            sector = index.display_identities('sectors', ['INDUSTRY:T0101'])['INDUSTRY:T0101']
+        self.assertEqual(stock['primary_industry_id'], 'INDUSTRY:T0101')
+        self.assertNotIn('primary_industry_id', sector)
+        self.assertEqual(sector['display_name'], '电气设备')
 
     def test_radar_filters_are_applied_before_sql_paging(self):
         where, args, order, offset, limit = query_parts(

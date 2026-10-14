@@ -217,16 +217,20 @@ class ReadIndex:
         with connection(self.binding['schema'],read_only=True) as pg:
             self.attest(pg)
             rows=pg.execute('''SELECT entity_id,symbol,display_name,detail,detail_sha256
-                FROM read_items WHERE token=%s AND day=%s AND domain='stocks' AND entity_id=ANY(%s)''',
-                (self.token,self.day,keys)).fetchall()
+                FROM read_items WHERE token=%s AND day=%s AND domain=%s AND entity_id=ANY(%s)''',
+                (self.token,self.day,domain,keys)).fetchall()
         result={}
         for entity_id,symbol,name,detail,digest in rows:
             if hashlib.sha256(canonical(detail)).hexdigest()!=digest:raise ValueError('READ_INDEX_DETAIL_DIGEST_MISMATCH')
-            result[entity_id]=dict(entity_id=entity_id,symbol=symbol,display_name=name,
+            identity=dict(entity_id=entity_id,symbol=symbol,display_name=name,
                 display_name_scope=detail.get('display_name_scope'),display_name_source=detail.get('display_name_source'),
                 display_name_observed_at=detail.get('display_name_observed_at'),
                 name_quality='KNOWN' if name else 'UNKNOWN',
                 name_reason=None if name else 'ACCEPTED_STOCK_DISPLAY_NAME_NOT_PRESENT')
+            if domain=='stocks':
+                cell=detail.get('fields',{}).get('primary_industry',{})
+                identity['primary_industry_id']=cell.get('value') if isinstance(cell,dict) else None
+            result[entity_id]=identity
         return result
 
 

@@ -56,6 +56,13 @@
 - 隔离 R2 真 HTTP 响应核对：`regime=NOT_PUBLISHED_V4_03`、`formalRisk=SOURCE_INCOMPLETE`、`risks=0`、`focusRiskEvents=14`、`forwardValue=null`、`radarValue=177`。内置浏览器 DOM 复验显示四轴均为“未发布”，风险完整源缺失说明及 Focus 事件分栏均可见。
 - 定向合同测试更新为 `test_v4_ux_r2_contract` + `test_v4_ux_r3_routes`，28/28 通过；`git diff --check` 通过。该验证不补齐三族风险 Owner，也不等于生产切换。
 - 为复用临时 G 盘隔离数据根，预览启动脚本增加显式 `--root` 参数；R2 预览只读取该临时根，读连接凭据在独立进程内从 DPAPI 装载且没有写入日志。生产 28765 与生产 Authority 未变。
+### Historical Owner root propagation repair (2026-10-14)
+
+- R5 在 10/12 跨日读取中发现：修正 Owner 的 PG descriptor 绑定生产 workspace，但 `focus/prewatch` profile-dependent corrections 与 `profile` semantic corrections 的二次查询/缓存 attest 没有继续传递 `workspace_root`，导致合法外部 Owner 被误判为缺 descriptor。修复已提交并推送：`e3e2bc5d0`（`Propagate external owner root through corrections`）。
+- 定向合同回归 `test_v4_ux_r2_contract` + `test_v4_ux_r3_routes`：36/36 通过；`git diff --check` 通过。首次无 `PYTHONPATH` 的运行导入失败，补齐 `src;tests;repo-root` 后测试通过，失败仅为启动配置。
+- 只读隔离预览从内置浏览器选择 2026-10-12 后，煤炭 `INDUSTRY:T0101` 详情成功读出 32/32 已映射成员、32/32 有行情；Focus API 同日返回 HTTP 200、3,025 条。详见 `R5_BROWSER_SMOKE_20261014.json` 的 `historical_date_switch`。
+- U03 现为 `PASS`（限定为读域可解释性）：同一 `INDUSTRY:T0101`、同一成员快照对照 10/12 与 10/13 两日真实 Owner。两个页面均展示 NONE→NONE、Delta 字段和完整谓词；10/13 的 `diffusion=TRUE`，`early_retained/mature_retained=UNKNOWN` 且原因均为 `REQUIRED_QUALITY_UNAVAILABLE`，页面仍明确标注验证中/完整性待核。Owner 文件路径、SHA、关键指标和谓词差异已写入 JSON `rotation_cross_date`。该 PASS 不表示严格 PIT、正式全历史递归 episode 或生产接受。
+
 ## 内置浏览器验收
 
 - 28765 生产页：旧首页读取 stocks 5,225/sectors 400、Focus 变化 177/展示 30、风险 14；Radar/Forward 首页仍显示来源未接入，直达 `/v4/research/radar` 提示“没有找到该入口”。生产包版本仍为旧 `1.0.0_88cc19deae3b`。
@@ -72,7 +79,7 @@
 |---|---|---|
 | U01 | `FAIL` | 内置浏览器确认事件 Radar 177 条、第二页可读且 `NEW` 筛选 110 条；Formal Radar 全市场 priority producer 仍缺。 |
 | U02 | `FAIL` | 正式 Forward 样本仍无授权 Owner；首次捕获面板显示 `NOT_DUE`、2026-10-14 候选日及四项缺失输入，计数仍为 null。 |
-| U03 | `FAIL` | 切换到 2026-10-12 时真实 PG 返回 `PG_OPERATIONAL_OWNER_DESCRIPTOR_REQUIRED_NO_FALLBACK`；页面明确不回退，跨日轮动复算因此未完成。 |
+| U03 | `PASS` | 同一煤炭行业、同一成员快照，在已接受 Head 索引的 10/12 与 10/13 Owner 逐日对比：均为 NONE→NONE；10/12 diffusion=false/early_retained=false，10/13 diffusion=true、early_retained 与 mature_retained 因质量缺失为 UNKNOWN；逐日字段、谓词、source hash 与“验证中/待核”标记在抽屉可见。PASS 仅覆盖读域解释性，不认证严格 PIT 或正式递归 episode。证据见 JSON `rotation_cross_date`。 |
 | U04 | `FAIL` | 四轴仍为正式环境未发布；个股/板块/市场三族独立风险事件与分母、四态生产证据缺失。 |
 | U05 | `FAIL` | 400 板块列表明确缺正式 maturity/health Owner；独立 Sector D2 生命周期生产者和 20 个真例重算未交付。 |
 | U06 | `NOT_VERIFIABLE` | 煤炭详情显示前态与当前态 `NONE` 均待核；完整规则来源及跨日时间序列还未验收。 |

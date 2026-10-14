@@ -101,9 +101,18 @@
   },
   "historical_date_switch": {
     "selected_trade_date": "2026-10-12",
-    "result": "SOURCE_INCOMPLETE",
-    "reason": "PG_OPERATIONAL_OWNER_DESCRIPTOR_REQUIRED_NO_FALLBACK",
-    "visible_message": "未回退到其他日期，请查看诊断"
+    "result": "OWNER_READ_SUCCESS_AFTER_WORKSPACE_ROOT_PROPAGATION",
+    "focus_http_status": 200,
+    "focus_total": 3025,
+    "sector_detail": "INDUSTRY:T0101",
+    "sector_member_count": 32,
+    "browser": "Codex In-app Browser",
+    "rotation_state": "NONE_WITH_COMPLETENESS_PENDING",
+    "rotation_acceptance": "NOT_VERIFIABLE",
+    "prior_and_current_predicates": "UI reports NONE to NONE, but full recursive rotation and accepted historical rule bindings remain unverified",
+    "production_cutover": false,
+    "owner_read_success": true,
+    "rotation_cross_date_sample": "rotation_cross_date"
   },
   "market": {
     "indices": [
@@ -293,5 +302,79 @@
     ],
     "acceptance": "PASS",
     "caveat": "The alias search resolves the current security identity; it does not imply that the old code itself had a T0 quote."
+  },
+  "rotation_cross_date": {
+    "contract_id": "R5_U03_ACCEPTED_OWNER_ROTATION_COMPARISON_R1",
+    "browser": "Codex In-app Browser",
+    "environment": "28768 read-only candidate preview",
+    "sector_id": "INDUSTRY:T0101",
+    "dates": [
+      "2026-10-12",
+      "2026-10-13"
+    ],
+    "same_sector_and_membership_snapshot": true,
+    "trade_dates_are_in_accepted_head_owner_index": true,
+    "samples": [
+      {
+        "trade_date": "2026-10-12",
+        "prior_state": "NONE",
+        "current_state": "NONE",
+        "reason_codes": [],
+        "rotation_owner": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/edada578cff44f03f071dde8e9ea4396bd6aa9ec4522b14fa49f93fa770fa010/sector_v3/2026-10-12/rotation.jsonl.gz",
+          "sha256": "e60314524ef383dbffc0ac1405f6959509369e229eb59911fbb85a9d6c0750de",
+          "bytes": 3500058
+        },
+        "fields": {
+          "dq5": 33.333333333333336,
+          "breadth_delta1": -0.71875,
+          "breadth_delta3": -0.59375,
+          "ma20_delta3": 0,
+          "base_seed_width_adjusted": 0.06864319106627216
+        },
+        "predicates": {
+          "NO_ACTIVE_EPISODE": "TRUE",
+          "sector_safety": "TRUE",
+          "diffusion": "FALSE",
+          "early_retained": "FALSE",
+          "mature_retained": "FALSE",
+          "pulse": "FALSE",
+          "ROTATION_IN": "FALSE",
+          "ROTATION_ACCEPTED": "FALSE"
+        }
+      },
+      {
+        "trade_date": "2026-10-13",
+        "prior_state": "NONE",
+        "current_state": "NONE",
+        "reason_codes": [],
+        "rotation_owner": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/fff118fef56ef5a4993b92496d352e8b977f5be17b9b6e66380e512d91bf5778/sector_v3/2026-10-13/rotation.jsonl.gz",
+          "sha256": "adbd195352844a16151e125285e7daa54a01937caa9102f8f4bf5cdbd35873f0",
+          "bytes": 3702561
+        },
+        "fields": {
+          "dq5": 0,
+          "breadth_delta1": 0.6875,
+          "breadth_delta3": -0.125,
+          "ma20_delta3": -0.0625,
+          "base_seed_width_adjusted": 0.005537717362550956
+        },
+        "predicates": {
+          "NO_ACTIVE_EPISODE": "TRUE",
+          "sector_safety": "TRUE",
+          "diffusion": "TRUE",
+          "early_retained": "UNKNOWN:REQUIRED_QUALITY_UNAVAILABLE",
+          "mature_retained": "UNKNOWN:REQUIRED_QUALITY_UNAVAILABLE",
+          "pulse": "FALSE",
+          "ROTATION_IN": "FALSE",
+          "ROTATION_ACCEPTED": "FALSE"
+        }
+      }
+    ],
+    "ui_visible_comparison": "NONE -> NONE on both dates; both tagged validation/integrity pending; current/prior state, delta fields and full predicate table available in source drawer",
+    "sample_scope": "Owner-backed reconstructed rule facts; membership mode TDX_LATEST_MEMBER_RETRO_V1; not strict PIT and not an independently accepted full episode reduction",
+    "acceptance": "PASS",
+    "caveat": "PASS covers cross-date read/explainability and correct NONE-vs-UNKNOWN labeling only. It does not certify formal production rotation, historical first availability, or recursive episode acceptance."
   }
 }

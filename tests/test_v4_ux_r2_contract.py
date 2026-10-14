@@ -7,7 +7,8 @@ from workbench_db.v4_read_index_r2 import (
     schema_for_revision, summary, detail_payload, validate_home_response, validate_query,
 )
 from workbench_service.core_product_bff_r1 import (
-    annotate_home_readiness, current_identity_presentation, home_summary, is_legacy_r1_home_fallback,
+    annotate_home_readiness, code_status_presentation, current_identity_presentation, home_summary,
+    is_legacy_r1_home_fallback, normalize_indexed_code_status,
 )
 
 
@@ -76,6 +77,26 @@ class UXR2RouteContractTests(unittest.TestCase):
         status = current_identity_presentation(identity, {'path': 'identity.json', 'sha256': 'b' * 64}, self.day)
         self.assertEqual(status['value'], 'CONFIRMED_CURRENT_IDENTITY')
         self.assertEqual(identity['code_status'], 'CONFIRMED_IPO')
+
+    def test_code_status_uses_dated_identity_and_never_marks_every_row_new(self):
+        source = {'path': 'identity.json', 'sha256': 'b' * 64}
+        old = code_status_presentation({'symbol': 'SH.600703', 'list_date': '1996-05-28'}, source, self.day)
+        new = code_status_presentation({'symbol': 'SZ.301660', 'list_date': self.day}, source, self.day)
+        missing = code_status_presentation({}, source, self.day)
+        self.assertEqual((old['value'], old['quality']), ('EXISTING_VERIFIED_IDENTITY', 'KNOWN'))
+        self.assertEqual((new['value'], new['quality']), ('NEW_CODE_OBSERVED', 'KNOWN'))
+        self.assertEqual((missing['value'], missing['quality']), ('UNKNOWN', 'SOURCE_INCOMPLETE'))
+
+    def test_indexed_stock_page_recomputes_code_status_from_dated_identity(self):
+        payload = {'items': [
+            {'identity_observation': {'list_date': '1996-05-28'}, 'fields': {'code_status': {'value': 'NEW_CODE_OBSERVED'}}},
+            {'identity_observation': {'first_seen_date': self.day}, 'fields': {'code_status': {'value': 'NEW_CODE_OBSERVED'}}},
+        ], 'item': {'identity_observation': {'list_date': '1996-05-28'},
+                   'fields': {'code_status': {'value': 'NEW_CODE_OBSERVED'}}}}
+        result = normalize_indexed_code_status(payload, self.day)
+        self.assertEqual(result['items'][0]['fields']['code_status']['value'], 'EXISTING_VERIFIED_IDENTITY')
+        self.assertEqual(result['items'][1]['fields']['code_status']['value'], 'NEW_CODE_OBSERVED')
+        self.assertEqual(result['item']['fields']['code_status']['value'], 'EXISTING_VERIFIED_IDENTITY')
 
     def test_home_summary_preserves_rendered_fields_without_full_profile(self):
         row = {

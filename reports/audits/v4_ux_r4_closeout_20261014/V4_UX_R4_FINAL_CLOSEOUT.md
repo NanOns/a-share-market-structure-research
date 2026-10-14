@@ -76,7 +76,7 @@
 | U06 | `NOT_VERIFIABLE` | 煤炭详情显示前态与当前态 `NONE` 均待核；完整规则来源及跨日时间序列还未验收。 |
 | U07 | `NOT_VERIFIABLE` | `SZ.301660` 真实详情呈现 `NONE + UNKNOWN`、检测器状态、10 项不可判定条件；跨字段 D2 Owner 复算仍不全。 |
 | U08 | `NOT_VERIFIABLE` | 真实详情明确显示资格 UNKNOWN 与不可判定项；TRUE/FALSE/UNKNOWN/NOT_IMPLEMENTED 全状态及 D2 Owner 对账尚未齐。 |
-| U09 | `NOT_VERIFIABLE` | `SZ.301660` 列表/详情为 `NEW_CODE_OBSERVED`、当前身份记录存在；普通旧股、无报价及别名反例未覆盖。 |
+| U09 | `PASS` | 28768 内置浏览器与同日正式身份来源对账：`SZ.301660` 列表/详情均为 `NEW_CODE_OBSERVED`；`SH.600703` 均为 `EXISTING_VERIFIED_IDENTITY`；搜索旧代码 `SZ.300114` 解析到当前身份 `SZ.302132`，列表/详情均为存量身份且不声称旧代码有 T0 报价。详见 `code_status_reconciliation`。仅通过隔离读域验收，不表示 28765 部署。 |
 | U10 | `PASS` | 2026-10-13 同一 T0 显示 3,151 个唯一活跃对象、未映射 0、Top5 中文名/计数/占比；内置浏览器打开 Focus 详情并完成 110 个行业 5 页（25/25/25/25/10）全量翻页。证据见 `R5_BROWSER_SMOKE_20261014.json`。 |
 | U11 | `NOT_VERIFIABLE` | Focus 第 1/2 页和 NEW 过滤可读；未知 membership/validity/path 被保留，但逐字段 observation/episode Owner 对账不全。 |
 | U12 | `NOT_VERIFIABLE` | Focus 事件分页（offset 30）与 NEW 筛选已实测；INVALIDATED/EXITED 过滤及同日多事件反例未全部验收。 |

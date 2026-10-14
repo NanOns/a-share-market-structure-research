@@ -117,6 +117,46 @@ def current_identity_presentation(identity,source,day):
     return dict(value=state,quality='KNOWN' if identity else 'UNKNOWN',unit='state',as_of=day,
         reason=None if identity else 'CURRENT_IDENTITY_ROW_NOT_FOUND',source=source)
 
+def code_status_presentation(identity,source,day):
+    """Render code status without promoting every existing identity to a new code."""
+    identity=identity or {}
+    status=identity.get('code_status')
+    if status:
+        value=status;quality='KNOWN';reason=None
+    elif identity.get('first_seen_date')==day or identity.get('list_date')==day:
+        # A same-day first observation is evidence of a newly observed code,
+        # and an authoritative same-day listing date is equivalent evidence.
+        # Neither field by itself establishes a historical identity.
+        value='NEW_CODE_OBSERVED';quality='KNOWN'
+        reason=('FIRST_OBSERVED_ON_CURRENT_TRADE_DATE' if identity.get('first_seen_date')==day
+                else 'LISTED_ON_CURRENT_TRADE_DATE')
+    else:
+        list_date=identity.get('list_date')
+        try:
+            existing=bool(list_date and list_date < day)
+        except TypeError:
+            existing=False
+        if existing:
+            value='EXISTING_VERIFIED_IDENTITY';quality='KNOWN';reason='DATED_IDENTITY_PREDATES_CURRENT_TRADE_DATE'
+        else:
+            value='UNKNOWN';quality='SOURCE_INCOMPLETE';reason='DATED_CODE_STATUS_NOT_REPORTED_BY_IDENTITY_OWNER'
+    return dict(value=value,quality=quality,unit='state',as_of=day,reason=reason,source=source)
+
+def normalize_indexed_code_status(payload,day):
+    """Repair stale list projections at read time using their dated identity facts."""
+    if not isinstance(payload,dict):return payload
+    candidates=list(payload.get('items') or [])
+    if isinstance(payload.get('item'),dict):candidates.append(payload['item'])
+    for row in candidates:
+        if not isinstance(row,dict):continue
+        fields=row.setdefault('fields',{})
+        if not isinstance(fields,dict):continue
+        previous=fields.get('code_status') or {}
+        observation=row.get('identity_observation')
+        source=previous.get('source') if isinstance(previous,dict) else None
+        fields['code_status']=code_status_presentation(observation,source,day)
+    return payload
+
 class CoreProductBFFR1(OperationalSuccessorBFFV1):
     isolated_history=None
     def __init__(self,api,legacy,*,isolated_history_authority=None,chart_history_index_root=None,market_fact_index_root=None):
@@ -246,6 +286,9 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         base={k:context[k] for k in ('context','context_token','production_accepted','source_quality') if k in context}
         if item is None:
             return 404,{**base,'status':'NOT_FOUND','code':'ENTITY_NOT_FOUND','item':None}
+        # The profile route bypasses page(), so normalize the embedded item here
+        # as well as the separately rendered R section below.
+        item=normalize_indexed_code_status({'item':item},day)['item']
         fields=item.get('fields',{});eligibility=fields.get('final_eligibility',{}).get('value')
         classified=('NOT_ELIGIBLE' if eligibility=='FALSE' else 'ELIGIBLE' if eligibility=='TRUE'
                     else 'NOT_IMPLEMENTED' if 'NOT_IMPLEMENTED' in str(fields.get('detector_statuses',{})) else 'UNKNOWN')
@@ -310,6 +353,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             if response is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
             response={k:v for k,v in response.items() if k in ('context','context_token','production_accepted','source_quality')}
             response.update(index.page(path.rsplit('/',1)[-1],query))
+            if path=='/api/v4/stocks':response=normalize_indexed_code_status(response,day)
             if index_r2 is None:response.update(read_index_status=self._read_index_r2_state(day),
                 read_index_capability=LEGACY_R1_READ_CAPABILITY)
             if path=='/api/v4/focus':
@@ -503,8 +547,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 if ident:
                     row['identity_observation']={k:ident.get(k) for k in
                         ('first_seen_date','list_date','confirmed_ipo_date','code_status','metadata_status','alias_status')}
-                    row['fields']['code_status']=dict(value=ident.get('code_status','NEW_CODE_OBSERVED'),
-                        quality='KNOWN',unit='state',as_of=day,source=identity_ref_current)
+                    row['fields']['code_status']=code_status_presentation(ident,identity_ref_current,day)
                     if ident.get('name'):
                         row.update(display_name=ident['name'],display_name_scope='OBSERVED_METADATA_NOT_PIT',
                                    display_name_source=identity_ref_current,display_name_quality='KNOWN')
@@ -570,11 +613,13 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     if context is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
                     base={k:v for k,v in context.items() if k in ('context','context_token','production_accepted','source_quality')}
                     if item is None:return {**base,'status':'NOT_FOUND','items':[],'total':0,'offset':int(q.get('offset',0)),'limit':int(q.get('limit',30)),'has_next':False,'domain':domain,'gap':None}
-                    return {**base,'status':'READY','items':[item],'item':item,'total':1,'offset':int(q.get('offset',0)),'limit':int(q.get('limit',30)),'has_next':False,'domain':domain,'gap':None}
+                    response={**base,'status':'READY','items':[item],'item':item,'total':1,'offset':int(q.get('offset',0)),'limit':int(q.get('limit',30)),'has_next':False,'domain':domain,'gap':None}
+                    return normalize_indexed_code_status(response,day) if domain=='stocks' else response
                 context=index.response('/api/v4/context')
                 if context is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
                 base={k:v for k,v in context.items() if k in ('context','context_token','production_accepted','source_quality')}
-                return {**base,**index.page(domain,q,entity=entity,sector=sector)}
+                response={**base,**index.page(domain,q,entity=entity,sector=sector)}
+                return normalize_indexed_code_status(response,day) if domain=='stocks' else response
             from workbench_db.v4_read_index_r1 import load as load_index
             index=load_index(self.api.root,self.api.token,day,allow_missing=day!=self.api.candidate['accepted_trade_date'])
             if index is not None:

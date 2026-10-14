@@ -200,5 +200,43 @@
       "return_navigation_verified": true
     },
     "acceptance": "PASS"
+  },
+  "code_status_reconciliation": {
+    "contract_id": "R5_U09_CODE_STATUS_RECONCILIATION_R1",
+    "environment": "28768 read-only candidate preview",
+    "browser": "Codex In-app Browser",
+    "trade_date": "2026-10-13",
+    "cases": [
+      {
+        "case": "new_listing",
+        "queried_symbol": "SZ.301660",
+        "identity_source": "dynamic_daily_sources/new_listing_r1/2026-10-13/SZ.301660.json",
+        "identity_list_date": "2026-10-13",
+        "list_status": "NEW_CODE_OBSERVED",
+        "detail_status": "NEW_CODE_OBSERVED",
+        "list_detail_consistent": true
+      },
+      {
+        "case": "ordinary_existing_stock",
+        "symbol": "SH.600703",
+        "identity_list_date": "1996-05-28",
+        "list_status": "EXISTING_VERIFIED_IDENTITY",
+        "detail_status": "EXISTING_VERIFIED_IDENTITY",
+        "list_detail_consistent": true
+      },
+      {
+        "case": "old_code_alias_without_T0_quote",
+        "searched_alias": "SZ.300114",
+        "displayed_current_symbol": "SZ.302132",
+        "display_name": "中航成飞",
+        "current_identity": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "alias_row_state": "EXISTING_VERIFIED_IDENTITY",
+        "detail_state": "EXISTING_VERIFIED_IDENTITY",
+        "route_resolves_to_current_identity": true,
+        "no_quote_for_searched_alias": true
+      }
+    ],
+    "acceptance": "PASS",
+    "caveat": "The alias search resolves the current security identity; it does not imply that the old code itself had a T0 quote."
   }
 }

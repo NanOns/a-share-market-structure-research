@@ -87,7 +87,7 @@
 | U08 | `NOT_VERIFIABLE` | 真实详情明确显示资格 UNKNOWN 与不可判定项；TRUE/FALSE/UNKNOWN/NOT_IMPLEMENTED 全状态及 D2 Owner 对账尚未齐。 |
 | U09 | `PASS` | 28768 内置浏览器与同日正式身份来源对账：`SZ.301660` 列表/详情均为 `NEW_CODE_OBSERVED`；`SH.600703` 均为 `EXISTING_VERIFIED_IDENTITY`；搜索旧代码 `SZ.300114` 解析到当前身份 `SZ.302132`，列表/详情均为存量身份且不声称旧代码有 T0 报价。详见 `code_status_reconciliation`。仅通过隔离读域验收，不表示 28765 部署。 |
 | U10 | `PASS` | 2026-10-13 同一 T0 显示 3,151 个唯一活跃对象、未映射 0、Top5 中文名/计数/占比；内置浏览器打开 Focus 详情并完成 110 个行业 5 页（25/25/25/25/10）全量翻页。证据见 `R5_BROWSER_SMOKE_20261014.json`。 |
-| U11 | `NOT_VERIFIABLE` | Focus 第 1/2 页和 NEW 过滤可读；未知 membership/validity/path 被保留，但逐字段 observation/episode Owner 对账不全。 |
+| U11 | `PASS` | 限定当前 Focus 重建读域：10/13 的 3,151 个 episode 均有同日 observation，与 3,151 条事件逐实体字段一致（9 字段差异 0）；内置浏览器搜索 `SH.688655` 显示新增关注/确认层/有效/可读取/突破已确认，退出日合法空值有原因。正式首次冻结、失效 AST 和真实退出 Owner 仍未获准/未提供，不属于本项字段接线 PASS。证据见 `FOCUS_OWNER_FIELD_AUDIT_R5.json`。 |
 | U12 | `NOT_VERIFIABLE` | Focus 事件分页（offset 30）与 NEW 筛选已实测；修复 `INVALIDATED`/`EXITED` 控件污染主列表查询的问题，两个真实筛选结果均为空且页面无路由错误；缺少失效/退出真样本与同日多事件反例，未闭环。 |
 | U13 | `FAIL` | 首捕就绪只读展示和隔离合同测试通过；日版全量 AS_RECORDED producer、独立队列 Owner、准入/结算/FEP 权限仍缺。 |
 | U14 | `NOT_VERIFIABLE` | 内置浏览器 28768 展开五指数均显示日变动、5/20 会话收益和 2026-04-15—10-13 OHLC 图；来源将五指数 volume_unit 均标为 `SOURCE_NATIVE_UNVERIFIED`，UI 已隐藏成交量。窄视口和可交付截图未完成，故保留未验收。详见 JSON `index_chart_ui_reconciliation`。 |
@@ -142,3 +142,11 @@
 - Codex 内置浏览器在修正后的普通只读预览 28770 上重做 10 个路由 × 2 视口（1280×800、375×812）：home、stocks、sectors、focus、market、diagnostics、Radar、Forward 子路由、股票详情、板块详情。所有最终页面均完成渲染；宽/窄文档宽 1265/360 px；窄屏主导航 scrollWidth=clientWidth=330 px 且自动换行。股票详情在 6.5 秒内完成冷图加载，显示 QFQ 120/420 根、成交量股/成交额元。内置浏览器共捕获 8 张视觉画面，但未导出报告目录，故 `screenshot_files_saved=0`。
 - 当前 R2 静态 Joint 不可安全刷新：首个校验差异为 `FORMAL_MANIFEST.sources` 的 `data/v4/engineering_series_r3/series.pg.json`，封存引用 2,020 B / SHA `1d523251168a8ba366e81a04332e30770cf624c7cc62a6964bf055b592624f2c`，现存候选及生产根字节为 2,032 B / SHA `839f28521d3e661bd8810c785b0b983ad5e549285e81c4283335cea4194cbe3e`。刷新在 authority activation 前失败；未更改 Head、快照、封存对象或生产 UI Authority。显式源码资源只用于隔离验收。详见 JSON `source_bound_ui_refresh_failure`。
 - 定向回归 `python -m unittest tests.test_v4_ux_r2_contract tests.test_v4_ux_r3_routes -q`：38/38 通过。
+
+
+### R5 Focus Owner 字段级读回核对（2026-10-14）
+
+- 对 10/13 已接受输入的 3,151 个 Focus episode 和 3,151 条当日事件做了只读逐实体匹配。每个 episode 都有不晚于 10/13 的最新 observation；9 个关键字段（event、membership、validity、path_resolution、best_confirmed_state、health、scenario、waiting_for、higher_priority_unresolved）与当日事件逐对象一致，差异 0。
+- 原始值分布显示 `validity=VALID` 104 条、`UNKNOWN` 3,047 条；`path_resolution=READY` 103、`PARTIAL` 519、`UNAVAILABLE` 2,529；membership 为 CURRENT 180、EARLY 428、UNKNOWN 2,543。3,151 条 episode 的 end_date 全部为空，不能据此声称退出或失效。
+- Codex 内置浏览器 28770 Focus 页已显示入组日、事件、关注资格、有效性、路径、最近确认结构、退出日期及来源。字段接线没有发现丢失；UNKNOWN/UNAVAILABLE 与 Owner 值一致。搜索样本 `SH.688655`（迅捷兴）在页面显示新增关注、确认层、有效、可读取、突破已确认；Owner 的空退出日期保留为带原因的合法空值，因此 U11 在当前读域限定下标记 PASS。
+- 该证据不关闭 U11/U12：Owner 自身明确 `AS_RECORDED=false`、`HISTORICAL_FIRST_AVAILABLE_PROVEN=false`、`PIT_ELIGIBLE=false`、`production_admission=false`。它证明当前重建候选字段能逐实体读回，不是正式生命周期、首次冻结、失效 AST 或真实退出 Owner。详见 [`FOCUS_OWNER_FIELD_AUDIT_R5.json`](FOCUS_OWNER_FIELD_AUDIT_R5.json)。

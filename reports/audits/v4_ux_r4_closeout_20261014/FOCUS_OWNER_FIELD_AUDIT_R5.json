@@ -1,0 +1,139 @@
+{
+  "contract_id": "R5_FOCUS_OWNER_FIELD_COVERAGE_AUDIT_R1",
+  "environment": "read_only_accepted_owner_source",
+  "trade_date": "2026-10-13",
+  "head": {
+    "path": "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json",
+    "sha256": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+    "accepted_trade_date": "2026-10-13"
+  },
+  "source": {
+    "path": "data/v4/dynamic_daily_owners/2026-10-13/fff118fef56ef5a4993b92496d352e8b977f5be17b9b6e66380e512d91bf5778/owner_v3/CORRECTED_FOCUS_FORWARD.json.gz",
+    "sha256": "bd12a4c12f76ef0a2ad79b65f114dd58da19ba3788a28a0cfd5fee33837e3e8f",
+    "bytes": 12935752,
+    "actual_file_sha256": "bd12a4c12f76ef0a2ad79b65f114dd58da19ba3788a28a0cfd5fee33837e3e8f",
+    "contract_id": "V4_R4_CORRECTED_FOCUS_FORWARD_CANDIDATE_V1"
+  },
+  "scope": {
+    "episode_count": 3151,
+    "latest_observation_cutoff": "2026-10-13",
+    "latest_observation_dates": {
+      "2026-10-13": 3151
+    },
+    "same_day_event_count": 3151,
+    "episode_event_entity_match_count": 3151,
+    "episode_event_semantic_mismatch_count": 0,
+    "AS_RECORDED": false,
+    "HISTORICAL_FIRST_AVAILABLE_PROVEN": false,
+    "PIT_ELIGIBLE": false,
+    "production_admission": false
+  },
+  "field_value_counts": {
+    "event": {
+      "DATA_UNAVAILABLE": 2543,
+      "PERSISTENT": 399,
+      "NEW": 126,
+      "UPGRADED": 69,
+      "WEAKENED": 14
+    },
+    "membership": {
+      "UNKNOWN": 2543,
+      "EARLY": 428,
+      "CURRENT": 180
+    },
+    "validity": {
+      "UNKNOWN": 3047,
+      "VALID": 104
+    },
+    "path_resolution": {
+      "UNAVAILABLE": 2529,
+      "PARTIAL": 519,
+      "READY": 103
+    },
+    "best_confirmed_state": {
+      "None": 2529,
+      "WAIT_CONFIRMATION": 428,
+      "BREAKOUT_CONFIRMED": 168,
+      "TOO_EXTENDED": 26
+    },
+    "health": {
+      "UNKNOWN": 3047,
+      "IMPROVING": 92,
+      "STABLE": 5,
+      "WEAKENING": 5,
+      "EXHAUSTED": 2
+    },
+    "scenario": {
+      "NONE": 2276,
+      "LAUNCH_CONFIRM": 601,
+      "RECOVERY_TURN": 274
+    },
+    "waiting_for": {
+      "['CONFIRMED', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN', 'scenario:OPTIONAL_INPUT_UNKNOWN']": 2271,
+      "['CONFIRMED', 'frozen_invalidation', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN', 'scenario:OPTIONAL_INPUT_UNKNOWN']": 692,
+      "['dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN']": 104,
+      "['frozen_invalidation', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN']": 76,
+      "['CONFIRMED', 'PREWATCH', 'SEED', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN', 'scenario:OPTIONAL_INPUT_UNKNOWN']": 3,
+      "['CONFIRMED', 'PREWATCH', 'SEED', 'delta3:OPTIONAL_INPUT_UNKNOWN', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN', 'scenario:OPTIONAL_INPUT_UNKNOWN']": 2,
+      "['CONFIRMED', 'PREWATCH', 'core_price_damage', 'frozen_invalidation', 'suspended', 'delta3:OPTIONAL_INPUT_UNKNOWN', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN', 'risk:OPTIONAL_INPUT_UNKNOWN', 'scenario:OPTIONAL_INPUT_UNKNOWN']": 2,
+      "['CONFIRMED', 'frozen_invalidation', 'delta3:OPTIONAL_INPUT_UNKNOWN', 'dq5:OPTIONAL_INPUT_UNKNOWN', 'episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN', 'followup_complete:OPTIONAL_INPUT_UNKNOWN', 'scenario:OPTIONAL_INPUT_UNKNOWN']": 1
+    },
+    "higher_priority_unresolved": {
+      "['STRUCTURE_DAMAGED', 'BREAKOUT_CONFIRMED', 'TREND_ACCELERATING', 'SECTOR_DIVERGENCE', 'WEAKENING']": 1316,
+      "['STRUCTURE_DAMAGED', 'BREAKOUT_CONFIRMED', 'SECTOR_DIVERGENCE', 'WEAKENING']": 696,
+      "['STRUCTURE_DAMAGED', 'PULLBACK_UNCONFIRMED', 'BREAKOUT_CONFIRMED', 'SECTOR_DIVERGENCE', 'WEAKENING']": 569,
+      "['STRUCTURE_DAMAGED', 'PULLBACK_HEALTHY', 'PULLBACK_UNCONFIRMED', 'BREAKOUT_CONFIRMED', 'TREND_ACCELERATING', 'SECTOR_DIVERGENCE', 'WEAKENING']": 144,
+      "['STRUCTURE_DAMAGED', 'PULLBACK_HEALTHY', 'PULLBACK_UNCONFIRMED', 'BREAKOUT_CONFIRMED', 'SECTOR_DIVERGENCE', 'WEAKENING']": 124,
+      "[]": 108,
+      "['STRUCTURE_DAMAGED', 'PULLBACK_UNCONFIRMED', 'BREAKOUT_CONFIRMED', 'TREND_ACCELERATING', 'SECTOR_DIVERGENCE', 'WEAKENING']": 103,
+      "['STRUCTURE_DAMAGED']": 88,
+      "['PULLBACK_HEALTHY', 'PULLBACK_UNCONFIRMED']": 1,
+      "['STRUCTURE_DAMAGED', 'PULLBACK_HEALTHY', 'PULLBACK_UNCONFIRMED']": 1,
+      "['STRUCTURE_DAMAGED', 'PULLBACK_UNCONFIRMED']": 1
+    }
+  },
+  "field_missing_key_counts": {
+    "event": 0,
+    "membership": 0,
+    "validity": 0,
+    "path_resolution": 0,
+    "best_confirmed_state": 0,
+    "health": 0,
+    "scenario": 0,
+    "waiting_for": 0,
+    "higher_priority_unresolved": 0
+  },
+  "end_date": {
+    "non_null": 0,
+    "null": 3151,
+    "interpretation": "No recorded episode end date; this does not prove an EXITED/INVALIDATED event."
+  },
+  "browser_check": {
+    "browser": "Codex In-app Browser",
+    "environment": "28770 isolated candidate preview",
+    "route": "/v4/research/focus?trade_date=2026-10-13",
+    "visible_fields": [
+      "event",
+      "membership",
+      "validity",
+      "path_resolution",
+      "best_confirmed_state",
+      "end_date"
+    ],
+    "sample_first_page_rows_show_owner_unknown_without_promoting_to_valid": true,
+    "search_sample": {
+      "symbol": "SH.688655",
+      "display_name": "迅捷兴",
+      "trade_date": "2026-10-13",
+      "event": "NEW",
+      "membership": "CONFIRMED_TIER",
+      "validity": "VALID",
+      "path_resolution": "READY",
+      "best_confirmed_state": "BREAKOUT_CONFIRMED",
+      "end_date": null,
+      "visible_end_date": "合法空值 · 来源未记录 Episode 结束日期"
+    }
+  },
+  "acceptance": "PASS_SCOPED_CURRENT_READ_DOMAIN",
+  "limitation": "The owner is a reconstructed corrected candidate, AS_RECORDED=false, PIT_ELIGIBLE=false, production_admission=false. Field parity proves source-to-projection presence for 2026-10-13; it does not certify formal first-observed lifecycle semantics, accepted invalidation/exit events, or production release."
+}

@@ -90,6 +90,13 @@ def validate_joint(root,joint,candidate,*,verify_loaded=True):
     root=Path(root);snapshot=validate(root,joint['snapshot'],candidate)
     validate_joint_document(joint,snapshot,candidate)
     for asset in joint['ui_assets'].values():checked(root,asset)
+    reconciliation=joint.get('source_reconciliation')
+    if reconciliation:
+        record=load(checked(root,reconciliation))
+        if record.get('contract_id')!='V4_ENGINEERING_SERIES_SOURCE_RECONCILIATION_R1':
+            raise ValueError('CURRENT_JOINT_SOURCE_RECONCILIATION_CONTRACT_REQUIRED')
+        if record.get('new_source_resolution')!='CURRENT_R2_DESCRIPTOR_AND_FULL_POSTGRES_CONTENT_MANIFEST_VERIFIED':
+            raise ValueError('CURRENT_JOINT_SERIES_SOURCE_NOT_VERIFIED')
     from workbench_analysis.operational_successor_release_v1 import verify_policy
     verify_policy(root,candidate,verify_loaded=verify_loaded)
     policy=load(checked(root,candidate['release_policy']))
@@ -98,19 +105,21 @@ def validate_joint(root,joint,candidate,*,verify_loaded=True):
     return joint
 
 
-def prepare_joint(root,candidate):
+def prepare_joint(root,candidate,*,ui_assets=None,source_reconciliation=None,verify_loaded=True):
     """Prepare an admitted current Joint; never change its active pointer."""
     root=Path(root)
     from workbench_analysis.operational_successor_release_v1 import verify_policy
-    verify_policy(root,candidate)
+    verify_policy(root,candidate,verify_loaded=verify_loaded)
     policy=load(checked(root,candidate['release_policy']))
     snapshot_binding=prepare(root,candidate);snapshot=load(checked(root,snapshot_binding))
     historical=load(root/'config/v4_joint_release_authority_v1.json')
-    joint=dict(contract_id=JOINT_CONTRACT,business_token=snapshot['business_token'],T0=snapshot['T0'],snapshot=snapshot_binding,operational_candidate=snapshot['candidate'],ui_assets=historical['ui_assets'],admission_evidence=policy['admission_evidence'],full_product_release=False,
+    joint=dict(contract_id=JOINT_CONTRACT,business_token=snapshot['business_token'],T0=snapshot['T0'],snapshot=snapshot_binding,operational_candidate=snapshot['candidate'],ui_assets=ui_assets or historical['ui_assets'],admission_evidence=policy['admission_evidence'],full_product_release=False,
         PIT_ELIGIBLE=False,AS_RECORDED=False,trading=False,probability_claims=False,historical_joint_is_current=False,
         scope='CURRENT_NATIVE_DATED_OPERATIONAL_RESEARCH; HISTORICAL_DATA_AND_PIT_AUTHORITIES_SEPARATE')
-    validate_joint(root,joint,candidate)
-    path=(root/snapshot_binding['path']).with_name('JOINT.json')
+    if source_reconciliation is not None:joint['source_reconciliation']=source_reconciliation
+    validate_joint(root,joint,candidate,verify_loaded=verify_loaded)
+    joint_id=hashlib.sha256(json.dumps(joint,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest()
+    path=(root/snapshot_binding['path']).with_name('JOINT_'+joint_id+'.json')
     if path.exists() and load(path)!=joint:raise ValueError('CURRENT_JOINT_IMMUTABLE_CONFLICT')
     atomic_json(root,path,joint)
     return ref(root,path)

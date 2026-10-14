@@ -1,0 +1,106 @@
+{
+  "T0": "2026-10-13",
+  "acceptance": "PASS_PRODUCTION_HTTP_SMOKE",
+  "base": "http://127.0.0.1:28765",
+  "checked_at": "2026-10-14T22:31:37+0800",
+  "checks": [
+    {
+      "T0": "2026-10-13",
+      "auto_daily_enabled": false,
+      "bytes": 4395,
+      "http": 200,
+      "name": "context_cold",
+      "package_id": "V4_PACKAGE_1.1.6_44d446ed72bd",
+      "pid": 21288,
+      "sha256": "77846169e96007bfe6d3313ad494d173da575ae407b2a25337b7fe2fa8b2784f",
+      "status": "READY",
+      "token": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3"
+    },
+    {
+      "T0": "2026-10-13",
+      "bytes": 272737,
+      "http": 200,
+      "name": "home",
+      "risk_families": [
+        "MARKET_PRESSURE_RISK",
+        "SECTOR_ECOLOGY_RISK",
+        "STOCK_STRUCTURE_RISK"
+      ],
+      "sha256": "fa63c6151f9f8321c8b94bc903016cdff7d6cb8dc8236c5b3aa5cab2d0644c9d",
+      "status": "READY",
+      "token_match": true,
+      "under_512KiB": true
+    },
+    {
+      "T0": "2026-10-13",
+      "bytes": 49716,
+      "http": 200,
+      "items": 30,
+      "name": "radar_p2",
+      "sha256": "a96779945626084ec95c145f5db2421879823cd74157586efb47ee81ecf45fde",
+      "status": "READY",
+      "token_match": true,
+      "total": 177
+    },
+    {
+      "T0": "2026-10-13",
+      "bytes": 31545,
+      "http": 200,
+      "items": 30,
+      "name": "priority_stocks_p2",
+      "rankable_total": 1410,
+      "sha256": "14228a9ace3ecfbd6302fad09c0e7fa7acc92a314c9fea571b4e3fa62f8a6f5a",
+      "status": "READY",
+      "token_match": true,
+      "total": 1410
+    },
+    {
+      "T0": "2026-10-13",
+      "bytes": 164099,
+      "http": 200,
+      "name": "stock_detail",
+      "sha256": "d00b0edcc3dd953cca6a488438863cd85ab6cf381e8f1beb2f252ea4fa111ca8",
+      "status": "READY",
+      "token_match": true
+    },
+    {
+      "T0": "2026-10-13",
+      "bytes": 89259,
+      "http": 200,
+      "name": "sector_detail",
+      "sha256": "c18beb769542cb9341dc2a985462af7f5d7dc9944e340c7dfa4fb47d5cbf00c1",
+      "status": "READY",
+      "token_match": true
+    },
+    {
+      "bytes": 1041,
+      "expected_strings": false,
+      "http": 200,
+      "name": "research_page",
+      "sha256": "739ff3164484fb63fe04aecfe6a4a4290941bed3654d91f1b728ebf3b5e104d1"
+    },
+    {
+      "bytes": 34844,
+      "expected_strings": true,
+      "http": 200,
+      "name": "priority_js",
+      "sha256": "2f7b4a258203c2a5b9a2569e312d20a23d539b30e639cbe6d301f303a930284a"
+    },
+    {
+      "bytes": 22634,
+      "expected_strings": true,
+      "http": 200,
+      "name": "identity_labels",
+      "sha256": "03847bbb9491107e40d326585cf3377cbc66e2d26b721a816d582044d9afb22f"
+    }
+  ],
+  "context_token": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+  "contract_id": "V4_R6_PRODUCTION_HTTP_SMOKE_R1",
+  "intermediate_packages": [
+    "V4_PACKAGE_1.1.4_4c031f43788d",
+    "V4_PACKAGE_1.1.5_ddd35de905bb"
+  ],
+  "package_id": "V4_PACKAGE_1.1.6_44d446ed72bd",
+  "pid": 21288,
+  "previous_package_id": "V4_PACKAGE_1.0.0_88cc19deae3b"
+}

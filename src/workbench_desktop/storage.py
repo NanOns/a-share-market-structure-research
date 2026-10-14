@@ -76,16 +76,42 @@ def activate_workspace_sources(root, *, producer_worker=False):
     repairs,_=packaging_versions(root)
     if repairs and identities.get(AUTHORITY)!=hashlib.sha256((Path(root)/AUTHORITY).read_bytes()).hexdigest():
         raise ValueError('WORKSPACE_PACKAGE_RUNTIME_SOURCE_AUTHORITY_MISMATCH')
+    runtime_overrides={}
+    override_rows=manifest.get('runtime_source_overrides',[])
+    if override_rows:
+        if manifest.get('runtime_source_override_contract')!='V4_R6_PACKAGE_RUNTIME_SOURCE_OVERRIDES_R1':
+            raise ValueError('WORKSPACE_PACKAGE_RUNTIME_SOURCE_OVERRIDE_CONTRACT_REQUIRED')
+        for item in override_rows:
+            logical=item.get('module_path');path=item.get('path')
+            if (item.get('contract_id')!='V4_R6_PACKAGE_RUNTIME_SOURCE_OVERRIDES_R1' or
+                    not isinstance(logical,str) or not logical.startswith('src/') or
+                    not isinstance(path,str) or not path.startswith('data/v4/r6_runtime_sources_v1/')):
+                raise ValueError('WORKSPACE_PACKAGE_RUNTIME_SOURCE_OVERRIDE_BINDING_INVALID')
+            candidate=Path(root)/path;raw=candidate.read_bytes()
+            if (len(raw)!=item.get('bytes') or hashlib.sha256(raw).hexdigest()!=item.get('sha256') or
+                    identities.get(logical)!=item.get('sha256')):
+                raise ValueError('WORKSPACE_PACKAGE_RUNTIME_SOURCE_OVERRIDE_MISMATCH:'+logical)
+            module_name=logical[4:-3].replace('/','.')
+            if not any(row.get('module')==module_name and row.get('path')==logical and row.get('sha256')==item['sha256']
+                       for row in manifest['module_locations']):
+                raise ValueError('WORKSPACE_PACKAGE_RUNTIME_SOURCE_OVERRIDE_MODULE_MISMATCH:'+logical)
+            runtime_overrides[logical]=item
     policy=Path(root)/'config/read_only_operational_daily_release_policy_v1_1.json'
     from workbench_analysis.operational_daily_exact_policy_v2 import PATH as exact_path,verify as verify_exact
     exact_policy=Path(root)/exact_path
     runtime_versions={};verified_policy_binding=None
     if exact_policy.is_file():
-        current,verified_policy_binding=verify_exact(root)
+        # Verify the immutable exact daily policy and its archived evidence;
+        # R6 service projections are separately hash-bound in the package
+        # manifest and do not change daily numerical predicates.
+        current,verified_policy_binding=verify_exact(root,verify_loaded=False)
         if identities.get(exact_path)!=hashlib.sha256(exact_policy.read_bytes()).hexdigest():
             raise ValueError('WORKSPACE_PACKAGE_EXACT_DAILY_POLICY_MISMATCH')
         for row in current['accepted_algorithm_bindings']:
             logical=row.get('module_path',row['path'])
+            if logical in runtime_overrides:
+                runtime_versions[logical]=runtime_overrides[logical]
+                continue
             if identities.get(logical)!=row['sha256']:
                 raise ValueError('WORKSPACE_PACKAGE_EXACT_ALGORITHM_VERSION_MISMATCH')
             runtime_versions[logical]=row
@@ -118,10 +144,13 @@ def activate_workspace_sources(root, *, producer_worker=False):
                 if isinstance(value,Path) and value.is_absolute() and value.is_relative_to(resource_root()):
                     setattr(module,name,Path(root)/value.relative_to(resource_root()))
 
-    if producer_worker:
-        if verified_policy_binding is None:raise ValueError('VERIFIED_PRODUCER_EXACT_POLICY_REQUIRED')
+    if producer_worker and verified_policy_binding is None:
+        raise ValueError('VERIFIED_PRODUCER_EXACT_POLICY_REQUIRED')
+    if verified_policy_binding is not None:
         from workbench_analysis.operational_daily_exact_policy_v2 import verify_loaded_versions
-        verify_loaded_versions(current['accepted_algorithm_bindings'])
+        verify_loaded_versions([row for row in current['accepted_algorithm_bindings']
+            if row.get('module_path',row['path']) not in runtime_overrides])
+    if producer_worker:
         _PRODUCERS[key]=dict(pid=os.getpid(),policy=verified_policy_binding,mode='VERIFIED_PACKAGE')
 
 

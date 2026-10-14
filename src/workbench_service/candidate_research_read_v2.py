@@ -1,37 +1,102 @@
 """Optional, head-bound candidate display. No formal fields or counts change."""
 import json
+import hashlib
 import re
 from pathlib import Path
+from datetime import datetime, time
+from zoneinfo import ZoneInfo
 from workbench_analysis.r43_owner_replay import checked
 from workbench_analysis.r43_operational_publication import digest
 
 CONTRACT='OPERATIONAL_CANDIDATE_DISPLAY_READ_V2'
 
 
-def first_capture_readiness(head, day, sessions):
-    """Pure status for the next first-capture gate; performs no extraction or writes."""
+def first_capture_readiness(head, day, sessions, *, evaluated_at=None, session_close='15:00:00'):
+    """Pure, clock-aware first-capture status; performs no extraction or writes.
+
+    The session calendar supplies the candidate date, while the accepted
+    exchange close in the versioned V4 calendar contract supplies the T0
+    cutoff. A missing producer/receipt after that cutoff is reported as a
+    missed first capture and is never repaired by a later observation.
+    """
+    zone=ZoneInfo('Asia/Shanghai')
+    if evaluated_at is None:evaluated_at=datetime.now(zone)
+    elif isinstance(evaluated_at,str):evaluated_at=datetime.fromisoformat(evaluated_at)
+    if evaluated_at.tzinfo is None:evaluated_at=evaluated_at.replace(tzinfo=zone)
+    evaluated_at=evaluated_at.astimezone(zone)
     accepted=head.get('accepted_trade_date')
-    gate_day=accepted or day
-    owners=head.get('owners',{}).get(gate_day,{})
-    producer=head.get('cohort_signal_producers',{}).get(gate_day)
-    required={
-        'FULL_AS_RECORDED_SIGNAL_PRODUCER':producer,
-        'INDEPENDENT_VALIDATION_COHORT_OWNER':owners.get('validation_cohort'),
-        'COMPLETE_FIRST_CAPTURE_RECEIPT':head.get('cohort_capture_receipts',{}).get(gate_day),
-        'SEPARATE_FIRST_CAPTURE_WRITE_GRANT':head.get('cohort_write_grants',{}).get(gate_day),
-    }
-    missing=[name for name,binding in required.items() if not binding]
     next_session=None
     if accepted in sessions:
         index=sessions.index(accepted)
         if index+1<len(sessions):next_session=sessions[index+1]
-    status='NOT_DUE' if accepted in sessions and next_session else 'SOURCE_INCOMPLETE' if missing else 'CAPTURE_CANDIDATE_READY'
-    return dict(contract_id='COHORT_FIRST_CAPTURE_READINESS_VIEW_R1',status=status,
-        trade_date=day,accepted_trade_date=accepted,next_capture_session=next_session,
+    candidate_session=day if day in sessions and (not accepted or day>accepted) else next_session
+    gate_day=candidate_session or accepted or day
+    owners=head.get('owners',{}).get(gate_day,{})
+    producer=head.get('cohort_signal_producers',{}).get(gate_day)
+    capture=head.get('cohort_capture_receipts',{}).get(gate_day)
+    required={
+        'FULL_AS_RECORDED_SIGNAL_PRODUCER':producer,
+        'INDEPENDENT_VALIDATION_COHORT_OWNER':owners.get('validation_cohort'),
+        'COMPLETE_FIRST_CAPTURE_RECEIPT':capture,
+        'SEPARATE_FIRST_CAPTURE_WRITE_GRANT':head.get('cohort_write_grants',{}).get(gate_day),
+    }
+    missing=[name for name,binding in required.items() if not binding]
+    cutoff=(datetime.combine(datetime.fromisoformat(candidate_session).date(),time.fromisoformat(session_close),zone)
+            if candidate_session else None)
+    future_session=bool(candidate_session and evaluated_at.date()<cutoff.date())
+    before_cutoff=bool(cutoff and evaluated_at<cutoff)
+    if not candidate_session:
+        status='NOT_VERIFIABLE';missing_reason='OFFICIAL_SESSION_CALENDAR_COVERAGE_UNAVAILABLE'
+    elif future_session or before_cutoff:
+        status='PENDING_NEXT_SESSION'
+        missing_reason='PENDING_FUTURE_SESSION'
+    elif not producer or not capture:
+        status='SOURCE_NOT_CAPTURED'
+        missing_reason='NOT_CAPTURED_AT_T0' if cutoff and evaluated_at>=cutoff else 'MISSING_SOURCE'
+    elif required['INDEPENDENT_VALIDATION_COHORT_OWNER'] is None or required['SEPARATE_FIRST_CAPTURE_WRITE_GRANT'] is None:
+        status='NOT_ADMITTED';missing_reason='NOT_ADMITTED'
+    else:
+        status='CAPTURE_READY';missing_reason=None
+    receipt=capture or {}
+    admitted=receipt.get('admitted_count')
+    if receipt.get('admission_status')=='ADMITTED' and admitted==0:status='ADMITTED_ZERO'
+    elif receipt.get('admission_status')=='ADMITTED' and isinstance(admitted,int) and admitted>0:status='ADMITTED_NONZERO'
+    settlement=receipt.get('settlement_status')
+    if settlement in ('DUE_UNSETTLED','SETTLED'):
+        settlement_status=settlement
+    elif receipt.get('due_at'):
+        due_at=datetime.fromisoformat(receipt['due_at'])
+        if due_at.tzinfo is None:due_at=due_at.replace(tzinfo=zone)
+        settlement_status='NOT_DUE' if evaluated_at<due_at.astimezone(zone) else 'DUE_UNSETTLED'
+    else:settlement_status='NOT_DUE'
+    missing_reasons={name:('MISSING_SOURCE' if name=='FULL_AS_RECORDED_SIGNAL_PRODUCER' else
+                          'NOT_CAPTURED_AT_T0' if name=='COMPLETE_FIRST_CAPTURE_RECEIPT' and cutoff and evaluated_at>=cutoff else
+                          'PENDING_FUTURE_SESSION' if candidate_session and cutoff and evaluated_at<cutoff else
+                          'NOT_ADMITTED') for name in missing}
+    return dict(contract_id='COHORT_FIRST_CAPTURE_READINESS_VIEW_R2',status=status,
+        trade_date=day,as_of_trade_date=accepted,evaluated_at=evaluated_at.isoformat(),accepted_trade_date=accepted,
+        next_session=next_session,next_capture_session=candidate_session,
+        capture_deadline=cutoff.isoformat() if cutoff else None,
+        first_available_at=receipt.get('first_available_at'),
         capture_condition='NEXT_SESSION_ACCEPTED_WITH_FULL_AS_RECORDED_SIGNAL_LEDGER_AND_INDEPENDENT_OWNER_AND_GRANT',
-        missing_inputs=missing,production_write_authorized=False,formal_cohort_enrollment_enabled=False,
-        observed_count=None,matured_count=None,settled_count=None,
+        missing_inputs=missing,missing_input_reasons=missing_reasons,missing_reason=missing_reason,
+        capture_state='NOT_CAPTURED_AT_T0' if not capture and cutoff and evaluated_at>=cutoff else 'CAPTURE_PRESENT' if capture else 'PENDING',
+        admission_status=receipt.get('admission_status','NOT_ADMITTED'),settlement_status=settlement_status,
+        production_write_authorized=False,formal_cohort_enrollment_enabled=False,
+        observed_count=receipt.get('observed_count'),admitted_count=admitted,
+        matured_count=receipt.get('matured_count'),settled_count=receipt.get('settled_count'),
         historical_backfill_permitted=False)
+
+
+def capture_calendar_contract(root):
+    """Return the accepted close-time contract identity without guessing a cutoff."""
+    path=Path(root)/'config/v4_dm01_bridge_calendar_v1.json'
+    raw=path.read_bytes();document=json.loads(raw)
+    runtime=document.get('runtime',{})
+    if document.get('contract_id')!='V4_DM01_OFFICIAL_CALENDAR_BRIDGE_V1' or runtime.get('timezone')!='Asia/Shanghai' or not runtime.get('market_close_local'):
+        raise ValueError('SESSION_CUTOFF_CONTRACT_INVALID')
+    return runtime['market_close_local'],dict(path=path.relative_to(root).as_posix(),sha256=hashlib.sha256(raw).hexdigest(),
+        contract_id=document['contract_id'],timezone=runtime['timezone'])
 
 
 def checked_dependency(root,binding):
@@ -105,9 +170,12 @@ def read_candidates(root, *, head, token, day, sector_id=None):
         cohort_enrollment_enabled=False,trade_date=day)
     try:
         from workbench_analysis.market_source_acquisition import official_sessions
-        result['first_capture_readiness']=first_capture_readiness(head,day,official_sessions(root))
+        session_close,calendar_source=capture_calendar_contract(root)
+        gate=first_capture_readiness(head,day,official_sessions(root),session_close=session_close)
+        gate['calendar_source']=calendar_source
+        result['first_capture_readiness']=gate
     except (ValueError,KeyError,TypeError,OSError) as exc:
-        result['first_capture_readiness']=dict(contract_id='COHORT_FIRST_CAPTURE_READINESS_VIEW_R1',
+        result['first_capture_readiness']=dict(contract_id='COHORT_FIRST_CAPTURE_READINESS_VIEW_R2',
             status='NOT_VERIFIABLE',trade_date=day,next_capture_session=None,
             missing_inputs=['OFFICIAL_SESSION_CALENDAR'],reason=str(exc),
             production_write_authorized=False,formal_cohort_enrollment_enabled=False,

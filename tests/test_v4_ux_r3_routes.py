@@ -75,9 +75,14 @@ class UXR3RouteTests(unittest.TestCase):
     def test_first_capture_readiness_is_read_only_and_explains_next_gate(self):
         head={'accepted_trade_date':DAY,'owners':{DAY:{}},'cohort_signal_producers':{},
               'cohort_capture_receipts':{},'cohort_write_grants':{}}
-        gate=first_capture_readiness(head,DAY,['2026-10-12',DAY,'2026-10-14'])
-        self.assertEqual(gate['status'],'NOT_DUE')
+        gate=first_capture_readiness(head,DAY,['2026-10-12',DAY,'2026-10-14'],
+            evaluated_at='2026-10-14T15:01:00+08:00')
+        self.assertEqual(gate['status'],'SOURCE_NOT_CAPTURED')
         self.assertEqual(gate['next_capture_session'],'2026-10-14')
+        self.assertEqual(gate['as_of_trade_date'],DAY)
+        self.assertEqual(gate['missing_reason'],'NOT_CAPTURED_AT_T0')
+        self.assertEqual(gate['capture_state'],'NOT_CAPTURED_AT_T0')
+        self.assertEqual(gate['settlement_status'],'NOT_DUE')
         self.assertEqual(gate['missing_inputs'],[
             'FULL_AS_RECORDED_SIGNAL_PRODUCER','INDEPENDENT_VALIDATION_COHORT_OWNER',
             'COMPLETE_FIRST_CAPTURE_RECEIPT','SEPARATE_FIRST_CAPTURE_WRITE_GRANT'])
@@ -85,10 +90,32 @@ class UXR3RouteTests(unittest.TestCase):
         self.assertFalse(gate['formal_cohort_enrollment_enabled'])
         self.assertIsNone(gate['observed_count'])
         self.assertFalse(gate['historical_backfill_permitted'])
-        historical=first_capture_readiness(head,'2026-10-12',['2026-10-12',DAY,'2026-10-14'])
+        historical=first_capture_readiness(head,'2026-10-12',['2026-10-12',DAY,'2026-10-14'],
+            evaluated_at='2026-10-14T15:01:00+08:00')
         self.assertEqual(historical['accepted_trade_date'],DAY)
         self.assertEqual(historical['next_capture_session'],'2026-10-14')
         self.assertEqual(historical['missing_inputs'],gate['missing_inputs'])
+
+    def test_first_capture_waits_only_before_real_session_cutoff(self):
+        head={'accepted_trade_date':DAY,'owners':{DAY:{}},'cohort_signal_producers':{},
+              'cohort_capture_receipts':{},'cohort_write_grants':{}}
+        gate=first_capture_readiness(head,DAY,['2026-10-13','2026-10-14'],
+            evaluated_at='2026-10-13T19:43:00+08:00')
+        self.assertEqual(gate['status'],'PENDING_NEXT_SESSION')
+        self.assertEqual(gate['next_capture_session'],'2026-10-14')
+        self.assertEqual(gate['missing_input_reasons']['COMPLETE_FIRST_CAPTURE_RECEIPT'],'PENDING_FUTURE_SESSION')
+
+    def test_first_capture_distinguishes_admission_from_capture(self):
+        target='2026-10-14'
+        head={'accepted_trade_date':DAY,'owners':{target:{'validation_cohort':{'sha256':'a'*64}}},
+              'cohort_signal_producers':{target:{'sha256':'b'*64}},
+              'cohort_capture_receipts':{target:{'first_available_at':'2026-10-14T14:59:00+08:00','observed_count':0}},
+              'cohort_write_grants':{}}
+        gate=first_capture_readiness(head,DAY,['2026-10-13','2026-10-14'],
+            evaluated_at='2026-10-14T16:00:00+08:00')
+        self.assertEqual(gate['status'],'NOT_ADMITTED')
+        self.assertEqual(gate['first_available_at'],'2026-10-14T14:59:00+08:00')
+        self.assertFalse(gate['historical_backfill_permitted'])
 
     def test_preview_serves_checkout_assets_separately_from_data_root(self):
         static_root=Path(__file__).resolve().parents[1]/'src/workbench_service/static'

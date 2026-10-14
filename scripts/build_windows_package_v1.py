@@ -11,12 +11,70 @@ import sys
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT/'src') not in sys.path:
+    sys.path.insert(0,str(ROOT/'src'))
 BUILD = Path('G:/codex_tmp/windows_package_v1')
 DELIVERY = Path('G:/codex work/大A交易_交付/windows_package_v1')
+PACKAGE_VERSION = '1.1.6'
+PYINSTALLER_SOURCE_PATHS = []
+RESOURCE_SOURCE_OVERRIDES = {}
+R6_RUNTIME_SOURCE_OVERRIDES = []
 
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def stage_exact_version(binding, module_locations):
+    logical=binding.get('module_path',binding['path'])
+    RESOURCE_SOURCE_OVERRIDES[logical]=ROOT/binding['path']
+    if not (logical.startswith(('src/','scripts/')) and logical.endswith('.py')):
+        return
+    relative=logical[4:] if logical.startswith('src/') else logical
+    overlay=BUILD/('accepted_sources_'+binding['sha256'][:16])
+    staged=overlay/relative
+    staged.parent.mkdir(parents=True,exist_ok=True)
+    shutil.copyfile(ROOT/binding['path'],staged)
+    if overlay not in PYINSTALLER_SOURCE_PATHS: PYINSTALLER_SOURCE_PATHS.append(overlay)
+    name=(logical[4:-3] if logical.startswith('src/') else logical[:-3]).replace('/','.')
+    if name.endswith('.__init__'): name=name[:-9]
+    for row in module_locations:
+        if row['module']==name:
+            row.update(path=logical,sha256=binding['sha256'],
+                       inclusion_reason='EXACT_V2_POLICY_BOUND_VERSIONED_SOURCE')
+
+
+def prepare_r6_runtime_source_overrides(module_locations):
+    """Bind R6 presentation/runtime sources separately from exact daily math."""
+    global R6_RUNTIME_SOURCE_OVERRIDES
+    logical='src/workbench_service/core_product_bff_r1.py'
+    source=ROOT/logical;raw=source.read_bytes();digest=hashlib.sha256(raw).hexdigest()
+    relative=f'data/v4/r6_runtime_sources_v1/{digest}/{logical}'
+    archive=ROOT/relative
+    if archive.exists() and archive.read_bytes()!=raw:
+        raise ValueError('R6_RUNTIME_SOURCE_IMMUTABLE_CONFLICT:'+logical)
+    if not archive.exists():
+        archive.parent.mkdir(parents=True,exist_ok=True)
+        temp=archive.with_suffix(archive.suffix+'.tmp');temp.write_bytes(raw);os.replace(temp,archive)
+    binding=dict(contract_id='V4_R6_PACKAGE_RUNTIME_SOURCE_OVERRIDES_R1',
+        module_path=logical,path=relative,sha256=digest,bytes=len(raw),
+        scope='R6_HOME_SUMMARY_AND_RESEARCH_PRESENTATION; NO_DAILY_NUMERICAL_PREDICATE_CHANGE')
+    contract=dict(contract_id='V4_R6_PACKAGE_RUNTIME_SOURCE_OVERRIDES_R1',version='1.0.0',bindings=[binding])
+    registry=ROOT/'config/v4_r6_package_runtime_source_overrides_r1.json'
+    registry_raw=(json.dumps(contract,ensure_ascii=False,sort_keys=True,indent=2)+'\n').encode()
+    registry.parent.mkdir(parents=True,exist_ok=True)
+    temp=registry.with_suffix(registry.suffix+'.tmp');temp.write_bytes(registry_raw);os.replace(temp,registry)
+    RESOURCE_SOURCE_OVERRIDES[logical]=archive
+    R6_RUNTIME_SOURCE_OVERRIDES=[binding]
+    name='workbench_service.core_product_bff_r1'
+    for row in module_locations:
+        if row['module']==name:
+            row.update(path=logical,sha256=digest,
+                       inclusion_reason='R6_VERSIONED_RUNTIME_SOURCE_OVERRIDE_R1')
+            break
+    else:
+        raise ValueError('R6_RUNTIME_SOURCE_MODULE_NOT_IN_PACKAGE:'+name)
+    return [archive]
 
 
 def inventory():
@@ -127,6 +185,7 @@ def exact_metadata_resources(root,policy_binding,policy,max_json_bytes=2*1024*10
 
 
 def prepare():
+    global PYINSTALLER_SOURCE_PATHS
     for key in ('TMP','TEMP','TMPDIR'):
         os.environ[key] = 'G:/codex_tmp'
     os.environ['PYINSTALLER_CONFIG_DIR'] = str(BUILD/'pyinstaller_cache')
@@ -157,6 +216,8 @@ def prepare():
     files = [ROOT/row['path'] for row in graph['modules']]
     module_locations=list(graph['modules'])
     known_modules={row['module'] for row in module_locations}
+    r6_runtime_archives=prepare_r6_runtime_source_overrides(module_locations)
+    files.extend(r6_runtime_archives)
     policy=json.loads((ROOT/'config/read_only_operational_daily_release_policy_v1_1.json').read_bytes())
     from workbench_desktop.closeout_runtime_sources_r1 import packaging_versions,AUTHORITY
     runtime_repairs,_=packaging_versions(ROOT)
@@ -167,6 +228,17 @@ def prepare():
         exact_policy,policy_binding=verify_exact(ROOT,candidate_only=True)
         exact_versions={b.get('module_path',b['path']):b for b in exact_policy['accepted_algorithm_bindings']}
         files.extend(ROOT/b['path'] for b in exact_versions.values())
+        for binding in exact_versions.values():
+            logical=binding.get('module_path',binding['path'])
+            source=ROOT/logical
+            if any(item['module_path']==logical for item in R6_RUNTIME_SOURCE_OVERRIDES):
+                # Preserve the immutable exact-policy archive, but package the
+                # independently versioned R6 service projection as the module
+                # loaded by the product runtime.
+                files.append(ROOT/binding['path'])
+                continue
+            if not source.is_file() or sha(source)!=binding['sha256']:
+                stage_exact_version(binding,module_locations)
         # Complete original component archives are policy-bound even if an AST
         # branch does not import every component in this specific runtime.
         from workbench_analysis.r43_owner_replay import checked
@@ -179,12 +251,18 @@ def prepare():
         if sha(source)!=binding['sha256']:
             version=exact_versions.get(binding['path'])
             repair=runtime_repairs.get(binding['path'])
-            if version and sha(source)==version['sha256']:
+            if version and sha(ROOT/version['path'])==version['sha256']:
+                # The exact V2 policy binds a versioned source archive while
+                # the historical checkout may retain its earlier module. Use
+                # that verified source both for frozen code and introspection;
+                # keep the historical checkout bytes intact.
+                stage_exact_version(version,module_locations)
                 files.append(ROOT/version['path'])
             elif repair and sha(source)==repair['runtime']['sha256']:
                 files.extend(ROOT/repair[key]['path'] for key in ('upstream','runtime'))
             else:raise ValueError('ACCEPTED_ALGORITHM_ORIGINAL_CHANGED:'+binding['path'])
-        files.append(source)
+        else:
+            files.append(source)
         if source.suffix=='.py' and source.is_relative_to(ROOT/'src'):
             name='.'.join(source.relative_to(ROOT/'src').with_suffix('').parts)
             if name not in known_modules:
@@ -217,8 +295,9 @@ def prepare():
         relative = source.relative_to(ROOT).as_posix()
         target = resources/relative
         target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(source, target)
-        entries.append(dict(path=relative, sha256=sha(source), bytes=source.stat().st_size))
+        resource_source=RESOURCE_SOURCE_OVERRIDES.get(relative,source)
+        shutil.copyfile(resource_source, target)
+        entries.append(dict(path=relative, sha256=sha(resource_source), bytes=resource_source.stat().st_size))
     for source in sorted(git_target.iterdir()):
         entries.append(dict(path=source.relative_to(resources).as_posix(), sha256=sha(source), bytes=source.stat().st_size))
     for source in sorted(notices.rglob('*')):
@@ -232,10 +311,12 @@ def prepare():
         sdk_callable_source_sha256={name:hashlib.sha256(inspect.getsource(getattr(baostock,name)).encode()).hexdigest()
             for name in ('query_stock_industry','query_history_k_data_plus')},
         contract='Unchanged accepted reconstructed Rotation evaluator and exact installed BaoStock callable logical sources')
-    manifest = dict(contract_id='V4_WINDOWS_FULL_PACKAGE_MANIFEST_V1', build_release_id='V4_PACKAGE_1.0.0_'+identity[:12],
+    manifest = dict(contract_id='V4_WINDOWS_FULL_PACKAGE_MANIFEST_V1', build_release_id='V4_PACKAGE_'+PACKAGE_VERSION+'_'+identity[:12],
         source_sha=identity, source_identity_kind='SHA256_EXACT_RESOURCE_LIST', workspace_schema_version=1,
         baseline_git_commit=subprocess.check_output(['git','rev-parse','HEAD'], cwd=ROOT, text=True).strip(),
         resources=entries,module_locations=module_locations,source_introspection_bindings=introspection,
+        runtime_source_override_contract='V4_R6_PACKAGE_RUNTIME_SOURCE_OVERRIDES_R1',
+        runtime_source_overrides=R6_RUNTIME_SOURCE_OVERRIDES,
         built_at=datetime.now(timezone.utc).isoformat(),
         workspace_policy='Existing independently verified G workspace; immutable referenced artifacts retain original bytes.',
         python=sys.version, external_python_required=False, formal_release=False)
@@ -253,6 +334,8 @@ def main():
         '--add-data',str(resources)+';resources', '--collect-all','baostock', '--collect-all','tzdata',
         '--runtime-hook',str(ROOT/'scripts/pyinstaller_workspace_paths_v1.py'),
         '--hidden-import','pystray._win32']
+    for source_path in reversed(PYINSTALLER_SOURCE_PATHS):
+        command[command.index('--paths'):command.index('--paths')]=['--paths',str(source_path)]
     for module in manifest['module_locations']:
         if module['module'] != 'run_desktop':
             command += ['--hidden-import',module['module']]

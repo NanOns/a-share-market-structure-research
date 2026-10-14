@@ -1,0 +1,34 @@
+{
+  "contract_id": "SECTOR_LIFECYCLE_RECONSTRUCTED_V1",
+  "version": "1.0.0",
+  "evidence_scope": "CURRENT_RECONSTRUCTED_RESEARCH_ONLY",
+  "historical_window_sessions": 5,
+  "maturity": {
+    "required_inputs": ["sector_rs5", "sector_rs20", "breadth_ret5", "breadth_ret20", "seed_retention", "participation_proxy", "sector_quote_coverage"],
+    "minimum_quote_coverage": 0.7,
+    "developing": {"minimum_matched_predicates": 3},
+    "mature": {"minimum_matched_predicates": 6},
+    "predicates": {
+      "RS5_POSITIVE": {"field": "sector_rs5", "operator": "gt", "value": 0},
+      "RS20_POSITIVE": {"field": "sector_rs20", "operator": "gt", "value": 0},
+      "BREADTH5_BROAD": {"field": "breadth_ret5", "operator": "gte", "value": 0.5},
+      "BREADTH20_BROAD": {"field": "breadth_ret20", "operator": "gte", "value": 0.5},
+      "SEED_RETENTION_PRESENT": {"field": "seed_retention", "operator": "gte", "value": 0.5},
+      "PARTICIPATION_BROAD": {"field": "participation_proxy", "operator": "gte", "value": 0.9}
+    },
+    "states": ["NONE", "EARLY", "DEVELOPING", "MATURE", "UNKNOWN"]
+  },
+  "health": {
+    "required_inputs": ["sector_rs5", "breadth_ret1", "breadth_ret5", "seed_retention", "sector_quote_coverage"],
+    "minimum_quote_coverage": 0.7,
+    "states": ["NONE", "WATCH", "WEAKENING", "DAMAGED", "UNKNOWN"],
+    "weakening_predicates": ["RS5_WORSENED", "BREADTH1_WORSENED", "SEED_RETENTION_WORSENED"],
+    "damaged_rule": "RS5_NEGATIVE_AND_BREADTH5_BELOW_0_25",
+    "weakening_minimum_matches": 2
+  },
+  "unknown_rules": ["MISSING_REQUIRED_VALUE", "LOW_QUOTE_COVERAGE", "LESS_THAN_5_ACCEPTED_SESSIONS", "MISSING_PRIOR_SESSION", "NON_COMPARABLE_MEMBERSHIP_SNAPSHOT"],
+  "strict_historical_pit": "WAIT_REAL_SESSION_NOT_AS_RECORDED",
+  "future_inputs_permitted": false,
+  "none_is_not_unknown": true,
+  "probability_claims": false
+}

@@ -137,26 +137,42 @@ class UXR2RouteContractTests(unittest.TestCase):
     def test_confirmed_ipo_identity_does_not_replace_code_status(self):
         identity = {'code_status': 'CONFIRMED_IPO', 'first_seen_date': self.day, 'list_date': self.day}
         status = current_identity_presentation(identity, {'path': 'identity.json', 'sha256': 'b' * 64}, self.day)
-        self.assertEqual(status['value'], 'CONFIRMED_CURRENT_IDENTITY')
+        self.assertEqual(status['value'], 'CURRENT_IDENTITY_PRESENT')
         self.assertEqual(identity['code_status'], 'CONFIRMED_IPO')
 
     def test_code_status_uses_dated_identity_and_never_marks_every_row_new(self):
         source = {'path': 'identity.json', 'sha256': 'b' * 64}
-        old = code_status_presentation({'symbol': 'SH.600703', 'list_date': '1996-05-28'}, source, self.day)
-        new = code_status_presentation({'symbol': 'SZ.301660', 'list_date': self.day}, source, self.day)
+        old = code_status_presentation({'symbol': 'SH.600703', 'list_date': '1996-05-28', 'code_status':'NEW_CODE_OBSERVED'}, source, self.day)
+        new = code_status_presentation({'symbol': 'SZ.301660', 'list_date': self.day, 'first_seen_date':self.day}, source, self.day)
         missing = code_status_presentation({}, source, self.day)
         self.assertEqual((old['value'], old['quality']), ('EXISTING_VERIFIED_IDENTITY', 'KNOWN'))
         self.assertEqual((new['value'], new['quality']), ('NEW_CODE_OBSERVED', 'KNOWN'))
         self.assertEqual((missing['value'], missing['quality']), ('UNKNOWN', 'SOURCE_INCOMPLETE'))
 
+    def test_identity_dates_are_separate_from_raw_owner_code_status(self):
+        from workbench_service.core_product_bff_r1 import identity_date_statuses
+        source={'path':'identity.json','sha256':'b'*64}
+        old=identity_date_statuses({'list_date':'1996-05-28','first_seen_date':'1996-05-28','code_status':'NEW_CODE_OBSERVED'},source,self.day)
+        ipo=identity_date_statuses({'list_date':self.day,'first_seen_date':self.day,'code_status':'NEW_CODE_OBSERVED'},source,self.day)
+        self.assertEqual(old['listing_status']['value'],'LISTED_BEFORE')
+        self.assertEqual(old['first_seen_status']['value'],'OBSERVED_BEFORE')
+        self.assertEqual(old['owner_code_status']['value'],'NEW_CODE_OBSERVED')
+        self.assertEqual(ipo['listing_status']['value'],'LISTED_TODAY')
+        self.assertEqual(ipo['first_seen_status']['value'],'FIRST_OBSERVED_TODAY')
+        self.assertEqual(ipo['ipo_confirmation_status']['value'],'IPO_NOT_INDEPENDENTLY_CONFIRMED')
+
     def test_indexed_stock_page_recomputes_code_status_from_dated_identity(self):
         payload = {'items': [
-            {'identity_observation': {'list_date': '1996-05-28'}, 'fields': {'code_status': {'value': 'NEW_CODE_OBSERVED'}}},
+            {'identity_observation': {'list_date': '1996-05-28', 'code_status':'NEW_CODE_OBSERVED',
+              'owner_code_status':{'value':'NEW_CODE_OBSERVED','quality':'KNOWN','source':{'path':'profile.json','sha256':'c'*64}}},
+             'fields': {'code_status': {'value': 'NEW_CODE_OBSERVED'}}},
             {'identity_observation': {'first_seen_date': self.day}, 'fields': {'code_status': {'value': 'NEW_CODE_OBSERVED'}}},
         ], 'item': {'identity_observation': {'list_date': '1996-05-28'},
                    'fields': {'code_status': {'value': 'NEW_CODE_OBSERVED'}}}}
         result = normalize_indexed_code_status(payload, self.day)
         self.assertEqual(result['items'][0]['fields']['code_status']['value'], 'EXISTING_VERIFIED_IDENTITY')
+        self.assertEqual(result['items'][0]['fields']['owner_code_status']['value'],'NEW_CODE_OBSERVED')
+        self.assertEqual(result['items'][0]['fields']['owner_code_status']['source']['path'],'profile.json')
         self.assertEqual(result['items'][1]['fields']['code_status']['value'], 'NEW_CODE_OBSERVED')
         self.assertEqual(result['item']['fields']['code_status']['value'], 'EXISTING_VERIFIED_IDENTITY')
 
@@ -198,11 +214,11 @@ class UXR2RouteContractTests(unittest.TestCase):
                   'risks': [{'entity_id': 'SEC-1', 'fields': {'effective_event': {'value': 'WEAKENED'}}}],
                   'counts': {'forward': {'value': 15}}}
         result = annotate_home_readiness(source)
-        self.assertEqual(result['market']['regime_publication_status'], 'NOT_PUBLISHED_V4_03')
+        self.assertEqual(result['market']['regime_publication_status'], 'ACCEPTED')
         self.assertEqual(result['market']['formal_risk_status'], 'SOURCE_INCOMPLETE')
         self.assertEqual(result['risks'], [])
         self.assertEqual(result['focus_risk_events'], source['risks'])
-        self.assertEqual(result['risk_families']['sector_ecology']['value'], None)
+        self.assertEqual(result['risk_families']['SECTOR_ECOLOGY_RISK']['value'], None)
         self.assertIsNone(result['counts']['forward']['value'])
         self.assertEqual(source['market']['regime_publication_status'], 'ACCEPTED')
         self.assertEqual(source['risks'], result['focus_risk_events'])
@@ -224,7 +240,7 @@ class UXR2RouteContractTests(unittest.TestCase):
         bff._read_index_r2=lambda _:Index()
         code,result=bff.get('/api/v4/home',{'trade_date':day,'context_token':token})
         self.assertEqual(code,200)
-        self.assertEqual(result['market']['regime_publication_status'],'NOT_PUBLISHED_V4_03')
+        self.assertEqual(result['market']['regime_publication_status'],'ACCEPTED')
         self.assertEqual(result['risks'],[])
         self.assertEqual(len(result['focus_risk_events']),1)
         self.assertIsNone(result['counts']['forward']['value'])

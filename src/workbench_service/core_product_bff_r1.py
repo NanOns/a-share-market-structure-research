@@ -3,7 +3,7 @@ from pathlib import Path
 from urllib.parse import unquote
 from collections import Counter
 from copy import deepcopy
-import json, gzip
+import json, gzip, re
 from .operational_successor_bff_v1 import OperationalSuccessorBFFV1
 from .r43_operational_bff import owner_cell
 from .stock_views import aggregate
@@ -11,6 +11,7 @@ from .domain_views import CHANGE_EVENTS, RISK_EVENTS, ROTATIONS
 from workbench_analysis.r43_owner_replay import checked
 from workbench_analysis.validation_cohort_read_contract_r3 import read_statistics, read_authorized_statistics
 from .research_hypotheses_r3 import competing_explanations
+from .operational_risk_v1 import build_stock_family,build_sector_family,build_market_family
 
 CONTRACT='CORE_PRODUCT_BFF_R1'
 
@@ -33,17 +34,18 @@ def annotate_home_readiness(payload, *, cohort_authorized=False):
     result=deepcopy(payload)
     market=result.get('market')
     if isinstance(market,dict):
-        market['regime_publication_status']='NOT_PUBLISHED_V4_03'
-        market['formal_risk_status']='SOURCE_INCOMPLETE'
-        market['formal_risk_reason']='DATED_OPERATIONAL_RISK_CHANGE_OWNER_NOT_PRESENT'
+        market.setdefault('regime_publication_status','NOT_PUBLISHED_V4_03')
+        market.setdefault('formal_risk_status','SOURCE_INCOMPLETE')
+        market.setdefault('formal_risk_reason','DATED_OPERATIONAL_RISK_CHANGE_OWNER_NOT_PRESENT')
     # Focus weakens remain useful evidence, but they do not establish the
     # independent stock-structure, sector-ecology and market-pressure families.
-    result['focus_risk_events']=result.get('risks') or []
+    result['focus_risk_events']=result.get('focus_risk_events') or result.get('risks') or []
     result['focus_risk_scope']='FOCUS_OWNER_RISK_EVENTS_ONLY; NOT_COMPLETE_RISK_FAMILIES'
-    result['risks']=[]
-    result['risk_families']={key:dict(status='SOURCE_INCOMPLETE',value=None,
-        reason='DATED_OPERATIONAL_RISK_CHANGE_OWNER_NOT_PRESENT')
-        for key in ('stock_structure','sector_ecology','market_pressure')}
+    if not result.get('risk_families'):
+        result['risks']=[]
+        result['risk_families']={key:dict(status='SOURCE_INCOMPLETE',numerator=0,denominator=0,coverage=0.0,value=None,
+            reason='DATED_OPERATIONAL_RISK_CHANGE_OWNER_NOT_PRESENT')
+            for key in ('STOCK_STRUCTURE_RISK','SECTOR_ECOLOGY_RISK','MARKET_PRESSURE_RISK')}
     if not cohort_authorized:
         result.setdefault('counts',{})['forward']=dict(value=None,quality='SOURCE_INCOMPLETE',
             status='NOT_GRANTED',scope='FORMAL_VALIDATION_COHORT',
@@ -93,6 +95,34 @@ def prioritize_home_changes(changes):
         selected.setdefault(row['entity_id'],row)
     return list(selected.values())
 
+def mark_evaluated_sector_lifecycle(response):
+    """Expose tested NONE states as evaluated, including prebuilt PG pages."""
+    rows=list(response.get('items') or [])
+    if isinstance(response.get('item'),dict):rows.append(response['item'])
+    for row in rows:
+        fields=row.get('fields') or {}
+        for name in ('maturity','health'):
+            cell=fields.get(name)
+            if isinstance(cell,dict):
+                cell['evaluated']=cell.get('quality')=='KNOWN' and cell.get('value') not in (None,'UNKNOWN')
+    return response
+
+def mark_stock_d2_semantics(response):
+    rows=list(response.get('items') or [])
+    if isinstance(response.get('item'),dict):rows.append(response['item'])
+    for row in rows:
+        fields=row.get('fields') or {};scenario=fields.get('scenario') or {};status=fields.get('scenario_status') or {}
+        if isinstance(scenario,dict) and scenario.get('value')=='NONE':
+            scenario['evaluated']=status.get('value')=='KNOWN' or status.get('quality')=='KNOWN'
+        value=(fields.get('final_eligibility') or {}).get('value')
+        detectors=(fields.get('detector_statuses') or {}).get('value')
+        if value in ('TRUE','FALSE'):state=value;reason='OWNER_REDUCER_QUALIFICATION'
+        elif 'NOT_IMPLEMENTED' in str(detectors):state='NOT_IMPLEMENTED';reason='REQUIRED_DETECTOR_NOT_IMPLEMENTED'
+        else:state='UNKNOWN';reason='QUALIFICATION_INPUT_OR_DETECTOR_UNKNOWN'
+        fields['qualification_state']=dict(value=state,quality='KNOWN' if state in ('TRUE','FALSE') else state,
+            reason=reason,source=(fields.get('final_eligibility') or {}).get('source'))
+    return response
+
 def d2_selection_explanation(fields,source):
     fields=fields or {}
     def owner_field(name):
@@ -112,35 +142,74 @@ def d2_selection_explanation(fields,source):
 
 def current_identity_presentation(identity,source,day):
     identity=identity or {}
-    state=('CONFIRMED_CURRENT_IDENTITY' if identity.get('code_status')=='CONFIRMED_IPO'
-           else 'CURRENT_IDENTITY_PRESENT' if identity else 'CURRENT_IDENTITY_UNKNOWN')
-    return dict(value=state,quality='KNOWN' if identity else 'UNKNOWN',unit='state',as_of=day,
+    state='CURRENT_IDENTITY_PRESENT' if identity else 'CURRENT_IDENTITY_UNKNOWN'
+    return dict(contract_id='V4_IDENTITY_PRESENTATION_R2',value=state,quality='KNOWN' if identity else 'UNKNOWN',unit='state',as_of=day,
         reason=None if identity else 'CURRENT_IDENTITY_ROW_NOT_FOUND',source=source)
 
-def code_status_presentation(identity,source,day):
-    """Render code status without promoting every existing identity to a new code."""
-    identity=identity or {}
-    status=identity.get('code_status')
-    if status:
-        value=status;quality='KNOWN';reason=None
-    elif identity.get('first_seen_date')==day or identity.get('list_date')==day:
-        # A same-day first observation is evidence of a newly observed code,
-        # and an authoritative same-day listing date is equivalent evidence.
-        # Neither field by itself establishes a historical identity.
-        value='NEW_CODE_OBSERVED';quality='KNOWN'
-        reason=('FIRST_OBSERVED_ON_CURRENT_TRADE_DATE' if identity.get('first_seen_date')==day
-                else 'LISTED_ON_CURRENT_TRADE_DATE')
+def identity_link_presentation(identity,aliases,symbol,source,day):
+    """Describe the current code-to-security link, including historical aliases."""
+    if not identity:
+        return dict(contract_id='V4_IDENTITY_PRESENTATION_R2',value='UNKNOWN',quality='SOURCE_INCOMPLETE',unit='state',as_of=day,
+            reason='CURRENT_IDENTITY_ROW_NOT_FOUND',source=source)
+    current=str(symbol or '').upper()
+    code_aliases={str(value).upper() for value in (aliases or [])
+        if isinstance(value,str) and re.fullmatch(r'(?:SH|SZ|BJ)\.\d{6}',value.upper())}
+    for value in (identity.get('symbol'),identity.get('source_security_key')):
+        if isinstance(value,str) and re.fullmatch(r'(?:SH|SZ|BJ)\.\d{6}',value.upper()):
+            code_aliases.add(value.upper())
+    if current and current in code_aliases:
+        value='HISTORICAL_CODE_ALIAS_LINKED' if any(alias!=current for alias in code_aliases) else 'CURRENT_CODE_LINKED'
+        reason='CURRENT_CODE_AND_DATED_ALIAS_RESOLVE_TO_ONE_SECURITY' if value.startswith('HISTORICAL') else 'CURRENT_CODE_MATCHES_IDENTITY'
     else:
-        list_date=identity.get('list_date')
-        try:
-            existing=bool(list_date and list_date < day)
-        except TypeError:
-            existing=False
-        if existing:
-            value='EXISTING_VERIFIED_IDENTITY';quality='KNOWN';reason='DATED_IDENTITY_PREDATES_CURRENT_TRADE_DATE'
-        else:
-            value='UNKNOWN';quality='SOURCE_INCOMPLETE';reason='DATED_CODE_STATUS_NOT_REPORTED_BY_IDENTITY_OWNER'
-    return dict(value=value,quality=quality,unit='state',as_of=day,reason=reason,source=source)
+        value='UNKNOWN';reason='CURRENT_CODE_NOT_LINKED_IN_IDENTITY_ALIASES'
+    return dict(contract_id='V4_IDENTITY_PRESENTATION_R2',value=value,quality='KNOWN' if value!='UNKNOWN' else 'SOURCE_INCOMPLETE',unit='state',as_of=day,reason=reason,source=source)
+
+def code_status_presentation(identity,source,day):
+    """Render whether the current symbol itself is new as of this date.
+
+    Older Owner versions populated ``code_status=NEW_CODE_OBSERVED`` for rows
+    merely present in the identity acquisition batch. That batch-level value
+    cannot establish per-security code novelty, so dated identity facts are
+    authoritative here; the raw Owner value remains available separately.
+    """
+    identity=identity or {}
+    list_date=identity.get('list_date')
+    first_seen=identity.get('first_seen_date')
+    if list_date and list_date < day:
+        value='EXISTING_VERIFIED_IDENTITY';quality='KNOWN';reason='DATED_IDENTITY_PREDATES_CURRENT_TRADE_DATE'
+    elif list_date==day or first_seen==day:
+        value='NEW_CODE_OBSERVED';quality='KNOWN'
+        reason='LISTED_ON_CURRENT_TRADE_DATE' if list_date==day else 'FIRST_OBSERVED_ON_CURRENT_TRADE_DATE'
+    else:
+        value='UNKNOWN';quality='SOURCE_INCOMPLETE';reason='DATED_CODE_STATUS_NOT_PROVEN_BY_IDENTITY_DATES'
+    return dict(contract_id='V4_IDENTITY_PRESENTATION_R2',value=value,quality=quality,unit='state',as_of=day,reason=reason,source=source)
+
+def identity_date_statuses(identity,source,day,owner_code_status=None):
+    """Keep listing and first observation separate from per-symbol code status."""
+    identity=identity or {}
+    listing=identity.get('list_date')
+    first_seen=identity.get('first_seen_date')
+    confirmed_ipo=identity.get('confirmed_ipo_date')
+    if listing==day: listing_value='LISTED_TODAY';listing_reason='LIST_DATE_EQUALS_TRADE_DATE'
+    elif listing and listing<day: listing_value='LISTED_BEFORE';listing_reason='LIST_DATE_PRECEDES_TRADE_DATE'
+    elif listing and listing>day: listing_value='NOT_YET_LISTED';listing_reason='LIST_DATE_AFTER_TRADE_DATE'
+    else: listing_value='UNKNOWN';listing_reason='LIST_DATE_NOT_AVAILABLE'
+    if first_seen==day: first_value='FIRST_OBSERVED_TODAY';first_reason='FIRST_SEEN_DATE_EQUALS_TRADE_DATE'
+    elif first_seen and first_seen<day: first_value='OBSERVED_BEFORE';first_reason='FIRST_SEEN_DATE_PRECEDES_TRADE_DATE'
+    else: first_value='UNKNOWN';first_reason='FIRST_SEEN_DATE_NOT_AVAILABLE_OR_AFTER_TRADE_DATE'
+    if confirmed_ipo==day: ipo_value='CONFIRMED_IPO';ipo_reason='CONFIRMED_IPO_DATE_EQUALS_TRADE_DATE'
+    elif listing==day: ipo_value='IPO_NOT_INDEPENDENTLY_CONFIRMED';ipo_reason='LIST_DATE_PRESENT_WITHOUT_CONFIRMED_IPO_DATE'
+    elif listing and listing<day: ipo_value='NOT_IPO_TODAY';ipo_reason='LIST_DATE_PRECEDES_TRADE_DATE'
+    else: ipo_value='UNKNOWN';ipo_reason='IPO_CONFIRMATION_DATE_NOT_AVAILABLE'
+    owner_cell=owner_code_status if isinstance(owner_code_status,dict) else None
+    raw=owner_cell.get('value') if owner_cell else identity.get('code_status')
+    raw_source=(owner_cell.get('source') or source) if owner_cell else source
+    return {
+        'listing_status':dict(contract_id='V4_IDENTITY_PRESENTATION_R2',value=listing_value,quality='KNOWN' if listing_value!='UNKNOWN' else 'SOURCE_INCOMPLETE',unit='state',as_of=day,reason=listing_reason,source=source),
+        'first_seen_status':dict(contract_id='V4_IDENTITY_PRESENTATION_R2',value=first_value,quality='KNOWN' if first_value!='UNKNOWN' else 'SOURCE_INCOMPLETE',unit='state',as_of=day,reason=first_reason,source=source),
+        'ipo_confirmation_status':dict(contract_id='V4_IDENTITY_PRESENTATION_R2',value=ipo_value,quality='KNOWN' if ipo_value not in ('UNKNOWN','IPO_NOT_INDEPENDENTLY_CONFIRMED') else 'SOURCE_INCOMPLETE',unit='state',as_of=day,reason=ipo_reason,source=source),
+        'owner_code_status':dict(contract_id='V4_IDENTITY_PRESENTATION_R2',value=raw,quality=(owner_cell.get('quality') if owner_cell else None) or ('OBSERVED' if raw is not None else 'SOURCE_INCOMPLETE'),unit='source_state',as_of=day,reason='RAW_OWNER_CODE_STATUS_PRESERVED_WITHOUT_IDENTITY_INTERPRETATION' if raw is not None else 'OWNER_CODE_STATUS_MISSING',source=raw_source),
+    }
 
 def normalize_indexed_code_status(payload,day):
     """Repair stale list projections at read time using their dated identity facts."""
@@ -155,6 +224,10 @@ def normalize_indexed_code_status(payload,day):
         observation=row.get('identity_observation')
         source=previous.get('source') if isinstance(previous,dict) else None
         fields['code_status']=code_status_presentation(observation,source,day)
+        fields.update(identity_date_statuses(observation,source,day,
+            # A presentation value from an older index is never evidence for
+            # the distinct raw Owner field. Missing raw provenance stays null.
+            owner_code_status=observation.get('owner_code_status') if isinstance(observation,dict) else None))
     return payload
 
 class CoreProductBFFR1(OperationalSuccessorBFFV1):
@@ -325,12 +398,32 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
     def get(self,path,query):
         from workbench_db.v4_read_index_r2 import validate_query
         from workbench_db.v4_read_index_r1 import load as load_index_r1
-        day=validate_query({k:v for k,v in query.items() if k not in ('event_state','events_offset')},
+        day=validate_query({k:v for k,v in query.items() if k not in ('event_state','events_offset','scope','rankability')},
                            self.api.token,self.api.candidate['published_sessions'],
                            self.api.candidate['accepted_trade_date'],path)
-        index_route=(path in ('/api/v4/context','/api/v4/home','/api/v4/stocks','/api/v4/sectors','/api/v4/focus','/api/v4/radar') or
+        index_route=(path in ('/api/v4/context','/api/v4/home','/api/v4/stocks','/api/v4/sectors','/api/v4/focus','/api/v4/radar','/api/v4/radar/priority') or
                      path.startswith('/api/v4/stocks/') or path.startswith('/api/v4/sectors/') or path.startswith('/api/v4/focus/'))
         index_r2=self._read_index_r2(day) if index_route else None
+        if path=='/api/v4/radar/priority' and not getattr(self,'building_read_index',False):
+            if index_r2 is None:raise ValueError('READ_INDEX_R2_PRIORITY_CONTEXT_NOT_PREPARED')
+            context=index_r2.response('/api/v4/context')
+            if context is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
+            from workbench_db.v4_operational_risk_pg_r1 import load_priority
+            binding,priority=load_priority(self.api.root,self.api.token,day)
+            scope=query.get('scope','stocks')
+            if scope not in ('stocks','sectors'):raise ValueError('RESEARCH_PRIORITY_SCOPE_INVALID')
+            subset=priority[scope];rankability=query.get('rankability','RANKABLE')
+            if rankability not in ('RANKABLE','NOT_RANKABLE'):raise ValueError('RESEARCH_PRIORITY_RANKABILITY_INVALID')
+            rows=subset.get('all_items',[]) if rankability=='RANKABLE' else subset.get('not_rankable_rows',[])
+            offset=int(query.get('offset',0));limit=int(query.get('limit',30))
+            if not 0<=offset<=1000000 or not 1<=limit<=200:raise ValueError('INVALID_QUERY_BOUND')
+            items=rows[offset:offset+limit]
+            return 200,{k:context[k] for k in ('context','context_token','production_accepted','source_quality') if k in context}|{
+                'status':'READY' if items or not rows else 'EMPTY_VALID','contract_id':priority['contract_id'],
+                'priority_owner':binding,'rule':priority['rule'],'market_permission':priority['market_permission'],
+                'scope':scope,'rankability':rankability,'total':len(rows),'rankable_total':subset['rankable'],
+                'not_rankable_total':subset['not_rankable'],'offset':offset,'limit':limit,
+                'has_next':offset+len(items)<len(rows),'items':items,'T0':day,'context_token':self.api.token}
         if (index_r2 is not None and path.startswith('/api/v4/stocks/') and
                 path.endswith(('/profile','/evidence','/why-not','/why-not-prewatch'))):
             parts=[unquote(part) for part in path.split('/') if part]
@@ -353,18 +446,38 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 if path=='/api/v4/home':
                     cohort_ref=self.api.candidate['owners'][day].get('validation_cohort')
                     response=annotate_home_readiness(response,cohort_authorized=bool(cohort_ref))
+                    try:
+                        from workbench_db.v4_operational_risk_pg_r1 import load as load_risk_owner
+                        risk_binding,risk_owner=load_risk_owner(self.api.root,self.api.token,day)
+                        families=risk_owner['families'];response['risk_families']=families;response['risk_owner_source']=risk_binding
+                        response['focus_risk_scope']='FOCUS_OWNER_RISK_EVENTS_ONLY; NOT_COMPLETE_RISK_FAMILIES'
+                        response['risks']=[home_summary(dict(entity_id=item.get('entity_id'),display_name=item.get('display_name'),symbol=item.get('symbol'),
+                            fields={'effective_event':{'value':item['change'],'quality':'KNOWN','reason':item.get('reason_code')},
+                                'prior_state':{'value':item.get('prior_state'),'quality':'KNOWN' if item.get('prior_state') else 'SOURCE_INCOMPLETE'},
+                                'current_state':{'value':item.get('current_state'),'quality':'KNOWN'},
+                                'risk_family':{'value':family_name,'quality':'KNOWN'}},source=item.get('source')),
+                                HOME_STOCK_SUMMARY_FIELDS)
+                            for family_name,family in families.items() for item in family.get('changes',[])][:30]
+                        if isinstance(response.get('market'),dict):
+                            market_family=families.get('MARKET_PRESSURE_RISK',{})
+                            response['market']['regime_publication_status']='FACT_AXES_OBSERVED_COMPOSITE_UNACCEPTED'
+                            response['market']['formal_risk_status']=market_family.get('status','SOURCE_INCOMPLETE')
+                            response['market']['four_axis_scope']='OBSERVED_V4_FACT_AXES; COMPOSITE_REGIME_CANDIDATE_UNACCEPTED'
+                    except (OSError,ValueError,KeyError,TypeError):
+                        response['risk_owner_source']={'status':'SOURCE_INCOMPLETE','reason':'IMMUTABLE_PG_RISK_OWNER_NOT_BOUND'}
                 return 200,response
             response=index.response('/api/v4/context')
             if response is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
             response={k:v for k,v in response.items() if k in ('context','context_token','production_accepted','source_quality')}
             response.update(index.page(path.rsplit('/',1)[-1],query))
-            if path=='/api/v4/stocks':response=normalize_indexed_code_status(response,day)
+            if path=='/api/v4/stocks':response=mark_stock_d2_semantics(normalize_indexed_code_status(response,day))
             if index_r2 is None:response.update(read_index_status=self._read_index_r2_state(day),
                 read_index_capability=LEGACY_R1_READ_CAPABILITY)
             if path=='/api/v4/focus':
                 extra=index.response('/api/v4/focus-meta')
                 if extra is None:raise ValueError('READ_INDEX_FOCUS_NOT_PREPARED')
                 response.update(extra)
+            if path=='/api/v4/sectors':response=mark_evaluated_sector_lifecycle(response)
             return 200,response
         code,data=self._get_product(path,query)
         if index is None and day!=self.api.candidate['accepted_trade_date']:
@@ -407,6 +520,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             data['production_accepted']=False
             data['context'].update(production_accepted=False,read_scope='DEFAULT_AUTHORITY_ISOLATED_ENGINEERING',
                                    pg_history_acceptance='NOT_GRANTED')
+        if path.startswith('/api/v4/sectors/') and code==200:data=mark_evaluated_sector_lifecycle(data)
+        if path.startswith('/api/v4/stocks/') and code==200:data=mark_stock_d2_semantics(data)
         return code,data
     def identity_records(self):
         key=('product-identity',)
@@ -529,6 +644,20 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         d2={r['entity_id']:r for r in self.source('focus',day)} if domain=='stocks' else {}
         profiles={r['security_id']:r for r in self.source('profile',day)} if domain=='stocks' else {}
         sector_native={r['sector_id']:r for r in self.source('sector',day)} if domain=='sectors' else {}
+        sector_lifecycle={}
+        if domain=='sectors':
+            lifecycle_key=('sector-lifecycle-pg-owner-r1',self.api.token,day)
+            if lifecycle_key not in self.api.cache:
+                try:
+                    from workbench_db.v4_sector_lifecycle_pg_r1 import load as load_sector_lifecycle
+                    self.api.cache[lifecycle_key]=load_sector_lifecycle(self.api.root,self.api.token,day)
+                except Exception as error:
+                    # The independently published lifecycle feature degrades
+                    # to explicit UNKNOWN if its PG owner is unavailable; it
+                    # must not take down the otherwise valid sector route.
+                    self.api.cache[lifecycle_key]=('UNAVAILABLE',type(error).__name__)
+            loaded=self.api.cache[lifecycle_key]
+            if loaded and loaded[0]!='UNAVAILABLE':sector_lifecycle=loaded[1]
         # Sector detail pages need the dated rotation explanation. Attach it
         # while building the immutable R2 projection so a detail request does
         # not reload the rotation owner bundle on every click.
@@ -550,14 +679,18 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             if domain=='stocks':
                 ident=current_identities.get(row['entity_id'],{})
                 if ident:
+                    raw_code_status=row['fields'].get('code_status')
                     row['identity_observation']={k:ident.get(k) for k in
                         ('first_seen_date','list_date','confirmed_ipo_date','code_status','metadata_status','alias_status')}
+                    row['identity_observation']['owner_code_status']=raw_code_status
                     row['fields']['code_status']=code_status_presentation(ident,identity_ref_current,day)
+                    row['fields'].update(identity_date_statuses(ident,identity_ref_current,day,owner_code_status=raw_code_status))
                     if ident.get('name'):
                         row.update(display_name=ident['name'],display_name_scope='OBSERVED_METADATA_NOT_PIT',
                                    display_name_source=identity_ref_current,display_name_quality='KNOWN')
                 row['fields']['identity_status']=current_identity_presentation(ident,identity_ref_current,day)
                 row['search_aliases']=sorted(aliases.get(row['entity_id'],set()))
+                row['fields']['identity_link_status']=identity_link_presentation(ident,row['search_aliases'],row.get('symbol'),identity_ref_current,day)
                 row['alias_source']=identity_ref
                 for k,v in cores.get(row['entity_id'],{}).get('fields',{}).items():
                     row['fields'].setdefault(k,owner_cell(v,self.api.candidate['owners'][day]['core'],'fields.'+k,day))
@@ -572,11 +705,35 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     row['fields'][key]=owner_cell(dict(value=value,quality='KNOWN',unit='members'),ref,field,day)
                 for key in ('maturity','health'):
                     row['fields'].setdefault(key,dict(value='UNKNOWN',quality='SOURCE_INCOMPLETE',reason='DATED_SECTOR_D2_'+key.upper()+'_OWNER_NOT_PRESENT',as_of=day,unit='state',source=None,field=None))
+                lifecycle=sector_lifecycle.get(row['entity_id'])
+                if lifecycle:
+                    pg_binding=loaded[0]
+                    lifecycle_source=dict(contract_id=pg_binding['contract_id'],engine='postgresql',schema=pg_binding['schema'],
+                        digest=pg_binding['digest'],producer_sha256=pg_binding['producer_sha256'],parameter_digest=pg_binding['parameter_digest'],
+                        input_digest=lifecycle['input_digest'],T0=day)
+                    for key in ('maturity','health'):
+                        value=lifecycle[key]
+                        row['fields'][key]=dict(value=value['current'],quality='KNOWN' if value['current'] not in ('UNKNOWN',None) else 'SOURCE_INCOMPLETE',
+                            reason=';'.join(value['reason_codes']) if value['reason_codes'] else None,unit='state',as_of=day,source=lifecycle_source,
+                            field=key,prior=value['prior'],current=value['current'],state_reason=lifecycle['state_reason'][key],
+                            matched_predicates=value['matches'],unknown_predicates=value['unknown_predicates'],
+                            evaluated=value['current'] not in ('UNKNOWN',None))
+                    row['fields']['lifecycle_evidence_scope']=dict(value=lifecycle['evidence_scope'],quality='KNOWN',unit='scope',as_of=day,source=lifecycle_source)
+                    row.setdefault('__detail_extras__',{})['lifecycle']=dict(contract_id=lifecycle['contract_id'],version=lifecycle['version'],
+                        maturity=lifecycle['maturity'],health=lifecycle['health'],state_reason=lifecycle['state_reason'],
+                        prior_state_reason=lifecycle['prior_state_reason'],failure_boundary=lifecycle['failure_boundary'],
+                        input_completeness=lifecycle['input_completeness'],session_window=lifecycle['session_window'],
+                        evidence_scope=lifecycle['evidence_scope'],AS_RECORDED=False,PIT_ELIGIBLE=False,source=lifecycle_source)
+                elif loaded and loaded[0]=='UNAVAILABLE':
+                    for key in ('maturity','health'):
+                        row['fields'][key].update(value='UNKNOWN',quality='SOURCE_INCOMPLETE',reason='SECTOR_LIFECYCLE_PG_OWNER_UNAVAILABLE')
+                    row.setdefault('__detail_extras__',{})['lifecycle']=dict(status='SOURCE_INCOMPLETE',reason='SECTOR_LIFECYCLE_PG_OWNER_UNAVAILABLE',
+                        evidence_scope='CURRENT_RECONSTRUCTED_RESEARCH_ONLY',AS_RECORDED=False,PIT_ELIGIBLE=False)
                 rotation=sector_rotation.get(row['entity_id'],{})
-                row['__detail_extras__']={'why_now':dict(prior_state=rotation.get('prior_rotation_state'),current_state=rotation.get('output_state'),
+                row.setdefault('__detail_extras__',{})['why_now']=dict(prior_state=rotation.get('prior_rotation_state'),current_state=rotation.get('output_state'),
                     reason_codes=rotation.get('reason_codes',[]),predicates=rotation.get('predicates',{}),
                     fields={k:rotation.get('fields',{}).get(k) for k in ('dq5','breadth_delta1','breadth_delta3','ma20_delta3','base_seed_width_adjusted')},
-                    source=self.api.candidate['owners'][day]['rotation'],scope='Observed reconstructed rule facts; not strict PIT or independently accepted full episode reduction')}
+                    source=self.api.candidate['owners'][day]['rotation'],scope='Observed reconstructed rule facts; not strict PIT or independently accepted full episode reduction')
             original={}
             if domain=='stocks':
                 original.update(cores.get(row['entity_id'],{}).get('fields',{}))
@@ -788,6 +945,9 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             return self.paged(day,data,q,unique_share=len(ids-shared)/len(ids) if ids else None,member_count=len(ids),source=self.api.candidate['owners'][day]['sector'],contract_id='TDX_UNIQUE_MEMBER_JACCARD_READ_R1',PIT_ELIGIBLE=False)
         if p[0]=='focus' and len(p)>=2 and p[1].startswith('SEC-'):
             episodes=[e for e in self.source('forward',day)['episodes'] if e['entity_id']==p[1]];kind=p[2] if len(p)>2 else 'episodes'
+            from .focus_episode_state_r1 import classify_episode
+            owner_events=[e for e in self.source('forward',day).get('events',[]) if e.get('trade_date','9999')<=day]
+            episodes=[dict(e,owner_event_state=classify_episode(e,owner_events)) for e in episodes]
             if kind=='episodes':data=episodes
             elif kind=='timeline':data=[dict(o,episode_id=e['episode_id'],entity_id=e['entity_id']) for e in episodes for o in e['observations']]
             elif kind in ('anchors','observations','outcomes'):data=[dict(o,episode_id=e['episode_id'],entity_id=e['entity_id']) for e in episodes for o in e.get(kind,[])]
@@ -880,6 +1040,45 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 data['market']['formal_risk_status']='SOURCE_INCOMPLETE'
                 data['market']['formal_risk_reason']='DATED_OPERATIONAL_RISK_CHANGE_OWNER_NOT_PRESENT'
             data.setdefault('counts',{})
+            # Three descriptive risk families use accepted V4 facts and their
+            # own coverage denominators. Focus events remain a fourth view.
+            risk_source={'stock_current':self.api.candidate['owners'][day].get('core'),
+                'sector_current':self.api.candidate['owners'][day].get('sector'),
+                'sector_lifecycle':self.api.candidate['owners'][day].get('sector'),
+                'market':self.api.candidate['owners'][day].get('market')}
+            sessions=self.api.candidate.get('published_sessions',[]);prior_day=None
+            if day in sessions and sessions.index(day)>0:prior_day=sessions[sessions.index(day)-1]
+            prior_stocks=self.project('stocks',prior_day) if prior_day else []
+            risk_stock=build_stock_family(list(stocks.values()),prior_stocks,
+                dict(current=risk_source['stock_current'],prior=self.api.candidate['owners'][prior_day].get('core') if prior_day else None),day)
+            lifecycle={r['entity_id']:{'health':{'current':r.get('fields',{}).get('health',{}).get('value'),
+                'prior':r.get('fields',{}).get('health',{}).get('prior')}} for r in sectors}
+            risk_sector=build_sector_family(sectors,lifecycle,risk_source,day)
+            risk_market=build_market_family(data.get('market'),risk_source['market'],day)
+            families=(risk_stock,risk_sector,risk_market)
+            family_payload={family['family']:family for family in families}
+            try:
+                from workbench_db.v4_operational_risk_pg_r1 import load as load_risk_owner
+                risk_binding,risk_owner=load_risk_owner(self.api.root,self.api.token,day)
+                family_payload=risk_owner['families']
+                data['risk_owner_source']=risk_binding
+            except (OSError,ValueError,KeyError,TypeError):
+                data['risk_owner_source']={'status':'UNMATERIALIZED_CANDIDATE','reason':'IMMUTABLE_PG_RISK_OWNER_NOT_BOUND'}
+            data['risk_families']=family_payload
+            data['risks']=[home_summary(dict(entity_id=item['entity_id'],display_name=item.get('display_name'),symbol=item.get('symbol'),
+                fields={'effective_event':{'value':item['change'],'quality':'KNOWN','reason':item['reason_code']},
+                    'prior_state':{'value':item.get('prior_state'),'quality':'KNOWN' if item.get('prior_state') else 'SOURCE_INCOMPLETE'},
+                    'current_state':{'value':item.get('current_state'),'quality':'KNOWN'},
+                    'risk_family':{'value':family['family'],'quality':'KNOWN'}},source=item.get('source')),
+                    HOME_STOCK_SUMMARY_FIELDS)
+                for family in families for item in family.get('changes',[])][:30]
+            data['focus_risk_events']=data.get('risks') or []
+            data['focus_risk_scope']='FOCUS_OWNER_RISK_EVENTS_ONLY; NOT_COMPLETE_RISK_FAMILIES'
+            if isinstance(data.get('market'),dict):
+                data['market']['regime_publication_status']='FACT_AXES_OBSERVED_COMPOSITE_UNACCEPTED'
+                data['market']['formal_risk_status']=risk_market['status']
+                data['market']['formal_risk_reason']=risk_market.get('reason')
+                data['market']['four_axis_scope']='OBSERVED_V4_FACT_AXES; COMPOSITE_REGIME_CANDIDATE_UNACCEPTED'
             data['counts']['radar']=dict(value=len(independent),quality='KNOWN',status='PARTIAL',scope='ACCEPTED_FOCUS_CHANGE_EVENTS_WITHOUT_TOP_ROTATION_COVERAGE',source=self.api.candidate['owners'][day].get('forward'),reason='FORMAL_RADAR_PRIORITY_NOT_PUBLISHED',href='/v4/research/radar')
             data['counts']['forward']=dict(value=None,quality='SOURCE_INCOMPLETE',status='NOT_GRANTED',scope='FORMAL_VALIDATION_COHORT',source=self.api.candidate['owners'][day].get('validation_cohort'),reason='NO_AUTHORIZED_COHORT_OWNER',href='/v4/research/focus#forward-cohort')
             data['gaps']=[g for g in data['gaps'] if g['domain'] not in ('home/changes','home/risks','home/net-information')]

@@ -1,0 +1,20 @@
+{
+  "contract_id": "V4_R6_FORWARD_ISOLATED_E2E_R1",
+  "acceptance": "PASS_ISOLATED_ENGINEERING_WIRING",
+  "formal_cohort_write": false,
+  "production": false,
+  "synthetic_data_only": true,
+  "temporary_root": "G:/codex_tmp/test_temp/r6-targeted-suite",
+  "case": {
+    "authorized_read": "READY; one frozen eligible row",
+    "missing_read_grant": "DENIED; COHORT_READ_GRANT_MISSING",
+    "T_plus_1_as_of_2026_10_08": "DUE_REQUIRES_SETTLEMENT_OWNER",
+    "T_plus_3_as_of_2026_10_08": "PENDING",
+    "settlement": "OBSERVED; isolated VectorPriceSource fixture",
+    "settlement_readback": "FIRST_OBSERVED exact registered source row",
+    "fep_projection": "ENGINEERING_FIXTURE only; no real maturity or training permission"
+  },
+  "suite": "tests/test_v4_r6_forward_e2e.py",
+  "result": "1 passed; included in five-file targeted suite: 51 passed in 3.81s",
+  "data_written_to_production_cohort": false
+}

@@ -1,0 +1,29 @@
+{
+  "contract_id": "V4_COHORT_FIRST_CAPTURE_CURRENT_R1",
+  "version": "1.0.0",
+  "compatibility": {
+    "v4_15_radar_cohort": "HISTORICAL_ONLY; CURRENT_V4_10_2026_NOT_ACCEPTED_BY_2026-09-30_BOUNDARY",
+    "current_head_binding": "V4_OPERATIONAL_RESEARCH_HEAD.json exact token and accepted T0",
+    "current_producer": "COHORT_FIRST_CAPTURE_PRODUCER_R1",
+    "readiness": "COHORT_FIRST_CAPTURE_READINESS_VIEW_R2",
+    "cohort_reader": "VALIDATION_COHORT_READ_R3",
+    "pg_owner": "V4_COHORT_PG_OWNER_R1"
+  },
+  "operations": {
+    "first_capture": "Manual operator invocation against current accepted V4 T0 and official close-time contract",
+    "daily_incremental": "Manual operator invocation for the accepted T0; current-day delta only",
+    "production_write": false,
+    "grant_issuance": false,
+    "historical_backfill": false,
+    "focus_to_cohort_promotion": false,
+    "auto_daily_reactivation": false
+  },
+  "write_gates": [
+    "full AS_RECORDED signal producer",
+    "complete first-capture receipt with timestamps at or before close",
+    "independent validation cohort Owner",
+    "separate first-capture write grant",
+    "exact accepted Head CAS and PG Owner readback"
+  ],
+  "scope": "Preflight and isolated extraction capability; no synthetic or reconstructed signal can become a formal cohort"
+}

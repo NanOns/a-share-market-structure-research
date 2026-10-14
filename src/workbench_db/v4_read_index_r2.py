@@ -25,7 +25,7 @@ ALLOWED = {'q','state','limit','offset','sort','context_token','trade_date',
            'quality','eligibility','period','price_basis','as_of','view','left',
            'right','mode','snapshot_token','followup'}
 SUMMARY_FIELDS = {
-    'stocks': {'close','scenario','final_eligibility','primary_industry','maturity','health','quality','rps5','rps20','code_status','identity_status'},
+    'stocks': {'close','scenario','final_eligibility','primary_industry','maturity','health','quality','rps5','rps20','code_status','owner_code_status','listing_status','first_seen_status','ipo_confirmation_status','identity_status','identity_link_status'},
     'sectors': {'sector_type','member_count','source_member_count','unmapped_count','quoted_count','output_state',
                 'prior_rotation_state','sector_rs20','sector_rs5','breadth_ret1','breadth_ret5','breadth_ret20',
                 'maturity','health','seed_width','participation_proxy'},

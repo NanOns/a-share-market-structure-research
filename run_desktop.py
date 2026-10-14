@@ -1,6 +1,7 @@
 """Packaged entry: fixed task dispatch precedes any tray/worker initialization."""
 from pathlib import Path
 import argparse
+import json
 import multiprocessing
 import os
 import sys
@@ -83,6 +84,16 @@ def main():
         return 0
     except Exception as exc:
         import ctypes
+        try:
+            import traceback
+            failure = Path('G:/codex_tmp/v4_desktop_startup_failure.json')
+            failure.parent.mkdir(parents=True, exist_ok=True)
+            temporary = failure.with_suffix('.json.tmp')
+            temporary.write_text(json.dumps({'pid':os.getpid(),'exception_type':type(exc).__name__,
+                'reason':str(exc),'traceback':traceback.format_exc()},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+            os.replace(temporary,failure)
+        except Exception:
+            pass
         if str(exc) == 'WORKSPACE_ALREADY_OWNED':
             from workbench_desktop.storage import verified_existing_owner,focus_existing_owner
             try:

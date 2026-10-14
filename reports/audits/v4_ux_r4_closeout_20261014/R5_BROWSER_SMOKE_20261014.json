@@ -9,12 +9,48 @@
     "height": 844
   },
   "six_entry_narrow_smoke": [
-    {"route": "home", "heading": "今日总览", "loaded": true, "source_error": false, "scroll_width": 375},
-    {"route": "sectors", "heading": "板块研究", "loaded": true, "source_error": false, "scroll_width": 375},
-    {"route": "stocks", "heading": "个股研究", "loaded": true, "source_error": false, "scroll_width": 375},
-    {"route": "focus", "heading": "关注跟踪", "loaded": true, "source_error": false, "scroll_width": 375},
-    {"route": "market", "heading": "市场与事件", "loaded": true, "source_error": false, "scroll_width": 375},
-    {"route": "diagnostics", "heading": "数据与诊断", "loaded": true, "source_error": false, "scroll_width": 375}
+    {
+      "route": "home",
+      "heading": "今日总览",
+      "loaded": true,
+      "source_error": false,
+      "scroll_width": 375
+    },
+    {
+      "route": "sectors",
+      "heading": "板块研究",
+      "loaded": true,
+      "source_error": false,
+      "scroll_width": 375
+    },
+    {
+      "route": "stocks",
+      "heading": "个股研究",
+      "loaded": true,
+      "source_error": false,
+      "scroll_width": 375
+    },
+    {
+      "route": "focus",
+      "heading": "关注跟踪",
+      "loaded": true,
+      "source_error": false,
+      "scroll_width": 375
+    },
+    {
+      "route": "market",
+      "heading": "市场与事件",
+      "loaded": true,
+      "source_error": false,
+      "scroll_width": 375
+    },
+    {
+      "route": "diagnostics",
+      "heading": "数据与诊断",
+      "loaded": true,
+      "source_error": false,
+      "scroll_width": 375
+    }
   ],
   "radar": {
     "route": "/v4/research/radar?trade_date=2026-10-13",
@@ -45,11 +81,16 @@
   },
   "market": {
     "indices": [
-      "上证指数", "深证成指", "创业板指", "沪深300", "中证1000"
+      "上证指数",
+      "深证成指",
+      "创业板指",
+      "沪深300",
+      "中证1000"
     ],
     "rule_unknown_count": 21,
     "rule_unknown_reason_sample": [
-      "REFERENCE_PRICE_UNKNOWN", "NO_PRICE_LIMIT_SPECIAL_PERIOD"
+      "REFERENCE_PRICE_UNKNOWN",
+      "NO_PRICE_LIMIT_SPECIAL_PERIOD"
     ],
     "limit_up_count": 69,
     "exact_first_board_count": 57,
@@ -73,5 +114,91 @@
   },
   "desktop_viewport_rechecked_after_static_root_fix": false,
   "screenshot_files_saved": 0,
-  "production_cutover": false
+  "production_cutover": false,
+  "focus_industry_concentration": {
+    "route": "/v4/research/focus?trade_date=2026-10-13",
+    "same_trade_date_as_head": true,
+    "active_unique_objects": 3151,
+    "unmapped_industry_count": 0,
+    "top5": [
+      {
+        "name": "电气设备",
+        "count": 197,
+        "denominator": 3151,
+        "share_percent": 6.3
+      },
+      {
+        "name": "化工原料",
+        "count": 149,
+        "denominator": 3151,
+        "share_percent": 4.7
+      },
+      {
+        "name": "软件服务",
+        "count": 149,
+        "denominator": 3151,
+        "share_percent": 4.7
+      },
+      {
+        "name": "汽车配件",
+        "count": 133,
+        "denominator": 3151,
+        "share_percent": 4.2
+      },
+      {
+        "name": "专用机械",
+        "count": 124,
+        "denominator": 3151,
+        "share_percent": 3.9
+      }
+    ],
+    "full_pagination": {
+      "total_industries": 110,
+      "page_size": 25,
+      "pages": [
+        {
+          "page": 1,
+          "visible_rows": 25,
+          "first": "电气设备（INDUSTRY）",
+          "last": "IT设备（INDUSTRY）"
+        },
+        {
+          "page": 2,
+          "visible_rows": 25,
+          "first": "供气供热（INDUSTRY）",
+          "last": "汽车整车（INDUSTRY）"
+        },
+        {
+          "page": 3,
+          "visible_rows": 25,
+          "first": "全国地产（INDUSTRY）",
+          "last": "摩托车（INDUSTRY）"
+        },
+        {
+          "page": 4,
+          "visible_rows": 25,
+          "first": "化工机械（INDUSTRY）",
+          "last": "批发业（INDUSTRY）"
+        },
+        {
+          "page": 5,
+          "visible_rows": 10,
+          "first": "轻工机械（INDUSTRY）",
+          "last": "公路（INDUSTRY）"
+        }
+      ],
+      "all_pages_visited_in_codex_in_app_browser": true
+    },
+    "detail_navigation": {
+      "symbol": "SH.688349",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "route_opened": "/v4/research/focus/SEC-00096141BD5420F5CB3120E687CDA5B9?trade_date=2026-10-13",
+      "visible_sections": [
+        "关注 Episode",
+        "关注锚点"
+      ],
+      "return_navigation_verified": true
+    },
+    "acceptance": "PASS"
+  }
 }

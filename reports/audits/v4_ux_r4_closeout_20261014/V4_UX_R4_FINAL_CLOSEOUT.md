@@ -37,6 +37,7 @@
 - 重新构建的隔离 R2 schema 为 `v4_00bd3ea17fe4cd57d84f9171aa8e725fbd9edab55a754087aac5b2f5`，T0/token 与生产已接受 Head 一致，计数 `{focus:3151, radar:177, sectors:400, stocks:5225}`。隔离 authority 仍只在 G 盘临时根，生产根无 R2 authority 写入。
 - 修复后板块详情 HTTP 原始回应 n=8：8/8 200，81,051 B，P50 80.30ms、P95 192.09ms；此前 P95 1,198.83ms。范围仍仅为 28768 隔离预览。
 - 增加 20 个分层真实 Owner 投影样本读回证据 [`OWNER_SAMPLE_AUDIT_R5.json`](OWNER_SAMPLE_AUDIT_R5.json)：股票 10（含 `SZ.301660`、`SH.688349`）、板块 5、Focus 5；隔离 PG R2 投影读回哈希 20/20 一致。此结果证明投影字节对账，不替代 D2/风险/资格算法字段的独立业务复算，也不替代 U01–U16 完整验收。
+- 修复 Focus 页面状态筛选串入主列表请求的问题：`event_state` 与 `events_offset` 仍由事件子路由消费，但不再被独立 Focus 列表路由误判为未知参数。定向合同测试覆盖查询隔离；内置浏览器在 28768 选择 `INVALIDATED` 与 `EXITED` 后，Focus 主列表均继续显示 3,151 条，事件区分别以 0 条空结果正常呈现，没有 `UNKNOWN_PARAMETER`。零行属于真实接受源空结果，只证明筛选路由/空态正确，不能替代 U12 要求的失效/退出真样本或同日多事件反例；完整证据见 [`R5_BROWSER_SMOKE_20261014.json`](R5_BROWSER_SMOKE_20261014.json) 的 `focus_event_filter_reconciliation`。
 - R4 阶段只检查了内置浏览器入口；当时未做六入口双视口。本轮 R5 已补上六入口双视口与 Radar/Forward/详情页的目视和 DOM 检查，仍缺可交付截图文件。
 - 当前阶段结论不变：正式 D2 lifecycle、三族风险、Formal Radar priority、合法验证队列/settlement/FEP Owner 与生产权限仍未齐；不得据此切换 28765。
 
@@ -79,7 +80,7 @@
 | U09 | `PASS` | 28768 内置浏览器与同日正式身份来源对账：`SZ.301660` 列表/详情均为 `NEW_CODE_OBSERVED`；`SH.600703` 均为 `EXISTING_VERIFIED_IDENTITY`；搜索旧代码 `SZ.300114` 解析到当前身份 `SZ.302132`，列表/详情均为存量身份且不声称旧代码有 T0 报价。详见 `code_status_reconciliation`。仅通过隔离读域验收，不表示 28765 部署。 |
 | U10 | `PASS` | 2026-10-13 同一 T0 显示 3,151 个唯一活跃对象、未映射 0、Top5 中文名/计数/占比；内置浏览器打开 Focus 详情并完成 110 个行业 5 页（25/25/25/25/10）全量翻页。证据见 `R5_BROWSER_SMOKE_20261014.json`。 |
 | U11 | `NOT_VERIFIABLE` | Focus 第 1/2 页和 NEW 过滤可读；未知 membership/validity/path 被保留，但逐字段 observation/episode Owner 对账不全。 |
-| U12 | `NOT_VERIFIABLE` | Focus 事件分页（offset 30）与 NEW 筛选已实测；INVALIDATED/EXITED 过滤及同日多事件反例未全部验收。 |
+| U12 | `NOT_VERIFIABLE` | Focus 事件分页（offset 30）与 NEW 筛选已实测；修复 `INVALIDATED`/`EXITED` 控件污染主列表查询的问题，两个真实筛选结果均为空且页面无路由错误；缺少失效/退出真样本与同日多事件反例，未闭环。 |
 | U13 | `FAIL` | 首捕就绪只读展示和隔离合同测试通过；日版全量 AS_RECORDED producer、独立队列 Owner、准入/结算/FEP 权限仍缺。 |
 | U14 | `NOT_VERIFIABLE` | 五指数 5/20 会话收益和 OHLC 图可读；volume 单位未核验，最新静态修正后桌面视口和截图文件未复验。 |
 | U15 | `PASS` | 真实可评价分母 5,191、UNKNOWN 21；内置浏览器展开 21 条，含参考价缺失/特殊规则期原因，错误参数合同测试有负例。 |

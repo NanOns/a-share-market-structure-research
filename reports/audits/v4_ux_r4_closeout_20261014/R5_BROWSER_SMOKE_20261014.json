@@ -65,6 +65,32 @@
     "new_filter_page_observations": 30,
     "source_unavailable_is_not_counted_as_transition": true
   },
+  "focus_event_filter_reconciliation": {
+    "contract_id": "R5_U12_FOCUS_EVENT_FILTER_RECONCILIATION_R1",
+    "environment": "28768 read-only candidate preview",
+    "browser": "Codex In-app Browser",
+    "trade_date": "2026-10-13",
+    "focus_list_loaded": true,
+    "focus_list_total": 3151,
+    "filters": [
+      {
+        "event_state": "INVALIDATED",
+        "event_total": 0,
+        "filter_applied": true,
+        "focus_list_remains_loaded": true,
+        "unknown_parameter_error": false
+      },
+      {
+        "event_state": "EXITED",
+        "event_total": 0,
+        "filter_applied": true,
+        "focus_list_remains_loaded": true,
+        "unknown_parameter_error": false
+      }
+    ],
+    "acceptance": "PARTIAL_ACCEPTED_EMPTY",
+    "limitation": "Both filters returned zero accepted-source rows. This verifies filter routing and accepted-empty rendering only; it does not provide a real invalidation/exit sample or the same-date multi-event counterexample required to close U12."
+  },
   "stock_detail": {
     "symbol": "SZ.301660",
     "display_name": "粤芯半导体",

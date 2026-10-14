@@ -4,9 +4,15 @@ export const labels={value:'数值',close:'收盘价',amount:'成交额（元）
 export const states={NEW_CONFIRMED:'新增确认',LAUNCH_CONFIRM:'启动确认',RECOVERY_TURN:'恢复转向',CONFIRMED:'已确认',PREWATCH:'预观察',TRUE:'符合',FALSE:'不符合',FRESH:'当前有效',STALE:'状态过期',KNOWN:'已知',OBSERVED:'已观测',UNKNOWN:'无法判定',DATA_UNAVAILABLE:'观察来源不足',DEGRADED:'质量降级',QUALITY_DEGRADED:'质量降级',SOURCE_INCOMPLETE:'来源未发布',SOURCE_INSUFFICIENT:'必要来源不足',NOT_GRANTED:'尚未授权',NOT_AUTHORIZED:'尚未授权',NOT_ELIGIBLE:'不满足资格条件',DATA_INSUFFICIENT:'必需数据不足',NOT_DUE:'尚未到期',NOT_OBSERVED:'当日未观测',UNKNOWN_IDENTITY_REASON:'证券身份待核验',EXISTING_VERIFIED_IDENTITY:'已有证券（代码沿用）',CONFIRMED_CURRENT_IDENTITY:'正式身份来源已确认',CURRENT_IDENTITY_PRESENT:'当前身份记录存在',CURRENT_IDENTITY_UNKNOWN:'当前身份记录待确认',CONFIRMED_IPO:'当日确认上市',NEW_CODE_UNLINKED:'新代码关系未确认',ENGINEERING_NOT_READY:'待工程接入',PENDING:'待到期',RIGHT_CENSORED:'右删失',READY:'可读取',EMPTY_VALID:'当前无符合项',FULL_PASS:'通过',PASS:'通过',DEGRADED_PASS:'降级通过',NONE:'NONE（判定完整性待核）',NOT_APPLICABLE:'不适用',OPERATIONAL_PRODUCTION_ACTIVE:'正式研究运营',VALIDATION_ONGOING:'持续验证中',PARTIAL:'部分接入',NOT_GRANTED_STATUS:'尚未准入',DATA_PENDING:'等待新数据',WAIT_NEXT_ACCEPTED_INPUT:'等待下一已接收交易日',NOT_IMPLEMENTED:'尚未实现'};
 export const missingReasons={
  FORMAL_RADAR_PRIORITY_NOT_PUBLISHED:'正式 Radar 优先级尚未生产；数字仅为已接受变化事件数',
- NO_AUTHORIZED_COHORT_OWNER:'正式前瞻样本尚未准入：缺少已授权 Cohort Owner',
- DATED_SECTOR_D2_MATURITY_OWNER_NOT_PRESENT:'当日正式板块成熟度 Owner 尚未发布',
- DATED_SECTOR_D2_HEALTH_OWNER_NOT_PRESENT:'当日正式板块健康度 Owner 尚未发布',
+ NO_AUTHORIZED_COHORT_OWNER:'正式前瞻样本尚未准入：缺少经批准的验证队列负责人',
+ DATED_SECTOR_D2_MATURITY_OWNER_NOT_PRESENT:'尚无当日正式板块成熟度记录',
+ DATED_SECTOR_D2_HEALTH_OWNER_NOT_PRESENT:'尚无当日正式板块健康度记录',
+ DATED_OPERATIONAL_FORWARD_OWNER:'正式 Forward 首次捕获来源尚未接入',
+ DATED_OPERATIONAL_RISK_CHANGE_OWNER_NOT_PRESENT:'正式风险变化来源尚未接入',
+ OPERATIONAL_OWNER_UNKNOWN:'正式运营来源尚未发布，无法判定',
+ OWNER_REPORTED_UNKNOWN_VALIDITY:'来源记录的有效性为无法判定',
+ OWNER_REPORTED_UNKNOWN_MEMBERSHIP:'来源记录的关注层级为无法判定',
+ NO_RECORDED_EPISODE_END_DATE:'来源未记录 Episode 结束日期',
  FULL_ROTATION_NOT_INDEPENDENTLY_ACCEPTED:'轮动状态仍在验证，不能视为完整轮动判定',
  NO_DATED_FOCUS_OBSERVATION_FIELD:'该对象没有已发布的定日期观察字段',
  ACCEPTED_IDENTITY_SYMBOL_NOT_VERIFIED:'当前代码与接受身份记录未能完全对应',
@@ -18,8 +24,30 @@ export const missingReasons={
  NOT_OBSERVABLE_FROM_DAILY:'日线数据不能观察盘中封板过程',
  PREFIX_NOT_BOUND:'历史连板前缀未绑定，无法确认精确板数',
  NO_FORMAL_IDENTITY:'正式证券身份记录缺失',
- NO_DATED_SOURCE:'没有当前日期已发布的来源'
+ NO_DATED_SOURCE:'没有当前日期已发布的来源',
+ NO_TARGET_ACCEPTED_CORE_FACTS:'当前日期没有已接受的核心事实',
+ REQUIRED_INPUT_UNKNOWN_OR_ZERO_HIGH:'所需输入无法判定，或前期高点为零',
+ NO_UNIQUE_TDX_LEAF_INDUSTRY:'通达信未提供唯一末级行业',
+ REQUIRED_INPUT_UNKNOWN:'所需输入缺失或无法判定',
+ INSUFFICIENT_HISTORY:'有效历史长度不足',
+ PRIOR20_AMOUNT_UNAVAILABLE:'前二十会话成交额缺失或不可用',
+ REQUIRED_INPUT_UNKNOWN_OR_ZERO_ATR:'所需输入无法判定，或 ATR 为零',
+ CLOSED_PERIOD_OR_INPUT_UNAVAILABLE:'已收盘周期数据或必需输入不可用',
+ REQUIRED_TDX_LOO_CONTEXT_UNKNOWN:'通达信逐证券剔除后的行业背景无法判定',
+ MA10_WINDOW_OR_ENDPOINT_UNAVAILABLE:'十会话均线窗口或端点数据不可用',
+ INSUFFICIENT_SESSION_HISTORY:'可用交易会话历史不足',
+ RETURN_OR_UNIVERSE_UNKNOWN:'收益或证券范围无法判定',
+ POS250_WINDOW_OR_DENOMINATOR_UNAVAILABLE:'二百五十会话位置窗口或分母不可用',
+ CORRECTED_MARKET_AXES_NOT_YET_BOUND:'尚未绑定修正后的市场四轴',
+ ATR_OR_PRICE_INPUT_UNAVAILABLE:'ATR 或价格输入不可用',
+ EXACT_DATED_RPS_ENDPOINT_UNKNOWN:'精确日期的 RPS 端点无法判定',
+ DATED_MARKET_REFERENCE_UNPROVEN:'日期对应的市场参照尚未核实',
+ NO_QUALIFIED_RANK_INPUT:'符合资格的排名输入缺失'
 };
+Object.assign(labels,{code_status:'证券代码状态',identity_status:'代码身份'});
+Object.assign(states,{NEW_CODE_OBSERVED:'新代码已观测'});
+Object.assign(states,{PROXY_RECONSTRUCTED:'代理重建（仅研究）'});
+Object.assign(labels,{input_provenance:'输入来源依据',ma10:'十会话均线',ma20:'二十会话均线',ret5:'五会话收益',rps20:'二十会话相对强度',owner:'来源负责人',core_price_damage:'核心价格损伤',delta3:'三会话变化',dq5:'五会话宽度变化',episode_invalidation_contract_id:'Episode 失效合同',followup_complete:'后续确认状态'});
 export function translate(value){if(value===null||value===undefined)return '—';if(typeof value==='boolean')return value?'是':'否';if(Array.isArray(value))return value.length?`${value.length} 项`:'无';if(typeof value==='object')return '查看详情';if(typeof value==='number')return Number.isInteger(value)?String(value):value.toFixed(3);if(/^(?:[0-9a-f]{24,}|SEC-[0-9A-F]+)$/.test(String(value)))return '查看来源标识';return states[value]||String(value);}
 export const reasons={market:'市场四轴尚缺当前日期的已绑定产物，定点计算由任务 05 完成。',focus:'已提供真实冻结源重建；实际价格路径与到期结果可查，结构谓词缺失会保留不可判定。旧账尚未完成核对。' ,stocks:'当前 Core successor、状态与高级画像按 9 月 30 日来源展示；旧 9 月 28 日 owner 记录独立保留。',profile_identity:'部分高级画像对象不在当前日行情池，已隔离登记。'};
 

@@ -698,6 +698,10 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 rotation_total=len(rotations),
                 source_bindings=dict(stock_changes=self.api.candidate['owners'][day]['forward'],sector_changes=self.api.candidate['owners'][day]['rotation']),
                 rotation_validation='VALIDATION_ONGOING; NOT_INDEPENDENTLY_ACCEPTED')
+            if isinstance(data.get('market'),dict):
+                data['market']['regime_publication_status']='NOT_PUBLISHED_V4_03'
+                data['market']['formal_risk_status']='SOURCE_INCOMPLETE'
+                data['market']['formal_risk_reason']='DATED_OPERATIONAL_RISK_CHANGE_OWNER_NOT_PRESENT'
             data.setdefault('counts',{})
             data['counts']['radar']=dict(value=len(independent),quality='KNOWN',status='PARTIAL',scope='ACCEPTED_FOCUS_CHANGE_EVENTS_WITHOUT_TOP_ROTATION_COVERAGE',source=self.api.candidate['owners'][day].get('forward'),reason='FORMAL_RADAR_PRIORITY_NOT_PUBLISHED',href='/v4/research/radar')
             data['counts']['forward']=dict(value=None,quality='SOURCE_INCOMPLETE',status='NOT_GRANTED',scope='FORMAL_VALIDATION_COHORT',source=self.api.candidate['owners'][day].get('validation_cohort'),reason='NO_AUTHORIZED_COHORT_OWNER',href='/v4/research/focus#forward-cohort')

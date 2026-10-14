@@ -93,12 +93,21 @@ def validate_home_response(payload):
 def summary(row, domain=None):
     domain=domain or ('focus' if row.get('focus_scope') else 'sectors' if 'sector_type' in row['fields'] else 'stocks')
     result = {k:v for k,v in row.items() if k not in
-              ('source','symbol_source','display_name_source','alias_source','field_owner_bindings')}
+              ('source','symbol_source','display_name_source','alias_source','field_owner_bindings','__detail_extras__')}
     result['fields'] = {k:{a:b for a,b in cell.items() if a in
                             ('value','quality','unit','reason','as_of','actual_count','required_count','adjustment_basis')}
                         for k,cell in row['fields'].items() if k in SUMMARY_FIELDS[domain]}
     result['detail_href'] = ('/api/v4/stocks/' if domain=='radar' else '/api/v4/'+domain+'/')+row['entity_id']
     result['list_contract_id']='V4_LIST_SUMMARY_R1'
+    return result
+
+
+def detail_payload(row):
+    """Expand immutable producer-side detail-only facts into the detail row."""
+    result=dict(row)
+    extras=result.pop('__detail_extras__',{})
+    if extras:
+        result.update(extras)
     return result
 
 
@@ -238,9 +247,10 @@ def prepare(root, token, day, collections, responses, memberships):
                         sid=row['entity_id'];aliases=sorted(set([sid,row['symbol'],*row.get('search_aliases',[])]))
                         aliases=sorted(set(aliases)|{v.upper() for v in aliases}|{v.upper().split('.')[-1] for v in aliases})
                         search=[str(v).casefold() for v in [sid,row['symbol'],row['display_name'],*row.get('search_aliases',[])]]
+                        detail=detail_payload(row)
                         values.append((token,day,domain,sid,row['symbol'],row['display_name'],aliases,search,
                             memberships.get(sid,[]),Jsonb({k:c.get('value') for k,c in row['fields'].items()}),
-                            Jsonb(summary(row,domain)),Jsonb(row),hashlib.sha256(canonical(row)).hexdigest()))
+                            Jsonb(summary(row,domain)),Jsonb(detail),hashlib.sha256(canonical(detail)).hexdigest()))
                     cur.executemany('INSERT INTO read_items VALUES('+','.join(['%s']*13)+')',values)
                 cur.executemany('INSERT INTO read_responses VALUES(%s,%s,%s,%s,%s)',
                     [(token,day,path,Jsonb(payload),hashlib.sha256(canonical(payload)).hexdigest()) for path,payload in responses.items()])
@@ -250,7 +260,8 @@ def prepare(root, token, day, collections, responses, memberships):
         # Read back every row once before handing the index to HTTP.
         for domain,rows in collections.items():
             actual=pg.execute('SELECT detail FROM read_items WHERE token=%s AND day=%s AND domain=%s ORDER BY entity_id COLLATE "C"',(token,day,domain)).fetchall()
-            if [r[0] for r in actual]!=sorted(rows,key=lambda r:r['entity_id']): raise ValueError('READ_INDEX_ROW_PARITY_FAILED')
+            expected=sorted((detail_payload(row) for row in rows),key=lambda r:r['entity_id'])
+            if [r[0] for r in actual]!=expected: raise ValueError('READ_INDEX_ROW_PARITY_FAILED')
         identity=ForwardFactStore._database_identity(pg)
     return dict(contract_id=CONTRACT,engine='postgresql',schema=schema,producer_sha256=source_sha,
                 head_token=token,T0=day,
@@ -282,6 +293,38 @@ class ReadIndex:
         if hashlib.sha256(canonical(row[0])).hexdigest()!=row[1]: raise ValueError('READ_INDEX_RESPONSE_DIGEST_MISMATCH')
         return row[0]
 
+    @staticmethod
+    def _detail_row(pg, token, day, domain, key):
+        # Prefer the primary key. Combining entity, symbol and alias
+        # predicates with OR prevents PostgreSQL from using the composite
+        # primary-key index efficiently on the dominant detail route.
+        rows=pg.execute('''SELECT detail,detail_sha256 FROM read_items
+            WHERE token=%s AND day=%s AND domain=%s AND entity_id=%s LIMIT 2''',
+            (token,day,domain,key)).fetchall()
+        if not rows:
+            rows=pg.execute('''SELECT detail,detail_sha256 FROM read_items
+                WHERE token=%s AND day=%s AND domain=%s AND upper(symbol)=upper(%s) LIMIT 2''',
+                (token,day,domain,key)).fetchall()
+        if not rows:
+            rows=pg.execute('''SELECT detail,detail_sha256 FROM read_items
+                WHERE token=%s AND day=%s AND domain=%s AND %s=ANY(aliases) LIMIT 2''',
+                (token,day,domain,key)).fetchall()
+        if len(rows)!=1:return None
+        row=rows[0]
+        if hashlib.sha256(canonical(row[0])).hexdigest()!=row[1]: raise ValueError('READ_INDEX_DETAIL_DIGEST_MISMATCH')
+        return row[0]
+
+    def response_and_detail(self, path, domain, key):
+        """Read the shared context and one detail with a single attested PG session."""
+        with connection(self.binding['schema'],read_only=True) as pg:
+            self.attest(pg)
+            response=pg.execute('SELECT payload,payload_sha256 FROM read_responses WHERE token=%s AND day=%s AND path=%s',
+                                (self.token,self.day,path)).fetchone()
+            detail=self._detail_row(pg,self.token,self.day,domain,key)
+        if response is None:return None,None
+        if hashlib.sha256(canonical(response[0])).hexdigest()!=response[1]: raise ValueError('READ_INDEX_RESPONSE_DIGEST_MISMATCH')
+        return response[0],detail
+
     def page(self, domain, query, *, entity=None, sector=None):
         where,args,order,offset,limit=query_parts(domain,query,entity=entity,sector=sector)
         base=(self.token,self.day,domain)
@@ -296,14 +339,7 @@ class ReadIndex:
     def detail(self, domain, key):
         with connection(self.binding['schema'],read_only=True) as pg:
             self.attest(pg)
-            rows=pg.execute('''SELECT detail,detail_sha256 FROM read_items
-                WHERE token=%s AND day=%s AND domain=%s AND
-                (entity_id=%s OR upper(symbol)=upper(%s) OR %s=ANY(aliases)) LIMIT 2''',
-                (self.token,self.day,domain,key,key,key)).fetchall()
-        if len(rows)!=1: return None
-        row=rows[0]
-        if hashlib.sha256(canonical(row[0])).hexdigest()!=row[1]: raise ValueError('READ_INDEX_DETAIL_DIGEST_MISMATCH')
-        return row[0]
+            return self._detail_row(pg,self.token,self.day,domain,key)
 
     def display_identities(self, domain, entity_ids):
         """Bounded identity/name join for already selected event or ladder rows."""

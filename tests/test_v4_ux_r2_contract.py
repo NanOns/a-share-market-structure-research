@@ -2,7 +2,7 @@ import unittest
 
 from workbench_db.v4_read_index_r2 import (
     materialize_radar_rows, query_parts, schema_binding_matches,
-    schema_for_revision, summary, validate_home_response, validate_query,
+    schema_for_revision, summary, detail_payload, validate_home_response, validate_query,
 )
 from workbench_service.core_product_bff_r1 import (
     current_identity_presentation, home_summary, is_legacy_r1_home_fallback,
@@ -13,6 +13,15 @@ class UXR2RouteContractTests(unittest.TestCase):
     def setUp(self):
         self.token = 'a' * 64
         self.day = '2026-10-13'
+
+    def test_detail_only_extras_are_expanded_but_never_leak_into_summary(self):
+        row = {'entity_id': 'INDUSTRY:T0101', 'symbol': 'T0101', 'display_name': '测试行业',
+               'fields': {'member_count': {'value': 3}},
+               '__detail_extras__': {'why_now': {'current_state': 'RISING'}}}
+        self.assertEqual(detail_payload(row)['why_now'], {'current_state': 'RISING'})
+        self.assertNotIn('__detail_extras__', detail_payload(row))
+        self.assertNotIn('why_now', summary(row, 'sectors'))
+        self.assertNotIn('__detail_extras__', summary(row, 'sectors'))
 
     def test_limit_state_is_allowed_only_on_limits_route(self):
         query = {'trade_date': self.day, 'context_token': self.token, 'limit_state': 'UNKNOWN'}
@@ -130,6 +139,149 @@ class UXR2RouteContractTests(unittest.TestCase):
         self.assertTrue(schema_binding_matches(root, {
             'schema': workspace_schema(root, 'read_index_r2'),
         }))
+
+    def test_read_index_detail_uses_exact_primary_key_before_fallbacks(self):
+        from unittest.mock import patch
+        from workbench_db import v4_read_index_r2 as module
+        from workbench_db.v4_read_index_r2 import ReadIndex, canonical
+
+        row = {'entity_id': 'INDUSTRY:T0101', 'fields': {'maturity': {'value': None}}}
+        detail_digest = __import__('hashlib').sha256(canonical(row)).hexdigest()
+
+        class Result:
+            def __init__(self, one=None, many=None):
+                self.one, self.many = one, many or []
+
+            def fetchone(self):
+                return self.one
+
+            def fetchall(self):
+                return self.many
+
+        class Pg:
+            def __init__(self):
+                self.calls = []
+
+            def execute(self, statement, args=None):
+                query = str(statement)
+                self.calls.append(query)
+                if 'SELECT digest,contract,sealed' in query:
+                    return Result(one=('d' * 64, 'V4_READ_INDEX_R2', True))
+                return Result(many=[(row, detail_digest)])
+
+        pg = Pg()
+
+        class Connection:
+            def __enter__(self):
+                return pg
+
+            def __exit__(self, *_):
+                return False
+
+        binding = dict(contract_id='V4_READ_INDEX_R2', engine='postgresql', schema='v4_test',
+                       head_token=self.token, T0=self.day, digest='d' * 64, counts={},
+                       database_identity={'id': 1})
+        with (patch.object(module, 'connection', return_value=Connection()),
+              patch.object(module, 'schema_binding_matches', return_value=True),
+              patch.object(module.ForwardFactStore, '_database_identity', return_value={'id': 1})):
+            result = ReadIndex('root', binding, self.token, self.day).detail('sectors', row['entity_id'])
+
+        self.assertEqual(result, row)
+        self.assertEqual(len(pg.calls), 2)  # attest + one primary-key lookup
+        self.assertIn('entity_id=%s LIMIT 2', pg.calls[1])
+        self.assertNotIn(' OR ', pg.calls[1])
+
+    def test_read_index_detail_reaches_symbol_fallback_only_after_primary_miss(self):
+        from unittest.mock import patch
+        from workbench_db import v4_read_index_r2 as module
+        from workbench_db.v4_read_index_r2 import ReadIndex, canonical
+        import hashlib
+
+        row = {'entity_id': 'SEC-1', 'symbol': 'SH.600000'}
+        detail_digest = hashlib.sha256(canonical(row)).hexdigest()
+
+        class Result:
+            def __init__(self, one=None, many=None):
+                self.one, self.many = one, many or []
+
+            def fetchone(self): return self.one
+            def fetchall(self): return self.many
+
+        class Pg:
+            def __init__(self): self.calls = []
+            def execute(self, statement, args=None):
+                query = str(statement)
+                self.calls.append(query)
+                if 'SELECT digest,contract,sealed' in query:
+                    return Result(one=('d' * 64, 'V4_READ_INDEX_R2', True))
+                if 'entity_id=%s LIMIT 2' in query:
+                    return Result(many=[])
+                if 'upper(symbol)=upper(%s)' in query:
+                    return Result(many=[(row, detail_digest)])
+                self.fail('unexpected alias scan')
+
+            def fail(self, message): raise AssertionError(message)
+
+        pg = Pg()
+
+        class Connection:
+            def __enter__(self): return pg
+            def __exit__(self, *_): return False
+
+        binding = dict(contract_id='V4_READ_INDEX_R2', engine='postgresql', schema='v4_test',
+                       head_token=self.token, T0=self.day, digest='d' * 64, counts={},
+                       database_identity={'id': 1})
+        with (patch.object(module, 'connection', return_value=Connection()),
+              patch.object(module, 'schema_binding_matches', return_value=True),
+              patch.object(module.ForwardFactStore, '_database_identity', return_value={'id': 1})):
+            result = ReadIndex('root', binding, self.token, self.day).detail('stocks', 'SH.600000')
+
+        self.assertEqual(result, row)
+        self.assertEqual(len(pg.calls), 3)  # attest + exact key miss + symbol fallback
+
+    def test_read_index_detail_and_context_share_one_attested_connection(self):
+        from unittest.mock import patch
+        from workbench_db import v4_read_index_r2 as module
+        from workbench_db.v4_read_index_r2 import ReadIndex, canonical
+        import hashlib
+
+        context = {'context': {'trade_date': self.day}, 'context_token': self.token}
+        row = {'entity_id': 'INDUSTRY:T0101', 'fields': {'member_count': {'value': 32}}}
+
+        class Result:
+            def __init__(self, one=None, many=None): self.one, self.many = one, many or []
+            def fetchone(self): return self.one
+            def fetchall(self): return self.many
+
+        class Pg:
+            def execute(self, statement, args=None):
+                query = str(statement)
+                if 'SELECT digest,contract,sealed' in query:
+                    return Result(one=('d' * 64, 'V4_READ_INDEX_R2', True))
+                if 'SELECT payload,payload_sha256' in query:
+                    return Result(one=(context, hashlib.sha256(canonical(context)).hexdigest()))
+                if 'entity_id=%s LIMIT 2' in query:
+                    return Result(many=[(row, hashlib.sha256(canonical(row)).hexdigest())])
+                raise AssertionError('unexpected query')
+
+        pg = Pg()
+
+        class Connection:
+            def __enter__(self): return pg
+            def __exit__(self, *_): return False
+
+        binding = dict(contract_id='V4_READ_INDEX_R2', engine='postgresql', schema='v4_test',
+                       head_token=self.token, T0=self.day, digest='d' * 64, counts={},
+                       database_identity={'id': 1})
+        with (patch.object(module, 'connection', return_value=Connection()) as connect,
+              patch.object(module, 'schema_binding_matches', return_value=True),
+              patch.object(module.ForwardFactStore, '_database_identity', return_value={'id': 1})):
+            result_context, result_detail = ReadIndex('root', binding, self.token, self.day).response_and_detail(
+                '/api/v4/context', 'sectors', row['entity_id'])
+
+        self.assertEqual(result_context, context)
+        self.assertEqual(result_detail, row)
+        self.assertEqual(connect.call_count, 1)
 
 
 if __name__ == '__main__':

@@ -47,6 +47,9 @@ class FakeR2:
         self.detail_calls.append((domain, key))
         return self.detail_row
 
+    def response_and_detail(self, path, domain, key):
+        return self.response(path), self.detail(domain, key)
+
 
 def make_bff(root):
     bff = CoreProductBFFR1.__new__(CoreProductBFFR1)
@@ -151,6 +154,31 @@ class UXR3RouteTests(unittest.TestCase):
         self.assertEqual(response['selection_explanation']['d2']['scenario_status']['reason'], 'DETECTOR_NOT_RUN')
         self.assertEqual(response['item']['fields']['identity_status']['value'], 'CONFIRMED_CURRENT_IDENTITY')
         self.assertNotIn(('stocks', {'context_token': TOKEN}), index.page_calls)
+
+    def test_sector_detail_does_not_load_unrelated_focus_projection(self):
+        self.bff._read_index_r2 = lambda day: None
+        self.bff._get_product = lambda path, query: (200, {'context': {}, 'item': {'entity_id': 'INDUSTRY:T0101'}})
+        self.bff.focus_projection = lambda day: self.fail('sector detail must not load the Focus projection')
+        code, response = self.bff.get('/api/v4/sectors/INDUSTRY:T0101', {'context_token': TOKEN})
+        self.assertEqual(code, 200)
+        self.assertEqual(response['item']['entity_id'], 'INDUSTRY:T0101')
+
+    def test_sector_detail_uses_indexed_rotation_explanation_without_owner_reload(self):
+        why_now = {'current_state': 'RISING', 'reason_codes': ['BREADTH_IMPROVED']}
+        detail = {'entity_id': 'INDUSTRY:T0101', 'symbol': 'T0101', 'fields': {}, 'why_now': why_now}
+        index = FakeR2(detail)
+        self.bff._read_index_r2 = lambda day: index
+        self.bff.source = lambda domain, day: self.fail('indexed sector detail must not reload the rotation owner')
+
+        def base_get(instance, path, query):
+            page = instance.page('sectors', DAY, query, entity='INDUSTRY:T0101')
+            return 200, {'context': {}, 'item': page['item']}
+
+        with patch.object(OperationalSuccessorBFFV1, 'get', base_get):
+            code, response = self.bff.get('/api/v4/sectors/INDUSTRY:T0101', {'context_token': TOKEN})
+        self.assertEqual(code, 200)
+        self.assertEqual(response['why_now'], why_now)
+        self.assertEqual(index.detail_calls, [('sectors', 'INDUSTRY:T0101')])
 
     def test_focus_entity_route_attaches_full_r2_detail(self):
         detail = {'entity_id': 'SEC-2', 'fields': {'validity': {'value': 'UNKNOWN', 'quality': 'SOURCE_INCOMPLETE',

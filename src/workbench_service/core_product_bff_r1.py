@@ -251,7 +251,10 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         code,data=self._get_product(path,query)
         if index is None and day!=self.api.candidate['accepted_trade_date']:
             data['read_index_status']='HISTORICAL_UNINDEXED_READ_ONLY'
-        day=query.get('trade_date',self.api.candidate['accepted_trade_date']);pack=self.focus_projection(day)
+        day=query.get('trade_date',self.api.candidate['accepted_trade_date'])
+        focus_route=(path in ('/api/v4/focus','/api/v4/home','/api/v4/radar') or
+                     path.startswith('/api/v4/focus/') or path.startswith('/api/v4/forward'))
+        pack=self.focus_projection(day) if focus_route else None
         if path=='/api/v4/focus' and code==200:
             episodes=self.source('forward',day)['episodes'];active={e['entity_id'] for e in episodes if e.get('end_date') is None}
             stocks={r['entity_id']:r for r in self.project('stocks',day)};sectors={r['entity_id']:r for r in self.project('sectors',day)};groups=Counter();unknown=0
@@ -365,6 +368,10 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         d2={r['entity_id']:r for r in self.source('focus',day)} if domain=='stocks' else {}
         profiles={r['security_id']:r for r in self.source('profile',day)} if domain=='stocks' else {}
         sector_native={r['sector_id']:r for r in self.source('sector',day)} if domain=='sectors' else {}
+        # Sector detail pages need the dated rotation explanation. Attach it
+        # while building the immutable R2 projection so a detail request does
+        # not reload the rotation owner bundle on every click.
+        sector_rotation={r['sector_id']:r.get('rotation',{}) for r in self.source('rotation',day)} if domain=='sectors' else {}
         identities,identity_ref=self.identity_records() if domain=='stocks' else ([],None)
         current_identities={r['security_id']:r for r in self.identity_rows()} if domain=='stocks' else {}
         identity_ref_current=None
@@ -405,6 +412,11 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     row['fields'][key]=owner_cell(dict(value=value,quality='KNOWN',unit='members'),ref,field,day)
                 for key in ('maturity','health'):
                     row['fields'].setdefault(key,dict(value='UNKNOWN',quality='SOURCE_INCOMPLETE',reason='DATED_SECTOR_D2_'+key.upper()+'_OWNER_NOT_PRESENT',as_of=day,unit='state',source=None,field=None))
+                rotation=sector_rotation.get(row['entity_id'],{})
+                row['__detail_extras__']={'why_now':dict(prior_state=rotation.get('prior_rotation_state'),current_state=rotation.get('output_state'),
+                    reason_codes=rotation.get('reason_codes',[]),predicates=rotation.get('predicates',{}),
+                    fields={k:rotation.get('fields',{}).get(k) for k in ('dq5','breadth_delta1','breadth_delta3','ma20_delta3','base_seed_width_adjusted')},
+                    source=self.api.candidate['owners'][day]['rotation'],scope='Observed reconstructed rule facts; not strict PIT or independently accepted full episode reduction')}
             original={}
             if domain=='stocks':
                 original.update(cores.get(row['entity_id'],{}).get('fields',{}))
@@ -437,13 +449,16 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         if not getattr(self,'building_read_index',False):
             index=self._read_index_r2(day)
             if index is not None and domain in ('stocks','sectors','focus'):
+                if entity is not None:
+                    context,item=index.response_and_detail(
+                        '/api/v4/context',domain,str(entity).strip().upper())
+                    if context is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
+                    base={k:v for k,v in context.items() if k in ('context','context_token','production_accepted','source_quality')}
+                    if item is None:return {**base,'status':'NOT_FOUND','items':[],'total':0,'offset':int(q.get('offset',0)),'limit':int(q.get('limit',30)),'has_next':False,'domain':domain,'gap':None}
+                    return {**base,'status':'READY','items':[item],'item':item,'total':1,'offset':int(q.get('offset',0)),'limit':int(q.get('limit',30)),'has_next':False,'domain':domain,'gap':None}
                 context=index.response('/api/v4/context')
                 if context is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
                 base={k:v for k,v in context.items() if k in ('context','context_token','production_accepted','source_quality')}
-                if entity is not None:
-                    item=index.detail(domain,str(entity).strip().upper())
-                    if item is None:return {**base,'status':'NOT_FOUND','items':[],'total':0,'offset':int(q.get('offset',0)),'limit':int(q.get('limit',30)),'has_next':False,'domain':domain,'gap':None}
-                    return {**base,'status':'READY','items':[item],'item':item,'total':1,'offset':int(q.get('offset',0)),'limit':int(q.get('limit',30)),'has_next':False,'domain':domain,'gap':None}
                 return {**base,**index.page(domain,q,entity=entity,sector=sector)}
             from workbench_db.v4_read_index_r1 import load as load_index
             index=load_index(self.api.root,self.api.token,day,allow_missing=day!=self.api.candidate['accepted_trade_date'])
@@ -570,12 +585,16 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         if p[0]=='sectors' and len(p)==2:
             code,data=super().get(path,self._base_query(q))
             if code!=200:return code,data
-            row=next((r for r in self.source('rotation',day) if r['sector_id']==p[1]),None)
-            rotation=row.get('rotation',{}) if row else {}
-            data['why_now']=dict(prior_state=rotation.get('prior_rotation_state'),current_state=rotation.get('output_state'),
-                reason_codes=rotation.get('reason_codes',[]),predicates=rotation.get('predicates',{}),
-                fields={k:rotation.get('fields',{}).get(k) for k in ('dq5','breadth_delta1','breadth_delta3','ma20_delta3','base_seed_width_adjusted')},
-                source=self.api.candidate['owners'][day]['rotation'],scope='Observed reconstructed rule facts; not strict PIT or independently accepted full episode reduction')
+            indexed_why_now=data.get('item',{}).get('why_now')
+            if indexed_why_now is not None:
+                data['why_now']=indexed_why_now
+            else:
+                row=next((r for r in self.source('rotation',day) if r['sector_id']==p[1]),None)
+                rotation=row.get('rotation',{}) if row else {}
+                data['why_now']=dict(prior_state=rotation.get('prior_rotation_state'),current_state=rotation.get('output_state'),
+                    reason_codes=rotation.get('reason_codes',[]),predicates=rotation.get('predicates',{}),
+                    fields={k:rotation.get('fields',{}).get(k) for k in ('dq5','breadth_delta1','breadth_delta3','ma20_delta3','base_seed_width_adjusted')},
+                    source=self.api.candidate['owners'][day]['rotation'],scope='Observed reconstructed rule facts; not strict PIT or independently accepted full episode reduction')
             return code,data
         if p[0]=='sectors' and len(p)==3 and p[2] in ('timeline','rotation-timeline'):
             data=[]

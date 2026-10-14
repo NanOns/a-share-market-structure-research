@@ -1,7 +1,7 @@
 import unittest
 
-from workbench_db.v4_read_index_r2 import materialize_radar_rows, query_parts, summary, validate_query
-from workbench_service.core_product_bff_r1 import current_identity_presentation
+from workbench_db.v4_read_index_r2 import materialize_radar_rows, query_parts, summary, validate_home_response, validate_query
+from workbench_service.core_product_bff_r1 import current_identity_presentation, home_summary
 
 
 class UXR2RouteContractTests(unittest.TestCase):
@@ -60,6 +60,35 @@ class UXR2RouteContractTests(unittest.TestCase):
         status = current_identity_presentation(identity, {'path': 'identity.json', 'sha256': 'b' * 64}, self.day)
         self.assertEqual(status['value'], 'CONFIRMED_CURRENT_IDENTITY')
         self.assertEqual(identity['code_status'], 'CONFIRMED_IPO')
+
+    def test_home_summary_preserves_rendered_fields_without_full_profile(self):
+        row = {
+            'entity_id': 'SEC-1', 'security_id': 'SEC-1', 'symbol': 'SZ.000001',
+            'display_name': '测试', 'trade_date': self.day,
+            'field_owner_bindings': {'private_detail': 'not-for-home'},
+            'knowledge_lineage': {'many': 'details'}, 'search_aliases': ['000001'],
+            'fields': {
+                'effective_event': {'value': 'WEAKENED', 'quality': 'KNOWN', 'source': {'path': 'events.json'}},
+                'trade_date': {'value': self.day, 'quality': 'KNOWN'},
+                'scenario': {'value': 'NONE', 'quality': 'KNOWN'},
+                'large_array': {'value': list(range(2000)), 'quality': 'KNOWN'},
+            },
+        }
+        result = home_summary(row, {'effective_event', 'trade_date'})
+        self.assertEqual(set(result['fields']), {'effective_event', 'trade_date'})
+        self.assertEqual(result['fields']['effective_event']['quality'], 'KNOWN')
+        self.assertNotIn('field_owner_bindings', result)
+        self.assertNotIn('knowledge_lineage', result)
+        self.assertNotIn('search_aliases', result)
+
+    def test_home_response_guard_accepts_summary_and_rejects_full_detail(self):
+        row = {'entity_id': 'SEC-1', 'symbol': 'SZ.000001', 'display_name': '测试',
+               'fields': {'effective_event': {'value': 'NEW', 'quality': 'KNOWN'}}}
+        payload = {'changes': [row], 'risks': [], 'rotations': [], 'sector_changes': []}
+        self.assertGreater(validate_home_response(payload), 0)
+        payload['changes'][0]['fields']['knowledge_lineage'] = {'value': 'large'}
+        with self.assertRaisesRegex(ValueError, 'HOME_FULL_DETAIL_REGRESSION'):
+            validate_home_response(payload)
 
 
 if __name__ == '__main__':

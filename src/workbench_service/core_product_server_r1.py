@@ -172,6 +172,8 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None):
                         if current_joint is not None and code==200:
                             data['current_native_joint']=dict(contract_id=current_joint['contract_id'],T0=current_joint['T0'],business_token=current_joint['business_token'],snapshot=current_joint['snapshot'],full_product_release=current_joint['full_product_release'])
                         if path=='/api/v4/home' and code==200:
+                            from workbench_db.v4_read_index_r2 import validate_home_response
+                            validate_home_response(data)
                             from workbench_db.v4_native import configured_reader_dsn
                             from workbench_db.v4_forward_pg_r1 import ForwardFactStore
                             with psycopg.connect(configured_reader_dsn(),connect_timeout=5) as pg:

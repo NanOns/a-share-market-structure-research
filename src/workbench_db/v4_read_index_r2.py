@@ -33,10 +33,27 @@ SUMMARY_FIELDS = {
     'radar': {'effective_event','trade_date','scenario','final_eligibility','identity_status','primary_industry','validity','path_resolution'},
 }
 HOME_EVENT_PRIORITY={'INVALIDATED':0,'EXITED':1,'WEAKENED':2,'UPGRADED':3,'REENTERED':4,'NEW':5}
+HOME_RESPONSE_MAX_BYTES=512*1024
 
 
 def canonical(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',',':')).encode()
+
+
+def validate_home_response(payload):
+    """Guard both the prebuilt R2 response and HTTP response against full-row regressions."""
+    if len(canonical(payload))>HOME_RESPONSE_MAX_BYTES:
+        raise ValueError('HOME_RESPONSE_SIZE_LIMIT_EXCEEDED')
+    def check_row(row,allowed):
+        if set(row.get('fields',{}))-allowed or any(key in row for key in ('field_owner_bindings','knowledge_lineage','search_aliases')):
+            raise ValueError('HOME_FULL_DETAIL_REGRESSION')
+    for row in payload.get('changes',[]):check_row(row,{'effective_event','trade_date'})
+    for row in payload.get('risks',[]):check_row(row,{'effective_event','trade_date'})
+    for row in payload.get('rotations',[]):check_row(row,{'output_state','prior_rotation_state','sector_rs5','member_count'})
+    for card in payload.get('sector_changes',[]):
+        check_row(card.get('item',{}),{'output_state','prior_rotation_state','sector_rs5','member_count'})
+        for row in card.get('member_previews',[]):check_row(row,{'effective_event','trade_date'})
+    return len(canonical(payload))
 
 
 def summary(row, domain=None):
@@ -305,6 +322,7 @@ def prepare_bff(root, candidate, *, days=None, jobs=None):
         query=dict(trade_date=day,context_token=api.token)
         collections={domain:bff.project(domain,day) for domain in ('stocks','sectors','focus')}
         responses={path:bff.get(path,query)[1] for path in ('/api/v4/context','/api/v4/home')}
+        validate_home_response(responses['/api/v4/home'])
         stocks={row['entity_id']:row for row in collections['stocks']}
         memberships_by_sector={row['sector_id']:set(row.get('member_ids',[])) for row in bff.source('sector',day)}
         events=bff.source('forward',day).get('events',[])

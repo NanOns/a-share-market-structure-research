@@ -16,6 +16,24 @@ CONTRACT='CORE_PRODUCT_BFF_R1'
 
 HOME_EVENT_PRIORITY={'INVALIDATED':0,'EXITED':1,'WEAKENED':2,'UPGRADED':3,'REENTERED':4,'NEW':5}
 
+HOME_STOCK_SUMMARY_FIELDS={'effective_event','trade_date'}
+HOME_SECTOR_SUMMARY_FIELDS={'output_state','prior_rotation_state','sector_rs5','member_count'}
+HOME_IDENTITY_FIELDS={'entity_id','security_id','symbol','display_name','display_name_scope','trade_date'}
+HOME_CELL_FIELDS={'value','quality','unit','reason','as_of','source','actual_count','required_count'}
+
+def home_summary(row, fields):
+    """Keep only the identity and explicitly rendered evidence needed by home cards."""
+    result={key:row[key] for key in HOME_IDENTITY_FIELDS if key in row}
+    result['fields']={name:{key:value for key,value in cell.items() if key in HOME_CELL_FIELDS}
+                      for name,cell in row.get('fields',{}).items() if name in fields}
+    for key in ('source','symbol_source','display_name_source'):
+        value=row.get(key)
+        if isinstance(value,dict):
+            result[key]={name:value[name] for name in ('path','sha256','contract_id','as_of','field') if name in value}
+        elif value is not None:
+            result[key]=value
+    return result
+
 def product_manifest_bindings(authority):
     """Versioned authority: R1 singleton or R2 exact date catalogue."""
     if authority.get('contract_id') == 'CORE_PRODUCT_READ_AUTHORITY_R1':
@@ -638,7 +656,22 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 covered.update(r['entity_id'] for r in related)
                 cards.append(dict(item=row,member_previews=related[:5],member_total=len(members),net_information_count=len(fresh),change_counts=dict(Counter(r['fields']['effective_event']['value'] for r in related))))
             independent=[r for r in changes if r['entity_id'] not in covered]
-            data.update(changes=independent[:30],change_total=len(independent),risks=[r for r in changes if r['fields']['effective_event']['value'] in RISK_EVENTS][:30],net_information_count=len(changes),persistent_count=sum(e.get('event')=='PERSISTENT' for e in events),change_scope='EXPLICIT_FOCUS_EVENTS_AND_ROTATION_OWNER_DELTAS; FULL_STRUCTURE_CHANGE_DEBT_OPEN',sector_changes=cards,sector_change_total=len(rotations),rotations=rotations[:10],rotation_total=len(rotations),source_bindings=dict(stock_changes=self.api.candidate['owners'][day]['forward'],sector_changes=self.api.candidate['owners'][day]['rotation']),rotation_validation='VALIDATION_ONGOING; NOT_INDEPENDENTLY_ACCEPTED')
+            data.update(
+                changes=[home_summary(r,HOME_STOCK_SUMMARY_FIELDS) for r in independent[:30]],
+                change_total=len(independent),
+                risks=[home_summary(r,HOME_STOCK_SUMMARY_FIELDS) for r in changes if r['fields']['effective_event']['value'] in RISK_EVENTS][:30],
+                net_information_count=len(changes),
+                persistent_count=sum(e.get('event')=='PERSISTENT' for e in events),
+                change_scope='EXPLICIT_FOCUS_EVENTS_AND_ROTATION_OWNER_DELTAS; FULL_STRUCTURE_CHANGE_DEBT_OPEN',
+                sector_changes=[dict(item=home_summary(card['item'],HOME_SECTOR_SUMMARY_FIELDS),
+                    member_previews=[home_summary(r,HOME_STOCK_SUMMARY_FIELDS) for r in card['member_previews']],
+                    member_total=card['member_total'],net_information_count=card['net_information_count'],
+                    change_counts=card['change_counts']) for card in cards],
+                sector_change_total=len(rotations),
+                rotations=[home_summary(r,HOME_SECTOR_SUMMARY_FIELDS) for r in rotations[:10]],
+                rotation_total=len(rotations),
+                source_bindings=dict(stock_changes=self.api.candidate['owners'][day]['forward'],sector_changes=self.api.candidate['owners'][day]['rotation']),
+                rotation_validation='VALIDATION_ONGOING; NOT_INDEPENDENTLY_ACCEPTED')
             data.setdefault('counts',{})
             data['counts']['radar']=dict(value=len(independent),quality='KNOWN',status='PARTIAL',scope='ACCEPTED_FOCUS_CHANGE_EVENTS_WITHOUT_TOP_ROTATION_COVERAGE',source=self.api.candidate['owners'][day].get('forward'),reason='FORMAL_RADAR_PRIORITY_NOT_PUBLISHED',href='/v4/research/radar')
             data['counts']['forward']=dict(value=None,quality='SOURCE_INCOMPLETE',status='NOT_GRANTED',scope='FORMAL_VALIDATION_COHORT',source=self.api.candidate['owners'][day].get('validation_cohort'),reason='NO_AUTHORIZED_COHORT_OWNER',href='/v4/research/focus#forward-cohort')

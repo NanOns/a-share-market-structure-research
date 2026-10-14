@@ -21,6 +21,8 @@ class DesktopTray:
         from PIL import Image, ImageDraw
         self.controller = controller
         self.exiting = False
+        self.status_dialog_lock = threading.Lock()
+        self.action_request_lock = threading.Lock()
         self.monitor_stop = threading.Event()
         image = Image.new('RGBA', (64,64), (18,30,45,255))
         draw = ImageDraw.Draw(image)
@@ -74,15 +76,19 @@ class DesktopTray:
     def confirm_stop(self, action):
         text = ('停止引擎期间不执行采集，可能错过本机首次观测；补日更不能补造历史首次观测。\n'
                 '当前任务会等待安全边界后停止。\n是否继续？')
-        return ctypes.windll.user32.MessageBoxW(None, text, '大A交易 · 安全维护', 0x24) == 6
+        return ctypes.windll.user32.MessageBoxW(None, text, '大A交易 · 安全维护', 0x23) == 6
 
     def action(self, action, confirm=True):
-        if action in ('stop','restart','exit') and self.controller.state == 'RUNNING' and confirm and not self.confirm_stop(action):
-            return
-        if self.controller.operation.locked():
-            self.notify('操作正在进行，请等待安全边界。'); return
+        # MessageBox has its own modal loop. Keep it off the tray pump and
+        # admit only one pending confirmation/operation from repeated clicks.
+        if not self.action_request_lock.acquire(blocking=False):
+            self.notify('操作正在进行，请等待或关闭确认窗口。'); return
         def work():
             try:
+                if action in ('stop','restart','exit') and self.controller.state == 'RUNNING' and confirm and not self.confirm_stop(action):
+                    return
+                if self.controller.operation.locked():
+                    self.notify('操作正在进行，请等待安全边界。'); return
                 result = self.controller.perform('stop' if action=='exit' else action)
                 self.notify(LABELS[result['engine_state']])
                 if action == 'exit' and result['engine_state'] == 'STOPPED':
@@ -92,7 +98,13 @@ class DesktopTray:
                     self.icon.stop()
             except Exception as exc:
                 self.notify('操作未完成：'+str(exc)[:120])
-        threading.Thread(target=work, name='tray-operation', daemon=False).start()
+            finally:
+                self.action_request_lock.release()
+        try:
+            threading.Thread(target=work, name='tray-operation', daemon=False).start()
+        except Exception:
+            self.action_request_lock.release()
+            raise
 
     def cancel_maintenance(self):
         try:
@@ -119,17 +131,30 @@ class DesktopTray:
             webbrowser.open(f'http://127.0.0.1:{self.controller.port}/v4/research/diagnostics?tab=jobs')
 
     def show_status(self, *_):
-        status = self.controller.status()
-        auto='开启' if status['auto_daily_enabled'] is True else '暂停' if status['auto_daily_enabled'] is False else '待确认'
-        text = ('应用已启动；引擎：'+LABELS[status['engine_state']]+'\n'
-                '包版本：'+str(status['BUILD_RELEASE_ID'])+'\n'
-                '工作区：'+status['WORKSPACE_ROOT']+'\n'
-                '自动日更：'+auto+'\n'
-                '观测时间：'+status['observed_at']+'\n'
-                '最近错误：'+str(status['reason'] or '无')+'\n\n'
-                'CAPTURE_REQUIRES_APP_RUNNING\n真实首次观测需要电脑可用、用户登录、引擎运行及来源/调度条件满足。\n'
-                '离线记录不代表实时健康；正式能力准入沿用原合同。')
-        ctypes.windll.user32.MessageBoxW(None, text, '大A V4 · 运行状态', 0x40)
+        if not self.status_dialog_lock.acquire(blocking=False):
+            return
+        def work():
+            try:
+                status = self.controller.status()
+                auto='开启' if status['auto_daily_enabled'] is True else '暂停' if status['auto_daily_enabled'] is False else '待确认'
+                text = ('应用已启动；引擎：'+LABELS[status['engine_state']]+'\n'
+                        '包版本：'+str(status['BUILD_RELEASE_ID'])+'\n'
+                        '工作区：'+status['WORKSPACE_ROOT']+'\n'
+                        '自动日更：'+auto+'\n'
+                        '观测时间：'+status['observed_at']+'\n'
+                        '最近错误：'+str(status['reason'] or '无')+'\n\n'
+                        'CAPTURE_REQUIRES_APP_RUNNING\n真实首次观测需要电脑可用、用户登录、引擎运行及来源/调度条件满足。\n'
+                        '离线记录不代表实时健康；正式能力准入沿用原合同。')
+                ctypes.windll.user32.MessageBoxW(None, text, '大A V4 · 运行状态', 0x40)
+            except Exception as exc:
+                self.notify('状态窗口未打开：'+str(exc)[:120])
+            finally:
+                self.status_dialog_lock.release()
+        try:
+            threading.Thread(target=work, name='tray-status-dialog', daemon=True).start()
+        except Exception:
+            self.status_dialog_lock.release()
+            raise
 
     def open_logs(self, *_):
         path = self.controller.root/'runtime/desktop'

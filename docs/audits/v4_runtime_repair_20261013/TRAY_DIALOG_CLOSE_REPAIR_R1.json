@@ -1,0 +1,106 @@
+{
+  "contract_id": "V4_TRAY_DIALOG_CLOSE_REPAIR_R1",
+  "audit_item": "TRAY-UI-01",
+  "observed_at": "2026-10-14T00:28:52.368395+00:00",
+  "acceptance": "PASS_SCOPED_DEPLOYED_DIALOG_CLOSE",
+  "user_symptoms": [
+    "Close button/OK does not dismiss",
+    "Tray unresponsive after dialog closure"
+  ],
+  "root_cause_scope": "Synchronous MessageBox/status fetch in tray message pump, unguarded repeated modal calls; YESNO maintenance lacks Cancel/title-bar closure",
+  "changes": [
+    "Status PG fetch/dialog in dedicated thread with single-dialog guard released on close/error",
+    "Confirmation in operation thread; one pending request; Cancel and X interpreted as false",
+    "MessageBox YESNOCANCEL; accepted only IDYES"
+  ],
+  "tests": "6 passed in 0.08s",
+  "native_source_ui": {
+    "status": "PASS_NATIVE_DIALOG_CLOSURE",
+    "status_dialog_closed": true,
+    "confirmation_cancelled": true,
+    "scope": "Source UI isolated fake controller; no real engine or production changes"
+  },
+  "native_production_ui": {
+    "status_title_close": true,
+    "status_ok_close": true,
+    "reopen_after_close": true,
+    "physical_tray_menu_click": false,
+    "note": "Repeated executable entry uses supported focus-existing-owner tray message; confirms message pump responds after close"
+  },
+  "frozen_qa": {
+    "status": "PASS",
+    "errors": [],
+    "checks": [
+      {
+        "name": "NATIVE_TRAY_VISIBLE",
+        "status": "PASS"
+      },
+      {
+        "name": "MENU_START_STOP_RESTART_PRESENT",
+        "status": "PASS"
+      },
+      {
+        "name": "TRAY_PAUSE_RESUME_PERSISTENCE",
+        "status": "PASS"
+      },
+      {
+        "name": "TRAY_REMAINS_AFTER_ENGINE_STOP",
+        "status": "PASS"
+      },
+      {
+        "name": "STOPPED_TRAY_RETAINS_LIFETIME_LOCK",
+        "status": "PASS"
+      },
+      {
+        "name": "TRAY_RESTART_RECREATES_WORKER",
+        "status": "PASS"
+      },
+      {
+        "name": "SESSION_CANCEL_NOTIFICATION_RECORDED",
+        "status": "PASS"
+      },
+      {
+        "name": "EXIT_CLOSES_ENGINE_AND_TRAY",
+        "status": "PASS"
+      }
+    ],
+    "evidence_kind": "ACTUAL_WIN32_TRAY_PROGRAMMATIC_ACTIONS_WITH_SIMULATED_HTTP_EXECUTOR"
+  },
+  "package": "V4_PACKAGE_1.0.0_88cc19deae3b",
+  "pid": 34284,
+  "engine_state": "RUNNING",
+  "auto_daily_enabled": false,
+  "deployment": {
+    "acceptance": "PASS_DEPLOYED_HEAD_AND_PAUSE_CONSERVED",
+    "context_token": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+    "trade_date": "2026-10-13",
+    "heads": {
+      "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+      "data/v4/V4_DATA_ACCEPTED_HEAD.json": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "config/v4_current_native_joint_authority_v3.json": "0d8372fa81a34f5c12e41e6f2432af449abaf2bcdb658e4ac38dbf8bd25c22b6"
+    },
+    "changed_resources": [
+      "src/workbench_desktop/engine.py",
+      "src/workbench_desktop/tray.py",
+      "src/workbench_service/static/core-product-r1/desktop_status.js"
+    ],
+    "old_package_preserved": true,
+    "safe_exit": true,
+    "forced_termination": false,
+    "task_backup": "G:\\codex_tmp\\tray_dialog_package_20261014_r3\\OLD_SCHEDULED_TASK.xml"
+  },
+  "source_sha256": {
+    "src\\workbench_desktop\\tray.py": "0dc9ac129ad7d454f15859a0e72a690aa4de01fc741b7075024cc234360c5f69",
+    "tests\\test_tray_dialog_close_r1.py": "11fec617242b15fcc4292f8710e7a57215824de7fd48d520aecaa0523a11a517"
+  },
+  "build_setup_failures": [
+    "Default Python lacks pystray distribution metadata before build",
+    "Existing G build env first invocation lacked PYTHONPATH=src before build"
+  ],
+  "actual_pyinstaller_builds": 1,
+  "remaining": [
+    "Normal APPEND F-03 not run",
+    "RI-02 RANGE_REPAIR deferred",
+    "F-04 wiring deferred"
+  ]
+}

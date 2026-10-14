@@ -140,3 +140,16 @@ F-02 工程修复：只有 stage_state=RUNNING、没有 finished_at 且最后进
 Process专项使用真实ProcessDailyJobs、真实PG、真实子进程/monitor；子进程只读确认暂停，父子PID不同，监控线程存活，QUIESCE退出。仅替换完整任务体为受控读取体，不验run_daily_worker采集/Core/CAS，不能替代F-03。本轮只改测试和证据；未改生产源码、未全量回归、未构建/安装/切换、未开启调度。
 
 独立审计项F-PG-01：范围为原等待超时消歧，验收F_PG_01_CLOSED_TEST_CONFIGURATION_WITH_SCOPED_RUNTIME_PASS。F_PG_01_R3_DIAGNOSTIC.json留存负例traceback、各阶段耗时、两条路径连接ledger、复现环境和生产只读状态。旧POST_CUTOVER_LIGHT_FOLLOWUP_R1.json不覆写，本节为后续闭环。F-01/F-02仍ENGINEERING_ACCEPTED_NOT_DEPLOYED；F-03普通APPEND/正式冷启动、F-04逐字段分类/接线、RI-02 RANGE_REPAIR、shutdown_snapshot历次时间语义P2仍开放。下一阶段等待真实收盘数据及明确手动维护授权，保持自动暂停；推送不是下一阶段准入。
+
+
+### TRAY-UI-01 Windows弹窗关闭修复及正式生效（2026-10-14）
+
+用户直接报告关闭不消失、关闭后托盘卡住，并要求修复。本阶段合同为托盘弹窗生命周期最小修复，已查阅R2.1打包设计、R1性能整改与本报告现役阶段，不进入新的算法/采集/APPEND阶段。TRAY-UI-01独立于F-PG-01及原数值门。
+
+源码发现状态PG读取和MessageBoxW均同步运行于托盘消息回调，重复触发无单实例门；维护YESNO窗口也无Cancel，Windows标题栏关闭不可用。修复：状态读取/显示移到专用线程，状态窗口单实例锁在关闭/异常后释放；维护确认移到操作线程，重复请求不叠加，YESNOCANCEL的取消/×只撤销请求，唯有IDYES执行。原安全维护流程保留，不强杀引擎。
+
+6项定向测试PASS；真实Windows隔离窗口经computer-use点击状态×及维护×，后者返回取消。正式冻结托盘8项启停/重启/暂停/退出检查PASS。构建前两次环境预检分别缺pystray metadata和PYTHONPATH，均未进入PyInstaller；随后使用现有G盘build env完成一次编译。新包V4_PACKAGE_1.0.0_88cc19deae3b资源集合与原包完全相同，仅tray.py、engine.py及desktop_status.js三文件改变，数值/政策资源逐SHA守恒；因此合入此前F-01/F-02显示修复。
+
+当前生产空闲(active_job=null)后，保留旧包和任务XML，原PID1172通过既有核验owner的安全退出命令结束，未强杀；新PID34284运行原28765。正式context_token保持974c60e0...、T0=2026-10-13，三个Head/authority文件哈希保持，auto_daily_enabled=false。计划任务入口更新至新包（原任务路径与此前实际运行包不同，原XML保留），未启动普通日更。
+
+新生产EXE真实状态弹窗×关闭成功；随后通过受支持的已有实例唤起消息重新打开，再以确定关闭成功，证明关闭后消息泵仍响应。没有声称已物理点击托盘菜单每个条目或验证双尺寸。验收PASS_SCOPED_DEPLOYED_DIALOG_CLOSE；证据TRAY_DIALOG_CLOSE_REPAIR_R1.json。F-01/F-02现在随本包正式生效，cached_snapshot语义现场读回正确；本轮未另行做全部终态前端页面矩阵，不扩展F-03正常APPEND/冷启动、F-04接线或RI-02验收。下一步在用户需要时正常使用托盘，其他阶段仍按其原准入条件。

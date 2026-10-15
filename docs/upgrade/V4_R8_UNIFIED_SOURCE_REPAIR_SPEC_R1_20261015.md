@@ -89,3 +89,18 @@ This prevents the homogeneous store writer from replacing an unknown-member
 sector's late Lane with a stock-qualified LIVE_OOS batch Lane. Per-Lane run IDs
 are distinct. The observer regression now covers the mixed stock/sector case
 as well as its publication and due-source hashes (two observer checks passed).
+
+`R8_ISOLATED_OWNER_READ_ORIGIN_R1` permits read-only reuse of old PG Owner
+descriptors inside a G-drive candidate. A hash-bound original Head and its
+embedded authority must list the exact descriptor; its schema must equal the
+configured original workspace's Owner namespace. Existing payload, database,
+date, domain, token and source-hash checks still run. Candidate writes retain
+their normal candidate-derived namespace. Five origin rejection checks passed.
+
+`R8_ISOLATED_DAY_NUMERIC_ACCEPTANCE_R1` records a fully validated candidate day
+without granting production admission. Only the explicit G-drive candidate
+path may use it as the next day's baseline. Its unmodified candidate, generation
+policy, pending-publication policy and full numeric day validation are rechecked;
+both market drivers remain revision-protected. A changed candidate, claimed
+production acceptance, wrong date or different generation policy fails. Five
+targeted baseline checks passed. Production baseline selection is unchanged.

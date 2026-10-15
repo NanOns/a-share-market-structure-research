@@ -7,6 +7,36 @@ from .v4_forward_pg_r1 import ForwardFactStore,CONTRACT,digest
 OWNER='V4_OPERATIONAL_OWNER_NATIVE_PG_CLOSEOUT_R1'
 FOLDER='data/v4/operational_owner_pg_closeout_r1'
 
+
+def read_schema(root,binding,descriptor,workspace_root=None):
+    """Resolve an exact read-only predecessor origin for a G-drive candidate."""
+    root=Path(root).resolve()
+    expected=workspace_schema(Path(workspace_root or root)/FOLDER,'forward')
+    if descriptor.get('schema')==expected or workspace_root is not None:return expected
+    config=root/'config/r8_owner_read_origin_r1.json'
+    if not config.is_file():return expected
+    from workbench_analysis.r43_owner_replay import checked
+    origin=json.loads(config.read_bytes())
+    if (not root.is_relative_to(Path('G:/codex_tmp').resolve())
+            or origin.get('contract_id')!='R8_ISOLATED_OWNER_READ_ORIGIN_R1'
+            or origin.get('scope')!='READ_ONLY_ACCEPTED_PREDECESSOR'
+            or Path(origin.get('candidate_root','')).resolve()!=root):
+        raise ValueError('ISOLATED_OWNER_READ_ORIGIN_INVALID')
+    source=Path(origin['source_workspace_root']).resolve()
+    if source.drive.upper()!='G:' or source==root:raise ValueError('ISOLATED_OWNER_SOURCE_ROOT_INVALID')
+    head=json.loads(checked(root,origin['source_head']).read_bytes())
+    if head.get('contract_id')!='V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1':
+        raise ValueError('ISOLATED_OWNER_SOURCE_HEAD_REQUIRED')
+    authority=json.loads(checked(root,head['native_pg_owner_authority']).read_bytes())
+    if (authority.get('contract_id')!='V4_HEAD_EMBEDDED_NATIVE_PG_OWNER_AUTHORITY_V2'
+            or authority.get('source_owners')!=head.get('owners')):
+        raise ValueError('ISOLATED_OWNER_SOURCE_AUTHORITY_MISMATCH')
+    allowed=[entry['descriptor'] for domains in authority['owners'].values() for entry in domains.values()]
+    source_schema=workspace_schema(source/FOLDER,'forward')
+    if binding not in allowed or descriptor.get('schema')!=source_schema:
+        raise ValueError('ISOLATED_OWNER_DESCRIPTOR_NOT_IN_ACCEPTED_PREDECESSOR')
+    return source_schema
+
 def prepare(root,head_token,day,domain,source_binding,rows):
     from workbench_analysis.r43_owner_replay import checked
     checked(root,source_binding)
@@ -17,7 +47,7 @@ def prepare(root,head_token,day,domain,source_binding,rows):
 def read(root,binding,head_token,day,domain,source_binding,*,workspace_root=None):
     from workbench_analysis.r43_owner_replay import checked
     path=checked(root,binding);descriptor=json.loads(path.read_bytes())
-    schema=workspace_schema(Path(workspace_root or root)/FOLDER,'forward')
+    schema=read_schema(root,binding,descriptor,workspace_root)
     if (descriptor.get('contract_id'),descriptor.get('engine'),descriptor.get('schema'),descriptor.get('kind'))!=(CONTRACT,'postgresql',schema,domain):
         raise ValueError('PG_OPERATIONAL_OWNER_DESCRIPTOR_REQUIRED_NO_FALLBACK')
     checked(root,source_binding)
@@ -57,7 +87,7 @@ def attest_cached(root,binding,domain,source_binding,*,workspace_root=None):
     """Rehash live PG bytes before reusing a previously fully verified owner."""
     from workbench_analysis.r43_owner_replay import checked
     path=checked(root,binding);descriptor=json.loads(path.read_bytes())
-    schema=workspace_schema(Path(workspace_root or root)/FOLDER,'forward')
+    schema=read_schema(root,binding,descriptor,workspace_root)
     if (descriptor.get('contract_id'),descriptor.get('engine'),descriptor.get('schema'),descriptor.get('kind'))!=(CONTRACT,'postgresql',schema,domain):
         raise ValueError('PG_OPERATIONAL_OWNER_DESCRIPTOR_REQUIRED_NO_FALLBACK')
     checked(root,source_binding)

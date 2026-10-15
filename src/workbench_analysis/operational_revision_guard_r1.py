@@ -65,6 +65,34 @@ def accepted_baseline(root,parent,generation):
     verify_runtime(root,parent,policy)
     return policy['accepted_algorithm_bindings'],parent['release_policy'],True
 
+
+def isolated_day_baseline(root,parent,generation):
+    """A numerically verified isolated day may precede the next isolated day."""
+    from pathlib import Path
+    root=Path(root).resolve()
+    if not root.is_relative_to(Path('G:/codex_tmp').resolve()):
+        raise ValueError('ISOLATED_CANDIDATE_REVISION_SCOPE_REQUIRED')
+    proof=load(checked(root,parent['r8_isolated_day_acceptance']))
+    if (proof.get('contract_id')!='R8_ISOLATED_DAY_NUMERIC_ACCEPTANCE_R1'
+            or proof.get('scope')!='ISOLATED_CANDIDATE_HEAD_ONLY'
+            or proof.get('acceptance')!='PASS_NUMERIC_DAY_QA'
+            or proof.get('production_admitted') is not False
+            or proof.get('trade_date')!=parent['accepted_trade_date']):
+        raise ValueError('ISOLATED_DAY_NUMERIC_ACCEPTANCE_REQUIRED')
+    original=load(checked(root,proof['candidate']))
+    stripped={k:v for k,v in parent.items() if k!='r8_isolated_day_acceptance'}
+    if original!=stripped:raise ValueError('ISOLATED_ACCEPTED_CANDIDATE_CHANGED')
+    if generation.get('adjustment_contract',{}).get('policy')!=parent['release_policy']:
+        raise ValueError('ISOLATED_GENERATION_POLICY_MISMATCH')
+    from .operational_daily_exact_policy_v2 import verify
+    policy,_=verify(root,parent['release_policy'],candidate_only=True)
+    if policy.get('publication_ready') is not False or parent['accepted_algorithm_bindings']!=policy['accepted_algorithm_bindings']:
+        raise ValueError('ISOLATED_CANDIDATE_POLICY_REQUIRED')
+    from .operational_successor_v1 import validate
+    validate(root,parent)
+    # Keep both market drivers protected on subsequent candidate days.
+    return policy['accepted_algorithm_bindings'],parent['release_policy'],True
+
 def detect(root,parent,gbbq_sha,member_hashes,*,execution_bindings=None,candidate_only=False):
     from pathlib import Path
     root=Path(root);previous=parent['accepted_trade_date']
@@ -76,7 +104,8 @@ def detect(root,parent,gbbq_sha,member_hashes,*,execution_bindings=None,candidat
     revisions=[]
     if generation.get('gbbq')!=gbbq_sha:revisions.append('GBBQ_REVISION')
     if generation.get('member_sources')!=member_hashes:revisions.append('MEMBERSHIP_REVISION')
-    baseline,baseline_policy,corrected_market=accepted_baseline(root,parent,generation)
+    isolated_parent=bool(candidate_only and parent.get('r8_isolated_day_acceptance'))
+    baseline,baseline_policy,corrected_market=(isolated_day_baseline(root,parent,generation) if isolated_parent else accepted_baseline(root,parent,generation))
     kernels=[];drivers=[];candidate_admissions=[]
     executed={b.get('module_path',b['path']):b for b in execution_bindings or []}
     for binding in baseline:
@@ -100,6 +129,7 @@ def detect(root,parent,gbbq_sha,member_hashes,*,execution_bindings=None,candidat
     return dict(contract_id=CONTRACT,status='RANGE_REPAIR_REQUIRED' if revisions else 'APPEND_DAY',
         predecessor_trade_date=previous,predecessor_generation=registry['generation'],
         accepted_source_baseline=baseline_policy,bounded_market_admission_verified=corrected_market,
+        baseline_scope='ISOLATED_NUMERIC_QA' if isolated_parent else 'ACCEPTED_PREDECESSOR',
         gbbq=dict(accepted=generation.get('gbbq'),actual=gbbq_sha),
         member_sources_unchanged=generation.get('member_sources')==member_hashes,
         revisions=revisions,numeric_bindings=kernels,driver_bindings_separate_admission=drivers,

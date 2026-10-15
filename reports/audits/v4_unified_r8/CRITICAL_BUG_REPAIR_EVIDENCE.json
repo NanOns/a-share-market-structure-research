@@ -126,7 +126,25 @@
     "head_mutated": false,
     "observed_head_date": "2026-10-13",
     "production_http_or_pg_write": false,
-    "system_clock_changed": false
+    "system_clock_changed": false,
+    "final_read_only_checkpoints": [
+      {
+        "observed_at": "2026-10-15T11:36:58+08:00",
+        "listener_pid": 48936,
+        "package": "V4_PACKAGE_1.1.7_f3e4c68bc2d4",
+        "root_http_status": 200,
+        "accepted_head_date": "2026-10-13",
+        "head_sha256": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3"
+      },
+      {
+        "observed_at": "2026-10-15T11:38:14+08:00",
+        "listener_pid": 48936,
+        "package": "V4_PACKAGE_1.1.7_f3e4c68bc2d4",
+        "root_http_status": 200,
+        "accepted_head_date": "2026-10-13",
+        "head_sha256": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3"
+      }
+    ]
   },
   "recorded_at": "2026-10-15",
   "source_contracts": [
@@ -200,9 +218,15 @@
       "result": "S4_ISOLATED_PG_READBACK_PASS",
       "evidence": "Disposable PG port 55440: seven legacy fact payload hashes unchanged; same-date Lane H/L plus Lane L revisions read independently; real-source 10/08 H T+3 settles and unresolved 10/13 H T+1 remains DUE_SOURCE_NOT_ACCEPTED; incremental settlement revision readback; R6 risk PG Owner R2 consumer readback equal; date reads use primary-key index with bounded rows under 39,366 unrelated daily facts and 10,000 unrelated schedules.",
       "limits": "Lane L is explicitly a synthetic isolated fixture; 10/14 Head is not accepted, so its due settlement and true LIVE_OOS evidence await a future accepted session."
+    },
+    {
+      "stage": "S5_FINAL_CLOSEOUT",
+      "result": "UNIFIED_SOURCE_ACCEPTANCE_PASS",
+      "evidence": "I-01 through I-10 final dispositions recorded in R8_UNIFIED_SOURCE_FINAL.md; read-only production checkpoints match; no build or deployment performed.",
+      "next_stage": "One candidate build from the final fixed-branch SHA and isolated package proof in a separately authorized production window."
     }
   ],
-  "next_stage": "S5_FINAL_CLOSEOUT_I01_I10_FINAL_REPORT_DRIVE_SYNC_AND_PRODUCTION_BUILD_ENTRY",
+  "next_stage": "ONE_SAME_SHA_CANDIDATE_BUILD_AND_ISOLATED_PACKAGE_PROOF_IN_A_SEPARATE_PRODUCTION_WINDOW",
   "s4_isolated_pg": {
     "contract_id": "R8_S4_ISOLATED_PG_READBACK_R1",
     "mode": "DISPOSABLE_G_DRIVE_POSTGRESQL_ONLY",
@@ -311,5 +335,5 @@
     "package_built": false,
     "production_restarted": false
   },
-  "status": "S4_ISOLATED_PG_READBACK_PASS_FINAL_AUDIT_PENDING_S5"
+  "status": "UNIFIED_SOURCE_ACCEPTANCE_PASS"
 }

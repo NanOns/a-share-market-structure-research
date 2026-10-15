@@ -82,3 +82,10 @@ R7 changes requiring function-level rather than whole-file transplant: `src/work
 - Validation: 27 targeted tests passed across S2/S3/Forward/R6 risk and existing isolated R6 Forward e2e; changed modules compiled; `git diff --check` passed. No package/build, production Head/PG change, TDX write, or production process restart occurred.
 - Acceptance: `S4_ISOLATED_PG_READBACK_PASS`. S4 establishes disposable-PG coexistence and readback; it does not establish future LIVE_OOS or 10/14 settlement, because Head remains accepted only through 10/13. Those observations remain `WAIT_FUTURE_REAL_SESSION` and do not block source acceptance.
 - Next stage: S5 — publish the I-01–I-10 closeout report, sync the final deliverable to the task's established Drive folder, and record the single same-branch production build entry. Do not build or switch production in this task.
+
+## S5 record — 2026-10-15
+
+- Contract consulted: R8 task card §§5–7 and current R8 upgrade contract.
+- Evidence: `R8_UNIFIED_SOURCE_FINAL.md` records I-01 through I-10; `CRITICAL_BUG_REPAIR_EVIDENCE.json` holds the source, database, hash, readback, query-plan and production checkpoint evidence. Two read-only checks on 28765 observed the same 1.1.7 executable process, successful root GET, accepted Head date 2026-10-13 and identical Head hash.
+- Acceptance: `UNIFIED_SOURCE_ACCEPTANCE_PASS`. Real future LIVE_OOS and 10/14 maturity remain `WAIT_FUTURE_REAL_SESSION`, which the task card allows after current source acceptance.
+- Next stage: build one candidate from the final fixed-branch SHA, prove it in isolation, then enter one separately scheduled production upgrade window. This stage did not build, deploy, switch Head or restart production.

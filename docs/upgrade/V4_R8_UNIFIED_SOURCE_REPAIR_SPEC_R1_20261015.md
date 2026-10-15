@@ -25,3 +25,7 @@ Targeted tests and in-memory/mock store checks establish source semantics only. 
 S4 validation exercised Forward and the R6 risk PG Owner against one disposable PostgreSQL cluster under `G:/codex_tmp/test_temp`, with source documents read from the accepted source root. The isolation contract and measured query plans are recorded in `reports/audits/v4_unified_r8/CRITICAL_BUG_REPAIR_EVIDENCE.json` and `R6_R7_SOURCE_DIFF_AND_MERGE_MATRIX.md`. Date-scoped observation and schedule reads now use fact-key range predicates so the existing `(kind, fact_key)` primary key can bound reads. Compact R7 aggregate facts feed the counts, audit-date, and matured-count readers. No business facts or files in the source root were modified.
 
 S4 acceptance is scoped to isolated PG coexistence/readback, source semantics, and bounded query plans. True LIVE_OOS and the 10/14 due settlement still await a future accepted Head; the isolated Lane L sample is only an engineering fixture. S5 records the task-card I-01–I-10 disposition and next production build entry without running a build.
+
+## S5 final closeout note — 2026-10-15
+
+The task-card I-01–I-10 dispositions and `UNIFIED_SOURCE_ACCEPTANCE_PASS` are recorded in `reports/audits/v4_unified_r8/R8_UNIFIED_SOURCE_FINAL.md`. Real future LIVE_OOS and unaccepted 10/14 settlement remain explicit future-session dependencies. The next build entry is one candidate at the final fixed-branch SHA, isolated package proof, then one planned production window; no package or deployment was run during R8.

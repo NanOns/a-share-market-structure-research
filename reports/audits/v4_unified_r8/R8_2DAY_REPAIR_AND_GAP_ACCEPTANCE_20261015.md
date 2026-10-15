@@ -47,3 +47,15 @@
 - 修复 A：`classify_membership_provenance()` 不再从 sector Owner 回填成员 hash/path。仅当 Head 存在独立 membership（或 membership_snapshot）Owner，Owner 文件通过校验，且行内成员源路径/hash 与该 Owner 一致时，才可能输出 `AS_RECORDED`。同日时间戳但只带派生 sector 产物的负例输出 `UNKNOWN_MEMBERSHIP_BASIS`。
 - 修复 B：`review_legacy_no_quote()` 对相同 `DUE_SOURCE_NOT_ACCEPTED` 状态、原因、空 source digest 和 settlement 结果直接幂等跳过；当来源以后被接受，仍进入已接受来源核验与纠正路径。
 - 验证：`tests/test_r8_s2_data_repairs.py`、`tests/test_r8_s3_ledger.py` **19 passed**；`git diff --check` 通过。源码提交 `161b32aee`，证据提交见本文件所在提交。此结果仅证明固定 fixture 语义；不构成 10/14、10/15 实源验收或打包放行。
+
+
+## Step B 实际触发记录（2026-10-15 收盘后）
+
+- 最新阶段结论：**`SOURCE_BATCH_READY_DERIVATION_BLOCKED`**，替代前述等待源数据的状态。不能再将“本地缺少回执”解释为上游通达信/BaoStock 未更新。
+- 已真实下载通达信 10/15 官方包（552,456,022 bytes），SHA-256 `768c907a6433bc5cfc1fb0c4f6b0cf0ae25f5fe94bf86d95987418558b1acd9d`；从同一包分别冻结 10/14、10/15 的 SH/SZ 日线。BaoStock 分别为 5,225、5,226 行；14 日复用既有已验证缓存并保留早间真实时钟，15 日实时查询。不能将旧缓存声称为晚间重新抓取。
+- 两日来源门均 `source_ready=true`，15 日新增 `SZ.301569` 通过现有新代码身份核验；`SZ.301660` 在两日来源集合中均保留。Core/Profile 尚未派生，不能把源集合计数写成 Core/Profile 验收计数。
+- 真正触发的候选 PG 日更任务：`0b1c9e6f00b74c68b1bb2634fb7c8395`，模式 `CATCH_UP`，缺口 `[2026-10-14,2026-10-15]`，独立候选 schema `v4_jobs_64d0f9c30983a3ac`，复用原 `127.0.0.1:5432/market_research`；未创建新数据库实例。
+- 任务进入 10/14 计算后最终 `QA_BLOCKED`：`RANGE_REPAIR_REQUIRED:NUMERIC_ALGORITHM_REVISION:src/workbench_analysis/operational_owner_adapter_v1.py`。R8 生命周期参数传递改动与 10/13 已接受市场修正驱动绑定不同。差异核对表明是身份传递新增，但本轮没有修改或关闭版本门，也没有自行将它声明为已准入。15 日仍排队且尝试次数 0。
+- 两个 Head 均仍为 10/13；生产 Head SHA-256 保持 `974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3`。本轮未启动 HTTP 服务，28765/28766 均未监听；候选调度保持关闭，临时执行/复制进程均已停止。
+- 阶段矩阵：V-05 已取得双日绑定来源，但 14 日 BaoStock 使用旧缓存的真实时间明确保留；V-06 在驱动准入门阻断；V-07 仅来源集合通过；V-08、V-09 未达执行前置；V-10 未打包。详细日期级哈希、来源时钟、任务状态和源集合见 `TWO_SESSION_20261014_15_CATCHUP.json`。
+- 下一阶段：完成 R8 生命周期传递改动相对于已接受市场驱动的有界候选数值准入，再重试同一隔离任务。禁止通过忽略 revision guard、伪造已接受 Head、跳过 14 日或变更生产门获得 PASS。

@@ -1,6 +1,7 @@
 from workbench_analysis.forward_r7 import compute_nominal_settlement
 from workbench_analysis.forward_r7_pipeline import (
-    accepted_prices_with_status, build_schedules, classify_after_close_capture)
+    accepted_prices_with_status, build_schedules, classify_after_close_capture,
+    classify_membership_provenance, build_daily_universe, next_capture_plan)
 from workbench_analysis.r43_owner_replay import complete_target_universe, unknown_active_core_row
 from workbench_db.forward_r7_store import summarize_settlement_schedule
 from scripts import run_v4_04_full_market_candidate_r4 as profile_builder
@@ -62,12 +63,14 @@ def test_after_close_first_freeze_window_uses_distinct_timestamp_roles():
         first_available_at="2026-10-14T15:05:00+08:00",
         head_accepted_at="2026-10-14T15:12:00+08:00",
         first_processed_at="2026-10-14T15:13:00+08:00",
-        frozen_at="2026-10-14T15:30:00+08:00")
+        frozen_at="2026-10-14T15:30:00+08:00",source_ready_at="2026-10-14T15:08:00+08:00")
     assert valid["lane"] == "LIVE_OOS"
     assert valid["observed_signal_T0"] == "2026-10-14"
     assert valid["valid_from_session"] == "2026-10-15"
     assert valid["executable_from"] == "2026-10-15T09:30:00+08:00"
     assert valid["execution_semantics"] == "RESEARCH_REFERENCE_ONLY_NOT_EXECUTED"
+    assert valid["market_close_at"] == "2026-10-14T15:00:00+08:00"
+    assert valid["source_ready_at"] == "2026-10-14T15:08:00+08:00"
     late = classify_after_close_capture(trade_date="2026-10-14", sessions=sessions,
         first_available_at="2026-10-14T15:05:00+08:00",
         head_accepted_at="2026-10-14T15:12:00+08:00",
@@ -75,6 +78,85 @@ def test_after_close_first_freeze_window_uses_distinct_timestamp_roles():
         frozen_at="2026-10-15T09:31:00+08:00")
     assert late["lane"] == "LATE_OBSERVED_NOT_PIT"
     assert "FREEZE_AFTER_NEXT_SESSION_OPEN" in late["timing_reasons"]
+    edge = classify_after_close_capture(trade_date="2026-10-14", sessions=sessions,
+        first_available_at="2026-10-14T15:01:00+08:00",
+        head_accepted_at="2026-10-14T15:02:00+08:00",
+        first_processed_at="2026-10-15T09:29:00+08:00",
+        frozen_at="2026-10-15T09:29:59+08:00")
+    assert edge["lane"] == "LIVE_OOS"
+    at_open = classify_after_close_capture(trade_date="2026-10-14", sessions=sessions,
+        first_available_at="2026-10-14T15:01:00+08:00",
+        head_accepted_at="2026-10-14T15:02:00+08:00",
+        first_processed_at="2026-10-15T09:29:59+08:00",
+        frozen_at="2026-10-15T09:30:00+08:00")
+    assert at_open["lane"] == "LATE_OBSERVED_NOT_PIT"
+    assert "FREEZE_AFTER_NEXT_SESSION_OPEN" in at_open["timing_reasons"]
+
+
+def test_membership_provenance_requires_same_day_timestamps_and_bound_source():
+    binding = {"path": "sector/accepted.json", "sha256": "a" * 64}
+    same_day = {"sector_id": "SAME", "membership_provenance": {
+        "observed_at": "2026-10-14T15:03:00+08:00",
+        "first_available_at": "2026-10-14T15:04:00+08:00",
+        "membership_effective_T0": "2026-10-14", "source_sha256": "a" * 64}}
+    next_day = {"sector_id": "RETRO", "membership_provenance": {
+        "observed_at": "2026-10-15T08:00:00+08:00",
+        "first_available_at": "2026-10-15T08:01:00+08:00",
+        "membership_effective_T0": "2026-10-14", "source_sha256": "a" * 64}}
+    unknown = {"sector_id": "UNKNOWN", "membership_snapshot_id": "latest"}
+    result = classify_membership_provenance(trade_date="2026-10-14",
+        sector_rows=[same_day, next_day, unknown], binding=binding,
+        frozen_at="2026-10-14T15:10:00+08:00")
+    assert result["by_sector"]["SAME"]["membership_basis"] == "AS_RECORDED"
+    assert result["by_sector"]["RETRO"]["membership_basis"] == "MEMBERSHIP_RETRO"
+    assert result["by_sector"]["UNKNOWN"]["membership_basis"] == "UNKNOWN_MEMBERSHIP_BASIS"
+
+
+def test_stock_price_observation_survives_unknown_sector_membership():
+    rows = build_daily_universe(trade_date="2026-10-14",
+        stock_rows=[{"security_id": "SEC-1"}],
+        raw_rows=[{"security_id": "SEC-1", "close": 10}],
+        sector_rows=[{"sector_id": "IND-1", "membership_snapshot_id": "latest"}],
+        prior_stock_rows=None, prior_raw_rows=None, prior_sector_rows=None,
+        bindings={name: {"sha256": name[0] * 64} for name in ("raw", "core", "sector")},
+        captured_at="2026-10-15T16:00:00+08:00", lane="LIVE_OOS",
+        membership_basis="UNKNOWN_MEMBERSHIP_BASIS",
+        membership_provenance={"IND-1": {"membership_basis": "UNKNOWN_MEMBERSHIP_BASIS"}})
+    by_type = {row["entity_type"]: row for row in rows}
+    assert by_type["STOCK"]["entity_id"] == "SEC-1"
+    assert by_type["STOCK"]["membership_basis"] == "NOT_APPLICABLE"
+    assert by_type["SECTOR"]["membership_basis"] == "UNKNOWN_MEMBERSHIP_BASIS"
+    assert by_type["SECTOR"]["membership_pit_eligible"] is False
+    assert by_type["SECTOR"]["evidence_lane"] == "LATE_OBSERVED_NOT_PIT"
+
+
+def test_capture_plan_uses_session_gaps_source_readiness_and_next_open(monkeypatch, tmp_path):
+    import workbench_analysis.forward_r7_pipeline as pipeline
+    head = {"accepted_trade_date": "2026-10-13", "published_sessions": ["2026-10-13"],
+            "source_registry": {"2026-10-14": {"freeze": {"path": "freeze-14.json"}}}}
+    monkeypatch.setattr(pipeline, "official_sessions", lambda root: [
+        "2026-10-13", "2026-10-14", "2026-10-15", "2026-10-16", "2026-10-19"])
+    monkeypatch.setattr(pipeline, "_head", lambda root: head)
+    monkeypatch.setattr(pipeline, "_daily_job_snapshot", lambda root: {
+        "available": True, "auto_enabled": False, "last_job": None})
+    monkeypatch.setattr(pipeline, "_document", lambda root, binding: {
+        "source_ready_at": "2026-10-14T18:00:00+08:00"})
+    plan = next_capture_plan(tmp_path, now=__import__("datetime").datetime.fromisoformat(
+        "2026-10-15T15:01:00+08:00"))
+    assert plan["missing_sessions"] == ["2026-10-14", "2026-10-15"]
+    assert plan["collection_batch_dates"] == []
+    assert plan["signal_T0"] == "2026-10-15"
+    assert plan["market_close_at"] == "2026-10-15T15:00:00+08:00"
+    assert plan["capture_window_end"] == "2026-10-16T09:30:00+08:00"
+    assert "capture_deadline" not in plan
+    assert "late_capture_dates" not in plan
+    assert plan["status"] == "WAIT_SOURCE_READY"
+    assert plan["next_attempt_at"] is None
+    head["source_registry"]["2026-10-15"] = {"freeze": {"path": "freeze-15.json"}}
+    complete = next_capture_plan(tmp_path, now=__import__("datetime").datetime.fromisoformat(
+        "2026-10-15T18:01:00+08:00"))
+    assert complete["status"] == "SOURCE_READY"
+    assert complete["collection_batch_dates"] == ["2026-10-14", "2026-10-15"]
 
 
 def test_unverified_schedule_states_never_enter_return_denominator():

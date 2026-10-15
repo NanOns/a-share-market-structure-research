@@ -59,15 +59,14 @@ def build_daily_universe(*, trade_date: str, stock_rows: list[dict], raw_rows: l
                          prior_raw_rows: list[dict] | None, prior_sector_rows: list[dict] | None,
                          bindings: dict[str, dict],
                          captured_at: str, lane: str,
-                         membership_basis: str) -> list[dict]:
+                         membership_basis: str,
+                         membership_provenance: dict | None = None) -> list[dict]:
     """Evaluate every stock and sector identity, retaining UNKNOWN and NO_MATCH."""
     if lane not in ("LIVE_OOS", "RETROSPECTIVE_RESEARCH"):
         raise ValueError("FORWARD_EVIDENCE_LANE_REQUIRED")
-    if membership_basis not in ("AS_RECORDED", "MEMBERSHIP_RETRO", "RECONSTRUCTED"):
+    if membership_basis not in ("AS_RECORDED", "MEMBERSHIP_RETRO", "RECONSTRUCTED", "UNKNOWN_MEMBERSHIP_BASIS"):
         raise ValueError("FORWARD_MEMBERSHIP_BASIS_REQUIRED")
     evidence = "LIVE_OOS" if lane == "LIVE_OOS" else "RETROSPECTIVE_RESEARCH"
-    if lane == "LIVE_OOS" and membership_basis != "AS_RECORDED":
-        evidence = "LATE_OBSERVED_NOT_PIT"
     hashes = _source_hashes(bindings)
     raw_by_id = {r.get("security_id"): r for r in raw_rows if r.get("security_id")}
     prior_raw_by_id = {r.get("security_id"): r for r in (prior_raw_rows or []) if r.get("security_id")}
@@ -131,8 +130,10 @@ def build_daily_universe(*, trade_date: str, stock_rows: list[dict], raw_rows: l
             symbol=core.get("source_security_key"), board_scope=core.get("board_scope"),
             sector_id=core.get("primary_industry"), status=status, event_code=event,
             reason_codes=reasons, missing_inputs=sorted(set(missing)),
-            input_cutoff=trade_date + "T15:00:00+08:00", membership_basis=membership_basis,
+            input_cutoff=trade_date + "T15:00:00+08:00", membership_basis="NOT_APPLICABLE",
             evidence_class=evidence, source_hashes=hashes, captured_at=captured_at,
+            price_pit_eligible=False,
+            membership_pit_eligible=None,
             values=dict(open=raw.get("open") if raw else None, high=raw.get("high") if raw else None,
                         low=raw.get("low") if raw else None, close=raw.get("close") if raw else None,
                         volume=raw.get("volume") if raw else None, **required),
@@ -150,6 +151,16 @@ def build_daily_universe(*, trade_date: str, stock_rows: list[dict], raw_rows: l
                 missing.append(name)
         prior = prior_sector.get(sector_id)
         current_membership = sector.get("membership_snapshot_id") or sector.get("member_set_asof")
+        provenance = (membership_provenance or {}).get(sector_id) or sector.get("membership_provenance") or {}
+        sector_basis = provenance.get("membership_basis", membership_basis)
+        membership_pit = sector_basis == "AS_RECORDED" and bool(
+            provenance.get("source_path") and provenance.get("source_sha256")
+            and provenance.get("observed_at") and provenance.get("first_available_at")
+            and provenance.get("membership_effective_T0") == trade_date
+            and provenance.get("source_sha256") == hashes.get("sector"))
+        sector_evidence = evidence
+        if lane == "LIVE_OOS" and not membership_pit:
+            sector_evidence = "LATE_OBSERVED_NOT_PIT"
         prior_membership = (prior or {}).get("membership_snapshot_id") or (prior or {}).get("member_set_asof")
         if prior is None:
             missing.append("prior_comparable_state")
@@ -177,8 +188,11 @@ def build_daily_universe(*, trade_date: str, stock_rows: list[dict], raw_rows: l
             sector_id=sector_id, status=status, event_code=event,
             reason_codes=reasons, missing_inputs=sorted(set(missing)),
             input_cutoff=trade_date + "T15:00:00+08:00",
-            membership_basis=("RECONSTRUCTED" if membership_basis == "MEMBERSHIP_RETRO" else membership_basis),
-            evidence_class=evidence, source_hashes=hashes, captured_at=captured_at,
+            membership_basis=("RECONSTRUCTED" if sector_basis == "MEMBERSHIP_RETRO" else sector_basis),
+            evidence_class=sector_evidence, evidence_lane=sector_evidence,
+            membership_pit_eligible=membership_pit,
+            membership_provenance=provenance or None,
+            source_hashes=hashes, captured_at=captured_at,
             values=vals, membership_snapshot_id=current_membership))
     return out
 

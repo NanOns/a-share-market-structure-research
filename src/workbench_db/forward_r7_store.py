@@ -275,9 +275,29 @@ class ForwardR7Store:
             raise ValueError("FORWARD_R7_EVIDENCE_LANE_INVALID")
         if not rows:
             raise ValueError("EMPTY_UNIVERSE_CANNOT_BE_PUBLISHED_AS_A_COMPLETED_READ")
-        return self._publish_day_facts(trade_date=trade_date, rows=rows, lane=lane,
-            run_id=run_id, revision=revision, first_available_at=first_available_at,
-            source_run=source_run, settlement_rows=settlement_rows or [])
+        grouped = {}
+        for row in rows:
+            row_lane = row.get("evidence_lane") or lane
+            if row_lane not in ("LIVE_OOS", "RETROSPECTIVE_RESEARCH", "LATE_OBSERVED_NOT_PIT"):
+                raise ValueError("FORWARD_R7_ROW_EVIDENCE_LANE_INVALID")
+            grouped.setdefault(row_lane, []).append(row)
+        if len(grouped) == 1:
+            selected_lane, selected_rows = next(iter(grouped.items()))
+            return self._publish_day_facts(trade_date=trade_date, rows=selected_rows, lane=selected_lane,
+                run_id=run_id, revision=revision, first_available_at=first_available_at,
+                source_run=source_run, settlement_rows=settlement_rows or [])
+        publications = []
+        for selected_lane, selected_rows in sorted(grouped.items()):
+            ids = {make_observation_id(row) for row in selected_rows}
+            selected_schedules = [item for item in (settlement_rows or [])
+                                  if item.get("observation_id") in ids]
+            publications.append(self._publish_day_facts(trade_date=trade_date, rows=selected_rows,
+                lane=selected_lane, run_id=f"{run_id}:{selected_lane}", revision=revision,
+                first_available_at=first_available_at, source_run=source_run,
+                settlement_rows=selected_schedules))
+        return dict(status="PUBLISHED", trade_date=trade_date,
+                    published_lanes=[item["lane"] for item in publications],
+                    publications=publications)
 
     def _publish_day_facts(self, *, trade_date, rows, lane, run_id, revision,
                            first_available_at, source_run, settlement_rows):
@@ -601,28 +621,9 @@ class ForwardR7Store:
 
 
     def read_matured_count(self):
-        if hasattr(self, "schema"):
-            snapshots={}; base={}; has_per_observation_revision=False
-            for ordinal,(_,payload) in enumerate(self._read_facts("r7_settlement_aggregate")):
-                lane=payload.get("lane") or "RETROSPECTIVE_RESEARCH"
-                horizon=payload.get("horizon_sessions")
-                asof=payload.get("asof_trade_date")
-                if asof:
-                    key=(lane,horizon)
-                    if key not in snapshots or (asof,ordinal)>snapshots[key][0]:
-                        snapshots[key]=((asof,ordinal),int(payload.get("settled_count",0)))
-                else:
-                    key=(payload.get("trade_date"),lane,horizon)
-                    if key not in base or ordinal>=base[key][0]:
-                        base[key]=(ordinal,int(payload.get("settled_count",0)))
-                    has_per_observation_revision |= payload.get("identity_contract") == "V4_FORWARD_SETTLEMENT_AGGREGATE_R2"
-            if has_per_observation_revision:
-                return sum(count for _,count in base.values())
-            grouped={(lane,horizon) for _,lane,horizon in base}|set(snapshots)
-            return sum(snapshots[(lane,horizon)][1] if (lane,horizon) in snapshots else
-                       sum(count for (_,item_lane,item_h),(_,count) in base.items()
-                           if item_lane==lane and item_h==horizon)
-                       for lane,horizon in grouped)
+        # Derive this value from the same latest observation/settlement revisions
+        # as the paged API. Aggregate facts remain audit evidence, not a second
+        # potentially stale source for the home-page count.
         latest_observations = {}
         for bundle in self._daily_facts():
             for row in bundle.get("rows", []):
@@ -661,8 +662,134 @@ class ForwardR7Store:
                     latest[key] = (revision, schedule)
         return sorted({schedule.get("due_date") for _, schedule in latest.values()
                        if schedule.get("due_date") in accepted
-                       and schedule.get("schedule_status") in (
-                           "DUE_SOURCE_NOT_ACCEPTED", "SOURCE_GAP", "PENDING_FUTURE_SESSION")})
+                       and (schedule.get("schedule_status") in (
+                           "DUE_SOURCE_NOT_ACCEPTED", "SOURCE_GAP", "PENDING_FUTURE_SESSION", "NO_QUOTE")
+                            or schedule.get("correction_type") == "LEGACY_NO_QUOTE_REVIEW_R1")})
+
+    def legacy_no_quote_due_dates(self):
+        """Return due dates with a latest materialized legacy NO_QUOTE for review."""
+        latest = {}
+        for bundle in self._settlement_facts():
+            for schedule in bundle.get("items", []):
+                key = (bundle.get("lane", "RETROSPECTIVE_RESEARCH"), schedule.get("observation_id"),
+                       schedule.get("horizon_sessions"))
+                revision = int(schedule.get("settlement_revision", bundle.get("revision", 1)))
+                if key not in latest or revision >= latest[key][0]:
+                    latest[key] = (revision, schedule)
+        return sorted({item.get("due_date") for _, item in latest.values()
+                       if (item.get("schedule_status") == "NO_QUOTE"
+                           or item.get("correction_type") == "LEGACY_NO_QUOTE_REVIEW_R1")
+                       and item.get("due_date")})
+
+    def review_legacy_no_quote(self, *, accepted_trade_date: str,
+                               accepted_source_dates: set[str], prices_by_date: dict,
+                               source_digests_by_date: dict[str, str],
+                               source_bindings_by_date: dict[str, dict] | None = None,
+                               reviewed_at: str | None = None):
+        """Append controlled corrections for old NO_QUOTE rows; never rewrite facts."""
+        accepted = set(accepted_source_dates)
+        if accepted_trade_date not in accepted:
+            raise ValueError("FORWARD_R7_SETTLEMENT_ADVANCE_DATE_NOT_ACCEPTED")
+        reviewed_at = reviewed_at or datetime.now(timezone.utc).isoformat()
+        observations = {}
+        for bundle in self._daily_facts():
+            for row in bundle.get("rows", []):
+                if row.get("entity_type") == "STOCK" and row.get("status") == "MATCH":
+                    lane = row.get("evidence_lane", bundle.get("lane", "RETROSPECTIVE_RESEARCH"))
+                    observations[(lane, make_observation_id(row))] = (row, bundle)
+                    observations[(lane, legacy_observation_id(row))] = (row, bundle)
+        latest = {}
+        for bundle in self._settlement_facts():
+            for schedule in bundle.get("items", []):
+                key = (bundle.get("lane", "RETROSPECTIVE_RESEARCH"), schedule.get("observation_id"),
+                       schedule.get("horizon_sessions"))
+                revision = int(schedule.get("settlement_revision", bundle.get("revision", 1)))
+                if key not in latest or revision >= latest[key][0]:
+                    latest[key] = (revision, bundle, schedule)
+        corrections = []
+        legacy_count = legitimate_count = unaccepted_count = no_source_count = 0
+        for (lane, schedule_id, horizon), (old_revision, old_bundle, old) in latest.items():
+            if (old.get("schedule_status") != "NO_QUOTE"
+                    and old.get("correction_type") != "LEGACY_NO_QUOTE_REVIEW_R1"):
+                continue
+            match = observations.get((lane, schedule_id))
+            if not match:
+                continue
+            row, _ = match
+            legacy_count += 1
+            due_day = old.get("due_date")
+            if due_day > accepted_trade_date:
+                continue
+            correction_reason = "LEGACY_NO_QUOTE_WITHOUT_ACCEPTED_SECURITY_LEVEL_PROOF"
+            due_digest = source_digests_by_date.get(due_day)
+            bindings = (source_bindings_by_date or {}).get(due_day, {})
+            if due_day not in accepted:
+                unaccepted_count += 1
+                result = dict(status="DUE_SOURCE_NOT_ACCEPTED", reason="LEGACY_NO_QUOTE_DUE_SOURCE_NOT_ACCEPTED",
+                              due_date=due_day)
+                due_digest = None
+            else:
+                if not due_digest:
+                    raise ValueError("LEGACY_NO_QUOTE_ACCEPTED_SOURCE_DIGEST_REQUIRED")
+                if (old.get("correction_type") == "LEGACY_NO_QUOTE_REVIEW_R1"
+                        and old.get("source_digest") == due_digest):
+                    continue
+                materialized = dict(prices_by_date)
+                materialized.setdefault(row.get("T0"), {})
+                materialized[row.get("T0")].setdefault(row.get("entity_id"),
+                    dict(close=(row.get("values") or {}).get("close")))
+                result = compute_nominal_settlement(observation=row, due_date=due_day,
+                    prices_by_date=materialized, settlement_at=reviewed_at, due_source_accepted=True)
+                if result.get("status") in ("NO_QUOTE", "SUSPENDED"):
+                    legitimate_count += 1
+                    prior_outcome = old.get("settlement") or {}
+                    if (old.get("source_digest") == due_digest
+                            and prior_outcome.get("source_hash") == result.get("source_hash")
+                            and prior_outcome.get("status") == result.get("status")):
+                        continue
+                    correction_reason = ("LEGACY_NO_QUOTE_SOURCE_REBOUND"
+                        if prior_outcome.get("reason") == "SECURITY_LEVEL_ACCEPTED_SOURCE_FACT"
+                        else "LEGACY_NO_QUOTE_SECURITY_PROOF_ADDED")
+                if result.get("status") == "SOURCE_GAP":
+                    no_source_count += 1
+            new_revision = old_revision + 1
+            correction = dict(observation_id=schedule_id, horizon_sessions=horizon, due_date=due_day,
+                schedule_status=result["status"], reason=result.get("reason"), settlement=result,
+                settlement_revision=new_revision, source_digest=due_digest,
+                source_bindings=bindings or None, price_basis="NOMINAL_UNADJUSTED_CLOSE",
+                correction_type="LEGACY_NO_QUOTE_REVIEW_R1",
+                correction_reason=correction_reason,
+                old_revision=old_revision, new_revision=new_revision, reviewed_at=reviewed_at)
+            corrections.append((lane, row.get("T0"), correction))
+        if not corrections:
+            return dict(status="NO_LEGACY_NO_QUOTE_CORRECTIONS", accepted_trade_date=accepted_trade_date,
+                        appended=0, legacy_no_quote_count=legacy_count,
+                        legitimate_security_proofs=legitimate_count,
+                        corrected_count=0, still_unaccepted_source_count=unaccepted_count,
+                        accepted_but_missing_source_count=no_source_count, corrections=[])
+        by_group = {}
+        for lane, t0, item in corrections:
+            by_group.setdefault((lane, t0, item["settlement_revision"]), []).append(item)
+        with self._connect() as pg:
+            for (lane, t0, revision), items in by_group.items():
+                digest = self._stable_hash(items)
+                source_digest = self._stable_hash(sorted({x.get("source_digest") for x in items if x.get("source_digest")}))
+                key = f"v2:{t0}:{lane}:legacy-no-quote-review:r{revision}:{digest}"
+                self._append_fact(pg, "r7_settlement_schedule", key,
+                    dict(identity_contract="V4_FORWARD_SETTLEMENT_R2", trade_date=t0,
+                         accepted_trade_date=accepted_trade_date, lane=lane, revision=revision,
+                         capture_revision=revision, items=items, stable_sha256=digest,
+                         source_digest=source_digest, correction_type="LEGACY_NO_QUOTE_REVIEW_R1",
+                         reviewed_at=reviewed_at), source_digest)
+        return dict(status="APPENDED", accepted_trade_date=accepted_trade_date, appended=len(corrections),
+                    legacy_no_quote_count=legacy_count, legitimate_security_proofs=legitimate_count,
+                    corrected_count=len(corrections), still_unaccepted_source_count=unaccepted_count,
+                    accepted_but_missing_source_count=no_source_count,
+                    corrections=[dict(T0=t0, lane=lane, due_date=item["due_date"],
+                        observation_id=item["observation_id"], correction_type=item["correction_type"],
+                        old_revision=item["old_revision"], new_revision=item["new_revision"],
+                        source_digest=item.get("source_digest"), after=item["schedule_status"])
+                        for lane, t0, item in corrections])
 
     def advance_due_settlements(self, *, accepted_trade_date: str, prices_by_date: dict,
                                 source_digest: str, accepted_source_dates: set[str] | None = None,
@@ -691,8 +818,10 @@ class ForwardR7Store:
                 if row_lane != lane or schedule_id not in (observation_id, legacy_observation_id(row)):
                     continue
                 due_day = old.get("due_date")
-                if due_day not in accepted or due_day > accepted_trade_date or old.get("schedule_status") not in (
-                        "DUE_SOURCE_NOT_ACCEPTED", "SOURCE_GAP", "PENDING_FUTURE_SESSION"):
+                if (due_day not in accepted or due_day > accepted_trade_date
+                        or (old.get("schedule_status") not in (
+                            "DUE_SOURCE_NOT_ACCEPTED", "SOURCE_GAP", "PENDING_FUTURE_SESSION", "NO_QUOTE")
+                            and old.get("correction_type") != "LEGACY_NO_QUOTE_REVIEW_R1")):
                     continue
                 current_prices = prices_by_date.get(due_day, {})
                 due_source_digest = (source_digests_by_date or {}).get(due_day, source_digest)
@@ -714,6 +843,14 @@ class ForwardR7Store:
                     due_date=due_day, schedule_status=status, reason=result.get("reason"),
                     settlement=result, settlement_revision=revision + 1,
                     source_digest=due_source_digest, price_basis="NOMINAL_UNADJUSTED_CLOSE")
+                if (old.get("schedule_status") == "NO_QUOTE"
+                        or old.get("correction_type") == "LEGACY_NO_QUOTE_REVIEW_R1"):
+                    updated.update(correction_type="LEGACY_NO_QUOTE_REVIEW_R1",
+                        correction_reason=("LEGACY_NO_QUOTE_SECURITY_PROOF_ADDED"
+                            if status in ("NO_QUOTE", "SUSPENDED") else
+                            "LEGACY_NO_QUOTE_WITHOUT_ACCEPTED_SECURITY_LEVEL_PROOF"),
+                        old_revision=revision, new_revision=revision + 1,
+                        source_date=due_day, correction_at=datetime.now(timezone.utc).isoformat())
                 appended.append((lane, row.get("T0"), updated, revision + 1))
         if not appended:
             return dict(status="NO_DUE_SETTLEMENTS", accepted_trade_date=accepted_trade_date, appended=0)

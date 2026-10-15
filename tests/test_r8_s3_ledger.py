@@ -140,6 +140,7 @@ def test_settlement_reader_selects_latest_append_revision(monkeypatch):
     assert result["total"]==1 and result["items"][0]["settlement_revision"]==2
     assert result["items"][0]["status"]=="SETTLED"
     assert result["aggregates"][0]["return_denominator"]==1
+    assert store.read_matured_count()==1
     assert store.read_settlement(lane="RETROSPECTIVE_RESEARCH")["aggregates"][0]["lane"]=="RETROSPECTIVE_RESEARCH"
 
 
@@ -161,3 +162,87 @@ def test_settlement_append_failure_records_retryable_failure(monkeypatch):
     assert result["status"]=="RETRY_REQUIRED"
     assert failures and failures[0]["stage"]=="SETTLEMENT_ADVANCE"
     assert failures[0]["payload"]["retryable"] is True
+
+
+def test_legacy_no_quote_repair_appends_revision_and_repeats_idempotently(monkeypatch):
+    row=_row()
+    legacy_id=legacy_observation_id(row)
+    original=dict(observation_id=legacy_id,horizon_sessions=1,due_date="2026-10-14",
+        schedule_status="NO_QUOTE",reason="OLD_R7_NO_QUOTE",settlement={"status":"NO_QUOTE"})
+    daily=[dict(identity_contract="V4_FORWARD_OBSERVATION_ID_R1_LEGACY_LANE_H",
+        trade_date=row["T0"],lane="RETROSPECTIVE_RESEARCH",rows=[row])]
+    settlements=[dict(identity_contract="V4_FORWARD_SETTLEMENT_R1_LEGACY_LANE_H",
+        trade_date=row["T0"],lane="RETROSPECTIVE_RESEARCH",items=[original])]
+    appended=[]
+    store=object.__new__(ForwardR7Store)
+    monkeypatch.setattr(store,"_daily_facts",lambda:daily)
+    monkeypatch.setattr(store,"_settlement_facts",lambda: settlements)
+    monkeypatch.setattr(store,"_connect",lambda:nullcontext(object()))
+    def append(pg,kind,key,payload,source_sha256=None):
+        appended.append((kind,key,payload))
+        if kind=="r7_settlement_schedule":settlements.append(payload)
+    monkeypatch.setattr(store,"_append_fact",append)
+    assert store.pending_due_dates(accepted_source_dates={"2026-10-14"}) == ["2026-10-14"]
+    assert store.legacy_no_quote_due_dates() == ["2026-10-14"]
+    review=store.review_legacy_no_quote(accepted_trade_date="2026-10-15",
+        accepted_source_dates={"2026-10-14","2026-10-15"},
+        prices_by_date={"2026-10-14":{"SEC-1":{"close":11.0}}},
+        source_digests_by_date={"2026-10-14":"c"*64},
+        source_bindings_by_date={"2026-10-14":{"raw":{"sha256":"c"*64}}},
+        reviewed_at="2026-10-15T16:00:00+08:00")
+    assert review["corrected_count"]==1
+    assert review["legacy_no_quote_count"]==1
+    correction=appended[0][2]["items"][0]
+    assert correction["schedule_status"]=="SETTLED"
+    assert correction["old_revision"]==1 and correction["new_revision"]==2
+    assert correction["correction_type"]=="LEGACY_NO_QUOTE_REVIEW_R1"
+    assert correction["source_digest"]=="c"*64
+    assert original["schedule_status"]=="NO_QUOTE" and "settlement_revision" not in original
+    retry=store.review_legacy_no_quote(accepted_trade_date="2026-10-15",
+        accepted_source_dates={"2026-10-14","2026-10-15"},
+        prices_by_date={"2026-10-14":{"SEC-1":{"close":11.0}}},
+        source_digests_by_date={"2026-10-14":"c"*64},
+        reviewed_at="2026-10-15T16:00:00+08:00")
+    assert retry["appended"]==0
+
+
+def test_legacy_no_quote_requires_accepted_source_or_security_level_proof(monkeypatch):
+    row=_row(); legacy_id=legacy_observation_id(row)
+    old=dict(observation_id=legacy_id,horizon_sessions=1,due_date="2026-10-14",
+        schedule_status="NO_QUOTE",source_digest="d"*64,
+        settlement={"status":"NO_QUOTE","reason":"SECURITY_LEVEL_ACCEPTED_SOURCE_FACT",
+                    "source_hash":"d"*64})
+    daily=[dict(identity_contract="V4_FORWARD_OBSERVATION_ID_R1_LEGACY_LANE_H",
+        trade_date=row["T0"],lane="RETROSPECTIVE_RESEARCH",rows=[row])]
+    settlements=[dict(identity_contract="V4_FORWARD_SETTLEMENT_R1_LEGACY_LANE_H",
+        lane="RETROSPECTIVE_RESEARCH",items=[old])]
+    appended=[]
+    store=object.__new__(ForwardR7Store)
+    monkeypatch.setattr(store,"_daily_facts",lambda:daily)
+    monkeypatch.setattr(store,"_settlement_facts",lambda:settlements)
+    monkeypatch.setattr(store,"_connect",lambda:nullcontext(object()))
+    def append(pg,kind,key,payload,source_sha256=None):
+        appended.append(payload)
+        settlements.append(payload)
+    monkeypatch.setattr(store,"_append_fact",append)
+    legitimate=store.review_legacy_no_quote(accepted_trade_date="2026-10-15",
+        accepted_source_dates={"2026-10-14","2026-10-15"},
+        prices_by_date={"2026-10-14":{"SEC-1":{"source_status":"SUSPENDED","source_hash":"d"*64}}},
+        source_digests_by_date={"2026-10-14":"d"*64})
+    assert legitimate["legitimate_security_proofs"]==1
+    assert legitimate["appended"]==1
+    assert appended[0]["items"][0]["schedule_status"]=="SUSPENDED"
+    rebound=store.review_legacy_no_quote(accepted_trade_date="2026-10-15",
+        accepted_source_dates={"2026-10-14","2026-10-15"},
+        prices_by_date={"2026-10-14":{"SEC-1":{"source_status":"SUSPENDED","source_hash":"e"*64}}},
+        source_digests_by_date={"2026-10-14":"e"*64},
+        reviewed_at="2026-10-15T16:01:00+08:00")
+    assert rebound["legitimate_security_proofs"]==1 and rebound["appended"]==1
+    assert appended[-1]["items"][0]["correction_reason"]=="LEGACY_NO_QUOTE_SOURCE_REBOUND"
+    unaccepted=store.review_legacy_no_quote(accepted_trade_date="2026-10-15",
+        accepted_source_dates={"2026-10-15"},prices_by_date={},source_digests_by_date={})
+    assert unaccepted["corrected_count"]==1
+    correction=appended[-1]["items"][0]
+    assert correction["schedule_status"]=="DUE_SOURCE_NOT_ACCEPTED"
+    assert correction["source_digest"] is None
+    assert correction["settlement"]["reason"]=="LEGACY_NO_QUOTE_DUE_SOURCE_NOT_ACCEPTED"

@@ -2,7 +2,7 @@
 
 当前唯一开发目录：`G:/codex work/大A交易`。在这个目录中切换分支进行开发，不另建源码工作区。
 
-- `main`：生产代码主分支，使用 tag 标识代码版本。
+- `main`：生产代码主分支，使用标签（`tag`）标识代码版本。
 - `codex/v4-unified-development`：统一开发分支。
 - `codex/v4-fp14-r2-repair`：因独有提交暂时保留，待后续处理。
 - `G:/codex work/大A交易_交付`：交付包和清理归档。
@@ -12,39 +12,36 @@
 
 本次收拢合同与原运行目录的归档说明见 [仓库收拢记录](docs/maintenance/REPOSITORY_CONSOLIDATION_20261015.md)。代码基线标签不替代运行包或生产数据验收。
 
-## 早期 Phase 0 历史说明
+## 早期阶段 0 历史说明
 
-Phase 0 implementation for auditing a local TongdaXin installation without modifying it.
+阶段 0 的实现用于审计本地通达信安装，不修改其内容。
 
-Run:
+运行方式：
 
 ```powershell
 python run_phase0.py --tdx-root "D:\new_tdx"
 ```
 
-The primary Phase 0 result is `reports/phase0/TDX_DATA_AUDIT.json`.
+阶段 0 的主要结果文件为 `reports/phase0/TDX_DATA_AUDIT.json`。
 
-Phase 0.1:
+阶段 0.1：
 
 ```powershell
 python run_phase0_1.py
 ```
 
-Its final receipt is `reports/phase0_1/PHASE0_1_FINAL_RECEIPT.json`. The current status is `DEGRADED_PASS`; adjustment-dependent results remain experimental.
+该阶段的最终收据为 `reports/phase0_1/PHASE0_1_FINAL_RECEIPT.json`。此处记录的状态为 `DEGRADED_PASS`；依赖复权的结果仍属于实验性结果。
 
-Phase 0.2:
+阶段 0.2：
 
 ```powershell
 python run_phase0_2.py
 ```
 
-The local GBBQ decoder and affine QFQ engine now pass automated local and reference-style validation. The consolidated audit handoff is `docs/PHASE0_2_REPORT.md`; status remains `DEGRADED_PASS` only because the five-row TongdaXin desktop QFQ check is still `NOT_CHECKED`.
+本地 GBBQ 解码器和仿射前复权（QFQ）引擎已通过本地自动化验证及参考对照式验证。综合审计交接文档为 `docs/PHASE0_2_REPORT.md`；该阶段状态仍为 `DEGRADED_PASS`，唯一原因是通达信桌面端的五行前复权对照检查仍为 `NOT_CHECKED`。
 
-Phase 0.2A supersedes that gate decision: `BLOCKED_FOR_FORMAL_ADJUSTMENT`.
-Four fixed external QFQ samples differ beyond tolerance; the root cause remains
-unresolved. The latest report is `docs/PHASE0_2A_REPORT.md`. Production remains
-`LOCAL_TDX_ONLY` with `RAW` prices and formal scanners disabled. Existing
-network evidence must not be overwritten. Re-seal the retained evidence offline:
+阶段 0.2A 替代了上述门禁判定，其状态为 `BLOCKED_FOR_FORMAL_ADJUSTMENT`。
+四个固定的外部前复权样本存在超出容差的差异，根本原因尚未解决。该阶段最新报告为 `docs/PHASE0_2A_REPORT.md`。该阶段记录的生产模式仍为 `LOCAL_TDX_ONLY`，使用 `RAW` 原始价格，正式扫描器保持禁用。不得覆盖已有网络取证资料。可离线重新封存已保留的证据：
 
 ```powershell
 python scripts/seal_phase0_2a_offline.py

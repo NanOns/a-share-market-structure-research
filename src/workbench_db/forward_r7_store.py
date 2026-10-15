@@ -73,6 +73,28 @@ class ForwardR7Store:
         create a schema or infer an empty target when the expected namespace is
         absent. The accepted core fact date uniquely binds the live workspace.
         """
+        candidate_binding=self.root/'config/r8_forward_candidate_namespace_r1.json'
+        if candidate_binding.is_file():
+            binding=json.loads(candidate_binding.read_bytes())
+            expected=workspace_schema(self.root,'r8_forward')
+            if (not self.root.is_relative_to(Path('G:/codex_tmp').resolve())
+                    or binding.get('contract_id')!='R8_ISOLATED_FORWARD_NAMESPACE_R1'
+                    or binding.get('scope')!='CANDIDATE_ONLY'
+                    or Path(binding.get('candidate_root','')).resolve()!=self.root
+                    or binding.get('schema')!=expected):
+                raise RuntimeError('ISOLATED_FORWARD_NAMESPACE_BINDING_INVALID')
+            from workbench_analysis.r43_owner_replay import checked
+            receipt=json.loads(checked(self.root,binding['baseline_receipt']).read_bytes())
+            if (receipt.get('contract_id')!='R8_FORWARD_ISOLATED_BASELINE_COPY_R1'
+                    or receipt.get('candidate_schema')!=expected or receipt.get('source_unchanged') is not True
+                    or Path(receipt.get('candidate_root','')).resolve()!=self.root
+                    or receipt.get('source_after')!=receipt.get('source_before')
+                    or receipt.get('candidate_baseline')!=receipt.get('source_before')):
+                raise RuntimeError('ISOLATED_FORWARD_BASELINE_RECEIPT_INVALID')
+            with psycopg.connect(self.dsn,connect_timeout=5) as pg:
+                present=pg.execute('SELECT 1 FROM information_schema.tables WHERE table_schema=%s AND table_name=%s',(expected,'forward_facts')).fetchone()
+            if not present:raise RuntimeError('ISOLATED_FORWARD_FACTS_TABLE_MISSING')
+            return expected
         target_date = None
         head_path = self.root / "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json"
         if head_path.is_file():

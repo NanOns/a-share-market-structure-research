@@ -55,3 +55,13 @@ production-path rejection, and numerical-kernel rejection. These plus the
 existing revision tests passed (18); existing R8 member/settlement tests passed
 (19). Real two-day computation and final per-day QA are recorded separately in
 `TWO_SESSION_20261014_15_CATCHUP.json`.
+
+For the actual due-settlement test, `R8_ISOLATED_FORWARD_NAMESPACE_R1` binds a
+candidate below `G:/codex_tmp` to its own `v4_r8_forward_<workspace hash>` schema
+through a hash-bound baseline-copy receipt. Source-before, source-after and
+candidate-baseline counts/digests must match. The schema deliberately falls
+outside the legacy `v4_forward_%` date-discovery pattern: cloning a matching
+date into that pattern would make a production read ambiguous. Invalid roots,
+schema pointers, scope, receipt bytes or missing tables fail without falling
+back to production. Six targeted tests passed; actual source and candidate
+resolution plus the unchanged 217-fact baseline were also read back in PG.

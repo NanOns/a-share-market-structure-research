@@ -481,16 +481,22 @@ def capture_after_accepted_head(root: str | Path, candidate: dict, *, dsn: str |
                     row_lane = "LATE_OBSERVED_NOT_PIT"
             row["evidence_class"] = row_lane
             row["evidence_lane"] = row_lane
+            row["lane"] = row_lane
             row["capture_revision"] = 1
             row["source_digest"] = capture_source_digest
         prices = {item["security_id"]: item for item in raw if item.get("security_id")}
-        settlement_schedule = build_schedules(
-            rows, day, sessions, {day: prices}, frozen_at, accepted_source_dates={day})
-        result = store.publish_day(trade_date=day,rows=rows,lane=lane,
-            first_available_at=first_available,
-            run_id=hashlib.sha256((day+frozen_at+"R7-LIVE").encode()).hexdigest(),
-            settlement_rows=settlement_schedule,
-            source_run={"contract_id":"V4_FORWARD_PIPELINE_R7_R2","source_hashes":{k:v["sha256"] for k,v in refs.items()},
+        lane_rows={}
+        for row in rows:lane_rows.setdefault(row['evidence_lane'],[]).append(row)
+        if not lane_rows:lane_rows[lane]=[]
+        published_by_lane={}
+        for row_lane,group in sorted(lane_rows.items()):
+            settlement_schedule = build_schedules(
+                group, day, sessions, {day: prices}, frozen_at, accepted_source_dates={day})
+            published_by_lane[row_lane] = store.publish_day(trade_date=day,rows=group,lane=row_lane,
+                first_available_at=first_available,
+                run_id=hashlib.sha256((day+frozen_at+"R7-LIVE:"+row_lane).encode()).hexdigest(),
+                settlement_rows=settlement_schedule,
+                source_run={"contract_id":"V4_FORWARD_PIPELINE_R7_R2","source_hashes":{k:v["sha256"] for k,v in refs.items()},
                         "first_processed_at":first_processed_at,"frozen_at":frozen_at,
                         "head_accepted_at":accepted_at,"source_ready_at":source_ready_at,
                         "first_available_at":first_available,"timing_contract":timing,
@@ -498,6 +504,7 @@ def capture_after_accepted_head(root: str | Path, candidate: dict, *, dsn: str |
                         "membership_basis":membership["membership_basis"],
                         "membership_provenance_counts":{k:membership[k] for k in
                             ("as_recorded_count","retro_count","unknown_count")}})
+        result=published_by_lane.get(lane) or next(iter(published_by_lane.values()))
         accepted_dates = set(accepted.get("published_sessions", []))
         due_prices = {}
         due_source_hashes = {}
@@ -537,7 +544,7 @@ def capture_after_accepted_head(root: str | Path, candidate: dict, *, dsn: str |
             advanced = dict(status="RETRY_REQUIRED", accepted_trade_date=day,
                             appended=0, error_code=type(advance_error).__name__)
         return dict(timing,status="PUBLISHED",trade_date=day,lane=lane,captured_at=frozen_at,
-                    settlement_advance=advanced,result=result)
+                    settlement_advance=advanced,result=result,published_by_lane=published_by_lane)
     except Exception as exc:
         LOG.exception("R7 post-accepted-head capture failed for %s", day)
         error_code = type(exc).__name__ + ":" + str(exc)

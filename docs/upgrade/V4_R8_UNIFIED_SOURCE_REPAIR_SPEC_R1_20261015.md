@@ -75,3 +75,17 @@ hook; it and the 19 existing R8 repair tests passed. Actual candidate legacy
 review at accepted Head 10/13 appended 11 corrections, appended zero on repeat,
 and retained the 39,366 historical observation denominator. The complete
 candidate evidence is recorded separately from fixture tests and production.
+
+Actual Focus recovery reached a previously sealed 41,691-bar PG series after a
+later input dependency failed. An exact retry now verifies the immutable PG
+snapshot and compares every incoming `(security, day, canonical bar)` byte,
+source digest, T0, release and counts before returning the existing descriptor.
+Changed sources/rows, duplicate rows, missing rows and future rows still fail;
+the successful reuse writes neither the descriptor nor PG. Six targeted retry
+checks passed. Numerical kernels and the original series remain unchanged.
+
+The post-Head hook publishes separately by each row's classified evidence Lane.
+This prevents the homogeneous store writer from replacing an unknown-member
+sector's late Lane with a stock-qualified LIVE_OOS batch Lane. Per-Lane run IDs
+are distinct. The observer regression now covers the mixed stock/sector case
+as well as its publication and due-source hashes (two observer checks passed).

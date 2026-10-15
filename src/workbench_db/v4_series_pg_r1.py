@@ -40,8 +40,26 @@ def build(root,path,rows,*,t0,source_digest):
     from workbench_service.current_v4_context import canonical
     if len(source_digest)!=64: raise ValueError('SERIES_SOURCE_DIGEST_REQUIRED')
     path=Path(path).resolve()
-    if path.exists():raise ValueError('IMMUTABLE_SERIES_OUTPUT_ALREADY_EXISTS')
     release=hashlib.sha256((source_digest+':'+t0+':'+str(path)).encode()).hexdigest()
+    if path.exists():
+        descriptor=json.loads(path.read_bytes())
+        if (descriptor.get('series_contract_id')!=CONTRACT or descriptor.get('T0')!=t0
+                or descriptor.get('source_digest')!=source_digest or descriptor.get('release_id')!=release):
+            raise ValueError('IMMUTABLE_SERIES_REUSE_IDENTITY_MISMATCH')
+        expected={};symbols=set()
+        for sid,day,bar in rows:
+            if day>t0 or bar['trade_date']!=day:raise ValueError('SERIES_FUTURE_OR_MIXED_DATE')
+            if (sid,day) in expected:raise ValueError('SERIES_DUPLICATE_INPUT_ROW')
+            expected[sid,day]=canonical(bar).decode();symbols.add(sid)
+        if len(expected)!=descriptor.get('bar_count') or len(symbols)!=descriptor.get('symbol_count'):
+            raise ValueError('IMMUTABLE_SERIES_REUSE_CONTENT_MISMATCH')
+        # The reader verifies the complete immutable PG snapshot before reuse.
+        # Compare desired bytes as well: a matching source label is insufficient.
+        with verified_series_read(descriptor) as reader:
+            saved=reader.execute('SELECT security,day::text,payload FROM bars ORDER BY security,day').fetchall()
+            if len(saved)!=len(expected) or any(expected.get((sid,day))!=raw for sid,day,raw in saved):
+                raise ValueError('IMMUTABLE_SERIES_REUSE_CONTENT_MISMATCH')
+        return descriptor
     db=Builder(root,release,storage_kind='series')
     try:
         db.executescript('CREATE TABLE objects(domain text,id text,name text,symbol text,state text,payload text,PRIMARY KEY(domain,id));CREATE TABLE aliases(alias text,id text,PRIMARY KEY(alias,id));CREATE TABLE members(sector text,security text,PRIMARY KEY(sector,security));CREATE TABLE metadata(key text PRIMARY KEY,value text);CREATE TABLE bars(security text,day date,payload text NOT NULL,PRIMARY KEY(security,day));')

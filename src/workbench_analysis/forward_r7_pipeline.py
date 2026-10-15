@@ -9,7 +9,7 @@ import logging
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from .forward_r7 import (build_daily_universe, load_definitions, make_observation_id,
+from .forward_r7 import (build_daily_universe, load_definitions, make_observation_id, canonical_bytes,
                          scheduled_sessions, summarize_universe, compute_nominal_settlement)
 from .market_source_acquisition import official_sessions
 from .r43_owner_replay import checked
@@ -536,8 +536,8 @@ def capture_after_accepted_head(root: str | Path, candidate: dict, *, dsn: str |
                 payload={"retryable":True,"accepted_due_dates":sorted(accepted_dates)})
             advanced = dict(status="RETRY_REQUIRED", accepted_trade_date=day,
                             appended=0, error_code=type(advance_error).__name__)
-        return dict(status="PUBLISHED",trade_date=day,lane=lane,captured_at=frozen_at,
-                    settlement_advance=advanced,**timing,result=result)
+        return dict(timing,status="PUBLISHED",trade_date=day,lane=lane,captured_at=frozen_at,
+                    settlement_advance=advanced,result=result)
     except Exception as exc:
         LOG.exception("R7 post-accepted-head capture failed for %s", day)
         error_code = type(exc).__name__ + ":" + str(exc)

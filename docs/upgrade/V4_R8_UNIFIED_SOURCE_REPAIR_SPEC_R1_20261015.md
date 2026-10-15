@@ -65,3 +65,13 @@ date into that pattern would make a production read ambiguous. Invalid roots,
 schema pointers, scope, receipt bytes or missing tables fail without falling
 back to production. Six targeted tests passed; actual source and candidate
 resolution plus the unchanged 217-fact baseline were also read back in PG.
+
+The R7 post-accepted-head observer now explicitly imports its canonical hash
+encoder and merges the timing mapping before its explicit result fields. The
+previous code could raise `NameError` before publishing or `TypeError` for a
+duplicate `lane` after publishing. A targeted observer test exercises row source
+digests, publication, legacy review and due-source advancement through the real
+hook; it and the 19 existing R8 repair tests passed. Actual candidate legacy
+review at accepted Head 10/13 appended 11 corrections, appended zero on repeat,
+and retained the 39,366 historical observation denominator. The complete
+candidate evidence is recorded separately from fixture tests and production.

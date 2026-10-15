@@ -1,0 +1,45 @@
+# R6/R7 Source Diff and Merge Matrix — V4-R8/R1
+
+- Contract: `V4-R8-UNIFIED-SOURCE-REPAIR-20261015/R1` (user task card, 2026-10-15).
+- Stage contract consulted: `docs/upgrade/V4_R7_FORWARD_SIGNAL_SPEC_R1.md` (R7 retrospective/live Lane and source-time rules) and `docs/audits/V4_R6_PROMOTION_STAGE_ENTRY_HANDOFF_20261002.md` (prior R6 stage entry and gate boundary). The R8 task card is the controlling current contract.
+- R6 source: `codex/v4-r4-closeout-20261014` / `e44a55609168344b820138efc01d53d76b7312df`.
+- R7 source: `codex/v4-fp14-r2-repair` / `bf285eef4a625daa2b0d0f147bd73fffbcb6710a`.
+- Merge base: `fbd23a6ba08d0948fe7ad421d1765fe363648522`; the histories diverged after it.
+- Fixed target: `codex/v4-unified-development`, created from the exact R6 SHA above. The target did not exist in local refs or `git ls-remote --heads origin` at S0 entry. No older branch was overwritten.
+- S0 result: `S0_FIXED_BRANCH_PASS`. This file records the stage contract, observed evidence, result, and next stage as required by `AGENTS.md` §7. Overall R8 result remains `IN_PROGRESS`; this is not source acceptance.
+
+## Stage evidence and limits
+
+The new target worktree is `G:/codex work/v4-unified-development`. It is based at the exact R6 commit and kept separate from the existing R7 worktree, which has unrelated modified and untracked files. The R7 worktree was not cleaned, reset, switched, or committed.
+
+The R7 source was built on the common ancestor rather than R6. The direct R6-to-R7 tree comparison therefore contains broad removals and incompatible file changes; it is not a valid whole-tree merge plan. The observed BFF sizes are R6 1,150 lines versus R7 610 lines. R7 also omits the R6 sector lifecycle implementation, its PG materializer, and the R6 research-priority owner. These are preservation constraints, not reasons to copy R7 wholesale.
+
+The checkout has 59,808 tracked paths. LFS smudging was skipped only while materializing this new source worktree; Git source blobs are checked out from R6. LFS-managed evidence/data blobs may remain pointer files in this worktree and will be fetched individually only if a later scoped validation requires them. This does not change the source commit or the original worktrees.
+
+## Function-level preservation and migration plan
+
+| System area | R6 verified baseline to preserve | R7 additions or repair to integrate | Unified sole implementation | Status at S0 |
+|---|---|---|---|---|
+| `core_product_bff_r1.py` | Read Index R2, constrained home response, identity/date/status, Sector Lifecycle, risk PG, Radar priority, Focus, history reads. R6 file is 1,150 lines. | Forward statistics/cohort/observations/settlement/FEP routes, source audit, three home Forward metrics. | Keep R6 BFF and add only the missing Forward handlers; produce one route-to-handler matrix and verify no duplicate route registration. | Pending S1 |
+| `static/core-product-r1/app.js`, `components.js`, `labels.js`, `stock.js` | R6 research navigation, Sector D2, three risk families, Priority, Focus/Forward explanations, six existing product entries and working filters. | Five Forward tabs, actual lists, Lane H/L sample counts, historical FEP research. | Extend R6 components in place; retain all R6 entries and filters; bind Forward rows to the R7 paged APIs. | Pending S1 |
+| `sector/lifecycle_reconstructed_v1.py`, `v4_sector_lifecycle_pg_r1.py` | R6 independent sector maturity/health algorithm and PG materialization (161 and 123 lines respectively); neither exists on R7. | No equivalent R7 replacement. | Preserve both R6 owners unchanged unless a separately evidenced compatibility edit is required. | Preserve-required |
+| `research_priority_r1.py`, `v4_operational_risk_pg_r1.py` | R6 independent priority and risk PG read/write owner; the priority module is absent on R7. | R7 risk transition direction and newly observable state repair. | Keep the R6 PG owner and merge the corrected transition semantics into one versioned producer/consumer contract. | Pending S3 |
+| `v4_read_index_r2.py`, `core_product_server_r1.py` | R6 index token, paging, response-size bound, and HTTP compatibility. | Forward details use independent paging endpoints. | Keep R6 R1/R2 compatibility and home 512 KiB guard; do not route detail payloads through home. | Pending S1 |
+| `forward_r7.py`, `forward_r7_pipeline.py`, `fep_r7_read.py`, `v4_forward_signal_definitions_r7.json` | No R6 equivalent. | R7 Forward rules, schedule builder, outcomes, FEP reads. | Add as versioned research-only contracts with explicit Lane, source, time, missingness, and nominal-price limitations. | Pending S1/S2 |
+| `forward_r7_store.py` | Existing R6 PG business owners and source binding. | R7 PostgreSQL persistence and readers; current reader scans large JSON facts in Python and schema detection uses dates/core keys. | Reuse R7 store only after root/DB/binding identity, Lane/revision identity, append semantics, and SQL paging/aggregation are explicit; retain old facts. | Pending S3 |
+| `operational_successor_release_v1.py` | R6 Head CAS, rollback, accepted daily release semantics. | R7 first-freeze, failure reporting, and settlement advancement. | Run successor only after Head publication; preserve Head on failure and persist retryable failure state. | Pending S2/S3 |
+| `source_view.py`, `build_windows_package_v1.py` | R6 production resource binding, worker identity, daily path. | R7 required producer-environment fixes. | Review binding and source identity only; no package/build command during this task. | Pending S1 |
+| PG-only consumers and industry membership | R6 PG facts plus TDX industry/concept membership and business token. | R7 ForwardR7Store reuse of PG. | Do not add DuckDB/SQLite as a formal business source; keep Lane H and Lane L partitions independent. | Pending S3 |
+
+## R7 delta inventory in scope
+
+R7-only Forward implementation modules: `src/workbench_analysis/forward_r7.py`, `forward_r7_pipeline.py`, `fep_r7_read.py`, `operational_daily_policy_binding_r7.py`; `src/workbench_db/forward_r7_store.py`; `src/workbench_service/operational_risk_v1.py`; `config/v4_forward_signal_definitions_r7.json`; and focused UI/API tests `tests/test_forward_r7_task.py`, `tests/test_core_product_ui_r1.mjs`, `tests/test_v4_research_usability_r1.py`.
+
+R7 changes requiring function-level rather than whole-file transplant: `src/workbench_service/core_product_bff_r1.py`, `core_product_server_r1.py`, `r43_operational_bff.py`, `static/core-product-r1/{app.js,components.js,labels.js,stock.js}`, `src/workbench_analysis/operational_successor_release_v1.py`, `src/workbench_desktop/source_view.py`, and `scripts/build_windows_package_v1.py`.
+
+## S0 record
+
+- Contract: create the one permanent development branch from R6; record source SHAs, merge base, remote target lookup, and the initial R6/R7 preservation matrix.
+- Evidence: local/remote branch lookup was empty before creation; worktree HEAD is `e44a55609168344b820138efc01d53d76b7312df`; merge base is `fbd23a6ba08d0948fe7ad421d1765fe363648522`; key-file existence and line-count comparison confirmed the large BFF reduction and R6-only Sector/Priority owners.
+- Acceptance: `PASS` for S0 branch creation and provenance recording. No claim is made yet about integration, P0 repair, runtime evidence, or I-01–I-10.
+- Next stage: S1 — function-level migration on this branch; preserve R6 capabilities, then add the R7 routes/components/store and publish one entry/ownership matrix before any P0 changes.

@@ -407,7 +407,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             try:
                 from workbench_db.forward_r7_store import ForwardR7Store
                 result=ForwardR7Store(self.api.root).read_universe(
-                    lane=lane_alias[lane],trade_date=q.get('trade_date'),rule=q.get('rule'),
+                    lane=lane_alias[lane],trade_date=q.get('trade_date',day),rule=q.get('rule'),
                     status=q.get('status'),limit=int(q.get('limit',30)),offset=int(q.get('offset',0)),
                     revision=int(q['revision']) if q.get('revision') else None)
                 return 200,self.envelope(day,status=result['status'],data=result,items=result['items'],
@@ -424,10 +424,10 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 store=ForwardR7Store(self.api.root)
                 counts=store.read_counts()
                 matured_count=store.read_matured_count()
-                historical=store.read_universe(lane='RETROSPECTIVE_RESEARCH',trade_date=q.get('trade_date'),
+                historical=store.read_universe(lane='RETROSPECTIVE_RESEARCH',trade_date=q.get('trade_date',day),
                     rule=q.get('rule'),status=q.get('status'),limit=min(30,int(q.get('limit',30))),
                     offset=int(q.get('offset',0)))
-                live=store.read_universe(lane='LIVE_OOS',trade_date=q.get('trade_date'),
+                live=store.read_universe(lane='LIVE_OOS',trade_date=q.get('trade_date',day),
                     rule=q.get('rule'),status=q.get('status'),limit=min(30,int(q.get('limit',30))),
                     offset=int(q.get('offset',0)))
                 plan=__import__('workbench_analysis.forward_r7_pipeline',
@@ -483,7 +483,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             from workbench_db.forward_r7_store import ForwardR7Store
             result=ForwardR7Store(self.api.root).read_settlement(
                 lane=lane_alias.get(q.get('lane')) if q.get('lane') else None,
-                trade_date=q.get('trade_date'),horizon=int(q['horizon']) if q.get('horizon') else None,
+                trade_date=q.get('trade_date',day),horizon=int(q['horizon']) if q.get('horizon') else None,
                 status=q.get('status'),limit=int(q.get('limit',30)),offset=int(q.get('offset',0)),
                 revision=int(q['revision']) if q.get('revision') else None,
                 settlement_revision=int(q['settlement_revision']) if q.get('settlement_revision') else None)

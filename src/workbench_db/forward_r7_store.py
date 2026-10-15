@@ -163,9 +163,46 @@ class ForwardR7Store:
                 WHERE kind=%s ORDER BY ordinal""").format(sql.Identifier(self.schema)), (kind,)).fetchall()
         return [(key, json.loads(payload)) for key, payload in rows]
 
-    def _daily_facts(self):
+    def _read_day_facts(self, kind: str, trade_date: str, lane: str | None = None):
+        """Use append-only fact-key prefixes to bound date-scoped reads in PG."""
+        def prefix_clause(prefix):
+            if not prefix.endswith(":"):
+                raise ValueError("FORWARD_FACT_KEY_PREFIX_INVALID")
+            return "(fact_key >= %s AND fact_key < %s)", [prefix, prefix[:-1] + ";"]
+        with self._connect() as pg:
+            pg.execute("SET TRANSACTION READ ONLY")
+            if kind == "r7_daily_universe":
+                if lane:
+                    clause, params = prefix_clause(f"v2:{trade_date}:{lane}:")
+                    clauses = [clause]
+                    if lane == "RETROSPECTIVE_RESEARCH":
+                        clauses.append("fact_key=%s"); params.append(trade_date)
+                else:
+                    clause, params = prefix_clause(f"v2:{trade_date}:")
+                    clauses = ["fact_key=%s", clause]
+                    params = [trade_date, *params]
+                query = sql.SQL("SELECT fact_key,payload FROM {}.forward_facts WHERE kind=%s AND ({}) ORDER BY ordinal").format(
+                    sql.Identifier(self.schema), sql.SQL(" OR ").join(sql.SQL(x) for x in clauses))
+                rows = pg.execute(query, [kind, *params]).fetchall()
+            else:
+                clause, prefix_params = prefix_clause(f"v2:{trade_date}:{lane}:" if lane else f"v2:{trade_date}:")
+                legacy_clause, legacy_params = prefix_clause(f"{trade_date}:")
+                advance_clause, advance_params = prefix_clause("v2:advance:")
+                clauses = [f"({clause} OR {legacy_clause} OR ({advance_clause} AND payload::jsonb->>'trade_date'=%s))"]
+                params = [*prefix_params, *legacy_params, *advance_params, trade_date]
+                if lane:
+                    clauses.append("(payload::jsonb->>'lane'=%s OR (payload::jsonb->>'identity_contract' IS NULL AND %s='RETROSPECTIVE_RESEARCH'))")
+                    params.extend([lane, lane])
+                query = sql.SQL("SELECT fact_key,payload FROM {}.forward_facts WHERE kind=%s AND {} ORDER BY ordinal").format(
+                    sql.Identifier(self.schema), sql.SQL(" AND ").join(sql.SQL(x) for x in clauses))
+                rows = pg.execute(query, [kind, *params]).fetchall()
+        return [(key, json.loads(payload)) for key, payload in rows]
+
+    def _daily_facts(self, trade_date: str | None = None, lane: str | None = None):
+        source = (self._read_facts("r7_daily_universe") if trade_date is None
+                  else self._read_day_facts("r7_daily_universe", trade_date, lane))
         bundles = []
-        for key, value in self._read_facts("r7_daily_universe"):
+        for key, value in source:
             item = dict(value)
             if not item.get("identity_contract"):
                 # R7 had one date-wide identity. Preserve every old row as Lane H.
@@ -182,15 +219,28 @@ class ForwardR7Store:
             bundles.append(item)
         return bundles
 
-    def _settlement_facts(self):
+    def _settlement_facts(self, trade_date: str | None = None, lane: str | None = None):
         result = []
-        for _, value in self._read_facts("r7_settlement_schedule"):
+        source = (self._read_facts("r7_settlement_schedule") if trade_date is None
+                  else self._read_day_facts("r7_settlement_schedule", trade_date, lane))
+        for _, value in source:
             item = dict(value)
             if not item.get("identity_contract"):
                 item["lane"] = "RETROSPECTIVE_RESEARCH"
                 item["identity_contract"] = "V4_FORWARD_SETTLEMENT_R1_LEGACY_LANE_H"
             result.append(item)
         return result
+
+    def _latest_daily_aggregates(self):
+        latest = {}
+        for _, payload in self._read_facts("r7_aggregate_stats"):
+            day = payload.get("trade_date")
+            lane = payload.get("lane") or "RETROSPECTIVE_RESEARCH"
+            key = (day, lane)
+            revision = int(payload.get("revision", 1))
+            if key not in latest or revision >= latest[key][0]:
+                latest[key] = (revision, payload)
+        return latest
 
     @staticmethod
     def _insert_immutable(pg, table, columns, values, identity_where, identity_values,
@@ -381,25 +431,32 @@ class ForwardR7Store:
 
 
     def read_counts(self):
-        bundles = self._daily_facts()
-        latest = {}
-        for bundle in bundles:
-            for row in bundle.get("rows", []):
-                key = (row.get("T0"), row.get("evidence_lane"), row.get("rule_id"),
-                       row.get("rule_version"), row.get("entity_id"))
-                current = latest.get(key)
-                if current is None or int(row.get("capture_revision", row.get("revision", 1))) >= int(current.get("capture_revision", current.get("revision", 1))):
-                    latest[key] = row
-        rows = list(latest.values())
         grouped = {}
-        for row in rows:
-            lane = row.get("evidence_lane")
-            info = grouped.setdefault(lane, dict(count=0, match=0, no_match=0, unknown=0, latest_t0=""))
-            info["count"] += 1
-            info["match"] += row.get("status") == "MATCH"
-            info["no_match"] += row.get("status") == "NO_MATCH"
-            info["unknown"] += row.get("status") == "UNKNOWN"
-            info["latest_t0"] = max(info["latest_t0"], row.get("T0", ""))
+        if hasattr(self, "schema"):
+            for (day, lane), (_, payload) in self._latest_daily_aggregates().items():
+                info = grouped.setdefault(lane, dict(count=0, match=0, no_match=0, unknown=0, latest_t0=""))
+                info["latest_t0"] = max(info["latest_t0"], day or "")
+                for aggregate in payload.get("groups", {}).values():
+                    info["count"] += int(aggregate.get("universe_count", 0))
+                    info["match"] += int(aggregate.get("match_count", 0))
+                    info["no_match"] += int(aggregate.get("no_match_count", 0))
+                    info["unknown"] += int(aggregate.get("unknown_count", 0))
+        else:
+            latest = {}
+            for bundle in self._daily_facts():
+                for row in bundle.get("rows", []):
+                    key = (row.get("T0"), row.get("evidence_lane"), row.get("rule_id"), row.get("rule_version"), row.get("entity_id"))
+                    current = latest.get(key)
+                    if current is None or int(row.get("capture_revision", row.get("revision", 1))) >= int(current.get("capture_revision", current.get("revision", 1))):
+                        latest[key] = row
+            for row in latest.values():
+                lane = row.get("evidence_lane")
+                info = grouped.setdefault(lane, dict(count=0, match=0, no_match=0, unknown=0, latest_t0=""))
+                info["count"] += 1
+                info["match"] += row.get("status") == "MATCH"
+                info["no_match"] += row.get("status") == "NO_MATCH"
+                info["unknown"] += row.get("status") == "UNKNOWN"
+                info["latest_t0"] = max(info["latest_t0"], row.get("T0", ""))
         pointer = self._latest_publish_index(lane="LIVE_OOS") or self._latest_publish_index(lane="RETROSPECTIVE_RESEARCH") or self._latest_publish_index()
         if not pointer:
             return dict(status="DATA_MISSING", historical=None, live=None, published_generation=None)
@@ -413,27 +470,35 @@ class ForwardR7Store:
     def read_audit_dates(self, *, limit: int = 100, offset: int = 0):
         if not 1 <= limit <= 200 or not 0 <= offset <= 1_000_000:
             raise ValueError("INVALID_QUERY_BOUND")
-        latest = {}
-        for bundle in self._daily_facts():
-            for row in bundle.get("rows", []):
-                identity = (row.get("T0"), row.get("evidence_lane"), row.get("rule_id"), row.get("rule_version"), row.get("entity_id"))
-                revision = int(row.get("capture_revision", row.get("revision", 1)))
-                if identity not in latest or revision >= latest[identity][0]:
-                    latest[identity] = (revision, row)
         by_date = {}
-        for _, row in latest.values():
-                day = row.get("T0")
+        if hasattr(self, "schema"):
+            for (day, lane), (_, payload) in self._latest_daily_aggregates().items():
                 groups = by_date.setdefault(day, {})
-                key = (row.get("rule_id"), row.get("rule_version"), row.get("entity_type"))
-                group = groups.setdefault(key, dict(rule_id=key[0], rule_version=key[1],
-                    entity_type=key[2], universe_count=0, match_count=0, no_match_count=0,
-                    unknown_count=0, live_count=0, historical_count=0))
-                group["universe_count"] += 1
-                group["match_count"] += row.get("status") == "MATCH"
-                group["no_match_count"] += row.get("status") == "NO_MATCH"
-                group["unknown_count"] += row.get("status") == "UNKNOWN"
-                group["live_count"] += row.get("evidence_lane") == "LIVE_OOS"
-                group["historical_count"] += row.get("evidence_lane") == "RETROSPECTIVE_RESEARCH"
+                for key_text, counts in payload.get("groups", {}).items():
+                    entity_type = key_text.split("/")[-1]
+                    key = (key_text.split("/")[0], key_text.split("/")[1] if "/" in key_text else "1.0.0", entity_type)
+                    group = groups.setdefault(key, dict(rule_id=key[0],rule_version=key[1],entity_type=key[2],
+                        universe_count=0,match_count=0,no_match_count=0,unknown_count=0,live_count=0,historical_count=0))
+                    for field in ("universe_count","match_count","no_match_count","unknown_count"):
+                        group[field] += int(counts.get(field,0))
+                    group["live_count"] += int(counts.get("universe_count",0)) if lane=="LIVE_OOS" else 0
+                    group["historical_count"] += int(counts.get("universe_count",0)) if lane=="RETROSPECTIVE_RESEARCH" else 0
+        else:
+            latest = {}
+            for bundle in self._daily_facts():
+                for row in bundle.get("rows", []):
+                    identity=(row.get("T0"),row.get("evidence_lane"),row.get("rule_id"),row.get("rule_version"),row.get("entity_id"))
+                    revision=int(row.get("capture_revision",row.get("revision",1)))
+                    if identity not in latest or revision>=latest[identity][0]: latest[identity]=(revision,row)
+            for _, row in latest.values():
+                day=row.get("T0");groups=by_date.setdefault(day,{})
+                key=(row.get("rule_id"),row.get("rule_version"),row.get("entity_type"))
+                group=groups.setdefault(key,dict(rule_id=key[0],rule_version=key[1],entity_type=key[2],universe_count=0,
+                    match_count=0,no_match_count=0,unknown_count=0,live_count=0,historical_count=0))
+                group["universe_count"]+=1;group["match_count"]+=row.get("status")=="MATCH"
+                group["no_match_count"]+=row.get("status")=="NO_MATCH";group["unknown_count"]+=row.get("status")=="UNKNOWN"
+                group["live_count"]+=row.get("evidence_lane")=="LIVE_OOS"
+                group["historical_count"]+=row.get("evidence_lane")=="RETROSPECTIVE_RESEARCH"
         dates = sorted(by_date, reverse=True)
         page = dates[offset:offset + limit]
         return dict(status="READY" if dates else "EMPTY_VALID",
@@ -448,7 +513,7 @@ class ForwardR7Store:
         if not 1 <= limit <= 200 or not 0 <= offset <= 1_000_000:
             raise ValueError("INVALID_QUERY_BOUND")
         latest_observations = {}
-        for bundle in self._daily_facts():
+        for bundle in self._daily_facts(trade_date=trade_date, lane=lane):
             for row in bundle.get("rows", []):
                 if revision is not None and int(row.get("capture_revision", row.get("revision", 1))) != revision:
                     continue
@@ -465,7 +530,7 @@ class ForwardR7Store:
                 observations[legacy_observation_id(row)] = row
         items, counts = [], {}
         latest_schedule = {}
-        for bundle in self._settlement_facts():
+        for bundle in self._settlement_facts(trade_date=trade_date, lane=lane):
             for schedule in bundle.get("items", []):
                 key = (bundle.get("lane", "RETROSPECTIVE_RESEARCH"), schedule.get("observation_id"),
                        schedule.get("horizon_sessions"))
@@ -473,7 +538,7 @@ class ForwardR7Store:
                 current_revision = int(schedule.get("settlement_revision", bundle.get("revision", 1)))
                 if settlement_revision is not None and current_revision != settlement_revision:
                     continue
-                if old is None or current_revision >= old[1]:
+                if old is None or current_revision >= old[2]:
                     latest_schedule[key] = (bundle, schedule, current_revision)
         aggregate_values = {}
         for bundle, schedule, settlement_revision in latest_schedule.values():
@@ -483,10 +548,11 @@ class ForwardR7Store:
             state = schedule.get("schedule_status", "PENDING")
             h = schedule.get("horizon_sessions")
             lane_value, day = row.get("evidence_lane"), row.get("T0")
+            if ((lane and lane != lane_value) or (trade_date and trade_date != day)
+                    or (horizon and horizon != h) or (status and status != state)):
+                continue
             counts[(lane_value, h, state)] = counts.get((lane_value, h, state), 0) + 1
             aggregate_values.setdefault((lane_value, h), []).append(schedule)
-            if (lane and lane != lane_value) or (trade_date and trade_date != day) or (horizon and horizon != h) or (status and status != state):
-                continue
             outcome = schedule.get("settlement", {})
             items.append(dict(observation_id=schedule.get("observation_id"), revision=row.get("capture_revision",row.get("revision",1)),
                 settlement_revision=settlement_revision,
@@ -535,6 +601,28 @@ class ForwardR7Store:
 
 
     def read_matured_count(self):
+        if hasattr(self, "schema"):
+            snapshots={}; base={}; has_per_observation_revision=False
+            for ordinal,(_,payload) in enumerate(self._read_facts("r7_settlement_aggregate")):
+                lane=payload.get("lane") or "RETROSPECTIVE_RESEARCH"
+                horizon=payload.get("horizon_sessions")
+                asof=payload.get("asof_trade_date")
+                if asof:
+                    key=(lane,horizon)
+                    if key not in snapshots or (asof,ordinal)>snapshots[key][0]:
+                        snapshots[key]=((asof,ordinal),int(payload.get("settled_count",0)))
+                else:
+                    key=(payload.get("trade_date"),lane,horizon)
+                    if key not in base or ordinal>=base[key][0]:
+                        base[key]=(ordinal,int(payload.get("settled_count",0)))
+                    has_per_observation_revision |= payload.get("identity_contract") == "V4_FORWARD_SETTLEMENT_AGGREGATE_R2"
+            if has_per_observation_revision:
+                return sum(count for _,count in base.values())
+            grouped={(lane,horizon) for _,lane,horizon in base}|set(snapshots)
+            return sum(snapshots[(lane,horizon)][1] if (lane,horizon) in snapshots else
+                       sum(count for (_,item_lane,item_h),(_,count) in base.items()
+                           if item_lane==lane and item_h==horizon)
+                       for lane,horizon in grouped)
         latest_observations = {}
         for bundle in self._daily_facts():
             for row in bundle.get("rows", []):
@@ -631,6 +719,11 @@ class ForwardR7Store:
             return dict(status="NO_DUE_SETTLEMENTS", accepted_trade_date=accepted_trade_date, appended=0)
         by_lane = {}
         latest_schedule_rows = {(key[0], key[1], key[2]): value[2] for key, value in latest.items()}
+        observation_dates = {}
+        for bundle, row, observation_id in observations:
+            lane = row.get("evidence_lane", bundle.get("lane", "RETROSPECTIVE_RESEARCH"))
+            observation_dates[(lane, observation_id)] = row.get("T0")
+            observation_dates[(lane, legacy_observation_id(row))] = row.get("T0")
         for lane, t0, item, revision in appended:
             by_lane.setdefault((lane, t0, revision), []).append(item)
             latest_schedule_rows[(lane, item["observation_id"], item["horizon_sessions"])] = item
@@ -641,7 +734,7 @@ class ForwardR7Store:
                 for (lane, t0, revision), items in by_lane.items():
                     digest = self._stable_hash(items)
                     item_source_digest = items[0].get("source_digest", source_digest)
-                    key = f"v2:advance:{accepted_trade_date}:{lane}:{t0}:r{revision}:{item_source_digest}:{digest}"
+                    key = f"v2:{t0}:{lane}:advance:{accepted_trade_date}:r{revision}:{item_source_digest}:{digest}"
                     self._append_fact(pg, "r7_settlement_schedule", key,
                         dict(identity_contract="V4_FORWARD_SETTLEMENT_R2", trade_date=t0,
                              accepted_trade_date=accepted_trade_date, lane=lane, revision=revision,
@@ -649,17 +742,20 @@ class ForwardR7Store:
                              source_digest=item_source_digest,
                              price_basis="NOMINAL_UNADJUSTED_CLOSE", corporate_action_adjustment="NOT_APPLIED"),
                         item_source_digest)
+                changed_groups={(lane,t0,item.get("horizon_sessions")) for lane,t0,item,_ in appended}
                 aggregate_groups = {}
-                for (lane, _observation_id, horizon), schedule in latest_schedule_rows.items():
-                    aggregate_groups.setdefault((lane, horizon), []).append(schedule)
-                for (lane, horizon), schedules in aggregate_groups.items():
-                    summary = summarize_settlement_schedule(accepted_trade_date,lane,horizon,schedules)
+                for (lane, observation_id, horizon), schedule in latest_schedule_rows.items():
+                    t0=observation_dates.get((lane,observation_id))
+                    if (lane,t0,horizon) in changed_groups:
+                        aggregate_groups.setdefault((lane,t0,horizon), []).append(schedule)
+                for (lane,t0,horizon), schedules in aggregate_groups.items():
+                    summary = summarize_settlement_schedule(t0,lane,horizon,schedules)
                     summary.update(identity_contract="V4_FORWARD_SETTLEMENT_AGGREGATE_R2",
-                        asof_trade_date=accepted_trade_date,
+                        settlement_revision=max(int(x.get("settlement_revision",1)) for x in schedules),
                         price_basis="NOMINAL_UNADJUSTED_CLOSE",corporate_action_adjustment="NOT_APPLIED")
                     summary_digest = self._stable_hash(summary)
                     self._append_fact(pg,"r7_settlement_aggregate",
-                        f"v2:advance:{accepted_trade_date}:{lane}:{horizon}:{summary_digest}",
+                        f"v2:{t0}:{lane}:{horizon}:r{summary['settlement_revision']}:{summary_digest}",
                         summary,summary_digest)
                 self._append_fact(pg, "r7_pipeline_run", run_id,
                     dict(run_id=run_id, stage="SETTLEMENT_ADVANCE", trade_date=accepted_trade_date,

@@ -105,10 +105,10 @@ def test_settlement_reads_only_latest_capture_revision_by_lane(monkeypatch):
     current=_row(revision=2,source_digest="b"*64)
     old_id=make_observation_id(old); current_id=make_observation_id(current)
     store=object.__new__(ForwardR7Store)
-    monkeypatch.setattr(store,"_daily_facts",lambda:[
+    monkeypatch.setattr(store,"_daily_facts",lambda **kwargs:[
         dict(identity_contract="V4_FORWARD_OBSERVATION_ID_R2",lane="RETROSPECTIVE_RESEARCH",rows=[old]),
         dict(identity_contract="V4_FORWARD_OBSERVATION_ID_R2",lane="RETROSPECTIVE_RESEARCH",rows=[current])])
-    monkeypatch.setattr(store,"_settlement_facts",lambda:[
+    monkeypatch.setattr(store,"_settlement_facts",lambda **kwargs:[
         dict(identity_contract="V4_FORWARD_SETTLEMENT_R2",lane="RETROSPECTIVE_RESEARCH",revision=1,
              items=[dict(observation_id=old_id,horizon_sessions=1,due_date="2026-10-14",
                          schedule_status="SETTLED",settlement={"status":"SETTLED","nominal_return":0.2})]),
@@ -121,6 +121,26 @@ def test_settlement_reads_only_latest_capture_revision_by_lane(monkeypatch):
     assert result["items"][0]["status"]=="SOURCE_GAP"
     assert result["aggregates"][0]["return_denominator"]==0
     assert store.read_matured_count()==0
+
+
+def test_settlement_reader_selects_latest_append_revision(monkeypatch):
+    row=_row(); obs=make_observation_id(row)
+    store=object.__new__(ForwardR7Store)
+    monkeypatch.setattr(store,"_daily_facts",lambda **kwargs:[dict(identity_contract="V4_FORWARD_OBSERVATION_ID_R2",
+        lane="RETROSPECTIVE_RESEARCH",rows=[row])])
+    monkeypatch.setattr(store,"_settlement_facts",lambda **kwargs:[
+        dict(identity_contract="V4_FORWARD_SETTLEMENT_R2",lane="RETROSPECTIVE_RESEARCH",revision=1,
+             items=[dict(observation_id=obs,horizon_sessions=1,due_date="2026-10-14",
+                         schedule_status="SOURCE_GAP",settlement_revision=1)]),
+        dict(identity_contract="V4_FORWARD_SETTLEMENT_R2",lane="RETROSPECTIVE_RESEARCH",revision=2,
+             items=[dict(observation_id=obs,horizon_sessions=1,due_date="2026-10-14",
+                         schedule_status="SETTLED",settlement_revision=2,
+                         settlement={"status":"SETTLED","nominal_return":0.05})])])
+    result=store.read_settlement()
+    assert result["total"]==1 and result["items"][0]["settlement_revision"]==2
+    assert result["items"][0]["status"]=="SETTLED"
+    assert result["aggregates"][0]["return_denominator"]==1
+    assert store.read_settlement(lane="RETROSPECTIVE_RESEARCH")["aggregates"][0]["lane"]=="RETROSPECTIVE_RESEARCH"
 
 
 def test_settlement_append_failure_records_retryable_failure(monkeypatch):

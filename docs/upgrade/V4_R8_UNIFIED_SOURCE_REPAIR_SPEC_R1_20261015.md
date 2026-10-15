@@ -19,3 +19,9 @@ After successful Head CAS/readback, the Forward post-publication observer querie
 ## Stage acceptance boundary
 
 Targeted tests and in-memory/mock store checks establish source semantics only. S3 does not claim real PG coexistence/readback. S4 must demonstrate immutable legacy facts, same-date dual-Lane coexistence, revision/idempotency behavior, due-settlement append and retry, R6 risk consumer binding, and query consistency using a disposable isolated PostgreSQL cluster under `G:/codex_tmp/test_temp`.
+
+## S4 evidence and change note — 2026-10-15
+
+S4 validation exercised Forward and the R6 risk PG Owner against one disposable PostgreSQL cluster under `G:/codex_tmp/test_temp`, with source documents read from the accepted source root. The isolation contract and measured query plans are recorded in `reports/audits/v4_unified_r8/CRITICAL_BUG_REPAIR_EVIDENCE.json` and `R6_R7_SOURCE_DIFF_AND_MERGE_MATRIX.md`. Date-scoped observation and schedule reads now use fact-key range predicates so the existing `(kind, fact_key)` primary key can bound reads. Compact R7 aggregate facts feed the counts, audit-date, and matured-count readers. No business facts or files in the source root were modified.
+
+S4 acceptance is scoped to isolated PG coexistence/readback, source semantics, and bounded query plans. True LIVE_OOS and the 10/14 due settlement still await a future accepted Head; the isolated Lane L sample is only an engineering fixture. S5 records the task-card I-01–I-10 disposition and next production build entry without running a build.

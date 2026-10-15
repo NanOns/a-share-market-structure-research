@@ -487,18 +487,30 @@ def capture_after_accepted_head(root: str | Path, candidate: dict, *, dsn: str |
         prices = {item["security_id"]: item for item in raw if item.get("security_id")}
         settlement_schedule = build_schedules(
             rows, day, sessions, {day: prices}, frozen_at, accepted_source_dates={day})
-        result = store.publish_day(trade_date=day,rows=rows,lane=lane,
-            first_available_at=first_available,
-            run_id=hashlib.sha256((day+frozen_at+"R7-LIVE").encode()).hexdigest(),
-            settlement_rows=settlement_schedule,
-            source_run={"contract_id":"V4_FORWARD_PIPELINE_R7_R2","source_hashes":{k:v["sha256"] for k,v in refs.items()},
+        source_hashes={k:v["sha256"] for k,v in refs.items()}
+        head_token=hashlib.sha256(canonical_head(candidate)).hexdigest()
+        source_run={"contract_id":"V4_FORWARD_PIPELINE_R7_R2","source_hashes":source_hashes,
                         "first_processed_at":first_processed_at,"frozen_at":frozen_at,
                         "head_accepted_at":accepted_at,"source_ready_at":source_ready_at,
                         "first_available_at":first_available,"timing_contract":timing,
-                        "head_token":hashlib.sha256(canonical_head(candidate)).hexdigest(),
+                        "head_token":head_token,
                         "membership_basis":membership["membership_basis"],
                         "membership_provenance_counts":{k:membership[k] for k in
-                            ("as_recorded_count","retro_count","unknown_count")}})
+                            ("as_recorded_count","retro_count","unknown_count")}}
+        expected_lanes=sorted({row["evidence_lane"] for row in rows})
+        existing=store.find_published_day(trade_date=day,source_hashes=source_hashes,
+                                          head_token=head_token)
+        if existing:
+            if sorted(existing)!=expected_lanes:
+                raise ValueError("FORWARD_R7_PARTIAL_LANE_REPLAY_REQUIRES_REVISION")
+            result=dict(status="PUBLISHED_IDEMPOTENT",trade_date=day,
+                published_lanes=expected_lanes,
+                publications=[existing[key] for key in expected_lanes])
+        else:
+            result = store.publish_day(trade_date=day,rows=rows,lane=lane,
+                first_available_at=first_available,
+                run_id=hashlib.sha256((day+frozen_at+"R7-LIVE").encode()).hexdigest(),
+                settlement_rows=settlement_schedule,source_run=source_run)
         accepted_dates = set(accepted.get("published_sessions", []))
         due_prices = {}
         due_source_hashes = {}
@@ -537,7 +549,7 @@ def capture_after_accepted_head(root: str | Path, candidate: dict, *, dsn: str |
                 payload={"retryable":True,"accepted_due_dates":sorted(accepted_dates)})
             advanced = dict(status="RETRY_REQUIRED", accepted_trade_date=day,
                             appended=0, error_code=type(advance_error).__name__)
-        return dict(timing,status="PUBLISHED",trade_date=day,lane=lane,captured_at=frozen_at,
+        return dict(timing,status=result.get("status", "PUBLISHED"),trade_date=day,lane=lane,captured_at=frozen_at,
                     settlement_advance=advanced,result=result)
     except Exception as exc:
         LOG.exception("R7 post-accepted-head capture failed for %s", day)

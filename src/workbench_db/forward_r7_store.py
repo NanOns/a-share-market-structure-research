@@ -333,6 +333,23 @@ class ForwardR7Store:
                     published_lanes=[item["lane"] for item in publications],
                     publications=publications)
 
+    def find_published_day(self, *, trade_date: str, source_hashes: dict,
+                           head_token: str) -> dict[str, dict]:
+        """Return existing per-Lane publications bound to this exact source and Head."""
+        matches = {}
+        for item in self._daily_facts():
+            source_run = item.get("source_run") or {}
+            if (item.get("identity_contract") == "V4_FORWARD_OBSERVATION_ID_R2"
+                    and item.get("trade_date") == trade_date
+                    and source_run.get("head_token") == head_token
+                    and source_run.get("source_hashes") == source_hashes):
+                matches[item.get("lane")] = dict(status="PUBLISHED_IDEMPOTENT",
+                    trade_date=trade_date, lane=item.get("lane"),
+                    rows=len(item.get("rows", [])),
+                    payload_sha256=item.get("stable_sha256"),
+                    generation=None)
+        return matches
+
     def _publish_day_facts(self, *, trade_date, rows, lane, run_id, revision,
                            first_available_at, source_run, settlement_rows):
         source_hashes = (source_run or {}).get("source_hashes", {})

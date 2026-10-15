@@ -4,7 +4,8 @@ import pytest
 
 
 @pytest.mark.parametrize('mixed',[False,True])
-def test_accepted_head_hook_publishes_hash_bound_rows_and_advances_due_sources(tmp_path,monkeypatch,mixed):
+@pytest.mark.parametrize('idempotent',[False,True])
+def test_accepted_head_hook_publishes_hash_bound_rows_and_advances_due_sources(tmp_path,monkeypatch,mixed,idempotent):
     day='2026-10-14';head=dict(accepted_trade_date=day,published_sessions=['2026-10-13',day])
     refs={name:dict(path=name,sha256=name[0]*64) for name in ('raw','core','sector','lifecycle')}
     refs['freeze']=dict(path='freeze',sha256='f'*64)
@@ -14,6 +15,10 @@ def test_accepted_head_hook_publishes_hash_bound_rows_and_advances_due_sources(t
         def __init__(self):pass
         def verify_existing_storage(self):pass
         def register_definitions(self,*args):pass
+        def find_published_day(self,**kwargs):
+            if not idempotent:return {}
+            lanes=['LATE_OBSERVED_NOT_PIT','LIVE_OOS'] if mixed else ['LATE_OBSERVED_NOT_PIT']
+            return {lane:dict(status='PUBLISHED_IDEMPOTENT',lane=lane) for lane in lanes}
         def _publish_day_facts(self,**kwargs):
             seen['publish']=kwargs;seen.setdefault('publications',[]).append(kwargs)
             return dict(status='PUBLISHED',lane=kwargs['lane'])
@@ -41,8 +46,13 @@ def test_accepted_head_hook_publishes_hash_bound_rows_and_advances_due_sources(t
     for row in rows:row.update(T0=day,rule_id='engineering-rule',rule_version='1')
     monkeypatch.setattr(pipeline,'build_daily_universe',lambda **kwargs:rows)
     monkeypatch.setattr(pipeline,'build_schedules',lambda *args,**kwargs:[])
+    monkeypatch.setattr(pipeline,'classify_after_close_capture',lambda **kwargs:dict(lane='LATE_OBSERVED_NOT_PIT'))
+    if mixed:monkeypatch.setattr(pipeline,'classify_after_close_capture',lambda **kwargs:dict(lane='LIVE_OOS'))
     result=pipeline.capture_after_accepted_head(tmp_path,head,head_accepted_at='2026-10-15T12:00:00+00:00')
-    assert result['status']=='PUBLISHED'
+    assert result['status']==('PUBLISHED_IDEMPOTENT' if idempotent else 'PUBLISHED')
+    if idempotent:
+        assert 'publish' not in seen
+        return
     digest=seen['publish']['rows'][0]['source_digest']
     assert len(digest)==64
     assert seen['review']['source_digests_by_date'][day]==digest

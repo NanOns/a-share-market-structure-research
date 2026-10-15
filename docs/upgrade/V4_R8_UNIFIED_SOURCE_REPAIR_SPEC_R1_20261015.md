@@ -87,16 +87,19 @@ checks passed. Numerical kernels and the original series remain unchanged.
 The post-Head observer assigns each row's evidence Lane, and the store already
 groups rows by that field during publication. The observer regression now
 uses the real store grouping path for a mixed stock/sector case and checks its
-publication and due-source hashes (two observer checks passed). Each row's
-display `lane` is also kept equal to its `evidence_lane`.
+publication and due-source hashes (four observer combinations passed). Each
+row's display `lane` is also kept equal to its `evidence_lane`. Replaying the
+same accepted Head and source hashes reuses the existing per-Lane capture; a
+partial Lane match fails closed and cannot append a misleading revision.
 
 The R7 definition catalog was byte-hashed before this run under LF line
 endings, while the Windows checkout supplied the same JSON with CRLF. The
 loader now normalizes only CRLF to LF for the existing semantic catalog digest
 and records both the original byte digest and normalized digest in an
 append-only PG byte-identity fact. Changes to JSON content still change the
-catalog digest. Three focused checks cover LF/CRLF identity, content changes,
-and observer publication; the four relevant regression files pass 23 checks.
+catalog digest. Focused checks cover LF/CRLF identity, content changes, and
+observer publication/idempotency; the five relevant regression files pass
+27 checks.
 
 `R8_ISOLATED_OWNER_READ_ORIGIN_R1` permits read-only reuse of old PG Owner
 descriptors inside a G-drive candidate. A hash-bound original Head and its

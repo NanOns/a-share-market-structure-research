@@ -1,21 +1,21 @@
-# V4 R8 unified source repair — S2 design contract
+# V4 R8 unified source repair — S3 design contract
 
-- Contract: `V4-R8-UNIFIED-SOURCE-REPAIR-20261015/R1`
-- Version: `R1.0.0`
-- Scope: new-listing Profile conservation, Forward due-source states, and after-close first-freeze timing.
+- Contract: `V4-R8-UNIFIED-SOURCE-REPAIR-20261015/R1`, P0-D/P0-E/P0-F.
+- Consulted sources: the R8 task card sections 2 and 5; `docs/upgrade/V4_R7_FORWARD_SIGNAL_SPEC_R1.md`; the R6 immutable operational risk PG owner and BFF read path.
+- Base: fixed branch `codex/v4-unified-development`, R6 `e44a55609168344b820138efc01d53d76b7312df` plus pushed S1/S2; S2 commit `986de69d3eafdf58e6bc292382f4ad558cc70889`.
 
-## P0-A: target lifecycle conservation
+## P0-D — observation and publication identities
 
-The target-dated, versioned lifecycle identity binding is authoritative for the current daily Owner run. Its active IDs are added only to the target-day universe; historical dates retain their own dated universes. Identity absence is a hard failure. Active entities with no calculable history remain in Core/Profile outputs with null values and explicit `UNKNOWN`/`INSUFFICIENT_HISTORY`; raw bars and returns are never fabricated. `config/v4_dynamic_profile_lifecycle_conservation_r1.json` binds these rules into the generation scope.
+New observations use `V4_FORWARD_OBSERVATION_ID_R2`, binding T0, evidence Lane, rule and version, entity, capture revision, and source digest. New daily universe, schedule, aggregate, and publish pointer keys include Lane and revision/digest. Same T0 can publish Lane H, Lane L, and late observations independently. Equal revision with different content fails closed; changed content needs a higher revision. Existing unversioned R7 facts remain immutable and are read as Lane H only. Default reads select the latest capture revision within each T0/Lane/rule/entity; explicit revision reads remain available. Settlement schedules append by `(observation_id, horizon, settlement_revision)` and readers choose the latest settlement revision for that observation only.
 
-## P0-B: settlement source states
+## P0-E — accepted-session advancement
 
-The Forward schedule distinguishes `PENDING_FUTURE_SESSION`, `DUE_SOURCE_NOT_ACCEPTED`, `SOURCE_GAP`, security-fact-backed `NO_QUOTE`/`SUSPENDED`, and `SETTLED`. Accepted target-day lifecycle facts may classify a missing security quote only when they explicitly state `NO_QUOTE` or `SUSPENDED`. Missing due-source days and generic gaps never enter the quote-failure count or return denominator. Only `SETTLED` results enter return aggregates; nominal unadjusted close-to-close values remain research descriptions.
+After successful Head CAS/readback, the Forward post-publication observer queries only accepted due sessions whose latest schedule remains pending or unresolved, loads each bound raw/lifecycle source, and appends a settlement revision using those accepted prices. It never revises the frozen T0 observation. The nominal unadjusted close basis and lack of corporate-action adjustment remain explicit. Successful runs and retryable failures are append-only PG facts. A later accepted Head rechecks unresolved schedules, allowing an actual due result to be appended without backdating the original observation.
 
-## P0-C: after-close timing
+## P0-F — risk producer and consumer
 
-An after-close T0 signal is `AFTER_CLOSE_FIRST_OBSERVED`. The first available source time, accepted Head time, first processing time, and immutable freeze time have distinct fields and must be timezone-aware and ordered. The signal is valid from the next official session. A first freeze at or after that session's 09:30 Asia/Shanghai open is `LATE_OBSERVED_NOT_PIT`; it remains an observation but is never backdated. `executable_from` marks a research reference boundary and does not claim a trade occurred. No machine-clock changes are allowed.
+`operational_risk_v1.py` remains the only transition producer under `V4_OPERATIONAL_RISK_CHANGE_R2`; the R6 content-addressed PG owner accepts R1 history and R2 writes. The home and risk detail consumers continue to load the immutable R6 PG owner and expose its binding/token. S3 targeted vectors cover direction and first-observed denominators; isolated PG consumer readback remains part of S4.
 
-## Stage evidence
+## Stage acceptance boundary
 
-Targeted tests cover set conservation/unknown history, all due-source states, settlement denominators, and synthetic next-session timing boundaries. Real production sources were read only; the detailed counts and SHA-256 bindings are recorded in `reports/audits/v4_unified_r8/CRITICAL_BUG_REPAIR_EVIDENCE.json`. Full isolated Owner/PG readback is reserved for S4 and is not inferred from unit tests or the single-security real-source replay.
+Targeted tests and in-memory/mock store checks establish source semantics only. S3 does not claim real PG coexistence/readback. S4 must demonstrate immutable legacy facts, same-date dual-Lane coexistence, revision/idempotency behavior, due-settlement append and retry, R6 risk consumer binding, and query consistency using a disposable isolated PostgreSQL cluster under `G:/codex_tmp/test_temp`.

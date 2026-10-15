@@ -184,6 +184,26 @@ def build_daily_universe(*, trade_date: str, stock_rows: list[dict], raw_rows: l
 
 
 def make_observation_id(row: dict) -> str:
+    """Return a Lane/revision-bound identity for one immutable observation.
+
+    Rows written before the R8 identity contract remain addressable through
+    ``legacy_observation_id`` in the read adapter; newly produced rows always
+    include their Lane, capture revision, and source digest here.
+    """
+    lane = row.get("evidence_lane") or row.get("evidence_class") or "RETROSPECTIVE_RESEARCH"
+    if lane == "RECONSTRUCTED":
+        lane = "RETROSPECTIVE_RESEARCH"
+    revision = int(row.get("capture_revision", row.get("revision", 1)))
+    source_digest = row.get("source_digest")
+    if not source_digest:
+        source_digest = sha256(row.get("source_hashes", {}))
+    return sha256(["V4_FORWARD_OBSERVATION_ID_R2", row["T0"], lane,
+                   row["rule_id"], row["rule_version"], row["entity_id"],
+                   revision, source_digest])
+
+
+def legacy_observation_id(row: dict) -> str:
+    """Address an immutable R7 identity while reading existing PG facts."""
     return sha256([row["rule_id"], row["rule_version"], row["T0"], row["entity_id"]])
 
 

@@ -292,9 +292,13 @@ def capture_after_accepted_head(root: str | Path, candidate: dict, *, dsn: str |
             first_available_at=first_available,head_accepted_at=accepted_at,
             first_processed_at=first_processed_at,frozen_at=frozen_at)
         lane = timing["lane"]
+        capture_source_digest = hashlib.sha256(canonical_bytes({k:v.get("sha256") for k,v in sorted(refs.items())})).hexdigest()
         for row in rows:
             row.update(timing)
             row["evidence_class"] = lane
+            row["evidence_lane"] = lane
+            row["capture_revision"] = 1
+            row["source_digest"] = capture_source_digest
         prices = {item["security_id"]: item for item in raw if item.get("security_id")}
         settlement_schedule = build_schedules(
             rows, day, sessions, {day: prices}, frozen_at, accepted_source_dates={day})
@@ -306,7 +310,37 @@ def capture_after_accepted_head(root: str | Path, candidate: dict, *, dsn: str |
                         "first_processed_at":first_processed_at,"frozen_at":frozen_at,
                         "head_accepted_at":accepted_at,"timing_contract":timing,
                         "head_token":hashlib.sha256(canonical_head(candidate)).hexdigest()})
-        return dict(status="PUBLISHED",trade_date=day,lane=lane,captured_at=frozen_at,**timing,result=result)
+        accepted_dates = set(accepted.get("published_sessions", []))
+        due_prices = {}
+        due_source_hashes = {}
+        try:
+            due_days = store.pending_due_dates(accepted_source_dates=accepted_dates)
+            for due_day in due_days:
+                due_refs = _bindings(accepted, due_day)
+                due_raw = _document(root, due_refs["raw"])
+                due_lifecycle = _document(root, due_refs["lifecycle"]) if due_refs.get("lifecycle") else None
+                due_prices[due_day] = accepted_prices_with_status(due_raw, due_lifecycle,
+                    source_hash=due_refs.get("lifecycle", {}).get("sha256"))
+                due_source_hashes[due_day] = {k:v.get("sha256") for k,v in sorted(due_refs.items())}
+            if due_days:
+                advance_digest = hashlib.sha256(canonical_bytes(due_source_hashes)).hexdigest()
+                per_day_digests = {d:hashlib.sha256(canonical_bytes(hashes)).hexdigest()
+                                   for d,hashes in due_source_hashes.items()}
+                advanced = store.advance_due_settlements(accepted_trade_date=day,
+                    prices_by_date=due_prices, source_digest=advance_digest,
+                    accepted_source_dates=accepted_dates, source_digests_by_date=per_day_digests)
+            else:
+                advanced = dict(status="NO_DUE_SETTLEMENTS", accepted_trade_date=day, appended=0)
+        except Exception as advance_error:
+            error_code = type(advance_error).__name__ + ":" + str(advance_error)
+            advance_run = hashlib.sha256((day + capture_source_digest + error_code + first_processed_at).encode()).hexdigest()
+            store.record_failure(stage="SETTLEMENT_ADVANCE",trade_date=day,current_head_date=day,
+                run_id=advance_run,attempt=1,error_code=error_code,
+                payload={"retryable":True,"accepted_due_dates":sorted(accepted_dates)})
+            advanced = dict(status="RETRY_REQUIRED", accepted_trade_date=day,
+                            appended=0, error_code=type(advance_error).__name__)
+        return dict(status="PUBLISHED",trade_date=day,lane=lane,captured_at=frozen_at,
+                    settlement_advance=advanced,**timing,result=result)
     except Exception as exc:
         LOG.exception("R7 post-accepted-head capture failed for %s", day)
         error_code = type(exc).__name__ + ":" + str(exc)

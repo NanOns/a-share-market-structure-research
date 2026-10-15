@@ -408,7 +408,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 from workbench_db.forward_r7_store import ForwardR7Store
                 result=ForwardR7Store(self.api.root).read_universe(
                     lane=lane_alias[lane],trade_date=q.get('trade_date'),rule=q.get('rule'),
-                    status=q.get('status'),limit=int(q.get('limit',30)),offset=int(q.get('offset',0)))
+                    status=q.get('status'),limit=int(q.get('limit',30)),offset=int(q.get('offset',0)),
+                    revision=int(q['revision']) if q.get('revision') else None)
                 return 200,self.envelope(day,status=result['status'],data=result,items=result['items'],
                     total=result['total'],offset=result['offset'],limit=result['limit'],
                     has_next=result['has_next'],lane=lane,evidence_class=lane_alias[lane],
@@ -483,10 +484,12 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             result=ForwardR7Store(self.api.root).read_settlement(
                 lane=lane_alias.get(q.get('lane')) if q.get('lane') else None,
                 trade_date=q.get('trade_date'),horizon=int(q['horizon']) if q.get('horizon') else None,
-                status=q.get('status'),limit=int(q.get('limit',30)),offset=int(q.get('offset',0)))
+                status=q.get('status'),limit=int(q.get('limit',30)),offset=int(q.get('offset',0)),
+                revision=int(q['revision']) if q.get('revision') else None,
+                settlement_revision=int(q['settlement_revision']) if q.get('settlement_revision') else None)
             return 200,self.envelope(day,status=result['status'],data=result,items=result['items'],
                 total=result['total'],offset=result['offset'],limit=result['limit'],
-                has_next=result['has_next'],counts=result['counts'],
+                has_next=result['has_next'],counts=result['counts'],aggregates=result['aggregates'],
                 price_basis='NOMINAL_UNADJUSTED_CLOSE',write_authorized=False)
         except Exception as exc:
             return 200,self.envelope(day,status='ERROR',reason='FORWARD_SETTLEMENT_PG_READ_FAILED',

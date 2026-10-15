@@ -8,6 +8,7 @@ from .v4_forward_pg_r1 import ForwardFactStore
 from workbench_analysis.operational_daily_storage_v1 import atomic_json
 
 CONTRACT='V4_OPERATIONAL_RISK_PG_OWNER_R1'
+RISK_INPUT_CONTRACTS=('V4_OPERATIONAL_RISK_CHANGE_R1','V4_OPERATIONAL_RISK_CHANGE_R2')
 AUTHORITY='data/v4/operational_risk_authority_r1.json'
 PRIORITY_AUTHORITY='data/v4/research_priority_authority_r1.json'
 
@@ -49,7 +50,7 @@ def _install(pg,schema):
 
 def prepare(root,token,day,payload):
     root=Path(root).resolve()
-    if payload.get('contract_id') not in ('V4_OPERATIONAL_RISK_CHANGE_R1','V4_OPERATIONAL_RISK_CHANGE_R2') or payload.get('T0')!=day:raise ValueError('OPERATIONAL_RISK_PAYLOAD_CONTEXT_INVALID')
+    if payload.get('contract_id') not in RISK_INPUT_CONTRACTS or payload.get('T0')!=day:raise ValueError('OPERATIONAL_RISK_PAYLOAD_CONTEXT_INVALID')
     expected={'STOCK_STRUCTURE_RISK','SECTOR_ECOLOGY_RISK','MARKET_PRESSURE_RISK'}
     if set(payload.get('families',{}))!=expected:raise ValueError('OPERATIONAL_RISK_FAMILY_SET_INVALID')
     if any(item.get('T0')!=day for item in payload['families'].values()):raise ValueError('OPERATIONAL_RISK_FAMILY_DATE_INVALID')

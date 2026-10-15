@@ -112,7 +112,19 @@ def detail_payload(row):
 
 
 def validate_query(query, token, dates, default_day, path):
-    route_only={'limit_state'} if path=='/api/v4/market/limits' else {'event','validity'} if path in ('/api/v4/radar','/api/v4/focus/events') else set()
+    route_only=set()
+    if path=='/api/v4/market/limits':
+        route_only={'limit_state'}
+    elif path in ('/api/v4/radar','/api/v4/focus/events'):
+        route_only={'event','validity'}
+    elif path=='/api/v4/forward/observations':
+        route_only={'lane','rule','status','revision'}
+    elif path=='/api/v4/forward/settlement':
+        route_only={'lane','horizon','status','revision','settlement_revision'}
+    elif path=='/api/v4/forward/statistics':
+        route_only={'rule','status'}
+    elif path=='/api/v4/forward/fep':
+        route_only={'lane'}
     if set(query)-ALLOWED-route_only: raise ValueError('UNKNOWN_PARAMETER')
     if 'limit_state' in query:
         if path!='/api/v4/market/limits': raise ValueError('UNKNOWN_PARAMETER')

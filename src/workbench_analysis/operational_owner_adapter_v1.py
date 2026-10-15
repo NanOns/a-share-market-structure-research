@@ -35,7 +35,10 @@ def private_scope(module, replacements):
     return scope
 
 
-def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,observed_at,exact_adjustment=False,exact_daily_policy=None,candidate_only_exact=False,predecessor=None,progress=None):
+PROFILE_LIFECYCLE_CONSERVATION_CONTRACT = "DYNAMIC_PROFILE_LIFECYCLE_CONSERVATION_R1"
+
+
+def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,observed_at,lifecycle_binding=None,exact_adjustment=False,exact_daily_policy=None,candidate_only_exact=False,predecessor=None,progress=None):
     root=Path(root).resolve();folder=Path(folder).resolve()
     if exact_daily_policy:
         from .operational_daily_exact_policy_v2 import verify
@@ -105,9 +108,14 @@ def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,o
         expected=Path(exact_kernel.__file__).resolve()
         from .tdx_official_daily_source import sha256_file
         if source['sha256']!=sha256_file(expected):raise ValueError('EXACT_CORE_CACHED_SOURCE_MISMATCH')
+    lifecycle=load(core.checked(root,lifecycle_binding)) if lifecycle_binding else None
+    identity_binding=lifecycle.get('identity') if lifecycle else None
+    identity_rows=load(core.checked(root,identity_binding))['rows'] if identity_binding else None
+    active_security_ids=set(lifecycle.get('active_security_ids',[])) if lifecycle else None
     report('CORE','RUNNING')
     owners=load(core_path)['owners'] if core_path.exists() else c['materialize_core'](root,dates,
         basis_namespace='TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE' if exact_adjustment else 'TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE',
+        identity_binding=identity_binding,identity_rows=identity_rows,required_active_ids=active_security_ids,
         accepted_history=previous['profiles'][-1]['owner']['history'] if previous else None,progress_counter=counter('CORE'))
     if [r['trade_date'] for r in owners]!=list(dates):raise ValueError('COMPUTE_OWNER_DATES_MISMATCH')
     report('CORE','COMPLETED')

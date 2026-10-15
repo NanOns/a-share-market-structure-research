@@ -113,7 +113,29 @@ def progress_items(rows, callback, *, coordinate_endpoint=None, phase=None, cloc
             last_at=now;last_count=processed
 
 
-def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE', accepted_history=None, progress_counter=None):
+PROFILE_LIFECYCLE_CONSERVATION_CONTRACT = "DYNAMIC_PROFILE_LIFECYCLE_CONSERVATION_R1"
+
+
+def complete_target_universe(snapshot_ids, active_lifecycle_ids):
+    """Union the target-day lifecycle into any older or narrower snapshot."""
+    return set(snapshot_ids or ()) | set(active_lifecycle_ids or ())
+
+
+def unknown_active_core_row(identity_row, target, sessions, basis_namespace):
+    """Materialize an active identity with quality-local UNKNOWN fields and no bars."""
+    from dataclasses import asdict
+    start=max(str(identity_row.get('list_date') or target),min(sessions))
+    unknown_sessions=[d for d in sessions if start<=d<=target] or [target]
+    observations=[Observation(d,'UNKNOWN',None) for d in unknown_sessions]
+    fields={key:asdict(value) for key,value in compute_core(observations,identity_row['security_id'],asof=target).items()}
+    return dict(security_id=identity_row['security_id'],source_security_key=identity_row['source_security_key'].upper(),
+        board_scope=identity_row['board_scope'],trade_date=target,price_basis_id=basis_namespace+':NO_PRICE_HISTORY',
+        fields=fields,knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,
+        profile_quality='INSUFFICIENT_HISTORY',quality_codes=['UNKNOWN','INSUFFICIENT_HISTORY'])
+
+
+def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE', accepted_history=None, progress_counter=None,
+                     identity_binding=None, identity_rows=None, required_active_ids=None):
     if basis_namespace not in ('TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE','TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE'):
         raise ValueError('UNSUPPORTED_CORE_BASIS_NAMESPACE')
     root = Path(root).resolve(); policy = load(root/CONTRACT)
@@ -122,7 +144,9 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
     write(out/'ENTRY.json', dict(contract=ref(root,root/CONTRACT), upgrade_document='R4.3', phase0='DEGRADED_PASS',
           acceptance='IN_PROGRESS', observed_at=now(), protected=protected, next_stage='CORRECTED_STRUCTURE_AND_MEMBER_OWNERS'))
     head = load(root/'data/v4/V4_DATA_ACCEPTED_HEAD.json')
-    identity = load(checked(root,head['component_artifacts']['IDENTITY_UNIVERSE']))['rows']
+    identity_binding = identity_binding or head['component_artifacts']['IDENTITY_UNIVERSE']
+    identity = identity_rows if identity_rows is not None else load(checked(root,identity_binding))['rows']
+    required_active_ids = set(required_active_ids or ())
     ids = {r['source_security_key'].lower():r for r in identity}
     sessions = official_sessions(root)
     required = sorted(set(dates) | {sessions[sessions.index(d)-k] for d in dates for k in (1,3,4,5)})
@@ -145,7 +169,7 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
     for e in read_gbbq(gpath):events[e.security_id.lower()].append(e)
     dispositions=load(root/'config/v4_02_gbbq_price_impact_classification_v1.json')['dispositions']
     sources=dict(package=capture['package'],receipt=source_pointer['capture_receipt'],gbbq=ref(root,gpath),
-                 identity=head['component_artifacts']['IDENTITY_UNIVERSE'],contract=ref(root,root/CONTRACT),
+                 identity=identity_binding,contract=ref(root,root/CONTRACT),
                  core_kernel=ref(root,root/'src/v4/factors/core.py'),adjustment_kernel=ref(root,root/'src/adjustment/tdx_adjustment.py'))
     snapshot=root/'docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json'
     sources['latest_tdx_member_snapshot']=ref(root,snapshot)
@@ -170,6 +194,8 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
         for code,r in rows.items():
             if code in ids:status[ids[code]['security_id']][day]='SUSPENDED' if r.get('tradestatus')=='0' else 'ACTUAL_TRADED'
     for day,rows in universes.items():dated_identity[day]={ids[c]['security_id'] for c in rows if c in ids}
+    # The target-dated lifecycle is complete; older snapshots cannot exclude a new listing.
+    if required_active_ids:dated_identity[max(dates)]=complete_target_universe(dated_identity.get(max(dates)),required_active_ids)
     cache={}; unknown_codes=[]
     with zipfile.ZipFile(package) as z:
         for name in z.namelist():
@@ -198,9 +224,24 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
         if members is None:raise ValueError('NO_DATED_IDENTITY_UNIVERSE:'+target)
         for i in progress_items(identity,progress_counter,coordinate_endpoint=target,phase='CORE'):
             sid=i['security_id']
-            if sid not in members or sid not in cache:continue
+            if sid not in members:continue
+            code=i['source_security_key'].lower()
+            raw=cache[sid][1] if sid in cache else []
+            bs=transform_window(raw,events[code],dispositions,target) if raw else []
+            if not bs:
+                if sid not in required_active_ids or target != max(dates):continue
+                # Preserve active lifecycle rows without fabricating price history.
+                unknown_row=unknown_active_core_row(i,target,sessions,basis_namespace)
+                rows.append(unknown_row)
+                if target in dates:
+                    histories[sid]=[]
+                    prior_values={k:asdict(v) for k,v in compute_core(
+                        [Observation(d,'UNKNOWN',None) for d in sessions if str(i.get('list_date') or target)<=d<=previous],
+                        sid,asof=previous).items()} if str(i.get('list_date') or target)<=previous else {}
+                    prior_rows.append(dict(security_id=sid,trade_date=previous,coordinate_target=target,
+                        price_basis_id=basis_namespace+':NO_PRICE_HISTORY',fields=prior_values))
+                continue
             code,raw=cache[sid];bs=transform_window(raw,events[code],dispositions,target)
-            if not bs:continue
             revision=hashlib.sha256(json.dumps(dict(code=code,gbbq=sources['gbbq']['sha256'],
                 events=[(e.event_date,e.category,e.c1,e.c2,e.c3,e.c4) for e in events[code]
                         if e.event_date<=int(target.replace('-','')) and e.category==1]),sort_keys=True).encode()).hexdigest()

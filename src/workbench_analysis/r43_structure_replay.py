@@ -129,6 +129,7 @@ def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_
         verified_status[r['security_id'],r['trade_date']]=r['status']
     identity=load(checked(root,replay['owners'][0]['sources']['identity']))['rows']
     code_to_id={r['source_security_key'].lower():r['security_id'] for r in identity}
+    identity_by_id={r['security_id']:r for r in identity}
     acquisition=load(root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
     for query in acquisition['queries']:
         if query.get('path') and query['method']=='query_daily_history_k_AStock':
@@ -145,14 +146,17 @@ def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_
         builder.CUTOFF=day;profiles=[];statuses=[]
         regime=RegimeUI('UNKNOWN','UNKNOWN',None,0,{'reason':'CORRECTED_MARKET_AXES_NOT_YET_BOUND'},'CORRECTED_MARKET_AXES_NOT_YET_BOUND')
         for factor in progress_items(factors,progress_counter,coordinate_endpoint=day,phase='PROFILE'):
-            sid=factor['security_id'];bs=histories[sid]
-            actual={b['trade_date'] for b in bs};status=[(d,'ACTUAL_TRADED' if d in actual else verified_status.get((sid,d),'UNKNOWN')) for d in sessions if bs[0]['trade_date']<=d<=day]
+            sid=factor['security_id'];bs=histories.get(sid,[])
+            first_session=bs[0]['trade_date'] if bs else str(identity_by_id.get(sid,{}).get('list_date') or day)
+            actual={b['trade_date'] for b in bs};status=[(d,'ACTUAL_TRADED' if d in actual else verified_status.get((sid,d),'UNKNOWN')) for d in sessions if first_session<=d<=day]
             bars=[dict(trade_date=b['trade_date'],qfq_close=b['qfq_ohlc'][3] if b['qfq_ohlc'] else None,
                 qfq_high=b['qfq_ohlc'][1] if b['qfq_ohlc'] else None,qfq_low=b['qfq_ohlc'][2] if b['qfq_ohlc'] else None,
                 amount=b['amount'],adjusted_quality='READY' if b['qfq_ohlc'] else 'UNKNOWN') for b in bs]
             r=build_row(factor,bars,periods(bs,'WEEKLY',day),periods(bs,'MONTHLY',day),status,
                         {'source_security_key':factor['source_security_key']},owner['source_digest'],cd,sessions,regime)
-            r.update(knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False);profiles.append(r)
+            r.update(knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False)
+            if not bs:r.update(profile_quality='INSUFFICIENT_HISTORY',quality_codes=['UNKNOWN','INSUFFICIENT_HISTORY'])
+            profiles.append(r)
             statuses.append(dict(security_id=sid,trade_date=day,actual_bar_present=day in actual,
                                  status='ACTUAL_TRADED' if day in actual else verified_status.get((sid,day),'UNKNOWN'),status_conflict=False))
         owner=dict(owner,profiles=gzwrite(root,folder/'profiles.jsonl.gz',profiles),status=gzwrite(root,folder/'status.jsonl.gz',statuses))

@@ -16,6 +16,28 @@ from workbench_analysis.forward_r7 import canonical_bytes, make_observation_id, 
 from .v4_native import workspace_schema
 
 
+SETTLEMENT_STATUS_STATES = (
+    "SETTLED", "NO_QUOTE", "SUSPENDED", "SOURCE_GAP",
+    "DUE_SOURCE_NOT_ACCEPTED", "PENDING_FUTURE_SESSION",
+)
+
+
+def summarize_settlement_schedule(trade_date, lane, horizon, scheduled):
+    """Only validated SETTLED returns enter the return denominator."""
+    settled=[item.get("settlement",{}).get("nominal_return") for item in scheduled
+             if item.get("schedule_status")=="SETTLED"
+             and item.get("settlement",{}).get("status")=="SETTLED"
+             and item.get("settlement",{}).get("nominal_return") is not None]
+    return dict(trade_date=trade_date,lane=lane,horizon_sessions=horizon,
+        outcomes={state:sum(item.get("schedule_status")==state for item in scheduled)
+                  for state in SETTLEMENT_STATUS_STATES},
+        sample_count=len(scheduled),settled_count=len(settled),return_denominator=len(settled),
+        mean_return=statistics.mean(settled) if settled else None,
+        median_return=statistics.median(settled) if settled else None,
+        source_observation_ids=sorted({item.get("observation_id") for item in scheduled}),
+        price_basis="NOMINAL_UNADJUSTED_CLOSE")
+
+
 def _configured_forward_dsn(root: Path):
     """Use the project's existing PostgreSQL setting without duplicating it."""
     for key in ("V4_NATIVE_PG_DSN", "WORKBENCH_PG_DSN"):
@@ -223,17 +245,7 @@ class ForwardR7Store:
                      stable_sha256=digest), digest)
             for horizon in (1, 3, 5):
                 scheduled = [item for item in settlement_rows if item.get("horizon_sessions") == horizon]
-                settled = [item.get("settlement", {}).get("nominal_return") for item in scheduled
-                           if item.get("schedule_status") == "SETTLED"
-                           and item.get("settlement", {}).get("nominal_return") is not None]
-                summary = dict(trade_date=trade_date, lane=lane, horizon_sessions=horizon,
-                    outcomes={state:sum(item.get("schedule_status") == state for item in scheduled)
-                              for state in ("SETTLED", "NO_QUOTE", "SUSPENDED", "SOURCE_GAP", "PENDING")},
-                    sample_count=len(scheduled), settled_count=len(settled),
-                    mean_return=statistics.mean(settled) if settled else None,
-                    median_return=statistics.median(settled) if settled else None,
-                    source_observation_ids=sorted({item.get("observation_id") for item in scheduled}),
-                    price_basis="NOMINAL_UNADJUSTED_CLOSE")
+                summary = summarize_settlement_schedule(trade_date,lane,horizon,scheduled)
                 summary_digest = self._stable_hash(summary)
                 self._append_fact(pg, "r7_settlement_aggregate",
                     f"{trade_date}:{horizon}:{summary_digest}", summary, summary_digest)

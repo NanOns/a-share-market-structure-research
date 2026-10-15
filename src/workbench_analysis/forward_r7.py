@@ -200,14 +200,27 @@ def scheduled_sessions(trade_date: str, sessions: list[str]) -> dict[int, str | 
 
 def compute_nominal_settlement(*, observation: dict, due_date: str,
                                prices_by_date: dict[str, dict[str, dict]],
-                               settlement_at: str) -> dict:
-    """Settle a stock outcome only when both T0 and due-session raw close exist."""
+                               settlement_at: str, due_source_accepted: bool = True) -> dict:
+    """Settle only accepted source dates; absent due dates are not quote failures."""
     if observation.get("entity_type") != "STOCK" or observation.get("status") != "MATCH":
         return dict(status="SOURCE_GAP", reason="NO_TRADABLE_STOCK_MATCH")
-    t0_price = prices_by_date.get(observation["T0"], {}).get(observation["entity_id"], {}).get("close")
-    due_price = prices_by_date.get(due_date, {}).get(observation["entity_id"], {}).get("close")
-    if t0_price is None or due_price is None or float(t0_price) <= 0:
-        return dict(status="NO_QUOTE", reason="RAW_CLOSE_MISSING", due_date=due_date)
+    if not due_source_accepted:
+        return dict(status="DUE_SOURCE_NOT_ACCEPTED", reason="DUE_SESSION_NOT_IN_ACCEPTED_HEAD", due_date=due_date)
+    t0_row = prices_by_date.get(observation["T0"], {}).get(observation["entity_id"], {})
+    due_row = prices_by_date.get(due_date, {}).get(observation["entity_id"], {})
+    t0_price = t0_row.get("close")
+    due_price = due_row.get("close")
+    if t0_price is None or float(t0_price) <= 0:
+        return dict(status="SOURCE_GAP", reason="ACCEPTED_T0_RAW_CLOSE_MISSING", due_date=due_date)
+    source_status = due_row.get("source_status") or due_row.get("quote_status")
+    if source_status in ("NO_QUOTE", "SUSPENDED"):
+        if due_price is not None:
+            return dict(status="SOURCE_GAP", reason="QUOTE_STATUS_CONFLICTS_WITH_ACCEPTED_PRICE", due_date=due_date)
+        return dict(status=source_status, reason="SECURITY_LEVEL_ACCEPTED_SOURCE_FACT",
+                    due_date=due_date, source_fact=source_status,
+                    source_hash=due_row.get("source_hash"))
+    if due_price is None:
+        return dict(status="SOURCE_GAP", reason="ACCEPTED_DUE_SESSION_SECURITY_ROW_MISSING", due_date=due_date)
     return dict(status="SETTLED", T0_close=float(t0_price), due_close=float(due_price),
                 nominal_return=float(due_price) / float(t0_price) - 1.0,
                 price_basis="NOMINAL_UNADJUSTED_CLOSE",

@@ -1,5 +1,6 @@
 """One-session CAS, readback and crash-recoverable exact predecessor rollback."""
 from pathlib import Path
+from datetime import datetime,timezone
 import json
 from .operational_daily_storage_v1 import atomic_json,exclusive_lock
 from .r43_owner_replay import checked,ref
@@ -60,8 +61,16 @@ def promote(root,candidate,expected_sha,readback):
         before=head.read_bytes();archive=head.parent/'predecessors'/(expected_sha+'.json')
         _atomic_write(archive,before,tdx_root=Path('D:/new_tdx'))
         coordination=dict(current_joint=joint_binding,current_joint_predecessor=joint_previous)
-        return _commit_pointers(root,head,current_joint,transaction,candidate,before,archive,coordination,joint_before,
+        published = _commit_pointers(root,head,current_joint,transaction,candidate,before,archive,coordination,joint_before,
             checked(root,joint_binding).read_bytes() if joint_binding is not None else None,readback)
+    head_accepted_at = datetime.now(timezone.utc).isoformat()
+    try:
+        from .forward_r7_pipeline import capture_after_accepted_head
+        forward_capture = capture_after_accepted_head(root,candidate,head_accepted_at=head_accepted_at)
+    except Exception as exc:
+        forward_capture = dict(status='RETRY_REQUIRED',trade_date=candidate.get('accepted_trade_date'),
+                               head_accepted_at=head_accepted_at,error_code=type(exc).__name__,retryable=True)
+    return dict(published,head_accepted_at=head_accepted_at,forward_r7_capture=forward_capture)
 
 
 def _commit_pointers(pointer_root,head,current_joint,transaction,candidate,before,archive,coordination,joint_before,joint_bytes,readback):

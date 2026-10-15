@@ -62,7 +62,12 @@ def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None)
     increment=increment_plan(parent,day,sessions,revisions=revisions,replay_current=replay_current)
     compute_dates=increment['compute_sessions']
     required=sorted(set(compute_dates)|{sessions[sessions.index(d)-k] for d in compute_dates for k in (1,3,4,5)})
-    generation=dict(contract_id='DYNAMIC_DAILY_OWNER_GENERATION_SCOPE_V1',source_freeze=freeze_binding['sha256'],
+    profile_contract_path=root/'config/v4_dynamic_profile_lifecycle_conservation_r1.json'
+    profile_contract=load(profile_contract_path)
+    if (profile_contract.get('contract_id')!='DYNAMIC_PROFILE_LIFECYCLE_CONSERVATION_R1'
+            or profile_contract.get('version')!='1.0.0'):
+        raise ValueError('PROFILE_LIFECYCLE_CONSERVATION_CONTRACT_REQUIRED')
+    generation=dict(contract_id='DYNAMIC_DAILY_OWNER_GENERATION_SCOPE_V1',profile_lifecycle_conservation_contract=ref(root,profile_contract_path),source_freeze=freeze_binding['sha256'],
         parent_head=sha256_file(root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'),identity=identity_binding['sha256'],
         gbbq=hashlib.sha256(blob).hexdigest(),member_sources=member_source_hashes,
         revision_guard=revision_guard,
@@ -225,6 +230,7 @@ def build(root,freeze_binding,*,replay_current=False):
     context=prepare(root,freeze_binding,replay_current=replay_current)
     return replay(root,context['folder'],context['compute_dates'],context['mappings'],
                   membership_snapshot=context['snapshot'],seed_registry=context['seed_registry'],
+                  lifecycle_binding=context['lifecycle'],
                   predecessor=context['parent'] if context['increment_plan']['mode']=='APPEND_DAY' else None,
                   observed_at=load(checked(root,context['freeze']))['observed_at']),context
 

@@ -1,0 +1,19 @@
+{
+  "contract_id": "DYNAMIC_PROFILE_LIFECYCLE_CONSERVATION_R1",
+  "version": "1.0.0",
+  "scope": "target-day operational Profile/Core owner admission",
+  "input_authority": "accepted target-dated lifecycle identity binding plus active_security_ids",
+  "rules": [
+    "The target-dated lifecycle active security set is authoritative for the current execution and is unioned into any older or narrower date snapshot.",
+    "Every active lifecycle security must resolve to exactly one canonical identity row before owner materialization; missing or duplicate identity is a hard failure.",
+    "Every active lifecycle security is retained in Core/Profile status output even when its price history is insufficient.",
+    "Missing price history emits field-local UNKNOWN and INSUFFICIENT_HISTORY; no raw bar, adjusted price, or return is fabricated.",
+    "Historical dates retain their own dated universes and are not backfilled with current identities."
+  ],
+  "acceptance": {
+    "active_lifecycle_ids": "exactly equal Core/Profile status security IDs",
+    "unknown_history": "explicit quality codes; price fields remain null",
+    "tdx_source": "read only"
+  },
+  "lineage": "V4-R8-UNIFIED-SOURCE-REPAIR-20261015/R1"
+}

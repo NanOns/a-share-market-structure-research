@@ -39,6 +39,7 @@ def build(root,freeze_binding,*,source_readiness,engineering_replay_current=Fals
         context['upstream_reuse']=install(root,context,resume_checkpoint)
     produced=owner.replay(root,context['folder'],context['compute_dates'],context['mappings'],
         membership_snapshot=context['snapshot'],seed_registry=context['seed_registry'],
+        lifecycle_binding=context['lifecycle'],
         observed_at=load(checked(root,context['freeze']))['observed_at'],exact_adjustment=bool(exact_candidate or exact_policy),
         exact_daily_policy=exact_policy,candidate_only_exact=candidate_only_exact,
         predecessor=context['parent'] if context['increment_plan']['mode']=='APPEND_DAY' else None,progress=progress)

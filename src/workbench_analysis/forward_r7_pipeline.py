@@ -32,7 +32,9 @@ def _bindings(head: dict, day: str):
     required = ("raw", "core", "sector")
     if any(not owners.get(k) for k in required):
         raise ValueError("FORWARD_R7_ACCEPTED_SOURCE_OWNER_MISSING")
-    return {k: owners[k] for k in required}
+    result={k:owners[k] for k in required}
+    if owners.get("lifecycle"):result["lifecycle"]=owners["lifecycle"]
+    return result
 
 
 def _head(root: Path):
@@ -46,6 +48,20 @@ def _head(root: Path):
 def _session_pair(sessions: list[str], day: str):
     index = sessions.index(day)
     return sessions[index - 1] if index else None
+
+
+def accepted_prices_with_status(raw_rows: list[dict], lifecycle: dict | None, *, source_hash: str | None = None):
+    """Join quote rows to accepted security-level facts without inventing quotes."""
+    prices={row["security_id"]:dict(row,source_hash=row.get("source_hash") or source_hash)
+            for row in raw_rows if row.get("security_id")}
+    if not isinstance(lifecycle,dict):return prices
+    for fact in lifecycle.get("source_rows",lifecycle.get("rows",[])):
+        sid=fact.get("security_id");status=fact.get("status")
+        if not sid or status not in ("NO_QUOTE","SUSPENDED"):continue
+        row=prices.setdefault(sid,{})
+        row["source_status"]=status
+        row["source_hash"]=row.get("source_hash") or source_hash
+    return prices
 
 
 def reconstruct_history(root: str | Path, *, store: ForwardR7Store | None = None,
@@ -66,12 +82,14 @@ def reconstruct_history(root: str | Path, *, store: ForwardR7Store | None = None
             "raw": _document(root, refs["raw"]),
             "core": _document(root, refs["core"]),
             "sector": _document(root, refs["sector"]),
+            "lifecycle": _document(root, refs["lifecycle"]) if refs.get("lifecycle") else None,
             "bindings": refs,
         }
     result = []
     prices_by_date = {}
     for day, bundle in all_by_day.items():
-        prices_by_date[day] = {r["security_id"]: r for r in bundle["raw"] if r.get("security_id")}
+        prices_by_date[day] = accepted_prices_with_status(bundle["raw"],bundle.get("lifecycle"),
+            source_hash=bundle["bindings"].get("lifecycle",{}).get("sha256"))
     for day in targets:
         prior = _session_pair(sessions, day)
         prior_bundle = all_by_day.get(prior) if prior else None
@@ -119,11 +137,12 @@ def reconstruct_history(root: str | Path, *, store: ForwardR7Store | None = None
 
 
 def build_schedules(rows: list[dict], trade_date: str, sessions: list[str],
-                    prices_by_date: dict, settled_at: str):
+                    prices_by_date: dict, settled_at: str, *, accepted_source_dates=None):
     due_dates = scheduled_sessions(trade_date, sessions)
     output = []
     now = datetime.fromisoformat(settled_at)
     today = now.astimezone(SHANGHAI).date().isoformat()
+    accepted_dates = set(accepted_source_dates if accepted_source_dates is not None else prices_by_date)
     for row in rows:
         if row["entity_type"] != "STOCK" or row["status"] != "MATCH":
             continue
@@ -131,15 +150,18 @@ def build_schedules(rows: list[dict], trade_date: str, sessions: list[str],
         for horizon, due_date in due_dates.items():
             if due_date is None:
                 output.append(dict(observation_id=observation_id,horizon_sessions=horizon,
-                                   due_date=None,schedule_status="PENDING",reason="OFFICIAL_CALENDAR_HORIZON_NOT_YET_PUBLISHED"))
+                                   due_date=None,schedule_status="PENDING_FUTURE_SESSION",reason="OFFICIAL_CALENDAR_HORIZON_NOT_YET_PUBLISHED"))
                 continue
             if due_date > today:
                 output.append(dict(observation_id=observation_id,horizon_sessions=horizon,
-                                   due_date=due_date,schedule_status="PENDING",reason="FUTURE_OFFICIAL_SESSION"))
+                                   due_date=due_date,schedule_status="PENDING_FUTURE_SESSION",reason="FUTURE_OFFICIAL_SESSION"))
                 continue
-            outcome = compute_nominal_settlement(observation=row,due_date=due_date,
-                prices_by_date=prices_by_date,settlement_at=settled_at)
-            schedule_status = outcome["status"] if outcome["status"] in ("SETTLED","NO_QUOTE","SUSPENDED") else "SOURCE_GAP"
+            if due_date not in accepted_dates:
+                outcome = dict(status="DUE_SOURCE_NOT_ACCEPTED",reason="DUE_SESSION_NOT_IN_ACCEPTED_HEAD",due_date=due_date)
+            else:
+                outcome = compute_nominal_settlement(observation=row,due_date=due_date,
+                    prices_by_date=prices_by_date,settlement_at=settled_at,due_source_accepted=True)
+            schedule_status = outcome["status"] if outcome["status"] in ("SETTLED","NO_QUOTE","SUSPENDED","DUE_SOURCE_NOT_ACCEPTED") else "SOURCE_GAP"
             output.append(dict(observation_id=observation_id,horizon_sessions=horizon,due_date=due_date,
                                schedule_status=schedule_status,reason=outcome.get("reason"),settlement=outcome))
     return output
@@ -201,12 +223,46 @@ def retry_pending_capture_receipts(root: str | Path):
     return dict(status='RECOVERED' if recovered else 'RETRY_REQUIRED',recovered=len(recovered),dates=recovered)
 
 
-def capture_after_accepted_head(root: str | Path, candidate: dict, *, dsn: str | None = None):
+def classify_after_close_capture(*, trade_date: str, sessions: list[str], first_available_at: str | None,
+                                  head_accepted_at: str | None, first_processed_at: str,
+                                  frozen_at: str) -> dict:
+    """Classify first-freeze timing without conflating source, Head, and worker clocks."""
+    ordered=sorted(set(sessions)); following=[d for d in ordered if d>trade_date]
+    next_session=following[0] if following else None
+    open_at=datetime.fromisoformat(next_session+"T09:30:00+08:00") if next_session else None
+    def instant(value):
+        if not value:return None
+        parsed=datetime.fromisoformat(value)
+        if parsed.tzinfo is None:raise ValueError("FORWARD_R7_CAPTURE_TIMESTAMP_MUST_BE_TIMEZONE_AWARE")
+        return parsed.astimezone(timezone.utc)
+    available=instant(first_available_at);accepted=instant(head_accepted_at)
+    processed=instant(first_processed_at);frozen=instant(frozen_at)
+    close_at=datetime.fromisoformat(trade_date+"T15:00:00+08:00").astimezone(timezone.utc)
+    open_utc=open_at.astimezone(timezone.utc) if open_at else None
+    reasons=[]
+    if not next_session:reasons.append("NEXT_OFFICIAL_SESSION_UNKNOWN")
+    if not available:reasons.append("SOURCE_FIRST_AVAILABLE_TIME_UNKNOWN")
+    elif available<close_at:reasons.append("SIGNAL_SOURCE_PRECEDES_AFTER_CLOSE_CUTOFF")
+    if not accepted:reasons.append("HEAD_ACCEPTANCE_TIME_UNKNOWN")
+    elif available and accepted<available:reasons.append("HEAD_ACCEPTED_BEFORE_SOURCE_AVAILABLE")
+    if processed and accepted and processed<accepted:reasons.append("PROCESSING_PRECEDES_HEAD_ACCEPTANCE")
+    if frozen<processed:reasons.append("FREEZE_PRECEDES_PROCESSING")
+    if open_utc and frozen>=open_utc:reasons.append("FREEZE_AFTER_NEXT_SESSION_OPEN")
+    lane="LIVE_OOS" if not reasons else "LATE_OBSERVED_NOT_PIT"
+    return dict(lane=lane,observed_signal_T0=trade_date,first_available_at=first_available_at,
+                head_accepted_at=head_accepted_at,first_processed_at=first_processed_at,frozen_at=frozen_at,
+                valid_from_session=next_session,
+                executable_from=(next_session+"T09:30:00+08:00") if next_session else None,
+                execution_semantics="RESEARCH_REFERENCE_ONLY_NOT_EXECUTED",timing_reasons=reasons,
+                capture_window_end=(open_at.isoformat() if open_at else None))
+
+
+def capture_after_accepted_head(root: str | Path, candidate: dict, *, dsn: str | None = None, head_accepted_at: str | None = None):
     """Post-publication live event hook; errors are logged and never roll back Head."""
     root = Path(root).resolve()
-    now = datetime.now(timezone.utc)
+    first_processed_at = datetime.now(timezone.utc).isoformat()
     day = candidate.get("accepted_trade_date")
-    task_date = now.astimezone(SHANGHAI).date().isoformat()
+    task_date = datetime.fromisoformat(first_processed_at).astimezone(SHANGHAI).date().isoformat()
     # The current accepted package has no R7 source owners until the daily
     # producer creates them. Fail closed and record the exact missing inputs.
     try:
@@ -227,25 +283,30 @@ def capture_after_accepted_head(root: str | Path, candidate: dict, *, dsn: str |
         if source_times.get("target_session") != day:
             raise ValueError("FORWARD_R7_SOURCE_FREEZE_DATE_MISMATCH")
         first_available = source_times.get("observed_at")
-        deadline = datetime.fromisoformat(day + "T15:00:00+08:00").astimezone(timezone.utc)
-        lane = ("LIVE_OOS" if day == task_date and first_available
-                and datetime.fromisoformat(first_available) <= deadline
-                and now <= deadline else "LATE_OBSERVED_NOT_PIT")
+        accepted_at = head_accepted_at or accepted.get("head_accepted_at") or accepted.get("accepted_at")
         rows = build_daily_universe(trade_date=day,stock_rows=core,raw_rows=raw,sector_rows=sectors,
             prior_stock_rows=prior_core,prior_raw_rows=prior_raw,prior_sector_rows=prior_sectors,
-            bindings=refs,captured_at=now.isoformat(),lane="LIVE_OOS",membership_basis="AS_RECORDED")
-        if lane == "LATE_OBSERVED_NOT_PIT":
-            for row in rows: row["evidence_class"] = "LATE_OBSERVED_NOT_PIT"
+            bindings=refs,captured_at=first_processed_at,lane="LIVE_OOS",membership_basis="AS_RECORDED")
+        frozen_at = datetime.now(timezone.utc).isoformat()
+        timing = classify_after_close_capture(trade_date=day,sessions=sessions,
+            first_available_at=first_available,head_accepted_at=accepted_at,
+            first_processed_at=first_processed_at,frozen_at=frozen_at)
+        lane = timing["lane"]
+        for row in rows:
+            row.update(timing)
+            row["evidence_class"] = lane
         prices = {item["security_id"]: item for item in raw if item.get("security_id")}
         settlement_schedule = build_schedules(
-            rows, day, sessions, {day: prices}, now.isoformat())
+            rows, day, sessions, {day: prices}, frozen_at, accepted_source_dates={day})
         result = store.publish_day(trade_date=day,rows=rows,lane=lane,
             first_available_at=first_available,
-            run_id=hashlib.sha256((day+now.isoformat()+"R7-LIVE").encode()).hexdigest(),
+            run_id=hashlib.sha256((day+frozen_at+"R7-LIVE").encode()).hexdigest(),
             settlement_rows=settlement_schedule,
-            source_run={"contract_id":"V4_FORWARD_PIPELINE_R7_R1","source_hashes":{k:v["sha256"] for k,v in refs.items()},
-                        "capture_clock":now.isoformat(),"head_token":hashlib.sha256(canonical_head(candidate)).hexdigest()})
-        return dict(status="PUBLISHED",trade_date=day,lane=lane,captured_at=now.isoformat(),result=result)
+            source_run={"contract_id":"V4_FORWARD_PIPELINE_R7_R2","source_hashes":{k:v["sha256"] for k,v in refs.items()},
+                        "first_processed_at":first_processed_at,"frozen_at":frozen_at,
+                        "head_accepted_at":accepted_at,"timing_contract":timing,
+                        "head_token":hashlib.sha256(canonical_head(candidate)).hexdigest()})
+        return dict(status="PUBLISHED",trade_date=day,lane=lane,captured_at=frozen_at,**timing,result=result)
     except Exception as exc:
         LOG.exception("R7 post-accepted-head capture failed for %s", day)
         error_code = type(exc).__name__ + ":" + str(exc)
@@ -253,8 +314,8 @@ def capture_after_accepted_head(root: str | Path, candidate: dict, *, dsn: str |
             if 'store' in locals():
                 store.verify_existing_storage()
                 store.record_failure(stage="LIVE_CAPTURE",trade_date=day,current_head_date=day,
-                    run_id=hashlib.sha256((str(day)+now.isoformat()+"R7-FAIL").encode()).hexdigest(),
-                    attempt=1,error_code=error_code,payload={"captured_at":now.isoformat()})
+                    run_id=hashlib.sha256((str(day)+first_processed_at+"R7-FAIL").encode()).hexdigest(),
+                    attempt=1,error_code=error_code,payload={"first_processed_at":first_processed_at,"head_accepted_at":head_accepted_at})
         except Exception:
             pass
         try:
@@ -262,13 +323,13 @@ def capture_after_accepted_head(root: str | Path, candidate: dict, *, dsn: str |
             directory = root / "runtime/forward_r7/retry_receipts"
             directory.mkdir(parents=True,exist_ok=True)
             receipt = dict(contract_id="V4_FORWARD_R7_RETRY_RECEIPT_R1",trade_date=day,
-                           captured_at=now.isoformat(),error_code=error_code,retryable=True,
+                           captured_at=first_processed_at,head_accepted_at=head_accepted_at,error_code=error_code,retryable=True,
                            pg_run_persisted=False)
-            name = hashlib.sha256((str(day)+now.isoformat()).encode()).hexdigest()+".json"
+            name = hashlib.sha256((str(day)+first_processed_at).encode()).hexdigest()+".json"
             atomic_json(root,directory/name,receipt)
         except Exception:
             pass
-        return dict(status="RETRY_REQUIRED",trade_date=day,captured_at=now.isoformat(),
+        return dict(status="RETRY_REQUIRED",trade_date=day,captured_at=first_processed_at,head_accepted_at=head_accepted_at,
                     error_code=error_code,retryable=True)
 
 

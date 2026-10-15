@@ -1,0 +1,17 @@
+{
+  "contract_id": "MEMBERSHIP_AND_CAPTURE_CLOCK_RECONCILIATION_R1",
+  "status": "WAIT_15_CLOSE_AND_BOTH_REAL_SOURCES",
+  "task_id": "V4-R8-UNIFIED-REPAIR-2DAY-CATCHUP-20261015/R1",
+  "code_commit": "7f63eab3f",
+  "source_collection_started": false,
+  "real_dates": {
+    "2026-10-14": {"membership_basis": "NOT_YET_CLASSIFIED", "PIT_ELIGIBLE": null, "source_hash": null},
+    "2026-10-15": {"membership_basis": "NOT_YET_CLASSIFIED", "PIT_ELIGIBLE": null, "source_hash": null}
+  },
+  "fixture_evidence": {
+    "test_file": "tests/test_r8_s2_data_repairs.py",
+    "cases": ["same_day_member_snapshot", "next_day_latest_snapshot_is_retro", "membership_unknown", "stock_retained_sector_membership_unknown", "09:29:59_freeze", "09:30:00_freeze_is_late"],
+    "real_source_claim": false
+  },
+  "notes": "Do not promote either date to AS_RECORDED without its own membership source hash, observed_at, first_available_at, effective T0, frozen_at and accepted source binding."
+}

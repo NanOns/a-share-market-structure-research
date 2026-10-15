@@ -728,6 +728,14 @@ class ForwardR7Store:
                 result = dict(status="DUE_SOURCE_NOT_ACCEPTED", reason="LEGACY_NO_QUOTE_DUE_SOURCE_NOT_ACCEPTED",
                               due_date=due_day)
                 due_digest = None
+                prior_result = old.get("settlement") or {}
+                if (old.get("correction_type") == "LEGACY_NO_QUOTE_REVIEW_R1"
+                        and old.get("schedule_status") == result["status"]
+                        and old.get("reason") == result["reason"]
+                        and old.get("source_digest") is None
+                        and prior_result.get("status") == result["status"]
+                        and prior_result.get("reason") == result["reason"]):
+                    continue
             else:
                 if not due_digest:
                     raise ValueError("LEGACY_NO_QUOTE_ACCEPTED_SOURCE_DIGEST_REQUIRED")

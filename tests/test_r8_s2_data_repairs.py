@@ -98,17 +98,25 @@ def test_membership_provenance_requires_same_day_timestamps_and_bound_source():
     same_day = {"sector_id": "SAME", "membership_provenance": {
         "observed_at": "2026-10-14T15:03:00+08:00",
         "first_available_at": "2026-10-14T15:04:00+08:00",
-        "membership_effective_T0": "2026-10-14", "source_sha256": "a" * 64}}
+        "membership_effective_T0": "2026-10-14",
+        "source_sha256": "b" * 64, "source_path": "membership/2026-10-14.json"}}
+    derived_only = {"sector_id": "DERIVED_ONLY", "membership_provenance": {
+        "observed_at": "2026-10-14T15:03:00+08:00",
+        "first_available_at": "2026-10-14T15:04:00+08:00",
+        "membership_effective_T0": "2026-10-14"}}
     next_day = {"sector_id": "RETRO", "membership_provenance": {
         "observed_at": "2026-10-15T08:00:00+08:00",
         "first_available_at": "2026-10-15T08:01:00+08:00",
-        "membership_effective_T0": "2026-10-14", "source_sha256": "a" * 64}}
+        "membership_effective_T0": "2026-10-14", "source_sha256": "b" * 64,
+        "source_path": "membership/2026-10-14.json"}}
     unknown = {"sector_id": "UNKNOWN", "membership_snapshot_id": "latest"}
     result = classify_membership_provenance(trade_date="2026-10-14",
-        sector_rows=[same_day, next_day, unknown], binding=binding,
+        sector_rows=[same_day, next_day, derived_only, unknown], binding=binding,
+        membership_binding={"path": "membership/2026-10-14.json", "sha256": "b" * 64},
         frozen_at="2026-10-14T15:10:00+08:00")
     assert result["by_sector"]["SAME"]["membership_basis"] == "AS_RECORDED"
     assert result["by_sector"]["RETRO"]["membership_basis"] == "MEMBERSHIP_RETRO"
+    assert result["by_sector"]["DERIVED_ONLY"]["membership_basis"] == "UNKNOWN_MEMBERSHIP_BASIS"
     assert result["by_sector"]["UNKNOWN"]["membership_basis"] == "UNKNOWN_MEMBERSHIP_BASIS"
 
 

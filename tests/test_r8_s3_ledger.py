@@ -246,3 +246,9 @@ def test_legacy_no_quote_requires_accepted_source_or_security_level_proof(monkey
     assert correction["schedule_status"]=="DUE_SOURCE_NOT_ACCEPTED"
     assert correction["source_digest"] is None
     assert correction["settlement"]["reason"]=="LEGACY_NO_QUOTE_DUE_SOURCE_NOT_ACCEPTED"
+    revision_count=len(appended)
+    retry_unaccepted=store.review_legacy_no_quote(accepted_trade_date="2026-10-15",
+        accepted_source_dates={"2026-10-15"},prices_by_date={},source_digests_by_date={},
+        reviewed_at="2026-10-15T16:02:00+08:00")
+    assert retry_unaccepted["appended"]==0
+    assert len(appended)==revision_count

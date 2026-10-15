@@ -34,6 +34,8 @@ def _bindings(head: dict, day: str):
         raise ValueError("FORWARD_R7_ACCEPTED_SOURCE_OWNER_MISSING")
     result={k:owners[k] for k in required}
     if owners.get("lifecycle"):result["lifecycle"]=owners["lifecycle"]
+    membership=owners.get("membership") or owners.get("membership_snapshot")
+    if membership:result["membership"]=membership
     return result
 
 
@@ -285,10 +287,14 @@ def next_capture_plan(root: str | Path, *, now: datetime | None = None):
 
 def classify_membership_provenance(*, trade_date: str, sector_rows: list[dict],
                                    binding: dict, frozen_at: str,
-                                   accepted_head_binding: str | None = None) -> dict:
-    """Classify member snapshots only when date, time, and accepted bytes agree."""
+                                   accepted_head_binding: str | None = None,
+                                   membership_binding: dict | None = None) -> dict:
+    """Classify only independently bound membership snapshots as point-in-time."""
     bound_sha = binding.get("sha256")
     source_path = binding.get("path") or binding.get("relative_path")
+    member_sha = (membership_binding or {}).get("sha256")
+    member_path = ((membership_binding or {}).get("path")
+                   or (membership_binding or {}).get("relative_path"))
     by_sector = {}
     for row in sector_rows:
         sector_id = row.get("sector_id")
@@ -297,12 +303,14 @@ def classify_membership_provenance(*, trade_date: str, sector_rows: list[dict],
         available = original.get("first_available_at") or row.get("membership_first_available_at")
         effective = (original.get("membership_effective_T0") or row.get("membership_effective_T0")
                      or row.get("member_set_asof"))
-        digest = original.get("source_sha256") or row.get("membership_source_sha256") or bound_sha
-        path = original.get("source_path") or row.get("membership_source_path") or source_path
+        digest = original.get("source_sha256") or row.get("membership_source_sha256")
+        path = original.get("source_path") or row.get("membership_source_path")
         basis = "UNKNOWN_MEMBERSHIP_BASIS"
         if effective and effective != trade_date:
             basis = "MEMBERSHIP_RETRO"
-        elif observed and available and effective == trade_date and digest == bound_sha and path:
+        elif (observed and available and effective == trade_date and digest and path
+              and member_sha and member_path and digest == member_sha and path == member_path
+              and (digest != bound_sha or path != source_path)):
             try:
                 observed_dt = datetime.fromisoformat(observed.replace("Z", "+00:00"))
                 available_dt = datetime.fromisoformat(available.replace("Z", "+00:00"))
@@ -417,6 +425,8 @@ def capture_after_accepted_head(root: str | Path, candidate: dict, *, dsn: str |
         accepted = _head(root)
         refs = _bindings(accepted, day)
         raw = _document(root, refs["raw"]); core = _document(root, refs["core"]); sectors = _document(root, refs["sector"])
+        if refs.get("membership"):
+            _document(root, refs["membership"])
         sessions = official_sessions(root)
         prior = _session_pair(sessions, day)
         prior_refs = _bindings(accepted, prior) if prior else None
@@ -438,7 +448,8 @@ def capture_after_accepted_head(root: str | Path, candidate: dict, *, dsn: str |
         lane = timing["lane"]
         membership = classify_membership_provenance(trade_date=day,sector_rows=sectors,
             binding=refs["sector"],frozen_at=frozen_at,
-            accepted_head_binding=hashlib.sha256(canonical_head(accepted)).hexdigest())
+            accepted_head_binding=hashlib.sha256(canonical_head(accepted)).hexdigest(),
+            membership_binding=refs.get("membership"))
         rows = build_daily_universe(trade_date=day,stock_rows=core,raw_rows=raw,sector_rows=sectors,
             prior_stock_rows=prior_core,prior_raw_rows=prior_raw,prior_sector_rows=prior_sectors,
             bindings=refs,captured_at=first_processed_at,lane="LIVE_OOS",

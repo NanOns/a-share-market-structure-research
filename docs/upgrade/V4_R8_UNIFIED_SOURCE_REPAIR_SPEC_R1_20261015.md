@@ -98,8 +98,21 @@ loader now normalizes only CRLF to LF for the existing semantic catalog digest
 and records both the original byte digest and normalized digest in an
 append-only PG byte-identity fact. Changes to JSON content still change the
 catalog digest. Focused checks cover LF/CRLF identity, content changes, and
-observer publication/idempotency; the five relevant regression files pass
-27 checks.
+observer publication/idempotency; those regressions passed 27 checks before
+adding the actual-source-clock fixture below.
+
+The actual 10/15 freeze stores the TDX price availability clock as
+`tdx_source_available_at` and the combined source freeze observation as
+`observed_at`. The R7 observer previously read only `first_available_at` /
+`provider_available_at`, so it recorded `SOURCE_FIRST_AVAILABLE_TIME_UNKNOWN`
+and conservatively classified that capture as late even though the source had
+been downloaded and Head accepted before the next session opened. A bounded
+clock resolver now consumes those recorded fields, with a fixture reproducing
+the actual 10/15 times; the five focused regression files pass 28 checks. The
+already published late-lane fact remains immutable. Replaying it with the
+corrected Lane set fails closed pending an explicit append-only reclassification
+path; this candidate capture therefore remains conservative and does not claim
+10/15 LIVE_OOS acceptance.
 
 `R8_ISOLATED_OWNER_READ_ORIGIN_R1` permits read-only reuse of old PG Owner
 descriptors inside a G-drive candidate. A hash-bound original Head and its

@@ -1,6 +1,6 @@
 from workbench_analysis.forward_r7 import compute_nominal_settlement
 from workbench_analysis.forward_r7_pipeline import (
-    accepted_prices_with_status, build_schedules, classify_after_close_capture,
+    accepted_prices_with_status, build_schedules, classify_after_close_capture, _source_capture_times,
     classify_membership_provenance, build_daily_universe, next_capture_plan)
 from workbench_analysis.r43_owner_replay import complete_target_universe, unknown_active_core_row
 from workbench_db.forward_r7_store import summarize_settlement_schedule
@@ -91,6 +91,23 @@ def test_after_close_first_freeze_window_uses_distinct_timestamp_roles():
         frozen_at="2026-10-15T09:30:00+08:00")
     assert at_open["lane"] == "LATE_OBSERVED_NOT_PIT"
     assert "FREEZE_AFTER_NEXT_SESSION_OPEN" in at_open["timing_reasons"]
+
+
+def test_capture_clock_uses_recorded_tdx_availability_and_full_freeze_observation():
+    first_available, source_ready = _source_capture_times({
+        "tdx_source_available_at": "2026-10-15T11:31:36+00:00",
+        "observed_at": "2026-10-15T19:32:35.285791+08:00"})
+    result = classify_after_close_capture(trade_date="2026-10-15",
+        sessions=["2026-10-14", "2026-10-15", "2026-10-16"],
+        first_available_at=first_available,
+        source_ready_at=source_ready,
+        head_accepted_at="2026-10-15T21:17:52+08:00",
+        first_processed_at="2026-10-15T21:18:16+08:00",
+        frozen_at="2026-10-15T21:18:18+08:00")
+    assert result["lane"] == "LIVE_OOS"
+    assert result["first_available_at"] == first_available
+    assert result["source_ready_at"] == source_ready
+    assert result["capture_window_end"] == "2026-10-16T09:30:00+08:00"
 
 
 def test_membership_provenance_requires_same_day_timestamps_and_bound_source():

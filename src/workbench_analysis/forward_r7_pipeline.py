@@ -410,6 +410,18 @@ def classify_after_close_capture(*, trade_date: str, sessions: list[str], first_
                 capture_window_end=(open_at.isoformat() if open_at else None))
 
 
+def _source_capture_times(source_times: dict) -> tuple[str | None, str | None]:
+    """Resolve the explicit first price-source and complete-freeze clocks."""
+    package = source_times.get("effective_package") or {}
+    first_available_at = (source_times.get("first_available_at")
+        or source_times.get("provider_available_at")
+        or source_times.get("tdx_source_available_at")
+        or package.get("observed_at") or package.get("downloaded_at"))
+    source_ready_at = (source_times.get("source_ready_at")
+        or source_times.get("source_complete_at") or source_times.get("observed_at"))
+    return first_available_at, source_ready_at
+
+
 def capture_after_accepted_head(root: str | Path, candidate: dict, *, dsn: str | None = None, head_accepted_at: str | None = None):
     """Post-publication live event hook; errors are logged and never roll back Head."""
     root = Path(root).resolve()
@@ -437,8 +449,7 @@ def capture_after_accepted_head(root: str | Path, candidate: dict, *, dsn: str |
         source_times = _document(root,freeze_ref) if freeze_ref else {}
         if source_times.get("target_session") != day:
             raise ValueError("FORWARD_R7_SOURCE_FREEZE_DATE_MISMATCH")
-        source_ready_at = source_times.get("source_ready_at") or source_times.get("source_complete_at")
-        first_available = (source_times.get("first_available_at") or source_times.get("provider_available_at"))
+        first_available, source_ready_at = _source_capture_times(source_times)
         accepted_at = head_accepted_at or accepted.get("head_accepted_at") or accepted.get("accepted_at")
         frozen_at = datetime.now(timezone.utc).isoformat()
         timing = classify_after_close_capture(trade_date=day,sessions=sessions,

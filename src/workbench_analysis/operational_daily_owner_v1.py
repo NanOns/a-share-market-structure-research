@@ -16,7 +16,7 @@ BASE='docs/evidence/r4_3_four_session_closeout_20261009'
 ACQUISITION='docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json'
 
 
-def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None):
+def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None,candidate_only_exact=False):
     root=Path(root).resolve();freeze=load(checked(root,freeze_binding));day=freeze['target_session']
     parent=load(root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json')
     sessions=official_sessions(root);previous=parent['accepted_trade_date']
@@ -57,7 +57,7 @@ def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None)
     member_source_hashes={source['address']:sha256_file(Path(source['address'])) for source in snapshot['sources']}
     from .operational_revision_guard_r1 import detect as detect_revisions
     execution_bindings=load(checked(root,adjustment_contract['policy']))['accepted_algorithm_bindings'] if adjustment_contract else None
-    revision_guard=detect_revisions(root,parent,hashlib.sha256(blob).hexdigest(),member_source_hashes,execution_bindings=execution_bindings)
+    revision_guard=detect_revisions(root,parent,hashlib.sha256(blob).hexdigest(),member_source_hashes,execution_bindings=execution_bindings,candidate_only=candidate_only_exact)
     revisions=revision_guard['revisions']
     increment=increment_plan(parent,day,sessions,revisions=revisions,replay_current=replay_current)
     compute_dates=increment['compute_sessions']

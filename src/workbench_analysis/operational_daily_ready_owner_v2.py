@@ -28,7 +28,7 @@ def build(root,freeze_binding,*,source_readiness,engineering_replay_current=Fals
     if not engineering_replay_current:
         from .operational_daily_exact_policy_v2 import verify,KERNEL
         _,exact_policy=verify(root,exact_policy_binding,candidate_only=candidate_only_exact)
-    context=owner.prepare(root,freeze_binding,replay_current=engineering_replay_current,
+    context=owner.prepare(root,freeze_binding,replay_current=engineering_replay_current,candidate_only_exact=candidate_only_exact,
         adjustment_contract=dict(contract=KERNEL,policy=exact_policy) if exact_policy else None)
     if exact_policy:context['exact_daily_policy']=exact_policy
     if sha256_file(context['folder']/'sources/gbbq')!=deps['gbbq']['sha256']:

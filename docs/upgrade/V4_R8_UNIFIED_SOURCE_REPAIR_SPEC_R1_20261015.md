@@ -29,3 +29,29 @@ S4 acceptance is scoped to isolated PG coexistence/readback, source semantics, a
 ## S5 final closeout note — 2026-10-15
 
 The task-card I-01–I-10 dispositions and `UNIFIED_SOURCE_ACCEPTANCE_PASS` are recorded in `reports/audits/v4_unified_r8/R8_UNIFIED_SOURCE_FINAL.md`. Real future LIVE_OOS and unaccepted 10/14 settlement remain explicit future-session dependencies. The next build entry is one candidate at the final fixed-branch SHA, isolated package proof, then one planned production window; no package or deployment was run during R8.
+
+## R8 isolated lifecycle driver admission R1 — actual two-session catch-up
+
+The actual post-close 10/14–10/15 source batch passed both source gates. Its
+first candidate computation stopped at the accepted market driver's whole-file
+revision check: R8 adds target lifecycle identity arguments to the Owner IO
+adapter. This gate remains unchanged for production execution.
+
+`R8_ISOLATED_LIFECYCLE_DRIVER_ADMISSION_R1` permits candidate computation only
+when `candidate_only_exact=True` and the root resolves below `G:/codex_tmp`.
+An AST comparison against the hash-verified accepted adapter recognizes exactly
+the lifecycle contract declaration, optional lifecycle argument, four identity
+read statements and three identity keywords to `materialize_core`. After those
+exact additions are removed, the entire module AST must equal the accepted
+module. Any other market or numeric change still requires range repair. The
+revision receipt records both source bindings, keeps `unchanged=False`, and
+explicitly sets `production_admitted=False`; actual daily numeric QA is still
+required. This is not production policy admission or release acceptance.
+
+The actual accepted pre-R8 adapter is retained as the portable audit fixture
+`tests/fixtures/r8_owner_adapter_before.txt`. Targeted guard tests include changed
+market dispatch, changed identity arguments, an unrelated extra statement,
+production-path rejection, and numerical-kernel rejection. These plus the
+existing revision tests passed (18); existing R8 member/settlement tests passed
+(19). Real two-day computation and final per-day QA are recorded separately in
+`TWO_SESSION_20261014_15_CATCHUP.json`.

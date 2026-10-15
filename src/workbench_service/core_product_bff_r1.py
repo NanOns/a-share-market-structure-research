@@ -395,12 +395,112 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             'hypothesis_scope':'情景解释不证明洗盘、吸筹、出货或账户资金行为',
             'competitive_hypotheses':competing_explanations(deepcopy(fields))}
 
+    def _forward_r7_read(self,path,q,day):
+        if path not in ('/api/v4/forward/statistics','/api/v4/forward/observations',
+                        '/api/v4/forward/settlement','/api/v4/forward/fep'):
+            return None
+        if path=='/api/v4/forward/observations':
+            lane_alias={'historical':'RETROSPECTIVE_RESEARCH','live':'LIVE_OOS'}
+            lane=q.get('lane')
+            if lane not in lane_alias:
+                raise ValueError('INVALID_FORWARD_EVIDENCE_LANE')
+            try:
+                from workbench_db.forward_r7_store import ForwardR7Store
+                result=ForwardR7Store(self.api.root).read_universe(
+                    lane=lane_alias[lane],trade_date=q.get('trade_date'),rule=q.get('rule'),
+                    status=q.get('status'),limit=int(q.get('limit',30)),offset=int(q.get('offset',0)))
+                return 200,self.envelope(day,status=result['status'],data=result,items=result['items'],
+                    total=result['total'],offset=result['offset'],limit=result['limit'],
+                    has_next=result['has_next'],lane=lane,evidence_class=lane_alias[lane],
+                    research_contract_id='V4_FORWARD_PIPELINE_R7_R1')
+            except Exception as exc:
+                return 200,self.envelope(day,status='ERROR',reason='FORWARD_PG_READ_FAILED',
+                    error_code=type(exc).__name__,data=dict(status='ERROR',items=None,total=None,observed_count=None),
+                    items=None,total=None,write_authorized=False,PIT_ELIGIBLE=False)
+        if path=='/api/v4/forward/statistics':
+            try:
+                from workbench_db.forward_r7_store import ForwardR7Store
+                store=ForwardR7Store(self.api.root)
+                counts=store.read_counts()
+                matured_count=store.read_matured_count()
+                historical=store.read_universe(lane='RETROSPECTIVE_RESEARCH',trade_date=q.get('trade_date'),
+                    rule=q.get('rule'),status=q.get('status'),limit=min(30,int(q.get('limit',30))),
+                    offset=int(q.get('offset',0)))
+                live=store.read_universe(lane='LIVE_OOS',trade_date=q.get('trade_date'),
+                    rule=q.get('rule'),status=q.get('status'),limit=min(30,int(q.get('limit',30))),
+                    offset=int(q.get('offset',0)))
+                plan=__import__('workbench_analysis.forward_r7_pipeline',
+                    fromlist=['next_capture_plan']).next_capture_plan(self.api.root)
+                data=dict(status='READY',
+                    historical=dict((counts.get('historical') or {}),items=historical['items'],
+                        page_total=historical['total'],offset=historical['offset'],limit=historical['limit'],
+                        has_next=historical['has_next'],evidence_class='RETROSPECTIVE_RESEARCH'),
+                    live=dict((counts.get('live') or {}),items=live['items'],page_total=live['total'],
+                        offset=live['offset'],limit=live['limit'],has_next=live['has_next'],
+                        next_capture=plan,evidence_class='LIVE_OOS',late=counts.get('late')),
+                    published_generation=counts.get('published_generation'),
+                    published_t0=counts.get('published_t0'),matured_settlement_count=matured_count,
+                    source=counts.get('source_run_id'))
+                return 200,self.envelope(day,status='READY',data=data,
+                    contract_id='V4_FORWARD_STATISTICS_R7_R1',source='PG_PUBLISHED_READ_INDEX',
+                    write_authorized=False,PIT_ELIGIBLE=False)
+            except Exception as exc:
+                data=dict(status='ERROR',historical=None,live=None,observed_count=None,
+                    reason='PG_FORWARD_READ_INDEX_UNAVAILABLE',error_code=type(exc).__name__)
+                return 200,self.envelope(day,status='ERROR',data=data,
+                    contract_id='V4_FORWARD_STATISTICS_R7_R1',source=None,
+                    write_authorized=False,PIT_ELIGIBLE=False)
+        if path=='/api/v4/forward/fep':
+            from workbench_analysis.fep_r7_read import read_r7_fep
+            try:
+                from workbench_db.forward_r7_store import ForwardR7Store
+                store=ForwardR7Store(self.api.root)
+                counts=store.read_counts()
+                projections=store.read_fep_projections()
+                result=read_r7_fep(self.api.root,current_counts=counts)
+                if projections.get('items'):
+                    result['pg_projection_status']='READY'
+                    result['pg_historical_baselines']=projections['items']
+                else:
+                    result['pg_projection_status']='DATA_MISSING'
+                    result['historical_baselines']=[]
+                    result['missing_inputs'].append('PG_PUBLISHED_FEP_RESEARCH_PROJECTION')
+                return 200,self.envelope(day,status='READY' if result['models'] else 'DATA_MISSING',
+                    data=result,contract_id='V4_FORWARD_FEP_RESEARCH_READ_R7_R1',
+                    source=result.get('source'),priority_v1_unchanged=True,
+                    write_authorized=False,PIT_ELIGIBLE=False)
+            except Exception as exc:
+                result=read_r7_fep(self.api.root)
+                result['historical_baselines']=[]
+                result['pg_projection_status']='ERROR'
+                result['missing_inputs'].append('PG_PUBLISHED_FEP_RESEARCH_PROJECTION')
+                return 200,self.envelope(day,status='DATA_MISSING',data=result,
+                    contract_id='V4_FORWARD_FEP_RESEARCH_READ_R7_R1',error_code=type(exc).__name__,
+                    source=result.get('source'),priority_v1_unchanged=True)
+        lane_alias={'historical':'RETROSPECTIVE_RESEARCH','live':'LIVE_OOS'}
+        try:
+            from workbench_db.forward_r7_store import ForwardR7Store
+            result=ForwardR7Store(self.api.root).read_settlement(
+                lane=lane_alias.get(q.get('lane')) if q.get('lane') else None,
+                trade_date=q.get('trade_date'),horizon=int(q['horizon']) if q.get('horizon') else None,
+                status=q.get('status'),limit=int(q.get('limit',30)),offset=int(q.get('offset',0)))
+            return 200,self.envelope(day,status=result['status'],data=result,items=result['items'],
+                total=result['total'],offset=result['offset'],limit=result['limit'],
+                has_next=result['has_next'],counts=result['counts'],
+                price_basis='NOMINAL_UNADJUSTED_CLOSE',write_authorized=False)
+        except Exception as exc:
+            return 200,self.envelope(day,status='ERROR',reason='FORWARD_SETTLEMENT_PG_READ_FAILED',
+                error_code=type(exc).__name__,data=dict(observed_count=None,matured_count=None,outcomes=None),
+                items=None,total=None,write_authorized=False)
+
     def get(self,path,query):
         from workbench_db.v4_read_index_r2 import validate_query
         from workbench_db.v4_read_index_r1 import load as load_index_r1
         day=validate_query({k:v for k,v in query.items() if k not in ('event_state','events_offset','scope','rankability')},
                            self.api.token,self.api.candidate['published_sessions'],
                            self.api.candidate['accepted_trade_date'],path)
+        forward_response=self._forward_r7_read(path,query,day)
+        if forward_response is not None:return forward_response
         index_route=(path in ('/api/v4/context','/api/v4/home','/api/v4/stocks','/api/v4/sectors','/api/v4/focus','/api/v4/radar','/api/v4/radar/priority') or
                      path.startswith('/api/v4/stocks/') or path.startswith('/api/v4/sectors/') or path.startswith('/api/v4/focus/'))
         index_r2=self._read_index_r2(day) if index_route else None
@@ -465,6 +565,28 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                             response['market']['four_axis_scope']='OBSERVED_V4_FACT_AXES; COMPOSITE_REGIME_CANDIDATE_UNACCEPTED'
                     except (OSError,ValueError,KeyError,TypeError):
                         response['risk_owner_source']={'status':'SOURCE_INCOMPLETE','reason':'IMMUTABLE_PG_RISK_OWNER_NOT_BOUND'}
+                    try:
+                        from workbench_db.forward_r7_store import ForwardR7Store
+                        forward_store=ForwardR7Store(self.api.root)
+                        forward_counts=forward_store.read_counts()
+                        settled_count=forward_store.read_matured_count()
+                        history=forward_counts.get('historical')
+                        live=forward_counts.get('live')
+                        response.setdefault('counts',{})['forward']=dict(
+                            value=(history or {}).get('count'),quality=forward_counts.get('status'),
+                            matured_settlement_count=settled_count,
+                            latest_live_observation_T0=(live or {}).get('latest_t0'),
+                            last_successful_increment_T0=forward_counts.get('published_t0'),
+                            source=forward_counts.get('source_run_id'),
+                            historical_research_count=(history or {}).get('count'),
+                            live_frozen_count=(live or {}).get('count'),updated_at=response.get('updated_at'),
+                            href='/v4/research/forward')
+                    except Exception as exc:
+                        response.setdefault('counts',{})['forward']=dict(
+                            value=None,quality='ERROR',status='DATA_MISSING',scope='R7_LANES',
+                            historical_research_count=None,live_frozen_count=None,
+                            matured_settlement_count=None,reason=type(exc).__name__,
+                            updated_at=response.get('updated_at'),href='/v4/research/forward')
                 return 200,response
             response=index.response('/api/v4/context')
             if response is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
@@ -480,6 +602,20 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             if path=='/api/v4/sectors':response=mark_evaluated_sector_lifecycle(response)
             return 200,response
         code,data=self._get_product(path,query)
+        if path=='/api/v4/candidates/cohort' and code==200:
+            try:
+                from workbench_db.forward_r7_store import ForwardR7Store
+                audit=ForwardR7Store(self.api.root).read_audit_dates(
+                    limit=int(query.get('limit',30)),offset=int(query.get('offset',0)))
+                data['r7_source_audit']=audit
+                data['r7_capture_plan']=__import__('workbench_analysis.forward_r7_pipeline',
+                    fromlist=['next_capture_plan']).next_capture_plan(self.api.root)
+                data['r7_source_status']=audit['status']
+            except Exception as exc:
+                data['r7_source_status']='ERROR'
+                data['r7_source_audit']=dict(status='ERROR',items=None,total=None,reason=type(exc).__name__)
+                data['r7_capture_plan']=dict(status='PENDING_REAL_SESSION',
+                    planned_trade_date=None,reason='OFFICIAL_CALENDAR_UNAVAILABLE')
         if index is None and day!=self.api.candidate['accepted_trade_date']:
             data['read_index_status']='HISTORICAL_UNINDEXED_READ_ONLY'
         day=query.get('trade_date',self.api.candidate['accepted_trade_date'])
@@ -1115,7 +1251,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             b=self.resolve_dated_object(domain,asof,right) if mode.endswith(('stock','sector')) else self.source('market',asof)
             if not a or not b:return self.missing(day,'compare','COMPARE_OBJECT_NOT_PRESENT')
             return 200,self.envelope(day,status='READY',left=a,right=b,mode=mode,as_of=asof,PIT_ELIGIBLE=False,comparison_scope='CORRECTED_RECONSTRUCTED; NOT_STRICT_PIT',items=[],total=0)
-        if path in ('/api/v4/forward','/api/v4/forward/statistics'):
+        if path=='/api/v4/forward':
             ref=self.api.candidate['owners'][day].get('validation_cohort')
             owner=None
             if ref:
@@ -1132,19 +1268,4 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 source=ref,contract_id='VALIDATION_COHORT_STATISTICS_BFF_R3_V1',
                 reason=None if owner else 'NO_AUTHORIZED_COHORT_OWNER',
                 focus_is_validation_cohort=False,write_authorized=False,PIT_ELIGIBLE=False)
-        if path=='/api/v4/forward/fep':
-            from workbench_analysis.fep_e5.admission import current_gate
-            gate=current_gate(self.api.root)
-            return 200,self.envelope(day,status='SOURCE_INCOMPLETE',reason='MODEL_OR_PERMISSION_NOT_READY',
-                contract_id=gate['contract_id'],source=None,reason_text='；'.join(gate['reason_text']),
-                data=dict(model_version=None,prediction_revision=None,permission_gate='MODEL_OR_PERMISSION_NOT_READY',
-                    required_grant_key=['scope_id','target_id','horizon','feature_contract_id','model_set_id','model_revision','capability'],
-                    capabilities={k:'NOT_GRANTED' for k in ('SHADOW_INFERENCE','DESCRIPTIVE_DISPLAY','MODEL_DISPLAY','PRIORITY_USE')},
-                    prediction=None,training_authorized=False,focus_write_authorized=False,priority_v1_unchanged=True,
-                    admission_gate=gate))
-        if path=='/api/v4/forward/settlement':
-            return 200,self.envelope(day,status='SOURCE_INCOMPLETE',reason='NO_AUTHORIZED_COHORT_SETTLEMENT_OWNER',
-                contract_id='COHORT_SETTLEMENT_NOT_READY_READ_R3_V1',source=None,
-                data=dict(observed_count=None,matured_count=None,outcomes=None,write_authorized=False),items=[],
-                total=None,offset=0,limit=30,has_next=False,focus_is_validation_cohort=False)
         return super().get(path,self._base_query(q))

@@ -1,0 +1,73 @@
+{
+  "contract_id": "V4_FORWARD_SIGNAL_DEFINITIONS_R7",
+  "version": "R1",
+  "effective_from": "2026-10-15",
+  "status": "FROZEN_FOR_RESEARCH",
+  "scope": "RESEARCH_EVALUATION_ONLY",
+  "source_requirements": {
+    "accepted_head_only": true,
+    "input_cutoff": "T0_CLOSE",
+    "stock_population": "ALL_ACCEPTED_STOCK_IDENTITIES",
+    "sector_population": "ALL_ACCEPTED_SECTOR_IDENTITIES",
+    "membership_basis_historical": "MEMBERSHIP_RETRO",
+    "membership_basis_live": "AS_RECORDED",
+    "unknown_is_no_match": false
+  },
+  "rules": [
+    {
+      "rule_id": "STOCK_RIGHT_STRUCTURE_EVENT_R1",
+      "rule_version": "1.0.0",
+      "entity_type": "STOCK",
+      "board_scopes": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR", "OTHER_SUPPORTED"],
+      "required_inputs": ["open", "high", "low", "close", "volume", "prior_high20", "prior_low20", "ma20", "core_price_damage", "rps5", "rps20"],
+      "breakout": {
+        "predicate": "close > prior_high20",
+        "minimum_prior_observations": 20,
+        "required_price_basis": "SAME_T0_NATIVE_COORDINATE",
+        "event_code": "BREAKOUT_OBSERVED"
+      },
+      "pullback_confirmation": {
+        "predicate": "prior_session_breakout AND low <= prior_high20 * (1 + retest_tolerance) AND close >= prior_high20 AND core_price_damage IS FALSE",
+        "retest_tolerance": 0.02,
+        "required_consecutive_sessions": 2,
+        "event_code": "PULLBACK_CONFIRMATION_OBSERVED"
+      },
+      "other_statuses": ["NO_MATCH", "UNKNOWN"],
+      "missing_or_incomplete_input_status": "UNKNOWN"
+    },
+    {
+      "rule_id": "SECTOR_STRENGTH_TRANSITION_R1",
+      "rule_version": "1.0.0",
+      "entity_type": "SECTOR",
+      "required_inputs": ["sector_rs5", "sector_rs20", "breadth_ret5", "breadth_ret20", "sector_quote_coverage", "prior_comparable_state"],
+      "minimum_quote_coverage": 0.8,
+      "predicate": "sector_rs5 > 0 AND sector_rs20 > 0 AND breadth_ret5 > 0 AND breadth_ret20 > 0 AND state_is_stronger_than_prior",
+      "event_code": "STRENGTHENING_OBSERVED",
+      "transition_states": ["STRENGTHENING_OBSERVED", "NO_MATCH", "UNKNOWN"],
+      "none_is_unknown": true,
+      "membership_comparability_required": true,
+      "historical_membership_basis": "RECONSTRUCTED"
+    }
+  ],
+  "identity_fields": [
+    "rule_id", "rule_version", "T0", "entity_id", "sector_id", "status",
+    "reason_codes", "missing_inputs", "input_cutoff", "membership_basis",
+    "evidence_class", "source_hashes", "captured_at"
+  ],
+  "capture_policy": {
+    "historical_evidence_class": "RETROSPECTIVE_RESEARCH",
+    "live_evidence_class": "LIVE_OOS",
+    "late_capture_evidence_class": "LATE_OBSERVED_NOT_PIT",
+    "historical_capture_time": "ACTUAL_RECONSTRUCTION_CLOCK",
+    "live_first_available_and_freeze_times": "SOURCE_REPORTED_AND_ACTUAL_CAPTURE_CLOCKS",
+    "same_identity_changed_payload": "REJECT_AND_CREATE_NEW_REVISION"
+  },
+  "settlement_policy": {
+    "horizons_sessions": [1, 3, 5],
+    "price_basis": "NOMINAL_UNADJUSTED_CLOSE",
+    "corporate_action_note": "Returns are nominal raw-close changes; no split/dividend adjustment is claimed.",
+    "trading_calendar": "ACCEPTED_OFFICIAL_SESSION_CALENDAR",
+    "only_settle_after_due_session": true
+  },
+  "prohibited_uses": ["AUTOMATED_TRADING", "PRIORITY_V1_INPUT", "PROBABILITY_CLAIM", "STRICT_HISTORICAL_PIT_CLAIM_FROM_RECONSTRUCTION"]
+}

@@ -7,8 +7,23 @@ from .storage import require_owned
 CONTRACT='TDX_SH_SZ_NATIVE_SOURCE_VIEW_V1'
 
 
+def _require_worker_admission(root):
+    from .storage import require_producer
+    require_producer(root)
+
+
+def _require_project_admission(root):
+    try:
+        require_owned(root)
+    except ValueError as lease_error:
+        try:
+            _require_worker_admission(root)
+        except (ValueError, RuntimeError):
+            raise lease_error
+
+
 def project(root, extraction):
-    require_owned(root)
+    _require_project_admission(root)
     from workbench_analysis.tdx_official_daily_source import sha256_file,sha256_bytes,_json_bytes,_atomic_write
     from workbench_analysis.operational_daily_storage_v1 import output_path
     binding=extraction['artifact']

@@ -49,7 +49,7 @@ def _install(pg,schema):
 
 def prepare(root,token,day,payload):
     root=Path(root).resolve()
-    if payload.get('contract_id')!='V4_OPERATIONAL_RISK_CHANGE_R1' or payload.get('T0')!=day:raise ValueError('OPERATIONAL_RISK_PAYLOAD_CONTEXT_INVALID')
+    if payload.get('contract_id') not in ('V4_OPERATIONAL_RISK_CHANGE_R1','V4_OPERATIONAL_RISK_CHANGE_R2') or payload.get('T0')!=day:raise ValueError('OPERATIONAL_RISK_PAYLOAD_CONTEXT_INVALID')
     expected={'STOCK_STRUCTURE_RISK','SECTOR_ECOLOGY_RISK','MARKET_PRESSURE_RISK'}
     if set(payload.get('families',{}))!=expected:raise ValueError('OPERATIONAL_RISK_FAMILY_SET_INVALID')
     if any(item.get('T0')!=day for item in payload['families'].values()):raise ValueError('OPERATIONAL_RISK_FAMILY_DATE_INVALID')

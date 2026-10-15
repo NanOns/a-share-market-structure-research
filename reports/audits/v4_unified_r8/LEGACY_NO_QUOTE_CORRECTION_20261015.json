@@ -1,24 +1,20 @@
 {
-  "contract_id": "LEGACY_NO_QUOTE_CORRECTION_R1",
-  "status": "WAIT_15_CLOSE_AND_BOTH_REAL_SOURCES",
-  "task_id": "V4-R8-UNIFIED-REPAIR-2DAY-CATCHUP-20261015/R1",
-  "code_commit": "161b32aee",
-  "source_collection_started": false,
-  "counts": {
-    "legacy_no_quote": null,
-    "legitimate_security_level_proofs": null,
-    "corrected": null,
-    "still_unaccepted_source": null,
-    "accepted_but_missing_source": null
-  },
-  "required_real_cases": [
-    {"T0": "2026-10-13", "horizon_sessions": 1, "due_date": "2026-10-14", "status": "WAIT_REAL_BATCH"},
-    {"T0": "2026-10-08", "horizon_sessions": 3, "due_date": "2026-10-13", "status": "WAIT_REAL_SOURCE_AUDIT"}
+  "contract_id": "R8_LEGACY_NO_QUOTE_CORRECTION_EVIDENCE_R1",
+  "scope": "ISOLATED_CANDIDATE_ONLY",
+  "production_published": false,
+  "correction_policy": "APPEND_ONLY_PRESERVE_ORIGINAL_OBSERVATIONS",
+  "total_corrections_across_catchup": 683,
+  "settlements": [
+    {"t0": "2026-10-08", "horizon_sessions": 3, "due_date": "2026-10-13", "settled": 134, "suspended": 1, "denominator": 134, "price_basis": "NOMINAL_UNADJUSTED_CLOSE"},
+    {"t0": "2026-10-13", "horizon_sessions": 1, "due_date": "2026-10-14", "settled": 113, "suspended": 0, "denominator": 113, "sample_revision": "1 -> 2"},
+    {"t0": "2026-10-14", "horizon_sessions": 1, "due_date": "2026-10-15", "settled": 130, "suspended": 0, "denominator": 130, "lane": "LATE_OBSERVED_NOT_PIT", "source_digest": "377c16ef1cc5bfa29591a5be81c8b7b945805635b562b0f030d591a6504148d8"}
   ],
-  "fixture_evidence": {
-    "test_file": "tests/test_r8_s3_ledger.py",
-    "covers": ["append_only_revision", "same_digest_idempotency", "source_digest_rebind", "unaccepted_due_source_same_state_retry_idempotency", "accepted_price_settlement", "security_level_suspension_proof"],
-    "real_source_claim": false
+  "idempotency": {
+    "2026-10-14_duplicate_run": {"settlements_appended": 0, "legacy_revisions_appended": 0},
+    "2026-10-15_duplicate_run": {"settlements_appended": 0, "legacy_revisions_appended": 0},
+    "second_legacy_review_status": "NO_LEGACY_NO_QUOTE_CORRECTIONS",
+    "unaccepted_source_remaining": 0,
+    "accepted_but_missing_source_remaining": 0
   },
-  "notes": "Null counts are intentionally pending; no real 10/14 source was processed in this stage."
+  "evidence_readback": "runtime/r8_forward_four_module_readback_20261015.json"
 }

@@ -1,17 +1,33 @@
 {
-  "contract_id": "MEMBERSHIP_AND_CAPTURE_CLOCK_RECONCILIATION_R1",
-  "status": "WAIT_15_CLOSE_AND_BOTH_REAL_SOURCES",
-  "task_id": "V4-R8-UNIFIED-REPAIR-2DAY-CATCHUP-20261015/R1",
-  "code_commit": "161b32aee",
-  "source_collection_started": false,
-  "real_dates": {
-    "2026-10-14": {"membership_basis": "NOT_YET_CLASSIFIED", "PIT_ELIGIBLE": null, "source_hash": null},
-    "2026-10-15": {"membership_basis": "NOT_YET_CLASSIFIED", "PIT_ELIGIBLE": null, "source_hash": null}
+  "contract_id": "R8_MEMBERSHIP_AND_CAPTURE_CLOCK_RECONCILIATION_R1",
+  "scope": "2026-10-14_AND_2026-10-15_CANDIDATE_CAPTURE",
+  "membership": {
+    "2026-10-14": {"basis": "MEMBERSHIP_RETRO", "as_recorded": 0, "retro": 400, "unknown": 0},
+    "2026-10-15": {"basis": "MEMBERSHIP_RETRO", "as_recorded": 0, "retro": 400, "unknown": 0},
+    "independent_dated_member_snapshot_evidence": "NOT_ESTABLISHED",
+    "derived_sector_outputs_used_as_member_evidence": false,
+    "conclusion": "No AS_RECORDED membership claim was made. Sector membership evidence is classified retro because a derived sector product proves computation, not that historical membership was frozen on that date."
   },
-  "fixture_evidence": {
-    "test_file": "tests/test_r8_s2_data_repairs.py",
-    "cases": ["same_day_independently_bound_member_snapshot", "derived_sector_owner_without_independent_membership_evidence_is_unknown", "next_day_latest_snapshot_is_retro", "membership_unknown", "stock_retained_sector_membership_unknown", "09:29:59_freeze", "09:30:00_freeze_is_late"],
-    "real_source_claim": false
+  "source_clocks": {
+    "tdx_source_available_at_utc": {"2026-10-14": "2026-10-15T11:23:27+00:00", "2026-10-15": "2026-10-15T11:31:36+00:00"},
+    "2026-10-15_observed_at_local": "2026-10-15T19:32:35+08:00",
+    "upstream_sources_ready": true
   },
-  "notes": "Do not promote either date to AS_RECORDED without its own independently Head-bound membership source hash and path, observed_at, first_available_at, effective T0, and frozen_at. Sector Owner bytes alone do not prove frozen historical membership."
+  "forward_lane": {
+    "persisted_2026-10-14": "LATE_OBSERVED_NOT_PIT",
+    "persisted_2026-10-15": "LATE_OBSERVED_NOT_PIT",
+    "initial_2026-10-15_reason": "SOURCE_FIRST_AVAILABLE_TIME_UNKNOWN",
+    "cause": "Initial Forward observer recognized first_available_at/provider_available_at, not the actual freeze field tdx_source_available_at or top-level observed_at.",
+    "code_fix_commit": "455111223",
+    "fixture_result_with_actual_clocks": "LIVE_OOS",
+    "persisted_record_rewritten": false,
+    "reclassification": "BLOCKED_PENDING_CONTROLLED_APPEND_ONLY_MIGRATION",
+    "replay_policy": "A changed lane set fails closed as partial replay; existing immutable LATE facts were not silently rewritten."
+  },
+  "membership_fix": {
+    "require_independent_member_source_evidence": true,
+    "owner_sector_hash_or_path_fallback": false,
+    "negative_case_added_before_two_day_run": true,
+    "source_code_location": "src/workbench_analysis/forward_r7_pipeline.py::classify_membership_provenance"
+  }
 }

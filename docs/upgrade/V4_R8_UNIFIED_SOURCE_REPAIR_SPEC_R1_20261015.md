@@ -84,11 +84,19 @@ Changed sources/rows, duplicate rows, missing rows and future rows still fail;
 the successful reuse writes neither the descriptor nor PG. Six targeted retry
 checks passed. Numerical kernels and the original series remain unchanged.
 
-The post-Head hook publishes separately by each row's classified evidence Lane.
-This prevents the homogeneous store writer from replacing an unknown-member
-sector's late Lane with a stock-qualified LIVE_OOS batch Lane. Per-Lane run IDs
-are distinct. The observer regression now covers the mixed stock/sector case
-as well as its publication and due-source hashes (two observer checks passed).
+The post-Head observer assigns each row's evidence Lane, and the store already
+groups rows by that field during publication. The observer regression now
+uses the real store grouping path for a mixed stock/sector case and checks its
+publication and due-source hashes (two observer checks passed). Each row's
+display `lane` is also kept equal to its `evidence_lane`.
+
+The R7 definition catalog was byte-hashed before this run under LF line
+endings, while the Windows checkout supplied the same JSON with CRLF. The
+loader now normalizes only CRLF to LF for the existing semantic catalog digest
+and records both the original byte digest and normalized digest in an
+append-only PG byte-identity fact. Changes to JSON content still change the
+catalog digest. Three focused checks cover LF/CRLF identity, content changes,
+and observer publication; the four relevant regression files pass 23 checks.
 
 `R8_ISOLATED_OWNER_READ_ORIGIN_R1` permits read-only reuse of old PG Owner
 descriptors inside a G-drive candidate. A hash-bound original Head and its

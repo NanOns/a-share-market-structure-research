@@ -284,6 +284,10 @@ class ForwardR7Store:
             raise ValueError("FORWARD_R7_IMMUTABLE_CONTENT_CHANGED_NEW_REVISION_REQUIRED")
 
     def register_definitions(self, definitions: dict, definitions_sha256: str):
+        byte_identity=definitions.get('source_byte_identity')
+        if byte_identity and (byte_identity.get('contract_id')!='V4_FORWARD_DEFINITION_BYTE_IDENTITY_R2'
+                or byte_identity.get('lf_sha256')!=definitions_sha256):
+            raise ValueError('FORWARD_DEFINITION_BYTE_IDENTITY_MISMATCH')
         with self._connect() as pg:
             for rule in definitions["rules"]:
                 row = dict(contract_id=definitions["contract_id"], version=definitions["version"],
@@ -291,6 +295,9 @@ class ForwardR7Store:
                            definitions_sha256=definitions_sha256)
                 key = f"{rule['rule_id']}:{rule['rule_version']}"
                 self._append_fact(pg, "r7_signal_definition", key, row, definitions_sha256)
+            if byte_identity:
+                self._append_fact(pg,'r7_definition_byte_identity',
+                    definitions_sha256+':'+byte_identity['raw_sha256'],byte_identity,byte_identity['raw_sha256'])
         return dict(status="READY", rule_count=len(definitions["rules"]), definition_sha256=definitions_sha256)
 
 

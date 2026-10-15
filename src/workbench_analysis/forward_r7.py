@@ -288,4 +288,8 @@ def load_definitions(root: str | Path) -> tuple[dict, str]:
     ids = [r.get("rule_id") for r in value.get("rules", [])]
     if ids != ["STOCK_RIGHT_STRUCTURE_EVENT_R1", "SECTOR_STRENGTH_TRANSITION_R1"]:
         raise ValueError("R7_RULE_SET_INCOMPLETE")
-    return value, hashlib.sha256(raw).hexdigest()
+    normalized_sha=hashlib.sha256(raw.replace(b'\r\n',b'\n')).hexdigest()
+    value['source_byte_identity']=dict(contract_id='V4_FORWARD_DEFINITION_BYTE_IDENTITY_R2',
+        logical_path=DEFINITIONS_PATH.as_posix(),raw_sha256=hashlib.sha256(raw).hexdigest(),
+        lf_sha256=normalized_sha,normalization='CRLF_TO_LF_ONLY')
+    return value, normalized_sha

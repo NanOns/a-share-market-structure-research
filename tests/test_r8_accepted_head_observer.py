@@ -1,4 +1,5 @@
 from workbench_analysis import forward_r7_pipeline as pipeline
+from workbench_db.forward_r7_store import ForwardR7Store
 import pytest
 
 
@@ -9,12 +10,13 @@ def test_accepted_head_hook_publishes_hash_bound_rows_and_advances_due_sources(t
     refs['freeze']=dict(path='freeze',sha256='f'*64)
     head['source_registry']={day:dict(freeze=refs['freeze'])}
     seen={}
-    class Store:
+    class Store(ForwardR7Store):
+        def __init__(self):pass
         def verify_existing_storage(self):pass
         def register_definitions(self,*args):pass
-        def publish_day(self,**kwargs):
+        def _publish_day_facts(self,**kwargs):
             seen['publish']=kwargs;seen.setdefault('publications',[]).append(kwargs)
-            return dict(status='PUBLISHED')
+            return dict(status='PUBLISHED',lane=kwargs['lane'])
         def pending_due_dates(self,**kwargs):return [day]
         def legacy_no_quote_due_dates(self):return [day]
         def review_legacy_no_quote(self,**kwargs):seen['review']=kwargs;return dict(appended=0)
@@ -36,6 +38,7 @@ def test_accepted_head_hook_publishes_hash_bound_rows_and_advances_due_sources(t
     if mixed:
         rows.append(dict(entity_type='SECTOR',entity_id='unproved-members'))
         monkeypatch.setattr(pipeline,'classify_after_close_capture',lambda **kwargs:dict(lane='LIVE_OOS'))
+    for row in rows:row.update(T0=day,rule_id='engineering-rule',rule_version='1')
     monkeypatch.setattr(pipeline,'build_daily_universe',lambda **kwargs:rows)
     monkeypatch.setattr(pipeline,'build_schedules',lambda *args,**kwargs:[])
     result=pipeline.capture_after_accepted_head(tmp_path,head,head_accepted_at='2026-10-15T12:00:00+00:00')

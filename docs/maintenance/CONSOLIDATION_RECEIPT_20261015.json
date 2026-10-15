@@ -1,0 +1,108 @@
+{
+  "contract_id": "V4_PRIMARY_REPOSITORY_CONSOLIDATION_R1",
+  "recorded_at": "2026-10-15T22:41:20.520422+08:00",
+  "acceptance": "MAIN_MERGED_BRANCHES_AND_G_WORKSPACES_CONSOLIDATED_C_MANAGED_WORKTREE_BLOCKED",
+  "primary_directory": "G:\\codex work\\大A交易",
+  "current_branch": "main",
+  "keep_branches": [
+    "codex/v4-fp14-r2-repair",
+    "codex/v4-unified-development",
+    "main"
+  ],
+  "unified_source_pushed_before_merge": "0eaf983d722eef88b1d91e980a4e462eac4d4b98",
+  "prior_main": "414b78c2995687dd8ee13e465711e1e5c2c10038",
+  "merge": "FAST_FORWARD",
+  "baseline_tag": "v4-main-baseline-20261015",
+  "baseline_tag_commit": "65bb1fa3405fad19d71ca40b3675860df7f3aa81",
+  "protected_fp14_head": "e44ab3b821028e8a155fdb0e74df53fd51bb36cd",
+  "protected_fp14_unique_commits": 8,
+  "deleted_local_branch_count": 11,
+  "deleted_remote_branch_count": 9,
+  "removed_top_level_directories": [
+    "r4-pg-only-20261011",
+    "s1-b-20261012",
+    "v4-full-closeout-20261012",
+    "v4-r4-closeout-20261014",
+    "v4-ux-r2-integration-20261014",
+    "v4-unified-development",
+    "v4-production-20261012"
+  ],
+  "archives": [
+    {
+      "source": "G:\\codex work\\大A交易",
+      "archive": "G:\\codex work\\大A交易_交付\\repository_consolidation_20261015\\primary_uncommitted.zip",
+      "crc_readback": "PASS",
+      "archived_files": 62,
+      "git_reused_files": 0,
+      "archived_payload_bytes": 10923175
+    },
+    {
+      "source": "G:\\codex work\\r4-pg-only-20261011",
+      "archive": "G:\\codex work\\大A交易_交付\\repository_consolidation_20261015\\r4-pg-only-20261011.zip",
+      "crc_readback": "PASS",
+      "archived_files": 7882,
+      "git_reused_files": 0,
+      "archived_payload_bytes": 5538191009
+    },
+    {
+      "source": "G:\\codex work\\s1-b-20261012",
+      "archive": "G:\\codex work\\大A交易_交付\\repository_consolidation_20261015\\s1-b-20261012.zip",
+      "crc_readback": "PASS",
+      "archived_files": 0,
+      "git_reused_files": 0,
+      "archived_payload_bytes": 0
+    },
+    {
+      "source": "G:\\codex work\\v4-full-closeout-20261012",
+      "archive": "G:\\codex work\\大A交易_交付\\repository_consolidation_20261015\\v4-full-closeout-20261012.zip",
+      "crc_readback": "PASS",
+      "archived_files": 10769,
+      "git_reused_files": 0,
+      "archived_payload_bytes": 20014506920
+    },
+    {
+      "source": "G:\\codex work\\v4-r4-closeout-20261014",
+      "archive": "G:\\codex work\\大A交易_交付\\repository_consolidation_20261015\\v4-r4-closeout-20261014.zip",
+      "crc_readback": "PASS",
+      "archived_files": 741,
+      "git_reused_files": 0,
+      "archived_payload_bytes": 163730485
+    },
+    {
+      "source": "G:\\codex work\\v4-unified-development",
+      "archive": "G:\\codex work\\大A交易_交付\\repository_consolidation_20261015\\v4-unified-development.zip",
+      "crc_readback": "PASS",
+      "archived_files": 5,
+      "git_reused_files": 0,
+      "archived_payload_bytes": 552485528
+    },
+    {
+      "source": "G:/codex work/v4-ux-r2-integration-20261014",
+      "archive": "G:\\codex work\\大A交易_交付\\repository_consolidation_20261015\\v4-ux-r2-integration-20261014.zip",
+      "crc_readback": "PASS",
+      "archived_files": 10,
+      "git_reused_files": 59754,
+      "archived_payload_bytes": 28509
+    },
+    {
+      "source": "C:\\Users\\lps\\.codex\\worktrees\\f46d\\大A交易",
+      "archive": "G:\\codex work\\大A交易_交付\\repository_consolidation_20261015\\大A交易.zip",
+      "crc_readback": "PASS",
+      "archived_files": 0,
+      "git_reused_files": 0,
+      "archived_payload_bytes": 0
+    }
+  ],
+  "production_runtime_archive": "G:\\codex work\\大A交易_交付\\repository_consolidation_20261015\\production_runtime_20261012",
+  "production_head_sha256": "974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3",
+  "production_task": "Codex-V4-OperationalDaily-28765",
+  "production_task_state": "DISABLED_OLD_PATH_RETIRED_XML_ARCHIVED",
+  "production_data_published": false,
+  "database_instance_modified": false,
+  "exception": {
+    "path": "C:/Users/lps/.codex/worktrees/f46d/大A交易",
+    "reason": "Shell automatic safety review rejected recursive deletion: blocked by policy. App attach rejected: This worktree is owned by another task.",
+    "directory_preserved": true,
+    "next_action": "Archive through owning task in Codex app."
+  }
+}

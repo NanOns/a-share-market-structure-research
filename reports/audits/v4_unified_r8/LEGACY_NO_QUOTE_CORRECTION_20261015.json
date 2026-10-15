@@ -2,7 +2,7 @@
   "contract_id": "LEGACY_NO_QUOTE_CORRECTION_R1",
   "status": "WAIT_15_CLOSE_AND_BOTH_REAL_SOURCES",
   "task_id": "V4-R8-UNIFIED-REPAIR-2DAY-CATCHUP-20261015/R1",
-  "code_commit": "7f63eab3f",
+  "code_commit": "161b32aee",
   "source_collection_started": false,
   "counts": {
     "legacy_no_quote": null,
@@ -17,7 +17,7 @@
   ],
   "fixture_evidence": {
     "test_file": "tests/test_r8_s3_ledger.py",
-    "covers": ["append_only_revision", "same_digest_idempotency", "source_digest_rebind", "unaccepted_due_source", "accepted_price_settlement", "security_level_suspension_proof"],
+    "covers": ["append_only_revision", "same_digest_idempotency", "source_digest_rebind", "unaccepted_due_source_same_state_retry_idempotency", "accepted_price_settlement", "security_level_suspension_proof"],
     "real_source_claim": false
   },
   "notes": "Null counts are intentionally pending; no real 10/14 source was processed in this stage."

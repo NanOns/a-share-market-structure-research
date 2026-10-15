@@ -25,9 +25,9 @@
 | 编号 | 阶段结果 | 范围 |
 |---|---|---|
 | V-01 | PASS | 固定分支，源码在 `7f63eab3f` 并已推送；其他工作树未改动。 |
-| V-02 | PASS（fixture）/ 等真实源 | 追加修订、合法状态、未接受来源、幂等与最新分母逻辑；真实旧账本计数待双日窗口。 |
+| V-02 | PASS（fixture）/ 等真实源 | 追加修订、合法状态、未接受来源、同状态重试幂等与最新分母逻辑；真实旧账本计数待双日窗口。 |
 | V-03 | PASS（fixture） | 多日缺口、完整 batch gate、15:00/次日 09:30、等待源状态与 UI 字段；真实来源时钟待双日窗口。 |
-| V-04 | PASS（fixture） | 当日成员、次日反推、未知成员与股票/板块身份拆分；10/14、10/15 实际源哈希待双日窗口。 |
+| V-04 | PASS（fixture） | 独立成员源绑定的当日成员、次日反推、缺少成员源证据负例、未知成员与股票/板块身份拆分；10/14、10/15 实际源哈希待双日窗口。 |
 | V-05 | WAIT | 当前 `source_ready=false`，必须在 15:00 后待两日源齐备一批抓取。 |
 | V-06 | WAIT | 尚未在隔离候选 Head 运行 10/13→10/14→10/15。 |
 | V-07 | WAIT | 真实证券集合及 `SZ.301660` 计数待源就绪。 |
@@ -40,3 +40,10 @@
 状态维持 `FIXED_SOURCE_PASS_WAIT_2DAY_DATA`。15:00 到点不等于源已齐；收到/检测到正式 10/14、10/15 全套源后，使用一次 source batch，在隔离同构 PG 中先验收 10/14、再以其为前态验收 10/15，并完成 V-05–V-09。只有这些项目通过后才进入任务卡唯一候选打包步骤。生产 Head 与 28765 不由本任务切换。
 
 暂不生成 `TWO_SESSION_20261014_15_CATCHUP.json` 或 `SINGLE_PACKAGE_RECEIPT_20261015.json`，避免写入虚构批次/包回执。
+
+## 追加修复：成员证据与旧 `NO_QUOTE` 重试（2026-10-15）
+
+- 阶段合同：沿用 `V4-R8-UNIFIED-REPAIR-2DAY-CATCHUP-20261015/R1` 的 Step A 源码修复门；按 `docs/upgrade/V4_R8_UNIFIED_SOURCE_REPAIR_SPEC_R1_20261015.md` 与 `docs/upgrade/V4_R7_FORWARD_SIGNAL_SPEC_R1.md`，`AS_RECORDED` 只接受有独立冻结来源的在线成员关系，真实双日数据门维持 WAIT。
+- 修复 A：`classify_membership_provenance()` 不再从 sector Owner 回填成员 hash/path。仅当 Head 存在独立 membership（或 membership_snapshot）Owner，Owner 文件通过校验，且行内成员源路径/hash 与该 Owner 一致时，才可能输出 `AS_RECORDED`。同日时间戳但只带派生 sector 产物的负例输出 `UNKNOWN_MEMBERSHIP_BASIS`。
+- 修复 B：`review_legacy_no_quote()` 对相同 `DUE_SOURCE_NOT_ACCEPTED` 状态、原因、空 source digest 和 settlement 结果直接幂等跳过；当来源以后被接受，仍进入已接受来源核验与纠正路径。
+- 验证：`tests/test_r8_s2_data_repairs.py`、`tests/test_r8_s3_ledger.py` **19 passed**；`git diff --check` 通过。源码提交 `161b32aee`，证据提交见本文件所在提交。此结果仅证明固定 fixture 语义；不构成 10/14、10/15 实源验收或打包放行。

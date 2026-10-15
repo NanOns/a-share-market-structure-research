@@ -95,11 +95,12 @@ class ForwardR7Store:
                 present=pg.execute('SELECT 1 FROM information_schema.tables WHERE table_schema=%s AND table_name=%s',(expected,'forward_facts')).fetchone()
             if not present:raise RuntimeError('ISOLATED_FORWARD_FACTS_TABLE_MISSING')
             return expected
-        target_date = None
+        target_date = None;head_document={}
         head_path = self.root / "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json"
         if head_path.is_file():
             try:
-                target_date = json.loads(head_path.read_bytes()).get("accepted_trade_date")
+                head_document=json.loads(head_path.read_bytes())
+                target_date = head_document.get("accepted_trade_date")
             except (OSError, ValueError, TypeError):
                 target_date = None
         with psycopg.connect(self.dsn, connect_timeout=5) as pg:
@@ -116,6 +117,10 @@ class ForwardR7Store:
                             sql.Identifier(schema)), (f"%_{target_date}_core",)).fetchone()
                     if exists:
                         matches.append(schema)
+            if head_document.get('native_pg_owner_authority'):
+                owned=workspace_schema(self.root/'data/v4/operational_owner_pg_closeout_r1','forward')
+                if owned in matches:return owned
+                raise RuntimeError('FORWARD_ACCEPTED_WORKSPACE_NAMESPACE_REQUIRED')
             if len(matches) == 1:
                 return matches[0]
             expected = workspace_schema(self.root, "forward")

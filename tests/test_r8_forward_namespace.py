@@ -56,3 +56,22 @@ def test_changed_baseline_receipt_fails_hash_check(tmp_path,monkeypatch):
     store,path,binding,receipt=candidate(tmp_path,monkeypatch)
     receipt.write_text('{}')
     with pytest.raises(ValueError,match='DIGEST_MISMATCH'):store._resolve_existing_schema()
+
+
+@pytest.mark.parametrize('owned_present',[True,False])
+def test_head_bound_workspace_never_selects_a_foreign_matching_date(tmp_path,monkeypatch,owned_present):
+    head=tmp_path/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json';head.parent.mkdir(parents=True)
+    head.write_text(json.dumps(dict(accepted_trade_date='2026-10-13',native_pg_owner_authority={'path':'bound-authority.json'})))
+    owned=workspace_schema(tmp_path/'data/v4/operational_owner_pg_closeout_r1','forward')
+    candidates=[('v4_forward_foreign_matching_date',)]+([(owned,)] if owned_present else [])
+    class Connection:
+        def __enter__(self):return self
+        def __exit__(self,*args):pass
+        def execute(self,*args):return self
+        def fetchall(self):return candidates
+        def fetchone(self):return (1,)
+    monkeypatch.setattr('workbench_db.forward_r7_store.psycopg.connect',lambda *a,**kw:Connection())
+    store=ForwardR7Store.__new__(ForwardR7Store);store.root=tmp_path.resolve();store.dsn='unused'
+    if owned_present:assert store._resolve_existing_schema()==owned
+    else:
+        with pytest.raises(RuntimeError,match='ACCEPTED_WORKSPACE_NAMESPACE_REQUIRED'):store._resolve_existing_schema()

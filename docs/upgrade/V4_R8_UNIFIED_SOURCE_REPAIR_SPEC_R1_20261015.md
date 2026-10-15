@@ -104,3 +104,11 @@ policy, pending-publication policy and full numeric day validation are rechecked
 both market drivers remain revision-protected. A changed candidate, claimed
 production acceptance, wrong date or different generation policy fails. Five
 targeted baseline checks passed. Production baseline selection is unchanged.
+
+For a Head with embedded PG Owner authority, the default R7 namespace resolver
+now requires that workspace's Owner namespace rather than choosing another
+workspace solely because its core date matches. The explicit R8 candidate
+binding still takes precedence. Two additional tests cover simultaneous
+matching dates and a missing owned namespace; foreign workspaces cannot become
+an implicit fallback. This also prevents retained candidate dates from making
+a later production date ambiguous when the updated runtime is deployed.

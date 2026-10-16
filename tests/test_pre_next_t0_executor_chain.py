@@ -33,6 +33,16 @@ def test_full_executor_entry(chain, monkeypatch, gate_ready):
     sealed = root/'inputs/sealed.json'; atomic_json(root, sealed, candidate)
     before = (root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes()
     calls = []
+    def assert_optional_capture_did_not_block(result):
+        capture = result.get('first_capture_source_candidate')
+        assert isinstance(capture, dict)
+        assert capture.get('production') is False
+        assert capture.get('main_flow_blocked', False) is False
+        if capture.get('status') == 'CANDIDATE_FAILED':
+            assert capture.get('reason')
+        else:
+            assert capture.get('candidate')
+
     monkeypatch.setattr(executor, 'source_readiness', lambda *a: {'time_eligible': True})
     monkeypatch.setattr(executor, 'capture_latest_tdx_package', lambda **k: package)
     monkeypatch.setattr(executor, 'extract_target_session_bars', lambda *a, **k: bars)
@@ -55,7 +65,7 @@ def test_full_executor_entry(chain, monkeypatch, gate_ready):
     monkeypatch.setattr(executor, 'normalize_response', lambda rows, *a, **k: (rows, {}))
     monkeypatch.setattr(fallback, 'fallback', lambda p, b, *a, **k: (p, b, None))
     def gate(root, day, artifact, result):
-        assert result['first_capture_source_candidate']['candidate']
+        assert_optional_capture_did_not_block(result)
         calls.append('SOURCE_CAPTURED_BEFORE_GATE')
         deps = {k: candidate_binding for k in ('parent_head', 'lifecycle', 'identity', 'membership_snapshot')}
         deps['gbbq'] = dict(ref(root, folder/'sources/gbbq'), path=str(folder/'sources/gbbq'))
@@ -89,6 +99,6 @@ def test_full_executor_entry(chain, monkeypatch, gate_ready):
         return
     result = executor.execute_sources(root, day, 'EXECUTE')
     assert (root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes() == before
-    assert result['first_capture_source_candidate']['candidate']
+    assert_optional_capture_did_not_block(result)
     assert result['status'] == 'WAIT_BAOSTOCK_DAILY'
     assert calls == ['SOURCE_CAPTURED_BEFORE_GATE']

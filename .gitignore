@@ -22,6 +22,19 @@ data/
 reports/
 logs/
 runtime/
+artifacts/
+docs/evidence/
+
+# Permit only a version-bound comprehensive stage report under reports/.
+# Keep the reports parent traversable so Git can see the narrow exception below.
+!reports/
+reports/*
+!reports/stage/
+reports/stage/*
+!reports/stage/V4_*_COMPREHENSIVE_TEST_REPORT_[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]_R[0-9].md
+reports/audits/
+reports/r[0-9]*/
+reports/v4_*/
 
 # Large versioned R4/R5 evidence remains in the ignored local artifact store.
 # Commit only hashes, counts, bounded samples, validation reports, and receipts.
@@ -44,6 +57,14 @@ references/
 *.db
 *.sqlite
 *.sqlite3
+*.jsonl
+*.jsonl.gz
+*.zip
+*.dump
+*.exe
+*.dll
+junit*.xml
+pytest*.xml
 
 # Temporary and editor files
 tmp/

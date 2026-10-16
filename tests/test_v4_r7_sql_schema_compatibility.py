@@ -12,6 +12,8 @@ def test_core_result_migration_uses_current_publication_identity_columns():
     assert "where publication_id=new.publication_id and revision_no=new.publication_revision" in sql
     assert "s.publication_revision=new.revision_no" in sql
     assert "cs.revision=" not in sql
+    # The primary key already creates the same leading-key index.
+    assert "create index ix_daily_core_result_rows_security" not in sql
 
 
 def test_source_provenance_migration_uses_existing_revision_and_consumed_source_keys():
@@ -24,4 +26,5 @@ def test_source_provenance_migration_uses_existing_revision_and_consumed_source_
     assert "(publication_id, source_key, source_revision_id, digest)" in normalized_ingest
     assert "source_package_source_key" in sql
     assert "source_fact_digest" in sql
+    assert "and item->'record_locator'=new.record_locator" in " ".join(sql.split())
     assert "where new.publication_id=%s and revision=%s" not in ingest

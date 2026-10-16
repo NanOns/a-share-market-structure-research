@@ -72,9 +72,6 @@ CREATE TABLE v4.daily_core_result_rows (
     CHECK ((trade_status <> 'TRADING') OR (open IS NOT NULL AND high IS NOT NULL AND low IS NOT NULL AND close IS NOT NULL))
 );
 
-CREATE INDEX ix_daily_core_result_rows_security
-    ON v4.daily_core_result_rows (publication_id, publication_revision, security_id);
-
 CREATE OR REPLACE FUNCTION v4.require_core_row_consumed_tdx_revision()
 RETURNS trigger LANGUAGE plpgsql AS $$
 BEGIN

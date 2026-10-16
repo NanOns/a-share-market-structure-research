@@ -17,6 +17,73 @@ def readiness_binding_revision(source_revision_id,source_freeze,dependencies):
         source_revision_id=source_revision_id,source_freeze=source_freeze,
         dependency_bindings=dependencies)))
 
+
+def _runtime_acceptance_manifest_path(root, day):
+    """Resolve the versioned path contract for the active runtime receipt."""
+    contract_path = Path(__file__).resolve().parents[2] / 'config/v4_daily_runtime_acceptance_path_v1.json'
+    contract = json.loads(contract_path.read_bytes())
+    if (contract.get('contract_id') != 'V4_DAILY_RUNTIME_ACCEPTANCE_PATH_R1'
+            or contract.get('contract_version') != '1.0.0'):
+        raise ValueError('DAILY_RUNTIME_ACCEPTANCE_PATH_CONTRACT_INVALID')
+    template = contract.get('manifest_path_template')
+    if not isinstance(template, str) or template.count('{trade_date_compact}') != 1:
+        raise ValueError('DAILY_RUNTIME_ACCEPTANCE_PATH_TEMPLATE_INVALID')
+    relative = template.format(trade_date_compact=day.replace('-', ''))
+    root = Path(root).resolve()
+    path = (root / relative).resolve()
+    if not path.is_relative_to(root):
+        raise ValueError('DAILY_RUNTIME_ACCEPTANCE_PATH_ESCAPE')
+    return path
+
+
+def _tdx_gbbq_source_path():
+    """Load the configured, read-only TDX source input path."""
+    contract_path = Path(__file__).resolve().parents[2] / 'config/v4_daily_tdx_readonly_source_v1.json'
+    contract = json.loads(contract_path.read_bytes())
+    if (contract.get('contract_id') != 'V4_DAILY_TDX_READONLY_SOURCE_R1'
+            or contract.get('contract_version') != '1.0.0'
+            or contract.get('source_mode') != 'READ_ONLY_INPUT'):
+        raise ValueError('DAILY_TDX_SOURCE_PATH_CONTRACT_INVALID')
+    path = Path(contract.get('gbbq_path', ''))
+    if not path.is_absolute():
+        raise ValueError('DAILY_TDX_SOURCE_PATH_MUST_BE_ABSOLUTE')
+    return path
+
+
+def _pg_source_ingest_plan_diagnostic(root, day, result):
+    """Bridge the actual executor evidence into the PG adapter without IO.
+
+    This deliberately reports the adapter's readiness decision only. The
+    executor never turns its own clock/source gate into independent acceptance
+    authority and never persists a package or changes a publication Head.
+    """
+    freeze = result.get('source_freeze')
+    readiness = result.get('source_readiness')
+    if not isinstance(freeze, dict) or not isinstance(readiness, dict):
+        return None
+    try:
+        from workbench_db.v4_daily_source_ingest_r6 import (
+            CONTRACT_ID as SOURCE_INGEST_CONTRACT_ID,
+            CONTRACT_VERSION as SOURCE_INGEST_CONTRACT_VERSION,
+            build_source_ingest_plan,
+        )
+        plan = build_source_ingest_plan(root, trade_date=day,
+                                        source_freeze=freeze,
+                                        source_readiness=readiness)
+    except Exception as exc:
+        # Diagnostic bridge failures must not change the existing local daily
+        # executor semantics; they still fail closed and are visible to callers.
+        return dict(contract_id='V4_DAILY_SOURCE_INGEST_ADAPTER_R6',
+                    contract_version='1.0.0', trade_date=day,
+                    status='BRIDGE_BLOCKED', acceptance_status=str(exc),
+                    write_mode='PLAN_ONLY_NO_DATABASE_IO', persisted=False)
+    return dict(contract_id=plan['contract_id'], contract_version=plan['contract_version'],
+                trade_date=plan['trade_date'], package_id=plan['package_id'],
+                package_sha256=plan['package_sha256'], status=plan['status'],
+                acceptance_status=plan['acceptance_status'],
+                source_fact_count=len(plan['source_facts']),
+                write_mode=plan['write_mode'], persisted=False)
+
 def probe_source_revision(day):
     """Three bounded metadata requests; never download ZIP or query full market."""
     from .tdx_latest_daily_source_v2 import _package_validator
@@ -75,7 +142,7 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
         package=capture_latest_tdx_package(snapshot_root=snapshot,force_refresh=True)
         if not package.get('download'):return dict(status='WAIT_TDX',reason='POST_GATE_OFFICIAL_CAPTURE_NOT_FROZEN')
         bars=extract_target_session_bars(package,day,snapshot_root=snapshot)
-    manifest_path=root/'reports/v4_baostock/runtime_acceptance'/day.replace('-','')/'accepted_runtime_manifest.json'
+    manifest_path=_runtime_acceptance_manifest_path(root, day)
     try:
         manifest=load_runtime_acceptance_manifest(manifest_path,project_root=root)
         if manifest['live_smoke']['target_date']!=day:raise ValueError('EXACT_TARGET_RUNTIME_REQUIRED')
@@ -136,6 +203,7 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     result=dict(result,first_capture_source_candidate=optional_step(
         capture_daily_sources,root,day,result['source_freeze']))
     result,readiness=verify_source_gate(root,day,artifact,result)
+    result['pg_source_ingest_candidate'] = _pg_source_ingest_plan_diagnostic(root, day, result)
     progress(day,'SOURCE_READY' if readiness['source_ready'] else readiness['status'],result)
     if not readiness['source_ready']:return dict(result,status=readiness['status'],reason=readiness['reason'])
     if capture_only:return result
@@ -150,7 +218,10 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
         raise ValueError('EXACT_CANDIDATE_ONLY_CANNOT_PROMOTE')
     if engineering_replay_current:
         import os
-        if readback_url is not None or os.environ.get('R4_NATIVE_ISOLATION')!='1' or not root.resolve().is_relative_to(Path('G:/codex_tmp').resolve()):
+        isolation_root = os.environ.get('V4_R4_ISOLATION_ROOT')
+        if (readback_url is not None or os.environ.get('R4_NATIVE_ISOLATION') != '1'
+                or not isolation_root
+                or not root.resolve().is_relative_to(Path(isolation_root).resolve())):
             raise ValueError('ENGINEERING_REPLAY_CANNOT_PROMOTE')
     artifact=json.loads(checked(root,result['source_freeze']).read_bytes())
     from .producer_bootstrap_v1 import capture_daily_sources, optional_step
@@ -158,6 +229,7 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
         result=dict(result,first_capture_source_candidate=optional_step(
             capture_daily_sources,root,day,result['source_freeze']))
     result,readiness=verify_source_gate(root,day,artifact,result)
+    result['pg_source_ingest_candidate'] = _pg_source_ingest_plan_diagnostic(root, day, result)
     if not readiness['source_ready']:
         return dict(result,status=readiness['status'],reason=readiness['reason'])
     progress(day,'DERIVING',result)
@@ -308,7 +380,7 @@ def verify_source_gate(root,day,artifact,result,now=None):
             status='PREVIOUS_HEAD_IDENTITY_SCOPE_MATCH' if scope_matches else 'WAIT_DATED_IDENTITY_AUTHORITY',
             scope_matches=scope_matches,expected_codes=sorted(expected_codes),actual_codes=sorted(actual_codes),
             new_identity_admitted=False,provider_status='NATIVE_PROVIDERS_RECONCILED' if reconciled else 'NATIVE_PROVIDER_RECONCILIATION_FAILED')
-        gbbq=Path('D:/new_tdx/T0002/hq_cache/gbbq')
+        gbbq=_tdx_gbbq_source_path()
         before=gbbq.stat();gbbq_sha=tdx.sha256_file(gbbq);after=gbbq.stat()
         if (before.st_size,before.st_mtime_ns)!=(after.st_size,after.st_mtime_ns):raise ValueError('GBBQ_CHANGED_DURING_READINESS')
         dependencies=dict(parent_head=ref(root,head_path),lifecycle=life_binding,identity=life['identity'],

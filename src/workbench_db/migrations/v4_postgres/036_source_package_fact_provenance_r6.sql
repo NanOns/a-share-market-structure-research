@@ -84,6 +84,7 @@ BEGIN
           AND item->>'fact_digest'=NEW.fact_digest
           AND item->>'source_fact_sha256'=NEW.source_fact_sha256
           AND item->>'acceptance_receipt_id'=NEW.acceptance_receipt_id
+          AND item->'record_locator'=NEW.record_locator
     ) THEN
         RAISE EXCEPTION 'V4_SOURCE_PACKAGE_FACT_NOT_IN_BOUND_MANIFEST';
     END IF;

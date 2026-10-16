@@ -70,7 +70,8 @@ def _input():
     return receipt, rows, source_sha, producer_sha
 
 
-def _pg(plan, *, proof_rows=None):
+def _pg(plan, *, proof_rows=None, proof_overrides=None,
+        isolation="repeatable read", read_only="on"):
     receipt, _, source_sha, producer_sha = _input()
     row = plan["rows"][0]
     db_row = tuple(date.fromisoformat(row[key]) if key == "trade_date" else row[key] for key in (
@@ -84,7 +85,9 @@ def _pg(plan, *, proof_rows=None):
         "fact_digest": artifact["fact_digest"], "source_fact_sha256": artifact["source_fact_sha256"],
         "record_locator": artifact["record_locator"],
     }
-    package_manifest = {"acceptance_receipt_id": artifact["acceptance_receipt_id"], "source_fact_bindings": [fact]}
+    package_manifest = {"acceptance_receipt_id": artifact["acceptance_receipt_id"],
+                        "AS_RECORDED": True, "PIT_ELIGIBLE": True,
+                        "source_fact_bindings": [fact]}
     proof = (
         date.fromisoformat("2026-10-16"), "V4_PG_CONSUMED_SOURCE_MANIFEST_R2", source_sha,
         "tdx", artifact["source_revision_id"], artifact["fact_digest"], artifact["logical_fact_id"], 1,
@@ -97,8 +100,25 @@ def _pg(plan, *, proof_rows=None):
         "V4_DAILY_SOURCE_INGEST_R6", "ACCEPTED_SOURCE_PACKAGE", package_manifest,
         artifact["source_package_id"], artifact["source_key"], artifact["logical_fact_id"],
         artifact["fact_digest"], artifact["source_fact_sha256"], artifact["record_locator"],
-        artifact["acceptance_receipt_id"],
+        artifact["acceptance_receipt_id"], "ACCEPTED",
+        datetime(2026, 10, 16, 11, tzinfo=timezone.utc),
     )
+    proof_fields = (
+        "publication_trade_date", "source_manifest_contract_id", "publication_manifest_sha256",
+        "source_key", "source_revision_id", "consumed_digest", "logical_fact_id", "revision_no",
+        "revision_digest", "effective_from", "effective_to", "provider_available_at", "observed_at",
+        "ingested_at", "system_available_at", "tombstone", "revision_package_id",
+        "revision_package_source_key", "revision_source_fact_digest", "source_package_id",
+        "source_package_contract_version", "source_package_sha256", "source_package_page_observed_at",
+        "source_package_target_trade_date", "source_package_parser_version", "source_package_accepted_scope",
+        "source_package_manifest", "fact_package_id", "fact_source_key", "fact_logical_fact_id",
+        "fact_digest", "source_fact_sha256", "record_locator", "acceptance_receipt_id",
+        "publication_status", "publication_accepted_at",
+    )
+    if proof_overrides:
+        material = dict(zip(proof_fields, proof))
+        material.update(proof_overrides)
+        proof = tuple(material[key] for key in proof_fields)
     snapshot = (
         date.fromisoformat("2026-10-16"), plan["result_identity"],
         "V4_DAILY_CORE_RESULT_BINDING_R6", plan["producer_contract_id"], producer_sha,
@@ -108,7 +128,15 @@ def _pg(plan, *, proof_rows=None):
 
     selected_proof_rows = [proof] if proof_rows is None else proof_rows
     class PG:
-        def execute(self, query, params):
+        def __init__(self, *, isolation="repeatable read", read_only="on"):
+            self.isolation = isolation
+            self.read_only = read_only
+
+        def execute(self, query, params=None):
+            if query == "SHOW transaction_isolation":
+                return type("Result", (), {"fetchone": lambda self: (self_outer.isolation,)})()
+            if query == "SHOW transaction_read_only":
+                return type("Result", (), {"fetchone": lambda self: (self_outer.read_only,)})()
             if "daily_core_result_snapshots" in query:
                 return type("Result", (), {"fetchone": lambda self: snapshot})()
             if "daily_core_result_rows" in query:
@@ -116,7 +144,9 @@ def _pg(plan, *, proof_rows=None):
             assert "source_package_facts" in query
             assert "JOIN v4.source_package_facts" in query
             return type("Result", (), {"fetchall": lambda self: selected_proof_rows})()
-    return PG()
+    pg = PG(isolation=isolation, read_only=read_only)
+    self_outer = pg
+    return pg
 
 
 def test_core_result_plan_binds_actual_rows_and_keeps_unresolved_gate_closed():
@@ -251,6 +281,98 @@ def test_reader_fails_closed_when_independent_consumed_source_proof_is_missing()
     with pytest.raises(CoreResultError, match="CORE_RESULT_INDEPENDENT_SOURCE_PROOF_MISSING"):
         read_daily_core_result(
             _pg(plan, proof_rows=[]), publication_id="pub-20261016-r1",
+            publication_revision=1, trade_date="2026-10-16", source_manifest_sha256=source_sha,
+        )
+
+
+@pytest.mark.parametrize("field,late", [
+    ("provider_available_at", datetime(2026, 10, 16, 12, tzinfo=timezone.utc)),
+    ("observed_at", datetime(2026, 10, 16, 12, tzinfo=timezone.utc)),
+    ("ingested_at", datetime(2026, 10, 16, 12, tzinfo=timezone.utc)),
+    ("system_available_at", datetime(2026, 10, 16, 12, tzinfo=timezone.utc)),
+    ("source_package_page_observed_at", datetime(2026, 10, 16, 12, tzinfo=timezone.utc)),
+])
+def test_reader_rejects_any_source_clock_after_publication_accepted_at(field, late):
+    receipt, rows, source_sha, producer_sha = _input()
+    plan = build_daily_core_result_plan(
+        publication_id="pub-20261016-r1", publication_revision=1,
+        trade_date="2026-10-16", source_manifest_sha256=source_sha,
+        producer_contract_id="V4_OPERATIONAL_DAILY_OWNER_R1", producer_sha256=producer_sha,
+        producer_receipt=receipt, rows=rows,
+    )
+    with pytest.raises(CoreResultError, match="CORE_RESULT_SOURCE_AFTER_PUBLICATION_ACCEPTANCE"):
+        read_daily_core_result(
+            _pg(plan, proof_overrides={field: late}), publication_id="pub-20261016-r1",
+            publication_revision=1, trade_date="2026-10-16", source_manifest_sha256=source_sha,
+        )
+
+
+def test_reader_rejects_source_package_from_another_trade_date():
+    receipt, rows, source_sha, producer_sha = _input()
+    plan = build_daily_core_result_plan(
+        publication_id="pub-20261016-r1", publication_revision=1,
+        trade_date="2026-10-16", source_manifest_sha256=source_sha,
+        producer_contract_id="V4_OPERATIONAL_DAILY_OWNER_R1", producer_sha256=producer_sha,
+        producer_receipt=receipt, rows=rows,
+    )
+    with pytest.raises(CoreResultError, match="CORE_RESULT_CONSUMED_SOURCE_ARTIFACT_MISMATCH"):
+        read_daily_core_result(
+            _pg(plan, proof_overrides={"source_package_target_trade_date": date.fromisoformat("2026-10-15")}),
+            publication_id="pub-20261016-r1", publication_revision=1,
+            trade_date="2026-10-16", source_manifest_sha256=source_sha,
+        )
+
+
+def test_reader_uses_publication_accepted_at_as_the_actual_source_cutoff():
+    receipt, rows, source_sha, producer_sha = _input()
+    plan = build_daily_core_result_plan(
+        publication_id="pub-20261016-r1", publication_revision=1,
+        trade_date="2026-10-16", source_manifest_sha256=source_sha,
+        producer_contract_id="V4_OPERATIONAL_DAILY_OWNER_R1", producer_sha256=producer_sha,
+        producer_receipt=receipt, rows=rows,
+    )
+    with pytest.raises(CoreResultError, match="CORE_RESULT_SOURCE_AFTER_PUBLICATION_ACCEPTANCE"):
+        read_daily_core_result(
+            _pg(plan, proof_overrides={
+                "publication_accepted_at": datetime(2026, 10, 16, 10, tzinfo=timezone.utc),
+            }), publication_id="pub-20261016-r1", publication_revision=1,
+            trade_date="2026-10-16", source_manifest_sha256=source_sha,
+        )
+
+
+@pytest.mark.parametrize("proof_overrides,match", [
+    ({"acceptance_receipt_id": ""}, "CORE_RESULT_CONSUMED_SOURCE_ARTIFACT_MISMATCH"),
+    ({"source_package_manifest": {"acceptance_receipt_id": "accepted-r1",
+                                  "AS_RECORDED": False, "PIT_ELIGIBLE": True,
+                                  "source_fact_bindings": []}}, "CORE_RESULT_SOURCE_ACCEPTANCE_PROOF_INVALID"),
+])
+def test_reader_rejects_missing_or_non_pit_acceptance_proof(proof_overrides, match):
+    receipt, rows, source_sha, producer_sha = _input()
+    plan = build_daily_core_result_plan(
+        publication_id="pub-20261016-r1", publication_revision=1,
+        trade_date="2026-10-16", source_manifest_sha256=source_sha,
+        producer_contract_id="V4_OPERATIONAL_DAILY_OWNER_R1", producer_sha256=producer_sha,
+        producer_receipt=receipt, rows=rows,
+    )
+    with pytest.raises(CoreResultError, match=match):
+        read_daily_core_result(
+            _pg(plan, proof_overrides=proof_overrides), publication_id="pub-20261016-r1",
+            publication_revision=1, trade_date="2026-10-16", source_manifest_sha256=source_sha,
+        )
+
+
+@pytest.mark.parametrize("isolation,read_only", [("read committed", "on"), ("repeatable read", "off")])
+def test_reader_requires_same_repeatable_read_only_transaction(isolation, read_only):
+    receipt, rows, source_sha, producer_sha = _input()
+    plan = build_daily_core_result_plan(
+        publication_id="pub-20261016-r1", publication_revision=1,
+        trade_date="2026-10-16", source_manifest_sha256=source_sha,
+        producer_contract_id="V4_OPERATIONAL_DAILY_OWNER_R1", producer_sha256=producer_sha,
+        producer_receipt=receipt, rows=rows,
+    )
+    with pytest.raises(CoreResultError, match="CORE_RESULT_READ_TRANSACTION_MUST_BE_REPEATABLE_READ_ONLY"):
+        read_daily_core_result(
+            _pg(plan, isolation=isolation, read_only=read_only), publication_id="pub-20261016-r1",
             publication_revision=1, trade_date="2026-10-16", source_manifest_sha256=source_sha,
         )
 

@@ -107,7 +107,7 @@ def _read_consumed_source_proofs(pg: Any, *, publication_id: str, publication_re
                       sp.package_id,sp.contract_version,sp.package_sha256,sp.page_observed_at,
                       sp.target_trade_date,sp.parser_version,sp.accepted_scope,sp.manifest,
                       f.package_id,f.source_key,f.logical_fact_id,f.fact_digest,f.source_fact_sha256,
-                      f.record_locator,f.acceptance_receipt_id
+                      f.record_locator,f.acceptance_receipt_id,p.status,p.accepted_at
                  FROM v4.publications p
                  JOIN v4.publication_consumed_sources cs ON cs.publication_id=p.publication_id
                  JOIN v4.source_revisions sr ON sr.source_revision_id=cs.source_revision_id
@@ -135,6 +135,7 @@ def _read_consumed_source_proofs(pg: Any, *, publication_id: str, publication_re
         "source_package_target_trade_date", "source_package_parser_version", "source_package_accepted_scope",
         "source_package_manifest", "fact_package_id", "fact_source_key", "fact_logical_fact_id",
         "fact_digest", "source_fact_sha256", "record_locator", "acceptance_receipt_id",
+        "publication_status", "publication_accepted_at",
     )
     try:
         from .v4_source_manifest import CONTRACT_ID as SOURCE_MANIFEST_CONTRACT_ID, build_source_manifest
@@ -150,6 +151,11 @@ def _read_consumed_source_proofs(pg: Any, *, publication_id: str, publication_re
                     or str(proof["publication_manifest_sha256"]).strip() != source_manifest_sha256):
                 raise CoreResultError("CORE_RESULT_CONSUMED_SOURCE_MANIFEST_IDENTITY_MISMATCH")
             observed_trade_date = proof["publication_trade_date"].isoformat()
+            accepted_at = proof["publication_accepted_at"]
+            if (proof["publication_status"] != "ACCEPTED"
+                    or not isinstance(accepted_at, datetime) or accepted_at.tzinfo is None):
+                raise CoreResultError("CORE_RESULT_PUBLICATION_ACCEPTANCE_CUTOFF_INVALID")
+            accepted_at = accepted_at.astimezone(timezone.utc)
             key = proof["source_key"]
             if key in seen_source_keys:
                 raise CoreResultError("CORE_RESULT_CONSUMED_SOURCE_KEY_DUPLICATE")
@@ -166,21 +172,39 @@ def _read_consumed_source_proofs(pg: Any, *, publication_id: str, publication_re
                     or str(proof["revision_source_fact_digest"]).strip() != str(proof["fact_digest"]).strip()
                     or proof["source_package_accepted_scope"] != "ACCEPTED_SOURCE_PACKAGE"
                     or proof["source_package_target_trade_date"].isoformat() != target
+                    or not isinstance(proof["acceptance_receipt_id"], str)
+                    or not proof["acceptance_receipt_id"].strip()
                     or proof["tombstone"] is True
                     or proof["effective_from"] is not None and proof["effective_from"].isoformat() > target
                     or proof["effective_to"] is not None and proof["effective_to"].isoformat() < target):
                 raise CoreResultError("CORE_RESULT_CONSUMED_SOURCE_ARTIFACT_MISMATCH")
             if proof["source_package_manifest"] is None:
                 raise CoreResultError("CORE_RESULT_SOURCE_PACKAGE_MANIFEST_MISSING")
-            package_bindings = proof["source_package_manifest"].get("source_fact_bindings")
+            package_manifest = proof["source_package_manifest"]
+            if (package_manifest.get("acceptance_receipt_id") != proof["acceptance_receipt_id"]
+                    or package_manifest.get("AS_RECORDED") is not True
+                    or package_manifest.get("PIT_ELIGIBLE") is not True):
+                raise CoreResultError("CORE_RESULT_SOURCE_ACCEPTANCE_PROOF_INVALID")
+            cutoff_clocks = {
+                "source_package_page_observed_at": proof["source_package_page_observed_at"],
+                "observed_at": proof["observed_at"],
+                "ingested_at": proof["ingested_at"],
+                "system_available_at": proof["system_available_at"],
+            }
+            if proof["provider_available_at"] is not None:
+                cutoff_clocks["provider_available_at"] = proof["provider_available_at"]
+            for clock_name, clock_value in cutoff_clocks.items():
+                if (not isinstance(clock_value, datetime) or clock_value.tzinfo is None
+                        or clock_value.astimezone(timezone.utc) > accepted_at):
+                    raise CoreResultError("CORE_RESULT_SOURCE_AFTER_PUBLICATION_ACCEPTANCE:" + clock_name)
+            package_bindings = package_manifest.get("source_fact_bindings")
             expected_fact = {
                 "source_key": key, "logical_fact_id": proof["logical_fact_id"],
                 "fact_digest": str(proof["fact_digest"]).strip(),
                 "source_fact_sha256": str(proof["source_fact_sha256"]).strip(),
                 "record_locator": proof["record_locator"],
             }
-            if (proof["source_package_manifest"].get("acceptance_receipt_id") != proof["acceptance_receipt_id"]
-                    or not isinstance(package_bindings, list) or not any(
+            if (not isinstance(package_bindings, list) or not any(
                     isinstance(item, Mapping) and all(item.get(name) == value for name, value in expected_fact.items())
                     for item in package_bindings)):
                 raise CoreResultError("CORE_RESULT_SOURCE_PACKAGE_MANIFEST_FACT_MISMATCH")
@@ -442,12 +466,25 @@ def build_daily_core_result_plan(
 
 def read_daily_core_result(pg: Any, *, publication_id: str, publication_revision: int,
                            trade_date: str, source_manifest_sha256: str) -> VerifiedDailyCoreResult:
-    """Independently read back and hash a publication-bound core result in PG."""
+    """Read back a result inside the caller's explicit read-only RR snapshot.
+
+    The caller must begin a READ ONLY, REPEATABLE READ transaction before this
+    call. The function verifies that transaction on the same PG connection;
+    it never upgrades transaction isolation or accepts a cursor/mock that
+    cannot attest it.
+    """
     target = _date(trade_date)
     if (not isinstance(publication_id, str) or not publication_id.strip()
             or isinstance(publication_revision, bool) or not isinstance(publication_revision, int)
             or publication_revision <= 0 or not _SHA256.fullmatch(str(source_manifest_sha256))):
         raise CoreResultError("CORE_RESULT_PUBLICATION_IDENTITY_INVALID")
+    try:
+        isolation = pg.execute("SHOW transaction_isolation").fetchone()[0]
+        read_only = pg.execute("SHOW transaction_read_only").fetchone()[0]
+    except Exception as exc:
+        raise CoreResultError("CORE_RESULT_READ_TRANSACTION_UNVERIFIABLE") from exc
+    if str(isolation).lower().replace("_", " ") != "repeatable read" or str(read_only).lower() not in {"on", "true", "1"}:
+        raise CoreResultError("CORE_RESULT_READ_TRANSACTION_MUST_BE_REPEATABLE_READ_ONLY")
     snapshot = pg.execute(
         """SELECT trade_date,result_identity,result_contract_id,producer_contract_id,
                   producer_sha256,producer_receipt_sha256,source_manifest_sha256,result_sha256,row_count,

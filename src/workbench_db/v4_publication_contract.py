@@ -9,17 +9,18 @@ from types import MappingProxyType
 
 CONTRACT_ID = "V4_CURRENT_PUBLICATION_OWNER_PROJECTION_CONTRACT_R4"
 CONTRACT_VERSION = "4.0.0"
-MINIMUM_DAILY_PUBLICATION_CONTRACT_ID = "V4_DAILY_PUBLICATION_MINIMUM_R1"
+MINIMUM_DAILY_PUBLICATION_CONTRACT_ID = "V4_DAILY_PUBLICATION_MINIMUM_R2"
 MINIMUM_DAILY_PUBLICATION_CONTRACT = MappingProxyType({
     "contract_id": MINIMUM_DAILY_PUBLICATION_CONTRACT_ID,
-    "version": "1.0.0",
+    "version": "2.0.0",
     "required_owner_families": (),
     "required_base_fields": (
         "publication_id", "trade_date", "model_namespace_id", "revision_no",
         "database_identity", "computation_identity_sha256", "state_head_id", "state_logical_digest",
         "nonempty_source_manifest_contract", "verified_source_revision_rows",
+        "accepted_source_package_authority", "bound_core_business_result",
     ),
-    "acceptance_boundary": "CANDIDATE_PLAN_ONLY; PG READBACK AND HEAD WRITE ARE SEPARATE",
+    "acceptance_boundary": "METADATA_READY_IS_NOT_BUSINESS_PUBLISHABLE; CORE_RESULT_BINDING_REQUIRED; PG_READBACK_AND_HEAD_WRITE_SEPARATE",
 })
 
 OWNER_FAMILIES = MappingProxyType({

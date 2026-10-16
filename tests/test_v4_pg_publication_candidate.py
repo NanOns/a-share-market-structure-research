@@ -61,6 +61,13 @@ def source_row(**changes):
         "ingested_at": datetime(2026, 10, 15, 15, 7, tzinfo=timezone.utc),
         "system_available_at": datetime(2026, 10, 15, 15, 8, tzinfo=timezone.utc),
         "tombstone": False,
+        "source_package_id": "pkg-20261015-r1",
+        "source_package_contract_version": "V4_DAILY_CAPTURE_R1",
+        "source_package_sha256": "f" * 64,
+        "source_package_page_observed_at": datetime(2026, 10, 15, 15, 6, tzinfo=timezone.utc),
+        "source_package_target_trade_date": TARGET_DATE,
+        "source_package_parser_version": "daily-parser-r1",
+        "source_package_accepted_scope": "ACCEPTED_SOURCE_PACKAGE",
     }
     row.update(changes)
     return row
@@ -192,6 +199,10 @@ def test_reader_returns_final_schema_identity_and_preserves_owner_quality():
     assert "p.revision_no" in head_sql and "state_heads" in head_sql
     source_sql = next(sql for sql, _ in connection.statements if "FROM v4.publication_consumed_sources" in sql)
     assert "ORDER BY convert_to(cs.source_key, 'UTF8')" in source_sql
+    assert "JOIN v4.source_packages sp ON sp.package_id=sr.source_package_id" in source_sql
+    assert "sp.accepted_scope AS source_package_accepted_scope" in source_sql
+    event_sql = next(sql for sql, _ in connection.statements if "FROM v4.event_observations" in sql)
+    assert "row_number() OVER" in event_sql and "ORDER BY observation_revision DESC" in event_sql
 
 
 def test_metadata_only_is_marked_unverified_and_is_not_the_default():
@@ -236,6 +247,19 @@ def test_source_digest_clock_or_t0_corruption_blocks_context():
         (source_row(system_available_at=datetime(2026, 10, 16, tzinfo=timezone.utc)), "PUBLICATION_SOURCE_AVAILABLE_AFTER_ACCEPTANCE"),
         (source_row(effective_from=date(2026, 10, 16)), "PUBLICATION_SOURCE_OUTSIDE_T0_WINDOW"),
         (source_row(tombstone=True), "PUBLICATION_SOURCE_TOMBSTONED"),
+    ]
+    for source, code in cases:
+        with pytest.raises(PublicationReadError, match=code):
+            reader_for(FakeConnection(head=publication_row(), sources=[source])).read_context(
+                trade_date="2026-10-15", model_namespace_id="v4-main",
+            )
+
+
+def test_reader_rechecks_accepted_package_identity_and_t0_clock():
+    cases = [
+        (source_row(source_package_accepted_scope="DIAGNOSTIC_ONLY"), "SOURCE_PACKAGE_NOT_ACCEPTED_OR_UNBOUND"),
+        (source_row(source_package_target_trade_date=date(2026, 10, 14)), "SOURCE_PACKAGE_T0_MISMATCH"),
+        (source_row(source_package_page_observed_at=datetime(2026, 10, 14, 15, 0, tzinfo=timezone.utc)), "FUTURE_TRADE_DATE_WITHOUT_SAME_DAY_SOURCE_OBSERVATION"),
     ]
     for source, code in cases:
         with pytest.raises(PublicationReadError, match=code):
@@ -375,7 +399,12 @@ def test_adapter_parses_exact_publication_bound_events_and_lifecycle_fields():
         "effective_event": "BREAKOUT", "trade_date": "2026-10-15", "why_now": "volume",
     }
     assert summary["field_mapping"]["effective_event"] == "page_data.summary_events[0].payload.effective_event"
+    assert summary["parsed_business_fields"]["events"][0]["field_states"]["effective_event"] == "PG_FIELD_VERIFIED"
+    assert summary["parsed_business_fields"]["events"][0]["field_states"]["counterevidence"] == "SOURCE_MISSING"
     assert entity["parsed_business_fields"]["lifecycle"][0]["security_id"] == "000001.SZ"
+    assert entity["parsed_business_fields"]["lifecycle"][0]["field_states"]["security_id"] == "PG_FIELD_VERIFIED"
+    assert entity["field_states"]["trade_date"] == "PG_FIELD_VERIFIED"
+    assert entity["field_states"]["close"] == "SOURCE_MISSING"
     assert entity["field_mapping"]["security_id"] == "page_data.entity_lifecycle[0].security_id"
     assert entity["uncovered_reasons"]["RAW_DAILY"] == "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION"
 
@@ -409,10 +438,12 @@ def candidate(**overrides):
 
 def test_candidate_is_candidate_only_and_preserves_quality_flags():
     plan = candidate()
-    assert plan["status"] == "CANDIDATE_READY" and plan["publish_status"] == "CANDIDATE"
+    assert plan["status"] == "METADATA_CANDIDATE_READY" and plan["publish_status"] == "BLOCKED_BUSINESS_PUBLISHABILITY"
     assert plan["accepted_at"] is None and plan["head_update"] == "PLAN_ONLY_NOT_EXECUTED"
-    assert plan["global_requiredness_status"] == "PASS_MINIMUM_DAILY_SNAPSHOT_R1"
-    assert plan["minimum_publish_contract_id"] == "V4_DAILY_PUBLICATION_MINIMUM_R1"
+    assert plan["metadata_readiness_status"] == "SOURCE_AND_IDENTITY_VALIDATED"
+    assert plan["business_publishability_status"] == "BLOCKED_CORE_RESULT_NOT_BOUND"
+    assert plan["global_requiredness_status"] == "PASS_METADATA_IDENTITY_ONLY"
+    assert plan["minimum_publish_contract_id"] == "V4_DAILY_PUBLICATION_MINIMUM_R2"
     assert plan["revision_no"] == 1 and plan["publication_lineage_id"] == "lineage-20261015"
     assert plan["module_results"][0]["quality_status"] == "DEGRADED"
     assert plan["module_results"][0]["as_recorded"] is False
@@ -422,7 +453,7 @@ def test_candidate_is_candidate_only_and_preserves_quality_flags():
 
 def test_candidate_required_modules_and_versioned_contract_cannot_be_downgraded():
     partial = candidate(module_results=[])
-    assert partial["status"] == "CANDIDATE_READY"
+    assert partial["status"] == "METADATA_CANDIDATE_READY"
     assert partial["module_results"] == []
     bad = owner_results()
     bad[0]["module_contract_id"] = "OPTIONAL_OVERRIDE"
@@ -462,30 +493,36 @@ def test_candidate_rejects_source_owner_and_state_identity_mismatch():
         candidate(module_results=bad_owner)
 
 
-def test_head_planner_uses_publication_id_and_exact_state_cas_without_writes():
+def test_metadata_candidate_ready_does_not_authorize_head_change():
+    plan = candidate()
+    assert plan["status"] == "METADATA_CANDIDATE_READY"
+    with pytest.raises(CandidatePlanError, match="CANDIDATE_NOT_READY"):
+        plan_publication_head_change(plan, None)
+
+
+def test_candidate_rejects_package_scope_t0_and_future_observation_mismatch():
+    with pytest.raises(CandidatePlanError, match="CANDIDATE_SOURCE_MANIFEST_UNVERIFIED"):
+        candidate(source_manifest_rows=[source_row(source_package_accepted_scope="REJECTED")])
+    with pytest.raises(CandidatePlanError, match="SOURCE_PACKAGE_T0_MISMATCH"):
+        candidate(source_manifest_sha256=None, source_manifest_rows=[source_row(source_package_target_trade_date=date(2026, 10, 14))])
+    with pytest.raises(CandidatePlanError, match="FUTURE_TRADE_DATE_WITHOUT_SAME_DAY_SOURCE_OBSERVATION"):
+        candidate(source_manifest_sha256=None, source_manifest_rows=[source_row(source_package_page_observed_at=datetime(2026, 10, 14, 15, 0, tzinfo=timezone.utc))])
+    with pytest.raises(CandidatePlanError, match="INVALID_TRADE_DATE"):
+        candidate(trade_date="20261015")
+
+
+def test_head_planner_blocks_metadata_ready_without_business_result_binding():
     first = candidate()
-    initial = plan_publication_head_change(first, None)
-    assert initial["action"] == "INSERT_IF_ABSENT" and initial["initial_boundary_review_required"] is True
-    assert initial["write_executed"] is False
-    next_pub = candidate(
-        publication_id="candidate-20261015-r2", revision_no=2,
-        same_day_revision_parent_id=first["publication_id"], prior_session_gap_reason="INITIAL_BOUNDARY",
-    )
-    cas = plan_publication_head_change(next_pub, {
-        "trade_date": "2026-10-15", "model_namespace_id": "v4-main",
-        "publication_id": first["publication_id"], "revision_no": 1,
-        "publication_lineage_id": first["publication_lineage_id"],
-        "state_head_id": first["state_head_id"], "state_logical_digest": first["state_logical_digest"],
-    })
-    assert cas["action"] == "CAS_UPDATE" and cas["write_executed"] is False
-    assert cas["expected_prior_head"]["publication_id"] == first["publication_id"]
-    assert "revision" not in cas["expected_prior_head"]
+    assert first["metadata_readiness_status"] == "SOURCE_AND_IDENTITY_VALIDATED"
+    assert first["business_publishability_status"] == "BLOCKED_CORE_RESULT_NOT_BOUND"
+    with pytest.raises(CandidatePlanError, match="CANDIDATE_NOT_READY"):
+        plan_publication_head_change(first, None)
 
 
-def test_head_planner_rejects_wrong_parent_or_non_next_revision():
+def test_head_planner_keeps_cas_unreachable_until_business_snapshot_is_verified():
     first = candidate()
     wrong_parent = candidate(publication_id="candidate-r2", revision_no=2, same_day_revision_parent_id="other")
-    with pytest.raises(CandidatePlanError, match="HEAD_CAS_PRECONDITION_MISMATCH"):
+    with pytest.raises(CandidatePlanError, match="CANDIDATE_NOT_READY"):
         plan_publication_head_change(wrong_parent, {
             "trade_date": first["trade_date"], "model_namespace_id": first["model_namespace_id"],
             "publication_id": first["publication_id"], "revision_no": 1,
@@ -493,7 +530,7 @@ def test_head_planner_rejects_wrong_parent_or_non_next_revision():
             "state_head_id": first["state_head_id"], "state_logical_digest": first["state_logical_digest"],
         })
     gap = candidate(publication_id="candidate-r4", revision_no=4, same_day_revision_parent_id=first["publication_id"])
-    with pytest.raises(CandidatePlanError, match="PUBLICATION_REVISION_NOT_NEXT"):
+    with pytest.raises(CandidatePlanError, match="CANDIDATE_NOT_READY"):
         plan_publication_head_change(gap, {
             "trade_date": first["trade_date"], "model_namespace_id": first["model_namespace_id"],
             "publication_id": first["publication_id"], "revision_no": 1,

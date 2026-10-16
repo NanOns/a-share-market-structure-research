@@ -6,10 +6,11 @@ readback in one repeatable-read, read-only transaction. It does not switch or
 write the production Head.
 """
 from contextlib import contextmanager
-from datetime import date
+from datetime import date, datetime
 import os
 import re
 from typing import Any, Callable, Mapping
+from zoneinfo import ZoneInfo
 
 from workbench_service.current_v4_context import canonical, digest
 from .v4_publication_contract import (
@@ -343,11 +344,19 @@ class PgPublicationReader:
         try:
             event_rows = _row_dicts(pg.execute(
                 """SELECT logical_event_id,observation_revision,status,payload
-                     FROM v4.event_observations
-                    WHERE publication_id=%s AND status='ACTIVE'
-                    ORDER BY logical_event_id COLLATE \"C\",observation_revision
+                     FROM (
+                         SELECT logical_event_id,observation_revision,status,payload,
+                                row_number() OVER (
+                                    PARTITION BY logical_event_id
+                                    ORDER BY observation_revision DESC
+                                ) AS event_rank
+                           FROM v4.event_observations
+                          WHERE publication_id=%s AND publication_revision=%s
+                     ) latest
+                    WHERE event_rank=1 AND status='ACTIVE'
+                    ORDER BY logical_event_id COLLATE \"C\"
                     LIMIT 50001""",
-                (publication_id,),
+                (publication_id, int(publication["revision_no"])),
             ), ("logical_event_id", "observation_revision", "status", "payload"))
             source_ids = sorted({row["source_revision_id"] for row in source_rows})
             lifecycle_rows = []
@@ -379,12 +388,19 @@ class PgPublicationReader:
                     or int(row.get("observation_revision", 0)) < 1
                     or row.get("status") != "ACTIVE" or not isinstance(row.get("payload"), Mapping)):
                 raise PublicationReadError("EVENT_OBSERVATION_IDENTITY_INVALID")
+            event_date = row["payload"].get("trade_date")
+            if event_date is not None and _iso_date(event_date) != target_date.isoformat():
+                raise PublicationReadError("EVENT_TRADE_DATE_MISMATCH")
         bound_source_ids = {row["source_revision_id"] for row in source_rows}
         for row in lifecycle_rows:
             if row.get("source_revision_id") not in bound_source_ids:
                 raise PublicationReadError("LIFECYCLE_SOURCE_NOT_PUBLICATION_BOUND")
-            if row.get("quality") is None or row.get("security_id") is None:
+            if (not isinstance(row.get("quality"), str) or not row["quality"].strip()
+                    or not isinstance(row.get("security_id"), str) or not row["security_id"].strip()
+                    or not isinstance(row.get("source_revision_id"), str)):
                 raise PublicationReadError("LIFECYCLE_ROW_QUALITY_OR_IDENTITY_MISSING")
+            if row.get("listed_from") is not None and row.get("listed_to") is not None and row["listed_to"] < row["listed_from"]:
+                raise PublicationReadError("LIFECYCLE_LISTING_DATE_WINDOW_INVALID")
         def json_row(row):
             return {key: value.isoformat() if hasattr(value, "isoformat") else value for key, value in row.items()}
         return {
@@ -432,9 +448,17 @@ class PgPublicationReader:
             """SELECT cs.source_key, cs.source_revision_id, cs.digest,
                       sr.logical_fact_id, sr.revision_no, sr.digest AS revision_digest,
                       sr.effective_from, sr.effective_to, sr.provider_available_at,
-                      sr.observed_at, sr.ingested_at, sr.system_available_at, sr.tombstone
+                      sr.observed_at, sr.ingested_at, sr.system_available_at, sr.tombstone,
+                      sp.package_id AS source_package_id,
+                      sp.contract_version AS source_package_contract_version,
+                      sp.package_sha256 AS source_package_sha256,
+                      sp.page_observed_at AS source_package_page_observed_at,
+                      sp.target_trade_date AS source_package_target_trade_date,
+                      sp.parser_version AS source_package_parser_version,
+                      sp.accepted_scope AS source_package_accepted_scope
                  FROM v4.publication_consumed_sources cs
                  JOIN v4.source_revisions sr ON sr.source_revision_id=cs.source_revision_id
+                 LEFT JOIN v4.source_packages sp ON sp.package_id=sr.source_package_id
                 WHERE cs.publication_id=%s
                 ORDER BY convert_to(cs.source_key, 'UTF8')""",
             (publication["publication_id"],),
@@ -443,6 +467,9 @@ class PgPublicationReader:
             "source_key", "source_revision_id", "digest", "logical_fact_id", "revision_no",
             "revision_digest", "effective_from", "effective_to", "provider_available_at",
             "observed_at", "ingested_at", "system_available_at", "tombstone",
+            "source_package_id", "source_package_contract_version", "source_package_sha256",
+            "source_package_page_observed_at", "source_package_target_trade_date",
+            "source_package_parser_version", "source_package_accepted_scope",
         )
         rows = _row_dicts(cursor, columns)
         if not rows:
@@ -454,6 +481,16 @@ class PgPublicationReader:
             if row["source_key"] in seen:
                 raise PublicationReadError("DUPLICATE_PUBLICATION_SOURCE_KEY")
             seen.add(row["source_key"])
+            if (row.get("source_package_accepted_scope") != "ACCEPTED_SOURCE_PACKAGE"
+                    or row.get("source_package_id") is None):
+                raise PublicationReadError("SOURCE_PACKAGE_NOT_ACCEPTED_OR_UNBOUND")
+            if _iso_date(row.get("source_package_target_trade_date")) != target.isoformat():
+                raise PublicationReadError("SOURCE_PACKAGE_T0_MISMATCH")
+            page_observed_at = row.get("source_package_page_observed_at")
+            if not isinstance(page_observed_at, datetime) or page_observed_at.tzinfo is None:
+                raise PublicationReadError("SOURCE_PACKAGE_OBSERVATION_CLOCK_MISSING")
+            if page_observed_at.astimezone(ZoneInfo("Asia/Shanghai")).date() < target:
+                raise PublicationReadError("FUTURE_TRADE_DATE_WITHOUT_SAME_DAY_SOURCE_OBSERVATION")
             if not _DIGEST.fullmatch(str(row["digest"]).strip()) or str(row["digest"]).strip() != str(row["revision_digest"]).strip():
                 raise PublicationReadError("PUBLICATION_SOURCE_DIGEST_MISMATCH")
             if row["tombstone"] is True:

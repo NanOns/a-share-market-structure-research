@@ -4,9 +4,10 @@ This module never connects to PostgreSQL, inserts DML, or changes a Head.
 Database identity is the opaque ``publication_id``; ``revision_no`` is only the
 lineage sequence and is never used as a foreign-key component.
 """
-from datetime import date
+from datetime import date, datetime
 import re
 from typing import Any, Mapping, Sequence
+from zoneinfo import ZoneInfo
 
 from workbench_service.current_v4_context import canonical, digest
 from .v4_publication_contract import (
@@ -35,7 +36,10 @@ def _valid_date(value: Any) -> str:
         return value.isoformat()
     if isinstance(value, str):
         try:
-            return date.fromisoformat(value).isoformat()
+            parsed = date.fromisoformat(value)
+            if parsed.isoformat() != value:
+                raise ValueError("noncanonical")
+            return parsed.isoformat()
         except ValueError as exc:
             raise CandidatePlanError("INVALID_TRADE_DATE") from exc
     raise CandidatePlanError("INVALID_TRADE_DATE")
@@ -158,6 +162,19 @@ def build_publication_candidate(
     if source_bindings != dict(sorted(source_row_bindings.items())):
         raise CandidatePlanError("SOURCE_MANIFEST_BINDING_MISMATCH")
     for row in normalized_source_rows:
+        if row["source_package_target_trade_date"] != target_date:
+            raise CandidatePlanError("SOURCE_PACKAGE_T0_MISMATCH")
+        package_observed_at = row["source_package_page_observed_at"]
+        if package_observed_at is None:
+            raise CandidatePlanError("SOURCE_PACKAGE_OBSERVATION_CLOCK_MISSING")
+        try:
+            package_observed_date = datetime.fromisoformat(
+                package_observed_at.replace("Z", "+00:00")
+            ).astimezone(ZoneInfo("Asia/Shanghai")).date()
+        except (TypeError, ValueError) as exc:
+            raise CandidatePlanError("SOURCE_PACKAGE_OBSERVATION_CLOCK_INVALID") from exc
+        if package_observed_date < date.fromisoformat(target_date):
+            raise CandidatePlanError("FUTURE_TRADE_DATE_WITHOUT_SAME_DAY_SOURCE_OBSERVATION")
         if row["digest"] != row["revision_digest"]:
             raise CandidatePlanError("SOURCE_MANIFEST_REVISION_DIGEST_MISMATCH")
         if row["tombstone"]:
@@ -230,13 +247,19 @@ def build_publication_candidate(
     extras = sorted(set(normalized) - set(supported_owner_keys()))
     if extras:
         raise CandidatePlanError("MODULE_NOT_IN_EFFECTIVE_CONTRACT")
-    status = "CANDIDATE_INCOMPLETE" if missing_required else "CANDIDATE_READY"
+    status = "METADATA_CANDIDATE_INCOMPLETE" if missing_required else "METADATA_CANDIDATE_READY"
     readiness_reasons = ["REQUIRED_MODULE_RESULT_MISSING"] if missing_required else []
     body = {
         "contract_id": CONTRACT_ID,
         "module_contract_id": MODULE_CONTRACT_ID,
         "candidate_only": True,
-        "publish_status": "CANDIDATE",
+        "publish_status": "BLOCKED_BUSINESS_PUBLISHABILITY",
+        "metadata_readiness_status": "SOURCE_AND_IDENTITY_VALIDATED" if not missing_required else "INCOMPLETE",
+        # A validated manifest and optional Owner capability rows do not prove
+        # any business result. No current V4 daily producer binds its core
+        # persisted output to this publication contract, so release stays shut.
+        "business_publishability_status": "BLOCKED_CORE_RESULT_NOT_BOUND",
+        "business_publishability_reasons": ["NO_VERIFIED_CURRENT_DAILY_CORE_RESULT_BINDING"],
         "accepted_at": None,
         "head_update": "PLAN_ONLY_NOT_EXECUTED",
         "minimum_publish_contract_id": MINIMUM_DAILY_PUBLICATION_CONTRACT_ID,
@@ -247,10 +270,12 @@ def build_publication_candidate(
             "computation_identity_digest": "PASS",
             "source_manifest_rows_and_digest": "PASS",
             "source_revision_digest_t0_tombstone_and_clock_rules": "PASS",
+            "accepted_source_package_binding": "PASS",
+            "core_business_result_binding": "BLOCKED_NO_VERIFIED_CURRENT_DAILY_PRODUCER",
             "optional_owner_families": "NOT_REQUIRED_BY_CONTRACT",
-            "pg_candidate_readback_and_head_write": "NOT_EXECUTED_BY_PURE_PLANNER",
+            "pg_candidate_readback_and_head_write": "BLOCKED_UNTIL_BUSINESS_PUBLISHABLE",
         },
-        "global_requiredness_status": "PASS_MINIMUM_DAILY_SNAPSHOT_R1" if not missing_required else "FAIL_REQUIRED_OWNER_MISSING",
+        "global_requiredness_status": "PASS_METADATA_IDENTITY_ONLY" if not missing_required else "FAIL_REQUIRED_OWNER_MISSING",
         "publication_id": publication_id,
         "trade_date": target_date,
         "revision_no": revision_no,
@@ -282,8 +307,10 @@ def build_publication_candidate(
 
 def plan_publication_head_change(candidate: Mapping[str, Any], current_head: Mapping[str, Any] | None) -> dict[str, Any]:
     """Describe exact publication-id CAS; never execute or grant a write."""
-    if (not isinstance(candidate, Mapping) or candidate.get("status") != "CANDIDATE_READY"
-            or candidate.get("global_requiredness_status") != "PASS_MINIMUM_DAILY_SNAPSHOT_R1"
+    if (not isinstance(candidate, Mapping) or candidate.get("status") != "METADATA_CANDIDATE_READY"
+            or candidate.get("metadata_readiness_status") != "SOURCE_AND_IDENTITY_VALIDATED"
+            or candidate.get("business_publishability_status") != "PUBLISHABLE_BUSINESS_SNAPSHOT"
+            or candidate.get("global_requiredness_status") != "PASS_PUBLISHABLE_BUSINESS_SNAPSHOT"
             or candidate.get("minimum_publish_contract_id") != MINIMUM_DAILY_PUBLICATION_CONTRACT_ID
             or not candidate.get("source_manifest_sha256")):
         raise CandidatePlanError("CANDIDATE_NOT_READY")

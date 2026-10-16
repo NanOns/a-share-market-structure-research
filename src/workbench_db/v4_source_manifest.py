@@ -11,13 +11,16 @@ import re
 from typing import Any, Mapping, Sequence
 
 
-CONTRACT_ID = "V4_PG_CONSUMED_SOURCE_MANIFEST_R1"
-CONTRACT_VERSION = "1.0.0"
+CONTRACT_ID = "V4_PG_CONSUMED_SOURCE_MANIFEST_R2"
+CONTRACT_VERSION = "2.0.0"
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 FIELDS = (
     "source_key", "source_revision_id", "digest", "logical_fact_id", "revision_no",
     "revision_digest", "effective_from", "effective_to", "provider_available_at",
     "observed_at", "ingested_at", "system_available_at", "tombstone",
+    "source_package_id", "source_package_contract_version", "source_package_sha256",
+    "source_package_page_observed_at", "source_package_target_trade_date",
+    "source_package_parser_version", "source_package_accepted_scope",
 )
 
 
@@ -60,6 +63,14 @@ def canonical_source_rows(rows: Sequence[Mapping[str, Any]]) -> list[dict[str, A
                     value = value.isoformat()
                 elif not isinstance(value, str):
                     raise SourceManifestError("SOURCE_MANIFEST_DATE_INVALID")
+                else:
+                    try:
+                        parsed = date.fromisoformat(value)
+                    except ValueError as exc:
+                        raise SourceManifestError("SOURCE_MANIFEST_DATE_INVALID") from exc
+                    if parsed.isoformat() != value:
+                        raise SourceManifestError("SOURCE_MANIFEST_DATE_NONCANONICAL")
+                    value = parsed.isoformat()
                 row_value = value
             else:
                 row_value = None
@@ -72,6 +83,32 @@ def canonical_source_rows(rows: Sequence[Mapping[str, Any]]) -> list[dict[str, A
             raise SourceManifestError("SOURCE_MANIFEST_REVISION_INVALID")
         if not isinstance(row["tombstone"], bool):
             raise SourceManifestError("SOURCE_MANIFEST_TOMBSTONE_INVALID")
+        if effective_from is not None and effective_to is not None and effective_from > effective_to:
+            raise SourceManifestError("SOURCE_MANIFEST_DATE_WINDOW_INVALID")
+        if (not isinstance(row["source_package_id"], str) or not row["source_package_id"].strip()
+                or not isinstance(row["source_package_contract_version"], str)
+                or not row["source_package_contract_version"].strip()
+                or not isinstance(row["source_package_parser_version"], str)
+                or not row["source_package_parser_version"].strip()
+                or row["source_package_accepted_scope"] != "ACCEPTED_SOURCE_PACKAGE"):
+            raise SourceManifestError("SOURCE_MANIFEST_PACKAGE_AUTHORITY_INVALID")
+        package_sha = row["source_package_sha256"]
+        if not isinstance(package_sha, str) or not _SHA256.fullmatch(package_sha):
+            raise SourceManifestError("SOURCE_MANIFEST_PACKAGE_DIGEST_INVALID")
+        package_date = row["source_package_target_trade_date"]
+        if isinstance(package_date, datetime):
+            raise SourceManifestError("SOURCE_MANIFEST_DATE_INVALID")
+        if isinstance(package_date, date):
+            package_date = package_date.isoformat()
+        elif isinstance(package_date, str):
+            try:
+                parsed_package_date = date.fromisoformat(package_date)
+            except ValueError as exc:
+                raise SourceManifestError("SOURCE_MANIFEST_DATE_INVALID") from exc
+            if parsed_package_date.isoformat() != package_date:
+                raise SourceManifestError("SOURCE_MANIFEST_DATE_NONCANONICAL")
+        else:
+            raise SourceManifestError("SOURCE_MANIFEST_DATE_INVALID")
         normalized.append({
             "source_key": key,
             "source_revision_id": str(row["source_revision_id"]),
@@ -86,6 +123,13 @@ def canonical_source_rows(rows: Sequence[Mapping[str, Any]]) -> list[dict[str, A
             "ingested_at": _timestamp(row["ingested_at"]),
             "system_available_at": _timestamp(row["system_available_at"]),
             "tombstone": row["tombstone"],
+            "source_package_id": row["source_package_id"],
+            "source_package_contract_version": row["source_package_contract_version"],
+            "source_package_sha256": package_sha.lower(),
+            "source_package_page_observed_at": _timestamp(row["source_package_page_observed_at"]),
+            "source_package_target_trade_date": package_date,
+            "source_package_parser_version": row["source_package_parser_version"],
+            "source_package_accepted_scope": row["source_package_accepted_scope"],
         })
     normalized.sort(key=lambda row: row["source_key"].encode("utf-8"))
     return normalized

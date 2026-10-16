@@ -91,7 +91,8 @@ def test_contract_models_three_real_owner_families_and_explicit_page_gaps():
     candidate = read(ROOT / "src/workbench_db/v4_publication_candidate.py")
     assert "CANDIDATE_SOURCE_MANIFEST_UNVERIFIED" in candidate
     assert "build_source_manifest(source_manifest_rows)" in candidate
-    assert 'candidate.get("global_requiredness_status") != "PASS_MINIMUM_DAILY_SNAPSHOT_R1"' in candidate
+    assert 'candidate.get("business_publishability_status") != "PUBLISHABLE_BUSINESS_SNAPSHOT"' in candidate
+    assert '"business_publishability_status": "BLOCKED_CORE_RESULT_NOT_BOUND"' in candidate
     assert 'candidate.get("minimum_publish_contract_id") != MINIMUM_DAILY_PUBLICATION_CONTRACT_ID' in candidate
     assert '"minimum_publish_contract_id": MINIMUM_DAILY_PUBLICATION_CONTRACT_ID' in candidate
 
@@ -115,3 +116,16 @@ def test_all_current_entries_are_candidate_only_and_default_reader_is_unchanged(
     assert "READY_CURRENT_ACCEPTED" not in adapter
     assert "CurrentAcceptedV4Reader" in server
     assert "PgV4CurrentAdapter" not in server
+
+
+def test_r5_source_revision_requires_immutable_accepted_package_and_r2_manifest():
+    authority = read(MIGRATIONS / "034_source_package_revision_authority_r2.sql")
+    manifest = read(MIGRATIONS / "035_source_manifest_contract_r2.sql")
+    assert "ADD COLUMN source_package_id text" in authority
+    assert "FOREIGN KEY (source_package_id) REFERENCES v4.source_packages(package_id)" in authority
+    assert "V4_SOURCE_PACKAGE_BINDING_REQUIRED" in authority
+    assert "V4_SOURCE_PACKAGE_NOT_ACCEPTED" in authority
+    assert "source_package_authority_immutable" in authority
+    assert "V4_PG_CONSUMED_SOURCE_MANIFEST_R1" in manifest
+    assert "V4_PG_CONSUMED_SOURCE_MANIFEST_R2" in manifest
+    assert "V4_SOURCE_MANIFEST_R2_CONTRACT_REQUIRED" in manifest

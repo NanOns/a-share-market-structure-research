@@ -18,6 +18,13 @@ def row(**changes):
         "ingested_at": datetime(2026, 10, 15, 7, 7, tzinfo=timezone.utc),
         "system_available_at": datetime(2026, 10, 15, 7, 7, tzinfo=timezone.utc),
         "tombstone": False,
+        "source_package_id": "pkg-20261015-r1",
+        "source_package_contract_version": "V4_DAILY_CAPTURE_R1",
+        "source_package_sha256": "c" * 64,
+        "source_package_page_observed_at": datetime(2026, 10, 15, 7, 6, tzinfo=timezone.utc),
+        "source_package_target_trade_date": date(2026, 10, 15),
+        "source_package_parser_version": "parser-r1",
+        "source_package_accepted_scope": "ACCEPTED_SOURCE_PACKAGE",
     }
     value.update(changes)
     return value
@@ -30,12 +37,12 @@ def test_manifest_vectors_are_stable_order_independent_and_single_field_sensitiv
                  digest="b" * 64, revision_digest="b" * 64,
                  effective_from=None, effective_to=None, tombstone=True)
     baseline = source_manifest_digest([first, second])
-    assert baseline == "5aae36d0bef1f5df5200bc9fe549be5c6300ae2cfc095009f59fb71751486c33"
+    assert baseline == "83d7acd0850fb5704fb7a1a399ef7b564abb418d8c9f06c07096aedfc6a491ee"
     assert baseline == source_manifest_digest([second, first])
     assert baseline == source_manifest_digest([first, second])
-    assert source_manifest_digest([first]) == "6b4cef3a9a1fe2ad846d878ebb1714e9960daa7abbda2765010ed2a470506ae8"
+    assert source_manifest_digest([first]) == "0401f69c38bd225a5551656692063beec35e65490c4bad90467b398c6e86ea1c"
     assert source_manifest_digest([row(observed_at=datetime(2026, 10, 15, 7, 6, tzinfo=timezone(timedelta(hours=0))))]) == source_manifest_digest([row()])
-    assert source_manifest_digest([row(logical_fact_id="tdx:changed")]) == "65f2f4a0fd4f997bfa552b4143225091e36179e98e8d8f0670bbcf9d8fa5b4dd"
+    assert source_manifest_digest([row(logical_fact_id="tdx:changed")]) == "c834321359debf6871b32283b9bbde4e04f5fce436fc6b8db5ffee8b56257c08"
     assert source_manifest_digest([row(logical_fact_id="tdx:changed")]) != source_manifest_digest([row()])
     assert len(baseline) == 64
 
@@ -47,3 +54,14 @@ def test_manifest_requires_complete_unique_and_typed_source_identity():
         canonical_source_rows([row(digest="A" * 64)])
     with pytest.raises(SourceManifestError, match="SOURCE_MANIFEST_TIMESTAMP_MUST_BE_AWARE"):
         canonical_source_rows([row(ingested_at=datetime(2026, 10, 15, 7, 7))])
+
+
+def test_manifest_requires_accepted_package_binding_and_canonical_dates():
+    with pytest.raises(SourceManifestError, match="SOURCE_MANIFEST_PACKAGE_AUTHORITY_INVALID"):
+        canonical_source_rows([row(source_package_accepted_scope="DIAGNOSTIC_ONLY")])
+    with pytest.raises(SourceManifestError, match="SOURCE_MANIFEST_PACKAGE_DIGEST_INVALID"):
+        canonical_source_rows([row(source_package_sha256="not-a-sha")])
+    with pytest.raises(SourceManifestError, match="SOURCE_MANIFEST_DATE_NONCANONICAL"):
+        canonical_source_rows([row(effective_from="20261015")])
+    with pytest.raises(SourceManifestError, match="SOURCE_MANIFEST_DATE_WINDOW_INVALID"):
+        canonical_source_rows([row(effective_from="2026-10-16", effective_to="2026-10-15")])

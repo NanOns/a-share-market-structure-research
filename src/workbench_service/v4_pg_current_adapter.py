@@ -78,17 +78,22 @@ class PgV4CurrentAdapter:
                     "observation_revision": event["observation_revision"],
                     "fields": selected,
                     "missing_fields": missing,
+                    "field_states": _field_states(selected, missing, contract_known=True),
                 })
                 field_map.update(paths)
         elif page == "entity":
             parsed["lifecycle"] = []
             for index, row in enumerate(page_data.get("entity_lifecycle", [])):
-                selected, paths, _ = _project_fields(
+                selected, paths, missing = _project_fields(
                     row, ("security_id", "security_type", "board", "listed_from", "listed_to",
                           "st_state", "trade_status", "trade_date", "effective_from", "effective_to",
                           "quality", "source_revision_id"),
                     f"page_data.entity_lifecycle[{index}]",
                 )
+                selected["missing_fields"] = missing
+                selected["field_states"] = _field_states(selected, missing, contract_known=True)
+                selected["trade_date"] = page_data.get("trade_date")
+                field_map["trade_date"] = "page_data.trade_date"
                 parsed["lifecycle"].append(selected)
                 field_map.update(paths)
         uncovered = {
@@ -99,6 +104,19 @@ class PgV4CurrentAdapter:
             )
             for group in projection["uncovered_groups"]
         }
+        field_states = {}
+        for field in projection["consumer_fields"]:
+            if field in field_map:
+                field_states[field] = "PG_FIELD_VERIFIED"
+            elif page in ("summary", "entity"):
+                field_states[field] = (
+                    "SOURCE_MISSING" if field in {"open", "high", "low", "close", "scenario", "state", "health", "maturity"}
+                    else "PROJECTION_READY"
+                )
+            elif page in ("cohort", "settlement"):
+                field_states[field] = "CONTRACT_UNKNOWN"
+            else:
+                field_states[field] = "SOURCE_MISSING"
         return {
             "contract_id": CONTRACT_ID,
             "status": status,
@@ -114,6 +132,12 @@ class PgV4CurrentAdapter:
             "payload": owner_payloads,
             "parsed_business_fields": parsed,
             "field_mapping": field_map,
+            "field_states": field_states,
+            "business_result_state": (
+                "PG_FIELD_VERIFIED" if parsed.get("events") or parsed.get("lifecycle")
+                else "SOURCE_MISSING" if page in ("summary", "entity")
+                else "CONTRACT_UNKNOWN"
+            ),
         }
 
 
@@ -123,6 +147,14 @@ def _project_fields(row: dict[str, Any], fields: tuple[str, ...], source_path: s
     mapping = {key: f"{source_path}.{key}" for key in values}
     missing = {key: "OWNER_FIELD_NOT_PRESENT" for key in fields if key not in row}
     return values, mapping, missing
+
+
+def _field_states(selected: dict[str, Any], missing: dict[str, Any], *, contract_known: bool):
+    state = "PG_FIELD_VERIFIED" if selected else "PROJECTION_READY"
+    states = {field: state for field in selected if field not in {"missing_fields", "field_states"}}
+    missing_state = "SOURCE_MISSING" if contract_known else "CONTRACT_UNKNOWN"
+    states.update({field: missing_state for field in missing})
+    return states
 
 
 def _parse_owner_projection(page: str, owners: dict[str, Any]):

@@ -43,6 +43,8 @@ The focused local command is:
 python -m pytest -q -p no:cacheprovider tests/test_v4_pg_publication_candidate.py tests/test_v4_pg_publication_owners.py tests/test_v4_pg_publication_contract_static.py
 ```
 
+The CI job adds `--confcutdir=tests` so these fake-connection/static-contract tests do not load unrelated root-level historical DuckDB/PG runtime fixtures. CI does not connect to a database.
+
 Temporary variables and test output are directed to `G:/codex_tmp`. These tests cover final migration semantics, removed-column regressions, publication-id CAS planning, same-day parent identity, source/Owner/state failures, privilege distinction, requiredness, adapter mapping, append sealing source clauses and fixed-query Owner readback. They do not compile or execute PostgreSQL DDL and do not prove real PG role/readback.
 
 Acceptance must stay `EXTERNAL_REVIEW_BLOCKED` until the six current-page Owner payload contracts are proven against canonical PG relations, source manifest serialization and accepted source rows are reconciled, isolated PG schema/trigger/concurrent-CAS tests pass, and live read-only role/catalog/readback evidence exists. No accepted Head, database data, port 28765, Git history, or source file was changed by this repair.

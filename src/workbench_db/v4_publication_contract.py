@@ -70,7 +70,7 @@ PAGE_PROJECTIONS = MappingProxyType({
     "entity": MappingProxyType({
         "input_groups": ("RAW_DAILY", "IDENTITY_UNIVERSE", "states", "state_view", "events", "identity_names"),
         "owner_families": (),
-        "consumer_fields": ("source_security_key", "close", "open", "high", "low", "trade_date", "list_date", "scenario", "state", "health", "maturity"),
+        "consumer_fields": ("source_security_key", "close", "open", "high", "low", "trade_date", "list_date", "ma5", "ma20", "ma60", "history_status", "profile_payload", "scenario", "state", "health", "maturity"),
         "owner_field_paths": (),
         "uncovered_groups": ("RAW_DAILY", "IDENTITY_UNIVERSE", "states", "state_view", "events", "identity_names"),
     }),

@@ -86,7 +86,7 @@ class Cursor:
 
 
 class FakeConnection:
-    def __init__(self, *, head=None, bindings=None, sources=None, identity=None, role=None, missing_bindings=False, parent=None, page_data=None):
+    def __init__(self, *, head=None, bindings=None, sources=None, identity=None, role=None, missing_bindings=False, parent=None, page_data=None, core_snapshot=None, core_rows=None):
         self.head = head
         self.bindings = bindings if bindings is not None else [binding_row(module) for module in supported_owner_keys()]
         self.sources = sources if sources is not None else [source_row()]
@@ -95,6 +95,8 @@ class FakeConnection:
         self.missing_bindings = missing_bindings
         self.parent = parent
         self.page_data = page_data or {}
+        self.core_snapshot = core_snapshot
+        self.core_rows = core_rows or []
         self.statements = []
 
     def __enter__(self):
@@ -122,6 +124,10 @@ class FakeConnection:
             return Cursor(all_rows=self.page_data.get("summary_events", []))
         if "FROM v4.security_lifecycle_facts" in statement:
             return Cursor(all_rows=self.page_data.get("entity_lifecycle", []))
+        if "FROM v4.daily_core_result_snapshots" in statement:
+            return Cursor(one=self.core_snapshot)
+        if "FROM v4.daily_core_result_rows" in statement:
+            return Cursor(all_rows=self.core_rows)
         if "FROM v4.publication_module_results" in statement:
             if self.missing_bindings:
                 error = RuntimeError("relation missing")
@@ -477,8 +483,101 @@ def test_missing_daily_prices_remain_explicit_for_entity_even_when_lifecycle_is_
     )
     for field in ("open", "high", "low", "close"):
         assert result["field_states"][field] == "SOURCE_MISSING"
-        assert result["field_coverage"][field]["missing_reason"] == "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION"
+        assert result["field_coverage"][field]["missing_reason"] == "NO_PUBLICATION_BOUND_CORE_RESULT"
     assert result["parsed_business_fields"]["lifecycle"][0]["field_coverage"]["security_id"]["verified_rows"] == 1
+
+
+def test_entity_candidate_projects_only_publication_bound_core_rows_and_ma_profile():
+    from workbench_db.v4_daily_core_result_r6 import _sha
+
+    row = {
+        "trade_date": "2026-10-15", "security_id": "000001.SZ", "security_type": "STOCK",
+        "trade_status": "TRADING", "open": 10.0, "high": 11.0, "low": 9.5, "close": 10.5,
+        "volume": 1000.0, "amount": 10500.0, "turnover_rate": None,
+        "turnover_status": "TURNOVER_UNAVAILABLE", "ma5": 10.1, "ma20": 9.9, "ma60": 9.5,
+        "history_status": "SUFFICIENT", "price_basis": "TDX_GBBQ_UNCHANGED",
+        "source_revision_id": "src-r1", "profile_payload": {"trend": "OBSERVED"},
+        "quality_status": "ACTUAL_OPERATIONAL_DAILY_OWNER_V1",
+    }
+    row["row_sha256"] = _sha(row)
+    pub = publication_row()
+    material = {
+        "contract_id": "V4_DAILY_CORE_RESULT_BINDING_R6", "contract_version": "1.0.0",
+        "publication_id": pub["publication_id"], "publication_revision": pub["revision_no"],
+        "trade_date": "2026-10-15", "source_manifest_sha256": pub["source_manifest_sha256"],
+        "producer_contract_id": "V4_OPERATIONAL_DAILY_PRODUCER_R1", "producer_sha256": "1" * 64,
+        "producer_receipt_sha256": "2" * 64, "rows": [row],
+    }
+    snapshot = (TARGET_DATE, "V4_DAILY_CORE_RESULT_BINDING_R6", pub["source_manifest_sha256"],
+                _sha(material), 1, "V4_OPERATIONAL_DAILY_PRODUCER_R1", "1" * 64, "2" * 64)
+    reader = reader_for(FakeConnection(head=pub, core_snapshot=snapshot, core_rows=[row]))
+    result = PgV4CurrentAdapter(reader).read_endpoint(
+        "/api/v4/current/entity", trade_date="2026-10-15", model_namespace_id="v4-main",
+    )
+    assert result["field_coverage"]["close"]["status"] == "PG_FIELD_VERIFIED"
+    assert result["field_coverage"]["ma20"]["status"] == "PG_FIELD_VERIFIED"
+    assert result["parsed_business_fields"]["daily_core"][0]["profile_payload"] == {"trend": "OBSERVED"}
+    entity = result["parsed_business_fields"]["entities"][0]
+    assert entity["security_id"] == "000001.SZ"
+    assert entity["identity_name_state"] == "DATA_MISSING"
+    assert entity["context_token"] == result["context"]["context_token"]
+
+
+def test_entity_candidate_rejects_core_rows_with_bad_row_digest():
+    from workbench_db.v4_daily_core_result_r6 import _sha
+
+    row = {
+        "trade_date": "2026-10-15", "security_id": "000001.SZ", "security_type": "STOCK",
+        "trade_status": "TRADING", "open": 10.0, "high": 11.0, "low": 9.5, "close": 10.5,
+        "volume": 1000.0, "amount": 10500.0, "turnover_rate": None,
+        "turnover_status": "TURNOVER_UNAVAILABLE", "ma5": 10.1, "ma20": 9.9, "ma60": 9.5,
+        "history_status": "SUFFICIENT", "price_basis": "TDX_GBBQ_UNCHANGED",
+        "source_revision_id": "src-r1", "profile_payload": {}, "quality_status": "ACTUAL",
+    }
+    row["row_sha256"] = "0" * 64
+    pub = publication_row()
+    material = {
+        "contract_id": "V4_DAILY_CORE_RESULT_BINDING_R6", "contract_version": "1.0.0",
+        "publication_id": pub["publication_id"], "publication_revision": pub["revision_no"],
+        "trade_date": "2026-10-15", "source_manifest_sha256": pub["source_manifest_sha256"],
+        "producer_contract_id": "P", "producer_sha256": "1" * 64,
+        "producer_receipt_sha256": "2" * 64, "rows": [row],
+    }
+    snapshot = (TARGET_DATE, "V4_DAILY_CORE_RESULT_BINDING_R6", pub["source_manifest_sha256"],
+                _sha(material), 1, "P", "1" * 64, "2" * 64)
+    reader = reader_for(FakeConnection(head=pub, core_snapshot=snapshot, core_rows=[row]))
+    with pytest.raises(PublicationReadError, match="CORE_RESULT_ROW_DIGEST_MISMATCH"):
+        PgV4CurrentAdapter(reader).read_endpoint(
+            "/api/v4/current/entity", trade_date="2026-10-15", model_namespace_id="v4-main",
+        )
+
+
+def test_sector_lifecycle_supplement_does_not_claim_membership_or_algorithm_state():
+    readers = owner_readers()
+
+    def lifecycle_reader(pg, binding):
+        return {
+            "database_identity": binding["database_identity"],
+            "owner_schema": binding["owner_schema"], "owner_relation": binding["owner_relation"],
+            "owner_version_token": binding["owner_version_token"], "owner_trade_date": binding["owner_trade_date"],
+            "owner_contract_id": binding["owner_contract_id"], "result_digest": binding["result_digest"],
+            "row_count": binding["row_count"], "payload": [{
+                "sector_id": "INDUSTRY:T0706", "T0": "2026-10-15",
+                "contract_id": "SECTOR_LIFECYCLE_RECONSTRUCTED_V1", "maturity": "OBSERVED",
+                "health": "HEALTHY",
+            }],
+        }
+
+    readers["sector_lifecycle"] = lifecycle_reader
+    reader = reader_for(FakeConnection(head=publication_row()), owner_readers=readers)
+    result = PgV4CurrentAdapter(reader).read_endpoint(
+        "/api/v4/current/sector", trade_date="2026-10-15", model_namespace_id="v4-main",
+    )
+    row = result["parsed_business_fields"]["sector_membership"][0]
+    assert row["lifecycle_supplement"]["maturity"] == "OBSERVED"
+    assert row["field_data_states"]["member_count"] == "DATA_MISSING"
+    assert row["field_data_states"]["algorithm_state"] == "DATA_MISSING"
+    assert result["field_coverage"]["sector_id"]["status"] == "SOURCE_MISSING"
 
 
 def owner_results(day="2026-10-15"):

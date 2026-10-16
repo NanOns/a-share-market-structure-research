@@ -98,8 +98,37 @@ class PgV4CurrentAdapter:
                 selected["trade_date"] = page_data.get("trade_date")
                 field_map["trade_date"] = "page_data.trade_date"
                 parsed["lifecycle"].append(selected)
-                page_rows.append({"row": selected, "path": f"page_data.entity_lifecycle[{index}]", "verified": True})
+                page_rows.append({"row": selected, "path": f"page_data.entity_lifecycle[{index}]", "verified": True,
+                                  "eligible_fields": {"trade_date", "source_security_key", "list_date", "scenario", "state", "health", "maturity"}})
                 field_map.update(paths)
+            parsed["daily_core"] = []
+            core_fields = ("security_id", "security_type", "trade_status", "open", "high", "low", "close",
+                           "volume", "amount", "ma5", "ma20", "ma60", "history_status", "profile_payload",
+                           "trade_date", "source_revision_id", "quality_status")
+            for index, row in enumerate(page_data.get("daily_core_rows", [])):
+                selected, paths, missing = _project_fields(
+                    row, core_fields, f"page_data.daily_core_rows[{index}]",
+                )
+                selected["field_states"] = _field_states(selected, missing, contract_known=True)
+                parsed["daily_core"].append(selected)
+                page_rows.append({"row": selected, "path": f"page_data.daily_core_rows[{index}]", "verified": True,
+                                  "eligible_fields": {"trade_date", "open", "high", "low", "close", "ma5", "ma20", "ma60", "history_status", "profile_payload"}})
+                field_map.update(paths)
+            lifecycle_by_id = {}
+            for row in parsed["lifecycle"]:
+                lifecycle_by_id.setdefault(row.get("security_id"), []).append(row)
+            parsed["entities"] = []
+            for row in parsed["daily_core"]:
+                security_id = row.get("security_id")
+                parsed["entities"].append({
+                    "security_id": security_id,
+                    "trade_date": trade_date,
+                    "daily_core": row,
+                    "lifecycle_candidates": lifecycle_by_id.get(security_id, []),
+                    "identity_name_state": "DATA_MISSING",
+                    "identity_name_reason": "NO_V4_PUBLICATION_BOUND_IDENTITY_NAME_RELATION",
+                    "context_token": context["context_token"],
+                })
         elif page == "radar":
             for group in ("stocks", "sectors"):
                 for index, row in enumerate(parsed.get(group, [])):
@@ -108,6 +137,28 @@ class PgV4CurrentAdapter:
             rows = parsed.get("sector_lifecycle_supplement", [])
             for index, row in enumerate(rows):
                 page_rows.append({"row": row, "path": f"payload.sector_lifecycle[{index}]", "verified": True})
+            parsed["sector_membership"] = []
+            for index, row in enumerate(rows):
+                parsed["sector_membership"].append({
+                    "sector_id": row.get("sector_id"),
+                    "sector_name": None,
+                    "member_count": None,
+                    "algorithm_state": None,
+                    "field_data_states": {
+                        "sector_id": "DATA_MISSING",
+                        "sector_name": "DATA_MISSING",
+                        "member_count": "DATA_MISSING",
+                        "algorithm_state": "DATA_MISSING",
+                    },
+                    "field_reasons": {
+                        "sector_id": "SECTOR_MEMBERSHIP_FACTS_HAVE_NO_PUBLICATION_SOURCE_BINDING",
+                        "sector_name": "NO_V4_PUBLICATION_BOUND_IDENTITY_NAME_RELATION",
+                        "member_count": "NO_V4_PUBLICATION_BOUND_SECTOR_MEMBERSHIP_RELATION",
+                        "algorithm_state": "NO_PUBLICATION_BOUND_ALGORITHM_STATE_RELATION",
+                    },
+                    "lifecycle_supplement": row,
+                    "context_token": context["context_token"],
+                })
         elif page == "health":
             for family, row in sorted(parsed.get("risk_families", {}).items()):
                 page_rows.append({"row": row, "path": f"payload.operational_risk.families.{family}",
@@ -118,23 +169,33 @@ class PgV4CurrentAdapter:
         eligible_fields = {
             "summary": set(projection["consumer_fields"]),
             "radar": set(projection["consumer_fields"]),
-            "entity": {"trade_date"},
-            "sector": {"sector_id"},
+            "entity": {"trade_date", "open", "high", "low", "close", "ma5", "ma20", "ma60",
+                       "history_status", "profile_payload"},
+            "sector": set(),
             "cohort": set(),
             "settlement": set(),
             "health": {"maturity"},
         }[page]
         field_source_gaps = {
-            "open": "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION",
-            "high": "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION",
-            "low": "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION",
-            "close": "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION",
+            "open": page_data.get("uncovered", {}).get("entity_prices", "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION"),
+            "high": page_data.get("uncovered", {}).get("entity_prices", "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION"),
+            "low": page_data.get("uncovered", {}).get("entity_prices", "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION"),
+            "close": page_data.get("uncovered", {}).get("entity_prices", "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION"),
             "source_security_key": "NO_V4_PUBLICATION_BOUND_IDENTITY_NAME_RELATION",
             "list_date": "NO_V4_PUBLICATION_BOUND_IDENTITY_NAME_RELATION",
             "scenario": "NO_PUBLICATION_BOUND_STATE_OR_SCENARIO_RELATION",
             "state": "NO_PUBLICATION_BOUND_STATE_OR_SCENARIO_RELATION",
             "health": "NO_PUBLICATION_BOUND_HEALTH_RESULT_RELATION",
             "maturity": "NO_PUBLICATION_BOUND_MATURITY_RESULT_RELATION",
+            "ma5": page_data.get("uncovered", {}).get("entity_prices", "NO_PUBLICATION_BOUND_CORE_PROFILE_RELATION"),
+            "ma20": page_data.get("uncovered", {}).get("entity_prices", "NO_PUBLICATION_BOUND_CORE_PROFILE_RELATION"),
+            "ma60": page_data.get("uncovered", {}).get("entity_prices", "NO_PUBLICATION_BOUND_CORE_PROFILE_RELATION"),
+            "history_status": page_data.get("uncovered", {}).get("entity_prices", "NO_PUBLICATION_BOUND_CORE_PROFILE_RELATION"),
+            "profile_payload": page_data.get("uncovered", {}).get("entity_prices", "NO_PUBLICATION_BOUND_CORE_PROFILE_RELATION"),
+            "sector_id": page_data.get("uncovered", {}).get("sector_membership", "SECTOR_MEMBERSHIP_FACTS_HAVE_NO_PUBLICATION_SOURCE_BINDING"),
+            "sector_name": "NO_V4_PUBLICATION_BOUND_IDENTITY_NAME_RELATION",
+            "member_count": "NO_V4_PUBLICATION_BOUND_SECTOR_MEMBERSHIP_RELATION",
+            "algorithm_state": "NO_PUBLICATION_BOUND_ALGORITHM_STATE_RELATION",
             "component": "NO_PUBLICATION_BOUND_REPLAY_RELATION",
             "row_count": "NO_PUBLICATION_BOUND_REPLAY_RELATION",
             "quality": "NO_PUBLICATION_BOUND_REPLAY_RELATION",
@@ -272,7 +333,7 @@ def _field_coverage(fields, rows, *, target_t0, no_row_reason, contract_known,
                 reasons.add("FIELD_NOT_PRESENT_IN_ROW")
         if eligible == 0:
             status = "CONTRACT_UNKNOWN" if not contract_known else "SOURCE_MISSING"
-            missing_reason = next(iter(sorted(reasons)), no_row_reason)
+            missing_reason = next(iter(sorted(reasons)), field_missing_reasons.get(field, no_row_reason))
         elif verified == eligible:
             status = "PG_FIELD_VERIFIED"
             missing_reason = None

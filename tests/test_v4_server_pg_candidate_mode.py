@@ -129,3 +129,16 @@ def test_pg_candidate_http_mode_fails_closed_when_not_enabled(monkeypatch, tmp_p
         server.shutdown()
         server.server_close()
         thread.join(timeout=3)
+
+
+def test_candidate_server_factory_requires_explicit_database_identity(monkeypatch):
+    monkeypatch.delenv("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON", raising=False)
+    with pytest.raises(RuntimeError, match="V4_PG_EXPECTED_DATABASE_IDENTITY_REQUIRED"):
+        v4_server.pg_candidate_adapter_from_environment()
+    monkeypatch.setenv("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON", json.dumps({
+        "database": "market_research", "database_oid": 16384, "host": "127.0.0.1", "port": 5432,
+    }))
+    adapter = v4_server.pg_candidate_adapter_from_environment()
+    assert adapter.reader.expected_database_identity == {
+        "database": "market_research", "database_oid": 16384, "host": "127.0.0.1", "port": 5432,
+    }

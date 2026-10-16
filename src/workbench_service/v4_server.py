@@ -202,10 +202,35 @@ def serve_v4(root,host='127.0.0.1',port=28765):
     ThreadingHTTPServer((host,port),make_v4_handler(root)).serve_forever()
 
 
-def serve_v4_candidate(root, pg_current_adapter):
+def pg_candidate_adapter_from_environment(environ=None):
+    """Build the read-only candidate adapter from explicit, non-secret DB identity config."""
+    import os
+    env = os.environ if environ is None else environ
+    raw = env.get('V4_PG_EXPECTED_DATABASE_IDENTITY_JSON')
+    if not raw:
+        raise RuntimeError('V4_PG_EXPECTED_DATABASE_IDENTITY_REQUIRED')
+    try:
+        identity = json.loads(raw)
+    except (TypeError, json.JSONDecodeError) as error:
+        raise RuntimeError('V4_PG_EXPECTED_DATABASE_IDENTITY_INVALID') from error
+    if (not isinstance(identity, dict)
+            or set(identity) != {'database', 'database_oid', 'host', 'port'}
+            or not isinstance(identity.get('database'), str)
+            or isinstance(identity.get('database_oid'), bool)
+            or not isinstance(identity.get('database_oid'), int)
+            or not isinstance(identity.get('host'), str)
+            or isinstance(identity.get('port'), bool)
+            or not isinstance(identity.get('port'), int)):
+        raise RuntimeError('V4_PG_EXPECTED_DATABASE_IDENTITY_INVALID')
+    from workbench_db.v4_publication_reader import PgPublicationReader
+    from .v4_pg_current_adapter import PgV4CurrentAdapter
+    return PgV4CurrentAdapter(PgPublicationReader(expected_database_identity=identity))
+
+
+def serve_v4_candidate(root, pg_current_adapter=None):
     """Explicit candidate-only BFF on the one development port; never production."""
     if pg_current_adapter is None:
-        raise ValueError('PG_CANDIDATE_READER_REQUIRED')
+        pg_current_adapter = pg_candidate_adapter_from_environment()
     ThreadingHTTPServer(
         ('127.0.0.1',28766),
         make_v4_handler(root,pg_current_adapter,allow_pg_candidate=True),

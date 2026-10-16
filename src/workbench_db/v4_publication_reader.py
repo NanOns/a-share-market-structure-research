@@ -382,6 +382,11 @@ class PgPublicationReader:
                     "st_state", "trade_status", "effective_from", "effective_to",
                     "observed_at", "ingested_at", "system_available_at",
                     "source_revision_id", "source_identity", "quality"))
+            core_rows, core_status = PgPublicationReader._read_core_result_rows(
+                pg, publication, source_ids,
+            )
+        except PublicationReadError:
+            raise
         except Exception as exc:
             PgPublicationReader._map_schema_error(exc, "PAGE_RELATION_SCHEMA_UNAVAILABLE")
             raise PublicationReadError("PAGE_RELATION_READ_FAILED") from exc
@@ -413,8 +418,10 @@ class PgPublicationReader:
             "trade_date": target_date.isoformat(),
             "summary_events": [json_row(row) for row in event_rows],
             "entity_lifecycle": [json_row(row) for row in lifecycle_rows],
+            "daily_core_rows": [json_row(row) for row in core_rows],
+            "daily_core_status": core_status,
             "uncovered": {
-                "entity_prices": "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION",
+                "entity_prices": None if core_status == "VERIFIED" else core_status,
                 "identity_names": "NO_V4_PUBLICATION_BOUND_IDENTITY_NAME_RELATION",
                 "replay": "NO_V4_PUBLICATION_BOUND_REPLAY_RELATION",
                 "sector_membership": "SECTOR_MEMBERSHIP_FACTS_HAVE_NO_PUBLICATION_SOURCE_BINDING",
@@ -422,6 +429,77 @@ class PgPublicationReader:
                 "settlement": "NO_V4_PUBLICATION_BOUND_SETTLEMENT_RELATION",
             },
         }
+
+    @staticmethod
+    def _read_core_result_rows(pg, publication, bound_source_ids):
+        """Read R6 Core rows only when their immutable result is bound to this exact publication."""
+        publication_id = publication["publication_id"]
+        revision = int(publication["revision_no"])
+        target = _iso_date(publication["trade_date"])
+        try:
+            snapshot_cursor = pg.execute(
+                """SELECT trade_date,result_contract_id,source_manifest_sha256,result_sha256,row_count,
+                          producer_contract_id,producer_sha256,producer_receipt_sha256
+                     FROM v4.daily_core_result_snapshots
+                    WHERE publication_id=%s AND publication_revision=%s""",
+                (publication_id, revision),
+            )
+            snapshot = snapshot_cursor.fetchone()
+            if snapshot is None:
+                return [], "NO_PUBLICATION_BOUND_CORE_RESULT"
+            if (snapshot[0].isoformat() != target
+                    or snapshot[1] != "V4_DAILY_CORE_RESULT_BINDING_R6"
+                    or str(snapshot[2]).strip() != str(publication["source_manifest_sha256"]).strip()):
+                raise PublicationReadError("CORE_RESULT_PUBLICATION_IDENTITY_MISMATCH")
+            cursor = pg.execute(
+                """SELECT trade_date,security_id,security_type,trade_status,open,high,low,close,
+                          volume,amount,turnover_rate,turnover_status,ma5,ma20,ma60,history_status,
+                          price_basis,source_revision_id,profile_payload,quality_status,row_sha256
+                     FROM v4.daily_core_result_rows
+                    WHERE publication_id=%s AND publication_revision=%s
+                    ORDER BY security_id COLLATE "C"
+                    LIMIT 20001""",
+                (publication_id, revision),
+            )
+            columns = ("trade_date", "security_id", "security_type", "trade_status", "open", "high", "low", "close",
+                       "volume", "amount", "turnover_rate", "turnover_status", "ma5", "ma20", "ma60", "history_status",
+                       "price_basis", "source_revision_id", "profile_payload", "quality_status", "row_sha256")
+            rows = _row_dicts(cursor, columns)
+        except PublicationReadError:
+            raise
+        except Exception as exc:
+            if getattr(exc, "sqlstate", None) == "42P01":
+                return [], "CORE_RESULT_RELATION_UNAVAILABLE"
+            PgPublicationReader._map_schema_error(exc, "CORE_RESULT_RELATION_UNAVAILABLE")
+            raise PublicationReadError("CORE_RESULT_READ_FAILED") from exc
+        if len(rows) > 20000:
+            raise PublicationReadError("CORE_RESULT_ROW_LIMIT_EXCEEDED")
+        if len(rows) != int(snapshot[4]) or not rows:
+            raise PublicationReadError("CORE_RESULT_ROW_COUNT_MISMATCH")
+        from .v4_daily_core_result_r6 import _sha
+        verified = []
+        for row in rows:
+            if (_iso_date(row["trade_date"]) != target
+                    or row["price_basis"] != "TDX_GBBQ_UNCHANGED"
+                    or row["source_revision_id"] not in bound_source_ids):
+                raise PublicationReadError("CORE_RESULT_ROW_SOURCE_OR_T0_MISMATCH")
+            row_sha = str(row.pop("row_sha256")).strip()
+            row["trade_date"] = target
+            if _sha(row) != row_sha:
+                raise PublicationReadError("CORE_RESULT_ROW_DIGEST_MISMATCH")
+            row["row_sha256"] = row_sha
+            verified.append(row)
+        verified.sort(key=lambda row: str(row["security_id"]).encode("utf-8"))
+        result_material = {
+            "contract_id": "V4_DAILY_CORE_RESULT_BINDING_R6", "contract_version": "1.0.0",
+            "publication_id": publication_id, "publication_revision": revision,
+            "trade_date": target, "source_manifest_sha256": str(snapshot[2]).strip(),
+            "producer_contract_id": snapshot[5], "producer_sha256": str(snapshot[6]).strip(),
+            "producer_receipt_sha256": str(snapshot[7]).strip(), "rows": verified,
+        }
+        if _sha(result_material) != str(snapshot[3]).strip():
+            raise PublicationReadError("CORE_RESULT_AGGREGATE_DIGEST_MISMATCH")
+        return verified, "VERIFIED"
 
     @staticmethod
     def _read_same_day_parent(pg, publication):

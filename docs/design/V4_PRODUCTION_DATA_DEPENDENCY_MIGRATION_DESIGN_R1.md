@@ -94,6 +94,10 @@ The following current code paths were confirmed against source. These are code d
 
 The tracked-`src/` admission scan flagged historical report/evidence reads in 42 source files. The table above maps the confirmed current Producer/Owner/BFF chain; the other matches still need call-graph and retirement classification before source removal. This is not proof that every match is runtime-reachable or a full repository-wide dependency closure. Do not untrack or delete the referenced historical files until the replacement chain passes candidate testing and the production cleanup gates.
 
+### Supplemental source-recovery evidence from the WP-3 frozen objects
+
+The initial Owner source check searched the current checkout and refs reachable through `--all`; it did not search dangling commits or resolve historical Git LFS pointers. After archiving all refs and preserving the 497 `git fsck --full --no-reflogs` dangling objects outside the checkout, a read-only scan of the 49 dangling commits found four exact historical sector-lifecycle source paths. Their Git blobs are LFS pointers, and the corresponding objects already in the local LFS cache match the Owner metadata SHA-256 and byte count exactly. Across the 18 unique Owner source path/digest bindings inventoried (priority 6, risk 3, sector lifecycle 9), those four are the only exact LFS cache matches; 14 remain unresolved. No source file was restored or modified in the checkout, and no LFS object was downloaded. This improves recoverability for four inputs but does not prove complete Owner lineage or authorize importing any rows.
+
 ## Design constraints and write gate
 
 1. Reuse existing `v4` publication/source/history structures and existing immutable Owner schemas where their owner/token and content identity are verified. Do not create a generic duplicate registry before the missing publication-to-owner relationship is demonstrated.

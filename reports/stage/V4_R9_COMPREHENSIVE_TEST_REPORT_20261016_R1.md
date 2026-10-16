@@ -15,7 +15,7 @@ core_ready: BLOCKED_NO_ACCEPTED_SOURCE_OR_PG_ROWS
 pit: BLOCKED_SOURCE_EVIDENCE_NOT_PIT_ELIGIBLE
 daily_e2e: BLOCKED_NO_PUBLICATION_OR_HEAD
 page: NOT_VERIFIABLE_NO_PUBLICATION_OR_SERVICE
-ci: PENDING_AFTER_PUSH
+ci: PASS_PUSH_AND_PR_RUNS
 production: UNCHANGED
 approval_status: no authorization for production PG writes, accepted Head switch, 28765 deployment, isolated PG writes, physical cleanup, or history rewrite
 ---
@@ -50,6 +50,7 @@ approval_status: no authorization for production PG writes, accepted Head switch
 ## 定向验证
 
 - `python -m pytest -q -p no:cacheprovider --basetemp=G:/codex_tmp/test_temp/v4_r9 tests/test_v4_native_reader_dsn.py tests/test_v4_daily_core_result_r6.py tests/test_v4_pg_publication_candidate.py tests/test_v4_pg_publication_owners.py tests/test_v4_pg_publication_contract_static.py`：**76 passed**。
+- Implementation commit `3e831fd0d850787dab17866e3d51fe2584513aa7` and stage-report commit `44e8ad6d6e1b63fb8a6ac1a0b7a6db3a5ce17181` GitHub push and PR runs passed both `admission` and `v4-pg-publication-candidate`: [push run 38877424235](https://github.com/NanOns/a-share-market-structure-research/actions/runs/38877424235), [PR run 38877428988](https://github.com/NanOns/a-share-market-structure-research/actions/runs/38877428988).
 - `git diff --check`：通过。
 - `tests/test_v4_current_accepted_reader.py`：**8 passed, 3 failed**。失败均为现有文件来源校验/投影：`BOUND_ARTIFACT_DIGEST_MISMATCH:data/v4/confirmation_candidates_r5/D2_2026-09-30_CANDIDATE_R5.json.gz`，导致 WAIT_NEXT 返回 409、实体无行和深链接 token 不返回。本轮未改写或重新生成该只读绑定文件。
 - 曾尝试更宽的 PG closeout 回归集合：**79 passed, 9 failed**。失败项尝试创建临时 PG Owner/快照，但环境没有 `V4_NATIVE_PG_DSN`，均在取得连接前失败关闭；其中一项依赖未建立的 owner fixture。未将 `WORKBENCH_PG_DSN` 写连接回退，也未执行隔离 PG DDL/DML。该结果不是隔离 PG 验收。

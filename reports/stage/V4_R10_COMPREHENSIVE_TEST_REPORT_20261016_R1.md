@@ -1,6 +1,6 @@
 ---
 stage_id: V4_R10_COMPREHENSIVE_20261016_R1
-code_sha: f22e32ec7253f20bf187c06cfc8f854160d955be
+code_sha: 6f60daa70b23f05e5dd57cec381b12f4c2e75e10
 baseline_sha: 0eb2392f2a4a9666bd11f17b261dcfd4d98ce2e1
 branch: codex/v4-workspace-cleanup
 scope: R10 current Reader recovery and CI, explicit PG candidate BFF, Workspace identity, Owner/page projection states, daily Core producer bridge and controlled writer, read-only PG/schema audit
@@ -20,7 +20,7 @@ e2e_neg: PASS_DIGEST_MISMATCH_FAIL_CLOSED
 e2e_pos: BLOCKED_NO_ACCEPTED_SOURCE_OR_PUBLICATION
 http_28766: PASS_SYNTHETIC_SEVEN_ENDPOINT_HTTP
 ui_seven: PARTIAL_API_WIRED_NO_REAL_PG_OR_BROWSER_PARITY
-ci: WORKFLOW_UPDATED_LOCAL_SCOPE_PASS_GITHUB_RUN_PENDING_PUSH
+ci: PASS_PUSH_AND_PR_38885076598_38885083695_141_PASS_1_SKIPPED
 production: UNCHANGED_28765_NOT_LISTENING_NO_PG_WRITE
 approval_status: no authorization for production/isolated PG writes, migration, accepted Head, 28765 deployment, physical cleanup, or history rewrite
 ---
@@ -30,7 +30,7 @@ approval_status: no authorization for production/isolated PG writes, migration, 
 ## 范围和基线
 
 - 正式任务：Google Drive `1IUqI1XEUVLsaVgLIuhvjCKPTrB4gmnP9`，R10 当前读链、Owner/Workspace 实质修复。
-- 开始前核对分支 `codex/v4-workspace-cleanup` 的本地及 origin HEAD 为冻结基线 `0eb2392f2a4a9666bd11f17b261dcfd4d98ce2e1`，无 tracked 改动；R10 主代码提交为 `26cf2e67efad4d42fa6f1f78622ce8d9e53ff6c6`，CI 精确 LFS 输入修正提交为 `f22e32ec7253f20bf187c06cfc8f854160d955be`，本报告另有独立提交，最终 HEAD 在推送后记录。
+- 开始前核对分支 `codex/v4-workspace-cleanup` 的本地及 origin HEAD 为冻结基线 `0eb2392f2a4a9666bd11f17b261dcfd4d98ce2e1`，无 tracked 改动；R10 主代码提交为 `26cf2e67efad4d42fa6f1f78622ce8d9e53ff6c6`，CI 精确 LFS 输入修正提交为 `f22e32ec7253f20bf187c06cfc8f854160d955be`；GitHub push/PR CI 已在 `6f60daa70b23f05e5dd57cec381b12f4c2e75e10` 成功。本报告为独立文档提交，最终报告 HEAD 以 GitHub Issue/PR 更新为准。
 - 查阅适用升级合同 `docs/upgrade/V4_R8_UNIFIED_SOURCE_REPAIR_SPEC_R1_20261015.md`、R9 阶段报告和仓库 `AGENTS.md`。本任务不启动扫描器，阶段 0 不适用。
 - 仅在既有主仓开发；未创建 worktree、克隆、PG 实例或其他端口。过程测试临时目录均在 `G:/codex_tmp/test_temp`。
 
@@ -49,6 +49,7 @@ approval_status: no authorization for production/isolated PG writes, migration, 
 - Reader/DSN/HTTP 单独合并组：**29 passed**；收集分母分别为 Accepted Reader 12、DSN guard 15（参数化角色负例展开）、候选 HTTP 2。
 - 合成 HTTP fixture 在允许的固定开发端口 `127.0.0.1:28766` 实际发起 HTTP GET：七个 endpoint 都命中候选 adapter；context 缺字段返回 400；未启用候选模式返回 404；无 accepted publication 返回 `PENDING_PG_HEAD`；文件模式仍返回 file Reader。测试关闭后服务线程退出。此为隔离 fixture，不代表真实 PG 或浏览器页面读回。
 - `tools/git_repository_policy.py --staged`：通过（13 changed Git blobs）；`git diff --check` 与所改 Python `compileall`：通过。
+- GitHub push run [38885076598](https://github.com/NanOns/a-share-market-structure-research/actions/runs/38885076598) 和 PR run [38885083695](https://github.com/NanOns/a-share-market-structure-research/actions/runs/38885083695) 在上述同一 SHA 全部 job 成功。V4 scoped pytest 实际结果 **141 passed, 1 skipped**；唯一 skip 为 `test_real_20261012_executor_evidence_reaches_pg_adapter_as_diagnostic_only`，原因是 GitHub runner 没有不入库的本机 2026-10-12 冻结 executor 文件。Accepted Reader、native DSN 和 synthetic HTTP 组均实际运行，非 skip。
 - 一次额外触碰 `tests/test_v4_embedded_owner_reader_integration.py` 的 PG 写测试未进入通过数：2 个用例在取连接前因未设置 `V4_NATIVE_PG_DSN` 失败关闭；没有连接或 PG 写入。这些需隔离数据库写入的用例未放进 CI。
 - `.github/workflows/repository-policy.yml` 已给 V4 scoped job 加入 Accepted Reader、native DSN 和 synthetic HTTP 回归，并只通过 `git lfs pull --include` 拉取两个冻结 Reader 文件，避免拉取仓库全部 436 个 LFS 对象；CI 会读取真实冻结字节，而不是 133/131-byte pointer。工作流本地等价测试通过，GitHub push check 等待最新精确 SHA 实跑。
 
@@ -77,7 +78,7 @@ approval_status: no authorization for production/isolated PG writes, migration, 
 | E2E_POS | BLOCKED_NOT_EXECUTED | 无 PIT source/package 与 accepted Publication，不构造成功快照 |
 | HTTP_28766 | PASS_SYNTHETIC | 七 endpoint fixture HTTP 测试完成后已停止；非真实 BFF/PG |
 | UI_SEVEN | PARTIAL / NOT_VERIFIABLE | 七 API route 已 wired；页面所需价格、身份、成员、回放/结果关系仍缺 live publication 数据 |
-| CI | WORKFLOW_READY | LFS 与 Reader 测试已入 scoped job；GitHub 最终 SHA 结果待推送触发 |
+| CI | PASS_WITH_ONE_EXPLICIT_SKIP | Push/PR checks 在 SHA `6f60daa70b23f05e5dd57cec381b12f4c2e75e10` 成功；141 passed、1 skip，唯一 skip 是 CI 缺本机冻结日更证据 |
 | PRODUCTION | UNCHANGED | 28765 未监听；无 PG 写入、迁移、Head 切换、物理删除或历史强推 |
 
 ## 下一阶段与阻断

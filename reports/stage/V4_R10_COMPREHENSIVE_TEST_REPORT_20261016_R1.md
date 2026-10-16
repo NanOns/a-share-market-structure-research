@@ -1,6 +1,6 @@
 ---
 stage_id: V4_R10_COMPREHENSIVE_20261016_R1
-code_sha: ffe8723c9a48111bd23e94c7cb471fe5688ffcdb
+code_sha: e14ed450c
 baseline_sha: 0eb2392f2a4a9666bd11f17b261dcfd4d98ce2e1
 branch: codex/v4-workspace-cleanup
 scope: R10 current Reader recovery and CI, explicit PG candidate BFF, Workspace identity, Owner/page projection states, daily Core producer bridge and controlled writer, read-only PG/schema audit
@@ -86,6 +86,14 @@ approval_status: no authorization for production/isolated PG writes, migration, 
 代码和测试已推送；文档将随最新 CI 结果收尾。尚未完成且有外部权限/数据门的项目：独立 source package acceptance/PIT receipt、具备最小权限的非超管 Reader/Writer 角色、获批的 PG schema migration/write 批次，以及现役页面对同一 accepted Publication/T0 的真实读回。真实日更耗时/证券数增量复测需等源数据和运行资格；不以 synthetic 数据宣称性能。
 
 未执行生产/隔离 PG DDL/DML、Publication 或正式 Head 写入、28765 部署、旧 C 工作区清理、Git 历史改写或强推。GitHub Issue #2 和 Draft PR #3 已记录前一批 R10 状态；将在最新代码/报告 SHA 与 CI 确认后同步续推结果，PR 维持 Draft。
+
+
+## R10 继续实质修复（2026-10-16，代码 SHA `e14ed450c`）
+
+- 为 R4 publication-bound Owner mapping 增加真实事务接口 `persist_publication_module_results(pg, candidate)`：只接受经过摘要核验的 metadata candidate 和显式 `V4_NATIVE_PG_DSN` writer role；确认当前事务可写、writer 权限不含超管/DDL/更新删除、数据库身份一致，以及目标 publication 已 ACCEPTED 且尚未 Head seal。对已存在绑定做逐字段幂等核验；首次写入后逐行 readback。函数只使用调用方事务，不连接数据库、不 commit、不改 Head。迁移 `038_publication_module_results_r4.sql` 仍未执行。
+- 新增事务 writer 插入/readback/重复调用回归；R10 scoped CI 同等本地命令为 **150 passed**，其中包含现役 Reader、Owner、Core、七 API/候选 server、固定 28766 synthetic HTTP 等原回归。Python 源码编译、工作台 JavaScript `node --check`、`git diff --check` 和 staged repository policy 均通过。测试使用 SQL fixture；不构成 live PG 写入证据。
+- 代码已提交并推送：`e14ed450cc34e06868aa5d53b7a30fbcd984c4e0`。该 SHA 的 GitHub push run [38893245565](https://github.com/NanOns/a-share-market-structure-research/actions/runs/38893245565) 和 Draft PR run [38893252248](https://github.com/NanOns/a-share-market-structure-research/actions/runs/38893252248) 均成功，admission 与 V4 scoped job 全绿；runner 为 **149 passed / 1 skipped**。唯一 skip 是 CI 未提供 Git 外的 2026-10-12 冻结日更证据；本机同命令读取到该冻结证据，为 **150 passed / 0 skipped**。
+- 本次会话环境没有 `V4_NATIVE_PG_READER_DSN` 或 `WORKBENCH_PG_DSN`，故此续推没有新的 live PG 查询。此前只读快照记录不被冒充为本次查询。也没有真实 Owner 绑定写入、accepted Head、页面到 live PG 的正向读回、或生产端口操作。
 
 
 ## R10 代码续推（2026-10-16）

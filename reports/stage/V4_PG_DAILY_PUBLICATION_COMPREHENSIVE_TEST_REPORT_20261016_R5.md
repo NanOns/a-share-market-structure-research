@@ -1,6 +1,6 @@
 ---
 stage_id: V4_PG_DAILY_PUBLICATION_R5_20261016
-code_sha: f0e4ef7da7e55a9b302c928ca0ba9625c57228ef-base-plus-R5-worktree
+code_sha: 23f300eb814e20ed91f091cba28cc7c7b7471b00
 test_scope: manifest-package-authority-date-validation-business-release-boundary-page-readback
 conclusion: 51-focused-tests-pass; daily-chain-suite-7-pass-1-preexisting-fixture-failure; real-producer-pg-and-business-publishability-blocked
 approval_status: CODE_ONLY_REPAIR_AUTHORIZED
@@ -29,7 +29,7 @@ approval_status: CODE_ONLY_REPAIR_AUTHORIZED
 - **Passed 2:** `tests/test_operational_daily_executor_v1.py` with its own G-drive basetemp.
 - **Daily-chain spot check: 7 passed, 1 failed.** The failure is `tests/test_pre_next_t0_executor_chain.py::test_full_executor_entry[True]`, which stops before the modified code path because its temporary checkout lacks `config/operational_daily_exact_release_policy_v2.json`. This is recorded as a fixture/environment failure, not a passing regression.
 - No production PG connection, migration, data write, Head change, service start, or 28765 deployment was performed.
-- GitHub Actions/CI: pending push.
+- GitHub Actions/CI for the implementation SHA: all four checks passed — [push run 38860274386](https://github.com/NanOns/a-share-market-structure-research/actions/runs/38860274386) and [PR run 38860278691](https://github.com/NanOns/a-share-market-structure-research/actions/runs/38860278691). A later report-only commit is tracked separately in Issue #2 / PR #3.
 
 ## Status and blockers
 

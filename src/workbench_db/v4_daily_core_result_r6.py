@@ -8,6 +8,7 @@ thresholds, and an independent database readback are absent.
 from __future__ import annotations
 
 from datetime import date, datetime, timezone
+from dataclasses import dataclass, field
 import hashlib
 import json
 import math
@@ -25,6 +26,204 @@ _PROFILE_FIELDS = ("ma5", "ma20", "ma60")
 
 class CoreResultError(ValueError):
     pass
+
+
+_PG_READBACK_PROOF = object()
+
+
+@dataclass(frozen=True)
+class VerifiedDailyCoreResult:
+    """Typed evidence emitted only after the full PostgreSQL readback check.
+
+    This object deliberately is not a Mapping: a caller cannot make a dict that
+    happens to contain ``status=PG_READBACK_VERIFIED`` and pass the Head planner.
+    The private proof identity is also checked by the planner-facing validator.
+    """
+
+    contract_id: str
+    publication_id: str
+    publication_revision: int
+    trade_date: str
+    source_manifest_sha256: str
+    result_identity: str
+    result_sha256: str
+    producer_receipt_sha256: str
+    readback_receipt_sha256: str
+    row_count: int
+    missing_price_rows: int
+    completeness_status: str
+    observed_completeness_status: str
+    quality_status: str
+    status: str
+    publishable: bool
+    _proof: object = field(repr=False, compare=False)
+
+
+def is_verified_daily_core_result(value: Any) -> bool:
+    """Return whether value is a sealed result produced by this module's PG reader."""
+    if not isinstance(value, VerifiedDailyCoreResult) or value._proof is not _PG_READBACK_PROOF:
+        return False
+    try:
+        return _sha(_verified_result_receipt_material(value)) == value.readback_receipt_sha256
+    except (TypeError, ValueError, AttributeError):
+        return False
+
+
+def _verified_result_receipt_material(value: VerifiedDailyCoreResult) -> dict[str, Any]:
+    """All verified fields, especially every field consumed by Head planning."""
+    return {
+        "contract_id": value.contract_id,
+        "publication_id": value.publication_id,
+        "publication_revision": value.publication_revision,
+        "trade_date": value.trade_date,
+        "source_manifest_sha256": value.source_manifest_sha256,
+        "result_identity": value.result_identity,
+        "result_sha256": value.result_sha256,
+        "producer_receipt_sha256": value.producer_receipt_sha256,
+        "row_count": value.row_count,
+        "missing_price_rows": value.missing_price_rows,
+        "completeness_status": value.completeness_status,
+        "observed_completeness_status": value.observed_completeness_status,
+        "quality_status": value.quality_status,
+        "status": value.status,
+        "publishable": value.publishable,
+    }
+
+
+def _read_consumed_source_proofs(pg: Any, *, publication_id: str, publication_revision: int,
+                                 target: str, source_manifest_sha256: str,
+                                 core_source_revision_ids: set[str]) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Rebuild the publication manifest and exact TDX artifact bindings from PG.
+
+    This intentionally INNER JOINs the independent package fact relation. A
+    trigger-created core row or consumed-source row alone is not proof of the
+    underlying source artifact.
+    """
+    query = """SELECT p.trade_date,p.source_manifest_contract_id,p.source_manifest_sha256,
+                      cs.source_key,cs.source_revision_id,cs.digest,
+                      sr.logical_fact_id,sr.revision_no,sr.digest,sr.effective_from,sr.effective_to,
+                      sr.provider_available_at,sr.observed_at,sr.ingested_at,sr.system_available_at,
+                      sr.tombstone,sr.source_package_id,sr.source_package_source_key,sr.source_fact_digest,
+                      sp.package_id,sp.contract_version,sp.package_sha256,sp.page_observed_at,
+                      sp.target_trade_date,sp.parser_version,sp.accepted_scope,sp.manifest,
+                      f.package_id,f.source_key,f.logical_fact_id,f.fact_digest,f.source_fact_sha256,
+                      f.record_locator,f.acceptance_receipt_id
+                 FROM v4.publications p
+                 JOIN v4.publication_consumed_sources cs ON cs.publication_id=p.publication_id
+                 JOIN v4.source_revisions sr ON sr.source_revision_id=cs.source_revision_id
+                 JOIN v4.source_packages sp ON sp.package_id=sr.source_package_id
+                 JOIN v4.source_package_facts f
+                   ON f.package_id=sr.source_package_id
+                  AND f.source_key=sr.source_package_source_key
+                  AND f.logical_fact_id=sr.logical_fact_id
+                  AND f.fact_digest=sr.source_fact_digest
+                WHERE p.publication_id=%s AND p.revision_no=%s
+                ORDER BY convert_to(cs.source_key,'UTF8')"""
+    try:
+        raw_rows = pg.execute(query, (publication_id, publication_revision)).fetchall()
+    except Exception as exc:
+        raise CoreResultError("CORE_RESULT_INDEPENDENT_SOURCE_PROOF_UNAVAILABLE") from exc
+    if not raw_rows:
+        raise CoreResultError("CORE_RESULT_INDEPENDENT_SOURCE_PROOF_MISSING")
+    columns = (
+        "publication_trade_date", "source_manifest_contract_id", "publication_manifest_sha256",
+        "source_key", "source_revision_id", "consumed_digest", "logical_fact_id", "revision_no",
+        "revision_digest", "effective_from", "effective_to", "provider_available_at", "observed_at",
+        "ingested_at", "system_available_at", "tombstone", "revision_package_id",
+        "revision_package_source_key", "revision_source_fact_digest", "source_package_id",
+        "source_package_contract_version", "source_package_sha256", "source_package_page_observed_at",
+        "source_package_target_trade_date", "source_package_parser_version", "source_package_accepted_scope",
+        "source_package_manifest", "fact_package_id", "fact_source_key", "fact_logical_fact_id",
+        "fact_digest", "source_fact_sha256", "record_locator", "acceptance_receipt_id",
+    )
+    try:
+        from .v4_source_manifest import CONTRACT_ID as SOURCE_MANIFEST_CONTRACT_ID, build_source_manifest
+        proof_rows = [dict(zip(columns, row)) for row in raw_rows]
+        seen_source_keys = set()
+        manifest_rows = []
+        tdx_bindings = []
+        observed_trade_date = None
+        for proof in proof_rows:
+            if proof["publication_trade_date"].isoformat() != target:
+                raise CoreResultError("CORE_RESULT_CONSUMED_SOURCE_T0_MISMATCH")
+            if (proof["source_manifest_contract_id"] != SOURCE_MANIFEST_CONTRACT_ID
+                    or str(proof["publication_manifest_sha256"]).strip() != source_manifest_sha256):
+                raise CoreResultError("CORE_RESULT_CONSUMED_SOURCE_MANIFEST_IDENTITY_MISMATCH")
+            observed_trade_date = proof["publication_trade_date"].isoformat()
+            key = proof["source_key"]
+            if key in seen_source_keys:
+                raise CoreResultError("CORE_RESULT_CONSUMED_SOURCE_KEY_DUPLICATE")
+            seen_source_keys.add(key)
+            if not isinstance(proof["source_revision_id"], str) or not proof["source_revision_id"].strip():
+                raise CoreResultError("CORE_RESULT_CONSUMED_SOURCE_REVISION_INVALID")
+            if (proof["source_package_id"] != proof["revision_package_id"]
+                    or proof["source_package_id"] != proof["fact_package_id"]
+                    or proof["source_key"] != proof["revision_package_source_key"]
+                    or proof["source_key"] != proof["fact_source_key"]
+                    or proof["logical_fact_id"] != proof["fact_logical_fact_id"]
+                    or str(proof["consumed_digest"]).strip() != str(proof["revision_digest"]).strip()
+                    or str(proof["revision_digest"]).strip() != str(proof["fact_digest"]).strip()
+                    or str(proof["revision_source_fact_digest"]).strip() != str(proof["fact_digest"]).strip()
+                    or proof["source_package_accepted_scope"] != "ACCEPTED_SOURCE_PACKAGE"
+                    or proof["source_package_target_trade_date"].isoformat() != target
+                    or proof["tombstone"] is True
+                    or proof["effective_from"] is not None and proof["effective_from"].isoformat() > target
+                    or proof["effective_to"] is not None and proof["effective_to"].isoformat() < target):
+                raise CoreResultError("CORE_RESULT_CONSUMED_SOURCE_ARTIFACT_MISMATCH")
+            if proof["source_package_manifest"] is None:
+                raise CoreResultError("CORE_RESULT_SOURCE_PACKAGE_MANIFEST_MISSING")
+            package_bindings = proof["source_package_manifest"].get("source_fact_bindings")
+            expected_fact = {
+                "source_key": key, "logical_fact_id": proof["logical_fact_id"],
+                "fact_digest": str(proof["fact_digest"]).strip(),
+                "source_fact_sha256": str(proof["source_fact_sha256"]).strip(),
+                "record_locator": proof["record_locator"],
+            }
+            if (proof["source_package_manifest"].get("acceptance_receipt_id") != proof["acceptance_receipt_id"]
+                    or not isinstance(package_bindings, list) or not any(
+                    isinstance(item, Mapping) and all(item.get(name) == value for name, value in expected_fact.items())
+                    for item in package_bindings)):
+                raise CoreResultError("CORE_RESULT_SOURCE_PACKAGE_MANIFEST_FACT_MISMATCH")
+            manifest_rows.append({
+                "source_key": key, "source_revision_id": proof["source_revision_id"],
+                "digest": str(proof["consumed_digest"]).strip(),
+                "logical_fact_id": proof["logical_fact_id"], "revision_no": int(proof["revision_no"]),
+                "revision_digest": str(proof["revision_digest"]).strip(),
+                "effective_from": proof["effective_from"], "effective_to": proof["effective_to"],
+                "provider_available_at": proof["provider_available_at"], "observed_at": proof["observed_at"],
+                "ingested_at": proof["ingested_at"], "system_available_at": proof["system_available_at"],
+                "tombstone": proof["tombstone"], "source_package_id": proof["source_package_id"],
+                "source_package_contract_version": proof["source_package_contract_version"],
+                "source_package_sha256": str(proof["source_package_sha256"]).strip(),
+                "source_package_page_observed_at": proof["source_package_page_observed_at"],
+                "source_package_target_trade_date": proof["source_package_target_trade_date"],
+                "source_package_parser_version": proof["source_package_parser_version"],
+                "source_package_accepted_scope": proof["source_package_accepted_scope"],
+            })
+            if key == "tdx" and proof["source_revision_id"] in core_source_revision_ids:
+                tdx_bindings.append({
+                    "source_key": "tdx", "source_revision_id": proof["source_revision_id"],
+                    "source_package_id": proof["source_package_id"],
+                    "package_sha256": str(proof["source_package_sha256"]).strip(),
+                    "logical_fact_id": proof["logical_fact_id"],
+                    "fact_digest": str(proof["fact_digest"]).strip(),
+                    "source_fact_sha256": str(proof["source_fact_sha256"]).strip(),
+                    "acceptance_receipt_id": proof["acceptance_receipt_id"],
+                    "target_trade_date": target, "record_locator": proof["record_locator"],
+                })
+        if observed_trade_date != target:
+            raise CoreResultError("CORE_RESULT_CONSUMED_SOURCE_T0_MISMATCH")
+        rebuilt = build_source_manifest(manifest_rows)
+        if rebuilt["source_manifest_sha256"] != source_manifest_sha256:
+            raise CoreResultError("CORE_RESULT_CONSUMED_SOURCE_MANIFEST_DIGEST_MISMATCH")
+        if not tdx_bindings or {item["source_revision_id"] for item in tdx_bindings} != core_source_revision_ids:
+            raise CoreResultError("CORE_RESULT_ROW_SOURCE_NOT_IN_PUBLICATION_CONSUMED_SET")
+        tdx_bindings.sort(key=lambda item: item["source_revision_id"].encode("utf-8"))
+        return rebuilt["source_rows"], tdx_bindings
+    except CoreResultError:
+        raise
+    except Exception as exc:
+        raise CoreResultError("CORE_RESULT_INDEPENDENT_SOURCE_PROOF_INVALID") from exc
 
 
 def _canonical(value: Any) -> bytes:
@@ -63,6 +262,40 @@ def _number(value: Any, field: str, *, nullable: bool = True) -> float | None:
     return number
 
 
+_ARTIFACT_BINDING_FIELDS = (
+    "source_key", "source_revision_id", "source_package_id", "package_sha256",
+    "logical_fact_id", "fact_digest", "source_fact_sha256", "acceptance_receipt_id",
+    "target_trade_date", "record_locator",
+)
+
+
+def _normalize_artifact_bindings(value: Any, target: str) -> list[dict[str, Any]]:
+    if not isinstance(value, Sequence) or isinstance(value, (str, bytes)) or not value:
+        raise CoreResultError("CORE_RESULT_SOURCE_ARTIFACT_BINDINGS_REQUIRED")
+    normalized = []
+    seen_revision_ids = set()
+    for raw in value:
+        if not isinstance(raw, Mapping) or set(raw) != set(_ARTIFACT_BINDING_FIELDS):
+            raise CoreResultError("CORE_RESULT_SOURCE_ARTIFACT_BINDING_INVALID")
+        item = dict(raw)
+        for name in ("source_key", "source_revision_id", "source_package_id", "logical_fact_id", "acceptance_receipt_id"):
+            if not isinstance(item[name], str) or not item[name].strip():
+                raise CoreResultError("CORE_RESULT_SOURCE_ARTIFACT_BINDING_INVALID")
+        if item["source_key"] != "tdx" or item["target_trade_date"] != target:
+            raise CoreResultError("CORE_RESULT_SOURCE_ARTIFACT_BINDING_T0_OR_KEY_MISMATCH")
+        if item["source_revision_id"] in seen_revision_ids:
+            raise CoreResultError("CORE_RESULT_SOURCE_ARTIFACT_REVISION_DUPLICATE")
+        seen_revision_ids.add(item["source_revision_id"])
+        for name in ("package_sha256", "fact_digest", "source_fact_sha256"):
+            if not isinstance(item[name], str) or not _SHA256.fullmatch(item[name]):
+                raise CoreResultError("CORE_RESULT_SOURCE_ARTIFACT_DIGEST_INVALID")
+        if not isinstance(item["record_locator"], Mapping) or not item["record_locator"]:
+            raise CoreResultError("CORE_RESULT_SOURCE_ARTIFACT_LOCATOR_REQUIRED")
+        normalized.append(item)
+    normalized.sort(key=lambda item: item["source_revision_id"].encode("utf-8"))
+    return normalized
+
+
 def build_daily_core_result_plan(
     *,
     publication_id: str,
@@ -89,6 +322,15 @@ def build_daily_core_result_plan(
         raise CoreResultError("CORE_RESULT_PRODUCER_RECEIPT_REQUIRED")
     receipt = dict(producer_receipt)
     receipt_digest = receipt.pop("receipt_sha256", None)
+    artifact_bindings = _normalize_artifact_bindings(receipt.get("source_artifact_bindings"), target)
+    if artifact_bindings != receipt.get("source_artifact_bindings"):
+        raise CoreResultError("CORE_RESULT_SOURCE_ARTIFACT_BINDING_ORDER_INVALID")
+    receipt["source_artifact_bindings"] = artifact_bindings
+    if set(receipt) != {
+        "trade_date", "producer_contract_id", "producer_sha256", "publication_id",
+        "publication_revision", "source_manifest_sha256", "source_artifact_bindings",
+    }:
+        raise CoreResultError("CORE_RESULT_PRODUCER_RECEIPT_FIELDS_INVALID")
     if (receipt_digest != _sha(receipt)
             or receipt.get("trade_date") != target
             or receipt.get("producer_contract_id") != producer_contract_id
@@ -151,6 +393,9 @@ def build_daily_core_result_plan(
         row["row_sha256"] = _sha(row)
         normalized.append(row)
     normalized.sort(key=lambda row: row["security_id"].encode("utf-8"))
+    if not {row["source_revision_id"] for row in normalized}.issubset(
+            {binding["source_revision_id"] for binding in artifact_bindings}):
+        raise CoreResultError("CORE_RESULT_ROW_SOURCE_NOT_IN_PRODUCER_RECEIPT")
 
     if completeness_contract is None:
         completeness_contract_id = "UNRESOLVED"
@@ -184,6 +429,8 @@ def build_daily_core_result_plan(
         "trade_date": target, "result_identity": result_identity,
         "result_contract_id": CONTRACT_ID, "producer_contract_id": producer_contract_id,
         "producer_sha256": producer_sha256, "source_manifest_sha256": source_manifest_sha256,
+        "producer_receipt_sha256": receipt_digest,
+        "producer_source_artifact_bindings": artifact_bindings,
         "result_sha256": result_sha, "row_count": len(normalized),
         "missing_price_rows": missing_price, "completeness_contract_id": completeness_contract_id,
         "completeness_contract_version": completeness_contract_version,
@@ -194,9 +441,13 @@ def build_daily_core_result_plan(
 
 
 def read_daily_core_result(pg: Any, *, publication_id: str, publication_revision: int,
-                           trade_date: str, source_manifest_sha256: str) -> dict[str, Any]:
+                           trade_date: str, source_manifest_sha256: str) -> VerifiedDailyCoreResult:
     """Independently read back and hash a publication-bound core result in PG."""
     target = _date(trade_date)
+    if (not isinstance(publication_id, str) or not publication_id.strip()
+            or isinstance(publication_revision, bool) or not isinstance(publication_revision, int)
+            or publication_revision <= 0 or not _SHA256.fullmatch(str(source_manifest_sha256))):
+        raise CoreResultError("CORE_RESULT_PUBLICATION_IDENTITY_INVALID")
     snapshot = pg.execute(
         """SELECT trade_date,result_identity,result_contract_id,producer_contract_id,
                   producer_sha256,producer_receipt_sha256,source_manifest_sha256,result_sha256,row_count,
@@ -237,8 +488,29 @@ def read_daily_core_result(pg: Any, *, publication_id: str, publication_revision
         if item["close"] is None:
             missing_price += 1
         material_rows.append({**item, "row_sha256": str(row_sha).strip()})
+    if len(rows) == 0 or len(rows) > _MAX_ROWS:
+        raise CoreResultError("CORE_RESULT_PG_ROWSET_EMPTY_OR_LIMIT_EXCEEDED")
+    ordered_ids = [row["security_id"] for row in material_rows]
+    if len(set(ordered_ids)) != len(ordered_ids) or ordered_ids != sorted(ordered_ids, key=lambda item: item.encode("utf-8")):
+        raise CoreResultError("CORE_RESULT_PG_ROWSET_ORDER_OR_DUPLICATE_INVALID")
     if len(rows) != int(snapshot[8]) or missing_price != int(snapshot[9]):
         raise CoreResultError("CORE_RESULT_PG_ROWSET_COUNT_MISMATCH")
+    source_revision_ids = {str(row["source_revision_id"]) for row in material_rows}
+    _, artifact_bindings = _read_consumed_source_proofs(
+        pg, publication_id=publication_id, publication_revision=publication_revision,
+        target=target, source_manifest_sha256=source_manifest_sha256,
+        core_source_revision_ids=source_revision_ids,
+    )
+    producer_receipt_body = {
+        "trade_date": target, "producer_contract_id": str(snapshot[3]),
+        "producer_sha256": str(snapshot[4]).strip(), "publication_id": publication_id,
+        "publication_revision": publication_revision,
+        "source_manifest_sha256": source_manifest_sha256,
+        "source_artifact_bindings": artifact_bindings,
+    }
+    producer_receipt_sha = _sha(producer_receipt_body)
+    if producer_receipt_sha != str(snapshot[5]).strip():
+        raise CoreResultError("CORE_RESULT_PRODUCER_RECEIPT_SOURCE_BINDING_MISMATCH")
     material = {
         "contract_id": CONTRACT_ID, "contract_version": CONTRACT_VERSION,
         "publication_id": publication_id, "publication_revision": publication_revision,
@@ -257,10 +529,34 @@ def read_daily_core_result(pg: Any, *, publication_id: str, publication_revision
     })
     if expected_identity != snapshot[1]:
         raise CoreResultError("CORE_RESULT_PG_RESULT_IDENTITY_MISMATCH")
-    return {
-        "publication_id": publication_id, "publication_revision": publication_revision,
-        "trade_date": target, "result_identity": snapshot[1], "result_sha256": result_sha,
+    # Stored PASS is only a database claim. The active, audited completeness
+    # contract is not independently loaded by this reader, so the verified
+    # business state remains unresolved and cannot release a Head.
+    observed_completeness_status = str(snapshot[12])
+    completeness_status = "CONTRACT_UNRESOLVED"
+    publishable = False
+    receipt_body = {
+        "contract_id": CONTRACT_ID, "publication_id": publication_id,
+        "publication_revision": publication_revision, "trade_date": target,
+        "source_manifest_sha256": source_manifest_sha256,
+        "result_identity": str(snapshot[1]), "result_sha256": result_sha,
+        "producer_receipt_sha256": producer_receipt_sha,
         "row_count": len(rows), "missing_price_rows": missing_price,
-        "completeness_status": snapshot[12], "quality_status": snapshot[13],
-        "publishable": snapshot[12] == "PASS",
+        "completeness_status": completeness_status,
+        "observed_completeness_status": observed_completeness_status,
+        "quality_status": str(snapshot[13]), "status": "PG_READBACK_VERIFIED",
+        "publishable": publishable,
     }
+    return VerifiedDailyCoreResult(
+        contract_id=CONTRACT_ID, publication_id=publication_id,
+        publication_revision=publication_revision, trade_date=target,
+        source_manifest_sha256=source_manifest_sha256,
+        result_identity=str(snapshot[1]), result_sha256=result_sha,
+        producer_receipt_sha256=producer_receipt_sha,
+        readback_receipt_sha256=_sha(receipt_body),
+        row_count=len(rows), missing_price_rows=missing_price,
+        completeness_status=completeness_status,
+        observed_completeness_status=observed_completeness_status,
+        quality_status=str(snapshot[13]), status="PG_READBACK_VERIFIED", publishable=publishable,
+        _proof=_PG_READBACK_PROOF,
+    )

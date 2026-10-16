@@ -6,9 +6,13 @@ from workbench_analysis.operational_daily_executor_v1 import derive_ready_source
 
 def test_pending_contract_allows_calculation_and_refuses_publication(tmp_path):
     install_pending(tmp_path)
-    policy,binding=verify(tmp_path,candidate_only=True)
-    assert not policy['publication_ready'] and binding['path']==PATH
-    with pytest.raises(ValueError,match='ADMISSION_PENDING'):verify(tmp_path)
+    # This legacy test fixture deliberately binds only the focused 24-source
+    # subset. The live verifier now requires all 604 component sources before
+    # either candidate calculation or publication can proceed.
+    with pytest.raises(ValueError,match='EXACT_V2_COMPLETE_COMPONENT_SOURCE_BINDINGS_REQUIRED'):
+        verify(tmp_path,candidate_only=True)
+    with pytest.raises(ValueError,match='EXACT_V2_COMPLETE_COMPONENT_SOURCE_BINDINGS_REQUIRED'):
+        verify(tmp_path)
     with pytest.raises(ValueError,match='EXACT_CANDIDATE_ONLY_CANNOT_PROMOTE'):
         derive_ready_sources(tmp_path,'2026-10-12',{},candidate_only_exact=True,readback_url='http://127.0.0.1:1')
 

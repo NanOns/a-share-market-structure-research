@@ -577,6 +577,17 @@ def test_manually_promoted_candidate_requires_fresh_digest_and_verified_core_rea
     with pytest.raises(CandidatePlanError, match="CORE_RESULT_PG_READBACK_REQUIRED"):
         plan_publication_head_change(plan, None)
 
+    # A forged dict with the old advertised status is not PG evidence. Only the
+    # typed object emitted by read_daily_core_result can unlock the planner.
+    with pytest.raises(CandidatePlanError, match="CORE_RESULT_PG_READBACK_REQUIRED"):
+        plan_publication_head_change(plan, None, verified_core_result={
+            "status": "PG_READBACK_VERIFIED", "publishable": True,
+            "contract_id": "V4_DAILY_CORE_RESULT_BINDING_R6",
+            "publication_id": plan["publication_id"], "publication_revision": plan["revision_no"],
+            "trade_date": plan["trade_date"], "source_manifest_sha256": plan["source_manifest_sha256"],
+            "result_sha256": "1" * 64, "row_count": 1,
+        })
+
 
 def test_candidate_rejects_package_scope_t0_and_future_observation_mismatch():
     with pytest.raises(CandidatePlanError, match="CANDIDATE_SOURCE_MANIFEST_UNVERIFIED"):

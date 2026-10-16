@@ -305,7 +305,10 @@ def build_publication_candidate(
     return body
 
 
-def plan_publication_head_change(candidate: Mapping[str, Any], current_head: Mapping[str, Any] | None) -> dict[str, Any]:
+def plan_publication_head_change(
+    candidate: Mapping[str, Any], current_head: Mapping[str, Any] | None, *,
+    verified_core_result: Any = None,
+) -> dict[str, Any]:
     """Describe exact publication-id CAS; never execute or grant a write."""
     if not isinstance(candidate, Mapping):
         raise CandidatePlanError("CANDIDATE_NOT_READY")
@@ -321,24 +324,31 @@ def plan_publication_head_change(candidate: Mapping[str, Any], current_head: Map
             or candidate.get("minimum_publish_contract_id") != MINIMUM_DAILY_PUBLICATION_CONTRACT_ID
             or not candidate.get("source_manifest_sha256")):
         raise CandidatePlanError("CANDIDATE_NOT_READY")
-    core_result = candidate.get("verified_core_result")
-    if (not isinstance(core_result, Mapping)
-            or core_result.get("status") != "PG_READBACK_VERIFIED"
-            or core_result.get("publishable") is not True
-            or core_result.get("contract_id") != "V4_DAILY_CORE_RESULT_BINDING_R6"
-            or core_result.get("publication_id") != candidate.get("publication_id")
-            or core_result.get("publication_revision") != candidate.get("revision_no")
-            or core_result.get("trade_date") != candidate.get("trade_date")
-            or core_result.get("source_manifest_sha256") != candidate.get("source_manifest_sha256")
-            or not _DIGEST.fullmatch(str(core_result.get("result_sha256", "")))
-            or isinstance(core_result.get("row_count"), bool)
-            or not isinstance(core_result.get("row_count"), int) or core_result["row_count"] <= 0):
+    from .v4_daily_core_result_r6 import is_verified_daily_core_result
+    core_result = verified_core_result
+    if (not is_verified_daily_core_result(core_result)
+            or core_result.status != "PG_READBACK_VERIFIED"
+            or core_result.publishable is not True
+            or core_result.completeness_status != "PASS"
+            or core_result.contract_id != "V4_DAILY_CORE_RESULT_BINDING_R6"
+            or core_result.publication_id != candidate.get("publication_id")
+            or core_result.publication_revision != candidate.get("revision_no")
+            or core_result.trade_date != candidate.get("trade_date")
+            or core_result.source_manifest_sha256 != candidate.get("source_manifest_sha256")
+            or not _DIGEST.fullmatch(str(core_result.result_sha256))
+            or not _DIGEST.fullmatch(str(core_result.readback_receipt_sha256))
+            or isinstance(core_result.row_count, bool)
+            or not isinstance(core_result.row_count, int) or core_result.row_count <= 0):
         raise CandidatePlanError("CORE_RESULT_PG_READBACK_REQUIRED")
     target = {"trade_date": candidate["trade_date"], "model_namespace_id": candidate["model_namespace_id"]}
+    def sealed_plan(body):
+        body["core_result_readback_receipt_sha256"] = core_result.readback_receipt_sha256
+        body["plan_receipt_sha256"] = digest(canonical(body))
+        return body
     if current_head is None:
         if int(candidate["revision_no"]) != 1 or candidate.get("same_day_revision_parent_id") is not None:
             raise CandidatePlanError("INITIAL_PUBLICATION_IDENTITY_INVALID")
-        return {
+        return sealed_plan({
             "action": "INSERT_IF_ABSENT", "target": target,
             "expected_prior_head": None,
             "prior_session_publication_id": candidate.get("prior_session_publication_id"),
@@ -346,7 +356,7 @@ def plan_publication_head_change(candidate: Mapping[str, Any], current_head: Map
             "prior_session_state_logical_digest": candidate.get("prior_session_state_logical_digest"),
             "initial_boundary_review_required": candidate.get("prior_session_publication_id") is None,
             "write_executed": False,
-        }
+        })
     if current_head.get("trade_date") != candidate["trade_date"] or current_head.get("model_namespace_id") != candidate["model_namespace_id"]:
         raise CandidatePlanError("HEAD_SELECTOR_MISMATCH")
     current_id, current_revision = current_head.get("publication_id"), int(current_head.get("revision_no", 0))
@@ -367,12 +377,12 @@ def plan_publication_head_change(candidate: Mapping[str, Any], current_head: Map
                 or current_head.get("state_head_id") != candidate.get("state_head_id")
                 or current_head.get("state_logical_digest") != candidate.get("state_logical_digest")):
             raise CandidatePlanError("IDEMPOTENT_IDENTITY_UNVERIFIED")
-        return {"action": "IDEMPOTENT_REPLAY", "target": target, "expected_prior_head": dict(current_head), "write_executed": False}
+        return sealed_plan({"action": "IDEMPOTENT_REPLAY", "target": target, "expected_prior_head": dict(current_head), "write_executed": False})
     if int(candidate["revision_no"]) != current_revision + 1:
         raise CandidatePlanError("PUBLICATION_REVISION_NOT_NEXT")
     if candidate.get("same_day_revision_parent_id") != current_id:
         raise CandidatePlanError("HEAD_CAS_PRECONDITION_MISMATCH")
-    return {
+    return sealed_plan({
         "action": "CAS_UPDATE", "target": target,
         "expected_prior_head": {
             "publication_id": current_id,
@@ -381,4 +391,4 @@ def plan_publication_head_change(candidate: Mapping[str, Any], current_head: Map
             "state_logical_digest": current_state_digest,
         },
         "write_executed": False,
-    }
+    })

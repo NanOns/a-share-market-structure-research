@@ -40,7 +40,7 @@ def _frozen_inputs(root, *, as_recorded=False, pit_eligible=False):
     }
     freeze = _write(root, "data/v4/frozen/freeze.json", freeze_doc)
     ready_doc = {
-        "target_session": day, "source_ready": True,
+        "contract_id": "V4_DAILY_SOURCE_READINESS_V2", "trade_date": day, "source_ready": True,
         "AS_RECORDED": as_recorded, "PIT_ELIGIBLE": pit_eligible,
         "source_freeze": {"sha256": freeze["sha256"]},
     }
@@ -68,21 +68,23 @@ def test_actual_style_freeze_stays_diagnostic_without_accepted_pit_receipt(tmp_p
         acceptance_receipt=_receipt(day, freeze, readiness),
     )
     assert plan["status"] == "DIAGNOSTIC_ONLY"
-    assert plan["readiness_status"] == "ACCEPTANCE_RECEIPT_REJECTED"
+    assert plan["readiness_status"] == "SOURCE_PIT_AUTHORITY_UNAVAILABLE"
     assert plan["capture_status"] == "CAPTURED"
     assert plan["write_mode"] == "PLAN_ONLY_NO_DATABASE_IO"
     assert {row["source_key"] for row in plan["source_facts"]} == {"tdx", "native_baostock", "runtime_manifest"}
 
 
-def test_source_freeze_bytes_and_acceptance_receipt_are_exactly_bound(tmp_path):
+def test_self_hashed_receipt_cannot_create_acceptance_authority(tmp_path):
     day, freeze, readiness, _ = _frozen_inputs(tmp_path, as_recorded=True, pit_eligible=True)
     receipt = _receipt(day, freeze, readiness)
     plan = build_source_ingest_plan(
         tmp_path, trade_date=day, source_freeze=freeze, source_readiness=readiness,
         acceptance_receipt=receipt,
     )
-    assert plan["status"] == "ACCEPTED"
-    assert all(fact["acceptance_receipt_id"] == receipt["acceptance_id"] for fact in plan["source_facts"])
+    assert plan["status"] == "DIAGNOSTIC_ONLY"
+    assert plan["acceptance_status"] == "INDEPENDENT_ACCEPTANCE_AUTHORITY_UNAVAILABLE"
+    assert plan["package_manifest"]["acceptance_receipt_id"] is None
+    assert all("acceptance_receipt_id" not in fact for fact in plan["source_facts"])
 
     receipt["source_freeze_sha256"] = "0" * 64
     rejected = build_source_ingest_plan(
@@ -94,6 +96,108 @@ def test_source_freeze_bytes_and_acceptance_receipt_are_exactly_bound(tmp_path):
     (tmp_path / freeze["path"]).write_bytes(b"changed")
     with pytest.raises(SourceIngestError, match="SOURCE_FREEZE_DIGEST_MISMATCH"):
         build_source_ingest_plan(tmp_path, trade_date=day, source_freeze=freeze)
+
+
+class _AtomicityFakePg:
+    """Small cursor double records that detected replay conflicts roll back."""
+
+    def __init__(self):
+        self.writes = 0
+        self.statements = []
+        self.consumed_reads = 0
+
+    def execute(self, sql, params=None):
+        self.statements.append((sql, params))
+        normalized = " ".join(sql.split()).lower()
+        if normalized.startswith("select revision_no from v4.publications"):
+            return _Row((3,))
+        if normalized.startswith("select package_id, package_sha256, manifest, accepted_scope"):
+            return _Row(None)
+        if normalized.startswith("select logical_fact_id,revision_no,digest,payload"):
+            return _Row(None)
+        if normalized.startswith("select revision_no,source_revision_id from v4.source_revisions"):
+            return _Row(None)
+        if normalized.startswith("select source_revision_id,digest from v4.publication_consumed_sources"):
+            self.consumed_reads += 1
+            return _Row(None if self.consumed_reads == 1 else ("different-revision", "f" * 64))
+        if normalized.startswith(("insert", "update", "delete")):
+            self.writes += 1
+        if normalized.startswith("rollback to savepoint"):
+            self.writes = 0
+        return _Row(None)
+
+
+class _Row:
+    def __init__(self, value):
+        self.value = value
+
+    def fetchone(self):
+        return self.value
+
+
+def test_detected_conflict_rolls_back_all_prior_plan_writes(tmp_path, monkeypatch):
+    import workbench_db.v4_daily_source_ingest_r6 as ingest
+
+    from workbench_db.v4_daily_source_ingest_r6 import (
+        SourceIngestConflict,
+        _persist_accepted_source_ingest_plan_transaction,
+        persist_source_ingest_plan,
+    )
+
+    facts = []
+    for key in ("tdx", "native_baostock"):
+        facts.append({
+            "source_key": key, "logical_fact_id": "daily-source:2026-10-16:" + key,
+            "fact_digest": key[0] * 64, "source_fact_sha256": key[0] * 64,
+            "record_locator": {"path": key + ".json"}, "record_count": 1, "byte_count": 10,
+        })
+    manifest = {
+        "accepted_scope": "ACCEPTED_SOURCE_PACKAGE", "source_observed_at": "2026-10-16T12:00:00+00:00",
+        "source_freeze_sha256": "a" * 64, "acceptance_receipt_id": "authority-ref",
+    }
+    plan = {
+        "contract_id": "V4_DAILY_SOURCE_INGEST_ADAPTER_R6", "status": "ACCEPTED",
+        "package_id": "pkg", "package_sha256": "b" * 64, "trade_date": "2026-10-16",
+        "package_manifest": manifest, "source_facts": facts,
+    }
+    public_pg = _AtomicityFakePg()
+    with pytest.raises(SourceIngestError, match="INDEPENDENT_ACCEPTANCE_AUTHORITY_UNAVAILABLE"):
+        persist_source_ingest_plan(
+            public_pg, plan, publication_id="pub-1", publication_revision=3,
+            ingested_at="2026-10-16T12:30:00+00:00",
+            system_available_at="2026-10-16T12:31:00+00:00",
+        )
+    assert public_pg.statements == []
+
+    internal_pg = _AtomicityFakePg()
+    with pytest.raises(SourceIngestError, match="INDEPENDENT_ACCEPTANCE_AUTHORITY_UNAVAILABLE"):
+        _persist_accepted_source_ingest_plan_transaction(
+            internal_pg, plan, publication_id="pub-1", publication_revision=3,
+            ingested_at="2026-10-16T12:30:00+00:00",
+            system_available_at="2026-10-16T12:31:00+00:00",
+        )
+    assert internal_pg.statements == []
+
+    # Exercise only the transaction rollback mechanics with an explicit test
+    # verifier; this does not model or claim a production acceptance authority.
+    plan_digest = hashlib.sha256(_json_bytes(plan)).hexdigest()
+    monkeypatch.setattr(
+        ingest, "_verify_independent_acceptance_authority",
+        lambda _plan: ingest._IndependentAcceptanceProof(plan_digest, "TEST_ONLY_ATOMICITY_FIXTURE"),
+    )
+
+    pg = _AtomicityFakePg()
+    with pytest.raises(SourceIngestConflict, match="PUBLICATION_CONSUMED_SOURCE_CONFLICT"):
+        _persist_accepted_source_ingest_plan_transaction(
+            pg, plan, publication_id="pub-1", publication_revision=3,
+            ingested_at="2026-10-16T12:30:00+00:00",
+            system_available_at="2026-10-16T12:31:00+00:00",
+        )
+    assert pg.writes == 0
+    assert any("ROLLBACK TO SAVEPOINT" in sql for sql, _ in pg.statements)
+    assert not any("revision=%s" in sql for sql, _ in pg.statements)
+    consumed_sql = [sql for sql, _ in pg.statements if "publication_consumed_sources" in sql]
+    assert all("source_key=%s" in sql or "(publication_id, source_key," in sql for sql in consumed_sql)
 
 
 def test_source_readiness_must_bind_exact_freeze_and_t0(tmp_path):

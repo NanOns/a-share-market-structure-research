@@ -1,6 +1,8 @@
--- R6: bind each canonical source revision and consumed-source key to one
--- verifiable fact extracted from the exact immutable package. This is a
--- migration proposal only; it has not been run against any database.
+-- R7 repair of the R6 proposal: bind each canonical source revision and
+-- consumed-source key to one fact in the exact package manifest. This DDL
+-- validates lineage; accepted_scope and a self-hash are not independent source
+-- authority. No runtime source acceptance authority is currently configured,
+-- and this proposal has not been run against any database.
 
 CREATE TABLE v4.source_package_facts (
     package_id text NOT NULL REFERENCES v4.source_packages(package_id),
@@ -83,7 +85,7 @@ BEGIN
           AND item->>'source_fact_sha256'=NEW.source_fact_sha256
           AND item->>'acceptance_receipt_id'=NEW.acceptance_receipt_id
     ) THEN
-        RAISE EXCEPTION 'V4_SOURCE_PACKAGE_FACT_NOT_IN_SIGNED_MANIFEST';
+        RAISE EXCEPTION 'V4_SOURCE_PACKAGE_FACT_NOT_IN_BOUND_MANIFEST';
     END IF;
     RETURN NEW;
 END $$;

@@ -1,5 +1,6 @@
--- R6: immutable publication-scoped storage for the actual daily producer's
--- core rows. This is a DDL proposal only; it has not been executed in PG.
+-- R7 repair of the R6 proposal: publication_id is the physical publication
+-- identity and revision_no is its declared sequence. This is still a DDL
+-- proposal only; it has not been executed or compatibility-tested in live PG.
 
 CREATE TABLE v4.daily_core_result_snapshots (
     publication_id text NOT NULL,
@@ -21,8 +22,8 @@ CREATE TABLE v4.daily_core_result_snapshots (
     captured_at timestamptz NOT NULL,
     PRIMARY KEY (publication_id, publication_revision),
     UNIQUE (result_identity),
-    FOREIGN KEY (publication_id, publication_revision)
-        REFERENCES v4.publications(publication_id, revision),
+    FOREIGN KEY (publication_id)
+        REFERENCES v4.publications(publication_id),
     CHECK (producer_sha256 ~ '^[0-9a-f]{64}$'),
     CHECK (producer_receipt_sha256 ~ '^[0-9a-f]{64}$'),
     CHECK (source_manifest_sha256 ~ '^[0-9a-f]{64}$'),
@@ -79,8 +80,9 @@ RETURNS trigger LANGUAGE plpgsql AS $$
 BEGIN
     IF NOT EXISTS (
         SELECT 1 FROM v4.publication_consumed_sources cs
+        JOIN v4.publications p ON p.publication_id=cs.publication_id
          WHERE cs.publication_id=NEW.publication_id
-           AND cs.revision=NEW.publication_revision
+           AND p.revision_no=NEW.publication_revision
            AND cs.source_revision_id=NEW.source_revision_id
            AND cs.source_key='tdx'
     ) THEN
@@ -120,7 +122,7 @@ DECLARE wrong_date_count integer;
 DECLARE current_publication v4.publications%ROWTYPE;
 BEGIN
     SELECT * INTO STRICT current_publication FROM v4.publications
-     WHERE publication_id=NEW.publication_id AND revision=NEW.publication_revision;
+     WHERE publication_id=NEW.publication_id AND revision_no=NEW.publication_revision;
     IF NEW.trade_date <> current_publication.trade_date
        OR NEW.source_manifest_sha256 <> current_publication.source_manifest_sha256 THEN
         RAISE EXCEPTION 'V4_DAILY_CORE_RESULT_PUBLICATION_IDENTITY_MISMATCH';
@@ -150,7 +152,7 @@ BEGIN
     IF NEW.status='ACCEPTED' AND NOT EXISTS (
         SELECT 1 FROM v4.daily_core_result_snapshots s
          WHERE s.publication_id=NEW.publication_id
-           AND s.publication_revision=NEW.revision
+           AND s.publication_revision=NEW.revision_no
            AND s.trade_date=NEW.trade_date
            AND s.source_manifest_sha256=NEW.source_manifest_sha256
            AND s.completeness_status='PASS'

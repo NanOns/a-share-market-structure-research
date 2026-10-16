@@ -17,6 +17,9 @@ from scripts import audit_dynamic_daily_period_numbers_v1 as oracle
 @pytest.mark.parametrize('gate_ready', [False, True])
 def test_full_executor_entry(chain, monkeypatch, gate_ready):
     root, day, freeze, new_head, _ = chain
+    if gate_ready:
+        from tests.exact_daily_policy_fixture import install_official_closure
+        install_official_closure(root)
     artifact = json.loads((root/freeze['path']).read_bytes())
     now = datetime.now(timezone.utc).isoformat()
     package = dict(download={'synthetic': True}, provider_package_date=day, observed_at=now)
@@ -72,16 +75,20 @@ def test_full_executor_entry(chain, monkeypatch, gate_ready):
     monkeypatch.setattr(oracle, 'audit', audit)
     monkeypatch.setattr(bootstrap, 'produce_daily_state', lambda *a: candidate_binding)
     monkeypatch.setattr(bootstrap, 'produce_daily_sector', lambda *a: candidate_binding)
-    monkeypatch.setattr(release, 'promote', lambda *a, **k: pytest.fail('NO_REAL_CAS_OR_GRANT'))
+    promotion_calls=[]
+    def forbid_promotion(*a, **k):
+        promotion_calls.append('PROMOTE')
+        pytest.fail('NO_REAL_CAS_OR_GRANT')
+    monkeypatch.setattr(release, 'promote', forbid_promotion)
+    if gate_ready:
+        with pytest.raises(ValueError,match='CORRECTED_INPUT_DIGEST_MISMATCH:data/v4/runtime_repair_sources_r1_1/59c29bd5ea5a591995dea12675c4191b3277d9d240d180c57eaf15bc6e690fc6/config/v4_operational_new_listing_r1.json'):
+            executor.execute_sources(root, day, 'EXECUTE')
+        assert (root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes() == before
+        assert calls == ['SOURCE_CAPTURED_BEFORE_GATE','SOURCE_CAPTURED_BEFORE_GATE']
+        assert promotion_calls == []
+        return
     result = executor.execute_sources(root, day, 'EXECUTE')
     assert (root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes() == before
     assert result['first_capture_source_candidate']['candidate']
-    if gate_ready:
-        assert 'OWNER_PREPARE' in calls
-        strict = result['producer_review_candidates']['candidate']['strict_source']['candidate']
-        receipt = json.loads((root/strict['path']).read_bytes())
-        assert receipt['scope_reconciliation']['status'] == 'SAME_DAY_SCOPE_RECONCILED'
-        assert result['status'] == 'QA_BLOCKED'
-    else:
-        assert result['status'] == 'WAIT_BAOSTOCK_DAILY'
-        assert calls == ['SOURCE_CAPTURED_BEFORE_GATE']
+    assert result['status'] == 'WAIT_BAOSTOCK_DAILY'
+    assert calls == ['SOURCE_CAPTURED_BEFORE_GATE']

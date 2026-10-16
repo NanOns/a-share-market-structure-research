@@ -127,7 +127,11 @@ def build_publication_candidate(
                 or date.fromisoformat(target_date) >= R3_SOURCE_EFFECTIVE_DATE
                    and (verified_core_result.universe_completeness_status != "PASS"
                         or verified_core_result.universe_contract_id != "V4_MARKET_UNIVERSE_COMPLETENESS_R1"
-                        or not _DIGEST.fullmatch(str(verified_core_result.universe_sha256 or "")))
+                        or not _DIGEST.fullmatch(str(verified_core_result.universe_sha256 or ""))
+                        or not _DIGEST.fullmatch(str(verified_core_result.universe_readback_receipt_sha256 or ""))
+                        or isinstance(verified_core_result.universe_reconciliation_count, bool)
+                        or not isinstance(verified_core_result.universe_reconciliation_count, int)
+                        or verified_core_result.universe_reconciliation_count <= 0)
                 or verified_core_result.publication_id != publication_id
                 or verified_core_result.publication_revision != revision_no
                 or verified_core_result.trade_date != target_date
@@ -297,6 +301,11 @@ def build_publication_candidate(
             "completeness_contract_id": core_result.completeness_contract_id,
             "completeness_contract_version": core_result.completeness_contract_version,
             "source_manifest_sha256": core_result.source_manifest_sha256,
+            "universe_completeness_status": core_result.universe_completeness_status,
+            "universe_contract_id": core_result.universe_contract_id,
+            "universe_sha256": core_result.universe_sha256,
+            "universe_reconciliation_count": core_result.universe_reconciliation_count,
+            "universe_readback_receipt_sha256": core_result.universe_readback_receipt_sha256,
             "status": core_result.status,
         } if publishable else None),
         "accepted_at": None,
@@ -374,7 +383,11 @@ def plan_publication_head_change(
             or date.fromisoformat(str(candidate.get("trade_date"))) >= R3_SOURCE_EFFECTIVE_DATE
                and (core_result.universe_completeness_status != "PASS"
                     or core_result.universe_contract_id != "V4_MARKET_UNIVERSE_COMPLETENESS_R1"
-                    or not _DIGEST.fullmatch(str(core_result.universe_sha256 or "")))
+                    or not _DIGEST.fullmatch(str(core_result.universe_sha256 or ""))
+                    or not _DIGEST.fullmatch(str(core_result.universe_readback_receipt_sha256 or ""))
+                    or isinstance(core_result.universe_reconciliation_count, bool)
+                    or not isinstance(core_result.universe_reconciliation_count, int)
+                    or core_result.universe_reconciliation_count <= 0)
             or core_result.contract_id != "V4_DAILY_CORE_RESULT_BINDING_R6"
             or core_result.publication_id != candidate.get("publication_id")
             or core_result.publication_revision != candidate.get("revision_no")
@@ -387,6 +400,8 @@ def plan_publication_head_change(
             or candidate["core_result_binding"].get("completeness_status") != core_result.completeness_status
             or candidate["core_result_binding"].get("completeness_contract_id") != core_result.completeness_contract_id
             or candidate["core_result_binding"].get("completeness_contract_version") != core_result.completeness_contract_version
+            or candidate["core_result_binding"].get("universe_readback_receipt_sha256") != core_result.universe_readback_receipt_sha256
+            or candidate["core_result_binding"].get("universe_reconciliation_count") != core_result.universe_reconciliation_count
             or not _DIGEST.fullmatch(str(core_result.result_sha256))
             or not _DIGEST.fullmatch(str(core_result.readback_receipt_sha256))
             or isinstance(core_result.row_count, bool)

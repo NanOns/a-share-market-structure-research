@@ -69,6 +69,8 @@ class VerifiedDailyCoreResult:
     universe_completeness_status: str
     universe_contract_id: str
     universe_sha256: str | None
+    universe_reconciliation_count: int
+    universe_readback_receipt_sha256: str | None
     quality_status: str
     status: str
     publishable: bool
@@ -105,6 +107,8 @@ def _verified_result_receipt_material(value: VerifiedDailyCoreResult) -> dict[st
         "universe_completeness_status": value.universe_completeness_status,
         "universe_contract_id": value.universe_contract_id,
         "universe_sha256": value.universe_sha256,
+        "universe_reconciliation_count": value.universe_reconciliation_count,
+        "universe_readback_receipt_sha256": value.universe_readback_receipt_sha256,
         "quality_status": value.quality_status,
         "status": value.status,
         "publishable": value.publishable,
@@ -822,11 +826,38 @@ def read_daily_core_result(pg: Any, *, publication_id: str, publication_revision
     if expected_identity != snapshot[1]:
         raise CoreResultError("CORE_RESULT_PG_RESULT_IDENTITY_MISMATCH")
     observed_completeness_status = str(snapshot[12])
-    universe_status = ("BLOCKED_UNIVERSE_READBACK_NOT_PERSISTED"
-                       if date.fromisoformat(target) >= R3_SOURCE_EFFECTIVE_DATE
-                       else "LEGACY_NOT_REQUIRED")
-    universe_contract_id = "V4_MARKET_UNIVERSE_COMPLETENESS_R1" if universe_status.startswith("BLOCKED") else "LEGACY_DIAGNOSTIC"
+    universe_proof = None
+    universe_status = "LEGACY_NOT_REQUIRED"
+    universe_contract_id = "LEGACY_DIAGNOSTIC"
     universe_sha256 = None
+    universe_reconciliation_count = 0
+    universe_readback_receipt_sha256 = None
+    if date.fromisoformat(target) >= R3_SOURCE_EFFECTIVE_DATE:
+        try:
+            from .v4_universe_pg_r1 import read_universe_snapshot, is_verified_universe_readback
+            universe_proof = read_universe_snapshot(
+                pg, publication_id=publication_id, publication_revision=publication_revision,
+                trade_date=target, source_manifest_sha256=source_manifest_sha256,
+                core_rows=material_rows,
+            )
+            if not is_verified_universe_readback(universe_proof):
+                raise CoreResultError("UNIVERSE_TYPED_READBACK_INVALID")
+            universe_status = "PASS"
+            universe_contract_id = "V4_MARKET_UNIVERSE_COMPLETENESS_R1"
+            universe_sha256 = universe_proof.universe_sha256
+            universe_reconciliation_count = universe_proof.expected_count
+            universe_readback_receipt_sha256 = universe_proof.readback_receipt_sha256
+        except Exception as exc:
+            reason = str(exc)
+            universe_status = ("BLOCKED_UNIVERSE_READBACK_NOT_PERSISTED"
+                               if any(tag in reason for tag in (
+                                   "UNIVERSE_PG_SNAPSHOT_MISSING", "UNIVERSE_PG_SCHEMA_NOT_INSTALLED",
+                                   "UNIVERSE_PG_READBACK_UNAVAILABLE"))
+                               else "BLOCKED_UNIVERSE_AUTHORITY_OR_READ_PRIVILEGE"
+                               if any(tag in reason for tag in (
+                                   "AUTHORITY_UNAVAILABLE", "READER", "PRIVILEGE", "NO_WRITER_FALLBACK"))
+                               else "FAIL_UNIVERSE_READBACK_INVALID")
+            universe_contract_id = "V4_MARKET_UNIVERSE_COMPLETENESS_R1"
     if (snapshot[10] != DAILY_COMPLETENESS_CONTRACT["contract_id"]
             or snapshot[11] != DAILY_COMPLETENESS_CONTRACT["version"]):
         completeness_status = "CONTRACT_UNRESOLVED"
@@ -837,11 +868,7 @@ def read_daily_core_result(pg: Any, *, publication_id: str, publication_revision
         )
         if observed_completeness_status != completeness_status:
             raise CoreResultError("CORE_RESULT_PG_COMPLETENESS_DECLARATION_MISMATCH")
-        # R13 requires independent Universe completeness to be part of the
-        # typed Core readback. The current PG schema stores only the signed
-        # source-fact digest and locator, not the snapshot/reconciliation proof,
-        # so a T0 on or after the R3 effective date stays non-publishable.
-        publishable = completeness_status == "PASS" and universe_status == "LEGACY_NOT_REQUIRED"
+        publishable = completeness_status == "PASS" and universe_status in {"PASS", "LEGACY_NOT_REQUIRED"}
     receipt_body = {
         "contract_id": CONTRACT_ID, "publication_id": publication_id,
         "publication_revision": publication_revision, "trade_date": target,
@@ -855,6 +882,8 @@ def read_daily_core_result(pg: Any, *, publication_id: str, publication_revision
         "universe_completeness_status": universe_status,
         "universe_contract_id": universe_contract_id,
         "universe_sha256": universe_sha256,
+        "universe_reconciliation_count": universe_reconciliation_count,
+        "universe_readback_receipt_sha256": universe_readback_receipt_sha256,
         "observed_completeness_status": observed_completeness_status,
         "quality_status": str(snapshot[13]), "status": "PG_READBACK_VERIFIED",
         "publishable": publishable,
@@ -874,6 +903,8 @@ def read_daily_core_result(pg: Any, *, publication_id: str, publication_revision
         universe_completeness_status=universe_status,
         universe_contract_id=universe_contract_id,
         universe_sha256=universe_sha256,
+        universe_reconciliation_count=universe_reconciliation_count,
+        universe_readback_receipt_sha256=universe_readback_receipt_sha256,
         quality_status=str(snapshot[13]), status="PG_READBACK_VERIFIED", publishable=publishable,
         _proof=_PG_READBACK_PROOF,
     )

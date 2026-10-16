@@ -34,6 +34,7 @@ VERSIONS={
     "039_tdx_package_row_count_authority_r1.sql":"V4_TDX_PACKAGE_ROW_COUNT_AUTHORITY_R1",
     "040_source_manifest_r3_fact_proof.sql":"V4_SOURCE_MANIFEST_R3_FACT_PROOF",
     "041_r3_effective_date_gate.sql":"V4_R3_EFFECTIVE_DATE_GATE_R1",
+    "042_market_universe_persistence_r1.sql":"V4_MARKET_UNIVERSE_PERSISTENCE_R1",
 }
 
 def dsn():

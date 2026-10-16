@@ -47,11 +47,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          lfs: true
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Fetch frozen current-reader LFS artifacts
+        run: >-
+          git lfs pull
+          --include="data/v4/confirmation_candidates_r5/D2_2026-09-30_CANDIDATE_R5.json.gz,data/v4/confirmation_candidates_r5/STATE_EVENT_2026-09-30_CANDIDATE_R5.json.gz"
+          --exclude=""
       - name: Install focused test runner
         run: python -m pip install pytest duckdb pyarrow "psycopg[binary]" pandas
       - name: Check V4 PG publication contract and candidate code

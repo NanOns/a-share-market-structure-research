@@ -1,6 +1,6 @@
 ---
 stage_id: V4_R18_FINAL_DELIVERY_20261016
-code_sha: 5ae62167a
+code_sha: b0c74302787415ac7e05b3f629b3a20fed21f5dc
 test_scope: current-v4-r6-r18-targeted-publication-source-pg-owner-api-universe-regression
 conclusion: FIVE_CODE_STAGES_COMPLETE_LIVE_PG_SOURCE_BROWSER_AND_PRODUCTION_ACCEPTANCE_BLOCKED
 approval_status: CODE_TEST_COMMIT_PUSH_AND_GITHUB_REPORT_AUTHORIZED
@@ -14,10 +14,10 @@ approval_status: CODE_TEST_COMMIT_PUSH_AND_GITHUB_REPORT_AUTHORIZED
 
 | 阶段 | 代码提交 | 交付与路径 |
 |---|---|---|
-| R14 | `18b06d142` | `src/workbench_db/v4_universe_pg_r1.py`: 原始事实/包签名绑定、append-only writer/readback；`042_market_universe_persistence_r1.sql` 注册；`v4_daily_core_result_r6.py`、`v4_publication_candidate.py` 把封闭 Universe readback 能力摘要绑定进 Core/Candidate/Head；R14 合同与报告。 |
-| R15 | `c43d0678d` | 完整 43 文件 migration 名称/SHA/依赖/静态对象/风险和 live `NOT_VERIFIABLE` 差异清单；reader/writer/migration 权限、一次批量迁移授权申请；更新静态清点测试适配 042。 |
-| R16 | `0473cbb84` | `V4_DAILY_PIPELINE_PROGRESS_R1` 包装 `execute_sources`/`derive_ready_sources` 既有 checkpoint，记录耗时和计数；定向 Executor 说明及测试。该计时为 checkpoint interval，不是隔离阶段基准。 |
-| R17 | `5ae62167a` | `PgV4CurrentAdapter` 以 publication-bound rows 显示 `DEGRADED` partial result；新增七 API→Owner/PG relation/字段/UI 血缘矩阵与回归断言。 |
+| R14 | `18b06d1421fbc7ef9aa32781abf76a293537e151` | `src/workbench_db/v4_universe_pg_r1.py`: 原始事实/包签名绑定、append-only writer/readback；`042_market_universe_persistence_r1.sql` 注册；`v4_daily_core_result_r6.py`、`v4_publication_candidate.py` 把封闭 Universe readback 能力摘要绑定进 Core/Candidate/Head；R14 合同与报告。 |
+| R15 | `c43d0678ddd0ee33038b8fb5c1e9e09b5dd238b6` | 完整 43 文件 migration 名称/SHA/依赖/静态对象/风险和 live `NOT_VERIFIABLE` 差异清单；reader/writer/migration 权限、一次批量迁移授权申请；更新静态清点测试适配 042。 |
+| R16 | `0473cbb8486370a8cd03fa2a61bbff99f28a03b7` | `V4_DAILY_PIPELINE_PROGRESS_R1` 包装 `execute_sources`/`derive_ready_sources` 既有 checkpoint，记录耗时和计数；定向 Executor 说明及测试。该计时为 checkpoint interval，不是隔离阶段基准。 |
+| R17 | `5ae62167a4722051764103c92867e2b58c3d4d8a` | `PgV4CurrentAdapter` 以 publication-bound rows 显示 `DEGRADED` partial result；新增七 API→Owner/PG relation/字段/UI 血缘矩阵与回归断言。 |
 | R18 | 本报告最终提交 | 补齐 R8 isolated-schema plan runner 与测试对完整已注册 001–042 链、43 个文件和两个独立 010 的识别；添加性能/故障恢复矩阵和本总报告。未运行其 `--apply`。 |
 
 ## 测试与 CI
@@ -45,7 +45,7 @@ python -m pytest --confcutdir=tests -q -p no:cacheprovider \
 
 R18 汇总：`210 passed, 3 failed`。3 个失败均在既有 `test_v4_r14_governance_contracts.py` 针对 2026-10-12 固定历史 Head 运行；受保护证据声称 `scripts/validate_v4_12_r11_chain.py` 为 9,383 bytes / SHA `ab76426fba950a58ba4a38ae144084801082d784e508c1985120f00a5c1a167d`，当前冻结仓库文件为 9,564 bytes / SHA `72a97af013b7c87e70be16c6dbdcc3741ca7acfca3a927bf52b61f34a5515a9c`。因此 exact scoped promotion、zero mutation repeat 和 full contract completeness 这3项失败均由历史证据字节绑定不一致触发；本轮没有改历史 Head/数据/校验器去掩盖它们。首轮 R18 还发现 isolated runner 把 041 写死为最后迁移；已修复为完整注册链 042，并在复跑中通过。
 
-- Push/PR CI：在本最终报告提交推送后必须对最终 Git SHA 重新核实；CI run 链接、结论和 SHA 由 GitHub Issue #2 / Draft PR #3 的最终更新记录。此报告撰写时 CI 尚未完成，因此不把先前提交的成功 run 冒充为最终 SHA 证据。
+- R18 code/report SHA `b0c74302787415ac7e05b3f629b3a20fed21f5dc` 的 push CI [38926147348](https://github.com/NanOns/a-share-market-structure-research/actions/runs/38926147348) 与 PR CI [38926155126](https://github.com/NanOns/a-share-market-structure-research/actions/runs/38926155126) 均通过 `admission` 与 `v4-pg-publication-candidate`。报告证据补录形成的后续 closeout SHA 及其 CI 将记录在 Issue #2 / Draft PR #3 最终更新中。
 - 测试全在 G: 临时路径保存缓存；没有运行 7,000+ 旧版测试/M14。
 
 ## 按阶段 × 任务卡验收状态
@@ -74,6 +74,8 @@ R18 汇总：`210 passed, 3 failed`。3 个失败均在既有 `test_v4_r14_gover
 | PRODUCTION | UNCHANGED | UNCHANGED | UNCHANGED | UNCHANGED | UNCHANGED |
 
 Current least-privilege read/write DSNs and approved authority are absent; 5432 is the only observed PG listener, and 28765/28766 have no listener. No database query, DDL/DML, service start, browser E2E, accepted Head CAS, production schedule, or deployment occurred. Real performance, SQL compile in PG, data lineage through a live accepted Publication, and isolated rollback remain unverified.
+
+The pre-existing untracked `.githooks/pre-push` hook was preserved and not staged; no other worktree changes were left by this task.
 
 ## Code readiness versus live acceptance
 

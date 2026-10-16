@@ -141,30 +141,53 @@ class PgV4CurrentAdapter:
                     page_rows.append({"row": row, "path": f"payload.research_priority.{group}.all_items[{index}]", "verified": True})
         elif page == "sector":
             rows = parsed.get("sector_lifecycle_supplement", [])
-            for index, row in enumerate(rows):
-                page_rows.append({"row": row, "path": f"payload.sector_lifecycle[{index}]", "verified": True})
+            membership_by_sector = {}
+            for index, row in enumerate(page_data.get("sector_membership_rows", [])):
+                membership_by_sector.setdefault(row["sector_id"], []).append(row)
             parsed["sector_membership"] = []
-            for index, row in enumerate(rows):
-                parsed["sector_membership"].append({
-                    "sector_id": row.get("sector_id"),
-                    "sector_name": None,
-                    "member_count": None,
+            for sector_id, members in sorted(membership_by_sector.items()):
+                first = members[0]
+                pit_eligible = all(
+                    row.get("pit_observed") is True
+                    and row.get("historical_backtest_safe") is True
+                    and row.get("membership_quality") == "PIT_OBSERVED_ACCEPTED"
+                    and row.get("identity_status") == "MAPPED"
+                    for row in members
+                )
+                mapped_ids = {row["security_id"] for row in members if row.get("security_id") is not None}
+                parsed_row = {
+                    "sector_id": sector_id,
+                    "sector_name": first["sector_name"],
+                    "member_count": len(mapped_ids),
+                    "unknown_identity_count": sum(row.get("identity_status") == "UNKNOWN" for row in members),
+                    "membership_basis": first["membership_basis"],
+                    "membership_quality": first["membership_quality"],
+                    "pit_observed": first["pit_observed"],
+                    "historical_backtest_safe": first["historical_backtest_safe"],
+                    "source_revision_id": first["source_revision_id"],
+                    "T0": first["target_trade_date"],
                     "algorithm_state": None,
                     "field_data_states": {
-                        "sector_id": "DATA_MISSING",
-                        "sector_name": "DATA_MISSING",
-                        "member_count": "DATA_MISSING",
+                        "sector_id": "DATA_VERIFIED",
+                        "sector_name": "DATA_VERIFIED",
+                        "member_count": "DATA_VERIFIED" if pit_eligible else "NOT_PIT_ELIGIBLE",
                         "algorithm_state": "DATA_MISSING",
                     },
                     "field_reasons": {
-                        "sector_id": "SECTOR_MEMBERSHIP_FACTS_HAVE_NO_PUBLICATION_SOURCE_BINDING",
-                        "sector_name": "NO_V4_PUBLICATION_BOUND_IDENTITY_NAME_RELATION",
-                        "member_count": "NO_V4_PUBLICATION_BOUND_SECTOR_MEMBERSHIP_RELATION",
                         "algorithm_state": "NO_PUBLICATION_BOUND_ALGORITHM_STATE_RELATION",
                     },
-                    "lifecycle_supplement": row,
                     "context_token": context["context_token"],
+                }
+                parsed["sector_membership"].append(parsed_row)
+                page_rows.append({
+                    "row": parsed_row,
+                    "path": f"page_data.sector_membership_rows[{sector_id}]",
+                    "verified": True,
+                    "eligible_fields": {"sector_id", "sector_name", "member_count"},
                 })
+            for index, row in enumerate(rows):
+                page_rows.append({"row": row, "path": f"payload.sector_lifecycle[{index}]", "verified": True,
+                                  "eligible_fields": set()})
         elif page == "health":
             for family, row in sorted(parsed.get("risk_families", {}).items()):
                 page_rows.append({"row": row, "path": f"payload.operational_risk.families.{family}",
@@ -177,7 +200,7 @@ class PgV4CurrentAdapter:
             "radar": set(projection["consumer_fields"]),
             "entity": {"trade_date", "open", "high", "low", "close", "ma5", "ma20", "ma60",
                        "history_status", "profile_payload"},
-            "sector": set(),
+            "sector": {"sector_id", "sector_name", "member_count"},
             "cohort": set(),
             "settlement": set(),
             "health": {"maturity"},
@@ -199,7 +222,7 @@ class PgV4CurrentAdapter:
             "history_status": page_data.get("uncovered", {}).get("entity_prices", "NO_PUBLICATION_BOUND_CORE_PROFILE_RELATION"),
             "profile_payload": page_data.get("uncovered", {}).get("entity_prices", "NO_PUBLICATION_BOUND_CORE_PROFILE_RELATION"),
             "sector_id": page_data.get("uncovered", {}).get("sector_membership", "SECTOR_MEMBERSHIP_FACTS_HAVE_NO_PUBLICATION_SOURCE_BINDING"),
-            "sector_name": "NO_V4_PUBLICATION_BOUND_IDENTITY_NAME_RELATION",
+            "sector_name": page_data.get("uncovered", {}).get("sector_membership", "SECTOR_MEMBERSHIP_FACTS_HAVE_NO_PUBLICATION_SOURCE_BINDING"),
             "member_count": "NO_V4_PUBLICATION_BOUND_SECTOR_MEMBERSHIP_RELATION",
             "algorithm_state": "NO_PUBLICATION_BOUND_ALGORITHM_STATE_RELATION",
             "component": "NO_PUBLICATION_BOUND_REPLAY_RELATION",
@@ -212,6 +235,7 @@ class PgV4CurrentAdapter:
             group: (
                 "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION" if group == "RAW_DAILY" else
                 "NO_V4_PUBLICATION_BOUND_IDENTITY_NAME_RELATION" if group == "identity_names" else
+                page_data.get("uncovered", {}).get("sector_membership") if group == "membership" else
                 page_data.get("uncovered", {}).get(group, "NO_PUBLICATION_BOUND_PG_RELATION_OR_PRODUCER")
             )
             for group in projection["uncovered_groups"]
@@ -239,6 +263,10 @@ class PgV4CurrentAdapter:
             )
             for field, item in field_coverage.items()
         }
+        if page == "sector" and parsed.get("sector_membership"):
+            if any(row.get("member_count") is not None and row.get("field_data_states", {}).get("member_count") == "NOT_PIT_ELIGIBLE"
+                   for row in parsed["sector_membership"]):
+                field_data_states["member_count"] = "NOT_PIT_ELIGIBLE"
         business_statuses = set(field_states.values())
         business_result_state = (
             "PG_FIELD_VERIFIED" if business_statuses == {"PG_FIELD_VERIFIED"} else

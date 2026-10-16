@@ -128,6 +128,8 @@ class FakeConnection:
             return Cursor(one=self.core_snapshot)
         if "FROM v4.daily_core_result_rows" in statement:
             return Cursor(all_rows=self.core_rows)
+        if "FROM v4.sector_membership_facts" in statement:
+            return Cursor(all_rows=self.page_data.get("sector_membership_rows", []))
         if "FROM v4.publication_module_results" in statement:
             if self.missing_bindings:
                 error = RuntimeError("relation missing")
@@ -591,11 +593,42 @@ def test_sector_lifecycle_supplement_does_not_claim_membership_or_algorithm_stat
     result = PgV4CurrentAdapter(reader).read_endpoint(
         "/api/v4/current/sector", trade_date="2026-10-15", model_namespace_id="v4-main",
     )
-    row = result["parsed_business_fields"]["sector_membership"][0]
-    assert row["lifecycle_supplement"]["maturity"] == "OBSERVED"
-    assert row["field_data_states"]["member_count"] == "DATA_MISSING"
-    assert row["field_data_states"]["algorithm_state"] == "DATA_MISSING"
+    assert result["parsed_business_fields"]["sector_membership"] == []
+    assert result["parsed_business_fields"]["sector_lifecycle_supplement"][0]["maturity"] == "OBSERVED"
+    assert result["field_data_states"]["member_count"] == "DATA_MISSING"
+    assert result["field_data_states"]["algorithm_state"] == "DATA_MISSING"
     assert result["field_coverage"]["sector_id"]["status"] == "SOURCE_MISSING"
+
+
+def test_sector_membership_requires_same_publication_source_and_reports_non_pit_basis():
+    shared = {
+        "snapshot_id": "a" * 64, "source_revision_id": "src-r1", "sector_id": "INDUSTRY:T0706",
+        "sector_code": "T0706", "sector_name": "通信设备", "sector_type": "INDUSTRY",
+        "target_trade_date": TARGET_DATE, "membership_asof_date": TARGET_DATE,
+        "membership_basis": "CURRENT_TDX_MEMBERSHIP", "membership_quality": "CURRENT_TDX_DIAGNOSTIC",
+        "pit_observed": False, "historical_backtest_safe": False, "snapshot_source_digest": "e" * 64,
+        "snapshot_row_count": 2, "snapshot_quality": "CURRENT_TDX_DIAGNOSTIC",
+        "snapshot_pit_observed": False,
+    }
+    rows = [
+        {**shared, "membership_fact_id": "1" * 64, "source_security_key": "SZ.000001",
+         "security_id": "000001.SZ", "identity_status": "MAPPED"},
+        {**shared, "membership_fact_id": "2" * 64, "source_security_key": "SZ.000002",
+         "security_id": None, "identity_status": "UNKNOWN"},
+    ]
+    reader = reader_for(FakeConnection(head=publication_row(), page_data={"sector_membership_rows": rows}))
+    result = PgV4CurrentAdapter(reader).read_endpoint(
+        "/api/v4/current/sector", trade_date="2026-10-15", model_namespace_id="v4-main",
+    )
+    sector = result["parsed_business_fields"]["sector_membership"][0]
+    assert sector["member_count"] == 1
+    assert sector["unknown_identity_count"] == 1
+    assert sector["membership_basis"] == "CURRENT_TDX_MEMBERSHIP"
+    assert result["field_coverage"]["member_count"]["status"] == "PG_FIELD_VERIFIED"
+    assert result["field_data_states"]["member_count"] == "NOT_PIT_ELIGIBLE"
+    assert result["field_data_states"]["sector_name"] == "DATA_VERIFIED"
+    assert result["uncovered_reasons"]["membership"] is None
+    assert sector["field_data_states"]["algorithm_state"] == "DATA_MISSING"
 
 
 def owner_results(day="2026-10-15"):

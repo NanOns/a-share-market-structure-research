@@ -385,6 +385,9 @@ class PgPublicationReader:
             core_rows, core_status = PgPublicationReader._read_core_result_rows(
                 pg, publication, source_ids,
             )
+            membership_rows, membership_status = PgPublicationReader._read_sector_membership_rows(
+                pg, publication, source_rows, source_ids,
+            )
         except PublicationReadError:
             raise
         except Exception as exc:
@@ -420,11 +423,13 @@ class PgPublicationReader:
             "entity_lifecycle": [json_row(row) for row in lifecycle_rows],
             "daily_core_rows": [json_row(row) for row in core_rows],
             "daily_core_status": core_status,
+            "sector_membership_rows": [json_row(row) for row in membership_rows],
+            "sector_membership_status": membership_status,
             "uncovered": {
                 "entity_prices": None if core_status == "VERIFIED" else core_status,
                 "identity_names": "NO_V4_PUBLICATION_BOUND_IDENTITY_NAME_RELATION",
                 "replay": "NO_V4_PUBLICATION_BOUND_REPLAY_RELATION",
-                "sector_membership": "SECTOR_MEMBERSHIP_FACTS_HAVE_NO_PUBLICATION_SOURCE_BINDING",
+                "sector_membership": None if membership_status == "VERIFIED" else membership_status,
                 "cohort": "NO_V4_PUBLICATION_BOUND_COHORT_RELATION",
                 "settlement": "NO_V4_PUBLICATION_BOUND_SETTLEMENT_RELATION",
             },
@@ -500,6 +505,81 @@ class PgPublicationReader:
         if _sha(result_material) != str(snapshot[3]).strip():
             raise PublicationReadError("CORE_RESULT_AGGREGATE_DIGEST_MISMATCH")
         return verified, "VERIFIED"
+
+    @staticmethod
+    def _read_sector_membership_rows(pg, publication, source_rows, bound_source_ids):
+        """Read dated membership only where the snapshot source revision is consumed by this publication."""
+        if not bound_source_ids:
+            return [], "NO_PUBLICATION_BOUND_SECTOR_MEMBERSHIP_RELATION"
+        target = _iso_date(publication["trade_date"])
+        source_digest_by_id = {
+            str(row["source_revision_id"]): str(row["digest"]).strip()
+            for row in source_rows
+        }
+        try:
+            cursor = pg.execute(
+                """SELECT f.membership_fact_id,f.snapshot_id,f.source_revision_id,f.sector_id,
+                          f.sector_code,f.sector_name,f.sector_type,f.source_security_key,f.security_id,
+                          f.identity_status,f.target_trade_date,f.membership_asof_date,f.membership_basis,
+                          f.membership_quality,f.pit_observed,f.historical_backtest_safe,
+                          s.source_digest,s.row_count,s.membership_quality,s.pit_observed
+                     FROM v4.sector_membership_facts f
+                     JOIN v4.sector_membership_snapshots s ON s.snapshot_id=f.snapshot_id
+                    WHERE f.source_revision_id=ANY(%s) AND f.target_trade_date=%s
+                    ORDER BY f.sector_id COLLATE "C",f.source_security_key COLLATE "C"
+                    LIMIT 50001""",
+                (bound_source_ids, target),
+            )
+            columns = (
+                "membership_fact_id", "snapshot_id", "source_revision_id", "sector_id", "sector_code",
+                "sector_name", "sector_type", "source_security_key", "security_id", "identity_status",
+                "target_trade_date", "membership_asof_date", "membership_basis", "membership_quality",
+                "pit_observed", "historical_backtest_safe", "snapshot_source_digest", "snapshot_row_count",
+                "snapshot_quality", "snapshot_pit_observed",
+            )
+            rows = _row_dicts(cursor, columns)
+        except Exception as exc:
+            if getattr(exc, "sqlstate", None) == "42P01":
+                return [], "SECTOR_MEMBERSHIP_RELATION_UNAVAILABLE"
+            PgPublicationReader._map_schema_error(exc, "PAGE_RELATION_SCHEMA_UNAVAILABLE")
+            raise PublicationReadError("SECTOR_MEMBERSHIP_READ_FAILED") from exc
+        if len(rows) > 50000:
+            raise PublicationReadError("SECTOR_MEMBERSHIP_ROW_LIMIT_EXCEEDED")
+        if not rows:
+            return [], "NO_PUBLICATION_BOUND_SECTOR_MEMBERSHIP_ROWS"
+        by_snapshot = {}
+        for row in rows:
+            target_date = _iso_date(row["target_trade_date"])
+            source_id = row["source_revision_id"]
+            if (target_date != target or source_id not in bound_source_ids
+                    or source_digest_by_id.get(source_id) != str(row["snapshot_source_digest"]).strip()
+                    or not isinstance(row.get("sector_id"), str) or not row["sector_id"].strip()
+                    or not isinstance(row.get("sector_name"), str) or not row["sector_name"].strip()
+                    or row.get("sector_type") not in {"INDUSTRY", "THEME", "STYLE", "UNKNOWN"}
+                    or row.get("membership_basis") not in {
+                        "PIT_OBSERVED", "CURRENT_TDX_MEMBERSHIP", "CURRENT_MEMBERSHIP_REPLAY", "DERIVED_PARENT_MEMBERSHIP",
+                    }
+                    or not isinstance(row.get("membership_quality"), str) or not row["membership_quality"].strip()
+                    or row.get("identity_status") not in {"MAPPED", "UNKNOWN"}
+                    or (row.get("identity_status") == "MAPPED" and not row.get("security_id"))
+                    or (row.get("identity_status") == "UNKNOWN" and row.get("security_id") is not None)):
+                raise PublicationReadError("SECTOR_MEMBERSHIP_PUBLICATION_BINDING_INVALID")
+            pit = row.get("membership_basis") == "PIT_OBSERVED"
+            if (bool(row.get("pit_observed")) != pit
+                    or bool(row.get("snapshot_pit_observed")) != pit
+                    or bool(row.get("historical_backtest_safe")) and not pit
+                    or bool(row.get("historical_backtest_safe"))
+                       and (row.get("membership_quality") != "PIT_OBSERVED_ACCEPTED" or row.get("identity_status") != "MAPPED")
+                    or pit and row.get("membership_asof_date") is None
+                    or row.get("snapshot_quality") != row.get("membership_quality")):
+                raise PublicationReadError("SECTOR_MEMBERSHIP_PIT_OR_QUALITY_INVALID")
+            by_snapshot.setdefault(row["snapshot_id"], []).append(row)
+        for snapshot_rows in by_snapshot.values():
+            if any(int(row["snapshot_row_count"]) != len(snapshot_rows) for row in snapshot_rows):
+                raise PublicationReadError("SECTOR_MEMBERSHIP_SNAPSHOT_ROW_COUNT_MISMATCH")
+        if len(by_snapshot) != 1:
+            raise PublicationReadError("MULTIPLE_SECTOR_MEMBERSHIP_SNAPSHOTS_FOR_PUBLICATION")
+        return rows, "VERIFIED"
 
     @staticmethod
     def _read_same_day_parent(pg, publication):

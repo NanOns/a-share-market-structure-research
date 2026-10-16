@@ -5,18 +5,20 @@ import pytest
 from scripts import validate_v4_r8_isolated_schema as runner
 
 
-def test_runner_plan_contains_ordered_full_001_to_041_migration_set():
+def test_runner_plan_contains_ordered_full_registered_migration_set():
     files = [path.name for path, _, _ in runner.migrations()]
-    assert len(files) == 42  # 001..041, with the two separately versioned 010 files.
+    assert len(files) == 43  # 001..042, with the two separately versioned 010 files.
     assert files[0] == "001_v4_phase0_foundation.sql"
-    assert files[-1] == "041_r3_effective_date_gate.sql"
+    assert files[-1] == "042_market_universe_persistence_r1.sql"
     assert files.index("034_source_package_revision_authority_r2.sql") < files.index(
         "035_source_manifest_contract_r2.sql"
     ) < files.index("036_source_package_fact_provenance_r6.sql") < files.index(
         "037_daily_core_result_binding_r6.sql"
     ) < files.index("038_publication_module_results_r4.sql") < files.index(
         "039_tdx_package_row_count_authority_r1.sql"
-    ) < files.index("040_source_manifest_r3_fact_proof.sql") < files.index("041_r3_effective_date_gate.sql")
+    ) < files.index("040_source_manifest_r3_fact_proof.sql") < files.index(
+        "041_r3_effective_date_gate.sql"
+    ) < files.index("042_market_universe_persistence_r1.sql")
 
 
 @pytest.mark.parametrize(

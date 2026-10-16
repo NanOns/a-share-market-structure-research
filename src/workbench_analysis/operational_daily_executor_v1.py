@@ -103,7 +103,7 @@ def probe_source_revision(day):
         source_ready=False,reason='EXECUTOR_MUST_VERIFY_ACTUAL_TARGET_AND_THREE_SOURCES')
 
 
-def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,readback_url=None,progress=lambda *args:None,pg_publication_context=None):
+def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,readback_url=None,progress=lambda *args:None,pg_publication_context=None,pg_core_result_connection=None):
     root=Path(root)
     if mode!='PROBE' and not capture_only:
         head=json.loads((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())
@@ -209,10 +209,11 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     if not readiness['source_ready']:return dict(result,status=readiness['status'],reason=readiness['reason'])
     if capture_only:return result
     return derive_ready_sources(root,day,result,cancelled=cancelled,readback_url=readback_url,progress=progress,
-                                pg_publication_context=pg_publication_context)
+                                pg_publication_context=pg_publication_context,
+                                pg_core_result_connection=pg_core_result_connection)
 
 
-def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=None,progress=lambda *args:None,engineering_replay_current=False,candidate_only_exact=False,pg_publication_context=None):
+def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=None,progress=lambda *args:None,engineering_replay_current=False,candidate_only_exact=False,pg_publication_context=None,pg_core_result_connection=None):
     """Revalidate frozen bytes at the final boundary before any Owner work."""
     from .r43_owner_replay import checked
     root=Path(root)
@@ -243,8 +244,10 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
     # The real sealed daily Owners feed the V4 Core result planner when an
     # independently issued PG publication/source receipt is provided. Normal
     # daily local builds remain non-persistent and report the missing authority.
-    result=dict(result,pg_daily_core_result_candidate=
-                build_daily_core_result_candidate(root,candidate,day,pg_publication_context))
+    core_candidate=build_daily_core_result_candidate(root,candidate,day,pg_publication_context)
+    if pg_core_result_connection is not None:
+        core_candidate=persist_daily_core_result_candidate(pg_core_result_connection,core_candidate)
+    result=dict(result,pg_daily_core_result_candidate=core_candidate)
     from scripts.audit_dynamic_daily_period_numbers_v1 import audit as audit_periods
     from .r43_owner_replay import ref
     period_qa=audit_periods(root,context['folder'])
@@ -309,6 +312,8 @@ def build_daily_core_result_candidate(root,candidate,trade_date,publication_cont
         return {"status":"BLOCKED_PG_PUBLICATION_CONTEXT_MISSING",
                 "trade_date":trade_date,"write_mode":"PLAN_ONLY_NO_DATABASE_IO",
                 "persisted":False}
+
+
     try:
         from gzip import open as gzip_open
         from .r43_owner_replay import checked
@@ -393,6 +398,24 @@ def build_daily_core_result_candidate(root,candidate,trade_date,publication_cont
         return {"status":"BLOCKED_PRODUCER_OR_SOURCE_BINDING",
                 "trade_date":trade_date,"reason":str(exc),
                 "write_mode":"PLAN_ONLY_NO_DATABASE_IO","persisted":False}
+
+
+def persist_daily_core_result_candidate(pg, candidate):
+    """Opt-in bridge from sealed producer plan to the controlled caller transaction.
+
+    No connection is opened and no commit is issued here. Supplying ``pg`` is
+    an explicit write-path selection; the writer still validates the configured
+    V4 writer role, candidate publication, source package proofs, and PIT clocks.
+    """
+    if not isinstance(candidate,dict) or candidate.get("status")!="PLAN_READY_NOT_PERSISTED":
+        raise ValueError("PG_CORE_RESULT_PLAN_NOT_READY")
+    plan=candidate.get("plan")
+    if not isinstance(plan,dict):raise ValueError("PG_CORE_RESULT_PLAN_MISSING")
+    from workbench_db.v4_daily_core_result_r6 import persist_daily_core_result
+    receipt=persist_daily_core_result(pg,plan)
+    return {**candidate,"status":"PG_CANDIDATE_RESULT_INSERTED_NOT_ACCEPTED",
+            "write_mode":"CALLER_TRANSACTION_NO_COMMIT","persisted":True,
+            "pg_write_receipt":receipt}
 
 
 def verify_source_gate(root,day,artifact,result,now=None):

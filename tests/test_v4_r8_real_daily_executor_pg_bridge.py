@@ -13,6 +13,7 @@ import pytest
 
 from workbench_analysis.operational_daily_executor_v1 import (
     build_daily_core_result_candidate,
+    persist_daily_core_result_candidate,
     _pg_source_ingest_plan_diagnostic,
     _runtime_acceptance_manifest_path,
     _tdx_gbbq_source_path,
@@ -91,6 +92,29 @@ def test_actual_daily_owner_bridge_does_not_invent_publication_or_pit_authority(
         "write_mode": "PLAN_ONLY_NO_DATABASE_IO",
         "persisted": False,
     }
+
+
+def test_core_result_writer_bridge_is_explicit_and_delegates_to_caller_transaction(monkeypatch):
+    from workbench_db import v4_daily_core_result_r6
+
+    pg = object()
+    plan = {"contract_id": v4_daily_core_result_r6.CONTRACT_ID, "trade_date": DAY}
+    called = []
+
+    def writer(received_pg, received_plan):
+        called.append((received_pg, received_plan))
+        return {"status": "INSERTED_CANDIDATE_ROWS", "committed": False}
+
+    monkeypatch.setattr(v4_daily_core_result_r6, "persist_daily_core_result", writer)
+    result = persist_daily_core_result_candidate(pg, {
+        "status": "PLAN_READY_NOT_PERSISTED", "trade_date": DAY, "plan": plan,
+    })
+    assert called == [(pg, plan)]
+    assert result["status"] == "PG_CANDIDATE_RESULT_INSERTED_NOT_ACCEPTED"
+    assert result["write_mode"] == "CALLER_TRANSACTION_NO_COMMIT"
+    assert result["persisted"] is True
+    with pytest.raises(ValueError, match="PG_CORE_RESULT_PLAN_NOT_READY"):
+        persist_daily_core_result_candidate(pg, {"status": "BLOCKED_PG_PUBLICATION_CONTEXT_MISSING"})
 
 
 def test_active_runtime_receipt_path_comes_from_versioned_contract(tmp_path):

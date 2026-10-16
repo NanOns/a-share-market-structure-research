@@ -1,6 +1,6 @@
 ---
 stage_id: V4_R10_COMPREHENSIVE_20261016_R1
-code_sha: 6f60daa70b23f05e5dd57cec381b12f4c2e75e10
+code_sha: ffe8723c9a48111bd23e94c7cb471fe5688ffcdb
 baseline_sha: 0eb2392f2a4a9666bd11f17b261dcfd4d98ce2e1
 branch: codex/v4-workspace-cleanup
 scope: R10 current Reader recovery and CI, explicit PG candidate BFF, Workspace identity, Owner/page projection states, daily Core producer bridge and controlled writer, read-only PG/schema audit
@@ -38,18 +38,18 @@ approval_status: no authorization for production/isolated PG writes, migration, 
 
 1. **Accepted file Reader：** 两个坏掉的工作树 LFS pointer 用本地 Git LFS 缓存中与合同 SHA 相同的原始对象恢复，未改合同、Head、SHA 或断言。当前合同 390 个绑定全部通过路径、字节数和 SHA 核对；R10 Reader 文件现有 12 个用例全部通过。压缩原件证据：D2 为 12,539,130 bytes / `12a9aef662c540bbea47e1bb2f8a86378bf381863a3d80344fc27d259f1ace58`；STATE_EVENT 为 614,785 bytes / `7de481708462bda5073031a129bc147279dc9f2c7741c389f14a8fc6f99dcd58`。
 2. **Reader 权限和 DSN：** `v4_native.connection(read_only=True)` 现在先执行 `SET TRANSACTION READ ONLY`，再核对目标 schema、超管/角色管理/建库/复制/BYPASSRLS、schema CREATE、关系写权限和 sequence 写权限。`PgPublicationReader` 同步拒绝这些高权限/可写能力。R9 reader DSN 优先级和 writer 无回退行为原样保留。
-3. **七路现役 API：** `make_v4_handler` 增加仅显式的 `source=pg_candidate` 分支；需要注入 reader adapter、开启候选模式，并强制携带 `trade_date`、`model_namespace_id`、`context_token`。候选读出错时返回 `PENDING_PG_HEAD / NO_READER_PRIVILEGE / NOT_PIT_ELIGIBLE / DATA_MISSING` 状态，不读文件补齐；默认文件 Reader 仍按原路径工作。`serve_v4_candidate` 只绑定 `127.0.0.1:28766`，没有被启动。
-4. **七页 Owner 消费：** 候选 adapter 对 summary、radar、entity、sector、cohort、settlement、health 返回逐字段数据状态，并维持原 Owner 合同/精确字段投影，不合并 T0。现有三类 PG Owner 能力仍然是可选且无 live Publication binding：`research_priority → radar`；`operational_risk → summary/health`；`sector_lifecycle → sector/health 补充`。entity 的日线价格和身份名称关系缺失；sector membership/algorithm state 未绑定；cohort 和 settlement 没有 publication-bound 数据关系；health 缺 replay/maturity。故 API route 接入不等于 UI parity。
+3. **七路现役 API 与工作台：** `make_v4_handler` 增加仅显式的 `source=pg_candidate` 分支；强制携带 `trade_date`、`model_namespace_id`、`context_token`，候选失败绝不回退文件 Reader。`serve_v4_candidate` 可从显式非密钥数据库身份 JSON 构造 `PgPublicationReader`，只绑定 `127.0.0.1:28766`。`v4-workbench.js` 支持 `?source=pg_candidate&trade_date=...&model_namespace_id=...&context_token=...`，七模块请求共享该 context，并展示字段缺失状态/Owner 读回；未启动服务，真实浏览器/PG readback 仍未发生。
+4. **七页 Owner 消费：** 三个可选 PG Owner 映射仍为 `research_priority → radar`、`operational_risk → summary/health`、`sector_lifecycle → sector/health 补充`，且必须由同一 publication 绑定。新增 entity 真实读 `daily_core_result_snapshots/rows`：核验同一 publication/revision、T0、source revision 属于 consumed sources、每行 digest 和聚合 digest，随后投影 OHLCV、MA5/20/60、history/profile，并同 security_id 的 lifecycle 行关联；缺名称关系时显式标 `DATA_MISSING`。sector lifecycle 保留为独立补充，不再将 sector_id 误认 membership；member_count 和 algorithm_state 明确缺 relation。Cohort/Settlement 无 publication-bound relation；health 缺 replay/maturity。七页 UI 候选模式已接入，但 live PG/浏览器 parity 仍未验证。
 5. **Workspace identity：** 增加不暴露路径的 `V4_PG_WORKSPACE_NAMESPACE_ID_R1`，把 root-derived schema、root identity SHA 和读写能力要求一起表达；测试确认两个不同根映射到不同 schema。PG 旧 schema 到新 G 盘主仓的授权映射未建立，不按日期或名称猜测。当前唯一主仓在 G 盘。旧 C 盘 worktree 只读状态为 detached/prunable，gitdir 指向不存在位置；未触碰或删除。
 6. **日更生产者和 Core：** 现役 `operational_daily_executor_v1.derive_ready_sources` 在真实 `seal()` 后调用 Core plan bridge。该桥只从已封存的 `raw/core/profile/lifecycle` bindings 按 `(security_id, trade_date)` 读取和校验数据，并要求显式 publication/source receipt 才组装 `build_daily_core_result_plan` 输入；当前没有该权威上下文时显式返回 `BLOCKED_PG_PUBLICATION_CONTEXT_MISSING`，不生成假 source ID、Head 或 PIT 声明，也不做数据库 I/O。新增 `persist_daily_core_result` 受控 writer，要求显式 writer DSN、配置角色与当前数据库角色相同、非超管/无 DDL 能力、仅具备 Core 表 INSERT、匹配 CANDIDATE publication、PG statement-time PIT/source package 证明；不自动提交、不改 publication status、不改 Head。尚无合法 source receipt 或 live Core 表，故真实 plan 和写入均未运行。
 
 ## 测试和 HTTP 证据
 
-- 综合定向回归（15 个文件：PG candidate/Owners/source manifest/Core result、executor、T0、exact policy、R8 bridge/schema runner、DSN、Accepted Reader、HTTP）：**142 passed，0 skipped**，本地临时目录为 `G:/codex_tmp/test_temp/v4_r10_check`。
+- R10 初始综合定向回归为 142 passed。后续 Core→entity、sector Owner 状态和候选 UI/adapter factory 接线后，最终综合集合（15 个测试文件）为 **146 passed，0 skipped**，本地临时目录为 `G:/codex_tmp/test_temp/v4_r10_continuation_final`。
 - Reader/DSN/HTTP 单独合并组：**29 passed**；收集分母分别为 Accepted Reader 12、DSN guard 15（参数化角色负例展开）、候选 HTTP 2。
 - 合成 HTTP fixture 在允许的固定开发端口 `127.0.0.1:28766` 实际发起 HTTP GET：七个 endpoint 都命中候选 adapter；context 缺字段返回 400；未启用候选模式返回 404；无 accepted publication 返回 `PENDING_PG_HEAD`；文件模式仍返回 file Reader。测试关闭后服务线程退出。此为隔离 fixture，不代表真实 PG 或浏览器页面读回。
-- `tools/git_repository_policy.py --staged`：通过（13 changed Git blobs）；`git diff --check` 与所改 Python `compileall`：通过。
-- GitHub push run [38885076598](https://github.com/NanOns/a-share-market-structure-research/actions/runs/38885076598) 和 PR run [38885083695](https://github.com/NanOns/a-share-market-structure-research/actions/runs/38885083695) 在上述同一 SHA 全部 job 成功。V4 scoped pytest 实际结果 **141 passed, 1 skipped**；唯一 skip 为 `test_real_20261012_executor_evidence_reaches_pg_adapter_as_diagnostic_only`，原因是 GitHub runner 没有不入库的本机 2026-10-12 冻结 executor 文件。Accepted Reader、native DSN 和 synthetic HTTP 组均实际运行，非 skip。
+- `tools/git_repository_policy.py --staged`：通过（13 changed Git blobs）；`git diff --check`、所改 Python `compileall`、`node --check src/workbench_service/static/v4-workbench.js`：通过；续推代码 SHA 的 staged policy 通过（7 blobs）。
+- 初始 SHA 的 push run [38885076598](https://github.com/NanOns/a-share-market-structure-research/actions/runs/38885076598) 和 PR run [38885083695](https://github.com/NanOns/a-share-market-structure-research/actions/runs/38885083695) 全部通过（141 passed、1 skip）。续推代码 SHA `ffe8723c9a48111bd23e94c7cb471fe5688ffcdb` 的 push run [38888775268](https://github.com/NanOns/a-share-market-structure-research/actions/runs/38888775268) 和 PR run [38888782707](https://github.com/NanOns/a-share-market-structure-research/actions/runs/38888782707) 的 admission 与 V4 scoped job 全部通过（145 passed、1 skipped）。唯一 skip 仍是 runner 缺少不入库的 2026-10-12 冻结 executor 文件；Accepted Reader、native DSN、HTTP 与新增 Core/sector tests 均在 CI 执行。
 - 一次额外触碰 `tests/test_v4_embedded_owner_reader_integration.py` 的 PG 写测试未进入通过数：2 个用例在取连接前因未设置 `V4_NATIVE_PG_DSN` 失败关闭；没有连接或 PG 写入。这些需隔离数据库写入的用例未放进 CI。
 - `.github/workflows/repository-policy.yml` 已给 V4 scoped job 加入 Accepted Reader、native DSN 和 synthetic HTTP 回归，并只通过 `git lfs pull --include` 拉取两个冻结 Reader 文件，避免拉取仓库全部 436 个 LFS 对象；CI 会读取真实冻结字节，而不是 133/131-byte pointer。工作流本地等价测试通过，GitHub push check 等待最新精确 SHA 实跑。
 
@@ -77,12 +77,21 @@ approval_status: no authorization for production/isolated PG writes, migration, 
 | E2E_NEG | PASS | reader 字节摘要不符的 fail-closed 负例通过 |
 | E2E_POS | BLOCKED_NOT_EXECUTED | 无 PIT source/package 与 accepted Publication，不构造成功快照 |
 | HTTP_28766 | PASS_SYNTHETIC | 七 endpoint fixture HTTP 测试完成后已停止；非真实 BFF/PG |
-| UI_SEVEN | PARTIAL / NOT_VERIFIABLE | 七 API route 已 wired；页面所需价格、身份、成员、回放/结果关系仍缺 live publication 数据 |
-| CI | PASS_WITH_ONE_EXPLICIT_SKIP | Push/PR checks 在 SHA `6f60daa70b23f05e5dd57cec381b12f4c2e75e10` 成功；141 passed、1 skip，唯一 skip 是 CI 缺本机冻结日更证据 |
+| UI_SEVEN | CODE_WIRED / LIVE_READBACK_BLOCKED | 工作台有显式 candidate mode，七 API 同 context；entity Core 绑定读接线完成。缺 live Head 和名称、sector membership、replay/cohort/settlement 数据，不能验证真实 parity |
+| CI | PASS_WITH_ONE_EXPLICIT_SKIP | 代码 SHA `ffe8723c9a48111bd23e94c7cb471fe5688ffcdb` push `38888775268` 与 PR `38888782707` 全部通过；145 passed、1 skipped，唯一 skip 是 runner 缺本机冻结 executor 文件 |
 | PRODUCTION | UNCHANGED | 28765 未监听；无 PG 写入、迁移、Head 切换、物理删除或历史强推 |
 
 ## 下一阶段与阻断
 
-本阶段代码、测试和 CI 修改已准备提交推送。外部发布继续等待：独立 source package acceptance/PIT receipt、具备最小权限的非超管 Reader/Writer 角色、获批的 PG schema migration/write 批次，以及现役页面对同一 accepted Publication/T0 的真实读回。真实日更耗时/证券数增量复测需等源数据和运行资格；不以 synthetic 数据宣称性能。
+代码和测试已推送；文档将随最新 CI 结果收尾。尚未完成且有外部权限/数据门的项目：独立 source package acceptance/PIT receipt、具备最小权限的非超管 Reader/Writer 角色、获批的 PG schema migration/write 批次，以及现役页面对同一 accepted Publication/T0 的真实读回。真实日更耗时/证券数增量复测需等源数据和运行资格；不以 synthetic 数据宣称性能。
 
-未执行生产/隔离 PG DDL/DML、Publication 或正式 Head 写入、28765 部署、旧 C 工作区清理、Git 历史改写或强推。GitHub Issue #2 和 Draft PR #3 将在最终推送后同步准确 HEAD、实际 CI 结果、Workspace/Owner 状态及阻断项；PR 维持 Draft。
+未执行生产/隔离 PG DDL/DML、Publication 或正式 Head 写入、28765 部署、旧 C 工作区清理、Git 历史改写或强推。GitHub Issue #2 和 Draft PR #3 已记录前一批 R10 状态；将在最新代码/报告 SHA 与 CI 确认后同步续推结果，PR 维持 Draft。
+
+
+## R10 代码续推（2026-10-16）
+
+- 后续代码 SHA：`ffe8723c9a48111bd23e94c7cb471fe5688ffcdb`（已推送）。
+- 补入 Core result 的 publication-bound 只读查询与实体页投影；行 T0/source revision、行 SHA 和聚合 SHA 全部校验，失败关闭。候选 UI 通过显式 URL 参数选择 PG 模式，不加载文件 context、不混读；缺少候选 context 时在页面报错。
+- Sector 页将 lifecycle supplement 与真实 membership 分离；成员数、名称、算法状态在无权威 PG relation 时明确 `DATA_MISSING`。
+- 最终综合回归 146 passed / 0 skipped；Node JS 语法检查及 Python compileall 通过。代码 SHA push/PR workflows（38888775268 / 38888782707）均全通过，145 passed / 1 skipped；唯一 skip 是 runner 缺少本机冻结 executor 文件。
+- 当前仍没有合法 AS_RECORDED/PIT accepted source/package、PG Publication/Head、daily Core 数据行或七页所需完整 Owner。代码可读路径完成不代表实际生产者写入、PG 正向 E2E、页面 parity 已验收。

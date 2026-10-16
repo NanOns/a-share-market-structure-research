@@ -154,7 +154,11 @@ def _read_consumed_source_proofs(pg: Any, *, publication_id: str, publication_re
         "publication_status", "publication_accepted_at",
     )
     try:
-        from .v4_source_manifest import CONTRACT_ID as SOURCE_MANIFEST_CONTRACT_ID, build_source_manifest
+        from .v4_source_manifest import (
+            CONTRACT_ID as SOURCE_MANIFEST_CONTRACT_ID,
+            CONTRACT_ID_R3 as SOURCE_MANIFEST_CONTRACT_ID_R3,
+            build_source_manifest, build_source_manifest_r3,
+        )
         proof_rows = [dict(zip(columns, row)) for row in raw_rows]
         seen_source_keys = set()
         manifest_rows = []
@@ -163,7 +167,7 @@ def _read_consumed_source_proofs(pg: Any, *, publication_id: str, publication_re
         for proof in proof_rows:
             if proof["publication_trade_date"].isoformat() != target:
                 raise CoreResultError("CORE_RESULT_CONSUMED_SOURCE_T0_MISMATCH")
-            if (proof["source_manifest_contract_id"] != SOURCE_MANIFEST_CONTRACT_ID
+            if (proof["source_manifest_contract_id"] not in {SOURCE_MANIFEST_CONTRACT_ID, SOURCE_MANIFEST_CONTRACT_ID_R3}
                     or str(proof["publication_manifest_sha256"]).strip() != source_manifest_sha256):
                 raise CoreResultError("CORE_RESULT_CONSUMED_SOURCE_MANIFEST_IDENTITY_MISMATCH")
             observed_trade_date = proof["publication_trade_date"].isoformat()
@@ -205,10 +209,21 @@ def _read_consumed_source_proofs(pg: Any, *, publication_id: str, publication_re
             if proof["source_package_manifest"] is None:
                 raise CoreResultError("CORE_RESULT_SOURCE_PACKAGE_MANIFEST_MISSING")
             package_manifest = proof["source_package_manifest"]
-            if (package_manifest.get("acceptance_receipt_id") != proof["acceptance_receipt_id"]
+            is_manifest_r3 = proof["source_manifest_contract_id"] == SOURCE_MANIFEST_CONTRACT_ID_R3
+            has_acceptance_proof_fields = any(
+                name in package_manifest for name in ("acceptance_receipt_id", "AS_RECORDED", "PIT_ELIGIBLE")
+            )
+            if (is_manifest_r3 or has_acceptance_proof_fields) and (
+                    package_manifest.get("acceptance_receipt_id") != proof["acceptance_receipt_id"]
                     or package_manifest.get("AS_RECORDED") is not True
                     or package_manifest.get("PIT_ELIGIBLE") is not True):
                 raise CoreResultError("CORE_RESULT_SOURCE_ACCEPTANCE_PROOF_INVALID")
+            if is_manifest_r3:
+                from .v4_daily_source_ingest_r6 import verify_source_package_manifest_authority
+                try:
+                    verify_source_package_manifest_authority(package_manifest)
+                except ValueError as exc:
+                    raise CoreResultError("CORE_RESULT_SOURCE_ACCEPTANCE_SIGNATURE_INVALID") from exc
             cutoff_clocks = {
                 "source_package_page_observed_at": proof["source_package_page_observed_at"],
                 "observed_at": proof["observed_at"],
@@ -228,6 +243,8 @@ def _read_consumed_source_proofs(pg: Any, *, publication_id: str, publication_re
                 "source_fact_sha256": str(proof["source_fact_sha256"]).strip(),
                 "record_locator": proof["record_locator"],
             }
+            if is_manifest_r3:
+                expected_fact["acceptance_receipt_id"] = proof["acceptance_receipt_id"]
             is_core_tdx_fact = key == "tdx" and proof["source_revision_id"] in core_source_revision_ids
             if is_core_tdx_fact:
                 if (isinstance(proof["fact_record_count"], bool)
@@ -255,6 +272,19 @@ def _read_consumed_source_proofs(pg: Any, *, publication_id: str, publication_re
                 "source_package_parser_version": proof["source_package_parser_version"],
                 "source_package_accepted_scope": proof["source_package_accepted_scope"],
             })
+            if is_manifest_r3:
+                acceptance_proof = package_manifest.get("acceptance_proof") or {}
+                manifest_rows[-1].update({
+                    "source_package_acceptance_receipt_id": proof["acceptance_receipt_id"],
+                    "source_package_as_recorded": package_manifest.get("AS_RECORDED"),
+                    "source_package_pit_eligible": package_manifest.get("PIT_ELIGIBLE"),
+                    "source_package_acceptance_proof_sha256": acceptance_proof.get("receipt_sha256"),
+                    "source_fact_digest": str(proof["fact_digest"]).strip(),
+                    "source_fact_sha256": str(proof["source_fact_sha256"]).strip(),
+                    "source_fact_record_locator": proof["record_locator"],
+                    "source_fact_record_count": proof["fact_record_count"],
+                    "source_fact_acceptance_receipt_id": proof["acceptance_receipt_id"],
+                })
             if key == "tdx" and proof["source_revision_id"] in core_source_revision_ids:
                 tdx_bindings.append({
                     "source_key": "tdx", "source_revision_id": proof["source_revision_id"],
@@ -269,7 +299,9 @@ def _read_consumed_source_proofs(pg: Any, *, publication_id: str, publication_re
                 })
         if observed_trade_date != target:
             raise CoreResultError("CORE_RESULT_CONSUMED_SOURCE_T0_MISMATCH")
-        rebuilt = build_source_manifest(manifest_rows)
+        rebuilt = (build_source_manifest_r3(manifest_rows)
+                   if proof_rows[0]["source_manifest_contract_id"] == SOURCE_MANIFEST_CONTRACT_ID_R3
+                   else build_source_manifest(manifest_rows))
         if rebuilt["source_manifest_sha256"] != source_manifest_sha256:
             raise CoreResultError("CORE_RESULT_CONSUMED_SOURCE_MANIFEST_DIGEST_MISMATCH")
         if not tdx_bindings or {item["source_revision_id"] for item in tdx_bindings} != core_source_revision_ids:

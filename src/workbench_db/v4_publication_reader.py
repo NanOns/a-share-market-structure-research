@@ -19,7 +19,8 @@ from .v4_publication_contract import (
 )
 from .v4_source_manifest import (
     CONTRACT_ID as SOURCE_MANIFEST_CONTRACT_ID, canonical_source_rows,
-    source_manifest_digest,
+    source_manifest_digest, CONTRACT_ID_R3 as SOURCE_MANIFEST_CONTRACT_ID_R3,
+    source_manifest_digest_r3,
 )
 
 
@@ -330,10 +331,11 @@ class PgPublicationReader:
     @staticmethod
     def _verify_source_manifest(publication, rows):
         contract_id = publication.get("source_manifest_contract_id")
-        if contract_id != SOURCE_MANIFEST_CONTRACT_ID:
+        if contract_id not in {SOURCE_MANIFEST_CONTRACT_ID, SOURCE_MANIFEST_CONTRACT_ID_R3}:
             raise PublicationReadError("SOURCE_MANIFEST_CONTRACT_UNSUPPORTED")
         try:
-            actual = source_manifest_digest(rows)
+            actual = (source_manifest_digest_r3(rows) if contract_id == SOURCE_MANIFEST_CONTRACT_ID_R3
+                      else source_manifest_digest(rows))
         except Exception as exc:
             raise PublicationReadError("SOURCE_MANIFEST_REHASH_FAILED") from exc
         expected = str(publication.get("source_manifest_sha256") or "").strip().lower()
@@ -607,8 +609,45 @@ class PgPublicationReader:
 
     @staticmethod
     def _read_sources(pg, publication):
-        cursor = pg.execute(
-            """SELECT cs.source_key, cs.source_revision_id, cs.digest,
+        contract_id = publication.get("source_manifest_contract_id")
+        if contract_id == SOURCE_MANIFEST_CONTRACT_ID_R3:
+            query = """SELECT cs.source_key, cs.source_revision_id, cs.digest,
+                      sr.logical_fact_id, sr.revision_no, sr.digest AS revision_digest,
+                      sr.effective_from, sr.effective_to, sr.provider_available_at,
+                      sr.observed_at, sr.ingested_at, sr.system_available_at, sr.tombstone,
+                      sp.package_id AS source_package_id,
+                      sp.contract_version AS source_package_contract_version,
+                      sp.package_sha256 AS source_package_sha256,
+                      sp.page_observed_at AS source_package_page_observed_at,
+                      sp.target_trade_date AS source_package_target_trade_date,
+                      sp.parser_version AS source_package_parser_version,
+                      sp.accepted_scope AS source_package_accepted_scope,
+                      sp.manifest AS source_package_manifest,
+                      f.acceptance_receipt_id AS source_fact_acceptance_receipt_id,
+                      f.fact_digest AS source_fact_digest,f.source_fact_sha256,
+                      f.record_locator AS source_fact_record_locator,f.record_count AS source_fact_record_count
+                 FROM v4.publication_consumed_sources cs
+                 JOIN v4.source_revisions sr ON sr.source_revision_id=cs.source_revision_id
+                 JOIN v4.source_packages sp ON sp.package_id=sr.source_package_id
+                 JOIN v4.source_package_facts f
+                   ON f.package_id=sr.source_package_id
+                  AND f.source_key=sr.source_package_source_key
+                  AND f.logical_fact_id=sr.logical_fact_id
+                  AND f.fact_digest=sr.source_fact_digest
+                WHERE cs.publication_id=%s
+                ORDER BY convert_to(cs.source_key, 'UTF8')"""
+            columns = (
+                "source_key", "source_revision_id", "digest", "logical_fact_id", "revision_no",
+                "revision_digest", "effective_from", "effective_to", "provider_available_at",
+                "observed_at", "ingested_at", "system_available_at", "tombstone",
+                "source_package_id", "source_package_contract_version", "source_package_sha256",
+                "source_package_page_observed_at", "source_package_target_trade_date",
+                "source_package_parser_version", "source_package_accepted_scope", "source_package_manifest",
+                "source_fact_acceptance_receipt_id", "source_fact_digest", "source_fact_sha256",
+                "source_fact_record_locator", "source_fact_record_count",
+            )
+        else:
+            query = """SELECT cs.source_key, cs.source_revision_id, cs.digest,
                       sr.logical_fact_id, sr.revision_no, sr.digest AS revision_digest,
                       sr.effective_from, sr.effective_to, sr.provider_available_at,
                       sr.observed_at, sr.ingested_at, sr.system_available_at, sr.tombstone,
@@ -623,16 +662,18 @@ class PgPublicationReader:
                  JOIN v4.source_revisions sr ON sr.source_revision_id=cs.source_revision_id
                  LEFT JOIN v4.source_packages sp ON sp.package_id=sr.source_package_id
                 WHERE cs.publication_id=%s
-                ORDER BY convert_to(cs.source_key, 'UTF8')""",
+                ORDER BY convert_to(cs.source_key, 'UTF8')"""
+            columns = (
+                "source_key", "source_revision_id", "digest", "logical_fact_id", "revision_no",
+                "revision_digest", "effective_from", "effective_to", "provider_available_at",
+                "observed_at", "ingested_at", "system_available_at", "tombstone",
+                "source_package_id", "source_package_contract_version", "source_package_sha256",
+                "source_package_page_observed_at", "source_package_target_trade_date",
+                "source_package_parser_version", "source_package_accepted_scope",
+            )
+        cursor = pg.execute(
+            query,
             (publication["publication_id"],),
-        )
-        columns = (
-            "source_key", "source_revision_id", "digest", "logical_fact_id", "revision_no",
-            "revision_digest", "effective_from", "effective_to", "provider_available_at",
-            "observed_at", "ingested_at", "system_available_at", "tombstone",
-            "source_package_id", "source_package_contract_version", "source_package_sha256",
-            "source_package_page_observed_at", "source_package_target_trade_date",
-            "source_package_parser_version", "source_package_accepted_scope",
         )
         rows = _row_dicts(cursor, columns)
         if not rows:
@@ -669,6 +710,37 @@ class PgPublicationReader:
                 raise PublicationReadError("PUBLICATION_SOURCE_AVAILABLE_AFTER_ACCEPTANCE")
             if row["provider_available_at"] is not None and row["provider_available_at"] > accepted_at:
                 raise PublicationReadError("PUBLICATION_SOURCE_PROVIDER_TIME_AFTER_ACCEPTANCE")
+            if contract_id == SOURCE_MANIFEST_CONTRACT_ID_R3:
+                manifest = row.get("source_package_manifest")
+                try:
+                    from .v4_daily_source_ingest_r6 import verify_source_package_manifest_authority
+                    proof = verify_source_package_manifest_authority(manifest)
+                except (TypeError, ValueError) as exc:
+                    raise PublicationReadError("SOURCE_PACKAGE_INDEPENDENT_ACCEPTANCE_INVALID") from exc
+                if (manifest.get("AS_RECORDED") is not True or manifest.get("PIT_ELIGIBLE") is not True
+                        or row["source_fact_acceptance_receipt_id"] != manifest.get("acceptance_receipt_id")):
+                    raise PublicationReadError("SOURCE_PACKAGE_ACCEPTANCE_PROOF_INVALID")
+                bindings = manifest.get("source_fact_bindings")
+                expected_fact = next((item for item in bindings if isinstance(item, dict)
+                                      and item.get("source_key") == row["source_key"]), None) if isinstance(bindings, list) else None
+                if (not isinstance(expected_fact, dict)
+                        or expected_fact.get("fact_digest") != row["source_fact_digest"]
+                        or expected_fact.get("source_fact_sha256") != row["source_fact_sha256"]
+                        or expected_fact.get("record_locator") != row["source_fact_record_locator"]
+                        or expected_fact.get("record_count") != row["source_fact_record_count"]
+                        or expected_fact.get("acceptance_receipt_id") != row["source_fact_acceptance_receipt_id"]):
+                    raise PublicationReadError("SOURCE_PACKAGE_FACT_MANIFEST_MISMATCH")
+                row.update({
+                    "source_package_acceptance_receipt_id": manifest["acceptance_receipt_id"],
+                    "source_package_as_recorded": manifest["AS_RECORDED"],
+                    "source_package_pit_eligible": manifest["PIT_ELIGIBLE"],
+                    "source_package_acceptance_proof_sha256": proof["receipt_sha256"],
+                    "source_fact_digest": row["source_fact_digest"],
+                    "source_fact_sha256": row["source_fact_sha256"],
+                    "source_fact_record_locator": row["source_fact_record_locator"],
+                    "source_fact_record_count": row["source_fact_record_count"],
+                    "source_fact_acceptance_receipt_id": row["source_fact_acceptance_receipt_id"],
+                })
         return rows
 
     @staticmethod

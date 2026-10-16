@@ -4,6 +4,7 @@ import pytest
 
 from workbench_db.v4_source_manifest import (
     SourceManifestError, canonical_source_rows, source_manifest_digest,
+    canonical_source_rows_r3, source_manifest_digest_r3,
 )
 
 
@@ -65,3 +66,43 @@ def test_manifest_requires_accepted_package_binding_and_canonical_dates():
         canonical_source_rows([row(effective_from="20261015")])
     with pytest.raises(SourceManifestError, match="SOURCE_MANIFEST_DATE_WINDOW_INVALID"):
         canonical_source_rows([row(effective_from="2026-10-16", effective_to="2026-10-15")])
+
+
+def r3_row(**changes):
+    value = row(
+        source_package_acceptance_receipt_id="issuer-r1-20261015",
+        source_package_as_recorded=True, source_package_pit_eligible=True,
+        source_package_acceptance_proof_sha256="d" * 64,
+        source_fact_digest="a" * 64, source_fact_sha256="b" * 64,
+        source_fact_record_locator={"path":"security_master.json","record_count":5001},
+        source_fact_record_count=5001,
+        source_fact_acceptance_receipt_id="issuer-r1-20261015",
+    )
+    value.update(changes)
+    return value
+
+
+def test_r3_manifest_includes_the_exact_acceptance_and_fact_proof_readers_consume():
+    material = canonical_source_rows_r3([r3_row()])[0]
+    assert material["source_package_acceptance_receipt_id"] == "issuer-r1-20261015"
+    assert material["source_package_as_recorded"] is True
+    assert material["source_package_pit_eligible"] is True
+    assert material["source_fact_digest"] == "a" * 64
+    assert material["source_fact_sha256"] == "b" * 64
+    assert material["source_fact_record_locator"]["record_count"] == 5001
+    assert material["source_fact_record_count"] == 5001
+    assert material["source_fact_acceptance_receipt_id"] == material["source_package_acceptance_receipt_id"]
+    assert len(source_manifest_digest_r3([r3_row()])) == 64
+    assert source_manifest_digest_r3([r3_row(source_fact_sha256="c" * 64)]) != source_manifest_digest_r3([r3_row()])
+
+
+@pytest.mark.parametrize("change,code", [
+    ({"source_package_as_recorded":False}, "SOURCE_MANIFEST_R3_ACCEPTANCE_PROOF_INVALID"),
+    ({"source_package_pit_eligible":False}, "SOURCE_MANIFEST_R3_ACCEPTANCE_PROOF_INVALID"),
+    ({"source_fact_acceptance_receipt_id":"other"}, "SOURCE_MANIFEST_R3_ACCEPTANCE_PROOF_INVALID"),
+    ({"source_fact_record_count":-1}, "SOURCE_MANIFEST_R3_RECORD_COUNT_INVALID"),
+    ({"source_fact_record_locator":[]}, "SOURCE_MANIFEST_R3_FACT_LOCATOR_INVALID"),
+])
+def test_r3_manifest_rejects_missing_or_conflicting_acceptance_fact_proof(change, code):
+    with pytest.raises(SourceManifestError, match=code):
+        canonical_source_rows_r3([r3_row(**change)])

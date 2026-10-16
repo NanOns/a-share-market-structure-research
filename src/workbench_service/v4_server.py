@@ -12,7 +12,7 @@ from .research_bff import ResearchBFF
 from .joint_release import load as joint_load,checked_path,recover
 
 
-def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False):
+def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, workspace_mapping_registry_path=None):
     """Build the V4 BFF; PG candidates require explicit injection and opt-in."""
     root=Path(root)
     recover(root)
@@ -150,18 +150,38 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False):
                     if any(not query.get(key) for key in required):
                         return self.send(400,dict(status='BLOCKED',code='PG_CANDIDATE_CONTEXT_REQUIRED',required=list(required)))
                     try:
+                        from workbench_db.v4_workspace_owner_mapping_r1 import (
+                            WorkspaceOwnerMappingError, resolve_workspace_owner_mapping,
+                        )
+                        workspace_mapping=resolve_workspace_owner_mapping(
+                            root=root, trade_date=query['trade_date'],
+                            selected_model_namespace_id=query['model_namespace_id'],
+                            registry_path=workspace_mapping_registry_path,
+                        )
                         payload=pg_current_adapter.read_endpoint(
                             parsed.path,trade_date=query['trade_date'],
                             model_namespace_id=query['model_namespace_id'],
                             expected_context_token=query['context_token'],
                         )
+                        context=payload.get('context') if isinstance(payload,dict) else None
+                        if isinstance(context,dict):
+                            if context.get('model_namespace_id') != workspace_mapping['model_namespace_id']:
+                                raise WorkspaceOwnerMappingError('WORKSPACE_PUBLICATION_NAMESPACE_MISMATCH')
+                            if context.get('database_identity') != workspace_mapping['database_identity']:
+                                raise WorkspaceOwnerMappingError('WORKSPACE_DATABASE_IDENTITY_MISMATCH')
+                            for family,binding in context.get('module_results',{}).items():
+                                if binding.get('owner_schema') != workspace_mapping['owner_schemas'].get(family):
+                                    raise WorkspaceOwnerMappingError('WORKSPACE_OWNER_SCHEMA_MISMATCH:'+str(family))
                         from workbench_db.v4_native import workspace_namespace_identity
                         payload['workspace_identity']=workspace_namespace_identity(root,'publication')
+                        payload['workspace_mapping']=workspace_mapping
                     except Exception as error:
                         # PG candidate reads are isolated from the file reader. A missing
                         # Head, Owner or read privilege is returned as a candidate error.
                         from workbench_db.v4_publication_reader import PublicationReadError
-                        if isinstance(error, PublicationReadError):
+                        if isinstance(error, WorkspaceOwnerMappingError):
+                            reason=str(error)
+                        elif isinstance(error, PublicationReadError):
                             reason=str(error)
                         else:
                             reason=type(error).__name__

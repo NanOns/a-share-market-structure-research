@@ -17,6 +17,8 @@ from .v4_publication_contract import (
 from .v4_source_manifest import (
     CONTRACT_ID as SOURCE_MANIFEST_CONTRACT_ID,
     build_source_manifest,
+    CONTRACT_ID_R3 as SOURCE_MANIFEST_CONTRACT_ID_R3,
+    build_source_manifest_r3,
 )
 
 
@@ -127,12 +129,14 @@ def build_publication_candidate(
                 or verified_core_result.source_manifest_sha256 != source_manifest_sha256):
             raise CandidatePlanError("CORE_RESULT_PG_READBACK_REQUIRED")
         core_result = verified_core_result
-    if source_manifest_contract_id != SOURCE_MANIFEST_CONTRACT_ID:
+    if source_manifest_contract_id not in {SOURCE_MANIFEST_CONTRACT_ID, SOURCE_MANIFEST_CONTRACT_ID_R3}:
         raise CandidatePlanError("SOURCE_MANIFEST_CONTRACT_UNSUPPORTED")
     if not source_manifest_rows:
         raise CandidatePlanError("CANDIDATE_SOURCE_MANIFEST_UNVERIFIED")
     try:
-        produced_manifest = build_source_manifest(source_manifest_rows)
+        produced_manifest = (build_source_manifest_r3(source_manifest_rows)
+                             if source_manifest_contract_id == SOURCE_MANIFEST_CONTRACT_ID_R3
+                             else build_source_manifest(source_manifest_rows))
         normalized_source_rows = produced_manifest["source_rows"]
         calculated_source_manifest = produced_manifest["source_manifest_sha256"]
     except Exception as exc:

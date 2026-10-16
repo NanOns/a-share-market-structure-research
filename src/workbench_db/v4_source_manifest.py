@@ -13,6 +13,8 @@ from typing import Any, Mapping, Sequence
 
 CONTRACT_ID = "V4_PG_CONSUMED_SOURCE_MANIFEST_R2"
 CONTRACT_VERSION = "2.0.0"
+CONTRACT_ID_R3 = "V4_PG_CONSUMED_SOURCE_MANIFEST_R3"
+CONTRACT_VERSION_R3 = "3.0.0"
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 FIELDS = (
     "source_key", "source_revision_id", "digest", "logical_fact_id", "revision_no",
@@ -21,6 +23,13 @@ FIELDS = (
     "source_package_id", "source_package_contract_version", "source_package_sha256",
     "source_package_page_observed_at", "source_package_target_trade_date",
     "source_package_parser_version", "source_package_accepted_scope",
+)
+FACT_PROOF_FIELDS = (
+    "source_package_acceptance_receipt_id", "source_package_as_recorded",
+    "source_package_pit_eligible", "source_package_acceptance_proof_sha256",
+    "source_fact_digest", "source_fact_sha256",
+    "source_fact_record_locator", "source_fact_record_count",
+    "source_fact_acceptance_receipt_id",
 )
 
 
@@ -151,4 +160,66 @@ def build_source_manifest(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
         "contract_version": CONTRACT_VERSION,
         "source_rows": canonical_rows,
         "source_manifest_sha256": source_manifest_digest(rows),
+    }
+
+
+def canonical_source_rows_r3(rows: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
+    """R3 binds the exact package/fact proof consumed by the Core Reader."""
+    normalized = canonical_source_rows(rows)
+    by_key = {row["source_key"]: row for row in rows}
+    output = []
+    for base in normalized:
+        row = by_key[base["source_key"]]
+        if any(field not in row for field in FACT_PROOF_FIELDS):
+            raise SourceManifestError("SOURCE_MANIFEST_R3_FACT_PROOF_FIELDS_INVALID")
+        receipt = row["source_package_acceptance_receipt_id"]
+        fact_receipt = row["source_fact_acceptance_receipt_id"]
+        if (not isinstance(receipt, str) or not receipt.strip() or fact_receipt != receipt
+                or row["source_package_as_recorded"] is not True
+                or row["source_package_pit_eligible"] is not True):
+            raise SourceManifestError("SOURCE_MANIFEST_R3_ACCEPTANCE_PROOF_INVALID")
+        for field in ("source_package_acceptance_proof_sha256", "source_fact_digest", "source_fact_sha256"):
+            value = row[field]
+            if not isinstance(value, str) or not _SHA256.fullmatch(value):
+                raise SourceManifestError("SOURCE_MANIFEST_R3_FACT_DIGEST_INVALID")
+        locator = row["source_fact_record_locator"]
+        if not isinstance(locator, Mapping):
+            raise SourceManifestError("SOURCE_MANIFEST_R3_FACT_LOCATOR_INVALID")
+        record_count = row["source_fact_record_count"]
+        if record_count is not None and (isinstance(record_count, bool) or not isinstance(record_count, int) or record_count < 0):
+            raise SourceManifestError("SOURCE_MANIFEST_R3_RECORD_COUNT_INVALID")
+        if (isinstance(locator.get("record_count"), bool)
+                or locator.get("record_count") != record_count
+                or base["source_key"] in {"tdx", "security_universe"} and (record_count is None or record_count <= 0)):
+            raise SourceManifestError("SOURCE_MANIFEST_R3_RECORD_COUNT_INVALID")
+        output.append({
+            **base,
+            "source_package_acceptance_receipt_id": receipt,
+            "source_package_as_recorded": True,
+            "source_package_pit_eligible": True,
+            "source_package_acceptance_proof_sha256": row["source_package_acceptance_proof_sha256"].lower(),
+            "source_fact_digest": row["source_fact_digest"].lower(),
+            "source_fact_sha256": row["source_fact_sha256"].lower(),
+            "source_fact_record_locator": dict(locator),
+            "source_fact_record_count": record_count,
+            "source_fact_acceptance_receipt_id": fact_receipt,
+        })
+    return output
+
+
+def source_manifest_digest_r3(rows: Sequence[Mapping[str, Any]]) -> str:
+    material = json.dumps(
+        canonical_source_rows_r3(rows), ensure_ascii=False, sort_keys=True,
+        separators=(",", ":"), allow_nan=False,
+    ).encode("utf-8")
+    return hashlib.sha256(material).hexdigest()
+
+
+def build_source_manifest_r3(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    canonical_rows = canonical_source_rows_r3(rows)
+    return {
+        "contract_id": CONTRACT_ID_R3,
+        "contract_version": CONTRACT_VERSION_R3,
+        "source_rows": canonical_rows,
+        "source_manifest_sha256": source_manifest_digest_r3(rows),
     }

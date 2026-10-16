@@ -33,7 +33,17 @@ class _Adapter:
         self.calls.append((endpoint, kwargs))
         if self.error:
             raise self.error
-        return {"candidate_only": True, "endpoint": endpoint, "context": {"context_token": kwargs["expected_context_token"]}}
+        return {"candidate_only": True, "endpoint": endpoint, "context": {
+            "context_token": kwargs["expected_context_token"],
+            "model_namespace_id": kwargs["model_namespace_id"],
+            "database_identity": {"database": "market_research", "database_oid": 16384,
+                                  "host": "127.0.0.1", "port": 5432},
+            "module_results": {
+                "research_priority": {"owner_schema": "v4_research_priority_aaaaaaaaaaaaaaaa"},
+                "operational_risk": {"owner_schema": "v4_operational_risk_aaaaaaaaaaaaaaaa"},
+                "sector_lifecycle": {"owner_schema": "v4_sector_lifecycle_aaaaaaaaaaaaaaaa"},
+            },
+        }}
 
 
 def _base_handler():
@@ -68,7 +78,25 @@ def test_current_api_explicit_pg_candidate_http_and_no_file_fallback(monkeypatch
     monkeypatch.setattr(v4_server, "make_shadow_handler", lambda root: _base_handler())
     monkeypatch.setattr(v4_server, "ResearchBFF", _Bff)
     adapter = _Adapter()
-    handler = v4_server.make_v4_handler(tmp_path, adapter, allow_pg_candidate=True)
+    from workbench_db.v4_native import workspace_namespace_identity
+    identity=workspace_namespace_identity(tmp_path,'publication')
+    registry=tmp_path/'workspace-mapping.json'
+    registry.write_text(json.dumps({
+        'contract_id':'V4_PG_WORKSPACE_OWNER_MAPPING_REGISTRY_R1','contract_version':'1.0.0',
+        'status':'TEST_FIXTURE_ONLY','mappings':[{
+            'status':'APPROVED','root_identity_sha256':identity['root_identity_sha256'],
+            'model_namespace_id':'workspace-main','valid_from':'2026-10-01','valid_to':None,
+            'authorized_by':'TEST_FIXTURE_ONLY','authorization_reference':'TEST_ONLY_NO_PRODUCTION_AUTHORITY',
+            'database_identity':{'database':'market_research','database_oid':16384,'host':'127.0.0.1','port':5432},
+            'owner_schemas':{'research_priority':'v4_research_priority_aaaaaaaaaaaaaaaa',
+                             'operational_risk':'v4_operational_risk_aaaaaaaaaaaaaaaa',
+                             'sector_lifecycle':'v4_sector_lifecycle_aaaaaaaaaaaaaaaa'},
+        }],
+    }),encoding='utf-8')
+    handler = v4_server.make_v4_handler(
+        tmp_path, adapter, allow_pg_candidate=True,
+        workspace_mapping_registry_path=registry,
+    )
     server = ThreadingHTTPServer(("127.0.0.1", 28766), handler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
@@ -79,17 +107,31 @@ def test_current_api_explicit_pg_candidate_http_and_no_file_fallback(monkeypatch
                 f"/api/v4/current/{page}?source=pg_candidate&trade_date=2026-10-16"
                 "&model_namespace_id=workspace-main&context_token=token-1"
             )
-            assert status == 200
+            assert status == 200, body
             assert body["candidate_only"] is True
             assert body["endpoint"] == f"/api/v4/current/{page}"
             assert body["workspace_identity"]["contract_id"] == "V4_PG_WORKSPACE_NAMESPACE_ID_R1"
             assert body["workspace_identity"]["purpose"] == "publication"
+            assert body["workspace_mapping"]["model_namespace_id"] == "workspace-main"
             assert str(tmp_path) not in json.dumps(body["workspace_identity"])
         assert [call[0] for call in adapter.calls] == [f"/api/v4/current/{page}" for page in pages]
         assert all(call[1] == {
             "trade_date": "2026-10-16", "model_namespace_id": "workspace-main",
             "expected_context_token": "token-1",
         } for call in adapter.calls)
+
+        # The accepted publication itself must agree with the historically
+        # authorized mapping. A same-T0 publication from another namespace is
+        # not selected by date alone.
+        adapter.read_endpoint=lambda endpoint, **kwargs: {
+            'candidate_only':True,'context':{'context_token':kwargs['expected_context_token'],
+               'model_namespace_id':'other-workspace',
+               'database_identity':{'database':'market_research','database_oid':16384,'host':'127.0.0.1','port':5432},
+               'module_results':{}},
+        }
+        status,body=_request('/api/v4/current/entity?source=pg_candidate&trade_date=2026-10-16&model_namespace_id=workspace-main&context_token=token-1')
+        assert status==409 and body['reason']=='WORKSPACE_PUBLICATION_NAMESPACE_MISMATCH'
+        assert len(adapter.calls)==7
 
         status, body = _request("/api/v4/current/entity?source=pg_candidate&trade_date=2026-10-16&model_namespace_id=workspace-main")
         assert status == 400 and body["code"] == "PG_CANDIDATE_CONTEXT_REQUIRED"
@@ -99,6 +141,7 @@ def test_current_api_explicit_pg_candidate_http_and_no_file_fallback(monkeypatch
         assert status == 200 and body["reader"] == "file"
 
         from workbench_db.v4_publication_reader import PublicationReadError
+        adapter.read_endpoint = _Adapter.read_endpoint.__get__(adapter, _Adapter)
         adapter.error = PublicationReadError("NO_ACCEPTED_PUBLICATION")
         status, body = _request(
             "/api/v4/current/entity?source=pg_candidate&trade_date=2026-10-16"

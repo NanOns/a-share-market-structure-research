@@ -32,6 +32,7 @@ VERSIONS={
     "037_daily_core_result_binding_r6.sql":"V4_DAILY_CORE_RESULT_BINDING_R6",
     "038_publication_module_results_r4.sql":"V4_PUBLICATION_MODULE_RESULTS_R4",
     "039_tdx_package_row_count_authority_r1.sql":"V4_TDX_PACKAGE_ROW_COUNT_AUTHORITY_R1",
+    "040_source_manifest_r3_fact_proof.sql":"V4_SOURCE_MANIFEST_R3_FACT_PROOF",
 }
 
 def dsn():

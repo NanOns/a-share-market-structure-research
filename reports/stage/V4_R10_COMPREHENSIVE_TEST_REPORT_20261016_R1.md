@@ -1,6 +1,6 @@
 ---
 stage_id: V4_R10_COMPREHENSIVE_20261016_R1
-code_sha: 26cf2e67efad4d42fa6f1f78622ce8d9e53ff6c6
+code_sha: f22e32ec7253f20bf187c06cfc8f854160d955be
 baseline_sha: 0eb2392f2a4a9666bd11f17b261dcfd4d98ce2e1
 branch: codex/v4-workspace-cleanup
 scope: R10 current Reader recovery and CI, explicit PG candidate BFF, Workspace identity, Owner/page projection states, daily Core producer bridge and controlled writer, read-only PG/schema audit
@@ -30,7 +30,7 @@ approval_status: no authorization for production/isolated PG writes, migration, 
 ## 范围和基线
 
 - 正式任务：Google Drive `1IUqI1XEUVLsaVgLIuhvjCKPTrB4gmnP9`，R10 当前读链、Owner/Workspace 实质修复。
-- 开始前核对分支 `codex/v4-workspace-cleanup` 的本地及 origin HEAD 为冻结基线 `0eb2392f2a4a9666bd11f17b261dcfd4d98ce2e1`，无 tracked 改动；R10 代码提交为 `26cf2e67efad4d42fa6f1f78622ce8d9e53ff6c6`，本报告另有独立提交，最终 HEAD 在推送后记录。
+- 开始前核对分支 `codex/v4-workspace-cleanup` 的本地及 origin HEAD 为冻结基线 `0eb2392f2a4a9666bd11f17b261dcfd4d98ce2e1`，无 tracked 改动；R10 主代码提交为 `26cf2e67efad4d42fa6f1f78622ce8d9e53ff6c6`，CI 精确 LFS 输入修正提交为 `f22e32ec7253f20bf187c06cfc8f854160d955be`，本报告另有独立提交，最终 HEAD 在推送后记录。
 - 查阅适用升级合同 `docs/upgrade/V4_R8_UNIFIED_SOURCE_REPAIR_SPEC_R1_20261015.md`、R9 阶段报告和仓库 `AGENTS.md`。本任务不启动扫描器，阶段 0 不适用。
 - 仅在既有主仓开发；未创建 worktree、克隆、PG 实例或其他端口。过程测试临时目录均在 `G:/codex_tmp/test_temp`。
 
@@ -50,7 +50,7 @@ approval_status: no authorization for production/isolated PG writes, migration, 
 - 合成 HTTP fixture 在允许的固定开发端口 `127.0.0.1:28766` 实际发起 HTTP GET：七个 endpoint 都命中候选 adapter；context 缺字段返回 400；未启用候选模式返回 404；无 accepted publication 返回 `PENDING_PG_HEAD`；文件模式仍返回 file Reader。测试关闭后服务线程退出。此为隔离 fixture，不代表真实 PG 或浏览器页面读回。
 - `tools/git_repository_policy.py --staged`：通过（13 changed Git blobs）；`git diff --check` 与所改 Python `compileall`：通过。
 - 一次额外触碰 `tests/test_v4_embedded_owner_reader_integration.py` 的 PG 写测试未进入通过数：2 个用例在取连接前因未设置 `V4_NATIVE_PG_DSN` 失败关闭；没有连接或 PG 写入。这些需隔离数据库写入的用例未放进 CI。
-- `.github/workflows/repository-policy.yml` 已给 V4 scoped job 开启 Git LFS checkout，并加入 Accepted Reader、native DSN 和 synthetic HTTP 回归；这样 CI 会读取真实冻结字节，而不是 133/131-byte pointer。工作流本地等价测试通过，GitHub push/PR checks 等待最终提交推送后实跑。
+- `.github/workflows/repository-policy.yml` 已给 V4 scoped job 加入 Accepted Reader、native DSN 和 synthetic HTTP 回归，并只通过 `git lfs pull --include` 拉取两个冻结 Reader 文件，避免拉取仓库全部 436 个 LFS 对象；CI 会读取真实冻结字节，而不是 133/131-byte pointer。工作流本地等价测试通过，GitHub push check 等待最新精确 SHA 实跑。
 
 ## PostgreSQL / Owner / Workspace 只读实证
 

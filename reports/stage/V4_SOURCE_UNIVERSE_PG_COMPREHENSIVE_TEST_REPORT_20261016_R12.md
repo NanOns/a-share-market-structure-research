@@ -1,6 +1,6 @@
 ---
 stage_id: V4_R12_SOURCE_UNIVERSE_PG_20261016
-code_sha: eec5f8629-plus-R12-CI-dependency-fix
+code_sha: ff027b47d8144b9affa57ea912e40da0368ba164
 test_scope: source-acceptance-universe-source-manifest-pg-preflight-seven-api-focused
 conclusion: 110-focused-tests-pass; live-authority-universe-publication-and-pg-migration-blocked
 approval_status: CODE_ONLY_REPAIR_AUTHORIZED
@@ -36,7 +36,7 @@ approval_status: CODE_ONLY_REPAIR_AUTHORIZED
 | E2E_POS | `PASS_SYNTHETIC_FIXTURES` | 受信测试密钥签发的新 T0、R3 manifest/reader、候选 HTTP 路径与 Universe 逻辑正例通过；不等于真实签发者或 PG 发布。 |
 | SEVEN_API | `PASS_SYNTHETIC_HTTP` | 28766 上对 summary、radar、entity、sector、cohort、settlement、health 七个候选 API 分别验证；本次测试结束后服务已关闭。 |
 | BROWSER | `NOT_RUN` | 没有运行生产或开发浏览器页面；HTTP 夹具不代表 UI 真数据接线。 |
-| CI | `PENDING_RETRY` | SHA `eec5f8629` 的 admission 通过；candidate job 在收集测试时因 workflow 未安装 `cryptography` 失败（0 test assertions run）。已补 workflow 安装依赖并同步更新 001–040 isolated-runner 清单；CI 同集本地重跑 166 passed，修正提交的 GitHub CI 待完成。 |
+| CI | `PASS` | 最终代码 SHA `ff027b47d8144b9affa57ea912e40da0368ba164`：push run [38912354143](https://github.com/NanOns/a-share-market-structure-research/actions/runs/38912354143) 与 PR run [38912366271](https://github.com/NanOns/a-share-market-structure-research/actions/runs/38912366271) 的 `admission`、`v4-pg-publication-candidate` 均通过；candidate job 对 166 项通过。前序 SHA `eec5f8629` 暴露 CI 未安装 `cryptography`，workflow 已修复并在最终 SHA 复验。 |
 | PRODUCTION | `UNCHANGED` | 未连接/修改 28765 服务；未切换生产 Head、未部署、未调度、未写入 PG。 |
 
 ## 本地验证

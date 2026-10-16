@@ -1,5 +1,10 @@
 # V4 PG-only 日发布候选读取与发布链设计 R1
 
+> Historical design snapshot. Superseded for current implementation by
+> `V4_PG_DAILY_PUBLICATION_REPAIR_R2_20261016.md` after independent audit found
+> the pre-003 `(publication_id, revision)` assumptions below were obsolete.
+> Do not use this R1 file or its former SQL draft as the active schema contract.
+
 - Contract: `V4-PG-DAILY-PUBLICATION-CANDIDATE-20261016/R1`
 - Scope: current V4 readers and publication metadata only.
 - Candidate implementation: `src/workbench_db/v4_publication_reader.py`, `src/workbench_db/v4_publication_candidate.py`.

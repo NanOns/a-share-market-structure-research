@@ -40,11 +40,11 @@ PROCESS_NAME = re.compile(
 PROCESS_UPGRADE_DOC = re.compile(r"(?i)(?:^|[_-])(?:task|execution|continuation|receipt|evidence)(?:[_-]|\.)")
 ROOT_LAUNCHER = re.compile(r"^(?:run_[A-Za-z0-9_.-]+\.py|(?:OPEN|START)_[A-Za-z0-9_.-]+\.cmd)$")
 MACHINE_PATH = re.compile(
-    r"(?i)(?<![A-Za-z0-9])(?:[A-Z]:[\\/](?:Users[\\/][^\\/\s'\"`]+|new_tdx|codex work|codex_tmp|Postgres|Users)[^\r\n'\"`]*|\\\\[^\\\s]+\\[^\\\s]+)"
+    r"(?i)(?<![A-Za-z0-9])[A-Z]:[\\/](?:[^\\/\s'\"`]+[\\/])*[^\s'\"`]*|\\\\[^\\\s]+\\[^\\\s]+"
 )
 SECRET_ASSIGNMENT = re.compile(
     r"(?i)\b(?:password|passwd|pwd|secret|token|api[_-]?key|access[_-]?key|"
-    r"private[_-]?key|client[_-]?secret)\b\s*[=:]\s*['\"]?([^\s'\"#,;]{4,})"
+    r"private[_-]?key|client[_-]?secret)\b['\"]?\s*[=:]\s*['\"]?([^\s'\"#,;]{4,})"
 )
 PLACEHOLDER = re.compile(r"(?i)^(?:change[-_ ]?me|example|sample|placeholder|your[-_ ].*|<.*>|\$\{.*\}|\*+|null|none|redacted)$")
 DSN_CREDENTIAL = re.compile(r"(?i)\b(?:postgres(?:ql)?|mysql|mongodb(?:\+srv)?)://[^\s'\"`]+:[^\s@'\"`]+@")
@@ -189,8 +189,8 @@ def inspect_blob(path: str, blob: bytes) -> list[Finding]:
         value = match.group(1).strip().strip("'\"")
         if value and not PLACEHOLDER.fullmatch(value) and not re.match(
             r"(?i)^(?:os\.(?:getenv|environ)|settings\.|config\.|secretmanager\.|"
-            r"get_secret\(|read_secret\(|process\.env\b|env\()", value
-        ):
+            r"get_secret\(|read_secret\(|process\.env\b|env\(|[A-Za-z_]\w*\.[A-Za-z_]\w*\()", value
+        ) and not re.fullmatch(r"(?i)(?:[A-Za-z_]\w*\.)*[A-Za-z_]\w*\([^)]*\)", value):
             findings.append(Finding("CREDENTIAL_PATTERN", path, "non-placeholder credential assignment pattern detected"))
             break
 

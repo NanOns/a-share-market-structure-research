@@ -15,8 +15,11 @@ def configured_dsn():
     return value
 
 def configured_reader_dsn():
-    """HTTP/SELECT uses the configured reader; legacy isolated fixtures keep DSN."""
-    return os.environ.get('V4_NATIVE_PG_READER_DSN') or configured_dsn()
+    """Read paths prefer the reader role and may reuse the configured workbench DSN."""
+    return (os.environ.get('V4_NATIVE_PG_READER_DSN')
+            or os.environ.get('V4_NATIVE_PG_DSN')
+            or os.environ.get('WORKBENCH_PG_DSN')
+            or configured_dsn())
 
 def workspace_schema(root, purpose):
     if not re.fullmatch(r'[a-z][a-z0-9_]{0,24}',purpose): raise ValueError('INVALID_PG_PURPOSE')

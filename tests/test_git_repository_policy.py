@@ -64,6 +64,18 @@ def test_machine_paths_credentials_and_dynamic_sql_are_flagged_without_echoing_v
     assert all("SuperSecretValue" not in item.detail for item in findings)
 
 
+def test_credentials_in_config_are_flagged_but_runtime_secret_lookup_is_allowed():
+    sample = b'{"pass' + b'word":"Static' + b'Secret42"}'
+    findings = policy.inspect_blob("config/runtime.json", sample)
+    assert "CREDENTIAL_PATTERN" in {item.code for item in findings}
+    assert policy.inspect_blob("src/auth.py", b"token = response.get('access_token')\n") == []
+
+
+def test_arbitrary_windows_drive_paths_are_machine_specific():
+    findings = policy.inspect_blob("src/provider.py", b"ROOT = 'E:/private-feed/cache'\n")
+    assert "MACHINE_PATH" in {item.code for item in findings}
+
+
 def test_stage_report_requires_schema():
     findings = policy.inspect_blob(
         "reports/stage/V4_GOVERNANCE_COMPREHENSIVE_TEST_REPORT_20261016_R1.md",

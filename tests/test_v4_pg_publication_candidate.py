@@ -79,7 +79,7 @@ class Cursor:
 
 
 class FakeConnection:
-    def __init__(self, *, head=None, bindings=None, sources=None, identity=None, role=None, missing_bindings=False, parent=None):
+    def __init__(self, *, head=None, bindings=None, sources=None, identity=None, role=None, missing_bindings=False, parent=None, page_data=None):
         self.head = head
         self.bindings = bindings if bindings is not None else [binding_row(module) for module in supported_owner_keys()]
         self.sources = sources if sources is not None else [source_row()]
@@ -87,6 +87,7 @@ class FakeConnection:
         self.role = role or ("v4_reader", False, False, False, False, False, False, False)
         self.missing_bindings = missing_bindings
         self.parent = parent
+        self.page_data = page_data or {}
         self.statements = []
 
     def __enter__(self):
@@ -110,6 +111,10 @@ class FakeConnection:
             return Cursor(one=self.parent)
         if "FROM v4.publication_consumed_sources" in statement:
             return Cursor(all_rows=self.sources)
+        if "FROM v4.event_observations" in statement:
+            return Cursor(all_rows=self.page_data.get("summary_events", []))
+        if "FROM v4.security_lifecycle_facts" in statement:
+            return Cursor(all_rows=self.page_data.get("entity_lifecycle", []))
         if "FROM v4.publication_module_results" in statement:
             if self.missing_bindings:
                 error = RuntimeError("relation missing")
@@ -324,6 +329,7 @@ def test_adapter_maps_each_formal_current_entry_and_has_no_fallback():
     assert result["status"] == "PENDING"
     assert result["quality_status"] == "NOT_VERIFIABLE_PAGE_PARITY"
     assert result["payload"] == {}
+    assert result["uncovered_reasons"]["RAW_DAILY"] == "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION"
     with pytest.raises(PublicationReadError, match="PG_CURRENT_ENDPOINT_UNSUPPORTED"):
         PgV4CurrentAdapter(reader_for(FakeConnection(head=publication_row()))).read_endpoint(
             "/api/v4/current/unknown", trade_date="2026-10-15", model_namespace_id="v4-main",
@@ -347,6 +353,33 @@ def test_partial_owner_projection_never_promotes_page_to_ready(page, expected_ow
     assert result["uncovered_input_groups"]
 
 
+def test_adapter_parses_exact_publication_bound_events_and_lifecycle_fields():
+    events = [{
+        "logical_event_id": "event-1", "observation_revision": 1, "status": "ACTIVE",
+        "payload": {"effective_event": "BREAKOUT", "trade_date": "2026-10-15", "why_now": "volume"},
+    }]
+    lifecycle = [{
+        "security_id": "000001.SZ", "security_type": "STOCK", "board": "MAIN",
+        "listed_from": date(2000, 1, 1), "listed_to": None, "st_state": None,
+        "trade_status": "ACTIVE", "effective_from": date(2026, 10, 1), "effective_to": None,
+        "observed_at": ACCEPTED_AT, "ingested_at": ACCEPTED_AT, "system_available_at": ACCEPTED_AT,
+        "source_revision_id": "src-r1", "source_identity": "fixture-source", "quality": "KNOWN",
+    }]
+    reader = reader_for(FakeConnection(
+        head=publication_row(), page_data={"summary_events": events, "entity_lifecycle": lifecycle},
+    ))
+    adapter = PgV4CurrentAdapter(reader)
+    summary = adapter.read_endpoint("/api/v4/current/summary", trade_date="2026-10-15", model_namespace_id="v4-main")
+    entity = adapter.read_endpoint("/api/v4/current/entity", trade_date="2026-10-15", model_namespace_id="v4-main")
+    assert summary["parsed_business_fields"]["events"][0]["fields"] == {
+        "effective_event": "BREAKOUT", "trade_date": "2026-10-15", "why_now": "volume",
+    }
+    assert summary["field_mapping"]["effective_event"] == "page_data.summary_events[0].payload.effective_event"
+    assert entity["parsed_business_fields"]["lifecycle"][0]["security_id"] == "000001.SZ"
+    assert entity["field_mapping"]["security_id"] == "page_data.entity_lifecycle[0].security_id"
+    assert entity["uncovered_reasons"]["RAW_DAILY"] == "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION"
+
+
 def owner_results(day="2026-10-15"):
     return [{
         "module_key": module, "module_contract_id": CONTRACT_ID,
@@ -362,10 +395,11 @@ def candidate(**overrides):
     args = dict(
         publication_id="candidate-20261015-r1", trade_date="2026-10-15", revision_no=1,
         publication_lineage_id="lineage-20261015", model_namespace_id="v4-main", core_revision=1,
-        source_manifest_sha256="a" * 64, computation_identity_sha256="b" * 64,
+        source_manifest_sha256=source_manifest_digest([source_row()]), source_manifest_rows=[source_row()], computation_identity_sha256="b" * 64,
         source_manifest_contract_id=SOURCE_MANIFEST_CONTRACT_ID,
         expected_source_bindings={"tdx_daily": {"source_revision_id": "src-r1", "digest": "e" * 64}},
         observed_source_bindings={"tdx_daily": {"source_revision_id": "src-r1", "digest": "e" * 64}},
+        database_identity=DATABASE_IDENTITY,
         module_results=owner_results(), state_head_id="state-20261015-r1", state_logical_digest="c" * 64,
         prior_session_gap_reason="INITIAL_BOUNDARY",
     )
@@ -375,9 +409,10 @@ def candidate(**overrides):
 
 def test_candidate_is_candidate_only_and_preserves_quality_flags():
     plan = candidate()
-    assert plan["status"] == "CANDIDATE_REQUIREMENTS_UNVERIFIED" and plan["publish_status"] == "CANDIDATE"
-    assert plan["accepted_at"] is None and plan["head_update"] == "BLOCKED_REQUIREMENTS_UNVERIFIED"
-    assert plan["global_requiredness_status"] == "NOT_ESTABLISHED_FROM_PRODUCER_CONTRACTS"
+    assert plan["status"] == "CANDIDATE_READY" and plan["publish_status"] == "CANDIDATE"
+    assert plan["accepted_at"] is None and plan["head_update"] == "PLAN_ONLY_NOT_EXECUTED"
+    assert plan["global_requiredness_status"] == "PASS_MINIMUM_DAILY_SNAPSHOT_R1"
+    assert plan["minimum_publish_contract_id"] == "V4_DAILY_PUBLICATION_MINIMUM_R1"
     assert plan["revision_no"] == 1 and plan["publication_lineage_id"] == "lineage-20261015"
     assert plan["module_results"][0]["quality_status"] == "DEGRADED"
     assert plan["module_results"][0]["as_recorded"] is False
@@ -387,7 +422,7 @@ def test_candidate_is_candidate_only_and_preserves_quality_flags():
 
 def test_candidate_required_modules_and_versioned_contract_cannot_be_downgraded():
     partial = candidate(module_results=[])
-    assert partial["status"] == "CANDIDATE_REQUIREMENTS_UNVERIFIED"
+    assert partial["status"] == "CANDIDATE_READY"
     assert partial["module_results"] == []
     bad = owner_results()
     bad[0]["module_contract_id"] = "OPTIONAL_OVERRIDE"
@@ -400,6 +435,16 @@ def test_candidate_requires_explicit_source_manifest_contract_version():
         candidate(source_manifest_contract_id="LEGACY_UNKNOWN")
 
 
+def test_candidate_rehashes_complete_source_rows_and_blocks_missing_or_changed_manifest():
+    with pytest.raises(CandidatePlanError, match="CANDIDATE_SOURCE_MANIFEST_UNVERIFIED"):
+        candidate(source_manifest_rows=[])
+    with pytest.raises(CandidatePlanError, match="SOURCE_MANIFEST_DIGEST_MISMATCH"):
+        candidate(source_manifest_sha256="a" * 64)
+    with pytest.raises(CandidatePlanError, match="SOURCE_MANIFEST_DIGEST_MISMATCH"):
+        candidate(source_manifest_rows=[source_row(revision_digest="f" * 64)])
+    assert candidate(source_manifest_sha256=None)["source_manifest_sha256"] == source_manifest_digest([source_row()])
+
+
 def test_candidate_rejects_source_owner_and_state_identity_mismatch():
     with pytest.raises(CandidatePlanError, match="SOURCE_IDENTITY_MISMATCH"):
         candidate(observed_source_bindings={"tdx_daily": {"source_revision_id": "src-r1", "digest": "f" * 64}})
@@ -409,16 +454,16 @@ def test_candidate_rejects_source_owner_and_state_identity_mismatch():
         candidate(module_results=bad_date)
     with pytest.raises(CandidatePlanError, match="PUBLICATION_STATE_IDENTITY_INVALID"):
         candidate(state_logical_digest="bad")
+    with pytest.raises(CandidatePlanError, match="PUBLICATION_DATABASE_IDENTITY_INVALID"):
+        candidate(database_identity={"database": "market_research"})
+    bad_owner = owner_results()
+    bad_owner[0]["database_identity"] = {**DATABASE_IDENTITY, "database": "other"}
+    with pytest.raises(CandidatePlanError, match="OWNER_DATABASE_IDENTITY_MISMATCH"):
+        candidate(module_results=bad_owner)
 
 
 def test_head_planner_uses_publication_id_and_exact_state_cas_without_writes():
     first = candidate()
-    with pytest.raises(CandidatePlanError, match="CANDIDATE_NOT_READY"):
-        plan_publication_head_change(first, None)
-    # The following exact-CAS vectors isolate the planner after an upstream
-    # contract gate attests completeness; no production contract does so here.
-    first["status"] = "CANDIDATE_READY"
-    first["global_requiredness_status"] = "PASS"
     initial = plan_publication_head_change(first, None)
     assert initial["action"] == "INSERT_IF_ABSENT" and initial["initial_boundary_review_required"] is True
     assert initial["write_executed"] is False
@@ -426,8 +471,6 @@ def test_head_planner_uses_publication_id_and_exact_state_cas_without_writes():
         publication_id="candidate-20261015-r2", revision_no=2,
         same_day_revision_parent_id=first["publication_id"], prior_session_gap_reason="INITIAL_BOUNDARY",
     )
-    next_pub["status"] = "CANDIDATE_READY"
-    next_pub["global_requiredness_status"] = "PASS"
     cas = plan_publication_head_change(next_pub, {
         "trade_date": "2026-10-15", "model_namespace_id": "v4-main",
         "publication_id": first["publication_id"], "revision_no": 1,
@@ -441,11 +484,7 @@ def test_head_planner_uses_publication_id_and_exact_state_cas_without_writes():
 
 def test_head_planner_rejects_wrong_parent_or_non_next_revision():
     first = candidate()
-    first["status"] = "CANDIDATE_READY"
-    first["global_requiredness_status"] = "PASS"
     wrong_parent = candidate(publication_id="candidate-r2", revision_no=2, same_day_revision_parent_id="other")
-    wrong_parent["status"] = "CANDIDATE_READY"
-    wrong_parent["global_requiredness_status"] = "PASS"
     with pytest.raises(CandidatePlanError, match="HEAD_CAS_PRECONDITION_MISMATCH"):
         plan_publication_head_change(wrong_parent, {
             "trade_date": first["trade_date"], "model_namespace_id": first["model_namespace_id"],
@@ -454,8 +493,6 @@ def test_head_planner_rejects_wrong_parent_or_non_next_revision():
             "state_head_id": first["state_head_id"], "state_logical_digest": first["state_logical_digest"],
         })
     gap = candidate(publication_id="candidate-r4", revision_no=4, same_day_revision_parent_id=first["publication_id"])
-    gap["status"] = "CANDIDATE_READY"
-    gap["global_requiredness_status"] = "PASS"
     with pytest.raises(CandidatePlanError, match="PUBLICATION_REVISION_NOT_NEXT"):
         plan_publication_head_change(gap, {
             "trade_date": first["trade_date"], "model_namespace_id": first["model_namespace_id"],

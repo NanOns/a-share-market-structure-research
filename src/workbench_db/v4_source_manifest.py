@@ -97,3 +97,14 @@ def source_manifest_digest(rows: Sequence[Mapping[str, Any]]) -> str:
         separators=(",", ":"), allow_nan=False,
     ).encode("utf-8")
     return hashlib.sha256(material).hexdigest()
+
+
+def build_source_manifest(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """Producer entry point: canonicalize the complete source rows and hash them."""
+    canonical_rows = canonical_source_rows(rows)
+    return {
+        "contract_id": CONTRACT_ID,
+        "contract_version": CONTRACT_VERSION,
+        "source_rows": canonical_rows,
+        "source_manifest_sha256": source_manifest_digest(rows),
+    }

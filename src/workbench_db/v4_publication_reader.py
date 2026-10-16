@@ -191,6 +191,7 @@ class PgPublicationReader:
             parent = self._read_same_day_parent(pg, publication)
             sources = self._read_sources(pg, publication)
             manifest_status, recomputed_manifest_digest = self._verify_source_manifest(publication, sources)
+            page_data = self._read_page_data(pg, publication, sources)
             bindings = self._read_module_bindings(pg, publication, identity)
             missing = sorted(set(modules) - set(bindings))
             if missing:
@@ -250,6 +251,7 @@ class PgPublicationReader:
                 "database_identity": identity,
                 "reader_role": role,
                 "same_day_parent": parent,
+                "page_data": page_data,
                 "module_results": selected,
                 "module_results_digest": digest(canonical(binding_rows)),
                 "module_requirements": {module: "CAPABILITY_OPTIONAL" for module in supported_owner_keys()},
@@ -332,6 +334,73 @@ class PgPublicationReader:
         if not _DIGEST.fullmatch(expected) or actual != expected:
             raise PublicationReadError("SOURCE_MANIFEST_REHASH_MISMATCH")
         return "REHASH_PASS", actual
+
+    @staticmethod
+    def _read_page_data(pg, publication, source_rows):
+        """Read only page facts with a verifiable publication/source binding."""
+        publication_id = publication["publication_id"]
+        target_date = date.fromisoformat(_iso_date(publication["trade_date"]))
+        try:
+            event_rows = _row_dicts(pg.execute(
+                """SELECT logical_event_id,observation_revision,status,payload
+                     FROM v4.event_observations
+                    WHERE publication_id=%s AND status='ACTIVE'
+                    ORDER BY logical_event_id COLLATE \"C\",observation_revision
+                    LIMIT 50001""",
+                (publication_id,),
+            ), ("logical_event_id", "observation_revision", "status", "payload"))
+            source_ids = sorted({row["source_revision_id"] for row in source_rows})
+            lifecycle_rows = []
+            if source_ids:
+                lifecycle_rows = _row_dicts(pg.execute(
+                    """SELECT security_id,security_type,board,listed_from,listed_to,
+                              st_state,trade_status,effective_from,effective_to,
+                              observed_at,ingested_at,system_available_at,
+                              source_revision_id,source_identity,quality
+                         FROM v4.security_lifecycle_facts
+                        WHERE source_revision_id=ANY(%s)
+                          AND effective_from<=%s
+                          AND (effective_to IS NULL OR effective_to>=%s)
+                        ORDER BY security_id COLLATE \"C\",effective_from,source_revision_id
+                        LIMIT 50001""",
+                    (source_ids, target_date, target_date),
+                ), ("security_id", "security_type", "board", "listed_from", "listed_to",
+                    "st_state", "trade_status", "effective_from", "effective_to",
+                    "observed_at", "ingested_at", "system_available_at",
+                    "source_revision_id", "source_identity", "quality"))
+        except Exception as exc:
+            PgPublicationReader._map_schema_error(exc, "PAGE_RELATION_SCHEMA_UNAVAILABLE")
+            raise PublicationReadError("PAGE_RELATION_READ_FAILED") from exc
+        if len(event_rows) > 50000 or len(lifecycle_rows) > 50000:
+            raise PublicationReadError("PAGE_RELATION_ROW_LIMIT_EXCEEDED")
+        for row in event_rows:
+            if (not isinstance(row.get("logical_event_id"), str) or not row["logical_event_id"]
+                    or isinstance(row.get("observation_revision"), bool)
+                    or int(row.get("observation_revision", 0)) < 1
+                    or row.get("status") != "ACTIVE" or not isinstance(row.get("payload"), Mapping)):
+                raise PublicationReadError("EVENT_OBSERVATION_IDENTITY_INVALID")
+        bound_source_ids = {row["source_revision_id"] for row in source_rows}
+        for row in lifecycle_rows:
+            if row.get("source_revision_id") not in bound_source_ids:
+                raise PublicationReadError("LIFECYCLE_SOURCE_NOT_PUBLICATION_BOUND")
+            if row.get("quality") is None or row.get("security_id") is None:
+                raise PublicationReadError("LIFECYCLE_ROW_QUALITY_OR_IDENTITY_MISSING")
+        def json_row(row):
+            return {key: value.isoformat() if hasattr(value, "isoformat") else value for key, value in row.items()}
+        return {
+            "publication_id": publication_id,
+            "trade_date": target_date.isoformat(),
+            "summary_events": [json_row(row) for row in event_rows],
+            "entity_lifecycle": [json_row(row) for row in lifecycle_rows],
+            "uncovered": {
+                "entity_prices": "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION",
+                "identity_names": "NO_V4_PUBLICATION_BOUND_IDENTITY_NAME_RELATION",
+                "replay": "NO_V4_PUBLICATION_BOUND_REPLAY_RELATION",
+                "sector_membership": "SECTOR_MEMBERSHIP_FACTS_HAVE_NO_PUBLICATION_SOURCE_BINDING",
+                "cohort": "NO_V4_PUBLICATION_BOUND_COHORT_RELATION",
+                "settlement": "NO_V4_PUBLICATION_BOUND_SETTLEMENT_RELATION",
+            },
+        }
 
     @staticmethod
     def _read_same_day_parent(pg, publication):

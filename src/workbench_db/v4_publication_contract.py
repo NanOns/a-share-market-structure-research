@@ -7,8 +7,20 @@ evidence; none is invented as a daily-publication prerequisite.
 from types import MappingProxyType
 
 
-CONTRACT_ID = "V4_CURRENT_PUBLICATION_OWNER_PROJECTION_CONTRACT_R3"
-CONTRACT_VERSION = "3.0.0"
+CONTRACT_ID = "V4_CURRENT_PUBLICATION_OWNER_PROJECTION_CONTRACT_R4"
+CONTRACT_VERSION = "4.0.0"
+MINIMUM_DAILY_PUBLICATION_CONTRACT_ID = "V4_DAILY_PUBLICATION_MINIMUM_R1"
+MINIMUM_DAILY_PUBLICATION_CONTRACT = MappingProxyType({
+    "contract_id": MINIMUM_DAILY_PUBLICATION_CONTRACT_ID,
+    "version": "1.0.0",
+    "required_owner_families": (),
+    "required_base_fields": (
+        "publication_id", "trade_date", "model_namespace_id", "revision_no",
+        "database_identity", "computation_identity_sha256", "state_head_id", "state_logical_digest",
+        "nonempty_source_manifest_contract", "verified_source_revision_rows",
+    ),
+    "acceptance_boundary": "CANDIDATE_PLAN_ONLY; PG READBACK AND HEAD WRITE ARE SEPARATE",
+})
 
 OWNER_FAMILIES = MappingProxyType({
     "research_priority": MappingProxyType({
@@ -45,7 +57,7 @@ PAGE_PROJECTIONS = MappingProxyType({
         "owner_families": ("operational_risk",),
         "consumer_fields": ("effective_event", "primary_scenario", "counterevidence", "trade_date", "why_now"),
         "owner_field_paths": ("payload.families.*.status", "payload.families.*.changes[*].change"),
-        "uncovered_groups": ("events", "observations", "replay", "identity_names"),
+        "uncovered_groups": ("replay", "identity_names"),
     }),
     "radar": MappingProxyType({
         "input_groups": ("radar", "ledger", "replay", "identity_names"),
@@ -91,6 +103,33 @@ PAGE_PROJECTIONS = MappingProxyType({
     }),
 })
 
+PAGE_PG_RELATIONS = MappingProxyType({
+    "summary": MappingProxyType({
+        "events": "v4.event_observations WHERE publication_id = selected publication_id",
+        "fields": "payload.effective_event, payload.primary_scenario, payload.counterevidence, payload.trade_date, payload.why_now",
+        "coverage": "DIRECT_PUBLICATION_BOUND_ROWS; FIELD_PRESENCE_REPORTED_PER_ROW",
+    }),
+    "entity": MappingProxyType({
+        "lifecycle": "v4.security_lifecycle_facts JOIN publication_consumed_sources ON source_revision_id",
+        "fields": "security_id, security_type, board, listed_from, listed_to, st_state, trade_status, effective dates, quality",
+        "coverage": "SOURCE_BOUND_LIFECYCLE_ONLY; DAILY_PRICES_AND_IDENTITY_NAMES_UNAVAILABLE",
+    }),
+    "radar": MappingProxyType({
+        "priority": "hashed Owner owner_payloads via v4.publication_module_results",
+        "coverage": "SUPPLEMENTAL_PRIORITY; FORMAL_LEDGER_AND_REPLAY_UNAVAILABLE",
+    }),
+    "sector": MappingProxyType({
+        "lifecycle": "hashed Owner owner_rows via v4.publication_module_results",
+        "coverage": "SUPPLEMENTAL_MATURITY; MEMBERSHIP_RELATION_NOT_BOUND_TO_PUBLICATION",
+    }),
+    "cohort": MappingProxyType({"coverage": "NO_PUBLICATION_BOUND_COHORT_RELATION"}),
+    "settlement": MappingProxyType({"coverage": "NO_PUBLICATION_BOUND_SETTLEMENT_RELATION"}),
+    "health": MappingProxyType({
+        "owners": "operational_risk owner_payloads; sector_lifecycle owner_rows",
+        "coverage": "OWNER_SUPPLEMENTS_ONLY; REPLAY_AND_MATURITY_UNAVAILABLE",
+    }),
+})
+
 MODULES = OWNER_FAMILIES
 
 
@@ -114,6 +153,8 @@ def effective_module_contract():
             }
             for key, value in PAGE_PROJECTIONS.items()
         },
+        "minimum_daily_publication": dict(MINIMUM_DAILY_PUBLICATION_CONTRACT),
+        "page_pg_relations": {key: dict(value) for key, value in PAGE_PG_RELATIONS.items()},
     }
 
 

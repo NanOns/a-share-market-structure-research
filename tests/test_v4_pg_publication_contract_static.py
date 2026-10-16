@@ -56,6 +56,24 @@ def test_reader_rehashes_sources_in_one_read_only_final_schema_context():
     assert "SOURCE_MANIFEST_CONTRACT_UNSUPPORTED" in reader
 
 
+def test_r4_source_and_page_field_map_matches_final_migration_relations():
+    m001 = read(MIGRATIONS / "001_v4_phase0_foundation.sql")
+    m003 = read(MIGRATIONS / "003_phase0_contract_alignment.sql")
+    m016 = read(MIGRATIONS / "016_v4_08_sector_membership.sql")
+    reader = read(ROOT / "src/workbench_db/v4_publication_reader.py")
+    contract = read(ROOT / "src/workbench_db/v4_publication_contract.py")
+    for field in (
+        "logical_fact_id", "revision_no", "digest", "effective_from", "effective_to",
+        "provider_available_at", "observed_at", "ingested_at", "system_available_at", "tombstone",
+    ):
+        assert field in m001
+    assert "publication_consumed_sources" in m003 and "source_key" in m001
+    assert "v4.event_observations" in reader and "publication_id=%s" in reader
+    assert "v4.security_lifecycle_facts" in reader and "source_revision_id=ANY(%s)" in reader
+    assert "v4.sector_membership_facts" in m016
+    assert "MEMBERSHIP_RELATION_NOT_BOUND_TO_PUBLICATION" in contract
+
+
 def test_manifest_migration_keeps_legacy_unknown_and_requires_r1_on_new_rows():
     migration = read(MIGRATIONS / "010_source_manifest_contract_r1.sql")
     assert "ADD COLUMN source_manifest_contract_id text" in migration
@@ -65,15 +83,17 @@ def test_manifest_migration_keeps_legacy_unknown_and_requires_r1_on_new_rows():
 
 def test_contract_models_three_real_owner_families_and_explicit_page_gaps():
     contract = read(ROOT / "src/workbench_db/v4_publication_contract.py")
-    assert "V4_CURRENT_PUBLICATION_OWNER_PROJECTION_CONTRACT_R3" in contract
+    assert "V4_CURRENT_PUBLICATION_OWNER_PROJECTION_CONTRACT_R4" in contract
     assert "daily_publication_required\": False" in contract
     assert "uncovered_groups" in contract
     assert "SECTOR_LIFECYCLE_SUPPLEMENT_ONLY" in contract
     assert '"entity": MappingProxyType' in contract
     candidate = read(ROOT / "src/workbench_db/v4_publication_candidate.py")
-    assert "CANDIDATE_REQUIREMENTS_UNVERIFIED" in candidate
-    assert "GLOBAL_REQUIREDNESS_UNVERIFIED" in candidate
-    assert 'candidate.get("global_requiredness_status") != "PASS"' in candidate
+    assert "CANDIDATE_SOURCE_MANIFEST_UNVERIFIED" in candidate
+    assert "build_source_manifest(source_manifest_rows)" in candidate
+    assert 'candidate.get("global_requiredness_status") != "PASS_MINIMUM_DAILY_SNAPSHOT_R1"' in candidate
+    assert 'candidate.get("minimum_publish_contract_id") != MINIMUM_DAILY_PUBLICATION_CONTRACT_ID' in candidate
+    assert '"minimum_publish_contract_id": MINIMUM_DAILY_PUBLICATION_CONTRACT_ID' in candidate
 
 
 def test_sector_owner_resolver_uses_fixed_relations_and_quoted_schema_identifier():

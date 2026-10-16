@@ -10,9 +10,13 @@ from typing import Any, Mapping, Sequence
 
 from workbench_service.current_v4_context import canonical, digest
 from .v4_publication_contract import (
-    CONTRACT_ID as MODULE_CONTRACT_ID, OWNER_FAMILIES, required_module_keys, supported_owner_keys,
+    CONTRACT_ID as MODULE_CONTRACT_ID, MINIMUM_DAILY_PUBLICATION_CONTRACT_ID,
+    OWNER_FAMILIES, required_module_keys, supported_owner_keys,
 )
-from .v4_source_manifest import CONTRACT_ID as SOURCE_MANIFEST_CONTRACT_ID
+from .v4_source_manifest import (
+    CONTRACT_ID as SOURCE_MANIFEST_CONTRACT_ID,
+    build_source_manifest,
+)
 
 
 CONTRACT_ID = "V4_PG_PUBLICATION_CANDIDATE_PLAN_R2"
@@ -75,11 +79,13 @@ def build_publication_candidate(
     publication_lineage_id: str,
     model_namespace_id: str,
     core_revision: int,
-    source_manifest_sha256: str,
+    source_manifest_sha256: str | None = None,
+    source_manifest_rows: Sequence[Mapping[str, Any]] | None = None,
     source_manifest_contract_id: str,
     computation_identity_sha256: str,
     expected_source_bindings: Mapping[str, Any],
     observed_source_bindings: Mapping[str, Any],
+    database_identity: Mapping[str, Any],
     module_results: Sequence[Mapping[str, Any]],
     state_head_id: str,
     state_logical_digest: str,
@@ -101,14 +107,43 @@ def build_publication_candidate(
     if isinstance(core_revision, bool) or not isinstance(core_revision, int) or core_revision <= 0:
         raise CandidatePlanError("CORE_REVISION_INVALID")
     target_date = _valid_date(trade_date)
-    if not _DIGEST.fullmatch(str(source_manifest_sha256)):
-        raise CandidatePlanError("SOURCE_MANIFEST_DIGEST_INVALID")
     if source_manifest_contract_id != SOURCE_MANIFEST_CONTRACT_ID:
         raise CandidatePlanError("SOURCE_MANIFEST_CONTRACT_UNSUPPORTED")
+    if not source_manifest_rows:
+        raise CandidatePlanError("CANDIDATE_SOURCE_MANIFEST_UNVERIFIED")
+    try:
+        produced_manifest = build_source_manifest(source_manifest_rows)
+        normalized_source_rows = produced_manifest["source_rows"]
+        calculated_source_manifest = produced_manifest["source_manifest_sha256"]
+    except Exception as exc:
+        raise CandidatePlanError("CANDIDATE_SOURCE_MANIFEST_UNVERIFIED") from exc
+    if source_manifest_sha256 is not None and not _DIGEST.fullmatch(str(source_manifest_sha256)):
+        raise CandidatePlanError("SOURCE_MANIFEST_DIGEST_INVALID")
+    if source_manifest_sha256 is not None and calculated_source_manifest != str(source_manifest_sha256).lower():
+        raise CandidatePlanError("SOURCE_MANIFEST_DIGEST_MISMATCH")
+    source_manifest_sha256 = calculated_source_manifest
+    # The canonical publication relation binds these rows to the identical source
+    # revision IDs and package digests. Never let either caller map be the only
+    # source of truth for a candidate manifest.
+    source_row_bindings = {
+        row["source_key"]: {
+            "source_revision_id": row["source_revision_id"],
+            "digest": row["digest"],
+        }
+        for row in normalized_source_rows
+    }
     if not _DIGEST.fullmatch(str(computation_identity_sha256)):
         raise CandidatePlanError("COMPUTATION_IDENTITY_DIGEST_INVALID")
     if not isinstance(state_head_id, str) or not state_head_id.strip() or not _DIGEST.fullmatch(str(state_logical_digest)):
         raise CandidatePlanError("PUBLICATION_STATE_IDENTITY_INVALID")
+    if (not isinstance(database_identity, Mapping)
+            or not {"database", "database_oid", "host", "port"}.issubset(database_identity)
+            or not isinstance(database_identity.get("database"), str) or not database_identity["database"].strip()
+            or isinstance(database_identity.get("database_oid"), bool) or not isinstance(database_identity["database_oid"], int)
+            or not isinstance(database_identity.get("host"), str) or not database_identity["host"].strip()
+            or isinstance(database_identity.get("port"), bool) or not isinstance(database_identity["port"], int)):
+        raise CandidatePlanError("PUBLICATION_DATABASE_IDENTITY_INVALID")
+    candidate_database_identity = dict(database_identity)
     _validate_prior_session(
         prior_publication_id=prior_session_publication_id,
         prior_state_head=prior_session_state_head,
@@ -120,6 +155,24 @@ def build_publication_candidate(
     if same_day_revision_parent_id is not None and (revision_no <= 1 or not same_day_revision_parent_id.strip()):
         raise CandidatePlanError("SAME_DAY_REVISION_PARENT_INVALID")
     source_bindings = verify_source_identities(expected_source_bindings, observed_source_bindings)
+    if source_bindings != dict(sorted(source_row_bindings.items())):
+        raise CandidatePlanError("SOURCE_MANIFEST_BINDING_MISMATCH")
+    for row in normalized_source_rows:
+        if row["digest"] != row["revision_digest"]:
+            raise CandidatePlanError("SOURCE_MANIFEST_REVISION_DIGEST_MISMATCH")
+        if row["tombstone"]:
+            raise CandidatePlanError("SOURCE_MANIFEST_TOMBSTONED")
+        if row["effective_from"] is not None and row["effective_from"] > target_date:
+            raise CandidatePlanError("SOURCE_MANIFEST_OUTSIDE_T0_WINDOW")
+        if row["effective_to"] is not None and row["effective_to"] < target_date:
+            raise CandidatePlanError("SOURCE_MANIFEST_OUTSIDE_T0_WINDOW")
+        if any(row[clock] is None for clock in ("observed_at", "ingested_at", "system_available_at")):
+            raise CandidatePlanError("SOURCE_MANIFEST_CLOCK_MISSING")
+        observed_at, ingested_at, system_available_at = (
+            row["observed_at"], row["ingested_at"], row["system_available_at"]
+        )
+        if system_available_at < max(observed_at, ingested_at):
+            raise CandidatePlanError("SOURCE_MANIFEST_CLOCK_ORDER_INVALID")
 
     normalized = {}
     for raw in module_results:
@@ -158,12 +211,14 @@ def build_publication_candidate(
         recorded, pit = raw.get("as_recorded"), raw.get("pit_eligible")
         if not isinstance(recorded, bool) or not isinstance(pit, bool):
             raise CandidatePlanError("OWNER_QUALIFICATION_MISSING")
-        database_identity = raw.get("database_identity")
-        if not isinstance(database_identity, Mapping) or not {"database", "database_oid", "host", "port"}.issubset(database_identity):
+        owner_database_identity = raw.get("database_identity")
+        if not isinstance(owner_database_identity, Mapping) or not {"database", "database_oid", "host", "port"}.issubset(owner_database_identity):
             raise CandidatePlanError("OWNER_DATABASE_IDENTITY_MISSING")
+        if dict(owner_database_identity) != candidate_database_identity:
+            raise CandidatePlanError("OWNER_DATABASE_IDENTITY_MISMATCH")
         normalized[module] = {
             "module_key": module, "module_contract_id": MODULE_CONTRACT_ID,
-            "database_identity": dict(database_identity), "owner_schema": schema,
+            "database_identity": candidate_database_identity, "owner_schema": schema,
             "owner_relation": relation, "owner_version_token": token,
             "owner_trade_date": owner_date, "owner_contract_id": contract,
             "result_digest": result_digest, "row_count": count,
@@ -175,26 +230,38 @@ def build_publication_candidate(
     extras = sorted(set(normalized) - set(supported_owner_keys()))
     if extras:
         raise CandidatePlanError("MODULE_NOT_IN_EFFECTIVE_CONTRACT")
-    status = "CANDIDATE_INCOMPLETE" if missing_required else "CANDIDATE_REQUIREMENTS_UNVERIFIED"
-    readiness_reasons = (["REQUIRED_MODULE_RESULT_MISSING"] if missing_required
-                         else ["GLOBAL_REQUIREDNESS_UNVERIFIED"])
+    status = "CANDIDATE_INCOMPLETE" if missing_required else "CANDIDATE_READY"
+    readiness_reasons = ["REQUIRED_MODULE_RESULT_MISSING"] if missing_required else []
     body = {
         "contract_id": CONTRACT_ID,
         "module_contract_id": MODULE_CONTRACT_ID,
         "candidate_only": True,
         "publish_status": "CANDIDATE",
         "accepted_at": None,
-        "head_update": "BLOCKED_REQUIREMENTS_UNVERIFIED",
-        "global_requiredness_status": "NOT_ESTABLISHED_FROM_PRODUCER_CONTRACTS",
+        "head_update": "PLAN_ONLY_NOT_EXECUTED",
+        "minimum_publish_contract_id": MINIMUM_DAILY_PUBLICATION_CONTRACT_ID,
+        "minimum_publish_checks": {
+            "publication_identity": "PASS",
+            "single_target_database_identity": "PASS",
+            "state_head_identity": "PASS",
+            "computation_identity_digest": "PASS",
+            "source_manifest_rows_and_digest": "PASS",
+            "source_revision_digest_t0_tombstone_and_clock_rules": "PASS",
+            "optional_owner_families": "NOT_REQUIRED_BY_CONTRACT",
+            "pg_candidate_readback_and_head_write": "NOT_EXECUTED_BY_PURE_PLANNER",
+        },
+        "global_requiredness_status": "PASS_MINIMUM_DAILY_SNAPSHOT_R1" if not missing_required else "FAIL_REQUIRED_OWNER_MISSING",
         "publication_id": publication_id,
         "trade_date": target_date,
         "revision_no": revision_no,
         "publication_lineage_id": publication_lineage_id,
         "same_day_revision_parent_id": same_day_revision_parent_id,
         "model_namespace_id": model_namespace_id,
+        "database_identity": candidate_database_identity,
         "core_revision": core_revision,
         "source_manifest_sha256": source_manifest_sha256,
         "source_manifest_contract_id": source_manifest_contract_id,
+        "source_manifest_rows": normalized_source_rows,
         "computation_identity_sha256": computation_identity_sha256,
         "state_head_id": state_head_id,
         "state_logical_digest": state_logical_digest,
@@ -216,7 +283,9 @@ def build_publication_candidate(
 def plan_publication_head_change(candidate: Mapping[str, Any], current_head: Mapping[str, Any] | None) -> dict[str, Any]:
     """Describe exact publication-id CAS; never execute or grant a write."""
     if (not isinstance(candidate, Mapping) or candidate.get("status") != "CANDIDATE_READY"
-            or candidate.get("global_requiredness_status") != "PASS"):
+            or candidate.get("global_requiredness_status") != "PASS_MINIMUM_DAILY_SNAPSHOT_R1"
+            or candidate.get("minimum_publish_contract_id") != MINIMUM_DAILY_PUBLICATION_CONTRACT_ID
+            or not candidate.get("source_manifest_sha256")):
         raise CandidatePlanError("CANDIDATE_NOT_READY")
     target = {"trade_date": candidate["trade_date"], "model_namespace_id": candidate["model_namespace_id"]}
     if current_head is None:

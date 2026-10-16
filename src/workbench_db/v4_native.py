@@ -7,7 +7,7 @@ import re
 import psycopg
 from psycopg import sql
 
-CONTRACT = 'V4_NATIVE_POSTGRESQL_CONNECTION_R1'
+CONTRACT = 'V4_NATIVE_POSTGRESQL_CONNECTION_R2'
 
 def configured_dsn():
     value=os.environ.get('V4_NATIVE_PG_DSN')
@@ -15,11 +15,11 @@ def configured_dsn():
     return value
 
 def configured_reader_dsn():
-    """Read paths prefer the reader role and may reuse the configured workbench DSN."""
-    return (os.environ.get('V4_NATIVE_PG_READER_DSN')
-            or os.environ.get('V4_NATIVE_PG_DSN')
-            or os.environ.get('WORKBENCH_PG_DSN')
-            or configured_dsn())
+    """Return a read connection string without ever falling back to the writer."""
+    value = os.environ.get('V4_NATIVE_PG_READER_DSN') or os.environ.get('WORKBENCH_PG_DSN')
+    if not value:
+        raise RuntimeError('V4_NATIVE_PG_READER_DSN_REQUIRED_NO_WRITER_FALLBACK')
+    return value
 
 def workspace_schema(root, purpose):
     if not re.fullmatch(r'[a-z][a-z0-9_]{0,24}',purpose): raise ValueError('INVALID_PG_PURPOSE')

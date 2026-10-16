@@ -82,6 +82,9 @@ def test_current_api_explicit_pg_candidate_http_and_no_file_fallback(monkeypatch
             assert status == 200
             assert body["candidate_only"] is True
             assert body["endpoint"] == f"/api/v4/current/{page}"
+            assert body["workspace_identity"]["contract_id"] == "V4_PG_WORKSPACE_NAMESPACE_ID_R1"
+            assert body["workspace_identity"]["purpose"] == "publication"
+            assert str(tmp_path) not in json.dumps(body["workspace_identity"])
         assert [call[0] for call in adapter.calls] == [f"/api/v4/current/{page}" for page in pages]
         assert all(call[1] == {
             "trade_date": "2026-10-16", "model_namespace_id": "workspace-main",

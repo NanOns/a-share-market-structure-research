@@ -19,7 +19,7 @@
       const states=payload.field_data_states||{};
       const stateList=node('ul');for(const [field,state] of Object.entries(states))stateList.append(node('li',`${labels[field]||field}: ${state} · ${payload.field_coverage?.[field]?.missing_reason||'字段由当前 Publication 验证'}`));
       target.append(stateList);
-      const details=node('details');details.open=true;details.append(node('summary','同一 PG Publication 的字段与 Owner 读回证据'),node('pre',JSON.stringify({context:payload.context,payload:payload.payload,parsed_business_fields:payload.parsed_business_fields,uncovered_reasons:payload.uncovered_reasons},null,2)));target.append(details);
+      const details=node('details');details.open=true;details.append(node('summary','同一 PG Publication 的字段与 Owner 读回证据'),node('pre',JSON.stringify({workspace_identity:payload.workspace_identity,context:payload.context,payload:payload.payload,parsed_business_fields:payload.parsed_business_fields,uncovered_reasons:payload.uncovered_reasons},null,2)));target.append(details);
       return;
     }
     if(payload.context_token!==context.context_token)throw Error('上下文已变更，请刷新页面');

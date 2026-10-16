@@ -155,6 +155,8 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False):
                             model_namespace_id=query['model_namespace_id'],
                             expected_context_token=query['context_token'],
                         )
+                        from workbench_db.v4_native import workspace_namespace_identity
+                        payload['workspace_identity']=workspace_namespace_identity(root,'publication')
                     except Exception as error:
                         # PG candidate reads are isolated from the file reader. A missing
                         # Head, Owner or read privilege is returned as a candidate error.

@@ -84,6 +84,12 @@ class PgV4CurrentAdapter:
                 })
                 page_rows.append({"row": payload, "path": f"page_data.summary_events[{index}].payload", "verified": True})
                 field_map.update(paths)
+            risk_families = parsed.get("risk_families", {})
+            parsed["risk_change_summary"] = [
+                {"family": family, **value, "source_owner": "operational_risk",
+                 "context_token": context["context_token"]}
+                for family, value in sorted(risk_families.items())
+            ]
         elif page == "entity":
             parsed["lifecycle"] = []
             for index, row in enumerate(page_data.get("entity_lifecycle", [])):

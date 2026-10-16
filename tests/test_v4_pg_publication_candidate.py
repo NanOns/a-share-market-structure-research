@@ -406,9 +406,24 @@ def test_adapter_parses_exact_publication_bound_events_and_lifecycle_fields():
         "observed_at": ACCEPTED_AT, "ingested_at": ACCEPTED_AT, "system_available_at": ACCEPTED_AT,
         "source_revision_id": "src-r1", "source_identity": "fixture-source", "quality": "KNOWN",
     }]
+    readers = owner_readers()
+    def risk_reader(pg, binding):
+        return {
+            "database_identity": binding["database_identity"],
+            "owner_schema": binding["owner_schema"], "owner_relation": binding["owner_relation"],
+            "owner_version_token": binding["owner_version_token"], "owner_trade_date": binding["owner_trade_date"],
+            "owner_contract_id": binding["owner_contract_id"], "result_digest": binding["result_digest"],
+            "row_count": binding["row_count"], "payload": {
+                "contract_id": "V4_OPERATIONAL_RISK_CHANGE_R1", "T0": "2026-10-15",
+                "families": {name: {"status": "KNOWN", "changes": []} for name in (
+                    "STOCK_STRUCTURE_RISK", "SECTOR_ECOLOGY_RISK", "MARKET_PRESSURE_RISK",
+                )},
+            },
+        }
+    readers["operational_risk"] = risk_reader
     reader = reader_for(FakeConnection(
         head=publication_row(), page_data={"summary_events": events, "entity_lifecycle": lifecycle},
-    ))
+    ), owner_readers=readers)
     adapter = PgV4CurrentAdapter(reader)
     summary = adapter.read_endpoint("/api/v4/current/summary", trade_date="2026-10-15", model_namespace_id="v4-main")
     entity = adapter.read_endpoint("/api/v4/current/entity", trade_date="2026-10-15", model_namespace_id="v4-main")
@@ -418,6 +433,9 @@ def test_adapter_parses_exact_publication_bound_events_and_lifecycle_fields():
     assert summary["field_mapping"]["effective_event"] == "page_data.summary_events[0].payload.effective_event"
     assert summary["parsed_business_fields"]["events"][0]["field_states"]["effective_event"] == "PG_FIELD_VERIFIED"
     assert summary["parsed_business_fields"]["events"][0]["field_states"]["counterevidence"] == "SOURCE_MISSING"
+    assert len(summary["parsed_business_fields"]["risk_change_summary"]) == 3
+    assert summary["parsed_business_fields"]["risk_change_summary"][0]["source_owner"] == "operational_risk"
+    assert summary["parsed_business_fields"]["risk_change_summary"][0]["context_token"] == summary["context"]["context_token"]
     assert entity["parsed_business_fields"]["lifecycle"][0]["security_id"] == "000001.SZ"
     assert entity["parsed_business_fields"]["lifecycle"][0]["field_states"]["security_id"] == "PG_FIELD_VERIFIED"
     assert entity["field_states"]["trade_date"] == "PG_FIELD_VERIFIED"

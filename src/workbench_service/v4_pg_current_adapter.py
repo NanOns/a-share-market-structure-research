@@ -62,6 +62,8 @@ class PgV4CurrentAdapter:
         status = "DEGRADED" if owner_payloads else "PENDING"
         parsed, field_map = _parse_owner_projection(page, owner_payloads)
         page_data = context.get("page_data", {})
+        page_rows: list[dict[str, Any]] = []
+        row_prefix = page
         if page == "summary":
             events = page_data.get("summary_events", [])
             parsed["events"] = []
@@ -80,6 +82,7 @@ class PgV4CurrentAdapter:
                     "missing_fields": missing,
                     "field_states": _field_states(selected, missing, contract_known=True),
                 })
+                page_rows.append({"row": payload, "path": f"page_data.summary_events[{index}].payload", "verified": True})
                 field_map.update(paths)
         elif page == "entity":
             parsed["lifecycle"] = []
@@ -95,7 +98,49 @@ class PgV4CurrentAdapter:
                 selected["trade_date"] = page_data.get("trade_date")
                 field_map["trade_date"] = "page_data.trade_date"
                 parsed["lifecycle"].append(selected)
+                page_rows.append({"row": selected, "path": f"page_data.entity_lifecycle[{index}]", "verified": True})
                 field_map.update(paths)
+        elif page == "radar":
+            for group in ("stocks", "sectors"):
+                for index, row in enumerate(parsed.get(group, [])):
+                    page_rows.append({"row": row, "path": f"payload.research_priority.{group}.all_items[{index}]", "verified": True})
+        elif page == "sector":
+            rows = parsed.get("sector_lifecycle_supplement", [])
+            for index, row in enumerate(rows):
+                page_rows.append({"row": row, "path": f"payload.sector_lifecycle[{index}]", "verified": True})
+        elif page == "health":
+            for family, row in sorted(parsed.get("risk_families", {}).items()):
+                page_rows.append({"row": row, "path": f"payload.operational_risk.families.{family}",
+                                  "verified": True, "eligible_fields": set()})
+            for index, row in enumerate(parsed.get("sector_lifecycle_supplement", [])):
+                page_rows.append({"row": row, "path": f"payload.sector_lifecycle[{index}]",
+                                  "verified": True, "eligible_fields": {"maturity"}})
+        eligible_fields = {
+            "summary": set(projection["consumer_fields"]),
+            "radar": set(projection["consumer_fields"]),
+            "entity": {"trade_date"},
+            "sector": {"sector_id"},
+            "cohort": set(),
+            "settlement": set(),
+            "health": {"maturity"},
+        }[page]
+        field_source_gaps = {
+            "open": "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION",
+            "high": "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION",
+            "low": "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION",
+            "close": "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION",
+            "source_security_key": "NO_V4_PUBLICATION_BOUND_IDENTITY_NAME_RELATION",
+            "list_date": "NO_V4_PUBLICATION_BOUND_IDENTITY_NAME_RELATION",
+            "scenario": "NO_PUBLICATION_BOUND_STATE_OR_SCENARIO_RELATION",
+            "state": "NO_PUBLICATION_BOUND_STATE_OR_SCENARIO_RELATION",
+            "health": "NO_PUBLICATION_BOUND_HEALTH_RESULT_RELATION",
+            "maturity": "NO_PUBLICATION_BOUND_MATURITY_RESULT_RELATION",
+            "component": "NO_PUBLICATION_BOUND_REPLAY_RELATION",
+            "row_count": "NO_PUBLICATION_BOUND_REPLAY_RELATION",
+            "quality": "NO_PUBLICATION_BOUND_REPLAY_RELATION",
+            "freshness": "NO_PUBLICATION_BOUND_REPLAY_RELATION",
+            "source_quality": "NO_PUBLICATION_BOUND_REPLAY_RELATION",
+        }
         uncovered = {
             group: (
                 "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION" if group == "RAW_DAILY" else
@@ -104,19 +149,39 @@ class PgV4CurrentAdapter:
             )
             for group in projection["uncovered_groups"]
         }
-        field_states = {}
-        for field in projection["consumer_fields"]:
-            if field in field_map:
-                field_states[field] = "PG_FIELD_VERIFIED"
-            elif page in ("summary", "entity"):
-                field_states[field] = (
-                    "SOURCE_MISSING" if field in {"open", "high", "low", "close", "scenario", "state", "health", "maturity"}
-                    else "PROJECTION_READY"
+        field_coverage = _field_coverage(
+            projection["consumer_fields"], page_rows, target_t0=trade_date,
+            no_row_reason=(
+                "OWNER_FAMILY_UNAVAILABLE" if unavailable_families else
+                "NO_PUBLICATION_BOUND_ROWS" if page in ("summary", "entity", "radar", "sector", "health") else
+                "NO_PUBLICATION_BOUND_PG_RELATION"
+            ),
+            contract_known=page not in ("cohort", "settlement"),
+            eligible_fields=eligible_fields,
+            field_missing_reasons=field_source_gaps,
+        )
+        field_states = {field: item["status"] for field, item in field_coverage.items()}
+        business_statuses = set(field_states.values())
+        business_result_state = (
+            "PG_FIELD_VERIFIED" if business_statuses == {"PG_FIELD_VERIFIED"} else
+            "PARTIAL_PG_FIELD_VERIFIED" if "PG_FIELD_VERIFIED" in business_statuses or "PARTIAL_PG_FIELD_VERIFIED" in business_statuses else
+            "CONTRACT_UNKNOWN" if "CONTRACT_UNKNOWN" in business_statuses else
+            "SOURCE_MISSING"
+        )
+        # Per-row state is based on this row, never on a hit elsewhere in the page.
+        if page in ("summary", "entity"):
+            row_key = "events" if page == "summary" else "lifecycle"
+            for index, item in enumerate(parsed.get(row_key, [])):
+                row_fields = item.get("fields", item)
+                row_field_names = tuple(item.get("field_states", {}).keys())
+                row_coverage = _field_coverage(
+                    row_field_names,
+                    [{"row": row_fields, "path": f"{row_prefix}[{index}]", "verified": True}],
+                    target_t0=trade_date, no_row_reason="NO_PUBLICATION_BOUND_ROWS", contract_known=True,
+                    eligible_fields=set(row_field_names), field_missing_reasons=field_source_gaps,
                 )
-            elif page in ("cohort", "settlement"):
-                field_states[field] = "CONTRACT_UNKNOWN"
-            else:
-                field_states[field] = "SOURCE_MISSING"
+                item["field_coverage"] = row_coverage
+                item["field_states"] = {field: value["status"] for field, value in row_coverage.items()}
         return {
             "contract_id": CONTRACT_ID,
             "status": status,
@@ -133,11 +198,8 @@ class PgV4CurrentAdapter:
             "parsed_business_fields": parsed,
             "field_mapping": field_map,
             "field_states": field_states,
-            "business_result_state": (
-                "PG_FIELD_VERIFIED" if parsed.get("events") or parsed.get("lifecycle")
-                else "SOURCE_MISSING" if page in ("summary", "entity")
-                else "CONTRACT_UNKNOWN"
-            ),
+            "field_coverage": field_coverage,
+            "business_result_state": business_result_state,
         }
 
 
@@ -155,6 +217,68 @@ def _field_states(selected: dict[str, Any], missing: dict[str, Any], *, contract
     missing_state = "SOURCE_MISSING" if contract_known else "CONTRACT_UNKNOWN"
     states.update({field: missing_state for field in missing})
     return states
+
+
+def _field_coverage(fields, rows, *, target_t0, no_row_reason, contract_known,
+                    eligible_fields=None, field_missing_reasons=None):
+    """Report row-level coverage; a single hit never implies page-wide coverage."""
+    coverage = {}
+    eligible_fields = set(fields) if eligible_fields is None else set(eligible_fields)
+    field_missing_reasons = field_missing_reasons or {}
+    for field in fields:
+        eligible = present = verified = 0
+        reasons = set()
+        source_paths = []
+        if field not in eligible_fields:
+            no_field_source = field_missing_reasons.get(field, no_row_reason)
+            coverage[field] = {
+                "present_rows": 0,
+                "eligible_rows": 0,
+                "verified_rows": 0,
+                "missing_reason": no_field_source,
+                "source_paths": [],
+                "status": "CONTRACT_UNKNOWN" if not contract_known else "SOURCE_MISSING",
+            }
+            continue
+        for entry in rows:
+            entry_fields = entry.get("eligible_fields")
+            if entry_fields is not None and field not in entry_fields:
+                continue
+            row = entry.get("row", {})
+            row_t0 = row.get("T0", row.get("trade_date")) if isinstance(row, dict) else None
+            if row_t0 is not None and str(row_t0) != str(target_t0):
+                reasons.add("T0_MISMATCH")
+                continue
+            eligible += 1
+            if isinstance(row, dict) and field in row:
+                present += 1
+                if entry.get("verified") is True:
+                    verified += 1
+                    if isinstance(entry.get("path"), str):
+                        source_paths.append(f"{entry['path']}.{field}")
+            else:
+                reasons.add("FIELD_NOT_PRESENT_IN_ROW")
+        if eligible == 0:
+            status = "CONTRACT_UNKNOWN" if not contract_known else "SOURCE_MISSING"
+            missing_reason = next(iter(sorted(reasons)), no_row_reason)
+        elif verified == eligible:
+            status = "PG_FIELD_VERIFIED"
+            missing_reason = None
+        elif verified:
+            status = "PARTIAL_PG_FIELD_VERIFIED"
+            missing_reason = "FIELD_NOT_PRESENT_IN_ALL_ELIGIBLE_ROWS"
+        else:
+            status = "SOURCE_MISSING"
+            missing_reason = next(iter(sorted(reasons)), "FIELD_NOT_VERIFIED")
+        coverage[field] = {
+            "present_rows": present,
+            "eligible_rows": eligible,
+            "verified_rows": verified,
+            "missing_reason": missing_reason,
+            "source_paths": source_paths,
+            "status": status,
+        }
+    return coverage
 
 
 def _parse_owner_projection(page: str, owners: dict[str, Any]):

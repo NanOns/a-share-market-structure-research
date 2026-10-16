@@ -307,6 +307,13 @@ def build_publication_candidate(
 
 def plan_publication_head_change(candidate: Mapping[str, Any], current_head: Mapping[str, Any] | None) -> dict[str, Any]:
     """Describe exact publication-id CAS; never execute or grant a write."""
+    if not isinstance(candidate, Mapping):
+        raise CandidatePlanError("CANDIDATE_NOT_READY")
+    supplied_digest = candidate.get("candidate_digest")
+    integrity_body = dict(candidate)
+    integrity_body.pop("candidate_digest", None)
+    if not _DIGEST.fullmatch(str(supplied_digest or "")) or digest(canonical(integrity_body)) != supplied_digest:
+        raise CandidatePlanError("CANDIDATE_DIGEST_MISMATCH")
     if (not isinstance(candidate, Mapping) or candidate.get("status") != "METADATA_CANDIDATE_READY"
             or candidate.get("metadata_readiness_status") != "SOURCE_AND_IDENTITY_VALIDATED"
             or candidate.get("business_publishability_status") != "PUBLISHABLE_BUSINESS_SNAPSHOT"
@@ -314,6 +321,19 @@ def plan_publication_head_change(candidate: Mapping[str, Any], current_head: Map
             or candidate.get("minimum_publish_contract_id") != MINIMUM_DAILY_PUBLICATION_CONTRACT_ID
             or not candidate.get("source_manifest_sha256")):
         raise CandidatePlanError("CANDIDATE_NOT_READY")
+    core_result = candidate.get("verified_core_result")
+    if (not isinstance(core_result, Mapping)
+            or core_result.get("status") != "PG_READBACK_VERIFIED"
+            or core_result.get("publishable") is not True
+            or core_result.get("contract_id") != "V4_DAILY_CORE_RESULT_BINDING_R6"
+            or core_result.get("publication_id") != candidate.get("publication_id")
+            or core_result.get("publication_revision") != candidate.get("revision_no")
+            or core_result.get("trade_date") != candidate.get("trade_date")
+            or core_result.get("source_manifest_sha256") != candidate.get("source_manifest_sha256")
+            or not _DIGEST.fullmatch(str(core_result.get("result_sha256", "")))
+            or isinstance(core_result.get("row_count"), bool)
+            or not isinstance(core_result.get("row_count"), int) or core_result["row_count"] <= 0):
+        raise CandidatePlanError("CORE_RESULT_PG_READBACK_REQUIRED")
     target = {"trade_date": candidate["trade_date"], "model_namespace_id": candidate["model_namespace_id"]}
     if current_head is None:
         if int(candidate["revision_no"]) != 1 or candidate.get("same_day_revision_parent_id") is not None:

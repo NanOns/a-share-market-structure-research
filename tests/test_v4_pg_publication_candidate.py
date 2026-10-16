@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 
 import pytest
 
@@ -260,6 +260,7 @@ def test_reader_rechecks_accepted_package_identity_and_t0_clock():
         (source_row(source_package_accepted_scope="DIAGNOSTIC_ONLY"), "SOURCE_PACKAGE_NOT_ACCEPTED_OR_UNBOUND"),
         (source_row(source_package_target_trade_date=date(2026, 10, 14)), "SOURCE_PACKAGE_T0_MISMATCH"),
         (source_row(source_package_page_observed_at=datetime(2026, 10, 14, 15, 0, tzinfo=timezone.utc)), "FUTURE_TRADE_DATE_WITHOUT_SAME_DAY_SOURCE_OBSERVATION"),
+        (source_row(source_package_page_observed_at=ACCEPTED_AT + timedelta(seconds=1)), "SOURCE_PACKAGE_OBSERVED_AFTER_PUBLICATION_ACCEPTANCE"),
     ]
     for source, code in cases:
         with pytest.raises(PublicationReadError, match=code):
@@ -409,6 +410,66 @@ def test_adapter_parses_exact_publication_bound_events_and_lifecycle_fields():
     assert entity["uncovered_reasons"]["RAW_DAILY"] == "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION"
 
 
+def test_adapter_field_coverage_does_not_promote_one_row_hit_to_page_coverage():
+    events = [
+        {"logical_event_id": "event-1", "observation_revision": 1, "status": "ACTIVE",
+         "payload": {"effective_event": "BREAKOUT", "trade_date": "2026-10-15"}},
+        {"logical_event_id": "event-2", "observation_revision": 1, "status": "ACTIVE",
+         "payload": {"primary_scenario": "TREND", "trade_date": "2026-10-15"}},
+    ]
+    reader = reader_for(FakeConnection(head=publication_row(), page_data={"summary_events": events}))
+    result = PgV4CurrentAdapter(reader).read_endpoint(
+        "/api/v4/current/summary", trade_date="2026-10-15", model_namespace_id="v4-main",
+    )
+    assert result["field_states"]["effective_event"] == "PARTIAL_PG_FIELD_VERIFIED"
+    assert result["field_coverage"]["effective_event"] == {
+        "present_rows": 1, "eligible_rows": 2, "verified_rows": 1,
+        "missing_reason": "FIELD_NOT_PRESENT_IN_ALL_ELIGIBLE_ROWS",
+        "source_paths": ["page_data.summary_events[0].payload.effective_event"],
+        "status": "PARTIAL_PG_FIELD_VERIFIED",
+    }
+    assert result["parsed_business_fields"]["events"][1]["field_states"]["effective_event"] == "SOURCE_MISSING"
+
+
+def test_field_coverage_reports_empty_owner_and_excludes_mixed_t0_rows():
+    from workbench_service.v4_pg_current_adapter import _field_coverage
+
+    empty = _field_coverage(
+        ("entity_id",), [], target_t0="2026-10-15", no_row_reason="OWNER_FAMILY_UNAVAILABLE",
+        contract_known=True,
+    )
+    assert empty["entity_id"]["eligible_rows"] == 0
+    assert empty["entity_id"]["missing_reason"] == "OWNER_FAMILY_UNAVAILABLE"
+    mixed = _field_coverage(
+        ("entity_id",), [
+            {"row": {"entity_id": "A", "T0": "2026-10-15"}, "verified": True},
+            {"row": {"entity_id": "B", "T0": "2026-10-14"}, "verified": True},
+        ], target_t0="2026-10-15", no_row_reason="NO_PUBLICATION_BOUND_ROWS", contract_known=True,
+    )
+    assert mixed["entity_id"] == {
+        "present_rows": 1, "eligible_rows": 1, "verified_rows": 1,
+        "missing_reason": None, "source_paths": [], "status": "PG_FIELD_VERIFIED",
+    }
+
+
+def test_missing_daily_prices_remain_explicit_for_entity_even_when_lifecycle_is_present():
+    lifecycle = [{
+        "security_id": "000001.SZ", "security_type": "STOCK", "board": "MAIN",
+        "listed_from": date(2000, 1, 1), "listed_to": None, "st_state": None,
+        "trade_status": "ACTIVE", "effective_from": date(2026, 10, 1), "effective_to": None,
+        "observed_at": ACCEPTED_AT, "ingested_at": ACCEPTED_AT, "system_available_at": ACCEPTED_AT,
+        "source_revision_id": "src-r1", "source_identity": "fixture-source", "quality": "KNOWN",
+    }]
+    reader = reader_for(FakeConnection(head=publication_row(), page_data={"entity_lifecycle": lifecycle}))
+    result = PgV4CurrentAdapter(reader).read_endpoint(
+        "/api/v4/current/entity", trade_date="2026-10-15", model_namespace_id="v4-main",
+    )
+    for field in ("open", "high", "low", "close"):
+        assert result["field_states"][field] == "SOURCE_MISSING"
+        assert result["field_coverage"][field]["missing_reason"] == "NO_V4_PUBLICATION_BOUND_DAILY_PRICE_RELATION"
+    assert result["parsed_business_fields"]["lifecycle"][0]["field_coverage"]["security_id"]["verified_rows"] == 1
+
+
 def owner_results(day="2026-10-15"):
     return [{
         "module_key": module, "module_contract_id": CONTRACT_ID,
@@ -497,6 +558,23 @@ def test_metadata_candidate_ready_does_not_authorize_head_change():
     plan = candidate()
     assert plan["status"] == "METADATA_CANDIDATE_READY"
     with pytest.raises(CandidatePlanError, match="CANDIDATE_NOT_READY"):
+        plan_publication_head_change(plan, None)
+
+
+def test_manually_promoted_candidate_requires_fresh_digest_and_verified_core_readback():
+    plan = candidate()
+    plan.update(
+        business_publishability_status="PUBLISHABLE_BUSINESS_SNAPSHOT",
+        global_requiredness_status="PASS_PUBLISHABLE_BUSINESS_SNAPSHOT",
+    )
+    with pytest.raises(CandidatePlanError, match="CANDIDATE_DIGEST_MISMATCH"):
+        plan_publication_head_change(plan, None)
+
+    # Recomputing a plain digest does not manufacture the missing PG-backed
+    # daily core result or authorize a publication Head CAS.
+    from workbench_service.current_v4_context import canonical, digest
+    plan["candidate_digest"] = digest(canonical({key: value for key, value in plan.items() if key != "candidate_digest"}))
+    with pytest.raises(CandidatePlanError, match="CORE_RESULT_PG_READBACK_REQUIRED"):
         plan_publication_head_change(plan, None)
 
 

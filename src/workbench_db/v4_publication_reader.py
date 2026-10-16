@@ -491,6 +491,8 @@ class PgPublicationReader:
                 raise PublicationReadError("SOURCE_PACKAGE_OBSERVATION_CLOCK_MISSING")
             if page_observed_at.astimezone(ZoneInfo("Asia/Shanghai")).date() < target:
                 raise PublicationReadError("FUTURE_TRADE_DATE_WITHOUT_SAME_DAY_SOURCE_OBSERVATION")
+            if page_observed_at > accepted_at:
+                raise PublicationReadError("SOURCE_PACKAGE_OBSERVED_AFTER_PUBLICATION_ACCEPTANCE")
             if not _DIGEST.fullmatch(str(row["digest"]).strip()) or str(row["digest"]).strip() != str(row["revision_digest"]).strip():
                 raise PublicationReadError("PUBLICATION_SOURCE_DIGEST_MISMATCH")
             if row["tombstone"] is True:

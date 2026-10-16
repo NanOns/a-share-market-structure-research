@@ -104,6 +104,8 @@ def probe_source_revision(day):
 
 
 def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,readback_url=None,progress=lambda *args:None,pg_publication_context=None,pg_core_result_connection=None):
+    from .v4_daily_pipeline_progress_r1 import instrument_progress
+    progress=instrument_progress(progress)
     root=Path(root)
     if mode!='PROBE' and not capture_only:
         head=json.loads((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())
@@ -215,6 +217,8 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
 
 def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=None,progress=lambda *args:None,engineering_replay_current=False,candidate_only_exact=False,pg_publication_context=None,pg_core_result_connection=None):
     """Revalidate frozen bytes at the final boundary before any Owner work."""
+    from .v4_daily_pipeline_progress_r1 import instrument_progress
+    progress=instrument_progress(progress)
     from .r43_owner_replay import checked
     root=Path(root)
     if candidate_only_exact and readback_url is not None:

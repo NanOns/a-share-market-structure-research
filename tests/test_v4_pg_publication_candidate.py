@@ -8,8 +8,9 @@ from workbench_db.v4_publication_candidate import (
     build_publication_candidate,
     plan_publication_head_change,
 )
-from workbench_db.v4_publication_contract import CONTRACT_ID, effective_module_contract, required_module_keys
+from workbench_db.v4_publication_contract import CONTRACT_ID, OWNER_FAMILIES, effective_module_contract, required_module_keys, supported_owner_keys
 from workbench_db.v4_publication_reader import PgPublicationReader, PublicationReadError, reader_dsn
+from workbench_db.v4_source_manifest import CONTRACT_ID as SOURCE_MANIFEST_CONTRACT_ID, source_manifest_digest
 from workbench_service.v4_pg_current_adapter import ENDPOINT_MODULES, PgV4CurrentAdapter
 
 
@@ -23,7 +24,8 @@ def publication_row(**changes):
     row = {
         "publication_id": "pub-20261015-r1", "revision_no": 1, "trade_date": TARGET_DATE,
         "model_namespace_id": "v4-main", "status": "ACCEPTED", "accepted_at": ACCEPTED_AT,
-        "core_revision": 1, "source_manifest_sha256": DIGEST,
+        "core_revision": 1, "source_manifest_sha256": source_manifest_digest([source_row()]),
+        "source_manifest_contract_id": SOURCE_MANIFEST_CONTRACT_ID,
         "computation_identity_sha256": "b" * 64, "publication_lineage_id": "lineage-20261015",
         "same_day_revision_parent_id": None, "prior_session_publication_id": None,
         "prior_session_state_head": None, "prior_session_state_logical_digest": None,
@@ -38,9 +40,10 @@ def binding_row(module, **changes):
     row = {
         "module_key": module, "module_contract_id": CONTRACT_ID,
         "database_identity": DATABASE_IDENTITY,
-        "owner_schema": "v4_" + "a" * 56, "owner_relation": "owner_rows",
+        "owner_schema": "v4_" + "a" * 56,
+        "owner_relation": "owner_rows" if module == "sector_lifecycle" else "owner_payloads",
         "owner_version_token": f"{module}-owner-r1", "owner_trade_date": TARGET_DATE,
-        "owner_contract_id": f"{module.upper()}_OWNER_R1", "result_digest": "d" * 64,
+        "owner_contract_id": OWNER_FAMILIES[module]["owner_contract_id"], "result_digest": "d" * 64,
         "row_count": 1, "quality_status": "DEGRADED", "as_recorded": False,
         "pit_eligible": False,
     }
@@ -78,7 +81,7 @@ class Cursor:
 class FakeConnection:
     def __init__(self, *, head=None, bindings=None, sources=None, identity=None, role=None, missing_bindings=False, parent=None):
         self.head = head
-        self.bindings = bindings if bindings is not None else [binding_row(module) for module in required_module_keys()]
+        self.bindings = bindings if bindings is not None else [binding_row(module) for module in supported_owner_keys()]
         self.sources = sources if sources is not None else [source_row()]
         self.identity = identity or ("market_research", 16384, "127.0.0.1", 5432)
         self.role = role or ("v4_reader", False, False, False, False, False, False, False)
@@ -125,7 +128,7 @@ def owner_readers():
             "owner_contract_id": binding["owner_contract_id"], "result_digest": binding["result_digest"],
             "row_count": binding["row_count"], "payload": [{"row": binding["module_key"]}],
         }
-    return {module: resolve for module in required_module_keys()}
+    return {module: resolve for module in supported_owner_keys()}
 
 
 def reader_for(connection, **kwargs):
@@ -148,12 +151,13 @@ def test_reader_dsn_never_falls_back_to_writer():
     assert reader_dsn({"V4_NATIVE_PG_READER_DSN": "reader-role", "WORKBENCH_PG_DSN": "other"}) == "reader-role"
 
 
-def test_contract_has_fixed_requiredness_for_all_current_entries():
+def test_contract_maps_real_owner_families_and_does_not_infer_daily_requiredness():
     contract = effective_module_contract()
     assert contract["contract_id"] == CONTRACT_ID
-    assert set(contract["modules"]) == set(ENDPOINT_MODULES.values())
-    assert {row["requiredness"] for row in contract["modules"].values()} == {"REQUIRED"}
-    assert all(row["quality_policy"] == "PRESERVE_OWNER_QUALITY_NO_PROMOTION" for row in contract["modules"].values())
+    assert set(contract["owner_families"]) == set(supported_owner_keys())
+    assert all(row["daily_publication_required"] is False for row in contract["owner_families"].values())
+    assert contract["page_projections"]["entity"]["owner_families"] == []
+    assert "membership" in contract["page_projections"]["sector"]["uncovered_groups"]
 
 
 def test_no_head_fails_closed_without_owner_or_source_query():
@@ -169,12 +173,13 @@ def test_reader_returns_final_schema_identity_and_preserves_owner_quality():
     result = reader_for(connection).read_context(trade_date="2026-10-15", model_namespace_id="v4-main")
     assert result["candidate_only"] is True and result["readback_complete"] is True
     assert result["publication_id"] == "pub-20261015-r1" and result["revision_no"] == 1
-    assert result["module_results"]["entity"]["quality_status"] == "DEGRADED"
-    assert result["module_results"]["entity"]["as_recorded"] is False
-    assert result["module_results"]["entity"]["pit_eligible"] is False
+    assert result["module_results"]["research_priority"]["quality_status"] == "DEGRADED"
+    assert result["module_results"]["research_priority"]["as_recorded"] is False
+    assert result["module_results"]["research_priority"]["pit_eligible"] is False
     assert result["state_head_id"] == "state-20261015-r1"
     assert result["source_bindings"][0]["source_revision_id"] == "src-r1"
-    assert result["source_manifest_rehash_status"].startswith("NOT_PROVEN")
+    assert result["source_manifest_rehash_status"] == "REHASH_PASS"
+    assert result["source_manifest_recomputed_sha256"] == result["source_manifest_sha256"]
     assert len(result["module_results_digest"]) == 64
     assert result["context_token"].startswith("pg-candidate-")
     head_sql = next(sql for sql, _ in connection.statements if "FROM v4.publication_heads" in sql)
@@ -194,7 +199,7 @@ def test_metadata_only_is_marked_unverified_and_is_not_the_default():
     assert "module_payloads" not in result
 
 
-def test_missing_payload_resolver_fails_closed_for_every_required_page():
+def test_missing_payload_resolver_fails_closed_for_bound_owner_family():
     with pytest.raises(PublicationReadError, match="MODULE_OWNER_READER_UNAVAILABLE"):
         reader_for(FakeConnection(head=publication_row()), owner_readers={}).read_context(
             trade_date="2026-10-15", model_namespace_id="v4-main",
@@ -210,8 +215,8 @@ def test_shared_context_token_pins_publication_and_source_module_snapshot():
         expected_context_token=context["context_token"],
     )
     assert repeated["context_token"] == context["context_token"]
-    changed = [binding_row(module) for module in required_module_keys()]
-    changed[0] = binding_row(required_module_keys()[0], result_digest="f" * 64)
+    changed = [binding_row(module) for module in supported_owner_keys()]
+    changed[0] = binding_row(supported_owner_keys()[0], result_digest="f" * 64)
     with pytest.raises(PublicationReadError, match="STALE_CONTEXT_REQUIRES_REFRESH"):
         reader_for(FakeConnection(head=publication_row(), bindings=changed)).read_context(
             trade_date="2026-10-15", model_namespace_id="v4-main",
@@ -234,22 +239,36 @@ def test_source_digest_clock_or_t0_corruption_blocks_context():
             )
 
 
-def test_wrong_owner_t0_module_contract_or_missing_module_fails_closed():
-    bindings = [binding_row(module) for module in required_module_keys()]
-    with pytest.raises(PublicationReadError, match="OWNER_T0_MISMATCH"):
-        reader_for(FakeConnection(head=publication_row(), bindings=[binding_row("summary", owner_trade_date=date(2026, 10, 14)), *bindings[1:]])).read_context(
+def test_source_manifest_contract_must_be_supported_and_rehash_must_match():
+    with pytest.raises(PublicationReadError, match="SOURCE_MANIFEST_CONTRACT_UNSUPPORTED"):
+        reader_for(FakeConnection(head=publication_row(source_manifest_contract_id=None))).read_context(
             trade_date="2026-10-15", model_namespace_id="v4-main",
         )
-    wrong_contract = [binding_row(module) for module in required_module_keys()]
-    wrong_contract[0] = binding_row(required_module_keys()[0], module_contract_id="UNVERSIONED_OPTIONAL")
+    changed = source_row(logical_fact_id="tdx:changed")
+    with pytest.raises(PublicationReadError, match="SOURCE_MANIFEST_REHASH_MISMATCH"):
+        reader_for(FakeConnection(head=publication_row(), sources=[changed])).read_context(
+            trade_date="2026-10-15", model_namespace_id="v4-main",
+        )
+
+
+def test_wrong_owner_t0_and_module_contract_fail_closed_but_absent_optional_owner_does_not():
+    bindings = [binding_row(module) for module in supported_owner_keys()]
+    with pytest.raises(PublicationReadError, match="OWNER_T0_MISMATCH"):
+        reader_for(FakeConnection(head=publication_row(), bindings=[binding_row("research_priority", owner_trade_date=date(2026, 10, 14)), *bindings[1:]])).read_context(
+            trade_date="2026-10-15", model_namespace_id="v4-main",
+        )
+    wrong_contract = [binding_row(module) for module in supported_owner_keys()]
+    wrong_contract[0] = binding_row(supported_owner_keys()[0], module_contract_id="UNVERSIONED_OPTIONAL")
     with pytest.raises(PublicationReadError, match="MODULE_CONTRACT_ID_MISMATCH"):
         reader_for(FakeConnection(head=publication_row(), bindings=wrong_contract)).read_context(
             trade_date="2026-10-15", model_namespace_id="v4-main",
         )
-    with pytest.raises(PublicationReadError, match="MODULE_RESULT_UNBOUND"):
-        reader_for(FakeConnection(head=publication_row(), bindings=bindings[:-1])).read_context(
-            trade_date="2026-10-15", model_namespace_id="v4-main",
-        )
+    # Existing Owners are capability-optional; a missing one cannot be
+    # represented by a fabricated empty result or block unrelated pages.
+    result = reader_for(FakeConnection(head=publication_row(), bindings=bindings[:-1])).read_context(
+        trade_date="2026-10-15", model_namespace_id="v4-main",
+    )
+    assert result["readback_complete"] is True
 
 
 def test_head_state_and_same_day_parent_identity_fail_closed():
@@ -288,8 +307,8 @@ def test_stale_publication_and_unsafe_owner_locator_fail_closed():
         reader_for(FakeConnection(head=publication_row())).read_context(
             trade_date="2026-10-15", model_namespace_id="v4-main", expected_publication=("older", 1),
         )
-    bindings = [binding_row(module) for module in required_module_keys()]
-    bindings[0] = binding_row(required_module_keys()[0], owner_schema="x;drop_schema")
+    bindings = [binding_row(module) for module in supported_owner_keys()]
+    bindings[0] = binding_row(supported_owner_keys()[0], owner_schema="x;drop_schema")
     with pytest.raises(PublicationReadError, match="INVALID_OWNER_LOCATOR"):
         reader_for(FakeConnection(head=publication_row(), bindings=bindings)).read_context(
             trade_date="2026-10-15", model_namespace_id="v4-main",
@@ -297,27 +316,46 @@ def test_stale_publication_and_unsafe_owner_locator_fail_closed():
 
 
 def test_adapter_maps_each_formal_current_entry_and_has_no_fallback():
-    assert set(ENDPOINT_MODULES.values()) == set(required_module_keys())
+    assert set(ENDPOINT_MODULES.values()) == {"summary", "radar", "entity", "sector", "cohort", "settlement", "health"}
     result = PgV4CurrentAdapter(reader_for(FakeConnection(head=publication_row()))).read_endpoint(
         "/api/v4/current/entity", trade_date="2026-10-15", model_namespace_id="v4-main",
     )
-    assert result["candidate_only"] is True and result["module"] == "entity"
-    assert result["payload"] == [{"row": "entity"}]
+    assert result["candidate_only"] is True and result["page"] == "entity"
+    assert result["status"] == "PENDING"
+    assert result["quality_status"] == "NOT_VERIFIABLE_PAGE_PARITY"
+    assert result["payload"] == {}
     with pytest.raises(PublicationReadError, match="PG_CURRENT_ENDPOINT_UNSUPPORTED"):
         PgV4CurrentAdapter(reader_for(FakeConnection(head=publication_row()))).read_endpoint(
             "/api/v4/current/unknown", trade_date="2026-10-15", model_namespace_id="v4-main",
         )
 
 
+@pytest.mark.parametrize(("page", "expected_owner"), [
+    ("summary", "operational_risk"),
+    ("radar", "research_priority"),
+    ("sector", "sector_lifecycle"),
+    ("health", "operational_risk"),
+])
+def test_partial_owner_projection_never_promotes_page_to_ready(page, expected_owner):
+    result = PgV4CurrentAdapter(reader_for(FakeConnection(head=publication_row()))).read_endpoint(
+        f"/api/v4/current/{page}", trade_date="2026-10-15", model_namespace_id="v4-main",
+    )
+    assert result["status"] == "DEGRADED"
+    assert result["candidate_only"] is True
+    assert result["quality_status"] == "NOT_VERIFIABLE_PAGE_PARITY"
+    assert expected_owner in result["payload"]
+    assert result["uncovered_input_groups"]
+
+
 def owner_results(day="2026-10-15"):
     return [{
         "module_key": module, "module_contract_id": CONTRACT_ID,
         "database_identity": DATABASE_IDENTITY, "owner_schema": "v4_" + "a" * 56,
-        "owner_relation": "owner_rows", "owner_version_token": f"{module}-r1",
-        "owner_trade_date": day, "owner_contract_id": f"{module.upper()}_R1",
+        "owner_relation": OWNER_FAMILIES[module]["relation"], "owner_version_token": f"{module}-r1",
+        "owner_trade_date": day, "owner_contract_id": OWNER_FAMILIES[module]["owner_contract_id"],
         "result_digest": "d" * 64, "row_count": 1, "quality_status": "DEGRADED",
         "as_recorded": False, "pit_eligible": False,
-    } for module in required_module_keys()]
+    } for module in supported_owner_keys()]
 
 
 def candidate(**overrides):
@@ -325,6 +363,7 @@ def candidate(**overrides):
         publication_id="candidate-20261015-r1", trade_date="2026-10-15", revision_no=1,
         publication_lineage_id="lineage-20261015", model_namespace_id="v4-main", core_revision=1,
         source_manifest_sha256="a" * 64, computation_identity_sha256="b" * 64,
+        source_manifest_contract_id=SOURCE_MANIFEST_CONTRACT_ID,
         expected_source_bindings={"tdx_daily": {"source_revision_id": "src-r1", "digest": "e" * 64}},
         observed_source_bindings={"tdx_daily": {"source_revision_id": "src-r1", "digest": "e" * 64}},
         module_results=owner_results(), state_head_id="state-20261015-r1", state_logical_digest="c" * 64,
@@ -336,8 +375,9 @@ def candidate(**overrides):
 
 def test_candidate_is_candidate_only_and_preserves_quality_flags():
     plan = candidate()
-    assert plan["status"] == "CANDIDATE_READY" and plan["publish_status"] == "CANDIDATE"
-    assert plan["accepted_at"] is None and plan["head_update"] == "NOT_AUTHORIZED_BY_PLAN"
+    assert plan["status"] == "CANDIDATE_REQUIREMENTS_UNVERIFIED" and plan["publish_status"] == "CANDIDATE"
+    assert plan["accepted_at"] is None and plan["head_update"] == "BLOCKED_REQUIREMENTS_UNVERIFIED"
+    assert plan["global_requiredness_status"] == "NOT_ESTABLISHED_FROM_PRODUCER_CONTRACTS"
     assert plan["revision_no"] == 1 and plan["publication_lineage_id"] == "lineage-20261015"
     assert plan["module_results"][0]["quality_status"] == "DEGRADED"
     assert plan["module_results"][0]["as_recorded"] is False
@@ -346,13 +386,18 @@ def test_candidate_is_candidate_only_and_preserves_quality_flags():
 
 
 def test_candidate_required_modules_and_versioned_contract_cannot_be_downgraded():
-    partial = candidate(module_results=owner_results()[:-1])
-    assert partial["status"] == "CANDIDATE_INCOMPLETE"
-    assert len(partial["missing_required_modules"]) == 1
+    partial = candidate(module_results=[])
+    assert partial["status"] == "CANDIDATE_REQUIREMENTS_UNVERIFIED"
+    assert partial["module_results"] == []
     bad = owner_results()
     bad[0]["module_contract_id"] = "OPTIONAL_OVERRIDE"
     with pytest.raises(CandidatePlanError, match="MODULE_CONTRACT_ID_MISMATCH"):
         candidate(module_results=bad)
+
+
+def test_candidate_requires_explicit_source_manifest_contract_version():
+    with pytest.raises(CandidatePlanError, match="SOURCE_MANIFEST_CONTRACT_UNSUPPORTED"):
+        candidate(source_manifest_contract_id="LEGACY_UNKNOWN")
 
 
 def test_candidate_rejects_source_owner_and_state_identity_mismatch():
@@ -368,6 +413,12 @@ def test_candidate_rejects_source_owner_and_state_identity_mismatch():
 
 def test_head_planner_uses_publication_id_and_exact_state_cas_without_writes():
     first = candidate()
+    with pytest.raises(CandidatePlanError, match="CANDIDATE_NOT_READY"):
+        plan_publication_head_change(first, None)
+    # The following exact-CAS vectors isolate the planner after an upstream
+    # contract gate attests completeness; no production contract does so here.
+    first["status"] = "CANDIDATE_READY"
+    first["global_requiredness_status"] = "PASS"
     initial = plan_publication_head_change(first, None)
     assert initial["action"] == "INSERT_IF_ABSENT" and initial["initial_boundary_review_required"] is True
     assert initial["write_executed"] is False
@@ -375,6 +426,8 @@ def test_head_planner_uses_publication_id_and_exact_state_cas_without_writes():
         publication_id="candidate-20261015-r2", revision_no=2,
         same_day_revision_parent_id=first["publication_id"], prior_session_gap_reason="INITIAL_BOUNDARY",
     )
+    next_pub["status"] = "CANDIDATE_READY"
+    next_pub["global_requiredness_status"] = "PASS"
     cas = plan_publication_head_change(next_pub, {
         "trade_date": "2026-10-15", "model_namespace_id": "v4-main",
         "publication_id": first["publication_id"], "revision_no": 1,
@@ -388,7 +441,11 @@ def test_head_planner_uses_publication_id_and_exact_state_cas_without_writes():
 
 def test_head_planner_rejects_wrong_parent_or_non_next_revision():
     first = candidate()
+    first["status"] = "CANDIDATE_READY"
+    first["global_requiredness_status"] = "PASS"
     wrong_parent = candidate(publication_id="candidate-r2", revision_no=2, same_day_revision_parent_id="other")
+    wrong_parent["status"] = "CANDIDATE_READY"
+    wrong_parent["global_requiredness_status"] = "PASS"
     with pytest.raises(CandidatePlanError, match="HEAD_CAS_PRECONDITION_MISMATCH"):
         plan_publication_head_change(wrong_parent, {
             "trade_date": first["trade_date"], "model_namespace_id": first["model_namespace_id"],
@@ -397,6 +454,8 @@ def test_head_planner_rejects_wrong_parent_or_non_next_revision():
             "state_head_id": first["state_head_id"], "state_logical_digest": first["state_logical_digest"],
         })
     gap = candidate(publication_id="candidate-r4", revision_no=4, same_day_revision_parent_id=first["publication_id"])
+    gap["status"] = "CANDIDATE_READY"
+    gap["global_requiredness_status"] = "PASS"
     with pytest.raises(CandidatePlanError, match="PUBLICATION_REVISION_NOT_NEXT"):
         plan_publication_head_change(gap, {
             "trade_date": first["trade_date"], "model_namespace_id": first["model_namespace_id"],

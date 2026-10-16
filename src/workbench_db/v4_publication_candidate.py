@@ -9,7 +9,10 @@ import re
 from typing import Any, Mapping, Sequence
 
 from workbench_service.current_v4_context import canonical, digest
-from .v4_publication_contract import CONTRACT_ID as MODULE_CONTRACT_ID, required_module_keys
+from .v4_publication_contract import (
+    CONTRACT_ID as MODULE_CONTRACT_ID, OWNER_FAMILIES, required_module_keys, supported_owner_keys,
+)
+from .v4_source_manifest import CONTRACT_ID as SOURCE_MANIFEST_CONTRACT_ID
 
 
 CONTRACT_ID = "V4_PG_PUBLICATION_CANDIDATE_PLAN_R2"
@@ -73,6 +76,7 @@ def build_publication_candidate(
     model_namespace_id: str,
     core_revision: int,
     source_manifest_sha256: str,
+    source_manifest_contract_id: str,
     computation_identity_sha256: str,
     expected_source_bindings: Mapping[str, Any],
     observed_source_bindings: Mapping[str, Any],
@@ -99,6 +103,8 @@ def build_publication_candidate(
     target_date = _valid_date(trade_date)
     if not _DIGEST.fullmatch(str(source_manifest_sha256)):
         raise CandidatePlanError("SOURCE_MANIFEST_DIGEST_INVALID")
+    if source_manifest_contract_id != SOURCE_MANIFEST_CONTRACT_ID:
+        raise CandidatePlanError("SOURCE_MANIFEST_CONTRACT_UNSUPPORTED")
     if not _DIGEST.fullmatch(str(computation_identity_sha256)):
         raise CandidatePlanError("COMPUTATION_IDENTITY_DIGEST_INVALID")
     if not isinstance(state_head_id, str) or not state_head_id.strip() or not _DIGEST.fullmatch(str(state_logical_digest)):
@@ -124,7 +130,7 @@ def build_publication_candidate(
             raise CandidatePlanError("INVALID_MODULE_KEY")
         if module in normalized:
             raise CandidatePlanError("DUPLICATE_MODULE_RESULT")
-        if module not in required_module_keys():
+        if module not in supported_owner_keys():
             raise CandidatePlanError("MODULE_NOT_IN_EFFECTIVE_CONTRACT")
         if raw.get("module_contract_id") != MODULE_CONTRACT_ID:
             raise CandidatePlanError("MODULE_CONTRACT_ID_MISMATCH")
@@ -134,6 +140,9 @@ def build_publication_candidate(
         token, contract = raw.get("owner_version_token"), raw.get("owner_contract_id")
         if not isinstance(token, str) or not token.strip() or not isinstance(contract, str) or not contract.strip():
             raise CandidatePlanError("OWNER_IDENTITY_INCOMPLETE")
+        owner_family = OWNER_FAMILIES[module]
+        if contract != owner_family["owner_contract_id"] or relation != owner_family["relation"]:
+            raise CandidatePlanError("OWNER_FAMILY_CONTRACT_MISMATCH")
         owner_date = _valid_date(raw.get("owner_trade_date"))
         if owner_date != target_date:
             raise CandidatePlanError("OWNER_T0_MISMATCH")
@@ -163,17 +172,20 @@ def build_publication_candidate(
 
     required = set(required_module_keys())
     missing_required = sorted(required - set(normalized))
-    extras = sorted(set(normalized) - required)
+    extras = sorted(set(normalized) - set(supported_owner_keys()))
     if extras:
         raise CandidatePlanError("MODULE_NOT_IN_EFFECTIVE_CONTRACT")
-    status = "CANDIDATE_READY" if not missing_required else "CANDIDATE_INCOMPLETE"
+    status = "CANDIDATE_INCOMPLETE" if missing_required else "CANDIDATE_REQUIREMENTS_UNVERIFIED"
+    readiness_reasons = (["REQUIRED_MODULE_RESULT_MISSING"] if missing_required
+                         else ["GLOBAL_REQUIREDNESS_UNVERIFIED"])
     body = {
         "contract_id": CONTRACT_ID,
         "module_contract_id": MODULE_CONTRACT_ID,
         "candidate_only": True,
         "publish_status": "CANDIDATE",
         "accepted_at": None,
-        "head_update": "NOT_AUTHORIZED_BY_PLAN",
+        "head_update": "BLOCKED_REQUIREMENTS_UNVERIFIED",
+        "global_requiredness_status": "NOT_ESTABLISHED_FROM_PRODUCER_CONTRACTS",
         "publication_id": publication_id,
         "trade_date": target_date,
         "revision_no": revision_no,
@@ -182,6 +194,7 @@ def build_publication_candidate(
         "model_namespace_id": model_namespace_id,
         "core_revision": core_revision,
         "source_manifest_sha256": source_manifest_sha256,
+        "source_manifest_contract_id": source_manifest_contract_id,
         "computation_identity_sha256": computation_identity_sha256,
         "state_head_id": state_head_id,
         "state_logical_digest": state_logical_digest,
@@ -193,7 +206,7 @@ def build_publication_candidate(
         "module_results": [normalized[key] for key in sorted(normalized)],
         "missing_required_modules": missing_required,
         "status": status,
-        "reasons": ["REQUIRED_MODULE_RESULT_MISSING"] if missing_required else [],
+        "reasons": readiness_reasons,
     }
     body["module_results_digest"] = digest(canonical(body["module_results"]))
     body["candidate_digest"] = digest(canonical(body))
@@ -202,7 +215,8 @@ def build_publication_candidate(
 
 def plan_publication_head_change(candidate: Mapping[str, Any], current_head: Mapping[str, Any] | None) -> dict[str, Any]:
     """Describe exact publication-id CAS; never execute or grant a write."""
-    if not isinstance(candidate, Mapping) or candidate.get("status") != "CANDIDATE_READY":
+    if (not isinstance(candidate, Mapping) or candidate.get("status") != "CANDIDATE_READY"
+            or candidate.get("global_requiredness_status") != "PASS"):
         raise CandidatePlanError("CANDIDATE_NOT_READY")
     target = {"trade_date": candidate["trade_date"], "model_namespace_id": candidate["model_namespace_id"]}
     if current_head is None:

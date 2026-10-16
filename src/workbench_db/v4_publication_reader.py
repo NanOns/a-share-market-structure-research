@@ -12,7 +12,14 @@ import re
 from typing import Any, Callable, Mapping
 
 from workbench_service.current_v4_context import canonical, digest
-from .v4_publication_contract import CONTRACT_ID as MODULE_CONTRACT_ID, effective_module_contract, required_module_keys
+from .v4_publication_contract import (
+    CONTRACT_ID as MODULE_CONTRACT_ID, OWNER_FAMILIES, effective_module_contract,
+    required_module_keys, supported_owner_keys,
+)
+from .v4_source_manifest import (
+    CONTRACT_ID as SOURCE_MANIFEST_CONTRACT_ID, canonical_source_rows,
+    source_manifest_digest,
+)
 
 
 CONTRACT_ID = "V4_PG_PUBLICATION_READER_CANDIDATE_R2"
@@ -99,7 +106,10 @@ class PgPublicationReader:
     ):
         self.connection_factory = connection_factory or readonly_connection
         self.expected_database_identity = dict(expected_database_identity or {})
-        self.owner_readers = dict(owner_readers or {})
+        if owner_readers is None:
+            from .v4_publication_owners import default_owner_readers
+            owner_readers = default_owner_readers()
+        self.owner_readers = dict(owner_readers)
 
     def read_context(
         self,
@@ -126,7 +136,7 @@ class PgPublicationReader:
                 head_cursor = pg.execute(
                     """SELECT p.publication_id, p.revision_no, p.trade_date,
                               p.model_namespace_id, p.status, p.accepted_at,
-                              p.core_revision, p.source_manifest_sha256,
+                              p.core_revision, p.source_manifest_sha256, p.source_manifest_contract_id,
                               p.computation_identity_sha256, p.publication_lineage_id,
                               p.same_day_revision_parent_id, p.prior_session_publication_id,
                               p.prior_session_state_head, p.prior_session_state_logical_digest,
@@ -147,7 +157,7 @@ class PgPublicationReader:
                 raise
             pub_columns = (
                 "publication_id", "revision_no", "trade_date", "model_namespace_id",
-                "status", "accepted_at", "core_revision", "source_manifest_sha256",
+                "status", "accepted_at", "core_revision", "source_manifest_sha256", "source_manifest_contract_id",
                 "computation_identity_sha256", "publication_lineage_id",
                 "same_day_revision_parent_id", "prior_session_publication_id",
                 "prior_session_state_head", "prior_session_state_logical_digest",
@@ -180,18 +190,19 @@ class PgPublicationReader:
 
             parent = self._read_same_day_parent(pg, publication)
             sources = self._read_sources(pg, publication)
+            manifest_status, recomputed_manifest_digest = self._verify_source_manifest(publication, sources)
             bindings = self._read_module_bindings(pg, publication, identity)
             missing = sorted(set(modules) - set(bindings))
             if missing:
                 raise PublicationReadError("MODULE_RESULT_UNBOUND")
-            extras = sorted(set(bindings) - set(modules))
+            extras = sorted(set(bindings) - set(supported_owner_keys()))
             if extras:
                 raise PublicationReadError("MODULE_NOT_IN_EFFECTIVE_CONTRACT")
 
             payloads = {}
             readback_complete = False
             if resolve_payloads:
-                for module in modules:
+                for module in sorted(bindings):
                     resolver = self.owner_readers.get(module)
                     if resolver is None:
                         raise PublicationReadError("MODULE_OWNER_READER_UNAVAILABLE")
@@ -205,15 +216,7 @@ class PgPublicationReader:
                 for module, row in sorted(bindings.items())
             }
             binding_rows = [{"module_key": module, **selected[module]} for module in sorted(selected)]
-            source_rows = [{key: row[key] for key in (
-                "source_key", "source_revision_id", "digest", "logical_fact_id", "revision_no",
-                "effective_from", "effective_to", "provider_available_at", "observed_at",
-                "ingested_at", "system_available_at", "tombstone",
-            )} for row in sources]
-            for row in source_rows:
-                for key, value in tuple(row.items()):
-                    if isinstance(value, (date,)) or hasattr(value, "isoformat"):
-                        row[key] = value.isoformat()
+            source_rows = canonical_source_rows(sources)
             context = {
                 "contract_id": CONTRACT_ID,
                 "module_contract": effective_module_contract(),
@@ -241,24 +244,26 @@ class PgPublicationReader:
                 "computation_identity_sha256": str(publication["computation_identity_sha256"]).strip(),
                 "source_bindings": source_rows,
                 "source_bindings_digest": digest(canonical(source_rows)),
-                "source_manifest_rehash_status": "NOT_PROVEN_MANIFEST_SERIALIZATION_UNSPECIFIED",
+                "source_manifest_contract_id": publication.get("source_manifest_contract_id"),
+                "source_manifest_rehash_status": manifest_status,
+                "source_manifest_recomputed_sha256": recomputed_manifest_digest,
                 "database_identity": identity,
                 "reader_role": role,
                 "same_day_parent": parent,
                 "module_results": selected,
                 "module_results_digest": digest(canonical(binding_rows)),
-                "module_requirements": {module: "REQUIRED" for module in modules},
+                "module_requirements": {module: "CAPABILITY_OPTIONAL" for module in supported_owner_keys()},
             }
             context["context_token"] = "pg-candidate-" + digest(canonical(context))
             if expected_context_token is not None and context["context_token"] != expected_context_token:
                 raise PublicationReadError("STALE_CONTEXT_REQUIRES_REFRESH")
-            if payloads:
+            if resolve_payloads:
                 context["module_payloads"] = payloads
             return context
 
     @staticmethod
     def _map_schema_error(exc, default):
-        if getattr(exc, "sqlstate", None) == "42P01":
+        if getattr(exc, "sqlstate", None) in {"42P01", "42703"}:
             raise PublicationReadError(default) from exc
 
     @staticmethod
@@ -313,6 +318,20 @@ class PgPublicationReader:
                 raise PublicationReadError("PRIOR_SESSION_IDENTITY_INVALID")
         elif row.get("prior_session_state_head") is None or not _DIGEST.fullmatch(str(row.get("prior_session_state_logical_digest") or "").strip()) or row.get("prior_session_gap_reason") is not None:
             raise PublicationReadError("PRIOR_SESSION_IDENTITY_INVALID")
+
+    @staticmethod
+    def _verify_source_manifest(publication, rows):
+        contract_id = publication.get("source_manifest_contract_id")
+        if contract_id != SOURCE_MANIFEST_CONTRACT_ID:
+            raise PublicationReadError("SOURCE_MANIFEST_CONTRACT_UNSUPPORTED")
+        try:
+            actual = source_manifest_digest(rows)
+        except Exception as exc:
+            raise PublicationReadError("SOURCE_MANIFEST_REHASH_FAILED") from exc
+        expected = str(publication.get("source_manifest_sha256") or "").strip().lower()
+        if not _DIGEST.fullmatch(expected) or actual != expected:
+            raise PublicationReadError("SOURCE_MANIFEST_REHASH_MISMATCH")
+        return "REHASH_PASS", actual
 
     @staticmethod
     def _read_same_day_parent(pg, publication):
@@ -409,8 +428,14 @@ class PgPublicationReader:
                 raise PublicationReadError("INVALID_MODULE_KEY")
             if module in bindings:
                 raise PublicationReadError("DUPLICATE_MODULE_RESULT_BINDING")
+            if module not in OWNER_FAMILIES:
+                raise PublicationReadError("MODULE_NOT_IN_EFFECTIVE_CONTRACT")
             if row["module_contract_id"] != MODULE_CONTRACT_ID:
                 raise PublicationReadError("MODULE_CONTRACT_ID_MISMATCH")
+            family_contract = OWNER_FAMILIES[module]
+            if (row["owner_contract_id"] != family_contract["owner_contract_id"]
+                    or row["owner_relation"] != family_contract["relation"]):
+                raise PublicationReadError("OWNER_FAMILY_CONTRACT_MISMATCH")
             for key in ("owner_schema", "owner_relation"):
                 if not isinstance(row.get(key), str) or not _IDENTIFIER.fullmatch(row[key]):
                     raise PublicationReadError("INVALID_OWNER_LOCATOR")
@@ -457,6 +482,5 @@ class PgPublicationReader:
             raise PublicationReadError("OWNER_READBACK_IDENTITY_MISMATCH") from exc
         if any(actual[key] != expected[key] for key in identity_keys):
             raise PublicationReadError("OWNER_READBACK_IDENTITY_MISMATCH")
-        payload = resolved.get("payload")
-        if not isinstance(payload, list) or len(payload) != expected["row_count"]:
-            raise PublicationReadError("OWNER_READBACK_ROW_COUNT_MISMATCH")
+        if "payload" not in resolved:
+            raise PublicationReadError("OWNER_READBACK_PAYLOAD_MISSING")

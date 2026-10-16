@@ -1,5 +1,7 @@
 # V4 PG 日发布独立审计定点修复 R2
 
+> Historical repair record. Superseded by `V4_PG_DAILY_PUBLICATION_REPAIR_R3_20261016.md`; R2's seven endpoint-shaped REQUIRED module contract is not the active Owner contract.
+
 - Contract: `V4-PG-DAILY-PUBLICATION-EXTERNAL-REPAIR-20261016/R2`
 - Audit input: `V4_PG日发布_PR3_独立外部代码审计与定点修复任务_R1_20261016.md` (Drive ID `1zb5-Zqi8beFW-4653HygMopOegWwbK3x`); downloaded for this run to `G:/codex_tmp`.
 - Frozen audit base: `04044506b0a4e0da54a44299c1c6c8a596f7ecf0`.

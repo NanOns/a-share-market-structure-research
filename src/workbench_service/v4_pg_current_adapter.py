@@ -9,6 +9,7 @@ from __future__ import annotations
 from typing import Any
 
 from workbench_db.v4_publication_reader import PgPublicationReader, PublicationReadError
+from workbench_db.v4_publication_contract import PAGE_PROJECTIONS
 
 
 CONTRACT_ID = "V4_PG_CURRENT_ENDPOINT_ADAPTER_R1"
@@ -39,8 +40,8 @@ class PgV4CurrentAdapter:
         model_namespace_id: str,
         expected_context_token: str | None = None,
     ) -> dict[str, Any]:
-        module = ENDPOINT_MODULES.get(endpoint)
-        if module is None:
+        page = ENDPOINT_MODULES.get(endpoint)
+        if page is None:
             raise PublicationReadError("PG_CURRENT_ENDPOINT_UNSUPPORTED")
         context = self.reader.read_context(
             trade_date=trade_date,
@@ -49,13 +50,26 @@ class PgV4CurrentAdapter:
             resolve_payloads=True,
         )
         payloads = context.get("module_payloads")
-        if not isinstance(payloads, dict) or module not in payloads:
-            raise PublicationReadError("PG_CURRENT_MODULE_PAYLOAD_UNAVAILABLE")
+        if not isinstance(payloads, dict):
+            raise PublicationReadError("PG_CURRENT_OWNER_PAYLOADS_UNAVAILABLE")
+        projection = PAGE_PROJECTIONS[page]
+        owner_payloads = {
+            family: payloads[family]
+            for family in projection["owner_families"]
+            if family in payloads
+        }
+        unavailable_families = sorted(set(projection["owner_families"]) - set(owner_payloads))
+        status = "DEGRADED" if owner_payloads else "PENDING"
         return {
             "contract_id": CONTRACT_ID,
-            "status": "READY_CURRENT_ACCEPTED",
+            "status": status,
             "candidate_only": True,
             "context": context,
-            "module": module,
-            "payload": payloads[module],
+            "page": page,
+            "quality_status": "NOT_VERIFIABLE_PAGE_PARITY",
+            "required_input_groups": list(projection["input_groups"]),
+            "uncovered_input_groups": list(projection["uncovered_groups"]),
+            "owner_families": list(projection["owner_families"]),
+            "unavailable_owner_families": unavailable_families,
+            "payload": owner_payloads,
         }

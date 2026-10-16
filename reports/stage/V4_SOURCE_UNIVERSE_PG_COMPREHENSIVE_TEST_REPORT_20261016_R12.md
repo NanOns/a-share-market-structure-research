@@ -1,6 +1,6 @@
 ---
 stage_id: V4_R12_SOURCE_UNIVERSE_PG_20261016
-code_sha: 1174f63512031ba63498285495e4b0dee36ba370-plus-R12-worktree
+code_sha: eec5f8629-plus-R12-CI-dependency-fix
 test_scope: source-acceptance-universe-source-manifest-pg-preflight-seven-api-focused
 conclusion: 110-focused-tests-pass; live-authority-universe-publication-and-pg-migration-blocked
 approval_status: CODE_ONLY_REPAIR_AUTHORIZED
@@ -36,7 +36,7 @@ approval_status: CODE_ONLY_REPAIR_AUTHORIZED
 | E2E_POS | `PASS_SYNTHETIC_FIXTURES` | 受信测试密钥签发的新 T0、R3 manifest/reader、候选 HTTP 路径与 Universe 逻辑正例通过；不等于真实签发者或 PG 发布。 |
 | SEVEN_API | `PASS_SYNTHETIC_HTTP` | 28766 上对 summary、radar、entity、sector、cohort、settlement、health 七个候选 API 分别验证；本次测试结束后服务已关闭。 |
 | BROWSER | `NOT_RUN` | 没有运行生产或开发浏览器页面；HTTP 夹具不代表 UI 真数据接线。 |
-| CI | `PENDING_PUSH` | 本地提交前验证完成后触发；需在 Issue #2 与 Draft PR #3 记录远端精确结果。 |
+| CI | `PENDING_RETRY` | SHA `eec5f8629` 的 admission 通过；candidate job 在收集测试时因 workflow 未安装 `cryptography` 失败（0 test assertions run）。已补 workflow 安装依赖并同步更新 001–040 isolated-runner 清单；CI 同集本地重跑 166 passed，修正提交的 GitHub CI 待完成。 |
 | PRODUCTION | `UNCHANGED` | 未连接/修改 28765 服务；未切换生产 Head、未部署、未调度、未写入 PG。 |
 
 ## 本地验证
@@ -49,6 +49,8 @@ python -m pytest -q tests/test_v4_daily_ingest_r6.py tests/test_v4_market_univer
 107 passed
 python -m pytest -q tests/test_v4_server_pg_candidate_mode.py
 3 passed
+python -m pytest --confcutdir=tests -q -p no:cacheprovider tests/test_v4_pg_publication_candidate.py tests/test_v4_pg_publication_owners.py tests/test_v4_pg_publication_contract_static.py tests/test_v4_pg_source_manifest.py tests/test_v4_daily_ingest_r6.py tests/test_v4_daily_core_result_r6.py tests/test_v4_r7_sql_schema_compatibility.py tests/test_operational_daily_executor_v1.py tests/test_pre_next_t0_executor_chain.py tests/test_v4_exact_daily_policy_v2.py tests/test_v4_r8_real_daily_executor_pg_bridge.py tests/test_v4_r8_isolated_schema_runner.py tests/test_v4_native_reader_dsn.py tests/test_v4_current_accepted_reader.py tests/test_v4_server_pg_candidate_mode.py
+166 passed
 ```
 
 测试仅覆盖现役 V4 定向夹具。28765/28766 在启动 API 夹具前没有监听者；API 测试仅绑定 28766，并在 finally 中关闭。阶段范围为 `DEGRADED_PASS`：代码合同和合成正负例完成；真实授权、Universe 生产读回、迁移执行/编译、隔离 PG、Owner live binding、浏览器及发布链路仍未通过。下一阶段先取得独立数据签发主体与 workspace/Owner 映射的正式授权；数据库如需写入，另行提交精确目标、SQL hash、备份/恢复、角色和回滚范围供单独授权。

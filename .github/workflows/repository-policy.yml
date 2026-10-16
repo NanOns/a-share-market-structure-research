@@ -51,7 +51,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install focused test runner
-        run: python -m pip install pytest
+        run: python -m pip install pytest duckdb
       - name: Check V4 PG publication contract and candidate code
         env:
           PYTHONPATH: src

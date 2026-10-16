@@ -5,16 +5,16 @@ import pytest
 from scripts import validate_v4_r8_isolated_schema as runner
 
 
-def test_runner_plan_contains_ordered_full_001_to_037_migration_set():
+def test_runner_plan_contains_ordered_full_001_to_038_migration_set():
     files = [path.name for path, _, _ in runner.migrations()]
-    assert len(files) == 38  # 001..037, with the two separately versioned 010 files.
+    assert len(files) == 39  # 001..038, with the two separately versioned 010 files.
     assert files[0] == "001_v4_phase0_foundation.sql"
-    assert files[-1] == "037_daily_core_result_binding_r6.sql"
+    assert files[-1] == "038_publication_module_results_r4.sql"
     assert files.index("034_source_package_revision_authority_r2.sql") < files.index(
         "035_source_manifest_contract_r2.sql"
     ) < files.index("036_source_package_fact_provenance_r6.sql") < files.index(
         "037_daily_core_result_binding_r6.sql"
-    )
+    ) < files.index("038_publication_module_results_r4.sql")
 
 
 @pytest.mark.parametrize(

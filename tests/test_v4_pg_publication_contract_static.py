@@ -44,6 +44,7 @@ def test_candidate_sql_serializes_associations_without_invented_seven_owner_comp
 
 
 def test_reader_rehashes_sources_in_one_read_only_final_schema_context():
+    contract = read(ROOT / "src/workbench_db/v4_publication_contract.py")
     reader = read(ROOT / "src/workbench_db/v4_publication_reader.py")
     assert "p.revision_no" in reader
     assert "h.revision" not in reader and "p.revision," not in reader
@@ -95,6 +96,24 @@ def test_contract_models_three_real_owner_families_and_explicit_page_gaps():
     assert '"business_publishability_status": "BLOCKED_CORE_RESULT_NOT_BOUND"' in candidate
     assert 'candidate.get("minimum_publish_contract_id") != MINIMUM_DAILY_PUBLICATION_CONTRACT_ID' in candidate
     assert '"minimum_publish_contract_id": MINIMUM_DAILY_PUBLICATION_CONTRACT_ID' in candidate
+
+
+def test_r4_owner_binding_relation_is_migrated_for_the_exact_reader_contract():
+    migration = read(MIGRATIONS / "038_publication_module_results_r4.sql")
+    contract = read(ROOT / "src/workbench_db/v4_publication_contract.py")
+    reader = read(ROOT / "src/workbench_db/v4_publication_reader.py")
+    ledger = read(ROOT / "scripts/apply_v4_phase0_schema.py")
+    assert "CREATE TABLE v4.publication_module_results" in migration
+    assert "V4_CURRENT_PUBLICATION_OWNER_PROJECTION_CONTRACT_R4" in migration
+    assert "V4_CURRENT_PUBLICATION_OWNER_PROJECTION_CONTRACT_R4" in contract
+    assert "OWNER_FAMILIES" in reader
+    assert "PRIMARY KEY (publication_id, module_key)" in migration
+    assert "BEFORE UPDATE OR DELETE ON v4.publication_module_results" in migration
+    assert "BEFORE TRUNCATE ON v4.publication_module_results" in migration
+    assert "V4_PUBLICATION_MODULE_SET_SEALED" in migration
+    assert "research_priority" in migration and "operational_risk" in migration and "sector_lifecycle" in migration
+    assert "REQUIRED_MODULE_RESULT" not in migration
+    assert '"038_publication_module_results_r4.sql":"V4_PUBLICATION_MODULE_RESULTS_R4"' in ledger
 
 
 def test_sector_owner_resolver_uses_fixed_relations_and_quoted_schema_identifier():

@@ -1,6 +1,6 @@
 ---
 stage_id: V4_PG_DAILY_PUBLICATION_R6_20261016
-code_sha: implementation commit recorded after push
+code_sha: 4f0c56a573695665a0f3ab089f19af7cd24828bb
 baseline_sha: 5875c1f79daeca0e7aec47c881bef05316b5adae
 branch: codex/v4-workspace-cleanup
 scope: WB1-WB7
@@ -33,6 +33,7 @@ production: UNCHANGED
 - 新增 source/core binding 定向测试：**5 passed**（synthetic fixtures；不执行 SQL，不证明 live provenance 或真实行情）。
 - WB4 candidate adapter/owner/contract 测试：**51 passed**（synthetic PG doubles）。
 - 综合定向命令覆盖 candidate、contract static、owners、source manifest、R6 source/core 与 executor chain：**63 passed, 1 failed**；唯一失败为 `tests/test_pre_next_t0_executor_chain.py::test_full_executor_entry[True]`，原因和边界见 WB6。
+- 推送 SHA `4f0c56a573695665a0f3ab089f19af7cd24828bb` 的 [GitHub Actions run 38864434003](https://github.com/NanOns/a-share-market-structure-research/actions/runs/38864434003)：admission 与 `v4-pg-publication-candidate` 均通过。
 - 未在真实 PG 执行 migration、DML、source-package 写入、core-result 写入或 Head CAS；未启动 28766/28765 服务；未改生产调度。28765 与 5432 生产数据保持不变。PostgreSQL DDL 未经本机 parser 编译检查，需隔离 PG 上验证。
 - Migration 036/037 仅为提案；未在隔离 PG 编译/执行。CI 等提交 SHA 推送后核验。
 

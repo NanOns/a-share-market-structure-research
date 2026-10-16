@@ -92,7 +92,9 @@ def _verified_result_receipt_material(value: VerifiedDailyCoreResult) -> dict[st
 
 def _read_consumed_source_proofs(pg: Any, *, publication_id: str, publication_revision: int,
                                  target: str, source_manifest_sha256: str,
-                                 core_source_revision_ids: set[str]) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+                                 core_source_revision_ids: set[str],
+                                 allow_candidate: bool = False,
+                                 candidate_cutoff: datetime | None = None) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     """Rebuild the publication manifest and exact TDX artifact bindings from PG.
 
     This intentionally INNER JOINs the independent package fact relation. A
@@ -152,8 +154,16 @@ def _read_consumed_source_proofs(pg: Any, *, publication_id: str, publication_re
                 raise CoreResultError("CORE_RESULT_CONSUMED_SOURCE_MANIFEST_IDENTITY_MISMATCH")
             observed_trade_date = proof["publication_trade_date"].isoformat()
             accepted_at = proof["publication_accepted_at"]
-            if (proof["publication_status"] != "ACCEPTED"
-                    or not isinstance(accepted_at, datetime) or accepted_at.tzinfo is None):
+            if proof["publication_status"] == "ACCEPTED":
+                if not isinstance(accepted_at, datetime) or accepted_at.tzinfo is None:
+                    raise CoreResultError("CORE_RESULT_PUBLICATION_ACCEPTANCE_CUTOFF_INVALID")
+            elif (allow_candidate and proof["publication_status"] == "CANDIDATE"
+                  and accepted_at is None and isinstance(candidate_cutoff, datetime)
+                  and candidate_cutoff.tzinfo is not None):
+                # Use a server timestamp before candidate insertion. Any later
+                # ACCEPTED timestamp is necessarily no earlier than this cutoff.
+                accepted_at = candidate_cutoff
+            else:
                 raise CoreResultError("CORE_RESULT_PUBLICATION_ACCEPTANCE_CUTOFF_INVALID")
             accepted_at = accepted_at.astimezone(timezone.utc)
             key = proof["source_key"]
@@ -462,6 +472,150 @@ def build_daily_core_result_plan(
         "quality_status": "CORE_RESULT_ROWS_VERIFIED_CANDIDATE",
         "rows": normalized, "write_mode": "PLAN_ONLY_NO_DATABASE_IO",
     }
+
+
+def persist_daily_core_result(pg: Any, plan: Mapping[str, Any]) -> dict[str, Any]:
+    """Append one producer-built core candidate inside the caller's transaction.
+
+    This controlled writer never connects, commits, accepts a Head, or makes a
+    completeness decision. It requires the explicit V4 writer DSN, an already
+    open writable transaction, a matching CANDIDATE publication and verified
+    source-package/PIT bindings. The caller owns transaction rollback/commit.
+    """
+    from workbench_db.v4_native import configured_dsn
+    try:
+        writer_dsn = configured_dsn()
+    except RuntimeError as exc:
+        raise CoreResultError("CORE_RESULT_WRITER_DSN_REQUIRED_NO_READER_FALLBACK") from exc
+    from psycopg.conninfo import conninfo_to_dict
+    configured_writer = conninfo_to_dict(writer_dsn).get("user")
+    if not configured_writer:
+        raise CoreResultError("CORE_RESULT_WRITER_ROLE_REQUIRED")
+    if not isinstance(plan, Mapping) or plan.get("contract_id") != CONTRACT_ID:
+        raise CoreResultError("CORE_RESULT_PLAN_CONTRACT_REQUIRED")
+    target = _date(plan.get("trade_date"))
+    try:
+        read_only = pg.execute("SHOW transaction_read_only").fetchone()[0]
+    except Exception as exc:
+        raise CoreResultError("CORE_RESULT_WRITE_TRANSACTION_UNVERIFIABLE") from exc
+    if str(read_only).lower() in {"on", "true", "1"}:
+        raise CoreResultError("CORE_RESULT_WRITE_TRANSACTION_MUST_BE_WRITABLE")
+    receipt_body = {
+        "trade_date": target,
+        "producer_contract_id": plan.get("producer_contract_id"),
+        "producer_sha256": plan.get("producer_sha256"),
+        "publication_id": plan.get("publication_id"),
+        "publication_revision": plan.get("publication_revision"),
+        "source_manifest_sha256": plan.get("source_manifest_sha256"),
+        "source_artifact_bindings": plan.get("producer_source_artifact_bindings"),
+    }
+    receipt = dict(receipt_body, receipt_sha256=_sha(receipt_body))
+    rebuilt = build_daily_core_result_plan(
+        publication_id=plan.get("publication_id"),
+        publication_revision=plan.get("publication_revision"),
+        trade_date=target,
+        source_manifest_sha256=plan.get("source_manifest_sha256"),
+        producer_contract_id=plan.get("producer_contract_id"),
+        producer_sha256=plan.get("producer_sha256"),
+        producer_receipt=receipt,
+        rows=plan.get("rows"),
+        completeness_contract={
+            "contract_id": plan.get("completeness_contract_id"),
+            "version": plan.get("completeness_contract_version"),
+        },
+    )
+    for field_name in (
+        "result_identity", "result_sha256", "producer_receipt_sha256", "row_count",
+        "missing_price_rows", "completeness_contract_id", "completeness_contract_version",
+        "completeness_status", "publishability_status", "quality_status",
+    ):
+        if rebuilt.get(field_name) != plan.get(field_name):
+            raise CoreResultError("CORE_RESULT_PLAN_DIGEST_OR_COUNT_MISMATCH")
+    try:
+        role = pg.execute(
+            """SELECT current_user, r.rolsuper, r.rolcreaterole, r.rolcreatedb, r.rolreplication,
+                      r.rolbypassrls,
+                      has_schema_privilege(current_user,'v4','CREATE'),
+                      has_table_privilege(current_user,'v4.daily_core_result_snapshots','INSERT'),
+                      has_table_privilege(current_user,'v4.daily_core_result_rows','INSERT'),
+                      (has_table_privilege(current_user,'v4.daily_core_result_snapshots','UPDATE')
+                       OR has_table_privilege(current_user,'v4.daily_core_result_snapshots','DELETE')
+                       OR has_table_privilege(current_user,'v4.daily_core_result_snapshots','TRUNCATE')),
+                      (has_table_privilege(current_user,'v4.daily_core_result_rows','UPDATE')
+                       OR has_table_privilege(current_user,'v4.daily_core_result_rows','DELETE')
+                       OR has_table_privilege(current_user,'v4.daily_core_result_rows','TRUNCATE'))"""
+        ).fetchone()
+    except Exception as exc:
+        raise CoreResultError("CORE_RESULT_WRITER_ROLE_UNVERIFIABLE") from exc
+    if (role is None or role[0] != configured_writer
+            or any(bool(value) for value in role[1:7])
+            or not all(bool(value) for value in role[7:9])
+            or any(bool(value) for value in role[9:])):
+        raise CoreResultError("CORE_RESULT_WRITER_ROLE_INVALID")
+    pub = pg.execute(
+        """SELECT trade_date, revision_no, source_manifest_sha256, status
+             FROM v4.publications WHERE publication_id=%s""",
+        (plan["publication_id"],),
+    ).fetchone()
+    if (pub is None or pub[0].isoformat() != target
+            or int(pub[1]) != plan["publication_revision"]
+            or str(pub[2]).strip() != plan["source_manifest_sha256"]
+            or pub[3] != "CANDIDATE"):
+        raise CoreResultError("CORE_RESULT_PUBLICATION_MUST_BE_MATCHING_CANDIDATE")
+    cutoff = pg.execute("SELECT statement_timestamp()").fetchone()[0]
+    _, artifact_bindings = _read_consumed_source_proofs(
+        pg, publication_id=plan["publication_id"],
+        publication_revision=plan["publication_revision"], target=target,
+        source_manifest_sha256=plan["source_manifest_sha256"],
+        core_source_revision_ids={str(row["source_revision_id"]) for row in plan["rows"]},
+        allow_candidate=True, candidate_cutoff=cutoff,
+    )
+    if artifact_bindings != plan["producer_source_artifact_bindings"]:
+        raise CoreResultError("CORE_RESULT_SOURCE_AUTHORITY_PLAN_MISMATCH")
+    if pg.execute(
+        """SELECT 1 FROM v4.daily_core_result_snapshots
+            WHERE publication_id=%s AND publication_revision=%s""",
+        (plan["publication_id"], plan["publication_revision"]),
+    ).fetchone() is not None:
+        raise CoreResultError("CORE_RESULT_APPEND_ONLY_SNAPSHOT_ALREADY_EXISTS")
+    snapshot = (
+        plan["publication_id"], plan["publication_revision"], target,
+        plan["result_identity"], CONTRACT_ID, plan["producer_contract_id"],
+        plan["producer_sha256"], plan["producer_receipt_sha256"],
+        plan["source_manifest_sha256"], plan["result_sha256"], plan["row_count"],
+        plan["missing_price_rows"], plan["completeness_contract_id"],
+        plan["completeness_contract_version"], plan["completeness_status"],
+        plan["quality_status"],
+    )
+    pg.execute(
+        """INSERT INTO v4.daily_core_result_snapshots
+           (publication_id,publication_revision,trade_date,result_identity,result_contract_id,
+            producer_contract_id,producer_sha256,producer_receipt_sha256,source_manifest_sha256,
+            result_sha256,row_count,missing_price_rows,completeness_contract_id,
+            completeness_contract_version,completeness_status,quality_status,captured_at)
+           VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,clock_timestamp())""",
+        snapshot,
+    )
+    from psycopg.types.json import Jsonb
+    for row in plan["rows"]:
+        pg.execute(
+            """INSERT INTO v4.daily_core_result_rows
+               (publication_id,publication_revision,trade_date,security_id,security_type,trade_status,
+                open,high,low,close,volume,amount,turnover_rate,turnover_status,ma5,ma20,ma60,
+                history_status,price_basis,source_revision_id,profile_payload,quality_status,row_sha256)
+               VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+            (plan["publication_id"], plan["publication_revision"], target, row["security_id"],
+             row["security_type"], row["trade_status"], row["open"], row["high"], row["low"],
+             row["close"], row["volume"], row["amount"], row["turnover_rate"],
+             row["turnover_status"], row["ma5"], row["ma20"], row["ma60"],
+             row["history_status"], row["price_basis"], row["source_revision_id"],
+             Jsonb(row["profile_payload"]), row["quality_status"], row["row_sha256"]),
+        )
+    return {"status": "CANDIDATE_CORE_RESULT_APPENDED", "persisted": True,
+            "publication_id": plan["publication_id"],
+            "publication_revision": plan["publication_revision"],
+            "trade_date": target, "row_count": plan["row_count"],
+            "transaction_owner": "CALLER_NO_AUTOCOMMIT"}
 
 
 def read_daily_core_result(pg: Any, *, publication_id: str, publication_revision: int,

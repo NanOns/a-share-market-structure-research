@@ -108,14 +108,17 @@ def test_sector_owner_resolver_uses_fixed_relations_and_quoted_schema_identifier
 
 def test_all_current_entries_are_candidate_only_and_default_reader_is_unchanged():
     adapter = read(ROOT / "src/workbench_service/v4_pg_current_adapter.py")
-    server = read(ROOT / "src/workbench_service/v4_control_server_v2.py")
+    server = read(ROOT / "src/workbench_service/v4_server.py")
     for endpoint in ("summary", "radar", "entity", "sector", "cohort", "settlement", "health"):
         assert f"/api/v4/current/{endpoint}" in adapter
     assert '"status": status' in adapter
     assert '"quality_status": "NOT_VERIFIABLE_PAGE_PARITY"' in adapter
     assert "READY_CURRENT_ACCEPTED" not in adapter
     assert "CurrentAcceptedV4Reader" in server
-    assert "PgV4CurrentAdapter" not in server
+    assert "pg_candidate" in server
+    assert "PG_CANDIDATE_READER_UNAVAILABLE" in server
+    assert "allow_pg_candidate=False" in server
+    assert "def serve_v4_candidate" in server
 
 
 def test_r5_source_revision_requires_immutable_accepted_package_and_r2_manifest():

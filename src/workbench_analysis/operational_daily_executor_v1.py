@@ -103,7 +103,7 @@ def probe_source_revision(day):
         source_ready=False,reason='EXECUTOR_MUST_VERIFY_ACTUAL_TARGET_AND_THREE_SOURCES')
 
 
-def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,readback_url=None,progress=lambda *args:None):
+def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,readback_url=None,progress=lambda *args:None,pg_publication_context=None):
     root=Path(root)
     if mode!='PROBE' and not capture_only:
         head=json.loads((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())
@@ -208,10 +208,11 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     progress(day,'SOURCE_READY' if readiness['source_ready'] else readiness['status'],result)
     if not readiness['source_ready']:return dict(result,status=readiness['status'],reason=readiness['reason'])
     if capture_only:return result
-    return derive_ready_sources(root,day,result,cancelled=cancelled,readback_url=readback_url,progress=progress)
+    return derive_ready_sources(root,day,result,cancelled=cancelled,readback_url=readback_url,progress=progress,
+                                pg_publication_context=pg_publication_context)
 
 
-def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=None,progress=lambda *args:None,engineering_replay_current=False,candidate_only_exact=False):
+def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=None,progress=lambda *args:None,engineering_replay_current=False,candidate_only_exact=False,pg_publication_context=None):
     """Revalidate frozen bytes at the final boundary before any Owner work."""
     from .r43_owner_replay import checked
     root=Path(root)
@@ -239,6 +240,11 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
     context['source_readiness']=result['source_readiness']
     if cancelled():return dict(result,status='CANCELLED',reason='CANCELLED_BEFORE_CAS')
     candidate,binding=seal(root,context)
+    # The real sealed daily Owners feed the V4 Core result planner when an
+    # independently issued PG publication/source receipt is provided. Normal
+    # daily local builds remain non-persistent and report the missing authority.
+    result=dict(result,pg_daily_core_result_candidate=
+                build_daily_core_result_candidate(root,candidate,day,pg_publication_context))
     from scripts.audit_dynamic_daily_period_numbers_v1 import audit as audit_periods
     from .r43_owner_replay import ref
     period_qa=audit_periods(root,context['folder'])
@@ -288,6 +294,105 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
     if cancelled():return dict(result,status='CANCELLED',reason='CANCELLED_BEFORE_CAS')
     publication=promote(root,candidate,candidate['predecessor']['sha256'],lambda c:readback(readback_url,c))
     return dict(result,**publication,source_ready=True,derived_ready=True,published=True,candidate=binding)
+
+
+def build_daily_core_result_candidate(root,candidate,trade_date,publication_context=None):
+    """Bind sealed V4 daily producer bytes to the Core PG result planner.
+
+    The executor supplies no fabricated publication or source identities. A
+    missing context is an explicit blocked diagnostic; with a context, the
+    exact `raw`, `core`, `profile`, and `lifecycle` producer artifacts are
+    digest-checked and joined by `(security_id, trade_date)` before planning.
+    This function performs no database I/O.
+    """
+    if not isinstance(publication_context,dict):
+        return {"status":"BLOCKED_PG_PUBLICATION_CONTEXT_MISSING",
+                "trade_date":trade_date,"write_mode":"PLAN_ONLY_NO_DATABASE_IO",
+                "persisted":False}
+    try:
+        from gzip import open as gzip_open
+        from .r43_owner_replay import checked
+        from workbench_db.v4_daily_core_result_r6 import build_daily_core_result_plan
+
+        owner=(candidate.get("owners") or {}).get(trade_date)
+        if not isinstance(owner,dict):raise ValueError("SEALED_DAILY_OWNER_MISSING")
+        def rows(name):
+            binding=owner.get(name)
+            if not isinstance(binding,dict):raise ValueError("SEALED_OWNER_BINDING_MISSING:"+name)
+            path=checked(root,binding)
+            if path.name.endswith(".gz"):
+                with gzip_open(path,"rt",encoding="utf-8") as stream:return [json.loads(line) for line in stream]
+            value=json.loads(path.read_bytes())
+            return value.get("rows",value if isinstance(value,list) else [value])
+        raw_rows=rows("raw");core_rows=rows("core");profile_rows=rows("profile");lifecycle_rows=rows("lifecycle")
+        maps={name:{str(row.get("security_id")):row for row in values
+                    if row.get("trade_date",trade_date)==trade_date}
+               for name,values in (("raw",raw_rows),("core",core_rows),
+                                   ("profile",profile_rows),("lifecycle",lifecycle_rows))}
+        if any(len(maps[name])!=len(values) for name,values in (("raw",raw_rows),("core",core_rows),
+                                                                 ("profile",profile_rows),("lifecycle",lifecycle_rows))):
+            raise ValueError("SEALED_DAILY_OWNER_DUPLICATE_OR_T0_MISMATCH")
+        if set(maps["core"]) != set(maps["lifecycle"]) or set(maps["profile"]) != set(maps["lifecycle"]):
+            raise ValueError("SEALED_DAILY_OWNER_SECURITY_ID_SET_MISMATCH")
+        receipt=publication_context.get("producer_receipt")
+        bindings=(receipt or {}).get("source_artifact_bindings") if isinstance(receipt,dict) else None
+        tdx_ids=sorted({item.get("source_revision_id") for item in bindings or []
+                        if item.get("source_key")=="tdx" and item.get("target_trade_date")==trade_date})
+        by_security=publication_context.get("source_revision_by_security") or {}
+        if not tdx_ids and not by_security:raise ValueError("ACCEPTED_TDX_SOURCE_REVISION_REQUIRED")
+        security_types=publication_context.get("security_type_by_security") or {}
+        projected=[]
+        for security_id in sorted(maps["core"]):
+            core=maps["core"][security_id];life=maps["lifecycle"][security_id]
+            raw=maps["raw"].get(security_id);profile=maps["profile"][security_id]
+            if core.get("trade_date")!=trade_date or life.get("trade_date",trade_date)!=trade_date:
+                raise ValueError("SEALED_DAILY_OWNER_T0_MISMATCH")
+            status=life.get("status")
+            trade_status={"ACTUAL_TRADED":"TRADING","TRADING":"TRADING",
+                          "SUSPENDED":"SUSPENDED","DELISTED":"DELISTED"}.get(status,"UNKNOWN")
+            fields=core.get("fields") if isinstance(core.get("fields"),dict) else {}
+            def observed(name):
+                item=fields.get(name)
+                if not isinstance(item,dict) or item.get("quality_state")!="OBSERVED":return None
+                return item.get("value")
+            ma60=fields.get("ma60") if isinstance(fields.get("ma60"),dict) else None
+            history_status=("SUFFICIENT" if ma60 and ma60.get("quality_state")=="OBSERVED"
+                            and int(ma60.get("actual_count") or 0)>=60 else
+                            "INSUFFICIENT_NEW_LISTING_HISTORY" if ma60 else "HISTORY_UNKNOWN")
+            source_revision=by_security.get(security_id)
+            if source_revision is None and len(tdx_ids)==1:source_revision=tdx_ids[0]
+            if not source_revision:raise ValueError("CORE_ROW_SOURCE_REVISION_UNBOUND:"+security_id)
+            projected.append({
+                "trade_date":trade_date,"security_id":security_id,
+                "security_type":security_types.get(security_id,"UNKNOWN"),
+                "trade_status":trade_status,
+                **({key:raw.get(key) for key in ("open","high","low","close","volume","amount")} if raw else
+                   {key:None for key in ("open","high","low","close","volume","amount")}),
+                "turnover_rate":None,"turnover_status":"TURNOVER_UNAVAILABLE",
+                "ma5":observed("ma5"),"ma20":observed("ma20"),"ma60":observed("ma60"),
+                "history_status":history_status,"price_basis":"TDX_GBBQ_UNCHANGED",
+                "source_revision_id":source_revision,
+                "profile_payload":{"core_fields":fields,"profile_owner":profile},
+                "quality_status":"ACTUAL_OPERATIONAL_DAILY_OWNER_V1",
+            })
+        plan=build_daily_core_result_plan(
+            publication_id=publication_context.get("publication_id"),
+            publication_revision=publication_context.get("publication_revision"),
+            trade_date=trade_date,
+            source_manifest_sha256=publication_context.get("source_manifest_sha256"),
+            producer_contract_id=publication_context.get("producer_contract_id"),
+            producer_sha256=publication_context.get("producer_sha256"),
+            producer_receipt=receipt,rows=projected,
+            completeness_contract=publication_context.get("completeness_contract"),
+        )
+        return {"status":"PLAN_READY_NOT_PERSISTED","trade_date":trade_date,
+                "result_identity":plan["result_identity"],"result_sha256":plan["result_sha256"],
+                "row_count":plan["row_count"],"write_mode":plan["write_mode"],
+                "persisted":False,"plan":plan}
+    except Exception as exc:
+        return {"status":"BLOCKED_PRODUCER_OR_SOURCE_BINDING",
+                "trade_date":trade_date,"reason":str(exc),
+                "write_mode":"PLAN_ONLY_NO_DATABASE_IO","persisted":False}
 
 
 def verify_source_gate(root,day,artifact,result,now=None):

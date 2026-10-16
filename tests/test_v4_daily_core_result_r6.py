@@ -6,7 +6,7 @@ import pytest
 
 from workbench_db.v4_daily_core_result_r6 import (
     CoreResultError, VerifiedDailyCoreResult, build_daily_core_result_plan,
-    is_verified_daily_core_result, read_daily_core_result,
+    is_verified_daily_core_result, persist_daily_core_result, read_daily_core_result,
 )
 
 
@@ -387,3 +387,42 @@ def test_core_rows_must_reference_a_receipted_source_revision():
             producer_contract_id="V4_OPERATIONAL_DAILY_OWNER_R1", producer_sha256=producer_sha,
             producer_receipt=receipt, rows=rows,
         )
+
+
+def test_core_writer_never_uses_reader_dsn_or_touches_database_without_writer_dsn(monkeypatch):
+    receipt, rows, source_sha, producer_sha = _input()
+    plan = build_daily_core_result_plan(
+        publication_id="pub-20261016-r1", publication_revision=1,
+        trade_date="2026-10-16", source_manifest_sha256=source_sha,
+        producer_contract_id="V4_OPERATIONAL_DAILY_OWNER_R1", producer_sha256=producer_sha,
+        producer_receipt=receipt, rows=rows,
+    )
+    monkeypatch.delenv("V4_NATIVE_PG_DSN", raising=False)
+    monkeypatch.setenv("WORKBENCH_PG_DSN", "postgresql://reader@example.invalid/market_research")
+    class PG:
+        touched = False
+        def execute(self, *args, **kwargs): self.touched = True
+    pg = PG()
+    with pytest.raises(CoreResultError, match="CORE_RESULT_WRITER_DSN_REQUIRED_NO_READER_FALLBACK"):
+        persist_daily_core_result(pg, plan)
+    assert pg.touched is False
+
+
+def test_core_writer_rejects_read_only_transaction_before_any_write(monkeypatch):
+    receipt, rows, source_sha, producer_sha = _input()
+    plan = build_daily_core_result_plan(
+        publication_id="pub-20261016-r1", publication_revision=1,
+        trade_date="2026-10-16", source_manifest_sha256=source_sha,
+        producer_contract_id="V4_OPERATIONAL_DAILY_OWNER_R1", producer_sha256=producer_sha,
+        producer_receipt=receipt, rows=rows,
+    )
+    monkeypatch.setenv("V4_NATIVE_PG_DSN", "postgresql://writer@example.invalid/market_research")
+    class PG:
+        def __init__(self): self.queries=[]
+        def execute(self, query, params=None):
+            self.queries.append((query,params))
+            return type("Result", (), {"fetchone": lambda self: ("on",)})()
+    pg=PG()
+    with pytest.raises(CoreResultError, match="CORE_RESULT_WRITE_TRANSACTION_MUST_BE_WRITABLE"):
+        persist_daily_core_result(pg, plan)
+    assert pg.queries == [("SHOW transaction_read_only", None)]

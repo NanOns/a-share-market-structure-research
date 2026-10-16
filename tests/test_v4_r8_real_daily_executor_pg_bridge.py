@@ -12,6 +12,7 @@ from pathlib import PureWindowsPath
 import pytest
 
 from workbench_analysis.operational_daily_executor_v1 import (
+    build_daily_core_result_candidate,
     _pg_source_ingest_plan_diagnostic,
     _runtime_acceptance_manifest_path,
     _tdx_gbbq_source_path,
@@ -78,6 +79,18 @@ def test_source_diagnostic_bridge_failure_does_not_break_executor(monkeypatch):
     assert diagnostic["acceptance_status"] == "diagnostic adapter unavailable"
     assert diagnostic["write_mode"] == "PLAN_ONLY_NO_DATABASE_IO"
     assert diagnostic["persisted"] is False
+
+
+def test_actual_daily_owner_bridge_does_not_invent_publication_or_pit_authority():
+    result = build_daily_core_result_candidate(
+        ROOT, {"owners": {DAY: {"core": {"path": "unread"}}}}, DAY,
+    )
+    assert result == {
+        "status": "BLOCKED_PG_PUBLICATION_CONTEXT_MISSING",
+        "trade_date": DAY,
+        "write_mode": "PLAN_ONLY_NO_DATABASE_IO",
+        "persisted": False,
+    }
 
 
 def test_active_runtime_receipt_path_comes_from_versioned_contract(tmp_path):

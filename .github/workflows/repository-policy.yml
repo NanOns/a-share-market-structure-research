@@ -47,6 +47,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          lfs: true
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -71,3 +73,6 @@ jobs:
           tests/test_v4_exact_daily_policy_v2.py
           tests/test_v4_r8_real_daily_executor_pg_bridge.py
           tests/test_v4_r8_isolated_schema_runner.py
+          tests/test_v4_native_reader_dsn.py
+          tests/test_v4_current_accepted_reader.py
+          tests/test_v4_server_pg_candidate_mode.py

@@ -12,7 +12,8 @@ from .research_bff import ResearchBFF
 from .joint_release import load as joint_load,checked_path,recover
 
 
-def make_v4_handler(root):
+def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False):
+    """Build the V4 BFF; PG candidates require explicit injection and opt-in."""
     root=Path(root)
     recover(root)
     reader=CurrentAcceptedV4Reader(root,require_runtime=True)
@@ -137,9 +138,43 @@ def make_v4_handler(root):
             if parsed.path.startswith('/api/v4/current/'):
                 values=parse_qs(parsed.query,keep_blank_values=True)
                 if any(len(v)!=1 for v in values.values()):return self.send(409,dict(status='BLOCKED',code='DUPLICATE_CONTEXT_PARAMETER'))
-                allowed={'q','state','limit','offset','context_token'}
+                allowed={'q','state','limit','offset','context_token','source','trade_date','model_namespace_id'}
                 if set(values)-allowed:return self.send(400,dict(status='BLOCKED',code='UNKNOWN_CONTEXT_PARAMETER'))
-                code,payload=reader.read(parsed.path.removeprefix('/api/v4/current/'),{k:v[0] for k,v in values.items()})
+                query={k:v[0] for k,v in values.items()}
+                if query.get('source')=='pg_candidate':
+                    if not allow_pg_candidate:
+                        return self.send(404,dict(status='BLOCKED',code='PG_CANDIDATE_MODE_DISABLED'))
+                    if pg_current_adapter is None:
+                        return self.send(503,dict(status='BLOCKED',code='PG_CANDIDATE_READER_UNAVAILABLE'))
+                    required=('trade_date','model_namespace_id','context_token')
+                    if any(not query.get(key) for key in required):
+                        return self.send(400,dict(status='BLOCKED',code='PG_CANDIDATE_CONTEXT_REQUIRED',required=list(required)))
+                    try:
+                        payload=pg_current_adapter.read_endpoint(
+                            parsed.path,trade_date=query['trade_date'],
+                            model_namespace_id=query['model_namespace_id'],
+                            expected_context_token=query['context_token'],
+                        )
+                    except Exception as error:
+                        # PG candidate reads are isolated from the file reader. A missing
+                        # Head, Owner or read privilege is returned as a candidate error.
+                        from workbench_db.v4_publication_reader import PublicationReadError
+                        if isinstance(error, PublicationReadError):
+                            reason=str(error)
+                        else:
+                            reason=type(error).__name__
+                        state=(
+                            'NO_READER_PRIVILEGE' if ('READER' in reason or 'PERMISSION' in reason) else
+                            'PENDING_PG_HEAD' if ('PUBLICATION' in reason or 'HEAD' in reason) else
+                            'NOT_PIT_ELIGIBLE' if ('PIT' in reason or 'ACCEPTANCE' in reason) else
+                            'DATA_MISSING'
+                        )
+                        return self.send(409,dict(status='BLOCKED',data_state=state,code='PG_CANDIDATE_READ_FAILED',reason=reason))
+                    return self.send(200,payload)
+                if query.get('source','file')!='file':
+                    return self.send(400,dict(status='BLOCKED',code='CURRENT_SOURCE_UNSUPPORTED'))
+                query.pop('source',None)
+                code,payload=reader.read(parsed.path.removeprefix('/api/v4/current/'),query)
                 return self.send(code,payload)
             if parsed.path.startswith('/api/v4/') and not parsed.path.startswith('/api/v4/shadow/'):
                 if len(self.path)>4096:return self.send(414,dict(code='REQUEST_TOO_LONG'))
@@ -165,3 +200,13 @@ def make_v4_handler(root):
 
 def serve_v4(root,host='127.0.0.1',port=28765):
     ThreadingHTTPServer((host,port),make_v4_handler(root)).serve_forever()
+
+
+def serve_v4_candidate(root, pg_current_adapter):
+    """Explicit candidate-only BFF on the one development port; never production."""
+    if pg_current_adapter is None:
+        raise ValueError('PG_CANDIDATE_READER_REQUIRED')
+    ThreadingHTTPServer(
+        ('127.0.0.1',28766),
+        make_v4_handler(root,pg_current_adapter,allow_pg_candidate=True),
+    ).serve_forever()

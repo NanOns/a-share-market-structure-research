@@ -285,17 +285,22 @@ class PgPublicationReader:
     def _attest_read_role(pg):
         cursor = pg.execute(
             """SELECT current_user, r.rolsuper, r.rolbypassrls,
+                      r.rolcreaterole, r.rolcreatedb, r.rolreplication,
                       has_schema_privilege(current_user, 'v4', 'CREATE'),
                       (has_table_privilege(current_user, 'v4.publications', 'INSERT') OR has_table_privilege(current_user, 'v4.publications', 'UPDATE') OR has_table_privilege(current_user, 'v4.publications', 'DELETE') OR has_table_privilege(current_user, 'v4.publications', 'TRUNCATE')),
                       (has_table_privilege(current_user, 'v4.publication_heads', 'INSERT') OR has_table_privilege(current_user, 'v4.publication_heads', 'UPDATE') OR has_table_privilege(current_user, 'v4.publication_heads', 'DELETE') OR has_table_privilege(current_user, 'v4.publication_heads', 'TRUNCATE')),
                       (has_table_privilege(current_user, 'v4.publication_consumed_sources', 'INSERT') OR has_table_privilege(current_user, 'v4.publication_consumed_sources', 'UPDATE') OR has_table_privilege(current_user, 'v4.publication_consumed_sources', 'DELETE') OR has_table_privilege(current_user, 'v4.publication_consumed_sources', 'TRUNCATE')),
-                      (has_table_privilege(current_user, 'v4.publication_module_results', 'INSERT') OR has_table_privilege(current_user, 'v4.publication_module_results', 'UPDATE') OR has_table_privilege(current_user, 'v4.publication_module_results', 'DELETE') OR has_table_privilege(current_user, 'v4.publication_module_results', 'TRUNCATE'))
+                      (has_table_privilege(current_user, 'v4.publication_module_results', 'INSERT') OR has_table_privilege(current_user, 'v4.publication_module_results', 'UPDATE') OR has_table_privilege(current_user, 'v4.publication_module_results', 'DELETE') OR has_table_privilege(current_user, 'v4.publication_module_results', 'TRUNCATE')),
+                      EXISTS (SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
+                               WHERE n.nspname='v4' AND c.relkind='S'
+                                 AND (has_sequence_privilege(current_user,c.oid,'USAGE')
+                                   OR has_sequence_privilege(current_user,c.oid,'UPDATE')))
                  FROM pg_roles r WHERE r.rolname=current_user"""
         )
         row = cursor.fetchone()
         if row is None:
             raise PublicationReadError("PG_READER_ROLE_UNAVAILABLE")
-        if bool(row[1]) or bool(row[2]) or any(bool(value) for value in row[3:]):
+        if any(bool(value) for value in row[1:]):
             raise PublicationReadError("PG_READER_ROLE_HAS_WRITE_PRIVILEGES")
         return {"role_capability_check": "NO_SUPERUSER_NO_BYPASS_NO_CHECKED_WRITE_PRIVILEGES"}
 

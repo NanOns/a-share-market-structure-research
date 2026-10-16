@@ -91,7 +91,7 @@ class FakeConnection:
         self.bindings = bindings if bindings is not None else [binding_row(module) for module in supported_owner_keys()]
         self.sources = sources if sources is not None else [source_row()]
         self.identity = identity or ("market_research", 16384, "127.0.0.1", 5432)
-        self.role = role or ("v4_reader", False, False, False, False, False, False, False)
+        self.role = role or ("v4_reader", False, False, False, False, False, False, False, False, False, False, False)
         self.missing_bindings = missing_bindings
         self.parent = parent
         self.page_data = page_data or {}
@@ -316,7 +316,17 @@ def test_head_state_and_same_day_parent_identity_fail_closed():
 
 def test_reader_role_write_privilege_blocks_even_read_only_transaction():
     with pytest.raises(PublicationReadError, match="PG_READER_ROLE_HAS_WRITE_PRIVILEGES"):
-        reader_for(FakeConnection(head=publication_row(), role=("owner", False, False, False, True, False, False, False))).read_context(
+        reader_for(FakeConnection(head=publication_row(), role=("owner", False, False, False, False, False, False, True, False, False, False, False))).read_context(
+            trade_date="2026-10-15", model_namespace_id="v4-main",
+        )
+
+
+@pytest.mark.parametrize("index", [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+def test_reader_rejects_every_privileged_role_or_namespace_write_capability(index):
+    role=["v4_reader"]+[False]*11
+    role[index]=True
+    with pytest.raises(PublicationReadError, match="PG_READER_ROLE_HAS_WRITE_PRIVILEGES"):
+        reader_for(FakeConnection(head=publication_row(), role=tuple(role))).read_context(
             trade_date="2026-10-15", model_namespace_id="v4-main",
         )
 
@@ -422,6 +432,7 @@ def test_adapter_field_coverage_does_not_promote_one_row_hit_to_page_coverage():
         "/api/v4/current/summary", trade_date="2026-10-15", model_namespace_id="v4-main",
     )
     assert result["field_states"]["effective_event"] == "PARTIAL_PG_FIELD_VERIFIED"
+    assert result["field_data_states"]["effective_event"] == "PARTIAL_DATA_VERIFIED"
     assert result["field_coverage"]["effective_event"] == {
         "present_rows": 1, "eligible_rows": 2, "verified_rows": 1,
         "missing_reason": "FIELD_NOT_PRESENT_IN_ALL_ELIGIBLE_ROWS",

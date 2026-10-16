@@ -161,6 +161,17 @@ class PgV4CurrentAdapter:
             field_missing_reasons=field_source_gaps,
         )
         field_states = {field: item["status"] for field, item in field_coverage.items()}
+        field_data_states = {
+            field: (
+                "PENDING_PG_HEAD" if item["missing_reason"] == "NO_ACCEPTED_PUBLICATION" else
+                "NOT_PIT_ELIGIBLE" if "PIT" in str(item["missing_reason"] or "") else
+                "NO_READER_PRIVILEGE" if "PRIVILEGE" in str(item["missing_reason"] or "") else
+                "DATA_MISSING" if item["status"] in {"SOURCE_MISSING", "CONTRACT_UNKNOWN"} else
+                "PARTIAL_DATA_VERIFIED" if item["status"] == "PARTIAL_PG_FIELD_VERIFIED" else
+                "DATA_VERIFIED"
+            )
+            for field, item in field_coverage.items()
+        }
         business_statuses = set(field_states.values())
         business_result_state = (
             "PG_FIELD_VERIFIED" if business_statuses == {"PG_FIELD_VERIFIED"} else
@@ -198,6 +209,7 @@ class PgV4CurrentAdapter:
             "parsed_business_fields": parsed,
             "field_mapping": field_map,
             "field_states": field_states,
+            "field_data_states": field_data_states,
             "field_coverage": field_coverage,
             "business_result_state": business_result_state,
         }

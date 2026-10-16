@@ -673,6 +673,11 @@ def test_candidate_is_candidate_only_and_preserves_quality_flags():
     assert len(plan["candidate_digest"]) == 64
 
 
+def test_new_t0_rejects_r2_manifest_downgrade():
+    with pytest.raises(CandidatePlanError, match="NEW_PUBLICATION_REQUIRES_R3_SOURCE_MANIFEST"):
+        candidate(trade_date="2026-10-16", source_manifest_contract_id=SOURCE_MANIFEST_CONTRACT_ID)
+
+
 def test_owner_binding_writer_inserts_inside_caller_transaction_and_never_seals_head(monkeypatch):
     from workbench_db.v4_publication_module_writer_r4 import persist_publication_module_results
 

@@ -1,4 +1,4 @@
-"""Apply V4 migrations 001-040 only to a pre-provisioned isolated PG database.
+"""Apply V4 migrations 001-041 only to a pre-provisioned isolated PG database.
 
 This utility never provisions or starts PostgreSQL and never resolves
 WORKBENCH_PG_DSN/V4_NATIVE_PG_DSN. It is intentionally not an application
@@ -36,7 +36,7 @@ def migrations() -> list[tuple[Path, str, str]]:
     for path in sorted(MIGRATION_DIR.glob("*.sql")):
         raw = path.read_bytes()
         result.append((path, migration_version(path), hashlib.sha256(raw).hexdigest()))
-    if not result or result[-1][0].name != "040_source_manifest_r3_fact_proof.sql":
+    if not result or result[-1][0].name != "041_r3_effective_date_gate.sql":
         raise RuntimeError("V4_R8_MIGRATION_SET_INCOMPLETE")
     return result
 

@@ -22,8 +22,9 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 
 
 CONTRACT_ID = "V4_DAILY_SOURCE_INGEST_ADAPTER_R6"
-CONTRACT_VERSION = "1.1.0"
-ACCEPTANCE_CONTRACT_ID = "V4_DAILY_SOURCE_ACCEPTANCE_RECEIPT_R2"
+CONTRACT_VERSION = "1.2.0"
+ACCEPTANCE_CONTRACT_ID = "V4_DAILY_SOURCE_ACCEPTANCE_RECEIPT_R3"
+PIT_CLOCK_CONTRACT_ID = "V4_DAILY_PIT_DECISION_CLOCK_R1"
 ACCEPTANCE_AUTHORITY_REGISTRY = Path(__file__).resolve().parents[2] / "config" / "v4_daily_source_acceptance_authorities_r1.json"
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _SOURCE_NAMES = ("tdx", "native_baostock", "runtime_manifest")
@@ -117,8 +118,10 @@ def _verify_independent_acceptance_authority(plan: Mapping[str, Any]) -> _Indepe
         "source_fact_bindings_sha256": manifest.get("source_fact_bindings_sha256") if isinstance(manifest, Mapping) else None,
         "package_sha256": manifest.get("package_sha256") if isinstance(manifest, Mapping) else None,
         "source_ready": True,
+        "readiness_observed_at": manifest.get("source_readiness_observed_at"),
         "as_recorded": True,
         "pit_eligible": True,
+        "pit_clock_contract_id": PIT_CLOCK_CONTRACT_ID,
     }
     for key, expected in required.items():
         if receipt.get(key) != expected:
@@ -130,12 +133,27 @@ def _verify_independent_acceptance_authority(plan: Mapping[str, Any]) -> _Indepe
     signed_at = _utc_timestamp(receipt.get("signed_at"), "INDEPENDENT_ACCEPTANCE_SIGNATURE_TIME_INVALID")
     pit_cutoff_at = _utc_timestamp(receipt.get("pit_cutoff_at"), "INDEPENDENT_ACCEPTANCE_CUTOFF_INVALID")
     observed_at = manifest.get("source_observed_at") if isinstance(manifest, Mapping) else None
-    if accepted_at > signed_at or signed_at > pit_cutoff_at or observed_at is None or observed_at > pit_cutoff_at:
+    ready_at = _utc_timestamp(manifest.get("source_readiness_observed_at"), "SOURCE_READINESS_TIME_INVALID")
+    if (accepted_at < max(_utc_timestamp(observed_at, "SOURCE_OBSERVATION_TIME_INVALID"), ready_at)
+            or signed_at < max(_utc_timestamp(observed_at, "SOURCE_OBSERVATION_TIME_INVALID"), ready_at)
+            or accepted_at > signed_at or signed_at > pit_cutoff_at
+            or observed_at is None or _utc_timestamp(observed_at, "SOURCE_OBSERVATION_TIME_INVALID") > pit_cutoff_at):
         raise SourceIngestError("INDEPENDENT_ACCEPTANCE_TIME_ORDER_INVALID")
     target = date.fromisoformat(str(plan.get("trade_date")))
     cutoff = datetime.fromisoformat(pit_cutoff_at.replace("Z", "+00:00")).astimezone(ZoneInfo("Asia/Shanghai"))
-    if cutoff.date() != target or cutoff.time() > time(15, 0):
-        raise SourceIngestError("INDEPENDENT_ACCEPTANCE_CUTOFF_NOT_SAME_DAY")
+    calendar_sha = receipt.get("trading_calendar_sha256")
+    if not isinstance(calendar_sha, str) or not _SHA256.fullmatch(calendar_sha):
+        raise SourceIngestError("INDEPENDENT_ACCEPTANCE_TRADING_CALENDAR_PROOF_MISSING")
+    session = receipt.get("decision_session")
+    if (session == "T0_AFTER_CLOSE" and cutoff.date() == target
+            and cutoff.time() >= time(15, 0)):
+        pass
+    elif (session == "T1_PREOPEN"
+          and receipt.get("next_trade_date") == cutoff.date().isoformat()
+          and cutoff.date() > target and cutoff.time() < time(9, 30)):
+        pass
+    else:
+        raise SourceIngestError("INDEPENDENT_ACCEPTANCE_CUTOFF_SESSION_INVALID")
     _receipt_id = receipt.get("acceptance_id")
     if not isinstance(_receipt_id, str) or not _receipt_id.strip():
         raise SourceIngestError("INDEPENDENT_ACCEPTANCE_RECEIPT_ID_INVALID")
@@ -363,6 +381,8 @@ def build_source_ingest_plan(
         "source_freeze_bytes": freeze_bytes,
         "source_freeze_contract_id": freeze["contract_id"],
         "source_observed_at": _utc_timestamp(freeze.get("observed_at"), "SOURCE_OBSERVATION_TIME_INVALID"),
+        "source_readiness_observed_at": (_utc_timestamp(readiness_doc.get("observed_at"), "SOURCE_READINESS_TIME_INVALID")
+                                         if isinstance(readiness_doc, Mapping) and readiness_doc.get("observed_at") is not None else None),
         "source_fact_bindings": bindings,
         "adjustment_factor_role": freeze.get("factor_role"),
         "package_id": package_id,

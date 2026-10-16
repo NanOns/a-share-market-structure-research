@@ -205,7 +205,7 @@ def run(out_dir: str | Path, *, read_catalog: bool = True) -> dict:
                                            check=True, capture_output=True, text=True).stdout.strip(),
         "migration_count": len(migrations), "duplicate_sequence_numbers": duplicate_numbers,
         "migration_files": migrations,
-        "expected_order_note": "001-040 plus duplicated 010 filenames; publication chain 010 source-manifest, 034–040 is contract-derived and not encoded as a complete SQL dependency graph.",
+        "expected_order_note": "001-041 plus duplicated 010 filenames; publication chain 010 source-manifest, 034–041 is contract-derived and not encoded as a complete SQL dependency graph.",
         "database_catalog": catalog,
     }
     document["migration_ledger_reconcile"] = {
@@ -214,7 +214,8 @@ def run(out_dir: str | Path, *, read_catalog: bool = True) -> dict:
                                  "035_source_manifest_contract_r2.sql", "036_source_package_fact_provenance_r6.sql",
                                  "037_daily_core_result_binding_r6.sql", "038_publication_module_results_r4.sql",
                                  "039_tdx_package_row_count_authority_r1.sql",
-                                 "040_source_manifest_r3_fact_proof.sql"],
+                                 "040_source_manifest_r3_fact_proof.sql",
+                                 "041_r3_effective_date_gate.sql"],
         "automatic_apply_decision": "BLOCKED_UNTIL_CATALOG_LEDGER_RECONCILIATION_AND_APPROVED_MIGRATION_ROLE",
         "ddl_executed": False, "dml_executed": False, "head_changed": False,
     }

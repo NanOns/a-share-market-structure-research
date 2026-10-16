@@ -45,7 +45,7 @@ def _frozen_inputs(root, *, day="2026-10-16", as_recorded=False, pit_eligible=Fa
     universe = _write(root, "data/v4/frozen/security_universe.json", universe_doc)
     freeze_doc = {
         "contract_id": "DYNAMIC_DAILY_SOURCE_FREEZE_V1", "target_session": day,
-        "observed_at": day + "T06:00:00+00:00", "AS_RECORDED": as_recorded,
+        "observed_at": day + "T07:15:00+00:00", "AS_RECORDED": as_recorded,
         "PIT_ELIGIBLE": pit_eligible, "canonical_qfq_authority": "TDX_GBBQ_UNCHANGED",
         "factor_role": "AUDIT_FACT_NOT_CANONICAL_QFQ_AUTHORITY",
         "tdx": tdx, "native_baostock": bao, "runtime_manifest": runtime,
@@ -54,6 +54,7 @@ def _frozen_inputs(root, *, day="2026-10-16", as_recorded=False, pit_eligible=Fa
     freeze = _write(root, "data/v4/frozen/freeze.json", freeze_doc)
     ready_doc = {
         "contract_id": "V4_DAILY_SOURCE_READINESS_V2", "trade_date": day, "source_ready": True,
+        "observed_at": day + "T07:18:00+00:00",
         "AS_RECORDED": as_recorded, "PIT_ELIGIBLE": pit_eligible,
         "source_freeze": {"sha256": freeze["sha256"]},
     }
@@ -63,14 +64,18 @@ def _frozen_inputs(root, *, day="2026-10-16", as_recorded=False, pit_eligible=Fa
 
 def _receipt(day, freeze, readiness, *, accepted_at="2026-10-16T13:00:00+00:00"):
     value = {
-        "contract_id": "V4_DAILY_SOURCE_ACCEPTANCE_RECEIPT_R2",
+        "contract_id": "V4_DAILY_SOURCE_ACCEPTANCE_RECEIPT_R3",
         "acceptance_id": "accept-r1-001", "trade_date": day,
         "source_freeze_sha256": freeze["sha256"],
         "source_readiness_sha256": readiness["sha256"],
         "source_ready": True, "as_recorded": True, "pit_eligible": True,
         "accepted_at": accepted_at,
         "signed_at": accepted_at,
-        "pit_cutoff_at": "2026-10-16T07:00:00+00:00",
+        "pit_cutoff_at": "2026-10-16T12:00:00+00:00",
+        "pit_clock_contract_id": "V4_DAILY_PIT_DECISION_CLOCK_R1",
+        "decision_session": "T0_AFTER_CLOSE",
+        "trading_calendar_sha256": "a" * 64,
+        "next_trade_date": "2026-10-19",
         "issuer_id": "TEST_AUTHORITY_ONLY",
     }
     value["source_fact_bindings_sha256"] = "0" * 64
@@ -83,11 +88,11 @@ def _receipt(day, freeze, readiness, *, accepted_at="2026-10-16T13:00:00+00:00")
 def _signed_receipt(plan, private_key, *, signed_at=None, accepted_at=None, cutoff=None):
     manifest = plan["package_manifest"]
     day = plan["trade_date"]
-    signed_at = signed_at or day + "T06:45:00+00:00"
-    accepted_at = accepted_at or day + "T06:30:00+00:00"
-    cutoff = cutoff or day + "T07:00:00+00:00"
+    signed_at = signed_at or day + "T07:25:00+00:00"
+    accepted_at = accepted_at or day + "T07:20:00+00:00"
+    cutoff = cutoff or day + "T12:00:00+00:00"
     value = {
-        "contract_id": "V4_DAILY_SOURCE_ACCEPTANCE_RECEIPT_R2",
+        "contract_id": "V4_DAILY_SOURCE_ACCEPTANCE_RECEIPT_R3",
         "acceptance_id": "independent-r1-001", "trade_date": plan["trade_date"],
         "source_freeze_sha256": manifest["source_freeze_sha256"],
         "source_readiness_sha256": manifest["source_readiness_sha256"],
@@ -96,6 +101,11 @@ def _signed_receipt(plan, private_key, *, signed_at=None, accepted_at=None, cuto
         "source_ready": True,
         "as_recorded": True, "pit_eligible": True,
         "accepted_at": accepted_at, "signed_at": signed_at, "pit_cutoff_at": cutoff,
+        "readiness_observed_at": manifest["source_readiness_observed_at"],
+        "pit_clock_contract_id": "V4_DAILY_PIT_DECISION_CLOCK_R1",
+        "decision_session": "T0_AFTER_CLOSE",
+        "trading_calendar_sha256": "a" * 64,
+        "next_trade_date": "2026-10-19",
         "issuer_id": "TEST_AUTHORITY_ONLY",
     }
     value["receipt_sha256"] = hashlib.sha256(_json_bytes(value)).hexdigest()
@@ -163,7 +173,8 @@ def test_independent_ed25519_receipt_accepts_new_same_day_t0_and_emits_reader_fi
     day, freeze, readiness, _ = _frozen_inputs(tmp_path, as_recorded=True, pit_eligible=True)
     private = _trust_test_authority(tmp_path, monkeypatch)
     diagnostic = build_source_ingest_plan(tmp_path, trade_date=day, source_freeze=freeze, source_readiness=readiness)
-    receipt = _signed_receipt(diagnostic, private)
+    receipt = _signed_receipt(diagnostic, private, signed_at="2026-10-16T07:25:00+00:00",
+                              accepted_at="2026-10-16T07:20:00+00:00", cutoff="2026-10-16T12:00:00+00:00")
     plan = build_source_ingest_plan(tmp_path, trade_date=day, source_freeze=freeze,
                                     source_readiness=readiness, acceptance_receipt=receipt)
     assert plan["status"] == "ACCEPTED"
@@ -181,13 +192,44 @@ def test_independent_ed25519_receipt_accepts_new_same_day_t0_and_emits_reader_fi
         verify_source_package_manifest_authority(mutated)
 
 
+def test_post_close_source_is_eligible_for_evening_and_t1_preopen_cutoffs(tmp_path, monkeypatch):
+    day, freeze, readiness, _ = _frozen_inputs(tmp_path, as_recorded=True, pit_eligible=True)
+    private = _trust_test_authority(tmp_path, monkeypatch)
+    diagnostic = build_source_ingest_plan(tmp_path, trade_date=day, source_freeze=freeze, source_readiness=readiness)
+    evening = _signed_receipt(diagnostic, private)
+    plan = build_source_ingest_plan(tmp_path, trade_date=day, source_freeze=freeze,
+                                    source_readiness=readiness, acceptance_receipt=evening)
+    assert plan["status"] == "ACCEPTED"
+    preopen = _signed_receipt(diagnostic, private, accepted_at="2026-10-18T23:00:00+00:00",
+                              signed_at="2026-10-18T23:05:00+00:00", cutoff="2026-10-19T01:20:00+00:00")
+    preopen["decision_session"] = "T1_PREOPEN"
+    preopen["next_trade_date"] = "2026-10-19"
+    preopen["receipt_sha256"] = hashlib.sha256(_json_bytes({k:v for k,v in preopen.items() if k not in {"signature_ed25519","receipt_sha256"}})).hexdigest()
+    preopen["signature_ed25519"] = base64.b64encode(private.sign(_json_bytes({k:v for k,v in preopen.items() if k not in {"signature_ed25519","receipt_sha256"}}))).decode("ascii")
+    next_plan = build_source_ingest_plan(tmp_path, trade_date=day, source_freeze=freeze,
+                                         source_readiness=readiness, acceptance_receipt=preopen)
+    assert next_plan["status"] == "ACCEPTED", next_plan["acceptance_status"]
+
+
+def test_decision_before_source_first_observation_is_rejected(tmp_path, monkeypatch):
+    day, freeze, readiness, _ = _frozen_inputs(tmp_path, as_recorded=True, pit_eligible=True)
+    private = _trust_test_authority(tmp_path, monkeypatch)
+    diagnostic = build_source_ingest_plan(tmp_path, trade_date=day, source_freeze=freeze, source_readiness=readiness)
+    receipt = _signed_receipt(diagnostic, private, accepted_at="2026-10-16T06:30:00+00:00",
+                              signed_at="2026-10-16T06:45:00+00:00", cutoff="2026-10-16T06:55:00+00:00")
+    plan = build_source_ingest_plan(tmp_path, trade_date=day, source_freeze=freeze,
+                                    source_readiness=readiness, acceptance_receipt=receipt)
+    assert plan["status"] == "DIAGNOSTIC_ONLY"
+    assert plan["acceptance_status"] == "INDEPENDENT_ACCEPTANCE_TIME_ORDER_INVALID"
+
+
 @pytest.mark.parametrize("fault", ["signature", "source_sha", "late_signature", "wrong_day"])
 def test_independent_receipt_rejects_signature_binding_clock_and_old_t0(tmp_path, monkeypatch, fault):
     day, freeze, readiness, _ = _frozen_inputs(tmp_path, as_recorded=True, pit_eligible=True)
     private = _trust_test_authority(tmp_path, monkeypatch)
     diagnostic = build_source_ingest_plan(tmp_path, trade_date=day, source_freeze=freeze, source_readiness=readiness)
     if fault == "late_signature":
-        receipt = _signed_receipt(diagnostic, private, signed_at="2026-10-16T07:01:00+00:00", accepted_at="2026-10-16T06:30:00+00:00")
+        receipt = _signed_receipt(diagnostic, private, signed_at="2026-10-16T12:01:00+00:00", accepted_at="2026-10-16T07:20:00+00:00")
     else:
         receipt = _signed_receipt(diagnostic, private)
     if fault == "signature":
@@ -210,7 +252,7 @@ def test_post_hoc_receipt_cannot_upgrade_frozen_2026_10_12_pit(tmp_path, monkeyp
     private = _trust_test_authority(tmp_path, monkeypatch)
     diagnostic = build_source_ingest_plan(tmp_path, trade_date=day, source_freeze=freeze, source_readiness=readiness)
     receipt = _signed_receipt(diagnostic, private, accepted_at="2026-10-12T06:30:00+00:00",
-                              signed_at="2026-10-16T06:45:00+00:00", cutoff="2026-10-12T07:00:00+00:00")
+                              signed_at="2026-10-16T06:45:00+00:00", cutoff="2026-10-12T12:00:00+00:00")
     plan = build_source_ingest_plan(tmp_path, trade_date=day, source_freeze=freeze,
                                     source_readiness=readiness, acceptance_receipt=receipt)
     assert plan["status"] == "DIAGNOSTIC_ONLY"

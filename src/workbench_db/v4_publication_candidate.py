@@ -27,6 +27,7 @@ _DIGEST = re.compile(r"^[0-9a-f]{64}$")
 _MODULE = re.compile(r"^[a-z][a-z0-9_]{0,47}$")
 _IDENTIFIER = re.compile(r"^[a-z][a-z0-9_]{0,62}$")
 _SOURCE_KEY = re.compile(r"^[A-Za-z][A-Za-z0-9_.-]{0,127}$")
+R3_SOURCE_EFFECTIVE_DATE = date(2026, 10, 16)
 
 
 class CandidatePlanError(ValueError):
@@ -123,6 +124,10 @@ def build_publication_candidate(
                 or verified_core_result.completeness_status != "PASS"
                 or verified_core_result.completeness_contract_id != "V4_DAILY_COMPLETENESS_R1"
                 or verified_core_result.completeness_contract_version != "1.0.0"
+                or date.fromisoformat(target_date) >= R3_SOURCE_EFFECTIVE_DATE
+                   and (verified_core_result.universe_completeness_status != "PASS"
+                        or verified_core_result.universe_contract_id != "V4_MARKET_UNIVERSE_COMPLETENESS_R1"
+                        or not _DIGEST.fullmatch(str(verified_core_result.universe_sha256 or "")))
                 or verified_core_result.publication_id != publication_id
                 or verified_core_result.publication_revision != revision_no
                 or verified_core_result.trade_date != target_date
@@ -131,6 +136,8 @@ def build_publication_candidate(
         core_result = verified_core_result
     if source_manifest_contract_id not in {SOURCE_MANIFEST_CONTRACT_ID, SOURCE_MANIFEST_CONTRACT_ID_R3}:
         raise CandidatePlanError("SOURCE_MANIFEST_CONTRACT_UNSUPPORTED")
+    if date.fromisoformat(target_date) >= R3_SOURCE_EFFECTIVE_DATE and source_manifest_contract_id != SOURCE_MANIFEST_CONTRACT_ID_R3:
+        raise CandidatePlanError("NEW_PUBLICATION_REQUIRES_R3_SOURCE_MANIFEST")
     if not source_manifest_rows:
         raise CandidatePlanError("CANDIDATE_SOURCE_MANIFEST_UNVERIFIED")
     try:
@@ -364,6 +371,10 @@ def plan_publication_head_change(
             or core_result.completeness_status != "PASS"
             or core_result.completeness_contract_id != "V4_DAILY_COMPLETENESS_R1"
             or core_result.completeness_contract_version != "1.0.0"
+            or date.fromisoformat(str(candidate.get("trade_date"))) >= R3_SOURCE_EFFECTIVE_DATE
+               and (core_result.universe_completeness_status != "PASS"
+                    or core_result.universe_contract_id != "V4_MARKET_UNIVERSE_COMPLETENESS_R1"
+                    or not _DIGEST.fullmatch(str(core_result.universe_sha256 or "")))
             or core_result.contract_id != "V4_DAILY_CORE_RESULT_BINDING_R6"
             or core_result.publication_id != candidate.get("publication_id")
             or core_result.publication_revision != candidate.get("revision_no")

@@ -20,6 +20,7 @@ CONTRACT_ID = "V4_DAILY_CORE_RESULT_BINDING_R6"
 CONTRACT_VERSION = "1.0.0"
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _MAX_ROWS = 20_000
+R3_SOURCE_EFFECTIVE_DATE = date(2026, 10, 16)
 _PRICE_FIELDS = ("open", "high", "low", "close", "volume", "amount", "turnover_rate")
 _PROFILE_FIELDS = ("ma5", "ma20", "ma60")
 DAILY_COMPLETENESS_CONTRACT = {
@@ -65,6 +66,9 @@ class VerifiedDailyCoreResult:
     missing_price_rows: int
     completeness_status: str
     observed_completeness_status: str
+    universe_completeness_status: str
+    universe_contract_id: str
+    universe_sha256: str | None
     quality_status: str
     status: str
     publishable: bool
@@ -98,6 +102,9 @@ def _verified_result_receipt_material(value: VerifiedDailyCoreResult) -> dict[st
         "missing_price_rows": value.missing_price_rows,
         "completeness_status": value.completeness_status,
         "observed_completeness_status": value.observed_completeness_status,
+        "universe_completeness_status": value.universe_completeness_status,
+        "universe_contract_id": value.universe_contract_id,
+        "universe_sha256": value.universe_sha256,
         "quality_status": value.quality_status,
         "status": value.status,
         "publishable": value.publishable,
@@ -210,6 +217,9 @@ def _read_consumed_source_proofs(pg: Any, *, publication_id: str, publication_re
                 raise CoreResultError("CORE_RESULT_SOURCE_PACKAGE_MANIFEST_MISSING")
             package_manifest = proof["source_package_manifest"]
             is_manifest_r3 = proof["source_manifest_contract_id"] == SOURCE_MANIFEST_CONTRACT_ID_R3
+            if (proof["publication_trade_date"] >= R3_SOURCE_EFFECTIVE_DATE
+                    and not is_manifest_r3):
+                raise CoreResultError("CORE_RESULT_NEW_PUBLICATION_REQUIRES_R3_MANIFEST")
             has_acceptance_proof_fields = any(
                 name in package_manifest for name in ("acceptance_receipt_id", "AS_RECORDED", "PIT_ELIGIBLE")
             )
@@ -812,6 +822,11 @@ def read_daily_core_result(pg: Any, *, publication_id: str, publication_revision
     if expected_identity != snapshot[1]:
         raise CoreResultError("CORE_RESULT_PG_RESULT_IDENTITY_MISMATCH")
     observed_completeness_status = str(snapshot[12])
+    universe_status = ("BLOCKED_UNIVERSE_READBACK_NOT_PERSISTED"
+                       if date.fromisoformat(target) >= R3_SOURCE_EFFECTIVE_DATE
+                       else "LEGACY_NOT_REQUIRED")
+    universe_contract_id = "V4_MARKET_UNIVERSE_COMPLETENESS_R1" if universe_status.startswith("BLOCKED") else "LEGACY_DIAGNOSTIC"
+    universe_sha256 = None
     if (snapshot[10] != DAILY_COMPLETENESS_CONTRACT["contract_id"]
             or snapshot[11] != DAILY_COMPLETENESS_CONTRACT["version"]):
         completeness_status = "CONTRACT_UNRESOLVED"
@@ -822,7 +837,11 @@ def read_daily_core_result(pg: Any, *, publication_id: str, publication_revision
         )
         if observed_completeness_status != completeness_status:
             raise CoreResultError("CORE_RESULT_PG_COMPLETENESS_DECLARATION_MISMATCH")
-        publishable = completeness_status == "PASS"
+        # R13 requires independent Universe completeness to be part of the
+        # typed Core readback. The current PG schema stores only the signed
+        # source-fact digest and locator, not the snapshot/reconciliation proof,
+        # so a T0 on or after the R3 effective date stays non-publishable.
+        publishable = completeness_status == "PASS" and universe_status == "LEGACY_NOT_REQUIRED"
     receipt_body = {
         "contract_id": CONTRACT_ID, "publication_id": publication_id,
         "publication_revision": publication_revision, "trade_date": target,
@@ -833,6 +852,9 @@ def read_daily_core_result(pg: Any, *, publication_id: str, publication_revision
         "completeness_contract_version": str(snapshot[11]),
         "row_count": len(rows), "missing_price_rows": missing_price,
         "completeness_status": completeness_status,
+        "universe_completeness_status": universe_status,
+        "universe_contract_id": universe_contract_id,
+        "universe_sha256": universe_sha256,
         "observed_completeness_status": observed_completeness_status,
         "quality_status": str(snapshot[13]), "status": "PG_READBACK_VERIFIED",
         "publishable": publishable,
@@ -849,6 +871,9 @@ def read_daily_core_result(pg: Any, *, publication_id: str, publication_revision
         row_count=len(rows), missing_price_rows=missing_price,
         completeness_status=completeness_status,
         observed_completeness_status=observed_completeness_status,
+        universe_completeness_status=universe_status,
+        universe_contract_id=universe_contract_id,
+        universe_sha256=universe_sha256,
         quality_status=str(snapshot[13]), status="PG_READBACK_VERIFIED", publishable=publishable,
         _proof=_PG_READBACK_PROOF,
     )

@@ -12,6 +12,7 @@ ROOT=Path(__file__).resolve().parents[1]
 MIGRATIONS=ROOT/"src/workbench_db/migrations/v4_postgres"
 VERSIONS={
     "021_v4_09_stock_prewatch.sql":"V4_09_STOCK_PREWATCH_V1",
+    "010_source_manifest_contract_r1.sql":"V4_PG_CONSUMED_SOURCE_MANIFEST_R1",
     "001_v4_phase0_foundation.sql":"V4_PHASE0_FOUNDATION_V1",
     "002_namespace_integrity.sql":"V4_PHASE0_NAMESPACE_INTEGRITY_V1",
     "003_phase0_contract_alignment.sql":"V4_PHASE0_CONTRACT_ALIGNMENT_R2",
@@ -25,7 +26,12 @@ VERSIONS={
     "011_security_membership_interval_r6_2.sql":"V4_SECURITY_MEMBERSHIP_INTERVAL_R6_2_V1",
     "012_provider_lifecycle_fact_r6_2.sql":"V4_PROVIDER_LIFECYCLE_FACT_R6_2_V1",
     "013_v4_06_stock_profile_enrichments.sql":"V4_06_STOCK_PROFILE_ENRICHMENTS_V1",
+    "034_source_package_revision_authority_r2.sql":"V4_SOURCE_PACKAGE_REVISION_AUTHORITY_R2",
+    "035_source_manifest_contract_r2.sql":"V4_SOURCE_MANIFEST_CONTRACT_R2",
+    "036_source_package_fact_provenance_r6.sql":"V4_SOURCE_PACKAGE_FACT_PROVENANCE_R6",
+    "037_daily_core_result_binding_r6.sql":"V4_DAILY_CORE_RESULT_BINDING_R6",
     "038_publication_module_results_r4.sql":"V4_PUBLICATION_MODULE_RESULTS_R4",
+    "039_tdx_package_row_count_authority_r1.sql":"V4_TDX_PACKAGE_ROW_COUNT_AUTHORITY_R1",
 }
 
 def dsn():
@@ -40,9 +46,13 @@ def dsn():
 def apply():
     applied=[]
     with psycopg.connect(dsn()) as pg:
-        for path in sorted(MIGRATIONS.glob("*.sql")):
-            version=VERSIONS.get(path.name)
-            if not version: raise RuntimeError(f"UNREGISTERED_V4_MIGRATION:{path.name}")
+        # Apply only the explicit, contract-registered foundation set. The
+        # directory also contains feature migrations owned by other runners;
+        # globbing every SQL file made this entrypoint fail on those unrelated
+        # migrations and obscured the 034-038 publication chain.
+        for filename,version in sorted(VERSIONS.items()):
+            path=MIGRATIONS/filename
+            if not path.is_file(): raise RuntimeError(f"REGISTERED_V4_MIGRATION_MISSING:{filename}")
             text=path.read_text("utf-8"); checksum=hashlib.sha256(text.encode()).hexdigest()
             with pg.transaction():
                 cur=pg.cursor()

@@ -2,8 +2,8 @@
 
 The module validates and stores rows supplied by the existing V4 producer; it
 does not calculate prices, moving averages, profiles, or signals. R6 deliberately
-keeps publishability blocked while the live PG producer, its completeness
-thresholds, and an independent database readback are absent.
+keeps publishability blocked unless the versioned completeness rules pass,
+independent source/PIT proof is rebuilt from PG, and the typed readback verifies.
 """
 from __future__ import annotations
 
@@ -22,6 +22,16 @@ _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _MAX_ROWS = 20_000
 _PRICE_FIELDS = ("open", "high", "low", "close", "volume", "amount", "turnover_rate")
 _PROFILE_FIELDS = ("ma5", "ma20", "ma60")
+DAILY_COMPLETENESS_CONTRACT = {
+    "contract_id": "V4_DAILY_COMPLETENESS_R1",
+    "version": "1.0.0",
+    "minimum_rows": 1,
+    "maximum_missing_close_rows": 0,
+    "require_trading_ohlc": True,
+    "require_unique_security_ids": True,
+    "require_source_revision_binding": True,
+    "require_independent_source_pit_proof": True,
+}
 
 
 class CoreResultError(ValueError):
@@ -49,6 +59,8 @@ class VerifiedDailyCoreResult:
     result_sha256: str
     producer_receipt_sha256: str
     readback_receipt_sha256: str
+    completeness_contract_id: str
+    completeness_contract_version: str
     row_count: int
     missing_price_rows: int
     completeness_status: str
@@ -80,6 +92,8 @@ def _verified_result_receipt_material(value: VerifiedDailyCoreResult) -> dict[st
         "result_identity": value.result_identity,
         "result_sha256": value.result_sha256,
         "producer_receipt_sha256": value.producer_receipt_sha256,
+        "completeness_contract_id": value.completeness_contract_id,
+        "completeness_contract_version": value.completeness_contract_version,
         "row_count": value.row_count,
         "missing_price_rows": value.missing_price_rows,
         "completeness_status": value.completeness_status,
@@ -109,7 +123,7 @@ def _read_consumed_source_proofs(pg: Any, *, publication_id: str, publication_re
                       sp.package_id,sp.contract_version,sp.package_sha256,sp.page_observed_at,
                       sp.target_trade_date,sp.parser_version,sp.accepted_scope,sp.manifest,
                       f.package_id,f.source_key,f.logical_fact_id,f.fact_digest,f.source_fact_sha256,
-                      f.record_locator,f.acceptance_receipt_id,p.status,p.accepted_at
+                      f.record_locator,f.record_count,f.acceptance_receipt_id,p.status,p.accepted_at
                  FROM v4.publications p
                  JOIN v4.publication_consumed_sources cs ON cs.publication_id=p.publication_id
                  JOIN v4.source_revisions sr ON sr.source_revision_id=cs.source_revision_id
@@ -136,7 +150,7 @@ def _read_consumed_source_proofs(pg: Any, *, publication_id: str, publication_re
         "source_package_contract_version", "source_package_sha256", "source_package_page_observed_at",
         "source_package_target_trade_date", "source_package_parser_version", "source_package_accepted_scope",
         "source_package_manifest", "fact_package_id", "fact_source_key", "fact_logical_fact_id",
-        "fact_digest", "source_fact_sha256", "record_locator", "acceptance_receipt_id",
+        "fact_digest", "source_fact_sha256", "record_locator", "fact_record_count", "acceptance_receipt_id",
         "publication_status", "publication_accepted_at",
     )
     try:
@@ -214,6 +228,13 @@ def _read_consumed_source_proofs(pg: Any, *, publication_id: str, publication_re
                 "source_fact_sha256": str(proof["source_fact_sha256"]).strip(),
                 "record_locator": proof["record_locator"],
             }
+            is_core_tdx_fact = key == "tdx" and proof["source_revision_id"] in core_source_revision_ids
+            if is_core_tdx_fact:
+                if (isinstance(proof["fact_record_count"], bool)
+                        or not isinstance(proof["fact_record_count"], int)
+                        or proof["fact_record_count"] <= 0):
+                    raise CoreResultError("CORE_RESULT_SOURCE_PACKAGE_RECORD_COUNT_MISSING")
+                expected_fact["record_count"] = proof["fact_record_count"]
             if (not isinstance(package_bindings, list) or not any(
                     isinstance(item, Mapping) and all(item.get(name) == value for name, value in expected_fact.items())
                     for item in package_bindings)):
@@ -243,6 +264,7 @@ def _read_consumed_source_proofs(pg: Any, *, publication_id: str, publication_re
                     "fact_digest": str(proof["fact_digest"]).strip(),
                     "source_fact_sha256": str(proof["source_fact_sha256"]).strip(),
                     "acceptance_receipt_id": proof["acceptance_receipt_id"],
+                    "record_count": proof["fact_record_count"],
                     "target_trade_date": target, "record_locator": proof["record_locator"],
                 })
         if observed_trade_date != target:
@@ -299,7 +321,7 @@ def _number(value: Any, field: str, *, nullable: bool = True) -> float | None:
 _ARTIFACT_BINDING_FIELDS = (
     "source_key", "source_revision_id", "source_package_id", "package_sha256",
     "logical_fact_id", "fact_digest", "source_fact_sha256", "acceptance_receipt_id",
-    "target_trade_date", "record_locator",
+    "target_trade_date", "record_locator", "record_count",
 )
 
 
@@ -325,9 +347,40 @@ def _normalize_artifact_bindings(value: Any, target: str) -> list[dict[str, Any]
                 raise CoreResultError("CORE_RESULT_SOURCE_ARTIFACT_DIGEST_INVALID")
         if not isinstance(item["record_locator"], Mapping) or not item["record_locator"]:
             raise CoreResultError("CORE_RESULT_SOURCE_ARTIFACT_LOCATOR_REQUIRED")
+        if (isinstance(item["record_count"], bool) or not isinstance(item["record_count"], int)
+                or item["record_count"] <= 0):
+            raise CoreResultError("CORE_RESULT_SOURCE_ARTIFACT_RECORD_COUNT_INVALID")
         normalized.append(item)
     normalized.sort(key=lambda item: item["source_revision_id"].encode("utf-8"))
     return normalized
+
+
+def _evaluate_completeness(rows: Sequence[Mapping[str, Any]], missing_price_rows: int,
+                           source_bindings: Sequence[Mapping[str, Any]]) -> tuple[str, list[str]]:
+    """Evaluate the frozen R1 rule against actual normalized producer rows."""
+    reasons = []
+    if not rows or len(rows) < DAILY_COMPLETENESS_CONTRACT["minimum_rows"]:
+        reasons.append("CORE_ROWSET_EMPTY")
+    if missing_price_rows > DAILY_COMPLETENESS_CONTRACT["maximum_missing_close_rows"]:
+        reasons.append("CORE_CLOSE_MISSING")
+    expected_row_count = sum(
+        item.get("record_count", 0) for item in source_bindings
+        if isinstance(item.get("record_count"), int) and not isinstance(item.get("record_count"), bool)
+    )
+    if (not source_bindings or any(isinstance(item.get("record_count"), bool)
+                                   or not isinstance(item.get("record_count"), int)
+                                   or item["record_count"] <= 0 for item in source_bindings)
+            or len(rows) != expected_row_count):
+        reasons.append("CORE_SOURCE_PACKAGE_RECORD_COUNT_MISMATCH")
+    bound_ids = {item["source_revision_id"] for item in source_bindings}
+    if not rows or any(row.get("source_revision_id") not in bound_ids for row in rows):
+        reasons.append("CORE_SOURCE_REVISION_UNBOUND")
+    if len({row.get("security_id") for row in rows}) != len(rows):
+        reasons.append("CORE_SECURITY_ID_DUPLICATE")
+    if any(row.get("trade_status") == "TRADING" and any(
+            row.get(key) is None for key in ("open", "high", "low", "close")) for row in rows):
+        reasons.append("CORE_TRADING_OHLC_INCOMPLETE")
+    return ("PASS" if not reasons else "FAIL", reasons)
 
 
 def build_daily_core_result_plan(
@@ -435,14 +488,17 @@ def build_daily_core_result_plan(
         completeness_contract_id = "UNRESOLVED"
         completeness_contract_version = "UNRESOLVED"
         completeness_status = "CONTRACT_UNRESOLVED"
+        completeness_reasons = ["COMPLETENESS_CONTRACT_REQUIRED"]
         publishability = "BLOCKED_COMPLETENESS_CONTRACT_UNRESOLVED"
     else:
-        # No threshold is inferred here. This is a sentinel until the active,
-        # versioned operational contract is supplied and independently audited.
-        completeness_contract_id = str(completeness_contract.get("contract_id") or "UNRESOLVED")
-        completeness_contract_version = str(completeness_contract.get("version") or "UNRESOLVED")
-        completeness_status = "CONTRACT_UNRESOLVED"
-        publishability = "BLOCKED_COMPLETENESS_CONTRACT_UNRESOLVED"
+        if (not isinstance(completeness_contract, Mapping)
+                or dict(completeness_contract) != DAILY_COMPLETENESS_CONTRACT):
+            raise CoreResultError("CORE_RESULT_COMPLETENESS_CONTRACT_UNSUPPORTED")
+        completeness_contract_id = DAILY_COMPLETENESS_CONTRACT["contract_id"]
+        completeness_contract_version = DAILY_COMPLETENESS_CONTRACT["version"]
+        completeness_status, completeness_reasons = _evaluate_completeness(normalized, missing_price, artifact_bindings)
+        publishability = ("CORE_RESULT_COMPLETENESS_PASS" if completeness_status == "PASS"
+                          else "BLOCKED_CORE_RESULT_INCOMPLETE")
     material = {
         "contract_id": CONTRACT_ID, "contract_version": CONTRACT_VERSION,
         "publication_id": publication_id, "publication_revision": publication_revision,
@@ -468,7 +524,8 @@ def build_daily_core_result_plan(
         "result_sha256": result_sha, "row_count": len(normalized),
         "missing_price_rows": missing_price, "completeness_contract_id": completeness_contract_id,
         "completeness_contract_version": completeness_contract_version,
-        "completeness_status": completeness_status, "publishability_status": publishability,
+        "completeness_status": completeness_status, "completeness_reasons": completeness_reasons,
+        "publishability_status": publishability,
         "quality_status": "CORE_RESULT_ROWS_VERIFIED_CANDIDATE",
         "rows": normalized, "write_mode": "PLAN_ONLY_NO_DATABASE_IO",
     }
@@ -519,10 +576,10 @@ def persist_daily_core_result(pg: Any, plan: Mapping[str, Any]) -> dict[str, Any
         producer_sha256=plan.get("producer_sha256"),
         producer_receipt=receipt,
         rows=plan.get("rows"),
-        completeness_contract={
-            "contract_id": plan.get("completeness_contract_id"),
-            "version": plan.get("completeness_contract_version"),
-        },
+        completeness_contract=(DAILY_COMPLETENESS_CONTRACT
+                              if plan.get("completeness_contract_id") == DAILY_COMPLETENESS_CONTRACT["contract_id"]
+                              and plan.get("completeness_contract_version") == DAILY_COMPLETENESS_CONTRACT["version"]
+                              else None),
     )
     for field_name in (
         "result_identity", "result_sha256", "producer_receipt_sha256", "row_count",
@@ -572,6 +629,8 @@ def persist_daily_core_result(pg: Any, plan: Mapping[str, Any]) -> dict[str, Any
     )
     if artifact_bindings != plan["producer_source_artifact_bindings"]:
         raise CoreResultError("CORE_RESULT_SOURCE_AUTHORITY_PLAN_MISMATCH")
+    if _evaluate_completeness(plan["rows"], plan["missing_price_rows"], artifact_bindings)[0] != plan["completeness_status"]:
+        raise CoreResultError("CORE_RESULT_SOURCE_PACKAGE_ROW_COUNT_MISMATCH")
     if pg.execute(
         """SELECT 1 FROM v4.daily_core_result_snapshots
             WHERE publication_id=%s AND publication_revision=%s""",
@@ -720,18 +779,26 @@ def read_daily_core_result(pg: Any, *, publication_id: str, publication_revision
     })
     if expected_identity != snapshot[1]:
         raise CoreResultError("CORE_RESULT_PG_RESULT_IDENTITY_MISMATCH")
-    # Stored PASS is only a database claim. The active, audited completeness
-    # contract is not independently loaded by this reader, so the verified
-    # business state remains unresolved and cannot release a Head.
     observed_completeness_status = str(snapshot[12])
-    completeness_status = "CONTRACT_UNRESOLVED"
-    publishable = False
+    if (snapshot[10] != DAILY_COMPLETENESS_CONTRACT["contract_id"]
+            or snapshot[11] != DAILY_COMPLETENESS_CONTRACT["version"]):
+        completeness_status = "CONTRACT_UNRESOLVED"
+        publishable = False
+    else:
+        completeness_status, _ = _evaluate_completeness(
+            material_rows, missing_price, artifact_bindings,
+        )
+        if observed_completeness_status != completeness_status:
+            raise CoreResultError("CORE_RESULT_PG_COMPLETENESS_DECLARATION_MISMATCH")
+        publishable = completeness_status == "PASS"
     receipt_body = {
         "contract_id": CONTRACT_ID, "publication_id": publication_id,
         "publication_revision": publication_revision, "trade_date": target,
         "source_manifest_sha256": source_manifest_sha256,
         "result_identity": str(snapshot[1]), "result_sha256": result_sha,
         "producer_receipt_sha256": producer_receipt_sha,
+        "completeness_contract_id": str(snapshot[10]),
+        "completeness_contract_version": str(snapshot[11]),
         "row_count": len(rows), "missing_price_rows": missing_price,
         "completeness_status": completeness_status,
         "observed_completeness_status": observed_completeness_status,
@@ -745,6 +812,8 @@ def read_daily_core_result(pg: Any, *, publication_id: str, publication_revision
         result_identity=str(snapshot[1]), result_sha256=result_sha,
         producer_receipt_sha256=producer_receipt_sha,
         readback_receipt_sha256=_sha(receipt_body),
+        completeness_contract_id=str(snapshot[10]),
+        completeness_contract_version=str(snapshot[11]),
         row_count=len(rows), missing_price_rows=missing_price,
         completeness_status=completeness_status,
         observed_completeness_status=observed_completeness_status,

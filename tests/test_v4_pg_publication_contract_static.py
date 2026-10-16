@@ -93,7 +93,7 @@ def test_contract_models_three_real_owner_families_and_explicit_page_gaps():
     assert "CANDIDATE_SOURCE_MANIFEST_UNVERIFIED" in candidate
     assert "build_source_manifest(source_manifest_rows)" in candidate
     assert 'candidate.get("business_publishability_status") != "PUBLISHABLE_BUSINESS_SNAPSHOT"' in candidate
-    assert '"business_publishability_status": "BLOCKED_CORE_RESULT_NOT_BOUND"' in candidate
+    assert '"business_publishability_status": "PUBLISHABLE_BUSINESS_SNAPSHOT" if publishable else "BLOCKED_CORE_RESULT_NOT_BOUND"' in candidate
     assert 'candidate.get("minimum_publish_contract_id") != MINIMUM_DAILY_PUBLICATION_CONTRACT_ID' in candidate
     assert '"minimum_publish_contract_id": MINIMUM_DAILY_PUBLICATION_CONTRACT_ID' in candidate
 

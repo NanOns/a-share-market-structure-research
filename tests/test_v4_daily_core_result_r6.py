@@ -5,7 +5,7 @@ from datetime import date, datetime, timezone
 import pytest
 
 from workbench_db.v4_daily_core_result_r6 import (
-    CoreResultError, VerifiedDailyCoreResult, build_daily_core_result_plan,
+    CoreResultError, DAILY_COMPLETENESS_CONTRACT, VerifiedDailyCoreResult, build_daily_core_result_plan,
     is_verified_daily_core_result, persist_daily_core_result, read_daily_core_result,
 )
 
@@ -48,7 +48,7 @@ def _input():
         "source_package_id": "pkg-r1", "package_sha256": package_sha,
         "logical_fact_id": "daily-source:2026-10-16:tdx", "fact_digest": fact_digest,
         "source_fact_sha256": source_fact_sha, "acceptance_receipt_id": "accepted-r1",
-        "target_trade_date": "2026-10-16", "record_locator": locator,
+        "target_trade_date": "2026-10-16", "record_locator": locator, "record_count": 1,
     }
     receipt = {
         "trade_date": "2026-10-16", "producer_contract_id": "V4_OPERATIONAL_DAILY_OWNER_R1",
@@ -83,7 +83,7 @@ def _pg(plan, *, proof_rows=None, proof_overrides=None,
     fact = {
         "source_key": artifact["source_key"], "logical_fact_id": artifact["logical_fact_id"],
         "fact_digest": artifact["fact_digest"], "source_fact_sha256": artifact["source_fact_sha256"],
-        "record_locator": artifact["record_locator"],
+        "record_locator": artifact["record_locator"], "record_count": artifact["record_count"],
     }
     package_manifest = {"acceptance_receipt_id": artifact["acceptance_receipt_id"],
                         "AS_RECORDED": True, "PIT_ELIGIBLE": True,
@@ -100,7 +100,7 @@ def _pg(plan, *, proof_rows=None, proof_overrides=None,
         "V4_DAILY_SOURCE_INGEST_R6", "ACCEPTED_SOURCE_PACKAGE", package_manifest,
         artifact["source_package_id"], artifact["source_key"], artifact["logical_fact_id"],
         artifact["fact_digest"], artifact["source_fact_sha256"], artifact["record_locator"],
-        artifact["acceptance_receipt_id"], "ACCEPTED",
+        artifact["record_count"], artifact["acceptance_receipt_id"], "ACCEPTED",
         datetime(2026, 10, 16, 11, tzinfo=timezone.utc),
     )
     proof_fields = (
@@ -112,7 +112,7 @@ def _pg(plan, *, proof_rows=None, proof_overrides=None,
         "source_package_contract_version", "source_package_sha256", "source_package_page_observed_at",
         "source_package_target_trade_date", "source_package_parser_version", "source_package_accepted_scope",
         "source_package_manifest", "fact_package_id", "fact_source_key", "fact_logical_fact_id",
-        "fact_digest", "source_fact_sha256", "record_locator", "acceptance_receipt_id",
+        "fact_digest", "source_fact_sha256", "record_locator", "fact_record_count", "acceptance_receipt_id",
         "publication_status", "publication_accepted_at",
     )
     if proof_overrides:
@@ -123,7 +123,8 @@ def _pg(plan, *, proof_rows=None, proof_overrides=None,
         date.fromisoformat("2026-10-16"), plan["result_identity"],
         "V4_DAILY_CORE_RESULT_BINDING_R6", plan["producer_contract_id"], producer_sha,
         plan["producer_receipt_sha256"], source_sha, plan["result_sha256"], 1, 0,
-        "V4_DAILY_COMPLETENESS_R1", "1.0.0", "PASS", "CORE_RESULT_ROWS_VERIFIED_CANDIDATE",
+        plan["completeness_contract_id"], plan["completeness_contract_version"],
+        plan["completeness_status"], "CORE_RESULT_ROWS_VERIFIED_CANDIDATE",
     )
 
     selected_proof_rows = [proof] if proof_rows is None else proof_rows
@@ -204,7 +205,7 @@ def test_pg_reader_returns_typed_result_with_planner_contract_fields():
     assert verified.status == "PG_READBACK_VERIFIED"
     assert verified.contract_id == "V4_DAILY_CORE_RESULT_BINDING_R6"
     assert verified.source_manifest_sha256 == source_sha
-    assert verified.observed_completeness_status == "PASS"
+    assert verified.observed_completeness_status == "CONTRACT_UNRESOLVED"
     assert verified.completeness_status == "CONTRACT_UNRESOLVED"
     assert verified.publishable is False
 
@@ -228,6 +229,7 @@ def test_verified_core_result_cannot_be_forged_without_reader_proof():
         {"publishable": True}, {"status": "FAKE_READBACK"},
         {"row_count": 999}, {"source_manifest_sha256": "f" * 64},
         {"result_sha256": "f" * 64}, {"completeness_status": "PASS"},
+        {"completeness_contract_id": "FORGED"},
         {"readback_receipt_sha256": "f" * 64},
     ):
         assert not is_verified_daily_core_result(replace(verified, **change))
@@ -245,7 +247,7 @@ def test_database_pass_without_independent_completeness_contract_stays_blocked()
         _pg(plan), publication_id="pub-20261016-r1", publication_revision=1,
         trade_date="2026-10-16", source_manifest_sha256=source_sha,
     )
-    assert verified.observed_completeness_status == "PASS"
+    assert verified.observed_completeness_status == "CONTRACT_UNRESOLVED"
     assert verified.completeness_status == "CONTRACT_UNRESOLVED"
     assert verified.publishable is False
     assert is_verified_daily_core_result(verified)
@@ -270,6 +272,102 @@ def test_database_pass_without_independent_completeness_contract_stays_blocked()
         plan_publication_head_change(candidate, None, verified_core_result=verified)
 
 
+def test_completeness_contract_evaluates_real_rows_and_rejects_unsupported_rules():
+    receipt, rows, source_sha, producer_sha = _input()
+    kwargs = dict(
+        publication_id="pub-20261016-r1", publication_revision=1,
+        trade_date="2026-10-16", source_manifest_sha256=source_sha,
+        producer_contract_id="V4_OPERATIONAL_DAILY_OWNER_R1", producer_sha256=producer_sha,
+        producer_receipt=receipt, rows=rows,
+    )
+    plan = build_daily_core_result_plan(**kwargs, completeness_contract=DAILY_COMPLETENESS_CONTRACT)
+    assert plan["completeness_contract_id"] == "V4_DAILY_COMPLETENESS_R1"
+    assert plan["completeness_status"] == "PASS"
+    assert plan["publishability_status"] == "CORE_RESULT_COMPLETENESS_PASS"
+
+    count_mismatch_receipt = dict(receipt)
+    count_mismatch_receipt["source_artifact_bindings"] = [dict(receipt["source_artifact_bindings"][0], record_count=2)]
+    count_mismatch_receipt["receipt_sha256"] = _sha({key: value for key, value in count_mismatch_receipt.items() if key != "receipt_sha256"})
+    mismatch = build_daily_core_result_plan(
+        **{**kwargs, "producer_receipt": count_mismatch_receipt},
+        completeness_contract=DAILY_COMPLETENESS_CONTRACT,
+    )
+    assert mismatch["completeness_status"] == "FAIL"
+    assert "CORE_SOURCE_PACKAGE_RECORD_COUNT_MISMATCH" in mismatch["completeness_reasons"]
+
+    incomplete_rows = [dict(rows[0], close=None)]
+    incomplete_rows[0]["trade_status"] = "SUSPENDED"
+    failed = build_daily_core_result_plan(
+        **{**kwargs, "rows": incomplete_rows}, completeness_contract=DAILY_COMPLETENESS_CONTRACT,
+    )
+    assert failed["completeness_status"] == "FAIL"
+    assert failed["publishability_status"] == "BLOCKED_CORE_RESULT_INCOMPLETE"
+
+    with pytest.raises(CoreResultError, match="CORE_RESULT_COMPLETENESS_CONTRACT_UNSUPPORTED"):
+        build_daily_core_result_plan(**kwargs, completeness_contract={
+            **DAILY_COMPLETENESS_CONTRACT, "maximum_missing_close_rows": 1,
+        })
+
+
+def test_positive_core_readback_plus_candidate_reaches_head_plan():
+    receipt, rows, source_sha, producer_sha = _input()
+    plan = build_daily_core_result_plan(
+        publication_id="pub-20261016-r1", publication_revision=1,
+        trade_date="2026-10-16", source_manifest_sha256=source_sha,
+        producer_contract_id="V4_OPERATIONAL_DAILY_OWNER_R1", producer_sha256=producer_sha,
+        producer_receipt=receipt, rows=rows, completeness_contract=DAILY_COMPLETENESS_CONTRACT,
+    )
+    verified = read_daily_core_result(
+        _pg(plan), publication_id="pub-20261016-r1", publication_revision=1,
+        trade_date="2026-10-16", source_manifest_sha256=source_sha,
+    )
+    assert is_verified_daily_core_result(verified)
+    assert verified.completeness_status == "PASS" and verified.publishable is True
+    assert verified.completeness_contract_id == "V4_DAILY_COMPLETENESS_R1"
+    assert verified.completeness_contract_version == "1.0.0"
+
+    from workbench_db.v4_publication_candidate import (
+        build_publication_candidate, plan_publication_head_change,
+    )
+    from tests.test_v4_pg_publication_candidate import DATABASE_IDENTITY
+    from workbench_db.v4_source_manifest import source_manifest_digest
+    # The publication candidate binds the same independently read Core result.
+    manifest_rows = [{
+        "source_key": "tdx", "source_revision_id": "v4sr-tdx-r1", "digest": "d" * 64,
+        "logical_fact_id": "daily-source:2026-10-16:tdx", "revision_no": 1,
+        "revision_digest": "d" * 64, "effective_from": date(2026, 10, 16),
+        "effective_to": date(2026, 10, 16),
+        "provider_available_at": datetime(2026, 10, 16, 9, tzinfo=timezone.utc),
+        "observed_at": datetime(2026, 10, 16, 10, tzinfo=timezone.utc),
+        "ingested_at": datetime(2026, 10, 16, 10, 1, tzinfo=timezone.utc),
+        "system_available_at": datetime(2026, 10, 16, 10, 1, tzinfo=timezone.utc),
+        "tombstone": False, "source_package_id": "pkg-r1",
+        "source_package_contract_version": "V4_DAILY_SOURCE_INGEST_R6/1.0.0",
+        "source_package_sha256": "c" * 64,
+        "source_package_page_observed_at": datetime(2026, 10, 16, 9, tzinfo=timezone.utc),
+        "source_package_target_trade_date": date(2026, 10, 16),
+        "source_package_parser_version": "V4_DAILY_SOURCE_INGEST_R6",
+        "source_package_accepted_scope": "ACCEPTED_SOURCE_PACKAGE",
+    }]
+    manifest_sha = source_manifest_digest(manifest_rows)
+    assert manifest_sha == source_sha
+    candidate = build_publication_candidate(
+        publication_id="pub-20261016-r1", trade_date="2026-10-16", revision_no=1,
+        publication_lineage_id="lineage-20261016", model_namespace_id="v4-main",
+        core_revision=1, source_manifest_sha256=source_sha, source_manifest_rows=manifest_rows,
+        source_manifest_contract_id="V4_PG_CONSUMED_SOURCE_MANIFEST_R2",
+        computation_identity_sha256="b" * 64,
+        expected_source_bindings={"tdx": {"source_revision_id": "v4sr-tdx-r1", "digest": "d" * 64}},
+        observed_source_bindings={"tdx": {"source_revision_id": "v4sr-tdx-r1", "digest": "d" * 64}},
+        database_identity=DATABASE_IDENTITY, module_results=[],
+        state_head_id="state-20261016-r1", state_logical_digest="c" * 64,
+        prior_session_gap_reason="INITIAL_BOUNDARY", verified_core_result=verified,
+    )
+    assert candidate["business_publishability_status"] == "PUBLISHABLE_BUSINESS_SNAPSHOT"
+    head_plan = plan_publication_head_change(candidate, None, verified_core_result=verified)
+    assert head_plan["action"] == "INSERT_IF_ABSENT"
+
+
 def test_reader_fails_closed_when_independent_consumed_source_proof_is_missing():
     receipt, rows, source_sha, producer_sha = _input()
     plan = build_daily_core_result_plan(
@@ -282,6 +380,35 @@ def test_reader_fails_closed_when_independent_consumed_source_proof_is_missing()
         read_daily_core_result(
             _pg(plan, proof_rows=[]), publication_id="pub-20261016-r1",
             publication_revision=1, trade_date="2026-10-16", source_manifest_sha256=source_sha,
+        )
+
+
+def test_reader_rejects_stored_pass_when_accepted_package_row_count_exceeds_core_readback():
+    receipt, rows, source_sha, producer_sha = _input()
+    plan = build_daily_core_result_plan(
+        publication_id="pub-20261016-r1", publication_revision=1,
+        trade_date="2026-10-16", source_manifest_sha256=source_sha,
+        producer_contract_id="V4_OPERATIONAL_DAILY_OWNER_R1", producer_sha256=producer_sha,
+        producer_receipt=receipt, rows=rows, completeness_contract=DAILY_COMPLETENESS_CONTRACT,
+    )
+    original = _pg(plan)
+    # The source fact and immutable package manifest both independently attest
+    # two rows, while PG Core contains one. The stored PASS cannot override it.
+    class MismatchPG:
+        def execute(self, query, params=None):
+            result = original.execute(query, params)
+            if "source_package_facts" not in query:
+                return result
+            values = list(result.fetchall()[0])
+            values[26] = {**values[26], "source_fact_bindings": [
+                {**values[26]["source_fact_bindings"][0], "record_count": 2}
+            ]}
+            values[33] = 2
+            return type("Result", (), {"fetchall": lambda self: [tuple(values)]})()
+    with pytest.raises(CoreResultError, match="CORE_RESULT_PRODUCER_RECEIPT_SOURCE_BINDING_MISMATCH"):
+        read_daily_core_result(
+            MismatchPG(), publication_id="pub-20261016-r1", publication_revision=1,
+            trade_date="2026-10-16", source_manifest_sha256=source_sha,
         )
 
 

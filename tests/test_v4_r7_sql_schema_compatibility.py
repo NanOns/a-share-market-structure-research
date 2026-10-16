@@ -28,3 +28,20 @@ def test_source_provenance_migration_uses_existing_revision_and_consumed_source_
     assert "source_fact_digest" in sql
     assert "and item->'record_locator'=new.record_locator" in " ".join(sql.split())
     assert "where new.publication_id=%s and revision=%s" not in ingest
+
+
+def test_publication_migration_runner_registers_the_ordered_034_to_039_chain():
+    runner = (ROOT / "scripts/apply_v4_phase0_schema.py").read_text(encoding="utf-8")
+    normalized = " ".join(runner.split())
+    for migration, contract in (
+        ("010_source_manifest_contract_r1.sql", "V4_PG_CONSUMED_SOURCE_MANIFEST_R1"),
+        ("034_source_package_revision_authority_r2.sql", "V4_SOURCE_PACKAGE_REVISION_AUTHORITY_R2"),
+        ("035_source_manifest_contract_r2.sql", "V4_SOURCE_MANIFEST_CONTRACT_R2"),
+        ("036_source_package_fact_provenance_r6.sql", "V4_SOURCE_PACKAGE_FACT_PROVENANCE_R6"),
+        ("037_daily_core_result_binding_r6.sql", "V4_DAILY_CORE_RESULT_BINDING_R6"),
+        ("038_publication_module_results_r4.sql", "V4_PUBLICATION_MODULE_RESULTS_R4"),
+        ("039_tdx_package_row_count_authority_r1.sql", "V4_TDX_PACKAGE_ROW_COUNT_AUTHORITY_R1"),
+    ):
+        assert f'"{migration}":"{contract}"' in normalized
+    assert "for filename,version in sorted(VERSIONS.items())" in normalized
+    assert "MIGRATIONS.glob(\"*.sql\")" not in runner

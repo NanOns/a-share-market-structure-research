@@ -98,6 +98,7 @@ def build_publication_candidate(
     prior_session_state_head: str | None = None,
     prior_session_state_logical_digest: str | None = None,
     prior_session_gap_reason: str | None = None,
+    verified_core_result: Any = None,
 ) -> dict[str, Any]:
     """Build a candidate-only plan using immutable publication_id identity."""
     if not isinstance(publication_id, str) or not publication_id.strip():
@@ -111,6 +112,21 @@ def build_publication_candidate(
     if isinstance(core_revision, bool) or not isinstance(core_revision, int) or core_revision <= 0:
         raise CandidatePlanError("CORE_REVISION_INVALID")
     target_date = _valid_date(trade_date)
+    core_result = None
+    if verified_core_result is not None:
+        from .v4_daily_core_result_r6 import is_verified_daily_core_result
+        if (not is_verified_daily_core_result(verified_core_result)
+                or verified_core_result.status != "PG_READBACK_VERIFIED"
+                or verified_core_result.publishable is not True
+                or verified_core_result.completeness_status != "PASS"
+                or verified_core_result.completeness_contract_id != "V4_DAILY_COMPLETENESS_R1"
+                or verified_core_result.completeness_contract_version != "1.0.0"
+                or verified_core_result.publication_id != publication_id
+                or verified_core_result.publication_revision != revision_no
+                or verified_core_result.trade_date != target_date
+                or verified_core_result.source_manifest_sha256 != source_manifest_sha256):
+            raise CandidatePlanError("CORE_RESULT_PG_READBACK_REQUIRED")
+        core_result = verified_core_result
     if source_manifest_contract_id != SOURCE_MANIFEST_CONTRACT_ID:
         raise CandidatePlanError("SOURCE_MANIFEST_CONTRACT_UNSUPPORTED")
     if not source_manifest_rows:
@@ -249,17 +265,29 @@ def build_publication_candidate(
         raise CandidatePlanError("MODULE_NOT_IN_EFFECTIVE_CONTRACT")
     status = "METADATA_CANDIDATE_INCOMPLETE" if missing_required else "METADATA_CANDIDATE_READY"
     readiness_reasons = ["REQUIRED_MODULE_RESULT_MISSING"] if missing_required else []
+    publishable = core_result is not None
     body = {
         "contract_id": CONTRACT_ID,
         "module_contract_id": MODULE_CONTRACT_ID,
         "candidate_only": True,
-        "publish_status": "BLOCKED_BUSINESS_PUBLISHABILITY",
+        "publish_status": "PUBLISHABLE_BUSINESS_SNAPSHOT" if publishable else "BLOCKED_BUSINESS_PUBLISHABILITY",
         "metadata_readiness_status": "SOURCE_AND_IDENTITY_VALIDATED" if not missing_required else "INCOMPLETE",
-        # A validated manifest and optional Owner capability rows do not prove
-        # any business result. No current V4 daily producer binds its core
-        # persisted output to this publication contract, so release stays shut.
-        "business_publishability_status": "BLOCKED_CORE_RESULT_NOT_BOUND",
-        "business_publishability_reasons": ["NO_VERIFIED_CURRENT_DAILY_CORE_RESULT_BINDING"],
+        # Metadata-only candidates stay blocked. A verified typed readback can
+        # bind the actual Core result after PG source/PIT and completeness checks.
+        "business_publishability_status": "PUBLISHABLE_BUSINESS_SNAPSHOT" if publishable else "BLOCKED_CORE_RESULT_NOT_BOUND",
+        "business_publishability_reasons": [] if publishable else ["NO_VERIFIED_CURRENT_DAILY_CORE_RESULT_BINDING"],
+        "core_result_binding": ({
+            "contract_id": core_result.contract_id,
+            "result_identity": core_result.result_identity,
+            "result_sha256": core_result.result_sha256,
+            "readback_receipt_sha256": core_result.readback_receipt_sha256,
+            "row_count": core_result.row_count,
+            "completeness_status": core_result.completeness_status,
+            "completeness_contract_id": core_result.completeness_contract_id,
+            "completeness_contract_version": core_result.completeness_contract_version,
+            "source_manifest_sha256": core_result.source_manifest_sha256,
+            "status": core_result.status,
+        } if publishable else None),
         "accepted_at": None,
         "head_update": "PLAN_ONLY_NOT_EXECUTED",
         "minimum_publish_contract_id": MINIMUM_DAILY_PUBLICATION_CONTRACT_ID,
@@ -271,11 +299,11 @@ def build_publication_candidate(
             "source_manifest_rows_and_digest": "PASS",
             "source_revision_digest_t0_tombstone_and_clock_rules": "PASS",
             "accepted_source_package_binding": "PASS",
-            "core_business_result_binding": "BLOCKED_NO_VERIFIED_CURRENT_DAILY_PRODUCER",
+            "core_business_result_binding": "PASS_PG_TYPED_READBACK" if publishable else "BLOCKED_NO_VERIFIED_CURRENT_DAILY_PRODUCER",
             "optional_owner_families": "NOT_REQUIRED_BY_CONTRACT",
-            "pg_candidate_readback_and_head_write": "BLOCKED_UNTIL_BUSINESS_PUBLISHABLE",
+            "pg_candidate_readback_and_head_write": "READY_FOR_EXPLICIT_HEAD_PLAN" if publishable else "BLOCKED_UNTIL_BUSINESS_PUBLISHABLE",
         },
-        "global_requiredness_status": "PASS_METADATA_IDENTITY_ONLY" if not missing_required else "FAIL_REQUIRED_OWNER_MISSING",
+        "global_requiredness_status": ("PASS_PUBLISHABLE_BUSINESS_SNAPSHOT" if publishable else "PASS_METADATA_IDENTITY_ONLY") if not missing_required else "FAIL_REQUIRED_OWNER_MISSING",
         "publication_id": publication_id,
         "trade_date": target_date,
         "revision_no": revision_no,
@@ -330,11 +358,20 @@ def plan_publication_head_change(
             or core_result.status != "PG_READBACK_VERIFIED"
             or core_result.publishable is not True
             or core_result.completeness_status != "PASS"
+            or core_result.completeness_contract_id != "V4_DAILY_COMPLETENESS_R1"
+            or core_result.completeness_contract_version != "1.0.0"
             or core_result.contract_id != "V4_DAILY_CORE_RESULT_BINDING_R6"
             or core_result.publication_id != candidate.get("publication_id")
             or core_result.publication_revision != candidate.get("revision_no")
             or core_result.trade_date != candidate.get("trade_date")
             or core_result.source_manifest_sha256 != candidate.get("source_manifest_sha256")
+            or not isinstance(candidate.get("core_result_binding"), Mapping)
+            or candidate["core_result_binding"].get("result_identity") != core_result.result_identity
+            or candidate["core_result_binding"].get("result_sha256") != core_result.result_sha256
+            or candidate["core_result_binding"].get("readback_receipt_sha256") != core_result.readback_receipt_sha256
+            or candidate["core_result_binding"].get("completeness_status") != core_result.completeness_status
+            or candidate["core_result_binding"].get("completeness_contract_id") != core_result.completeness_contract_id
+            or candidate["core_result_binding"].get("completeness_contract_version") != core_result.completeness_contract_version
             or not _DIGEST.fullmatch(str(core_result.result_sha256))
             or not _DIGEST.fullmatch(str(core_result.readback_receipt_sha256))
             or isinstance(core_result.row_count, bool)

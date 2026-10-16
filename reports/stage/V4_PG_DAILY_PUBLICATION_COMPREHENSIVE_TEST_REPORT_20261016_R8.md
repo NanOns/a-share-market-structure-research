@@ -16,7 +16,7 @@ core_ready: BLOCKED_NO_ACCEPTED_SOURCE_OR_PG_ROWS
 pit: BLOCKED_SOURCE_EVIDENCE_NOT_PIT_ELIGIBLE
 daily_e2e: DIAGNOSTIC_ONLY_NO_SUCCESSFUL_PUBLICATION
 page: NOT_RUN_NO_PUBLICATION_OR_SERVICE
-ci: LOCAL_WORKFLOW_SUITE_PASS; GITHUB_RUNS_PENDING_PUSH
+ci: LOCAL_WORKFLOW_SUITE_PASS; INITIAL_GITHUB_R8_RUN_FAILED_THEN_FIXED; FOLLOWUP_PENDING
 production: UNCHANGED
 approval_status: no authorization for isolated or production PostgreSQL writes, Head switch, 28765 deployment, destructive cleanup or history rewrite
 ---
@@ -44,7 +44,8 @@ approval_status: no authorization for isolated or production PostgreSQL writes, 
 
 - R8 定向本地测试：**68 passed**，覆盖 executor、真实 hash-bound source diagnostic bridge、Core Reader cutoff/隔离级别检查、source ingest、PG candidate、036/037 静态兼容及隔离 runner 参数防护。
 - 隔离 runner `--plan` 列出 **38** 个 SQL 文件（含两份独立 010）；pglast 语法解析结果由静态审计记录为 034/035/036/037 各 10/5/15/13 条语句。静态 parser 不编译 PL/pgSQL 函数体，不能替代 PG 实跑。
-- GitHub Actions 当前 V4 job 的本地等价命令（candidate、owners、contracts、source manifest、daily ingest/core、SQL static、executor、pre-next T0、exact-policy，加本轮 R8 用例）**99 passed in 23.95s**。push/PR GitHub Actions 结果待提交后读取。
+- GitHub Actions 当前 V4 job 的本地等价命令（candidate、owners、contracts、source manifest、daily ingest/core、SQL static、executor、pre-next T0、exact-policy，加本轮 R8 用例）最新本地结果 **99 passed in 7.36s**。
+- 首轮包含 R8 用例的 GitHub Actions 在跨平台路径合同测试上失败：Ubuntu 将 Windows 只读 TDX 路径 `D:/...` 判为相对路径，结果 **97 passed, 1 failed, 1 skipped**。代码现使用 `PureWindowsPath` 校验该版本化 Windows 来源路径；本地同一 V4 job 等价命令已 **99 passed**。修复后的 push/PR Actions 待新提交运行。
 - 另外尝试仓库全部 pytest：共收集 7,650 项，但未完成。`-x -vv` 首个确定失败为 `tests/fep/test_feature_owner.py::test_all_47_accepted_historical_fields_and_seven_relative_rps_are_copied`，实际报 `FEP_EXACT_BINDING_MISMATCH`：合同绑定的 V4.03 receipt 期望 6,714 字节，当前工作区文件是 129 字节 Git LFS pointer（对象未 hydration）。运行中其余 FEP PostgreSQL 配置用例被跳过。首次不加 `-x` 的全量运行在约 2% 处无进度并被中断，曾显示多个失败/错误标记，未取得完整汇总，故不报告全仓通过。
 - `git diff --check` 通过。PostgreSQL 只读事务复核身份为 `market_research`、`127.0.0.1:5432`、角色 `postgres`，该查询事务 `transaction_read_only=on`。ledger 仅有 12 项到 012；010 source manifest 及 013–037 无 ledger entry。现役 schema 有部分未对应 ledger 的后续列，缺 `source_manifest_contract_id` 和 `daily_core_result_snapshots/rows`。行数：source packages 0、source revisions 40,455、publications 0、publication heads 0；未执行 SQL 034–037。
 - 端口只读检查发现 PostgreSQL 5432 双栈监听（PID 8260）；28765、28766 均未监听。没有启动网页服务，因此页面 parity 未运行。没有 PG DDL/DML、核心行写入、Head CAS、生产数据更改、正式 Head 切换或部署。
@@ -62,7 +63,7 @@ approval_status: no authorization for isolated or production PostgreSQL writes, 
 | PIT | `BLOCKED` | freeze/readiness 为 `AS_RECORDED=false/PIT_ELIGIBLE=false`。 |
 | DAILY_E2E | `DIAGNOSTIC_ONLY` | 使用真实 hash-bound 证据得到安全关闭计划；没有成功写入/发布。 |
 | PAGE | `NOT_RUN` | 无 Publication 数据、服务未启动；28765/28766 未监听。 |
-| CI | `LOCAL_WORKFLOW_SUITE_PASS; GITHUB_PENDING` | 仓库 V4 job 等价本地测试集 99 passed；待本提交 push 后读取 GitHub Actions。全仓测试未完成且含独立 LFS hydration 失败。 |
+| CI | `LOCAL_WORKFLOW_SUITE_PASS; FOLLOWUP_PENDING` | 仓库 V4 job 等价本地测试集 99 passed；首轮 R8 GitHub CI 的 1 项 Windows 路径语义失败已修复，等待修复提交的 push/PR run。全仓测试未完成且含独立 LFS hydration 失败。 |
 | PRODUCTION | `UNCHANGED` | 未触碰生产 PG、Head、28765 或调度。 |
 
 ## 下一阶段

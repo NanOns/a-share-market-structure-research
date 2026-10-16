@@ -1,5 +1,5 @@
 """Real bounded source stages; no fabricated successor Owner or publication."""
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from datetime import datetime,timezone
 import json
 from . import tdx_official_daily_source as tdx
@@ -44,8 +44,9 @@ def _tdx_gbbq_source_path():
             or contract.get('contract_version') != '1.0.0'
             or contract.get('source_mode') != 'READ_ONLY_INPUT'):
         raise ValueError('DAILY_TDX_SOURCE_PATH_CONTRACT_INVALID')
-    path = Path(contract.get('gbbq_path', ''))
-    if not path.is_absolute():
+    raw_path = contract.get('gbbq_path', '')
+    path = Path(raw_path)
+    if not path.is_absolute() and not PureWindowsPath(raw_path).is_absolute():
         raise ValueError('DAILY_TDX_SOURCE_PATH_MUST_BE_ABSOLUTE')
     return path
 

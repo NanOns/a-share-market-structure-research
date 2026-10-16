@@ -7,6 +7,7 @@ are absent; developer runs with the frozen evidence exercise the real bytes.
 import hashlib
 import json
 from pathlib import Path
+from pathlib import PureWindowsPath
 
 import pytest
 
@@ -86,4 +87,4 @@ def test_active_runtime_receipt_path_comes_from_versioned_contract(tmp_path):
 
 
 def test_tdx_gbbq_is_configured_as_read_only_input():
-    assert _tdx_gbbq_source_path().is_absolute()
+    assert PureWindowsPath(str(_tdx_gbbq_source_path())).is_absolute()

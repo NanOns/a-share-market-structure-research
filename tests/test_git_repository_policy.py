@@ -14,6 +14,8 @@ import git_repository_policy as policy
 def test_allowed_code_and_report_contract():
     assert policy.classify_path("src/workbench/example.py") is None
     assert policy.classify_path("docs/spec/source-contract.md") is None
+    assert policy.classify_path("docs/upgrade/V4_R8_UNIFIED_SOURCE_REPAIR_SPEC_R1.md") is None
+    assert policy.classify_path("docs/upgrade/V4_FULL_CLOSEOUT_CONTINUATION_TASK_R2_20261013.md") == "PROCESS_UPGRADE_DOCUMENT"
     assert policy.classify_path("reports/stage/V4_GOVERNANCE_COMPREHENSIVE_TEST_REPORT_20261016_R1.md") is None
     assert policy.classify_path("run_workbench_service.py") is None
 

@@ -37,6 +37,7 @@ PROCESS_NAME = re.compile(
     r"(?i)(?:task[-_]?(?:card|handoff)|execution[-_]plan|repair[-_]receipt|"
     r"audit[-_]?pass|evidence[-_]?bundle|acceptance[-_]?receipt|run[-_]?receipt)"
 )
+PROCESS_UPGRADE_DOC = re.compile(r"(?i)(?:^|[_-])(?:task|execution|continuation|receipt|evidence)(?:[_-]|\.)")
 ROOT_LAUNCHER = re.compile(r"^(?:run_[A-Za-z0-9_.-]+\.py|(?:OPEN|START)_[A-Za-z0-9_.-]+\.cmd)$")
 MACHINE_PATH = re.compile(
     r"(?i)(?<![A-Za-z0-9])(?:[A-Z]:[\\/](?:Users[\\/][^\\/\s'\"`]+|new_tdx|codex work|codex_tmp|Postgres|Users)[^\r\n'\"`]*|\\\\[^\\\s]+\\[^\\\s]+)"
@@ -135,6 +136,8 @@ def classify_path(path: str) -> str | None:
         return "FILE_TYPE_NOT_ALLOWLISTED"
     if PROCESS_NAME.search(PurePosixPath(normalized).name) and not normalized.startswith("tests/"):
         return "PROCESS_ARTIFACT_NAME"
+    if normalized.startswith("docs/upgrade/") and PROCESS_UPGRADE_DOC.search(PurePosixPath(normalized).name):
+        return "PROCESS_UPGRADE_DOCUMENT"
     return None
 
 

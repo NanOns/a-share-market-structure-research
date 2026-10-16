@@ -5,7 +5,7 @@
 - 盘点日期：2026-10-16（Asia/Shanghai）
 - 仓库：当前唯一授权的 G: 主仓库
 - 治理分支：`codex/v4-workspace-cleanup`，从 `main` 的 `7ae514d5ab8adc0fe2da0e957799dfd2ac4b8136` 创建
-- 本文 HEAD：`af7360f796512ca0a5d169ca8276c9a63a1d6376`，已推送至同名远端分支
+- 本文撰写基线 HEAD：`af7360f796512ca0a5d169ca8276c9a63a1d6376`，治理分支已推送至同名远端分支
 
 本文记录当前 Git 历史与忽略工作区的边界、恢复证据和后续执行条件。它不授权历史重写、远端 ref 变更、ignored 文件删除、PG 写入或生产切换。
 

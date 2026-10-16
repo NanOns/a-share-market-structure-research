@@ -440,6 +440,7 @@ def test_adapter_parses_exact_publication_bound_events_and_lifecycle_fields():
     assert summary["parsed_business_fields"]["risk_change_summary"][0]["context_token"] == summary["context"]["context_token"]
     assert entity["parsed_business_fields"]["lifecycle"][0]["security_id"] == "000001.SZ"
     assert entity["parsed_business_fields"]["lifecycle"][0]["field_states"]["security_id"] == "PG_FIELD_VERIFIED"
+    assert entity["status"] == "DEGRADED"
     assert entity["field_states"]["trade_date"] == "PG_FIELD_VERIFIED"
     assert entity["field_states"]["close"] == "SOURCE_MISSING"
     assert entity["field_mapping"]["security_id"] == "page_data.entity_lifecycle[0].security_id"

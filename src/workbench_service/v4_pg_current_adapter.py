@@ -195,6 +195,9 @@ class PgV4CurrentAdapter:
             for index, row in enumerate(parsed.get("sector_lifecycle_supplement", [])):
                 page_rows.append({"row": row, "path": f"payload.sector_lifecycle[{index}]",
                                   "verified": True, "eligible_fields": {"maturity"}})
+        # Page-bound rows are real partial results even on endpoints without a
+        # separate Owner family. Keep field-level missing states independent.
+        status = "DEGRADED" if owner_payloads or page_rows else "PENDING"
         eligible_fields = {
             "summary": set(projection["consumer_fields"]),
             "radar": set(projection["consumer_fields"]),

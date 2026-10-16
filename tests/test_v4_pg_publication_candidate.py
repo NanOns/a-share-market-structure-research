@@ -673,6 +673,63 @@ def test_candidate_is_candidate_only_and_preserves_quality_flags():
     assert len(plan["candidate_digest"]) == 64
 
 
+def test_owner_binding_writer_inserts_inside_caller_transaction_and_never_seals_head(monkeypatch):
+    from workbench_db.v4_publication_module_writer_r4 import persist_publication_module_results
+
+    monkeypatch.setenv("V4_NATIVE_PG_DSN", "postgresql://v4_writer@127.0.0.1/market_research")
+    pg = OwnerBindingWriterConnection()
+    result = persist_publication_module_results(pg, candidate())
+    assert result == {
+        "status": "OWNER_BINDINGS_INSERTED_NOT_HEAD_ACCEPTED", "row_count": 3,
+        "write_mode": "CALLER_TRANSACTION_NO_COMMIT", "head_changed": False, "committed": False,
+    }
+    assert len(pg.inserted) == 3
+    assert not any("INSERT INTO v4.publication_heads" in sql for sql, _ in pg.statements)
+    assert not any("COMMIT" in sql.upper() for sql, _ in pg.statements)
+    repeated = persist_publication_module_results(pg, candidate())
+    assert repeated["status"] == "EXISTING_BINDINGS_VERIFIED"
+    assert repeated["row_count"] == 3
+    assert len(pg.inserted) == 3
+
+
+class OwnerBindingWriterConnection:
+    """SQL-shaped fixture for the pure caller-transaction writer contract."""
+
+    def __init__(self):
+        self.statements = []
+        self.inserted = []
+
+    def execute(self, statement, params=None):
+        from datetime import date
+
+        sql = str(statement)
+        self.statements.append((sql, params))
+        if sql == "SHOW transaction_read_only":
+            return Cursor(one=("off",))
+        if "FROM pg_roles r WHERE r.rolname=current_user" in sql:
+            return Cursor(one=("v4_writer", False, False, False, False, False, False, True, False))
+        if "inet_server_addr()" in sql:
+            return Cursor(one=("market_research", 16384, "127.0.0.1", 5432))
+        if "pg_advisory_xact_lock" in sql:
+            return Cursor()
+        if "FROM v4.publications WHERE publication_id=%s" in sql:
+            return Cursor(one=(date(2026, 10, 15), 1, source_manifest_digest([source_row()]), "ACCEPTED", ACCEPTED_AT))
+        if "FROM v4.publication_heads WHERE publication_id=%s" in sql:
+            return Cursor()
+        if "FROM v4.publication_module_results" in sql and sql.lstrip().startswith("SELECT"):
+            rows = []
+            for row in self.inserted:
+                row = list(row[1:])
+                row[2] = row[2].obj
+                row[6] = date.fromisoformat(row[6])
+                rows.append(tuple(row))
+            return Cursor(all_rows=rows)
+        if sql.lstrip().startswith("INSERT INTO v4.publication_module_results"):
+            self.inserted.append(tuple(params))
+            return Cursor()
+        raise AssertionError(f"unexpected SQL: {sql}")
+
+
 def test_candidate_required_modules_and_versioned_contract_cannot_be_downgraded():
     partial = candidate(module_results=[])
     assert partial["status"] == "METADATA_CANDIDATE_READY"

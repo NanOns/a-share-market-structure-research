@@ -16748,6 +16748,24 @@
         "p1_formally_remaining": 266,
         "status": "DM01_LIVE_SCHEMA_PROBE_READY_NOT_EXECUTED; actual job state remains unverified.",
         "next": "Continue daily state/Head/Owner migration and execute the preflight only with an approved Reader identity."
+      },
+      {
+        "batch_id": "R21-R4-bff-contract-proof-accepted-at-binding-r21",
+        "files": [
+          "src/workbench_service/v4_server.py",
+          "tests/test_v4_server_pg_candidate_mode.py",
+          "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R21.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "The candidate BFF now requires each contract proof's accepted_at to exactly equal the selected Head context accepted_at, in addition to requiring approval events to be timestamped no later than acceptance.",
+          "Added a regression rejecting a contract proof attached to a different publication acceptance timestamp."
+        ],
+        "verification": "72 focused registry, publication candidate and BFF tests passed; compile and diff checks passed. No live publication response.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "BFF_APPROVAL_PROOF_BOUND_TO_EXACT_HEAD_ACCEPTED_AT_OFFLINE; formal baseline unchanged.",
+        "next": "Continue actual business and Owner callsite code migrations and test against live accepted publication when the compliant Reader identity is available."
       }
     ]
   }

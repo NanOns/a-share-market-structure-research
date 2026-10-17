@@ -23,6 +23,7 @@ def _require_candidate_contract_proofs(context):
     publication_id=context.get('publication_id')
     trade_date=context.get('trade_date')
     namespace=context.get('model_namespace_id')
+    accepted_at=context.get('accepted_at')
     for contract_id,proof in contracts.items():
         digest=proof.get('raw_sha256') if isinstance(proof,dict) else None
         if (not isinstance(contract_id,str) or not contract_id
@@ -32,6 +33,7 @@ def _require_candidate_contract_proofs(context):
                 or proof.get('publication_id')!=publication_id
                 or proof.get('trade_date')!=trade_date
                 or proof.get('namespace')!=namespace
+                or proof.get('accepted_at')!=accepted_at
                 or proof.get('approval_source_sha256')!=digest
                 or not proof.get('version') or not proof.get('schema_version')
                 or not proof.get('accepted_at') or not proof.get('approved_by')

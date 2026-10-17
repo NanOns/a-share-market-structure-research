@@ -38,6 +38,7 @@ class _Adapter:
             "model_namespace_id": kwargs["model_namespace_id"],
             "publication_id": "pub-20261016-r1",
             "trade_date": "2026-10-16",
+            "accepted_at": "2026-10-16T16:00:00+00:00",
             "contracts": {"V4_PUBLICATION_TEST_CONTRACT": {
                 "version": "r1", "raw_sha256": "a" * 64,
                 "schema_version": "1", "namespace": kwargs["model_namespace_id"],
@@ -144,6 +145,7 @@ def test_current_api_explicit_pg_candidate_http_and_no_file_fallback(monkeypatch
             'candidate_only':True,'context':{'context_token':kwargs['expected_context_token'],
                'model_namespace_id':'other-workspace',
                'publication_id':'pub-20261016-r1','trade_date':'2026-10-16',
+               'accepted_at':'2026-10-16T16:00:00+00:00',
                'contracts':{'V4_PUBLICATION_TEST_CONTRACT':{
                    'version':'r1','raw_sha256':'a'*64,'schema_version':'1','namespace':'other-workspace',
                    'publication_id':'pub-20261016-r1','trade_date':'2026-10-16',
@@ -235,4 +237,19 @@ def test_candidate_bff_rejects_approval_recorded_after_publication_acceptance():
            "approval_source_sha256":"a"*64}
     with pytest.raises(PublicationReadError, match="PG_CANDIDATE_CONTRACT_PROOF_INVALID"):
         v4_server._require_candidate_contract_proofs({"publication_id":"pub-1","trade_date":"2026-10-16",
-            "model_namespace_id":"workspace-main","contracts":{"RULE":proof}})
+            "model_namespace_id":"workspace-main","accepted_at":"2026-10-16T16:00:00+00:00",
+            "contracts":{"RULE":proof}})
+
+
+def test_candidate_bff_requires_approval_proof_to_bind_head_acceptance_time():
+    from workbench_db.v4_publication_reader import PublicationReadError
+
+    proof={"version":"r1","raw_sha256":"a"*64,"schema_version":"1","namespace":"workspace-main",
+           "publication_id":"pub-1","trade_date":"2026-10-16","accepted_at":"2026-10-16T15:59:59+00:00",
+           "approved_by":"reviewer","approval_ref":"approval-1","approval_source_revision":"source-r1",
+           "approval_occurred_at":"2026-10-16T15:59:00+00:00","approval_recorded_at":"2026-10-16T15:59:01+00:00",
+           "approval_source_sha256":"a"*64}
+    with pytest.raises(PublicationReadError, match="PG_CANDIDATE_CONTRACT_PROOF_INVALID"):
+        v4_server._require_candidate_contract_proofs({"publication_id":"pub-1","trade_date":"2026-10-16",
+            "model_namespace_id":"workspace-main","accepted_at":"2026-10-16T16:00:00+00:00",
+            "contracts":{"RULE":proof}})

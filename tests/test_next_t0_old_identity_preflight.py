@@ -12,6 +12,9 @@ from workbench_analysis.v4_14_replay_io import publish
 
 @pytest.mark.parametrize('added', [False, True])
 def test_real_gate_preserves_bytes_and_explains_old_scope(chain, monkeypatch, added):
+    monkeypatch.setenv('V4_MARKET_CALENDAR_SOURCE','FILE')
+    monkeypatch.setenv('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE','FILE')
+    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','FILE')
     root, day, freeze, new_head, _ = chain
     head_path=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
     old=json.loads(head_path.read_bytes())
@@ -32,8 +35,8 @@ def test_real_gate_preserves_bytes_and_explains_old_scope(chain, monkeypatch, ad
         effective_package=dict(provider_package_date=day,observed_at=now),tdx=bars,observed_at=now)
     binding=publish(root,'inputs/freeze_gate.json',artifact)
     original=(root/native['path']).read_bytes()
-    gbbq=root/'inputs/gbbq';gbbq.write_bytes(b'SYNTHETIC_ONLY')
-    monkeypatch.setattr(executor,'Path',lambda p: gbbq if str(p)=='D:/new_tdx/T0002/hq_cache/gbbq' else Path(p))
+    gbbq=root/'inputs/T0002/hq_cache/gbbq';gbbq.parent.mkdir(parents=True);gbbq.write_bytes(b'SYNTHETIC_ONLY')
+    monkeypatch.setenv('TDX_ROOT',str(root/'inputs'))
     # Only the isolated readiness clock advances past the date gate, never system time.
     clock=datetime.fromisoformat(day+'T23:59:00+08:00')
     result, ready=executor.verify_source_gate(root,day,artifact,dict(source_freeze=binding),now=clock)
@@ -57,6 +60,9 @@ def test_real_gate_preserves_bytes_and_explains_old_scope(chain, monkeypatch, ad
 def test_partial_tdx_bytes_survive_baostock_not_ready(chain, monkeypatch):
     from scripts import accept_dynamic_daily_baostock_v2 as runtime
     root,day,_,_,_=chain
+    monkeypatch.setenv('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE','FILE')
+    monkeypatch.setenv('V4_MARKET_CALENDAR_SOURCE','FILE')
+    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','FILE')
     monkeypatch.setenv('TDX_ROOT',str(root/'read-only-tdx-fixture'))
     monkeypatch.setenv('TDX_SNAPSHOT_ROOT',str(root/'tdx-snapshots'))
     before=(root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes()

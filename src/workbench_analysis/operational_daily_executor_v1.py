@@ -61,6 +61,21 @@ def _runtime_acceptance_manifest_path(root, day):
     return path
 
 
+def _load_pg_runtime_acceptance(root, day):
+    """Load manifest, receipt and exact response bytes from the dated PG fact."""
+    from workbench_db.v4_baostock_runtime_acceptance_pg_r1 import load, export_native_response
+    bundle = load(root, day, sdk=package_metadata())
+    cache = Path(root) / 'data/v4/runtime_pg_ingress_cache/baostock' / day.replace('-', '')
+    manifest_path = cache / 'accepted_runtime_manifest.json'
+    atomic_json(root, manifest_path, bundle['manifest'])
+    native_binding = export_native_response(root, bundle)
+    return dict(manifest=bundle['manifest'], receipt=bundle['smoke_receipt'],
+                raw=bundle['native_response']['payload'],
+                raw_path=Path(root) / native_binding['path'],
+                manifest_path=manifest_path, manifest_sha256=tdx.sha256_file(manifest_path),
+                native_response_binding=native_binding, bundle=bundle)
+
+
 def _tdx_gbbq_source_path(project_root=None):
     """Load the configured, read-only TDX source input path."""
     repository_root = Path(__file__).resolve().parents[2]
@@ -191,30 +206,48 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
         package=capture_latest_tdx_package(snapshot_root=snapshot,tdx_root=tdx_root,force_refresh=True)
         if not package.get('download'):return dict(status='WAIT_TDX',reason='POST_GATE_OFFICIAL_CAPTURE_NOT_FROZEN')
         bars=extract_target_session_bars(package,day,snapshot_root=snapshot,tdx_root=tdx_root)
-    manifest_path=_runtime_acceptance_manifest_path(root, day)
-    try:
-        manifest=load_runtime_acceptance_manifest(manifest_path,project_root=root)
-        if manifest['live_smoke']['target_date']!=day:raise ValueError('EXACT_TARGET_RUNTIME_REQUIRED')
-        if runtime_acceptance_error(manifest,sdk=package_metadata(),auth_mode=manifest['auth_mode']):
-            raise ValueError('SDK_RUNTIME_CHANGED')
-    except (OSError,ValueError,KeyError):
-        from scripts.accept_dynamic_daily_baostock_v2 import accept_runtime
-        accepted=accept_runtime(day,root)
-        if accepted['status']!='ACCEPTED':return accepted
-        manifest=load_runtime_acceptance_manifest(manifest_path,project_root=root)
-    smoke=root/manifest['smoke_receipt']['path']
-    # The accepted smoke already captured both real full-market batch responses.
-    # Reuse them by their live receipt rather than issuing two more full queries.
-    raw_path=smoke.with_name(smoke.name.replace('_live_smoke_receipt.json','_raw_responses.json'))
-    raw=json.loads(raw_path.read_bytes())
-    immutable_manifest=smoke.with_name(smoke.name.replace('_live_smoke_receipt.json','_accepted_runtime_manifest.json'))
-    if not immutable_manifest.is_file() or immutable_manifest.read_bytes()!=manifest_path.read_bytes():
-        raise ValueError('IMMUTABLE_RUNTIME_MANIFEST_REQUIRED')
-    receipt=json.loads(smoke.read_bytes())
-    if raw['target_date']!=day or raw['observed_at']!=receipt['observed_at']:
-        raise ValueError('NATIVE_RESPONSE_OBSERVATION_MISMATCH')
-    if receipt.get('native_response') and tdx.sha256_file(raw_path)!=receipt['native_response']['sha256']:
-        raise ValueError('NATIVE_RESPONSE_DIGEST_MISMATCH')
+    manifest_mode=os.environ.get('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE','PG')
+    if manifest_mode=='PG':
+        try:
+            pg_runtime=_load_pg_runtime_acceptance(root,day)
+        except ValueError as exc:
+            if str(exc)!='BAOSTOCK_PG_RUNTIME_ACCEPTANCE_NOT_FOUND':raise
+            from scripts.accept_dynamic_daily_baostock_v2 import accept_runtime
+            try:accepted=accept_runtime(day,root)
+            except (OSError,ValueError,RuntimeError) as error:
+                return dict(status='WAIT_BAOSTOCK_DAILY_UPDATE',reason=str(error)[:180],
+                            pg_runtime_acceptance_required=True,source_captured=False)
+            if accepted['status']!='ACCEPTED':return accepted
+            pg_runtime=_load_pg_runtime_acceptance(root,day)
+        manifest=pg_runtime['manifest'];receipt=pg_runtime['receipt'];raw=pg_runtime['raw']
+        raw_path=pg_runtime['raw_path'];immutable_manifest=pg_runtime['manifest_path']
+        native_response_binding=pg_runtime['native_response_binding']
+    elif manifest_mode=='FILE':
+        manifest_path=_runtime_acceptance_manifest_path(root, day)
+        try:
+            manifest=load_runtime_acceptance_manifest(manifest_path,project_root=root)
+            if manifest['live_smoke']['target_date']!=day:raise ValueError('EXACT_TARGET_RUNTIME_REQUIRED')
+            if runtime_acceptance_error(manifest,sdk=package_metadata(),auth_mode=manifest['auth_mode']):
+                raise ValueError('SDK_RUNTIME_CHANGED')
+        except (OSError,ValueError,KeyError):
+            from scripts.accept_dynamic_daily_baostock_v2 import accept_runtime
+            accepted=accept_runtime(day,root)
+            if accepted['status']!='ACCEPTED':return accepted
+            manifest=load_runtime_acceptance_manifest(manifest_path,project_root=root)
+        smoke=root/manifest['smoke_receipt']['path']
+        raw_path=smoke.with_name(smoke.name.replace('_live_smoke_receipt.json','_raw_responses.json'))
+        raw=json.loads(raw_path.read_bytes())
+        immutable_manifest=smoke.with_name(smoke.name.replace('_live_smoke_receipt.json','_accepted_runtime_manifest.json'))
+        if not immutable_manifest.is_file() or immutable_manifest.read_bytes()!=manifest_path.read_bytes():
+            raise ValueError('IMMUTABLE_RUNTIME_MANIFEST_REQUIRED')
+        receipt=json.loads(smoke.read_bytes())
+        if raw['target_date']!=day or raw['observed_at']!=receipt['observed_at']:
+            raise ValueError('NATIVE_RESPONSE_OBSERVATION_MISMATCH')
+        if receipt.get('native_response') and tdx.sha256_file(raw_path)!=receipt['native_response']['sha256']:
+            raise ValueError('NATIVE_RESPONSE_DIGEST_MISMATCH')
+        native_response_binding=dict(path=raw_path.relative_to(root).as_posix(),sha256=tdx.sha256_file(raw_path),bytes=raw_path.stat().st_size)
+    else:
+        raise ValueError('BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE_UNSUPPORTED')
     schema=json.loads((root/'config/baostock_dm01_sdk_schema_adapter_v2.json').read_bytes())
     normalized={}
     for name,method in [('daily',DAILY_METHOD),('adjustment_factor',FACTOR_METHOD)]:
@@ -236,6 +269,12 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
         effective_package=package,
         normalized=normalized,canonical_qfq_authority='TDX_GBBQ_UNCHANGED',
         factor_role='AUDIT_FACT_NOT_CANONICAL_QFQ_AUTHORITY')
+    if manifest_mode=='PG':
+        bundle=pg_runtime['bundle']
+        artifact['runtime_acceptance_pg']=dict(
+            contract_id='V4_BAOSTOCK_RUNTIME_ACCEPTANCE_PG_R1',contract_version='1.0.0',
+            trade_date=day,database_identity=bundle['database_identity'],schema=bundle['schema'],
+            payload_sha256=bundle['payload_sha256'],native_response=native_response_binding)
     if raw.get('source_transport_v2'):
         artifact['source_transport_v2']=raw['source_transport_v2']
     if local_receipt:artifact.update(local_fallback=local_receipt,effective_package=package)

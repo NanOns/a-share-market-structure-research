@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+import base64
 import hashlib
 import json
 
@@ -17,16 +18,32 @@ def _fixture():
         "adjustment_factor": {"method": "query_daily_adjust_factor", "provider_date": day,
                   "row_count": 1, "response_sha256": "c" * 64, "fields": ["code"]},
     }
+    observed_at = "2026-10-16T11:00:00+00:00"
+    native_payload = {"target_date": day, "observed_at": observed_at,
+                      "daily_rows": [{"code": "sh.600000"}],
+                      "daily_metadata": {"error_code": "0"},
+                      "adjustment_factor_rows": [{"code": "sh.600000"}],
+                      "adjustment_factor_metadata": {"error_code": "0"}}
+    native_raw = canonical(native_payload)
+    native_sha = hashlib.sha256(native_raw).hexdigest()
     receipt = {"contract_id": "BAOSTOCK_DAILY_UPDATE_LIVE_SMOKE_V1", "status": "PASS",
                "target_date": day, "runtime": runtime, "auth_mode": "PUBLIC_ANONYMOUS",
-               "live_smoke": smoke}
+               "live_smoke": smoke, "observed_at": observed_at,
+               "native_response": {"path": "reports/v4_baostock/runtime_acceptance/20261016/raw.json",
+                                   "sha256": native_sha}}
     receipt_raw = canonical(receipt)
     manifest = build_runtime_acceptance_manifest(
         sdk=runtime, auth_mode="PUBLIC_ANONYMOUS", live_smoke=smoke,
         smoke_receipt_path="reports/v4_baostock/runtime_acceptance/20261016/smoke.json",
         smoke_receipt_sha256=hashlib.sha256(receipt_raw).hexdigest(),
     )
-    record = pg_acceptance._record(day, manifest, receipt_raw)
+    native_response = {
+        "source_binding": {"path": receipt["native_response"]["path"], "sha256": native_sha,
+                           "bytes": len(native_raw)},
+        "source_sha256": native_sha, "payload": native_payload,
+        "raw_b64": base64.b64encode(native_raw).decode("ascii"),
+    }
+    record = pg_acceptance._record(day, manifest, receipt_raw, native_response=native_response)
     payload = canonical(record).decode()
     return day, runtime, record, (payload, digest(payload.encode()))
 
@@ -59,6 +76,7 @@ def test_pg_loader_reads_date_fact_and_validates_database_identity(monkeypatch):
     assert result["source"] == "PG_ACCEPTED_DAILY_RUNTIME_FACT"
     assert result["manifest"] == record["manifest"]
     assert result["smoke_receipt"] == record["smoke_receipt"]
+    assert result["native_response"] == record["native_response"]
 
 
 def test_pg_loader_rejects_payload_digest_mismatch(monkeypatch):
@@ -82,6 +100,18 @@ def test_pg_loader_rejects_payload_digest_mismatch(monkeypatch):
         raise AssertionError("payload digest mismatch was accepted")
 
 
+def test_native_response_binding_rejects_modified_exact_bytes():
+    _day, _runtime, record, _row = _fixture()
+    native = dict(record["native_response"])
+    native["raw_b64"] = base64.b64encode(b'{"target_date":"tampered"}').decode("ascii")
+    try:
+        pg_acceptance._validate_native_response("2026-10-16", record["smoke_receipt"], native)
+    except ValueError as exc:
+        assert str(exc) == "BAOSTOCK_PG_NATIVE_RESPONSE_DIGEST_MISMATCH"
+    else:
+        raise AssertionError("modified BaoStock source bytes were accepted")
+
+
 def test_capture_entrypoint_uses_pg_runtime_authority_by_default(monkeypatch):
     from scripts import capture_baostock_daily_update as capture
     expected = {"contract_id": "BAOSTOCK_DAILY_UPDATE_RUNTIME_ACCEPTANCE_V1", "status": "ACCEPTED"}
@@ -98,6 +128,39 @@ def test_capture_entrypoint_uses_pg_runtime_authority_by_default(monkeypatch):
     })
     assert capture.load_runtime_acceptance("G:/repo", "2026-10-16", "ignored.json") == expected
     assert called["day"] == "2026-10-16"
+
+
+def test_operational_executor_materializes_manifest_from_pg_bundle_without_file_reader(monkeypatch, tmp_path):
+    from workbench_analysis import operational_daily_executor_v1 as executor
+    day, runtime, record, _row = _fixture()
+    bundle = {"manifest": record["manifest"], "smoke_receipt": record["smoke_receipt"],
+              "native_response": record["native_response"], "payload_sha256": "f" * 64,
+              "database_identity": {"database": "fixture", "database_oid": 1, "host": "fixture", "port": 5432},
+              "schema": "v4_fixture"}
+    calls = {}
+
+    def load(root, target, *, sdk):
+        calls.update(root=root, target=target, sdk=sdk)
+        return bundle
+
+    def export(root, loaded):
+        assert loaded is bundle
+        return {"path": "data/v4/runtime_pg_ingress_cache/baostock/20261016/native_response.json",
+                "sha256": record["native_response"]["source_sha256"], "bytes": 100}
+
+    monkeypatch.setattr(pg_acceptance, "load", load)
+    monkeypatch.setattr(pg_acceptance, "export_native_response", export)
+    monkeypatch.setattr(executor, "package_metadata", lambda: runtime)
+    monkeypatch.setattr(executor, "load_runtime_acceptance_manifest",
+                        lambda *_a, **_k: (_ for _ in ()).throw(AssertionError("local manifest read")))
+
+    result = executor._load_pg_runtime_acceptance(tmp_path, day)
+    assert calls["target"] == day
+    assert result["raw"] == record["native_response"]["payload"]
+    assert result["receipt"] == record["smoke_receipt"]
+    assert result["raw_path"].as_posix().endswith("runtime_pg_ingress_cache/baostock/20261016/native_response.json")
+    assert result["manifest_path"].is_file()
+    assert result["bundle"]["database_identity"]["database"] == "fixture"
 
 
 def test_zero_change_pg_bundle_requires_every_exact_universe_response():

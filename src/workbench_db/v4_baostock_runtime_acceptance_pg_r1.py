@@ -7,6 +7,7 @@ manifest or descriptor locator.
 from __future__ import annotations
 
 import hashlib
+import base64
 import json
 import os
 from pathlib import Path
@@ -36,7 +37,8 @@ def _expected_identity() -> Mapping[str, Any]:
 
 
 def _record(day: str, manifest: Mapping[str, Any], receipt_raw: bytes,
-            zero_change_evidence: Mapping[str, Any] | None = None) -> dict[str, Any]:
+            zero_change_evidence: Mapping[str, Any] | None = None,
+            native_response: Mapping[str, Any] | None = None) -> dict[str, Any]:
     receipt = json.loads(receipt_raw.decode("utf-8"))
     manifest_raw = canonical(dict(manifest))
     if hashlib.sha256(receipt_raw).hexdigest() != manifest.get("smoke_receipt", {}).get("sha256"):
@@ -65,6 +67,7 @@ def _record(day: str, manifest: Mapping[str, Any], receipt_raw: bytes,
         raise ValueError("BAOSTOCK_PG_RUNTIME_ACCEPTANCE_INVALID:" + error)
     if manifest.get("contract_id") == "OPERATIONAL_BAOSTOCK_RUNTIME_ZERO_CHANGE_V2":
         _validate_zero_change_evidence(manifest, zero_change_evidence)
+    _validate_native_response(day, receipt, native_response)
     record = {
         "contract_id": CONTRACT,
         "contract_version": "1.0.0",
@@ -76,7 +79,36 @@ def _record(day: str, manifest: Mapping[str, Any], receipt_raw: bytes,
     }
     if zero_change_evidence is not None:
         record["zero_change_evidence"] = dict(zero_change_evidence)
+    record["native_response"] = dict(native_response)
     return record
+
+
+def _validate_native_response(day: str, receipt: Mapping[str, Any],
+                              native_response: Mapping[str, Any] | None) -> None:
+    if not isinstance(native_response, Mapping):
+        raise ValueError("BAOSTOCK_PG_NATIVE_RESPONSE_REQUIRED")
+    binding = native_response.get("source_binding")
+    payload = native_response.get("payload")
+    raw_b64 = native_response.get("raw_b64")
+    raw_sha = native_response.get("source_sha256")
+    receipt_native = receipt.get("native_response")
+    if (not isinstance(binding, Mapping) or not isinstance(payload, Mapping)
+            or not isinstance(raw_b64, str) or not isinstance(raw_sha, str)
+            or not isinstance(receipt_native, Mapping)
+            or binding.get("sha256") != raw_sha
+            or receipt_native.get("sha256") != raw_sha
+            or receipt_native.get("path") != binding.get("path")
+            or payload.get("target_date") != day
+            or payload.get("observed_at") != receipt.get("observed_at")):
+        raise ValueError("BAOSTOCK_PG_NATIVE_RESPONSE_BINDING_INVALID")
+    try:
+        raw = base64.b64decode(raw_b64, validate=True)
+        parsed = json.loads(raw.decode("utf-8"))
+    except (ValueError, UnicodeDecodeError) as exc:
+        raise ValueError("BAOSTOCK_PG_NATIVE_RESPONSE_ENCODING_INVALID") from exc
+    if (hashlib.sha256(raw).hexdigest() != raw_sha or parsed != dict(payload)
+            or len(raw) != binding.get("bytes")):
+        raise ValueError("BAOSTOCK_PG_NATIVE_RESPONSE_DIGEST_MISMATCH")
 
 
 def _zero_change_evidence(root: Path, manifest: Mapping[str, Any]) -> dict[str, Any]:
@@ -156,7 +188,29 @@ def append_from_files(root: Path, day: str, manifest_path: Path) -> dict[str, An
     evidence = None
     if manifest.get("contract_id") == "OPERATIONAL_BAOSTOCK_RUNTIME_ZERO_CHANGE_V2":
         evidence = _zero_change_evidence(root, manifest)
-    record = _record(_key(day), manifest, receipt_path.read_bytes(), evidence)
+    receipt_raw = receipt_path.read_bytes()
+    receipt = json.loads(receipt_raw.decode("utf-8"))
+    native_ref = receipt.get("native_response")
+    if not isinstance(native_ref, Mapping):
+        raise ValueError("BAOSTOCK_PG_NATIVE_RESPONSE_RECEIPT_REQUIRED")
+    native_path = (root / str(native_ref.get("path") or "")).resolve()
+    try:
+        native_path.relative_to(root)
+    except ValueError as exc:
+        raise ValueError("BAOSTOCK_PG_NATIVE_RESPONSE_PATH_ESCAPE") from exc
+    from common.paths import resolve_tdx_root
+    from workbench_analysis.daily_source_freeze import ensure_outside_tdx
+    ensure_outside_tdx(native_path, resolve_tdx_root(root))
+    raw_native = native_path.read_bytes()
+    native_sha = hashlib.sha256(raw_native).hexdigest()
+    if native_sha != native_ref.get("sha256"):
+        raise ValueError("BAOSTOCK_PG_NATIVE_RESPONSE_SOURCE_DIGEST_MISMATCH")
+    native_payload = json.loads(raw_native.decode("utf-8"))
+    native_binding = {"path": native_path.relative_to(root).as_posix(), "sha256": native_sha,
+                      "bytes": len(raw_native)}
+    native_record = {"source_binding": native_binding, "source_sha256": native_sha,
+                     "payload": native_payload, "raw_b64": base64.b64encode(raw_native).decode("ascii")}
+    record = _record(_key(day), manifest, receipt_raw, evidence, native_record)
     store = ForwardFactStore(root, FOLDER)
     binding = store.append(KIND, _key(day), record, migration_timeout_seconds=120)
     return {"contract_id": CONTRACT, "trade_date": _key(day), "binding": binding,
@@ -205,10 +259,40 @@ def load(root: Path, day: str, *, sdk: Mapping[str, Any], auth_mode: str | None 
         raise ValueError("BAOSTOCK_PG_RUNTIME_ACCEPTANCE_BINDING_INVALID")
     if manifest.get("contract_id") == "OPERATIONAL_BAOSTOCK_RUNTIME_ZERO_CHANGE_V2":
         _validate_zero_change_evidence(manifest, record.get("zero_change_evidence"))
+    _validate_native_response(key, receipt, record.get("native_response"))
     selected_auth = auth_mode or str(manifest.get("auth_mode", ""))
     error = _acceptance_error(manifest, sdk=sdk, auth_mode=selected_auth)
     if error:
         raise ValueError("BAOSTOCK_PG_RUNTIME_ACCEPTANCE_INVALID:" + error)
-    return {"manifest": manifest, "smoke_receipt": receipt, "record": record,
+    return {"manifest": manifest, "smoke_receipt": receipt,
+            "native_response": record["native_response"], "record": record,
             "source": "PG_ACCEPTED_DAILY_RUNTIME_FACT", "database_identity": identity,
             "schema": schema, "payload_sha256": row[1]}
+
+
+def export_native_response(root: Path, bundle: Mapping[str, Any]) -> dict[str, Any]:
+    """Atomically materialize exact PG response bytes as a derived freeze input."""
+    root = Path(root).resolve()
+    if root.drive.upper() != "G:":
+        raise ValueError("BAOSTOCK_PG_RUNTIME_G_ROOT_REQUIRED")
+    native = bundle.get("native_response")
+    if not isinstance(native, Mapping):
+        raise ValueError("BAOSTOCK_PG_NATIVE_RESPONSE_REQUIRED")
+    try:
+        raw = base64.b64decode(native.get("raw_b64", ""), validate=True)
+    except (ValueError, TypeError) as exc:
+        raise ValueError("BAOSTOCK_PG_NATIVE_RESPONSE_ENCODING_INVALID") from exc
+    binding = native.get("source_binding")
+    if (not isinstance(binding, Mapping) or hashlib.sha256(raw).hexdigest() != native.get("source_sha256")
+            or native.get("source_sha256") != binding.get("sha256")
+            or len(raw) != binding.get("bytes")):
+        raise ValueError("BAOSTOCK_PG_NATIVE_RESPONSE_DIGEST_MISMATCH")
+    day = bundle.get("manifest", {}).get("live_smoke", {}).get("target_date")
+    if not isinstance(day, str) or _key(day) != day:
+        raise ValueError("BAOSTOCK_PG_NATIVE_RESPONSE_DATE_INVALID")
+    from common.paths import resolve_tdx_root
+    from workbench_analysis.daily_increment_builder import _atomic_bytes
+    path = root / "data/v4/runtime_pg_ingress_cache/baostock" / day.replace("-", "") / "native_response.json"
+    _atomic_bytes(path, raw, tdx_root=resolve_tdx_root(root))
+    return {"path": path.relative_to(root).as_posix(), "sha256": hashlib.sha256(raw).hexdigest(),
+            "bytes": len(raw), "source": "PG_FACT_DERIVED_CACHE", "pg_payload_sha256": bundle.get("payload_sha256")}

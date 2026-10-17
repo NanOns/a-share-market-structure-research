@@ -20,6 +20,7 @@ def test_full_executor_entry(chain, monkeypatch, gate_ready):
     # This legacy-chain fixture deliberately exercises the historical file
     # contracts; the default runtime path is the approved PG registry.
     monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE', 'FILE')
+    monkeypatch.setenv('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE', 'FILE')
     monkeypatch.setenv('V4_MARKET_CALENDAR_SOURCE', 'FILE')
     monkeypatch.setenv('TDX_ROOT',str(root/'readonly-tdx-root'))
     monkeypatch.setenv('TDX_SNAPSHOT_ROOT',str(root/'configured-snapshots'))

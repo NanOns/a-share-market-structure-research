@@ -1,12 +1,12 @@
-# V4 R20 business-code file access audit
+# V4 R20 business-code and external file-reference audit
 
-**Status:** inventory and scanner checks pass; database migration findings and dynamic write classification remain open. This report does not authorize a production cutover.
+**Status:** R20 broad reference inventory and scanner checks pass; business-file database migration findings, dynamic-path review, historical loader-chain evidence, and live read-only runtime evidence remain open or blocked. This report does not authorize a production cutover.
 
 ## Scope and policy
 
-The audit parses current V4 business code under `src/workbench_*`, `src/v4`, `src/focus_tracker`, shared runtime utilities, the desktop launcher, scripts referenced by those sources, and workflow entrypoints. It inventories file reads, writes, script/SQL execution references, absolute filesystem literals, environment configuration lookups, and unresolved paths. Reports, documentation, configs as reference sources, tests, and archived data are excluded as business-code sources; a business-code read that targets one of those files is still recorded.
+The audit parses current V4 business code under `src/workbench_*`, `src/v4`, `src/focus_tracker`, shared runtime utilities, the desktop launcher, scripts referenced by those sources, and workflow entrypoints. It inventories file reads, writes, script/SQL execution references, absolute filesystem literals, environment configuration lookups, and unresolved paths. A separate whole-repository reference pass includes executable sources and a bounded dependency closure rooted in current authority files, including reachable reports and docs; unrelated historical report trees are excluded with reasons.
 
-Only database connection configuration, invariant configuration, and other environment configuration may be read from files or environment. Business data and business artifacts must be read and written through the database. **Owner-bound file reads are not an exception**; they are reported as database-migration findings. Configuration-file reads remain review items until their invariant/environment role is established. Environment-variable names are recorded, never their values.
+Only database connection configuration, invariant configuration, and other environment configuration may be read from files or environment. Business data and business artifacts must be read and written through the database. **Owner-bound file reads are not an exception**; they are reported as database-migration findings. A `config/` path or filename alone does not make an input legal: configuration-file reads remain findings until their database, invariant, or environment role is established and shown to contain no business state. Environment-variable names are recorded, never their values.
 
 ## Inventory
 
@@ -25,12 +25,22 @@ The scan covered 753 source files and recorded 1,474 file-access or script-execu
 
 P1 rows remain open. Of the dynamic/unresolved paths, 331 are write callsites whose destination cannot yet be attributed to business data, process state, or temporary output. The scan passing means that the inventory is complete and hash-verified, not that these writes are harmless, that the reads have already been migrated, or that release is approved. No P0 determination is made by this inventory contract.
 
+## R20 whole-repository reference coverage
+
+The R2 scanner is `scripts/audit_v4_nonconfig_file_references_r1.py`; `scripts/validate_v4_nonconfig_external_file_references_r2.py` independently checks its coverage assertions. The complete inventory is bound to its exact Git HEAD and contains per-file hashes, resolved and unresolved path expressions, call-chain classifications, hash/LFS checks, bounded report/document closure, and exclusion reasons. R2 covers all 59,965 tracked files, including 4,160 source-like files; the bounded authority closure contains 8,584 files / 187,369,418 bytes and is not truncated. It records 161,114 reference edges, 8,779 unresolved dynamic references, 13,684 historical references, 134,217 independently verified hashes, and 3,502 verified LFS objects. The machine validator passed, including report/document source and target checks, dynamic-resolution evidence, chain ID resolution, LFS counts, and tracked-worktree/HEAD equality.
+
+The broad scanner's own P0/P1 counters are zero because its severity requires confirmed code-chain evidence; that result **does not establish that all business reads are gone or harmless**. The separate business-code access inventory still has 266 P1 reads requiring database migration: 200 Owner, 28 other business-state reads, and 38 external market-data file reads. All remain open. The whole-repository inventory also contains 120 `BUSINESS_FILE_READ_REQUIRES_DB` edges and 218 business-artifact references requiring classification. The only allowed file inputs remain database connection, invariant, and environment configuration; business-state reads, including Owner, must migrate to database access.
+
+The R19 baseline's 352 mismatch and 92 missing findings were itemized one-by-one: 444/444 matched current edges, with no unmatched baseline IDs. Review results: 441 P2 and 3 INFO; of the P2 rows, 58 stale policy identities do not have a confirmed static loader chain and are explicitly marked `NEEDS_POLICY_LOADER_CHAIN_EVIDENCE`, not claimed as active runtime reads. The rest are frozen-byte mismatches, synthetic negative fixtures, external dataset locators, or prose false positives, each retaining its reference ID, expected/current identity, reachability, evidence, and disposition. No accepted hash, policy, or Head was rebound.
+
+No compliant read-only PG DSN is present in this environment. Consequently a legal current-V4 runtime file-access trace is `NOT_RUN` / blocked; the scanner itself and the historical V4_12 validator are not treated as runtime evidence. No PG operation, accepted Head change, production deployment, or scheduler action was performed. R19-A historical tests and R19-B Universe positive-readback outcomes are preserved and were not repeated as new acceptance claims.
+
 ## Changes and verification
 
 - Removed implicit drive-specific TDX-root fallback from `src/common/paths.py`; callers must use `config/paths.yaml` or the `TDX_ROOT` environment setting.
 - Removed the obsolete E-drive disposable-root allowance; the destination boundary now requires an explicit temp-root environment setting (`CODEX_DISPOSABLE_TEMP_ROOT` or `TMPDIR`), which local agent commands set to the user-mandated G: root.
 - Added regression coverage that an Owner read is classified as requiring database migration, business data reads/writes are not treated as configuration, API routes are not filesystem absolute paths, and TDX roots cannot silently fall back to a coded drive.
-- Focused CI test set: 221 passed. Scanner and inventory validator: PASS at commit `b340e32636e5edb0ba5825b0b2d02ab01078ac38`.
+- Focused CI-equivalent test set: 233 passed locally after the R2 severity regression test was added. The dedicated scanner tests pass; broad inventory and validator pass. GitHub CI is the authoritative remote check for the pushed commit.
 - Local runtime evidence remains read-only and is separate from this code inventory. No database writes, Head changes, production deployment, or production-port checks were performed in this audit pass.
 
 ## Next stage

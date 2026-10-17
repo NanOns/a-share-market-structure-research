@@ -75,6 +75,18 @@ class ResearchBFF:
                     control.update(scope='INPUT_PROGRESS_NOT_RESEARCH_CONTEXT',accepted_input_date=progress['context']['context']['accepted_trade_date'],indexed_trade_date=r.context['accepted_trade_date'])
                 return 200,r.envelope(status='READY',counts=r.manifest['counts'],gaps=r.manifest['gaps'],daily_refresh=control)
             if name=='home':return 200,home(r)
+            if name=='candidates' and len(parts)==2 and parts[1]=='cohort':
+                # Keep the candidate endpoint on the same snapshot reader and
+                # PG transaction as the rest of the V4 research API. It is a
+                # read projection only; it does not enroll a formal cohort or
+                # claim PIT/production authority.
+                if not getattr(r,'pg_candidate_schema',None):
+                    return 409,r.envelope(status='BLOCKED',code='PG_CANDIDATE_SNAPSHOT_REQUIRED',items=[])
+                payload=r.query('forward',query)
+                payload.update(contract_id='V4_PG_CANDIDATE_COHORT_READ_R1',
+                    source_mode=r.context.get('source_mode'),production_accepted=False,
+                    cohort_enrollment_enabled=False,PIT_ELIGIBLE=False)
+                return 200,payload
             if name=='forward' and len(parts)>1 and parts[1] in ('statistics','plans','fep','risk'):
                 publication=r.manifest.get('domain_features',{}).get('forward')
                 if not publication:return 200,r.envelope(status='SOURCE_INCOMPLETE',items=[])

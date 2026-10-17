@@ -21,7 +21,7 @@
 
 本轮增量实修：日更 Owner/生命周期、Membership、Sector、Calendar、Predecessor 读取统一走 PG 绑定；在线 operational Head 缺失时停止读取冻结文件回退；read-index R2 authority 改为 candidate/Head 内嵌的 PG binding；Core BFF 与服务缓存不再用 workspace Head 文件或 R2 JSON 选择运行入口；source capture 的 calendar 由 PG publication Head/contract binding 提供；日更路径与 TDX source/cache roots 复用中央路径解析器；更新日更候选绑定后的 transport 再进入 CAS；修复 PG 板块名查询以同时匹配 canonical `display_name`。这些改动覆盖真实读链，但不等同于稳定 ID 正式核销。
 
-续作增量实修：`v4_operational_owner_authority_v2.prepare_successor()` 现在先通过专用 predecessor PG ingress 固化一次候选 predecessor，再从 PG 读取用于 Owner 复用；相同来源绑定的 Owner 复用路径仅检查 PG fact 和摘要，不再要求旧 payload 文件仍存在。新日期/新来源仍只在明确 ingress 分支读取原始 payload 后写入 PG。`operational_daily_owner_v1.py` 与 `r43_operational_sources.py` 的 TDX root、BaoStock request-ledger 改为 `config/paths.yaml` 中央解析器。
+续作增量实修：`v4_operational_owner_authority_v2.prepare_successor()` 现在先通过专用 predecessor PG ingress 固化一次候选 predecessor，再从 PG 读取用于 Owner 复用；相同来源绑定的 Owner 复用路径仅检查 PG fact 和摘要，不再要求旧 payload 文件仍存在。新日期/新来源仍只在明确 ingress 分支读取原始 payload 后写入 PG。`operational_daily_owner_v1.py` 与 `r43_operational_sources.py` 的 TDX root、BaoStock request-ledger 改为 `config/paths.yaml` 中央解析器。`research_bff.py` 新增 `/api/v4/candidates/cohort` 的 PG snapshot 只读路由，复用同一个 Forward projection，明确关闭生产接受、正式入组和 PIT 资格。
 
 2026-10-18 继续实修：新增 `V4_HISTORICAL_SOURCE_INGRESS_PG_R1`，将确切路径和字节摘要绑定的历史业务输入固化到同一个 `market_research` PostgreSQL 的 append-only Forward fact store，并提供 PG-only 后续读取及 G 盘临时物化。已从现有 V4 绑定图导入并读回 **643 条**来源事实（Forward facts 表约 **38.3 MB**）；没有导入或切换 Accepted publication/Head。稳定来源 ID 使用规范相对路径 SHA-256，运行消费者不再内嵌 evidence/report 路径。
 
@@ -56,7 +56,7 @@
 - 比较：真实操作运行“股票 vs 市场”，中华企业收益来源标为不完整；同窗 Universe 基准显示 -0.136%，并标注共同起止日。
 - 本轮重启后再次在内置浏览器打开“煤炭开采”详情：实际 URL `/v4/research/sectors/INDUSTRY%3AT010101`，读取 25 个成员、当前宽度/相对强度及成员详情。缺少前序 PIT 成分股的历史轮动值显示“来源能力不足”，页面明确未用当前成员回填。
 - 同一现场再次确认首页仍显示 PG 候选快照、T0 `2026-09-30`；Compare 严格 PIT 可用日期 0。Shadow 路由显示 `NO_REAL_SHADOW_DATA`、真实样本 0，故浏览器验收为部分通过，不能报告全模块 PASS。
-- 本轮代码更新后重启的 28766 服务再次在 Focus 页面实际搜索 `600675`，呈现中华企业 1 条 Focus 结果、Forward 117 样本及 585 期限计划；数据为同一 PG 候选快照。单独 `/api/v4/candidates/cohort` 在当前候选服务注册表中返回 `ROUTE_NOT_FOUND`；候选状态目前由 Focus/Forward 组合页呈现，不报告独立候选 API 已验收。
+- 本轮代码更新后重启的 28766 服务再次在 Focus 页面实际搜索 `600675`，呈现中华企业 1 条 Focus 结果、Forward 117 样本及 585 期限计划；数据为同一 PG 候选快照。修复前该快照模式的独立 `/api/v4/candidates/cohort` 返回 `ROUTE_NOT_FOUND`；修复后浏览器真实 HTTP 读回 200、`domain=forward`、117 项总数、2026-09-30、数据库身份 `market_research/646711`，并含 `contract_id=V4_PG_CANDIDATE_COHORT_READ_R1`、`production_accepted=false`、`cohort_enrollment_enabled=false`、`PIT_ELIGIBLE=false`。
 
 以上为候选 UI 功能验收，不是生产验收。开发服务端口为 28766，未触碰 28765。
 

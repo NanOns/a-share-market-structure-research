@@ -2,6 +2,7 @@ from pathlib import Path
 from common.paths import (
     configured_path_source,
     resolve_baostock_cache_root,
+    resolve_baostock_request_ledger,
     resolve_configured_path,
     resolve_tdx_root,
     resolve_tdx_snapshot_root,
@@ -79,3 +80,32 @@ def test_dm01_source_capture_entrypoints_resolve_central_roots(tmp_path):
         encoding='utf-8')
     assert capture_roots(tmp_path)==(configured_tdx.resolve(),configured_snapshot.resolve())
     assert resolve_source_paths(tmp_path)==(configured_tdx.resolve(),configured_baostock.resolve())
+
+
+def test_baostock_request_ledger_uses_configured_cache_without_legacy_history(tmp_path):
+    configured=tmp_path/'cache-root'
+    (tmp_path/'config').mkdir()
+    (tmp_path/'config/paths.yaml').write_text(
+        f'baostock:\n  cache_root: "{configured.as_posix()}"\n',encoding='utf-8')
+    assert resolve_baostock_request_ledger(tmp_path)==configured.resolve()/'request_ledger.json'
+
+
+def test_baostock_request_ledger_preserves_legacy_or_rejects_conflict(tmp_path):
+    import pytest
+    configured=tmp_path/'cache-root'
+    (tmp_path/'config').mkdir()
+    (tmp_path/'config/paths.yaml').write_text(
+        f'baostock:\n  cache_root: "{configured.as_posix()}"\n',encoding='utf-8')
+    legacy=tmp_path/'reports/v4_baostock/request_ledger.json'
+    legacy.parent.mkdir(parents=True);legacy.write_text('{}',encoding='utf-8')
+    assert resolve_baostock_request_ledger(tmp_path)==legacy
+    configured.mkdir();(configured/'request_ledger.json').write_text('{}',encoding='utf-8')
+    with pytest.raises(ValueError,match='BAOSTOCK_REQUEST_LEDGER_MIGRATION_CONFLICT'):
+        resolve_baostock_request_ledger(tmp_path)
+
+
+def test_live_baostock_acceptance_adapter_uses_resolved_roots():
+    source=(Path(__file__).resolve().parents[2]/'scripts/accept_dynamic_daily_baostock_v2.py').read_text(encoding='utf-8')
+    assert "resolve_tdx_root(root)" in source
+    assert "resolve_baostock_request_ledger(root)" in source
+    assert "D:/new_tdx" not in source

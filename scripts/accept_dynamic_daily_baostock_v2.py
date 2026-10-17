@@ -14,6 +14,7 @@ from workbench_analysis.dm01_runtime_r4 import calendar
 from workbench_analysis.source_readiness_v2 import source_readiness
 from workbench_analysis.operational_daily_calendar_v2 import SHANGHAI
 from workbench_analysis.baostock_dm01_sdk_schema_v2 import normalize_response
+from common.paths import resolve_baostock_request_ledger, resolve_tdx_root
 
 
 def accept_runtime(target, root=ROOT):
@@ -22,9 +23,10 @@ def accept_runtime(target, root=ROOT):
         return dict(status='BLOCKED',reason='OFFICIAL_SESSION_NOT_VERIFIED')
     if not source_readiness(target,now)['time_eligible']:
         return dict(status='WAIT_BAOSTOCK_FACTOR',reason='TIME_GATE_NOT_REACHED')
+    tdx_root=resolve_tdx_root(root)
     runtime=package_metadata()
     schema_contract=json.loads((root/'config/baostock_dm01_sdk_schema_adapter_v2.json').read_bytes())
-    folder=root/'reports/v4_baostock/runtime_acceptance'/target.replace('-','')
+    folder=root/'reports'/'v4_baostock'/'runtime_acceptance'/target.replace('-','')
     stamp=now.strftime('%Y%m%dT%H%M%S%f')
     smoke_path=folder/(stamp+'_live_smoke_receipt.json')
     receipt=dict(contract_id='BAOSTOCK_DAILY_UPDATE_LIVE_SMOKE_V1',version='1.0.0',
@@ -32,7 +34,7 @@ def accept_runtime(target, root=ROOT):
         runtime={k:runtime[k] for k in ['package','version','installed_python_sources_sha256']},
         status='FAIL',live_smoke=None,tdx_root_write_count=0)
     try:
-        with BaoStockClient(RequestBudget(root/'reports/v4_baostock/request_ledger.json'),
+        with BaoStockClient(RequestBudget(resolve_baostock_request_ledger(root)),
                 auth_mode='PUBLIC_ANONYMOUS',allow_unaccepted_runtime_smoke=True) as client:
             daily_requested=datetime.now(SHANGHAI).isoformat()
             daily,dm=client.query_rows('dynamic_daily_smoke_daily',DAILY_METHOD,date=target,max_rows=20000,max_pages=1)
@@ -49,7 +51,7 @@ def accept_runtime(target, root=ROOT):
             raw_path=folder/(stamp+'_raw_responses.json')
             raw_sha=write_json_atomic(raw_path,
                 dict(target_date=target,observed_at=factor_received,requested_at=daily_requested,source_transport_v2=transport,daily_rows=daily,daily_metadata=dm,
-                     adjustment_factor_rows=factor,adjustment_factor_metadata=fm),tdx_root=Path('D:/new_tdx'))
+                     adjustment_factor_rows=factor,adjustment_factor_metadata=fm),tdx_root=tdx_root)
             receipt['native_response']=dict(path=raw_path.relative_to(root).as_posix(),sha256=raw_sha)
             daily,dm=normalize_response(daily,dm,target=target,sdk=runtime,contract=schema_contract,method=DAILY_METHOD)
             factor,fm=normalize_response(factor,fm,target=target,sdk=runtime,contract=schema_contract,method=FACTOR_METHOD)
@@ -71,7 +73,7 @@ def accept_runtime(target, root=ROOT):
             receipt.update(status='PASS',live_smoke=smoke)
     except (ValueError,OSError,RuntimeError) as exc:
         receipt['reason']=str(exc)[:160]
-    digest=write_json_atomic(smoke_path,receipt,tdx_root=Path('D:/new_tdx'))
+    digest=write_json_atomic(smoke_path,receipt,tdx_root=tdx_root)
     if receipt['status']!='PASS':
         return dict(status='WAIT_BAOSTOCK_DAILY_UPDATE',reason=receipt.get('reason'),
                     smoke_receipt=smoke_path.relative_to(root).as_posix(),source_sha256=digest)
@@ -83,8 +85,8 @@ def accept_runtime(target, root=ROOT):
     else:
         manifest=build_runtime_acceptance_manifest(sdk=runtime,auth_mode=receipt['auth_mode'],live_smoke=receipt['live_smoke'],
             smoke_receipt_path=smoke_path.relative_to(root).as_posix(),smoke_receipt_sha256=digest)
-    write_json_atomic(folder/(stamp+'_accepted_runtime_manifest.json'),manifest,tdx_root=Path('D:/new_tdx'))
-    write_json_atomic(folder/'accepted_runtime_manifest.json',manifest,tdx_root=Path('D:/new_tdx'))
+    write_json_atomic(folder/(stamp+'_accepted_runtime_manifest.json'),manifest,tdx_root=tdx_root)
+    write_json_atomic(folder/'accepted_runtime_manifest.json',manifest,tdx_root=tdx_root)
     return dict(status='ACCEPTED',target_date=target,manifest= (folder/'accepted_runtime_manifest.json').relative_to(root).as_posix())
 
 

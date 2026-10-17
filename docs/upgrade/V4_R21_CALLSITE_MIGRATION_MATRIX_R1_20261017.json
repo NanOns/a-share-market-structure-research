@@ -16994,11 +16994,33 @@
           "If both old and configured ledger files exist, the adapter rejects the ambiguous dual history; no ledger contents were read, copied or changed during source review.",
           "The path is not present as an exact row in this 266-callsite baseline, so no synthetic baseline ID or count change is recorded."
         ],
-        "verification": "46 focused new-listing and configured-TDX/BaoStock path tests passed. No provider call, source capture, PG access or service startup.",
+        "verification": "46 focused new-listing and configured-TDX/BaoStock path tests passed. GitHub CI runs 39014320988 and 39014318610 are still in progress as of R32 preparation; no provider call, source capture, PG access or service startup.",
         "p1_formally_closed": 0,
         "p1_formally_remaining": 266,
         "status": "BAOSTOCK_NEW_LISTING_REQUEST_BUDGET_USES_CONFIGURED_CACHE_WITH_LEGACY_CONTINUITY; no baseline row reconciled.",
         "next": "Continue exact source-ingress contract and accepted PG append/readback work; reconcile current inventory edges without synthesizing callsite IDs."
+      },
+      {
+        "batch_id": "R21-R4-baostock-runtime-acceptance-config-paths-r32",
+        "files": [
+          "src/common/paths.py",
+          "src/workbench_analysis/operational_new_listing_r1.py",
+          "scripts/accept_dynamic_daily_baostock_v2.py",
+          "tests/r4_repair/test_configured_tdx_path.py",
+          "tests/test_next_t0_old_identity_preflight.py",
+          "docs/upgrade/V4_R21_R4_BAOSTOCK_RUNTIME_ACCEPTANCE_CONFIG_PATHS_R32_20261017.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "A shared request-ledger resolver preserves existing legacy budget history, selects the configured BaoStock cache for new installations, and refuses simultaneous legacy/configured copies.",
+          "The BaoStock runtime-acceptance adapter now uses resolve_tdx_root for all output guards and uses the shared configured request-ledger resolver; its previous D:/new_tdx path guard is removed.",
+          "The test adapter path contract runs offline only. The acceptance adapter was not run, and the code path is not an exact row in the 266-callsite baseline."
+        ],
+        "verification": "52 focused new-listing, configured source-path and source-readiness tests passed; Python compilation and diff check passed. No external provider, PG or worker activity.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "BAOSTOCK_RUNTIME_ACCEPTANCE_PATHS_USE_CONFIGURED_ROOTS; no baseline row reconciled.",
+        "next": "Continue exact source-ingress contract and accepted PG append/readback wiring; keep live acceptance gated by its explicit operational conditions."
       }
     ]
   }

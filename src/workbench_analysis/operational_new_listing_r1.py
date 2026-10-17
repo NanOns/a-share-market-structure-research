@@ -14,13 +14,8 @@ PATH='config/v4_operational_new_listing_r1.json'
 
 def request_ledger_path(root):
     """Keep the existing durable budget ledger while adopting configured cache paths."""
-    root=Path(root)
-    from common.paths import resolve_baostock_cache_root
-    legacy=root/'reports/v4_baostock/request_ledger.json'
-    configured=resolve_baostock_cache_root(root)/'request_ledger.json'
-    if legacy.exists() and configured.exists():
-        raise ValueError('BAOSTOCK_REQUEST_LEDGER_MIGRATION_CONFLICT')
-    return legacy if legacy.exists() else configured
+    from common.paths import resolve_baostock_request_ledger
+    return resolve_baostock_request_ledger(root)
 
 def validate_basic(code,day,rows,existing_ids):
     if len(rows)!=1:raise ValueError('IPO_BASIC_SINGLE_RECORD_REQUIRED')

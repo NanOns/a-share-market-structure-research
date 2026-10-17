@@ -113,5 +113,18 @@ def resolve_baostock_cache_root(project_root: str | Path, explicit: str | Path |
     return resolve_configured_path(project_root, "baostock.cache_root", explicit=explicit)  # type: ignore[return-value]
 
 
+def resolve_baostock_request_ledger(project_root: str | Path, explicit: str | Path | None = None) -> Path:
+    """Resolve the request-budget ledger without discarding legacy history."""
+    root = Path(project_root).resolve()
+    if explicit is not None and str(explicit).strip():
+        candidate = Path(explicit).expanduser()
+        return (candidate if candidate.is_absolute() else root / candidate).resolve()
+    legacy = root / "reports" / "v4_baostock" / "request_ledger.json"
+    configured = resolve_baostock_cache_root(root) / "request_ledger.json"
+    if legacy.exists() and configured.exists():
+        raise ValueError("BAOSTOCK_REQUEST_LEDGER_MIGRATION_CONFLICT")
+    return legacy if legacy.exists() else configured
+
+
 def resolve_ingest_temp_root(project_root: str | Path, explicit: str | Path | None = None) -> Path:
     return resolve_configured_path(project_root, "ingest.temp_root", explicit=explicit)  # type: ignore[return-value]

@@ -57,6 +57,8 @@ def test_real_gate_preserves_bytes_and_explains_old_scope(chain, monkeypatch, ad
 def test_partial_tdx_bytes_survive_baostock_not_ready(chain, monkeypatch):
     from scripts import accept_dynamic_daily_baostock_v2 as runtime
     root,day,_,_,_=chain
+    monkeypatch.setenv('TDX_ROOT',str(root/'read-only-tdx-fixture'))
+    monkeypatch.setenv('TDX_SNAPSHOT_ROOT',str(root/'tdx-snapshots'))
     before=(root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes()
     package_path=root/'inputs/partial_package.zip'
     package_path.write_bytes(b'SYNTHETIC_TDX_PACKAGE_ALREADY_FROZEN')

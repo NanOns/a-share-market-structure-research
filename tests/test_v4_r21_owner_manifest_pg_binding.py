@@ -75,6 +75,50 @@ def test_owner_authority_prepare_appends_pg_manifest_without_authority_json(monk
     assert not list(tmp_path.rglob("AUTHORITY.json"))
 
 
+def test_legacy_owner_authority_ingress_requires_an_exact_explicit_binding(tmp_path):
+    legacy_path = tmp_path / "config" / "v4_operational_owner_pg_closeout_r1.json"
+    legacy_path.parent.mkdir()
+    legacy_path.write_text("{}", encoding="utf-8")
+    with pytest.raises(ValueError, match="PG_OPERATIONAL_OWNER_AUTHORITY_MIGRATION_BINDING_REQUIRED"):
+        closeout_module.load_authority(tmp_path, _candidate(), "head-token")
+
+
+def test_bound_legacy_owner_authority_is_only_an_ingress_and_is_verified(monkeypatch, tmp_path):
+    candidate = _candidate()
+    candidate["owners"] = {DAY: {"raw": SOURCE}}
+    authority = {
+        "contract_id": closeout_module.OWNER,
+        "head_token": "head-token",
+        "source_owners": candidate["owners"],
+        "owners": {DAY: {"raw": OWNER_BINDING["descriptor"]}},
+        "historical_PIT_permission": False,
+        "PIT_ELIGIBLE": False,
+        "AS_RECORDED": False,
+    }
+    path = tmp_path / "config" / "v4_operational_owner_pg_closeout_r1.json"
+    path.parent.mkdir()
+    path.write_text(json.dumps(authority), encoding="utf-8")
+    source_binding = ref(tmp_path, path)
+    monkeypatch.setattr(closeout_module, "descriptor_metadata", lambda *args, **kwargs: {})
+
+    loaded = closeout_module.load_authority(
+        tmp_path, candidate, "head-token", authority_binding=source_binding
+    )
+
+    assert loaded == authority
+
+
+def test_legacy_owner_authority_ingress_rejects_an_unbound_location(tmp_path):
+    path = tmp_path / "config" / "v4_operational_owner_pg_closeout_r1.json"
+    path.parent.mkdir()
+    path.write_text("{}", encoding="utf-8")
+    with pytest.raises(ValueError, match="PG_OPERATIONAL_OWNER_AUTHORITY_MIGRATION_SOURCE_INVALID"):
+        closeout_module.load_authority(
+            tmp_path, _candidate(), "head-token",
+            authority_binding={"path": "unrelated.json", "sha256": "0" * 64, "bytes": 2},
+        )
+
+
 def test_pg_manifest_reader_checks_database_identity_and_payload_digest(monkeypatch, tmp_path):
     raw = json.dumps({"contract_id": authority_module.CONTRACT}, separators=(",", ":"))
     payload_sha = hashlib.sha256(raw.encode()).hexdigest()

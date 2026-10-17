@@ -43,9 +43,13 @@ def test_authority_requires_complete_unchanged_source_mapping(tmp_path):
     folder=tmp_path/'config';folder.mkdir()
     authority={'contract_id':OWNER,'head_token':'abc','source_owners':candidate['owners'],'owners':{'2026-10-09':{'core':ref}},'historical_PIT_permission':False,'PIT_ELIGIBLE':False,'AS_RECORDED':False}
     path=folder/'v4_operational_owner_pg_closeout_r1.json';path.write_text(json.dumps(authority))
-    assert load_authority(tmp_path,candidate,'abc')==authority
+    source_binding={'path':path.relative_to(tmp_path).as_posix(),
+        'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'bytes':path.stat().st_size}
+    assert load_authority(tmp_path,candidate,'abc',authority_binding=source_binding)==authority
     authority['owners']['2026-10-09']={};path.write_text(json.dumps(authority))
-    with pytest.raises(ValueError,match='DOMAINS_INCOMPLETE'):load_authority(tmp_path,candidate,'abc')
+    source_binding={'path':path.relative_to(tmp_path).as_posix(),
+        'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'bytes':path.stat().st_size}
+    with pytest.raises(ValueError,match='DOMAINS_INCOMPLETE'):load_authority(tmp_path,candidate,'abc',authority_binding=source_binding)
 
 def test_cached_attestation_rehashes_actual_native_payload(tmp_path):
     from workbench_db.v4_native import connection

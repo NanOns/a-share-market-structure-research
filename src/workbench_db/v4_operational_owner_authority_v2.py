@@ -13,7 +13,7 @@ from workbench_analysis.r43_owner_replay import checked
 CONTRACT='V4_HEAD_EMBEDDED_NATIVE_PG_OWNER_AUTHORITY_V2'
 KEY='native_pg_owner_authority'
 
-def prepare_successor(root,candidate):
+def prepare_successor(root,candidate,*,predecessor_authority_binding=None):
     """Append dated facts and bind their authority before the single Head CAS."""
     root=Path(root).resolve()
     predecessor=json.loads(checked(root,candidate['predecessor']).read_bytes())
@@ -21,9 +21,16 @@ def prepare_successor(root,candidate):
         prior=load(root,predecessor)
     else:
         from .v4_operational_owner_pg_closeout import load_authority
-        prior=load_authority(root,predecessor,candidate['predecessor']['sha256'])
+        prior=load_authority(root,predecessor,candidate['predecessor']['sha256'],
+                             authority_binding=predecessor_authority_binding)
     binding,receipt=prepare(root,candidate,prior)
     candidate[KEY]=binding
+    if KEY not in predecessor:
+        receipt["legacy_authority_ingress"] = dict(
+            path=predecessor_authority_binding["path"],
+            sha256=predecessor_authority_binding["sha256"],
+            disposition="EXACT_BOUND_ONE_TIME_INGRESS_THEN_PG_MANIFEST",
+        )
     return receipt
 
 def validate(candidate,authority):

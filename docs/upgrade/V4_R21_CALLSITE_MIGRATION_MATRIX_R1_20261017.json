@@ -14017,9 +14017,15 @@
         "status": "PROPOSED_REQUIRES_RELATION_AND_NAMESPACE_BINDING"
       },
       "acceptance_evidence": null,
-      "blocker": "Source-ingress authorization/manifest and PG ingestion reconciliation are still required.",
+      "blocker": "Legacy Head conversion requires a verified authority source binding and authorized PG append; absent binding is rejected.",
       "baseline_function": "prepare_successor",
-      "migration_evidence": "This is a publisher/source-ingress read retained to validate and copy source bytes into PG; it still needs source authorization/manifest evidence and downstream readback reconciliation.",
+      "migration_evidence": {
+        "batch": "R21-R4-contract-owner-authority-manifest",
+        "code_path": "prepare_successor -> load_authority(authority_binding=...) -> PG authority_manifest append",
+        "legacy_ingress": "Requires exact fixed-path ref with SHA-256 and byte length; otherwise fail closed. The binding is recorded in the preparation receipt.",
+        "pg_relation": "workspace-scoped forward_facts (kind=authority_manifest)",
+        "status_boundary": "CODE_PATH_IMPLEMENTED; first-source ingress requires caller-supplied identity and live PG authorization; not formally closed"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160570",

@@ -1,4 +1,5 @@
 """New Reader wiring controls; tiny PG fixtures do not grant admission."""
+import hashlib
 import json
 from copy import deepcopy
 import pytest
@@ -40,4 +41,7 @@ def test_successor_preparation_preserves_original_serialized_head_fact_token(tmp
         owners={'2026-10-12':dict(raw=descriptor)},historical_PIT_permission=False,PIT_ELIGIBLE=False,AS_RECORDED=False)
     atomic_json(tmp_path,tmp_path/'config/v4_operational_owner_pg_closeout_r1.json',authority)
     successor=deepcopy(previous);successor.update(predecessor=binding,metadata='NEW_HEAD')
-    assert prepare_successor(tmp_path,successor)['counts']==dict(reused=1,created=0)
+    legacy_binding={'path':'config/v4_operational_owner_pg_closeout_r1.json',
+        'sha256':hashlib.sha256((tmp_path/'config/v4_operational_owner_pg_closeout_r1.json').read_bytes()).hexdigest(),
+        'bytes':(tmp_path/'config/v4_operational_owner_pg_closeout_r1.json').stat().st_size}
+    assert prepare_successor(tmp_path,successor,predecessor_authority_binding=legacy_binding)['counts']==dict(reused=1,created=0)

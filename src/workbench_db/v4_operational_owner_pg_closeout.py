@@ -128,11 +128,13 @@ def read_authority_manifest(root,binding,*,workspace_root=None):
         raise ValueError('PG_OPERATIONAL_OWNER_AUTHORITY_PAYLOAD_INVALID')
     return payload
 
-def load_authority(root,candidate,head_token):
+def load_authority(root,candidate,head_token,*,authority_binding=None):
     from workbench_analysis.r43_owner_replay import checked
-    path=Path(root)/'config/v4_operational_owner_pg_closeout_r1.json'
-    if not path.exists():return None
-    authority=json.loads(path.read_bytes())
+    if not isinstance(authority_binding,dict):
+        raise ValueError('PG_OPERATIONAL_OWNER_AUTHORITY_MIGRATION_BINDING_REQUIRED')
+    if authority_binding.get('path')!='config/v4_operational_owner_pg_closeout_r1.json':
+        raise ValueError('PG_OPERATIONAL_OWNER_AUTHORITY_MIGRATION_SOURCE_INVALID')
+    authority=json.loads(checked(root,authority_binding).read_bytes())
     if authority.get('contract_id')!=OWNER or authority.get('head_token')!=head_token:
         raise ValueError('PG_OPERATIONAL_OWNER_AUTHORITY_HEAD_MISMATCH')
     if any(authority.get(name) is not False for name in ('historical_PIT_permission','PIT_ELIGIBLE','AS_RECORDED')):

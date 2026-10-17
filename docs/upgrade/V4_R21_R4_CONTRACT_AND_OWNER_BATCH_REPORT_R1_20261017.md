@@ -24,6 +24,7 @@ Date: 2026-10-17 (Asia/Shanghai). The active execution contract is the user-prov
 - Changed `publications.contract_bindings` to a nullable staged column without an empty-object default. A `NOT VALID` constraint and a trigger that fires on every insert/update preserve historical accepted rows during reconciliation while validating new acceptance, binding, namespace, and acceptance-time changes. The proposed stage-two validation remains commented and requires row-by-row historical mapping.
 - Hardened the contract byte reader to inspect the live transaction settings and require read-only `REPEATABLE READ`; returned contract evidence now carries its publication id, trade date, accepted timestamp, and database/user identity. Raw bytes are still independently SHA-256 checked; XML DTD/entity declarations remain rejected.
 - Migrated the active `v4_operational_owner_authority_v2.load` path away from opening `AUTHORITY.json`. Owner authority manifests are now appended to the existing workspace `forward_facts` Owner relation and read by their inline PG descriptor; digest and database identity are checked, with no file-value fallback. Native read connections now establish read-only repeatable-read transactions.
+- Removed the implicit fixed-path fallback for older `v4_operational_owner_pg_closeout_r1.json` authority. Legacy bytes can enter only through an explicit path/SHA/length binding, are validated against the predecessor Head and Owner descriptors, and are then written as a PG manifest for the successor. Unbound legacy authority now fails closed.
 - Updated the R21 callsite matrix evidence for `V4-BCA-R2-5fc637717724bb649d31`. This is code-path evidence only: it is not marked formally closed because the live database and full inventory reconciliation remain unavailable.
 - Fixed the test isolation guard to accept the current `tdx.source_root` key as well as the legacy `tdx.root` form. The resolved TDX path remains protected as a read-only root.
 
@@ -35,7 +36,7 @@ The registry reader has not yet been wired into the active runtime contract/Head
 
 ## Verification
 
-- Focused offline tests: **11 passed** (`test_v4_contract_registry_pg_v1.py`, `test_v4_r21_owner_manifest_pg_binding.py`), using `--confcutdir=tests` because the repository-wide legacy isolation plugin currently cannot initialize under the installed Python 3.13 environment (`psycopg` has no compatible PQ wrapper; the runtime package set also lacks `cryptography`). These are mocked PG-shaped positive and negative tests, not live-PG acceptance.
+- Focused offline tests: **14 passed** (`test_v4_contract_registry_pg_v1.py`, `test_v4_r21_owner_manifest_pg_binding.py`), using `--confcutdir=tests` because the repository-wide legacy isolation plugin currently cannot initialize under the installed Python 3.13 environment (`psycopg` has no compatible PQ wrapper; the runtime package set also lacks `cryptography`). These are mocked PG-shaped positive and negative tests, not live-PG acceptance.
 - `compileall` passed for modified Python files; `git diff --check` passed.
 - The broader daily-executor/Owner selection did not collect: it is blocked by the incompatible local dependency environment, not reported as passing.
 - GitHub CI and PR checks are pending the authorized commit/push of this batch.
